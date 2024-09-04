@@ -43,22 +43,22 @@ public class PlayerMovement : MonoBehaviour
         //Set movement direction based on Key Input
         if (movementState == MovementState.Still)
         {
-            if (Input.GetKeyDown(KeyCode.W) && detectorFront.GetComponent<Detector>().canMoveFurther)
+            if (Input.GetKey(KeyCode.W) && detectorFront.GetComponent<Detector>().canMoveFurther)
             {
                 movementDirection = MovementDirection.Forward;
                 movementState = MovementState.Moving;
             }
-            if (Input.GetKeyDown(KeyCode.S) && detectorBack.GetComponent<Detector>().canMoveFurther)
+            if (Input.GetKey(KeyCode.S) && detectorBack.GetComponent<Detector>().canMoveFurther)
             {
                 movementDirection = MovementDirection.Backward;
                 movementState = MovementState.Moving;
             }
-            if(Input.GetKeyDown(KeyCode.D) && detectorRight.GetComponent<Detector>().canMoveFurther)
+            if(Input.GetKey(KeyCode.D) && detectorRight.GetComponent<Detector>().canMoveFurther)
             {
                 movementDirection = MovementDirection.Right;
                 movementState = MovementState.Moving;
             }
-            if(Input.GetKeyDown(KeyCode.A) && detectorLeft.GetComponent<Detector>().canMoveFurther)
+            if(Input.GetKey(KeyCode.A) && detectorLeft.GetComponent<Detector>().canMoveFurther)
             {
                 movementDirection = MovementDirection.Left;
                 movementState = MovementState.Moving;
