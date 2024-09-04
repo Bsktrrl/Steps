@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public static event Action takeAStep;
+
     [Header("States")]
     public MovementState movementState;
     public MovementDirection movementDirection;
@@ -47,21 +50,29 @@ public class PlayerMovement : MonoBehaviour
             {
                 movementDirection = MovementDirection.Forward;
                 movementState = MovementState.Moving;
+
+                takeAStep?.Invoke();
             }
             if (Input.GetKey(KeyCode.S) && detectorBack.GetComponent<Detector>().canMoveFurther)
             {
                 movementDirection = MovementDirection.Backward;
                 movementState = MovementState.Moving;
+
+                takeAStep?.Invoke();
             }
             if(Input.GetKey(KeyCode.D) && detectorRight.GetComponent<Detector>().canMoveFurther)
             {
                 movementDirection = MovementDirection.Right;
                 movementState = MovementState.Moving;
+
+                takeAStep?.Invoke();
             }
             if(Input.GetKey(KeyCode.A) && detectorLeft.GetComponent<Detector>().canMoveFurther)
             {
                 movementDirection = MovementDirection.Left;
                 movementState = MovementState.Moving;
+
+                takeAStep?.Invoke();
             }
         }
 
