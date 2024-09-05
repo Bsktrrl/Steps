@@ -39,12 +39,10 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().platformType == PlatformTypes.Grass)
                 {
-                    print("GrassMovement");
                     GrassMovement();
                 }
                 else if (MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().platformType == PlatformTypes.Ice)
                 {
-                    print("IceMovement");
                     IceMovement();
                 }
             }

@@ -88,20 +88,23 @@ public class Detector : MonoBehaviour
             // Raycast hit something
             Debug.DrawRay(gameObject.transform.position, raycastDown * hit.distance, Color.green);
 
-            if (hit.collider.CompareTag("Platform_Ice"))
-            {
-                MainManager.Instance.playerStats.platformObject_StandingOn_Current = hit.collider.gameObject;
-                MainManager.Instance.playerStats.movementSpeed = MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().speed;
-            }
-            else if (hit.collider.CompareTag("Platform_Grass"))
-            {
-                MainManager.Instance.playerStats.platformObject_StandingOn_Current = hit.collider.gameObject;
-                MainManager.Instance.playerStats.movementSpeed = MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().speed;
-            }
-            else
-            {
-                MainManager.Instance.playerStats.platformObject_StandingOn_Current = null;
-            }
+            MainManager.Instance.playerStats.platformObject_StandingOn_Current = hit.collider.gameObject;
+            MainManager.Instance.playerStats.movementSpeed = MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().speed;
+
+            //if (hit.collider.CompareTag("Platform_Ice"))
+            //{
+            //    MainManager.Instance.playerStats.platformObject_StandingOn_Current = hit.collider.gameObject;
+            //    MainManager.Instance.playerStats.movementSpeed = MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().speed;
+            //}
+            //else if (hit.collider.CompareTag("Platform_Grass"))
+            //{
+            //    MainManager.Instance.playerStats.platformObject_StandingOn_Current = hit.collider.gameObject;
+            //    MainManager.Instance.playerStats.movementSpeed = MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().speed;
+            //}
+            //else
+            //{
+            //    MainManager.Instance.playerStats.platformObject_StandingOn_Current = null;
+            //}
         }
         else
         {
