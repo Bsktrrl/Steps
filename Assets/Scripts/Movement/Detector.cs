@@ -95,16 +95,19 @@ public class Detector : MonoBehaviour
             {
                 MainManager.Instance.playerStats.platformType_StandingOn = PlatformTypes.Ice;
                 MainManager.Instance.playerStats.platformObject_StandingOn = hit.collider.gameObject;
+                MainManager.Instance.playerStats.movementSpeed = MainManager.Instance.playerStats.platformObject_StandingOn.GetComponent<Platform>().speed;
             }
             else if (hit.collider.CompareTag("Platform_Grass"))
             {
                 MainManager.Instance.playerStats.platformType_StandingOn = PlatformTypes.Grass;
                 MainManager.Instance.playerStats.platformObject_StandingOn = hit.collider.gameObject;
+                MainManager.Instance.playerStats.movementSpeed = MainManager.Instance.playerStats.platformObject_StandingOn.GetComponent<Platform>().speed;
             }
             else
             {
                 MainManager.Instance.playerStats.platformType_StandingOn = PlatformTypes.None;
                 MainManager.Instance.playerStats.platformObject_StandingOn = null;
+                MainManager.Instance.playerStats.movementSpeed = 0;
             }
         }
         else
@@ -114,6 +117,7 @@ public class Detector : MonoBehaviour
 
             MainManager.Instance.playerStats.platformType_StandingOn = PlatformTypes.None;
             MainManager.Instance.playerStats.platformObject_StandingOn = null;
+            MainManager.Instance.playerStats.movementSpeed = 0;
         }
     }
 }

@@ -63,8 +63,6 @@ public class MainManager : Singleton<MainManager>
     }
     void TakeAStep()
     {
-        playerStats.stepsLeft -= 1;
-
         if (playerStats.stepsLeft < 0)
         {
             noMoreSteps?.Invoke();
@@ -86,6 +84,8 @@ public class PlayerStats
 {
     public PlatformTypes platformType_StandingOn;
     public GameObject platformObject_StandingOn;
+
+    public float movementSpeed = 3f;
 
     public int stepsMax;
     public int stepsLeft;

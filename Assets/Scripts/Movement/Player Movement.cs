@@ -19,7 +19,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] GameObject detectorRight;
 
     [Header("Variables")]
-    [SerializeField] float movementSpeed = 0.1f;
     public Vector3 moveToPos;
 
     private void Start()
@@ -52,16 +51,19 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.W) && detectorFront.GetComponent<Detector>().canMoveFurther)
             {
+                MainManager.Instance.playerStats.stepsLeft -= MainManager.Instance.playerStats.platformObject_StandingOn.GetComponent<Platform>().stepsCost;
+
                 moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn.transform.position + new Vector3(0, 0, 1);
 
                 movementDirection = MovementDirection.Forward;
                 movementState = MovementState.Moving;
 
-
                 takeAStep?.Invoke();
             }
             if (Input.GetKey(KeyCode.S) && detectorBack.GetComponent<Detector>().canMoveFurther)
             {
+                MainManager.Instance.playerStats.stepsLeft -= MainManager.Instance.playerStats.platformObject_StandingOn.GetComponent<Platform>().stepsCost;
+
                 moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn.transform.position + new Vector3(0, 0, -1);
 
                 movementDirection = MovementDirection.Backward;
@@ -71,6 +73,8 @@ public class PlayerMovement : MonoBehaviour
             }
             if (Input.GetKey(KeyCode.D) && detectorRight.GetComponent<Detector>().canMoveFurther)
             {
+                MainManager.Instance.playerStats.stepsLeft -= MainManager.Instance.playerStats.platformObject_StandingOn.GetComponent<Platform>().stepsCost;
+
                 moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn.transform.position + new Vector3(1, 0, 0);
 
                 movementDirection = MovementDirection.Right;
@@ -80,6 +84,8 @@ public class PlayerMovement : MonoBehaviour
             }
             if (Input.GetKey(KeyCode.A) && detectorLeft.GetComponent<Detector>().canMoveFurther)
             {
+                MainManager.Instance.playerStats.stepsLeft -= MainManager.Instance.playerStats.platformObject_StandingOn.GetComponent<Platform>().stepsCost;
+
                 moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn.transform.position + new Vector3(-1, 0, 0);
 
                 movementDirection = MovementDirection.Left;
@@ -101,16 +107,16 @@ public class PlayerMovement : MonoBehaviour
                     break;
 
                 case MovementDirection.Forward:
-                    gameObject.transform.position += Vector3.forward * movementSpeed * Time.deltaTime;
+                    gameObject.transform.position += Vector3.forward * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
                     break;
                 case MovementDirection.Backward:
-                    gameObject.transform.position += Vector3.back * movementSpeed * Time.deltaTime;
+                    gameObject.transform.position += Vector3.back * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
                     break;
                 case MovementDirection.Left:
-                    gameObject.transform.position += Vector3.left * movementSpeed * Time.deltaTime;
+                    gameObject.transform.position += Vector3.left * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
                     break;
                 case MovementDirection.Right:
-                    gameObject.transform.position += Vector3.right * movementSpeed * Time.deltaTime;
+                    gameObject.transform.position += Vector3.right * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
                     break;
 
                 default:
@@ -142,16 +148,16 @@ public class PlayerMovement : MonoBehaviour
                     break;
 
                 case MovementDirection.Forward:
-                    gameObject.transform.position += Vector3.forward * movementSpeed * Time.deltaTime;
+                    gameObject.transform.position += Vector3.forward * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
                     break;
                 case MovementDirection.Backward:
-                    gameObject.transform.position += Vector3.back * movementSpeed * Time.deltaTime;
+                    gameObject.transform.position += Vector3.back * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
                     break;
                 case MovementDirection.Left:
-                    gameObject.transform.position += Vector3.left * movementSpeed * Time.deltaTime;
+                    gameObject.transform.position += Vector3.left * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
                     break;
                 case MovementDirection.Right:
-                    gameObject.transform.position += Vector3.right * movementSpeed * Time.deltaTime;
+                    gameObject.transform.position += Vector3.right * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
                     break;
 
                 default:
