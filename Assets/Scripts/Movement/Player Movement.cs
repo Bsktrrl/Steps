@@ -23,6 +23,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        PlayerReset.playerReset += Raycasting;
+
         movementState = MovementState.Still;
         movementDirection = MovementDirection.None;
     }
@@ -32,16 +34,35 @@ public class PlayerMovement : MonoBehaviour
         {
             KeyInputs();
 
-            if (MainManager.Instance.playerStats.platformType_StandingOn == PlatformTypes.Grass)
+            //If standing on a Platform
+            if (MainManager.Instance.playerStats.platformObject_StandingOn_Current)
             {
-                GrassMovement();
+                if (MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().platformType == PlatformTypes.Grass)
+                {
+                    print("GrassMovement");
+                    GrassMovement();
+                }
+                else if (MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().platformType == PlatformTypes.Ice)
+                {
+                    print("IceMovement");
+                    IceMovement();
+                }
             }
-            else if (MainManager.Instance.playerStats.platformType_StandingOn == PlatformTypes.Ice)
+
+            //If not standing on a Platform, move back to the previous platform
+            else
             {
-                IceMovement();
+                if (MainManager.Instance.playerStats.platformObject_StandingOn_Previous)
+                {
+                    gameObject.transform.position = MainManager.Instance.playerStats.platformObject_StandingOn_Previous.transform.position;
+
+                    Raycasting();
+                }
+                
+                movementState = MovementState.Still;
+                movementDirection = MovementDirection.None;
             }
         }
-        
     }
 
     void KeyInputs()
@@ -49,49 +70,83 @@ public class PlayerMovement : MonoBehaviour
         //Set movement direction based on Key Input
         if (movementState == MovementState.Still)
         {
-            if (Input.GetKey(KeyCode.W) && detectorFront.GetComponent<Detector>().canMoveFurther)
+            Raycasting();
+
+            if (Input.GetKey(KeyCode.W))
             {
-                MainManager.Instance.playerStats.stepsToUse -= MainManager.Instance.playerStats.platformObject_Forward.GetComponent<Platform>().stepsCost;
+                if (MainManager.Instance.playerStats.platformObject_Forward)
+                {
+                    //detectorFront.GetComponent<Detector>().PerformRaycast();
 
-                moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn.transform.position + new Vector3(0, 0, 1);
+                    MainManager.Instance.playerStats.stepsToUse -= MainManager.Instance.playerStats.platformObject_Forward.GetComponent<Platform>().stepsCost;
 
-                movementDirection = MovementDirection.Forward;
-                movementState = MovementState.Moving;
+                    if (MainManager.Instance.playerStats.platformObject_StandingOn_Current)
+                    {
+                        moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn_Current.transform.position + new Vector3(0, 0, 1);
+                    }
 
-                takeAStep?.Invoke();
+                    movementDirection = MovementDirection.Forward;
+                    movementState = MovementState.Moving;
+
+                    takeAStep?.Invoke();
+                }
             }
-            if (Input.GetKey(KeyCode.S) && detectorBack.GetComponent<Detector>().canMoveFurther)
+            if (Input.GetKey(KeyCode.S))
             {
-                MainManager.Instance.playerStats.stepsToUse -= MainManager.Instance.playerStats.platformObject_Backward.GetComponent<Platform>().stepsCost;
+                if (MainManager.Instance.playerStats.platformObject_Backward)
+                {
+                    //detectorBack.GetComponent<Detector>().PerformRaycast();
 
-                moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn.transform.position + new Vector3(0, 0, -1);
+                    MainManager.Instance.playerStats.stepsToUse -= MainManager.Instance.playerStats.platformObject_Backward.GetComponent<Platform>().stepsCost;
 
-                movementDirection = MovementDirection.Backward;
-                movementState = MovementState.Moving;
+                    if (MainManager.Instance.playerStats.platformObject_StandingOn_Current)
+                    {
+                        moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn_Current.transform.position + new Vector3(0, 0, -1);
+                    }
 
-                takeAStep?.Invoke();
+                    movementDirection = MovementDirection.Backward;
+                    movementState = MovementState.Moving;
+
+                    takeAStep?.Invoke();
+                }
             }
-            if (Input.GetKey(KeyCode.D) && detectorRight.GetComponent<Detector>().canMoveFurther)
+            if (Input.GetKey(KeyCode.D))
             {
-                MainManager.Instance.playerStats.stepsToUse -= MainManager.Instance.playerStats.platformObject_Right.GetComponent<Platform>().stepsCost;
+                if (MainManager.Instance.playerStats.platformObject_Right)
+                {
+                    //detectorRight.GetComponent<Detector>().PerformRaycast();
 
-                moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn.transform.position + new Vector3(1, 0, 0);
+                    MainManager.Instance.playerStats.stepsToUse -= MainManager.Instance.playerStats.platformObject_Right.GetComponent<Platform>().stepsCost;
 
-                movementDirection = MovementDirection.Right;
-                movementState = MovementState.Moving;
+                    if (MainManager.Instance.playerStats.platformObject_StandingOn_Current)
+                    {
+                        moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn_Current.transform.position + new Vector3(1, 0, 0);
+                    }
 
-                takeAStep?.Invoke();
+                    movementDirection = MovementDirection.Right;
+                    movementState = MovementState.Moving;
+
+                    takeAStep?.Invoke();
+                }
             }
-            if (Input.GetKey(KeyCode.A) && detectorLeft.GetComponent<Detector>().canMoveFurther)
+            if (Input.GetKey(KeyCode.A))
             {
-                MainManager.Instance.playerStats.stepsToUse -= MainManager.Instance.playerStats.platformObject_Left.GetComponent<Platform>().stepsCost;
+                if (MainManager.Instance.playerStats.platformObject_Left)
+                {
+                    //detectorLeft.GetComponent<Detector>().PerformRaycast();
 
-                moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn.transform.position + new Vector3(-1, 0, 0);
+                    MainManager.Instance.playerStats.stepsToUse -= MainManager.Instance.playerStats.platformObject_Left.GetComponent<Platform>().stepsCost;
 
-                movementDirection = MovementDirection.Left;
-                movementState = MovementState.Moving;
+                    if (MainManager.Instance.playerStats.platformObject_StandingOn_Current)
+                    {
+                        moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn_Current.transform.position + new Vector3(-1, 0, 0);
+                    }
 
-                takeAStep?.Invoke();
+                    movementDirection = MovementDirection.Left;
+                    movementState = MovementState.Moving;
+
+                    takeAStep?.Invoke();
+                }
             }
         }
     }
@@ -101,39 +156,46 @@ public class PlayerMovement : MonoBehaviour
         //When Moving
         if (movementState == MovementState.Moving)
         {
-            switch (movementDirection)
+            Vector3 PlayerWorldPos_Current = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
+
+            Raycasting();
+
+            if (Vector3.Distance(PlayerWorldPos_Current, moveToPos) <= 0.05f)
             {
-                case MovementDirection.None:
-                    break;
-
-                case MovementDirection.Forward:
-                    gameObject.transform.position += Vector3.forward * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
-                    break;
-                case MovementDirection.Backward:
-                    gameObject.transform.position += Vector3.back * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
-                    break;
-                case MovementDirection.Left:
-                    gameObject.transform.position += Vector3.left * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
-                    break;
-                case MovementDirection.Right:
-                    gameObject.transform.position += Vector3.right * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
-                    break;
-
-                default:
-                    break;
-            }
-
-            Vector3 PlayerAltPos = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
-
-            print("1. Moving | MovePos: " + moveToPos + " | PlayerPos: " + PlayerAltPos + " | Distance: " + Vector3.Distance(PlayerAltPos, moveToPos));
-
-            if (Vector3.Distance(PlayerAltPos, moveToPos) <= 0.05f)
-            {
-                print("1. Reached Destination");
-
                 gameObject.transform.position = new Vector3(moveToPos.x, 0.3f, moveToPos.z);
 
+                Raycasting();
+
                 movementState = MovementState.Still;
+                movementDirection = MovementDirection.None;
+            }
+
+            //Move Player
+            if (movementState == MovementState.Moving)
+            {
+                switch (movementDirection)
+                {
+                    case MovementDirection.None:
+                        break;
+
+                    case MovementDirection.Forward:
+                        gameObject.transform.position += Vector3.forward * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
+                        break;
+                    case MovementDirection.Backward:
+                        gameObject.transform.position += Vector3.back * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
+                        break;
+                    case MovementDirection.Left:
+                        gameObject.transform.position += Vector3.left * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
+                        break;
+                    case MovementDirection.Right:
+                        gameObject.transform.position += Vector3.right * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                Raycasting();
             }
         }
     }
@@ -142,78 +204,85 @@ public class PlayerMovement : MonoBehaviour
         //When Moving
         if (movementState == MovementState.Moving)
         {
-            switch (movementDirection)
-            {
-                case MovementDirection.None:
-                    break;
-
-                case MovementDirection.Forward:
-                    gameObject.transform.position += Vector3.forward * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
-                    break;
-                case MovementDirection.Backward:
-                    gameObject.transform.position += Vector3.back * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
-                    break;
-                case MovementDirection.Left:
-                    gameObject.transform.position += Vector3.left * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
-                    break;
-                case MovementDirection.Right:
-                    gameObject.transform.position += Vector3.right * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
-                    break;
-
-                default:
-                    break;
-            }
-
             Vector3 PlayerAltPos = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
 
-            print("2. Moving | MovePos: " + moveToPos + " | PlayerPos: " + PlayerAltPos + " | Distance: " + Vector3.Distance(PlayerAltPos, moveToPos));
-
-            if (Vector3.Distance(PlayerAltPos, moveToPos) <= 0.05f)
+            if (Vector3.Distance(PlayerAltPos, moveToPos) <= 0.1f)
             {
                 gameObject.transform.position = new Vector3(moveToPos.x, 0.3f, moveToPos.z);
 
-                print("3. Reached Destination | Moving | MovePos: " + moveToPos + " | PlayerPos: " + gameObject.transform.position + " | Distance: " + Vector3.Distance(PlayerAltPos, moveToPos));
-
-                if (MainManager.Instance.playerStats.platformType_StandingOn == PlatformTypes.Ice)
+                if (MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().platformType == PlatformTypes.Ice)
                 {
-                    detectorFront.GetComponent<Detector>().PerformRaycast();
-                    detectorBack.GetComponent<Detector>().PerformRaycast();
-                    detectorRight.GetComponent<Detector>().PerformRaycast();
-                    detectorLeft.GetComponent<Detector>().PerformRaycast();
+                    Raycasting();
 
-                    print("3. PlatformTypes.Ice");
-                    if (movementDirection == MovementDirection.Forward && detectorFront.GetComponent<Detector>().canMoveFurther)
+                    if (movementDirection == MovementDirection.Forward && MainManager.Instance.playerStats.platformObject_Forward)
                     {
-                        print("3. detectorForward.GetComponent<Detector>().canMoveFurther");
-                        moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn.transform.position + new Vector3(0, 0, 1);
+                        moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn_Current.transform.position + new Vector3(0, 0, 1);
                     }
-                    else if (movementDirection == MovementDirection.Backward && detectorBack.GetComponent<Detector>().canMoveFurther)
+                    else if (movementDirection == MovementDirection.Backward && MainManager.Instance.playerStats.platformObject_Backward)
                     {
-                        print("3. detectorBackward.GetComponent<Detector>().canMoveFurther");
-                        moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn.transform.position + new Vector3(0, 0, -1);
+                        moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn_Current.transform.position + new Vector3(0, 0, -1);
                     }
-                    else if (movementDirection == MovementDirection.Right && detectorRight.GetComponent<Detector>().canMoveFurther)
+                    else if (movementDirection == MovementDirection.Right && MainManager.Instance.playerStats.platformObject_Right)
                     {
-                        print("3. detectorRight.GetComponent<Detector>().canMoveFurther");
-                        moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn.transform.position + new Vector3(1, 0, 0);
+                        moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn_Current.transform.position + new Vector3(1, 0, 0);
                     }
-                    else if (movementDirection == MovementDirection.Left && detectorLeft.GetComponent<Detector>().canMoveFurther)
+                    else if (movementDirection == MovementDirection.Left && MainManager.Instance.playerStats.platformObject_Left)
                     {
-                        print("3. detectorLeft.GetComponent<Detector>().canMoveFurther");
-                        moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn.transform.position + new Vector3(-1, 0, 0);
+                        moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn_Current.transform.position + new Vector3(-1, 0, 0);
                     }
                     else
                     {
-                        print("4. MovementState.Still");
+                        Raycasting();
+
                         movementState = MovementState.Still;
+                        movementDirection = MovementDirection.None;
                     }
                 }
                 else
                 {
-                    print("5. MovementState.Still");
+                    Raycasting();
+
                     movementState = MovementState.Still;
+                    movementDirection = MovementDirection.None;
                 }
             }
+
+            if (movementState == MovementState.Moving)
+            {
+                //Move Player
+                switch (movementDirection)
+                {
+                    case MovementDirection.None:
+                        break;
+
+                    case MovementDirection.Forward:
+                        gameObject.transform.position += Vector3.forward * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
+                        break;
+                    case MovementDirection.Backward:
+                        gameObject.transform.position += Vector3.back * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
+                        break;
+                    case MovementDirection.Left:
+                        gameObject.transform.position += Vector3.left * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
+                        break;
+                    case MovementDirection.Right:
+                        gameObject.transform.position += Vector3.right * MainManager.Instance.playerStats.movementSpeed * Time.deltaTime;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                Raycasting();
+            }
         }
+    }
+
+    void Raycasting()
+    {
+        detectorCenter.GetComponent<Detector>().PerformRaycast_Center();
+        detectorFront.GetComponent<Detector>().PerformRaycast();
+        detectorBack.GetComponent<Detector>().PerformRaycast();
+        detectorRight.GetComponent<Detector>().PerformRaycast();
+        detectorLeft.GetComponent<Detector>().PerformRaycast();
     }
 }

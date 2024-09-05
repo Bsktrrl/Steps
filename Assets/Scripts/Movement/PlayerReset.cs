@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerReset : MonoBehaviour
 {
+    public static event Action playerReset;
+
     private void Start()
     {
         MainManager.noMoreSteps += ResetPlayerPos;
@@ -21,6 +24,8 @@ public class PlayerReset : MonoBehaviour
 
     IEnumerator DespawnTime(float waitTime)
     {
+        playerReset?.Invoke();
+
         gameObject.GetComponent<PlayerMovement>().moveToPos = MainManager.Instance.startPos;
         gameObject.GetComponent<PlayerMovement>().movementState = MovementState.Still;
         gameObject.GetComponent<PlayerMovement>().movementDirection = MovementDirection.None;

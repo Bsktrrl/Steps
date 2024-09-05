@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Platform : MonoBehaviour
 {
-    public PlatformTypes platformtype;
+    public PlatformTypes platformType;
     public float speed;
     public int stepsCost;
+
+    public GameObject image_Darkener;
 }

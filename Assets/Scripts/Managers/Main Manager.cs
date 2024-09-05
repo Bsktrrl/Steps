@@ -21,7 +21,7 @@ public class MainManager : Singleton<MainManager>
 
     private void Awake()
     {
-        playerStats.stepsMax = 5;
+        playerStats.stepsMax = 10;
         RefillSteps();
 
         startPos = new Vector3 (0, 0.3f, 0);
@@ -82,15 +82,20 @@ public class MainManager : Singleton<MainManager>
 [Serializable]
 public class PlayerStats
 {
-    public PlatformTypes platformType_StandingOn;
-    public GameObject platformObject_StandingOn;
+    [Header("Platform Standing On")]
+    public GameObject platformObject_StandingOn_Previous;
+    public GameObject platformObject_StandingOn_Current;
+
+    [Header("Platform Detected")]
     public GameObject platformObject_Forward;
     public GameObject platformObject_Backward;
     public GameObject platformObject_Right;
     public GameObject platformObject_Left;
 
+    [Header("Movement Speed")]
     public float movementSpeed = 3f;
 
+    [Header("Steps")]
     public int stepsMax;
     public int stepsToUse;
 }

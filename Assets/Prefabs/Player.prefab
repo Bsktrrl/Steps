@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 836529317764139430}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 1.1}
+  m_LocalPosition: {x: 0, y: -0.5, z: 1.5}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -67,7 +67,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectorPoint: 1
-  canMoveFurther: 0
   stateHasChanged: 0
 --- !u!1 &1147234029047316420
 GameObject:
@@ -228,7 +227,6 @@ MonoBehaviour:
   detectorBack: {fileID: 6322315396196065421}
   detectorLeft: {fileID: 4262539949213931955}
   detectorRight: {fileID: 8904641650076278190}
-  movementSpeed: 4
   moveToPos: {x: 0, y: 0, z: 0}
 --- !u!114 &8139072927703432267
 MonoBehaviour:
@@ -269,7 +267,7 @@ Transform:
   m_GameObject: {fileID: 4262539949213931955}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.1, y: -0.5, z: 0}
+  m_LocalPosition: {x: -1.5, y: -0.5, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -309,7 +307,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectorPoint: 4
-  canMoveFurther: 0
   stateHasChanged: 0
 --- !u!1 &5056051803583185858
 GameObject:
@@ -378,7 +375,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectorPoint: 0
-  canMoveFurther: 0
   stateHasChanged: 0
 --- !u!1 &6322315396196065421
 GameObject:
@@ -407,7 +403,7 @@ Transform:
   m_GameObject: {fileID: 6322315396196065421}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: -1.1}
+  m_LocalPosition: {x: 0, y: -0.5, z: -1.5}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -447,7 +443,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectorPoint: 2
-  canMoveFurther: 0
   stateHasChanged: 0
 --- !u!1 &8904641650076278190
 GameObject:
@@ -476,7 +471,7 @@ Transform:
   m_GameObject: {fileID: 8904641650076278190}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.1, y: -0.5, z: 0}
+  m_LocalPosition: {x: 1.5, y: -0.5, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -516,5 +511,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectorPoint: 3
-  canMoveFurther: 0
   stateHasChanged: 0
