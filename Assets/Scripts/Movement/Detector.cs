@@ -10,7 +10,6 @@ public class Detector : MonoBehaviour
     float maxDistance = 0.4f;
     RaycastHit hit;
 
-    bool canMoveFurtherCheck;
     public bool stateHasChanged;
 
 
@@ -19,8 +18,6 @@ public class Detector : MonoBehaviour
 
     private void Start()
     {
-        //canMoveFurther = false;
-
         PerformRaycast();
     }
 
@@ -39,19 +36,39 @@ public class Detector : MonoBehaviour
 
             if (detectorPoint == DetectorPoint.Front)
             {
+                if (MainManager.Instance.playerStats.platformObject_Forward)
+                {
+                    MainManager.Instance.playerStats.platformObject_Forward.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
+                }
                 MainManager.Instance.playerStats.platformObject_Forward = hit.collider.gameObject;
+                MainManager.Instance.playerStats.platformObject_Forward.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(true);
             }
             else if (detectorPoint == DetectorPoint.Back)
             {
+                if (MainManager.Instance.playerStats.platformObject_Backward)
+                {
+                    MainManager.Instance.playerStats.platformObject_Backward.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
+                }
                 MainManager.Instance.playerStats.platformObject_Backward = hit.collider.gameObject;
+                MainManager.Instance.playerStats.platformObject_Backward.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(true);
             }
             else if (detectorPoint == DetectorPoint.Right)
             {
+                if (MainManager.Instance.playerStats.platformObject_Right)
+                {
+                    MainManager.Instance.playerStats.platformObject_Right.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
+                }
                 MainManager.Instance.playerStats.platformObject_Right = hit.collider.gameObject;
+                MainManager.Instance.playerStats.platformObject_Right.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(true);
             }
             else if (detectorPoint == DetectorPoint.Left)
             {
+                if (MainManager.Instance.playerStats.platformObject_Left)
+                {
+                    MainManager.Instance.playerStats.platformObject_Left.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
+                }
                 MainManager.Instance.playerStats.platformObject_Left = hit.collider.gameObject;
+                MainManager.Instance.playerStats.platformObject_Left.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(true);
             }
         }
         else
@@ -61,18 +78,34 @@ public class Detector : MonoBehaviour
 
             if (detectorPoint == DetectorPoint.Front)
             {
+                if (MainManager.Instance.playerStats.platformObject_Forward)
+                {
+                    MainManager.Instance.playerStats.platformObject_Forward.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
+                }
                 MainManager.Instance.playerStats.platformObject_Forward = null;
             }
             else if (detectorPoint == DetectorPoint.Back)
             {
+                if (MainManager.Instance.playerStats.platformObject_Backward)
+                {
+                    MainManager.Instance.playerStats.platformObject_Backward.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
+                }
                 MainManager.Instance.playerStats.platformObject_Backward = null;
             }
             else if (detectorPoint == DetectorPoint.Right)
             {
+                if (MainManager.Instance.playerStats.platformObject_Right)
+                {
+                    MainManager.Instance.playerStats.platformObject_Right.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
+                }
                 MainManager.Instance.playerStats.platformObject_Right = null;
             }
             else if (detectorPoint == DetectorPoint.Left)
             {
+                if (MainManager.Instance.playerStats.platformObject_Left)
+                {
+                    MainManager.Instance.playerStats.platformObject_Left.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
+                }
                 MainManager.Instance.playerStats.platformObject_Left = null;
             }
         }
@@ -90,21 +123,6 @@ public class Detector : MonoBehaviour
 
             MainManager.Instance.playerStats.platformObject_StandingOn_Current = hit.collider.gameObject;
             MainManager.Instance.playerStats.movementSpeed = MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().speed;
-
-            //if (hit.collider.CompareTag("Platform_Ice"))
-            //{
-            //    MainManager.Instance.playerStats.platformObject_StandingOn_Current = hit.collider.gameObject;
-            //    MainManager.Instance.playerStats.movementSpeed = MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().speed;
-            //}
-            //else if (hit.collider.CompareTag("Platform_Grass"))
-            //{
-            //    MainManager.Instance.playerStats.platformObject_StandingOn_Current = hit.collider.gameObject;
-            //    MainManager.Instance.playerStats.movementSpeed = MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().speed;
-            //}
-            //else
-            //{
-            //    MainManager.Instance.playerStats.platformObject_StandingOn_Current = null;
-            //}
         }
         else
         {
@@ -128,9 +146,9 @@ public class Detector : MonoBehaviour
             {
                 if (MainManager.Instance.playerStats.platformObject_StandingOn_Previous.GetComponent<Platform>())
                 {
-                    if (MainManager.Instance.playerStats.platformObject_StandingOn_Previous.GetComponent<Platform>().image_Darkener.activeInHierarchy)
+                    if (MainManager.Instance.playerStats.platformObject_StandingOn_Previous.GetComponent<Platform>().image_Darkener.gameObject.activeInHierarchy)
                     {
-                        MainManager.Instance.playerStats.platformObject_StandingOn_Previous.GetComponent<Platform>().image_Darkener.SetActive(false);
+                        MainManager.Instance.playerStats.platformObject_StandingOn_Previous.GetComponent<Platform>().image_Darkener.gameObject.SetActive(false);
                     }
                 }
             }
@@ -139,9 +157,9 @@ public class Detector : MonoBehaviour
             {
                 if (MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>())
                 {
-                    if (!MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().image_Darkener.activeInHierarchy)
+                    if (!MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().image_Darkener.gameObject.activeInHierarchy)
                     {
-                        MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().image_Darkener.SetActive(true);
+                        MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().image_Darkener.gameObject.SetActive(true);
                     }
                 }
             }
