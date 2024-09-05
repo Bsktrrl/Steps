@@ -33,54 +33,23 @@ public class Detector : MonoBehaviour
         {
             if (hit.collider.gameObject.GetComponent<Platform>().platformType == PlatformTypes.Water)
             {
-                RaycastNothing();
-                return;
+                if (!MainManager.Instance.keyItems.SwimSuit)
+                {
+                    RaycastNothing();
+                    return;
+                }
             }
             else if (hit.collider.gameObject.GetComponent<Platform>().platformType == PlatformTypes.Lava)
             {
-                RaycastNothing();
-                return;
+                if (!MainManager.Instance.keyItems.LavaSuit)
+                {
+                    RaycastNothing();
+                    return;
+                }
             }
 
             // Raycast hit something
-            Debug.DrawRay(gameObject.transform.position, raycastDown * hit.distance, Color.green);
-
-            if (detectorPoint == DetectorPoint.Front)
-            {
-                if (MainManager.Instance.playerStats.platformObject_Forward)
-                {
-                    MainManager.Instance.playerStats.platformObject_Forward.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
-                }
-                MainManager.Instance.playerStats.platformObject_Forward = hit.collider.gameObject;
-                MainManager.Instance.playerStats.platformObject_Forward.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(true);
-            }
-            else if (detectorPoint == DetectorPoint.Back)
-            {
-                if (MainManager.Instance.playerStats.platformObject_Backward)
-                {
-                    MainManager.Instance.playerStats.platformObject_Backward.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
-                }
-                MainManager.Instance.playerStats.platformObject_Backward = hit.collider.gameObject;
-                MainManager.Instance.playerStats.platformObject_Backward.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(true);
-            }
-            else if (detectorPoint == DetectorPoint.Right)
-            {
-                if (MainManager.Instance.playerStats.platformObject_Right)
-                {
-                    MainManager.Instance.playerStats.platformObject_Right.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
-                }
-                MainManager.Instance.playerStats.platformObject_Right = hit.collider.gameObject;
-                MainManager.Instance.playerStats.platformObject_Right.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(true);
-            }
-            else if (detectorPoint == DetectorPoint.Left)
-            {
-                if (MainManager.Instance.playerStats.platformObject_Left)
-                {
-                    MainManager.Instance.playerStats.platformObject_Left.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
-                }
-                MainManager.Instance.playerStats.platformObject_Left = hit.collider.gameObject;
-                MainManager.Instance.playerStats.platformObject_Left.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(true);
-            }
+            RaycastSomething();
         }
         else
         {
@@ -144,6 +113,47 @@ public class Detector : MonoBehaviour
         }
     }
 
+    void RaycastSomething()
+    {
+        Debug.DrawRay(gameObject.transform.position, raycastDown * hit.distance, Color.green);
+
+        if (detectorPoint == DetectorPoint.Front)
+        {
+            if (MainManager.Instance.playerStats.platformObject_Forward)
+            {
+                MainManager.Instance.playerStats.platformObject_Forward.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
+            }
+            MainManager.Instance.playerStats.platformObject_Forward = hit.collider.gameObject;
+            MainManager.Instance.playerStats.platformObject_Forward.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(true);
+        }
+        else if (detectorPoint == DetectorPoint.Back)
+        {
+            if (MainManager.Instance.playerStats.platformObject_Backward)
+            {
+                MainManager.Instance.playerStats.platformObject_Backward.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
+            }
+            MainManager.Instance.playerStats.platformObject_Backward = hit.collider.gameObject;
+            MainManager.Instance.playerStats.platformObject_Backward.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(true);
+        }
+        else if (detectorPoint == DetectorPoint.Right)
+        {
+            if (MainManager.Instance.playerStats.platformObject_Right)
+            {
+                MainManager.Instance.playerStats.platformObject_Right.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
+            }
+            MainManager.Instance.playerStats.platformObject_Right = hit.collider.gameObject;
+            MainManager.Instance.playerStats.platformObject_Right.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(true);
+        }
+        else if (detectorPoint == DetectorPoint.Left)
+        {
+            if (MainManager.Instance.playerStats.platformObject_Left)
+            {
+                MainManager.Instance.playerStats.platformObject_Left.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
+            }
+            MainManager.Instance.playerStats.platformObject_Left = hit.collider.gameObject;
+            MainManager.Instance.playerStats.platformObject_Left.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(true);
+        }
+    }
     void RaycastNothing()
     {
         Debug.DrawRay(gameObject.transform.position, raycastDown * maxDistance, Color.red);

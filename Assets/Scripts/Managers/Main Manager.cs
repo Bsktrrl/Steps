@@ -7,11 +7,14 @@ public class MainManager : Singleton<MainManager>
 {
     public static event Action updateUI;
     public static event Action noMoreSteps;
+    public static event Action flippersEquipped;
+    public static event Action hikerGearEquipped;
 
     public Vector3 startPos;
 
     public PlayerStats playerStats;
     public Collectables collectables;
+    public KeyItems keyItems;
 
     public bool gamePaused;
 
@@ -34,15 +37,25 @@ public class MainManager : Singleton<MainManager>
     //Make sure the Subscriptions doesn't bug out
     private void OnEnable()
     {
-        PickupItem.pickup_Coin_IsHit += AddCoin;
+        PickupObject.pickup_Coin_IsHit += AddCoin;
         PlayerMovement.takeAStep += TakeAStep;
-        PickupItem.pickup_Step_IsHit += AddMaxStep;
+        PickupObject.pickup_Step_IsHit += AddMaxStep;
+
+        PickupObject.pickup_KeyItem_SwimSuit_IsHit += AddSwimSuit;
+        PickupObject.pickup_KeyItem_Flippers_IsHit += AddFlippers;
+        PickupObject.pickup_KeyItem_HikerGear_IsHit += AddHikerGear;
+        PickupObject.pickup_KeyItem_LavaSuit_IsHit += AddLavaSuit;
     }
     private void OnDisable()
     {
-        PickupItem.pickup_Coin_IsHit -= AddCoin;
+        PickupObject.pickup_Coin_IsHit -= AddCoin;
         PlayerMovement.takeAStep -= TakeAStep;
-        PickupItem.pickup_Step_IsHit -= AddMaxStep;
+        PickupObject.pickup_Step_IsHit -= AddMaxStep;
+
+        PickupObject.pickup_KeyItem_SwimSuit_IsHit -= AddSwimSuit;
+        PickupObject.pickup_KeyItem_Flippers_IsHit -= AddFlippers;
+        PickupObject.pickup_KeyItem_HikerGear_IsHit -= AddHikerGear;
+        PickupObject.pickup_KeyItem_LavaSuit_IsHit -= AddLavaSuit;
     }
 
 
@@ -76,6 +89,29 @@ public class MainManager : Singleton<MainManager>
     {
         playerStats.stepsToUse = playerStats.stepsMax;
     }
+
+    void AddSwimSuit()
+    {
+        keyItems.SwimSuit = true;
+        updateUI?.Invoke();
+    }
+    void AddFlippers()
+    {
+        keyItems.Flippers = true;
+        updateUI?.Invoke();
+        flippersEquipped?.Invoke();
+    }
+    void AddHikerGear()
+    {
+        keyItems.HikerGear = true;
+        updateUI?.Invoke();
+        hikerGearEquipped?.Invoke();
+    }
+    void AddLavaSuit()
+    {
+        keyItems.LavaSuit = true;
+        updateUI?.Invoke();
+    }
 }
 
 
@@ -104,4 +140,14 @@ public class PlayerStats
 public class Collectables
 {
     public int coin;
+}
+
+[Serializable]
+public class KeyItems
+{
+    public bool SwimSuit;
+    public bool Flippers;
+    public bool HikerGear;
+
+    public bool LavaSuit;
 }

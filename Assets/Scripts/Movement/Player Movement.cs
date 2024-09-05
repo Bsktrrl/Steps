@@ -94,8 +94,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (MainManager.Instance.playerStats.platformObject_Forward)
                 {
-                    //detectorFront.GetComponent<Detector>().PerformRaycast();
-
                     MainManager.Instance.playerStats.stepsToUse -= MainManager.Instance.playerStats.platformObject_Forward.GetComponent<Platform>().stepsCost;
 
                     if (MainManager.Instance.playerStats.platformObject_StandingOn_Current)
@@ -113,8 +111,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (MainManager.Instance.playerStats.platformObject_Backward)
                 {
-                    //detectorBack.GetComponent<Detector>().PerformRaycast();
-
                     MainManager.Instance.playerStats.stepsToUse -= MainManager.Instance.playerStats.platformObject_Backward.GetComponent<Platform>().stepsCost;
 
                     if (MainManager.Instance.playerStats.platformObject_StandingOn_Current)
@@ -132,8 +128,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (MainManager.Instance.playerStats.platformObject_Right)
                 {
-                    //detectorRight.GetComponent<Detector>().PerformRaycast();
-
                     MainManager.Instance.playerStats.stepsToUse -= MainManager.Instance.playerStats.platformObject_Right.GetComponent<Platform>().stepsCost;
 
                     if (MainManager.Instance.playerStats.platformObject_StandingOn_Current)
@@ -151,8 +145,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (MainManager.Instance.playerStats.platformObject_Left)
                 {
-                    //detectorLeft.GetComponent<Detector>().PerformRaycast();
-
                     MainManager.Instance.playerStats.stepsToUse -= MainManager.Instance.playerStats.platformObject_Left.GetComponent<Platform>().stepsCost;
 
                     if (MainManager.Instance.playerStats.platformObject_StandingOn_Current)
@@ -308,9 +300,11 @@ public class PlayerMovement : MonoBehaviour
     }
     void WaterMovement()
     {
+        GrassMovement();
     }
     void LavaMovement()
     {
+        GrassMovement();
     }
 
     void Raycasting()

@@ -19,12 +19,33 @@ public class Platform : MonoBehaviour
 
     private void Start()
     {
+        MainManager.flippersEquipped += Flippers_ChangeStepCost;
+        MainManager.hikerGearEquipped += HikerGear_ChangeStepCost;
         stepCost_Text.text = stepsCost.ToString();
+
+        stepCost_Text.fontSize = 0.3f;
     }
 
 
     //--------------------
 
 
-
+    void Flippers_ChangeStepCost()
+    {
+        if (platformType == PlatformTypes.Water)
+        {
+            stepsCost -= 1;
+            speed += 2;
+            stepCost_Text.text = stepsCost.ToString();
+        }
+    }
+    void HikerGear_ChangeStepCost()
+    {
+        if (platformType == PlatformTypes.Hill || platformType == PlatformTypes.Mountain)
+        {
+            stepsCost -= 1;
+            speed += 2;
+            stepCost_Text.text = stepsCost.ToString();
+        }
+    }
 }
