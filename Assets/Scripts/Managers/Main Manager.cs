@@ -13,6 +13,8 @@ public class MainManager : Singleton<MainManager>
     public PlayerStats playerStats;
     public Collectables collectables;
 
+    public bool gamePaused;
+
 
     //--------------------
 
@@ -82,6 +84,9 @@ public class MainManager : Singleton<MainManager>
 [Serializable]
 public class PlayerStats
 {
+    public PlatformTypes platformType_StandingOn;
+    public GameObject platformObject_StandingOn;
+
     public int stepsMax;
     public int stepsLeft;
 }

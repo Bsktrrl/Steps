@@ -14,6 +14,10 @@ public class Detector : MonoBehaviour
     bool canMoveFurtherCheck;
     public bool stateHasChanged;
 
+
+    //--------------------
+
+
     private void Start()
     {
         canMoveFurther = false;
@@ -23,6 +27,7 @@ public class Detector : MonoBehaviour
 
     private void Update()
     {
+        //Raycast for Borders
         if ((detectorPoint == DetectorPoint.Front && gameObject.transform.parent.GetComponent<PlayerMovement>().movementDirection == MovementDirection.Forward)
             || (detectorPoint == DetectorPoint.Back && gameObject.transform.parent.GetComponent<PlayerMovement>().movementDirection == MovementDirection.Backward)
             || (detectorPoint == DetectorPoint.Right && gameObject.transform.parent.GetComponent<PlayerMovement>().movementDirection == MovementDirection.Right)
@@ -37,32 +42,38 @@ public class Detector : MonoBehaviour
                 stateHasChanged = true;
             }
         }
+
+        //Raycast Other
         else
         {
             PerformRaycast();
         }
+
+        PerformRaycast_Center();
     }
 
-    void PerformRaycast()
+
+    //--------------------
+
+
+    public void PerformRaycast()
     {
         if (Physics.Raycast(gameObject.transform.position, raycastDown, out hit, maxDistance))
         {
             // Raycast hit something
             Debug.DrawRay(gameObject.transform.position, raycastDown * hit.distance, Color.green);
 
-            if (hit.collider.CompareTag("Platform"))
+            if (hit.collider.CompareTag("Platform_Ice"))
             {
-                if (gameObject.transform.parent.GetComponent<PlayerMovement>())
-                {
-                    canMoveFurther = true;
-                }
+                canMoveFurther = true;
+            }
+            else if (hit.collider.CompareTag("Platform_Grass"))
+            {
+                canMoveFurther = true;
             }
             else
             {
-                if (gameObject.transform.parent.GetComponent<PlayerMovement>())
-                {
-                    canMoveFurther = false;
-                }
+                canMoveFurther = false;
             }
         }
         else
@@ -70,10 +81,39 @@ public class Detector : MonoBehaviour
             // Raycast did not hit anything
             Debug.DrawRay(gameObject.transform.position, raycastDown * maxDistance, Color.red);
 
-            if (gameObject.transform.parent.GetComponent<PlayerMovement>())
+            canMoveFurther = false;
+        }
+    }
+    void PerformRaycast_Center()
+    {
+        if (Physics.Raycast(gameObject.transform.position, raycastDown, out hit, maxDistance))
+        {
+            // Raycast hit something
+            Debug.DrawRay(gameObject.transform.position, raycastDown * hit.distance, Color.green);
+
+            if (hit.collider.CompareTag("Platform_Ice"))
             {
-                canMoveFurther = false;
+                MainManager.Instance.playerStats.platformType_StandingOn = PlatformTypes.Ice;
+                MainManager.Instance.playerStats.platformObject_StandingOn = hit.collider.gameObject;
             }
+            else if (hit.collider.CompareTag("Platform_Grass"))
+            {
+                MainManager.Instance.playerStats.platformType_StandingOn = PlatformTypes.Grass;
+                MainManager.Instance.playerStats.platformObject_StandingOn = hit.collider.gameObject;
+            }
+            else
+            {
+                MainManager.Instance.playerStats.platformType_StandingOn = PlatformTypes.None;
+                MainManager.Instance.playerStats.platformObject_StandingOn = null;
+            }
+        }
+        else
+        {
+            // Raycast did not hit anything
+            Debug.DrawRay(gameObject.transform.position, raycastDown * maxDistance, Color.red);
+
+            MainManager.Instance.playerStats.platformType_StandingOn = PlatformTypes.None;
+            MainManager.Instance.playerStats.platformObject_StandingOn = null;
         }
     }
 }

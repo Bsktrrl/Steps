@@ -16,5 +16,20 @@ public class PlayerReset : MonoBehaviour
     void ResetPlayerPos()
     {
         transform.position = MainManager.Instance.startPos;
+        StartCoroutine(DespawnTime(0.5f));
     }
+
+    IEnumerator DespawnTime(float waitTime)
+    {
+        gameObject.GetComponent<PlayerMovement>().moveToPos = MainManager.Instance.startPos;
+        gameObject.GetComponent<PlayerMovement>().movementState = MovementState.Still;
+        gameObject.GetComponent<PlayerMovement>().movementDirection = MovementDirection.None;
+
+        MainManager.Instance.gamePaused = true;
+
+        yield return new WaitForSeconds(waitTime);
+
+        MainManager.Instance.gamePaused = false;
+    }
+
 }

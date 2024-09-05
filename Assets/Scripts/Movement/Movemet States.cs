@@ -21,6 +21,8 @@ public enum MovementDirection
 
 public enum DetectorPoint
 {
+    Center, 
+
     Front,
     Back,
     Right,
