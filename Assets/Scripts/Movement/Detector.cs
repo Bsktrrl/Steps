@@ -75,6 +75,23 @@ public class Detector : MonoBehaviour
             {
                 canMoveFurther = false;
             }
+
+            if (detectorPoint == DetectorPoint.Front)
+            {
+                MainManager.Instance.playerStats.platformObject_Forward = hit.collider.gameObject;
+            }
+            else if (detectorPoint == DetectorPoint.Back)
+            {
+                MainManager.Instance.playerStats.platformObject_Backward = hit.collider.gameObject;
+            }
+            else if (detectorPoint == DetectorPoint.Right)
+            {
+                MainManager.Instance.playerStats.platformObject_Right = hit.collider.gameObject;
+            }
+            else if (detectorPoint == DetectorPoint.Left)
+            {
+                MainManager.Instance.playerStats.platformObject_Left = hit.collider.gameObject;
+            }
         }
         else
         {
@@ -82,6 +99,23 @@ public class Detector : MonoBehaviour
             Debug.DrawRay(gameObject.transform.position, raycastDown * maxDistance, Color.red);
 
             canMoveFurther = false;
+
+            if (detectorPoint == DetectorPoint.Front)
+            {
+                MainManager.Instance.playerStats.platformObject_Forward = null;
+            }
+            else if (detectorPoint == DetectorPoint.Back)
+            {
+                MainManager.Instance.playerStats.platformObject_Backward = null;
+            }
+            else if (detectorPoint == DetectorPoint.Right)
+            {
+                MainManager.Instance.playerStats.platformObject_Right = null;
+            }
+            else if (detectorPoint == DetectorPoint.Left)
+            {
+                MainManager.Instance.playerStats.platformObject_Left = null;
+            }
         }
     }
     void PerformRaycast_Center()
@@ -107,7 +141,6 @@ public class Detector : MonoBehaviour
             {
                 MainManager.Instance.playerStats.platformType_StandingOn = PlatformTypes.None;
                 MainManager.Instance.playerStats.platformObject_StandingOn = null;
-                MainManager.Instance.playerStats.movementSpeed = 0;
             }
         }
         else
@@ -117,7 +150,6 @@ public class Detector : MonoBehaviour
 
             MainManager.Instance.playerStats.platformType_StandingOn = PlatformTypes.None;
             MainManager.Instance.playerStats.platformObject_StandingOn = null;
-            MainManager.Instance.playerStats.movementSpeed = 0;
         }
     }
 }

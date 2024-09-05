@@ -35,6 +35,6 @@ public class Stats : MonoBehaviour
     }
     void UpdateSteps()
     {
-        stepsText.text = "Steps left: " + MainManager.Instance.playerStats.stepsLeft;
+        stepsText.text = "Steps left: " + MainManager.Instance.playerStats.stepsToUse;
     }
 }

@@ -63,18 +63,18 @@ public class MainManager : Singleton<MainManager>
     }
     void TakeAStep()
     {
-        if (playerStats.stepsLeft < 0)
+        if (playerStats.stepsToUse < 0)
         {
             noMoreSteps?.Invoke();
 
-            playerStats.stepsLeft = playerStats.stepsMax;
+            playerStats.stepsToUse = playerStats.stepsMax;
         }
 
         updateUI?.Invoke();
     }
     void RefillSteps()
     {
-        playerStats.stepsLeft = playerStats.stepsMax;
+        playerStats.stepsToUse = playerStats.stepsMax;
     }
 }
 
@@ -84,11 +84,15 @@ public class PlayerStats
 {
     public PlatformTypes platformType_StandingOn;
     public GameObject platformObject_StandingOn;
+    public GameObject platformObject_Forward;
+    public GameObject platformObject_Backward;
+    public GameObject platformObject_Right;
+    public GameObject platformObject_Left;
 
     public float movementSpeed = 3f;
 
     public int stepsMax;
-    public int stepsLeft;
+    public int stepsToUse;
 }
 
 [Serializable]

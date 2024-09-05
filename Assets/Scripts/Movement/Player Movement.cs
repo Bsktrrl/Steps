@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.W) && detectorFront.GetComponent<Detector>().canMoveFurther)
             {
-                MainManager.Instance.playerStats.stepsLeft -= MainManager.Instance.playerStats.platformObject_StandingOn.GetComponent<Platform>().stepsCost;
+                MainManager.Instance.playerStats.stepsToUse -= MainManager.Instance.playerStats.platformObject_Forward.GetComponent<Platform>().stepsCost;
 
                 moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn.transform.position + new Vector3(0, 0, 1);
 
@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
             }
             if (Input.GetKey(KeyCode.S) && detectorBack.GetComponent<Detector>().canMoveFurther)
             {
-                MainManager.Instance.playerStats.stepsLeft -= MainManager.Instance.playerStats.platformObject_StandingOn.GetComponent<Platform>().stepsCost;
+                MainManager.Instance.playerStats.stepsToUse -= MainManager.Instance.playerStats.platformObject_Backward.GetComponent<Platform>().stepsCost;
 
                 moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn.transform.position + new Vector3(0, 0, -1);
 
@@ -73,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
             }
             if (Input.GetKey(KeyCode.D) && detectorRight.GetComponent<Detector>().canMoveFurther)
             {
-                MainManager.Instance.playerStats.stepsLeft -= MainManager.Instance.playerStats.platformObject_StandingOn.GetComponent<Platform>().stepsCost;
+                MainManager.Instance.playerStats.stepsToUse -= MainManager.Instance.playerStats.platformObject_Right.GetComponent<Platform>().stepsCost;
 
                 moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn.transform.position + new Vector3(1, 0, 0);
 
@@ -84,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
             }
             if (Input.GetKey(KeyCode.A) && detectorLeft.GetComponent<Detector>().canMoveFurther)
             {
-                MainManager.Instance.playerStats.stepsLeft -= MainManager.Instance.playerStats.platformObject_StandingOn.GetComponent<Platform>().stepsCost;
+                MainManager.Instance.playerStats.stepsToUse -= MainManager.Instance.playerStats.platformObject_Left.GetComponent<Platform>().stepsCost;
 
                 moveToPos = MainManager.Instance.playerStats.platformObject_StandingOn.transform.position + new Vector3(-1, 0, 0);
 
