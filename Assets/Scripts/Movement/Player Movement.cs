@@ -45,6 +45,26 @@ public class PlayerMovement : MonoBehaviour
                 {
                     IceMovement();
                 }
+                else if (MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().platformType == PlatformTypes.Sand)
+                {
+                    SandMovement();
+                }
+                else if (MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().platformType == PlatformTypes.Hill)
+                {
+                    HillMovement();
+                }
+                else if (MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().platformType == PlatformTypes.Mountain)
+                {
+                    MountainMovement();
+                }
+                else if (MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().platformType == PlatformTypes.Water)
+                {
+                    WaterMovement();
+                }
+                else if (MainManager.Instance.playerStats.platformObject_StandingOn_Current.GetComponent<Platform>().platformType == PlatformTypes.Lava)
+                {
+                    LavaMovement();
+                }
             }
 
             //If not standing on a Platform, move back to the previous platform
@@ -273,6 +293,24 @@ public class PlayerMovement : MonoBehaviour
                 Raycasting();
             }
         }
+    }
+    void SandMovement()
+    {
+        GrassMovement();
+    }
+    void HillMovement()
+    {
+        GrassMovement();
+    }
+    void MountainMovement()
+    {
+        GrassMovement();
+    }
+    void WaterMovement()
+    {
+    }
+    void LavaMovement()
+    {
     }
 
     void Raycasting()

@@ -7,5 +7,10 @@ public enum PlatformTypes
     None,
 
     Grass,
-    Ice
+    Ice,
+    Sand,
+    Hill,
+    Mountain,
+    Water,
+    Lava
 }

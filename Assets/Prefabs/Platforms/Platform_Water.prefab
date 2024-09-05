@@ -329,7 +329,7 @@ GameObject:
   - component: {fileID: 78057788290285331}
   - component: {fileID: 909372429577791297}
   m_Layer: 0
-  m_Name: Platform_Ice
+  m_Name: Platform_Water
   m_TagString: Platform_Ice
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -379,7 +379,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cae0e8363d8db7a4b9dd56d0c9a669b2, type: 2}
+  - {fileID: 2100000, guid: 4cdccbb191487504484869004a4c72ad, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -461,8 +461,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd9857332f40e2141aef273e36bcc5c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  platformType: 2
-  speed: 10
+  platformType: 6
+  speed: 2
   stepsCost: 1
   image_Darkener: {fileID: 6771942260755154859}
   stepCost_Text: {fileID: 771338650251703548}
