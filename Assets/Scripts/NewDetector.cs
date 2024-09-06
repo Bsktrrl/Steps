@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class NewDetector : MonoBehaviour
 {
+    public static event Action finishMovement;
+
     public DetectorTypes detectorType;
 
     float maxDistance_Vertical = 0.4f;
@@ -116,6 +119,8 @@ public class NewDetector : MonoBehaviour
 
             UpdatePlatform_NotDetected();
         }
+
+        finishMovement?.Invoke();
     }
     void UpdatePlatform_Detected(GameObject detectedPlatform)
     {
@@ -125,6 +130,7 @@ public class NewDetector : MonoBehaviour
                 break;
 
             case DetectorTypes.Center:
+                transform.GetComponentInParent<PlayerController>().Platform_Center_Previous = transform.GetComponentInParent<PlayerController>().Platform_Center;
                 transform.GetComponentInParent<PlayerController>().Platform_Center = hit.collider.gameObject;
                 break;
             case DetectorTypes.Vertical_Front:

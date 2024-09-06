@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Singleton<PlayerController>
 {
     [Header("Player Object")]
     public GameObject playerObject;
@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     public GameObject detector_Horizontal_Left;
 
     [Header("Platforms Detected")]
+    public GameObject Platform_Center_Previous;
     public GameObject Platform_Center;
 
     public GameObject platform_Vertical_Forward;

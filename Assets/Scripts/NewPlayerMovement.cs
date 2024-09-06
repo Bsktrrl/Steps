@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,48 +37,64 @@ public class NewPlayerMovement : MonoBehaviour
     {
         if (movementStates == MovementStates.Moving) { return; }
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKey(KeyCode.W))
         {
             if (GetComponent<PlayerController>().platform_Vertical_Forward)
             {
+                //Don't move into a Wall
+                if (GetComponent<PlayerController>().platform_Horizontal_Forward)
+                {
+                    if (GetComponent<PlayerController>().platform_Horizontal_Forward.GetComponent<NewPlatform>().platformType == PlatformType.Wall) { return; }
+                }
+                
                 movementDirection = Vector3.forward;
                 moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerController>().platform_Vertical_Forward.gameObject.transform);
                 movementStates = MovementStates.Moving;
-
-                print("1.1. MovePos: " + moveToPos + " | PlayerPos: " + GetBottomCenterPositionOfPlayer(transform));
             }
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKey(KeyCode.S))
         {
             if (GetComponent<PlayerController>().platform_Vertical_Backward)
             {
+                //Don't move into a Wall
+                if (GetComponent<PlayerController>().platform_Horizontal_Backward)
+                {
+                    if (GetComponent<PlayerController>().platform_Horizontal_Backward.GetComponent<NewPlatform>().platformType == PlatformType.Wall) { return; }
+                }
+
                 movementDirection = Vector3.back;
                 moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerController>().platform_Vertical_Backward.gameObject.transform);
                 movementStates = MovementStates.Moving;
-
-                print("1.2. MovePos: " + moveToPos + " | PlayerPos: " + GetBottomCenterPositionOfPlayer(transform));
             }
         }
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKey(KeyCode.D))
         {
             if (GetComponent<PlayerController>().platform_Vertical_Right)
             {
+                //Don't move into a Wall
+                if (GetComponent<PlayerController>().platform_Horizontal_Right)
+                {
+                    if (GetComponent<PlayerController>().platform_Horizontal_Right.GetComponent<NewPlatform>().platformType == PlatformType.Wall) { return; }
+                }
+
                 movementDirection = Vector3.right;
                 moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerController>().platform_Vertical_Right.gameObject.transform);
                 movementStates = MovementStates.Moving;
-
-                print("1.3. MovePos: " + moveToPos + " | PlayerPos: " + GetBottomCenterPositionOfPlayer(transform));
             }
         }
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKey(KeyCode.A))
         {
             if (GetComponent<PlayerController>().platform_Vertical_Left)
             {
+                //Don't move into a Wall
+                if (GetComponent<PlayerController>().platform_Horizontal_Left)
+                {
+                    if (GetComponent<PlayerController>().platform_Horizontal_Left.GetComponent<NewPlatform>().platformType == PlatformType.Wall) { return; }
+                }
+
                 movementDirection = Vector3.left;
                 moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerController>().platform_Vertical_Left.gameObject.transform);
                 movementStates = MovementStates.Moving;
-
-                print("1.4. MovePos: " + moveToPos + " | PlayerPos: " + GetBottomCenterPositionOfPlayer(transform));
             }
         }
     }
@@ -120,15 +137,11 @@ public class NewPlayerMovement : MonoBehaviour
     {
         if (movementStates == MovementStates.Still) { return; }
 
-        print("2.1. MovePos: " + moveToPos + " | PlayerPos: " + GetBottomCenterPositionOfPlayer(transform));
-
         if (Vector3.Distance(GetBottomCenterPositionOfPlayer(transform), moveToPos) < 0.1f)
         {
             movementStates = MovementStates.Still;
 
             transform.SetPositionAndRotation(new Vector3(moveToPos.x, moveToPos.y + 0.35f, moveToPos.z), Quaternion.identity);
-
-            print("2.2. MovePos: " + moveToPos + " | PlayerPos: " + GetBottomCenterPositionOfPlayer(transform));
 
             moveToPos = Vector3.zero;
         }
