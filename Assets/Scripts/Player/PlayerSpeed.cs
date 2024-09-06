@@ -11,9 +11,9 @@ public class PlayerSpeed : Singleton<PlayerSpeed>
 
     void UpdatePlayerSpeed()
     {
-        if (PlayerController.Instance.platform_Center)
+        if (PlayerDetectorController.Instance.platform_Center)
         {
-            PlayerStats.Instance.stats.movementSpeed = PlayerController.Instance.platform_Center.GetComponent<Platform>().speed;
+            PlayerStats.Instance.stats.movementSpeed = PlayerDetectorController.Instance.platform_Center.GetComponent<Platform>().speed;
         }
     }
 }

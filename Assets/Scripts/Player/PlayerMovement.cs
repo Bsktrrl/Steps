@@ -39,16 +39,24 @@ public class PlayerMovement : Singleton<PlayerMovement>
 
         if (Input.GetKey(KeyCode.W))
         {
-            if (GetComponent<PlayerController>().platform_Vertical_Forward)
+            if (PlayerStats.Instance.stats.steps_Current <= 0)
+            {
+                movementStates = MovementStates.Moving;
+                PlayerStepCost.Instance.RefillSteps();
+
+                return;
+            }
+
+            if (GetComponent<PlayerDetectorController>().platform_Vertical_Forward && Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Forward))
             {
                 //Don't move into a Wall
-                if (GetComponent<PlayerController>().platform_Horizontal_Forward)
+                if (GetComponent<PlayerDetectorController>().platform_Horizontal_Forward)
                 {
-                    if (GetComponent<PlayerController>().platform_Horizontal_Forward.GetComponent<Platform>().platformType == PlatformType.Wall) { return; }
+                    if (GetComponent<PlayerDetectorController>().platform_Horizontal_Forward.GetComponent<Platform>().platformType == PlatformType.Wall) { return; }
                 }
                 
                 movementDirection = Vector3.forward;
-                moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerController>().platform_Vertical_Forward.gameObject.transform);
+                moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerDetectorController>().platform_Vertical_Forward.gameObject.transform);
                 movementStates = MovementStates.Moving;
 
                 takeAStep?.Invoke();
@@ -56,16 +64,24 @@ public class PlayerMovement : Singleton<PlayerMovement>
         }
         if (Input.GetKey(KeyCode.S))
         {
-            if (GetComponent<PlayerController>().platform_Vertical_Backward)
+            if (PlayerStats.Instance.stats.steps_Current <= 0)
+            {
+                movementStates = MovementStates.Moving;
+                PlayerStepCost.Instance.RefillSteps();
+
+                return;
+            }
+
+            if (GetComponent<PlayerDetectorController>().platform_Vertical_Backward && Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Backward))
             {
                 //Don't move into a Wall
-                if (GetComponent<PlayerController>().platform_Horizontal_Backward)
+                if (GetComponent<PlayerDetectorController>().platform_Horizontal_Backward)
                 {
-                    if (GetComponent<PlayerController>().platform_Horizontal_Backward.GetComponent<Platform>().platformType == PlatformType.Wall) { return; }
+                    if (GetComponent<PlayerDetectorController>().platform_Horizontal_Backward.GetComponent<Platform>().platformType == PlatformType.Wall) { return; }
                 }
 
                 movementDirection = Vector3.back;
-                moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerController>().platform_Vertical_Backward.gameObject.transform);
+                moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerDetectorController>().platform_Vertical_Backward.gameObject.transform);
                 movementStates = MovementStates.Moving;
 
                 takeAStep?.Invoke();
@@ -73,16 +89,24 @@ public class PlayerMovement : Singleton<PlayerMovement>
         }
         if (Input.GetKey(KeyCode.D))
         {
-            if (GetComponent<PlayerController>().platform_Vertical_Right)
+            if (PlayerStats.Instance.stats.steps_Current <= 0)
+            {
+                movementStates = MovementStates.Moving;
+                PlayerStepCost.Instance.RefillSteps();
+
+                return;
+            }
+
+            if (GetComponent<PlayerDetectorController>().platform_Vertical_Right && Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Right))
             {
                 //Don't move into a Wall
-                if (GetComponent<PlayerController>().platform_Horizontal_Right)
+                if (GetComponent<PlayerDetectorController>().platform_Horizontal_Right)
                 {
-                    if (GetComponent<PlayerController>().platform_Horizontal_Right.GetComponent<Platform>().platformType == PlatformType.Wall) { return; }
+                    if (GetComponent<PlayerDetectorController>().platform_Horizontal_Right.GetComponent<Platform>().platformType == PlatformType.Wall) { return; }
                 }
 
                 movementDirection = Vector3.right;
-                moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerController>().platform_Vertical_Right.gameObject.transform);
+                moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerDetectorController>().platform_Vertical_Right.gameObject.transform);
                 movementStates = MovementStates.Moving;
 
                 takeAStep?.Invoke();
@@ -90,16 +114,24 @@ public class PlayerMovement : Singleton<PlayerMovement>
         }
         if (Input.GetKey(KeyCode.A))
         {
-            if (GetComponent<PlayerController>().platform_Vertical_Left)
+            if (PlayerStats.Instance.stats.steps_Current <= 0)
+            {
+                movementStates = MovementStates.Moving;
+                PlayerStepCost.Instance.RefillSteps();
+
+                return;
+            }
+
+            if (GetComponent<PlayerDetectorController>().platform_Vertical_Left && Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Left))
             {
                 //Don't move into a Wall
-                if (GetComponent<PlayerController>().platform_Horizontal_Left)
+                if (GetComponent<PlayerDetectorController>().platform_Horizontal_Left)
                 {
-                    if (GetComponent<PlayerController>().platform_Horizontal_Left.GetComponent<Platform>().platformType == PlatformType.Wall) { return; }
+                    if (GetComponent<PlayerDetectorController>().platform_Horizontal_Left.GetComponent<Platform>().platformType == PlatformType.Wall) { return; }
                 }
 
                 movementDirection = Vector3.left;
-                moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerController>().platform_Vertical_Left.gameObject.transform);
+                moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerDetectorController>().platform_Vertical_Left.gameObject.transform);
                 movementStates = MovementStates.Moving;
 
                 takeAStep?.Invoke();

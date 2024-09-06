@@ -20,30 +20,33 @@ public class UIManager : Singleton<UIManager>
 
     private void Start()
     {
-        PlayerStepCost.updateStepCounter += UpdateSteps;
-        PlayerStats.updateStepMax += UpdateSteps;
+        PlayerStepCost.updateStepCounter += UpdateStepsUI;
+        PlayerStats.updateStepMax += UpdateStepsUI;
 
-        PlayerStats.updateCoins += UpdateCoins;
-        PlayerStats.updateSwimsuit += Update_KeyItem_SwimSuit;
-        PlayerStats.updateFlippers += Update_KeyItem_Flippers;
-        PlayerStats.updateHikerGear += Update_KeyItem_HikerGear;
-        PlayerStats.updateLavaSuit += Update_KeyItem_LavaSuit;
+        PlayerStats.updateCoins += UpdateCoinsUI;
+        PlayerStats.updateSwimsuit += Update_KeyItem_SwimSuitUI;
+        PlayerStats.updateFlippers += Update_KeyItem_FlippersUI;
+        PlayerStats.updateHikerGear += Update_KeyItem_HikerGearUI;
+        PlayerStats.updateLavaSuit += Update_KeyItem_LavaSuitUI;
+
+        UpdateCoinsUI();
+        UpdateStepsUI();
     }
 
 
     //--------------------
 
 
-    void UpdateCoins()
+    void UpdateCoinsUI()
     {
         coinText.text = "Coin: " + PlayerStats.Instance.collectables.coin;
     }
-    void UpdateSteps()
+    void UpdateStepsUI()
     {
         stepsText.text = "Steps left: " + PlayerStats.Instance.stats.steps_Current;
     }
 
-    void Update_KeyItem_SwimSuit()
+    void Update_KeyItem_SwimSuitUI()
     {
         if (PlayerStats.Instance.keyItems.SwimSuit)
         {
@@ -55,7 +58,7 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    void Update_KeyItem_Flippers()
+    void Update_KeyItem_FlippersUI()
     {
         if (PlayerStats.Instance.keyItems.Flippers)
         {
@@ -66,7 +69,7 @@ public class UIManager : Singleton<UIManager>
             image_Flippers.gameObject.SetActive(false);
         }
     }
-    void Update_KeyItem_HikerGear()
+    void Update_KeyItem_HikerGearUI()
     {
         if (PlayerStats.Instance.keyItems.HikerGear)
         {
@@ -78,7 +81,7 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    void Update_KeyItem_LavaSuit()
+    void Update_KeyItem_LavaSuitUI()
     {
         if (PlayerStats.Instance.keyItems.LavaSuit)
         {

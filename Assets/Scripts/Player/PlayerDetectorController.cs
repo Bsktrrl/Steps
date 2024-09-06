@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : Singleton<PlayerController>
+public class PlayerDetectorController : Singleton<PlayerDetectorController>
 {
     [Header("Player Object")]
     public GameObject playerObject;

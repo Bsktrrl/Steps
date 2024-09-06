@@ -131,32 +131,32 @@ public class PlayerDetector : MonoBehaviour
                 break;
 
             case DetectorTypes.Center:
-                transform.GetComponentInParent<PlayerController>().platform_Center_Previous = transform.GetComponentInParent<PlayerController>().platform_Center;
-                transform.GetComponentInParent<PlayerController>().platform_Center = hit.collider.gameObject;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Center_Previous = transform.GetComponentInParent<PlayerDetectorController>().platform_Center;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Center = hit.collider.gameObject;
                 break;
             case DetectorTypes.Vertical_Front:
-                transform.GetComponentInParent<PlayerController>().platform_Vertical_Forward = hit.collider.gameObject;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Vertical_Forward = hit.collider.gameObject;
                 break;
             case DetectorTypes.Vertical_Back:
-                transform.GetComponentInParent<PlayerController>().platform_Vertical_Backward = hit.collider.gameObject;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Vertical_Backward = hit.collider.gameObject;
                 break;
             case DetectorTypes.Vertical_Right:
-                transform.GetComponentInParent<PlayerController>().platform_Vertical_Right = hit.collider.gameObject;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Vertical_Right = hit.collider.gameObject;
                 break;
             case DetectorTypes.Vertical_Left:
-                transform.GetComponentInParent<PlayerController>().platform_Vertical_Left = hit.collider.gameObject;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Vertical_Left = hit.collider.gameObject;
                 break;
             case DetectorTypes.Horizontal_Front:
-                transform.GetComponentInParent<PlayerController>().platform_Horizontal_Forward = hit.collider.gameObject;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Horizontal_Forward = hit.collider.gameObject;
                 break;
             case DetectorTypes.Horizontal_Back:
-                transform.GetComponentInParent<PlayerController>().platform_Horizontal_Backward = hit.collider.gameObject;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Horizontal_Backward = hit.collider.gameObject;
                 break;
             case DetectorTypes.Horizontal_Right:
-                transform.GetComponentInParent<PlayerController>().platform_Horizontal_Right = hit.collider.gameObject;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Horizontal_Right = hit.collider.gameObject;
                 break;
             case DetectorTypes.Horizontal_Left:
-                transform.GetComponentInParent<PlayerController>().platform_Horizontal_Left = hit.collider.gameObject;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Horizontal_Left = hit.collider.gameObject;
                 break;
 
             default:
@@ -173,31 +173,31 @@ public class PlayerDetector : MonoBehaviour
                 break;
 
             case DetectorTypes.Center:
-                transform.GetComponentInParent<PlayerController>().platform_Center = null;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Center = null;
                 break;
             case DetectorTypes.Vertical_Front:
-                transform.GetComponentInParent<PlayerController>().platform_Vertical_Forward = null;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Vertical_Forward = null;
                 break;
             case DetectorTypes.Vertical_Back:
-                transform.GetComponentInParent<PlayerController>().platform_Vertical_Backward = null;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Vertical_Backward = null;
                 break;
             case DetectorTypes.Vertical_Right:
-                transform.GetComponentInParent<PlayerController>().platform_Vertical_Right = null;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Vertical_Right = null;
                 break;
             case DetectorTypes.Vertical_Left:
-                transform.GetComponentInParent<PlayerController>().platform_Vertical_Left = null;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Vertical_Left = null;
                 break;
             case DetectorTypes.Horizontal_Front:
-                transform.GetComponentInParent<PlayerController>().platform_Horizontal_Forward = null;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Horizontal_Forward = null;
                 break;
             case DetectorTypes.Horizontal_Back:
-                transform.GetComponentInParent<PlayerController>().platform_Horizontal_Backward = null;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Horizontal_Backward = null;
                 break;
             case DetectorTypes.Horizontal_Right:
-                transform.GetComponentInParent<PlayerController>().platform_Horizontal_Right = null;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Horizontal_Right = null;
                 break;
             case DetectorTypes.Horizontal_Left:
-                transform.GetComponentInParent<PlayerController>().platform_Horizontal_Left = null;
+                transform.GetComponentInParent<PlayerDetectorController>().platform_Horizontal_Left = null;
                 break;
 
             default:

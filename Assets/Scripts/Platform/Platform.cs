@@ -6,10 +6,15 @@ using UnityEngine.UI;
 
 public class Platform : MonoBehaviour
 {
+    [Header("Platform Definitions")]
     public PlatformType platformType;
+    public Requirement requirement;
+
+    [Header("Platform Settings")]
     public float speed;
     public int stepsCost;
 
+    [Header("Platform Components")]
     public Image image_Darkener;
     public TextMeshProUGUI stepCost_Text;
 
@@ -21,6 +26,7 @@ public class Platform : MonoBehaviour
     {
         PlayerDetector.finishedRaycast += UpdatePlatformShadow;
         PlayerDetector.newPlatformDetected += UpdatePlatformStepCount;
+        //PlayerMovement.playerStopped += UpdatePlatformStepCount;
 
         stepCost_Text.text = stepsCost.ToString();
         stepCost_Text.fontSize = 0.3f;
@@ -34,37 +40,37 @@ public class Platform : MonoBehaviour
 
     void UpdatePlatformShadow()
     {
-        GameObject standingOnPrevious_Check = PlayerController.Instance.platform_Center;
+        GameObject standingOnPrevious_Check = PlayerDetectorController.Instance.platform_Center;
 
         //Get the previous Platform standing on
         if (standingOnPrevious_Check
-            && standingOnPrevious_Check != PlayerController.Instance.platform_Center
-            && PlayerController.Instance.platform_Center_Previous != standingOnPrevious_Check)
+            && standingOnPrevious_Check != PlayerDetectorController.Instance.platform_Center
+            && PlayerDetectorController.Instance.platform_Center_Previous != standingOnPrevious_Check)
         {
-            PlayerController.Instance.platform_Center_Previous = standingOnPrevious_Check;
+            PlayerDetectorController.Instance.platform_Center_Previous = standingOnPrevious_Check;
         }
 
         //Change Platform Standing Shadow
-        if (PlayerController.Instance.platform_Center_Previous != PlayerController.Instance.platform_Center)
+        if (PlayerDetectorController.Instance.platform_Center_Previous != PlayerDetectorController.Instance.platform_Center)
         {
-            if (PlayerController.Instance.platform_Center_Previous)
+            if (PlayerDetectorController.Instance.platform_Center_Previous)
             {
-                if (PlayerController.Instance.platform_Center_Previous.GetComponent<Platform>())
+                if (PlayerDetectorController.Instance.platform_Center_Previous.GetComponent<Platform>())
                 {
-                    if (PlayerController.Instance.platform_Center_Previous.GetComponent<Platform>().image_Darkener.gameObject.activeInHierarchy)
+                    if (PlayerDetectorController.Instance.platform_Center_Previous.GetComponent<Platform>().image_Darkener.gameObject.activeInHierarchy)
                     {
-                        PlayerController.Instance.platform_Center_Previous.GetComponent<Platform>().image_Darkener.gameObject.SetActive(false);
+                        PlayerDetectorController.Instance.platform_Center_Previous.GetComponent<Platform>().image_Darkener.gameObject.SetActive(false);
                     }
                 }
             }
 
-            if (PlayerController.Instance.platform_Center)
+            if (PlayerDetectorController.Instance.platform_Center)
             {
-                if (PlayerController.Instance.platform_Center.GetComponent<Platform>())
+                if (PlayerDetectorController.Instance.platform_Center.GetComponent<Platform>())
                 {
-                    if (!PlayerController.Instance.platform_Center.GetComponent<Platform>().image_Darkener.gameObject.activeInHierarchy)
+                    if (!PlayerDetectorController.Instance.platform_Center.GetComponent<Platform>().image_Darkener.gameObject.activeInHierarchy)
                     {
-                        PlayerController.Instance.platform_Center.GetComponent<Platform>().image_Darkener.gameObject.SetActive(true);
+                        PlayerDetectorController.Instance.platform_Center.GetComponent<Platform>().image_Darkener.gameObject.SetActive(true);
                     }
                 }
             }
@@ -74,13 +80,16 @@ public class Platform : MonoBehaviour
     {
         stepCost_Text.gameObject.SetActive(false);
 
-        if (PlayerController.Instance.platform_Vertical_Forward == gameObject)
+        if (PlayerDetectorController.Instance.platform_Vertical_Forward == gameObject && Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Forward))
         {
-            if (PlayerController.Instance.platform_Horizontal_Forward)
+            if (PlayerDetectorController.Instance.platform_Horizontal_Forward)
             {
-                if (PlayerController.Instance.platform_Horizontal_Forward.GetComponent<Platform>().platformType != PlatformType.Wall)
+                if (PlayerDetectorController.Instance.platform_Horizontal_Forward.GetComponent<Platform>())
                 {
-                    stepCost_Text.gameObject.SetActive(true);
+                    if (PlayerDetectorController.Instance.platform_Horizontal_Forward.GetComponent<Platform>().platformType != PlatformType.Wall)
+                    {
+                        stepCost_Text.gameObject.SetActive(true);
+                    }
                 }
             }
             else
@@ -88,13 +97,16 @@ public class Platform : MonoBehaviour
                 stepCost_Text.gameObject.SetActive(true);
             }
         }
-        else if (PlayerController.Instance.platform_Vertical_Backward == gameObject)
+        else if (PlayerDetectorController.Instance.platform_Vertical_Backward == gameObject && Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Backward))
         {
-            if (PlayerController.Instance.platform_Horizontal_Backward)
+            if (PlayerDetectorController.Instance.platform_Horizontal_Backward)
             {
-                if (PlayerController.Instance.platform_Horizontal_Backward.GetComponent<Platform>().platformType != PlatformType.Wall)
+                if (PlayerDetectorController.Instance.platform_Horizontal_Backward.GetComponent<Platform>())
                 {
-                    stepCost_Text.gameObject.SetActive(true);
+                    if (PlayerDetectorController.Instance.platform_Horizontal_Backward.GetComponent<Platform>().platformType != PlatformType.Wall)
+                    {
+                        stepCost_Text.gameObject.SetActive(true);
+                    }
                 }
             }
             else
@@ -102,13 +114,16 @@ public class Platform : MonoBehaviour
                 stepCost_Text.gameObject.SetActive(true);
             }
         }
-        else if (PlayerController.Instance.platform_Vertical_Right == gameObject)
+        else if (PlayerDetectorController.Instance.platform_Vertical_Right == gameObject && Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Right))
         {
-            if (PlayerController.Instance.platform_Horizontal_Right)
+            if (PlayerDetectorController.Instance.platform_Horizontal_Right)
             {
-                if (PlayerController.Instance.platform_Horizontal_Right.GetComponent<Platform>().platformType != PlatformType.Wall)
+                if (PlayerDetectorController.Instance.platform_Horizontal_Right.GetComponent<Platform>())
                 {
-                    stepCost_Text.gameObject.SetActive(true);
+                    if (PlayerDetectorController.Instance.platform_Horizontal_Right.GetComponent<Platform>().platformType != PlatformType.Wall)
+                    {
+                        stepCost_Text.gameObject.SetActive(true);
+                    }
                 }
             }
             else
@@ -116,13 +131,16 @@ public class Platform : MonoBehaviour
                 stepCost_Text.gameObject.SetActive(true);
             }
         }
-        else if (PlayerController.Instance.platform_Vertical_Left == gameObject)
+        else if (PlayerDetectorController.Instance.platform_Vertical_Left == gameObject && Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Left))
         {
-            if (PlayerController.Instance.platform_Horizontal_Left)
+            if (PlayerDetectorController.Instance.platform_Horizontal_Left)
             {
-                if (PlayerController.Instance.platform_Horizontal_Left.GetComponent<Platform>().platformType != PlatformType.Wall)
+                if (PlayerDetectorController.Instance.platform_Horizontal_Left.GetComponent<Platform>())
                 {
-                    stepCost_Text.gameObject.SetActive(true);
+                    if (PlayerDetectorController.Instance.platform_Horizontal_Left.GetComponent<Platform>().platformType != PlatformType.Wall)
+                    {
+                        stepCost_Text.gameObject.SetActive(true);
+                    }
                 }
             }
             else
@@ -131,13 +149,21 @@ public class Platform : MonoBehaviour
             }
         }
 
-
-        //if ((PlayerController.Instance.platform_Vertical_Forward == gameObject && PlayerController.Instance.platform_Horizontal_Forward.GetComponent<NewPlatform>().platformType != PlatformType.Wall)
-        //    || PlayerController.Instance.platform_Vertical_Backward == gameObject && PlayerController.Instance.platform_Horizontal_Backward.GetComponent<NewPlatform>().platformType != PlatformType.Wall
-        //    || PlayerController.Instance.platform_Vertical_Right == gameObject && PlayerController.Instance.platform_Horizontal_Right.GetComponent<NewPlatform>().platformType != PlatformType.Wall
-        //    || PlayerController.Instance.platform_Vertical_Left == gameObject && PlayerController.Instance.platform_Horizontal_Left.GetComponent<NewPlatform>().platformType != PlatformType.Wall)
+        //if (Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Forward))
         //{
-        //    stepCost_Text.gameObject.SetActive(true);
+            
+        //}
+        //if (Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Backward))
+        //{
+            
+        //}
+        //if (Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Right))
+        //{
+            
+        //}
+        //if (Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Left))
+        //{
+            
         //}
     }
 }
@@ -155,5 +181,10 @@ public enum PlatformType
     Water,
     Lava,
 
-    Wall
+    Wall,
+
+    SavePoint,
+    RefillSteps,
+
+    Teleporter,
 }

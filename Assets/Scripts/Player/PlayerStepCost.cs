@@ -14,27 +14,38 @@ public class PlayerStepCost : Singleton<PlayerStepCost>
 
     void DecreaseStepCounter()
     {
-        if(PlayerController.Instance.platform_Center)
+        if(PlayerDetectorController.Instance.platform_Center)
         {
-            if (PlayerController.Instance.platform_Center.GetComponent<Platform>())
+            if (PlayerDetectorController.Instance.platform_Center.GetComponent<Platform>())
             {
-                PlayerStats.Instance.stats.steps_Current -= PlayerController.Instance.platform_Center.GetComponent<Platform>().stepsCost;
+                PlayerStats.Instance.stats.steps_Current -= PlayerDetectorController.Instance.platform_Center.GetComponent<Platform>().stepsCost;
 
-                if (PlayerStats.Instance.stats.steps_Current < 0)
-                {
-                    RefillSteps();
-                }
+                //if (PlayerStats.Instance.stats.steps_Current < 0)
+                //{
+                //    RefillSteps();
+                //}
 
                 updateStepCounter?.Invoke();
             }
         }
     }
 
-    void RefillSteps()
+    public void RefillSteps()
     {
         transform.position = PlayerStats.Instance.startPos;
 
+        StartCoroutine(WaitAfterReset(0.5f));
+    }
+
+    IEnumerator WaitAfterReset(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
         PlayerStats.Instance.stats.steps_Current = PlayerStats.Instance.stats.steps_Max;
+        updateStepCounter?.Invoke();
+
+        yield return new WaitForSeconds(waitTime);
+
         gameObject.GetComponent<PlayerMovement>().movementStates = MovementStates.Still;
     }
 }
