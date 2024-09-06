@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public static event Action takeAStep;
+    public static event Action finishMovement;
 
     [Header("States")]
     public MovementState movementState;
@@ -20,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Variables")]
     public Vector3 moveToPos;
+    public LayerMask platformMask;
 
     private void Start()
     {
@@ -79,7 +81,11 @@ public class PlayerMovement : MonoBehaviour
                 
                 movementState = MovementState.Still;
                 movementDirection = MovementDirection.None;
+
+                finishMovement?.Invoke();
             }
+
+            MoveWithTheTerrain();
         }
     }
 
@@ -178,6 +184,8 @@ public class PlayerMovement : MonoBehaviour
 
                 movementState = MovementState.Still;
                 movementDirection = MovementDirection.None;
+
+                finishMovement?.Invoke();
             }
 
             //Move Player
@@ -255,6 +263,8 @@ public class PlayerMovement : MonoBehaviour
                     movementState = MovementState.Still;
                     movementDirection = MovementDirection.None;
                 }
+
+                finishMovement?.Invoke();
             }
 
             if (movementState == MovementState.Moving)
@@ -314,5 +324,20 @@ public class PlayerMovement : MonoBehaviour
         detectorBack.GetComponent<Detector>().PerformRaycast();
         detectorRight.GetComponent<Detector>().PerformRaycast();
         detectorLeft.GetComponent<Detector>().PerformRaycast();
+    }
+    void MoveWithTheTerrain()
+    {
+        // Raycast downward from the cube to detect the terrain's surface
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out hit, 10f, platformMask))
+        {
+            // Adjust the cube's position to follow the terrain height
+            Vector3 targetPosition = new Vector3(transform.position.x, hit.point.y + 0.3f, transform.position.z);
+            transform.position = targetPosition;
+
+            // Align the cube's up direction to the terrain's surface normal
+            Quaternion slopeRotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
+            transform.rotation = slopeRotation;
+        }
     }
 }

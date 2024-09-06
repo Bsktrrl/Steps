@@ -7,7 +7,7 @@ public class Detector : MonoBehaviour
     [SerializeField] DetectorPoint detectorPoint;
 
     Vector3 raycastDown = Vector3.down;
-    float maxDistance = 0.4f;
+    float maxDistance = 1.2f;
     RaycastHit hit;
 
     public bool stateHasChanged;
@@ -163,32 +163,32 @@ public class Detector : MonoBehaviour
             if (MainManager.Instance.playerStats.platformObject_Forward)
             {
                 MainManager.Instance.playerStats.platformObject_Forward.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
+                MainManager.Instance.playerStats.platformObject_Forward = null;
             }
-            MainManager.Instance.playerStats.platformObject_Forward = null;
         }
         else if (detectorPoint == DetectorPoint.Back)
         {
             if (MainManager.Instance.playerStats.platformObject_Backward)
             {
                 MainManager.Instance.playerStats.platformObject_Backward.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
+                MainManager.Instance.playerStats.platformObject_Backward = null;
             }
-            MainManager.Instance.playerStats.platformObject_Backward = null;
         }
         else if (detectorPoint == DetectorPoint.Right)
         {
             if (MainManager.Instance.playerStats.platformObject_Right)
             {
                 MainManager.Instance.playerStats.platformObject_Right.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
+                MainManager.Instance.playerStats.platformObject_Right = null;
             }
-            MainManager.Instance.playerStats.platformObject_Right = null;
         }
         else if (detectorPoint == DetectorPoint.Left)
         {
             if (MainManager.Instance.playerStats.platformObject_Left)
             {
                 MainManager.Instance.playerStats.platformObject_Left.GetComponent<Platform>().stepCost_Text.gameObject.SetActive(false);
+                MainManager.Instance.playerStats.platformObject_Left = null;
             }
-            MainManager.Instance.playerStats.platformObject_Left = null;
         }
     }
 }
