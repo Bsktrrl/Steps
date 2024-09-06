@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class NewPlayerMovement : MonoBehaviour
 {
+    public static event Action takeAStep;
+    public static event Action playerStopped;
+
     public float movementSpeed = 5;
 
     [SerializeField] Vector3 movementDirection;
@@ -50,6 +53,8 @@ public class NewPlayerMovement : MonoBehaviour
                 movementDirection = Vector3.forward;
                 moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerController>().platform_Vertical_Forward.gameObject.transform);
                 movementStates = MovementStates.Moving;
+
+                takeAStep?.Invoke();
             }
         }
         if (Input.GetKey(KeyCode.S))
@@ -65,6 +70,8 @@ public class NewPlayerMovement : MonoBehaviour
                 movementDirection = Vector3.back;
                 moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerController>().platform_Vertical_Backward.gameObject.transform);
                 movementStates = MovementStates.Moving;
+
+                takeAStep?.Invoke();
             }
         }
         if (Input.GetKey(KeyCode.D))
@@ -80,6 +87,8 @@ public class NewPlayerMovement : MonoBehaviour
                 movementDirection = Vector3.right;
                 moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerController>().platform_Vertical_Right.gameObject.transform);
                 movementStates = MovementStates.Moving;
+
+                takeAStep?.Invoke();
             }
         }
         if (Input.GetKey(KeyCode.A))
@@ -95,6 +104,8 @@ public class NewPlayerMovement : MonoBehaviour
                 movementDirection = Vector3.left;
                 moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerController>().platform_Vertical_Left.gameObject.transform);
                 movementStates = MovementStates.Moving;
+
+                takeAStep?.Invoke();
             }
         }
     }
@@ -144,6 +155,8 @@ public class NewPlayerMovement : MonoBehaviour
             transform.SetPositionAndRotation(new Vector3(moveToPos.x, moveToPos.y + 0.35f, moveToPos.z), Quaternion.identity);
 
             moveToPos = Vector3.zero;
+
+            playerStopped?.Invoke();
         }
     }
 

@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class NewDetector : MonoBehaviour
 {
-    public static event Action finishMovement;
+    public static event Action newPlatformDetected;
+    public static event Action finishedRaycast;
 
     public DetectorTypes detectorType;
 
@@ -120,7 +121,7 @@ public class NewDetector : MonoBehaviour
             UpdatePlatform_NotDetected();
         }
 
-        finishMovement?.Invoke();
+        finishedRaycast?.Invoke();
     }
     void UpdatePlatform_Detected(GameObject detectedPlatform)
     {
@@ -161,6 +162,8 @@ public class NewDetector : MonoBehaviour
             default:
                 break;
         }
+
+        newPlatformDetected?.Invoke();
     }
     void UpdatePlatform_NotDetected()
     {
