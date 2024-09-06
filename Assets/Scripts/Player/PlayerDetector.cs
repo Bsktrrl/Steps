@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewDetector : MonoBehaviour
+public class PlayerDetector : MonoBehaviour
 {
     public static event Action newPlatformDetected;
     public static event Action finishedRaycast;
@@ -131,8 +131,8 @@ public class NewDetector : MonoBehaviour
                 break;
 
             case DetectorTypes.Center:
-                transform.GetComponentInParent<PlayerController>().Platform_Center_Previous = transform.GetComponentInParent<PlayerController>().Platform_Center;
-                transform.GetComponentInParent<PlayerController>().Platform_Center = hit.collider.gameObject;
+                transform.GetComponentInParent<PlayerController>().platform_Center_Previous = transform.GetComponentInParent<PlayerController>().platform_Center;
+                transform.GetComponentInParent<PlayerController>().platform_Center = hit.collider.gameObject;
                 break;
             case DetectorTypes.Vertical_Front:
                 transform.GetComponentInParent<PlayerController>().platform_Vertical_Forward = hit.collider.gameObject;
@@ -173,7 +173,7 @@ public class NewDetector : MonoBehaviour
                 break;
 
             case DetectorTypes.Center:
-                transform.GetComponentInParent<PlayerController>().Platform_Center = null;
+                transform.GetComponentInParent<PlayerController>().platform_Center = null;
                 break;
             case DetectorTypes.Vertical_Front:
                 transform.GetComponentInParent<PlayerController>().platform_Vertical_Forward = null;

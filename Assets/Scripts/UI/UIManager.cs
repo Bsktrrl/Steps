@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Stats : MonoBehaviour
+public class UIManager : Singleton<UIManager>
 {
     [SerializeField] TextMeshProUGUI coinText;
     [SerializeField] TextMeshProUGUI stepsText;
@@ -20,38 +20,32 @@ public class Stats : MonoBehaviour
 
     private void Start()
     {
-        MainManager.updateUI += UpdateUI;
+        PlayerStepCost.updateStepCounter += UpdateSteps;
+        PlayerStats.updateStepMax += UpdateSteps;
 
-        UpdateCoins();
-        UpdateSteps();
+        PlayerStats.updateCoins += UpdateCoins;
+        PlayerStats.updateSwimsuit += Update_KeyItem_SwimSuit;
+        PlayerStats.updateFlippers += Update_KeyItem_Flippers;
+        PlayerStats.updateHikerGear += Update_KeyItem_HikerGear;
+        PlayerStats.updateLavaSuit += Update_KeyItem_LavaSuit;
     }
 
 
     //--------------------
 
 
-    void UpdateUI()
-    {
-        UpdateCoins();
-        UpdateSteps();
-
-        Update_KeyItem_SwimSuit();
-        Update_KeyItem_Flippers();
-        Update_KeyItem_HikerGear();
-        Update_KeyItem_LavaSuit();
-    }
     void UpdateCoins()
     {
-        coinText.text = "Coin: " + MainManager.Instance.collectables.coin;
+        coinText.text = "Coin: " + PlayerStats.Instance.collectables.coin;
     }
     void UpdateSteps()
     {
-        stepsText.text = "Steps left: " + MainManager.Instance.playerStats.stepsToUse;
+        stepsText.text = "Steps left: " + PlayerStats.Instance.stats.steps_Current;
     }
 
     void Update_KeyItem_SwimSuit()
     {
-        if (MainManager.Instance.keyItems.SwimSuit)
+        if (PlayerStats.Instance.keyItems.SwimSuit)
         {
             image_SwimSuit.gameObject.SetActive(true);
         }
@@ -63,7 +57,7 @@ public class Stats : MonoBehaviour
 
     void Update_KeyItem_Flippers()
     {
-        if (MainManager.Instance.keyItems.Flippers)
+        if (PlayerStats.Instance.keyItems.Flippers)
         {
             image_Flippers.gameObject.SetActive(true);
         }
@@ -74,7 +68,7 @@ public class Stats : MonoBehaviour
     }
     void Update_KeyItem_HikerGear()
     {
-        if (MainManager.Instance.keyItems.HikerGear)
+        if (PlayerStats.Instance.keyItems.HikerGear)
         {
             image_HikerGear.gameObject.SetActive(true);
         }
@@ -86,7 +80,7 @@ public class Stats : MonoBehaviour
 
     void Update_KeyItem_LavaSuit()
     {
-        if (MainManager.Instance.keyItems.LavaSuit)
+        if (PlayerStats.Instance.keyItems.LavaSuit)
         {
             image_LavaSuit.gameObject.SetActive(true);
         }

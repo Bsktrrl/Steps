@@ -327,7 +327,7 @@ GameObject:
   - component: {fileID: 260141006752081942}
   - component: {fileID: 8789072288638024896}
   - component: {fileID: 78057788290285331}
-  - component: {fileID: -6361543762374486892}
+  - component: {fileID: 4502887236723312300}
   m_Layer: 7
   m_Name: Platform_Grass
   m_TagString: Platform_Grass
@@ -449,7 +449,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-6361543762374486892
+--- !u!114 &4502887236723312300
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -458,11 +458,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7732202691880752769}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd9857332f40e2141aef273e36bcc5c9, type: 3}
+  m_Script: {fileID: 11500000, guid: 3dd523a2781c0ab4091f74f5b51bf7e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  platformType: 1
-  speed: 6
+  platformType: 2
+  speed: 5
   stepsCost: 1
   image_Darkener: {fileID: 4397974808867922566}
   stepCost_Text: {fileID: 1289915306992553203}

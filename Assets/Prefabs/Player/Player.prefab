@@ -78,9 +78,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8004863066651519914}
   - component: {fileID: 5985793266650918454}
+  - component: {fileID: 6413364510623344163}
   - component: {fileID: 9171637518648446857}
+  - component: {fileID: 1489944609970445400}
+  - component: {fileID: -3468230449766007087}
   m_Layer: 0
-  m_Name: Player Temp
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,8 +136,8 @@ MonoBehaviour:
   detector_Horizontal_Backward: {fileID: 3372940350990377340}
   detector_Horizontal_Right: {fileID: 5736395443421689049}
   detector_Horizontal_Left: {fileID: 6009537119953179117}
-  Platform_Center_Previous: {fileID: 0}
-  Platform_Center: {fileID: 0}
+  platform_Center_Previous: {fileID: 0}
+  platform_Center: {fileID: 0}
   platform_Vertical_Forward: {fileID: 0}
   platform_Vertical_Backward: {fileID: 0}
   platform_Vertical_Right: {fileID: 0}
@@ -143,6 +146,30 @@ MonoBehaviour:
   platform_Horizontal_Backward: {fileID: 0}
   platform_Horizontal_Right: {fileID: 0}
   platform_Horizontal_Left: {fileID: 0}
+--- !u!114 &6413364510623344163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113039739388874501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b442bb4ae67cc34998e8774c3bcfd65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPos: {x: 0, y: 0, z: 0}
+  stats:
+    movementSpeed: 5
+    steps_Current: 0
+    steps_Max: 0
+  collectables:
+    coin: 0
+  keyItems:
+    SwimSuit: 0
+    Flippers: 0
+    HikerGear: 0
+    LavaSuit: 0
 --- !u!114 &9171637518648446857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,13 +182,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d8d2cd51aa05cb4382770a607807d90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 5
   movementDirection: {x: 0, y: 0, z: 0}
   movementStates: 0
   moveToPos: {x: 0, y: 0, z: 0}
   platformMask:
     serializedVersion: 2
     m_Bits: 0
+--- !u!114 &1489944609970445400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113039739388874501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56a43a362169c624ea0f90f7a7600d73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-3468230449766007087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113039739388874501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1766b6a6ca41644ebeff2931cb15da1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1469698453350356269
 GameObject:
   m_ObjectHideFlags: 0

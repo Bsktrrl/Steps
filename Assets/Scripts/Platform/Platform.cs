@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NewPlatform : MonoBehaviour
+public class Platform : MonoBehaviour
 {
     public PlatformType platformType;
     public float speed;
@@ -12,10 +12,15 @@ public class NewPlatform : MonoBehaviour
 
     public Image image_Darkener;
     public TextMeshProUGUI stepCost_Text;
+
+
+    //--------------------
+
+
     private void Start()
     {
-        NewDetector.finishedRaycast += UpdatePlatformShadow;
-        NewDetector.newPlatformDetected += UpdatePlatformStepCount;
+        PlayerDetector.finishedRaycast += UpdatePlatformShadow;
+        PlayerDetector.newPlatformDetected += UpdatePlatformStepCount;
 
         stepCost_Text.text = stepsCost.ToString();
         stepCost_Text.fontSize = 0.3f;
@@ -23,39 +28,43 @@ public class NewPlatform : MonoBehaviour
         UpdatePlatformShadow();
     }
 
+
+    //--------------------
+
+
     void UpdatePlatformShadow()
     {
-        GameObject standingOnPrevious_Check = PlayerController.Instance.Platform_Center;
+        GameObject standingOnPrevious_Check = PlayerController.Instance.platform_Center;
 
         //Get the previous Platform standing on
         if (standingOnPrevious_Check
-            && standingOnPrevious_Check != PlayerController.Instance.Platform_Center
-            && PlayerController.Instance.Platform_Center_Previous != standingOnPrevious_Check)
+            && standingOnPrevious_Check != PlayerController.Instance.platform_Center
+            && PlayerController.Instance.platform_Center_Previous != standingOnPrevious_Check)
         {
-            PlayerController.Instance.Platform_Center_Previous = standingOnPrevious_Check;
+            PlayerController.Instance.platform_Center_Previous = standingOnPrevious_Check;
         }
 
         //Change Platform Standing Shadow
-        if (PlayerController.Instance.Platform_Center_Previous != PlayerController.Instance.Platform_Center)
+        if (PlayerController.Instance.platform_Center_Previous != PlayerController.Instance.platform_Center)
         {
-            if (PlayerController.Instance.Platform_Center_Previous)
+            if (PlayerController.Instance.platform_Center_Previous)
             {
-                if (PlayerController.Instance.Platform_Center_Previous.GetComponent<NewPlatform>())
+                if (PlayerController.Instance.platform_Center_Previous.GetComponent<Platform>())
                 {
-                    if (PlayerController.Instance.Platform_Center_Previous.GetComponent<NewPlatform>().image_Darkener.gameObject.activeInHierarchy)
+                    if (PlayerController.Instance.platform_Center_Previous.GetComponent<Platform>().image_Darkener.gameObject.activeInHierarchy)
                     {
-                        PlayerController.Instance.Platform_Center_Previous.GetComponent<NewPlatform>().image_Darkener.gameObject.SetActive(false);
+                        PlayerController.Instance.platform_Center_Previous.GetComponent<Platform>().image_Darkener.gameObject.SetActive(false);
                     }
                 }
             }
 
-            if (PlayerController.Instance.Platform_Center)
+            if (PlayerController.Instance.platform_Center)
             {
-                if (PlayerController.Instance.Platform_Center.GetComponent<NewPlatform>())
+                if (PlayerController.Instance.platform_Center.GetComponent<Platform>())
                 {
-                    if (!PlayerController.Instance.Platform_Center.GetComponent<NewPlatform>().image_Darkener.gameObject.activeInHierarchy)
+                    if (!PlayerController.Instance.platform_Center.GetComponent<Platform>().image_Darkener.gameObject.activeInHierarchy)
                     {
-                        PlayerController.Instance.Platform_Center.GetComponent<NewPlatform>().image_Darkener.gameObject.SetActive(true);
+                        PlayerController.Instance.platform_Center.GetComponent<Platform>().image_Darkener.gameObject.SetActive(true);
                     }
                 }
             }
@@ -69,7 +78,7 @@ public class NewPlatform : MonoBehaviour
         {
             if (PlayerController.Instance.platform_Horizontal_Forward)
             {
-                if (PlayerController.Instance.platform_Horizontal_Forward.GetComponent<NewPlatform>().platformType != PlatformType.Wall)
+                if (PlayerController.Instance.platform_Horizontal_Forward.GetComponent<Platform>().platformType != PlatformType.Wall)
                 {
                     stepCost_Text.gameObject.SetActive(true);
                 }
@@ -83,7 +92,7 @@ public class NewPlatform : MonoBehaviour
         {
             if (PlayerController.Instance.platform_Horizontal_Backward)
             {
-                if (PlayerController.Instance.platform_Horizontal_Backward.GetComponent<NewPlatform>().platformType != PlatformType.Wall)
+                if (PlayerController.Instance.platform_Horizontal_Backward.GetComponent<Platform>().platformType != PlatformType.Wall)
                 {
                     stepCost_Text.gameObject.SetActive(true);
                 }
@@ -97,7 +106,7 @@ public class NewPlatform : MonoBehaviour
         {
             if (PlayerController.Instance.platform_Horizontal_Right)
             {
-                if (PlayerController.Instance.platform_Horizontal_Right.GetComponent<NewPlatform>().platformType != PlatformType.Wall)
+                if (PlayerController.Instance.platform_Horizontal_Right.GetComponent<Platform>().platformType != PlatformType.Wall)
                 {
                     stepCost_Text.gameObject.SetActive(true);
                 }
@@ -111,7 +120,7 @@ public class NewPlatform : MonoBehaviour
         {
             if (PlayerController.Instance.platform_Horizontal_Left)
             {
-                if (PlayerController.Instance.platform_Horizontal_Left.GetComponent<NewPlatform>().platformType != PlatformType.Wall)
+                if (PlayerController.Instance.platform_Horizontal_Left.GetComponent<Platform>().platformType != PlatformType.Wall)
                 {
                     stepCost_Text.gameObject.SetActive(true);
                 }

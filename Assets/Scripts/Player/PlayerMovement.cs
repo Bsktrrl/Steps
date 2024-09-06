@@ -3,18 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewPlayerMovement : MonoBehaviour
+public class PlayerMovement : Singleton<PlayerMovement>
 {
     public static event Action takeAStep;
     public static event Action playerStopped;
 
-    public float movementSpeed = 5;
+    public Vector3 movementDirection;
+    public MovementStates movementStates;
 
-    [SerializeField] Vector3 movementDirection;
-    //[SerializeField] float platformRotationDegree;
-    [SerializeField] MovementStates movementStates;
-
-    [SerializeField] Vector3 moveToPos;
+    public Vector3 moveToPos;
     public LayerMask platformMask;
 
 
@@ -47,7 +44,7 @@ public class NewPlayerMovement : MonoBehaviour
                 //Don't move into a Wall
                 if (GetComponent<PlayerController>().platform_Horizontal_Forward)
                 {
-                    if (GetComponent<PlayerController>().platform_Horizontal_Forward.GetComponent<NewPlatform>().platformType == PlatformType.Wall) { return; }
+                    if (GetComponent<PlayerController>().platform_Horizontal_Forward.GetComponent<Platform>().platformType == PlatformType.Wall) { return; }
                 }
                 
                 movementDirection = Vector3.forward;
@@ -64,7 +61,7 @@ public class NewPlayerMovement : MonoBehaviour
                 //Don't move into a Wall
                 if (GetComponent<PlayerController>().platform_Horizontal_Backward)
                 {
-                    if (GetComponent<PlayerController>().platform_Horizontal_Backward.GetComponent<NewPlatform>().platformType == PlatformType.Wall) { return; }
+                    if (GetComponent<PlayerController>().platform_Horizontal_Backward.GetComponent<Platform>().platformType == PlatformType.Wall) { return; }
                 }
 
                 movementDirection = Vector3.back;
@@ -81,7 +78,7 @@ public class NewPlayerMovement : MonoBehaviour
                 //Don't move into a Wall
                 if (GetComponent<PlayerController>().platform_Horizontal_Right)
                 {
-                    if (GetComponent<PlayerController>().platform_Horizontal_Right.GetComponent<NewPlatform>().platformType == PlatformType.Wall) { return; }
+                    if (GetComponent<PlayerController>().platform_Horizontal_Right.GetComponent<Platform>().platformType == PlatformType.Wall) { return; }
                 }
 
                 movementDirection = Vector3.right;
@@ -98,7 +95,7 @@ public class NewPlayerMovement : MonoBehaviour
                 //Don't move into a Wall
                 if (GetComponent<PlayerController>().platform_Horizontal_Left)
                 {
-                    if (GetComponent<PlayerController>().platform_Horizontal_Left.GetComponent<NewPlatform>().platformType == PlatformType.Wall) { return; }
+                    if (GetComponent<PlayerController>().platform_Horizontal_Left.GetComponent<Platform>().platformType == PlatformType.Wall) { return; }
                 }
 
                 movementDirection = Vector3.left;
@@ -142,7 +139,7 @@ public class NewPlayerMovement : MonoBehaviour
     {
         if (movementStates == MovementStates.Still) { return; }
 
-        transform.SetPositionAndRotation(transform.position + movementDirection * movementSpeed * Time.deltaTime, Quaternion.identity /*Quaternion.Euler(platformRotationDegree, 0, 0)*/);
+        transform.SetPositionAndRotation(transform.position + movementDirection * PlayerStats.Instance.stats.movementSpeed * Time.deltaTime, Quaternion.identity);
     }
     void CheckPlayerStop()
     {
