@@ -6,8 +6,8 @@ public class NewDetector : MonoBehaviour
 {
     public DetectorTypes detectorType;
 
-    float maxDistance_Vertical = 0.8f;
-    float maxDistance_Horizontal = 0.5f;
+    float maxDistance_Vertical = 0.4f;
+    float maxDistance_Horizontal = 0.3f;
 
     RaycastHit hit;
 
