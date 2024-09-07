@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class PlayerMovement : Singleton<PlayerMovement>
@@ -36,6 +37,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
     void KeyInputs()
     {
         if (movementStates == MovementStates.Moving) { return; }
+        if (MainManager.Instance.pauseGame) { return; }
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -185,8 +187,19 @@ public class PlayerMovement : Singleton<PlayerMovement>
 
             moveToPos = Vector3.zero;
 
+            StartCoroutine(WaitToMoveAgain(0.01f));
+
             playerStopped?.Invoke();
         }
+    }
+
+    IEnumerator WaitToMoveAgain(float waitTime)
+    {
+        MainManager.Instance.pauseGame = true;
+
+        yield return new WaitForSeconds(waitTime);
+
+        MainManager.Instance.pauseGame = false;
     }
 
     void MoveWithTheTerrain()

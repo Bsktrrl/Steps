@@ -24,21 +24,20 @@ public class Platform : MonoBehaviour
 
     private void Start()
     {
-        PlayerDetector.finishedRaycast += UpdatePlatformShadow;
-        PlayerDetector.newPlatformDetected += UpdatePlatformStepCount;
-        //PlayerMovement.playerStopped += UpdatePlatformStepCount;
+        PlayerDetector.finishedRaycast += UpdatePlatformShadowDisplay;
+        //PlayerDetector.newPlatformDetected += UpdatePlatformStepCountDisplay;
 
         stepCost_Text.text = stepsCost.ToString();
         stepCost_Text.fontSize = 0.3f;
 
-        UpdatePlatformShadow();
+        UpdatePlatformShadowDisplay();
     }
 
 
     //--------------------
 
 
-    void UpdatePlatformShadow()
+    void UpdatePlatformShadowDisplay()
     {
         GameObject standingOnPrevious_Check = PlayerDetectorController.Instance.platform_Center;
 
@@ -76,7 +75,7 @@ public class Platform : MonoBehaviour
             }
         }
     }
-    void UpdatePlatformStepCount()
+    void UpdatePlatformStepCountDisplay()
     {
         stepCost_Text.gameObject.SetActive(false);
 
@@ -148,23 +147,6 @@ public class Platform : MonoBehaviour
                 stepCost_Text.gameObject.SetActive(true);
             }
         }
-
-        //if (Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Forward))
-        //{
-            
-        //}
-        //if (Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Backward))
-        //{
-            
-        //}
-        //if (Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Right))
-        //{
-            
-        //}
-        //if (Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Left))
-        //{
-            
-        //}
     }
 }
 

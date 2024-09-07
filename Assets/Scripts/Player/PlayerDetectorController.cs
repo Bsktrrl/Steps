@@ -35,4 +35,10 @@ public class PlayerDetectorController : Singleton<PlayerDetectorController>
     public GameObject platform_Horizontal_Backward;
     public GameObject platform_Horizontal_Right;
     public GameObject platform_Horizontal_Left;
+
+    [Header("Step Counter Display")]
+    public GameObject player_StepCounterDisplayForward;
+    public GameObject player_StepCounterDisplayBackward;
+    public GameObject player_StepCounterDisplayRight;
+    public GameObject player_StepCounterDisplayLeft;
 }
