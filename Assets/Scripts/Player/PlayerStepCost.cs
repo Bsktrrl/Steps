@@ -69,17 +69,18 @@ public class PlayerStepCost : Singleton<PlayerStepCost>
                 {
                     if (PlayerDetectorController.Instance.platform_Horizontal_Forward.GetComponent<Platform>().platformType != PlatformType.Wall)
                     {
-                        PlayerDetectorController.Instance.player_StepCounterDisplayForward.GetComponent<TextMeshProUGUI>().text = PlayerDetectorController.Instance.platform_Vertical_Forward.GetComponent<Platform>().stepsCost.ToString();
-                        PlayerDetectorController.Instance.player_StepCounterDisplayForward.SetActive(true);
+                        print("-------------------- 1.Forward");
+                        RotateStepCountDisplay(PlayerDetectorController.Instance.player_StepCounterDisplayForward, PlayerDetectorController.Instance.platform_Vertical_Forward);
                     }
                 }
             }
             else
             {
-                PlayerDetectorController.Instance.player_StepCounterDisplayForward.GetComponent<TextMeshProUGUI>().text = PlayerDetectorController.Instance.platform_Vertical_Forward.GetComponent<Platform>().stepsCost.ToString();
-                PlayerDetectorController.Instance.player_StepCounterDisplayForward.SetActive(true);
+                print("-------------------- 2.Forward");
+                RotateStepCountDisplay(PlayerDetectorController.Instance.player_StepCounterDisplayForward, PlayerDetectorController.Instance.platform_Vertical_Forward);
             }
         }
+
         if (PlayerDetectorController.Instance.platform_Vertical_Backward && Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Backward))
         {
             if (PlayerDetectorController.Instance.platform_Horizontal_Backward)
@@ -88,17 +89,18 @@ public class PlayerStepCost : Singleton<PlayerStepCost>
                 {
                     if (PlayerDetectorController.Instance.platform_Horizontal_Backward.GetComponent<Platform>().platformType != PlatformType.Wall)
                     {
-                        PlayerDetectorController.Instance.player_StepCounterDisplayBackward.GetComponent<TextMeshProUGUI>().text = PlayerDetectorController.Instance.platform_Vertical_Backward.GetComponent<Platform>().stepsCost.ToString();
-                        PlayerDetectorController.Instance.player_StepCounterDisplayBackward.SetActive(true);
+                        print("-------------------- 1.Backard");
+                        RotateStepCountDisplay(PlayerDetectorController.Instance.player_StepCounterDisplayBackward, PlayerDetectorController.Instance.platform_Vertical_Backward);
                     }
                 }
             }
             else
             {
-                PlayerDetectorController.Instance.player_StepCounterDisplayBackward.GetComponent<TextMeshProUGUI>().text = PlayerDetectorController.Instance.platform_Vertical_Backward.GetComponent<Platform>().stepsCost.ToString();
-                PlayerDetectorController.Instance.player_StepCounterDisplayBackward.SetActive(true);
+                print("-------------------- 2.Backard");
+                RotateStepCountDisplay(PlayerDetectorController.Instance.player_StepCounterDisplayBackward, PlayerDetectorController.Instance.platform_Vertical_Backward);
             }
         }
+
         if (PlayerDetectorController.Instance.platform_Vertical_Right && Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Right))
         {
             if (PlayerDetectorController.Instance.platform_Horizontal_Right)
@@ -107,17 +109,18 @@ public class PlayerStepCost : Singleton<PlayerStepCost>
                 {
                     if (PlayerDetectorController.Instance.platform_Horizontal_Right.GetComponent<Platform>().platformType != PlatformType.Wall)
                     {
-                        PlayerDetectorController.Instance.player_StepCounterDisplayRight.GetComponent<TextMeshProUGUI>().text = PlayerDetectorController.Instance.platform_Vertical_Right.GetComponent<Platform>().stepsCost.ToString();
-                        PlayerDetectorController.Instance.player_StepCounterDisplayRight.SetActive(true);
+                        print("-------------------- 1.Right");
+                        RotateStepCountDisplay(PlayerDetectorController.Instance.player_StepCounterDisplayRight, PlayerDetectorController.Instance.platform_Vertical_Right);
                     }
                 }
             }
             else
             {
-                PlayerDetectorController.Instance.player_StepCounterDisplayRight.GetComponent<TextMeshProUGUI>().text = PlayerDetectorController.Instance.platform_Vertical_Right.GetComponent<Platform>().stepsCost.ToString();
-                PlayerDetectorController.Instance.player_StepCounterDisplayRight.SetActive(true);
+                print("-------------------- 2.Right");
+                RotateStepCountDisplay(PlayerDetectorController.Instance.player_StepCounterDisplayRight, PlayerDetectorController.Instance.platform_Vertical_Right);
             }
         }
+
         if (PlayerDetectorController.Instance.platform_Vertical_Left && Player_PlatformRequirementCheck.Instance.CheckPlatformRequirement(MovementDirection.Left))
         {
             if (PlayerDetectorController.Instance.platform_Horizontal_Left)
@@ -126,16 +129,56 @@ public class PlayerStepCost : Singleton<PlayerStepCost>
                 {
                     if (PlayerDetectorController.Instance.platform_Horizontal_Left.GetComponent<Platform>().platformType != PlatformType.Wall)
                     {
-                        PlayerDetectorController.Instance.player_StepCounterDisplayLeft.GetComponent<TextMeshProUGUI>().text = PlayerDetectorController.Instance.platform_Vertical_Left.GetComponent<Platform>().stepsCost.ToString();
-                        PlayerDetectorController.Instance.player_StepCounterDisplayLeft.SetActive(true);
+                        print("-------------------- 1.Left");
+                        RotateStepCountDisplay(PlayerDetectorController.Instance.player_StepCounterDisplayLeft, PlayerDetectorController.Instance.platform_Vertical_Left);
                     }
                 }
             }
             else
             {
-                PlayerDetectorController.Instance.player_StepCounterDisplayLeft.GetComponent<TextMeshProUGUI>().text = PlayerDetectorController.Instance.platform_Vertical_Left.GetComponent<Platform>().stepsCost.ToString();
-                PlayerDetectorController.Instance.player_StepCounterDisplayLeft.SetActive(true);
+                print("-------------------- 2.Left");
+                RotateStepCountDisplay(PlayerDetectorController.Instance.player_StepCounterDisplayLeft, PlayerDetectorController.Instance.platform_Vertical_Left);
             }
         }
+    }
+
+    void RotateStepCountDisplay(GameObject stepCounterDisplayLeft, GameObject platform_Vertical_Direction)
+    {
+        //Change StepCost Text
+        stepCounterDisplayLeft.GetComponent<TextMeshProUGUI>().text = platform_Vertical_Direction.GetComponent<Platform>().stepsCost.ToString();
+
+        //Change StepCost Gameobject Rotation
+        
+        if (platform_Vertical_Direction.transform.rotation.x == -26.5f)
+        {
+            print("2. localRotation.x == -26.5f | Name: " + platform_Vertical_Direction.name);
+            stepCounterDisplayLeft.GetComponent<RectTransform>().localRotation = Quaternion.Euler(-26.5f, 0, 0);
+        }
+        else if (platform_Vertical_Direction.transform.rotation.x == 26.5f)
+        {
+            print("3. localRotation.x == 26.5f | Name: " + platform_Vertical_Direction.name);
+            stepCounterDisplayLeft.GetComponent<RectTransform>().localRotation = Quaternion.Euler(26.5f, 0, 0);
+        }
+
+        else if(platform_Vertical_Direction.transform.rotation.x == 0)
+        {
+            print("1. localRotation.x == 0 | Name: " + platform_Vertical_Direction.name);
+            //stepCounterDisplayLeft.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 0);
+            stepCounterDisplayLeft.GetComponent<RectTransform>().SetLocalPositionAndRotation(new Vector3(stepCounterDisplayLeft.GetComponent<RectTransform>().localPosition.x, stepCounterDisplayLeft.GetComponent<RectTransform>().localPosition.y, 0), Quaternion.Euler(0, 0, 0));
+        }
+        else if(platform_Vertical_Direction.transform.rotation.x < 0)
+        {
+            print("4. localRotation.x < 0 | Name: " + platform_Vertical_Direction.name);
+            //stepCounterDisplayLeft.GetComponent<RectTransform>().localRotation = Quaternion.Euler(-26.5f, 0, 0);
+            stepCounterDisplayLeft.GetComponent<RectTransform>().SetLocalPositionAndRotation(new Vector3(stepCounterDisplayLeft.GetComponent<RectTransform>().localPosition.x, stepCounterDisplayLeft.GetComponent<RectTransform>().localPosition.y, -0.2f), Quaternion.Euler(-26.5f, 0, 0));
+        }
+        else if(platform_Vertical_Direction.transform.rotation.x > 0)
+        {
+            print("5. localRotation.x >= 0 | Name: " + platform_Vertical_Direction.name);
+            //stepCounterDisplayLeft.GetComponent<RectTransform>().localRotation = Quaternion.Euler(26.5f, 0, 0);
+            stepCounterDisplayLeft.GetComponent<RectTransform>().SetLocalPositionAndRotation(new Vector3(stepCounterDisplayLeft.GetComponent<RectTransform>().localPosition.x, stepCounterDisplayLeft.GetComponent<RectTransform>().localPosition.y, 0.2f), Quaternion.Euler(26.5f, 0, 0));
+        }
+
+        stepCounterDisplayLeft.SetActive(true);
     }
 }
