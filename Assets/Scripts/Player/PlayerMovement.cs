@@ -58,7 +58,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
                 }
                 
                 movementDirection = Vector3.forward;
-                moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerDetectorController>().platform_Vertical_Forward.gameObject.transform);
+                //moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerDetectorController>().platform_Vertical_Forward.gameObject.transform);
                 movementStates = MovementStates.Moving;
 
                 takeAStep?.Invoke();
@@ -83,7 +83,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
                 }
 
                 movementDirection = Vector3.back;
-                moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerDetectorController>().platform_Vertical_Backward.gameObject.transform);
+                //moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerDetectorController>().platform_Vertical_Backward.gameObject.transform);
                 movementStates = MovementStates.Moving;
 
                 takeAStep?.Invoke();
@@ -108,7 +108,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
                 }
 
                 movementDirection = Vector3.right;
-                moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerDetectorController>().platform_Vertical_Right.gameObject.transform);
+                //moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerDetectorController>().platform_Vertical_Right.gameObject.transform);
                 movementStates = MovementStates.Moving;
 
                 takeAStep?.Invoke();
@@ -133,7 +133,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
                 }
 
                 movementDirection = Vector3.left;
-                moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerDetectorController>().platform_Vertical_Left.gameObject.transform);
+                //moveToPos = GetUpperCenterPositionOfPlatform(GetComponent<PlayerDetectorController>().platform_Vertical_Left.gameObject.transform);
                 movementStates = MovementStates.Moving;
 
                 takeAStep?.Invoke();
@@ -217,10 +217,4 @@ public class PlayerMovement : Singleton<PlayerMovement>
             transform.rotation = slopeRotation;
         }
     }
-}
-
-public enum MovementStates
-{
-    Still,
-    Moving
 }
