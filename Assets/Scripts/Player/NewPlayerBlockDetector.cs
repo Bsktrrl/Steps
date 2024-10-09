@@ -27,23 +27,73 @@ public class NewPlayerBlockDetector : MonoBehaviour
 
     private void Update()
     {
-        //Check if something is in the way
-        PerformRaycast_Horizontal(detectorSpot_Horizontal_Front.transform.position, Vector3.forward);
-        PerformRaycast_Horizontal(detectorSpot_Horizontal_Back.transform.position, Vector3.back);
-        PerformRaycast_Horizontal(detectorSpot_Horizontal_Left.transform.position, Vector3.left);
-        PerformRaycast_Horizontal(detectorSpot_Horizontal_Right.transform.position, Vector3.right);
-
-        //Check if there is a block where the player can go
-        PerformRaycast_Vertical(detectorSpot_Vertical_Front.transform.position, Vector3.forward);
-        PerformRaycast_Vertical(detectorSpot_Vertical_Back.transform.position, Vector3.back);
-        PerformRaycast_Vertical(detectorSpot_Vertical_Left.transform.position, Vector3.left);
-        PerformRaycast_Vertical(detectorSpot_Vertical_Right.transform.position, Vector3.right);
+        RaycastSetup();
     }
 
 
     //--------------------
 
 
+    void RaycastSetup()
+    {
+        //Check if something is in the way
+        if (gameObject.GetComponent<PlayerCamera>().directionFacing == Vector3.forward)
+        {
+            //Check if something is in the way
+            PerformRaycast_Horizontal(detectorSpot_Horizontal_Front.transform.position, Vector3.forward);
+            PerformRaycast_Horizontal(detectorSpot_Horizontal_Back.transform.position, Vector3.back);
+            PerformRaycast_Horizontal(detectorSpot_Horizontal_Left.transform.position, Vector3.left);
+            PerformRaycast_Horizontal(detectorSpot_Horizontal_Right.transform.position, Vector3.right);
+
+            //Check if there is a block where the player can go
+            PerformRaycast_Vertical(detectorSpot_Vertical_Front.transform.position, Vector3.forward);
+            PerformRaycast_Vertical(detectorSpot_Vertical_Back.transform.position, Vector3.back);
+            PerformRaycast_Vertical(detectorSpot_Vertical_Left.transform.position, Vector3.left);
+            PerformRaycast_Vertical(detectorSpot_Vertical_Right.transform.position, Vector3.right);
+        }
+        else if (gameObject.GetComponent<PlayerCamera>().directionFacing == Vector3.back)
+        {
+            //Check if something is in the way
+            PerformRaycast_Horizontal(detectorSpot_Horizontal_Front.transform.position, Vector3.back);
+            PerformRaycast_Horizontal(detectorSpot_Horizontal_Back.transform.position, Vector3.forward);
+            PerformRaycast_Horizontal(detectorSpot_Horizontal_Left.transform.position, Vector3.right);
+            PerformRaycast_Horizontal(detectorSpot_Horizontal_Right.transform.position, Vector3.left);
+
+            //Check if there is a block where the player can go
+            PerformRaycast_Vertical(detectorSpot_Vertical_Front.transform.position, Vector3.back);
+            PerformRaycast_Vertical(detectorSpot_Vertical_Back.transform.position, Vector3.forward);
+            PerformRaycast_Vertical(detectorSpot_Vertical_Left.transform.position, Vector3.right);
+            PerformRaycast_Vertical(detectorSpot_Vertical_Right.transform.position, Vector3.left);
+        }
+        else if (gameObject.GetComponent<PlayerCamera>().directionFacing == Vector3.left)
+        {
+            //Check if something is in the way
+            PerformRaycast_Horizontal(detectorSpot_Horizontal_Front.transform.position, Vector3.left);
+            PerformRaycast_Horizontal(detectorSpot_Horizontal_Back.transform.position, Vector3.right);
+            PerformRaycast_Horizontal(detectorSpot_Horizontal_Left.transform.position, Vector3.back);
+            PerformRaycast_Horizontal(detectorSpot_Horizontal_Right.transform.position, Vector3.forward);
+
+            //Check if there is a block where the player can go
+            PerformRaycast_Vertical(detectorSpot_Vertical_Front.transform.position, Vector3.left);
+            PerformRaycast_Vertical(detectorSpot_Vertical_Back.transform.position, Vector3.right);
+            PerformRaycast_Vertical(detectorSpot_Vertical_Left.transform.position, Vector3.back);
+            PerformRaycast_Vertical(detectorSpot_Vertical_Right.transform.position, Vector3.forward);
+        }
+        else if (gameObject.GetComponent<PlayerCamera>().directionFacing == Vector3.right)
+        {
+            //Check if something is in the way
+            PerformRaycast_Horizontal(detectorSpot_Horizontal_Front.transform.position, Vector3.right);
+            PerformRaycast_Horizontal(detectorSpot_Horizontal_Back.transform.position, Vector3.left);
+            PerformRaycast_Horizontal(detectorSpot_Horizontal_Left.transform.position, Vector3.forward);
+            PerformRaycast_Horizontal(detectorSpot_Horizontal_Right.transform.position, Vector3.back);
+
+            //Check if there is a block where the player can go
+            PerformRaycast_Vertical(detectorSpot_Vertical_Front.transform.position, Vector3.right);
+            PerformRaycast_Vertical(detectorSpot_Vertical_Back.transform.position, Vector3.left);
+            PerformRaycast_Vertical(detectorSpot_Vertical_Left.transform.position, Vector3.forward);
+            PerformRaycast_Vertical(detectorSpot_Vertical_Right.transform.position, Vector3.back);
+        }
+    }
     void PerformRaycast_Horizontal(Vector3 rayPoint, Vector3 direction)
     {
         if (Physics.Raycast(rayPoint, direction, out hit, maxDistance, MainManager.Instance.Cube))
@@ -69,38 +119,174 @@ public class NewPlayerBlockDetector : MonoBehaviour
     {
         if (direction == Vector3.forward)
         {
-            MainManager.Instance.canMove_Forward = false;
+            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            {
+                case CameraState.Forward:
+                    MainManager.Instance.canMove_Forward = false;
+                    break;
+                case CameraState.Backward:
+                    MainManager.Instance.canMove_Back = false;
+                    break;
+                case CameraState.Left:
+                    MainManager.Instance.canMove_Right = false;
+                    break;
+                case CameraState.Right:
+                    MainManager.Instance.canMove_Left = false;
+                    break;
+
+                default:
+                    break;
+            }
         }
         else if (direction == Vector3.back)
         {
-            MainManager.Instance.canMove_Back = false;
+            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            {
+                case CameraState.Forward:
+                    MainManager.Instance.canMove_Back = false;
+                    break;
+                case CameraState.Backward:
+                    MainManager.Instance.canMove_Forward = false;
+                    break;
+                case CameraState.Left:
+                    MainManager.Instance.canMove_Left = false;
+                    break;
+                case CameraState.Right:
+                    MainManager.Instance.canMove_Right = false;
+                    break;
+
+                default:
+                    break;
+            }
         }
         else if (direction == Vector3.left)
         {
-            MainManager.Instance.canMove_Left = false;
+            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            {
+                case CameraState.Forward:
+                    MainManager.Instance.canMove_Left = false;
+                    break;
+                case CameraState.Backward:
+                    MainManager.Instance.canMove_Right = false;
+                    break;
+                case CameraState.Left:
+                    MainManager.Instance.canMove_Forward = false;
+                    break;
+                case CameraState.Right:
+                    MainManager.Instance.canMove_Back = false;
+                    break;
+
+                default:
+                    break;
+            }
         }
         else if (direction == Vector3.right)
         {
-            MainManager.Instance.canMove_Right = false;
+            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            {
+                case CameraState.Forward:
+                    MainManager.Instance.canMove_Right = false;
+                    break;
+                case CameraState.Backward:
+                    MainManager.Instance.canMove_Left = false;
+                    break;
+                case CameraState.Left:
+                    MainManager.Instance.canMove_Back = false;
+                    break;
+                case CameraState.Right:
+                    MainManager.Instance.canMove_Forward = false;
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
     void ResetRaycastDirection_Horizontal(Vector3 direction)
     {
         if (direction == Vector3.forward)
         {
-            MainManager.Instance.canMove_Forward = true;
+            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            {
+                case CameraState.Forward:
+                    MainManager.Instance.canMove_Forward = true;
+                    break;
+                case CameraState.Backward:
+                    MainManager.Instance.canMove_Back = true;
+                    break;
+                case CameraState.Left:
+                    MainManager.Instance.canMove_Right = true;
+                    break;
+                case CameraState.Right:
+                    MainManager.Instance.canMove_Left = true;
+                    break;
+
+                default:
+                    break;
+            }
         }
         else if (direction == Vector3.back)
         {
-            MainManager.Instance.canMove_Back = true;
+            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            {
+                case CameraState.Forward:
+                    MainManager.Instance.canMove_Back = true;
+                    break;
+                case CameraState.Backward:
+                    MainManager.Instance.canMove_Forward = true;
+                    break;
+                case CameraState.Left:
+                    MainManager.Instance.canMove_Left = true;
+                    break;
+                case CameraState.Right:
+                    MainManager.Instance.canMove_Right = true;
+                    break;
+
+                default:
+                    break;
+            }
         }
         else if (direction == Vector3.left)
         {
-            MainManager.Instance.canMove_Left = true;
+            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            {
+                case CameraState.Forward:
+                    MainManager.Instance.canMove_Left = true;
+                    break;
+                case CameraState.Backward:
+                    MainManager.Instance.canMove_Right = true;
+                    break;
+                case CameraState.Left:
+                    MainManager.Instance.canMove_Forward = true;
+                    break;
+                case CameraState.Right:
+                    MainManager.Instance.canMove_Back = true;
+                    break;
+
+                default:
+                    break;
+            }
         }
         else if (direction == Vector3.right)
         {
-            MainManager.Instance.canMove_Right = true;
+            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            {
+                case CameraState.Forward:
+                    MainManager.Instance.canMove_Right = true;
+                    break;
+                case CameraState.Backward:
+                    MainManager.Instance.canMove_Left = true;
+                    break;
+                case CameraState.Left:
+                    MainManager.Instance.canMove_Back = true;
+                    break;
+                case CameraState.Right:
+                    MainManager.Instance.canMove_Forward = true;
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 
@@ -126,19 +312,87 @@ public class NewPlayerBlockDetector : MonoBehaviour
     {
         if (direction == Vector3.forward && MainManager.Instance.canMove_Forward)
         {
-            MainManager.Instance.canMove_Forward = false;
+            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            {
+                case CameraState.Forward:
+                    MainManager.Instance.canMove_Forward = false;
+                    break;
+                case CameraState.Backward:
+                    MainManager.Instance.canMove_Back = false;
+                    break;
+                case CameraState.Left:
+                    MainManager.Instance.canMove_Left = false;
+                    break;
+                case CameraState.Right:
+                    MainManager.Instance.canMove_Right = false;
+                    break;
+
+                default:
+                    break;
+            }
         }
         else if (direction == Vector3.back && MainManager.Instance.canMove_Back)
         {
-            MainManager.Instance.canMove_Back = false;
+            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            {
+                case CameraState.Forward:
+                    MainManager.Instance.canMove_Back = false;
+                    break;
+                case CameraState.Backward:
+                    MainManager.Instance.canMove_Forward = false;
+                    break;
+                case CameraState.Left:
+                    MainManager.Instance.canMove_Right = false;
+                    break;
+                case CameraState.Right:
+                    MainManager.Instance.canMove_Left = false;
+                    break;
+
+                default:
+                    break;
+            }
         }
         else if (direction == Vector3.left && MainManager.Instance.canMove_Left)
         {
-            MainManager.Instance.canMove_Left = false;
+            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            {
+                case CameraState.Forward:
+                    MainManager.Instance.canMove_Left = false;
+                    break;
+                case CameraState.Backward:
+                    MainManager.Instance.canMove_Right = false;
+                    break;
+                case CameraState.Left:
+                    MainManager.Instance.canMove_Forward = false;
+                    break;
+                case CameraState.Right:
+                    MainManager.Instance.canMove_Back = false;
+                    break;
+
+                default:
+                    break;
+            }
         }
         else if (direction == Vector3.right && MainManager.Instance.canMove_Right)
         {
-            MainManager.Instance.canMove_Right = false;
+            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            {
+                case CameraState.Forward:
+                    MainManager.Instance.canMove_Right = false;
+                    break;
+                case CameraState.Backward:
+                    MainManager.Instance.canMove_Left = false;
+                    break;
+                case CameraState.Left:
+                    MainManager.Instance.canMove_Back = false;
+                    break;
+                case CameraState.Right:
+                    MainManager.Instance.canMove_Forward = false;
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 }
