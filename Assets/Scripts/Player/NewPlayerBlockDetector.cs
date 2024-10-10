@@ -102,6 +102,11 @@ public class NewPlayerBlockDetector : MonoBehaviour
 
             CheckRaycastDirection_Horizontal(direction);
         }
+        else if (Physics.Raycast(rayPoint, direction, out hit, maxDistance, MainManager.Instance.Stair))
+        {
+            Debug.DrawRay(rayPoint, direction * hit.distance, Color.cyan);
+            CheckRaycastDirection_Horizontal(direction);
+        }
         else if (Physics.Raycast(rayPoint, direction, out hit, maxDistance, MainManager.Instance.Ladder))
         {
             Debug.DrawRay(rayPoint, direction * hit.distance, Color.blue);
@@ -138,7 +143,7 @@ public class NewPlayerBlockDetector : MonoBehaviour
                     break;
             }
         }
-        else if (direction == Vector3.back)
+        if (direction == Vector3.back)
         {
             switch (gameObject.GetComponent<PlayerCamera>().cameraState)
             {
@@ -159,7 +164,7 @@ public class NewPlayerBlockDetector : MonoBehaviour
                     break;
             }
         }
-        else if (direction == Vector3.left)
+        if (direction == Vector3.left)
         {
             switch (gameObject.GetComponent<PlayerCamera>().cameraState)
             {
@@ -180,7 +185,7 @@ public class NewPlayerBlockDetector : MonoBehaviour
                     break;
             }
         }
-        else if (direction == Vector3.right)
+        if (direction == Vector3.right)
         {
             switch (gameObject.GetComponent<PlayerCamera>().cameraState)
             {
@@ -225,7 +230,7 @@ public class NewPlayerBlockDetector : MonoBehaviour
                     break;
             }
         }
-        else if (direction == Vector3.back)
+        if (direction == Vector3.back)
         {
             switch (gameObject.GetComponent<PlayerCamera>().cameraState)
             {
@@ -246,7 +251,7 @@ public class NewPlayerBlockDetector : MonoBehaviour
                     break;
             }
         }
-        else if (direction == Vector3.left)
+        if (direction == Vector3.left)
         {
             switch (gameObject.GetComponent<PlayerCamera>().cameraState)
             {
@@ -267,7 +272,7 @@ public class NewPlayerBlockDetector : MonoBehaviour
                     break;
             }
         }
-        else if (direction == Vector3.right)
+        if (direction == Vector3.right)
         {
             switch (gameObject.GetComponent<PlayerCamera>().cameraState)
             {
@@ -296,6 +301,11 @@ public class NewPlayerBlockDetector : MonoBehaviour
         {
             Debug.DrawRay(rayPoint, Vector3.down * hit.distance, Color.green);
         }
+        else if (Physics.Raycast(rayPoint, direction, out hit, maxDistance, MainManager.Instance.Stair))
+        {
+            Debug.DrawRay(rayPoint, direction * hit.distance, Color.cyan);
+            CheckRaycastDirection_Horizontal(direction);
+        }
         else if (Physics.Raycast(rayPoint, Vector3.down, out hit, maxDistance, MainManager.Instance.Ladder))
         {
             Debug.DrawRay(rayPoint, Vector3.down * hit.distance, Color.blue);
@@ -310,7 +320,92 @@ public class NewPlayerBlockDetector : MonoBehaviour
     }
     void ResetRaycastDirection_Vertical(Vector3 direction)
     {
-        if (direction == Vector3.forward && MainManager.Instance.canMove_Forward)
+        //if (direction == Vector3.forward && MainManager.Instance.canMove_Forward)
+        //{
+        //    switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+        //    {
+        //        case CameraState.Forward:
+        //            MainManager.Instance.canMove_Forward = false;
+        //            break;
+        //        case CameraState.Backward:
+        //            MainManager.Instance.canMove_Back = false;
+        //            break;
+        //        case CameraState.Left:
+        //            MainManager.Instance.canMove_Left = false;
+        //            break;
+        //        case CameraState.Right:
+        //            MainManager.Instance.canMove_Right = false;
+        //            break;
+
+        //        default:
+        //            break;
+        //    }
+        //}
+        //if (direction == Vector3.back && MainManager.Instance.canMove_Back)
+        //{
+        //    switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+        //    {
+        //        case CameraState.Forward:
+        //            MainManager.Instance.canMove_Back = false;
+        //            break;
+        //        case CameraState.Backward:
+        //            MainManager.Instance.canMove_Forward = false;
+        //            break;
+        //        case CameraState.Left:
+        //            MainManager.Instance.canMove_Right = false;
+        //            break;
+        //        case CameraState.Right:
+        //            MainManager.Instance.canMove_Left = false;
+        //            break;
+
+        //        default:
+        //            break;
+        //    }
+        //}
+        //if (direction == Vector3.left && MainManager.Instance.canMove_Left)
+        //{
+        //    switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+        //    {
+        //        case CameraState.Forward:
+        //            MainManager.Instance.canMove_Left = false;
+        //            break;
+        //        case CameraState.Backward:
+        //            MainManager.Instance.canMove_Right = false;
+        //            break;
+        //        case CameraState.Left:
+        //            MainManager.Instance.canMove_Forward = false;
+        //            break;
+        //        case CameraState.Right:
+        //            MainManager.Instance.canMove_Back = false;
+        //            break;
+
+        //        default:
+        //            break;
+        //    }
+        //}
+        //if (direction == Vector3.right && MainManager.Instance.canMove_Right)
+        //{
+        //    switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+        //    {
+        //        case CameraState.Forward:
+        //            MainManager.Instance.canMove_Right = false;
+        //            break;
+        //        case CameraState.Backward:
+        //            MainManager.Instance.canMove_Left = false;
+        //            break;
+        //        case CameraState.Left:
+        //            MainManager.Instance.canMove_Back = false;
+        //            break;
+        //        case CameraState.Right:
+        //            MainManager.Instance.canMove_Forward = false;
+        //            break;
+
+        //        default:
+        //            break;
+        //    }
+        //}
+
+        if (direction == Vector3.forward)
         {
             switch (gameObject.GetComponent<PlayerCamera>().cameraState)
             {
@@ -319,6 +414,27 @@ public class NewPlayerBlockDetector : MonoBehaviour
                     break;
                 case CameraState.Backward:
                     MainManager.Instance.canMove_Back = false;
+                    break;
+                case CameraState.Left:
+                    MainManager.Instance.canMove_Right = false;
+                    break;
+                case CameraState.Right:
+                    MainManager.Instance.canMove_Left = false;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        if (direction == Vector3.back)
+        {
+            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            {
+                case CameraState.Forward:
+                    MainManager.Instance.canMove_Back = false;
+                    break;
+                case CameraState.Backward:
+                    MainManager.Instance.canMove_Forward = false;
                     break;
                 case CameraState.Left:
                     MainManager.Instance.canMove_Left = false;
@@ -331,28 +447,7 @@ public class NewPlayerBlockDetector : MonoBehaviour
                     break;
             }
         }
-        else if (direction == Vector3.back && MainManager.Instance.canMove_Back)
-        {
-            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
-            {
-                case CameraState.Forward:
-                    MainManager.Instance.canMove_Back = false;
-                    break;
-                case CameraState.Backward:
-                    MainManager.Instance.canMove_Forward = false;
-                    break;
-                case CameraState.Left:
-                    MainManager.Instance.canMove_Right = false;
-                    break;
-                case CameraState.Right:
-                    MainManager.Instance.canMove_Left = false;
-                    break;
-
-                default:
-                    break;
-            }
-        }
-        else if (direction == Vector3.left && MainManager.Instance.canMove_Left)
+        if (direction == Vector3.left)
         {
             switch (gameObject.GetComponent<PlayerCamera>().cameraState)
             {
@@ -373,7 +468,7 @@ public class NewPlayerBlockDetector : MonoBehaviour
                     break;
             }
         }
-        else if (direction == Vector3.right && MainManager.Instance.canMove_Right)
+        if (direction == Vector3.right)
         {
             switch (gameObject.GetComponent<PlayerCamera>().cameraState)
             {

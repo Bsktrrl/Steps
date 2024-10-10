@@ -16,6 +16,7 @@ public class MainManager : Singleton<MainManager>
 
     [Header("Cube Layer Mask")]
     public LayerMask Cube;
+    public LayerMask Stair;
     public LayerMask Ladder;
 
     [Header("Player Movement Restrictions")]
