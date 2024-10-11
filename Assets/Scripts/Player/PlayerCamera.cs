@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,14 @@ public class PlayerCamera : MonoBehaviour
     public CameraState cameraState;
     public Vector3 directionFacing;
 
+    public CameraZoomState zoomState;
+
+    float cameraZoom_ExtraShort = 20;
+    float cameraZoom_short = 35;
+    float cameraZoom_mid = 50;
+    float cameraZoom_long = 65;
+    float cameraZoom_ExtraLong = 80;
+
 
     //--------------------
 
@@ -16,6 +25,13 @@ public class PlayerCamera : MonoBehaviour
     {
         cameraState = CameraState.Forward;
         directionFacing = Vector3.forward;
+
+        zoomState = CameraZoomState.Mid;
+        MainManager.Instance.camera_Forward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_mid;
+        MainManager.Instance.camera_Backward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_mid;
+        MainManager.Instance.camera_Left.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_mid;
+        MainManager.Instance.camera_Right.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_mid;
+
         SetActiveCamera();
     }
     private void Update()
@@ -31,21 +47,22 @@ public class PlayerCamera : MonoBehaviour
     {
         if (MainManager.Instance.pauseGame) { return; }
 
+        //Rotate Camera
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             switch (cameraState)
             {
                 case CameraState.Forward:
-                    cameraState = CameraState.Right;
-                    break;
-                case CameraState.Backward:
                     cameraState = CameraState.Left;
                     break;
+                case CameraState.Backward:
+                    cameraState = CameraState.Right;
+                    break;
                 case CameraState.Left:
-                    cameraState = CameraState.Forward;
+                    cameraState = CameraState.Backward;
                     break;
                 case CameraState.Right:
-                    cameraState = CameraState.Backward;
+                    cameraState = CameraState.Forward;
                     break;
                 default:
                     break;
@@ -59,16 +76,16 @@ public class PlayerCamera : MonoBehaviour
             switch (cameraState)
             {
                 case CameraState.Forward:
-                    cameraState = CameraState.Left;
-                    break;
-                case CameraState.Backward:
                     cameraState = CameraState.Right;
                     break;
+                case CameraState.Backward:
+                    cameraState = CameraState.Left;
+                    break;
                 case CameraState.Left:
-                    cameraState = CameraState.Backward;
+                    cameraState = CameraState.Forward;
                     break;
                 case CameraState.Right:
-                    cameraState = CameraState.Forward;
+                    cameraState = CameraState.Backward;
                     break;
                 default:
                     break;
@@ -77,6 +94,9 @@ public class PlayerCamera : MonoBehaviour
             SetBlockDetectorDirection();
             SetActiveCamera();
         }
+
+        //Zoom
+        SetCameraZoom();
     }
 
     void SetActiveCamera()
@@ -112,6 +132,98 @@ public class PlayerCamera : MonoBehaviour
         }
     }
 
+    void SetCameraZoom()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            switch (zoomState)
+            {
+                case CameraZoomState.ExtraShort:
+                    zoomState = CameraZoomState.ExtraShort;
+                    MainManager.Instance.camera_Forward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_ExtraShort;
+                    MainManager.Instance.camera_Backward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_ExtraShort;
+                    MainManager.Instance.camera_Left.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_ExtraShort;
+                    MainManager.Instance.camera_Right.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_ExtraShort;
+                    break;
+                case CameraZoomState.Short:
+                    zoomState = CameraZoomState.ExtraShort;
+                    MainManager.Instance.camera_Forward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_ExtraShort;
+                    MainManager.Instance.camera_Backward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_ExtraShort;
+                    MainManager.Instance.camera_Left.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_ExtraShort;
+                    MainManager.Instance.camera_Right.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_ExtraShort;
+                    break;
+                case CameraZoomState.Mid:
+                    zoomState = CameraZoomState.Short;
+                    MainManager.Instance.camera_Forward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_short;
+                    MainManager.Instance.camera_Backward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_short;
+                    MainManager.Instance.camera_Left.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_short;
+                    MainManager.Instance.camera_Right.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_short;
+                    break;
+                case CameraZoomState.Long:
+                    zoomState = CameraZoomState.Mid;
+                    MainManager.Instance.camera_Forward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_mid;
+                    MainManager.Instance.camera_Backward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_mid;
+                    MainManager.Instance.camera_Left.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_mid;
+                    MainManager.Instance.camera_Right.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_mid;
+                    break;
+                case CameraZoomState.ExtraLong:
+                    zoomState = CameraZoomState.Long;
+                    MainManager.Instance.camera_Forward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_long;
+                    MainManager.Instance.camera_Backward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_long;
+                    MainManager.Instance.camera_Left.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_long;
+                    MainManager.Instance.camera_Right.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_long;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            switch (zoomState)
+            {
+                case CameraZoomState.ExtraShort:
+                    zoomState = CameraZoomState.Short;
+                    MainManager.Instance.camera_Forward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_short;
+                    MainManager.Instance.camera_Backward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_short;
+                    MainManager.Instance.camera_Left.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_short;
+                    MainManager.Instance.camera_Right.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_short;
+                    break;
+                case CameraZoomState.Short:
+                    zoomState = CameraZoomState.Mid;
+                    MainManager.Instance.camera_Forward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_mid;
+                    MainManager.Instance.camera_Backward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_mid;
+                    MainManager.Instance.camera_Left.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_mid;
+                    MainManager.Instance.camera_Right.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_mid;
+                    break;
+                case CameraZoomState.Mid:
+                    zoomState = CameraZoomState.Long;
+                    MainManager.Instance.camera_Forward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_long;
+                    MainManager.Instance.camera_Backward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_long;
+                    MainManager.Instance.camera_Left.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_long;
+                    MainManager.Instance.camera_Right.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_long;
+                    break;
+                case CameraZoomState.Long:
+                    zoomState = CameraZoomState.ExtraLong;
+                    MainManager.Instance.camera_Forward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_ExtraLong;
+                    MainManager.Instance.camera_Backward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_ExtraLong;
+                    MainManager.Instance.camera_Left.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_ExtraLong;
+                    MainManager.Instance.camera_Right.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_ExtraLong;
+                    break;
+                case CameraZoomState.ExtraLong:
+                    zoomState = CameraZoomState.ExtraLong;
+                    MainManager.Instance.camera_Forward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_ExtraLong;
+                    MainManager.Instance.camera_Backward.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_ExtraLong;
+                    MainManager.Instance.camera_Left.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_ExtraLong;
+                    MainManager.Instance.camera_Right.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = cameraZoom_ExtraLong;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+
     void SetBlockDetectorDirection()
     {
         switch (cameraState)
@@ -141,4 +253,13 @@ public enum CameraState
     Backward,
     Left,
     Right
+}
+
+public enum CameraZoomState
+{
+    ExtraShort,
+    Short,
+    Mid,
+    Long,
+    ExtraLong
 }
