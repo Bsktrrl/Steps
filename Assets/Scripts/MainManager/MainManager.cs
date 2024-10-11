@@ -11,10 +11,16 @@ public class MainManager : Singleton<MainManager>
 
     [Header("Player Block Standing On Info")]
     public DetectedBlockInfo block_StandingOn;
-    public DetectedBlockInfo block_InFront;
-    public DetectedBlockInfo block_InBack;
-    public DetectedBlockInfo block_ToTheLeft;
-    public DetectedBlockInfo block_ToTheRight;
+
+    public DetectedBlockInfo block_Horizontal_InFront;
+    public DetectedBlockInfo block_Horizontal_InBack;
+    public DetectedBlockInfo block_Horizontal_ToTheLeft;
+    public DetectedBlockInfo block_Horizontal_ToTheRight;
+
+    public DetectedBlockInfo block_Vertical_InFront;
+    public DetectedBlockInfo block_Vertical_InBack;
+    public DetectedBlockInfo block_Vertical_ToTheLeft;
+    public DetectedBlockInfo block_Vertical_ToTheRight;
 
     [Header("Player Layer Masks")]
     public LayerMask playerLayerMask;

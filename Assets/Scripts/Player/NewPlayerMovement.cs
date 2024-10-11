@@ -32,7 +32,7 @@ public class NewPlayerMovement : MonoBehaviour
             if (MainManager.Instance.canMove_Forward)
             {
                 //Set new Position - Based on the Block to enter
-                MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.block_InFront.blockPosition + (Vector3.up * 0.85f), MainManager.Instance.player.transform.rotation);
+                MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.block_Vertical_InFront.blockPosition + (Vector3.up * 0.85f), MainManager.Instance.player.transform.rotation);
                 SetPlayerBodyRotation(0);
             }
             else
@@ -48,7 +48,7 @@ public class NewPlayerMovement : MonoBehaviour
         {
             if (MainManager.Instance.canMove_Back)
             {
-                MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.block_InBack.blockPosition + (Vector3.up * 0.85f), MainManager.Instance.player.transform.rotation);
+                MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.block_Vertical_InBack.blockPosition + (Vector3.up * 0.85f), MainManager.Instance.player.transform.rotation);
                 SetPlayerBodyRotation(180);
             }
             else
@@ -64,7 +64,7 @@ public class NewPlayerMovement : MonoBehaviour
         {
             if (MainManager.Instance.canMove_Left)
             {
-                MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.block_ToTheLeft.blockPosition + (Vector3.up * 0.85f), MainManager.Instance.player.transform.rotation);
+                MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.block_Vertical_ToTheLeft.blockPosition + (Vector3.up * 0.85f), MainManager.Instance.player.transform.rotation);
                 SetPlayerBodyRotation(-90);
             }
             else
@@ -80,7 +80,7 @@ public class NewPlayerMovement : MonoBehaviour
         {
             if (MainManager.Instance.canMove_Right)
             {
-                MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.block_ToTheRight.blockPosition + (Vector3.up * 0.85f), MainManager.Instance.player.transform.rotation);
+                MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.block_Vertical_ToTheRight.blockPosition + (Vector3.up * 0.85f), MainManager.Instance.player.transform.rotation);
                 SetPlayerBodyRotation(90);
             }
             else
