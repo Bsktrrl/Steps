@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class NewPlayerMovement : MonoBehaviour
 {
-
     public MovementStates movementStates;
+
+    float waitTime = 0.15f;
 
 
     //--------------------
@@ -13,259 +14,119 @@ public class NewPlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        KeyInputs();
+        NewKeyInputs();
     }
 
 
     //--------------------
 
 
-    void KeyInputs()
+    void NewKeyInputs()
     {
         if (movementStates == MovementStates.Moving) { return; }
         if (MainManager.Instance.pauseGame) { return; }
 
-        if (Input.GetKeyDown(KeyCode.W))
+        //If pressing UP
+        if (Input.GetKey(KeyCode.W))
         {
-            //if (PlayerStats.Instance.stats.steps_Current <= 0)
-            //{
-            //    movementStates = MovementStates.Moving;
-            //    PlayerStepCost.Instance.RefillSteps();
-
-            //    return;
-            //}
-
             if (MainManager.Instance.canMove_Forward)
             {
-                switch (gameObject.GetComponent<PlayerCamera>().cameraState)
-                {
-                    case CameraState.Forward:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position + Vector3.forward * 1, Quaternion.Euler(0, 0, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.forward;
-                        break;
-                    case CameraState.Backward:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position + Vector3.back * 1, Quaternion.Euler(0, 180, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.back;
-                        break;
-                    case CameraState.Left:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position + Vector3.left * 1, Quaternion.Euler(0, -90, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.left;
-                        break;
-                    case CameraState.Right:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position + Vector3.right * 1, Quaternion.Euler(0, 90, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.right;
-                        break;
-                    default:
-                        break;
-                }
+                //Set new Position - Based on the Block to enter
+                MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.block_InFront.blockPosition + (Vector3.up * 0.85f), MainManager.Instance.player.transform.rotation);
+                SetPlayerBodyRotation(0);
             }
             else
             {
-                switch (gameObject.GetComponent<PlayerCamera>().cameraState)
-                {
-                    case CameraState.Forward:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, 0, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.forward;
-                        break;
-                    case CameraState.Backward:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, 180, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.back;
-                        break;
-                    case CameraState.Left:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, -90, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.left;
-                        break;
-                    case CameraState.Right:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, 90, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.right;
-                        break;
-                    default:
-                        break;
-                }
+                SetPlayerBodyRotation(0);
             }
+
+            StartCoroutine(MovementWaitTime(waitTime));
         }
-        if (Input.GetKeyDown(KeyCode.S))
+
+        //If pressing DOWN
+        else if (Input.GetKey(KeyCode.S))
         {
-            //if (PlayerStats.Instance.stats.steps_Current <= 0)
-            //{
-            //    movementStates = MovementStates.Moving;
-            //    PlayerStepCost.Instance.RefillSteps();
-
-            //    return;
-            //}
-
             if (MainManager.Instance.canMove_Back)
             {
-                switch (gameObject.GetComponent<PlayerCamera>().cameraState)
-                {
-                    case CameraState.Forward:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position + Vector3.back * 1, Quaternion.Euler(0, 180, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.back;
-                        break;
-                    case CameraState.Backward:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position + Vector3.forward * 1, Quaternion.Euler(0, 0, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.forward;
-                        break;
-                    case CameraState.Left:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position + Vector3.right * 1, Quaternion.Euler(0, 90, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.right;
-                        break;
-                    case CameraState.Right:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position + Vector3.left * 1, Quaternion.Euler(0, -90, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.left;
-                        break;
-                    default:
-                        break;
-                }
+                MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.block_InBack.blockPosition + (Vector3.up * 0.85f), MainManager.Instance.player.transform.rotation);
+                SetPlayerBodyRotation(180);
             }
             else
             {
-                switch (gameObject.GetComponent<PlayerCamera>().cameraState)
-                {
-                    case CameraState.Forward:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, 180, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.back;
-                        break;
-                    case CameraState.Backward:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, 0, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.forward;
-                        break;
-                    case CameraState.Left:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, 90, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.right;
-                        break;
-                    case CameraState.Right:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, -90, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.left;
-                        break;
-                    default:
-                        break;
-                }
+                SetPlayerBodyRotation(180);
             }
+
+            StartCoroutine(MovementWaitTime(waitTime));
         }
-        if (Input.GetKeyDown(KeyCode.A))
+
+        //If pressing LEFT
+        else if (Input.GetKey(KeyCode.A))
         {
-            //if (PlayerStats.Instance.stats.steps_Current <= 0)
-            //{
-            //    movementStates = MovementStates.Moving;
-            //    PlayerStepCost.Instance.RefillSteps();
-
-            //    return;
-            //}
-
             if (MainManager.Instance.canMove_Left)
             {
-                switch (gameObject.GetComponent<PlayerCamera>().cameraState)
-                {
-                    case CameraState.Forward:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position + Vector3.left * 1, Quaternion.Euler(0, -90, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.left;
-                        break;
-                    case CameraState.Backward:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position + Vector3.right * 1, Quaternion.Euler(0, 90, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.right;
-                        break;
-                    case CameraState.Left:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position + Vector3.back * 1, Quaternion.Euler(0, 180, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.back;
-                        break;
-                    case CameraState.Right:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position + Vector3.forward * 1, Quaternion.Euler(0, 0, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.forward;
-                        break;
-                    default:
-                        break;
-                }
+                MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.block_ToTheLeft.blockPosition + (Vector3.up * 0.85f), MainManager.Instance.player.transform.rotation);
+                SetPlayerBodyRotation(-90);
             }
             else
             {
-                switch (gameObject.GetComponent<PlayerCamera>().cameraState)
-                {
-                    case CameraState.Forward:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, -90, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.left;
-                        break;
-                    case CameraState.Backward:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, 90, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.right;
-                        break;
-                    case CameraState.Left:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, 180, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.back;
-                        break;
-                    case CameraState.Right:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, 0, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.forward;
-                        break;
-                    default:
-                        break;
-                }
+                SetPlayerBodyRotation(-90);
             }
+
+            StartCoroutine(MovementWaitTime(waitTime));
         }
-        if (Input.GetKeyDown(KeyCode.D))
+
+        //If pressing RIGHT
+        else if (Input.GetKey(KeyCode.D))
         {
-            //if (PlayerStats.Instance.stats.steps_Current <= 0)
-            //{
-            //    movementStates = MovementStates.Moving;
-            //    PlayerStepCost.Instance.RefillSteps();
-
-            //    return;
-            //}
-
             if (MainManager.Instance.canMove_Right)
             {
-                switch (gameObject.GetComponent<PlayerCamera>().cameraState)
-                {
-                    case CameraState.Forward:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position + Vector3.right * 1, Quaternion.Euler(0, 90, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.right;
-                        break;
-                    case CameraState.Backward:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position + Vector3.left * 1, Quaternion.Euler(0, -90, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.left;
-                        break;
-                    case CameraState.Left:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position + Vector3.forward * 1, Quaternion.Euler(0, 0, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.forward;
-                        break;
-                    case CameraState.Right:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position + Vector3.back * 1, Quaternion.Euler(0, 180, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.back;
-                        break;
-                    default:
-                        break;
-                }
+                MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.block_ToTheRight.blockPosition + (Vector3.up * 0.85f), MainManager.Instance.player.transform.rotation);
+                SetPlayerBodyRotation(90);
             }
             else
             {
-                switch (gameObject.GetComponent<PlayerCamera>().cameraState)
-                {
-                    case CameraState.Forward:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, 90, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.right;
-                        break;
-                    case CameraState.Backward:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, -90, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.left;
-                        break;
-                    case CameraState.Left:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, 0, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.forward;
-                        break;
-                    case CameraState.Right:
-                        MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, 180, 0));
-                        gameObject.GetComponent<PlayerCamera>().directionFacing = Vector3.back;
-                        break;
-                    default:
-                        break;
-                }
+                SetPlayerBodyRotation(90);
             }
+
+            StartCoroutine(MovementWaitTime(waitTime));
         }
+    }
+    void SetPlayerBodyRotation(int rotationValue)
+    {
+        //Set new Rotation - Based on the key input
+        switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+        {
+            case CameraState.Forward:
+                MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 0 + rotationValue, 0));
+                break;
+            case CameraState.Backward:
+                MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 180 + rotationValue, 0));
+                break;
+            case CameraState.Left:
+                MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, -90 + rotationValue, 0));
+                break;
+            case CameraState.Right:
+                MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 90 + rotationValue, 0));
+                break;
+
+            default:
+                break;
+        }
+    }
+    IEnumerator MovementWaitTime(float wait)
+    {
+        movementStates = MovementStates.Moving;
+
+        yield return new WaitForSeconds(wait);
+
+        movementStates = MovementStates.Still;
     }
 }
 
 public enum MovementStates
 {
     Still,
-    Moving
+    Moving,
+
+    Jumping
 }

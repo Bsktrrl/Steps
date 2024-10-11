@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,14 @@ public class MainManager : Singleton<MainManager>
 {
     [Header("Player Object")]
     public GameObject player;
+    public GameObject playerBody;
+
+    [Header("Player Block Standing On Info")]
+    public DetectedBlockInfo block_StandingOn;
+    public DetectedBlockInfo block_InFront;
+    public DetectedBlockInfo block_InBack;
+    public DetectedBlockInfo block_ToTheLeft;
+    public DetectedBlockInfo block_ToTheRight;
 
     [Header("Player Layer Masks")]
     public LayerMask playerLayerMask;
@@ -33,4 +42,14 @@ public class MainManager : Singleton<MainManager>
 
     [Header("Game Paused")]
     public bool pauseGame;
+}
+
+[Serializable]
+public class DetectedBlockInfo
+{
+    public GameObject block;
+    public Vector3 blockPosition;
+
+    public BlockElement blockElement;
+    public BlockType blockType;
 }

@@ -15,6 +15,7 @@ public class PlayerCamera : MonoBehaviour
     private void Start()
     {
         cameraState = CameraState.Forward;
+        directionFacing = Vector3.forward;
         SetActiveCamera();
     }
     private void Update()
@@ -50,8 +51,8 @@ public class PlayerCamera : MonoBehaviour
                     break;
             }
 
+            SetBlockDetectorDirection();
             SetActiveCamera();
-            //SetPlayerRotation();
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -73,8 +74,8 @@ public class PlayerCamera : MonoBehaviour
                     break;
             }
 
+            SetBlockDetectorDirection();
             SetActiveCamera();
-            //SetPlayerRotation();
         }
     }
 
@@ -111,22 +112,23 @@ public class PlayerCamera : MonoBehaviour
         }
     }
 
-    void SetPlayerRotation()
+    void SetBlockDetectorDirection()
     {
-        switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+        switch (cameraState)
         {
             case CameraState.Forward:
-                MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, 0, 0));
+                gameObject.GetComponent<NewPlayerBlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(gameObject.GetComponent<NewPlayerBlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 0, 0));
                 break;
             case CameraState.Backward:
-                MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, 180, 0));
+                gameObject.GetComponent<NewPlayerBlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(gameObject.GetComponent<NewPlayerBlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 180, 0));
                 break;
             case CameraState.Left:
-                MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, -90, 0));
+                gameObject.GetComponent<NewPlayerBlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(gameObject.GetComponent<NewPlayerBlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, -90, 0));
                 break;
             case CameraState.Right:
-                MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.player.transform.position, Quaternion.Euler(0, 90, 0));
+                gameObject.GetComponent<NewPlayerBlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(gameObject.GetComponent<NewPlayerBlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 90, 0));
                 break;
+
             default:
                 break;
         }
