@@ -460,433 +460,70 @@ public class NewPlayerBlockDetector : MonoBehaviour
     }
     void ResetRaycastDirection_Vertical(Vector3 direction)
     {
-        switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+        if (direction == Vector3.forward)
         {
-            case CameraState.Forward:
-                if (direction == Vector3.forward)
-                {
-                    if (MainManager.Instance.block_Vertical_InFront.blockType == BlockType.None)
-                    {
-                        MainManager.Instance.canMove_Forward = false;
-                    }
-                    else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-                    {
-                        if (MainManager.Instance.block_Vertical_InFront.blockType == BlockType.Stair || MainManager.Instance.block_Vertical_InFront.blockType == BlockType.Cube)
-                            MainManager.Instance.canMove_Forward = true;
-                        else
-                            MainManager.Instance.canMove_Forward = false;
-                    }
-                }
-                else if (direction == Vector3.back)
-                {
-                    if (MainManager.Instance.block_Vertical_InBack.blockType == BlockType.None)
-                    {
-                        MainManager.Instance.canMove_Back = false;
-                    }
-                    else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-                    {
-                        if (MainManager.Instance.block_Vertical_InBack.blockType == BlockType.Stair || MainManager.Instance.block_Vertical_InBack.blockType == BlockType.Cube)
-                            MainManager.Instance.canMove_Back = true;
-                        else
-                            MainManager.Instance.canMove_Back = false;
-                    }
-                }
-                else if (direction == Vector3.left)
-                {
-                    if (MainManager.Instance.block_Vertical_ToTheLeft.blockType == BlockType.None)
-                    {
-                        MainManager.Instance.canMove_Left = false;
-                    }
-                    else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-                    {
-                        if (MainManager.Instance.block_Vertical_ToTheLeft.blockType == BlockType.Stair || MainManager.Instance.block_Vertical_ToTheLeft.blockType == BlockType.Cube)
-                            MainManager.Instance.canMove_Left = true;
-                        else
-                            MainManager.Instance.canMove_Left = false;
-                    }
-                }
-                else if (direction == Vector3.right)
-                {
-                    if (MainManager.Instance.block_Vertical_ToTheRight.blockType == BlockType.None)
-                    {
-                        MainManager.Instance.canMove_Right = false;
-                    }
-                    else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-                    {
-                        if (MainManager.Instance.block_Vertical_ToTheRight.blockType == BlockType.Stair || MainManager.Instance.block_Vertical_ToTheRight.blockType == BlockType.Cube)
-                            MainManager.Instance.canMove_Right = true;
-                        else
-                            MainManager.Instance.canMove_Right = false;
-                    }
-                }
-                break;
-            case CameraState.Backward:
-                if (direction == Vector3.forward)
-                {
-
-                }
-                else if (direction == Vector3.back)
-                {
-
-                }
-                else if (direction == Vector3.left)
-                {
-
-                }
-                else if (direction == Vector3.right)
-                {
-
-                }
-                break;
-            case CameraState.Left:
-                if (direction == Vector3.forward)
-                {
-
-                }
-                else if (direction == Vector3.back)
-                {
-
-                }
-                else if (direction == Vector3.left)
-                {
-
-                }
-                else if (direction == Vector3.right)
-                {
-
-                }
-                break;
-            case CameraState.Right:
-                if (direction == Vector3.forward)
-                {
-
-                }
-                else if (direction == Vector3.back)
-                {
-
-                }
-                else if (direction == Vector3.left)
-                {
-
-                }
-                else if (direction == Vector3.right)
-                {
-
-                }
-                break;
-
-            default:
-                break;
+            if (MainManager.Instance.block_Vertical_InFront.blockType == BlockType.None)
+            {
+                MainManager.Instance.canMove_Forward = false;
+            }
+            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
+            {
+                if (MainManager.Instance.block_Vertical_InFront.blockType == BlockType.Stair || MainManager.Instance.block_Vertical_InFront.blockType == BlockType.Cube)
+                    MainManager.Instance.canMove_Forward = true;
+                else
+                    MainManager.Instance.canMove_Forward = false;
+            }
         }
-
-        //if (direction == Vector3.forward)
-        //{
-        //    switch (gameObject.GetComponent<PlayerCamera>().cameraState)
-        //    {
-        //        case CameraState.Forward:
-        //            if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-        //            {
-        //                if (MainManager.Instance.block_Horizontal_InFront.blockType == BlockType.Stair || MainManager.Instance.block_Horizontal_InFront.blockType == BlockType.Cube)
-        //                    MainManager.Instance.canMove_Forward = true;
-        //                else
-        //                    MainManager.Instance.canMove_Forward = false;
-        //            }
-        //            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Ladder)
-        //            {
-        //                //Insert behavior
-        //            }
-        //            else
-        //            {
-        //                MainManager.Instance.canMove_Forward = false;
-        //            }
-        //            break;
-        //        case CameraState.Backward:
-        //            if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-        //            {
-        //                if (MainManager.Instance.block_Horizontal_InBack.blockType == BlockType.Stair || MainManager.Instance.block_Horizontal_InBack.blockType == BlockType.Cube)
-        //                    MainManager.Instance.canMove_Back = true;
-        //                else
-        //                    MainManager.Instance.canMove_Back = false;
-        //            }
-        //            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Ladder)
-        //            {
-        //                //Insert behavior
-        //            }
-        //            else
-        //            {
-        //                MainManager.Instance.canMove_Back = false;
-        //            }
-        //            break;
-        //        case CameraState.Left:
-        //            if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-        //            {
-        //                if (MainManager.Instance.block_Horizontal_ToTheLeft.blockType == BlockType.Stair || MainManager.Instance.block_Horizontal_ToTheLeft.blockType == BlockType.Cube)
-        //                    MainManager.Instance.canMove_Right = true;
-        //                else
-        //                    MainManager.Instance.canMove_Right = false;
-        //            }
-        //            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Ladder)
-        //            {
-        //                //Insert behavior
-        //            }
-        //            else
-        //            {
-        //                MainManager.Instance.canMove_Right = false;
-        //            }
-        //            break;
-        //        case CameraState.Right:
-        //            if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-        //            {
-        //                if (MainManager.Instance.block_Horizontal_ToTheRight.blockType == BlockType.Stair || MainManager.Instance.block_Horizontal_ToTheRight.blockType == BlockType.Cube)
-        //                    MainManager.Instance.canMove_Left = true;
-        //                else
-        //                    MainManager.Instance.canMove_Left = false;
-        //            }
-        //            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Ladder)
-        //            {
-        //                //Insert behavior
-        //            }
-        //            else
-        //            {
-        //                MainManager.Instance.canMove_Left = false;
-        //            }
-        //            break;
-
-        //        default:
-        //            break;
-        //    }
-        //}
-        //if (direction == Vector3.back)
-        //{
-        //    switch (gameObject.GetComponent<PlayerCamera>().cameraState)
-        //    {
-        //        case CameraState.Forward:
-        //            if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-        //            {
-        //                if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair || MainManager.Instance.block_StandingOn.blockType == BlockType.Cube)
-        //                    MainManager.Instance.canMove_Back = true;
-        //                else
-        //                    MainManager.Instance.canMove_Back = false;
-        //            }
-        //            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Ladder)
-        //            {
-        //                //Insert behavior
-        //            }
-        //            else
-        //            {
-        //                MainManager.Instance.canMove_Back = false;
-        //            }
-        //            break;
-        //        case CameraState.Backward:
-        //            if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-        //            {
-        //                if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair || MainManager.Instance.block_StandingOn.blockType == BlockType.Cube)
-        //                    MainManager.Instance.canMove_Forward = true;
-        //                else
-        //                    MainManager.Instance.canMove_Forward = false;
-        //            }
-        //            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Ladder)
-        //            {
-        //                //Insert behavior
-        //            }
-        //            else
-        //            {
-        //                MainManager.Instance.canMove_Forward = false;
-        //            }
-        //            break;
-        //        case CameraState.Left:
-        //            if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-        //            {
-        //                if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair || MainManager.Instance.block_StandingOn.blockType == BlockType.Cube)
-        //                    MainManager.Instance.canMove_Left = true;
-        //                else
-        //                    MainManager.Instance.canMove_Left = false;
-        //            }
-        //            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Ladder)
-        //            {
-        //                //Insert behavior
-        //            }
-        //            else
-        //            {
-        //                MainManager.Instance.canMove_Left = false;
-        //            }
-        //            break;
-        //        case CameraState.Right:
-        //            if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-        //            {
-        //                if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair || MainManager.Instance.block_StandingOn.blockType == BlockType.Cube)
-        //                    MainManager.Instance.canMove_Right = true;
-        //                else
-        //                    MainManager.Instance.canMove_Right = false;
-        //            }
-        //            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Ladder)
-        //            {
-        //                //Insert behavior
-        //            }
-        //            else
-        //            {
-        //                MainManager.Instance.canMove_Right = false;
-        //            }
-        //            break;
-
-        //        default:
-        //            break;
-        //    }
-        //}
-        //if (direction == Vector3.left)
-        //{
-        //    switch (gameObject.GetComponent<PlayerCamera>().cameraState)
-        //    {
-        //        case CameraState.Forward:
-        //            if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-        //            {
-        //                if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair || MainManager.Instance.block_StandingOn.blockType == BlockType.Cube)
-        //                    MainManager.Instance.canMove_Left = true;
-        //                else
-        //                    MainManager.Instance.canMove_Left = false;
-        //            }
-        //            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Ladder)
-        //            {
-        //                //Insert behavior
-        //            }
-        //            else
-        //            {
-        //                MainManager.Instance.canMove_Left = false;
-        //            }
-        //            break;
-        //        case CameraState.Backward:
-        //            if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-        //            {
-        //                if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair || MainManager.Instance.block_StandingOn.blockType == BlockType.Cube)
-        //                    MainManager.Instance.canMove_Right = true;
-        //                else
-        //                    MainManager.Instance.canMove_Right = false;
-        //            }
-        //            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Ladder)
-        //            {
-        //                //Insert behavior
-        //            }
-        //            else
-        //            {
-        //                MainManager.Instance.canMove_Right = false;
-        //            }
-        //            break;
-        //        case CameraState.Left:
-        //            if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-        //            {
-        //                if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair || MainManager.Instance.block_StandingOn.blockType == BlockType.Cube)
-        //                    MainManager.Instance.canMove_Forward = true;
-        //                else
-        //                    MainManager.Instance.canMove_Forward = false;
-        //            }
-        //            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Ladder)
-        //            {
-        //                //Insert behavior
-        //            }
-        //            else
-        //            {
-        //                MainManager.Instance.canMove_Forward = false;
-        //            }
-        //            break;
-        //        case CameraState.Right:
-        //            if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-        //            {
-        //                if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair || MainManager.Instance.block_StandingOn.blockType == BlockType.Cube)
-        //                    MainManager.Instance.canMove_Back = true;
-        //                else
-        //                    MainManager.Instance.canMove_Back = false;
-        //            }
-        //            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Ladder)
-        //            {
-        //                //Insert behavior
-        //            }
-        //            else
-        //            {
-        //                MainManager.Instance.canMove_Back = false;
-        //            }
-        //            break;
-
-        //        default:
-        //            break;
-        //    }
-        //}
-        //if (direction == Vector3.right)
-        //{
-        //    switch (gameObject.GetComponent<PlayerCamera>().cameraState)
-        //    {
-        //        case CameraState.Forward:
-        //            if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-        //            {
-        //                if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair || MainManager.Instance.block_StandingOn.blockType == BlockType.Cube)
-        //                    MainManager.Instance.canMove_Right = true;
-        //                else
-        //                    MainManager.Instance.canMove_Right = false;
-        //            }
-        //            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Ladder)
-        //            {
-        //                //Insert behavior
-        //            }
-        //            else
-        //            {
-        //                MainManager.Instance.canMove_Right = false;
-        //            }
-        //            break;
-        //        case CameraState.Backward:
-        //            if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-        //            {
-        //                if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair || MainManager.Instance.block_StandingOn.blockType == BlockType.Cube)
-        //                    MainManager.Instance.canMove_Left = true;
-        //                else
-        //                    MainManager.Instance.canMove_Left = false;
-        //            }
-        //            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Ladder)
-        //            {
-        //                //Insert behavior
-        //            }
-        //            else
-        //            {
-        //                MainManager.Instance.canMove_Left = false;
-        //            }
-        //            break;
-        //        case CameraState.Left:
-        //            if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-        //            {
-        //                if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair || MainManager.Instance.block_StandingOn.blockType == BlockType.Cube)
-        //                    MainManager.Instance.canMove_Back = true;
-        //                else
-        //                    MainManager.Instance.canMove_Back = false;
-        //            }
-        //            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Ladder)
-        //            {
-        //                //Insert behavior
-        //            }
-        //            else
-        //            {
-        //                MainManager.Instance.canMove_Back = false;
-        //            }
-        //            break;
-        //        case CameraState.Right:
-        //            if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-        //            {
-        //                if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair || MainManager.Instance.block_StandingOn.blockType == BlockType.Cube)
-        //                    MainManager.Instance.canMove_Forward = true;
-        //                else
-        //                    MainManager.Instance.canMove_Forward = false;
-        //            }
-        //            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Ladder)
-        //            {
-        //                //Insert behavior
-        //            }
-        //            else
-        //            {
-        //                MainManager.Instance.canMove_Forward = false;
-        //            }
-        //            break;
-
-        //        default:
-        //            break;
-        //    }
-        //}
+        else if (direction == Vector3.back)
+        {
+            if (MainManager.Instance.block_Vertical_InBack.blockType == BlockType.None)
+            {
+                MainManager.Instance.canMove_Back = false;
+            }
+            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
+            {
+                if (MainManager.Instance.block_Vertical_InBack.blockType == BlockType.Stair || MainManager.Instance.block_Vertical_InBack.blockType == BlockType.Cube)
+                    MainManager.Instance.canMove_Back = true;
+                else
+                    MainManager.Instance.canMove_Back = false;
+            }
+        }
+        else if (direction == Vector3.left)
+        {
+            if (MainManager.Instance.block_Vertical_ToTheLeft.blockType == BlockType.None)
+            {
+                MainManager.Instance.canMove_Left = false;
+            }
+            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair && MainManager.Instance.block_Horizontal_ToTheLeft.blockType == BlockType.Cube)
+            {
+                MainManager.Instance.canMove_Left = false;
+            }
+            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
+            {
+                if (MainManager.Instance.block_Vertical_ToTheLeft.blockType == BlockType.Stair || MainManager.Instance.block_Vertical_ToTheLeft.blockType == BlockType.Cube)
+                    MainManager.Instance.canMove_Left = true;
+                else
+                    MainManager.Instance.canMove_Left = false;
+            }
+        }
+        else if (direction == Vector3.right)
+        {
+            if (MainManager.Instance.block_Vertical_ToTheRight.blockType == BlockType.None)
+            {
+                MainManager.Instance.canMove_Right = false;
+            }
+            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair && MainManager.Instance.block_Horizontal_ToTheRight.blockType == BlockType.Cube)
+            {
+                MainManager.Instance.canMove_Right = false;
+            }
+            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
+            {
+                if (MainManager.Instance.block_Vertical_ToTheRight.blockType == BlockType.Stair || MainManager.Instance.block_Vertical_ToTheRight.blockType == BlockType.Cube)
+                    MainManager.Instance.canMove_Right = true;
+                else
+                    MainManager.Instance.canMove_Right = false;
+            }
+        }
     }
 
 
