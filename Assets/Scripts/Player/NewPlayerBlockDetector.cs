@@ -123,7 +123,7 @@ public class NewPlayerBlockDetector : MonoBehaviour
         {
             Debug.DrawRay(rayPointObject.transform.position, direction * maxDistance_Horizontal, Color.red);
 
-            MainManager.Instance.block_StandingOn.block = hit.transform.gameObject;
+            MainManager.Instance.block_StandingOn.block = null;
             MainManager.Instance.block_StandingOn.blockPosition = Vector3.zero;
             MainManager.Instance.block_StandingOn.blockElement = BlockElement.None;
             MainManager.Instance.block_StandingOn.blockType = BlockType.None;
