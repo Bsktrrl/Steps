@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewPlayerMovement : MonoBehaviour
+public class NewPlayerMovement : Singleton<NewPlayerMovement>
 {
+    public static Action updateStepDisplay;
+
     public MovementStates movementStates;
 
     float hightOverBlock = 0.85f;
@@ -17,6 +20,10 @@ public class NewPlayerMovement : MonoBehaviour
     //--------------------
 
 
+    private void Start()
+    {
+        updateStepDisplay?.Invoke();
+    }
     private void Update()
     {
         NewKeyInputs();
@@ -132,6 +139,8 @@ public class NewPlayerMovement : MonoBehaviour
         {
             MainManager.Instance.player.transform.position = endDestination;
             movementStates = MovementStates.Still;
+
+            updateStepDisplay?.Invoke();
         }
     }
 }

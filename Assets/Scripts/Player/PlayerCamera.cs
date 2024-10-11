@@ -70,6 +70,8 @@ public class PlayerCamera : MonoBehaviour
 
             SetBlockDetectorDirection();
             SetActiveCamera();
+
+            //NewPlayerMovement.updateStepDisplay?.Invoke();
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -93,6 +95,8 @@ public class PlayerCamera : MonoBehaviour
             
             SetBlockDetectorDirection();
             SetActiveCamera();
+
+            //NewPlayerMovement.updateStepDisplay?.Invoke();
         }
 
         //Zoom
