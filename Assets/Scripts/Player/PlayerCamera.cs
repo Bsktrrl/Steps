@@ -11,11 +11,11 @@ public class PlayerCamera : MonoBehaviour
 
     public CameraZoomState zoomState;
 
-    float cameraZoom_ExtraShort = 20;
-    float cameraZoom_short = 35;
+    float cameraZoom_ExtraShort = 35;
+    float cameraZoom_short = 40;
     float cameraZoom_mid = 50;
-    float cameraZoom_long = 65;
-    float cameraZoom_ExtraLong = 80;
+    float cameraZoom_long = 60;
+    float cameraZoom_ExtraLong = 65;
 
 
     //--------------------
@@ -53,16 +53,16 @@ public class PlayerCamera : MonoBehaviour
             switch (cameraState)
             {
                 case CameraState.Forward:
-                    cameraState = CameraState.Left;
-                    break;
-                case CameraState.Backward:
                     cameraState = CameraState.Right;
                     break;
+                case CameraState.Backward:
+                    cameraState = CameraState.Left;
+                    break;
                 case CameraState.Left:
-                    cameraState = CameraState.Backward;
+                    cameraState = CameraState.Forward;
                     break;
                 case CameraState.Right:
-                    cameraState = CameraState.Forward;
+                    cameraState = CameraState.Backward;
                     break;
                 default:
                     break;
@@ -76,21 +76,21 @@ public class PlayerCamera : MonoBehaviour
             switch (cameraState)
             {
                 case CameraState.Forward:
-                    cameraState = CameraState.Right;
-                    break;
-                case CameraState.Backward:
                     cameraState = CameraState.Left;
                     break;
+                case CameraState.Backward:
+                    cameraState = CameraState.Right;
+                    break;
                 case CameraState.Left:
-                    cameraState = CameraState.Forward;
+                    cameraState = CameraState.Backward;
                     break;
                 case CameraState.Right:
-                    cameraState = CameraState.Backward;
+                    cameraState = CameraState.Forward;
                     break;
                 default:
                     break;
             }
-
+            
             SetBlockDetectorDirection();
             SetActiveCamera();
         }

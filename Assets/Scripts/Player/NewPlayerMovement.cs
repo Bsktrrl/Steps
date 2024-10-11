@@ -6,6 +6,8 @@ public class NewPlayerMovement : MonoBehaviour
 {
     public MovementStates movementStates;
 
+    float hightOverBlock = 0.85f;
+
     float waitTime = 0.15f;
 
     Vector3 endDestination;
@@ -19,9 +21,13 @@ public class NewPlayerMovement : MonoBehaviour
     {
         NewKeyInputs();
 
-        if (movementStates == MovementStates.Moving)
+        if (movementStates == MovementStates.Moving && endDestination != (Vector3.zero + (Vector3.up * hightOverBlock)))
         {
             MovePlayer();
+        }
+        else
+        {
+            movementStates = MovementStates.Still;
         }
     }
 
@@ -40,8 +46,7 @@ public class NewPlayerMovement : MonoBehaviour
             if (MainManager.Instance.canMove_Forward)
             {
                 //Set new Position - Based on the Block to enter
-                endDestination = MainManager.Instance.block_Vertical_InFront.blockPosition + (Vector3.up * 0.85f);
-                //MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.block_Vertical_InFront.blockPosition + (Vector3.up * 0.85f), MainManager.Instance.player.transform.rotation);
+                endDestination = MainManager.Instance.block_Vertical_InFront.blockPosition + (Vector3.up * hightOverBlock);
                 SetPlayerBodyRotation(0);
                 movementStates = MovementStates.Moving;
             }
@@ -49,8 +54,6 @@ public class NewPlayerMovement : MonoBehaviour
             {
                 SetPlayerBodyRotation(0);
             }
-
-            //StartCoroutine(MovementWaitTime(waitTime));
         }
 
         //If pressing DOWN
@@ -58,8 +61,7 @@ public class NewPlayerMovement : MonoBehaviour
         {
             if (MainManager.Instance.canMove_Back)
             {
-                endDestination = MainManager.Instance.block_Vertical_InBack.blockPosition + (Vector3.up * 0.85f);
-                //MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.block_Vertical_InBack.blockPosition + (Vector3.up * 0.85f), MainManager.Instance.player.transform.rotation);
+                endDestination = MainManager.Instance.block_Vertical_InBack.blockPosition + (Vector3.up * hightOverBlock);
                 SetPlayerBodyRotation(180);
                 movementStates = MovementStates.Moving;
             }
@@ -67,8 +69,6 @@ public class NewPlayerMovement : MonoBehaviour
             {
                 SetPlayerBodyRotation(180);
             }
-
-            //StartCoroutine(MovementWaitTime(waitTime));
         }
 
         //If pressing LEFT
@@ -76,8 +76,7 @@ public class NewPlayerMovement : MonoBehaviour
         {
             if (MainManager.Instance.canMove_Left)
             {
-                endDestination = MainManager.Instance.block_Vertical_ToTheLeft.blockPosition + (Vector3.up * 0.85f);
-                //MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.block_Vertical_ToTheLeft.blockPosition + (Vector3.up * 0.85f), MainManager.Instance.player.transform.rotation);
+                endDestination = MainManager.Instance.block_Vertical_ToTheLeft.blockPosition + (Vector3.up * hightOverBlock);
                 SetPlayerBodyRotation(-90);
                 movementStates = MovementStates.Moving;
             }
@@ -85,8 +84,6 @@ public class NewPlayerMovement : MonoBehaviour
             {
                 SetPlayerBodyRotation(-90);
             }
-
-            //StartCoroutine(MovementWaitTime(waitTime));
         }
 
         //If pressing RIGHT
@@ -94,8 +91,7 @@ public class NewPlayerMovement : MonoBehaviour
         {
             if (MainManager.Instance.canMove_Right)
             {
-                endDestination = MainManager.Instance.block_Vertical_ToTheRight.blockPosition + (Vector3.up * 0.85f);
-                //MainManager.Instance.player.transform.SetPositionAndRotation(MainManager.Instance.block_Vertical_ToTheRight.blockPosition + (Vector3.up * 0.85f), MainManager.Instance.player.transform.rotation);
+                endDestination = MainManager.Instance.block_Vertical_ToTheRight.blockPosition + (Vector3.up * hightOverBlock);
                 SetPlayerBodyRotation(90);
                 movementStates = MovementStates.Moving;
             }
@@ -103,8 +99,6 @@ public class NewPlayerMovement : MonoBehaviour
             {
                 SetPlayerBodyRotation(90);
             }
-
-            //StartCoroutine(MovementWaitTime(waitTime));
         }
     }
     void SetPlayerBodyRotation(int rotationValue)
