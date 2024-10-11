@@ -12,6 +12,8 @@ public class BlockManager : Singleton<BlockManager>
     [SerializeField] int blockMovementCost_Water = 1;
     [SerializeField] int blockMovementCost_Lava = 2;
 
+    public float materialDarkenAmount = 0.9f;
+
 
     //--------------------
 
