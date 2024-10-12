@@ -9,7 +9,7 @@ public class BlockInfo : MonoBehaviour
     public BlockType blockType;
 
     [Header("Material Rendering")]
-    public List<Renderer> objectRenderers = new List<Renderer>();
+    List<Renderer> objectRenderers = new List<Renderer>();
     List<MaterialPropertyBlock> propertyBlocks = new List<MaterialPropertyBlock>();
 
 
@@ -19,6 +19,15 @@ public class BlockInfo : MonoBehaviour
     private void Start()
     {
         NewPlayerMovement.resetBlockColor += RestoreColors;
+
+        //Set objectRenderers
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).GetComponent<MeshRenderer>())
+            {
+                objectRenderers.Add(transform.GetChild(i).GetComponent<MeshRenderer>());
+            }
+        }
 
         // Initialize property blocks and get original colors
         for (int i = 0; i < objectRenderers.Count; i++)

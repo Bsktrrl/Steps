@@ -24,14 +24,9 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
     [SerializeField] GameObject detectorSpot_Vertical_Right;
 
     [Header("Raycast")]
-    RaycastHit hit;
     [SerializeField] float maxDistance_Horizontal = 0.5f;
     [SerializeField] float maxDistance_Vertical = 0.8f;
-
-    [SerializeField] GameObject detectorSpot_Front_Temp;
-    [SerializeField] GameObject detectorSpot_Back_Temp;
-    [SerializeField] GameObject detectorSpot_Left_Temp;
-    [SerializeField] GameObject detectorSpot_Right_Temp;
+    RaycastHit hit;
 
 
     //--------------------

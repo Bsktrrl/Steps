@@ -13,7 +13,7 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
     float hightOverBlock = 0.85f;
 
     Vector3 endDestination;
-    [SerializeField] float playerSpeed = 7;
+    [SerializeField] float playerSpeed = 5;
 
 
     //--------------------
@@ -159,6 +159,7 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
     {
         if (movementStates == MovementStates.Still)
         {
+            //If a key is held down, don't show the new darkening blocks
             if (Input.GetKey(KeyCode.W)
                 || Input.GetKey(KeyCode.S)
                 || Input.GetKey(KeyCode.A)
@@ -168,6 +169,7 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
                 UpdateDarkenBlocks();
             }
 
+            //When a key is pressed up
             if (Input.GetKeyUp(KeyCode.W)
                 || Input.GetKeyUp(KeyCode.S)
                 || Input.GetKeyUp(KeyCode.A)
@@ -180,13 +182,6 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
 
     void UpdateDarkenBlocks()
     {
-        //Lighten Block standing on
-        if (MainManager.Instance.block_StandingOn.block == null) { }
-        else
-        {
-            MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().RestoreColors();
-        }
-
         //Darken block in front of player
         if (MainManager.Instance.canMove_Forward)
         {
@@ -226,6 +221,13 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
             {
                 MainManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>().DarkenColors();
             }
+        }
+
+        //Lighten Block standing on
+        if (MainManager.Instance.block_StandingOn.block == null) { }
+        else
+        {
+            MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().RestoreColors();
         }
     }
 }
