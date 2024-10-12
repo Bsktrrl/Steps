@@ -188,7 +188,8 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
             if (MainManager.Instance.block_Horizontal_InFront.block == null && MainManager.Instance.block_Vertical_InFront.block == null) { }
             else
             {
-                MainManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>().DarkenColors();
+                if (MainManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>())
+                    MainManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>().DarkenColors();
             }
         }
 
@@ -198,7 +199,8 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
             if (MainManager.Instance.block_Horizontal_InBack.block == null && MainManager.Instance.block_Vertical_InBack.block == null) { }
             else
             {
-                MainManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>().DarkenColors();
+                if (MainManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>())
+                    MainManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>().DarkenColors();
             }
         }
 
@@ -208,7 +210,8 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
             if (MainManager.Instance.block_Horizontal_ToTheLeft.block == null && MainManager.Instance.block_Vertical_ToTheLeft.block == null) { }
             else
             {
-                MainManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>().DarkenColors();
+                if (MainManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>())
+                    MainManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>().DarkenColors();
             }
 
         }
@@ -219,7 +222,8 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
             if (MainManager.Instance.block_Horizontal_ToTheRight.block == null && MainManager.Instance.block_Vertical_ToTheRight.block == null) { }
             else
             {
-                MainManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>().DarkenColors();
+                if (MainManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>())
+                    MainManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>().DarkenColors();
             }
         }
 
@@ -227,7 +231,8 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
         if (MainManager.Instance.block_StandingOn.block == null) { }
         else
         {
-            MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().RestoreColors();
+            if (MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>())
+                MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().RestoreColors();
         }
     }
 }
