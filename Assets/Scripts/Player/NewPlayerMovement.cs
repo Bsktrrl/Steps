@@ -6,14 +6,11 @@ using UnityEngine;
 public class NewPlayerMovement : Singleton<NewPlayerMovement>
 {
     public static Action updateStepDisplay;
-    public static Action darkenBlockColor;
     public static Action resetBlockColor;
 
     public MovementStates movementStates;
 
     float hightOverBlock = 0.85f;
-
-    float waitTime = 0.15f;
 
     Vector3 endDestination;
     [SerializeField] float playerSpeed = 7;
@@ -25,6 +22,8 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
     private void Start()
     {
         updateStepDisplay?.Invoke();
+
+        UpdateDarkenBlocks();
     }
     private void Update()
     {
@@ -39,7 +38,7 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
             movementStates = MovementStates.Still;
         }
 
-        //DarkenAvailableBlock();
+        UpdateDarkenBlockWhenButtonIsPressed();
     }
 
 
@@ -61,7 +60,7 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
                 SetPlayerBodyRotation(0);
                 movementStates = MovementStates.Moving;
 
-                //resetBlockColor?.Invoke();
+                resetBlockColor?.Invoke();
             }
             else
             {
@@ -78,7 +77,7 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
                 SetPlayerBodyRotation(180);
                 movementStates = MovementStates.Moving;
 
-                //resetBlockColor?.Invoke();
+                resetBlockColor?.Invoke();
             }
             else
             {
@@ -95,7 +94,7 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
                 SetPlayerBodyRotation(-90);
                 movementStates = MovementStates.Moving;
 
-                //resetBlockColor?.Invoke();
+                resetBlockColor?.Invoke();
             }
             else
             {
@@ -112,7 +111,7 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
                 SetPlayerBodyRotation(90);
                 movementStates = MovementStates.Moving;
 
-                //resetBlockColor?.Invoke();
+                resetBlockColor?.Invoke();
             }
             else
             {
@@ -153,42 +152,79 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
             movementStates = MovementStates.Still;
 
             updateStepDisplay?.Invoke();
-
-            //DarkenAvailableBlock();
         }
     }
 
-    void DarkenAvailableBlock()
+    void UpdateDarkenBlockWhenButtonIsPressed()
     {
+        if (movementStates == MovementStates.Still)
+        {
+            if (Input.GetKey(KeyCode.W)
+                || Input.GetKey(KeyCode.S)
+                || Input.GetKey(KeyCode.A)
+                || Input.GetKey(KeyCode.D)) { }
+            else
+            {
+                UpdateDarkenBlocks();
+            }
+
+            if (Input.GetKeyUp(KeyCode.W)
+                || Input.GetKeyUp(KeyCode.S)
+                || Input.GetKeyUp(KeyCode.A)
+                || Input.GetKeyUp(KeyCode.D))
+            {
+                UpdateDarkenBlocks();
+            }
+        }
+    }
+
+    void UpdateDarkenBlocks()
+    {
+        //Lighten Block standing on
+        if (MainManager.Instance.block_StandingOn.block == null) { }
+        else
+        {
+            MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().RestoreColors();
+        }
+
+        //Darken block in front of player
         if (MainManager.Instance.canMove_Forward)
         {
-            if (MainManager.Instance.block_Horizontal_InFront.block != null || MainManager.Instance.block_Vertical_InFront.block != null)
+            if (MainManager.Instance.block_Horizontal_InFront.block == null && MainManager.Instance.block_Vertical_InFront.block == null) { }
+            else
             {
-                MainManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>().ChangeMaterialDarkness();
+                MainManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>().DarkenColors();
             }
         }
 
+        //Darken block in back of player
         if (MainManager.Instance.canMove_Back)
         {
-            if (MainManager.Instance.block_Horizontal_InBack.block != null || MainManager.Instance.block_Vertical_InBack.block != null)
+            if (MainManager.Instance.block_Horizontal_InBack.block == null && MainManager.Instance.block_Vertical_InBack.block == null) { }
+            else
             {
-                MainManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>().ChangeMaterialDarkness();
+                MainManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>().DarkenColors();
             }
         }
 
+        //Darken block to the left of player
         if (MainManager.Instance.canMove_Left)
         {
-            if (MainManager.Instance.block_Horizontal_ToTheLeft.block != null || MainManager.Instance.block_Vertical_ToTheLeft.block != null)
+            if (MainManager.Instance.block_Horizontal_ToTheLeft.block == null && MainManager.Instance.block_Vertical_ToTheLeft.block == null) { }
+            else
             {
-                MainManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>().ChangeMaterialDarkness();
+                MainManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>().DarkenColors();
             }
+
         }
 
+        //Darken block to the right of player
         if (MainManager.Instance.canMove_Right)
         {
-            if (MainManager.Instance.block_Horizontal_ToTheRight.block != null || MainManager.Instance.block_Vertical_ToTheRight.block != null)
+            if (MainManager.Instance.block_Horizontal_ToTheRight.block == null && MainManager.Instance.block_Vertical_ToTheRight.block == null) { }
+            else
             {
-                MainManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>().ChangeMaterialDarkness();
+                MainManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>().DarkenColors();
             }
         }
     }

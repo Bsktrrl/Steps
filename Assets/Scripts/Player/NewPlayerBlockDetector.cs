@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class NewPlayerBlockDetector : MonoBehaviour
+public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
 {
     [Header("Player BlockDetector Parent")]
     public GameObject blockDetector_Parent;
@@ -27,6 +28,11 @@ public class NewPlayerBlockDetector : MonoBehaviour
     [SerializeField] float maxDistance_Horizontal = 0.5f;
     [SerializeField] float maxDistance_Vertical = 0.8f;
 
+    [SerializeField] GameObject detectorSpot_Front_Temp;
+    [SerializeField] GameObject detectorSpot_Back_Temp;
+    [SerializeField] GameObject detectorSpot_Left_Temp;
+    [SerializeField] GameObject detectorSpot_Right_Temp;
+
 
     //--------------------
 
@@ -34,7 +40,7 @@ public class NewPlayerBlockDetector : MonoBehaviour
     private void Update()
     {
         RaycastSetup();
-        UpdateVerticalRacastLeangth();
+        UpdateVerticalRacastLength();
     }
 
 
@@ -419,8 +425,6 @@ public class NewPlayerBlockDetector : MonoBehaviour
                     MainManager.Instance.block_Vertical_ToTheRight.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
                 }
             }
-
-            ResetRaycastDirection_Vertical(direction);
         }
         else
         {
@@ -454,9 +458,9 @@ public class NewPlayerBlockDetector : MonoBehaviour
                 MainManager.Instance.block_Vertical_ToTheRight.blockElement = BlockElement.None;
                 MainManager.Instance.block_Vertical_ToTheRight.blockType = BlockType.None;
             }
-
-            ResetRaycastDirection_Vertical(direction);
         }
+
+        ResetRaycastDirection_Vertical(direction);
     }
     void ResetRaycastDirection_Vertical(Vector3 direction)
     {
@@ -554,7 +558,7 @@ public class NewPlayerBlockDetector : MonoBehaviour
     //--------------------
 
 
-    void UpdateVerticalRacastLeangth()
+    void UpdateVerticalRacastLength()
     {
         if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
         {

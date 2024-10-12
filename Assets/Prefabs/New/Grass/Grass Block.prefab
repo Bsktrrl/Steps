@@ -127,7 +127,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockElement: 1
   blockType: 1
-  material: {fileID: 2100000, guid: ab08612e63d71e8419000749e3c68d16, type: 2}
+  objectRenderers:
+  - {fileID: 4696565618902006523}
+  - {fileID: 2616321166026755690}
+  - {fileID: 7471808178828615627}
+  darkenAmount: 0.75
+  brightenAmount: 1
 --- !u!1 &6987596437497600609
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,7 +326,7 @@ Transform:
   m_GameObject: {fileID: 9170900155315177816}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -8,8 +8,9 @@ public class BlockInfo : MonoBehaviour
     public BlockElement blockElement;
     public BlockType blockType;
 
-    public Material material;
-    Color originalColor;
+    [Header("Material Rendering")]
+    public List<Renderer> objectRenderers = new List<Renderer>();
+    List<MaterialPropertyBlock> propertyBlocks = new List<MaterialPropertyBlock>();
 
 
     //--------------------
@@ -17,29 +18,48 @@ public class BlockInfo : MonoBehaviour
 
     private void Start()
     {
-        //NewPlayerMovement.darkenBlockColor += ChangeMaterialDarkness;
-        //NewPlayerMovement.resetBlockColor += ResetMaterialDarkness;
+        NewPlayerMovement.resetBlockColor += RestoreColors;
 
-        Color originalColor = material.color;
+        // Initialize property blocks and get original colors
+        for (int i = 0; i < objectRenderers.Count; i++)
+        {
+            MaterialPropertyBlock block = new MaterialPropertyBlock();
+            objectRenderers[i].GetPropertyBlock(block);
+            propertyBlocks.Add(block);
+        }
     }
 
 
     //--------------------
 
 
-    public void ChangeMaterialDarkness()
+    public void DarkenColors()
     {
-        // Darken the color by multiplying the RGB values
-        Color darkenedColor = originalColor * BlockManager.Instance.materialDarkenAmount;
-
-        // Apply the darkened color to the material
-        material.color = darkenedColor;
-    }
-    void ResetMaterialDarkness()
-    {
-        if (material.color != originalColor)
+        for (int i = 0; i < propertyBlocks.Count; i++)
         {
-            material.color = originalColor;
+            // Darken the color
+            Color darkenedColor = Color.white * BlockManager.Instance.materialDarkenAmount;
+
+            // Set the new color in the MaterialPropertyBlock
+            propertyBlocks[i].SetColor("_Color", darkenedColor);
+
+            // Apply the MaterialPropertyBlock to the renderer
+            objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
+        }
+    }
+
+    public void RestoreColors()
+    {
+        for (int i = 0; i < propertyBlocks.Count; i++)
+        {
+            // Restore the color to full brightness
+            Color restoredColor = Color.white;
+
+            // Set the original color in the MaterialPropertyBlock
+            propertyBlocks[i].SetColor("_Color", restoredColor);
+
+            // Apply the MaterialPropertyBlock to the renderer
+            objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
         }
     }
 }

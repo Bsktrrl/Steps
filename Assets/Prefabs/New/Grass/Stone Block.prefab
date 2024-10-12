@@ -293,7 +293,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockElement: 3
   blockType: 1
-  material: {fileID: 2100000, guid: ab08612e63d71e8419000749e3c68d16, type: 2}
+  objectRenderers:
+  - {fileID: 689974663036150601}
+  - {fileID: 1331482844299318086}
+  - {fileID: 3658224828918000752}
+  darkenAmount: 0.75
+  brightenAmount: 1
 --- !u!1 &7619997982675088191
 GameObject:
   m_ObjectHideFlags: 0

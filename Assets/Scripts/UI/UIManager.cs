@@ -69,7 +69,9 @@ public class UIManager : Singleton<UIManager>
             if (MainManager.Instance.block_Horizontal_InFront.block == null && MainManager.Instance.block_Vertical_InFront.block == null)
                 stepCost_Forward_Text.text = "";
             else
+            {
                 stepCost_Forward_Text.text = BlockManager.Instance.GetMovementCost(MainManager.Instance.block_Vertical_InFront.blockElement).ToString();
+            }
         }
         else
         {
@@ -81,7 +83,9 @@ public class UIManager : Singleton<UIManager>
             if (MainManager.Instance.block_Horizontal_InBack.block == null && MainManager.Instance.block_Vertical_InBack.block == null)
                 stepCost_Backward_Text.text = "";
             else
+            {
                 stepCost_Backward_Text.text = BlockManager.Instance.GetMovementCost(MainManager.Instance.block_Vertical_InBack.blockElement).ToString();
+            }
         }
         else
         {
@@ -93,8 +97,10 @@ public class UIManager : Singleton<UIManager>
             if (MainManager.Instance.block_Horizontal_ToTheLeft.block == null && MainManager.Instance.block_Vertical_ToTheLeft.block == null)
                 stepCost_Left_Text.text = "";
             else
+            {
                 stepCost_Left_Text.text = BlockManager.Instance.GetMovementCost(MainManager.Instance.block_Vertical_ToTheLeft.blockElement).ToString();
-                
+            }
+
         }
         else
         {
@@ -106,7 +112,9 @@ public class UIManager : Singleton<UIManager>
             if (MainManager.Instance.block_Horizontal_ToTheRight.block == null && MainManager.Instance.block_Vertical_ToTheRight.block == null)
                 stepCost_Right_Text.text = "";
             else
+            {
                 stepCost_Right_Text.text = BlockManager.Instance.GetMovementCost(MainManager.Instance.block_Vertical_ToTheRight.blockElement).ToString();
+            }
         }
         else
             stepCost_Right_Text.text = "";
