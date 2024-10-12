@@ -18,7 +18,7 @@ public class BlockInfo : MonoBehaviour
 
     private void Start()
     {
-        NewPlayerMovement.resetBlockColor += RestoreColors;
+        NewPlayerMovement.resetBlockColor += ResetColors;
 
         //Set objectRenderers
         for (int i = 0; i < transform.childCount; i++)
@@ -50,14 +50,14 @@ public class BlockInfo : MonoBehaviour
             Color darkenedColor = Color.white * BlockManager.Instance.materialDarkenAmount;
 
             // Set the new color in the MaterialPropertyBlock
-            propertyBlocks[i].SetColor("_Color", darkenedColor);
+            propertyBlocks[i].SetColor("_BaseColor", darkenedColor);
 
             // Apply the MaterialPropertyBlock to the renderer
             objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
         }
     }
 
-    public void RestoreColors()
+    public void ResetColors()
     {
         for (int i = 0; i < propertyBlocks.Count; i++)
         {
@@ -65,7 +65,7 @@ public class BlockInfo : MonoBehaviour
             Color restoredColor = Color.white;
 
             // Set the original color in the MaterialPropertyBlock
-            propertyBlocks[i].SetColor("_Color", restoredColor);
+            propertyBlocks[i].SetColor("_BaseColor", restoredColor);
 
             // Apply the MaterialPropertyBlock to the renderer
             objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);

@@ -232,7 +232,7 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
         else
         {
             if (MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>())
-                MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().RestoreColors();
+                MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().ResetColors();
         }
     }
 }
