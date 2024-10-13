@@ -7,6 +7,8 @@ public class BlockInfo : MonoBehaviour
     [Header("Block Stats")]
     public BlockElement blockElement;
     public BlockType blockType;
+    public int movementCost;
+    public float movementSpeed;
 
     [Header("Material Rendering")]
     List<Renderer> objectRenderers = new List<Renderer>();
@@ -18,7 +20,8 @@ public class BlockInfo : MonoBehaviour
 
     private void Start()
     {
-        Player_Movement.resetBlockColor += ResetColor;
+        Player_Movement.Action_resetBlockColor += ResetColor;
+        Player_Stats.Action_RespawnToSavePos += ResetColor;
 
         //Set objectRenderers
         for (int i = 0; i < transform.childCount; i++)
@@ -47,7 +50,7 @@ public class BlockInfo : MonoBehaviour
         for (int i = 0; i < propertyBlocks.Count; i++)
         {
             // Darken the color
-            Color darkenedColor = Color.white * BlockManager.Instance.materialDarkenAmount;
+            Color darkenedColor = Color.white * BlockManager.Instance.materialDarkeningValue;
 
             // Set the new color in the MaterialPropertyBlock
             propertyBlocks[i].SetColor("_BaseColor", darkenedColor);

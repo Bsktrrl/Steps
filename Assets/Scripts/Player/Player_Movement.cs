@@ -5,24 +5,25 @@ using UnityEngine;
 
 public class Player_Movement : Singleton<Player_Movement>
 {
-    public static Action updateStepDisplay;
-    public static Action resetBlockColor;
+    public static event Action Action_takeAStep;
+    public static event Action Action_resetBlockColor;
 
+    [Header("Current Movement Cost")]
+    public int currentMovementCost;
+
+    [Header("Movement State")]
     public MovementStates movementStates;
 
+    [Header("Player Movement over Blocks")]
     float heightOverBlock = 0.85f;
 
+    //Other
     Vector3 endDestination;
-    [SerializeField] float playerSpeed = 5;
 
 
     //--------------------
 
 
-    private void Start()
-    {
-        updateStepDisplay?.Invoke();
-    }
     private void Update()
     {
         NewKeyInputs();
@@ -51,12 +52,15 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (MainManager.Instance.canMove_Forward)
             {
-                //Set new Position - Based on the Block to enter
+                MainManager.Instance.block_MovingTowards = MainManager.Instance.block_Vertical_InFront;
+
+                currentMovementCost = MainManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>().movementCost;
+
                 endDestination = MainManager.Instance.block_Vertical_InFront.blockPosition + (Vector3.up * heightOverBlock);
                 SetPlayerBodyRotation(0);
                 movementStates = MovementStates.Moving;
 
-                resetBlockColor?.Invoke();
+                Action_resetBlockColor?.Invoke();
             }
             else
             {
@@ -69,11 +73,15 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (MainManager.Instance.canMove_Back)
             {
+                MainManager.Instance.block_MovingTowards = MainManager.Instance.block_Vertical_InBack;
+
+                currentMovementCost = MainManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>().movementCost;
+
                 endDestination = MainManager.Instance.block_Vertical_InBack.blockPosition + (Vector3.up * heightOverBlock);
                 SetPlayerBodyRotation(180);
                 movementStates = MovementStates.Moving;
 
-                resetBlockColor?.Invoke();
+                Action_resetBlockColor?.Invoke();
             }
             else
             {
@@ -86,11 +94,15 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (MainManager.Instance.canMove_Left)
             {
+                MainManager.Instance.block_MovingTowards = MainManager.Instance.block_Vertical_ToTheLeft;
+
+                currentMovementCost = MainManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>().movementCost;
+
                 endDestination = MainManager.Instance.block_Vertical_ToTheLeft.blockPosition + (Vector3.up * heightOverBlock);
                 SetPlayerBodyRotation(-90);
                 movementStates = MovementStates.Moving;
 
-                resetBlockColor?.Invoke();
+                Action_resetBlockColor?.Invoke();
             }
             else
             {
@@ -103,11 +115,15 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (MainManager.Instance.canMove_Right)
             {
+                MainManager.Instance.block_MovingTowards = MainManager.Instance.block_Vertical_ToTheRight;
+
+                currentMovementCost = MainManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>().movementCost;
+
                 endDestination = MainManager.Instance.block_Vertical_ToTheRight.blockPosition + (Vector3.up * heightOverBlock);
                 SetPlayerBodyRotation(90);
                 movementStates = MovementStates.Moving;
 
-                resetBlockColor?.Invoke();
+                Action_resetBlockColor?.Invoke();
             }
             else
             {
@@ -140,14 +156,29 @@ public class Player_Movement : Singleton<Player_Movement>
 
     void MovePlayer()
     {
-        MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, endDestination, playerSpeed * Time.deltaTime);
+        //Move with a set speed
+        if (MainManager.Instance.block_MovingTowards != null)
+        {
+            if (MainManager.Instance.block_MovingTowards.block != null)
+            {
+                if (MainManager.Instance.block_MovingTowards.block.GetComponent<BlockInfo>().movementSpeed <= 0)
+                    MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, endDestination, 5 * Time.deltaTime);
+                else
+                    MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, endDestination, MainManager.Instance.block_MovingTowards.block.GetComponent<BlockInfo>().movementSpeed * Time.deltaTime);
+            }
+            else
+                MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, endDestination, 5 * Time.deltaTime);
+        }
+        else
+            MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, endDestination, 5 * Time.deltaTime);
 
+        //Snap into place when close enough
         if (Vector3.Distance(MainManager.Instance.player.transform.position, endDestination) <= 0.05f)
         {
             MainManager.Instance.player.transform.position = endDestination;
             movementStates = MovementStates.Still;
 
-            updateStepDisplay?.Invoke();
+            Action_takeAStep?.Invoke();
         }
     }
 }

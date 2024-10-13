@@ -28,41 +28,55 @@ public class UIManager : Singleton<UIManager>
 
     private void Start()
     {
-        //PlayerStepCost.updateStepCounter += UpdateStepsUI;
-        Player_Stats.updateStepMax += UpdateStepsUI;
-
         Player_Stats.updateCoins += UpdateCoinsUI;
         Player_Stats.updateSwimsuit += Update_KeyItem_SwimSuitUI;
         Player_Stats.updateFlippers += Update_KeyItem_FlippersUI;
         Player_Stats.updateHikerGear += Update_KeyItem_HikerGearUI;
         Player_Stats.updateLavaSuit += Update_KeyItem_LavaSuitUI;
 
-        Player_Movement.updateStepDisplay += UpdateStepDisplayUI;
-
         UpdateCoinsUI();
         UpdateStepsUI();
     }
     private void Update()
     {
-        if (Player_Movement.Instance.movementStates == MovementStates.Still)
-        {
-            UpdateStepDisplayUI();
-        }
+        UpdateStepDisplayUI();
     }
 
 
     //--------------------
 
-
-    void UpdateCoinsUI()
-    {
-        coinText.text = "Coin: " + Player_Stats.Instance.collectables.coin;
-    }
-    void UpdateStepsUI()
-    {
-        stepsText.text = "Steps left: " + Player_Stats.Instance.stats.steps_Current;
-    }
     void UpdateStepDisplayUI()
+    {
+        if (Player_Movement.Instance.movementStates == MovementStates.Moving)
+        {
+            stepCost_Forward_Text.text = "";
+            stepCost_Backward_Text.text = "";
+            stepCost_Right_Text.text = "";
+            stepCost_Left_Text.text = "";
+
+            return;
+        }
+
+        //If a key is held down, don't show the new Movement Costs
+        if (Input.GetKey(KeyCode.W)
+            || Input.GetKey(KeyCode.S)
+            || Input.GetKey(KeyCode.A)
+            || Input.GetKey(KeyCode.D)) { }
+        else
+        {
+            StepDisplay();
+        }
+
+        //When a key is pressed up, show the new Movement Costs
+        if (Input.GetKeyUp(KeyCode.W)
+            || Input.GetKeyUp(KeyCode.S)
+            || Input.GetKeyUp(KeyCode.A)
+            || Input.GetKeyUp(KeyCode.D))
+        {
+            StepDisplay();
+        }
+    }
+    void StepDisplay()
     {
         if (MainManager.Instance.canMove_Forward)
         {
@@ -70,7 +84,13 @@ public class UIManager : Singleton<UIManager>
                 stepCost_Forward_Text.text = "";
             else
             {
-                stepCost_Forward_Text.text = BlockManager.Instance.GetMovementCost(MainManager.Instance.block_Vertical_InFront.blockElement).ToString();
+                if (MainManager.Instance.block_Vertical_InFront.block != null)
+                    if (MainManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>())
+                        stepCost_Forward_Text.text = MainManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>().movementCost.ToString();
+                    else
+                        stepCost_Forward_Text.text = "";
+                else
+                    stepCost_Forward_Text.text = "";
             }
         }
         else
@@ -84,7 +104,13 @@ public class UIManager : Singleton<UIManager>
                 stepCost_Backward_Text.text = "";
             else
             {
-                stepCost_Backward_Text.text = BlockManager.Instance.GetMovementCost(MainManager.Instance.block_Vertical_InBack.blockElement).ToString();
+                if (MainManager.Instance.block_Vertical_InBack.block != null)
+                    if (MainManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>())
+                        stepCost_Backward_Text.text = MainManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>().movementCost.ToString();
+                    else
+                        stepCost_Backward_Text.text = "";
+                else
+                    stepCost_Backward_Text.text = "";
             }
         }
         else
@@ -98,7 +124,13 @@ public class UIManager : Singleton<UIManager>
                 stepCost_Left_Text.text = "";
             else
             {
-                stepCost_Left_Text.text = BlockManager.Instance.GetMovementCost(MainManager.Instance.block_Vertical_ToTheLeft.blockElement).ToString();
+                if (MainManager.Instance.block_Vertical_ToTheLeft.block != null)
+                    if (MainManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>())
+                        stepCost_Left_Text.text = MainManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>().movementCost.ToString();
+                    else
+                        stepCost_Left_Text.text = "";
+                else
+                    stepCost_Left_Text.text = "";
             }
 
         }
@@ -113,12 +145,34 @@ public class UIManager : Singleton<UIManager>
                 stepCost_Right_Text.text = "";
             else
             {
-                stepCost_Right_Text.text = BlockManager.Instance.GetMovementCost(MainManager.Instance.block_Vertical_ToTheRight.blockElement).ToString();
+                if (MainManager.Instance.block_Vertical_ToTheRight.block != null)
+                    if (MainManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>())
+                        stepCost_Right_Text.text = MainManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>().movementCost.ToString();
+                    else
+                        stepCost_Right_Text.text = "";
+                else
+                    stepCost_Right_Text.text = "";
             }
         }
         else
             stepCost_Right_Text.text = "";
     }
+
+
+    //--------------------
+
+
+    void UpdateCoinsUI()
+    {
+        coinText.text = "Coin: " + Player_Stats.Instance.collectables.coin;
+    }
+    public void UpdateStepsUI()
+    {
+        stepsText.text = "Steps left: " + Player_Stats.Instance.stats.steps_Current;
+    }
+
+
+    //--------------------
 
 
     void Update_KeyItem_SwimSuitUI()
@@ -132,7 +186,6 @@ public class UIManager : Singleton<UIManager>
             image_SwimSuit.gameObject.SetActive(false);
         }
     }
-
     void Update_KeyItem_FlippersUI()
     {
         if (Player_Stats.Instance.upgrades.Flippers)
@@ -155,7 +208,6 @@ public class UIManager : Singleton<UIManager>
             image_HikerGear.gameObject.SetActive(false);
         }
     }
-
     void Update_KeyItem_LavaSuitUI()
     {
         if (Player_Stats.Instance.upgrades.LavaSuit)

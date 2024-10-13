@@ -9828,13 +9828,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6006af9035c8a554bb501e8925bfd5ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockMovementCost_Grass: 1
-  blockMovementCost_Sand: 0
-  blockMovementCost_Stone: 2
-  blockMovementCost_Ice: 1
-  blockMovementCost_Water: 1
-  blockMovementCost_Lava: 2
-  materialDarkenAmount: 0.5
+  materialDarkeningValue: 0.5
 --- !u!1001 &1044765035
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11740,6 +11734,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 2078796990}
   playerBody: {fileID: 1328545485}
+  block_MovingTowards:
+    block: {fileID: 0}
+    blockPosition: {x: 0, y: 0, z: 0}
+    blockElement: 0
+    blockType: 0
   block_StandingOn:
     block: {fileID: 0}
     blockPosition: {x: 0, y: 0, z: 0}

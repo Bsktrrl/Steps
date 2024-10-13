@@ -481,10 +481,6 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             {
                 MainManager.Instance.canMove_Forward = false;
             }
-            //else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair && MainManager.Instance.block_Horizontal_InFront.blockType == BlockType.None && MainManager.Instance.block_Vertical_InFront.blockType != BlockType.None)
-            //{
-            //    MainManager.Instance.canMove_Forward = false;
-            //}
             else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
             {
                 if (MainManager.Instance.block_Vertical_InFront.blockType == BlockType.Stair || MainManager.Instance.block_Vertical_InFront.blockType == BlockType.Cube)
@@ -503,10 +499,6 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             {
                 MainManager.Instance.canMove_Back = false;
             }
-            //else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair && MainManager.Instance.block_Horizontal_InBack.blockType == BlockType.None && MainManager.Instance.block_Vertical_InBack.blockType != BlockType.None)
-            //{
-            //    MainManager.Instance.canMove_Back = false;
-            //}
             else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
             {
                 if (MainManager.Instance.block_Vertical_InBack.blockType == BlockType.Stair || MainManager.Instance.block_Vertical_InBack.blockType == BlockType.Cube)
@@ -525,10 +517,6 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             {
                 MainManager.Instance.canMove_Left = false;
             }
-            //else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair && MainManager.Instance.block_Horizontal_ToTheLeft.blockType == BlockType.None && MainManager.Instance.block_Vertical_ToTheLeft.blockType != BlockType.None)
-            //{
-            //    MainManager.Instance.canMove_Left = false;
-            //}
             else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
             {
                 if (MainManager.Instance.block_Vertical_ToTheLeft.blockType == BlockType.Stair || MainManager.Instance.block_Vertical_ToTheLeft.blockType == BlockType.Cube)
@@ -547,10 +535,6 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             {
                 MainManager.Instance.canMove_Right = false;
             }
-            //else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair && MainManager.Instance.block_Horizontal_ToTheRight.blockType == BlockType.None && MainManager.Instance.block_Vertical_ToTheRight.blockType != BlockType.None)
-            //{
-            //    MainManager.Instance.canMove_Right = false;
-            //}
             else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
             {
                 if (MainManager.Instance.block_Vertical_ToTheRight.blockType == BlockType.Stair || MainManager.Instance.block_Vertical_ToTheRight.blockType == BlockType.Cube)

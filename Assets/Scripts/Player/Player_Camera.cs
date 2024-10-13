@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_Camera : MonoBehaviour
+public class Player_Camera : Singleton<Player_Camera>
 {
     [Header("Camera State")]
     public CameraState cameraState;
@@ -70,8 +70,6 @@ public class Player_Camera : MonoBehaviour
 
             SetBlockDetectorDirection();
             SetActiveCamera();
-
-            //NewPlayerMovement.updateStepDisplay?.Invoke();
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -95,8 +93,6 @@ public class Player_Camera : MonoBehaviour
             
             SetBlockDetectorDirection();
             SetActiveCamera();
-
-            //NewPlayerMovement.updateStepDisplay?.Invoke();
         }
 
         //Zoom

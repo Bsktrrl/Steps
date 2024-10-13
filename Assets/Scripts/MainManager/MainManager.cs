@@ -9,14 +9,19 @@ public class MainManager : Singleton<MainManager>
     public GameObject player;
     public GameObject playerBody;
 
+    [Header("Player Block Moving Towards")]
+    public DetectedBlockInfo block_MovingTowards;
+
     [Header("Player Block Standing On Info")]
     public DetectedBlockInfo block_StandingOn;
 
+    [Header("Player Block Horizontal")]
     public DetectedBlockInfo block_Horizontal_InFront;
     public DetectedBlockInfo block_Horizontal_InBack;
     public DetectedBlockInfo block_Horizontal_ToTheLeft;
     public DetectedBlockInfo block_Horizontal_ToTheRight;
 
+    [Header("Player Block Vertical")]
     public DetectedBlockInfo block_Vertical_InFront;
     public DetectedBlockInfo block_Vertical_InBack;
     public DetectedBlockInfo block_Vertical_ToTheLeft;
