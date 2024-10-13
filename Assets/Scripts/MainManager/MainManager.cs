@@ -22,18 +22,6 @@ public class MainManager : Singleton<MainManager>
     public DetectedBlockInfo block_Vertical_ToTheLeft;
     public DetectedBlockInfo block_Vertical_ToTheRight;
 
-    [Header("Player Layer Masks")]
-    public LayerMask playerLayerMask;
-    public LayerMask player_SideForward_LayerMask;
-    public LayerMask player_SideBack_LayerMask;
-    public LayerMask player_SideLeft_LayerMask;
-    public LayerMask player_SideRight_LayerMask;
-
-    [Header("Cube Layer Mask")]
-    public LayerMask Cube;
-    public LayerMask Stair;
-    public LayerMask Ladder;
-
     [Header("Player Movement Restrictions")]
     public bool canMove_Forward;
     public bool canMove_Back;

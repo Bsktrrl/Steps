@@ -23,9 +23,16 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
     [SerializeField] GameObject detectorSpot_Vertical_Left;
     [SerializeField] GameObject detectorSpot_Vertical_Right;
 
+    [Header("DetectorSpots for Stairs")]
+    [SerializeField] GameObject detectorSpot_Stair_Front;
+    [SerializeField] GameObject detectorSpot_Stair_Back;
+    [SerializeField] GameObject detectorSpot_Stair_Left;
+    [SerializeField] GameObject detectorSpot_Stair_Right;
+
     [Header("Raycast")]
     [SerializeField] float maxDistance_Horizontal = 0.5f;
     [SerializeField] float maxDistance_Vertical = 0.8f;
+    [SerializeField] float maxDistance_Stair = 0.75f;
     RaycastHit hit;
 
 
@@ -35,6 +42,7 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
     private void Update()
     {
         RaycastSetup();
+
         UpdateVerticalRacastLength();
     }
 
@@ -47,7 +55,7 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
         //Check which block the player stands on
         PerformRaycast_Center_Vertical(detectorSpot_Vertical_Center, Vector3.down);
 
-        //Check if something is in the way
+        //Check if something is in the way of movement
         if (gameObject.GetComponent<PlayerCamera>().cameraState == CameraState.Forward)
         {
             //Check if something is in the way
@@ -104,6 +112,9 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
             PerformRaycast_Vertical(detectorSpot_Vertical_Left, Vector3.forward);
             PerformRaycast_Vertical(detectorSpot_Vertical_Right, Vector3.back);
         }
+
+        //Check for Stair Edge, to prevent moving off the Stair
+        UpdateStairRaycast();
     }
 
     void PerformRaycast_Center_Vertical(GameObject rayPointObject, Vector3 direction)
@@ -545,6 +556,83 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
                     MainManager.Instance.canMove_Right = true;
                 else
                     MainManager.Instance.canMove_Right = false;
+            }
+        }
+    }
+    void UpdateStairRaycast()
+    {
+        if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
+        {
+            //Front
+            if (Physics.Raycast(detectorSpot_Stair_Front.transform.position, Vector3.down, out hit, maxDistance_Stair))
+            {
+                if (MainManager.Instance.block_Horizontal_InFront.block == null)
+                {
+                    Debug.DrawRay(detectorSpot_Stair_Front.transform.position, Vector3.down * hit.distance, Color.red);
+                    MainManager.Instance.canMove_Forward = false;
+                }
+                else
+                {
+                    Debug.DrawRay(detectorSpot_Stair_Front.transform.position, Vector3.down * hit.distance, Color.green);
+                }
+            }
+            else
+            {
+                Debug.DrawRay(detectorSpot_Stair_Front.transform.position, Vector3.down * maxDistance_Stair, Color.cyan);
+            }
+
+            //Back
+            if (Physics.Raycast(detectorSpot_Stair_Back.transform.position, Vector3.down, out hit, maxDistance_Stair))
+            {
+                if (MainManager.Instance.block_Horizontal_InBack.block == null)
+                {
+                    Debug.DrawRay(detectorSpot_Stair_Back.transform.position, Vector3.down * hit.distance, Color.red);
+                    MainManager.Instance.canMove_Back = false;
+                }
+                else
+                {
+                    Debug.DrawRay(detectorSpot_Stair_Back.transform.position, Vector3.down * hit.distance, Color.green);
+                }
+            }
+            else
+            {
+                Debug.DrawRay(detectorSpot_Stair_Back.transform.position, Vector3.down * maxDistance_Stair, Color.cyan);
+            }
+
+            //Left
+            if (Physics.Raycast(detectorSpot_Stair_Left.transform.position, Vector3.down, out hit, maxDistance_Stair))
+            {
+                if (MainManager.Instance.block_Horizontal_ToTheLeft.block == null)
+                {
+                    Debug.DrawRay(detectorSpot_Stair_Left.transform.position, Vector3.down * hit.distance, Color.red);
+                    MainManager.Instance.canMove_Left = false;
+                }
+                else
+                {
+                    Debug.DrawRay(detectorSpot_Stair_Left.transform.position, Vector3.down * hit.distance, Color.green);
+                }
+            }
+            else
+            {
+                Debug.DrawRay(detectorSpot_Stair_Left.transform.position, Vector3.down * maxDistance_Stair, Color.cyan);
+            }
+
+            //Right
+            if (Physics.Raycast(detectorSpot_Stair_Right.transform.position, Vector3.down, out hit, maxDistance_Stair))
+            {
+                if (MainManager.Instance.block_Horizontal_ToTheRight.block == null)
+                {
+                    Debug.DrawRay(detectorSpot_Stair_Right.transform.position, Vector3.down * hit.distance, Color.red);
+                    MainManager.Instance.canMove_Right = false;
+                }
+                else
+                {
+                    Debug.DrawRay(detectorSpot_Stair_Right.transform.position, Vector3.down * hit.distance, Color.green);
+                }
+            }
+            else
+            {
+                Debug.DrawRay(detectorSpot_Stair_Right.transform.position, Vector3.down * maxDistance_Stair, Color.cyan);
             }
         }
     }
