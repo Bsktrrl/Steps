@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewPlayerMovement : Singleton<NewPlayerMovement>
+public class Player_Movement : Singleton<Player_Movement>
 {
     public static Action updateStepDisplay;
     public static Action resetBlockColor;
@@ -118,7 +118,7 @@ public class NewPlayerMovement : Singleton<NewPlayerMovement>
     void SetPlayerBodyRotation(int rotationValue)
     {
         //Set new Rotation - Based on the key input
-        switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+        switch (gameObject.GetComponent<Player_Camera>().cameraState)
         {
             case CameraState.Forward:
                 MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 0 + rotationValue, 0));

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStats : Singleton<PlayerStats>
+public class Player_Stats : Singleton<Player_Stats>
 {
     public static event Action updateCoins;
     public static event Action updateStepMax;
@@ -16,7 +16,7 @@ public class PlayerStats : Singleton<PlayerStats>
 
     public Stats stats;
     public Collectables collectables;
-    public KeyItems keyItems;
+    public Upgrades upgrades;
 
 
     //--------------------
@@ -75,22 +75,22 @@ public class PlayerStats : Singleton<PlayerStats>
 
     void AddSwimSuit()
     {
-        keyItems.SwimSuit = true;
+        upgrades.SwimSuit = true;
         updateSwimsuit?.Invoke();
     }
     void AddFlippers()
     {
-        keyItems.Flippers = true;
+        upgrades.Flippers = true;
         updateFlippers?.Invoke();
     }
     void AddHikerGear()
     {
-        keyItems.HikerGear = true;
+        upgrades.HikerGear = true;
         updateHikerGear?.Invoke();
     }
     void AddLavaSuit()
     {
-        keyItems.LavaSuit = true;
+        upgrades.LavaSuit = true;
         updateLavaSuit?.Invoke();
     }
 }
@@ -113,7 +113,7 @@ public class Collectables
 }
 
 [Serializable]
-public class KeyItems
+public class Upgrades
 {
     public bool SwimSuit;
     public bool Flippers;

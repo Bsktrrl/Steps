@@ -4,10 +4,13 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
+public class Player_BlockDetector : Singleton<Player_BlockDetector>
 {
     [Header("Player BlockDetector Parent")]
     public GameObject blockDetector_Parent;
+
+    [Header("DetectorSpots Center")]
+    [SerializeField] GameObject detectorSpot_Vertical_Center;
 
     [Header("DetectorSpots Horizontal")]
     [SerializeField] GameObject detectorSpot_Horizontal_Front;
@@ -16,8 +19,6 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
     [SerializeField] GameObject detectorSpot_Horizontal_Right;
 
     [Header("DetectorSpots Vertical")]
-    [SerializeField] GameObject detectorSpot_Vertical_Center;
-
     [SerializeField] GameObject detectorSpot_Vertical_Front;
     [SerializeField] GameObject detectorSpot_Vertical_Back;
     [SerializeField] GameObject detectorSpot_Vertical_Left;
@@ -56,7 +57,7 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
         PerformRaycast_Center_Vertical(detectorSpot_Vertical_Center, Vector3.down);
 
         //Check if something is in the way of movement
-        if (gameObject.GetComponent<PlayerCamera>().cameraState == CameraState.Forward)
+        if (gameObject.GetComponent<Player_Camera>().cameraState == CameraState.Forward)
         {
             //Check if something is in the way
             PerformRaycast_Horizontal(detectorSpot_Horizontal_Front, Vector3.forward);
@@ -70,7 +71,7 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
             PerformRaycast_Vertical(detectorSpot_Vertical_Left, Vector3.left);
             PerformRaycast_Vertical(detectorSpot_Vertical_Right, Vector3.right);
         }
-        else if (gameObject.GetComponent<PlayerCamera>().cameraState == CameraState.Backward)
+        else if (gameObject.GetComponent<Player_Camera>().cameraState == CameraState.Backward)
         {
             //Check if something is in the way
             PerformRaycast_Horizontal(detectorSpot_Horizontal_Front, Vector3.back);
@@ -84,7 +85,7 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
             PerformRaycast_Vertical(detectorSpot_Vertical_Left, Vector3.right);
             PerformRaycast_Vertical(detectorSpot_Vertical_Right, Vector3.left);
         }
-        else if (gameObject.GetComponent<PlayerCamera>().cameraState == CameraState.Left)
+        else if (gameObject.GetComponent<Player_Camera>().cameraState == CameraState.Left)
         {
             //Check if something is in the way
             PerformRaycast_Horizontal(detectorSpot_Horizontal_Front, Vector3.left);
@@ -98,7 +99,7 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
             PerformRaycast_Vertical(detectorSpot_Vertical_Left, Vector3.back);
             PerformRaycast_Vertical(detectorSpot_Vertical_Right, Vector3.forward);
         }
-        else if (gameObject.GetComponent<PlayerCamera>().cameraState == CameraState.Right)
+        else if (gameObject.GetComponent<Player_Camera>().cameraState == CameraState.Right)
         {
             //Check if something is in the way
             PerformRaycast_Horizontal(detectorSpot_Horizontal_Front, Vector3.right);
@@ -223,7 +224,7 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
     {
         if (direction == Vector3.forward)
         {
-            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            switch (gameObject.GetComponent<Player_Camera>().cameraState)
             {
                 case CameraState.Forward:
                     MainManager.Instance.canMove_Forward = false;
@@ -244,7 +245,7 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
         }
         if (direction == Vector3.back)
         {
-            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            switch (gameObject.GetComponent<Player_Camera>().cameraState)
             {
                 case CameraState.Forward:
                     MainManager.Instance.canMove_Back = false;
@@ -265,7 +266,7 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
         }
         if (direction == Vector3.left)
         {
-            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            switch (gameObject.GetComponent<Player_Camera>().cameraState)
             {
                 case CameraState.Forward:
                     MainManager.Instance.canMove_Left = false;
@@ -286,7 +287,7 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
         }
         if (direction == Vector3.right)
         {
-            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            switch (gameObject.GetComponent<Player_Camera>().cameraState)
             {
                 case CameraState.Forward:
                     MainManager.Instance.canMove_Right = false;
@@ -310,7 +311,7 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
     {
         if (direction == Vector3.forward)
         {
-            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            switch (gameObject.GetComponent<Player_Camera>().cameraState)
             {
                 case CameraState.Forward:
                     MainManager.Instance.canMove_Forward = true;
@@ -331,7 +332,7 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
         }
         if (direction == Vector3.back)
         {
-            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            switch (gameObject.GetComponent<Player_Camera>().cameraState)
             {
                 case CameraState.Forward:
                     MainManager.Instance.canMove_Back = true;
@@ -352,7 +353,7 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
         }
         if (direction == Vector3.left)
         {
-            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            switch (gameObject.GetComponent<Player_Camera>().cameraState)
             {
                 case CameraState.Forward:
                     MainManager.Instance.canMove_Left = true;
@@ -373,7 +374,7 @@ public class NewPlayerBlockDetector : Singleton<NewPlayerBlockDetector>
         }
         if (direction == Vector3.right)
         {
-            switch (gameObject.GetComponent<PlayerCamera>().cameraState)
+            switch (gameObject.GetComponent<Player_Camera>().cameraState)
             {
                 case CameraState.Forward:
                     MainManager.Instance.canMove_Right = true;

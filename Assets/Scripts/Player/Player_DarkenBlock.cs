@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerDarkenBlock : MonoBehaviour
+public class Player_DarkenBlock : MonoBehaviour
 {
 
     private void Start()
@@ -21,7 +21,7 @@ public class PlayerDarkenBlock : MonoBehaviour
 
     void UpdateDarkenBlockWhenButtonIsPressed()
     {
-        if (NewPlayerMovement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
 
         //If a key is held down, don't show the new darkening blocks
         if (Input.GetKey(KeyCode.W)
@@ -45,7 +45,7 @@ public class PlayerDarkenBlock : MonoBehaviour
 
     void UpdateDarkenBlocks()
     {
-        if (NewPlayerMovement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
 
         //Darken block in the front of player
         if (MainManager.Instance.block_Horizontal_InFront.block == null && MainManager.Instance.block_Vertical_InFront.block == null) { }

@@ -28,23 +28,23 @@ public class UIManager : Singleton<UIManager>
 
     private void Start()
     {
-        PlayerStepCost.updateStepCounter += UpdateStepsUI;
-        PlayerStats.updateStepMax += UpdateStepsUI;
+        //PlayerStepCost.updateStepCounter += UpdateStepsUI;
+        Player_Stats.updateStepMax += UpdateStepsUI;
 
-        PlayerStats.updateCoins += UpdateCoinsUI;
-        PlayerStats.updateSwimsuit += Update_KeyItem_SwimSuitUI;
-        PlayerStats.updateFlippers += Update_KeyItem_FlippersUI;
-        PlayerStats.updateHikerGear += Update_KeyItem_HikerGearUI;
-        PlayerStats.updateLavaSuit += Update_KeyItem_LavaSuitUI;
+        Player_Stats.updateCoins += UpdateCoinsUI;
+        Player_Stats.updateSwimsuit += Update_KeyItem_SwimSuitUI;
+        Player_Stats.updateFlippers += Update_KeyItem_FlippersUI;
+        Player_Stats.updateHikerGear += Update_KeyItem_HikerGearUI;
+        Player_Stats.updateLavaSuit += Update_KeyItem_LavaSuitUI;
 
-        NewPlayerMovement.updateStepDisplay += UpdateStepDisplayUI;
+        Player_Movement.updateStepDisplay += UpdateStepDisplayUI;
 
         UpdateCoinsUI();
         UpdateStepsUI();
     }
     private void Update()
     {
-        if (NewPlayerMovement.Instance.movementStates == MovementStates.Still)
+        if (Player_Movement.Instance.movementStates == MovementStates.Still)
         {
             UpdateStepDisplayUI();
         }
@@ -56,11 +56,11 @@ public class UIManager : Singleton<UIManager>
 
     void UpdateCoinsUI()
     {
-        coinText.text = "Coin: " + PlayerStats.Instance.collectables.coin;
+        coinText.text = "Coin: " + Player_Stats.Instance.collectables.coin;
     }
     void UpdateStepsUI()
     {
-        stepsText.text = "Steps left: " + PlayerStats.Instance.stats.steps_Current;
+        stepsText.text = "Steps left: " + Player_Stats.Instance.stats.steps_Current;
     }
     void UpdateStepDisplayUI()
     {
@@ -123,7 +123,7 @@ public class UIManager : Singleton<UIManager>
 
     void Update_KeyItem_SwimSuitUI()
     {
-        if (PlayerStats.Instance.keyItems.SwimSuit)
+        if (Player_Stats.Instance.upgrades.SwimSuit)
         {
             image_SwimSuit.gameObject.SetActive(true);
         }
@@ -135,7 +135,7 @@ public class UIManager : Singleton<UIManager>
 
     void Update_KeyItem_FlippersUI()
     {
-        if (PlayerStats.Instance.keyItems.Flippers)
+        if (Player_Stats.Instance.upgrades.Flippers)
         {
             image_Flippers.gameObject.SetActive(true);
         }
@@ -146,7 +146,7 @@ public class UIManager : Singleton<UIManager>
     }
     void Update_KeyItem_HikerGearUI()
     {
-        if (PlayerStats.Instance.keyItems.HikerGear)
+        if (Player_Stats.Instance.upgrades.HikerGear)
         {
             image_HikerGear.gameObject.SetActive(true);
         }
@@ -158,7 +158,7 @@ public class UIManager : Singleton<UIManager>
 
     void Update_KeyItem_LavaSuitUI()
     {
-        if (PlayerStats.Instance.keyItems.LavaSuit)
+        if (Player_Stats.Instance.upgrades.LavaSuit)
         {
             image_LavaSuit.gameObject.SetActive(true);
         }

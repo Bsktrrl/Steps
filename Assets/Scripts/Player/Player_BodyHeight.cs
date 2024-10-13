@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBodyHeight : MonoBehaviour
+public class Player_BodyHeight : MonoBehaviour
 {
     [Header("Local PlayerBody height level")]
     [SerializeField] float normalHeight = 0;

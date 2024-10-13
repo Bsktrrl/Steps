@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCamera : MonoBehaviour
+public class Player_Camera : MonoBehaviour
 {
     [Header("Camera State")]
     public CameraState cameraState;
@@ -233,16 +233,16 @@ public class PlayerCamera : MonoBehaviour
         switch (cameraState)
         {
             case CameraState.Forward:
-                gameObject.GetComponent<NewPlayerBlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(gameObject.GetComponent<NewPlayerBlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 0, 0));
+                gameObject.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(gameObject.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 0, 0));
                 break;
             case CameraState.Backward:
-                gameObject.GetComponent<NewPlayerBlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(gameObject.GetComponent<NewPlayerBlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 180, 0));
+                gameObject.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(gameObject.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 180, 0));
                 break;
             case CameraState.Left:
-                gameObject.GetComponent<NewPlayerBlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(gameObject.GetComponent<NewPlayerBlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, -90, 0));
+                gameObject.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(gameObject.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, -90, 0));
                 break;
             case CameraState.Right:
-                gameObject.GetComponent<NewPlayerBlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(gameObject.GetComponent<NewPlayerBlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 90, 0));
+                gameObject.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(gameObject.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 90, 0));
                 break;
 
             default:

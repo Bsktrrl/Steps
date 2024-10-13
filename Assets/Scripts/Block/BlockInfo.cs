@@ -18,7 +18,7 @@ public class BlockInfo : MonoBehaviour
 
     private void Start()
     {
-        NewPlayerMovement.resetBlockColor += ResetColor;
+        Player_Movement.resetBlockColor += ResetColor;
 
         //Set objectRenderers
         for (int i = 0; i < transform.childCount; i++)
