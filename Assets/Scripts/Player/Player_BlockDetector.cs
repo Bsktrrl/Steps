@@ -567,10 +567,13 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             //Front
             if (Physics.Raycast(detectorSpot_Stair_Front.transform.position, Vector3.down, out hit, maxDistance_Stair))
             {
-                if (MainManager.Instance.block_Horizontal_InFront.block == null)
+                if (MainManager.Instance.block_Horizontal_InFront.block == null && MainManager.Instance.block_Vertical_InFront.block != null)
                 {
-                    Debug.DrawRay(detectorSpot_Stair_Front.transform.position, Vector3.down * hit.distance, Color.red);
-                    MainManager.Instance.canMove_Forward = false;
+                    if (MainManager.Instance.block_Vertical_InFront.blockType != BlockType.Stair)
+                    {
+                        Debug.DrawRay(detectorSpot_Stair_Front.transform.position, Vector3.down * hit.distance, Color.red);
+                        MainManager.Instance.canMove_Forward = false;
+                    }
                 }
                 else
                 {
@@ -585,10 +588,13 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             //Back
             if (Physics.Raycast(detectorSpot_Stair_Back.transform.position, Vector3.down, out hit, maxDistance_Stair))
             {
-                if (MainManager.Instance.block_Horizontal_InBack.block == null)
+                if (MainManager.Instance.block_Horizontal_InBack.block == null && MainManager.Instance.block_Vertical_InBack.block != null)
                 {
-                    Debug.DrawRay(detectorSpot_Stair_Back.transform.position, Vector3.down * hit.distance, Color.red);
-                    MainManager.Instance.canMove_Back = false;
+                    if (MainManager.Instance.block_Vertical_InBack.blockType != BlockType.Stair)
+                    {
+                        Debug.DrawRay(detectorSpot_Stair_Back.transform.position, Vector3.down * hit.distance, Color.red);
+                        MainManager.Instance.canMove_Back = false;
+                    }
                 }
                 else
                 {
@@ -603,10 +609,13 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             //Left
             if (Physics.Raycast(detectorSpot_Stair_Left.transform.position, Vector3.down, out hit, maxDistance_Stair))
             {
-                if (MainManager.Instance.block_Horizontal_ToTheLeft.block == null)
+                if (MainManager.Instance.block_Horizontal_ToTheLeft.block == null && MainManager.Instance.block_Vertical_ToTheLeft.block != null)
                 {
-                    Debug.DrawRay(detectorSpot_Stair_Left.transform.position, Vector3.down * hit.distance, Color.red);
-                    MainManager.Instance.canMove_Left = false;
+                    if (MainManager.Instance.block_Vertical_ToTheLeft.blockType != BlockType.Stair)
+                    {
+                        Debug.DrawRay(detectorSpot_Stair_Left.transform.position, Vector3.down * hit.distance, Color.red);
+                        MainManager.Instance.canMove_Left = false;
+                    }
                 }
                 else
                 {
@@ -621,10 +630,13 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             //Right
             if (Physics.Raycast(detectorSpot_Stair_Right.transform.position, Vector3.down, out hit, maxDistance_Stair))
             {
-                if (MainManager.Instance.block_Horizontal_ToTheRight.block == null)
+                if (MainManager.Instance.block_Horizontal_ToTheRight.block == null && MainManager.Instance.block_Vertical_ToTheRight.block != null)
                 {
-                    Debug.DrawRay(detectorSpot_Stair_Right.transform.position, Vector3.down * hit.distance, Color.red);
-                    MainManager.Instance.canMove_Right = false;
+                    if (MainManager.Instance.block_Vertical_ToTheRight.blockType != BlockType.Stair)
+                    {
+                        Debug.DrawRay(detectorSpot_Stair_Right.transform.position, Vector3.down * hit.distance, Color.red);
+                        MainManager.Instance.canMove_Right = false;
+                    }
                 }
                 else
                 {
