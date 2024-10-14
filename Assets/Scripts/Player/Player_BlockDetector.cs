@@ -227,19 +227,15 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             switch (Cameras.Instance.cameraState)
             {
                 case CameraState.Forward:
-                    print("Block - Forward | Camera Forward");
                     MainManager.Instance.canMove_Forward = false;
                     break;
                 case CameraState.Backward:
-                    print("Block - Forward | Camera Backward");
                     MainManager.Instance.canMove_Back = false;
                     break;
                 case CameraState.Left:
-                    print("Block - Forward | Camera Left");
                     MainManager.Instance.canMove_Left = false;
                     break;
                 case CameraState.Right:
-                    print("Block - Forward | Camera Right");
                     MainManager.Instance.canMove_Right = false;
                     break;
 
@@ -252,19 +248,15 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             switch (Cameras.Instance.cameraState)
             {
                 case CameraState.Forward:
-                    print("Block - Back | Camera Forward");
                     MainManager.Instance.canMove_Back = false;
                     break;
                 case CameraState.Backward:
-                    print("Block - Back | Camera Backward");
                     MainManager.Instance.canMove_Forward = false;
                     break;
                 case CameraState.Left:
-                    print("Block - Back | Camera Left");
                     MainManager.Instance.canMove_Right = false;
                     break;
                 case CameraState.Right:
-                    print("Block - Back | Camera Right");
                     MainManager.Instance.canMove_Left = false;
                     break;
 
@@ -277,19 +269,15 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             switch (Cameras.Instance.cameraState)
             {
                 case CameraState.Forward:
-                    print("Block - Left | Camera Forward");
                     MainManager.Instance.canMove_Left = false;
                     break;
                 case CameraState.Backward:
-                    print("Block - Left | Camera Backward");
                     MainManager.Instance.canMove_Right = false;
                     break;
                 case CameraState.Left:
-                    print("Block - Left | Camera Left");
                     MainManager.Instance.canMove_Back = false;
                     break;
                 case CameraState.Right:
-                    print("Block - Left | Camera Right");
                     MainManager.Instance.canMove_Forward = false;
                     break;
 
@@ -302,19 +290,15 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             switch (Cameras.Instance.cameraState)
             {
                 case CameraState.Forward:
-                    print("Block - Right | Camera Forward");
                     MainManager.Instance.canMove_Right = false;
                     break;
                 case CameraState.Backward:
-                    print("Block - Right | Camera Back");
                     MainManager.Instance.canMove_Left = false;
                     break;
                 case CameraState.Left:
-                    print("Block - Right | Camera Left");
                     MainManager.Instance.canMove_Forward = false;
                     break;
                 case CameraState.Right:
-                    print("Block - Right | Camera Right");
                     MainManager.Instance.canMove_Back = false;
                     break;
 

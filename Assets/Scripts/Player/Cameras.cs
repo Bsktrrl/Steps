@@ -30,7 +30,7 @@ public class Cameras : Singleton<Cameras>
 
     [Header("Rotation Stats")]
     public float rotationSpeed = 12;
-    public float transitionTimer = 0.75f;
+    public float transitionTimer = 0.25f;
     public float timerCounter = 0;
     public float rotationDistanceMin = 0.25f;
     public bool isRotating = false;
@@ -55,7 +55,7 @@ public class Cameras : Singleton<Cameras>
 
     void Start()
     {
-        //SetCameraParameters();
+        SetCameraParameters();
 
         cameraState = CameraState.Forward;
         directionFacing = Vector3.forward;
@@ -66,23 +66,23 @@ public class Cameras : Singleton<Cameras>
         camera_Left.m_Lens.FieldOfView = cameraZoom_mid;
         camera_Right.m_Lens.FieldOfView = cameraZoom_mid;
 
-        SetActiveCamera_OLD();
-
         //Set Active/Unactive cameras
-        //camera_Forward.gameObject.transform.parent.gameObject.SetActive(true);
-        //camera_Back.gameObject.transform.parent.gameObject.SetActive(false);
-        //camera_Left.gameObject.transform.parent.gameObject.SetActive(false);
-        //camera_Right.gameObject.transform.parent.gameObject.SetActive(false);
+        camera_Forward.gameObject.transform.parent.gameObject.SetActive(true);
+        camera_Back.gameObject.transform.parent.gameObject.SetActive(false);
+        camera_Left.gameObject.transform.parent.gameObject.SetActive(false);
+        camera_Right.gameObject.transform.parent.gameObject.SetActive(false);
+
+        //SetActiveCamera_OLD();
     }
 
     private void Update()
     {
-        KeyInputs_OLD();
+        //KeyInputs_OLD();
 
-        //Rotate_Setup();
-        //RotateCamera();
+        Rotate_Setup();
+        RotateCamera();
 
-        //CameraZoom_Setup();
+        CameraZoom_Setup();
     }
 
 
@@ -96,20 +96,28 @@ public class Cameras : Singleton<Cameras>
         cameraStats_Forward.startRot = new Vector3(50, 0, 0);
         cameraStats_Forward.startOffset = camera_Forward.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
 
+        camera_Forward.transform.localRotation = Quaternion.Euler(cameraStats_Forward.startRot);
+
         //Back
         cameraStats_Back.startPos = camera_Back.gameObject.transform.position;
         cameraStats_Back.startRot = new Vector3(50, 180, 0);
         cameraStats_Back.startOffset = camera_Back.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
+
+        camera_Back.transform.localRotation = Quaternion.Euler(cameraStats_Back.startRot);
 
         //Left
         cameraStats_Left.startPos = camera_Left.gameObject.transform.position;
         cameraStats_Left.startRot = new Vector3(50, 90, 0);
         cameraStats_Left.startOffset = camera_Left.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
 
+        camera_Left.transform.localRotation = Quaternion.Euler(cameraStats_Left.startRot);
+
         //Right
         cameraStats_Right.startPos = camera_Right.gameObject.transform.position;
         cameraStats_Right.startRot = new Vector3(50, -90, 0);
         cameraStats_Right.startOffset = camera_Right.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
+
+        camera_Right.transform.localRotation = Quaternion.Euler(cameraStats_Right.startRot);
     }
 
     void Rotate_Setup()
@@ -117,79 +125,66 @@ public class Cameras : Singleton<Cameras>
         //Don't be able to switch camera angle before the rotation has been done
         if (isRotating) { return; }
 
-        //Rotate, based on the CameraState
-        switch (cameraState)
+        //Rotate Camera
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            case CameraState.Forward:
-                if (Input.GetKeyDown(KeyCode.LeftArrow))
-                {
+            switch (cameraState)
+            {
+                case CameraState.Forward:
                     cameraState_BeforeSwitching = CameraState.Forward;
                     cameraState = CameraState.Left;
-                    timerCounter = 0;
-                    isRotating = true;
-                }
-                else if (Input.GetKeyDown(KeyCode.RightArrow))
-                {
-                    cameraState_BeforeSwitching = CameraState.Forward;
-                    cameraState = CameraState.Right;
-                    timerCounter = 0;
-                    isRotating = true;
-                }
-                break;
-            case CameraState.Backward:
-                if (Input.GetKeyDown(KeyCode.LeftArrow))
-                {
+                    break;
+                case CameraState.Backward:
                     cameraState_BeforeSwitching = CameraState.Backward;
                     cameraState = CameraState.Right;
-                    timerCounter = 0;
-                    isRotating = true;
-                }
-                else if (Input.GetKeyDown(KeyCode.RightArrow))
-                {
-                    cameraState_BeforeSwitching = CameraState.Backward;
-                    cameraState = CameraState.Left;
-                    timerCounter = 0;
-                    isRotating = true;
-                }
-                break;
-            case CameraState.Left:
-                if (Input.GetKeyDown(KeyCode.LeftArrow))
-                {
+                    break;
+                case CameraState.Left:
                     cameraState_BeforeSwitching = CameraState.Left;
                     cameraState = CameraState.Backward;
-                    timerCounter = 0;
-                    isRotating = true;
-                }
-                else if (Input.GetKeyDown(KeyCode.RightArrow))
-                {
-                    cameraState_BeforeSwitching = CameraState.Left;
-                    cameraState = CameraState.Forward;
-                    timerCounter = 0;
-                    isRotating = true;
-                }
-                break;
-            case CameraState.Right:
-                if (Input.GetKeyDown(KeyCode.LeftArrow))
-                {
+                    break;
+                case CameraState.Right:
                     cameraState_BeforeSwitching = CameraState.Right;
                     cameraState = CameraState.Forward;
-                    timerCounter = 0;
-                    isRotating = true;
-                }
-                else if (Input.GetKeyDown(KeyCode.RightArrow))
-                {
-                    cameraState_BeforeSwitching = CameraState.Right;
-                    cameraState = CameraState.Backward;
-                    timerCounter = 0;
-                    isRotating = true;
-                }
-                break;
+                    break;
+                default:
+                    break;
+            }
 
-            default:
-                break;
+            timerCounter = 0;
+            isRotating = true;
+
+            SetBlockDetectorDirection();
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            switch (cameraState)
+            {
+                case CameraState.Forward:
+                    cameraState_BeforeSwitching = CameraState.Forward;
+                    cameraState = CameraState.Right;
+                    break;
+                case CameraState.Backward:
+                    cameraState_BeforeSwitching = CameraState.Backward;
+                    cameraState = CameraState.Left;
+                    break;
+                case CameraState.Left:
+                    cameraState_BeforeSwitching = CameraState.Left;
+                    cameraState = CameraState.Forward;
+                    break;
+                case CameraState.Right:
+                    cameraState_BeforeSwitching = CameraState.Right;
+                    cameraState = CameraState.Backward;
+                    break;
+                default:
+                    break;
+            }
+
+            timerCounter = 0;
+            isRotating = true;
+
+            SetBlockDetectorDirection();
         }
     }
-
     void RotateCamera()
     {
         //Only rotate during rotation
@@ -203,16 +198,12 @@ public class Cameras : Singleton<Cameras>
             case CameraState.Forward:
                 switch (cameraState)
                 {
-                    case CameraState.Forward:
-                        RotateDirection(camera_Forward, cameraStats_Forward, camera_Forward, cameraStats_Forward);
-                        break;
-                    case CameraState.Backward:
-                        RotateDirection(camera_Forward, cameraStats_Forward, camera_Back, cameraStats_Back);
-                        break;
                     case CameraState.Left:
+                        //Forward -> Left: 
                         RotateDirection(camera_Forward, cameraStats_Forward, camera_Left, cameraStats_Left);
                         break;
                     case CameraState.Right:
+                        //Forward -> Right
                         RotateDirection(camera_Forward, cameraStats_Forward, camera_Right, cameraStats_Right);
                         break;
 
@@ -223,164 +214,50 @@ public class Cameras : Singleton<Cameras>
             case CameraState.Backward:
                 switch (cameraState)
                 {
-                    case CameraState.Forward:
-                        RotateDirection(camera_Back, cameraStats_Back, camera_Forward, cameraStats_Forward);
-                        break;
-                    case CameraState.Backward:
-                        RotateDirection(camera_Back, cameraStats_Back, camera_Back, cameraStats_Back);
-                        break;
                     case CameraState.Left:
+                        //Back -> Left
                         RotateDirection(camera_Back, cameraStats_Back, camera_Left, cameraStats_Left);
                         break;
                     case CameraState.Right:
+                        //Back -> Right
                         RotateDirection(camera_Back, cameraStats_Back, camera_Right, cameraStats_Right);
                         break;
 
                     default:
                         break;
                 }
-                //if (cameraState == CameraState.Left)
-                //{
-                //    camera_Back.transform.SetPositionAndRotation(Vector3.Lerp(camera_Back.transform.position, cameraStats_Left.startPos, rotationSpeed * Time.deltaTime), Quaternion.Lerp(camera_Back.transform.localRotation, Quaternion.Euler(cameraStats_Left.startRot), rotationSpeed * Time.deltaTime));
-                //    camera_Back.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = Vector3.Lerp(camera_Back.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset, cameraStats_Left.startOffset, rotationSpeed * Time.deltaTime);
-
-                //    //If close enough to the second camera, reset current Camera to startPos
-                //    if (Vector3.Distance(camera_Back.transform.position, cameraStats_Left.startPos) <= rotationDistanceMin)
-                //    {
-                //        camera_Back.transform.SetPositionAndRotation(cameraStats_Back.startPos, Quaternion.Euler(cameraStats_Back.startRot));
-                //        camera_Back.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = cameraStats_Back.startOffset;
-
-                //        camera_Right.transform.parent.gameObject.SetActive(true);
-                //        camera_Back.transform.parent.gameObject.SetActive(false);
-
-                //        isRotating = false;
-                //    }
-                //}
-                //else if (cameraState == CameraState.Right)
-                //{
-                //    camera_Back.transform.SetPositionAndRotation(Vector3.Lerp(camera_Back.transform.position, cameraStats_Right.startPos, rotationSpeed * Time.deltaTime), Quaternion.Lerp(camera_Back.transform.localRotation, Quaternion.Euler(cameraStats_Right.startRot), rotationSpeed * Time.deltaTime));
-                //    camera_Back.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = Vector3.Lerp(camera_Back.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset, cameraStats_Right.startOffset, rotationSpeed * Time.deltaTime);
-
-                //    //If close enough to the second camera, reset current Camera to startPos
-                //    if (Vector3.Distance(camera_Back.transform.position, cameraStats_Right.startPos) <= rotationDistanceMin)
-                //    {
-                //        camera_Back.transform.SetPositionAndRotation(cameraStats_Back.startPos, Quaternion.Euler(cameraStats_Back.startRot));
-                //        camera_Back.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = cameraStats_Back.startOffset;
-
-                //        camera_Left.transform.parent.gameObject.SetActive(true);
-                //        camera_Back.transform.parent.gameObject.SetActive(false);
-
-                //        isRotating = false;
-                //    }
-                //}
                 break;
             case CameraState.Left:
                 switch (cameraState)
                 {
                     case CameraState.Forward:
+                        //Left -> Forward
                         RotateDirection(camera_Left, cameraStats_Left, camera_Forward, cameraStats_Forward);
                         break;
                     case CameraState.Backward:
+                        //Left -> Back
                         RotateDirection(camera_Left, cameraStats_Left, camera_Back, cameraStats_Back);
-                        break;
-                    case CameraState.Left:
-                        RotateDirection(camera_Left, cameraStats_Left, camera_Left, cameraStats_Left);
-                        break;
-                    case CameraState.Right:
-                        RotateDirection(camera_Left, cameraStats_Left, camera_Right, cameraStats_Right);
                         break;
 
                     default:
                         break;
                 }
-                //if (cameraState == CameraState.Forward)
-                //{
-                //    camera_Left.transform.SetPositionAndRotation(Vector3.Lerp(camera_Left.transform.position, cameraStats_Forward.startPos, rotationSpeed * Time.deltaTime), Quaternion.Lerp(camera_Left.transform.localRotation, Quaternion.Euler(cameraStats_Forward.startRot), rotationSpeed * Time.deltaTime));
-                //    camera_Left.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = Vector3.Lerp(camera_Left.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset, cameraStats_Forward.startOffset, rotationSpeed * Time.deltaTime);
-
-                //    //If close enough to the second camera, reset current Camera to startPos
-                //    if (Vector3.Distance(camera_Left.transform.position, cameraStats_Forward.startPos) <= rotationDistanceMin)
-                //    {
-                //        camera_Left.transform.SetPositionAndRotation(cameraStats_Left.startPos, Quaternion.Euler(cameraStats_Left.startRot));
-                //        camera_Left.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = cameraStats_Left.startOffset;
-
-                //        camera_Forward.transform.parent.gameObject.SetActive(true);
-                //        camera_Left.transform.parent.gameObject.SetActive(false);
-
-                //        isRotating = false;
-                //    }
-                //}
-                //else if (cameraState == CameraState.Backward)
-                //{
-                //    camera_Left.transform.SetPositionAndRotation(Vector3.Lerp(camera_Left.transform.position, cameraStats_Back.startPos, rotationSpeed * Time.deltaTime), Quaternion.Lerp(camera_Left.transform.localRotation, Quaternion.Euler(cameraStats_Back.startRot), rotationSpeed * Time.deltaTime));
-                //    camera_Left.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = Vector3.Lerp(camera_Left.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset, cameraStats_Back.startOffset, rotationSpeed * Time.deltaTime);
-
-                //    //If close enough to the second camera, reset current Camera to startPos
-                //    if (Vector3.Distance(camera_Left.transform.position, cameraStats_Back.startPos) <= rotationDistanceMin)
-                //    {
-                //        camera_Left.transform.SetPositionAndRotation(cameraStats_Left.startPos, Quaternion.Euler(cameraStats_Left.startRot));
-                //        camera_Left.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = cameraStats_Left.startOffset;
-
-                //        camera_Back.transform.parent.gameObject.SetActive(true);
-                //        camera_Left.transform.parent.gameObject.SetActive(false);
-
-                //        isRotating = false;
-                //    }
-                //}
                 break;
             case CameraState.Right:
                 switch (cameraState)
                 {
                     case CameraState.Forward:
+                        //Right -> Forward
                         RotateDirection(camera_Right, cameraStats_Right, camera_Forward, cameraStats_Forward);
                         break;
                     case CameraState.Backward:
+                        //Right -> Back
                         RotateDirection(camera_Right, cameraStats_Right, camera_Back, cameraStats_Back);
-                        break;
-                    case CameraState.Left:
-                        RotateDirection(camera_Right, cameraStats_Right, camera_Left, cameraStats_Left);
-                        break;
-                    case CameraState.Right:
-                        RotateDirection(camera_Right, cameraStats_Right, camera_Right, cameraStats_Right);
                         break;
 
                     default:
                         break;
                 }
-                //if (cameraState == CameraState.Forward)
-                //{
-                //    camera_Right.transform.SetPositionAndRotation(Vector3.Lerp(camera_Right.transform.position, cameraStats_Forward.startPos, rotationSpeed * Time.deltaTime), Quaternion.Lerp(camera_Right.transform.localRotation, Quaternion.Euler(cameraStats_Forward.startRot), rotationSpeed * Time.deltaTime));
-                //    camera_Right.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = Vector3.Lerp(camera_Right.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset, cameraStats_Forward.startOffset, rotationSpeed * Time.deltaTime);
-
-                //    //If close enough to the second camera, reset current Camera to startPos
-                //    if (Vector3.Distance(camera_Right.transform.position, cameraStats_Forward.startPos) <= rotationDistanceMin)
-                //    {
-                //        camera_Right.transform.SetPositionAndRotation(cameraStats_Right.startPos, Quaternion.Euler(cameraStats_Right.startRot));
-                //        camera_Right.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = cameraStats_Right.startOffset;
-
-                //        camera_Forward.transform.parent.gameObject.SetActive(true);
-                //        camera_Right.transform.parent.gameObject.SetActive(false);
-
-                //        isRotating = false;
-                //    }
-                //}
-                //else if (cameraState == CameraState.Backward)
-                //{
-                //    camera_Right.transform.SetPositionAndRotation(Vector3.Lerp(camera_Right.transform.position, cameraStats_Back.startPos, rotationSpeed * Time.deltaTime), Quaternion.Lerp(camera_Right.transform.localRotation, Quaternion.Euler(cameraStats_Back.startRot), rotationSpeed * Time.deltaTime));
-                //    camera_Right.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = Vector3.Lerp(camera_Right.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset, cameraStats_Back.startOffset, rotationSpeed * Time.deltaTime);
-
-                //    //If close enough to the second camera, reset current Camera to startPos
-                //    if (Vector3.Distance(camera_Right.transform.position, cameraStats_Back.startPos) <= rotationDistanceMin)
-                //    {
-                //        camera_Right.transform.SetPositionAndRotation(cameraStats_Right.startPos, Quaternion.Euler(cameraStats_Right.startRot));
-                //        camera_Right.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = cameraStats_Right.startOffset;
-
-                //        camera_Back.transform.parent.gameObject.SetActive(true);
-                //        camera_Right.transform.parent.gameObject.SetActive(false);
-
-                //        isRotating = false;
-                //    }
-                //}
                 break;
 
             default:
