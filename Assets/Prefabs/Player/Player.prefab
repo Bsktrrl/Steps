@@ -110,7 +110,6 @@ GameObject:
   - component: {fileID: -904211747032048527}
   - component: {fileID: 4495977200974849547}
   - component: {fileID: 9003401136763078288}
-  - component: {fileID: 6668104162780318964}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -195,7 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b442bb4ae67cc34998e8774c3bcfd65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPos: {x: 0, y: 0, z: 0}
+  savePos: {x: 0, y: 0, z: 0}
   stats:
     movementSpeed: 5
     steps_Current: 0
@@ -206,6 +205,7 @@ MonoBehaviour:
     SwimSuit: 0
     Flippers: 0
     HikerGear: 0
+    FenceSneak: 0
     LavaSuit: 0
 --- !u!114 &2945233704919692102
 MonoBehaviour:
@@ -235,8 +235,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7372d8dda08135a46aca0e64988e5c42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentMovementCost: 0
   movementStates: 0
-  playerSpeed: 5
 --- !u!114 &4495977200974849547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,21 +278,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a93c2a28a45611840a38c1f24c5007fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6668104162780318964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1113039739388874501}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef04d10a244f9f5498291433cd8708e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraState: 0
-  directionFacing: {x: 0, y: 0, z: 0}
-  zoomState: 0
 --- !u!1 &1579374389231818420
 GameObject:
   m_ObjectHideFlags: 0

@@ -33,12 +33,6 @@ public class MainManager : Singleton<MainManager>
     public bool canMove_Left;
     public bool canMove_Right;
 
-    [Header("Cameras")]
-    public GameObject camera_Forward;
-    public GameObject camera_Backward;
-    public GameObject camera_Left;
-    public GameObject camera_Right;
-
     [Header("Game Paused")]
     public bool pauseGame;
 }

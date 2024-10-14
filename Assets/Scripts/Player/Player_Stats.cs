@@ -88,7 +88,7 @@ public class Player_Stats : Singleton<Player_Stats>
             stats.steps_Current = stats.steps_Max;
 
             //Transfer the player to last savePos
-            switch (Player_Camera.Instance.cameraState)
+            switch (Cameras.Instance.cameraState)
             {
                 case CameraState.Forward:
                     gameObject.transform.SetPositionAndRotation(savePos, gameObject.transform.rotation);

@@ -26,7 +26,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
     private void Update()
     {
-        NewKeyInputs();
+        KeyInputs();
 
         if (movementStates == MovementStates.Moving && endDestination != (Vector3.zero + (Vector3.up * heightOverBlock)))
         {
@@ -42,25 +42,31 @@ public class Player_Movement : Singleton<Player_Movement>
     //--------------------
 
 
-    void NewKeyInputs()
+    void KeyInputs()
     {
         if (movementStates == MovementStates.Moving) { return; }
         if (MainManager.Instance.pauseGame) { return; }
+        if (Cameras.Instance.isRotating) { return; }
 
         //If pressing UP
         if (Input.GetKey(KeyCode.W))
         {
             if (MainManager.Instance.canMove_Forward)
             {
-                MainManager.Instance.block_MovingTowards = MainManager.Instance.block_Vertical_InFront;
+                if (MainManager.Instance.block_Vertical_InFront != null)
+                    if (MainManager.Instance.block_Vertical_InFront.block != null)
+                        if (MainManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>())
+                        {
+                            MainManager.Instance.block_MovingTowards = MainManager.Instance.block_Vertical_InFront;
 
-                currentMovementCost = MainManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>().movementCost;
+                            currentMovementCost = MainManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>().movementCost;
 
-                endDestination = MainManager.Instance.block_Vertical_InFront.blockPosition + (Vector3.up * heightOverBlock);
-                SetPlayerBodyRotation(0);
-                movementStates = MovementStates.Moving;
+                            endDestination = MainManager.Instance.block_Vertical_InFront.blockPosition + (Vector3.up * heightOverBlock);
+                            SetPlayerBodyRotation(0);
+                            movementStates = MovementStates.Moving;
 
-                Action_resetBlockColor?.Invoke();
+                            Action_resetBlockColor?.Invoke();
+                        }
             }
             else
             {
@@ -73,15 +79,20 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (MainManager.Instance.canMove_Back)
             {
-                MainManager.Instance.block_MovingTowards = MainManager.Instance.block_Vertical_InBack;
+                if (MainManager.Instance.block_Vertical_InBack != null)
+                    if (MainManager.Instance.block_Vertical_InBack.block != null)
+                        if (MainManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>())
+                        {
+                            MainManager.Instance.block_MovingTowards = MainManager.Instance.block_Vertical_InBack;
 
-                currentMovementCost = MainManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>().movementCost;
+                            currentMovementCost = MainManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>().movementCost;
 
-                endDestination = MainManager.Instance.block_Vertical_InBack.blockPosition + (Vector3.up * heightOverBlock);
-                SetPlayerBodyRotation(180);
-                movementStates = MovementStates.Moving;
+                            endDestination = MainManager.Instance.block_Vertical_InBack.blockPosition + (Vector3.up * heightOverBlock);
+                            SetPlayerBodyRotation(180);
+                            movementStates = MovementStates.Moving;
 
-                Action_resetBlockColor?.Invoke();
+                            Action_resetBlockColor?.Invoke();
+                        }
             }
             else
             {
@@ -94,15 +105,21 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (MainManager.Instance.canMove_Left)
             {
-                MainManager.Instance.block_MovingTowards = MainManager.Instance.block_Vertical_ToTheLeft;
+                if (MainManager.Instance.block_Vertical_ToTheLeft != null)
+                    if (MainManager.Instance.block_Vertical_ToTheLeft.block != null)
+                        if (MainManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>())
+                        {
+                            MainManager.Instance.block_MovingTowards = MainManager.Instance.block_Vertical_ToTheLeft;
 
-                currentMovementCost = MainManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>().movementCost;
 
-                endDestination = MainManager.Instance.block_Vertical_ToTheLeft.blockPosition + (Vector3.up * heightOverBlock);
-                SetPlayerBodyRotation(-90);
-                movementStates = MovementStates.Moving;
+                            currentMovementCost = MainManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>().movementCost;
 
-                Action_resetBlockColor?.Invoke();
+                            endDestination = MainManager.Instance.block_Vertical_ToTheLeft.blockPosition + (Vector3.up * heightOverBlock);
+                            SetPlayerBodyRotation(-90);
+                            movementStates = MovementStates.Moving;
+
+                            Action_resetBlockColor?.Invoke();
+                        }
             }
             else
             {
@@ -115,15 +132,20 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (MainManager.Instance.canMove_Right)
             {
-                MainManager.Instance.block_MovingTowards = MainManager.Instance.block_Vertical_ToTheRight;
+                if (MainManager.Instance.block_Vertical_ToTheRight != null)
+                    if (MainManager.Instance.block_Vertical_ToTheRight.block != null)
+                        if (MainManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>())
+                        {
+                            MainManager.Instance.block_MovingTowards = MainManager.Instance.block_Vertical_ToTheRight;
 
-                currentMovementCost = MainManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>().movementCost;
+                            currentMovementCost = MainManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>().movementCost;
 
-                endDestination = MainManager.Instance.block_Vertical_ToTheRight.blockPosition + (Vector3.up * heightOverBlock);
-                SetPlayerBodyRotation(90);
-                movementStates = MovementStates.Moving;
+                            endDestination = MainManager.Instance.block_Vertical_ToTheRight.blockPosition + (Vector3.up * heightOverBlock);
+                            SetPlayerBodyRotation(90);
+                            movementStates = MovementStates.Moving;
 
-                Action_resetBlockColor?.Invoke();
+                            Action_resetBlockColor?.Invoke();
+                        }
             }
             else
             {
@@ -134,7 +156,7 @@ public class Player_Movement : Singleton<Player_Movement>
     void SetPlayerBodyRotation(int rotationValue)
     {
         //Set new Rotation - Based on the key input
-        switch (gameObject.GetComponent<Player_Camera>().cameraState)
+        switch (Cameras.Instance.cameraState)
         {
             case CameraState.Forward:
                 MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 0 + rotationValue, 0));
@@ -143,10 +165,10 @@ public class Player_Movement : Singleton<Player_Movement>
                 MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 180 + rotationValue, 0));
                 break;
             case CameraState.Left:
-                MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, -90 + rotationValue, 0));
+                MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 90 + rotationValue, 0));
                 break;
             case CameraState.Right:
-                MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 90 + rotationValue, 0));
+                MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, -90 + rotationValue, 0));
                 break;
 
             default:
