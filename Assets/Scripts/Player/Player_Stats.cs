@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class Player_Stats : Singleton<Player_Stats>
@@ -8,8 +9,9 @@ public class Player_Stats : Singleton<Player_Stats>
     public static event Action Action_RespawnToSavePos;
 
     public static event Action updateCoins;
-    public static event Action updateStepMax;
+    public static event Action updateStepsMax;
 
+    public static event Action updateFenceSneak;
     public static event Action updateSwimsuit;
     public static event Action updateFlippers;
     public static event Action updateHikerGear;
@@ -18,8 +20,6 @@ public class Player_Stats : Singleton<Player_Stats>
     public Vector3 savePos;
 
     public Stats stats;
-    public Collectables collectables;
-    public Upgrades upgrades;
 
 
     //--------------------
@@ -34,47 +34,13 @@ public class Player_Stats : Singleton<Player_Stats>
         stats.steps_Max = 20;
         stats.steps_Current = stats.steps_Max;
 
-        updateStepMax?.Invoke();
-    }
-
-    //Make sure the Subscriptions doesn't bug out
-    private void OnEnable()
-    {
-        PickupObject.pickup_Coin_IsHit += AddCoin;
-        PickupObject.pickup_Step_IsHit += AddMaxStep;
-
-        PickupObject.pickup_KeyItem_SwimSuit_IsHit += AddSwimSuit;
-        PickupObject.pickup_KeyItem_Flippers_IsHit += AddFlippers;
-        PickupObject.pickup_KeyItem_HikerGear_IsHit += AddHikerGear;
-        PickupObject.pickup_KeyItem_LavaSuit_IsHit += AddLavaSuit;
-    }
-    private void OnDisable()
-    {
-        PickupObject.pickup_Coin_IsHit -= AddCoin;
-        PickupObject.pickup_Step_IsHit -= AddMaxStep;
-
-        PickupObject.pickup_KeyItem_SwimSuit_IsHit -= AddSwimSuit;
-        PickupObject.pickup_KeyItem_Flippers_IsHit -= AddFlippers;
-        PickupObject.pickup_KeyItem_HikerGear_IsHit -= AddHikerGear;
-        PickupObject.pickup_KeyItem_LavaSuit_IsHit -= AddLavaSuit;
+        updateCoins?.Invoke();
+        updateStepsMax?.Invoke();
     }
 
 
     //--------------------
 
-
-    void AddCoin()
-    {
-        collectables.coin += 1;
-        updateCoins?.Invoke();
-    }
-    void AddMaxStep()
-    {
-        stats.steps_Max += 1;
-        stats.steps_Current = stats.steps_Max;
-
-        updateStepMax?.Invoke();
-    }
 
     public void TakeAStep()
     {
@@ -120,24 +86,38 @@ public class Player_Stats : Singleton<Player_Stats>
     }
 
 
-    void AddSwimSuit()
+    //--------------------
+
+
+    //Items
+    public void UpdateCoins()
     {
-        upgrades.SwimSuit = true;
+        updateCoins?.Invoke();
+    }
+    public void UpdateStepsMax()
+    {
+        updateStepsMax?.Invoke();
+    }
+
+    //Abilities
+    public void UpdateFenceSneak()
+    {
+        updateFenceSneak?.Invoke();
+    }
+    public void UpdateSwimsuit()
+    {
         updateSwimsuit?.Invoke();
     }
-    void AddFlippers()
+    public void UpdateFlippers()
     {
-        upgrades.Flippers = true;
         updateFlippers?.Invoke();
     }
-    void AddHikerGear()
+    public void UpdateHikerGear()
     {
-        upgrades.HikerGear = true;
         updateHikerGear?.Invoke();
     }
-    void AddLavaSuit()
+    public void UpdateLavaSuit()
     {
-        upgrades.LavaSuit = true;
         updateLavaSuit?.Invoke();
     }
 }
@@ -149,27 +129,30 @@ public class Player_Stats : Singleton<Player_Stats>
 [Serializable]
 public class Stats
 {
-    [Header("Movement Speed")]
-    public float movementSpeed = 5;
-
     [Header("Steps")]
-    public int steps_Current;
     public int steps_Max;
+    public int steps_Current;
+
+    [Header("Items")]
+    public ItemsGot inventoryItems;
+
+    [Header("Abilities")]
+    public AbilitiesGot abilities;
 }
 
 [Serializable]
-public class Collectables
+public class ItemsGot
 {
     public int coin;
 }
 
 [Serializable]
-public class Upgrades
+public class AbilitiesGot
 {
+    public bool FenceSneak;
     public bool SwimSuit;
     public bool Flippers;
-    public bool HikerGear;
-    public bool FenceSneak;
-
     public bool LavaSuit;
+
+    public bool HikerGear;
 }

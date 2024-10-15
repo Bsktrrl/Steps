@@ -47,6 +47,7 @@ public class Player_Movement : Singleton<Player_Movement>
         if (movementStates == MovementStates.Moving) { return; }
         if (MainManager.Instance.pauseGame) { return; }
         if (Cameras.Instance.isRotating) { return; }
+        if (Player_Interact.Instance.isInteracting) { return; }
 
         //If pressing UP
         if (Input.GetKey(KeyCode.W))
@@ -160,15 +161,47 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             case CameraState.Forward:
                 MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 0 + rotationValue, 0));
+                if (rotationValue == 0 || rotationValue == 360)
+                    Cameras.Instance.directionFacing = Vector3.forward;
+                else if (rotationValue == 180)
+                    Cameras.Instance.directionFacing = Vector3.back;
+                else if (rotationValue == 90)
+                    Cameras.Instance.directionFacing = Vector3.right;
+                else if (rotationValue == -90 || rotationValue == 270)
+                    Cameras.Instance.directionFacing = Vector3.left;
                 break;
             case CameraState.Backward:
                 MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 180 + rotationValue, 0));
+                if (180 + rotationValue == 0 || 180 + rotationValue == 360)
+                    Cameras.Instance.directionFacing = Vector3.back;
+                else if (180 + rotationValue == 180)
+                    Cameras.Instance.directionFacing = Vector3.forward;
+                else if (180 + rotationValue == 90)
+                    Cameras.Instance.directionFacing = Vector3.left;
+                else if (180 + rotationValue == -90 || 180 + rotationValue == 270)
+                    Cameras.Instance.directionFacing = Vector3.right;
                 break;
             case CameraState.Left:
                 MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 90 + rotationValue, 0));
+                if (90 + rotationValue == 0 || 90 + rotationValue == 360)
+                    Cameras.Instance.directionFacing = Vector3.left;
+                else if (90 + rotationValue == 180)
+                    Cameras.Instance.directionFacing = Vector3.right;
+                else if (90 + rotationValue == 90)
+                    Cameras.Instance.directionFacing = Vector3.forward;
+                else if (90 + rotationValue == -90 || 90 + rotationValue == 270)
+                    Cameras.Instance.directionFacing = Vector3.back;
                 break;
             case CameraState.Right:
                 MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, -90 + rotationValue, 0));
+                if (-90 + rotationValue == 0 || -90 + rotationValue == 360)
+                    Cameras.Instance.directionFacing = Vector3.right;
+                else if (-90 + rotationValue == 180 || -90 + rotationValue == -180)
+                    Cameras.Instance.directionFacing = Vector3.left;
+                else if (-90 + rotationValue == 90)
+                    Cameras.Instance.directionFacing = Vector3.back;
+                else if (-90 + rotationValue == -90 || -90 + rotationValue == 270)
+                    Cameras.Instance.directionFacing = Vector3.forward;
                 break;
 
             default:

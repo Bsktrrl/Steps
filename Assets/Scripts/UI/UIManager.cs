@@ -29,10 +29,7 @@ public class UIManager : Singleton<UIManager>
     private void Start()
     {
         Player_Stats.updateCoins += UpdateCoinsUI;
-        Player_Stats.updateSwimsuit += Update_KeyItem_SwimSuitUI;
-        Player_Stats.updateFlippers += Update_KeyItem_FlippersUI;
-        Player_Stats.updateHikerGear += Update_KeyItem_HikerGearUI;
-        Player_Stats.updateLavaSuit += Update_KeyItem_LavaSuitUI;
+        Player_Stats.updateStepsMax += UpdateStepsUI;
 
         UpdateCoinsUI();
         UpdateStepsUI();
@@ -164,59 +161,10 @@ public class UIManager : Singleton<UIManager>
 
     void UpdateCoinsUI()
     {
-        coinText.text = "Coin: " + Player_Stats.Instance.collectables.coin;
+        coinText.text = "Coin: " + Player_Stats.Instance.stats.inventoryItems.coin;
     }
     public void UpdateStepsUI()
     {
-        stepsText.text = "Steps left: " + Player_Stats.Instance.stats.steps_Current;
-    }
-
-
-    //--------------------
-
-
-    void Update_KeyItem_SwimSuitUI()
-    {
-        if (Player_Stats.Instance.upgrades.SwimSuit)
-        {
-            image_SwimSuit.gameObject.SetActive(true);
-        }
-        else
-        {
-            image_SwimSuit.gameObject.SetActive(false);
-        }
-    }
-    void Update_KeyItem_FlippersUI()
-    {
-        if (Player_Stats.Instance.upgrades.Flippers)
-        {
-            image_Flippers.gameObject.SetActive(true);
-        }
-        else
-        {
-            image_Flippers.gameObject.SetActive(false);
-        }
-    }
-    void Update_KeyItem_HikerGearUI()
-    {
-        if (Player_Stats.Instance.upgrades.HikerGear)
-        {
-            image_HikerGear.gameObject.SetActive(true);
-        }
-        else
-        {
-            image_HikerGear.gameObject.SetActive(false);
-        }
-    }
-    void Update_KeyItem_LavaSuitUI()
-    {
-        if (Player_Stats.Instance.upgrades.LavaSuit)
-        {
-            image_LavaSuit.gameObject.SetActive(true);
-        }
-        else
-        {
-            image_LavaSuit.gameObject.SetActive(false);
-        }
+        stepsText.text = "Steps: " + Player_Stats.Instance.stats.steps_Current + "/" + Player_Stats.Instance.stats.steps_Max;
     }
 }

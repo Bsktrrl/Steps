@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: -2463619204028244439}
   - component: {fileID: 2945233704919692102}
   - component: {fileID: -904211747032048527}
+  - component: {fileID: -2864528110141520541}
   - component: {fileID: 4495977200974849547}
   - component: {fileID: 9003401136763078288}
   m_Layer: 6
@@ -196,17 +197,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   savePos: {x: 0, y: 0, z: 0}
   stats:
-    movementSpeed: 5
-    steps_Current: 0
     steps_Max: 0
-  collectables:
-    coin: 0
-  upgrades:
-    SwimSuit: 0
-    Flippers: 0
-    HikerGear: 0
-    FenceSneak: 0
-    LavaSuit: 0
+    steps_Current: 0
+    inventoryItems:
+      coin: 0
+    abilities:
+      FenceSneak: 0
+      SwimSuit: 0
+      Flippers: 0
+      LavaSuit: 0
+      HikerGear: 0
 --- !u!114 &2945233704919692102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,6 +237,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentMovementCost: 0
   movementStates: 0
+--- !u!114 &-2864528110141520541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113039739388874501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d2b9bec3689b0444962990d209aa7bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canInteract: 0
+  interactableObject: {fileID: 0}
 --- !u!114 &4495977200974849547
 MonoBehaviour:
   m_ObjectHideFlags: 0

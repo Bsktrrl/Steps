@@ -27,4 +27,5 @@ public enum BlockType
     Cube,
     Stair,
     Ladder,
+    Chest,
 }
