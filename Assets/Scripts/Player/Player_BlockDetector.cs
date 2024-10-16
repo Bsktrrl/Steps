@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player_BlockDetector : Singleton<Player_BlockDetector>
@@ -473,78 +474,105 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     {
         if (direction == Vector3.forward)
         {
-            if (MainManager.Instance.block_Vertical_InFront.blockType == BlockType.None)
-            {
-                MainManager.Instance.canMove_Forward = false;
-            }
-            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair && MainManager.Instance.block_Horizontal_InFront.blockType == BlockType.Cube)
-            {
-                MainManager.Instance.canMove_Forward = false;
-            }
-            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-            {
-                if (MainManager.Instance.block_Vertical_InFront.blockType == BlockType.Stair || MainManager.Instance.block_Vertical_InFront.blockType == BlockType.Cube)
-                    MainManager.Instance.canMove_Forward = true;
-                else
-                    MainManager.Instance.canMove_Forward = false;
-            }
+            ResetRaycastDirection(MainManager.Instance.block_Vertical_InFront, MainManager.Instance.block_Horizontal_InFront, Vector3.forward);
         }
         else if (direction == Vector3.back)
         {
-            if (MainManager.Instance.block_Vertical_InBack.blockType == BlockType.None)
-            {
-                MainManager.Instance.canMove_Back = false;
-            }
-            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair && MainManager.Instance.block_Horizontal_InBack.blockType == BlockType.Cube)
-            {
-                MainManager.Instance.canMove_Back = false;
-            }
-            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-            {
-                if (MainManager.Instance.block_Vertical_InBack.blockType == BlockType.Stair || MainManager.Instance.block_Vertical_InBack.blockType == BlockType.Cube)
-                    MainManager.Instance.canMove_Back = true;
-                else
-                    MainManager.Instance.canMove_Back = false;
-            }
+            ResetRaycastDirection(MainManager.Instance.block_Vertical_InBack, MainManager.Instance.block_Horizontal_InBack, Vector3.back);
         }
         else if (direction == Vector3.left)
         {
-            if (MainManager.Instance.block_Vertical_ToTheLeft.blockType == BlockType.None)
-            {
-                MainManager.Instance.canMove_Left = false;
-            }
-            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair && MainManager.Instance.block_Horizontal_ToTheLeft.blockType == BlockType.Cube)
-            {
-                MainManager.Instance.canMove_Left = false;
-            }
-            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-            {
-                if (MainManager.Instance.block_Vertical_ToTheLeft.blockType == BlockType.Stair || MainManager.Instance.block_Vertical_ToTheLeft.blockType == BlockType.Cube)
-                    MainManager.Instance.canMove_Left = true;
-                else
-                    MainManager.Instance.canMove_Left = false;
-            }
+            ResetRaycastDirection(MainManager.Instance.block_Vertical_ToTheLeft, MainManager.Instance.block_Horizontal_ToTheLeft, Vector3.left);
         }
         else if (direction == Vector3.right)
         {
-            if (MainManager.Instance.block_Vertical_ToTheRight.blockType == BlockType.None)
-            {
-                MainManager.Instance.canMove_Right = false;
-            }
-            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair && MainManager.Instance.block_Horizontal_ToTheRight.blockType == BlockType.Cube)
-            {
-                MainManager.Instance.canMove_Right = false;
-            }
-            else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
-            {
-                if (MainManager.Instance.block_Vertical_ToTheRight.blockType == BlockType.Stair || MainManager.Instance.block_Vertical_ToTheRight.blockType == BlockType.Cube)
-                    MainManager.Instance.canMove_Right = true;
-                else
-                    MainManager.Instance.canMove_Right = false;
-            }
+            ResetRaycastDirection(MainManager.Instance.block_Vertical_ToTheRight, MainManager.Instance.block_Horizontal_ToTheRight, Vector3.right);
         }
     }
-    
+
+    void ResetRaycastDirection(DetectedBlockInfo blockType_Vertical, DetectedBlockInfo blockType_Horizontal, Vector3 direction)
+    {
+        #region Water Block
+        //If block is Water, you cannot move into it before having the Swimsuit Ability
+        if (blockType_Vertical.blockElement == BlockElement.Water)
+        {
+            if (Player_Stats.Instance.stats.abilities.SwimSuit || Player_Stats.Instance.stats.abilities.Flippers)
+            {
+                canMove(direction, true);
+            }
+            else
+            {
+                canMove(direction, false);
+            }
+        }
+        #endregion
+
+        #region Lava Block
+        //If block is Lava, you cannot move into it before having the LavaSuit Ability
+        else if (blockType_Vertical.blockElement == BlockElement.Lava)
+        {
+            if (Player_Stats.Instance.stats.abilities.LavaSuit)
+            {
+                canMove(direction, true);
+            }
+            else
+            {
+                canMove(direction, false);
+            }
+        }
+        #endregion
+
+        #region No Block
+        //if there isn't any block to move to
+        else if (blockType_Vertical.blockType == BlockType.None)
+        {
+            canMove(direction, false);
+        }
+        #endregion
+
+        #region On Stair
+        //If standing on a Stair, and move into a wall
+        else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair && blockType_Horizontal.blockType == BlockType.Cube)
+        {
+            canMove(direction, false);
+        }
+
+        //If standing on a Stair, and there is possible to move further up it
+        else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
+        {
+            if (blockType_Vertical.blockType == BlockType.Stair || blockType_Vertical.blockType == BlockType.Cube)
+            {
+                canMove(direction, true);
+            }
+            else
+            {
+                canMove(direction, false);
+            }
+        }
+        #endregion
+    }
+
+    void canMove(Vector3 direction, bool value)
+    {
+        if (direction == Vector3.forward)
+        {
+            MainManager.Instance.canMove_Forward = value;
+        }
+        else if (direction == Vector3.back)
+        {
+            MainManager.Instance.canMove_Back = value;
+        }
+        else if (direction == Vector3.left)
+        {
+            MainManager.Instance.canMove_Left = value;
+        }
+        else if (direction == Vector3.right)
+        {
+            MainManager.Instance.canMove_Right = value;
+        }
+    }
+
+
     void UpdateStairRaycast()
     {
         if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)

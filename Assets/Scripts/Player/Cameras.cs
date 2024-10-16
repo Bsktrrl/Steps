@@ -17,11 +17,11 @@ public class Cameras : Singleton<Cameras>
     [Header("Camera Zoom")]
     public CameraZoomState zoomState;
 
-    float cameraZoom_ExtraShort = 35;
-    float cameraZoom_short = 40;
-    float cameraZoom_mid = 50;
-    float cameraZoom_long = 60;
-    float cameraZoom_ExtraLong = 65;
+    float cameraZoom_ExtraShort = 50;
+    float cameraZoom_short = 60;
+    float cameraZoom_mid = 70;
+    float cameraZoom_long = 80;
+    float cameraZoom_ExtraLong = 90;
 
     [Header("CinemachineVirtualCameras")]
     public CinemachineVirtualCamera camera_Forward;
@@ -94,28 +94,28 @@ public class Cameras : Singleton<Cameras>
     {
         //Forward
         cameraStats_Forward.startPos = camera_Forward.gameObject.transform.position;
-        cameraStats_Forward.startRot = new Vector3(50, 0, 0);
+        cameraStats_Forward.startRot = new Vector3(30, 0, 0);
         cameraStats_Forward.startOffset = camera_Forward.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
 
         camera_Forward.transform.localRotation = Quaternion.Euler(cameraStats_Forward.startRot);
 
         //Back
         cameraStats_Back.startPos = camera_Back.gameObject.transform.position;
-        cameraStats_Back.startRot = new Vector3(50, 180, 0);
+        cameraStats_Back.startRot = new Vector3(30, 180, 0);
         cameraStats_Back.startOffset = camera_Back.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
 
         camera_Back.transform.localRotation = Quaternion.Euler(cameraStats_Back.startRot);
 
         //Left
         cameraStats_Left.startPos = camera_Left.gameObject.transform.position;
-        cameraStats_Left.startRot = new Vector3(50, 90, 0);
+        cameraStats_Left.startRot = new Vector3(30, 90, 0);
         cameraStats_Left.startOffset = camera_Left.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
 
         camera_Left.transform.localRotation = Quaternion.Euler(cameraStats_Left.startRot);
 
         //Right
         cameraStats_Right.startPos = camera_Right.gameObject.transform.position;
-        cameraStats_Right.startRot = new Vector3(50, -90, 0);
+        cameraStats_Right.startRot = new Vector3(30, -90, 0);
         cameraStats_Right.startOffset = camera_Right.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
 
         camera_Right.transform.localRotation = Quaternion.Euler(cameraStats_Right.startRot);
