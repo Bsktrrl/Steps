@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Player_Movement : Singleton<Player_Movement>
 {
-    public static event Action Action_takeAStep;
+    public static event Action Action_StepTaken;
     public static event Action Action_resetBlockColor;
 
     [Header("Current Movement Cost")]
@@ -244,7 +244,7 @@ public class Player_Movement : Singleton<Player_Movement>
             MainManager.Instance.player.transform.position = endDestination;
             movementStates = MovementStates.Still;
 
-            Action_takeAStep?.Invoke();
+            Action_StepTaken?.Invoke();
         }
     }
 }

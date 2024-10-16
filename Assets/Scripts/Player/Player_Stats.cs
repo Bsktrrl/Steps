@@ -27,7 +27,7 @@ public class Player_Stats : Singleton<Player_Stats>
 
     private void Start()
     {
-        Player_Movement.Action_takeAStep += TakeAStep;
+        Player_Movement.Action_StepTaken += TakeAStep;
 
         savePos = transform.position;
 

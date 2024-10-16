@@ -13,7 +13,7 @@ public class BlockInfo : MonoBehaviour
 
     [Header("Material Rendering")]
     List<Renderer> objectRenderers = new List<Renderer>();
-    List<MaterialPropertyBlock> propertyBlocks = new List<MaterialPropertyBlock>();
+    public List<MaterialPropertyBlock> propertyBlocks = new List<MaterialPropertyBlock>();
 
 
     //--------------------
