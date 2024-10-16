@@ -13,6 +13,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
     [Header("Movement State")]
     public MovementStates movementStates;
+    public ButtonsToPress lastMovementButtonPressed;
 
     [Header("Player Movement over Blocks")]
     float heightOverBlock = 0.85f;
@@ -24,6 +25,10 @@ public class Player_Movement : Singleton<Player_Movement>
     //--------------------
 
 
+    private void Start()
+    {
+        Action_StepTaken += IceGlide;
+    }
     private void Update()
     {
         KeyInputs();
@@ -52,106 +57,53 @@ public class Player_Movement : Singleton<Player_Movement>
         //If pressing UP
         if (Input.GetKey(KeyCode.W))
         {
-            if (MainManager.Instance.canMove_Forward)
-            {
-                if (MainManager.Instance.block_Vertical_InFront != null)
-                    if (MainManager.Instance.block_Vertical_InFront.block != null)
-                        if (MainManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>())
-                        {
-                            MainManager.Instance.block_MovingTowards = MainManager.Instance.block_Vertical_InFront;
-
-                            currentMovementCost = MainManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>().movementCost;
-
-                            endDestination = MainManager.Instance.block_Vertical_InFront.blockPosition + (Vector3.up * heightOverBlock);
-                            SetPlayerBodyRotation(0);
-                            movementStates = MovementStates.Moving;
-
-                            Action_resetBlockColor?.Invoke();
-                        }
-            }
-            else
-            {
-                SetPlayerBodyRotation(0);
-            }
+            lastMovementButtonPressed = ButtonsToPress.W;
+            MovementKeyIsPressed(MainManager.Instance.canMove_Forward, MainManager.Instance.block_Vertical_InFront, 0);
         }
 
         //If pressing DOWN
         else if (Input.GetKey(KeyCode.S))
         {
-            if (MainManager.Instance.canMove_Back)
-            {
-                if (MainManager.Instance.block_Vertical_InBack != null)
-                    if (MainManager.Instance.block_Vertical_InBack.block != null)
-                        if (MainManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>())
-                        {
-                            MainManager.Instance.block_MovingTowards = MainManager.Instance.block_Vertical_InBack;
-
-                            currentMovementCost = MainManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>().movementCost;
-
-                            endDestination = MainManager.Instance.block_Vertical_InBack.blockPosition + (Vector3.up * heightOverBlock);
-                            SetPlayerBodyRotation(180);
-                            movementStates = MovementStates.Moving;
-
-                            Action_resetBlockColor?.Invoke();
-                        }
-            }
-            else
-            {
-                SetPlayerBodyRotation(180);
-            }
+            lastMovementButtonPressed = ButtonsToPress.S;
+            MovementKeyIsPressed(MainManager.Instance.canMove_Back, MainManager.Instance.block_Vertical_InBack, 180);
         }
 
         //If pressing LEFT
         else if (Input.GetKey(KeyCode.A))
         {
-            if (MainManager.Instance.canMove_Left)
-            {
-                if (MainManager.Instance.block_Vertical_ToTheLeft != null)
-                    if (MainManager.Instance.block_Vertical_ToTheLeft.block != null)
-                        if (MainManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>())
-                        {
-                            MainManager.Instance.block_MovingTowards = MainManager.Instance.block_Vertical_ToTheLeft;
-
-
-                            currentMovementCost = MainManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>().movementCost;
-
-                            endDestination = MainManager.Instance.block_Vertical_ToTheLeft.blockPosition + (Vector3.up * heightOverBlock);
-                            SetPlayerBodyRotation(-90);
-                            movementStates = MovementStates.Moving;
-
-                            Action_resetBlockColor?.Invoke();
-                        }
-            }
-            else
-            {
-                SetPlayerBodyRotation(-90);
-            }
+            lastMovementButtonPressed = ButtonsToPress.A;
+            MovementKeyIsPressed(MainManager.Instance.canMove_Left, MainManager.Instance.block_Vertical_ToTheLeft, -90);
         }
 
         //If pressing RIGHT
         else if (Input.GetKey(KeyCode.D))
         {
-            if (MainManager.Instance.canMove_Right)
-            {
-                if (MainManager.Instance.block_Vertical_ToTheRight != null)
-                    if (MainManager.Instance.block_Vertical_ToTheRight.block != null)
-                        if (MainManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>())
-                        {
-                            MainManager.Instance.block_MovingTowards = MainManager.Instance.block_Vertical_ToTheRight;
+            lastMovementButtonPressed = ButtonsToPress.D;
+            MovementKeyIsPressed(MainManager.Instance.canMove_Right, MainManager.Instance.block_Vertical_ToTheRight, 90);
+        }
+    }
+    void MovementKeyIsPressed(bool canMove, DetectedBlockInfo block_Vertical, int rotation)
+    {
+        if (canMove)
+        {
+            if (block_Vertical != null)
+                if (block_Vertical.block != null)
+                    if (block_Vertical.block.GetComponent<BlockInfo>())
+                    {
+                        MainManager.Instance.block_MovingTowards = block_Vertical;
 
-                            currentMovementCost = MainManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>().movementCost;
+                        currentMovementCost = block_Vertical.block.GetComponent<BlockInfo>().movementCost;
 
-                            endDestination = MainManager.Instance.block_Vertical_ToTheRight.blockPosition + (Vector3.up * heightOverBlock);
-                            SetPlayerBodyRotation(90);
-                            movementStates = MovementStates.Moving;
+                        endDestination = block_Vertical.blockPosition + (Vector3.up * heightOverBlock);
+                        SetPlayerBodyRotation(rotation);
+                        movementStates = MovementStates.Moving;
 
-                            Action_resetBlockColor?.Invoke();
-                        }
-            }
-            else
-            {
-                SetPlayerBodyRotation(90);
-            }
+                        Action_resetBlockColor?.Invoke();
+                    }
+        }
+        else
+        {
+            SetPlayerBodyRotation(rotation);
         }
     }
     void SetPlayerBodyRotation(int rotationValue)
@@ -233,10 +185,14 @@ public class Player_Movement : Singleton<Player_Movement>
                 }
             }
             else
+            {
                 MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, endDestination, 5 * Time.deltaTime);
+            }
         }
         else
+        {
             MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, endDestination, 5 * Time.deltaTime);
+        }
 
         //Snap into place when close enough
         if (Vector3.Distance(MainManager.Instance.player.transform.position, endDestination) <= 0.05f)
@@ -247,10 +203,57 @@ public class Player_Movement : Singleton<Player_Movement>
             Action_StepTaken?.Invoke();
         }
     }
+
+    //Begin Ice Gliding
+    void IceGlide()
+    {
+        if (MainManager.Instance.block_StandingOn.blockElement == BlockElement.Ice)
+        {
+            switch (lastMovementButtonPressed)
+            {
+                case ButtonsToPress.W:
+                    if (MainManager.Instance.canMove_Forward)
+                        MovementKeyIsPressed(MainManager.Instance.canMove_Forward, MainManager.Instance.block_Vertical_InFront, 0);
+                    break;
+                case ButtonsToPress.S:
+                    if (MainManager.Instance.canMove_Back)
+                        MovementKeyIsPressed(MainManager.Instance.canMove_Back, MainManager.Instance.block_Vertical_InBack, 180);
+                    break;
+                case ButtonsToPress.A:
+                    if (MainManager.Instance.canMove_Left)
+                        MovementKeyIsPressed(MainManager.Instance.canMove_Left, MainManager.Instance.block_Vertical_ToTheLeft, -90);
+                    break;
+                case ButtonsToPress.D:
+                    if (MainManager.Instance.canMove_Right)
+                        MovementKeyIsPressed(MainManager.Instance.canMove_Right, MainManager.Instance.block_Vertical_ToTheRight, 90);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
 }
 
 public enum MovementStates
 {
     Still,
     Moving
+}
+
+public enum ButtonsToPress
+{
+    None,
+
+    W,
+    S,
+    A,
+    D,
+
+    Arrow_Left,
+    ArrowRight,
+
+    Space,
+    X,
+    
 }
