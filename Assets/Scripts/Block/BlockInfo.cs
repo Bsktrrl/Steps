@@ -9,6 +9,7 @@ public class BlockInfo : MonoBehaviour
     public BlockType blockType;
     public int movementCost;
     public float movementSpeed;
+    public Color stepCostText_Color;
 
     [Header("Material Rendering")]
     List<Renderer> objectRenderers = new List<Renderer>();
@@ -57,6 +58,12 @@ public class BlockInfo : MonoBehaviour
 
             // Apply the MaterialPropertyBlock to the renderer
             objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
+
+            //Show StepCost
+            if (gameObject.GetComponent<BlockStepCostDisplay>())
+            {
+                gameObject.GetComponent<BlockStepCostDisplay>().ShowDisplay();
+            }
         }
     }
 
@@ -72,6 +79,12 @@ public class BlockInfo : MonoBehaviour
 
             // Apply the MaterialPropertyBlock to the renderer
             objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
+
+            //Hide StepCost
+            if (gameObject.GetComponent<BlockStepCostDisplay>())
+            {
+                gameObject.GetComponent<BlockStepCostDisplay>().HideDisplay();
+            }
         }
     }
 }

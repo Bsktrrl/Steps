@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class Cameras : Singleton<Cameras>
 {
+    public static event Action rotateCamera;
+
     [Header("Camera State")]
     public CameraState cameraState;
     [SerializeField] CameraState cameraState_BeforeSwitching;
@@ -17,11 +19,11 @@ public class Cameras : Singleton<Cameras>
     [Header("Camera Zoom")]
     public CameraZoomState zoomState;
 
-    float cameraZoom_ExtraShort = 50;
-    float cameraZoom_short = 60;
-    float cameraZoom_mid = 70;
-    float cameraZoom_long = 80;
-    float cameraZoom_ExtraLong = 90;
+    float cameraZoom_ExtraShort = 40;
+    float cameraZoom_short = 50;
+    float cameraZoom_mid = 60;
+    float cameraZoom_long = 70;
+    float cameraZoom_ExtraLong = 80;
 
     [Header("CinemachineVirtualCameras")]
     public CinemachineVirtualCamera camera_Forward;
@@ -159,6 +161,8 @@ public class Cameras : Singleton<Cameras>
 
             //Adjust Facing Direction
             AdjustFacingDirection();
+
+            rotateCamera?.Invoke();
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -191,6 +195,8 @@ public class Cameras : Singleton<Cameras>
 
             //Adjust Facing Direction
             AdjustFacingDirection();
+
+            rotateCamera?.Invoke();
         }
     }
     void RotateCamera()
