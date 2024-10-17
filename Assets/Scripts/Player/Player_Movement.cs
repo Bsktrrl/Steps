@@ -209,6 +209,8 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         if (MainManager.Instance.block_StandingOn.blockElement == BlockElement.Ice)
         {
+            Player_Stats.Instance.stats.steps_Current += MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().movementCost;
+
             switch (lastMovementButtonPressed)
             {
                 case ButtonsToPress.W:
