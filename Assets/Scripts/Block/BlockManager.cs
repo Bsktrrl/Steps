@@ -26,6 +26,11 @@ public enum BlockElement
     Wood,
     Dirt,
 
+    LavaCube,
+
+    Metal,
+    Coal,
+    Ore,
 }
 public enum BlockType
 {
