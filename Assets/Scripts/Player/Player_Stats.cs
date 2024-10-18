@@ -31,7 +31,7 @@ public class Player_Stats : Singleton<Player_Stats>
 
         savePos = transform.position;
 
-        stats.steps_Max = 20;
+        stats.steps_Max = 200;
         stats.steps_Current = stats.steps_Max;
 
         updateCoins?.Invoke();

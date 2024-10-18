@@ -31,6 +31,11 @@ public enum BlockElement
     Metal,
     Coal,
     Ore,
+
+    Bush,
+    Sandstone,
+    Snow,
+    Rock,
 }
 public enum BlockType
 {
@@ -40,4 +45,6 @@ public enum BlockType
     Stair,
     Ladder,
     Chest,
+
+    GetOnto_Cube, //A cube, but it can be entered even if it's at the same level as the player
 }
