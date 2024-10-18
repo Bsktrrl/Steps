@@ -128,6 +128,8 @@ public class Cameras : Singleton<Cameras>
         //Don't be able to switch camera angle before the rotation has been done
         if (isRotating) { return; }
         if (Player_Interact.Instance.isInteracting) { return; }
+        if (Player_Movement.Instance.iceGliding) { return; }
+        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
 
         //Rotate Camera
         if (Input.GetKeyDown(KeyCode.LeftArrow))

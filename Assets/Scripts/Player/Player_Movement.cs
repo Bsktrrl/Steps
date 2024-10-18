@@ -20,6 +20,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
     //Other
     Vector3 endDestination;
+    public bool iceGliding;
 
 
     //--------------------
@@ -209,6 +210,7 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         if (MainManager.Instance.block_StandingOn.blockElement == BlockElement.Ice)
         {
+            iceGliding = true;
             Player_Stats.Instance.stats.steps_Current += MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().movementCost;
 
             switch (lastMovementButtonPressed)
@@ -233,6 +235,10 @@ public class Player_Movement : Singleton<Player_Movement>
                 default:
                     break;
             }
+        }
+        else
+        {
+            iceGliding = false;
         }
     }
 }
