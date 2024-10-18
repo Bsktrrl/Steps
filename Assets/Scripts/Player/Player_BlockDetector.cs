@@ -148,79 +148,125 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     {
         if (Physics.Raycast(rayPointObject.transform.position, direction, out hit, maxDistance_Horizontal))
         {
-            Debug.DrawRay(rayPointObject.transform.position, direction * hit.distance, Color.red);
-
-            if (hit.transform.GetComponent<BlockInfo>())
-            {
-                if (rayPointObject == detectorSpot_Horizontal_Front)
-                {
-                    MainManager.Instance.block_Horizontal_InFront.block = hit.transform.gameObject;
-                    MainManager.Instance.block_Horizontal_InFront.blockPosition = hit.transform.position;
-                    MainManager.Instance.block_Horizontal_InFront.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
-                    MainManager.Instance.block_Horizontal_InFront.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
-                }
-                else if (rayPointObject == detectorSpot_Horizontal_Back)
-                {
-                    MainManager.Instance.block_Horizontal_InBack.block = hit.transform.gameObject;
-                    MainManager.Instance.block_Horizontal_InBack.blockPosition = hit.transform.position;
-                    MainManager.Instance.block_Horizontal_InBack.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
-                    MainManager.Instance.block_Horizontal_InBack.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
-                }
-                else if (rayPointObject == detectorSpot_Horizontal_Left)
-                {
-                    MainManager.Instance.block_Horizontal_ToTheLeft.block = hit.transform.gameObject;
-                    MainManager.Instance.block_Horizontal_ToTheLeft.blockPosition = hit.transform.position;
-                    MainManager.Instance.block_Horizontal_ToTheLeft.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
-                    MainManager.Instance.block_Horizontal_ToTheLeft.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
-                }
-                else if (rayPointObject == detectorSpot_Horizontal_Right)
-                {
-                    MainManager.Instance.block_Horizontal_ToTheRight.block = hit.transform.gameObject;
-                    MainManager.Instance.block_Horizontal_ToTheRight.blockPosition = hit.transform.position;
-                    MainManager.Instance.block_Horizontal_ToTheRight.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
-                    MainManager.Instance.block_Horizontal_ToTheRight.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
-                }
-            }
-
-            CheckRaycastDirection_Horizontal(direction);
+            Raycast_Vertical_Hit(rayPointObject, direction);
         }
-
         else
         {
-            Debug.DrawRay(rayPointObject.transform.position, direction * maxDistance_Horizontal, Color.green);
+            Raycast_Vertical_NotHit(rayPointObject, direction);
+        }
+    }
+    void Raycast_Vertical_Hit(GameObject rayPointObject, Vector3 direction)
+    {
+        Debug.DrawRay(rayPointObject.transform.position, direction * hit.distance, Color.red);
 
+        if (hit.transform.GetComponent<BlockInfo>())
+        {
             if (rayPointObject == detectorSpot_Horizontal_Front)
             {
-                MainManager.Instance.block_Horizontal_InFront.block = null;
-                MainManager.Instance.block_Horizontal_InFront.blockPosition = Vector3.zero;
-                MainManager.Instance.block_Horizontal_InFront.blockElement = BlockElement.None;
-                MainManager.Instance.block_Horizontal_InFront.blockType = BlockType.None;
+                MainManager.Instance.block_Horizontal_InFront.block = hit.transform.gameObject;
+                MainManager.Instance.block_Horizontal_InFront.blockPosition = hit.transform.position;
+                MainManager.Instance.block_Horizontal_InFront.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
+                MainManager.Instance.block_Horizontal_InFront.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
+
+                if (MainManager.Instance.block_Horizontal_InFront.blockType == BlockType.Fence
+                    && Player_Stats.Instance.stats.abilities.FenceSneak)
+                {
+                    ResetRaycastDirection_Horizontal(direction);
+                }
+                else
+                {
+                    CheckRaycastDirection_Horizontal(direction);
+                }
             }
             else if (rayPointObject == detectorSpot_Horizontal_Back)
             {
-                MainManager.Instance.block_Horizontal_InBack.block = null;
-                MainManager.Instance.block_Horizontal_InBack.blockPosition = Vector3.zero;
-                MainManager.Instance.block_Horizontal_InBack.blockElement = BlockElement.None;
-                MainManager.Instance.block_Horizontal_InBack.blockType = BlockType.None;
+                MainManager.Instance.block_Horizontal_InBack.block = hit.transform.gameObject;
+                MainManager.Instance.block_Horizontal_InBack.blockPosition = hit.transform.position;
+                MainManager.Instance.block_Horizontal_InBack.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
+                MainManager.Instance.block_Horizontal_InBack.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
+
+                if (MainManager.Instance.block_Horizontal_InBack.blockType == BlockType.Fence
+                    && Player_Stats.Instance.stats.abilities.FenceSneak)
+                {
+                    ResetRaycastDirection_Horizontal(direction);
+                }
+                else
+                {
+                    CheckRaycastDirection_Horizontal(direction);
+                }
             }
             else if (rayPointObject == detectorSpot_Horizontal_Left)
             {
-                MainManager.Instance.block_Horizontal_ToTheLeft.block = null;
-                MainManager.Instance.block_Horizontal_ToTheLeft.blockPosition = Vector3.zero;
-                MainManager.Instance.block_Horizontal_ToTheLeft.blockElement = BlockElement.None;
-                MainManager.Instance.block_Horizontal_ToTheLeft.blockType = BlockType.None;
+                MainManager.Instance.block_Horizontal_ToTheLeft.block = hit.transform.gameObject;
+                MainManager.Instance.block_Horizontal_ToTheLeft.blockPosition = hit.transform.position;
+                MainManager.Instance.block_Horizontal_ToTheLeft.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
+                MainManager.Instance.block_Horizontal_ToTheLeft.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
+
+                if (MainManager.Instance.block_Horizontal_ToTheLeft.blockType == BlockType.Fence
+                    && Player_Stats.Instance.stats.abilities.FenceSneak)
+                {
+                    ResetRaycastDirection_Horizontal(direction);
+                }
+                else
+                {
+                    CheckRaycastDirection_Horizontal(direction);
+                }
             }
             else if (rayPointObject == detectorSpot_Horizontal_Right)
             {
-                MainManager.Instance.block_Horizontal_ToTheRight.block = null;
-                MainManager.Instance.block_Horizontal_ToTheRight.blockPosition = Vector3.zero;
-                MainManager.Instance.block_Horizontal_ToTheRight.blockElement = BlockElement.None;
-                MainManager.Instance.block_Horizontal_ToTheRight.blockType = BlockType.None;
-            }
+                MainManager.Instance.block_Horizontal_ToTheRight.block = hit.transform.gameObject;
+                MainManager.Instance.block_Horizontal_ToTheRight.blockPosition = hit.transform.position;
+                MainManager.Instance.block_Horizontal_ToTheRight.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
+                MainManager.Instance.block_Horizontal_ToTheRight.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
 
-            ResetRaycastDirection_Horizontal(direction);
+                if (MainManager.Instance.block_Horizontal_ToTheRight.blockType == BlockType.Fence
+                    && Player_Stats.Instance.stats.abilities.FenceSneak)
+                {
+                    ResetRaycastDirection_Horizontal(direction);
+                }
+                else
+                {
+                    CheckRaycastDirection_Horizontal(direction);
+                }
+            }
         }
     }
+    void Raycast_Vertical_NotHit(GameObject rayPointObject, Vector3 direction)
+    {
+        Debug.DrawRay(rayPointObject.transform.position, direction * maxDistance_Horizontal, Color.green);
+
+        if (rayPointObject == detectorSpot_Horizontal_Front)
+        {
+            MainManager.Instance.block_Horizontal_InFront.block = null;
+            MainManager.Instance.block_Horizontal_InFront.blockPosition = Vector3.zero;
+            MainManager.Instance.block_Horizontal_InFront.blockElement = BlockElement.None;
+            MainManager.Instance.block_Horizontal_InFront.blockType = BlockType.None;
+        }
+        else if (rayPointObject == detectorSpot_Horizontal_Back)
+        {
+            MainManager.Instance.block_Horizontal_InBack.block = null;
+            MainManager.Instance.block_Horizontal_InBack.blockPosition = Vector3.zero;
+            MainManager.Instance.block_Horizontal_InBack.blockElement = BlockElement.None;
+            MainManager.Instance.block_Horizontal_InBack.blockType = BlockType.None;
+        }
+        else if (rayPointObject == detectorSpot_Horizontal_Left)
+        {
+            MainManager.Instance.block_Horizontal_ToTheLeft.block = null;
+            MainManager.Instance.block_Horizontal_ToTheLeft.blockPosition = Vector3.zero;
+            MainManager.Instance.block_Horizontal_ToTheLeft.blockElement = BlockElement.None;
+            MainManager.Instance.block_Horizontal_ToTheLeft.blockType = BlockType.None;
+        }
+        else if (rayPointObject == detectorSpot_Horizontal_Right)
+        {
+            MainManager.Instance.block_Horizontal_ToTheRight.block = null;
+            MainManager.Instance.block_Horizontal_ToTheRight.blockPosition = Vector3.zero;
+            MainManager.Instance.block_Horizontal_ToTheRight.blockElement = BlockElement.None;
+            MainManager.Instance.block_Horizontal_ToTheRight.blockType = BlockType.None;
+        }
+
+        ResetRaycastDirection_Horizontal(direction);
+    }
+
     void CheckRaycastDirection_Horizontal(Vector3 direction)
     {
         if (direction == Vector3.forward)

@@ -47,4 +47,6 @@ public enum BlockType
     Chest,
 
     GetOnto_Cube, //A cube, but it can be entered even if it's at the same level as the player
+
+    Fence,
 }

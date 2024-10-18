@@ -48,6 +48,10 @@ public class BlockInfo : MonoBehaviour
 
     public void DarkenColors()
     {
+        //Don't darken Fences
+        if (blockType == BlockType.Fence) { return; }
+
+        //Darken all materials attached
         for (int i = 0; i < propertyBlocks.Count; i++)
         {
             // Darken the color
