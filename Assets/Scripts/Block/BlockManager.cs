@@ -19,6 +19,13 @@ public enum BlockElement
 
     Water,
     Lava,
+
+    Brick,
+    Candle,
+    Cloud,
+    Wood,
+    Dirt,
+
 }
 public enum BlockType
 {
