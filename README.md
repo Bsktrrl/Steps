@@ -1,4 +1,4 @@
-<img src="https://github.com/Bsktrrl/Bsktrrl.github.io/blob/main/images/Showcase.gif" width="50%"/><br>
+<img src="https://github.com/Bsktrrl/Bsktrrl.github.io/blob/main/images/Steps/Showcase.gif" width="50%"/><br>
 
 ## Project Description
 Before I learned how to program, I had this paper flip-book game in mind where a world was set in a grid, build by different "boxes" with different rules. Each Box type had its own movement cost and some boxes would refill them, or maybe teleport the player to another page.
