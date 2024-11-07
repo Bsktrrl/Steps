@@ -231,6 +231,7 @@ GameObject:
   - component: {fileID: -6159839950141549202}
   - component: {fileID: -6693595383041644439}
   - component: {fileID: -5624743257978002039}
+  - component: {fileID: 5360103121665687765}
   m_Layer: 0
   m_Name: Candle Block Grey Light
   m_TagString: Untagged
@@ -346,6 +347,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockElement: 8
   blockType: 1
+  blockAbility: 3
   movementCost: 1
   movementSpeed: 5
   stepCostText_Color: {r: 0.4392157, g: 0.4392157, b: 0.3764706, a: 1}
@@ -364,6 +366,19 @@ MonoBehaviour:
   stepCostDisplay_Parent: {fileID: 5235650923708810305}
   stepCostDisplay_Canvas: {fileID: 7840581520586893454}
   stepCostText_Object: {fileID: 2919284709811289195}
+--- !u!114 &5360103121665687765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4453998003429098427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d9432b0764691042bc3d837d8ea5dca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSteppedOn: 0
 --- !u!1 &5235650923708810305
 GameObject:
   m_ObjectHideFlags: 0

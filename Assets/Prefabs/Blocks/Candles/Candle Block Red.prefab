@@ -499,6 +499,7 @@ GameObject:
   - component: {fileID: -4373974131201104576}
   - component: {fileID: -4414370422148420548}
   - component: {fileID: 6974772280426817234}
+  - component: {fileID: -1650999255617547394}
   m_Layer: 0
   m_Name: Candle Block Red
   m_TagString: Untagged
@@ -614,6 +615,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockElement: 8
   blockType: 1
+  blockAbility: 3
   movementCost: 1
   movementSpeed: 5
   stepCostText_Color: {r: 0.8196079, g: 0.12941177, b: 0.16078432, a: 1}
@@ -632,6 +634,19 @@ MonoBehaviour:
   stepCostDisplay_Parent: {fileID: 8883365918351454024}
   stepCostDisplay_Canvas: {fileID: 6747307617365338196}
   stepCostText_Object: {fileID: 2808034197657140397}
+--- !u!114 &-1650999255617547394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8106212873063863171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d9432b0764691042bc3d837d8ea5dca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSteppedOn: 0
 --- !u!1 &8883365918351454024
 GameObject:
   m_ObjectHideFlags: 0

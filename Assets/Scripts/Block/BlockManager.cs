@@ -37,9 +37,6 @@ public enum BlockElement
     Snow,
     Rock,
 
-    RefillSteps,
-    Teleporter,
-
 }
 public enum BlockType
 {
@@ -50,7 +47,24 @@ public enum BlockType
     Ladder,
     Chest,
 
-    GetOnto_Cube, //A cube, but it can be entered even if it's at the same level as the player
-
     Fence,
+    Slope,
+
+}
+
+public enum BlockAbility
+{
+    None,
+
+    RefillSteps,
+    Teleporter,
+
+    Falling,
+    Weak,
+    Movable,
+
+    Rotator,
+    Pusher,
+    Elevator,
+    Transporter,
 }

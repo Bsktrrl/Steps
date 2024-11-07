@@ -34,8 +34,8 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     [Header("Raycast")]
     [SerializeField] float maxDistance_Horizontal = 0.5f;
     float maxDistance_Vertical;
-    [SerializeField] float maxDistance_Vertical_Normal = 0.8f;
-    [SerializeField] float maxDistance_Vertical_Stair = 1.5f;
+    [SerializeField] float maxDistance_Vertical_Normal = 0.9f;
+    [SerializeField] float maxDistance_Vertical_Stair = 1.6f;
     [SerializeField] float maxDistance_Stair = 0.75f;
     RaycastHit hit;
 
@@ -133,6 +133,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
                 MainManager.Instance.block_StandingOn.blockPosition = hit.transform.position;
                 MainManager.Instance.block_StandingOn.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
                 MainManager.Instance.block_StandingOn.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
+                MainManager.Instance.block_StandingOn.blockAbility = hit.transform.GetComponent<BlockInfo>().blockAbility;
             }
         }
         else
@@ -143,6 +144,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             MainManager.Instance.block_StandingOn.blockPosition = Vector3.zero;
             MainManager.Instance.block_StandingOn.blockElement = BlockElement.None;
             MainManager.Instance.block_StandingOn.blockType = BlockType.None;
+            MainManager.Instance.block_StandingOn.blockAbility = BlockAbility.None;
         }
     }
 
@@ -477,6 +479,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             MainManager.Instance.block_Vertical_InFront.blockPosition = hit.transform.position;
             MainManager.Instance.block_Vertical_InFront.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
             MainManager.Instance.block_Vertical_InFront.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
+            MainManager.Instance.block_Vertical_InFront.blockAbility = hit.transform.GetComponent<BlockInfo>().blockAbility;
         }
         else if (rayPointObject == detectorSpot_Vertical_Back)
         {
@@ -484,6 +487,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             MainManager.Instance.block_Vertical_InBack.blockPosition = hit.transform.position;
             MainManager.Instance.block_Vertical_InBack.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
             MainManager.Instance.block_Vertical_InBack.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
+            MainManager.Instance.block_Vertical_InBack.blockAbility = hit.transform.GetComponent<BlockInfo>().blockAbility;
         }
         else if (rayPointObject == detectorSpot_Vertical_Left)
         {
@@ -491,6 +495,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             MainManager.Instance.block_Vertical_ToTheLeft.blockPosition = hit.transform.position;
             MainManager.Instance.block_Vertical_ToTheLeft.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
             MainManager.Instance.block_Vertical_ToTheLeft.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
+            MainManager.Instance.block_Vertical_ToTheLeft.blockAbility = hit.transform.GetComponent<BlockInfo>().blockAbility;
         }
         else if (rayPointObject == detectorSpot_Vertical_Right)
         {
@@ -498,6 +503,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             MainManager.Instance.block_Vertical_ToTheRight.blockPosition = hit.transform.position;
             MainManager.Instance.block_Vertical_ToTheRight.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
             MainManager.Instance.block_Vertical_ToTheRight.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
+            MainManager.Instance.block_Vertical_ToTheRight.blockAbility = hit.transform.GetComponent<BlockInfo>().blockAbility;
         }
     }
     void Raycast_Vertical_NotHit(GameObject rayPointObject, Vector3 direction)
@@ -510,6 +516,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             MainManager.Instance.block_Vertical_InFront.blockPosition = Vector3.zero;
             MainManager.Instance.block_Vertical_InFront.blockElement = BlockElement.None;
             MainManager.Instance.block_Vertical_InFront.blockType = BlockType.None;
+            MainManager.Instance.block_Vertical_InFront.blockAbility = BlockAbility.None;
         }
         else if (rayPointObject == detectorSpot_Vertical_Back)
         {
@@ -517,6 +524,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             MainManager.Instance.block_Vertical_InBack.blockPosition = Vector3.zero;
             MainManager.Instance.block_Vertical_InBack.blockElement = BlockElement.None;
             MainManager.Instance.block_Vertical_InBack.blockType = BlockType.None;
+            MainManager.Instance.block_Vertical_InBack.blockAbility = BlockAbility.None;
         }
         else if (rayPointObject == detectorSpot_Vertical_Left)
         {
@@ -524,6 +532,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             MainManager.Instance.block_Vertical_ToTheLeft.blockPosition = Vector3.zero;
             MainManager.Instance.block_Vertical_ToTheLeft.blockElement = BlockElement.None;
             MainManager.Instance.block_Vertical_ToTheLeft.blockType = BlockType.None;
+            MainManager.Instance.block_Vertical_ToTheLeft.blockAbility = BlockAbility.None;
         }
         else if (rayPointObject == detectorSpot_Vertical_Right)
         {
@@ -531,6 +540,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             MainManager.Instance.block_Vertical_ToTheRight.blockPosition = Vector3.zero;
             MainManager.Instance.block_Vertical_ToTheRight.blockElement = BlockElement.None;
             MainManager.Instance.block_Vertical_ToTheRight.blockType = BlockType.None;
+            MainManager.Instance.block_Vertical_ToTheRight.blockAbility = BlockAbility.None;
         }
     }
     void ResetRaycastDirection_Vertical(Vector3 direction)

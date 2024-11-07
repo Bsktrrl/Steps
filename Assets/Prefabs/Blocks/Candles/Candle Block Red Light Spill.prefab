@@ -295,6 +295,7 @@ GameObject:
   - component: {fileID: -4822600992590698351}
   - component: {fileID: -7102206156617372757}
   - component: {fileID: -7099720654778653960}
+  - component: {fileID: 6740803185805792399}
   m_Layer: 0
   m_Name: Candle Block Red Light Spill
   m_TagString: Untagged
@@ -410,6 +411,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockElement: 8
   blockType: 1
+  blockAbility: 3
   movementCost: 1
   movementSpeed: 5
   stepCostText_Color: {r: 0.4392157, g: 0.07450981, b: 0.08627451, a: 1}
@@ -428,6 +430,19 @@ MonoBehaviour:
   stepCostDisplay_Parent: {fileID: 598139256552657148}
   stepCostDisplay_Canvas: {fileID: 7883235097053037485}
   stepCostText_Object: {fileID: 7766395105136153511}
+--- !u!114 &6740803185805792399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6038563314524661655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d9432b0764691042bc3d837d8ea5dca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSteppedOn: 0
 --- !u!1 &7766395105136153511
 GameObject:
   m_ObjectHideFlags: 0

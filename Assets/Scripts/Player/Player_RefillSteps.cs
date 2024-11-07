@@ -15,7 +15,7 @@ public class Player_RefillSteps : MonoBehaviour
 
     void RefillAvailableSteps()
     {
-        if (MainManager.Instance.block_StandingOn.blockElement == BlockElement.RefillSteps)
+        if (MainManager.Instance.block_StandingOn.blockAbility == BlockAbility.RefillSteps)
         {
             gameObject.GetComponent<Player_Stats>().stats.steps_Current = gameObject.GetComponent<Player_Stats>().stats.steps_Max;
         }

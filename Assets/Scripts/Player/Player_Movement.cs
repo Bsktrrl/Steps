@@ -16,7 +16,8 @@ public class Player_Movement : Singleton<Player_Movement>
     public ButtonsToPress lastMovementButtonPressed;
 
     [Header("Player Movement over Blocks")]
-    float heightOverBlock = 0.85f;
+    [HideInInspector] public float heightOverBlock = 0.95f;
+    public float fallSpeed = 6f;
 
     //Other
     Vector3 endDestination;
@@ -42,6 +43,8 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             movementStates = MovementStates.Still;
         }
+
+        PlayerHover();
     }
 
 
@@ -202,6 +205,29 @@ public class Player_Movement : Singleton<Player_Movement>
             movementStates = MovementStates.Still;
 
             Action_StepTaken?.Invoke();
+        }
+    }
+    void PlayerHover()
+    {
+        //Don't hover if teleporting
+        if (MainManager.Instance.player.GetComponent<Player_Teleport>().isTeleporting) { return; }
+
+        //Don't fall if moving
+        if (movementStates == MovementStates.Moving)
+        {
+            return;
+        }
+
+        //Hover over blocks you're standing on
+        else if (movementStates == MovementStates.Still && MainManager.Instance.block_StandingOn.block)
+        {
+            gameObject.transform.position = MainManager.Instance.block_StandingOn.block.transform.position + (Vector3.up * heightOverBlock);
+        }
+
+        //Fall if standing still and no block is under the player
+        else if (movementStates == MovementStates.Still && !MainManager.Instance.block_StandingOn.block)
+        {
+            gameObject.transform.position = gameObject.transform.position + (Vector3.down * fallSpeed * Time.deltaTime);
         }
     }
 

@@ -113,6 +113,7 @@ GameObject:
   - component: {fileID: 9003401136763078288}
   - component: {fileID: 2777181215963510340}
   - component: {fileID: 3957248811615775525}
+  - component: {fileID: 7405911231007403860}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -129,7 +130,7 @@ Transform:
   m_GameObject: {fileID: 1113039739388874501}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8, y: 0.1, z: 0}
+  m_LocalPosition: {x: 0, y: 0.9, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -240,6 +241,8 @@ MonoBehaviour:
   currentMovementCost: 0
   movementStates: 0
   lastMovementButtonPressed: 0
+  heightOverBlock: 0.95
+  fallSpeed: 6
   iceGliding: 0
 --- !u!114 &-2864528110141520541
 MonoBehaviour:
@@ -322,7 +325,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baa9b94671106074e9db8e34f1e8be02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  newLandingSpot: {fileID: 0}
+  isTeleporting: 0
+--- !u!114 &7405911231007403860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113039739388874501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c20fc2b189d54e040ac54906f133f06d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1579374389231818420
 GameObject:
   m_ObjectHideFlags: 0
