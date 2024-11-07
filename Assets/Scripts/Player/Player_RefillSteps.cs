@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_RefillBlock : MonoBehaviour
+public class Player_RefillSteps : MonoBehaviour
 {
     private void Start()
     {
