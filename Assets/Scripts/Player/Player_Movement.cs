@@ -196,7 +196,7 @@ public class Player_Movement : Singleton<Player_Movement>
         }
 
         //Snap into place when close enough
-        if (Vector3.Distance(MainManager.Instance.player.transform.position, endDestination) <= 0.05f)
+        if (Vector3.Distance(MainManager.Instance.player.transform.position, endDestination) <= 0.03f)
         {
             MainManager.Instance.player.transform.position = endDestination;
             movementStates = MovementStates.Still;

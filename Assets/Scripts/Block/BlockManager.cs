@@ -36,6 +36,10 @@ public enum BlockElement
     Sandstone,
     Snow,
     Rock,
+
+    RefillSteps,
+    Teleporter,
+
 }
 public enum BlockType
 {
