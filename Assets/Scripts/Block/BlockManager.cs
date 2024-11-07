@@ -51,20 +51,3 @@ public enum BlockType
     Slope,
 
 }
-
-public enum BlockAbility
-{
-    None,
-
-    RefillSteps,
-    Teleporter,
-
-    Falling,
-    Weak,
-    Movable,
-
-    Rotator,
-    Pusher,
-    Elevator,
-    Transporter,
-}

@@ -15,12 +15,9 @@ public class Player_FallingBlock : MonoBehaviour
 
     void StepsOnFallableBlock()
     {
-        if (MainManager.Instance.block_StandingOn.blockAbility == BlockAbility.Falling)
+        if (MainManager.Instance.block_StandingOn.block.GetComponent<Block_Falling>())
         {
-            if (MainManager.Instance.block_StandingOn.block.GetComponent<Block_Falling>())
-            {
-                MainManager.Instance.block_StandingOn.block.GetComponent<Block_Falling>().isSteppedOn = true;
-            }
+            MainManager.Instance.block_StandingOn.block.GetComponent<Block_Falling>().isSteppedOn = true;
         }
     }
 }

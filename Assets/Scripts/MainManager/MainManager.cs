@@ -45,5 +45,4 @@ public class DetectedBlockInfo
 
     public BlockElement blockElement;
     public BlockType blockType;
-    public BlockAbility blockAbility;
 }

@@ -7,7 +7,6 @@ public class BlockInfo : MonoBehaviour
     [Header("Block Stats")]
     public BlockElement blockElement;
     public BlockType blockType;
-    public BlockAbility blockAbility;
     public int movementCost;
     public float movementSpeed;
     public Color stepCostText_Color;

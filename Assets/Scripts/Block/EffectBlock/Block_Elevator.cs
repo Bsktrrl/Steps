@@ -7,11 +7,11 @@ public class Block_Elevator : MonoBehaviour
     public elevatorDirection elevatorDirection;
     public int distance;
     public float movementSpeed = 5f;
+    public float waitingTime = 2f;
 
     Vector3 startPos;
     Vector3 endPos;
 
-    float waitTime = 1;
     bool moveToEndPos;
     bool waiting;
 
@@ -79,7 +79,7 @@ public class Block_Elevator : MonoBehaviour
 
     void ElevatorMovement_ToEndPos()
     {
-        transform.position = Vector3.MoveTowards(transform.position, endPos, distance * movementSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, endPos, movementSpeed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, endPos) <= 0.03f)
         {
@@ -90,7 +90,7 @@ public class Block_Elevator : MonoBehaviour
     }
     void ElevatorMovement_ToStartPos()
     {
-        transform.position = Vector3.MoveTowards(transform.position, startPos, distance * movementSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, startPos, movementSpeed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, startPos) <= 0.03f)
         {
@@ -104,7 +104,7 @@ public class Block_Elevator : MonoBehaviour
     {
         waiting = true;
 
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(waitingTime);
 
         waiting = false;
     }

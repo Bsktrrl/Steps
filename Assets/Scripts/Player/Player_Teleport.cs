@@ -22,14 +22,11 @@ public class Player_Teleport : MonoBehaviour
 
     void TeleportPlayer()
     {
-        if (MainManager.Instance.block_StandingOn.blockAbility == BlockAbility.Teleporter)
+        if (MainManager.Instance.block_StandingOn.block.GetComponent<Block_Teleport>())
         {
-            if (MainManager.Instance.block_StandingOn.block.GetComponent<Block_Teleport>())
+            if (MainManager.Instance.block_StandingOn.block.GetComponent<Block_Teleport>().newLandingSpot)
             {
-                if (MainManager.Instance.block_StandingOn.block.GetComponent<Block_Teleport>().newLandingSpot)
-                {
-                    StartCoroutine(TeleportWait(0.01f));
-                }
+                StartCoroutine(TeleportWait(0.01f));
             }
         }
     }
