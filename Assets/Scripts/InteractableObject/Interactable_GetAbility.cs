@@ -40,6 +40,39 @@ public class Interactable_GetAbility : MonoBehaviour
                     Player_Stats.Instance.UpdateHikerGear();
                     break;
 
+                case Abilities.IceSpikes:
+                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.IceSpikes = true;
+                    Player_Stats.Instance.UpdateIceSpikes();
+                    break;
+                case Abilities.GrapplingHook:
+                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.GrapplingHook = true;
+                    Player_Stats.Instance.UpdateGrapplingHook();
+                    break;
+                case Abilities.Hammer:
+                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.Hammer = true;
+                    Player_Stats.Instance.UpdateHammer();
+                    break;
+                case Abilities.ClimbingGear:
+                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.ClimbingGear = true;
+                    Player_Stats.Instance.UpdateClimbingGear();
+                    break;
+                case Abilities.Dash:
+                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.Dash = true;
+                    Player_Stats.Instance.UpdateDash();
+                    break;
+                case Abilities.Ascend:
+                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.Ascend = true;
+                    Player_Stats.Instance.UpdateAscend();
+                    break;
+                case Abilities.Descend:
+                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.Descend = true;
+                    Player_Stats.Instance.UpdateDescend();
+                    break;
+                case Abilities.ControlStick:
+                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.ControlStick = true;
+                    Player_Stats.Instance.UpdateControlStick();
+                    break;
+
                 default:
                     break;
             }
@@ -56,4 +89,13 @@ public enum Abilities
     Flippers,
     LavaSuit,
     HikersKit,
+
+    IceSpikes,
+    GrapplingHook,
+    Hammer,
+    ClimbingGear,
+    Dash,
+    Ascend,
+    Descend,
+    ControlStick,
 }

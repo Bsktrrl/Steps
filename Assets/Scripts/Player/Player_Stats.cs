@@ -11,12 +11,6 @@ public class Player_Stats : Singleton<Player_Stats>
     public static event Action updateCoins;
     public static event Action updateStepsMax;
 
-    public static event Action updateFenceSneak;
-    public static event Action updateSwimsuit;
-    public static event Action updateFlippers;
-    public static event Action updateHikerGear;
-    public static event Action updateLavaSuit;
-
     public Vector3 savePos;
 
     public Stats stats;
@@ -102,23 +96,55 @@ public class Player_Stats : Singleton<Player_Stats>
     //Abilities
     public void UpdateFenceSneak()
     {
-        updateFenceSneak?.Invoke();
+        stats.abilities.FenceSneak = true;
     }
     public void UpdateSwimsuit()
     {
-        updateSwimsuit?.Invoke();
+        stats.abilities.SwimSuit = true;
     }
     public void UpdateFlippers()
     {
-        updateFlippers?.Invoke();
-    }
-    public void UpdateHikerGear()
-    {
-        updateHikerGear?.Invoke();
+        stats.abilities.Flippers = true;
     }
     public void UpdateLavaSuit()
     {
-        updateLavaSuit?.Invoke();
+        stats.abilities.LavaSuit = true;
+    }
+    public void UpdateHikerGear()
+    {
+        stats.abilities.HikerGear = true;
+    }
+    public void UpdateIceSpikes()
+    {
+        stats.abilities.IceSpikes = true;
+    }
+    public void UpdateGrapplingHook()
+    {
+        stats.abilities.GrapplingHook = true;
+    }
+    public void UpdateHammer()
+    {
+        stats.abilities.Hammer = true;
+    }
+    public void UpdateClimbingGear()
+    {
+        stats.abilities.ClimbingGear = true;
+    }
+    public void UpdateDash()
+    {
+        stats.abilities.Dash = true;
+    }
+    public void UpdateAscend()
+    {
+        stats.abilities.Ascend = true;
+    }
+    public void UpdateDescend()
+    {
+        stats.abilities.Descend = true;
+    }
+    public void UpdateControlStick()
+    {
+        stats.abilities.ControlStick = true;
     }
 }
 
@@ -155,4 +181,13 @@ public class AbilitiesGot
     public bool LavaSuit;
 
     public bool HikerGear;
+
+    public bool IceSpikes;
+    public bool GrapplingHook;
+    public bool Hammer;
+    public bool ClimbingGear;
+    public bool Dash;
+    public bool Ascend;
+    public bool Descend;
+    public bool ControlStick;
 }

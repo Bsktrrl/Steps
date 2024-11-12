@@ -34,56 +34,62 @@ public class Player_Ascend : Singleton<Player_Ascend>
 
     bool RaycastForAscending()
     {
-        if (Physics.Raycast(transform.position, Vector3.up, out hit, 3f))
+        if (gameObject.GetComponent<Player_Stats>().stats.abilities.Ascend)
         {
-            if (hit.transform.GetComponent<BlockInfo>())
+            if (Physics.Raycast(transform.position, Vector3.up, out hit, 3f))
             {
-                if (!hit.transform.GetComponent<BlockInfo>().upper_Center)
+                if (hit.transform.GetComponent<BlockInfo>())
                 {
-                    ascendingBlock_Previous = ascendingBlock_Current;
-                    ascendingBlock_Current = hit.transform.gameObject;
-
-                    if (ascendingBlock_Current != ascendingBlock_Previous)
+                    if (!hit.transform.GetComponent<BlockInfo>().upper_Center)
                     {
-                        if (ascendingBlock_Previous)
+                        ascendingBlock_Previous = ascendingBlock_Current;
+                        ascendingBlock_Current = hit.transform.gameObject;
+
+                        if (ascendingBlock_Current != ascendingBlock_Previous)
                         {
-                            if (ascendingBlock_Previous.GetComponent<BlockInfo>())
+                            if (ascendingBlock_Previous)
                             {
-                                ascendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                                if (ascendingBlock_Previous.GetComponent<BlockInfo>())
+                                {
+                                    ascendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                                }
                             }
                         }
+
+                        ascendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+
+                        return true;
                     }
+                }
+            }
 
-                    ascendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
-
-                    return true;
+            if (ascendingBlock_Current)
+            {
+                if (ascendingBlock_Current.GetComponent<BlockInfo>())
+                {
+                    ascendingBlock_Current.GetComponent<BlockInfo>().ResetColor();
+                    ascendingBlock_Current = null;
+                }
+            }
+            if (ascendingBlock_Previous)
+            {
+                if (ascendingBlock_Previous.GetComponent<BlockInfo>())
+                {
+                    ascendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                    ascendingBlock_Previous = null;
                 }
             }
         }
-
-        if (ascendingBlock_Current)
-        {
-            if (ascendingBlock_Current.GetComponent<BlockInfo>())
-            {
-                ascendingBlock_Current.GetComponent<BlockInfo>().ResetColor();
-                ascendingBlock_Current = null;
-            }
-        }
-        if (ascendingBlock_Previous)
-        {
-            if (ascendingBlock_Previous.GetComponent<BlockInfo>())
-            {
-                ascendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
-                ascendingBlock_Previous = null;
-            }
-        }
-
+        
         return false;
     }
 
     public void Ascend()
     {
-        StartCoroutine(AscendingWait(0.01f));
+        if (gameObject.GetComponent<Player_Stats>().stats.abilities.Ascend)
+        {
+            StartCoroutine(AscendingWait(0.01f));
+        }
     }
     public IEnumerator AscendingWait(float waitTime)
     {
