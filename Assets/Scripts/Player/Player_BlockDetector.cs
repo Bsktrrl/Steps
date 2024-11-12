@@ -11,7 +11,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     public GameObject blockDetector_Parent;
 
     [Header("DetectorSpots upper_Center")]
-    [SerializeField] GameObject detectorSpot_Vertical_Center;
+    public GameObject detectorSpot_Vertical_Center;
 
     [Header("DetectorSpots Horizontal")]
     [SerializeField] GameObject detectorSpot_Horizontal_Front;
@@ -121,7 +121,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         UpdateStairRaycast();
     }
 
-    void PerformRaycast_Center_Vertical(GameObject rayPointObject, Vector3 direction)
+    public void PerformRaycast_Center_Vertical(GameObject rayPointObject, Vector3 direction)
     {
         if (Physics.Raycast(rayPointObject.transform.position, direction, out hit, maxDistance_Horizontal))
         {

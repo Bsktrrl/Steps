@@ -12391,7 +12391,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 544321348}
   m_Follow: {fileID: 544321348}
   m_Lens:
-    FieldOfView: 60
+    FieldOfView: 80
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -21579,7 +21579,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 544321348}
   m_Follow: {fileID: 544321348}
   m_Lens:
-    FieldOfView: 60
+    FieldOfView: 80
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -22914,7 +22914,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 544321348}
   m_Follow: {fileID: 544321348}
   m_Lens:
-    FieldOfView: 60
+    FieldOfView: 80
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -38703,7 +38703,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 80
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -39168,6 +39168,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3986576037543488350, guid: 6ac083946db084141bdbe559f16f66cd, type: 3}
+      propertyPath: descendingSpeed
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: -3572959774394520723, guid: 6ac083946db084141bdbe559f16f66cd, type: 3}
       propertyPath: cameraZoom_mid
       value: 40
@@ -40055,7 +40059,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 544321348}
   m_Follow: {fileID: 544321348}
   m_Lens:
-    FieldOfView: 60
+    FieldOfView: 80
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000

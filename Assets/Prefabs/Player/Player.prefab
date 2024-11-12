@@ -363,7 +363,9 @@ MonoBehaviour:
   playerCanAscend: 0
   ascendingBlock_Previous: {fileID: 0}
   ascendingBlock_Current: {fileID: 0}
-  AscendingDistance: 3
+  ascendingBlock_Target: {fileID: 0}
+  ascendingDistance: 3
+  ascendingSpeed: 15
 --- !u!114 &-3986576037543488350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,7 +381,9 @@ MonoBehaviour:
   playerCanDescend: 0
   descendingBlock_Previous: {fileID: 0}
   descendingBlock_Current: {fileID: 0}
+  descendingBlock_Target: {fileID: 0}
   descendingDistance: 4
+  descendingSpeed: 20
 --- !u!1 &1579374389231818420
 GameObject:
   m_ObjectHideFlags: 0

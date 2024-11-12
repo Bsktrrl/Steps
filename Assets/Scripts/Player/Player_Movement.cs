@@ -284,6 +284,15 @@ public class Player_Movement : Singleton<Player_Movement>
             iceGliding = false;
         }
     }
+
+    public void Action_StepTakenInvoke()
+    {
+        Action_StepTaken?.Invoke();
+    }
+    public void Action_ResetBlockColorInvoke()
+    {
+        Action_resetBlockColor?.Invoke();
+    }
 }
 
 public enum MovementStates

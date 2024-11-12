@@ -8,7 +8,11 @@ public class Player_Descend : MonoBehaviour
     public bool playerCanDescend;
     public GameObject descendingBlock_Previous;
     public GameObject descendingBlock_Current;
+    public GameObject descendingBlock_Target;
     public float descendingDistance = 4;
+    public float descendingSpeed = 20;
+
+    bool isDescending;
 
     RaycastHit hit;
 
@@ -26,6 +30,8 @@ public class Player_Descend : MonoBehaviour
         {
             playerCanDescend = false;
         }
+
+        PerformDescendMovement();
     }
 
 
@@ -86,26 +92,53 @@ public class Player_Descend : MonoBehaviour
         return false;
     }
 
+
+    //--------------------
+
+
+    void PerformDescendMovement()
+    {
+        if (isDescending)
+        {
+            Vector3 targetPos = descendingBlock_Target.transform.position + (Vector3.up * Player_Movement.Instance.heightOverBlock);
+
+            MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, targetPos, descendingSpeed * Time.deltaTime);
+
+            //Snap into place when close enough
+            if (Vector3.Distance(MainManager.Instance.player.transform.position, targetPos) <= 0.03f)
+            {
+                MainManager.Instance.player.transform.position = targetPos;
+
+                MainManager.Instance.pauseGame = false;
+                gameObject.GetComponent<Player_Teleport>().isTeleporting = false;
+                isDescending = false;
+
+                Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
+
+                if (MainManager.Instance.block_StandingOn.block)
+                {
+                    Player_Movement.Instance.currentMovementCost = MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().movementCost;
+                }
+
+                Player_Movement.Instance.Action_StepTakenInvoke();
+                Player_Movement.Instance.Action_ResetBlockColorInvoke();
+            }
+        }
+    }
+
+
+    //--------------------
+
+
     public void Descend()
     {
         if (gameObject.GetComponent<Player_Stats>().stats.abilities.Descend)
         {
-            StartCoroutine(DescendingWait(0.01f));
+            MainManager.Instance.pauseGame = true;
+            gameObject.GetComponent<Player_Teleport>().isTeleporting = true;
+            isDescending = true;
+
+            descendingBlock_Target = descendingBlock_Current;
         }
-    }
-    public IEnumerator DescendingWait(float waitTime)
-    {
-        gameObject.GetComponent<Player_Teleport>().isTeleporting = true;
-
-        yield return new WaitForSeconds(waitTime);
-
-        if (descendingBlock_Current)
-        {
-            Vector3 newPos = descendingBlock_Current.transform.position;
-
-            gameObject.transform.position = new Vector3(newPos.x, newPos.y + gameObject.GetComponent<Player_Movement>().heightOverBlock, newPos.z);
-        }
-
-        gameObject.GetComponent<Player_Teleport>().isTeleporting = false;
     }
 }
