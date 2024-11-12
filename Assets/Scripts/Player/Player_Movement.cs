@@ -85,6 +85,15 @@ public class Player_Movement : Singleton<Player_Movement>
             lastMovementButtonPressed = ButtonsToPress.D;
             MovementKeyIsPressed(MainManager.Instance.canMove_Right, MainManager.Instance.block_Vertical_ToTheRight, 90);
         }
+
+        //If pressing ASCEND
+        else if (Input.GetKey(KeyCode.Space))
+        {
+            if (gameObject.GetComponent<Player_Ascend>().playerCanAscend)
+            {
+                gameObject.GetComponent<Player_Ascend>().Ascend();
+            }
+        }
     }
     void MovementKeyIsPressed(bool canMove, DetectedBlockInfo block_Vertical, int rotation)
     {

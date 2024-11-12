@@ -93,39 +93,39 @@ public class BlockInfo : MonoBehaviour
     void GetAdjacentBlocksInfo()
     {
         //Upper Layer
-        upper_Front_Left = RaycastBlocks(Vector3.up, Vector3.forward, Vector3.left);
-        upper_Front = RaycastBlocks(Vector3.up, Vector3.forward, Vector3.zero);
-        upper_Front_Right = RaycastBlocks(Vector3.up, Vector3.forward, Vector3.right);
-        upper_Center_Left = RaycastBlocks(Vector3.up, Vector3.zero, Vector3.left);
-        upper_Center = RaycastBlocks(Vector3.up, Vector3.zero, Vector3.zero);
-        upper_Center_Right = RaycastBlocks(Vector3.up, Vector3.zero, Vector3.right);
-        upper_Back_Left = RaycastBlocks(Vector3.up, Vector3.back, Vector3.left);
-        upper_Back = RaycastBlocks(Vector3.up, Vector3.back, Vector3.zero);
-        upper_Back_Right = RaycastBlocks(Vector3.up, Vector3.back, Vector3.right);
+        upper_Front_Left = FindBlock(Vector3.up, Vector3.forward, Vector3.left);
+        upper_Front = FindBlock(Vector3.up, Vector3.forward, Vector3.zero);
+        upper_Front_Right = FindBlock(Vector3.up, Vector3.forward, Vector3.right);
+        upper_Center_Left = FindBlock(Vector3.up, Vector3.zero, Vector3.left);
+        upper_Center = FindBlock(Vector3.up, Vector3.zero, Vector3.zero);
+        upper_Center_Right = FindBlock(Vector3.up, Vector3.zero, Vector3.right);
+        upper_Back_Left = FindBlock(Vector3.up, Vector3.back, Vector3.left);
+        upper_Back = FindBlock(Vector3.up, Vector3.back, Vector3.zero);
+        upper_Back_Right = FindBlock(Vector3.up, Vector3.back, Vector3.right);
 
         //Middle Layer
-        center_Front_Left = RaycastBlocks(Vector3.zero, Vector3.forward, Vector3.left);
-        center_Front = RaycastBlocks(Vector3.zero, Vector3.forward, Vector3.zero);
-        center_Front_Right = RaycastBlocks(Vector3.zero, Vector3.forward, Vector3.right);
-        center_Center_Left = RaycastBlocks(Vector3.zero, Vector3.zero, Vector3.left);
-        center_Center = RaycastBlocks(Vector3.zero, Vector3.zero, Vector3.zero);
-        center_Center_Right = RaycastBlocks(Vector3.zero, Vector3.zero, Vector3.right);
-        center_Back_Left = RaycastBlocks(Vector3.zero, Vector3.back, Vector3.left);
-        center_Back = RaycastBlocks(Vector3.zero, Vector3.back, Vector3.zero);
-        center_Back_Right = RaycastBlocks(Vector3.zero, Vector3.back, Vector3.right);
+        center_Front_Left = FindBlock(Vector3.zero, Vector3.forward, Vector3.left);
+        center_Front = FindBlock(Vector3.zero, Vector3.forward, Vector3.zero);
+        center_Front_Right = FindBlock(Vector3.zero, Vector3.forward, Vector3.right);
+        center_Center_Left = FindBlock(Vector3.zero, Vector3.zero, Vector3.left);
+        center_Center = FindBlock(Vector3.zero, Vector3.zero, Vector3.zero);
+        center_Center_Right = FindBlock(Vector3.zero, Vector3.zero, Vector3.right);
+        center_Back_Left = FindBlock(Vector3.zero, Vector3.back, Vector3.left);
+        center_Back = FindBlock(Vector3.zero, Vector3.back, Vector3.zero);
+        center_Back_Right = FindBlock(Vector3.zero, Vector3.back, Vector3.right);
 
         //Lower Layer
-        lower_Front_Left = RaycastBlocks(Vector3.down, Vector3.forward, Vector3.left);
-        lower_Front = RaycastBlocks(Vector3.down, Vector3.forward, Vector3.zero);
-        lower_Front_Right = RaycastBlocks(Vector3.down, Vector3.forward, Vector3.right);
-        lower_Center_Left = RaycastBlocks(Vector3.down, Vector3.zero, Vector3.left);
-        lower_Center = RaycastBlocks(Vector3.down, Vector3.zero, Vector3.zero);
-        lower_Center_Right = RaycastBlocks(Vector3.down, Vector3.zero, Vector3.right);
-        lower_Back_Left = RaycastBlocks(Vector3.down, Vector3.back, Vector3.left);
-        lower_Back = RaycastBlocks(Vector3.down, Vector3.back, Vector3.zero);
-        lower_Back_Right = RaycastBlocks(Vector3.down, Vector3.back, Vector3.right);
+        lower_Front_Left = FindBlock(Vector3.down, Vector3.forward, Vector3.left);
+        lower_Front = FindBlock(Vector3.down, Vector3.forward, Vector3.zero);
+        lower_Front_Right = FindBlock(Vector3.down, Vector3.forward, Vector3.right);
+        lower_Center_Left = FindBlock(Vector3.down, Vector3.zero, Vector3.left);
+        lower_Center = FindBlock(Vector3.down, Vector3.zero, Vector3.zero);
+        lower_Center_Right = FindBlock(Vector3.down, Vector3.zero, Vector3.right);
+        lower_Back_Left = FindBlock(Vector3.down, Vector3.back, Vector3.left);
+        lower_Back = FindBlock(Vector3.down, Vector3.back, Vector3.zero);
+        lower_Back_Right = FindBlock(Vector3.down, Vector3.back, Vector3.right);
     }
-    GameObject RaycastBlocks(Vector3 dir1, Vector3 dir2, Vector3 dir3)
+    GameObject FindBlock(Vector3 dir1, Vector3 dir2, Vector3 dir3)
     {
         return BlockPosManager.Instance.FindGameObjectAtPosition(transform.position + dir1 + dir2 + dir3);
     }
