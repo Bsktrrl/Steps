@@ -39,12 +39,17 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     [SerializeField] float maxDistance_Stair = 0.75f;
     RaycastHit hit;
 
+    public Vector3 lookDir;
+    public float lookDir_Temp;
+
 
     //--------------------
 
 
     private void Update()
     {
+        UpdateBlockLookingAt();
+
         RaycastSetup();
 
         UpdateVerticalRacastLength();
@@ -739,6 +744,58 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         else
         {
             maxDistance_Vertical = maxDistance_Vertical_Normal;
+        }
+    }
+
+    void UpdateBlockLookingAt()
+    {
+        //lookDir_Temp = MainManager.Instance.playerBody.transform.rotation.eulerAngles.y;
+        if (MainManager.Instance.playerBody.transform.rotation.eulerAngles.y == 0)
+            lookDir_Temp = 0;
+        else if (MainManager.Instance.playerBody.transform.rotation.eulerAngles.y == 90)
+            lookDir_Temp = 90;
+        else if (MainManager.Instance.playerBody.transform.rotation.eulerAngles.y == 180)
+            lookDir_Temp = 180;
+        else if (MainManager.Instance.playerBody.transform.rotation.eulerAngles.y == 270)
+            lookDir_Temp = 270;
+        else if (MainManager.Instance.playerBody.transform.rotation.eulerAngles.y == 360)
+            lookDir_Temp = 360;
+        else if (MainManager.Instance.playerBody.transform.rotation.eulerAngles.y == -90)
+            lookDir_Temp = -90;
+        else if (MainManager.Instance.playerBody.transform.rotation.eulerAngles.y == -180)
+            lookDir_Temp = -180;
+        else if (MainManager.Instance.playerBody.transform.rotation.eulerAngles.y == -270)
+            lookDir_Temp = -270;
+        else
+            lookDir_Temp = 0;
+
+        if (lookDir_Temp == 0 || lookDir_Temp == 360)
+            lookDir = Vector3.forward;
+        else if (lookDir_Temp == 180 || lookDir_Temp == -180)
+            lookDir = Vector3.back;
+        else if (lookDir_Temp == 270 || lookDir_Temp == -90)
+            lookDir = Vector3.left;
+        else if (lookDir_Temp == 90 || lookDir_Temp == -270)
+            lookDir = Vector3.right;
+
+        if (Physics.Raycast(transform.position, lookDir, out hit, 1))
+        {
+            Debug.DrawRay(transform.position, lookDir, Color.blue);
+
+            if (hit.transform.GetComponent<BlockInfo>())
+            {
+                MainManager.Instance.block_LookingAt = hit.transform.gameObject;
+            }
+            else
+            {
+                MainManager.Instance.block_LookingAt = null;
+            }
+        }
+        else
+        {
+            Debug.DrawRay(transform.position, lookDir, Color.blue);
+
+            MainManager.Instance.block_LookingAt = null;
         }
     }
 }

@@ -180,7 +180,7 @@ public class AbilitiesGot
     public bool Flippers;
     public bool LavaSuit;
 
-    public bool HikerGear;
+    public bool HikerGear; //Moving up Slopes
 
     public bool IceSpikes;
     public bool GrapplingHook;

@@ -12,6 +12,9 @@ public class MainManager : Singleton<MainManager>
     [Header("Player Block Moving Towards")]
     public DetectedBlockInfo block_MovingTowards;
 
+    [Header("Player Block Looking At")]
+    public GameObject block_LookingAt;
+
     [Header("Player Block Standing On Info")]
     public DetectedBlockInfo block_StandingOn;
 

@@ -19,7 +19,7 @@ public class Cameras : Singleton<Cameras>
     [Header("Camera Zoom")]
     [SerializeField] float zoomScrollValue_Base = 60;
     [SerializeField] float zoomScrollValue_Current;
-    [SerializeField] float zoomScrollSpeed = 5f;
+    [SerializeField] float zoomScrollSpeed = 8;
     [SerializeField] float zoomScrollValue_Min = 40;
     [SerializeField] float zoomScrollValue_Max = 120;
 
@@ -469,7 +469,7 @@ public class Cameras : Singleton<Cameras>
         //Get the scroll input value
         float scrollInput = Input.GetAxis("Mouse ScrollWheel");
 
-        if (scrollInput > 0f)
+        if (scrollInput < 0f)
         {
             //Get ZoomScroll Value
             zoomScrollValue_Current = zoomScrollValue_Current + zoomScrollSpeed;
@@ -486,7 +486,7 @@ public class Cameras : Singleton<Cameras>
             camera_Left.m_Lens.FieldOfView = zoomScrollValue_Current;
             camera_Right.m_Lens.FieldOfView = zoomScrollValue_Current;
         }
-        else if (scrollInput < 0f)
+        else if (scrollInput > 0f)
         {
             //Get ZoomScroll Value
             zoomScrollValue_Current = zoomScrollValue_Current - zoomScrollSpeed;

@@ -136,6 +136,8 @@ public class BlockInfo : MonoBehaviour
 
     public void DarkenColors()
     {
+        if (MainManager.Instance.player.GetComponent<Player_Dash>().isDashing) { return; }
+
         //Don't darken Fences
         if (blockType == BlockType.Fence) { return; }
 

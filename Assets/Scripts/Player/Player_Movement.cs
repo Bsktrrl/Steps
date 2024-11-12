@@ -102,6 +102,15 @@ public class Player_Movement : Singleton<Player_Movement>
                 gameObject.GetComponent<Player_Descend>().Descend();
             }
         }
+
+        //If pressing Space
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (gameObject.GetComponent<Player_Dash>().playerCanDash)
+            {
+                gameObject.GetComponent<Player_Dash>().Dash();
+            }
+        }
     }
     void MovementKeyIsPressed(bool canMove, DetectedBlockInfo block_Vertical, int rotation)
     {
@@ -251,7 +260,7 @@ public class Player_Movement : Singleton<Player_Movement>
     //Begin Ice Gliding
     void IceGlide()
     {
-        if (MainManager.Instance.block_StandingOn.blockElement == BlockElement.Ice)
+        if (MainManager.Instance.block_StandingOn.blockElement == BlockElement.Ice && !Player_Stats.Instance.stats.abilities.IceSpikes)
         {
             iceGliding = true;
             Player_Stats.Instance.stats.steps_Current += MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().movementCost;
