@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class BlockInfo : MonoBehaviour
@@ -10,6 +12,39 @@ public class BlockInfo : MonoBehaviour
     public int movementCost;
     public float movementSpeed;
     public Color stepCostText_Color;
+
+    [Header("Adjacent Blocks - Upper")]
+    public GameObject upper_Front_Left;
+    public GameObject upper_Front;
+    public GameObject upper_Front_Right;
+    public GameObject upper_Center_Left;
+    public GameObject upper_Center;
+    public GameObject upper_Center_Right;
+    public GameObject upper_Back_Left;
+    public GameObject upper_Back;
+    public GameObject upper_Back_Right;
+
+    [Header("Adjacent Blocks - Middle")]
+    public GameObject center_Front_Left;
+    public GameObject center_Front;
+    public GameObject center_Front_Right;
+    public GameObject center_Center_Left;
+    public GameObject center_Center;
+    public GameObject center_Center_Right;
+    public GameObject center_Back_Left;
+    public GameObject center_Back;
+    public GameObject center_Back_Right;
+
+    [Header("Adjacent Blocks - Lower")]
+    public GameObject lower_Front_Left;
+    public GameObject lower_Front;
+    public GameObject lower_Front_Right;
+    public GameObject lower_Center_Left;
+    public GameObject lower_Center;
+    public GameObject lower_Center_Right;
+    public GameObject lower_Back_Left;
+    public GameObject lower_Back;
+    public GameObject lower_Back_Right;
 
     [Header("Material Rendering")]
     List<Renderer> objectRenderers = new List<Renderer>();
@@ -24,6 +59,17 @@ public class BlockInfo : MonoBehaviour
         Player_Movement.Action_resetBlockColor += ResetColor;
         Player_Stats.Action_RespawnToSavePos += ResetColor;
 
+        SetObjectRenderer();
+        SetPropertyBlock();
+        GetAdjacentBlocksInfo();
+    }
+
+
+    //--------------------
+
+
+    void SetObjectRenderer()
+    {
         //Set objectRenderers
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -32,7 +78,9 @@ public class BlockInfo : MonoBehaviour
                 objectRenderers.Add(transform.GetChild(i).GetComponent<MeshRenderer>());
             }
         }
-
+    }
+    void SetPropertyBlock()
+    {
         // Initialize property blocks and get original colors
         for (int i = 0; i < objectRenderers.Count; i++)
         {
@@ -40,6 +88,46 @@ public class BlockInfo : MonoBehaviour
             objectRenderers[i].GetPropertyBlock(block);
             propertyBlocks.Add(block);
         }
+    }
+    
+    void GetAdjacentBlocksInfo()
+    {
+        //Upper Layer
+        upper_Front_Left = RaycastBlocks(Vector3.up, Vector3.forward, Vector3.left);
+        upper_Front = RaycastBlocks(Vector3.up, Vector3.forward, Vector3.zero);
+        upper_Front_Right = RaycastBlocks(Vector3.up, Vector3.forward, Vector3.right);
+        upper_Center_Left = RaycastBlocks(Vector3.up, Vector3.zero, Vector3.left);
+        upper_Center = RaycastBlocks(Vector3.up, Vector3.zero, Vector3.zero);
+        upper_Center_Right = RaycastBlocks(Vector3.up, Vector3.zero, Vector3.right);
+        upper_Back_Left = RaycastBlocks(Vector3.up, Vector3.back, Vector3.left);
+        upper_Back = RaycastBlocks(Vector3.up, Vector3.back, Vector3.zero);
+        upper_Back_Right = RaycastBlocks(Vector3.up, Vector3.back, Vector3.right);
+
+        //Middle Layer
+        center_Front_Left = RaycastBlocks(Vector3.zero, Vector3.forward, Vector3.left);
+        center_Front = RaycastBlocks(Vector3.zero, Vector3.forward, Vector3.zero);
+        center_Front_Right = RaycastBlocks(Vector3.zero, Vector3.forward, Vector3.right);
+        center_Center_Left = RaycastBlocks(Vector3.zero, Vector3.zero, Vector3.left);
+        center_Center = RaycastBlocks(Vector3.zero, Vector3.zero, Vector3.zero);
+        center_Center_Right = RaycastBlocks(Vector3.zero, Vector3.zero, Vector3.right);
+        center_Back_Left = RaycastBlocks(Vector3.zero, Vector3.back, Vector3.left);
+        center_Back = RaycastBlocks(Vector3.zero, Vector3.back, Vector3.zero);
+        center_Back_Right = RaycastBlocks(Vector3.zero, Vector3.back, Vector3.right);
+
+        //Lower Layer
+        lower_Front_Left = RaycastBlocks(Vector3.down, Vector3.forward, Vector3.left);
+        lower_Front = RaycastBlocks(Vector3.down, Vector3.forward, Vector3.zero);
+        lower_Front_Right = RaycastBlocks(Vector3.down, Vector3.forward, Vector3.right);
+        lower_Center_Left = RaycastBlocks(Vector3.down, Vector3.zero, Vector3.left);
+        lower_Center = RaycastBlocks(Vector3.down, Vector3.zero, Vector3.zero);
+        lower_Center_Right = RaycastBlocks(Vector3.down, Vector3.zero, Vector3.right);
+        lower_Back_Left = RaycastBlocks(Vector3.down, Vector3.back, Vector3.left);
+        lower_Back = RaycastBlocks(Vector3.down, Vector3.back, Vector3.zero);
+        lower_Back_Right = RaycastBlocks(Vector3.down, Vector3.back, Vector3.right);
+    }
+    GameObject RaycastBlocks(Vector3 dir1, Vector3 dir2, Vector3 dir3)
+    {
+        return BlockPosManager.Instance.FindGameObjectAtPosition(transform.position + dir1 + dir2 + dir3);
     }
 
 

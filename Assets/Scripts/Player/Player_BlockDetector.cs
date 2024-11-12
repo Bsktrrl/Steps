@@ -10,7 +10,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     [Header("Player BlockDetector Parent")]
     public GameObject blockDetector_Parent;
 
-    [Header("DetectorSpots Center")]
+    [Header("DetectorSpots upper_Center")]
     [SerializeField] GameObject detectorSpot_Vertical_Center;
 
     [Header("DetectorSpots Horizontal")]
