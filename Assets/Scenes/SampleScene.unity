@@ -12325,7 +12325,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 544321348}
   m_Follow: {fileID: 544321348}
   m_Lens:
-    FieldOfView: 60
+    FieldOfView: 120
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -12391,7 +12391,11 @@ MonoBehaviour:
   cameraState_BeforeSwitching: 0
   directionFacing: {x: 0, y: 0, z: 0}
   directionTranslator: 
-  zoomState: 0
+  zoomScrollValue_Base: 60
+  zoomScrollValue_Current: 60
+  zoomScrollSpeed: 5
+  zoomScrollValue_Min: 40
+  zoomScrollValue_Max: 80
   camera_Forward: {fileID: 604055999}
   camera_Back: {fileID: 2126651429}
   camera_Left: {fileID: 1180660405}
@@ -21377,7 +21381,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 544321348}
   m_Follow: {fileID: 544321348}
   m_Lens:
-    FieldOfView: 60
+    FieldOfView: 120
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -22712,7 +22716,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 544321348}
   m_Follow: {fileID: 544321348}
   m_Lens:
-    FieldOfView: 60
+    FieldOfView: 120
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -38364,7 +38368,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 120
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -39716,7 +39720,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 544321348}
   m_Follow: {fileID: 544321348}
   m_Lens:
-    FieldOfView: 60
+    FieldOfView: 120
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000

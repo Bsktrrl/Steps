@@ -17,13 +17,11 @@ public class Cameras : Singleton<Cameras>
     [SerializeField] string directionTranslator;
 
     [Header("Camera Zoom")]
-    public CameraZoomState zoomState;
-
-    float cameraZoom_ExtraShort = 40;
-    float cameraZoom_short = 50;
-    float cameraZoom_mid = 60;
-    float cameraZoom_long = 70;
-    float cameraZoom_ExtraLong = 80;
+    [SerializeField] float zoomScrollValue_Base = 60;
+    [SerializeField] float zoomScrollValue_Current;
+    [SerializeField] float zoomScrollSpeed = 5f;
+    [SerializeField] float zoomScrollValue_Min = 40;
+    [SerializeField] float zoomScrollValue_Max = 120;
 
     [Header("CinemachineVirtualCameras")]
     public CinemachineVirtualCamera camera_Forward;
@@ -63,11 +61,11 @@ public class Cameras : Singleton<Cameras>
         cameraState = CameraState.Forward;
         directionFacing = Vector3.forward;
 
-        zoomState = CameraZoomState.Mid;
-        camera_Forward.m_Lens.FieldOfView = cameraZoom_mid;
-        camera_Back.m_Lens.FieldOfView = cameraZoom_mid;
-        camera_Left.m_Lens.FieldOfView = cameraZoom_mid;
-        camera_Right.m_Lens.FieldOfView = cameraZoom_mid;
+        zoomScrollValue_Current = zoomScrollValue_Base;
+        camera_Forward.m_Lens.FieldOfView = zoomScrollValue_Current;
+        camera_Back.m_Lens.FieldOfView = zoomScrollValue_Current;
+        camera_Left.m_Lens.FieldOfView = zoomScrollValue_Current;
+        camera_Right.m_Lens.FieldOfView = zoomScrollValue_Current;
 
         //Set Active/Unactive cameras
         camera_Forward.gameObject.transform.parent.gameObject.SetActive(true);
@@ -468,301 +466,134 @@ public class Cameras : Singleton<Cameras>
         if (MainManager.Instance.pauseGame) { return; }
         if (isRotating) { return; }
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        //Get the scroll input value
+        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
+
+        if (scrollInput > 0f)
         {
-            switch (zoomState)
+            //Get ZoomScroll Value
+            zoomScrollValue_Current = zoomScrollValue_Current + zoomScrollSpeed;
+
+            //Set ZoomScroll Max Value
+            if ((zoomScrollValue_Current) >= zoomScrollValue_Max)
             {
-                case CameraZoomState.ExtraShort:
-                    zoomState = CameraZoomState.ExtraShort;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_ExtraShort;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_ExtraShort;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_ExtraShort;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_ExtraShort;
-                    break;
-                case CameraZoomState.Short:
-                    zoomState = CameraZoomState.ExtraShort;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_ExtraShort;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_ExtraShort;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_ExtraShort;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_ExtraShort;
-                    break;
-                case CameraZoomState.Mid:
-                    zoomState = CameraZoomState.Short;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_short;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_short;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_short;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_short;
-                    break;
-                case CameraZoomState.Long:
-                    zoomState = CameraZoomState.Mid;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_mid;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_mid;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_mid;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_mid;
-                    break;
-                case CameraZoomState.ExtraLong:
-                    zoomState = CameraZoomState.Long;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_long;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_long;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_long;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_long;
-                    break;
-
-                default:
-                    break;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            switch (zoomState)
-            {
-                case CameraZoomState.ExtraShort:
-                    zoomState = CameraZoomState.Short;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_short;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_short;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_short;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_short;
-                    break;
-                case CameraZoomState.Short:
-                    zoomState = CameraZoomState.Mid;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_mid;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_mid;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_mid;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_mid;
-                    break;
-                case CameraZoomState.Mid:
-                    zoomState = CameraZoomState.Long;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_long;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_long;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_long;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_long;
-                    break;
-                case CameraZoomState.Long:
-                    zoomState = CameraZoomState.ExtraLong;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_ExtraLong;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_ExtraLong;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_ExtraLong;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_ExtraLong;
-                    break;
-                case CameraZoomState.ExtraLong:
-                    zoomState = CameraZoomState.ExtraLong;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_ExtraLong;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_ExtraLong;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_ExtraLong;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_ExtraLong;
-                    break;
-
-                default:
-                    break;
-            }
-        }
-    }
-
-
-    //--------------------
-
-
-    void KeyInputs_OLD()
-    {
-        if (MainManager.Instance.pauseGame) { return; }
-
-        //Rotate Camera
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            switch (cameraState)
-            {
-                case CameraState.Forward:
-                    cameraState = CameraState.Left;
-                    break;
-                case CameraState.Backward:
-                    cameraState = CameraState.Right;
-                    break;
-                case CameraState.Left:
-                    cameraState = CameraState.Backward;
-                    break;
-                case CameraState.Right:
-                    cameraState = CameraState.Forward;
-                    break;
-                default:
-                    break;
+                zoomScrollValue_Current = zoomScrollValue_Max;
             }
 
-            SetBlockDetectorDirection_OLD();
-            SetActiveCamera_OLD();
+            //Set the zoom of all cameras
+            camera_Forward.m_Lens.FieldOfView = zoomScrollValue_Current;
+            camera_Back.m_Lens.FieldOfView = zoomScrollValue_Current;
+            camera_Left.m_Lens.FieldOfView = zoomScrollValue_Current;
+            camera_Right.m_Lens.FieldOfView = zoomScrollValue_Current;
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (scrollInput < 0f)
         {
-            switch (cameraState)
+            //Get ZoomScroll Value
+            zoomScrollValue_Current = zoomScrollValue_Current - zoomScrollSpeed;
+
+            //Set ZoomScroll Max Value
+            if ((zoomScrollValue_Current) <= zoomScrollValue_Min)
             {
-                case CameraState.Forward:
-                    cameraState = CameraState.Right;
-                    break;
-                case CameraState.Backward:
-                    cameraState = CameraState.Left;
-                    break;
-                case CameraState.Left:
-                    cameraState = CameraState.Forward;
-                    break;
-                case CameraState.Right:
-                    cameraState = CameraState.Backward;
-                    break;
-                default:
-                    break;
+                zoomScrollValue_Current = zoomScrollValue_Min;
             }
 
-            SetBlockDetectorDirection_OLD();
-            SetActiveCamera_OLD();
+            //Set the zoom of all cameras
+            camera_Forward.m_Lens.FieldOfView = zoomScrollValue_Current;
+            camera_Back.m_Lens.FieldOfView = zoomScrollValue_Current;
+            camera_Left.m_Lens.FieldOfView = zoomScrollValue_Current;
+            camera_Right.m_Lens.FieldOfView = zoomScrollValue_Current;
         }
 
-        //Zoom
-        SetCameraZoom_OLD();
-    }
+        #region Old Zoom
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    switch (zoomState)
+        //    {
+        //        case CameraZoomState.ExtraShort:
+        //            zoomState = CameraZoomState.ExtraShort;
+        //            camera_Forward.m_Lens.FieldOfView = cameraZoom_ExtraShort;
+        //            camera_Back.m_Lens.FieldOfView = cameraZoom_ExtraShort;
+        //            camera_Left.m_Lens.FieldOfView = cameraZoom_ExtraShort;
+        //            camera_Right.m_Lens.FieldOfView = cameraZoom_ExtraShort;
+        //            break;
+        //        case CameraZoomState.Short:
+        //            zoomState = CameraZoomState.ExtraShort;
+        //            camera_Forward.m_Lens.FieldOfView = cameraZoom_ExtraShort;
+        //            camera_Back.m_Lens.FieldOfView = cameraZoom_ExtraShort;
+        //            camera_Left.m_Lens.FieldOfView = cameraZoom_ExtraShort;
+        //            camera_Right.m_Lens.FieldOfView = cameraZoom_ExtraShort;
+        //            break;
+        //        case CameraZoomState.Mid:
+        //            zoomState = CameraZoomState.Short;
+        //            camera_Forward.m_Lens.FieldOfView = cameraZoom_short;
+        //            camera_Back.m_Lens.FieldOfView = cameraZoom_short;
+        //            camera_Left.m_Lens.FieldOfView = cameraZoom_short;
+        //            camera_Right.m_Lens.FieldOfView = cameraZoom_short;
+        //            break;
+        //        case CameraZoomState.Long:
+        //            zoomState = CameraZoomState.Mid;
+        //            camera_Forward.m_Lens.FieldOfView = cameraZoom_mid;
+        //            camera_Back.m_Lens.FieldOfView = cameraZoom_mid;
+        //            camera_Left.m_Lens.FieldOfView = cameraZoom_mid;
+        //            camera_Right.m_Lens.FieldOfView = cameraZoom_mid;
+        //            break;
+        //        case CameraZoomState.ExtraLong:
+        //            zoomState = CameraZoomState.Long;
+        //            camera_Forward.m_Lens.FieldOfView = cameraZoom_long;
+        //            camera_Back.m_Lens.FieldOfView = cameraZoom_long;
+        //            camera_Left.m_Lens.FieldOfView = cameraZoom_long;
+        //            camera_Right.m_Lens.FieldOfView = cameraZoom_long;
+        //            break;
 
-    void SetActiveCamera_OLD()
-    {
-        switch (cameraState)
-        {
-            case CameraState.Forward:
-                camera_Forward.transform.parent.gameObject.SetActive(true);
-                camera_Back.transform.parent.gameObject.SetActive(false);
-                camera_Left.transform.parent.gameObject.SetActive(false);
-                camera_Right.transform.parent.gameObject.SetActive(false);
-                break;
-            case CameraState.Backward:
-                camera_Forward.transform.parent.gameObject.SetActive(false);
-                camera_Back.transform.parent.gameObject.SetActive(true);
-                camera_Left.transform.parent.gameObject.SetActive(false);
-                camera_Right.transform.parent.gameObject.SetActive(false);
-                break;
-            case CameraState.Left:
-                camera_Forward.transform.parent.gameObject.SetActive(false);
-                camera_Back.transform.parent.gameObject.SetActive(false);
-                camera_Left.transform.parent.gameObject.SetActive(true);
-                camera_Right.transform.parent.gameObject.SetActive(false);
-                break;
-            case CameraState.Right:
-                camera_Forward.transform.parent.gameObject.SetActive(false);
-                camera_Back.transform.parent.gameObject.SetActive(false);
-                camera_Left.transform.parent.gameObject.SetActive(false);
-                camera_Right.transform.parent.gameObject.SetActive(true);
-                break;
-            default:
-                break;
-        }
-    }
+        //        default:
+        //            break;
+        //    }
+        //}
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    switch (zoomState)
+        //    {
+        //        case CameraZoomState.ExtraShort:
+        //            zoomState = CameraZoomState.Short;
+        //            camera_Forward.m_Lens.FieldOfView = cameraZoom_short;
+        //            camera_Back.m_Lens.FieldOfView = cameraZoom_short;
+        //            camera_Left.m_Lens.FieldOfView = cameraZoom_short;
+        //            camera_Right.m_Lens.FieldOfView = cameraZoom_short;
+        //            break;
+        //        case CameraZoomState.Short:
+        //            zoomState = CameraZoomState.Mid;
+        //            camera_Forward.m_Lens.FieldOfView = cameraZoom_mid;
+        //            camera_Back.m_Lens.FieldOfView = cameraZoom_mid;
+        //            camera_Left.m_Lens.FieldOfView = cameraZoom_mid;
+        //            camera_Right.m_Lens.FieldOfView = cameraZoom_mid;
+        //            break;
+        //        case CameraZoomState.Mid:
+        //            zoomState = CameraZoomState.Long;
+        //            camera_Forward.m_Lens.FieldOfView = cameraZoom_long;
+        //            camera_Back.m_Lens.FieldOfView = cameraZoom_long;
+        //            camera_Left.m_Lens.FieldOfView = cameraZoom_long;
+        //            camera_Right.m_Lens.FieldOfView = cameraZoom_long;
+        //            break;
+        //        case CameraZoomState.Long:
+        //            zoomState = CameraZoomState.ExtraLong;
+        //            camera_Forward.m_Lens.FieldOfView = cameraZoom_ExtraLong;
+        //            camera_Back.m_Lens.FieldOfView = cameraZoom_ExtraLong;
+        //            camera_Left.m_Lens.FieldOfView = cameraZoom_ExtraLong;
+        //            camera_Right.m_Lens.FieldOfView = cameraZoom_ExtraLong;
+        //            break;
+        //        case CameraZoomState.ExtraLong:
+        //            zoomState = CameraZoomState.ExtraLong;
+        //            camera_Forward.m_Lens.FieldOfView = cameraZoom_ExtraLong;
+        //            camera_Back.m_Lens.FieldOfView = cameraZoom_ExtraLong;
+        //            camera_Left.m_Lens.FieldOfView = cameraZoom_ExtraLong;
+        //            camera_Right.m_Lens.FieldOfView = cameraZoom_ExtraLong;
+        //            break;
 
-    void SetCameraZoom_OLD()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            switch (zoomState)
-            {
-                case CameraZoomState.ExtraShort:
-                    zoomState = CameraZoomState.ExtraShort;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_ExtraShort;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_ExtraShort;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_ExtraShort;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_ExtraShort;
-                    break;
-                case CameraZoomState.Short:
-                    zoomState = CameraZoomState.ExtraShort;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_ExtraShort;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_ExtraShort;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_ExtraShort;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_ExtraShort;
-                    break;
-                case CameraZoomState.Mid:
-                    zoomState = CameraZoomState.Short;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_short;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_short;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_short;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_short;
-                    break;
-                case CameraZoomState.Long:
-                    zoomState = CameraZoomState.Mid;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_mid;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_mid;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_mid;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_mid;
-                    break;
-                case CameraZoomState.ExtraLong:
-                    zoomState = CameraZoomState.Long;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_long;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_long;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_long;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_long;
-                    break;
-
-                default:
-                    break;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            switch (zoomState)
-            {
-                case CameraZoomState.ExtraShort:
-                    zoomState = CameraZoomState.Short;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_short;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_short;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_short;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_short;
-                    break;
-                case CameraZoomState.Short:
-                    zoomState = CameraZoomState.Mid;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_mid;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_mid;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_mid;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_mid;
-                    break;
-                case CameraZoomState.Mid:
-                    zoomState = CameraZoomState.Long;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_long;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_long;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_long;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_long;
-                    break;
-                case CameraZoomState.Long:
-                    zoomState = CameraZoomState.ExtraLong;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_ExtraLong;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_ExtraLong;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_ExtraLong;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_ExtraLong;
-                    break;
-                case CameraZoomState.ExtraLong:
-                    zoomState = CameraZoomState.ExtraLong;
-                    camera_Forward.m_Lens.FieldOfView = cameraZoom_ExtraLong;
-                    camera_Back.m_Lens.FieldOfView = cameraZoom_ExtraLong;
-                    camera_Left.m_Lens.FieldOfView = cameraZoom_ExtraLong;
-                    camera_Right.m_Lens.FieldOfView = cameraZoom_ExtraLong;
-                    break;
-
-                default:
-                    break;
-            }
-        }
-    }
-
-    void SetBlockDetectorDirection_OLD()
-    {
-        switch (cameraState)
-        {
-            case CameraState.Forward:
-                MainManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(MainManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 0, 0));
-                break;
-            case CameraState.Backward:
-                MainManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(MainManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 180, 0));
-                break;
-            case CameraState.Left:
-                MainManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(MainManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 90, 0));
-                break;
-            case CameraState.Right:
-                MainManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(MainManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, -90, 0));
-                break;
-
-            default:
-                break;
-        }
+        //        default:
+        //            break;
+        //    }
+        //}
+        #endregion
     }
 
 
