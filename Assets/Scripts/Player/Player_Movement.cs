@@ -87,11 +87,19 @@ public class Player_Movement : Singleton<Player_Movement>
         }
 
         //If pressing ASCEND
-        else if (Input.GetKey(KeyCode.Space))
+        else if (Input.GetKeyDown(KeyCode.E))
         {
             if (gameObject.GetComponent<Player_Ascend>().playerCanAscend)
             {
                 gameObject.GetComponent<Player_Ascend>().Ascend();
+            }
+        }
+        //If pressing DESCEND
+        else if (Input.GetKeyDown(KeyCode.Q))
+        {
+            if (gameObject.GetComponent<Player_Descend>().playerCanDescend)
+            {
+                gameObject.GetComponent<Player_Descend>().Descend();
             }
         }
     }

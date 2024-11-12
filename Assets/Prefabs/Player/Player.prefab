@@ -115,6 +115,7 @@ GameObject:
   - component: {fileID: 3957248811615775525}
   - component: {fileID: 7405911231007403860}
   - component: {fileID: -1184868024431873039}
+  - component: {fileID: -3986576037543488350}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -211,6 +212,14 @@ MonoBehaviour:
       Flippers: 0
       LavaSuit: 0
       HikerGear: 0
+      IceSpikes: 0
+      GrapplingHook: 0
+      Hammer: 0
+      ClimbingGear: 0
+      Dash: 0
+      Ascend: 0
+      Descend: 0
+      ControlStick: 0
 --- !u!114 &2945233704919692102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,6 +363,23 @@ MonoBehaviour:
   playerCanAscend: 0
   ascendingBlock_Previous: {fileID: 0}
   ascendingBlock_Current: {fileID: 0}
+  AscendingDistance: 3
+--- !u!114 &-3986576037543488350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113039739388874501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 103dadbe27081e9419f4e98e1139488b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCanDescend: 0
+  descendingBlock_Previous: {fileID: 0}
+  descendingBlock_Current: {fileID: 0}
+  descendingDistance: 4
 --- !u!1 &1579374389231818420
 GameObject:
   m_ObjectHideFlags: 0

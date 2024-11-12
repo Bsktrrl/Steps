@@ -9,6 +9,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
     public bool playerCanAscend;
     public GameObject ascendingBlock_Previous;
     public GameObject ascendingBlock_Current;
+    public float AscendingDistance = 3;
 
     RaycastHit hit;
 
@@ -36,8 +37,10 @@ public class Player_Ascend : Singleton<Player_Ascend>
     {
         if (gameObject.GetComponent<Player_Stats>().stats.abilities.Ascend)
         {
-            if (Physics.Raycast(transform.position, Vector3.up, out hit, 3f))
+            if (Physics.Raycast(transform.position, Vector3.up, out hit, AscendingDistance))
             {
+                Debug.DrawRay(transform.position, Vector3.up * AscendingDistance, Color.cyan);
+
                 if (hit.transform.GetComponent<BlockInfo>())
                 {
                     if (!hit.transform.GetComponent<BlockInfo>().upper_Center)
@@ -97,9 +100,9 @@ public class Player_Ascend : Singleton<Player_Ascend>
 
         yield return new WaitForSeconds(waitTime);
 
-        if (gameObject.GetComponent<Player_Ascend>().ascendingBlock_Current)
+        if (ascendingBlock_Current)
         {
-            Vector3 newPos = gameObject.GetComponent<Player_Ascend>().ascendingBlock_Current.transform.position;
+            Vector3 newPos = ascendingBlock_Current.transform.position;
 
             gameObject.transform.position = new Vector3(newPos.x, newPos.y + gameObject.GetComponent<Player_Movement>().heightOverBlock, newPos.z);
         }
