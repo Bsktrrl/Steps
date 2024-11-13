@@ -58,35 +58,39 @@ public class Player_Movement : Singleton<Player_Movement>
         if (Cameras.Instance.isRotating) { return; }
         if (Player_Interact.Instance.isInteracting) { return; }
 
-        //If pressing UP
+        //If pressing UP - Movement
         if (Input.GetKey(KeyCode.W))
         {
             lastMovementButtonPressed = ButtonsToPress.W;
             MovementKeyIsPressed(MainManager.Instance.canMove_Forward, MainManager.Instance.block_Vertical_InFront, 0);
         }
 
-        //If pressing DOWN
+        //If pressing DOWN - Movement
         else if (Input.GetKey(KeyCode.S))
         {
             lastMovementButtonPressed = ButtonsToPress.S;
             MovementKeyIsPressed(MainManager.Instance.canMove_Back, MainManager.Instance.block_Vertical_InBack, 180);
         }
 
-        //If pressing LEFT
+        //If pressing LEFT - Movement
         else if (Input.GetKey(KeyCode.A))
         {
             lastMovementButtonPressed = ButtonsToPress.A;
             MovementKeyIsPressed(MainManager.Instance.canMove_Left, MainManager.Instance.block_Vertical_ToTheLeft, -90);
         }
 
-        //If pressing RIGHT
+        //If pressing RIGHT - Movement
         else if (Input.GetKey(KeyCode.D))
         {
             lastMovementButtonPressed = ButtonsToPress.D;
             MovementKeyIsPressed(MainManager.Instance.canMove_Right, MainManager.Instance.block_Vertical_ToTheRight, 90);
         }
 
-        //If pressing ASCEND
+
+        //--------------------
+
+
+        //If pressing - E - ASCEND
         else if (Input.GetKeyDown(KeyCode.E))
         {
             if (gameObject.GetComponent<Player_Ascend>().playerCanAscend)
@@ -94,7 +98,7 @@ public class Player_Movement : Singleton<Player_Movement>
                 gameObject.GetComponent<Player_Ascend>().Ascend();
             }
         }
-        //If pressing DESCEND
+        //If pressing - Q - DESCEND
         else if (Input.GetKeyDown(KeyCode.Q))
         {
             if (gameObject.GetComponent<Player_Descend>().playerCanDescend)
@@ -103,12 +107,21 @@ public class Player_Movement : Singleton<Player_Movement>
             }
         }
 
-        //If pressing Space
+        //If pressing - Dash - Space
         else if (Input.GetKeyDown(KeyCode.Space))
         {
             if (gameObject.GetComponent<Player_Dash>().playerCanDash)
             {
                 gameObject.GetComponent<Player_Dash>().Dash();
+            }
+        }
+
+        //If pressing - Hammer - Enter
+        else if (Input.GetKeyDown(KeyCode.C))
+        {
+            if (gameObject.GetComponent<Player_WeakBlock>().playerCanHammer)
+            {
+                gameObject.GetComponent<Player_WeakBlock>().Hammer();
             }
         }
     }

@@ -181,4 +181,12 @@ public class BlockInfo : MonoBehaviour
             }
         }
     }
+
+    public void DestroyBlockInfo()
+    {
+        Player_Movement.Action_resetBlockColor -= ResetColor;
+        Player_Stats.Action_RespawnToSavePos -= ResetColor;
+
+        Destroy(this);
+    }
 }

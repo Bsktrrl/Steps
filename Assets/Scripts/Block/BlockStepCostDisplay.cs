@@ -142,4 +142,15 @@ public class BlockStepCostDisplay : MonoBehaviour
                 stepCostDisplay_Canvas.transform.localRotation = Quaternion.Euler(startRot_X_Canvas, -gameObject.transform.eulerAngles.y + -90, 0);
         }
     }
+
+
+    //--------------------
+
+
+    public void DestroyBlockStepCostDisplay()
+    {
+        Cameras.rotateCamera -= UpdateRotation;
+
+        Destroy(this);
+    }
 }
