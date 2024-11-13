@@ -97,6 +97,19 @@ public class Player_Descend : MonoBehaviour
     //--------------------
 
 
+    public void Descend()
+    {
+        if (gameObject.GetComponent<Player_Stats>().stats.abilities.Descend)
+        {
+            Player_Movement.Instance.movementStates = MovementStates.Moving;
+            MainManager.Instance.pauseGame = true;
+            MainManager.Instance.isTeleporting = true;
+            isDescending = true;
+
+            descendingBlock_Target = descendingBlock_Current;
+        }
+    }
+
     void PerformDescendMovement()
     {
         if (isDescending)
@@ -113,6 +126,7 @@ public class Player_Descend : MonoBehaviour
                 MainManager.Instance.pauseGame = false;
                 MainManager.Instance.isTeleporting = false;
                 isDescending = false;
+                Player_Movement.Instance.movementStates = MovementStates.Still;
 
                 Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
 
@@ -124,22 +138,6 @@ public class Player_Descend : MonoBehaviour
                 Player_Movement.Instance.Action_StepTakenInvoke();
                 Player_Movement.Instance.Action_ResetBlockColorInvoke();
             }
-        }
-    }
-
-
-    //--------------------
-
-
-    public void Descend()
-    {
-        if (gameObject.GetComponent<Player_Stats>().stats.abilities.Descend)
-        {
-            MainManager.Instance.pauseGame = true;
-            MainManager.Instance.isTeleporting = true;
-            isDescending = true;
-
-            descendingBlock_Target = descendingBlock_Current;
         }
     }
 }

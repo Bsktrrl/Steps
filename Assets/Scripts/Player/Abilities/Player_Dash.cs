@@ -133,6 +133,7 @@ public class Player_Dash : MonoBehaviour
             MainManager.Instance.pauseGame = true;
             MainManager.Instance.isTeleporting = true;
             isDashing = true;
+            Player_Movement.Instance.movementStates = MovementStates.Moving;
 
             dashBlock_Target = dashBlock_Current;
 
@@ -153,6 +154,7 @@ public class Player_Dash : MonoBehaviour
             {
                 MainManager.Instance.player.transform.position = targetPos;
 
+                Player_Movement.Instance.movementStates = MovementStates.Still;
                 MainManager.Instance.pauseGame = false;
                 MainManager.Instance.isTeleporting = false;
                 isDashing = false;

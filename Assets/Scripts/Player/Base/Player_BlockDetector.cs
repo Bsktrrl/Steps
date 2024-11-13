@@ -46,6 +46,10 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     //--------------------
 
 
+    private void Start()
+    {
+        PerformRaycast_Center_Vertical(detectorSpot_Vertical_Center, Vector3.down);
+    }
     private void Update()
     {
         UpdateBlockLookingAt();
@@ -62,7 +66,10 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     void RaycastSetup()
     {
         //Check which block the player stands on
-        PerformRaycast_Center_Vertical(detectorSpot_Vertical_Center, Vector3.down);
+        if (gameObject.GetComponent<Player_Movement>().movementStates == MovementStates.Moving)
+        {
+            UpdateBlock_StandingOn();
+        }
 
         //Check if something is in the way of movement
         if (Cameras.Instance.cameraState == CameraState.Forward)
@@ -124,6 +131,11 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
         //Check for Stair Edge, to prevent moving off the Stair
         UpdateStairRaycast();
+    }
+
+    public void UpdateBlock_StandingOn()
+    {
+        PerformRaycast_Center_Vertical(detectorSpot_Vertical_Center, Vector3.down);
     }
 
     public void PerformRaycast_Center_Vertical(GameObject rayPointObject, Vector3 direction)

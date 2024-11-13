@@ -1696,7 +1696,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7760816348145374978, guid: 2078eae1291a04d4dae41e54f1fdcdff, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -18
+      value: -19
       objectReference: {fileID: 0}
     - target: {fileID: 7760816348145374978, guid: 2078eae1291a04d4dae41e54f1fdcdff, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4287,7 +4287,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7760816348145374978, guid: 2078eae1291a04d4dae41e54f1fdcdff, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -18
+      value: -19
       objectReference: {fileID: 0}
     - target: {fileID: 7760816348145374978, guid: 2078eae1291a04d4dae41e54f1fdcdff, type: 3}
       propertyPath: m_LocalPosition.z
@@ -8067,6 +8067,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone Block 16 - Body (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4472733990976188348, guid: 5880f51ef600a7748a9f3a5d03449b65, type: 3}
+      propertyPath: movementSpeed
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6288170853875357090, guid: 5880f51ef600a7748a9f3a5d03449b65, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -8154,7 +8158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elevatorDirection: 1
   distance: 3
-  movementSpeed: 5
+  movementSpeed: 50
   waitingTime: 1
 --- !u!1001 &383076731
 PrefabInstance:
@@ -8998,7 +9002,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7760816348145374978, guid: 2078eae1291a04d4dae41e54f1fdcdff, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -18
+      value: -19
       objectReference: {fileID: 0}
     - target: {fileID: 7760816348145374978, guid: 2078eae1291a04d4dae41e54f1fdcdff, type: 3}
       propertyPath: m_LocalPosition.z
@@ -20513,7 +20517,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7760816348145374978, guid: 2078eae1291a04d4dae41e54f1fdcdff, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -18
+      value: -19
       objectReference: {fileID: 0}
     - target: {fileID: 7760816348145374978, guid: 2078eae1291a04d4dae41e54f1fdcdff, type: 3}
       propertyPath: m_LocalPosition.z
@@ -23286,7 +23290,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9432b0764691042bc3d837d8ea5dca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distance: 3
+  waitTime: 0.5
   isSteppedOn: 0
+  endPos: {x: 0, y: 0, z: 0}
+  isStandingOnBlock: 0
+  isMoving: 0
 --- !u!1001 &1187958263
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24170,7 +24179,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9432b0764691042bc3d837d8ea5dca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distance: 5
+  waitTime: 0.5
   isSteppedOn: 0
+  endPos: {x: 0, y: 0, z: 0}
+  isStandingOnBlock: 0
+  isMoving: 0
 --- !u!1001 &1241116680
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24491,7 +24505,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7760816348145374978, guid: 2078eae1291a04d4dae41e54f1fdcdff, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -18
+      value: -19
       objectReference: {fileID: 0}
     - target: {fileID: 7760816348145374978, guid: 2078eae1291a04d4dae41e54f1fdcdff, type: 3}
       propertyPath: m_LocalPosition.z
@@ -24629,7 +24643,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7760816348145374978, guid: 2078eae1291a04d4dae41e54f1fdcdff, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -18
+      value: -19
       objectReference: {fileID: 0}
     - target: {fileID: 7760816348145374978, guid: 2078eae1291a04d4dae41e54f1fdcdff, type: 3}
       propertyPath: m_LocalPosition.z
@@ -31234,7 +31248,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9432b0764691042bc3d837d8ea5dca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distance: 4
+  waitTime: 0.5
   isSteppedOn: 0
+  endPos: {x: 0, y: 0, z: 0}
+  isStandingOnBlock: 0
+  isMoving: 0
 --- !u!1001 &1600970640
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31545,7 +31564,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7760816348145374978, guid: 2078eae1291a04d4dae41e54f1fdcdff, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -18
+      value: -19
       objectReference: {fileID: 0}
     - target: {fileID: 7760816348145374978, guid: 2078eae1291a04d4dae41e54f1fdcdff, type: 3}
       propertyPath: m_LocalPosition.z
@@ -35281,7 +35300,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7760816348145374978, guid: 2078eae1291a04d4dae41e54f1fdcdff, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -18
+      value: -19
       objectReference: {fileID: 0}
     - target: {fileID: 7760816348145374978, guid: 2078eae1291a04d4dae41e54f1fdcdff, type: 3}
       propertyPath: m_LocalPosition.z
@@ -36810,7 +36829,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9432b0764691042bc3d837d8ea5dca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distance: 3
+  waitTime: 0.5
   isSteppedOn: 0
+  endPos: {x: 0, y: 0, z: 0}
+  isStandingOnBlock: 0
+  isMoving: 0
 --- !u!1001 &1934341758
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37278,7 +37302,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9432b0764691042bc3d837d8ea5dca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distance: 4
+  waitTime: 0.5
   isSteppedOn: 0
+  endPos: {x: 0, y: 0, z: 0}
+  isStandingOnBlock: 0
+  isMoving: 0
 --- !u!1 &1956324352
 GameObject:
   m_ObjectHideFlags: 0
@@ -39578,7 +39607,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7760816348145374978, guid: 2078eae1291a04d4dae41e54f1fdcdff, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -18
+      value: -19
       objectReference: {fileID: 0}
     - target: {fileID: 7760816348145374978, guid: 2078eae1291a04d4dae41e54f1fdcdff, type: 3}
       propertyPath: m_LocalPosition.z

@@ -278,16 +278,16 @@ public class Player_Movement : Singleton<Player_Movement>
             return;
         }
 
-        //Hover over blocks you're standing on
-        else if (movementStates == MovementStates.Still && MainManager.Instance.block_StandingOn_Current.block)
-        {
-            gameObject.transform.position = MainManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * heightOverBlock);
-        }
-
         //Fall if standing still and no block is under the player
         else if (movementStates == MovementStates.Still && !MainManager.Instance.block_StandingOn_Current.block)
         {
             gameObject.transform.position = gameObject.transform.position + (Vector3.down * fallSpeed * Time.deltaTime);
+        }
+
+        //Hover over blocks you're standing on
+        else if (movementStates == MovementStates.Still && MainManager.Instance.block_StandingOn_Current.block)
+        {
+            gameObject.transform.position = MainManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * heightOverBlock);
         }
     }
 

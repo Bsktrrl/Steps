@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class Block_Falling : MonoBehaviour
 {
-    float floatCounter_Current;
-    float floatCounter_Max = 0.5f;
+    public int distance;
+    float waitCounter;
+    public float waitTime = 0.5f;
+
     public bool isSteppedOn;
+
+    public Vector3 endPos;
+    public bool isStandingOnBlock;
+    public bool isMoving;
 
 
     //--------------------
@@ -14,6 +20,8 @@ public class Block_Falling : MonoBehaviour
     private void Start()
     {
         Player_Movement.Action_StepTaken += StepsOnFallableBlock;
+
+        CalculateMovementPath();
     }
     private void Update()
     {
@@ -21,6 +29,15 @@ public class Block_Falling : MonoBehaviour
         {
             Falling();
         }
+    }
+
+
+    //--------------------
+
+
+    void CalculateMovementPath()
+    {
+        endPos = gameObject.transform.position + (Vector3.down * distance);
     }
 
 
@@ -43,9 +60,10 @@ public class Block_Falling : MonoBehaviour
     {
         if (isSteppedOn)
         {
-            floatCounter_Current += Time.deltaTime;
+            if (waitCounter < waitTime)
+                waitCounter += Time.deltaTime;
 
-            if (floatCounter_Current >= floatCounter_Max)
+            if (waitCounter >= waitTime)
             {
                 return true;
             }
@@ -55,6 +73,28 @@ public class Block_Falling : MonoBehaviour
     }
     void Falling()
     {
-        gameObject.transform.position = gameObject.transform.position + (Vector3.down * MainManager.Instance.player.GetComponent<Player_Movement>().fallSpeed * Time.deltaTime);
+        //gameObject.transform.position = gameObject.transform.position + (Vector3.down * MainManager.Instance.player.GetComponent<Player_Movement>().fallSpeed * Time.deltaTime);
+
+        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endPos, MainManager.Instance.player.GetComponent<Player_Movement>().fallSpeed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, endPos) <= 0.03f)
+        {
+            isMoving = false;
+            HideBlock();
+            MainManager.Instance.player.GetComponent<Player_BlockDetector>().UpdateBlock_StandingOn();
+        }
+    }
+
+
+    //--------------------
+
+
+    void HideBlock()
+    {
+        gameObject.SetActive(false);
+    }
+    public void ShowBlock()
+    {
+        gameObject.SetActive(true);
     }
 }

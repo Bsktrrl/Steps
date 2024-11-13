@@ -96,6 +96,18 @@ public class Player_Ascend : Singleton<Player_Ascend>
     //--------------------
 
 
+    public void Ascend()
+    {
+        if (gameObject.GetComponent<Player_Stats>().stats.abilities.Ascend)
+        {
+            MainManager.Instance.pauseGame = true;
+            MainManager.Instance.isTeleporting = true;
+            isAscending = true;
+            Player_Movement.Instance.movementStates = MovementStates.Moving;
+
+            ascendingBlock_Target = ascendingBlock_Current;
+        }
+    }
     void PerformAscendMovement()
     {
         if (isAscending)
@@ -109,6 +121,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
             {
                 MainManager.Instance.player.transform.position = targetPos;
 
+                Player_Movement.Instance.movementStates = MovementStates.Still;
                 MainManager.Instance.pauseGame = false;
                 MainManager.Instance.isTeleporting = false;
                 isAscending = false;
@@ -123,22 +136,6 @@ public class Player_Ascend : Singleton<Player_Ascend>
                 Player_Movement.Instance.Action_StepTakenInvoke();
                 Player_Movement.Instance.Action_ResetBlockColorInvoke();
             }
-        }
-    }
-
-
-    //--------------------
-
-
-    public void Ascend()
-    {
-        if (gameObject.GetComponent<Player_Stats>().stats.abilities.Ascend)
-        {
-            MainManager.Instance.pauseGame = true;
-            MainManager.Instance.isTeleporting = true;
-            isAscending = true;
-
-            ascendingBlock_Target = ascendingBlock_Current;
         }
     }
 }
