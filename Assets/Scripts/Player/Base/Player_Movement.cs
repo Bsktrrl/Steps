@@ -157,6 +157,7 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             case CameraState.Forward:
                 MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 0 + rotationValue, 0));
+                
                 if (rotationValue == 0 || rotationValue == 360)
                     Cameras.Instance.directionFacing = Vector3.forward;
                 else if (rotationValue == 180)
@@ -168,6 +169,7 @@ public class Player_Movement : Singleton<Player_Movement>
                 break;
             case CameraState.Backward:
                 MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 180 + rotationValue, 0));
+                
                 if (180 + rotationValue == 0 || 180 + rotationValue == 360)
                     Cameras.Instance.directionFacing = Vector3.back;
                 else if (180 + rotationValue == 180)
@@ -179,6 +181,7 @@ public class Player_Movement : Singleton<Player_Movement>
                 break;
             case CameraState.Left:
                 MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 90 + rotationValue, 0));
+                
                 if (90 + rotationValue == 0 || 90 + rotationValue == 360)
                     Cameras.Instance.directionFacing = Vector3.left;
                 else if (90 + rotationValue == 180)
@@ -190,6 +193,7 @@ public class Player_Movement : Singleton<Player_Movement>
                 break;
             case CameraState.Right:
                 MainManager.Instance.playerBody.transform.SetPositionAndRotation(MainManager.Instance.playerBody.transform.position, Quaternion.Euler(0, -90 + rotationValue, 0));
+                
                 if (-90 + rotationValue == 0 || -90 + rotationValue == 360)
                     Cameras.Instance.directionFacing = Vector3.right;
                 else if (-90 + rotationValue == 180 || -90 + rotationValue == -180)
@@ -204,7 +208,7 @@ public class Player_Movement : Singleton<Player_Movement>
                 break;
         }
 
-        Action_BodyRotated?.Invoke();
+        //Action_BodyRotated?.Invoke();
     }
 
     void MovePlayer()

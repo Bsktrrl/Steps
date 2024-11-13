@@ -125,7 +125,7 @@ public class BlockInfo : MonoBehaviour
     }
     GameObject FindBlock(Vector3 dir1, Vector3 dir2, Vector3 dir3)
     {
-        return BlockPosManager.Instance.FindGameObjectAtPosition(transform.position + dir1 + dir2 + dir3);
+        return BlockPosManager.Instance.FindGameObjectAtPosition(transform.position + dir1 + dir2 + dir3, gameObject);
     }
 
 
