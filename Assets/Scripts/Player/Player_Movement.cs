@@ -204,14 +204,24 @@ public class Player_Movement : Singleton<Player_Movement>
                     if (MainManager.Instance.block_MovingTowards.block.GetComponent<BlockInfo>().movementSpeed <= 0)
                         MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, endDestination, 5 * Time.deltaTime);
                     else
-                        MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, endDestination, MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().movementSpeed * Time.deltaTime);
+                    {
+                        if (MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().blockElement == BlockElement.Ice && Player_Stats.Instance.stats.abilities.IceSpikes)
+                            MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, endDestination, (MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().movementSpeed / 2) * Time.deltaTime);
+                        else
+                            MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, endDestination, MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().movementSpeed * Time.deltaTime);
+                    }
                 }
                 else
                 {
                     if (MainManager.Instance.block_MovingTowards.block.GetComponent<BlockInfo>().movementSpeed <= 0)
                         MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, endDestination, 5 * Time.deltaTime);
                     else
-                        MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, endDestination, MainManager.Instance.block_MovingTowards.block.GetComponent<BlockInfo>().movementSpeed * Time.deltaTime);
+                    {
+                        if (MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().blockElement == BlockElement.Ice && Player_Stats.Instance.stats.abilities.IceSpikes)
+                            MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, endDestination, (MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().movementSpeed / 2) * Time.deltaTime);
+                        else
+                            MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, endDestination, MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().movementSpeed * Time.deltaTime);
+                    }
                 }
             }
             else
