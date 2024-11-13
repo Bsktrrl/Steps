@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block_Elevator : MonoBehaviour
+public class Block_Elevator_Normal : MonoBehaviour
 {
     public elevatorDirection elevatorDirection;
     public int distance;

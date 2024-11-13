@@ -39,7 +39,13 @@ public class Player_Stats : Singleton<Player_Stats>
     public void TakeAStep()
     {
         //Reduce available steps
-        stats.steps_Current -= MainManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().GetMovementCost();
+        if (MainManager.Instance.block_StandingOn_Current.block)
+        {
+            if (MainManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>())
+            {
+                stats.steps_Current -= MainManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().GetMovementCost();
+            }
+        }
 
         //If steps is < 0
         if (stats.steps_Current < 0)

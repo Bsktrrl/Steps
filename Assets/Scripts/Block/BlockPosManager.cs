@@ -26,7 +26,7 @@ public class BlockPosManager : Singleton<BlockPosManager>
         //Populate the dictionary with all BlockInfo' positions
         foreach (BlockInfo obj in FindObjectsOfType<BlockInfo>())
         {
-            if (!positionToGameObjectMap.ContainsKey(obj.gameObject.transform.position) && !obj.gameObject.GetComponent<Block_Elevator>())
+            if (!positionToGameObjectMap.ContainsKey(obj.gameObject.transform.position) && !obj.gameObject.GetComponent<Block_Elevator_Normal>())
             {
                 positionToGameObjectMap.Add(obj.gameObject.transform.position, obj.gameObject);
             }

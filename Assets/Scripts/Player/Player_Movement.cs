@@ -288,32 +288,39 @@ public class Player_Movement : Singleton<Player_Movement>
     //Begin Ice Gliding
     void IceGlide()
     {
-        if (MainManager.Instance.block_StandingOn_Current.block.GetComponent<Block_IceGlide>() && !Player_Stats.Instance.stats.abilities.IceSpikes)
+        if (MainManager.Instance.block_StandingOn_Current.block)
         {
-            iceGliding = true;
-            Player_Stats.Instance.stats.steps_Current += MainManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
-
-            switch (lastMovementButtonPressed)
+            if (MainManager.Instance.block_StandingOn_Current.block.GetComponent<Block_IceGlide>() && !Player_Stats.Instance.stats.abilities.IceSpikes)
             {
-                case ButtonsToPress.W:
-                    if (MainManager.Instance.canMove_Forward)
-                        MovementKeyIsPressed(MainManager.Instance.canMove_Forward, MainManager.Instance.block_Vertical_InFront, 0);
-                    break;
-                case ButtonsToPress.S:
-                    if (MainManager.Instance.canMove_Back)
-                        MovementKeyIsPressed(MainManager.Instance.canMove_Back, MainManager.Instance.block_Vertical_InBack, 180);
-                    break;
-                case ButtonsToPress.A:
-                    if (MainManager.Instance.canMove_Left)
-                        MovementKeyIsPressed(MainManager.Instance.canMove_Left, MainManager.Instance.block_Vertical_ToTheLeft, -90);
-                    break;
-                case ButtonsToPress.D:
-                    if (MainManager.Instance.canMove_Right)
-                        MovementKeyIsPressed(MainManager.Instance.canMove_Right, MainManager.Instance.block_Vertical_ToTheRight, 90);
-                    break;
+                iceGliding = true;
+                Player_Stats.Instance.stats.steps_Current += MainManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
 
-                default:
-                    break;
+                switch (lastMovementButtonPressed)
+                {
+                    case ButtonsToPress.W:
+                        if (MainManager.Instance.canMove_Forward)
+                            MovementKeyIsPressed(MainManager.Instance.canMove_Forward, MainManager.Instance.block_Vertical_InFront, 0);
+                        break;
+                    case ButtonsToPress.S:
+                        if (MainManager.Instance.canMove_Back)
+                            MovementKeyIsPressed(MainManager.Instance.canMove_Back, MainManager.Instance.block_Vertical_InBack, 180);
+                        break;
+                    case ButtonsToPress.A:
+                        if (MainManager.Instance.canMove_Left)
+                            MovementKeyIsPressed(MainManager.Instance.canMove_Left, MainManager.Instance.block_Vertical_ToTheLeft, -90);
+                        break;
+                    case ButtonsToPress.D:
+                        if (MainManager.Instance.canMove_Right)
+                            MovementKeyIsPressed(MainManager.Instance.canMove_Right, MainManager.Instance.block_Vertical_ToTheRight, 90);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                iceGliding = false;
             }
         }
         else
