@@ -105,6 +105,15 @@ public class Player_Stats : Singleton<Player_Stats>
     public void UpdateFlippers()
     {
         stats.abilities.Flippers = true;
+
+        //Find all gameObjects in the scene containing a Block_Water component
+        Block_Water[] waterBlocks = FindObjectsOfType<Block_Water>();
+
+        //Update the movementCost of all blocks
+        foreach (Block_Water block in waterBlocks)
+        {
+            block.UpdateFastSwimmingMovementCost();
+        }
     }
     public void UpdateLavaSuit()
     {
