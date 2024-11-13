@@ -120,9 +120,9 @@ public class Player_Movement : Singleton<Player_Movement>
         //If pressing - Hammer - Enter
         else if (Input.GetKeyDown(KeyCode.C))
         {
-            if (gameObject.GetComponent<Player_WeakBlock>().playerCanHammer)
+            if (gameObject.GetComponent<Player_Hammer>().playerCanHammer)
             {
-                gameObject.GetComponent<Player_WeakBlock>().Hammer();
+                gameObject.GetComponent<Player_Hammer>().Hammer();
             }
         }
     }
@@ -264,7 +264,7 @@ public class Player_Movement : Singleton<Player_Movement>
     void PlayerHover()
     {
         //Don't hover if teleporting
-        if (MainManager.Instance.player.GetComponent<Player_Teleport>().isTeleporting) { return; }
+        if (MainManager.Instance.isTeleporting) { return; }
 
         //Don't fall if moving
         if (movementStates == MovementStates.Moving)

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_WeakBlock : Singleton<Player_WeakBlock>
+public class Player_Hammer : Singleton<Player_Hammer>
 {
     public GameObject blockCrack;
     public bool playerCanHammer;

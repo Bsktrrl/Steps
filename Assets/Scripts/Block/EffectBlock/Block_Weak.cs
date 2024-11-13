@@ -11,7 +11,7 @@ public class Block_Weak : MonoBehaviour
 
     private void Start()
     {
-        GameObject obj = Instantiate(Player_WeakBlock.Instance.blockCrack, transform);
+        GameObject obj = Instantiate(Player_Hammer.Instance.blockCrack, transform);
 
         obj.transform.localPosition = Vector3.zero;
     }

@@ -11,12 +11,27 @@ public class Block_Falling : MonoBehaviour
 
     //--------------------
 
-
+    private void Start()
+    {
+        Player_Movement.Action_StepTaken += StepsOnFallableBlock;
+    }
     private void Update()
     {
         if (CheckIfReadyToFall())
         {
             Falling();
+        }
+    }
+
+
+    //--------------------
+
+
+    void StepsOnFallableBlock()
+    {
+        if (MainManager.Instance.block_StandingOn_Current.block == gameObject)
+        {
+            isSteppedOn = true;
         }
     }
 

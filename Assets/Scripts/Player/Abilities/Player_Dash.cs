@@ -131,7 +131,7 @@ public class Player_Dash : MonoBehaviour
         if (gameObject.GetComponent<Player_Stats>().stats.abilities.Dash)
         {
             MainManager.Instance.pauseGame = true;
-            gameObject.GetComponent<Player_Teleport>().isTeleporting = true;
+            MainManager.Instance.isTeleporting = true;
             isDashing = true;
 
             dashBlock_Target = dashBlock_Current;
@@ -154,7 +154,7 @@ public class Player_Dash : MonoBehaviour
                 MainManager.Instance.player.transform.position = targetPos;
 
                 MainManager.Instance.pauseGame = false;
-                gameObject.GetComponent<Player_Teleport>().isTeleporting = false;
+                MainManager.Instance.isTeleporting = false;
                 isDashing = false;
 
                 Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);

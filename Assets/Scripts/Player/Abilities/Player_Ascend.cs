@@ -110,7 +110,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
                 MainManager.Instance.player.transform.position = targetPos;
 
                 MainManager.Instance.pauseGame = false;
-                gameObject.GetComponent<Player_Teleport>().isTeleporting = false;
+                MainManager.Instance.isTeleporting = false;
                 isAscending = false;
 
                 Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
@@ -135,7 +135,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
         if (gameObject.GetComponent<Player_Stats>().stats.abilities.Ascend)
         {
             MainManager.Instance.pauseGame = true;
-            gameObject.GetComponent<Player_Teleport>().isTeleporting = true;
+            MainManager.Instance.isTeleporting = true;
             isAscending = true;
 
             ascendingBlock_Target = ascendingBlock_Current;

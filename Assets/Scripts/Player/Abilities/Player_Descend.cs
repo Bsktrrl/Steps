@@ -48,8 +48,9 @@ public class Player_Descend : MonoBehaviour
 
                 if (hit.transform.GetComponent<BlockInfo>())
                 {
-                    if (!hit.transform.GetComponent<BlockInfo>().upper_Center)
+                    if (hit.transform.GetComponent<BlockInfo>().upper_Center == null && hit.transform.position != gameObject.transform.position + (Vector3.down * gameObject.GetComponent<Player_Movement>().heightOverBlock) + Vector3.down)
                     {
+                        //print("HitPos: " + hit.transform.position + " | PlayerPos: " + (gameObject.transform.position + (Vector3.down * gameObject.GetComponent<Player_Movement>().heightOverBlock) + Vector3.down));
                         descendingBlock_Previous = descendingBlock_Current;
                         descendingBlock_Current = hit.transform.gameObject;
 
@@ -110,7 +111,7 @@ public class Player_Descend : MonoBehaviour
                 MainManager.Instance.player.transform.position = targetPos;
 
                 MainManager.Instance.pauseGame = false;
-                gameObject.GetComponent<Player_Teleport>().isTeleporting = false;
+                MainManager.Instance.isTeleporting = false;
                 isDescending = false;
 
                 Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
@@ -135,7 +136,7 @@ public class Player_Descend : MonoBehaviour
         if (gameObject.GetComponent<Player_Stats>().stats.abilities.Descend)
         {
             MainManager.Instance.pauseGame = true;
-            gameObject.GetComponent<Player_Teleport>().isTeleporting = true;
+            MainManager.Instance.isTeleporting = true;
             isDescending = true;
 
             descendingBlock_Target = descendingBlock_Current;
