@@ -8,36 +8,36 @@ public class BlockManager : Singleton<BlockManager>
     public float materialDarkeningValue = 0.5f;
 }
 
-public enum BlockElement
-{
-    None,
+//public enum BlockElement
+//{
+//    None,
 
-    Grass,
-    Sand,
-    Stone,
-    Ice,
+//    Grass,
+//    Sand,
+//    Stone,
+//    Ice,
 
-    Water,
-    Lava,
+//    Water,
+//    Lava,
 
-    Brick,
-    Candle,
-    Cloud,
-    Wood,
-    Dirt,
+//    Brick,
+//    Candle,
+//    Cloud,
+//    Wood,
+//    Dirt,
 
-    LavaCube,
+//    LavaCube,
 
-    Metal,
-    Coal,
-    Ore,
+//    Metal,
+//    Coal,
+//    Ore,
 
-    Bush,
-    Sandstone,
-    Snow,
-    Rock,
+//    Bush,
+//    Sandstone,
+//    Snow,
+//    Rock,
 
-}
+//}
 public enum BlockType
 {
     None,
@@ -49,5 +49,4 @@ public enum BlockType
 
     Fence,
     Slope,
-
 }

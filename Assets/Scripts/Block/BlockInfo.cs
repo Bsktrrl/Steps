@@ -9,7 +9,7 @@ using UnityEngine.Rendering;
 public class BlockInfo : MonoBehaviour
 {
     [Header("Block Stats")]
-    public BlockElement blockElement;
+    //public BlockElement blockElement;
     public BlockType blockType;
     public int movementCost;
     public float movementSpeed;

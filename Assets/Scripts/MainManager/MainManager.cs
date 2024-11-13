@@ -49,6 +49,6 @@ public class DetectedBlockInfo
     public GameObject block;
     public Vector3 blockPosition;
 
-    public BlockElement blockElement;
+    //public BlockElement blockElement;
     public BlockType blockType;
 }

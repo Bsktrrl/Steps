@@ -26,19 +26,25 @@ public class Player_BodyHeight : MonoBehaviour
 
     void SetPlayerBodyHeight()
     {
-        if (MainManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair)
+        if (MainManager.Instance.block_StandingOn_Current.block)
         {
-            //MainManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(MainManager.Instance.playerBody.transform.localPosition.x, stairHeight, MainManager.Instance.playerBody.transform.localPosition.z), MainManager.Instance.playerBody.transform.localRotation);
+            if (MainManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair)
+            {
+                //MainManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(MainManager.Instance.playerBody.transform.localPosition.x, stairHeight, MainManager.Instance.playerBody.transform.localPosition.z), MainManager.Instance.playerBody.transform.localRotation);
+            }
+            else if (MainManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Water>())
+            {
+                MainManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(MainManager.Instance.playerBody.transform.localPosition.x, waterHeight, MainManager.Instance.playerBody.transform.localPosition.z), MainManager.Instance.playerBody.transform.localRotation);
+            }
+            else if (MainManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Lava>())
+            {
+                MainManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(MainManager.Instance.playerBody.transform.localPosition.x, lavaHeight, MainManager.Instance.playerBody.transform.localPosition.z), MainManager.Instance.playerBody.transform.localRotation);
+            }
+            else
+            {
+                MainManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(MainManager.Instance.playerBody.transform.localPosition.x, normalHeight, MainManager.Instance.playerBody.transform.localPosition.z), MainManager.Instance.playerBody.transform.localRotation);
+            }
         }
-        else if (MainManager.Instance.block_StandingOn_Current.blockElement == BlockElement.Water)
-        {
-            MainManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(MainManager.Instance.playerBody.transform.localPosition.x, waterHeight, MainManager.Instance.playerBody.transform.localPosition.z), MainManager.Instance.playerBody.transform.localRotation);
-        }
-        else if (MainManager.Instance.block_StandingOn_Current.blockElement == BlockElement.Lava)
-        {
-            MainManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(MainManager.Instance.playerBody.transform.localPosition.x, lavaHeight, MainManager.Instance.playerBody.transform.localPosition.z), MainManager.Instance.playerBody.transform.localRotation);
-        }
-
         else
         {
             MainManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(MainManager.Instance.playerBody.transform.localPosition.x, normalHeight, MainManager.Instance.playerBody.transform.localPosition.z), MainManager.Instance.playerBody.transform.localRotation);

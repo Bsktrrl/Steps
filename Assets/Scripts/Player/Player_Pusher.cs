@@ -41,7 +41,6 @@ public class Player_Pusher : MonoBehaviour
     {
         if (MainManager.Instance.lookingDirection != pushDirection)
         {
-            print("CheckIfNotPushed");
             playerIsPushed = false;
             pushDirection = Vector3.zero;
         }

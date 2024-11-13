@@ -138,7 +138,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
                 MainManager.Instance.block_StandingOn_Current.block = hit.transform.gameObject;
                 MainManager.Instance.block_StandingOn_Current.blockPosition = hit.transform.position;
-                MainManager.Instance.block_StandingOn_Current.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
+                //MainManager.Instance.block_StandingOn_Current.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
                 MainManager.Instance.block_StandingOn_Current.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
             }
         }
@@ -148,7 +148,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
             MainManager.Instance.block_StandingOn_Current.block = null;
             MainManager.Instance.block_StandingOn_Current.blockPosition = Vector3.zero;
-            MainManager.Instance.block_StandingOn_Current.blockElement = BlockElement.None;
+            //MainManager.Instance.block_StandingOn_Current.blockElement = BlockElement.None;
             MainManager.Instance.block_StandingOn_Current.blockType = BlockType.None;
         }
     }
@@ -174,7 +174,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             {
                 MainManager.Instance.block_Horizontal_InFront.block = hit.transform.gameObject;
                 MainManager.Instance.block_Horizontal_InFront.blockPosition = hit.transform.position;
-                MainManager.Instance.block_Horizontal_InFront.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
+                //MainManager.Instance.block_Horizontal_InFront.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
                 MainManager.Instance.block_Horizontal_InFront.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
 
                 if (MainManager.Instance.block_Horizontal_InFront.blockType == BlockType.Fence
@@ -191,7 +191,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             {
                 MainManager.Instance.block_Horizontal_InBack.block = hit.transform.gameObject;
                 MainManager.Instance.block_Horizontal_InBack.blockPosition = hit.transform.position;
-                MainManager.Instance.block_Horizontal_InBack.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
+                //MainManager.Instance.block_Horizontal_InBack.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
                 MainManager.Instance.block_Horizontal_InBack.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
 
                 if (MainManager.Instance.block_Horizontal_InBack.blockType == BlockType.Fence
@@ -208,7 +208,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             {
                 MainManager.Instance.block_Horizontal_ToTheLeft.block = hit.transform.gameObject;
                 MainManager.Instance.block_Horizontal_ToTheLeft.blockPosition = hit.transform.position;
-                MainManager.Instance.block_Horizontal_ToTheLeft.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
+                //MainManager.Instance.block_Horizontal_ToTheLeft.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
                 MainManager.Instance.block_Horizontal_ToTheLeft.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
 
                 if (MainManager.Instance.block_Horizontal_ToTheLeft.blockType == BlockType.Fence
@@ -225,7 +225,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             {
                 MainManager.Instance.block_Horizontal_ToTheRight.block = hit.transform.gameObject;
                 MainManager.Instance.block_Horizontal_ToTheRight.blockPosition = hit.transform.position;
-                MainManager.Instance.block_Horizontal_ToTheRight.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
+                //MainManager.Instance.block_Horizontal_ToTheRight.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
                 MainManager.Instance.block_Horizontal_ToTheRight.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
 
                 if (MainManager.Instance.block_Horizontal_ToTheRight.blockType == BlockType.Fence
@@ -248,28 +248,28 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         {
             MainManager.Instance.block_Horizontal_InFront.block = null;
             MainManager.Instance.block_Horizontal_InFront.blockPosition = Vector3.zero;
-            MainManager.Instance.block_Horizontal_InFront.blockElement = BlockElement.None;
+            //MainManager.Instance.block_Horizontal_InFront.blockElement = BlockElement.None;
             MainManager.Instance.block_Horizontal_InFront.blockType = BlockType.None;
         }
         else if (rayPointObject == detectorSpot_Horizontal_Back)
         {
             MainManager.Instance.block_Horizontal_InBack.block = null;
             MainManager.Instance.block_Horizontal_InBack.blockPosition = Vector3.zero;
-            MainManager.Instance.block_Horizontal_InBack.blockElement = BlockElement.None;
+            //MainManager.Instance.block_Horizontal_InBack.blockElement = BlockElement.None;
             MainManager.Instance.block_Horizontal_InBack.blockType = BlockType.None;
         }
         else if (rayPointObject == detectorSpot_Horizontal_Left)
         {
             MainManager.Instance.block_Horizontal_ToTheLeft.block = null;
             MainManager.Instance.block_Horizontal_ToTheLeft.blockPosition = Vector3.zero;
-            MainManager.Instance.block_Horizontal_ToTheLeft.blockElement = BlockElement.None;
+            //MainManager.Instance.block_Horizontal_ToTheLeft.blockElement = BlockElement.None;
             MainManager.Instance.block_Horizontal_ToTheLeft.blockType = BlockType.None;
         }
         else if (rayPointObject == detectorSpot_Horizontal_Right)
         {
             MainManager.Instance.block_Horizontal_ToTheRight.block = null;
             MainManager.Instance.block_Horizontal_ToTheRight.blockPosition = Vector3.zero;
-            MainManager.Instance.block_Horizontal_ToTheRight.blockElement = BlockElement.None;
+            //MainManager.Instance.block_Horizontal_ToTheRight.blockElement = BlockElement.None;
             MainManager.Instance.block_Horizontal_ToTheRight.blockType = BlockType.None;
         }
 
@@ -482,28 +482,28 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         {
             MainManager.Instance.block_Vertical_InFront.block = hit.transform.gameObject;
             MainManager.Instance.block_Vertical_InFront.blockPosition = hit.transform.position;
-            MainManager.Instance.block_Vertical_InFront.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
+            //MainManager.Instance.block_Vertical_InFront.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
             MainManager.Instance.block_Vertical_InFront.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
         }
         else if (rayPointObject == detectorSpot_Vertical_Back)
         {
             MainManager.Instance.block_Vertical_InBack.block = hit.transform.gameObject;
             MainManager.Instance.block_Vertical_InBack.blockPosition = hit.transform.position;
-            MainManager.Instance.block_Vertical_InBack.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
+            //MainManager.Instance.block_Vertical_InBack.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
             MainManager.Instance.block_Vertical_InBack.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
         }
         else if (rayPointObject == detectorSpot_Vertical_Left)
         {
             MainManager.Instance.block_Vertical_ToTheLeft.block = hit.transform.gameObject;
             MainManager.Instance.block_Vertical_ToTheLeft.blockPosition = hit.transform.position;
-            MainManager.Instance.block_Vertical_ToTheLeft.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
+            //MainManager.Instance.block_Vertical_ToTheLeft.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
             MainManager.Instance.block_Vertical_ToTheLeft.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
         }
         else if (rayPointObject == detectorSpot_Vertical_Right)
         {
             MainManager.Instance.block_Vertical_ToTheRight.block = hit.transform.gameObject;
             MainManager.Instance.block_Vertical_ToTheRight.blockPosition = hit.transform.position;
-            MainManager.Instance.block_Vertical_ToTheRight.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
+            //MainManager.Instance.block_Vertical_ToTheRight.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
             MainManager.Instance.block_Vertical_ToTheRight.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
         }
     }
@@ -515,28 +515,28 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         {
             MainManager.Instance.block_Vertical_InFront.block = null;
             MainManager.Instance.block_Vertical_InFront.blockPosition = Vector3.zero;
-            MainManager.Instance.block_Vertical_InFront.blockElement = BlockElement.None;
+            //MainManager.Instance.block_Vertical_InFront.blockElement = BlockElement.None;
             MainManager.Instance.block_Vertical_InFront.blockType = BlockType.None;
         }
         else if (rayPointObject == detectorSpot_Vertical_Back)
         {
             MainManager.Instance.block_Vertical_InBack.block = null;
             MainManager.Instance.block_Vertical_InBack.blockPosition = Vector3.zero;
-            MainManager.Instance.block_Vertical_InBack.blockElement = BlockElement.None;
+            //MainManager.Instance.block_Vertical_InBack.blockElement = BlockElement.None;
             MainManager.Instance.block_Vertical_InBack.blockType = BlockType.None;
         }
         else if (rayPointObject == detectorSpot_Vertical_Left)
         {
             MainManager.Instance.block_Vertical_ToTheLeft.block = null;
             MainManager.Instance.block_Vertical_ToTheLeft.blockPosition = Vector3.zero;
-            MainManager.Instance.block_Vertical_ToTheLeft.blockElement = BlockElement.None;
+            //MainManager.Instance.block_Vertical_ToTheLeft.blockElement = BlockElement.None;
             MainManager.Instance.block_Vertical_ToTheLeft.blockType = BlockType.None;
         }
         else if (rayPointObject == detectorSpot_Vertical_Right)
         {
             MainManager.Instance.block_Vertical_ToTheRight.block = null;
             MainManager.Instance.block_Vertical_ToTheRight.blockPosition = Vector3.zero;
-            MainManager.Instance.block_Vertical_ToTheRight.blockElement = BlockElement.None;
+            //MainManager.Instance.block_Vertical_ToTheRight.blockElement = BlockElement.None;
             MainManager.Instance.block_Vertical_ToTheRight.blockType = BlockType.None;
         }
     }
@@ -562,64 +562,68 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     void ResetRaycastDirection(DetectedBlockInfo blockType_Vertical, DetectedBlockInfo blockType_Horizontal, Vector3 direction)
     {
-        #region Water Block
-        //If block is Water, you cannot move into it before having the Swimsuit Ability
-        if (blockType_Vertical.blockElement == BlockElement.Water)
+        if (blockType_Vertical.block)
         {
-            if (Player_Stats.Instance.stats.abilities.SwimSuit || Player_Stats.Instance.stats.abilities.Flippers)
+            #region Water Block
+            //If block is Water, you cannot move into it before having the Swimsuit Ability
+
+            if (blockType_Vertical.block.GetComponent<Block_Water>())
             {
-                canMove(direction, true);
+                if (Player_Stats.Instance.stats.abilities.SwimSuit || Player_Stats.Instance.stats.abilities.Flippers)
+                {
+                    canMove(direction, true);
+                }
+                else
+                {
+                    canMove(direction, false);
+                }
             }
-            else
+            #endregion
+
+            #region Lava Block
+            //If block is Lava, you cannot move into it before having the LavaSuit Ability
+            else if (blockType_Vertical.block.GetComponent<Block_Lava>())
+            {
+                if (Player_Stats.Instance.stats.abilities.LavaSuit)
+                {
+                    canMove(direction, true);
+                }
+                else
+                {
+                    canMove(direction, false);
+                }
+            }
+            #endregion
+
+            #region No Block
+            //if there isn't any block to move to
+            else if (blockType_Vertical.blockType == BlockType.None)
             {
                 canMove(direction, false);
             }
-        }
-        #endregion
+            #endregion
 
-        #region Lava Block
-        //If block is Lava, you cannot move into it before having the LavaSuit Ability
-        else if (blockType_Vertical.blockElement == BlockElement.Lava)
-        {
-            if (Player_Stats.Instance.stats.abilities.LavaSuit)
-            {
-                canMove(direction, true);
-            }
-            else
+            #region On Stair
+            //If standing on a Stair, and move into a wall
+            else if (MainManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair && blockType_Horizontal.blockType == BlockType.Cube)
             {
                 canMove(direction, false);
             }
-        }
-        #endregion
 
-        #region No Block
-        //if there isn't any block to move to
-        else if (blockType_Vertical.blockType == BlockType.None)
-        {
-            canMove(direction, false);
-        }
-        #endregion
-
-        #region On Stair
-        //If standing on a Stair, and move into a wall
-        else if (MainManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair && blockType_Horizontal.blockType == BlockType.Cube)
-        {
-            canMove(direction, false);
-        }
-
-        //If standing on a Stair, and there is possible to move further up it
-        else if (MainManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair)
-        {
-            if (blockType_Vertical.blockType == BlockType.Stair || blockType_Vertical.blockType == BlockType.Cube)
+            //If standing on a Stair, and there is possible to move further up it
+            else if (MainManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair)
             {
-                canMove(direction, true);
+                if (blockType_Vertical.blockType == BlockType.Stair || blockType_Vertical.blockType == BlockType.Cube)
+                {
+                    canMove(direction, true);
+                }
+                else
+                {
+                    canMove(direction, false);
+                }
             }
-            else
-            {
-                canMove(direction, false);
-            }
+            #endregion
         }
-        #endregion
     }
 
     void canMove(Vector3 direction, bool value)

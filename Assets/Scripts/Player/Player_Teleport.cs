@@ -37,6 +37,7 @@ public class Player_Teleport : MonoBehaviour
     IEnumerator TeleportWait(float waitTime)
     {
         isTeleporting = true;
+        MainManager.Instance.pauseGame = true;
 
         yield return new WaitForSeconds(waitTime);
 
@@ -44,6 +45,9 @@ public class Player_Teleport : MonoBehaviour
 
         gameObject.transform.position = new Vector3(newPos.x, newPos.y + gameObject.GetComponent<Player_Movement>().heightOverBlock, newPos.z);
 
+        yield return new WaitForSeconds(waitTime);
+
         isTeleporting = false;
+        MainManager.Instance.pauseGame = false;
     }
 }
