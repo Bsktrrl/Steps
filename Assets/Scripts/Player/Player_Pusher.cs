@@ -13,6 +13,7 @@ public class Player_Pusher : MonoBehaviour
     private void Start()
     {
         Player_Movement.Action_StepTaken += Push;
+        Player_Movement.Action_BodyRotated += CheckIfNotPushed;
     }
 
 
@@ -40,6 +41,7 @@ public class Player_Pusher : MonoBehaviour
     {
         if (MainManager.Instance.lookingDirection != pushDirection)
         {
+            print("CheckIfNotPushed");
             playerIsPushed = false;
             pushDirection = Vector3.zero;
         }

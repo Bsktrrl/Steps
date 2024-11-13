@@ -6,6 +6,7 @@ using UnityEngine;
 public class Player_Movement : Singleton<Player_Movement>
 {
     public static event Action Action_StepTaken;
+    public static event Action Action_BodyRotated;
     public static event Action Action_resetBlockColor;
 
     [Header("Current Movement Cost")]
@@ -202,6 +203,8 @@ public class Player_Movement : Singleton<Player_Movement>
             default:
                 break;
         }
+
+        Action_BodyRotated?.Invoke();
     }
 
     void MovePlayer()

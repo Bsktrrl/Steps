@@ -135,10 +135,19 @@ public class BlockInfo : MonoBehaviour
 
     public int GetMovementCost()
     {
+        //If Moving with Free Cost
         if (MainManager.Instance.block_StandingOn_Previous == gameObject && !MainManager.Instance.block_StandingOn_Previous.GetComponent<Block_Pusher>() && MainManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
         {
             return 0;
         }
+
+        //If Dashing with Free cost
+        else if (MainManager.Instance.player.GetComponent<Player_Dash>().dashBlock_Current == gameObject && MainManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed && MainManager.Instance.player.GetComponent<Player_Dash>().playerCanDash)
+        {
+            return 0;
+        }
+
+        //If Moving with Normal Cost
         else
         {
             return movementCost;

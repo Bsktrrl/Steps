@@ -43,6 +43,8 @@ public class BlockStepCostDisplay : MonoBehaviour
     {
         if (MainManager.Instance.block_LookingAt_Vertical == gameObject && !MainManager.Instance.block_LookingAt_Vertical.GetComponent<Block_Pusher>() && MainManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
             UpdateStepCostTextValue(0);
+        else if (MainManager.Instance.player.GetComponent<Player_Dash>().dashBlock_Current == gameObject && MainManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed && MainManager.Instance.player.GetComponent<Player_Dash>().playerCanDash)
+            UpdateStepCostTextValue(0);
         else
             UpdateStepCostTextValue(gameObject.GetComponent<BlockInfo>().movementCost);
 
