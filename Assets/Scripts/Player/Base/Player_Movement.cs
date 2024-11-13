@@ -131,7 +131,9 @@ public class Player_Movement : Singleton<Player_Movement>
         if (canMove)
         {
             if (block_Vertical != null)
+            {
                 if (block_Vertical.block != null)
+                {
                     if (block_Vertical.block.GetComponent<BlockInfo>())
                     {
                         MainManager.Instance.block_MovingTowards = block_Vertical;
@@ -139,16 +141,16 @@ public class Player_Movement : Singleton<Player_Movement>
                         block_Vertical.block.GetComponent<BlockInfo>().movementCost = block_Vertical.block.GetComponent<BlockInfo>().movementCost;
 
                         endDestination = block_Vertical.blockPosition + (Vector3.up * heightOverBlock);
-                        SetPlayerBodyRotation(rotation);
+                        //SetPlayerBodyRotation(rotation);
                         movementStates = MovementStates.Moving;
 
                         Action_resetBlockColor?.Invoke();
                     }
+                }
+            }
         }
-        else
-        {
-            SetPlayerBodyRotation(rotation);
-        }
+
+        SetPlayerBodyRotation(rotation);
     }
     void SetPlayerBodyRotation(int rotationValue)
     {
@@ -208,7 +210,7 @@ public class Player_Movement : Singleton<Player_Movement>
                 break;
         }
 
-        //Action_BodyRotated?.Invoke();
+        Action_BodyRotated?.Invoke();
     }
 
     void MovePlayer()
@@ -348,7 +350,6 @@ public enum MovementStates
     Still,
     Moving
 }
-
 public enum ButtonsToPress
 {
     None,
