@@ -22,11 +22,11 @@ public class Player_Teleport : MonoBehaviour
 
     void TeleportPlayer()
     {
-        if (MainManager.Instance.block_StandingOn.block)
+        if (MainManager.Instance.block_StandingOn_Current.block)
         {
-            if (MainManager.Instance.block_StandingOn.block.GetComponent<Block_Teleport>())
+            if (MainManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Teleport>())
             {
-                if (MainManager.Instance.block_StandingOn.block.GetComponent<Block_Teleport>().newLandingSpot)
+                if (MainManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Teleport>().newLandingSpot)
                 {
                     StartCoroutine(TeleportWait(0.01f));
                 }
@@ -40,7 +40,7 @@ public class Player_Teleport : MonoBehaviour
 
         yield return new WaitForSeconds(waitTime);
 
-        Vector3 newPos = MainManager.Instance.block_StandingOn.block.GetComponent<Block_Teleport>().newLandingSpot.transform.position;
+        Vector3 newPos = MainManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Teleport>().newLandingSpot.transform.position;
 
         gameObject.transform.position = new Vector3(newPos.x, newPos.y + gameObject.GetComponent<Player_Movement>().heightOverBlock, newPos.z);
 

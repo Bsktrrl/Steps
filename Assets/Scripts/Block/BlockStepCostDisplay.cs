@@ -32,7 +32,7 @@ public class BlockStepCostDisplay : MonoBehaviour
 
         HideDisplay();
         UpdateRotation();
-        UpdateStepCostTextValue();
+        UpdateStepCostTextValue(gameObject.GetComponent<BlockInfo>().movementCost);
     }
 
 
@@ -41,6 +41,11 @@ public class BlockStepCostDisplay : MonoBehaviour
 
     public void ShowDisplay()
     {
+        if (MainManager.Instance.block_LookingAt_Vertical == gameObject && !MainManager.Instance.block_LookingAt_Vertical.GetComponent<Block_Pusher>() && MainManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
+            UpdateStepCostTextValue(0);
+        else
+            UpdateStepCostTextValue(gameObject.GetComponent<BlockInfo>().movementCost);
+
         stepCostDisplay_Parent.SetActive(true);
     }
     public void HideDisplay()
@@ -52,9 +57,9 @@ public class BlockStepCostDisplay : MonoBehaviour
     //--------------------
 
 
-    public void UpdateStepCostTextValue()
+    public void UpdateStepCostTextValue(float moveCost)
     {
-        stepCostText_Object.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<BlockInfo>().movementCost.ToString();
+        stepCostText_Object.GetComponent<TextMeshProUGUI>().text = moveCost.ToString();
     }
 
 

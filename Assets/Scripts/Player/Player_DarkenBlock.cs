@@ -124,13 +124,13 @@ public class Player_DarkenBlock : MonoBehaviour
         }
 
         //Lighten Block player is standing on
-        if (MainManager.Instance.block_StandingOn.block == null) { }
+        if (MainManager.Instance.block_StandingOn_Current.block == null) { }
         else
         {
-            if (MainManager.Instance.block_StandingOn.block)
+            if (MainManager.Instance.block_StandingOn_Current.block)
             {
-                if (MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>())
-                    MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().ResetColor();
+                if (MainManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>())
+                    MainManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().ResetColor();
             }
         }
     }

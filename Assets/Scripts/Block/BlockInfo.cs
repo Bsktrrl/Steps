@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Burst.CompilerServices;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class BlockInfo : MonoBehaviour
 {
@@ -131,6 +133,18 @@ public class BlockInfo : MonoBehaviour
     }
 
 
+    public int GetMovementCost()
+    {
+        if (MainManager.Instance.block_StandingOn_Previous == gameObject && !MainManager.Instance.block_StandingOn_Previous.GetComponent<Block_Pusher>() && MainManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
+        {
+            return 0;
+        }
+        else
+        {
+            return movementCost;
+        }
+    }
+
     //--------------------
 
 
@@ -181,6 +195,10 @@ public class BlockInfo : MonoBehaviour
             }
         }
     }
+
+
+    //--------------------
+
 
     public void DestroyBlockInfo()
     {

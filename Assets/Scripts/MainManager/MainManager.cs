@@ -13,10 +13,13 @@ public class MainManager : Singleton<MainManager>
     public DetectedBlockInfo block_MovingTowards;
 
     [Header("Player Block Looking At")]
-    public GameObject block_LookingAt;
+    public Vector3 lookingDirection;
+    public GameObject block_LookingAt_Horizontal;
+    public GameObject block_LookingAt_Vertical;
 
     [Header("Player Block Standing On Info")]
-    public DetectedBlockInfo block_StandingOn;
+    public DetectedBlockInfo block_StandingOn_Current;
+    public GameObject block_StandingOn_Previous;
 
     [Header("Player Block Horizontal")]
     public DetectedBlockInfo block_Horizontal_InFront;

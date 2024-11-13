@@ -115,9 +115,9 @@ public class Player_Ascend : Singleton<Player_Ascend>
 
                 Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
 
-                if (MainManager.Instance.block_StandingOn.block)
+                if (MainManager.Instance.block_StandingOn_Current.block)
                 {
-                    Player_Movement.Instance.currentMovementCost = MainManager.Instance.block_StandingOn.block.GetComponent<BlockInfo>().movementCost;
+                    Player_Movement.Instance.currentMovementCost = MainManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
                 }
 
                 Player_Movement.Instance.Action_StepTakenInvoke();

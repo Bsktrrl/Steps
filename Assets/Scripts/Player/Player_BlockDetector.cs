@@ -134,20 +134,22 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
             if (hit.transform.GetComponent<BlockInfo>())
             {
-                MainManager.Instance.block_StandingOn.block = hit.transform.gameObject;
-                MainManager.Instance.block_StandingOn.blockPosition = hit.transform.position;
-                MainManager.Instance.block_StandingOn.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
-                MainManager.Instance.block_StandingOn.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
+                MainManager.Instance.block_StandingOn_Previous = MainManager.Instance.block_StandingOn_Current.block;
+
+                MainManager.Instance.block_StandingOn_Current.block = hit.transform.gameObject;
+                MainManager.Instance.block_StandingOn_Current.blockPosition = hit.transform.position;
+                MainManager.Instance.block_StandingOn_Current.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
+                MainManager.Instance.block_StandingOn_Current.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
             }
         }
         else
         {
             Debug.DrawRay(rayPointObject.transform.position, direction * maxDistance_Horizontal, Color.red);
 
-            MainManager.Instance.block_StandingOn.block = null;
-            MainManager.Instance.block_StandingOn.blockPosition = Vector3.zero;
-            MainManager.Instance.block_StandingOn.blockElement = BlockElement.None;
-            MainManager.Instance.block_StandingOn.blockType = BlockType.None;
+            MainManager.Instance.block_StandingOn_Current.block = null;
+            MainManager.Instance.block_StandingOn_Current.blockPosition = Vector3.zero;
+            MainManager.Instance.block_StandingOn_Current.blockElement = BlockElement.None;
+            MainManager.Instance.block_StandingOn_Current.blockType = BlockType.None;
         }
     }
 
@@ -600,13 +602,13 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
         #region On Stair
         //If standing on a Stair, and move into a wall
-        else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair && blockType_Horizontal.blockType == BlockType.Cube)
+        else if (MainManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair && blockType_Horizontal.blockType == BlockType.Cube)
         {
             canMove(direction, false);
         }
 
         //If standing on a Stair, and there is possible to move further up it
-        else if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
+        else if (MainManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair)
         {
             if (blockType_Vertical.blockType == BlockType.Stair || blockType_Vertical.blockType == BlockType.Cube)
             {
@@ -643,7 +645,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     void UpdateStairRaycast()
     {
-        if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
+        if (MainManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair)
         {
             //Front
             if (Physics.Raycast(detectorSpot_Stair_Front.transform.position, Vector3.down, out hit, maxDistance_Stair))
@@ -737,7 +739,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     void UpdateVerticalRacastLength()
     {
-        if (MainManager.Instance.block_StandingOn.blockType == BlockType.Stair)
+        if (MainManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair)
         {
             maxDistance_Vertical = maxDistance_Vertical_Stair;
         }
@@ -778,24 +780,48 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         else if (lookDir_Temp == 90 || lookDir_Temp == -270)
             lookDir = Vector3.right;
 
+        //Get BlockLookingAt - Horizontal
         if (Physics.Raycast(transform.position, lookDir, out hit, 1))
         {
             Debug.DrawRay(transform.position, lookDir, Color.blue);
 
             if (hit.transform.GetComponent<BlockInfo>())
             {
-                MainManager.Instance.block_LookingAt = hit.transform.gameObject;
+                MainManager.Instance.block_LookingAt_Horizontal = hit.transform.gameObject;
             }
             else
             {
-                MainManager.Instance.block_LookingAt = null;
+                MainManager.Instance.block_LookingAt_Horizontal = null;
             }
         }
         else
         {
             Debug.DrawRay(transform.position, lookDir, Color.blue);
 
-            MainManager.Instance.block_LookingAt = null;
+            MainManager.Instance.block_LookingAt_Horizontal = null;
         }
+
+        //Get BlockLookingAt - Vertical
+        if (Physics.Raycast((transform.position + (Vector3.up * 0.25f)) + lookDir, Vector3.down, out hit, 1.5f))
+        {
+            Debug.DrawRay((transform.position + (Vector3.up * 0.25f)) + lookDir, Vector3.down, Color.blue);
+
+            if (hit.transform.GetComponent<BlockInfo>())
+            {
+                MainManager.Instance.block_LookingAt_Vertical = hit.transform.gameObject;
+            }
+            else
+            {
+                MainManager.Instance.block_LookingAt_Vertical = null;
+            }
+        }
+        else
+        {
+            Debug.DrawRay(transform.position, lookDir, Color.blue);
+
+            MainManager.Instance.block_LookingAt_Vertical = null;
+        }
+
+        MainManager.Instance.lookingDirection = lookDir;
     }
 }
