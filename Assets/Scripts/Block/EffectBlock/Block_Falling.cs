@@ -81,7 +81,7 @@ public class Block_Falling : MonoBehaviour
         {
             isMoving = false;
             HideBlock();
-            MainManager.Instance.player.GetComponent<Player_BlockDetector>().UpdateBlock_StandingOn();
+            MainManager.Instance.player.GetComponent<Player_BlockDetector>().Update_BlockStandingOn();
         }
     }
 

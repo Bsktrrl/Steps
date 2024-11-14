@@ -94,7 +94,12 @@ public class Player_Movement : Singleton<Player_Movement>
         //If pressing - E - ASCEND
         else if (Input.GetKeyDown(KeyCode.E))
         {
-            if (gameObject.GetComponent<Player_Ascend>().playerCanAscend)
+            if (gameObject.GetComponent<Player_SwiftSwim>().canSwiftSwim_Up)
+            {
+                print("KeyCode.E - Up");
+                gameObject.GetComponent<Player_SwiftSwim>().SwiftSwim_Up();
+            }
+            else if (gameObject.GetComponent<Player_Ascend>().playerCanAscend)
             {
                 gameObject.GetComponent<Player_Ascend>().Ascend();
             }
@@ -102,7 +107,12 @@ public class Player_Movement : Singleton<Player_Movement>
         //If pressing - Q - DESCEND
         else if (Input.GetKeyDown(KeyCode.Q))
         {
-            if (gameObject.GetComponent<Player_Descend>().playerCanDescend)
+            if (gameObject.GetComponent<Player_SwiftSwim>().canSwiftSwim_Down)
+            {
+                print("KeyCode.Q - Down");
+                gameObject.GetComponent<Player_SwiftSwim>().SwiftSwim_Down();
+            }
+            else if (gameObject.GetComponent<Player_Descend>().playerCanDescend)
             {
                 gameObject.GetComponent<Player_Descend>().Descend();
             }

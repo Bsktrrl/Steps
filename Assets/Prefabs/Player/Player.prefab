@@ -112,12 +112,11 @@ GameObject:
   - component: {fileID: 4495977200974849547}
   - component: {fileID: 9003401136763078288}
   - component: {fileID: -7469004637789354630}
-  - component: {fileID: 2777181215963510340}
-  - component: {fileID: 3957248811615775525}
   - component: {fileID: -1184868024431873039}
   - component: {fileID: -3986576037543488350}
   - component: {fileID: 5578024844827249049}
   - component: {fileID: -1573091248132362793}
+  - component: {fileID: 338879179656190465}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -211,6 +210,7 @@ MonoBehaviour:
     abilities:
       FenceSneak: 0
       SwimSuit: 0
+      SwiftSwim: 0
       Flippers: 0
       LavaSuit: 0
       HikerGear: 0
@@ -329,31 +329,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockCrack: {fileID: 1901055088007959049, guid: 931b42b9e3cbdd24f9560b18dc903ac8, type: 3}
   playerCanHammer: 0
---- !u!114 &2777181215963510340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1113039739388874501}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecff06efd8c6d0a49a1aaa0f1a198e01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3957248811615775525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1113039739388874501}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baa9b94671106074e9db8e34f1e8be02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isTeleporting: 0
 --- !u!114 &-1184868024431873039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -424,6 +399,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerIsPushed: 0
   pushDirection: {x: 0, y: 0, z: 0}
+--- !u!114 &338879179656190465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113039739388874501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5816911b3ff9534789a8b4947047764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canSwiftSwim_Up: 0
+  canSwiftSwim_Down: 0
 --- !u!1 &1579374389231818420
 GameObject:
   m_ObjectHideFlags: 0

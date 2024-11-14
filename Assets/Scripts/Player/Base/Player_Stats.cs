@@ -108,6 +108,10 @@ public class Player_Stats : Singleton<Player_Stats>
     {
         stats.abilities.SwimSuit = true;
     }
+    public void UpdateSwiftSwim()
+    {
+        stats.abilities.SwiftSwim = true;
+    }
     public void UpdateFlippers()
     {
         stats.abilities.Flippers = true;
@@ -124,6 +128,10 @@ public class Player_Stats : Singleton<Player_Stats>
     public void UpdateLavaSuit()
     {
         stats.abilities.LavaSuit = true;
+    }
+    public void UpdateLavaSwiftSwim()
+    {
+        stats.abilities.LavaSwiftSwim = true;
     }
     public void UpdateHikerGear()
     {
@@ -192,8 +200,10 @@ public class AbilitiesGot
 {
     public bool FenceSneak;
     public bool SwimSuit;
+    public bool SwiftSwim;
     public bool Flippers;
     public bool LavaSuit;
+    public bool LavaSwiftSwim;
 
     public bool HikerGear; //Moving up Slopes
 

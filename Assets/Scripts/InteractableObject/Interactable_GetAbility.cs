@@ -27,6 +27,10 @@ public class Interactable_GetAbility : MonoBehaviour
                     MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.SwimSuit = true;
                     Player_Stats.Instance.UpdateSwimsuit();
                     break;
+                case Abilities.SwiftSwim:
+                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.SwiftSwim = true;
+                    Player_Stats.Instance.UpdateSwiftSwim();
+                    break;
                 case Abilities.Flippers:
                     MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.Flippers = true;
                     Player_Stats.Instance.UpdateFlippers();
@@ -34,6 +38,10 @@ public class Interactable_GetAbility : MonoBehaviour
                 case Abilities.LavaSuit:
                     MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.LavaSuit = true;
                     Player_Stats.Instance.UpdateLavaSuit();
+                    break;
+                case Abilities.LavaSwiftSwim:
+                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.LavaSwiftSwim = true;
+                    Player_Stats.Instance.UpdateLavaSwiftSwim();
                     break;
                 case Abilities.HikersKit:
                     MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.HikerGear = true;
@@ -85,17 +93,26 @@ public enum Abilities
     None,
 
     FenceSneak,
+
     SwimSuit,
+    SwiftSwim,
     Flippers,
+
     LavaSuit,
+    LavaSwiftSwim,
+
     HikersKit,
+    ClimbingGear,
 
     IceSpikes,
-    GrapplingHook,
-    Hammer,
-    ClimbingGear,
+
     Dash,
     Ascend,
     Descend,
+    
+    Hammer,
+
+    GrapplingHook,
+
     ControlStick,
 }

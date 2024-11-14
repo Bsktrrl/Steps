@@ -68,7 +68,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         //Check which block the player stands on
         if (gameObject.GetComponent<Player_Movement>().movementStates == MovementStates.Moving)
         {
-            UpdateBlock_StandingOn();
+            Update_BlockStandingOn();
         }
 
         //Check if something is in the way of movement
@@ -133,7 +133,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         UpdateStairRaycast();
     }
 
-    public void UpdateBlock_StandingOn()
+    public void Update_BlockStandingOn()
     {
         PerformRaycast_Center_Vertical(detectorSpot_Vertical_Center, Vector3.down);
     }
