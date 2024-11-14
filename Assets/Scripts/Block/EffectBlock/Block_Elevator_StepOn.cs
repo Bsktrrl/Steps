@@ -75,6 +75,12 @@ public class Block_Elevator_StepOn : MonoBehaviour
             case elevatorDirection.Down:
                 endPos = startPos + (Vector3.down * distance);
                 break;
+            case elevatorDirection.forward:
+                endPos = startPos + (Vector3.forward * distance);
+                break;
+            case elevatorDirection.backward:
+                endPos = startPos + (Vector3.back * distance);
+                break;
             case elevatorDirection.Left:
                 endPos = startPos + (Vector3.left * distance);
                 break;

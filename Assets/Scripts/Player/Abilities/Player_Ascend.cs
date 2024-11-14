@@ -64,7 +64,21 @@ public class Player_Ascend : Singleton<Player_Ascend>
                             }
                         }
 
-                        ascendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                        if (Player_SwiftSwim.Instance.swiftSwim_Up_Obj)
+                        {
+                            if (Player_SwiftSwim.Instance.swiftSwim_Up_Obj.GetComponent<Block_Water>())
+                            {
+                                
+                            }
+                            else
+                            {
+                                ascendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                            }
+                        }
+                        else
+                        {
+                            ascendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                        }
 
                         return true;
                     }

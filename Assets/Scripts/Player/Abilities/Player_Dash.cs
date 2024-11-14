@@ -112,6 +112,25 @@ public class Player_Dash : MonoBehaviour
                 playerCanDash = true;
             }
         }
+        else if (Player_Stats.Instance.stats.abilities.SwimSuit && dashBlock_Current && dashBlockOver_Current && Player_Stats.Instance.stats.abilities.Dash)
+        {
+            if (dashBlock_Current.GetComponent<BlockInfo>() && dashBlock_Current.GetComponent<Block_Water>())
+            {
+                if (dashBlock_Current != dashBlock_Previous)
+                {
+                    if (dashBlock_Previous)
+                    {
+                        if (dashBlock_Previous.GetComponent<BlockInfo>())
+                        {
+                            dashBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                        }
+                    }
+                }
+
+                dashBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                playerCanDash = true;
+            }
+        }
         else
         {
             if (dashBlock_Previous)

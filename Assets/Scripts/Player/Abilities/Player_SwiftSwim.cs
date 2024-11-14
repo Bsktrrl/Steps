@@ -25,11 +25,11 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
 
     private void Start()
     {
-        Player_Movement.Action_StepTaken += ActivateSwiftSwimRaycast;
+        //Player_Movement.Action_StepTaken += ActivateSwiftSwimRaycast;
     }
     private void Update()
     {
-        //ActivateSwiftSwimRaycast();
+        ActivateSwiftSwimRaycast();
 
         if (isSwiftSwimming_Up || isSwiftSwimming_Down)
         {
@@ -44,6 +44,7 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
     void ActivateSwiftSwimRaycast()
     {
         if (isSwiftSwimming_Up) { return; }
+        if (isSwiftSwimming_Down) { return; }
 
         canSwiftSwim_Up = RaycastSwiftSwim(Vector3.up);
         canSwiftSwim_Down = RaycastSwiftSwim(Vector3.down);
@@ -56,12 +57,18 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
             {
                 if (hit.transform.gameObject.GetComponent<Block_Water>())
                 {
-                    Debug.DrawRay(gameObject.transform.position, dir, Color.yellow);
+                    //Debug.DrawRay(gameObject.transform.position, dir, Color.yellow, 1);
 
                     if (dir == Vector3.up)
+                    {
                         swiftSwim_Up_Obj = hit.transform.gameObject;
+                        swiftSwim_Up_Obj.GetComponent<BlockInfo>().DarkenColors();
+                    }
                     else if (dir == Vector3.down)
+                    {
                         swiftSwim_Down_Obj = hit.transform.gameObject;
+                        swiftSwim_Down_Obj.GetComponent<BlockInfo>().DarkenColors();
+                    }
 
                     return true;
                 }
@@ -86,9 +93,21 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
     void ResetObj(Vector3 dir)
     {
         if (dir == Vector3.up)
-            swiftSwim_Up_Obj = null;
+        {
+            if (swiftSwim_Up_Obj)
+            {
+                swiftSwim_Up_Obj.GetComponent<BlockInfo>().ResetColor();
+                swiftSwim_Up_Obj = null;
+            }
+        }
         else if (dir == Vector3.down)
-            swiftSwim_Down_Obj = null;
+        {
+            if (swiftSwim_Down_Obj)
+            {
+                swiftSwim_Down_Obj.GetComponent<BlockInfo>().ResetColor();
+                swiftSwim_Down_Obj = null;
+            }
+        }
     }
 
 
@@ -129,8 +148,6 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
         //Snap into place when close enough
         if (Vector3.Distance(transform.position, targetPos) <= 0.03f)
         {
-            print("Distance - Finished");
-
             transform.position = targetPos;
 
             Player_Movement.Instance.movementStates = MovementStates.Still;
@@ -149,7 +166,7 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
             }
 
             swiftSwimBlock_Target = null;
-
+            
             Player_Movement.Instance.Action_StepTakenInvoke();
             Player_Movement.Instance.Action_ResetBlockColorInvoke();
         }

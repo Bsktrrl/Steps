@@ -65,7 +65,22 @@ public class Player_Descend : MonoBehaviour
                             }
                         }
 
-                        descendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                        if (Player_SwiftSwim.Instance.swiftSwim_Down_Obj)
+                        {
+                            if (Player_SwiftSwim.Instance.swiftSwim_Down_Obj.GetComponent<Block_Water>())
+                            {
+
+                            }
+                            else
+                            {
+                                descendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                            }
+                        }
+                        else
+                        {
+                            descendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                        }
+
 
                         return true;
                     }

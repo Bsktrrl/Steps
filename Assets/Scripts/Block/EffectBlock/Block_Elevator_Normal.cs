@@ -60,6 +60,12 @@ public class Block_Elevator_Normal : MonoBehaviour
             case elevatorDirection.Down:
                 endPos = startPos + (Vector3.down * distance);
                 break;
+            case elevatorDirection.forward:
+                endPos = startPos + (Vector3.forward * distance);
+                break;
+            case elevatorDirection.backward:
+                endPos = startPos + (Vector3.back * distance);
+                break;
             case elevatorDirection.Left:
                 endPos = startPos + (Vector3.left * distance);
                 break;
@@ -116,6 +122,8 @@ public enum elevatorDirection
 
     Up,
     Down,
+    forward,
+    backward,
     Left,
     Right,
 }
