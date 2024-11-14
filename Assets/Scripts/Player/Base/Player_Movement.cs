@@ -36,9 +36,14 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         KeyInputs();
 
-        if (movementStates == MovementStates.Moving && endDestination != (Vector3.zero + (Vector3.up * heightOverBlock)))
+        if (movementStates == MovementStates.Moving && endDestination != (Vector3.zero + (Vector3.up * heightOverBlock))
+            && !Player_SwiftSwim.Instance.isSwiftSwimming_Up && !Player_SwiftSwim.Instance.isSwiftSwimming_Down)
         {
             MovePlayer();
+        }
+        else if (Player_SwiftSwim.Instance.isSwiftSwimming_Up || Player_SwiftSwim.Instance.isSwiftSwimming_Down)
+        {
+
         }
         else
         {
@@ -96,7 +101,6 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (gameObject.GetComponent<Player_SwiftSwim>().canSwiftSwim_Up)
             {
-                print("KeyCode.E - Up");
                 gameObject.GetComponent<Player_SwiftSwim>().SwiftSwim_Up();
             }
             else if (gameObject.GetComponent<Player_Ascend>().playerCanAscend)
@@ -109,7 +113,6 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (gameObject.GetComponent<Player_SwiftSwim>().canSwiftSwim_Down)
             {
-                print("KeyCode.Q - Down");
                 gameObject.GetComponent<Player_SwiftSwim>().SwiftSwim_Down();
             }
             else if (gameObject.GetComponent<Player_Descend>().playerCanDescend)
@@ -274,7 +277,7 @@ public class Player_Movement : Singleton<Player_Movement>
             MainManager.Instance.player.transform.position = endDestination;
             movementStates = MovementStates.Still;
 
-            Action_StepTaken?.Invoke();
+            Action_StepTakenInvoke();
         }
     }
     void PlayerHover()

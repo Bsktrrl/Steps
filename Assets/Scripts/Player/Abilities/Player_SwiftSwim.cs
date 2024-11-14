@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 
-public class Player_SwiftSwim : MonoBehaviour
+public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
 {
     public bool canSwiftSwim_Up;
     public bool canSwiftSwim_Down;
@@ -13,11 +13,11 @@ public class Player_SwiftSwim : MonoBehaviour
 
     public GameObject swiftSwimBlock_Target;
 
-    bool isSwiftSwimming_Up;
-    bool isSwiftSwimming_Down;
+    public bool isSwiftSwimming_Up;
+    public bool isSwiftSwimming_Down;
 
     RaycastHit hit;
-    Vector3 targetPos;
+    public Vector3 targetPos;
 
 
     //--------------------
@@ -25,13 +25,16 @@ public class Player_SwiftSwim : MonoBehaviour
 
     private void Start()
     {
-        //Player_Movement.Action_StepTaken += ActivateSwiftSwimRaycast;
+        Player_Movement.Action_StepTaken += ActivateSwiftSwimRaycast;
     }
     private void Update()
     {
-        ActivateSwiftSwimRaycast();
+        //ActivateSwiftSwimRaycast();
 
-        PerformSwiftSwimMovement();
+        if (isSwiftSwimming_Up || isSwiftSwimming_Down)
+        {
+            PerformSwiftSwimMovement();
+        }
     }
 
 
@@ -49,7 +52,7 @@ public class Player_SwiftSwim : MonoBehaviour
     {
         if (gameObject.GetComponent<Player_Stats>().stats.abilities.SwiftSwim)
         {
-            if (Physics.Raycast(gameObject.transform.position + Vector3.down, dir * 2, out hit, 1))
+            if (Physics.Raycast(gameObject.transform.position + Vector3.down, dir, out hit, 1))
             {
                 if (hit.transform.gameObject.GetComponent<Block_Water>())
                 {
@@ -98,11 +101,11 @@ public class Player_SwiftSwim : MonoBehaviour
         {
             MainManager.Instance.pauseGame = true;
             MainManager.Instance.isTeleporting = true;
-            isSwiftSwimming_Up = true;
             Player_Movement.Instance.movementStates = MovementStates.Moving;
+            isSwiftSwimming_Up = true;
 
             swiftSwimBlock_Target = swiftSwim_Up_Obj;
-            targetPos = swiftSwimBlock_Target.transform.position + Vector3.up + (Vector3.up * Player_Movement.Instance.heightOverBlock);
+            targetPos = swiftSwimBlock_Target.transform.position /*+ Vector3.up*/ + (Vector3.up * Player_Movement.Instance.heightOverBlock);
         }
     }
     public void SwiftSwim_Down()
@@ -111,30 +114,32 @@ public class Player_SwiftSwim : MonoBehaviour
         {
             MainManager.Instance.pauseGame = true;
             MainManager.Instance.isTeleporting = true;
-            isSwiftSwimming_Down = true;
             Player_Movement.Instance.movementStates = MovementStates.Moving;
+            isSwiftSwimming_Down = true;
 
             swiftSwimBlock_Target = swiftSwim_Down_Obj;
-            targetPos = swiftSwimBlock_Target.transform.position + Vector3.down + (Vector3.up * Player_Movement.Instance.heightOverBlock);
+            targetPos = swiftSwimBlock_Target.transform.position /*+ Vector3.down*/ + (Vector3.up * Player_Movement.Instance.heightOverBlock);
         }
     }
     void PerformSwiftSwimMovement()
     {
-        if (!isSwiftSwimming_Up && !isSwiftSwimming_Down) { return; }
-
         //Move towards Target Block
-        MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, targetPos, swiftSwimBlock_Target.GetComponent<BlockInfo>().movementSpeed * Time.deltaTime);
+        MainManager.Instance.player.transform.position = Vector3.MoveTowards(transform.position, targetPos, 2 * Time.deltaTime);
 
         //Snap into place when close enough
-        if (Vector3.Distance(MainManager.Instance.player.transform.position, targetPos) <= 0.03f)
+        if (Vector3.Distance(transform.position, targetPos) <= 0.03f)
         {
-            MainManager.Instance.player.transform.position = targetPos;
+            print("Distance - Finished");
+
+            transform.position = targetPos;
 
             Player_Movement.Instance.movementStates = MovementStates.Still;
             MainManager.Instance.pauseGame = false;
             MainManager.Instance.isTeleporting = false;
+
             isSwiftSwimming_Up = false;
             isSwiftSwimming_Down = false;
+            targetPos = Vector3.zero;
 
             Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
 
