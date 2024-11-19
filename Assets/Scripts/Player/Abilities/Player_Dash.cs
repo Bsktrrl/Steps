@@ -16,13 +16,35 @@ public class Player_Dash : MonoBehaviour
 
     [SerializeField] HitDirection hitDir;
 
+    bool canRun;
+
+
+    //--------------------
+
+
     private void Update()
     {
+        if (!canRun) { return; }
+
         CheckHitDirection();
 
         CheckForDash();
 
         PerformDashMovement();
+    }
+
+    private void OnEnable()
+    {
+        DataManager.datahasLoaded += StartRunningObject;
+    }
+
+    private void OnDisable()
+    {
+        DataManager.datahasLoaded -= StartRunningObject;
+    }
+    void StartRunningObject()
+    {
+        canRun = true;
     }
 
 
@@ -31,7 +53,7 @@ public class Player_Dash : MonoBehaviour
 
     void CheckHitDirection()
     {
-        if (MainManager.Instance.block_LookingAt_Horizontal)
+        if (PlayerManager.Instance.block_LookingAt_Horizontal)
         {
             if (Player_BlockDetector.Instance.lookDir == Vector3.forward)
                 hitDir = HitDirection.Forward;
@@ -49,9 +71,9 @@ public class Player_Dash : MonoBehaviour
     }
     void CheckForDash()
     {
-        if (MainManager.Instance.block_LookingAt_Horizontal)
+        if (PlayerManager.Instance.block_LookingAt_Horizontal)
         {
-            if (MainManager.Instance.block_LookingAt_Horizontal.GetComponent<BlockInfo>())
+            if (PlayerManager.Instance.block_LookingAt_Horizontal.GetComponent<BlockInfo>())
             {
                 dashBlock_Previous = dashBlock_Current;
 
@@ -62,20 +84,20 @@ public class Player_Dash : MonoBehaviour
                         break;
 
                     case HitDirection.Forward:
-                        dashBlock_Current = MainManager.Instance.block_LookingAt_Horizontal.GetComponent<BlockInfo>().lower_Front;
-                        dashBlockOver_Current = MainManager.Instance.block_LookingAt_Horizontal.GetComponent<BlockInfo>().center_Front;
+                        dashBlock_Current = PlayerManager.Instance.block_LookingAt_Horizontal.GetComponent<BlockInfo>().lower_Front;
+                        dashBlockOver_Current = PlayerManager.Instance.block_LookingAt_Horizontal.GetComponent<BlockInfo>().center_Front;
                         break;
                     case HitDirection.Backward:
-                        dashBlock_Current = MainManager.Instance.block_LookingAt_Horizontal.GetComponent<BlockInfo>().lower_Back;
-                        dashBlockOver_Current = MainManager.Instance.block_LookingAt_Horizontal.GetComponent<BlockInfo>().center_Back;
+                        dashBlock_Current = PlayerManager.Instance.block_LookingAt_Horizontal.GetComponent<BlockInfo>().lower_Back;
+                        dashBlockOver_Current = PlayerManager.Instance.block_LookingAt_Horizontal.GetComponent<BlockInfo>().center_Back;
                         break;
                     case HitDirection.Left:
-                        dashBlock_Current = MainManager.Instance.block_LookingAt_Horizontal.GetComponent<BlockInfo>().lower_Center_Left;
-                        dashBlockOver_Current = MainManager.Instance.block_LookingAt_Horizontal.GetComponent<BlockInfo>().center_Center_Left;
+                        dashBlock_Current = PlayerManager.Instance.block_LookingAt_Horizontal.GetComponent<BlockInfo>().lower_Center_Left;
+                        dashBlockOver_Current = PlayerManager.Instance.block_LookingAt_Horizontal.GetComponent<BlockInfo>().center_Center_Left;
                         break;
                     case HitDirection.Right:
-                        dashBlock_Current = MainManager.Instance.block_LookingAt_Horizontal.GetComponent<BlockInfo>().lower_Center_Right;
-                        dashBlockOver_Current = MainManager.Instance.block_LookingAt_Horizontal.GetComponent<BlockInfo>().center_Center_Right;
+                        dashBlock_Current = PlayerManager.Instance.block_LookingAt_Horizontal.GetComponent<BlockInfo>().lower_Center_Right;
+                        dashBlockOver_Current = PlayerManager.Instance.block_LookingAt_Horizontal.GetComponent<BlockInfo>().center_Center_Right;
                         break;
 
                     default:
@@ -93,7 +115,7 @@ public class Player_Dash : MonoBehaviour
             dashBlock_Current = null;
         }
         
-        if (dashBlock_Current && !dashBlockOver_Current && Player_Stats.Instance.stats.abilities.Dash)
+        if (dashBlock_Current && !dashBlockOver_Current && PlayerStats.Instance.stats.abilitiesGot.Dash)
         {
             if (dashBlock_Current.GetComponent<BlockInfo>())
             {
@@ -112,7 +134,7 @@ public class Player_Dash : MonoBehaviour
                 playerCanDash = true;
             }
         }
-        else if (Player_Stats.Instance.stats.abilities.SwimSuit && dashBlock_Current && dashBlockOver_Current && Player_Stats.Instance.stats.abilities.Dash)
+        else if (PlayerStats.Instance.stats.abilitiesGot.SwimSuit && dashBlock_Current && dashBlockOver_Current && PlayerStats.Instance.stats.abilitiesGot.Dash)
         {
             if (dashBlock_Current.GetComponent<BlockInfo>() && dashBlock_Current.GetComponent<Block_Water>())
             {
@@ -147,10 +169,10 @@ public class Player_Dash : MonoBehaviour
 
     public void Dash()
     {
-        if (gameObject.GetComponent<Player_Stats>().stats.abilities.Dash)
+        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Dash)
         {
-            MainManager.Instance.pauseGame = true;
-            MainManager.Instance.isTeleporting = true;
+            PlayerManager.Instance.pauseGame = true;
+            PlayerManager.Instance.isTeleporting = true;
             isDashing = true;
             Player_Movement.Instance.movementStates = MovementStates.Moving;
 
@@ -166,25 +188,25 @@ public class Player_Dash : MonoBehaviour
         {
             Vector3 targetPos = dashBlock_Target.transform.position + (Vector3.up * Player_Movement.Instance.heightOverBlock);
 
-            MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, targetPos, dashSpeed * Time.deltaTime);
+            PlayerManager.Instance.player.transform.position = Vector3.MoveTowards(PlayerManager.Instance.player.transform.position, targetPos, dashSpeed * Time.deltaTime);
 
             //Snap into place when close enough
-            if (Vector3.Distance(MainManager.Instance.player.transform.position, targetPos) <= 0.03f)
+            if (Vector3.Distance(PlayerManager.Instance.player.transform.position, targetPos) <= 0.03f)
             {
-                MainManager.Instance.player.transform.position = targetPos;
+                PlayerManager.Instance.player.transform.position = targetPos;
 
                 Player_Movement.Instance.movementStates = MovementStates.Still;
-                MainManager.Instance.pauseGame = false;
-                MainManager.Instance.isTeleporting = false;
+                PlayerManager.Instance.pauseGame = false;
+                PlayerManager.Instance.isTeleporting = false;
                 isDashing = false;
 
                 Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
 
-                if (MainManager.Instance.block_StandingOn_Current.block)
+                if (PlayerManager.Instance.block_StandingOn_Current.block)
                 {
-                    if (MainManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>())
+                    if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>())
                     {
-                        Player_Movement.Instance.currentMovementCost = MainManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().GetMovementCost();
+                        Player_Movement.Instance.currentMovementCost = PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().GetMovementCost();
                     }
                 }
 

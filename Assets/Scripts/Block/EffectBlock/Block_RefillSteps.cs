@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class Block_RefillSteps : MonoBehaviour
 {
-    private void Start()
+    private void OnEnable()
     {
         Player_Movement.Action_StepTaken += RefillAvailableSteps;
+    }
+
+    private void OnDisable()
+    {
+        Player_Movement.Action_StepTaken -= RefillAvailableSteps;
     }
 
 
@@ -15,9 +20,9 @@ public class Block_RefillSteps : MonoBehaviour
 
     void RefillAvailableSteps()
     {
-        if (MainManager.Instance.block_StandingOn_Current.block == gameObject)
+        if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject)
         {
-            MainManager.Instance.player.GetComponent<Player_Stats>().stats.steps_Current = MainManager.Instance.player.GetComponent<Player_Stats>().stats.steps_Max;
+            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current = PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max;
         }
     }
 }

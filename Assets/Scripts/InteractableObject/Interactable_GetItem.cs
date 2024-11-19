@@ -8,6 +8,7 @@ public class Interactable_GetItem : MonoBehaviour
     public List<ItemStats> itemReceivedList;
 
 
+
     //--------------------
 
 
@@ -21,12 +22,12 @@ public class Interactable_GetItem : MonoBehaviour
                     break;
 
                 case Items.Coin:
-                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.inventoryItems.coin += itemReceivedList[i].amount;
-                    Player_Stats.Instance.UpdateCoins();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.coin += itemReceivedList[i].amount;
+                    PlayerStats.Instance.UpdateCoins();
                     break;
                 case Items.IncreaseMaxSteps:
-                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.steps_Max += itemReceivedList[i].amount;
-                    Player_Stats.Instance.UpdateStepsMax();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max += itemReceivedList[i].amount;
+                    PlayerStats.Instance.UpdateStepsMax();
                     break;
 
                 default:
@@ -35,19 +36,4 @@ public class Interactable_GetItem : MonoBehaviour
 
         }
     }
-}
-
-[Serializable]
-public class ItemStats
-{
-    public Items item;
-    public int amount;
-}
-
-public enum Items
-{
-    None,
-
-    Coin,
-    IncreaseMaxSteps
 }

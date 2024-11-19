@@ -16,22 +16,36 @@ public class Player_Descend : MonoBehaviour
 
     RaycastHit hit;
 
+    bool canRun;
+
 
     //--------------------
 
 
     private void Update()
     {
+        if (!canRun) { return; }
+
         if (RaycastForDescending())
-        {
             playerCanDescend = true;
-        }
         else
-        {
             playerCanDescend = false;
-        }
 
         PerformDescendMovement();
+    }
+
+    private void OnEnable()
+    {
+        DataManager.datahasLoaded += StartRunningObject;
+    }
+
+    private void OnDisable()
+    {
+        DataManager.datahasLoaded -= StartRunningObject;
+    }
+    void StartRunningObject()
+    {
+        canRun = true;
     }
 
 
@@ -40,7 +54,7 @@ public class Player_Descend : MonoBehaviour
 
     bool RaycastForDescending()
     {
-        if (gameObject.GetComponent<Player_Stats>().stats.abilities.Descend)
+        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Descend)
         {
             if (Physics.Raycast(transform.position + Vector3.down, Vector3.down, out hit, descendingDistance))
             {
@@ -114,11 +128,11 @@ public class Player_Descend : MonoBehaviour
 
     public void Descend()
     {
-        if (gameObject.GetComponent<Player_Stats>().stats.abilities.Descend)
+        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Descend)
         {
             Player_Movement.Instance.movementStates = MovementStates.Moving;
-            MainManager.Instance.pauseGame = true;
-            MainManager.Instance.isTeleporting = true;
+            PlayerManager.Instance.pauseGame = true;
+            PlayerManager.Instance.isTeleporting = true;
             isDescending = true;
 
             descendingBlock_Target = descendingBlock_Current;
@@ -131,23 +145,23 @@ public class Player_Descend : MonoBehaviour
         {
             Vector3 targetPos = descendingBlock_Target.transform.position + (Vector3.up * Player_Movement.Instance.heightOverBlock);
 
-            MainManager.Instance.player.transform.position = Vector3.MoveTowards(MainManager.Instance.player.transform.position, targetPos, descendingSpeed * Time.deltaTime);
+            PlayerManager.Instance.player.transform.position = Vector3.MoveTowards(PlayerManager.Instance.player.transform.position, targetPos, descendingSpeed * Time.deltaTime);
 
             //Snap into place when close enough
-            if (Vector3.Distance(MainManager.Instance.player.transform.position, targetPos) <= 0.03f)
+            if (Vector3.Distance(PlayerManager.Instance.player.transform.position, targetPos) <= 0.03f)
             {
-                MainManager.Instance.player.transform.position = targetPos;
+                PlayerManager.Instance.player.transform.position = targetPos;
 
-                MainManager.Instance.pauseGame = false;
-                MainManager.Instance.isTeleporting = false;
+                PlayerManager.Instance.pauseGame = false;
+                PlayerManager.Instance.isTeleporting = false;
                 isDescending = false;
                 Player_Movement.Instance.movementStates = MovementStates.Still;
 
                 Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
 
-                if (MainManager.Instance.block_StandingOn_Current.block)
+                if (PlayerManager.Instance.block_StandingOn_Current.block)
                 {
-                    Player_Movement.Instance.currentMovementCost = MainManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
+                    Player_Movement.Instance.currentMovementCost = PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
                 }
 
                 Player_Movement.Instance.Action_StepTakenInvoke();

@@ -22,9 +22,9 @@ public class Player_Hammer : Singleton<Player_Hammer>
 
     void CheckIfBlockCanBeHammered()
     {
-        if (MainManager.Instance.block_LookingAt_Horizontal)
+        if (PlayerManager.Instance.block_LookingAt_Horizontal)
         {
-            if (MainManager.Instance.block_LookingAt_Horizontal.GetComponent<Block_Weak>())
+            if (PlayerManager.Instance.block_LookingAt_Horizontal.GetComponent<Block_Weak>())
             {
                 playerCanHammer = true;
             }
@@ -33,11 +33,11 @@ public class Player_Hammer : Singleton<Player_Hammer>
 
     public void Hammer()
     {
-        if (MainManager.Instance.block_LookingAt_Horizontal && Player_Stats.Instance.stats.abilities.Hammer)
+        if (PlayerManager.Instance.block_LookingAt_Horizontal && PlayerStats.Instance.stats.abilitiesGot.Hammer)
         {
-            if (MainManager.Instance.block_LookingAt_Horizontal.GetComponent<Block_Weak>())
+            if (PlayerManager.Instance.block_LookingAt_Horizontal.GetComponent<Block_Weak>())
             {
-                MainManager.Instance.block_LookingAt_Horizontal.GetComponent<Block_Weak>().DestroyWeakBlock();
+                PlayerManager.Instance.block_LookingAt_Horizontal.GetComponent<Block_Weak>().DestroyWeakBlock();
             }
         }
     }

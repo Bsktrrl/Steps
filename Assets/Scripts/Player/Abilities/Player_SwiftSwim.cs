@@ -19,22 +19,36 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
     RaycastHit hit;
     public Vector3 targetPos;
 
+    bool canRun;
+
 
     //--------------------
 
 
-    private void Start()
-    {
-        //Player_Movement.Action_StepTaken += ActivateSwiftSwimRaycast;
-    }
     private void Update()
     {
+        if (!canRun) { return; }
+
         ActivateSwiftSwimRaycast();
 
         if (isSwiftSwimming_Up || isSwiftSwimming_Down)
         {
             PerformSwiftSwimMovement();
         }
+    }
+
+    private void OnEnable()
+    {
+        DataManager.datahasLoaded += StartRunningObject;
+    }
+
+    private void OnDisable()
+    {
+        DataManager.datahasLoaded -= StartRunningObject;
+    }
+    void StartRunningObject()
+    {
+        canRun = true;
     }
 
 
@@ -51,7 +65,7 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
     }
     bool RaycastSwiftSwim(Vector3 dir)
     {
-        if (gameObject.GetComponent<Player_Stats>().stats.abilities.SwiftSwim)
+        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.SwiftSwim)
         {
             if (Physics.Raycast(gameObject.transform.position + Vector3.down, dir, out hit, 1))
             {
@@ -116,10 +130,10 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
 
     public void SwiftSwim_Up()
     {
-        if (gameObject.GetComponent<Player_Stats>().stats.abilities.SwiftSwim)
+        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.SwiftSwim)
         {
-            MainManager.Instance.pauseGame = true;
-            MainManager.Instance.isTeleporting = true;
+            PlayerManager.Instance.pauseGame = true;
+            PlayerManager.Instance.isTeleporting = true;
             Player_Movement.Instance.movementStates = MovementStates.Moving;
             isSwiftSwimming_Up = true;
 
@@ -129,10 +143,10 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
     }
     public void SwiftSwim_Down()
     {
-        if (gameObject.GetComponent<Player_Stats>().stats.abilities.SwiftSwim)
+        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.SwiftSwim)
         {
-            MainManager.Instance.pauseGame = true;
-            MainManager.Instance.isTeleporting = true;
+            PlayerManager.Instance.pauseGame = true;
+            PlayerManager.Instance.isTeleporting = true;
             Player_Movement.Instance.movementStates = MovementStates.Moving;
             isSwiftSwimming_Down = true;
 
@@ -143,7 +157,7 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
     void PerformSwiftSwimMovement()
     {
         //Move towards Target Block
-        MainManager.Instance.player.transform.position = Vector3.MoveTowards(transform.position, targetPos, 2 * Time.deltaTime);
+        PlayerManager.Instance.player.transform.position = Vector3.MoveTowards(transform.position, targetPos, 2 * Time.deltaTime);
 
         //Snap into place when close enough
         if (Vector3.Distance(transform.position, targetPos) <= 0.03f)
@@ -151,8 +165,8 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
             transform.position = targetPos;
 
             Player_Movement.Instance.movementStates = MovementStates.Still;
-            MainManager.Instance.pauseGame = false;
-            MainManager.Instance.isTeleporting = false;
+            PlayerManager.Instance.pauseGame = false;
+            PlayerManager.Instance.isTeleporting = false;
 
             isSwiftSwimming_Up = false;
             isSwiftSwimming_Down = false;
@@ -160,9 +174,9 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
 
             Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
 
-            if (MainManager.Instance.block_StandingOn_Current.block)
+            if (PlayerManager.Instance.block_StandingOn_Current.block)
             {
-                Player_Movement.Instance.currentMovementCost = MainManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
+                Player_Movement.Instance.currentMovementCost = PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
             }
 
             swiftSwimBlock_Target = null;

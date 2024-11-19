@@ -1,0 +1,53 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+public class MenuStates : Singleton<MenuStates>
+{
+    public static event Action menuState_isChanged;
+
+
+    //--------------------
+
+
+    public void ChangeMenuState(MenuState state)
+    {
+        switch (state)
+        {
+            case MenuState.None:
+                MainMenuManager.Instance.menuState = MenuState.None;
+                break;
+
+            case MenuState.Main_Menu:
+                MainMenuManager.Instance.menuState = MenuState.Main_Menu;
+                break;
+            case MenuState.Overworld_Menu:
+                MainMenuManager.Instance.menuState = MenuState.Overworld_Menu;
+                break;
+            case MenuState.Info_Menu:
+                MainMenuManager.Instance.menuState = MenuState.Info_Menu;
+                break;
+
+            default:
+                break;
+        }
+
+        MenuState_isChanged_Invoke();
+    }
+
+    public void MenuState_isChanged_Invoke()
+    {
+        menuState_isChanged?.Invoke();
+    }
+}
+
+public enum MenuState
+{
+    None,
+
+    Main_Menu,
+    Overworld_Menu,
+    Info_Menu,
+}

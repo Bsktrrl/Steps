@@ -17,10 +17,9 @@ public class Block_Falling : MonoBehaviour
 
     //--------------------
 
+
     private void Start()
     {
-        Player_Movement.Action_StepTaken += StepsOnFallableBlock;
-
         CalculateMovementPath();
     }
     private void Update()
@@ -29,6 +28,20 @@ public class Block_Falling : MonoBehaviour
         {
             Falling();
         }
+    }
+
+
+    //--------------------
+
+
+    private void OnEnable()
+    {
+        Player_Movement.Action_StepTaken += StepsOnFallableBlock;
+    }
+
+    private void OnDisable()
+    {
+        Player_Movement.Action_StepTaken -= StepsOnFallableBlock;
     }
 
 
@@ -46,7 +59,7 @@ public class Block_Falling : MonoBehaviour
 
     void StepsOnFallableBlock()
     {
-        if (MainManager.Instance.block_StandingOn_Current.block == gameObject)
+        if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject)
         {
             isSteppedOn = true;
         }
@@ -75,13 +88,13 @@ public class Block_Falling : MonoBehaviour
     {
         //gameObject.transform.position = gameObject.transform.position + (Vector3.down * MainManager.Instance.player.GetComponent<Player_Movement>().fallSpeed * Time.deltaTime);
 
-        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endPos, MainManager.Instance.player.GetComponent<Player_Movement>().fallSpeed * Time.deltaTime);
+        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endPos, PlayerManager.Instance.player.GetComponent<Player_Movement>().fallSpeed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, endPos) <= 0.03f)
         {
             isMoving = false;
             HideBlock();
-            MainManager.Instance.player.GetComponent<Player_BlockDetector>().Update_BlockStandingOn();
+            PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().Update_BlockStandingOn();
         }
     }
 

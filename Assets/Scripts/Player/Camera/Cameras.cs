@@ -303,7 +303,7 @@ public class Cameras : Singleton<Cameras>
         switch (cameraState)
         {
             case CameraState.Forward:
-                MainManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(MainManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 0, 0));
+                PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 0, 0));
                 //if (directionFacing == Vector3.forward)
                 //    directionFacing = Vector3.forward;
                 //else if (directionFacing == Vector3.back)
@@ -314,7 +314,7 @@ public class Cameras : Singleton<Cameras>
                 //    directionFacing = Vector3.right;
                 break;
             case CameraState.Backward:
-                MainManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(MainManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 180, 0));
+                PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 180, 0));
                 //if (directionFacing == Vector3.forward)
                 //    directionFacing = Vector3.back;
                 //else if (directionFacing == Vector3.back)
@@ -325,7 +325,7 @@ public class Cameras : Singleton<Cameras>
                 //    directionFacing = Vector3.left;
                 break;
             case CameraState.Left:
-                MainManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(MainManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 90, 0));
+                PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 90, 0));
                 //if (directionFacing == Vector3.forward)
                 //    directionFacing = Vector3.left;
                 //else if (directionFacing == Vector3.back)
@@ -336,7 +336,7 @@ public class Cameras : Singleton<Cameras>
                 //    directionFacing = Vector3.back;
                 break;
             case CameraState.Right:
-                MainManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(MainManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, -90, 0));
+                PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, -90, 0));
                 //if (directionFacing == Vector3.forward)
                 //    directionFacing = Vector3.right;
                 //else if (directionFacing == Vector3.back)
@@ -356,21 +356,21 @@ public class Cameras : Singleton<Cameras>
         switch (cameraState)
         {
             case CameraState.Forward:
-                if (MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 0, 0)))
+                if (PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 0, 0)))
                 {
                     directionFacing = Vector3.forward;
                 }
-                else if (MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 180, 0))
-                        || MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, -180, 0)))
+                else if (PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 180, 0))
+                        || PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, -180, 0)))
                 {
                     directionFacing = Vector3.back;
                 }
-                else if (MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 90, 0)))
+                else if (PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 90, 0)))
                 {
                     directionFacing = Vector3.right;
                 }
-                else if (MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 270, 0))
-                        || MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, -90, 0)))
+                else if (PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 270, 0))
+                        || PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, -90, 0)))
                 {
                     directionFacing = Vector3.left;
                 }
@@ -380,21 +380,21 @@ public class Cameras : Singleton<Cameras>
                 }
                 break;
             case CameraState.Backward:
-                if (MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 0, 0)))
+                if (PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 0, 0)))
                 {
                     directionFacing = Vector3.back;
                 }
-                else if (MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 180, 0))
-                        || MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, -180, 0)))
+                else if (PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 180, 0))
+                        || PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, -180, 0)))
                 {
                     directionFacing = Vector3.forward;
                 }
-                else if (MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 90, 0)))
+                else if (PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 90, 0)))
                 {
                     directionFacing = Vector3.left;
                 }
-                else if (MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 270, 0))
-                        || MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, -90, 0)))
+                else if (PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 270, 0))
+                        || PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, -90, 0)))
                 {
                     directionFacing = Vector3.right;
                 }
@@ -404,21 +404,21 @@ public class Cameras : Singleton<Cameras>
                 }
                 break;
             case CameraState.Left:
-                if (MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 0, 0)))
+                if (PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 0, 0)))
                 {
                     directionFacing = Vector3.left;
                 }
-                else if (MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 180, 0))
-                        || MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, -180, 0)))
+                else if (PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 180, 0))
+                        || PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, -180, 0)))
                 {
                     directionFacing = Vector3.right;
                 }
-                else if (MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 90, 0)))
+                else if (PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 90, 0)))
                 {
                     directionFacing = Vector3.forward;
                 }
-                else if (MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 270, 0))
-                        || MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, -90, 0)))
+                else if (PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 270, 0))
+                        || PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, -90, 0)))
                 {
                     directionFacing = Vector3.back;
                 }
@@ -428,21 +428,21 @@ public class Cameras : Singleton<Cameras>
                 }
                 break;
             case CameraState.Right:
-                if (MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 0, 0)))
+                if (PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 0, 0)))
                 {
                     directionFacing = Vector3.right;
                 }
-                else if (MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 180, 0))
-                        || MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, -180, 0)))
+                else if (PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 180, 0))
+                        || PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, -180, 0)))
                 {
                     directionFacing = Vector3.left;
                 }
-                else if (MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 90, 0)))
+                else if (PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 90, 0)))
                 {
                     directionFacing = Vector3.back;
                 }
-                else if (MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 270, 0))
-                        || MainManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, -90, 0)))
+                else if (PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 270, 0))
+                        || PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, -90, 0)))
                 {
                     directionFacing = Vector3.forward;
                 }
@@ -463,7 +463,7 @@ public class Cameras : Singleton<Cameras>
 
     void CameraZoom_Setup()
     {
-        if (MainManager.Instance.pauseGame) { return; }
+        if (PlayerManager.Instance.pauseGame) { return; }
         if (isRotating) { return; }
 
         //Get the scroll input value

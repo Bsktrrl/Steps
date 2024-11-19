@@ -50,15 +50,21 @@ public class Block_Elevator_StepOn : MonoBehaviour
 
     void CheckIfPlayerIsOn()
     {
-        if (MainManager.Instance.block_StandingOn_Current.block != gameObject && isStandingOnBlock)
+        if (PlayerManager.Instance.block_StandingOn_Current.block != gameObject && isStandingOnBlock)
         {
             isStandingOnBlock = false;
         }
-        else if (MainManager.Instance.block_StandingOn_Current.block == gameObject && !isStandingOnBlock)
+        else if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject && !isStandingOnBlock)
         {
             isStandingOnBlock = true;
-            isMoving = true;
+            StartCoroutine(MoveElevator(0.35f));
         }
+    }
+    IEnumerator MoveElevator(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        isMoving = true;
     }
     void CalculateMovementPath()
     {

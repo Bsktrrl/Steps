@@ -10,9 +10,14 @@ public class Block_Teleport : MonoBehaviour
     //--------------------
 
 
-    private void Start()
+    private void OnEnable()
     {
         Player_Movement.Action_StepTaken += TeleportPlayer;
+    }
+
+    private void OnDisable()
+    {
+        Player_Movement.Action_StepTaken -= TeleportPlayer;
     }
 
 
@@ -21,7 +26,7 @@ public class Block_Teleport : MonoBehaviour
 
     void TeleportPlayer()
     {
-        if (MainManager.Instance.block_StandingOn_Current.block == gameObject && newLandingSpot)
+        if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject && newLandingSpot)
         {
             StartCoroutine(TeleportWait(0.01f));
         }
@@ -29,20 +34,20 @@ public class Block_Teleport : MonoBehaviour
 
     IEnumerator TeleportWait(float waitTime)
     {
-        MainManager.Instance.isTeleporting = true;
-        MainManager.Instance.pauseGame = true;
+        PlayerManager.Instance.isTeleporting = true;
+        PlayerManager.Instance.pauseGame = true;
         Player_Movement.Instance.movementStates = MovementStates.Moving;
 
         yield return new WaitForSeconds(waitTime);
 
         Vector3 newPos = gameObject.GetComponent<Block_Teleport>().newLandingSpot.transform.position;
 
-        MainManager.Instance.player.transform.position = new Vector3(newPos.x, newPos.y + MainManager.Instance.player.GetComponent<Player_Movement>().heightOverBlock, newPos.z);
+        PlayerManager.Instance.player.transform.position = new Vector3(newPos.x, newPos.y + PlayerManager.Instance.player.GetComponent<Player_Movement>().heightOverBlock, newPos.z);
 
         yield return new WaitForSeconds(waitTime);
 
         Player_Movement.Instance.movementStates = MovementStates.Still;
-        MainManager.Instance.isTeleporting = false;
-        MainManager.Instance.pauseGame = false;
+        PlayerManager.Instance.isTeleporting = false;
+        PlayerManager.Instance.pauseGame = false;
     }
 }

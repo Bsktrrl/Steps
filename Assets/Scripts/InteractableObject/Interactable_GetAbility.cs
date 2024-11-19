@@ -20,65 +20,65 @@ public class Interactable_GetAbility : MonoBehaviour
                     break;
 
                 case Abilities.FenceSneak:
-                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.FenceSneak = true;
-                    Player_Stats.Instance.UpdateFenceSneak();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.FenceSneak = true;
+                    PlayerStats.Instance.UpdateFenceSneak();
                     break;
                 case Abilities.SwimSuit:
-                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.SwimSuit = true;
-                    Player_Stats.Instance.UpdateSwimsuit();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.SwimSuit = true;
+                    PlayerStats.Instance.UpdateSwimsuit();
                     break;
                 case Abilities.SwiftSwim:
-                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.SwiftSwim = true;
-                    Player_Stats.Instance.UpdateSwiftSwim();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.SwiftSwim = true;
+                    PlayerStats.Instance.UpdateSwiftSwim();
                     break;
                 case Abilities.Flippers:
-                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.Flippers = true;
-                    Player_Stats.Instance.UpdateFlippers();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.Flippers = true;
+                    PlayerStats.Instance.UpdateFlippers();
                     break;
                 case Abilities.LavaSuit:
-                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.LavaSuit = true;
-                    Player_Stats.Instance.UpdateLavaSuit();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.LavaSuit = true;
+                    PlayerStats.Instance.UpdateLavaSuit();
                     break;
                 case Abilities.LavaSwiftSwim:
-                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.LavaSwiftSwim = true;
-                    Player_Stats.Instance.UpdateLavaSwiftSwim();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.LavaSwiftSwim = true;
+                    PlayerStats.Instance.UpdateLavaSwiftSwim();
                     break;
                 case Abilities.HikersKit:
-                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.HikerGear = true;
-                    Player_Stats.Instance.UpdateHikerGear();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.HikerGear = true;
+                    PlayerStats.Instance.UpdateHikerGear();
                     break;
 
                 case Abilities.IceSpikes:
-                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.IceSpikes = true;
-                    Player_Stats.Instance.UpdateIceSpikes();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.IceSpikes = true;
+                    PlayerStats.Instance.UpdateIceSpikes();
                     break;
                 case Abilities.GrapplingHook:
-                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.GrapplingHook = true;
-                    Player_Stats.Instance.UpdateGrapplingHook();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.GrapplingHook = true;
+                    PlayerStats.Instance.UpdateGrapplingHook();
                     break;
                 case Abilities.Hammer:
-                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.Hammer = true;
-                    Player_Stats.Instance.UpdateHammer();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.Hammer = true;
+                    PlayerStats.Instance.UpdateHammer();
                     break;
                 case Abilities.ClimbingGear:
-                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.ClimbingGear = true;
-                    Player_Stats.Instance.UpdateClimbingGear();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.ClimbingGear = true;
+                    PlayerStats.Instance.UpdateClimbingGear();
                     break;
                 case Abilities.Dash:
-                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.Dash = true;
-                    Player_Stats.Instance.UpdateDash();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.Dash = true;
+                    PlayerStats.Instance.UpdateDash();
                     break;
                 case Abilities.Ascend:
-                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.Ascend = true;
-                    Player_Stats.Instance.UpdateAscend();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.Ascend = true;
+                    PlayerStats.Instance.UpdateAscend();
                     break;
                 case Abilities.Descend:
-                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.Descend = true;
-                    Player_Stats.Instance.UpdateDescend();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.Descend = true;
+                    PlayerStats.Instance.UpdateDescend();
                     break;
                 case Abilities.ControlStick:
-                    MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.ControlStick = true;
-                    Player_Stats.Instance.UpdateControlStick();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.ControlStick = true;
+                    PlayerStats.Instance.UpdateControlStick();
                     break;
 
                 default:
@@ -86,33 +86,4 @@ public class Interactable_GetAbility : MonoBehaviour
             }
         }
     }
-}
-
-public enum Abilities
-{
-    None,
-
-    FenceSneak,
-
-    SwimSuit,
-    SwiftSwim,
-    Flippers,
-
-    LavaSuit,
-    LavaSwiftSwim,
-
-    HikersKit,
-    ClimbingGear,
-
-    IceSpikes,
-
-    Dash,
-    Ascend,
-    Descend,
-    
-    Hammer,
-
-    GrapplingHook,
-
-    ControlStick,
 }

@@ -10,10 +10,17 @@ public class Player_Pusher : MonoBehaviour
 
     //--------------------
 
-    private void Start()
+
+    private void OnEnable()
     {
         Player_Movement.Action_StepTaken += Push;
         Player_Movement.Action_BodyRotated += CheckIfNotPushed;
+    }
+
+    private void OnDisable()
+    {
+        Player_Movement.Action_StepTaken -= Push;
+        Player_Movement.Action_BodyRotated -= CheckIfNotPushed;
     }
 
 
@@ -27,19 +34,19 @@ public class Player_Pusher : MonoBehaviour
     }
     void CheckIfPushed()
     {
-        if (MainManager.Instance.block_StandingOn_Current.block)
+        if (PlayerManager.Instance.block_StandingOn_Current.block)
         {
-            if (MainManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Pusher>())
+            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Pusher>())
             {
                 playerIsPushed = true;
-                pushDirection = MainManager.Instance.lookingDirection;
+                pushDirection = PlayerManager.Instance.lookingDirection;
             }
         }
     }
 
     void CheckIfNotPushed()
     {
-        if (MainManager.Instance.lookingDirection != pushDirection)
+        if (PlayerManager.Instance.lookingDirection != pushDirection)
         {
             playerIsPushed = false;
             pushDirection = Vector3.zero;

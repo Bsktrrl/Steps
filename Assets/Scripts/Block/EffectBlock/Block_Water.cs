@@ -4,15 +4,47 @@ using UnityEngine;
 
 public class Block_Water : MonoBehaviour
 {
-    private void Start()
+    private void OnEnable()
     {
-        UpdateFastSwimmingMovementCost();
+        SaveLoad_PlayerStats.playerStats_hasLoaded += UpdateMovementCostWithFlippers;
     }
+
+    private void OnDisable()
+    {
+        SaveLoad_PlayerStats.playerStats_hasLoaded -= UpdateMovementCostWithFlippers;
+    }
+
+
+    //--------------------
+
+
+    void UpdateMovementCostWithFlippers()
+    {
+        if (PlayerManager.Instance.player.GetComponent<PlayerStats>())
+        {
+            if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats != null)
+            {
+                if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot != null)
+                {
+                    if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.Flippers == true)
+                    {
+                        if (gameObject.GetComponent<BlockInfo>())
+                        {
+                            gameObject.GetComponent<BlockInfo>().movementCost -= 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    //--------------------
 
 
     public void UpdateFastSwimmingMovementCost()
     {
-        if (MainManager.Instance.player.GetComponent<Player_Stats>().stats.abilities.Flippers)
+        if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.Flippers)
         {
             gameObject.GetComponent<BlockInfo>().movementCost = gameObject.GetComponent<BlockInfo>().movementCost - 1;
         }
