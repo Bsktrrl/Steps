@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 36fbce5e6eff14f4290a2dbc926108e7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a46df687ac43ec44dac7dcea98afd57f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 36fbce5e6eff14f4290a2dbc926108e7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a46df687ac43ec44dac7dcea98afd57f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 599190516854924227}
   - component: {fileID: 775772345541121264}
   m_Layer: 0
-  m_Name: Coin
+  m_Name: Goal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -181,7 +181,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.05}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.05}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8869851951204634738}
@@ -215,7 +215,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ddc1d78b032317f47b5ab599c2bde9f9, type: 2}
+  - {fileID: 2100000, guid: dea03d930908bdf409411898e7e3bbca, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -270,8 +270,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fac0ef60dda82544094d73cda26657a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemReceived: 1
+  itemReceived: 0
   abilityReceived: 0
+  goal: 1
 --- !u!114 &775772345541121264
 MonoBehaviour:
   m_ObjectHideFlags: 0

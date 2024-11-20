@@ -35,12 +35,12 @@ public class Player_Dash : MonoBehaviour
 
     private void OnEnable()
     {
-        DataManager.datahasLoaded += StartRunningObject;
+        SaveLoad_PlayerStats.playerStats_hasLoaded += StartRunningObject;
     }
 
     private void OnDisable()
     {
-        DataManager.datahasLoaded -= StartRunningObject;
+        SaveLoad_PlayerStats.playerStats_hasLoaded -= StartRunningObject;
     }
     void StartRunningObject()
     {

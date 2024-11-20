@@ -13,6 +13,7 @@ public class Map_SaveInfoList
 public class Map_SaveInfo
 {
     public string mapName;
+    public bool isCompleted;
 
     public List<CoinInfo> coinList;
     public List<CollectableInfo> collectableList;
@@ -80,8 +81,6 @@ public class Map_SaveInfo
     public void CorrectingMapObjects()
     {
         CheckTakenObjects();
-
-        //HideTakenObjects();
     }
     void CheckTakenObjects()
     {
@@ -128,30 +127,6 @@ public class Map_SaveInfo
                         }
                     }
                 }
-            }
-        }
-    }
-    void HideTakenObjects()
-    {
-        for (int i = 0; i < coinList.Count; i++)
-        {
-            if (coinList[i].isTaken)
-            {
-                coinList[i].coinObj.gameObject.SetActive(false);
-            }
-        }
-        for (int i = 0; i < collectableList.Count; i++)
-        {
-            if (collectableList[i].isTaken)
-            {
-                collectableList[i].collectableObj.gameObject.SetActive(false);
-            }
-        }
-        for (int i = 0; i < abilityList.Count; i++)
-        {
-            if (abilityList[i].isTaken)
-            {
-                abilityList[i].abilityObj.gameObject.SetActive(true);
             }
         }
     }

@@ -39,12 +39,12 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
 
     private void OnEnable()
     {
-        DataManager.datahasLoaded += StartRunningObject;
+        SaveLoad_PlayerStats.playerStats_hasLoaded += StartRunningObject;
     }
 
     private void OnDisable()
     {
-        DataManager.datahasLoaded -= StartRunningObject;
+        SaveLoad_PlayerStats.playerStats_hasLoaded -= StartRunningObject;
     }
     void StartRunningObject()
     {

@@ -5,8 +5,8 @@ using UnityEngine;
 public class Stats
 {
     [Header("Steps")]
-    public int steps_Max = 10;
-    public int steps_Current = 10;
+    public int steps_Max = 5;
+    public int steps_Current = 5;
 
     [Header("Items")]
     public ItemsGot itemsGot;

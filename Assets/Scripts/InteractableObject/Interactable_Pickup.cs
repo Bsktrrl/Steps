@@ -8,6 +8,7 @@ public class Interactable_Pickup : MonoBehaviour
 {
     public Items itemReceived;
     public Abilities abilityReceived;
+    public bool goal;
 
 
     //--------------------
@@ -58,6 +59,11 @@ public class Interactable_Pickup : MonoBehaviour
         MarkedAsTaken();
 
         PlayerManager.Instance.SavePlayerStats();
+
+        if (goal)
+        {
+            PlayerManager.Instance.player.GetComponent<Player_Movement>().QuitLevel();
+        }
     }
     void MarkedAsTaken()
     {
@@ -101,10 +107,15 @@ public class Interactable_Pickup : MonoBehaviour
                     default:
                         break;
                 }
+
+                //If it's a goal
+                if (goal)
+                {
+                    DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].isCompleted = true;
+                }
             }
         }
     }
-
     public void GetAbility()
     {
         switch (abilityReceived)

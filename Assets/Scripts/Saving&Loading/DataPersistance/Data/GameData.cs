@@ -5,11 +5,15 @@ using UnityEngine;
 [System.Serializable]
 public class GameData
 {
-    //All saved Maps info
-    [HideInInspector] public Map_SaveInfoList mapInfo_SaveList = new Map_SaveInfoList();
+    //MenuState
+    [HideInInspector] public MenuState menuState_Save = new MenuState();
 
     //Player saved Stats info
     [HideInInspector] public Stats playerStats_Save = new Stats();
+
+    //All saved Maps info
+    [HideInInspector] public Map_SaveInfoList mapInfo_SaveList = new Map_SaveInfoList();
+
 
     //--------------------
 

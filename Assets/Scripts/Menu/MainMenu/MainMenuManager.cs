@@ -19,7 +19,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     private void Start()
     {
-        MenuStates.Instance.ChangeMenuState(MenuState.Main_Menu);
+        //MenuStates.Instance.ChangeMenuState(MenuState.Main_Menu);
     }
 
 
@@ -30,12 +30,14 @@ public class MainMenuManager : Singleton<MainMenuManager>
     {
         MenuStates.menuState_isChanged += MenusOnMenuState;
         DataManager.datahasLoaded += LoadPlayerStats;
+        DataManager.datahasLoaded += SetMenu;
     }
 
     private void OnDisable()
     {
         MenuStates.menuState_isChanged -= MenusOnMenuState;
         DataManager.datahasLoaded -= LoadPlayerStats;
+        DataManager.datahasLoaded -= SetMenu;
     }
 
 
@@ -45,6 +47,16 @@ public class MainMenuManager : Singleton<MainMenuManager>
     void LoadPlayerStats()
     {
         SaveLoad_PlayerStats.Instance.LoadData();
+    }
+
+    void SetMenu()
+    {
+        if (DataManager.Instance.menuState_Store == MenuState.None)
+            menuState = MenuState.Main_Menu;
+        else
+            menuState = DataManager.Instance.menuState_Store;
+
+        MenusOnMenuState();
     }
 
 

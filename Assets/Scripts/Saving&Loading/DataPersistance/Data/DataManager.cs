@@ -21,11 +21,14 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
 
     #region Variables
-    //All stored Maps info
-    [HideInInspector] public Map_SaveInfoList mapInfo_StoreList = new Map_SaveInfoList();
+    //MenuState
+    [HideInInspector] public MenuState menuState_Store = new MenuState();
 
     //Player stored Stats info
     [HideInInspector] public Stats playerStats_Store = new Stats();
+
+    //All stored Maps info
+    [HideInInspector] public Map_SaveInfoList mapInfo_StoreList = new Map_SaveInfoList();
     #endregion
 
 
@@ -37,13 +40,14 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         //Get saved data from file to be loaded into the project
         #region
 
-        this.mapInfo_StoreList = gameData.mapInfo_SaveList;
+        this.menuState_Store = gameData.menuState_Save;
         this.playerStats_Store = gameData.playerStats_Save;
+        this.mapInfo_StoreList = gameData.mapInfo_SaveList;
 
         print("Data has Loaded");
         #endregion
 
-        StartCoroutine(LoadingDelay(0.5f));
+        StartCoroutine(LoadingDelay(0.01f));
     }
     IEnumerator LoadingDelay(float time)
     {
@@ -59,6 +63,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         dataIsSaving?.Invoke();
 
         //Input what to save
+         gameData.menuState_Save = this.menuState_Store;
         gameData.mapInfo_SaveList = this.mapInfo_StoreList;
         gameData.playerStats_Save = this.playerStats_Store;
 

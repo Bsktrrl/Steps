@@ -83,6 +83,7 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
     private void OnApplicationQuit()
     {
+        DataManager.Instance.menuState_Store = MenuState.Main_Menu;
         SaveGame();
     }
 

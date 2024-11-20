@@ -34,12 +34,19 @@ public class MenuStates : Singleton<MenuStates>
                 break;
         }
 
+        SaveMenuState(state);
         MenuState_isChanged_Invoke();
     }
 
     public void MenuState_isChanged_Invoke()
     {
         menuState_isChanged?.Invoke();
+    }
+
+    public void SaveMenuState(MenuState state)
+    {
+        DataManager.Instance.menuState_Store = state;
+        DataPersistanceManager.instance.SaveGame();
     }
 }
 
