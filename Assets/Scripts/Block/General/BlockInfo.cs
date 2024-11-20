@@ -179,6 +179,12 @@ public class BlockInfo : MonoBehaviour
         //Don't darken Fences
         if (blockType == BlockType.Fence) { return; }
 
+        if (PlayerStats.Instance.stats.steps_Current <= 0 /*|| PlayerStats.Instance.stats.steps_Current < movementCost*/)
+        {
+            ResetColor();
+            return;
+        }
+
         //Darken all materials attached
         for (int i = 0; i < propertyBlocks.Count; i++)
         {
