@@ -41,15 +41,12 @@ public class Interactable_Pickup : MonoBehaviour
 
             case Items.Coin:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.coin += 1 /*itemReceived.amount*/;
-                PlayerStats.Instance.UpdateCoins();
                 break;
             case Items.Collectable:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.collectable += 1 /*itemReceived.amount*/;
-                PlayerStats.Instance.UpdateCollectable();
                 break;
             case Items.IncreaseMaxSteps:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max += 1 /*itemReceived.amount*/;
-                PlayerStats.Instance.UpdateStepsMax();
                 break;
 
             default:

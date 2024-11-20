@@ -16,8 +16,8 @@ public class Stats
 
     public void ResetStats()
     {
-        steps_Max = 10;
-        steps_Current = 10;
+        steps_Max = 5;
+        steps_Current = 5;
 
         itemsGot.coin = 0;
         itemsGot.collectable = 0;

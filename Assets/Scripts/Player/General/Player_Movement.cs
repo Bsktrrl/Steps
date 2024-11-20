@@ -33,7 +33,7 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         KeyInputs();
 
-        if (movementStates == MovementStates.Moving && endDestination != (Vector3.zero + (Vector3.up * heightOverBlock))
+        if (movementStates == MovementStates.Moving /*&& endDestination != (Vector3.zero + (Vector3.up * heightOverBlock))*/
             && !Player_SwiftSwim.Instance.isSwiftSwimming_Up && !Player_SwiftSwim.Instance.isSwiftSwimming_Down)
         {
             MovePlayer();

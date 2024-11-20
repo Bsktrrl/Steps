@@ -18,7 +18,7 @@ public class PlayerStatsDisplay : MonoBehaviour
 
     private void Update()
     {
-        if (!canRun) { return; }
+        //if (!canRun) { return; }
 
         SetPlayerStatsDisplay();
     }
@@ -45,9 +45,12 @@ public class PlayerStatsDisplay : MonoBehaviour
     {
         if (gameObject.GetComponent<PlayerStats>())
         {
-            stepsAmountDisplay.text = gameObject.GetComponent<PlayerStats>().stats.steps_Max.ToString();
-            coinAmountDisplay.text = gameObject.GetComponent<PlayerStats>().stats.itemsGot.coin.ToString();
-            collectableAmountDisplay.text = gameObject.GetComponent<PlayerStats>().stats.itemsGot.collectable.ToString();
+            if (gameObject.GetComponent<PlayerStats>().stats != null)
+            {
+                stepsAmountDisplay.text = gameObject.GetComponent<PlayerStats>().stats.steps_Max.ToString();
+                coinAmountDisplay.text = gameObject.GetComponent<PlayerStats>().stats.itemsGot.coin.ToString();
+                collectableAmountDisplay.text = gameObject.GetComponent<PlayerStats>().stats.itemsGot.collectable.ToString();
+            } 
         }
     }
 }

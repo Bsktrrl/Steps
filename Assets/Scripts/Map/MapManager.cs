@@ -46,7 +46,7 @@ public class MapManager : Singleton<MapManager>
     }
     public void SaveMapInfo()
     {
-        SaveLoad_PlayerStats.Instance.SaveData();
+        SaveLoad_MapInfo.Instance.SaveData();
     }
 
 

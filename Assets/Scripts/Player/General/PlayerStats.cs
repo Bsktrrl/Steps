@@ -47,9 +47,6 @@ public class PlayerStats : Singleton<PlayerStats>
     void CorrectionsAfterLoadingStats()
     {
         stats.steps_Current = stats.steps_Max;
-
-        UpdateCoins();
-        UpdateStepsMax();
     }
 
 
@@ -75,7 +72,7 @@ public class PlayerStats : Singleton<PlayerStats>
         else
         {
             //Update the stepCounter UI
-            UIManager.Instance.UpdateStepsUI();
+            UIManager.Instance.UpdateUI();
         }
     }
     public void RespawnPlayer()
@@ -98,24 +95,6 @@ public class PlayerStats : Singleton<PlayerStats>
 
 
     //--------------------
-
-
-    //Items
-    #region
-    public void UpdateCoins()
-    {
-        updateCoins?.Invoke();
-    }
-    public void UpdateCollectable()
-    {
-        updateCoins?.Invoke();
-    }
-    public void UpdateStepsMax()
-    {
-        updateStepsMax?.Invoke();
-    }
-    #endregion
-
     //Abilities
     #region
     public void UpdateFenceSneak()
