@@ -790,8 +790,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerObject: {fileID: 6649856597487831825, guid: c3b8f5cc0d6decf4180d542299975521, type: 3}
-  playerStartPos: {x: 0, y: 1, z: 0}
   playerObjectInScene: {fileID: 0}
+  playerStartPos: {x: 0, y: 1, z: 0}
+  mapAudioList:
+  - track: {fileID: 8300000, guid: 5c6798a8a139f1246b5daa4aa8049a4d, type: 3}
+    volume: 0.2
+  - track: {fileID: 8300000, guid: 0041eb0465327c74d8fe7cb26b183cac, type: 3}
+    volume: 0.3
+  - track: {fileID: 8300000, guid: bcc522936bfaca4499936923878d2b0a, type: 3}
+    volume: 0.4
+  mapAudioSourceList: []
   mapInfo_ToSave:
     mapName: 
     isCompleted: 0

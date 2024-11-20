@@ -9,8 +9,12 @@ public class MapManager : Singleton<MapManager>
 
     [Header("Player")]
     [SerializeField] GameObject playerObject;
-    public Vector3 playerStartPos;
     [SerializeField] GameObject playerObjectInScene;
+    public Vector3 playerStartPos;
+
+    [Header("Sound")]
+    public List<AudioTrack> mapAudioList;
+    public List<AudioSource> mapAudioSourceList;
 
     [Header("MapManager")]
     public Map_SaveInfo mapInfo_ToSave;
@@ -28,6 +32,8 @@ public class MapManager : Singleton<MapManager>
     private void Start()
     {
         blockInfoList = FindObjectsOfType<BlockInfo>();
+
+        PlayAudio();
     }
 
     private void OnEnable()
@@ -87,4 +93,34 @@ public class MapManager : Singleton<MapManager>
             }
         }
     }
+
+
+    //--------------------
+
+
+    void PlayAudio()
+    {
+        for (int i = 0; i < mapAudioList.Count; i++)
+        {
+            //Make a new AudioSource
+            AudioSource audioSource = gameObject.AddComponent<AudioSource>();
+            mapAudioSourceList.Add(audioSource);
+
+            mapAudioSourceList[mapAudioSourceList.Count - 1].clip = mapAudioList[i].track;
+
+            if (mapAudioList[i].volume > 0)
+                mapAudioSourceList[mapAudioSourceList.Count - 1].volume = mapAudioList[i].volume;
+
+            mapAudioSourceList[mapAudioSourceList.Count - 1].loop = true;
+
+            mapAudioSourceList[mapAudioSourceList.Count - 1].Play();
+        }
+    }
+}
+
+[Serializable]
+public class AudioTrack
+{
+    public AudioClip track;
+    public float volume;
 }
