@@ -14,7 +14,7 @@ public class MapManager : Singleton<MapManager>
 
     [Header("Sound")]
     public List<AudioTrack> mapAudioList;
-    public List<AudioSource> mapAudioSourceList;
+    [SerializeField] List<AudioSource> mapAudioSourceList;
 
     [Header("MapManager")]
     public Map_SaveInfo mapInfo_ToSave;

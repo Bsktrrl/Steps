@@ -4,51 +4,61 @@ using UnityEngine;
 
 public class BlockInfo : MonoBehaviour
 {
-    [Header("Block Stats")]
+    [Header("Stats")]
     //public BlockElement blockElement;
     public BlockType blockType;
     public int movementCost;
     public float movementSpeed;
+
+    [Header("StepCost Color")]
     public Color stepCostText_Color;
 
+    [Header("Step Sound")]
+    [SerializeField] float stepSound_Volume;
+    public List<AudioClip> stepSound_ClipList;
+    AudioSource stepSound_Source;
+
+    [Header("Starting Position")]
     public Vector3 startPos;
-
-    [Header("Adjacent Blocks - Upper")]
-    public GameObject upper_Front_Left;
-    public GameObject upper_Front;
-    public GameObject upper_Front_Right;
-    public GameObject upper_Center_Left;
-    public GameObject upper_Center;
-    public GameObject upper_Center_Right;
-    public GameObject upper_Back_Left;
-    public GameObject upper_Back;
-    public GameObject upper_Back_Right;
-
-    [Header("Adjacent Blocks - Middle")]
-    public GameObject center_Front_Left;
-    public GameObject center_Front;
-    public GameObject center_Front_Right;
-    public GameObject center_Center_Left;
-    public GameObject center_Center;
-    public GameObject center_Center_Right;
-    public GameObject center_Back_Left;
-    public GameObject center_Back;
-    public GameObject center_Back_Right;
-
-    [Header("Adjacent Blocks - Lower")]
-    public GameObject lower_Front_Left;
-    public GameObject lower_Front;
-    public GameObject lower_Front_Right;
-    public GameObject lower_Center_Left;
-    public GameObject lower_Center;
-    public GameObject lower_Center_Right;
-    public GameObject lower_Back_Left;
-    public GameObject lower_Back;
-    public GameObject lower_Back_Right;
 
     [Header("Material Rendering")]
     List<Renderer> objectRenderers = new List<Renderer>();
-    public List<MaterialPropertyBlock> propertyBlocks = new List<MaterialPropertyBlock>();
+    [HideInInspector] public List<MaterialPropertyBlock> propertyBlocks = new List<MaterialPropertyBlock>();
+
+    #region Adjacent Blocks
+    [Header("Adjacent Blocks - Upper")]
+    [HideInInspector] public GameObject upper_Front_Left;
+    [HideInInspector] public GameObject upper_Front;
+    [HideInInspector] public GameObject upper_Front_Right;
+    [HideInInspector] public GameObject upper_Center_Left;
+    [HideInInspector] public GameObject upper_Center;
+    [HideInInspector] public GameObject upper_Center_Right;
+    [HideInInspector] public GameObject upper_Back_Left;
+    [HideInInspector] public GameObject upper_Back;
+    [HideInInspector] public GameObject upper_Back_Right;
+
+    [Header("Adjacent Blocks - Middle")]
+    [HideInInspector] public GameObject center_Front_Left;
+    [HideInInspector] public GameObject center_Front;
+    [HideInInspector] public GameObject center_Front_Right;
+    [HideInInspector] public GameObject center_Center_Left;
+    [HideInInspector] public GameObject center_Center;
+    [HideInInspector] public GameObject center_Center_Right;
+    [HideInInspector] public GameObject center_Back_Left;
+    [HideInInspector] public GameObject center_Back;
+    [HideInInspector] public GameObject center_Back_Right;
+
+    [Header("Adjacent Blocks - Lower")]
+    [HideInInspector] public GameObject lower_Front_Left;
+    [HideInInspector] public GameObject lower_Front;
+    [HideInInspector] public GameObject lower_Front_Right;
+    [HideInInspector] public GameObject lower_Center_Left;
+    [HideInInspector] public GameObject lower_Center;
+    [HideInInspector] public GameObject lower_Center_Right;
+    [HideInInspector] public GameObject lower_Back_Left;
+    [HideInInspector] public GameObject lower_Back;
+    [HideInInspector] public GameObject lower_Back_Right;
+    #endregion
 
 
     //--------------------
@@ -57,6 +67,7 @@ public class BlockInfo : MonoBehaviour
     private void Start()
     {
         startPos = transform.position;
+        stepSound_Source = gameObject.AddComponent<AudioSource>();
 
         SetObjectRenderer();
         SetPropertyBlock();
@@ -72,6 +83,7 @@ public class BlockInfo : MonoBehaviour
         Player_Movement.Action_resetBlockColor += ResetColor;
         PlayerStats.Action_RespawnToSavePos += ResetColor;
         PlayerStats.Action_RespawnPlayer += ResetBlock;
+        Player_Movement.Action_StepTaken += MakeStepSound;
     }
 
     private void OnDisable()
@@ -79,6 +91,7 @@ public class BlockInfo : MonoBehaviour
         Player_Movement.Action_resetBlockColor -= ResetColor;
         PlayerStats.Action_RespawnToSavePos -= ResetColor;
         PlayerStats.Action_RespawnPlayer -= ResetBlock;
+        Player_Movement.Action_StepTaken -= MakeStepSound;
     }
 
 
@@ -223,6 +236,27 @@ public class BlockInfo : MonoBehaviour
             {
                 gameObject.GetComponent<BlockStepCostDisplay>().HideDisplay();
             }
+        }
+    }
+
+
+    //--------------------
+
+
+    void MakeStepSound()
+    {
+        if (stepSound_ClipList.Count > 0 && PlayerManager.Instance.block_StandingOn_Current.block == gameObject)
+        {
+            int sound = Random.Range(0, stepSound_ClipList.Count);
+
+            stepSound_Source.clip = stepSound_ClipList[sound];
+
+            float volume = Random.Range(0.75f, 1.25f);
+
+            if (stepSound_Volume > 0)
+                stepSound_Source.volume = stepSound_Volume * volume;
+
+            stepSound_Source.Play();
         }
     }
 
