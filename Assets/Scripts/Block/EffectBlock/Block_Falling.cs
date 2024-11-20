@@ -37,11 +37,13 @@ public class Block_Falling : MonoBehaviour
     private void OnEnable()
     {
         Player_Movement.Action_StepTaken += StepsOnFallableBlock;
+        PlayerStats.Action_RespawnPlayer += ResetBlock;
     }
 
     private void OnDisable()
     {
         Player_Movement.Action_StepTaken -= StepsOnFallableBlock;
+        PlayerStats.Action_RespawnPlayer -= ResetBlock;
     }
 
 
@@ -109,5 +111,26 @@ public class Block_Falling : MonoBehaviour
     public void ShowBlock()
     {
         gameObject.SetActive(true);
+    }
+
+
+    //--------------------
+
+
+    public void ResetBlock()
+    {
+        waitCounter = 0;
+
+        isSteppedOn = false;
+        isStandingOnBlock = false;
+        isMoving = false;
+
+        print("isSteppedOn: " + isSteppedOn + " | isStandingOnBlock: " + isStandingOnBlock + " | isMoving: " + isMoving + " | waitCounter: " + waitCounter);
+
+        waitCounter = 0;
+
+        transform.position = gameObject.GetComponent<BlockInfo>().startPos;
+
+        ShowBlock();
     }
 }

@@ -54,65 +54,74 @@ public class Player_Ascend : Singleton<Player_Ascend>
 
     bool RaycastForAscending()
     {
-        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Ascend)
+        if (gameObject.GetComponent<PlayerStats>())
         {
-            if (Physics.Raycast(transform.position, Vector3.up, out hit, ascendingDistance))
+            if (gameObject.GetComponent<PlayerStats>().stats != null)
             {
-                Debug.DrawRay(transform.position, Vector3.up * ascendingDistance, Color.cyan);
-
-                if (hit.transform.GetComponent<BlockInfo>())
+                if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot != null)
                 {
-                    if (!hit.transform.GetComponent<BlockInfo>().upper_Center)
+                    if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Ascend)
                     {
-                        ascendingBlock_Previous = ascendingBlock_Current;
-                        ascendingBlock_Current = hit.transform.gameObject;
-
-                        if (ascendingBlock_Current != ascendingBlock_Previous)
+                        if (Physics.Raycast(transform.position, Vector3.up, out hit, ascendingDistance))
                         {
-                            if (ascendingBlock_Previous)
+                            Debug.DrawRay(transform.position, Vector3.up * ascendingDistance, Color.cyan);
+
+                            if (hit.transform.GetComponent<BlockInfo>())
                             {
-                                if (ascendingBlock_Previous.GetComponent<BlockInfo>())
+                                if (!hit.transform.GetComponent<BlockInfo>().upper_Center)
                                 {
-                                    ascendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                                    ascendingBlock_Previous = ascendingBlock_Current;
+                                    ascendingBlock_Current = hit.transform.gameObject;
+
+                                    if (ascendingBlock_Current != ascendingBlock_Previous)
+                                    {
+                                        if (ascendingBlock_Previous)
+                                        {
+                                            if (ascendingBlock_Previous.GetComponent<BlockInfo>())
+                                            {
+                                                ascendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                                            }
+                                        }
+                                    }
+
+                                    if (Player_SwiftSwim.Instance.swiftSwim_Up_Obj)
+                                    {
+                                        if (Player_SwiftSwim.Instance.swiftSwim_Up_Obj.GetComponent<Block_Water>())
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            ascendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        ascendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                                    }
+
+                                    return true;
                                 }
                             }
                         }
 
-                        if (Player_SwiftSwim.Instance.swiftSwim_Up_Obj)
+                        if (ascendingBlock_Current)
                         {
-                            if (Player_SwiftSwim.Instance.swiftSwim_Up_Obj.GetComponent<Block_Water>())
+                            if (ascendingBlock_Current.GetComponent<BlockInfo>())
                             {
-                                
-                            }
-                            else
-                            {
-                                ascendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                                ascendingBlock_Current.GetComponent<BlockInfo>().ResetColor();
+                                ascendingBlock_Current = null;
                             }
                         }
-                        else
+                        if (ascendingBlock_Previous)
                         {
-                            ascendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                            if (ascendingBlock_Previous.GetComponent<BlockInfo>())
+                            {
+                                ascendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                                ascendingBlock_Previous = null;
+                            }
                         }
-
-                        return true;
                     }
-                }
-            }
-
-            if (ascendingBlock_Current)
-            {
-                if (ascendingBlock_Current.GetComponent<BlockInfo>())
-                {
-                    ascendingBlock_Current.GetComponent<BlockInfo>().ResetColor();
-                    ascendingBlock_Current = null;
-                }
-            }
-            if (ascendingBlock_Previous)
-            {
-                if (ascendingBlock_Previous.GetComponent<BlockInfo>())
-                {
-                    ascendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
-                    ascendingBlock_Previous = null;
                 }
             }
         }

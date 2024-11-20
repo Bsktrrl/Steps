@@ -11,6 +11,8 @@ public class BlockInfo : MonoBehaviour
     public float movementSpeed;
     public Color stepCostText_Color;
 
+    public Vector3 startPos;
+
     [Header("Adjacent Blocks - Upper")]
     public GameObject upper_Front_Left;
     public GameObject upper_Front;
@@ -54,6 +56,8 @@ public class BlockInfo : MonoBehaviour
 
     private void Start()
     {
+        startPos = transform.position;
+
         SetObjectRenderer();
         SetPropertyBlock();
         GetAdjacentBlocksInfo();
@@ -67,12 +71,14 @@ public class BlockInfo : MonoBehaviour
     {
         Player_Movement.Action_resetBlockColor += ResetColor;
         PlayerStats.Action_RespawnToSavePos += ResetColor;
+        PlayerStats.Action_RespawnPlayer += ResetBlock;
     }
 
     private void OnDisable()
     {
         Player_Movement.Action_resetBlockColor -= ResetColor;
         PlayerStats.Action_RespawnToSavePos -= ResetColor;
+        PlayerStats.Action_RespawnPlayer -= ResetBlock;
     }
 
 
@@ -218,11 +224,8 @@ public class BlockInfo : MonoBehaviour
     //--------------------
 
 
-    public void DestroyBlockInfo()
+    void ResetBlock()
     {
-        Player_Movement.Action_resetBlockColor -= ResetColor;
-        PlayerStats.Action_RespawnToSavePos -= ResetColor;
-
-        Destroy(this);
+        transform.position = startPos;
     }
 }

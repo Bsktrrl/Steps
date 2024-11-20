@@ -153,6 +153,8 @@ public class Player_Movement : Singleton<Player_Movement>
         //If pressing - Respawn
         else if (Input.GetKeyDown(KeyCode.R))
         {
+            print("KeyCode.R is pressed");
+
             PlayerStats.Instance.RespawnPlayer();
         }
 
@@ -164,6 +166,12 @@ public class Player_Movement : Singleton<Player_Movement>
     }
     void MovementKeyIsPressed(bool canMove, DetectedBlockInfo block_Vertical, int rotation)
     {
+        if (PlayerStats.Instance.stats.steps_Current <= 0)
+        { 
+            PlayerStats.Instance.RespawnPlayer(); 
+            return; 
+        }
+
         if (canMove)
         {
             if (block_Vertical != null)
@@ -188,7 +196,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
         SetPlayerBodyRotation(rotation);
     }
-    void SetPlayerBodyRotation(int rotationValue)
+    public void SetPlayerBodyRotation(int rotationValue)
     {
         //Set new Rotation - Based on the key input
         switch (Cameras.Instance.cameraState)

@@ -9,11 +9,13 @@ public class MapManager : Singleton<MapManager>
 
     [Header("Player")]
     [SerializeField] GameObject playerObject;
-    [SerializeField] Vector3 playerStartPos;
+    public Vector3 playerStartPos;
     [SerializeField] GameObject playerObjectInScene;
 
     [Header("MapManager")]
     public Map_SaveInfo mapInfo_ToSave;
+
+    BlockInfo[] blockInfoList;
 
 
     //--------------------
@@ -23,15 +25,21 @@ public class MapManager : Singleton<MapManager>
     {
         SpawnPlayerObject();
     }
+    private void Start()
+    {
+        blockInfoList = FindObjectsOfType<BlockInfo>();
+    }
 
     private void OnEnable()
     {
         DataManager.datahasLoaded += LoadMapInfo;
+        PlayerStats.Action_RespawnPlayer += ShowHiddenObjects;
     }
 
     private void OnDisable()
     {
         DataManager.datahasLoaded -= LoadMapInfo;
+        PlayerStats.Action_RespawnPlayer -= ShowHiddenObjects;
     }
 
 
@@ -57,5 +65,26 @@ public class MapManager : Singleton<MapManager>
     {
         playerObjectInScene = Instantiate(playerObject);
         playerObjectInScene.transform.position = playerStartPos;
+    }
+
+    public void ShowHiddenObjects()
+    {
+        foreach (BlockInfo block in blockInfoList)
+        {
+            if (!block.gameObject.activeInHierarchy)
+            {
+                block.gameObject.SetActive(true);
+            }
+
+            if (block.gameObject.GetComponent<Block_Falling>())
+            {
+                block.gameObject.GetComponent<Block_Falling>().ResetBlock();
+            }
+
+            if (block.gameObject.GetComponent<Block_Weak>())
+            {
+                block.gameObject.GetComponent<Block_Weak>().ResetBlock();
+            }
+        }
     }
 }

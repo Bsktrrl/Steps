@@ -54,71 +54,80 @@ public class Player_Descend : MonoBehaviour
 
     bool RaycastForDescending()
     {
-        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Descend)
+        if (gameObject.GetComponent<PlayerStats>())
         {
-            if (Physics.Raycast(transform.position + Vector3.down, Vector3.down, out hit, descendingDistance))
+            if (gameObject.GetComponent<PlayerStats>().stats != null)
             {
-                Debug.DrawRay(transform.position + Vector3.down, Vector3.down * descendingDistance, Color.yellow);
-
-                if (hit.transform.GetComponent<BlockInfo>())
+                if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot != null)
                 {
-                    if (hit.transform.GetComponent<BlockInfo>().upper_Center == null && hit.transform.position != gameObject.transform.position + (Vector3.down * gameObject.GetComponent<Player_Movement>().heightOverBlock) + Vector3.down)
+                    if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Descend)
                     {
-                        //print("HitPos: " + hit.transform.position + " | PlayerPos: " + (gameObject.transform.position + (Vector3.down * gameObject.GetComponent<Player_Movement>().heightOverBlock) + Vector3.down));
-                        descendingBlock_Previous = descendingBlock_Current;
-                        descendingBlock_Current = hit.transform.gameObject;
-
-                        if (descendingBlock_Current != descendingBlock_Previous)
+                        if (Physics.Raycast(transform.position + Vector3.down, Vector3.down, out hit, descendingDistance))
                         {
-                            if (descendingBlock_Previous)
+                            Debug.DrawRay(transform.position + Vector3.down, Vector3.down * descendingDistance, Color.yellow);
+
+                            if (hit.transform.GetComponent<BlockInfo>())
                             {
-                                if (descendingBlock_Previous.GetComponent<BlockInfo>())
+                                if (hit.transform.GetComponent<BlockInfo>().upper_Center == null && hit.transform.position != gameObject.transform.position + (Vector3.down * gameObject.GetComponent<Player_Movement>().heightOverBlock) + Vector3.down)
                                 {
-                                    descendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                                    //print("HitPos: " + hit.transform.position + " | PlayerPos: " + (gameObject.transform.position + (Vector3.down * gameObject.GetComponent<Player_Movement>().heightOverBlock) + Vector3.down));
+                                    descendingBlock_Previous = descendingBlock_Current;
+                                    descendingBlock_Current = hit.transform.gameObject;
+
+                                    if (descendingBlock_Current != descendingBlock_Previous)
+                                    {
+                                        if (descendingBlock_Previous)
+                                        {
+                                            if (descendingBlock_Previous.GetComponent<BlockInfo>())
+                                            {
+                                                descendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                                            }
+                                        }
+                                    }
+
+                                    if (Player_SwiftSwim.Instance.swiftSwim_Down_Obj)
+                                    {
+                                        if (Player_SwiftSwim.Instance.swiftSwim_Down_Obj.GetComponent<Block_Water>())
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            descendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        descendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                                    }
+
+
+                                    return true;
                                 }
                             }
                         }
 
-                        if (Player_SwiftSwim.Instance.swiftSwim_Down_Obj)
+                        if (descendingBlock_Current)
                         {
-                            if (Player_SwiftSwim.Instance.swiftSwim_Down_Obj.GetComponent<Block_Water>())
+                            if (descendingBlock_Current.GetComponent<BlockInfo>())
                             {
-
-                            }
-                            else
-                            {
-                                descendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                                descendingBlock_Current.GetComponent<BlockInfo>().ResetColor();
+                                descendingBlock_Current = null;
                             }
                         }
-                        else
+                        if (descendingBlock_Previous)
                         {
-                            descendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                            if (descendingBlock_Previous.GetComponent<BlockInfo>())
+                            {
+                                descendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                                descendingBlock_Previous = null;
+                            }
                         }
-
-
-                        return true;
                     }
                 }
             }
-
-            if (descendingBlock_Current)
-            {
-                if (descendingBlock_Current.GetComponent<BlockInfo>())
-                {
-                    descendingBlock_Current.GetComponent<BlockInfo>().ResetColor();
-                    descendingBlock_Current = null;
-                }
-            }
-            if (descendingBlock_Previous)
-            {
-                if (descendingBlock_Previous.GetComponent<BlockInfo>())
-                {
-                    descendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
-                    descendingBlock_Previous = null;
-                }
-            }
         }
-
+       
         return false;
     }
 

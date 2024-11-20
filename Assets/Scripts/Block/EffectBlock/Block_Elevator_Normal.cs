@@ -40,6 +40,15 @@ public class Block_Elevator_Normal : MonoBehaviour
             }
         }
     }
+    private void OnEnable()
+    {
+        PlayerStats.Action_RespawnPlayer += ResetBlock;
+    }
+
+    private void OnDisable()
+    {
+        PlayerStats.Action_RespawnPlayer -= ResetBlock;
+    }
 
 
     //--------------------
@@ -113,6 +122,15 @@ public class Block_Elevator_Normal : MonoBehaviour
         yield return new WaitForSeconds(waitingTime);
 
         waiting = false;
+    }
+
+
+    //--------------------
+
+
+    void ResetBlock()
+    {
+        moveToEndPos = true;
     }
 }
 

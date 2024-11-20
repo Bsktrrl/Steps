@@ -43,6 +43,15 @@ public class Block_Elevator_StepOn : MonoBehaviour
             }
         }
     }
+    private void OnEnable()
+    {
+        PlayerStats.Action_RespawnPlayer += ResetBlock;
+    }
+
+    private void OnDisable()
+    {
+        PlayerStats.Action_RespawnPlayer -= ResetBlock;
+    }
 
 
     //--------------------
@@ -123,5 +132,16 @@ public class Block_Elevator_StepOn : MonoBehaviour
             isMoving = false;
             moveToEndPos = true;
         }
+    }
+
+
+    //--------------------
+
+
+    void ResetBlock()
+    {
+        moveToEndPos = true;
+        isStandingOnBlock = false;
+        isMoving = false;
     }
 }

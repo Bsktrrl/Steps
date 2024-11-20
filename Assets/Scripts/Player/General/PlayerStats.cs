@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerStats : Singleton<PlayerStats>
 {
     public static event Action Action_RespawnToSavePos;
+    public static event Action Action_RespawnPlayer;
 
     public static event Action updateCoins;
     public static event Action updateCollectable;
@@ -77,12 +79,44 @@ public class PlayerStats : Singleton<PlayerStats>
     }
     public void RespawnPlayer()
     {
-        if (!string.IsNullOrEmpty(SceneManager.GetActiveScene().name))
-        {
-            StartCoroutine(LoadSceneCoroutine(SceneManager.GetActiveScene().name));
-        }
+        print("Respawn Player");
+
+        StartCoroutine(ResetplayerPos(0.01f));
+
+        //if (!string.IsNullOrEmpty(SceneManager.GetActiveScene().name))
+        //{
+        //    StartCoroutine(LoadSceneCoroutine(SceneManager.GetActiveScene().name));
+        //}
     }
 
+    IEnumerator ResetplayerPos(float waitTime)
+    {
+        PlayerManager.Instance.pauseGame = true;
+        PlayerManager.Instance.isTeleporting = true;
+        Player_Movement.Instance.movementStates = MovementStates.Moving;
+
+        stats.steps_Current = stats.steps_Max;
+
+        yield return new WaitForSeconds(waitTime);
+
+        transform.position = MapManager.Instance.playerStartPos;
+
+        Action_RespawnPlayer?.Invoke();
+        Player_Movement.Instance.SetPlayerBodyRotation(0);
+
+        yield return new WaitForSeconds(waitTime);
+
+        Player_Movement.Instance.Action_ResetBlockColorInvoke();
+
+        Player_Movement.Instance.movementStates = MovementStates.Still;
+        stats.steps_Current = stats.steps_Max;
+        UIManager.Instance.UpdateUI();
+
+        yield return new WaitForSeconds(waitTime * 25);
+
+        PlayerManager.Instance.pauseGame = false;
+        PlayerManager.Instance.isTeleporting = false;
+    }
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);

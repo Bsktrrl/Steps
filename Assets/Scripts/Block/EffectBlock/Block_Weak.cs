@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class Block_Weak : MonoBehaviour
 {
-
-
-    //--------------------
-
-
     private void Start()
     {
         GameObject obj = Instantiate(Player_Hammer.Instance.blockCrack, transform);
 
         obj.transform.localPosition = Vector3.zero;
+    }
+    private void OnEnable()
+    {
+        PlayerStats.Action_RespawnPlayer += ResetBlock;
+    }
+
+    private void OnDisable()
+    {
+        PlayerStats.Action_RespawnPlayer -= ResetBlock;
     }
 
 
@@ -22,9 +26,13 @@ public class Block_Weak : MonoBehaviour
 
     public void DestroyWeakBlock()
     {
-        gameObject.GetComponent<BlockInfo>().DestroyBlockInfo();
-        gameObject.GetComponent<BlockStepCostDisplay>().DestroyBlockStepCostDisplay();
+        gameObject.SetActive(false);
+        //gameObject.GetComponent<BlockStepCostDisplay>().DestroyBlockStepCostDisplay();
 
-        Destroy(gameObject);
+        //Destroy(gameObject);
+    }
+    public void ResetBlock()
+    {
+        gameObject.SetActive(true);
     }
 }

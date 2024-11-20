@@ -65,26 +65,50 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
     }
     bool RaycastSwiftSwim(Vector3 dir)
     {
-        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.SwiftSwim)
+        if (gameObject.GetComponent<PlayerStats>())
         {
-            if (Physics.Raycast(gameObject.transform.position + Vector3.down, dir, out hit, 1))
+            if (gameObject.GetComponent<PlayerStats>().stats != null)
             {
-                if (hit.transform.gameObject.GetComponent<Block_Water>())
+                if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot != null)
                 {
-                    //Debug.DrawRay(gameObject.transform.position, dir, Color.yellow, 1);
-
-                    if (dir == Vector3.up)
+                    if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.SwiftSwim)
                     {
-                        swiftSwim_Up_Obj = hit.transform.gameObject;
-                        swiftSwim_Up_Obj.GetComponent<BlockInfo>().DarkenColors();
-                    }
-                    else if (dir == Vector3.down)
-                    {
-                        swiftSwim_Down_Obj = hit.transform.gameObject;
-                        swiftSwim_Down_Obj.GetComponent<BlockInfo>().DarkenColors();
-                    }
+                        if (Physics.Raycast(gameObject.transform.position + Vector3.down, dir, out hit, 1))
+                        {
+                            if (hit.transform.gameObject.GetComponent<Block_Water>())
+                            {
+                                //Debug.DrawRay(gameObject.transform.position, dir, Color.yellow, 1);
 
-                    return true;
+                                if (dir == Vector3.up)
+                                {
+                                    swiftSwim_Up_Obj = hit.transform.gameObject;
+                                    swiftSwim_Up_Obj.GetComponent<BlockInfo>().DarkenColors();
+                                }
+                                else if (dir == Vector3.down)
+                                {
+                                    swiftSwim_Down_Obj = hit.transform.gameObject;
+                                    swiftSwim_Down_Obj.GetComponent<BlockInfo>().DarkenColors();
+                                }
+
+                                return true;
+                            }
+                            else
+                            {
+                                ResetObj(dir);
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            ResetObj(dir);
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        ResetObj(dir);
+                        return false;
+                    }
                 }
                 else
                 {
