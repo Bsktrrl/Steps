@@ -9,26 +9,29 @@ public class SaveLoad_MapInfo : Singleton<SaveLoad_MapInfo>
     {
         if (DataManager.Instance.mapInfo_StoreList != null)
         {
-            for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count; i++)
+            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List != null)
             {
-                print("MapName: " + DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName + " | Saved Name: " + SceneManager.GetActiveScene().name);
-
-                if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName == SceneManager.GetActiveScene().name)
+                for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count; i++)
                 {
-                    print("MapInfo is already in the system");
+                    print("MapName: " + DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName + " | Saved Name: " + SceneManager.GetActiveScene().name);
 
-                    MapManager.Instance.mapInfo_ToSave = DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i];
-                    MapManager.Instance.mapInfo_ToSave.CorrectingMapObjects();
-                    SaveData();
+                    if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName == SceneManager.GetActiveScene().name)
+                    {
+                        print("MapInfo is already in the system");
 
-                    return;
+                        MapManager.Instance.mapInfo_ToSave = DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i];
+                        MapManager.Instance.mapInfo_ToSave.CorrectingMapObjects();
+                        SaveData();
+
+                        return;
+                    }
                 }
+
+                print("Make new MapInfo");
+
+                MapManager.Instance.mapInfo_ToSave.SetupMap();
+                SaveData();
             }
-
-            print("Make new MapInfo");
-
-            MapManager.Instance.mapInfo_ToSave.SetupMap();
-            SaveData();
         }
     }
     public void SaveData()

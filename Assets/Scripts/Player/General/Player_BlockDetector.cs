@@ -603,13 +603,19 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
             if (blockType_Vertical.block.GetComponent<Block_Water>())
             {
-                if (PlayerStats.Instance.stats.abilitiesGot.SwimSuit || PlayerStats.Instance.stats.abilitiesGot.Flippers)
+                if (PlayerStats.Instance.stats != null)
                 {
-                    canMove(direction, true);
-                }
-                else
-                {
-                    canMove(direction, false);
+                    if (PlayerStats.Instance.stats.abilitiesGot != null)
+                    {
+                        if (PlayerStats.Instance.stats.abilitiesGot.SwimSuit || PlayerStats.Instance.stats.abilitiesGot.Flippers)
+                        {
+                            canMove(direction, true);
+                        }
+                        else
+                        {
+                            canMove(direction, false);
+                        }
+                    }
                 }
             }
             #endregion

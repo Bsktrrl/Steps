@@ -34,32 +34,41 @@ public class Interactable_Pickup : MonoBehaviour
 
     public void GetItems()
     {
-        switch (itemReceived)
+        if (PlayerManager.Instance.player)
         {
-            case Items.None:
-                break;
+            if (PlayerManager.Instance.player.GetComponent<PlayerStats>())
+            {
+                if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot != null)
+                {
+                    switch (itemReceived)
+                    {
+                        case Items.None:
+                            break;
 
-            case Items.Coin:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.coin += 1 /*itemReceived.amount*/;
-                break;
-            case Items.Collectable:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.collectable += 1 /*itemReceived.amount*/;
-                break;
-            case Items.IncreaseMaxSteps:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max += 1 /*itemReceived.amount*/;
-                break;
+                        case Items.Coin:
+                            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.coin += 1 /*itemReceived.amount*/;
+                            break;
+                        case Items.Collectable:
+                            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.collectable += 1 /*itemReceived.amount*/;
+                            break;
+                        case Items.IncreaseMaxSteps:
+                            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max += 1 /*itemReceived.amount*/;
+                            break;
 
-            default:
-                break;
-        }
+                        default:
+                            break;
+                    }
 
-        MarkedAsTaken();
+                    MarkedAsTaken();
 
-        PlayerManager.Instance.SavePlayerStats();
+                    PlayerManager.Instance.SavePlayerStats();
 
-        if (goal)
-        {
-            PlayerManager.Instance.player.GetComponent<Player_Movement>().QuitLevel();
+                    if (goal)
+                    {
+                        PlayerManager.Instance.player.GetComponent<Player_Movement>().QuitLevel();
+                    }
+                }
+            }
         }
     }
     void MarkedAsTaken()
