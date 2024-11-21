@@ -127,6 +127,11 @@ public class PlayerStats : Singleton<PlayerStats>
         }
     }
 
+    public void RespawnToSavePos_Action()
+    {
+        Action_RespawnToSavePos?.Invoke();
+    }
+
 
     //--------------------
     //Abilities

@@ -17,6 +17,7 @@ public class Player_Descend : MonoBehaviour
     RaycastHit hit;
 
     bool canRun;
+    bool descendStepCorrection;
 
 
     //--------------------
@@ -139,12 +140,19 @@ public class Player_Descend : MonoBehaviour
     {
         if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Descend)
         {
-            Player_Movement.Instance.movementStates = MovementStates.Moving;
-            PlayerManager.Instance.pauseGame = true;
-            PlayerManager.Instance.isTeleporting = true;
-            isDescending = true;
+            if (PlayerStats.Instance.stats.steps_Current <= 0)
+            {
+                PlayerStats.Instance.RespawnPlayer();
+            }
+            else
+            {
+                Player_Movement.Instance.movementStates = MovementStates.Moving;
+                PlayerManager.Instance.pauseGame = true;
+                PlayerManager.Instance.isTeleporting = true;
+                isDescending = true;
 
-            descendingBlock_Target = descendingBlock_Current;
+                descendingBlock_Target = descendingBlock_Current;
+            }
         }
     }
 
@@ -155,6 +163,15 @@ public class Player_Descend : MonoBehaviour
             Vector3 targetPos = descendingBlock_Target.transform.position + (Vector3.up * Player_Movement.Instance.heightOverBlock);
 
             PlayerManager.Instance.player.transform.position = Vector3.MoveTowards(PlayerManager.Instance.player.transform.position, targetPos, descendingSpeed * Time.deltaTime);
+
+            if (PlayerManager.Instance.block_StandingOn_Current != null && !descendStepCorrection)
+            {
+                if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>())
+                {
+                    PlayerStats.Instance.stats.steps_Current += PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
+                    descendStepCorrection = true;
+                }
+            }
 
             //Snap into place when close enough
             if (Vector3.Distance(PlayerManager.Instance.player.transform.position, targetPos) <= 0.03f)
@@ -168,10 +185,13 @@ public class Player_Descend : MonoBehaviour
 
                 Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
 
-                if (PlayerManager.Instance.block_StandingOn_Current.block)
+
+                if (descendingBlock_Target.GetComponent<BlockInfo>() /*PlayerManager.Instance.block_StandingOn_Current.block*/)
                 {
-                    Player_Movement.Instance.currentMovementCost = PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
+                    Player_Movement.Instance.currentMovementCost = descendingBlock_Target.GetComponent<BlockInfo>().movementCost /*PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost*/;
                 }
+
+                descendStepCorrection = false;
 
                 Player_Movement.Instance.Action_StepTakenInvoke();
                 Player_Movement.Instance.Action_ResetBlockColorInvoke();

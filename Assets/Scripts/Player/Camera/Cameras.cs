@@ -20,7 +20,7 @@ public class Cameras : Singleton<Cameras>
     [SerializeField] float zoomScrollValue_Base = 40;
     [SerializeField] float zoomScrollValue_Current;
     [SerializeField] float zoomScrollSpeed = 8;
-    [SerializeField] float zoomScrollValue_Min = 40;
+    [SerializeField] float zoomScrollValue_Min = 43;
     [SerializeField] float zoomScrollValue_Max = 120;
 
     [Header("CinemachineVirtualCameras")]
@@ -34,6 +34,7 @@ public class Cameras : Singleton<Cameras>
     public float transitionTimer = 0.25f;
     public float timerCounter = 0;
     public float rotationDistanceMin = 0.15f;
+    float cameraStatRot_X = 17.5f;
     public bool isRotating = false;
 
     [Header("Camera Stats")]
@@ -97,41 +98,29 @@ public class Cameras : Singleton<Cameras>
     {
         //Forward
         cameraStats_Forward.startPos = camera_Forward.gameObject.transform.position;
-        cameraStats_Forward.startRot = new Vector3(30, 0, 0);
+        cameraStats_Forward.startRot = new Vector3(cameraStatRot_X, 0, 0);
         cameraStats_Forward.startOffset = camera_Forward.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
-
-        cameraStats_Forward.parentPos = camera_Forward.gameObject.transform.localPosition;
-        cameraStats_Forward.parentRot = new Vector3(2, 0, 0);
 
         camera_Forward.transform.localRotation = Quaternion.Euler(cameraStats_Forward.startRot);
 
         //Back
         cameraStats_Back.startPos = camera_Back.gameObject.transform.position;
-        cameraStats_Back.startRot = new Vector3(30, 180, 0);
+        cameraStats_Back.startRot = new Vector3(cameraStatRot_X, 180, 0);
         cameraStats_Back.startOffset = camera_Back.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
-
-        cameraStats_Back.parentPos = camera_Back.gameObject.transform.localPosition;
-        cameraStats_Back.parentRot = new Vector3(-2, 0, 0);
 
         camera_Back.transform.localRotation = Quaternion.Euler(cameraStats_Back.startRot);
 
         //Left
         cameraStats_Left.startPos = camera_Left.gameObject.transform.position;
-        cameraStats_Left.startRot = new Vector3(30, 90, 0);
+        cameraStats_Left.startRot = new Vector3(cameraStatRot_X, 90, 0);
         cameraStats_Left.startOffset = camera_Left.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
-
-        cameraStats_Left.parentPos = camera_Left.gameObject.transform.localPosition;
-        cameraStats_Left.parentRot = new Vector3(0, 0, 2);
 
         camera_Left.transform.localRotation = Quaternion.Euler(cameraStats_Left.startRot);
 
         //Right
         cameraStats_Right.startPos = camera_Right.gameObject.transform.position;
-        cameraStats_Right.startRot = new Vector3(30, -90, 0);
+        cameraStats_Right.startRot = new Vector3(cameraStatRot_X, -90, 0);
         cameraStats_Right.startOffset = camera_Right.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
-
-        cameraStats_Right.parentPos = camera_Right.gameObject.transform.localPosition;
-        cameraStats_Right.parentRot = new Vector3(0, 0, -2);
 
         camera_Right.transform.localRotation = Quaternion.Euler(cameraStats_Right.startRot);
     }

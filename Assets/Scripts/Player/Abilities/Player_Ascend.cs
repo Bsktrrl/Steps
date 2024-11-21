@@ -137,12 +137,19 @@ public class Player_Ascend : Singleton<Player_Ascend>
     {
         if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Ascend)
         {
-            PlayerManager.Instance.pauseGame = true;
-            PlayerManager.Instance.isTeleporting = true;
-            isAscending = true;
-            Player_Movement.Instance.movementStates = MovementStates.Moving;
+            if (PlayerStats.Instance.stats.steps_Current <= 0)
+            {
+                PlayerStats.Instance.RespawnPlayer();
+            }
+            else
+            {
+                PlayerManager.Instance.pauseGame = true;
+                PlayerManager.Instance.isTeleporting = true;
+                isAscending = true;
+                Player_Movement.Instance.movementStates = MovementStates.Moving;
 
-            ascendingBlock_Target = ascendingBlock_Current;
+                ascendingBlock_Target = ascendingBlock_Current;
+            }
         }
     }
     void PerformAscendMovement()
