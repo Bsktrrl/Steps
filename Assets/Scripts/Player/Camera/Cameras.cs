@@ -17,7 +17,7 @@ public class Cameras : Singleton<Cameras>
     [SerializeField] string directionTranslator;
 
     [Header("Camera Zoom")]
-    [SerializeField] float zoomScrollValue_Base = 60;
+    [SerializeField] float zoomScrollValue_Base = 40;
     [SerializeField] float zoomScrollValue_Current;
     [SerializeField] float zoomScrollSpeed = 8;
     [SerializeField] float zoomScrollValue_Min = 40;
@@ -33,7 +33,7 @@ public class Cameras : Singleton<Cameras>
     public float rotationSpeed = 12;
     public float transitionTimer = 0.25f;
     public float timerCounter = 0;
-    public float rotationDistanceMin = 0.25f;
+    public float rotationDistanceMin = 0.15f;
     public bool isRotating = false;
 
     [Header("Camera Stats")]
@@ -48,6 +48,9 @@ public class Cameras : Singleton<Cameras>
         public Vector3 startPos;
         public Vector3 startRot;
         public Vector3 startOffset;
+
+        public Vector3 parentPos;
+        public Vector3 parentRot;
     }
 
 
@@ -97,12 +100,18 @@ public class Cameras : Singleton<Cameras>
         cameraStats_Forward.startRot = new Vector3(30, 0, 0);
         cameraStats_Forward.startOffset = camera_Forward.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
 
+        cameraStats_Forward.parentPos = camera_Forward.gameObject.transform.localPosition;
+        cameraStats_Forward.parentRot = new Vector3(2, 0, 0);
+
         camera_Forward.transform.localRotation = Quaternion.Euler(cameraStats_Forward.startRot);
 
         //Back
         cameraStats_Back.startPos = camera_Back.gameObject.transform.position;
         cameraStats_Back.startRot = new Vector3(30, 180, 0);
         cameraStats_Back.startOffset = camera_Back.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
+
+        cameraStats_Back.parentPos = camera_Back.gameObject.transform.localPosition;
+        cameraStats_Back.parentRot = new Vector3(-2, 0, 0);
 
         camera_Back.transform.localRotation = Quaternion.Euler(cameraStats_Back.startRot);
 
@@ -111,12 +120,18 @@ public class Cameras : Singleton<Cameras>
         cameraStats_Left.startRot = new Vector3(30, 90, 0);
         cameraStats_Left.startOffset = camera_Left.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
 
+        cameraStats_Left.parentPos = camera_Left.gameObject.transform.localPosition;
+        cameraStats_Left.parentRot = new Vector3(0, 0, 2);
+
         camera_Left.transform.localRotation = Quaternion.Euler(cameraStats_Left.startRot);
 
         //Right
         cameraStats_Right.startPos = camera_Right.gameObject.transform.position;
         cameraStats_Right.startRot = new Vector3(30, -90, 0);
         cameraStats_Right.startOffset = camera_Right.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
+
+        cameraStats_Right.parentPos = camera_Right.gameObject.transform.localPosition;
+        cameraStats_Right.parentRot = new Vector3(0, 0, -2);
 
         camera_Right.transform.localRotation = Quaternion.Euler(cameraStats_Right.startRot);
     }
@@ -282,7 +297,7 @@ public class Cameras : Singleton<Cameras>
     {
         currentCamera.transform.SetPositionAndRotation(Vector3.Lerp(currentCamera.transform.position, transitioningCameraStat.startPos, rotationSpeed * Time.deltaTime), Quaternion.Lerp(currentCamera.transform.localRotation, Quaternion.Euler(transitioningCameraStat.startRot), rotationSpeed * Time.deltaTime));
         currentCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = Vector3.Lerp(currentCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset, transitioningCameraStat.startOffset, rotationSpeed * Time.deltaTime);
-
+        
         //If close enough to the second camera, reset current Camera to startPos
         if (Vector3.Distance(currentCamera.transform.position, transitioningCameraStat.startPos) <= rotationDistanceMin
             || timerCounter >= transitionTimer)
@@ -304,47 +319,15 @@ public class Cameras : Singleton<Cameras>
         {
             case CameraState.Forward:
                 PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 0, 0));
-                //if (directionFacing == Vector3.forward)
-                //    directionFacing = Vector3.forward;
-                //else if (directionFacing == Vector3.back)
-                //    directionFacing = Vector3.back;
-                //else if (directionFacing == Vector3.left)
-                //    directionFacing = Vector3.left;
-                //else if (directionFacing == Vector3.right)
-                //    directionFacing = Vector3.right;
                 break;
             case CameraState.Backward:
                 PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 180, 0));
-                //if (directionFacing == Vector3.forward)
-                //    directionFacing = Vector3.back;
-                //else if (directionFacing == Vector3.back)
-                //    directionFacing = Vector3.forward;
-                //else if (directionFacing == Vector3.left)
-                //    directionFacing = Vector3.right;
-                //else if (directionFacing == Vector3.right)
-                //    directionFacing = Vector3.left;
                 break;
             case CameraState.Left:
                 PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 90, 0));
-                //if (directionFacing == Vector3.forward)
-                //    directionFacing = Vector3.left;
-                //else if (directionFacing == Vector3.back)
-                //    directionFacing = Vector3.right;
-                //else if (directionFacing == Vector3.left)
-                //    directionFacing = Vector3.forward;
-                //else if (directionFacing == Vector3.right)
-                //    directionFacing = Vector3.back;
                 break;
             case CameraState.Right:
                 PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, -90, 0));
-                //if (directionFacing == Vector3.forward)
-                //    directionFacing = Vector3.right;
-                //else if (directionFacing == Vector3.back)
-                //    directionFacing = Vector3.left;
-                //else if (directionFacing == Vector3.left)
-                //    directionFacing = Vector3.back;
-                //else if (directionFacing == Vector3.right)
-                //    directionFacing = Vector3.forward;
                 break;
 
             default:
