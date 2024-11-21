@@ -1,2 +1,30 @@
 Decending:
 - When decending, it also costs the stepCost of the block standing on, instead of only the block entering
+
+Levels:
+- Make 3 new Levels so the concept is ready to be playtested
+
+Ladder:
+- Make a ladder functionalty
+	- Use SwiftSwim as a Base (the Ladder is a full block with the ladderAsset moved a side. Can be rotaded in the scene without any problem)
+	- Add stepCost to the inner side of the ladder
+
+Slopes:
+- Add a slope that pushes the player down and the player cannot move up
+- Add Hiker's Tools, so that the player can move up the Slope
+
+
+Grapling Hook:
+- Let the player use a Grapling Hook on a block up to 5 blocks away
+	- Loose steps acording to the blocks moved over
+	- Respawn if reaching 0 steps
+
+Climbing Gear:
+- Let the player move up 1 block (instead of using a ladder)
+
+MoveableObject:
+- Make an object able to push in any direction, 1 block away
+	- Make it glideable on ice blocks
+
+Overworld:
+- Make a new overwold that uses Zones and displays the levels as inteded
