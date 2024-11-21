@@ -180,9 +180,15 @@ public class Player_Movement : Singleton<Player_Movement>
                 {
                     if (block_Vertical.block.GetComponent<BlockInfo>())
                     {
+                        if (block_Vertical.block.GetComponent<BlockInfo>().movementCost > PlayerStats.Instance.stats.steps_Current)
+                        {
+                            SetPlayerBodyRotation(rotation);
+                            return;
+                        }
+
                         PlayerManager.Instance.block_MovingTowards = block_Vertical;
 
-                        block_Vertical.block.GetComponent<BlockInfo>().movementCost = block_Vertical.block.GetComponent<BlockInfo>().movementCost;
+                        //block_Vertical.block.GetComponent<BlockInfo>().movementCost = block_Vertical.block.GetComponent<BlockInfo>().movementCost;
 
                         endDestination = block_Vertical.blockPosition + (Vector3.up * heightOverBlock);
                         //SetPlayerBodyRotation(rotation);
