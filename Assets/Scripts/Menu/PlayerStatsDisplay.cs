@@ -47,9 +47,20 @@ public class PlayerStatsDisplay : MonoBehaviour
         {
             if (gameObject.GetComponent<PlayerStats>().stats != null)
             {
-                stepsAmountDisplay.text = gameObject.GetComponent<PlayerStats>().stats.steps_Max.ToString();
-                coinAmountDisplay.text = gameObject.GetComponent<PlayerStats>().stats.itemsGot.coin.ToString();
-                collectableAmountDisplay.text = gameObject.GetComponent<PlayerStats>().stats.itemsGot.collectable.ToString();
+                if (gameObject.GetComponent<PlayerStats>().stats.steps_Max > 0)
+                    stepsAmountDisplay.text = gameObject.GetComponent<PlayerStats>().stats.steps_Max.ToString();
+                else
+                    stepsAmountDisplay.text = 0.ToString();
+
+                if (gameObject.GetComponent<PlayerStats>().stats.itemsGot != null)
+                    coinAmountDisplay.text = gameObject.GetComponent<PlayerStats>().stats.itemsGot.coin.ToString();
+                else
+                    coinAmountDisplay.text = 0.ToString();
+
+                if (gameObject.GetComponent<PlayerStats>().stats.itemsGot != null)
+                    collectableAmountDisplay.text = gameObject.GetComponent<PlayerStats>().stats.itemsGot.collectable.ToString();
+                else
+                    collectableAmountDisplay.text = 0.ToString();
             } 
         }
     }

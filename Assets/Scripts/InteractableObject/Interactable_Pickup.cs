@@ -108,6 +108,16 @@ public class Interactable_Pickup : MonoBehaviour
                         break;
 
                     case Items.IncreaseMaxSteps:
+                        for (int j = 0; j < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].maxStepList.Count; j++)
+                        {
+                            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].maxStepList[j].pos.x == gameObject.transform.position.x
+                                && DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].maxStepList[j].pos.z == gameObject.transform.position.z)
+                            {
+                                DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].maxStepList[j].isTaken = true;
+
+                                return;
+                            }
+                        }
                         break;
 
                     default:

@@ -17,6 +17,7 @@ public class Map_SaveInfo
 
     public List<CoinInfo> coinList;
     public List<CollectableInfo> collectableList;
+    public List<MaxStepInfo> maxStepList;
     public List<AbilityInfo> abilityList;
 
 
@@ -58,6 +59,15 @@ public class Map_SaveInfo
                 collectableInfo.isTaken = false;
 
                 collectableList.Add(collectableInfo);
+            }
+            else if (obj.itemReceived == Items.IncreaseMaxSteps /*&& obj.itemReceived.amount > 0*/)
+            {
+                MaxStepInfo maxStepInfo = new MaxStepInfo();
+                maxStepInfo.maxStepObj = obj.gameObject;
+                maxStepInfo.pos = obj.gameObject.transform.position;
+                maxStepInfo.isTaken = false;
+
+                maxStepList.Add(maxStepInfo);
             }
 
             //Abilities
@@ -129,6 +139,27 @@ public class Map_SaveInfo
                 }
             }
         }
+
+        //MaxSteps Pickups
+        for (int i = 0; i < mapSaveInfo.maxStepList.Count; i++)
+        {
+            if (mapSaveInfo.maxStepList[i].isTaken)
+            {
+                foreach (Interactable_Pickup pickup in pickUpList)
+                {
+                    if (pickup.itemReceived == Items.IncreaseMaxSteps)
+                    {
+                        if (mapSaveInfo.maxStepList[i].pos.x == pickup.gameObject.transform.position.x
+                        && mapSaveInfo.maxStepList[i].pos.z == pickup.gameObject.transform.position.z)
+                        {
+                            pickup.gameObject.SetActive(false);
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -144,6 +175,14 @@ public class CoinInfo
 public class CollectableInfo
 {
     public GameObject collectableObj;
+    public Vector3 pos;
+    public bool isTaken;
+}
+
+[Serializable]
+public class MaxStepInfo
+{
+    public GameObject maxStepObj;
     public Vector3 pos;
     public bool isTaken;
 }
