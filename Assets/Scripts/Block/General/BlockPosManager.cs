@@ -40,6 +40,17 @@ public class BlockPosManager : Singleton<BlockPosManager>
         // Fast lookup in the dictionary
         if (positionToGameObjectMap.TryGetValue(targetPosition, out GameObject foundObject1))
         {
+            //if (foundObject1.GetComponent<BlockInfo>().blockType == BlockType.HalfSlab)
+            //{
+            //    //return foundObject6;
+            //    print("HalfSlab");
+            //    return null;
+            //}
+            //else
+            //{
+            //    return foundObject1;
+            //}
+
             return foundObject1;
         }
 

@@ -68,65 +68,124 @@ public class Player_Ascend : Singleton<Player_Ascend>
 
                             if (hit.transform.GetComponent<BlockInfo>())
                             {
-                                if (!hit.transform.GetComponent<BlockInfo>().upper_Center)
+                                //If Ascending block is a WaterBlock
+                                if (hit.transform.GetComponent<Block_Water>() && (PlayerStats.Instance.stats.abilitiesGot.SwimSuit || PlayerStats.Instance.stats.abilitiesGot.Flippers || PlayerStats.Instance.stats.abilitiesGot.SwiftSwim))
                                 {
-                                    ascendingBlock_Previous = ascendingBlock_Current;
-                                    ascendingBlock_Current = hit.transform.gameObject;
+                                    //print("1. Ascending - WaterBlock");
+                                    AscendingIsAllowed();
+                                    return true;
+                                }
 
-                                    if (ascendingBlock_Current != ascendingBlock_Previous)
+                                //If Ascending block is a Slab and it's empty over it
+                                else if (hit.transform.GetComponent<Block_Slab>() && !hit.transform.GetComponent<BlockInfo>().upper_Center)
+                                {
+                                    //print("2. Ascending - Slab and noting over");
+                                    AscendingIsAllowed();
+                                    return true;
+                                }
+
+                                //If the space over the blockHit is a Slab
+                                else if (hit.transform.GetComponent<BlockInfo>().upper_Center != null)
+                                {
+                                    if (hit.transform.GetComponent<BlockInfo>().upper_Center.GetComponent<Block_Slab>())
                                     {
-                                        if (ascendingBlock_Previous)
-                                        {
-                                            if (ascendingBlock_Previous.GetComponent<BlockInfo>())
-                                            {
-                                                ascendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
-                                            }
-                                        }
-                                    }
-
-                                    if (Player_SwiftSwim.Instance.swiftSwim_Up_Obj)
-                                    {
-                                        if (Player_SwiftSwim.Instance.swiftSwim_Up_Obj.GetComponent<Block_Water>())
-                                        {
-
-                                        }
-                                        else
-                                        {
-                                            ascendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
-                                        }
+                                        //print("3. Ascending - Block over is a Slab");
+                                        AscendingIsAllowed();
+                                        return true;
                                     }
                                     else
                                     {
-                                        ascendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                                        //print("4. Ascending - Block over is NOT a Slab");
+                                        AscendingIsNOTAllowed();
+                                        return false;
                                     }
-
-                                    return true;
                                 }
-                            }
-                        }
 
-                        if (ascendingBlock_Current)
-                        {
-                            if (ascendingBlock_Current.GetComponent<BlockInfo>())
-                            {
-                                ascendingBlock_Current.GetComponent<BlockInfo>().ResetColor();
-                                ascendingBlock_Current = null;
-                            }
-                        }
-                        if (ascendingBlock_Previous)
-                        {
-                            if (ascendingBlock_Previous.GetComponent<BlockInfo>())
-                            {
-                                ascendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
-                                ascendingBlock_Previous = null;
+                                //If available space over the blockHit is empty
+                                else if (!hit.transform.GetComponent<BlockInfo>().upper_Center)
+                                {
+                                    //If Ascending block is a WaterBlock
+                                    if (hit.transform.GetComponent<Block_Water>())
+                                    {
+                                        // print("5. Ascending - Empty but Water is Hit");
+                                        AscendingIsNOTAllowed();
+                                        return false;
+                                    }
+                                    else
+                                    {
+                                        //print("6. Ascending - Empty");
+                                        AscendingIsAllowed();
+                                        return true;
+                                    }
+                                }
+
+                                //If not allowed to Ascend
+                                else
+                                {
+                                    AscendingIsNOTAllowed();
+                                    return false;
+                                }
                             }
                         }
                     }
                 }
             }
         }
-        
+
+        //Don't Ascend
+        AscendingIsNOTAllowed();
         return false;
+    }
+    void AscendingIsAllowed()
+    {
+        ascendingBlock_Previous = ascendingBlock_Current;
+        ascendingBlock_Current = hit.transform.gameObject;
+
+        if (ascendingBlock_Current != ascendingBlock_Previous)
+        {
+            if (ascendingBlock_Previous)
+            {
+                if (ascendingBlock_Previous.GetComponent<BlockInfo>())
+                {
+                    ascendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                }
+            }
+        }
+
+        if (Player_SwiftSwim.Instance.swiftSwim_Up_Obj)
+        {
+            if (Player_SwiftSwim.Instance.swiftSwim_Up_Obj.GetComponent<Block_Water>())
+            {
+
+            }
+            else
+            {
+                ascendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+            }
+        }
+        else
+        {
+            ascendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+        }
+    }
+    void AscendingIsNOTAllowed()
+    {
+        if (ascendingBlock_Current)
+        {
+            if (ascendingBlock_Current.GetComponent<BlockInfo>())
+            {
+                ascendingBlock_Current.GetComponent<BlockInfo>().ResetColor();
+                ascendingBlock_Current = null;
+            }
+        }
+        if (ascendingBlock_Previous)
+        {
+            if (ascendingBlock_Previous.GetComponent<BlockInfo>())
+            {
+                ascendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                ascendingBlock_Previous = null;
+            }
+        }
     }
 
 

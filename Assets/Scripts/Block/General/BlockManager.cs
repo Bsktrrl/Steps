@@ -49,4 +49,5 @@ public enum BlockType
 
     Fence,
     Slope,
+    HalfSlab,
 }
