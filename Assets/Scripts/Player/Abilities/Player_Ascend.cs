@@ -12,7 +12,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
     public float ascendingDistance = 3;
     public float ascendingSpeed = 15;
 
-    bool isAscending;
+    public bool isAscending;
 
     RaycastHit hit;
 
@@ -227,17 +227,17 @@ public class Player_Ascend : Singleton<Player_Ascend>
                 Player_Movement.Instance.movementStates = MovementStates.Still;
                 PlayerManager.Instance.pauseGame = false;
                 PlayerManager.Instance.isTeleporting = false;
-                isAscending = false;
 
                 Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
 
-                if (PlayerManager.Instance.block_StandingOn_Current.block)
-                {
-                    Player_Movement.Instance.currentMovementCost = PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
-                }
+                //if (PlayerManager.Instance.block_StandingOn_Current.block)
+                //{
+                //    Player_Movement.Instance.currentMovementCost = PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
+                //}
 
                 Player_Movement.Instance.Action_StepTakenInvoke();
                 Player_Movement.Instance.Action_ResetBlockColorInvoke();
+                isAscending = false;
             }
         }
     }

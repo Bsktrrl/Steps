@@ -34,20 +34,25 @@ public class Player_Movement : Singleton<Player_Movement>
         KeyInputs();
 
         if (movementStates == MovementStates.Moving /*&& endDestination != (Vector3.zero + (Vector3.up * heightOverBlock))*/
-            && !Player_SwiftSwim.Instance.isSwiftSwimming_Up && !Player_SwiftSwim.Instance.isSwiftSwimming_Down)
+            && !Player_SwiftSwim.Instance.isSwiftSwimming_Up && !Player_SwiftSwim.Instance.isSwiftSwimming_Down
+            && !Player_Ascend.Instance.isAscending && !Player_Descend.Instance.isDescending)
         {
             MovePlayer();
+            PlayerHover();
         }
         else if (Player_SwiftSwim.Instance.isSwiftSwimming_Up || Player_SwiftSwim.Instance.isSwiftSwimming_Down)
+        {
+
+        }
+        else if (Player_Ascend.Instance.isAscending || Player_Descend.Instance.isDescending)
         {
 
         }
         else
         {
             movementStates = MovementStates.Still;
+            PlayerHover();
         }
-
-        PlayerHover();
     }
 
 

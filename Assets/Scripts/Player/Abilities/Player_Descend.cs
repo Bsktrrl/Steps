@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_Descend : MonoBehaviour
+public class Player_Descend : Singleton<Player_Descend>
 {
     [Header("Descending")]
     public bool playerCanDescend;
@@ -12,7 +12,7 @@ public class Player_Descend : MonoBehaviour
     public float descendingDistance = 4;
     public float descendingSpeed = 20;
 
-    bool isDescending;
+    public bool isDescending;
 
     RaycastHit hit;
 
@@ -302,23 +302,22 @@ public class Player_Descend : MonoBehaviour
             {
                 PlayerManager.Instance.player.transform.position = targetPos;
 
+                Player_Movement.Instance.movementStates = MovementStates.Still;
                 PlayerManager.Instance.pauseGame = false;
                 PlayerManager.Instance.isTeleporting = false;
-                isDescending = false;
-                Player_Movement.Instance.movementStates = MovementStates.Still;
 
                 Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
 
-
-                if (descendingBlock_Target.GetComponent<BlockInfo>() /*PlayerManager.Instance.block_StandingOn_Current.block*/)
-                {
-                    Player_Movement.Instance.currentMovementCost = descendingBlock_Target.GetComponent<BlockInfo>().movementCost /*PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost*/;
-                }
+                //if (descendingBlock_Target.GetComponent<BlockInfo>() /*PlayerManager.Instance.block_StandingOn_Current.block*/)
+                //{
+                //    Player_Movement.Instance.currentMovementCost = descendingBlock_Target.GetComponent<BlockInfo>().movementCost /*PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost*/;
+                //}
 
                 descendStepCorrection = false;
 
                 Player_Movement.Instance.Action_StepTakenInvoke();
                 Player_Movement.Instance.Action_ResetBlockColorInvoke();
+                isDescending = false;
             }
         }
     }
