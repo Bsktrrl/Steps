@@ -180,6 +180,7 @@ GameObject:
   - component: {fileID: -4418949380470636020}
   - component: {fileID: -1443420205590938271}
   - component: {fileID: -1651415619880555548}
+  - component: {fileID: 5887492854004723775}
   m_Layer: 0
   m_Name: Wood Slab - Light
   m_TagString: Untagged
@@ -253,7 +254,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 0.3, z: 1}
-  m_Center: {x: 0, y: 0.4, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!54 &-4418949380470636020
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -342,6 +343,18 @@ MonoBehaviour:
   stepCostDisplay_Parent: {fileID: 9168060961414471760}
   stepCostDisplay_Canvas: {fileID: 6469824359960722291}
   stepCostText_Object: {fileID: 8963884879554557864}
+--- !u!114 &5887492854004723775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6316429816586941799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb7a58216ff840e47b49bea5564dc4db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6469824359960722291
 GameObject:
   m_ObjectHideFlags: 0

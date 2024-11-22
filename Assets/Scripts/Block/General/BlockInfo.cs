@@ -31,7 +31,7 @@ public class BlockInfo : MonoBehaviour
     [HideInInspector] public GameObject upper_Front;
     [HideInInspector] public GameObject upper_Front_Right;
     [HideInInspector] public GameObject upper_Center_Left;
-    public GameObject upper_Center;
+    [HideInInspector] public GameObject upper_Center;
     [HideInInspector] public GameObject upper_Center_Right;
     [HideInInspector] public GameObject upper_Back_Left;
     [HideInInspector] public GameObject upper_Back;
@@ -42,7 +42,7 @@ public class BlockInfo : MonoBehaviour
     [HideInInspector] public GameObject center_Front;
     [HideInInspector] public GameObject center_Front_Right;
     [HideInInspector] public GameObject center_Center_Left;
-    public GameObject center_Center;
+    [HideInInspector] public GameObject center_Center;
     [HideInInspector] public GameObject center_Center_Right;
     [HideInInspector] public GameObject center_Back_Left;
     [HideInInspector] public GameObject center_Back;
@@ -53,7 +53,7 @@ public class BlockInfo : MonoBehaviour
     [HideInInspector] public GameObject lower_Front;
     [HideInInspector] public GameObject lower_Front_Right;
     [HideInInspector] public GameObject lower_Center_Left;
-    public GameObject lower_Center;
+    [HideInInspector] public GameObject lower_Center;
     [HideInInspector] public GameObject lower_Center_Right;
     [HideInInspector] public GameObject lower_Back_Left;
     [HideInInspector] public GameObject lower_Back;

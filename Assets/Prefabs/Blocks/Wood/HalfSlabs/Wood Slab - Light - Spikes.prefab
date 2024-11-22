@@ -416,6 +416,7 @@ GameObject:
   - component: {fileID: 3687294919780877854}
   - component: {fileID: 6660101800803678803}
   - component: {fileID: -3121025421807625316}
+  - component: {fileID: -2662919138728192033}
   m_Layer: 0
   m_Name: Wood Slab - Light - Spikes
   m_TagString: Untagged
@@ -489,7 +490,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 0.3, z: 1}
-  m_Center: {x: 0, y: 0.4, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!54 &3687294919780877854
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -578,6 +579,18 @@ MonoBehaviour:
   stepCostDisplay_Parent: {fileID: 7797442859379962405}
   stepCostDisplay_Canvas: {fileID: 2477225325759459260}
   stepCostText_Object: {fileID: 1709828206776017078}
+--- !u!114 &-2662919138728192033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7395785226117273716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb7a58216ff840e47b49bea5564dc4db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7797442859379962405
 GameObject:
   m_ObjectHideFlags: 0
