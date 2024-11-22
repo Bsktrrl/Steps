@@ -13,6 +13,7 @@ public class Stats
 
     [Header("Abilities")]
     public AbilitiesGot abilitiesGot;
+    public AbilitiesGot abilitiesTempGot;
 
     public void ResetStats()
     {
@@ -37,6 +38,40 @@ public class Stats
         abilitiesGot.Ascend = false;
         abilitiesGot.Descend = false;
         abilitiesGot.ControlStick = false;
+
+        abilitiesTempGot.FenceSneak = false;
+        abilitiesTempGot.SwimSuit = false;
+        abilitiesTempGot.SwiftSwim = false;
+        abilitiesTempGot.Flippers = false;
+        abilitiesTempGot.LavaSuit = false;
+        abilitiesTempGot.LavaSwiftSwim = false;
+        abilitiesTempGot.HikerGear = false;
+        abilitiesTempGot.IceSpikes = false;
+        abilitiesTempGot.GrapplingHook = false;
+        abilitiesTempGot.Hammer = false;
+        abilitiesTempGot.ClimbingGear = false;
+        abilitiesTempGot.Dash = false;
+        abilitiesTempGot.Ascend = false;
+        abilitiesTempGot.Descend = false;
+        abilitiesTempGot.ControlStick = false;
+    }
+    public void ResetTempStats()
+    {
+        abilitiesTempGot.FenceSneak = false;
+        abilitiesTempGot.SwimSuit = false;
+        abilitiesTempGot.SwiftSwim = false;
+        abilitiesTempGot.Flippers = false;
+        abilitiesTempGot.LavaSuit = false;
+        abilitiesTempGot.LavaSwiftSwim = false;
+        abilitiesTempGot.HikerGear = false;
+        abilitiesTempGot.IceSpikes = false;
+        abilitiesTempGot.GrapplingHook = false;
+        abilitiesTempGot.Hammer = false;
+        abilitiesTempGot.ClimbingGear = false;
+        abilitiesTempGot.Dash = false;
+        abilitiesTempGot.Ascend = false;
+        abilitiesTempGot.Descend = false;
+        abilitiesTempGot.ControlStick = false;
     }
 }
 

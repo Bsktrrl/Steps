@@ -212,7 +212,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
                 PlayerManager.Instance.block_Horizontal_InFront.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
 
                 if (PlayerManager.Instance.block_Horizontal_InFront.blockType == BlockType.Fence
-                    && PlayerStats.Instance.stats.abilitiesGot.FenceSneak)
+                    && (PlayerStats.Instance.stats.abilitiesGot.FenceSneak || PlayerStats.Instance.stats.abilitiesTempGot.FenceSneak))
                 {
                     ResetRaycastDirection_Horizontal(direction);
                 }
@@ -229,7 +229,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
                 PlayerManager.Instance.block_Horizontal_InBack.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
 
                 if (PlayerManager.Instance.block_Horizontal_InBack.blockType == BlockType.Fence
-                    && PlayerStats.Instance.stats.abilitiesGot.FenceSneak)
+                    && (PlayerStats.Instance.stats.abilitiesGot.FenceSneak || PlayerStats.Instance.stats.abilitiesTempGot.FenceSneak))
                 {
                     ResetRaycastDirection_Horizontal(direction);
                 }
@@ -246,7 +246,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
                 PlayerManager.Instance.block_Horizontal_ToTheLeft.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
 
                 if (PlayerManager.Instance.block_Horizontal_ToTheLeft.blockType == BlockType.Fence
-                    && PlayerStats.Instance.stats.abilitiesGot.FenceSneak)
+                    && (PlayerStats.Instance.stats.abilitiesGot.FenceSneak || PlayerStats.Instance.stats.abilitiesTempGot.FenceSneak))
                 {
                     ResetRaycastDirection_Horizontal(direction);
                 }
@@ -263,7 +263,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
                 PlayerManager.Instance.block_Horizontal_ToTheRight.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
 
                 if (PlayerManager.Instance.block_Horizontal_ToTheRight.blockType == BlockType.Fence
-                    && PlayerStats.Instance.stats.abilitiesGot.FenceSneak)
+                    && (PlayerStats.Instance.stats.abilitiesGot.FenceSneak || PlayerStats.Instance.stats.abilitiesTempGot.FenceSneak))
                 {
                     ResetRaycastDirection_Horizontal(direction);
                 }
@@ -605,9 +605,9 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             {
                 if (PlayerStats.Instance.stats != null)
                 {
-                    if (PlayerStats.Instance.stats.abilitiesGot != null)
+                    if (PlayerStats.Instance.stats.abilitiesGot != null || PlayerStats.Instance.stats.abilitiesTempGot != null)
                     {
-                        if (PlayerStats.Instance.stats.abilitiesGot.SwimSuit || PlayerStats.Instance.stats.abilitiesGot.Flippers)
+                        if (PlayerStats.Instance.stats.abilitiesGot.SwimSuit || PlayerStats.Instance.stats.abilitiesTempGot.SwimSuit)
                         {
                             canMove(direction, true);
                         }
@@ -624,7 +624,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             //If block is Lava, you cannot move into it before having the LavaSuit Ability
             else if (blockType_Vertical.block.GetComponent<Block_Lava>())
             {
-                if (PlayerStats.Instance.stats.abilitiesGot.LavaSuit)
+                if (PlayerStats.Instance.stats.abilitiesGot.LavaSuit || PlayerStats.Instance.stats.abilitiesTempGot.LavaSuit)
                 {
                     canMove(direction, true);
                 }

@@ -69,9 +69,9 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
         {
             if (gameObject.GetComponent<PlayerStats>().stats != null)
             {
-                if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot != null)
+                if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot != null || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot != null)
                 {
-                    if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.SwiftSwim)
+                    if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.SwiftSwim || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot.SwiftSwim)
                     {
                         if (Physics.Raycast(gameObject.transform.position + Vector3.down, dir, out hit, 1))
                         {
@@ -154,7 +154,7 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
 
     public void SwiftSwim_Up()
     {
-        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.SwiftSwim)
+        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.SwiftSwim || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot.SwiftSwim)
         {
             PlayerManager.Instance.pauseGame = true;
             PlayerManager.Instance.isTeleporting = true;
@@ -167,7 +167,7 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
     }
     public void SwiftSwim_Down()
     {
-        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.SwiftSwim)
+        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.SwiftSwim || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot.SwiftSwim)
         {
             PlayerManager.Instance.pauseGame = true;
             PlayerManager.Instance.isTeleporting = true;

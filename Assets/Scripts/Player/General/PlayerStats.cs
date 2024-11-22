@@ -33,22 +33,26 @@ public class PlayerStats : Singleton<PlayerStats>
     private void OnEnable()
     {
         Player_Movement.Action_StepTaken += TakeAStep;
-        SaveLoad_PlayerStats.playerStats_hasLoaded += CorrectionsAfterLoadingStats;
+        SaveLoad_PlayerStats.playerStats_hasLoaded += RefillStepsToMax;
     }
 
     private void OnDisable()
     {
         Player_Movement.Action_StepTaken -= TakeAStep;
-        SaveLoad_PlayerStats.playerStats_hasLoaded -= CorrectionsAfterLoadingStats;
+        SaveLoad_PlayerStats.playerStats_hasLoaded -= RefillStepsToMax;
     }
 
 
     //--------------------
 
 
-    void CorrectionsAfterLoadingStats()
+    void RefillStepsToMax()
     {
         stats.steps_Current = stats.steps_Max;
+    }
+    public void RefillStepsToMax(int corrections)
+    {
+        stats.steps_Current = stats.steps_Max + corrections;
     }
 
 
@@ -112,6 +116,8 @@ public class PlayerStats : Singleton<PlayerStats>
         stats.steps_Current = stats.steps_Max;
         UIManager.Instance.UpdateUI();
 
+        stats.ResetTempStats();
+
         yield return new WaitForSeconds(waitTime * 25);
 
         PlayerManager.Instance.pauseGame = false;
@@ -131,79 +137,4 @@ public class PlayerStats : Singleton<PlayerStats>
     {
         Action_RespawnToSavePos?.Invoke();
     }
-
-
-    //--------------------
-    //Abilities
-    #region
-    public void UpdateFenceSneak()
-    {
-        stats.abilitiesGot.FenceSneak = true;
-    }
-    public void UpdateSwimsuit()
-    {
-        stats.abilitiesGot.SwimSuit = true;
-    }
-    public void UpdateSwiftSwim()
-    {
-        stats.abilitiesGot.SwiftSwim = true;
-    }
-    public void UpdateFlippers()
-    {
-        stats.abilitiesGot.Flippers = true;
-
-        //Find all gameObjects in the scene containing a Block_Water component
-        Block_Water[] waterBlocks = FindObjectsOfType<Block_Water>();
-
-        //Update the movementCost of all blocks
-        foreach (Block_Water block in waterBlocks)
-        {
-            block.UpdateFastSwimmingMovementCost();
-        }
-    }
-    public void UpdateLavaSuit()
-    {
-        stats.abilitiesGot.LavaSuit = true;
-    }
-    public void UpdateLavaSwiftSwim()
-    {
-        stats.abilitiesGot.LavaSwiftSwim = true;
-    }
-    public void UpdateHikerGear()
-    {
-        stats.abilitiesGot.HikerGear = true;
-    }
-    public void UpdateIceSpikes()
-    {
-        stats.abilitiesGot.IceSpikes = true;
-    }
-    public void UpdateGrapplingHook()
-    {
-        stats.abilitiesGot.GrapplingHook = true;
-    }
-    public void UpdateHammer()
-    {
-        stats.abilitiesGot.Hammer = true;
-    }
-    public void UpdateClimbingGear()
-    {
-        stats.abilitiesGot.ClimbingGear = true;
-    }
-    public void UpdateDash()
-    {
-        stats.abilitiesGot.Dash = true;
-    }
-    public void UpdateAscend()
-    {
-        stats.abilitiesGot.Ascend = true;
-    }
-    public void UpdateDescend()
-    {
-        stats.abilitiesGot.Descend = true;
-    }
-    public void UpdateControlStick()
-    {
-        stats.abilitiesGot.ControlStick = true;
-    }
-    #endregion
 }

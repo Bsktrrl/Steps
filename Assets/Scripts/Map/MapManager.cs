@@ -20,6 +20,7 @@ public class MapManager : Singleton<MapManager>
     public Map_SaveInfo mapInfo_ToSave;
 
     BlockInfo[] blockInfoList;
+    Interactable_Pickup[] pickupInfoList;
 
 
     //--------------------
@@ -32,6 +33,7 @@ public class MapManager : Singleton<MapManager>
     private void Start()
     {
         blockInfoList = FindObjectsOfType<BlockInfo>();
+        pickupInfoList = FindObjectsOfType<Interactable_Pickup>();
 
         PlayAudio();
     }
@@ -90,6 +92,14 @@ public class MapManager : Singleton<MapManager>
             if (block.gameObject.GetComponent<Block_Weak>())
             {
                 block.gameObject.GetComponent<Block_Weak>().ResetBlock();
+            }
+        }
+
+        foreach (Interactable_Pickup pickup in pickupInfoList)
+        {
+            if (!pickup.gameObject.activeInHierarchy)
+            {
+                pickup.ShowPickup();
             }
         }
     }

@@ -58,9 +58,9 @@ public class Player_Ascend : Singleton<Player_Ascend>
         {
             if (gameObject.GetComponent<PlayerStats>().stats != null)
             {
-                if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot != null)
+                if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot != null || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot != null)
                 {
-                    if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Ascend)
+                    if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Ascend || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot.Ascend)
                     {
                         if (Physics.Raycast(transform.position, Vector3.up, out hit, ascendingDistance))
                         {
@@ -69,7 +69,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
                             if (hit.transform.GetComponent<BlockInfo>())
                             {
                                 //If Ascending block is a WaterBlock
-                                if (hit.transform.GetComponent<Block_Water>() && (PlayerStats.Instance.stats.abilitiesGot.SwimSuit || PlayerStats.Instance.stats.abilitiesGot.Flippers || PlayerStats.Instance.stats.abilitiesGot.SwiftSwim))
+                                if (hit.transform.GetComponent<Block_Water>() && (PlayerStats.Instance.stats.abilitiesGot.SwimSuit || PlayerStats.Instance.stats.abilitiesGot.Flippers || PlayerStats.Instance.stats.abilitiesGot.SwiftSwim || PlayerStats.Instance.stats.abilitiesTempGot.SwimSuit || PlayerStats.Instance.stats.abilitiesTempGot.Flippers || PlayerStats.Instance.stats.abilitiesTempGot.SwiftSwim))
                                 {
                                     //print("1. Ascending - WaterBlock");
                                     AscendingIsAllowed();
@@ -194,7 +194,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
 
     public void Ascend()
     {
-        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Ascend)
+        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Ascend || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot.Ascend)
         {
             if (PlayerStats.Instance.stats.steps_Current <= 0)
             {

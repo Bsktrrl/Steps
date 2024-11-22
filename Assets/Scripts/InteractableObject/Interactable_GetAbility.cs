@@ -20,65 +20,50 @@ public class Interactable_GetAbility : MonoBehaviour
                     break;
 
                 case Abilities.FenceSneak:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.FenceSneak = true;
-                    PlayerStats.Instance.UpdateFenceSneak();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.FenceSneak = true;
                     break;
                 case Abilities.SwimSuit:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.SwimSuit = true;
-                    PlayerStats.Instance.UpdateSwimsuit();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.SwimSuit = true;
                     break;
                 case Abilities.SwiftSwim:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.SwiftSwim = true;
-                    PlayerStats.Instance.UpdateSwiftSwim();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.SwiftSwim = true;
                     break;
                 case Abilities.Flippers:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.Flippers = true;
-                    PlayerStats.Instance.UpdateFlippers();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Flippers = true;
                     break;
                 case Abilities.LavaSuit:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.LavaSuit = true;
-                    PlayerStats.Instance.UpdateLavaSuit();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.LavaSuit = true;
                     break;
                 case Abilities.LavaSwiftSwim:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.LavaSwiftSwim = true;
-                    PlayerStats.Instance.UpdateLavaSwiftSwim();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.LavaSwiftSwim = true;
                     break;
                 case Abilities.HikersKit:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.HikerGear = true;
-                    PlayerStats.Instance.UpdateHikerGear();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.HikerGear = true;
                     break;
 
                 case Abilities.IceSpikes:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.IceSpikes = true;
-                    PlayerStats.Instance.UpdateIceSpikes();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.IceSpikes = true;
                     break;
                 case Abilities.GrapplingHook:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.GrapplingHook = true;
-                    PlayerStats.Instance.UpdateGrapplingHook();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.GrapplingHook = true;
                     break;
                 case Abilities.Hammer:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.Hammer = true;
-                    PlayerStats.Instance.UpdateHammer();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Hammer = true;
                     break;
                 case Abilities.ClimbingGear:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.ClimbingGear = true;
-                    PlayerStats.Instance.UpdateClimbingGear();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.ClimbingGear = true;
                     break;
                 case Abilities.Dash:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.Dash = true;
-                    PlayerStats.Instance.UpdateDash();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Dash = true;
                     break;
                 case Abilities.Ascend:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.Ascend = true;
-                    PlayerStats.Instance.UpdateAscend();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Ascend = true;
                     break;
                 case Abilities.Descend:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.Descend = true;
-                    PlayerStats.Instance.UpdateDescend();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Descend = true;
                     break;
                 case Abilities.ControlStick:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.ControlStick = true;
-                    PlayerStats.Instance.UpdateControlStick();
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.ControlStick = true;
                     break;
 
                 default:

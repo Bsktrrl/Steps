@@ -115,9 +115,9 @@ public class Player_Dash : MonoBehaviour
             dashBlock_Current = null;
         }
 
-        if (PlayerStats.Instance.stats.abilitiesGot != null)
+        if (PlayerStats.Instance.stats.abilitiesGot != null || PlayerStats.Instance.stats.abilitiesTempGot != null)
         {
-            if (dashBlock_Current && !dashBlockOver_Current && PlayerStats.Instance.stats.abilitiesGot.Dash)
+            if (dashBlock_Current && !dashBlockOver_Current && (PlayerStats.Instance.stats.abilitiesGot.Dash || PlayerStats.Instance.stats.abilitiesTempGot.Dash))
             {
                 if (dashBlock_Current.GetComponent<BlockInfo>())
                 {
@@ -136,7 +136,7 @@ public class Player_Dash : MonoBehaviour
                     playerCanDash = true;
                 }
             }
-            else if (PlayerStats.Instance.stats.abilitiesGot.SwimSuit && dashBlock_Current && dashBlockOver_Current && PlayerStats.Instance.stats.abilitiesGot.Dash)
+            else if ((PlayerStats.Instance.stats.abilitiesGot.SwimSuit || PlayerStats.Instance.stats.abilitiesTempGot.SwimSuit) && dashBlock_Current && dashBlockOver_Current && (PlayerStats.Instance.stats.abilitiesGot.Dash || PlayerStats.Instance.stats.abilitiesTempGot.Dash))
             {
                 if (dashBlock_Current.GetComponent<BlockInfo>() && dashBlock_Current.GetComponent<Block_Water>())
                 {
@@ -184,7 +184,7 @@ public class Player_Dash : MonoBehaviour
 
     public void Dash()
     {
-        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Dash)
+        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Dash || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot.Dash)
         {
             PlayerManager.Instance.pauseGame = true;
             PlayerManager.Instance.isTeleporting = true;

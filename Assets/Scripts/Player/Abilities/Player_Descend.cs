@@ -59,9 +59,9 @@ public class Player_Descend : Singleton<Player_Descend>
         {
             if (gameObject.GetComponent<PlayerStats>().stats != null)
             {
-                if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot != null)
+                if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot != null || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot != null)
                 {
-                    if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Descend)
+                    if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Descend || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot.Descend)
                     {
                         if (Physics.Raycast(transform.position + Vector3.down, Vector3.down, out hit, descendingDistance))
                         {
@@ -70,7 +70,7 @@ public class Player_Descend : Singleton<Player_Descend>
                             if (hit.transform.GetComponent<BlockInfo>())
                             {
                                 //If Descending block is a WaterBlock
-                                if (hit.transform.GetComponent<Block_Water>() && (PlayerStats.Instance.stats.abilitiesGot.SwimSuit || PlayerStats.Instance.stats.abilitiesGot.Flippers || PlayerStats.Instance.stats.abilitiesGot.SwiftSwim))
+                                if (hit.transform.GetComponent<Block_Water>() && (PlayerStats.Instance.stats.abilitiesGot.SwimSuit || PlayerStats.Instance.stats.abilitiesGot.Flippers || PlayerStats.Instance.stats.abilitiesGot.SwiftSwim || PlayerStats.Instance.stats.abilitiesTempGot.SwimSuit || PlayerStats.Instance.stats.abilitiesTempGot.Flippers || PlayerStats.Instance.stats.abilitiesTempGot.SwiftSwim))
                                 {
                                     if (hit.transform.GetComponent<BlockInfo>().upper_Center)
                                     {
@@ -149,7 +149,7 @@ public class Player_Descend : Singleton<Player_Descend>
                                         if (hit.transform.GetComponent<Block_Water>())
                                         {
                                             //Can Swim
-                                            if (PlayerStats.Instance.stats.abilitiesGot.SwimSuit || PlayerStats.Instance.stats.abilitiesGot.Flippers || PlayerStats.Instance.stats.abilitiesGot.SwiftSwim)
+                                            if (PlayerStats.Instance.stats.abilitiesGot.SwimSuit || PlayerStats.Instance.stats.abilitiesGot.Flippers || PlayerStats.Instance.stats.abilitiesGot.SwiftSwim || PlayerStats.Instance.stats.abilitiesTempGot.SwimSuit || PlayerStats.Instance.stats.abilitiesTempGot.Flippers || PlayerStats.Instance.stats.abilitiesTempGot.SwiftSwim)
                                             {
                                                 //print("9. Descending - WaterBlock with Slab over - CanSwim");
                                                 DescendingIsAllowed();
@@ -262,7 +262,7 @@ public class Player_Descend : Singleton<Player_Descend>
 
     public void Descend()
     {
-        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Descend)
+        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Descend || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot.Descend)
         {
             if (PlayerStats.Instance.stats.steps_Current <= 0)
             {

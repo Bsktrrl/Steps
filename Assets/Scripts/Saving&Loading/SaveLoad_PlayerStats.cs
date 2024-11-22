@@ -12,6 +12,7 @@ public class SaveLoad_PlayerStats : Singleton<SaveLoad_PlayerStats>
         if (DataManager.Instance.playerStats_Store != null)
         {
             PlayerStats.Instance.stats = DataManager.Instance.playerStats_Store;
+            PlayerStats.Instance.stats.ResetTempStats();
         }
 
         playerStats_hasLoaded?.Invoke();

@@ -24,9 +24,9 @@ public class Block_Water : MonoBehaviour
         {
             if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats != null)
             {
-                if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot != null)
+                if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot != null || PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot != null)
                 {
-                    if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.Flippers == true)
+                    if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.Flippers == true || PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Flippers == true)
                     {
                         if (gameObject.GetComponent<BlockInfo>())
                         {
@@ -44,7 +44,7 @@ public class Block_Water : MonoBehaviour
 
     public void UpdateFastSwimmingMovementCost()
     {
-        if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.Flippers)
+        if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.Flippers || PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Flippers)
         {
             gameObject.GetComponent<BlockInfo>().movementCost = gameObject.GetComponent<BlockInfo>().movementCost - 1;
         }
