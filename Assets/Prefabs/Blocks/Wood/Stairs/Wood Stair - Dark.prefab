@@ -428,11 +428,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a201269b3f988984da941a6b8a00096e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockElement: 10
   blockType: 2
   movementCost: 2
   movementSpeed: 3
   stepCostText_Color: {r: 0.6039216, g: 0.54509807, b: 0.39607847, a: 1}
+  stepSound_Volume: 0.6
+  stepSound_ClipList:
+  - {fileID: 8300000, guid: d9fad1328eecd694397ba95125922636, type: 3}
+  - {fileID: 8300000, guid: 9a2d741359f219b4faa61b6652e2d23b, type: 3}
+  - {fileID: 8300000, guid: 1f026e83b8b867e4dbeaec69457b37e1, type: 3}
+  - {fileID: 8300000, guid: 185fae9c2c4746145b751cb6dce757b6, type: 3}
+  - {fileID: 8300000, guid: b6db7a5326870f148a703205b41e4003, type: 3}
+  startPos: {x: 0, y: 0, z: 0}
+  upper_Front_Left: {fileID: 0}
+  upper_Front: {fileID: 0}
+  upper_Front_Right: {fileID: 0}
+  upper_Center_Left: {fileID: 0}
+  upper_Center: {fileID: 0}
+  upper_Center_Right: {fileID: 0}
+  upper_Back_Left: {fileID: 0}
+  upper_Back: {fileID: 0}
+  upper_Back_Right: {fileID: 0}
+  center_Front_Left: {fileID: 0}
+  center_Front: {fileID: 0}
+  center_Front_Right: {fileID: 0}
+  center_Center_Left: {fileID: 0}
+  center_Center: {fileID: 0}
+  center_Center_Right: {fileID: 0}
+  center_Back_Left: {fileID: 0}
+  center_Back: {fileID: 0}
+  center_Back_Right: {fileID: 0}
+  lower_Front_Left: {fileID: 0}
+  lower_Front: {fileID: 0}
+  lower_Front_Right: {fileID: 0}
+  lower_Center_Left: {fileID: 0}
+  lower_Center: {fileID: 0}
+  lower_Center_Right: {fileID: 0}
+  lower_Back_Left: {fileID: 0}
+  lower_Back: {fileID: 0}
+  lower_Back_Right: {fileID: 0}
 --- !u!114 &4814938858266907390
 MonoBehaviour:
   m_ObjectHideFlags: 0
