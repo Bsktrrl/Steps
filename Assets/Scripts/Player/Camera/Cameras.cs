@@ -17,11 +17,11 @@ public class Cameras : Singleton<Cameras>
     [SerializeField] string directionTranslator;
 
     [Header("Camera Zoom")]
-    [SerializeField] float zoomScrollValue_Base = 40;
+    [SerializeField] float zoomScrollValue_Base = 60;
     [SerializeField] float zoomScrollValue_Current;
     [SerializeField] float zoomScrollSpeed = 8;
-    [SerializeField] float zoomScrollValue_Min = 43;
-    [SerializeField] float zoomScrollValue_Max = 120;
+    [SerializeField] float zoomScrollValue_Min = 45;
+    [SerializeField] float zoomScrollValue_Max = 75;
 
     [Header("CinemachineVirtualCameras")]
     public CinemachineVirtualCamera camera_Forward;
@@ -34,7 +34,7 @@ public class Cameras : Singleton<Cameras>
     public float transitionTimer = 0.25f;
     public float timerCounter = 0;
     public float rotationDistanceMin = 0.15f;
-    float cameraStatRot_X = 22;
+    float cameraStatRot_X = 27;
     public bool isRotating = false;
 
     [Header("Camera Stats")]
