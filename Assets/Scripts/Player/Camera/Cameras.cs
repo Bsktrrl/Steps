@@ -34,7 +34,7 @@ public class Cameras : Singleton<Cameras>
     public float transitionTimer = 0.25f;
     public float timerCounter = 0;
     public float rotationDistanceMin = 0.15f;
-    float cameraStatRot_X = 17.5f;
+    float cameraStatRot_X = 22;
     public bool isRotating = false;
 
     [Header("Camera Stats")]
