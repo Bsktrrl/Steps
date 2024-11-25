@@ -171,7 +171,7 @@ public class Player_Movement : Singleton<Player_Movement>
     }
     void MovementKeyIsPressed(bool canMove, DetectedBlockInfo block_Vertical, int rotation)
     {
-        if (PlayerStats.Instance.stats.steps_Current <= 0)
+        if (PlayerStats.Instance.stats.steps_Current <= 0 && block_Vertical.block.GetComponent<BlockInfo>().movementCost > 0)
         { 
             PlayerStats.Instance.RespawnPlayer(); 
             return; 

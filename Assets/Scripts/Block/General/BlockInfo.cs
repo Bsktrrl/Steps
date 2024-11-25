@@ -22,6 +22,8 @@ public class BlockInfo : MonoBehaviour
     public Vector3 startPos;
 
     [Header("Material Rendering")]
+    public bool hasOtherMaterial;
+    Material material;
     List<Renderer> objectRenderers = new List<Renderer>();
     [HideInInspector] public List<MaterialPropertyBlock> propertyBlocks = new List<MaterialPropertyBlock>();
 
@@ -69,6 +71,11 @@ public class BlockInfo : MonoBehaviour
         startPos = transform.position;
         stepSound_Source = gameObject.AddComponent<AudioSource>();
 
+        if (hasOtherMaterial)
+        {
+            material = gameObject.GetComponentInChildren<MeshRenderer>().material;
+        }
+        
         SetObjectRenderer();
         SetPropertyBlock();
         GetAdjacentBlocksInfo();
@@ -192,7 +199,7 @@ public class BlockInfo : MonoBehaviour
         //Don't darken Fences
         if (blockType == BlockType.Fence) { return; }
 
-        if (PlayerStats.Instance.stats.steps_Current <= 0 /*|| PlayerStats.Instance.stats.steps_Current < movementCost*/)
+        if (PlayerStats.Instance.stats.steps_Current <= 0 && movementCost > 0 /*|| PlayerStats.Instance.stats.steps_Current < movementCost*/)
         {
             ResetColor();
             return;
@@ -202,7 +209,15 @@ public class BlockInfo : MonoBehaviour
         for (int i = 0; i < propertyBlocks.Count; i++)
         {
             // Darken the color
-            Color darkenedColor = Color.white * BlockManager.Instance.materialDarkeningValue;
+            Color darkenedColor = new Color();
+            if (hasOtherMaterial)
+            {
+                darkenedColor = material.color * BlockManager.Instance.materialDarkeningValue;
+            }
+            else
+            {
+                darkenedColor = Color.white * BlockManager.Instance.materialDarkeningValue;
+            }
 
             // Set the new color in the MaterialPropertyBlock
             propertyBlocks[i].SetColor("_BaseColor", darkenedColor);
@@ -223,8 +238,16 @@ public class BlockInfo : MonoBehaviour
         for (int i = 0; i < propertyBlocks.Count; i++)
         {
             // Restore the color to full brightness
-            Color restoredColor = Color.white;
-
+            Color restoredColor = new Color();
+            if (hasOtherMaterial)
+            {
+                restoredColor = material.color;
+            }
+            else
+            {
+                restoredColor = Color.white;
+            }
+           
             // Set the original color in the MaterialPropertyBlock
             propertyBlocks[i].SetColor("_BaseColor", restoredColor);
 

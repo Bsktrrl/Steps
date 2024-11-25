@@ -7,6 +7,7 @@ public class Block_Elevator_StepOn : MonoBehaviour
     public elevatorDirection elevatorDirection;
     public int distance;
     public float movementSpeed = 5f;
+    public float waitingTime = 0.35f;
 
     Vector3 startPos;
     Vector3 endPos;
@@ -66,12 +67,12 @@ public class Block_Elevator_StepOn : MonoBehaviour
         else if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject && !isStandingOnBlock)
         {
             isStandingOnBlock = true;
-            StartCoroutine(MoveElevator(0.35f));
+            StartCoroutine(MoveElevator());
         }
     }
-    IEnumerator MoveElevator(float waitTime)
+    IEnumerator MoveElevator()
     {
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(waitingTime);
 
         isMoving = true;
     }
