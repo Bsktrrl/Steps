@@ -34,7 +34,7 @@ public class Block_Teleport : MonoBehaviour
 
     IEnumerator TeleportWait(float waitTime)
     {
-        PlayerManager.Instance.isTeleporting = true;
+        PlayerManager.Instance.isTransportingPlayer = true;
         PlayerManager.Instance.pauseGame = true;
         Player_Movement.Instance.movementStates = MovementStates.Moving;
 
@@ -47,7 +47,7 @@ public class Block_Teleport : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
 
         Player_Movement.Instance.movementStates = MovementStates.Still;
-        PlayerManager.Instance.isTeleporting = false;
+        PlayerManager.Instance.isTransportingPlayer = false;
         PlayerManager.Instance.pauseGame = false;
     }
 }

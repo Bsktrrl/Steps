@@ -96,7 +96,7 @@ public class PlayerStats : Singleton<PlayerStats>
     IEnumerator ResetplayerPos(float waitTime)
     {
         PlayerManager.Instance.pauseGame = true;
-        PlayerManager.Instance.isTeleporting = true;
+        PlayerManager.Instance.isTransportingPlayer = true;
         Player_Movement.Instance.movementStates = MovementStates.Moving;
 
         stats.steps_Current = stats.steps_Max;
@@ -121,7 +121,7 @@ public class PlayerStats : Singleton<PlayerStats>
         yield return new WaitForSeconds(waitTime * 25);
 
         PlayerManager.Instance.pauseGame = false;
-        PlayerManager.Instance.isTeleporting = false;
+        PlayerManager.Instance.isTransportingPlayer = false;
     }
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {

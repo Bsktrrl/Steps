@@ -10,10 +10,17 @@ public class Interactable_Pickup : MonoBehaviour
     public Abilities abilityReceived;
     public bool goal;
 
+    Vector3 startPos;
+    RaycastHit hit;
+
 
     //--------------------
 
 
+    private void Start()
+    {
+        startPos = transform.position;
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.CompareTag("Player"))
@@ -139,6 +146,8 @@ public class Interactable_Pickup : MonoBehaviour
     }
     public void GetAbility()
     {
+        Player_BlockDetector.Instance.Update_BlockStandingOn();
+
         switch (abilityReceived)
         {
             case Abilities.None:
@@ -146,68 +155,61 @@ public class Interactable_Pickup : MonoBehaviour
 
             case Abilities.FenceSneak:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.FenceSneak = true;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(1);
                 break;
             case Abilities.SwimSuit:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.SwimSuit = true;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(1);
                 break;
             case Abilities.SwiftSwim:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.SwiftSwim = true;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(1);
                 break;
             case Abilities.Flippers:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Flippers = true;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(1);
                 break;
             case Abilities.LavaSuit:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.LavaSuit = true;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(1);
                 break;
             case Abilities.LavaSwiftSwim:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.LavaSwiftSwim = true;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(1);
                 break;
             case Abilities.HikersKit:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.HikerGear = true;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(1);
                 break;
 
             case Abilities.IceSpikes:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.IceSpikes = true;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(1);
                 break;
             case Abilities.GrapplingHook:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.GrapplingHook = true;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(1);
                 break;
             case Abilities.Hammer:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Hammer = true;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(1);
                 break;
             case Abilities.ClimbingGear:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.ClimbingGear = true;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(1);
                 break;
             case Abilities.Dash:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Dash = true;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(1);
                 break;
             case Abilities.Ascend:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Ascend = true;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(1);
                 break;
             case Abilities.Descend:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Descend = true;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(1);
                 break;
             case Abilities.ControlStick:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.ControlStick = true;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(1);
                 break;
 
             default:
                 break;
+        }
+
+        if (Physics.Raycast(startPos, Vector3.down, out hit, 1))
+        {
+            if (hit.transform.gameObject.GetComponent<BlockInfo>())
+            {
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(hit.transform.gameObject.GetComponent<BlockInfo>().movementCost);
+            }
         }
     }
 }

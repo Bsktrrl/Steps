@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class Block_Elevator_StepOn : MonoBehaviour
 {
@@ -66,6 +67,7 @@ public class Block_Elevator_StepOn : MonoBehaviour
         }
         else if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject && !isStandingOnBlock)
         {
+            PlayerManager.Instance.isTransportingPlayer = true;
             isStandingOnBlock = true;
             StartCoroutine(MoveElevator());
         }
@@ -75,6 +77,7 @@ public class Block_Elevator_StepOn : MonoBehaviour
         yield return new WaitForSeconds(waitingTime);
 
         isMoving = true;
+        PlayerManager.Instance.isTransportingPlayer = false;
     }
     void CalculateMovementPath()
     {

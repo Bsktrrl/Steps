@@ -157,7 +157,7 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
         if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.SwiftSwim || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot.SwiftSwim)
         {
             PlayerManager.Instance.pauseGame = true;
-            PlayerManager.Instance.isTeleporting = true;
+            PlayerManager.Instance.isTransportingPlayer = true;
             Player_Movement.Instance.movementStates = MovementStates.Moving;
             isSwiftSwimming_Up = true;
 
@@ -170,7 +170,7 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
         if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.SwiftSwim || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot.SwiftSwim)
         {
             PlayerManager.Instance.pauseGame = true;
-            PlayerManager.Instance.isTeleporting = true;
+            PlayerManager.Instance.isTransportingPlayer = true;
             Player_Movement.Instance.movementStates = MovementStates.Moving;
             isSwiftSwimming_Down = true;
 
@@ -190,7 +190,7 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
 
             Player_Movement.Instance.movementStates = MovementStates.Still;
             PlayerManager.Instance.pauseGame = false;
-            PlayerManager.Instance.isTeleporting = false;
+            PlayerManager.Instance.isTransportingPlayer = false;
 
             isSwiftSwimming_Up = false;
             isSwiftSwimming_Down = false;

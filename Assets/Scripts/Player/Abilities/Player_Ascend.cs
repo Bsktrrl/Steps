@@ -203,7 +203,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
             else
             {
                 PlayerManager.Instance.pauseGame = true;
-                PlayerManager.Instance.isTeleporting = true;
+                PlayerManager.Instance.isTransportingPlayer = true;
                 isAscending = true;
                 Player_Movement.Instance.movementStates = MovementStates.Moving;
 
@@ -226,7 +226,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
 
                 Player_Movement.Instance.movementStates = MovementStates.Still;
                 PlayerManager.Instance.pauseGame = false;
-                PlayerManager.Instance.isTeleporting = false;
+                PlayerManager.Instance.isTransportingPlayer = false;
 
                 Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
 

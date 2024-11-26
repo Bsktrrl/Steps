@@ -46,7 +46,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
     [Header("Game Paused")]
     public bool pauseGame;
-    public bool isTeleporting;
+    public bool isTransportingPlayer;
 
     #endregion
 

@@ -272,7 +272,7 @@ public class Player_Descend : Singleton<Player_Descend>
             {
                 Player_Movement.Instance.movementStates = MovementStates.Moving;
                 PlayerManager.Instance.pauseGame = true;
-                PlayerManager.Instance.isTeleporting = true;
+                PlayerManager.Instance.isTransportingPlayer = true;
                 isDescending = true;
 
                 descendingBlock_Target = descendingBlock_Current;
@@ -304,7 +304,7 @@ public class Player_Descend : Singleton<Player_Descend>
 
                 Player_Movement.Instance.movementStates = MovementStates.Still;
                 PlayerManager.Instance.pauseGame = false;
-                PlayerManager.Instance.isTeleporting = false;
+                PlayerManager.Instance.isTransportingPlayer = false;
 
                 Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
 

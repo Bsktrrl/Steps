@@ -77,6 +77,7 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         if (movementStates == MovementStates.Moving) { return; }
         if (PlayerManager.Instance.pauseGame) { return; }
+        if (PlayerManager.Instance.isTransportingPlayer) { return; }
         if (Cameras.Instance.isRotating) { return; }
         if (Player_Interact.Instance.isInteracting) { return; }
 
@@ -325,7 +326,7 @@ public class Player_Movement : Singleton<Player_Movement>
     void PlayerHover()
     {
         //Don't hover if teleporting
-        if (PlayerManager.Instance.isTeleporting) { return; }
+        if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
         //Don't fall if moving
         if (movementStates == MovementStates.Moving)
