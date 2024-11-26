@@ -5,73 +5,55 @@ using UnityEngine;
 public class Stats
 {
     [Header("Steps")]
-    public int steps_Max = 5;
-    public int steps_Current = 5;
+    public int steps_Max = 7;
+    public int steps_Current = 7;
 
     [Header("Items")]
-    public ItemsGot itemsGot;
+    public ItemsGot itemsGot = new ItemsGot();
 
     [Header("Abilities")]
-    public AbilitiesGot abilitiesGot;
-    public AbilitiesGot abilitiesTempGot;
+    public AbilitiesGot abilitiesGot_Permanent = new AbilitiesGot();
+    public AbilitiesGot abilitiesGot_Temporary = new AbilitiesGot();
 
     public void ResetStats()
     {
-        steps_Max = 5;
-        steps_Current = 5;
+        steps_Max = 7;
+        steps_Current = 7;
 
         itemsGot.coin = 0;
         itemsGot.collectable = 0;
 
-        abilitiesGot.FenceSneak = false;
-        abilitiesGot.SwimSuit = false;
-        abilitiesGot.SwiftSwim = false;
-        abilitiesGot.Flippers = false;
-        abilitiesGot.LavaSuit = false;
-        abilitiesGot.LavaSwiftSwim = false;
-        abilitiesGot.HikerGear = false;
-        abilitiesGot.IceSpikes = false;
-        abilitiesGot.GrapplingHook = false;
-        abilitiesGot.Hammer = false;
-        abilitiesGot.ClimbingGear = false;
-        abilitiesGot.Dash = false;
-        abilitiesGot.Ascend = false;
-        abilitiesGot.Descend = false;
-        abilitiesGot.ControlStick = false;
+        abilitiesGot_Permanent.FenceSneak = false;
+        abilitiesGot_Permanent.SwimSuit = false;
+        abilitiesGot_Permanent.SwiftSwim = false;
+        abilitiesGot_Permanent.Flippers = false;
+        abilitiesGot_Permanent.LavaSuit = false;
+        abilitiesGot_Permanent.LavaSwiftSwim = false;
+        abilitiesGot_Permanent.HikerGear = false;
+        abilitiesGot_Permanent.IceSpikes = false;
+        abilitiesGot_Permanent.GrapplingHook = false;
+        abilitiesGot_Permanent.Hammer = false;
+        abilitiesGot_Permanent.ClimbingGear = false;
+        abilitiesGot_Permanent.Dash = false;
+        abilitiesGot_Permanent.Ascend = false;
+        abilitiesGot_Permanent.Descend = false;
+        abilitiesGot_Permanent.ControlStick = false;
 
-        abilitiesTempGot.FenceSneak = false;
-        abilitiesTempGot.SwimSuit = false;
-        abilitiesTempGot.SwiftSwim = false;
-        abilitiesTempGot.Flippers = false;
-        abilitiesTempGot.LavaSuit = false;
-        abilitiesTempGot.LavaSwiftSwim = false;
-        abilitiesTempGot.HikerGear = false;
-        abilitiesTempGot.IceSpikes = false;
-        abilitiesTempGot.GrapplingHook = false;
-        abilitiesTempGot.Hammer = false;
-        abilitiesTempGot.ClimbingGear = false;
-        abilitiesTempGot.Dash = false;
-        abilitiesTempGot.Ascend = false;
-        abilitiesTempGot.Descend = false;
-        abilitiesTempGot.ControlStick = false;
-    }
-    public void ResetTempStats()
-    {
-        abilitiesTempGot.FenceSneak = false;
-        abilitiesTempGot.SwimSuit = false;
-        abilitiesTempGot.SwiftSwim = false;
-        abilitiesTempGot.Flippers = false;
-        abilitiesTempGot.LavaSuit = false;
-        abilitiesTempGot.LavaSwiftSwim = false;
-        abilitiesTempGot.HikerGear = false;
-        abilitiesTempGot.IceSpikes = false;
-        abilitiesTempGot.GrapplingHook = false;
-        abilitiesTempGot.Hammer = false;
-        abilitiesTempGot.ClimbingGear = false;
-        abilitiesTempGot.Dash = false;
-        abilitiesTempGot.Ascend = false;
-        abilitiesTempGot.Descend = false;
-        abilitiesTempGot.ControlStick = false;
+        abilitiesGot_Temporary.FenceSneak = false;
+        abilitiesGot_Temporary.SwimSuit = false;
+        abilitiesGot_Temporary.SwiftSwim = false;
+        abilitiesGot_Temporary.Flippers = false;
+        abilitiesGot_Temporary.LavaSuit = false;
+        abilitiesGot_Temporary.LavaSwiftSwim = false;
+        abilitiesGot_Temporary.HikerGear = false;
+        abilitiesGot_Temporary.IceSpikes = false;
+        abilitiesGot_Temporary.GrapplingHook = false;
+        abilitiesGot_Temporary.Hammer = false;
+        abilitiesGot_Temporary.ClimbingGear = false;
+        abilitiesGot_Temporary.Dash = false;
+        abilitiesGot_Temporary.Ascend = false;
+        abilitiesGot_Temporary.Descend = false;
+        abilitiesGot_Temporary.ControlStick = false;
     }
 }
 

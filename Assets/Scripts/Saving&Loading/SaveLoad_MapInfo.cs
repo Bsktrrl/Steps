@@ -26,28 +26,36 @@ public class SaveLoad_MapInfo : Singleton<SaveLoad_MapInfo>
                         return;
                     }
                 }
-
-                print("Make new MapInfo");
-
-                MapManager.Instance.mapInfo_ToSave.SetupMap();
-                SaveData();
             }
         }
+
+        MapManager.Instance.mapInfo_ToSave.SetupMap();
+        SaveData();
     }
     public void SaveData()
     {
-        for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count; i++)
+        if (DataManager.Instance.mapInfo_StoreList != null)
         {
-            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName == MapManager.Instance.mapInfo_ToSave.mapName)
+            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List != null)
             {
-                DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i] = MapManager.Instance.mapInfo_ToSave;
-                DataPersistanceManager.instance.SaveGame();
+                for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count; i++)
+                {
+                    if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName == MapManager.Instance.mapInfo_ToSave.mapName)
+                    {
+                        DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i] = MapManager.Instance.mapInfo_ToSave;
+                        DataPersistanceManager.instance.SaveGame();
 
-                return;
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                List<Map_SaveInfo> Map_SaveInfoList_Temp = new List<Map_SaveInfo>();
+                DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List = Map_SaveInfoList_Temp;
+                DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Add(MapManager.Instance.mapInfo_ToSave);
+                DataPersistanceManager.instance.SaveGame();
             }
         }
-
-        DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Add(MapManager.Instance.mapInfo_ToSave);
-        DataPersistanceManager.instance.SaveGame();
     }
 }

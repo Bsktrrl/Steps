@@ -15,7 +15,7 @@ public class PlayerStats : Singleton<PlayerStats>
 
     public Vector3 savePos;
 
-    public Stats stats;
+    public Stats stats = new Stats();
 
 
     //--------------------
@@ -33,13 +33,15 @@ public class PlayerStats : Singleton<PlayerStats>
     private void OnEnable()
     {
         Player_Movement.Action_StepTaken += TakeAStep;
-        SaveLoad_PlayerStats.playerStats_hasLoaded += RefillStepsToMax;
+        DataManager.datahasLoaded += RefillStepsToMax;
+        DataManager.datahasLoaded += UpdateActiveAbilities;
     }
 
     private void OnDisable()
     {
         Player_Movement.Action_StepTaken -= TakeAStep;
-        SaveLoad_PlayerStats.playerStats_hasLoaded -= RefillStepsToMax;
+        DataManager.datahasLoaded -= RefillStepsToMax;
+        DataManager.datahasLoaded -= UpdateActiveAbilities;
     }
 
 
@@ -48,11 +50,114 @@ public class PlayerStats : Singleton<PlayerStats>
 
     void RefillStepsToMax()
     {
-        stats.steps_Current = stats.steps_Max;
+        int counter = 0;
+
+        //Add steps gotten from active level
+        if (MapManager.Instance.mapInfo_ToSave != null)
+        {
+            if (MapManager.Instance.mapInfo_ToSave.maxStepList != null)
+            {
+                for (int i = 0; i < MapManager.Instance.mapInfo_ToSave.maxStepList.Count; i++)
+                {
+                    if (MapManager.Instance.mapInfo_ToSave.maxStepList[i].isTaken)
+                    {
+                        counter++;
+                    }
+                }
+            }
+        }
+
+        if (SceneManager.GetActiveScene().name == "Tutorial")
+            stats.steps_Current = 5 + counter;
+        else
+            stats.steps_Current = 7 + counter;
     }
-    public void RefillStepsToMax(int corrections)
+    void UpdateActiveAbilities()
     {
-        stats.steps_Current = stats.steps_Max + corrections;
+        if (stats.abilitiesGot_Temporary != null)
+        {
+            print("1. stats.abilitiesGot_Temporary != null");
+        }
+        else
+        {
+            print("2. stats.abilitiesGot_Temporary == null");
+        }
+
+        //Based on what's picked up in the level, assign active abilities to the player
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.FenceSneak)
+            stats.abilitiesGot_Temporary.FenceSneak = true;
+        else
+            stats.abilitiesGot_Temporary.FenceSneak = false;
+
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwimSuit)
+            stats.abilitiesGot_Temporary.SwimSuit = true;
+        else
+            stats.abilitiesGot_Temporary.SwimSuit = false;
+
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwiftSwim)
+            stats.abilitiesGot_Temporary.SwiftSwim = true;
+        else
+            stats.abilitiesGot_Temporary.SwiftSwim = false;
+
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flippers)
+            stats.abilitiesGot_Temporary.Flippers = true;
+        else
+            stats.abilitiesGot_Temporary.Flippers = false;
+
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.LavaSuit)
+            stats.abilitiesGot_Temporary.LavaSuit = true;
+        else
+            stats.abilitiesGot_Temporary.LavaSuit = false;
+
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.LavaSwiftSwim)
+            stats.abilitiesGot_Temporary.LavaSwiftSwim = true;
+        else
+            stats.abilitiesGot_Temporary.LavaSwiftSwim = false;
+
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.HikerGear)
+            stats.abilitiesGot_Temporary.HikerGear = true;
+        else
+            stats.abilitiesGot_Temporary.HikerGear = false;
+
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.IceSpikes)
+            stats.abilitiesGot_Temporary.IceSpikes = true;
+        else
+            stats.abilitiesGot_Temporary.IceSpikes = false;
+
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.GrapplingHook)
+            stats.abilitiesGot_Temporary.GrapplingHook = true;
+        else
+            stats.abilitiesGot_Temporary.GrapplingHook = false;
+
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Hammer)
+            stats.abilitiesGot_Temporary.Hammer = true;
+        else
+            stats.abilitiesGot_Temporary.Hammer = false;
+
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.ClimbingGear)
+            stats.abilitiesGot_Temporary.ClimbingGear = true;
+        else
+            stats.abilitiesGot_Temporary.ClimbingGear = false;
+
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Dash)
+            stats.abilitiesGot_Temporary.Dash = true;
+        else
+            stats.abilitiesGot_Temporary.Dash = false;
+
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Ascend)
+            stats.abilitiesGot_Temporary.Ascend = true;
+        else
+            stats.abilitiesGot_Temporary.Ascend = false;
+
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Descend)
+            stats.abilitiesGot_Temporary.Descend = true;
+        else
+            stats.abilitiesGot_Temporary.Descend = false;
+
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.ControlStick)
+            stats.abilitiesGot_Temporary.ControlStick = true;
+        else
+            stats.abilitiesGot_Temporary.ControlStick = false;
     }
 
 
@@ -95,28 +200,34 @@ public class PlayerStats : Singleton<PlayerStats>
 
     IEnumerator ResetplayerPos(float waitTime)
     {
+        //Set Pause parameters
         PlayerManager.Instance.pauseGame = true;
         PlayerManager.Instance.isTransportingPlayer = true;
         Player_Movement.Instance.movementStates = MovementStates.Moving;
 
-        stats.steps_Current = stats.steps_Max;
-
         yield return new WaitForSeconds(waitTime);
 
+        //Move player
         transform.position = MapManager.Instance.playerStartPos;
-
-        Action_RespawnPlayer?.Invoke();
         Player_Movement.Instance.SetPlayerBodyRotation(0);
+        Action_RespawnPlayer?.Invoke();
 
         yield return new WaitForSeconds(waitTime);
 
+        //Rest Block colors
         Player_Movement.Instance.Action_ResetBlockColorInvoke();
 
-        Player_Movement.Instance.movementStates = MovementStates.Still;
-        stats.steps_Current = stats.steps_Max;
-        UIManager.Instance.UpdateUI();
+        //Refill Steps to max + stepPickups gotten
+        RefillStepsToMax();
 
-        stats.ResetTempStats();
+        //Update active abilities acording to the MapInfo
+        UpdateActiveAbilities();
+
+        //Update the UI
+        UIManager.Instance.UpdateUI();
+        Player_Movement.Instance.movementStates = MovementStates.Still;
+
+        //stats.ResetTempStats(); //Reset all tempAbilities to not be active
 
         yield return new WaitForSeconds(waitTime * 25);
 

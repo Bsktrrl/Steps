@@ -25,10 +25,10 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     [HideInInspector] public MenuState menuState_Store = new MenuState();
 
     //Player stored Stats info
-    [HideInInspector] public Stats playerStats_Store = new Stats();
+    /*[HideInInspector]*/ public Stats playerStats_Store = new Stats();
 
     //All stored Maps info
-    [HideInInspector] public Map_SaveInfoList mapInfo_StoreList = new Map_SaveInfoList();
+    /*[HideInInspector]*/ public Map_SaveInfoList mapInfo_StoreList = new Map_SaveInfoList();
     #endregion
 
 
@@ -44,7 +44,25 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.playerStats_Store = gameData.playerStats_Save;
         this.mapInfo_StoreList = gameData.mapInfo_SaveList;
 
-        print("Data has Loaded");
+        #endregion
+
+        //Load the saved data into the project
+        #region
+
+        SaveLoad_MapInfo tempMapInfo = FindObjectOfType<SaveLoad_MapInfo>();
+        if (tempMapInfo)
+        {
+            SaveLoad_MapInfo.Instance.LoadData();
+            print("1. MapInfo has Loaded");
+        }
+
+        SaveLoad_PlayerStats tempPlayerStat = FindObjectOfType<SaveLoad_PlayerStats>();
+        if (tempPlayerStat)
+        {
+            SaveLoad_PlayerStats.Instance.LoadData();
+            print("2. PlayerStat has Loaded");
+        }
+
         #endregion
 
         StartCoroutine(LoadingDelay(0.01f));
@@ -63,7 +81,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         dataIsSaving?.Invoke();
 
         //Input what to save
-         gameData.menuState_Save = this.menuState_Store;
+        gameData.menuState_Save = this.menuState_Store;
         gameData.mapInfo_SaveList = this.mapInfo_StoreList;
         gameData.playerStats_Save = this.playerStats_Store;
 

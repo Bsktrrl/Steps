@@ -6,12 +6,12 @@ public class Block_Water : MonoBehaviour
 {
     private void OnEnable()
     {
-        SaveLoad_PlayerStats.playerStats_hasLoaded += UpdateMovementCostWithFlippers;
+        DataManager.datahasLoaded += UpdateMovementCostWithFlippers;
     }
 
     private void OnDisable()
     {
-        SaveLoad_PlayerStats.playerStats_hasLoaded -= UpdateMovementCostWithFlippers;
+        DataManager.datahasLoaded -= UpdateMovementCostWithFlippers;
     }
 
 
@@ -24,9 +24,9 @@ public class Block_Water : MonoBehaviour
         {
             if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats != null)
             {
-                if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot != null || PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot != null)
+                if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent != null || PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary != null)
                 {
-                    if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.Flippers == true || PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Flippers == true)
+                    if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Flippers == true || PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers == true)
                     {
                         if (gameObject.GetComponent<BlockInfo>())
                         {
@@ -44,7 +44,7 @@ public class Block_Water : MonoBehaviour
 
     public void UpdateFastSwimmingMovementCost()
     {
-        if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot.Flippers || PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Flippers)
+        if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Flippers || PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers)
         {
             gameObject.GetComponent<BlockInfo>().movementCost = gameObject.GetComponent<BlockInfo>().movementCost - 1;
         }

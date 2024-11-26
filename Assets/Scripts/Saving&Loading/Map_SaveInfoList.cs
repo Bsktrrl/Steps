@@ -20,6 +20,9 @@ public class Map_SaveInfo
     public List<MaxStepInfo> maxStepList;
     public List<AbilityInfo> abilityList;
 
+    public AbilitiesGot abilitiesInLevel;
+    public AbilitiesGot abilitiesGotInLevel;
+
 
     //--------------------
 

@@ -154,63 +154,80 @@ public class Interactable_Pickup : MonoBehaviour
                 break;
 
             case Abilities.FenceSneak:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.FenceSneak = true;
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.FenceSneak = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.FenceSneak = true;
                 break;
             case Abilities.SwimSuit:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.SwimSuit = true;
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SwimSuit = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwimSuit = true;
                 break;
             case Abilities.SwiftSwim:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.SwiftSwim = true;
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SwiftSwim = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwiftSwim = true;
                 break;
             case Abilities.Flippers:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Flippers = true;
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flippers = true;
                 break;
             case Abilities.LavaSuit:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.LavaSuit = true;
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.LavaSuit = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.LavaSuit = true;
                 break;
             case Abilities.LavaSwiftSwim:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.LavaSwiftSwim = true;
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.LavaSwiftSwim = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.LavaSwiftSwim = true;
                 break;
             case Abilities.HikersKit:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.HikerGear = true;
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.HikerGear = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.HikerGear = true;
                 break;
 
             case Abilities.IceSpikes:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.IceSpikes = true;
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.IceSpikes = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.IceSpikes = true;
                 break;
             case Abilities.GrapplingHook:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.GrapplingHook = true;
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.GrapplingHook = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.GrapplingHook = true;
                 break;
             case Abilities.Hammer:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Hammer = true;
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Hammer = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Hammer = true;
                 break;
             case Abilities.ClimbingGear:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.ClimbingGear = true;
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.ClimbingGear = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.ClimbingGear = true;
                 break;
             case Abilities.Dash:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Dash = true;
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Dash = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Dash = true;
                 break;
             case Abilities.Ascend:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Ascend = true;
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Ascend = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Ascend = true;
                 break;
             case Abilities.Descend:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.Descend = true;
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Descend = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Descend = true;
                 break;
             case Abilities.ControlStick:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesTempGot.ControlStick = true;
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.ControlStick = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.ControlStick = true;
                 break;
 
             default:
                 break;
         }
 
-        if (Physics.Raycast(startPos, Vector3.down, out hit, 1))
-        {
-            if (hit.transform.gameObject.GetComponent<BlockInfo>())
-            {
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(hit.transform.gameObject.GetComponent<BlockInfo>().movementCost);
-            }
-        }
+        //if (Physics.Raycast(startPos, Vector3.down, out hit, 1))
+        //{
+        //    if (hit.transform.gameObject.GetComponent<BlockInfo>())
+        //    {
+        //        PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(hit.transform.gameObject.GetComponent<BlockInfo>().movementCost);
+        //    }
+        //}
+
+        MapManager.Instance.SaveMapInfo();
     }
 }
 

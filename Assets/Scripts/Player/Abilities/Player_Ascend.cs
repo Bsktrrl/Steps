@@ -36,12 +36,12 @@ public class Player_Ascend : Singleton<Player_Ascend>
 
     private void OnEnable()
     {
-        SaveLoad_PlayerStats.playerStats_hasLoaded += StartRunningObject;
+        DataManager.datahasLoaded += StartRunningObject;
     }
 
     private void OnDisable()
     {
-        SaveLoad_PlayerStats.playerStats_hasLoaded -= StartRunningObject;
+        DataManager.datahasLoaded -= StartRunningObject;
     }
     void StartRunningObject()
     {
@@ -58,9 +58,9 @@ public class Player_Ascend : Singleton<Player_Ascend>
         {
             if (gameObject.GetComponent<PlayerStats>().stats != null)
             {
-                if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot != null || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot != null)
+                if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent != null || gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary != null)
                 {
-                    if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Ascend || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot.Ascend)
+                    if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Ascend || gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Ascend)
                     {
                         if (Physics.Raycast(transform.position, Vector3.up, out hit, ascendingDistance))
                         {
@@ -69,7 +69,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
                             if (hit.transform.GetComponent<BlockInfo>())
                             {
                                 //If Ascending block is a WaterBlock
-                                if (hit.transform.GetComponent<Block_Water>() && (PlayerStats.Instance.stats.abilitiesGot.SwimSuit || PlayerStats.Instance.stats.abilitiesGot.Flippers || PlayerStats.Instance.stats.abilitiesGot.SwiftSwim || PlayerStats.Instance.stats.abilitiesTempGot.SwimSuit || PlayerStats.Instance.stats.abilitiesTempGot.Flippers || PlayerStats.Instance.stats.abilitiesTempGot.SwiftSwim))
+                                if (hit.transform.GetComponent<Block_Water>() && (PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers || PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim || PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers || PlayerStats.Instance.stats.abilitiesGot_Temporary.SwiftSwim))
                                 {
                                     //print("1. Ascending - WaterBlock");
                                     AscendingIsAllowed();
@@ -194,7 +194,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
 
     public void Ascend()
     {
-        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Ascend || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot.Ascend)
+        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Ascend || gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Ascend)
         {
             if (PlayerStats.Instance.stats.steps_Current <= 0)
             {

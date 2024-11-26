@@ -39,12 +39,12 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
 
     private void OnEnable()
     {
-        SaveLoad_PlayerStats.playerStats_hasLoaded += StartRunningObject;
+        DataManager.datahasLoaded += StartRunningObject;
     }
 
     private void OnDisable()
     {
-        SaveLoad_PlayerStats.playerStats_hasLoaded -= StartRunningObject;
+        DataManager.datahasLoaded -= StartRunningObject;
     }
     void StartRunningObject()
     {
@@ -69,9 +69,9 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
         {
             if (gameObject.GetComponent<PlayerStats>().stats != null)
             {
-                if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot != null || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot != null)
+                if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent != null || gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary != null)
                 {
-                    if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.SwiftSwim || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot.SwiftSwim)
+                    if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.SwiftSwim || gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SwiftSwim)
                     {
                         if (Physics.Raycast(gameObject.transform.position + Vector3.down, dir, out hit, 1))
                         {
@@ -154,7 +154,7 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
 
     public void SwiftSwim_Up()
     {
-        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.SwiftSwim || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot.SwiftSwim)
+        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.SwiftSwim || gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SwiftSwim)
         {
             PlayerManager.Instance.pauseGame = true;
             PlayerManager.Instance.isTransportingPlayer = true;
@@ -167,7 +167,7 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
     }
     public void SwiftSwim_Down()
     {
-        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.SwiftSwim || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot.SwiftSwim)
+        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.SwiftSwim || gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SwiftSwim)
         {
             PlayerManager.Instance.pauseGame = true;
             PlayerManager.Instance.isTransportingPlayer = true;

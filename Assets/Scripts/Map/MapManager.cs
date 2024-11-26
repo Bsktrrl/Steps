@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MapManager : Singleton<MapManager>
 {
-    public static event Action mapInfo_hasLoaded;
+    //public static event Action mapInfo_hasLoaded;
 
     [Header("Player")]
     [SerializeField] GameObject playerObject;
@@ -17,7 +17,8 @@ public class MapManager : Singleton<MapManager>
     [SerializeField] List<AudioSource> mapAudioSourceList;
 
     [Header("MapManager")]
-    public Map_SaveInfo mapInfo_ToSave;
+    public Map_SaveInfo mapInfo_ToSave = new Map_SaveInfo();
+
 
     BlockInfo[] blockInfoList;
     Interactable_Pickup[] pickupInfoList;
@@ -51,6 +52,7 @@ public class MapManager : Singleton<MapManager>
     }
 
 
+
     //--------------------
 
 
@@ -58,7 +60,7 @@ public class MapManager : Singleton<MapManager>
     {
         SaveLoad_MapInfo.Instance.LoadData();
 
-        mapInfo_hasLoaded?.Invoke();
+        //mapInfo_hasLoaded?.Invoke();
     }
     public void SaveMapInfo()
     {
@@ -92,14 +94,6 @@ public class MapManager : Singleton<MapManager>
             if (block.gameObject.GetComponent<Block_Weak>())
             {
                 block.gameObject.GetComponent<Block_Weak>().ResetBlock();
-            }
-        }
-
-        foreach (Interactable_Pickup pickup in pickupInfoList)
-        {
-            if (!pickup.gameObject.activeInHierarchy)
-            {
-                pickup.ShowPickup();
             }
         }
     }

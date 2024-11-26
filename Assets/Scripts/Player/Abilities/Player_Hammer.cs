@@ -33,7 +33,7 @@ public class Player_Hammer : Singleton<Player_Hammer>
 
     public void Hammer()
     {
-        if (PlayerManager.Instance.block_LookingAt_Horizontal && (PlayerStats.Instance.stats.abilitiesGot.Hammer || PlayerStats.Instance.stats.abilitiesTempGot.Hammer))
+        if (PlayerManager.Instance.block_LookingAt_Horizontal && (PlayerStats.Instance.stats.abilitiesGot_Permanent.Hammer || PlayerStats.Instance.stats.abilitiesGot_Temporary.Hammer))
         {
             if (PlayerManager.Instance.block_LookingAt_Horizontal.GetComponent<Block_Weak>())
             {

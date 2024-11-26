@@ -23,7 +23,7 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
     {
         if (instance != null)
         {
-            print("Found more than 1 Data Persistance Manager in the scene");
+            print("Found more than 1 Data Persistence Manager in the scene");
         }
 
         instance = this;

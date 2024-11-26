@@ -9,10 +9,10 @@ public class GameData
     [HideInInspector] public MenuState menuState_Save = new MenuState();
 
     //Player saved Stats info
-    [HideInInspector] public Stats playerStats_Save = new Stats();
+    /*[HideInInspector]*/ public Stats playerStats_Save = new Stats();
 
     //All saved Maps info
-    [HideInInspector] public Map_SaveInfoList mapInfo_SaveList = new Map_SaveInfoList();
+    /*[HideInInspector]*/ public Map_SaveInfoList mapInfo_SaveList = new Map_SaveInfoList();
 
 
     //--------------------

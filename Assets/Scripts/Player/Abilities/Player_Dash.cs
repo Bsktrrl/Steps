@@ -35,12 +35,12 @@ public class Player_Dash : MonoBehaviour
 
     private void OnEnable()
     {
-        SaveLoad_PlayerStats.playerStats_hasLoaded += StartRunningObject;
+        DataManager.datahasLoaded += StartRunningObject;
     }
 
     private void OnDisable()
     {
-        SaveLoad_PlayerStats.playerStats_hasLoaded -= StartRunningObject;
+        DataManager.datahasLoaded -= StartRunningObject;
     }
     void StartRunningObject()
     {
@@ -115,9 +115,9 @@ public class Player_Dash : MonoBehaviour
             dashBlock_Current = null;
         }
 
-        if (PlayerStats.Instance.stats.abilitiesGot != null || PlayerStats.Instance.stats.abilitiesTempGot != null)
+        if (PlayerStats.Instance.stats.abilitiesGot_Permanent != null || PlayerStats.Instance.stats.abilitiesGot_Temporary != null)
         {
-            if (dashBlock_Current && !dashBlockOver_Current && (PlayerStats.Instance.stats.abilitiesGot.Dash || PlayerStats.Instance.stats.abilitiesTempGot.Dash))
+            if (dashBlock_Current && !dashBlockOver_Current && (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash || PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash))
             {
                 if (dashBlock_Current.GetComponent<BlockInfo>())
                 {
@@ -136,7 +136,7 @@ public class Player_Dash : MonoBehaviour
                     playerCanDash = true;
                 }
             }
-            else if ((PlayerStats.Instance.stats.abilitiesGot.SwimSuit || PlayerStats.Instance.stats.abilitiesTempGot.SwimSuit) && dashBlock_Current && dashBlockOver_Current && (PlayerStats.Instance.stats.abilitiesGot.Dash || PlayerStats.Instance.stats.abilitiesTempGot.Dash))
+            else if ((PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit) && dashBlock_Current && dashBlockOver_Current && (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash || PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash))
             {
                 if (dashBlock_Current.GetComponent<BlockInfo>() && dashBlock_Current.GetComponent<Block_Water>())
                 {
@@ -184,7 +184,7 @@ public class Player_Dash : MonoBehaviour
 
     public void Dash()
     {
-        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot.Dash || gameObject.GetComponent<PlayerStats>().stats.abilitiesTempGot.Dash)
+        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Dash || gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Dash)
         {
             PlayerManager.Instance.pauseGame = true;
             PlayerManager.Instance.isTransportingPlayer = true;
