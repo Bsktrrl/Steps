@@ -175,7 +175,7 @@ public class Interactable_Pickup : MonoBehaviour
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.LavaSwiftSwim = true;
                 MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.LavaSwiftSwim = true;
                 break;
-            case Abilities.HikersKit:
+            case Abilities.HikerGear:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.HikerGear = true;
                 MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.HikerGear = true;
                 break;
@@ -248,7 +248,7 @@ public enum Abilities
     LavaSuit,
     LavaSwiftSwim,
 
-    HikersKit,
+    HikerGear,
     ClimbingGear,
 
     IceSpikes,

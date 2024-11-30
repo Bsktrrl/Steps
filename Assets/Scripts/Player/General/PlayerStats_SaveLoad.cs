@@ -13,6 +13,7 @@ public class PlayerStats_SaveLoad : Singleton<PlayerStats_SaveLoad>
     public void SaveGame()
     {
         DataManager.Instance.playerStats_Store = PlayerStats.Instance.stats;
+        DataPersistanceManager.instance.SaveGame();
 
         print("PlayerStats is Saved");
     }
