@@ -36,12 +36,12 @@ public class Player_Ascend : Singleton<Player_Ascend>
 
     private void OnEnable()
     {
-        DataManager.datahasLoaded += StartRunningObject;
+        DataManager.Action_dataHasLoaded += StartRunningObject;
     }
 
     private void OnDisable()
     {
-        DataManager.datahasLoaded -= StartRunningObject;
+        DataManager.Action_dataHasLoaded -= StartRunningObject;
     }
     void StartRunningObject()
     {

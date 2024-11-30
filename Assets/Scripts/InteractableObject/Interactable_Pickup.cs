@@ -30,8 +30,13 @@ public class Interactable_Pickup : MonoBehaviour
             GetItems();
             GetAbility();
 
-            //Hide Pickup
             gameObject.SetActive(false);
+
+            PlayerManager.Instance.SavePlayerStats();
+            MapManager.Instance.SaveMapInfo();
+
+            if (goal)
+                PlayerManager.Instance.player.GetComponent<Player_Movement>().QuitLevel();
         }
     }
 
@@ -72,13 +77,6 @@ public class Interactable_Pickup : MonoBehaviour
                     }
 
                     MarkedAsTaken();
-
-                    PlayerManager.Instance.SavePlayerStats();
-
-                    if (goal)
-                    {
-                        PlayerManager.Instance.player.GetComponent<Player_Movement>().QuitLevel();
-                    }
                 }
             }
         }
@@ -218,16 +216,6 @@ public class Interactable_Pickup : MonoBehaviour
             default:
                 break;
         }
-
-        //if (Physics.Raycast(startPos, Vector3.down, out hit, 1))
-        //{
-        //    if (hit.transform.gameObject.GetComponent<BlockInfo>())
-        //    {
-        //        PlayerManager.Instance.player.GetComponent<PlayerStats>().RefillStepsToMax(hit.transform.gameObject.GetComponent<BlockInfo>().movementCost);
-        //    }
-        //}
-
-        MapManager.Instance.SaveMapInfo();
     }
 }
 

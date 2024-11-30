@@ -1892,6 +1892,38 @@ MonoBehaviour:
     collectableList: []
     maxStepList: []
     abilityList: []
+    abilitiesInLevel:
+      FenceSneak: 0
+      SwimSuit: 0
+      SwiftSwim: 0
+      Flippers: 0
+      LavaSuit: 0
+      LavaSwiftSwim: 0
+      HikerGear: 0
+      IceSpikes: 0
+      GrapplingHook: 0
+      Hammer: 0
+      ClimbingGear: 0
+      Dash: 0
+      Ascend: 0
+      Descend: 0
+      ControlStick: 0
+    abilitiesGotInLevel:
+      FenceSneak: 0
+      SwimSuit: 0
+      SwiftSwim: 0
+      Flippers: 0
+      LavaSuit: 0
+      LavaSwiftSwim: 0
+      HikerGear: 0
+      IceSpikes: 0
+      GrapplingHook: 0
+      Hammer: 0
+      ClimbingGear: 0
+      Dash: 0
+      Ascend: 0
+      Descend: 0
+      ControlStick: 0
 --- !u!114 &144769488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14458,6 +14490,7 @@ MonoBehaviour:
   elevatorDirection: 2
   distance: 4
   movementSpeed: 4
+  waitingTime: 0.35
   isStandingOnBlock: 0
   isMoving: 0
 --- !u!1001 &1495005976

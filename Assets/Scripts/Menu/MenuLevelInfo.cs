@@ -16,12 +16,12 @@ public class MenuLevelInfo : Singleton<MenuLevelInfo>
 
     private void OnEnable()
     {
-        DataManager.datahasLoaded += LoadMapInfo;
+        DataManager.Action_dataHasLoaded += LoadMapInfo;
     }
 
     private void OnDisable()
     {
-        DataManager.datahasLoaded -= LoadMapInfo;
+        DataManager.Action_dataHasLoaded -= LoadMapInfo;
     }
 
 

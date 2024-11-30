@@ -56,12 +56,12 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private void OnEnable()
     {
-        DataManager.datahasLoaded += LoadPlayerStats;
+        DataManager.Action_dataHasLoaded += LoadPlayerStats;
     }
 
     private void OnDisable()
     {
-        DataManager.datahasLoaded -= LoadPlayerStats;
+        DataManager.Action_dataHasLoaded -= LoadPlayerStats;
     }
 
 

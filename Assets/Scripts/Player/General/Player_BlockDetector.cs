@@ -65,14 +65,14 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     private void OnEnable()
     {
-        DataManager.datahasLoaded += StartRunningObject;
+        DataManager.Action_dataHasLoaded += StartRunningObject;
         PlayerStats.Action_RespawnPlayer += RaycastSetup;
         PlayerStats.Action_RespawnPlayer += Update_BlockStandingOn;
     }
 
     private void OnDisable()
     {
-        DataManager.datahasLoaded -= StartRunningObject;
+        DataManager.Action_dataHasLoaded -= StartRunningObject;
         PlayerStats.Action_RespawnPlayer -= RaycastSetup;
         PlayerStats.Action_RespawnPlayer -= Update_BlockStandingOn;
     }

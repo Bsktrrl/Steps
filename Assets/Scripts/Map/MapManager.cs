@@ -41,13 +41,12 @@ public class MapManager : Singleton<MapManager>
 
     private void OnEnable()
     {
-        DataManager.datahasLoaded += LoadMapInfo;
         PlayerStats.Action_RespawnPlayer += ShowHiddenObjects;
+        DataManager.Action_dataHasLoaded += SaveMapInfo;
     }
 
     private void OnDisable()
     {
-        DataManager.datahasLoaded -= LoadMapInfo;
         PlayerStats.Action_RespawnPlayer -= ShowHiddenObjects;
     }
 
@@ -56,12 +55,6 @@ public class MapManager : Singleton<MapManager>
     //--------------------
 
 
-    void LoadMapInfo()
-    {
-        SaveLoad_MapInfo.Instance.LoadData();
-
-        //mapInfo_hasLoaded?.Invoke();
-    }
     public void SaveMapInfo()
     {
         SaveLoad_MapInfo.Instance.SaveData();

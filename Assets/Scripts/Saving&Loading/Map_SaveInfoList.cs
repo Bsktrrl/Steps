@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 [Serializable]
 public class Map_SaveInfoList
 {
-    public List<Map_SaveInfo> map_SaveInfo_List;
+    public List<Map_SaveInfo> map_SaveInfo_List = new List<Map_SaveInfo>();
 }
 
 [Serializable]
@@ -15,10 +15,10 @@ public class Map_SaveInfo
     public string mapName;
     public bool isCompleted;
 
-    public List<CoinInfo> coinList;
-    public List<CollectableInfo> collectableList;
-    public List<MaxStepInfo> maxStepList;
-    public List<AbilityInfo> abilityList;
+    public List<CoinInfo> coinList = new List<CoinInfo>();
+    public List<CollectableInfo> collectableList = new List<CollectableInfo>();
+    public List<MaxStepInfo> maxStepList = new List<MaxStepInfo>();
+    public List<AbilityInfo> abilityList = new List<AbilityInfo>();
 
     public AbilitiesGot abilitiesInLevel;
     public AbilitiesGot abilitiesGotInLevel;
@@ -42,6 +42,8 @@ public class Map_SaveInfo
         //Find all objects in the scene with a Interactable_GetItem script attached
         Interactable_Pickup[] objectsWithScript = UnityEngine.Object.FindObjectsOfType<Interactable_Pickup>();
 
+        Debug.Log("Amount of Pickups in the Scene: " + objectsWithScript.Length);
+
         //Add all coins to the list
         foreach (Interactable_Pickup obj in objectsWithScript)
         {
@@ -53,6 +55,7 @@ public class Map_SaveInfo
                 coinInfo.isTaken = false;
 
                 coinList.Add(coinInfo);
+                Debug.Log("1. AddedCoin");
             }
             else if (obj.itemReceived == Items.Collectable /*&& obj.itemReceived.amount > 0*/)
             {
@@ -62,6 +65,7 @@ public class Map_SaveInfo
                 collectableInfo.isTaken = false;
 
                 collectableList.Add(collectableInfo);
+                Debug.Log("2. Addedcollectable");
             }
             else if (obj.itemReceived == Items.IncreaseMaxSteps /*&& obj.itemReceived.amount > 0*/)
             {
@@ -71,6 +75,7 @@ public class Map_SaveInfo
                 maxStepInfo.isTaken = false;
 
                 maxStepList.Add(maxStepInfo);
+                Debug.Log("3. AddedSteps");
             }
 
             //Abilities
@@ -82,7 +87,7 @@ public class Map_SaveInfo
                 abilitiesInfo.isTaken = false;
 
                 abilityList.Add(abilitiesInfo);
-                break;
+                Debug.Log("4. AddedAbility");
             }
         }
     }

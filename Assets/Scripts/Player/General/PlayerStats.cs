@@ -33,15 +33,15 @@ public class PlayerStats : Singleton<PlayerStats>
     private void OnEnable()
     {
         Player_Movement.Action_StepTaken += TakeAStep;
-        DataManager.datahasLoaded += RefillStepsToMax;
-        DataManager.datahasLoaded += UpdateActiveAbilities;
+        DataManager.Action_dataHasLoaded += RefillStepsToMax;
+        DataManager.Action_dataHasLoaded += UpdateActiveAbilities;
     }
 
     private void OnDisable()
     {
         Player_Movement.Action_StepTaken -= TakeAStep;
-        DataManager.datahasLoaded -= RefillStepsToMax;
-        DataManager.datahasLoaded -= UpdateActiveAbilities;
+        DataManager.Action_dataHasLoaded -= RefillStepsToMax;
+        DataManager.Action_dataHasLoaded -= UpdateActiveAbilities;
     }
 
 
@@ -50,6 +50,9 @@ public class PlayerStats : Singleton<PlayerStats>
 
     void RefillStepsToMax()
     {
+        MapManager mapManagerIsActive = FindObjectOfType<MapManager>();
+        if (!mapManagerIsActive) { return; }
+
         int counter = 0;
 
         //Add steps gotten from active level
@@ -74,6 +77,9 @@ public class PlayerStats : Singleton<PlayerStats>
     }
     void UpdateActiveAbilities()
     {
+        MapManager mapManagerIsActive = FindObjectOfType<MapManager>();
+        if (!mapManagerIsActive) {  return; }
+
         if (stats.abilitiesGot_Temporary != null)
         {
             print("1. stats.abilitiesGot_Temporary != null");

@@ -12,8 +12,8 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     #region General Variables
     public GameData gameData;
 
-    public static Action dataIsSaving;
-    public static Action datahasLoaded;
+    public static Action Action_dataIsSaving;
+    public static Action Action_dataHasLoaded;
     #endregion
 
 
@@ -73,12 +73,12 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
         print("------------------------------");
 
-        datahasLoaded?.Invoke();
+        Action_dataHasLoaded?.Invoke();
     }
 
     public void SaveData(ref GameData gameData)
     {
-        dataIsSaving?.Invoke();
+        Action_dataIsSaving?.Invoke();
 
         //Input what to save
         gameData.menuState_Save = this.menuState_Store;

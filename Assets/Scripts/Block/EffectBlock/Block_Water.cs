@@ -6,12 +6,12 @@ public class Block_Water : MonoBehaviour
 {
     private void OnEnable()
     {
-        DataManager.datahasLoaded += UpdateMovementCostWithFlippers;
+        DataManager.Action_dataHasLoaded += UpdateMovementCostWithFlippers;
     }
 
     private void OnDisable()
     {
-        DataManager.datahasLoaded -= UpdateMovementCostWithFlippers;
+        DataManager.Action_dataHasLoaded -= UpdateMovementCostWithFlippers;
     }
 
 

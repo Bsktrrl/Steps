@@ -1,24 +1,17 @@
-Abilities:
-- Make Abilities permanent for the level they're aquired in
-- Make StepCount add to the amount of StepsPickup aquired, in the given level
-
-
 Levels:
-- Make 3 new Levels so the concept is ready to be playtested
+- Make new Levels for playtesting
+
+EffectBlocks:
+- Make new BlockColors (can be any color based on a Color-variable, so it matches the theme of a level)
+- Make new Icons to be displayed on the EffectBlocks so that the player easy can see which effect it has
+
+UI:
+- Add it's active abilities to the UI, so the player knows which abilities it has (both Permanent and Temporary)
+- Add stepsGot and Abilities available/got in a level, for each level in the Overworld meny
+- Add Pickups got (Ex. CoinIcon: x/10) to the playerHUD in a level
 
 Fence:
 - Fix the bug so that fences block the player, even if the fence is placed inside of a block space
-
-Ladder:
-- Make a ladder functionalty
-	- Use SwiftSwim as a Base (the Ladder is a full block with the 
-UI:
-- Add active abilities to the UI, so the player knows which abilities it has
-- Add stepGot and Abilities available and got, for each level in the Overworld meny
-
-ladder:
-- Asset moved a side. Can be rotaded in the scene without any problem)
-	- Add stepCost to the inner side of the ladder
 
 Pusher:
 - Fix error where moving out of pusher-distance will not cost steps
@@ -29,6 +22,12 @@ Slab:
 
 --------------------
 
+
+Ladder:
+- Make a ladder functionalty
+	- Use SwiftSwim as a Base (the Ladder is a full block with the 
+- Asset moved to a side. Can be rotaded in the scene without any problem)
+	- Add stepCost to the inner side of the ladder
 
 Slopes:
 - Add a slope that pushes the player down and the player cannot move up
