@@ -4,11 +4,22 @@ using UnityEngine;
 
 public class PermanentAbility : MonoBehaviour
 {
-    [SerializeField] List<GameObject> levelsToComplete = new List<GameObject>();
     [SerializeField] List<Abilities> permanentAbilityList = new List<Abilities>();
+    [SerializeField] List<GameObject> levelsToComplete = new List<GameObject>();
 
     private void OnEnable()
     {
+        levelsToComplete = new List<GameObject>();
+
+        // Find all child GameObjects that have the LoadLevel script
+        foreach (Transform child in gameObject.transform)
+        {
+            if (child.GetComponent<LoadLevel>() != null)
+            {
+                levelsToComplete.Add(child.gameObject);
+            }
+        }
+
         int levelsCompletedCounter = 0;
 
         for (int i = 0; i < levelsToComplete.Count; i++)

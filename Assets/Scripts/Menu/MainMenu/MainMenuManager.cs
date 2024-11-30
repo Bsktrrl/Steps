@@ -260,6 +260,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
         infoMenu_Parent.SetActive(false);
         overworldMenu_Parent.SetActive(false);
 
+        Biome_0_Parent.SetActive(false);
         Biome_1_Parent.SetActive(false);
         Biome_2_Parent.SetActive(false);
         Biome_3_Parent.SetActive(false);

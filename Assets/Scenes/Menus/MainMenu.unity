@@ -3946,6 +3946,10 @@ PrefabInstance:
       propertyPath: levelToPlay
       value: Tutorial
       objectReference: {fileID: 0}
+    - target: {fileID: 6232501835443524658, guid: 6fb0bac386ee75b47807af5f4e13c5f3, type: 3}
+      propertyPath: levelsToBeFinished.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9014898553850246207, guid: 6fb0bac386ee75b47807af5f4e13c5f3, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -7686,8 +7690,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a31238241039c464c80c9f6428a9b478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelsToComplete:
-  - {fileID: 696537588}
+  levelsToComplete: []
   permanentAbilityList: 02000000
 --- !u!1 &1337976041
 GameObject:
