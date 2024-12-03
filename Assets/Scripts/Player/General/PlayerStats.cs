@@ -70,12 +70,8 @@ public class PlayerStats : Singleton<PlayerStats>
             }
         }
 
-        //if (SceneManager.GetActiveScene().name == "Tutorial")
-        //    stats.steps_Current = 5 + counter;
-        //else
-        //    stats.steps_Current = 7 + counter;
-
-        stats.steps_Current = 7 + counter;
+        stats.steps_Max = 7 + counter;
+        stats.steps_Current = stats.steps_Max;
     }
     void UpdateActiveAbilities()
     {
@@ -186,13 +182,12 @@ public class PlayerStats : Singleton<PlayerStats>
         //If steps is < 0
         if (stats.steps_Current < 0)
         {
+            stats.steps_Current = 0;
             RespawnPlayer();
         }
-        else
-        {
-            //Update the stepCounter UI
-            UIManager.Instance.UpdateUI();
-        }
+
+        //Update the stepCounter UI
+        UIManager.Instance.UpdateUI();
     }
     public void RespawnPlayer()
     {
