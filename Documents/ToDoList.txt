@@ -1,16 +1,11 @@
-UI:
-- Add it's active abilities to the UI, so the player knows which abilities it has (both Permanent from other levels and Temporary from the given map)
-- Add Pickups got (Ex. CoinIcon: x/10) to the playerHUD in a level
-
 Pusher:
 - Fix error where moving out of pusher-distance will not cost steps
 
 Slab:
-- Fix clipping from stair
+- Fix clipping from moving away from upwards stair
 
 Fence:
 - Fix the bug so that fences block the player, even if the fence is placed inside of a block space
-
 
 Levels:
 - Make new Levels for playtesting
