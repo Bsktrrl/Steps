@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class Interactable_Pickup : MonoBehaviour
 {
+    public static event Action Action_PickupGot;
+
     public Items itemReceived;
     public Abilities abilityReceived;
     public bool goal;
@@ -216,6 +218,13 @@ public class Interactable_Pickup : MonoBehaviour
             default:
                 break;
         }
+
+        Action_PickupGot_isActive();
+    }
+
+    public void Action_PickupGot_isActive()
+    {
+        Action_PickupGot?.Invoke();
     }
 }
 

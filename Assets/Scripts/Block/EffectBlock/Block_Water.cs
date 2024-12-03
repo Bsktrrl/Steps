@@ -46,7 +46,7 @@ public class Block_Water : MonoBehaviour
     {
         if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Flippers || PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers)
         {
-            gameObject.GetComponent<BlockInfo>().movementCost = gameObject.GetComponent<BlockInfo>().movementCost - 1;
+            gameObject.GetComponent<BlockInfo>().movementCost = 0 /*gameObject.GetComponent<BlockInfo>().movementCost - 1*/;
         }
     }
 }

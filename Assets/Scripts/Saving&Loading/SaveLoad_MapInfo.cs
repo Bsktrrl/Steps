@@ -25,7 +25,7 @@ public class SaveLoad_MapInfo : Singleton<SaveLoad_MapInfo>
 
                         MapManager.Instance.mapInfo_ToSave = DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i];
                         MapManager.Instance.mapInfo_ToSave.CorrectingMapObjects();
-                        SaveData();
+                        SaveGame();
 
                         return;
                     }
@@ -34,9 +34,9 @@ public class SaveLoad_MapInfo : Singleton<SaveLoad_MapInfo>
         }
 
         MapManager.Instance.mapInfo_ToSave.SetupMap();
-        SaveData();
+        SaveGame();
     }
-    public void SaveData()
+    public void SaveGame()
     {
         //Don't save MapInfo if not in a level
         MainMenuManager mainMenuManager = FindObjectOfType<MainMenuManager>();

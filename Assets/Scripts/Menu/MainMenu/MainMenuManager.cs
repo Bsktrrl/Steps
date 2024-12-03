@@ -34,7 +34,6 @@ public class MainMenuManager : Singleton<MainMenuManager>
         MenuStates.menuState_isChanged += MenusOnMenuState;
         DataManager.Action_dataHasLoaded += LoadPlayerStats;
         DataManager.Action_dataHasLoaded += SetMenu;
-        OverworldMenu.OverworldButton_isPressed += MenusOnMenuState;
     }
 
     private void OnDisable()
@@ -42,7 +41,6 @@ public class MainMenuManager : Singleton<MainMenuManager>
         MenuStates.menuState_isChanged -= MenusOnMenuState;
         DataManager.Action_dataHasLoaded -= LoadPlayerStats;
         DataManager.Action_dataHasLoaded -= SetMenu;
-        OverworldMenu.OverworldButton_isPressed -= MenusOnMenuState;
     }
 
 
@@ -56,10 +54,12 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     void SetMenu()
     {
-        if (DataManager.Instance.menuState_Store == MenuState.None)
-            menuState = MenuState.Main_Menu;
-        else
-            menuState = DataManager.Instance.menuState_Store;
+        //if (DataManager.Instance.menuState_Store == MenuState.None)
+        //    menuState = MenuState.Main_Menu;
+        //else
+        //    menuState = DataManager.Instance.menuState_Store;
+
+        menuState = DataManager.Instance.menuState_Store;
 
         MenusOnMenuState();
     }
@@ -290,6 +290,9 @@ public class MainMenuManager : Singleton<MainMenuManager>
     public void QuitButton_isPressed()
     {
         print("Quit Game");
+
+        menuState = MenuState.Main_Menu;
+
         Application.Quit();
     }
 

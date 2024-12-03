@@ -74,6 +74,7 @@ public class BlockInfo : MonoBehaviour
         if (hasOtherMaterial)
         {
             material = gameObject.GetComponentInChildren<MeshRenderer>().material;
+            stepCostText_Color = gameObject.GetComponentInChildren<MeshRenderer>().material.GetColor("_BaseColor");
         }
         
         SetObjectRenderer();

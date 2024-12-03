@@ -42,8 +42,6 @@ public class Map_SaveInfo
         //Find all objects in the scene with a Interactable_GetItem script attached
         Interactable_Pickup[] objectsWithScript = UnityEngine.Object.FindObjectsOfType<Interactable_Pickup>();
 
-        Debug.Log("Amount of Pickups in the Scene: " + objectsWithScript.Length);
-
         //Add all coins to the list
         foreach (Interactable_Pickup obj in objectsWithScript)
         {
@@ -55,7 +53,6 @@ public class Map_SaveInfo
                 coinInfo.isTaken = false;
 
                 coinList.Add(coinInfo);
-                Debug.Log("1. AddedCoin");
             }
             else if (obj.itemReceived == Items.Collectable /*&& obj.itemReceived.amount > 0*/)
             {
@@ -65,7 +62,6 @@ public class Map_SaveInfo
                 collectableInfo.isTaken = false;
 
                 collectableList.Add(collectableInfo);
-                Debug.Log("2. Addedcollectable");
             }
             else if (obj.itemReceived == Items.IncreaseMaxSteps /*&& obj.itemReceived.amount > 0*/)
             {
@@ -75,7 +71,6 @@ public class Map_SaveInfo
                 maxStepInfo.isTaken = false;
 
                 maxStepList.Add(maxStepInfo);
-                Debug.Log("3. AddedSteps");
             }
 
             //Abilities
@@ -87,7 +82,6 @@ public class Map_SaveInfo
                 abilitiesInfo.isTaken = false;
 
                 abilityList.Add(abilitiesInfo);
-                Debug.Log("4. AddedAbility");
             }
         }
     }
@@ -97,10 +91,6 @@ public class Map_SaveInfo
 
 
     public void CorrectingMapObjects()
-    {
-        CheckTakenObjects();
-    }
-    void CheckTakenObjects()
     {
         //Find all objects in the scene with a Interactable_GetItem script attached
         Map_SaveInfo mapSaveInfo = MapManager.Instance.mapInfo_ToSave;

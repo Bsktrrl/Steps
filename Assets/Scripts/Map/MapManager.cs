@@ -57,7 +57,7 @@ public class MapManager : Singleton<MapManager>
 
     public void SaveMapInfo()
     {
-        SaveLoad_MapInfo.Instance.SaveData();
+        SaveLoad_MapInfo.Instance.SaveGame();
     }
 
 

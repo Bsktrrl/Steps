@@ -70,10 +70,12 @@ public class PlayerStats : Singleton<PlayerStats>
             }
         }
 
-        if (SceneManager.GetActiveScene().name == "Tutorial")
-            stats.steps_Current = 5 + counter;
-        else
-            stats.steps_Current = 7 + counter;
+        //if (SceneManager.GetActiveScene().name == "Tutorial")
+        //    stats.steps_Current = 5 + counter;
+        //else
+        //    stats.steps_Current = 7 + counter;
+
+        stats.steps_Current = 7 + counter;
     }
     void UpdateActiveAbilities()
     {

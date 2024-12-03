@@ -2,21 +2,20 @@ UI:
 - Add it's active abilities to the UI, so the player knows which abilities it has (both Permanent from other levels and Temporary from the given map)
 - Add Pickups got (Ex. CoinIcon: x/10) to the playerHUD in a level
 
-Levels:
-- Make new Levels for playtesting
-
-EffectBlocks:
-- Make new BlockColors (can be any color based on a Color-variable, so it matches the theme of a level)
-- Make new Icons to be displayed on the EffectBlocks so that the player easy can see which effect it has
-
-Fence:
-- Fix the bug so that fences block the player, even if the fence is placed inside of a block space
-
 Pusher:
 - Fix error where moving out of pusher-distance will not cost steps
 
 Slab:
 - Fix clipping from stair
+
+Fence:
+- Fix the bug so that fences block the player, even if the fence is placed inside of a block space
+
+
+Levels:
+- Make new Levels for playtesting
+- Level Ideas:
+	- Dash: Run over falling blocks, making room for dashing on the heightLevel under, so after the player walk on RefillSteps it can reach longer
 
 
 --------------------

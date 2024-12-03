@@ -60,6 +60,8 @@ public class BlockStepCostDisplay : MonoBehaviour
         else
             UpdateStepCostTextValue(gameObject.GetComponent<BlockInfo>().movementCost);
 
+        stepCostText_Object.GetComponent<TextMeshProUGUI>().color = gameObject.GetComponent<BlockInfo>().stepCostText_Color;
+
         stepCostDisplay_Parent.SetActive(true);
     }
     public void HideDisplay()
