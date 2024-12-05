@@ -42,7 +42,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     public Vector3 lookDir;
     public float lookDir_Temp;
 
-    bool canRun;
+    bool canRunObjects;
 
 
     //--------------------
@@ -54,7 +54,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     }
     private void Update()
     {
-        if (!canRun) { return; }
+        if (!canRunObjects) { return; }
 
         UpdateBlockLookingAt();
 
@@ -78,7 +78,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     }
     void StartRunningObject()
     {
-        canRun = true;
+        canRunObjects = true;
     }
 
 
@@ -867,5 +867,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         }
 
         PlayerManager.Instance.lookingDirection = lookDir;
+
+        print("LookDir: " + PlayerManager.Instance.lookingDirection);
     }
 }

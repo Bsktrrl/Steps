@@ -171,14 +171,15 @@ public class BlockInfo : MonoBehaviour
 
     public int GetMovementCost()
     {
-        //If Moving with Free Cost
-        if (PlayerManager.Instance.block_StandingOn_Previous == gameObject && !PlayerManager.Instance.block_StandingOn_Previous.GetComponent<Block_Pusher>() && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
+        //If Moving with Free Cost - Pusher
+        if (/*PlayerManager.Instance.block_StandingOn_Previous == gameObject && !PlayerManager.Instance.block_StandingOn_Previous.GetComponent<Block_Pusher>() &&*/ PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
         {
+            print("100. Player IS pushed");
             return 0;
         }
 
         //If Dashing with Free cost
-        else if (PlayerManager.Instance.player.GetComponent<Player_Dash>().dashBlock_Current == gameObject && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed && PlayerManager.Instance.player.GetComponent<Player_Dash>().playerCanDash)
+        else if (PlayerManager.Instance.player.GetComponent<Player_Dash>().dashBlock_Current == gameObject && PlayerManager.Instance.player.GetComponent<Player_Dash>().playerCanDash && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
         {
             return 0;
         }
@@ -186,6 +187,7 @@ public class BlockInfo : MonoBehaviour
         //If Moving with Normal Cost
         else
         {
+            print("101. Player moves NORMAL");
             return movementCost;
         }
     }
