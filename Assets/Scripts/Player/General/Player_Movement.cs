@@ -332,13 +332,13 @@ public class Player_Movement : Singleton<Player_Movement>
         if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
         //Don't fall if moving
-        if (movementStates == MovementStates.Moving)
-        {
-            return;
-        }
+        if (movementStates == MovementStates.Moving) { return; }
+
+        //make a safty Raycast
+        Player_BlockDetector.Instance.Update_BlockStandingOn();
 
         //Fall if standing still and no block is under the player
-        else if (movementStates == MovementStates.Still && !PlayerManager.Instance.block_StandingOn_Current.block)
+        if (movementStates == MovementStates.Still && !PlayerManager.Instance.block_StandingOn_Current.block)
         {
             gameObject.transform.position = gameObject.transform.position + (Vector3.down * fallSpeed * Time.deltaTime);
         }

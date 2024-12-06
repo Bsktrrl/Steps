@@ -174,7 +174,6 @@ public class BlockInfo : MonoBehaviour
         //If Moving with Free Cost - Pusher
         if (/*PlayerManager.Instance.block_StandingOn_Previous == gameObject && !PlayerManager.Instance.block_StandingOn_Previous.GetComponent<Block_Pusher>() &&*/ PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
         {
-            print("100. Player IS pushed");
             return 0;
         }
 
@@ -187,7 +186,6 @@ public class BlockInfo : MonoBehaviour
         //If Moving with Normal Cost
         else
         {
-            print("101. Player moves NORMAL");
             return movementCost;
         }
     }
