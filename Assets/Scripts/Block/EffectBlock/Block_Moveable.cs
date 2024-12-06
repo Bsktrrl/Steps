@@ -23,6 +23,10 @@ public class Block_Moveable : MonoBehaviour
     {
         startPos = transform.position;
         savePos = transform.position;
+
+        GameObject obj = Instantiate(Player_MoveableObject.Instance.moveableObjectTexture_Prefab, transform);
+
+        obj.transform.localPosition = Vector3.zero;
     }
     private void Update()
     {
