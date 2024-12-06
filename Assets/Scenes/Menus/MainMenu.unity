@@ -159,7 +159,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 455}
+  m_AnchoredPosition: {x: 0, y: 465}
   m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1056778
@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 19179845}
   - component: {fileID: 19179847}
   m_Layer: 5
-  m_Name: Biome 8
+  m_Name: Biome 8 - Mechanics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -350,7 +350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a31238241039c464c80c9f6428a9b478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  permanentAbilityList: 
+  permanentAbilityList: 0f000000
   levelsToComplete: []
 --- !u!1 &25931747
 GameObject:
@@ -515,7 +515,7 @@ GameObject:
   - component: {fileID: 96858197}
   - component: {fileID: 96858199}
   m_Layer: 5
-  m_Name: Biome 4
+  m_Name: Biome 4 - Lava
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -591,7 +591,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a31238241039c464c80c9f6428a9b478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  permanentAbilityList: 
+  permanentAbilityList: 0500000006000000
   levelsToComplete: []
 --- !u!1 &97129635
 GameObject:
@@ -681,7 +681,7 @@ GameObject:
   - component: {fileID: 138865850}
   - component: {fileID: 138865852}
   m_Layer: 5
-  m_Name: Biome 2
+  m_Name: Biome 2 - Sand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -758,7 +758,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a31238241039c464c80c9f6428a9b478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  permanentAbilityList: 
+  permanentAbilityList: 0b0000000c000000
   levelsToComplete: []
 --- !u!1 &145834256
 GameObject:
@@ -1294,10 +1294,10 @@ RectTransform:
   - {fileID: 965946256}
   m_Father: {fileID: 1056777}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 150, y: -150}
+  m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &308113456
 GameObject:
@@ -1912,10 +1912,10 @@ RectTransform:
   - {fileID: 1578400494}
   m_Father: {fileID: 1056777}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 150, y: -50}
+  m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &382498632
 GameObject:
@@ -1965,7 +1965,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 50}
+  m_AnchoredPosition: {x: 0, y: 60}
   m_SizeDelta: {x: 450, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &382498634
@@ -2405,6 +2405,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6232501835443524658, guid: 6fb0bac386ee75b47807af5f4e13c5f3, type: 3}
+      propertyPath: levelSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: dff69648698971d4288182c73507317b, type: 3}
+    - target: {fileID: 6232501835443524658, guid: 6fb0bac386ee75b47807af5f4e13c5f3, type: 3}
       propertyPath: levelToPlay
       value: Sand - Level 1 - 1
       objectReference: {fileID: 0}
@@ -2547,10 +2551,10 @@ RectTransform:
   - {fileID: 844439465}
   m_Father: {fileID: 382498633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 390, y: -50}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &487379133
 MonoBehaviour:
@@ -2770,10 +2774,10 @@ RectTransform:
   - {fileID: 595888245}
   m_Father: {fileID: 382498633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 60, y: -160}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &531553477
 MonoBehaviour:
@@ -3473,10 +3477,10 @@ RectTransform:
   - {fileID: 1809836879}
   m_Father: {fileID: 382498633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 170, y: -270}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &609462971
 MonoBehaviour:
@@ -4518,10 +4522,10 @@ RectTransform:
   - {fileID: 82692711}
   m_Father: {fileID: 382498633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 170, y: -380}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &798970491
 MonoBehaviour:
@@ -5269,10 +5273,10 @@ RectTransform:
   - {fileID: 1611873889}
   m_Father: {fileID: 382498633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 60, y: -380}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &861162338
 MonoBehaviour:
@@ -5345,10 +5349,10 @@ RectTransform:
   - {fileID: 314976364}
   m_Father: {fileID: 382498633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 60, y: -270}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &894302746
 MonoBehaviour:
@@ -5794,7 +5798,7 @@ GameObject:
   - component: {fileID: 969025817}
   - component: {fileID: 969025819}
   m_Layer: 5
-  m_Name: Biome 5
+  m_Name: Biome 5 - Stone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5870,7 +5874,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a31238241039c464c80c9f6428a9b478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  permanentAbilityList: 
+  permanentAbilityList: 0d000000
   levelsToComplete: []
 --- !u!1 &978013599
 GameObject:
@@ -5889,7 +5893,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &978013600
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6313,11 +6317,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1287585240}
   - {fileID: 2108613110}
   - {fileID: 1056777}
   - {fileID: 2024666384}
   - {fileID: 382498633}
-  - {fileID: 1287585240}
   m_Father: {fileID: 1553666007}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6561,7 +6565,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3269627658152024833, guid: 6fb0bac386ee75b47807af5f4e13c5f3, type: 3}
       propertyPath: m_Name
-      value: Grass - Level 1 - 1
+      value: Water - Level 1 - 1
       objectReference: {fileID: 0}
     - target: {fileID: 4032425239964489308, guid: 6fb0bac386ee75b47807af5f4e13c5f3, type: 3}
       propertyPath: m_text
@@ -6591,6 +6595,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6232501835443524658, guid: 6fb0bac386ee75b47807af5f4e13c5f3, type: 3}
+      propertyPath: levelSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 39db7ad0caa30594fb23f554e8743a9d, type: 3}
     - target: {fileID: 6232501835443524658, guid: 6fb0bac386ee75b47807af5f4e13c5f3, type: 3}
       propertyPath: levelToPlay
       value: Water - Level 1 - 1
@@ -6676,7 +6684,7 @@ GameObject:
   - component: {fileID: 1154222588}
   - component: {fileID: 1154222590}
   m_Layer: 5
-  m_Name: Biome 3
+  m_Name: Biome 3 - Ice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6753,7 +6761,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a31238241039c464c80c9f6428a9b478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  permanentAbilityList: 
+  permanentAbilityList: 09000000
   levelsToComplete: []
 --- !u!1 &1172927324
 GameObject:
@@ -6788,10 +6796,10 @@ RectTransform:
   - {fileID: 2260332}
   m_Father: {fileID: 382498633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 170, y: -160}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1172927326
 MonoBehaviour:
@@ -6848,7 +6856,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1204695579
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7402,10 +7410,10 @@ RectTransform:
   - {fileID: 1412552395}
   m_Father: {fileID: 382498633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 390, y: -270}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1253343209
 MonoBehaviour:
@@ -7770,10 +7778,10 @@ RectTransform:
   - {fileID: 1464549288}
   m_Father: {fileID: 1056777}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 150, y: -250}
+  m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1287585239
 GameObject:
@@ -7973,7 +7981,7 @@ GameObject:
   - component: {fileID: 1303001843}
   - component: {fileID: 1303001845}
   m_Layer: 5
-  m_Name: Biome 0
+  m_Name: Biome 0 - Tutorial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8050,7 +8058,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a31238241039c464c80c9f6428a9b478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  permanentAbilityList: 02000000
+  permanentAbilityList: 
   levelsToComplete: []
 --- !u!1 &1337976041
 GameObject:
@@ -8065,7 +8073,7 @@ GameObject:
   - component: {fileID: 1337976044}
   - component: {fileID: 1337976046}
   m_Layer: 5
-  m_Name: Biome 1
+  m_Name: Biome 1 - Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8142,7 +8150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a31238241039c464c80c9f6428a9b478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  permanentAbilityList: 
+  permanentAbilityList: 020000000300000004000000
   levelsToComplete: []
 --- !u!1 &1342220882
 GameObject:
@@ -8232,7 +8240,7 @@ GameObject:
   - component: {fileID: 1350648566}
   - component: {fileID: 1350648568}
   m_Layer: 5
-  m_Name: Biome 6
+  m_Name: Biome 6 - Snow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8308,7 +8316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a31238241039c464c80c9f6428a9b478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  permanentAbilityList: 
+  permanentAbilityList: 010000000700000008000000
   levelsToComplete: []
 --- !u!1 &1379088048
 GameObject:
@@ -8959,10 +8967,10 @@ RectTransform:
   - {fileID: 97129636}
   m_Father: {fileID: 382498633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 280, y: -380}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1464703245
 MonoBehaviour:
@@ -9073,10 +9081,10 @@ RectTransform:
   - {fileID: 1029739244}
   m_Father: {fileID: 382498633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 280, y: -50}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1529044156
 MonoBehaviour:
@@ -9149,10 +9157,10 @@ RectTransform:
   - {fileID: 1209740160}
   m_Father: {fileID: 382498633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 390, y: -160}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1550835731
 MonoBehaviour:
@@ -9227,7 +9235,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 225, y: 500}
-  m_SizeDelta: {x: 450, y: 875}
+  m_SizeDelta: {x: 450, y: 885}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &1566091779
 GameObject:
@@ -9908,7 +9916,7 @@ GameObject:
   - component: {fileID: 1627248362}
   - component: {fileID: 1627248364}
   m_Layer: 5
-  m_Name: Biome 7
+  m_Name: Biome 7 - Poison
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9984,7 +9992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a31238241039c464c80c9f6428a9b478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  permanentAbilityList: 
+  permanentAbilityList: 070000000e000000
   levelsToComplete: []
 --- !u!1 &1639096643
 GameObject:
@@ -10949,10 +10957,10 @@ RectTransform:
   - {fileID: 695899011}
   m_Father: {fileID: 382498633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 60, y: -50}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1841228622
 MonoBehaviour:
@@ -11025,10 +11033,10 @@ RectTransform:
   - {fileID: 783972618}
   m_Father: {fileID: 382498633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 170, y: -50}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1843240755
 MonoBehaviour:
@@ -11476,10 +11484,10 @@ RectTransform:
   - {fileID: 25931748}
   m_Father: {fileID: 382498633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 280, y: -270}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1896489597
 MonoBehaviour:
@@ -12379,7 +12387,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 130.29999}
+  m_AnchoredPosition: {x: 0, y: 140.3}
   m_SizeDelta: {x: 450, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2024666385
@@ -13077,10 +13085,10 @@ RectTransform:
   - {fileID: 347300137}
   m_Father: {fileID: 382498633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 280, y: -160}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2094405663
 MonoBehaviour:
@@ -13154,7 +13162,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 500}
+  m_AnchoredPosition: {x: 0, y: 510}
   m_SizeDelta: {x: 450, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2108613111
