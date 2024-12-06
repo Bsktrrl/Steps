@@ -1,8 +1,6 @@
-Pusher:
-- Fix error where moving out of pusher-distance will not cost steps
-
-Slab:
-- Fix clipping from moving away from upwards stair
+MoveableObject:
+- Make an object able to push in any direction, 1 block away
+	- Make it glideable on ice blocks
 
 Fence:
 - Fix the bug so that fences block the player, even if the fence is placed inside of a block space
@@ -34,10 +32,6 @@ Grapling Hook:
 
 Climbing Gear:
 - Let the player move up 1 block (instead of using a ladder)
-
-MoveableObject:
-- Make an object able to push in any direction, 1 block away
-	- Make it glideable on ice blocks
 
 Overworld:
 - Make a new overwold that uses Zones and displays the levels as inteded

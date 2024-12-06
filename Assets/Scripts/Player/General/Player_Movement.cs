@@ -351,8 +351,10 @@ public class Player_Movement : Singleton<Player_Movement>
     }
 
     //Begin Ice Gliding
-    void IceGlide()
+    public void IceGlide()
     {
+        Player_BlockDetector.Instance.RaycastSetup();
+
         if (PlayerManager.Instance.block_StandingOn_Current.block)
         {
             if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_IceGlide>() && !PlayerStats.Instance.stats.abilitiesGot_Permanent.IceSpikes && !PlayerStats.Instance.stats.abilitiesGot_Temporary.IceSpikes)
@@ -364,19 +366,19 @@ public class Player_Movement : Singleton<Player_Movement>
                 {
                     case ButtonsToPress.W:
                         if (PlayerManager.Instance.canMove_Forward)
-                            MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
                         break;
                     case ButtonsToPress.S:
                         if (PlayerManager.Instance.canMove_Back)
-                            MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
                         break;
                     case ButtonsToPress.A:
                         if (PlayerManager.Instance.canMove_Left)
-                            MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
                         break;
                     case ButtonsToPress.D:
                         if (PlayerManager.Instance.canMove_Right)
-                            MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
                         break;
 
                     default:

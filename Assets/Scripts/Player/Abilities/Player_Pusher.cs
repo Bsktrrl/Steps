@@ -42,7 +42,6 @@ public class Player_Pusher : MonoBehaviour
         {
             if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Pusher>())
             {
-                print("1. playerIsPushed = true");
                 playerIsPushed = true;
                 pushDirection = PlayerManager.Instance.lookingDirection;
             }
@@ -53,7 +52,6 @@ public class Player_Pusher : MonoBehaviour
     {
         if (PlayerManager.Instance.lookingDirection != pushDirection)
         {
-            print("1. playerIsPushed = false");
             playerIsPushed = false;
             pushDirection = Vector3.zero;
         }

@@ -867,7 +867,5 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         }
 
         PlayerManager.Instance.lookingDirection = lookDir;
-
-        print("LookDir: " + PlayerManager.Instance.lookingDirection);
     }
 }
