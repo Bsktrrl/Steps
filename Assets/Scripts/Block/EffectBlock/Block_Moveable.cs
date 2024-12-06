@@ -65,10 +65,7 @@ public class Block_Moveable : MonoBehaviour
         PerformRaycast_Player(Vector3.left);
         PerformRaycast_Player(Vector3.right);
 
-        PerformRaycast_Horizontal(Vector3.forward);
-        PerformRaycast_Horizontal(Vector3.back);
-        PerformRaycast_Horizontal(Vector3.left);
-        PerformRaycast_Horizontal(Vector3.right);
+        PerformRaycast_Horizontal();
 
         PerformRaycast_Vertical();
     }
@@ -101,7 +98,7 @@ public class Block_Moveable : MonoBehaviour
             movementDirection = MovementDirection.None;
         }
     }
-    void PerformRaycast_Horizontal(Vector3 direction)
+    void PerformRaycast_Horizontal()
     {
         if (movementDirection == MovementDirection.None)
             canMove = false;
@@ -158,26 +155,25 @@ public class Block_Moveable : MonoBehaviour
 
             if (hit.transform.gameObject)
             {
-                canMove = true;
+                if (hit.transform.gameObject.GetComponent<BlockInfo>().blockType == BlockType.Cube)
+                {
+                    canMove = true;
 
-                if (hit.transform.gameObject.GetComponent<Block_IceGlide>())
-                {
-                    isIceGliding = true;
-                }
-                else
-                {
-                    isIceGliding = false;
+                    if (hit.transform.gameObject.GetComponent<Block_IceGlide>())
+                    {
+                        isIceGliding = true;
+                    }
+                    else
+                    {
+                        isIceGliding = false;
+                    }
+
+                    return;
                 }
             }
-            else
-            {
-                canMove = false;
-            }
         }
-        else
-        {
-            canMove = false;
-        }
+
+        canMove = false;
     }
 
     void ActivateBlockMovement()
@@ -227,11 +223,7 @@ public class Block_Moveable : MonoBehaviour
 
     bool IceGlide()
     {
-        PerformRaycast_Horizontal(Vector3.forward);
-        PerformRaycast_Horizontal(Vector3.back);
-        PerformRaycast_Horizontal(Vector3.left);
-        PerformRaycast_Horizontal(Vector3.right);
-
+        PerformRaycast_Horizontal();
         PerformRaycast_Vertical();
 
         if (movementDirection == MovementDirection.None) { return false; }
