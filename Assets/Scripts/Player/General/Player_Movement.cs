@@ -9,6 +9,7 @@ public class Player_Movement : Singleton<Player_Movement>
     public static event Action Action_StepTaken;
     public static event Action Action_BodyRotated;
     public static event Action Action_resetBlockColor;
+    public static event Action Action_PressMoveBlockButton;
 
     [Header("Current Movement Cost")]
     public int currentMovementCost;
@@ -153,6 +154,10 @@ public class Player_Movement : Singleton<Player_Movement>
             if (gameObject.GetComponent<Player_Hammer>().playerCanHammer)
             {
                 gameObject.GetComponent<Player_Hammer>().Hammer();
+            }
+            else
+            {
+                Action_PressMoveBlockButton?.Invoke();
             }
         }
 

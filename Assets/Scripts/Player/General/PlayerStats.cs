@@ -173,7 +173,7 @@ public class PlayerStats : Singleton<PlayerStats>
         //Reduce available steps
         if (PlayerManager.Instance.block_StandingOn_Current.block)
         {
-            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>())
+            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>() && !PlayerManager.Instance.isTransportingPlayer)
             {
                 stats.steps_Current -= PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().GetMovementCost();
             }
@@ -213,7 +213,7 @@ public class PlayerStats : Singleton<PlayerStats>
         //Move player
         transform.position = MapManager.Instance.playerStartPos;
         Player_Movement.Instance.SetPlayerBodyRotation(0);
-        Action_RespawnPlayer?.Invoke();
+        RespawnPlayer_Action();
 
         yield return new WaitForSeconds(waitTime);
 
@@ -246,7 +246,10 @@ public class PlayerStats : Singleton<PlayerStats>
             yield return null;
         }
     }
-
+    public void RespawnPlayer_Action()
+    {
+        Action_RespawnPlayer?.Invoke();
+    }
     public void RespawnToSavePos_Action()
     {
         Action_RespawnToSavePos?.Invoke();

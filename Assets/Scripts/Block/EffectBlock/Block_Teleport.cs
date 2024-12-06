@@ -51,8 +51,8 @@ public class Block_Teleport : MonoBehaviour
         PlayerManager.Instance.isTransportingPlayer = false;
         PlayerManager.Instance.pauseGame = false;
 
-        //Player_BlockDetector.Instance.Update_BlockStandingOn();
-        PlayerStats.Instance.stats.steps_Current = stepTemp /*+ 1 + gameObject.GetComponent<Block_Teleport>().newLandingSpot.GetComponent<BlockInfo>().movementCost*/;
+        Player_BlockDetector.Instance.Update_BlockStandingOn();
+        PlayerStats.Instance.stats.steps_Current = stepTemp - gameObject.GetComponent<Block_Teleport>().newLandingSpot.GetComponent<BlockInfo>().movementCost;
 
         Player_Movement.Instance.IceGlide();
     }
