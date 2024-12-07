@@ -21,6 +21,8 @@ public class LoadLevel : MonoBehaviour
     [SerializeField] bool canPlay;
     public bool isCompleted;
 
+    public AbilitiesGot abilitiesInLevel;
+
 
     //--------------------
 

@@ -70,107 +70,170 @@ public class LevelInfoDisplay : Singleton<LevelInfoDisplay>
         HideDisplayLevelInfo();
 
         //Display MapName
-        levelName.GetComponent<TextMeshProUGUI>().text = mapInfo.mapName;
+        if (mapInfo != null)
+            levelName.GetComponent<TextMeshProUGUI>().text = mapInfo.mapName;
+        else
+            levelName.GetComponent<TextMeshProUGUI>().text = level.levelToPlay;
+
 
         //Display Level Image
         levelImage.sprite = level.levelSprite;
 
         //Display Coins got
-        int coinCounter = 0;
-        for (int i = 0; i < mapInfo.coinList.Count; i++)
+        if (mapInfo != null)
         {
-            if (mapInfo.coinList[i].isTaken)
+            int coinCounter = 0;
+            for (int i = 0; i < mapInfo.coinList.Count; i++)
             {
-                coinCounter++;
+                if (mapInfo.coinList[i].isTaken)
+                {
+                    coinCounter++;
+                }
             }
+
+            coinAmount.GetComponentInChildren<TextMeshProUGUI>().text = coinCounter + " / 10";
         }
-        coinAmount.GetComponentInChildren<TextMeshProUGUI>().text = coinCounter + " / 10";
+        else
+        {
+            coinAmount.GetComponentInChildren<TextMeshProUGUI>().text = "0 / 10";
+        }
+
 
         //Display Coins got
-        int collectionCounter = 0;
-        for (int i = 0; i < mapInfo.collectableList.Count; i++)
+        if (mapInfo != null)
         {
-            if (mapInfo.collectableList[i].isTaken)
+            int collectionCounter = 0;
+            for (int i = 0; i < mapInfo.collectableList.Count; i++)
             {
-                collectionCounter++;
+                if (mapInfo.collectableList[i].isTaken)
+                {
+                    collectionCounter++;
+                }
             }
+
+            collectableAmount.GetComponentInChildren<TextMeshProUGUI>().text = collectionCounter + " / 3";
         }
-        collectableAmount.GetComponentInChildren<TextMeshProUGUI>().text = collectionCounter + " / 3";
+        else
+        {
+            collectableAmount.GetComponentInChildren<TextMeshProUGUI>().text = "0 / 3";
+        }
+
 
         //Display Coins got
-        int stepCounter = 0;
-        for (int i = 0; i < mapInfo.maxStepList.Count; i++)
+        if (mapInfo != null)
         {
-            if (mapInfo.maxStepList[i].isTaken)
+            int stepCounter = 0;
+            for (int i = 0; i < mapInfo.maxStepList.Count; i++)
             {
-                stepCounter++;
+                if (mapInfo.maxStepList[i].isTaken)
+                {
+                    stepCounter++;
+                }
             }
+
+            stepAmount.GetComponentInChildren<TextMeshProUGUI>().text = stepCounter + " / 3";
         }
-        stepAmount.GetComponentInChildren<TextMeshProUGUI>().text = stepCounter + " / 3";
+        else
+        {
+            stepAmount.GetComponentInChildren<TextMeshProUGUI>().text = "0 / 3";
+        }
+
 
         //Display all abilities in the Level
-        if (mapInfo.abilitiesInLevel.FenceSneak)
+        if (level.abilitiesInLevel.FenceSneak)
             ability_FenceSneak.gameObject.SetActive(true);
-        if (mapInfo.abilitiesInLevel.SwimSuit)
+        if (level.abilitiesInLevel.SwimSuit)
             ability_SwimSuit.gameObject.SetActive(true);
-        if (mapInfo.abilitiesInLevel.SwiftSwim)
+        if (level.abilitiesInLevel.SwiftSwim)
             ability_SwiftSwim.gameObject.SetActive(true);
-        if (mapInfo.abilitiesInLevel.Flippers)
+        if (level.abilitiesInLevel.Flippers)
             ability_Flippers.gameObject.SetActive(true);
-        if (mapInfo.abilitiesInLevel.LavaSuit)
+        if (level.abilitiesInLevel.LavaSuit)
             ability_LavaSuit.gameObject.SetActive(true);
-        if (mapInfo.abilitiesInLevel.LavaSwiftSwim)
+        if (level.abilitiesInLevel.LavaSwiftSwim)
             ability_LavaSwiftSwim.gameObject.SetActive(true);
-        if (mapInfo.abilitiesInLevel.HikerGear)
+        if (level.abilitiesInLevel.HikerGear)
             ability_HikerGear.gameObject.SetActive(true);
-        if (mapInfo.abilitiesInLevel.IceSpikes)
+        if (level.abilitiesInLevel.IceSpikes)
             ability_IceSpikes.gameObject.SetActive(true);
-        if (mapInfo.abilitiesInLevel.GrapplingHook)
+        if (level.abilitiesInLevel.GrapplingHook)
             ability_GrapplingHook.gameObject.SetActive(true);
-        if (mapInfo.abilitiesInLevel.Hammer)
+        if (level.abilitiesInLevel.Hammer)
             ability_Hammer.gameObject.SetActive(true);
-        if (mapInfo.abilitiesInLevel.ClimbingGear)
+        if (level.abilitiesInLevel.ClimbingGear)
             ability_ClimbingGear.gameObject.SetActive(true);
-        if (mapInfo.abilitiesInLevel.Dash)
+        if (level.abilitiesInLevel.Dash)
             ability_Dash.gameObject.SetActive(true);
-        if (mapInfo.abilitiesInLevel.Ascend)
+        if (level.abilitiesInLevel.Ascend)
             ability_Ascend.gameObject.SetActive(true);
-        if (mapInfo.abilitiesInLevel.Descend)
+        if (level.abilitiesInLevel.Descend)
             ability_Descend.gameObject.SetActive(true);
-        if (mapInfo.abilitiesInLevel.ControlStick)
+        if (level.abilitiesInLevel.ControlStick)
             ability_ControlStick.gameObject.SetActive(true);
 
-        //Display all abilities YOU in the Level
-        if (mapInfo.abilitiesGotInLevel.FenceSneak)
-            ability_FenceSneak_Got.gameObject.SetActive(true);
-        if (mapInfo.abilitiesGotInLevel.SwimSuit)
-            ability_SwimSuit_Got.gameObject.SetActive(true);
-        if (mapInfo.abilitiesGotInLevel.SwiftSwim)
-            ability_SwiftSwim_Got.gameObject.SetActive(true);
-        if (mapInfo.abilitiesGotInLevel.Flippers)
-            ability_Flippers_Got.gameObject.SetActive(true);
-        if (mapInfo.abilitiesGotInLevel.LavaSuit)
-            ability_LavaSuit_Got.gameObject.SetActive(true);
-        if (mapInfo.abilitiesGotInLevel.LavaSwiftSwim)
-            ability_LavaSwiftSwim_Got.gameObject.SetActive(true);
-        if (mapInfo.abilitiesGotInLevel.HikerGear)
-            ability_HikerGear_Got.gameObject.SetActive(true);
-        if (mapInfo.abilitiesGotInLevel.IceSpikes)
-            ability_IceSpikes_Got.gameObject.SetActive(true);
-        if (mapInfo.abilitiesGotInLevel.GrapplingHook)
-            ability_GrapplingHook_Got.gameObject.SetActive(true);
-        if (mapInfo.abilitiesGotInLevel.Hammer)
-            ability_Hammer_Got.gameObject.SetActive(true);
-        if (mapInfo.abilitiesGotInLevel.ClimbingGear)
-            ability_ClimbingGear_Got.gameObject.SetActive(true);
-        if (mapInfo.abilitiesGotInLevel.Dash)
-            ability_Dash_Got.gameObject.SetActive(true);
-        if (mapInfo.abilitiesGotInLevel.Ascend)
-            ability_Ascend_Got.gameObject.SetActive(true);
-        if (mapInfo.abilitiesGotInLevel.Descend)
-            ability_Descend_Got.gameObject.SetActive(true);
-        if (mapInfo.abilitiesGotInLevel.ControlStick)
-            ability_ControlStick_Got.gameObject.SetActive(true);
+
+        //if (mapInfo.abilitiesInLevel.FenceSneak)
+        //    ability_FenceSneak.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesInLevel.SwimSuit)
+        //    ability_SwimSuit.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesInLevel.SwiftSwim)
+        //    ability_SwiftSwim.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesInLevel.Flippers)
+        //    ability_Flippers.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesInLevel.LavaSuit)
+        //    ability_LavaSuit.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesInLevel.LavaSwiftSwim)
+        //    ability_LavaSwiftSwim.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesInLevel.HikerGear)
+        //    ability_HikerGear.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesInLevel.IceSpikes)
+        //    ability_IceSpikes.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesInLevel.GrapplingHook)
+        //    ability_GrapplingHook.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesInLevel.Hammer)
+        //    ability_Hammer.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesInLevel.ClimbingGear)
+        //    ability_ClimbingGear.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesInLevel.Dash)
+        //    ability_Dash.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesInLevel.Ascend)
+        //    ability_Ascend.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesInLevel.Descend)
+        //    ability_Descend.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesInLevel.ControlStick)
+        //    ability_ControlStick.gameObject.SetActive(true);
+
+        //Display all abilities YOU got in the Level
+        //if (mapInfo.abilitiesGotInLevel.FenceSneak)
+        //    ability_FenceSneak_Got.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesGotInLevel.SwimSuit)
+        //    ability_SwimSuit_Got.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesGotInLevel.SwiftSwim)
+        //    ability_SwiftSwim_Got.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesGotInLevel.Flippers)
+        //    ability_Flippers_Got.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesGotInLevel.LavaSuit)
+        //    ability_LavaSuit_Got.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesGotInLevel.LavaSwiftSwim)
+        //    ability_LavaSwiftSwim_Got.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesGotInLevel.HikerGear)
+        //    ability_HikerGear_Got.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesGotInLevel.IceSpikes)
+        //    ability_IceSpikes_Got.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesGotInLevel.GrapplingHook)
+        //    ability_GrapplingHook_Got.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesGotInLevel.Hammer)
+        //    ability_Hammer_Got.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesGotInLevel.ClimbingGear)
+        //    ability_ClimbingGear_Got.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesGotInLevel.Dash)
+        //    ability_Dash_Got.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesGotInLevel.Ascend)
+        //    ability_Ascend_Got.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesGotInLevel.Descend)
+        //    ability_Descend_Got.gameObject.SetActive(true);
+        //if (mapInfo.abilitiesGotInLevel.ControlStick)
+        //    ability_ControlStick_Got.gameObject.SetActive(true);
 
         //Show all Displays
         LevelInfo_Parent.SetActive(true);

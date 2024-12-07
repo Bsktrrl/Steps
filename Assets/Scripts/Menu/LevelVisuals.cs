@@ -22,10 +22,12 @@ public class LevelVisuals : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         Map_SaveInfo mapInfo = SaveLoad_MapInfo.Instance.GetMapInfo(gameObject.GetComponent<LoadLevel>().levelToPlay);
 
-        if (mapInfo != null)
-        {
-            LevelInfoDisplay.Instance.ShowDisplayLevelInfo(mapInfo, gameObject.GetComponent<LoadLevel>());
-        }
+        LevelInfoDisplay.Instance.ShowDisplayLevelInfo(mapInfo, gameObject.GetComponent<LoadLevel>());
+
+        //if (mapInfo != null)
+        //{
+        //    LevelInfoDisplay.Instance.ShowDisplayLevelInfo(mapInfo, gameObject.GetComponent<LoadLevel>());
+        //}
     }
 
     public void OnPointerExit(PointerEventData eventData)
