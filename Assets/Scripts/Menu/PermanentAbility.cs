@@ -28,12 +28,15 @@ public class PermanentAbility : MonoBehaviour
             {
                 if (levelsToComplete[i].GetComponent<LoadLevel>().levelToPlay == MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[j].mapName)
                 {
-                    levelsCompletedCounter++;
+                    if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[j].isCompleted)
+                    {
+                        levelsCompletedCounter++;
+                    }
                 }
             }
         }
 
-        if (levelsCompletedCounter >= levelsToComplete.Count)
+        if (levelsCompletedCounter >= levelsToComplete.Count && levelsToComplete.Count > 0)
         {
             print("1. Completed Biome and get an Ability");
 

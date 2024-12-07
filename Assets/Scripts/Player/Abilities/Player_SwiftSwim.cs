@@ -92,41 +92,14 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
 
                                 return true;
                             }
-                            else
-                            {
-                                ResetObj(dir);
-                                return false;
-                            }
-                        }
-                        else
-                        {
-                            ResetObj(dir);
-                            return false;
                         }
                     }
-                    else
-                    {
-                        ResetObj(dir);
-                        return false;
-                    }
-                }
-                else
-                {
-                    ResetObj(dir);
-                    return false;
                 }
             }
-            else
-            {
-                ResetObj(dir);
-                return false;
-            }
         }
-        else
-        {
-            ResetObj(dir);
-            return false;
-        }
+
+        ResetObj(dir);
+        return false;
     }
     void ResetObj(Vector3 dir)
     {

@@ -22,7 +22,14 @@ public class Block_RefillSteps : MonoBehaviour
     {
         if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject)
         {
-            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current = PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max + PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
+            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current = PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max /*+ PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost*/;
+            StartCoroutine(ResetSteps(0.05f));
         }
+    }
+    IEnumerator ResetSteps(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current = PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max /*+ PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost*/;
     }
 }
