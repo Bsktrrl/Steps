@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class Block_Moveable : MonoBehaviour
 {
-    [SerializeField] MovementDirection movementDirection;
+    MovementDirection movementDirection;
 
-    [SerializeField] bool canMove;
-    [SerializeField] bool isMoving;
-    [SerializeField] bool isIceGliding;
+    bool canMove;
+    bool isMoving;
+    bool isIceGliding;
 
     RaycastHit hit;
     Vector3 startPos;

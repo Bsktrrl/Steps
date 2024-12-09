@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class Block_Elevator_StepOn : MonoBehaviour
 {
-    public elevatorDirection elevatorDirection;
-    public int distance;
-    public float movementSpeed = 5f;
-    public float waitingTime = 0.35f;
+    [SerializeField] elevatorDirection elevatorDirection;
+    [SerializeField] int distance;
+    [SerializeField] float movementSpeed = 5f;
+    [SerializeField] float waitingTime = 0.35f;
 
     Vector3 startPos;
     Vector3 endPos;
 
     bool moveToEndPos = true;
 
-    public bool isStandingOnBlock;
-    public bool isMoving;
+    bool isStandingOnBlock;
+    bool isMoving;
 
 
     //--------------------

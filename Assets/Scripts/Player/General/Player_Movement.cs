@@ -202,16 +202,17 @@ public class Player_Movement : Singleton<Player_Movement>
 
                         PlayerManager.Instance.block_MovingTowards = block_Vertical;
 
-                        //block_Vertical.block.GetComponent<BlockInfo>().movementCost = block_Vertical.block.GetComponent<BlockInfo>().movementCost;
-
                         endDestination = block_Vertical.blockPosition + (Vector3.up * heightOverBlock);
-                        //SetPlayerBodyRotation(rotation);
                         movementStates = MovementStates.Moving;
 
                         Action_resetBlockColor?.Invoke();
                     }
                 }
             }
+        }
+        else
+        {
+            movementStates = MovementStates.Still;
         }
 
         SetPlayerBodyRotation(rotation);
@@ -390,15 +391,9 @@ public class Player_Movement : Singleton<Player_Movement>
                         break;
                 }
             }
-            else
-            {
-                iceGliding = false;
-            }
         }
-        else
-        {
-            iceGliding = false;
-        }
+
+        iceGliding = false;
     }
 
 

@@ -5,21 +5,21 @@ using UnityEngine;
 public class Block_Falling : MonoBehaviour
 {
     [Header("Falling Parameters")]
-    public int distance;
+    [SerializeField] int distance;
+    [SerializeField] float waitTime_BeforeFalling = 0.75f;
     float waitCounter = 0;
-    public float waitTime = 0.75f;
 
     [Header("Checked If Stepped On")]
-    public bool isSteppedOn;
+    bool isSteppedOn;
 
     [Header("Runtime Stats")]
-    public Vector3 endPos;
-    public bool isStandingOnBlock;
-    public bool isMoving;
+    Vector3 endPos;
+    bool isStandingOnBlock;
+    bool isMoving;
 
     [Header("FallingAnimation")]
-    public float shakingIntensity = 3;
-    public float shakingSpeed = 50;
+    float shakingIntensity = 3;
+    float shakingSpeed = 50;
     List<GameObject> LOD_ObjectsList;
     Quaternion objectInitialRotation;
 
@@ -110,10 +110,10 @@ public class Block_Falling : MonoBehaviour
         {
             FallingAlertAnimation();
 
-            if (waitCounter < waitTime)
+            if (waitCounter < waitTime_BeforeFalling)
                 waitCounter += Time.deltaTime;
 
-            if (waitCounter >= waitTime)
+            if (waitCounter >= waitTime_BeforeFalling)
             {
                 return true;
             }
@@ -137,7 +137,7 @@ public class Block_Falling : MonoBehaviour
     void FallingAlertAnimation()
     {
         //When falling, straighten up the rotation from the shaking
-        if (waitCounter >= waitTime)
+        if (waitCounter >= waitTime_BeforeFalling)
         {
             for (int i = 0; i < LOD_ObjectsList.Count; i++)
             {
