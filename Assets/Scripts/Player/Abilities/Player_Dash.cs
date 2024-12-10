@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 
-public class Player_Dash : MonoBehaviour
+public class Player_Dash : Singleton<Player_Dash>
 {
     [Header("Dashing")]
     public bool playerCanDash;
