@@ -36,7 +36,7 @@ public class Block_Teleport : MonoBehaviour
     {
         if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject && newLandingSpot)
         {
-            StartCoroutine(TeleportWait(0.01f));
+            StartCoroutine(TeleportWait(0.005f));
         }
     }
 
@@ -66,7 +66,7 @@ public class Block_Teleport : MonoBehaviour
         Player_BlockDetector.Instance.RaycastSetup();
         Player_Movement.Instance.Action_StepTakenInvoke();
 
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(waitTime * 20);
 
         Player_Movement.Instance.IceGlide();
         Action_EndTeleport?.Invoke();
