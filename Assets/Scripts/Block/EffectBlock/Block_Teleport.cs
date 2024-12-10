@@ -1,9 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Block_Teleport : MonoBehaviour
 {
+    public static event Action Action_StartTeleport;
+    public static event Action Action_EndTeleport;
+
     public GameObject newLandingSpot;
 
 
@@ -13,11 +17,15 @@ public class Block_Teleport : MonoBehaviour
     private void OnEnable()
     {
         Player_Movement.Action_StepTaken += TeleportPlayer;
+        Action_StartTeleport += StartTeleport_Action;
+        Action_EndTeleport += EndTeleport_Action;
     }
 
     private void OnDisable()
     {
         Player_Movement.Action_StepTaken -= TeleportPlayer;
+        Action_StartTeleport -= StartTeleport_Action;
+        Action_EndTeleport -= EndTeleport_Action;
     }
 
 
@@ -51,9 +59,25 @@ public class Block_Teleport : MonoBehaviour
         PlayerManager.Instance.isTransportingPlayer = false;
         PlayerManager.Instance.pauseGame = false;
 
-        Player_BlockDetector.Instance.Update_BlockStandingOn();
         PlayerStats.Instance.stats.steps_Current = stepTemp - gameObject.GetComponent<Block_Teleport>().newLandingSpot.GetComponent<BlockInfo>().movementCost;
 
+        Action_StartTeleport?.Invoke();
+        Player_BlockDetector.Instance.Update_BlockStandingOn();
+        Player_BlockDetector.Instance.RaycastSetup();
+        Player_Movement.Instance.Action_StepTakenInvoke();
+
+        yield return new WaitForSeconds(waitTime);
+
         Player_Movement.Instance.IceGlide();
+        Action_EndTeleport?.Invoke();
+    }
+
+    void StartTeleport_Action()
+    {
+        Player_Movement.Action_StepTaken -= TeleportPlayer;
+    }
+    void EndTeleport_Action()
+    {
+        Player_Movement.Action_StepTaken += TeleportPlayer;
     }
 }

@@ -164,8 +164,6 @@ public class Player_Movement : Singleton<Player_Movement>
         //If pressing - Respawn
         else if (Input.GetKeyDown(KeyCode.R))
         {
-            print("KeyCode.R is pressed");
-
             PlayerStats.Instance.RespawnPlayer();
         }
 
@@ -194,9 +192,10 @@ public class Player_Movement : Singleton<Player_Movement>
                 {
                     if (block_Vertical.block.GetComponent<BlockInfo>())
                     {
+                        SetPlayerBodyRotation(rotation);
+
                         if (block_Vertical.block.GetComponent<BlockInfo>().movementCost > PlayerStats.Instance.stats.steps_Current)
                         {
-                            SetPlayerBodyRotation(rotation);
                             return;
                         }
 
@@ -206,15 +205,14 @@ public class Player_Movement : Singleton<Player_Movement>
                         movementStates = MovementStates.Moving;
 
                         Action_resetBlockColor?.Invoke();
+
+                        return;
                     }
                 }
             }
         }
-        else
-        {
-            movementStates = MovementStates.Still;
-        }
 
+        movementStates = MovementStates.Still;
         SetPlayerBodyRotation(rotation);
     }
     public void SetPlayerBodyRotation(int rotationValue)
@@ -372,19 +370,19 @@ public class Player_Movement : Singleton<Player_Movement>
                 {
                     case ButtonsToPress.W:
                         if (PlayerManager.Instance.canMove_Forward)
-                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                            MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
                         break;
                     case ButtonsToPress.S:
                         if (PlayerManager.Instance.canMove_Back)
-                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                            MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
                         break;
                     case ButtonsToPress.A:
                         if (PlayerManager.Instance.canMove_Left)
-                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                            MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
                         break;
                     case ButtonsToPress.D:
                         if (PlayerManager.Instance.canMove_Right)
-                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                            MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
                         break;
 
                     default:

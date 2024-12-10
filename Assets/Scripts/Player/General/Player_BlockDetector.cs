@@ -60,7 +60,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
         RaycastSetup();
 
-        UpdateVerticalRacastLength();
+        UpdateVerticalRaycastLength();
     }
 
     private void OnEnable()
@@ -152,7 +152,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         }
 
         //Check for Stair Edge, to prevent moving off the Stair
-        UpdateStairRaycast();
+        UpdateRaycastingFromStair();
     }
 
     public void Update_BlockStandingOn()
@@ -687,7 +687,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     }
 
 
-    void UpdateStairRaycast()
+    void UpdateRaycastingFromStair()
     {
         if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair)
         {
@@ -781,7 +781,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     //--------------------
 
 
-    void UpdateVerticalRacastLength()
+    void UpdateVerticalRaycastLength()
     {
         if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair)
         {
