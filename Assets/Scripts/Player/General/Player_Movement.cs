@@ -358,14 +358,13 @@ public class Player_Movement : Singleton<Player_Movement>
     //Begin Ice Gliding
     public void IceGlide()
     {
-        Player_BlockDetector.Instance.Update_BlockStandingOn();
+        Player_BlockDetector.Instance.RaycastSetup();
+        //Player_BlockDetector.Instance.Update_BlockStandingOn();
 
         if (PlayerManager.Instance.block_StandingOn_Current.block)
         {
             if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_IceGlide>() && !PlayerStats.Instance.stats.abilitiesGot_Permanent.IceSpikes && !PlayerStats.Instance.stats.abilitiesGot_Temporary.IceSpikes)
             {
-                Player_BlockDetector.Instance.RaycastSetup();
-
                 iceGliding = true;
                 PlayerStats.Instance.stats.steps_Current += PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
 

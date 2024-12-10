@@ -48,6 +48,8 @@ public class Block_Teleport : MonoBehaviour
         PlayerManager.Instance.pauseGame = true;
         Player_Movement.Instance.movementStates = MovementStates.Moving;
 
+        Action_StartTeleport?.Invoke();
+
         yield return new WaitForSeconds(waitTime);
 
         Vector3 newPos = gameObject.GetComponent<Block_Teleport>().newLandingSpot.transform.position;
@@ -61,7 +63,6 @@ public class Block_Teleport : MonoBehaviour
 
         PlayerStats.Instance.stats.steps_Current = stepTemp - gameObject.GetComponent<Block_Teleport>().newLandingSpot.GetComponent<BlockInfo>().movementCost;
 
-        Action_StartTeleport?.Invoke();
         Player_BlockDetector.Instance.Update_BlockStandingOn();
         Player_BlockDetector.Instance.RaycastSetup();
         Player_Movement.Instance.Action_StepTakenInvoke();

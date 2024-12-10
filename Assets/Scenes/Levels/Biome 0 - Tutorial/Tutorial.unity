@@ -7680,6 +7680,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1065640494}
     m_Modifications:
+    - target: {fileID: 1204396668016509174, guid: d6f56b84b325cd940ba4ccdd3230603a, type: 3}
+      propertyPath: m_Color.b
+      value: 0.09803922
+      objectReference: {fileID: 0}
+    - target: {fileID: 1204396668016509174, guid: d6f56b84b325cd940ba4ccdd3230603a, type: 3}
+      propertyPath: m_Color.g
+      value: 0.42352942
+      objectReference: {fileID: 0}
+    - target: {fileID: 1204396668016509174, guid: d6f56b84b325cd940ba4ccdd3230603a, type: 3}
+      propertyPath: m_Color.r
+      value: 0.30980393
+      objectReference: {fileID: 0}
     - target: {fileID: 7492846381898084657, guid: d6f56b84b325cd940ba4ccdd3230603a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -14982,8 +14994,6 @@ MonoBehaviour:
   distance: 4
   movementSpeed: 4
   waitingTime: 0.35
-  isStandingOnBlock: 0
-  isMoving: 0
 --- !u!1001 &1495005976
 PrefabInstance:
   m_ObjectHideFlags: 0
