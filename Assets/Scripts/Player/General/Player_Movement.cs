@@ -32,6 +32,11 @@ public class Player_Movement : Singleton<Player_Movement>
 
     private void Update()
     {
+        if (Player_GraplingHook.Instance.isGrapplingHooking) { return; }
+        //if (Player_Ascend.Instance.isAscending) { return; }
+        //if (Player_Descend.Instance.isDescending) { return; }
+        //if (Player_Dash.Instance.isDashing) { return; }
+
         KeyInputs();
 
         if (movementStates == MovementStates.Moving /*&& endDestination != (Vector3.zero + (Vector3.up * heightOverBlock))*/
@@ -82,6 +87,7 @@ public class Player_Movement : Singleton<Player_Movement>
         if (PlayerManager.Instance.isTransportingPlayer) { return; }
         if (Cameras.Instance.isRotating) { return; }
         if (Player_Interact.Instance.isInteracting) { return; }
+        if (Player_GraplingHook.Instance.isGrapplingHooking) { return; }
 
         //If pressing UP - Movement
         if (Input.GetKey(KeyCode.W))
@@ -115,8 +121,8 @@ public class Player_Movement : Singleton<Player_Movement>
         //--------------------
 
 
-        //If pressing - E - ASCEND
-        else if (Input.GetKeyDown(KeyCode.E))
+        //If pressing - UP - ASCEND
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             if (gameObject.GetComponent<Player_SwiftSwim>().canSwiftSwim_Up)
             {
@@ -127,8 +133,8 @@ public class Player_Movement : Singleton<Player_Movement>
                 gameObject.GetComponent<Player_Ascend>().Ascend();
             }
         }
-        //If pressing - Q - DESCEND
-        else if (Input.GetKeyDown(KeyCode.Q))
+        //If pressing - DOWN - DESCEND
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             if (gameObject.GetComponent<Player_SwiftSwim>().canSwiftSwim_Down)
             {
@@ -138,6 +144,27 @@ public class Player_Movement : Singleton<Player_Movement>
             {
                 gameObject.GetComponent<Player_Descend>().Descend();
             }
+        }
+
+        //Grappling Hook
+        else if (Input.GetKey(KeyCode.G) && Input.GetKeyDown(KeyCode.Space))
+        {
+            if (Player_GraplingHook.Instance.CheckIfCanGrapple())
+            {
+                Player_GraplingHook.Instance.PerformGrapplingMovement();
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.G))
+        {
+            Player_GraplingHook.Instance.StartRaycastGrappling();
+        }
+        else if (Input.GetKey(KeyCode.G))
+        {
+            Player_GraplingHook.Instance.UngoingRaycastGrappling();
+        }
+        else if (Input.GetKeyUp(KeyCode.G))
+        {
+            Player_GraplingHook.Instance.StopRaycastGrappling();
         }
 
         //If pressing - Dash - Space

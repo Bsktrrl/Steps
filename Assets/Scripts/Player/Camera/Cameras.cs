@@ -134,7 +134,7 @@ public class Cameras : Singleton<Cameras>
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
 
         //Rotate Camera
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             switch (cameraState)
             {
@@ -168,7 +168,7 @@ public class Cameras : Singleton<Cameras>
 
             rotateCamera?.Invoke();
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             switch (cameraState)
             {
