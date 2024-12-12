@@ -19,7 +19,7 @@ public class BlockStepCostDisplay : MonoBehaviour
 
     private void Start()
     {
-        if (gameObject.GetComponent<BlockInfo>().blockType == BlockType.Stair)
+        if (gameObject.GetComponent<BlockInfo>().blockType == BlockType.Stair || gameObject.GetComponent<BlockInfo>().blockType == BlockType.Slope)
             startRot_X_Canvas = 45;
         else
             startRot_X_Canvas = 90;
@@ -94,7 +94,7 @@ public class BlockStepCostDisplay : MonoBehaviour
         //}
 
         //If the block is a Stair
-        if (gameObject.GetComponent<BlockInfo>().blockType == BlockType.Stair)
+        if (gameObject.GetComponent<BlockInfo>().blockType == BlockType.Stair && gameObject.GetComponent<BlockInfo>().blockType == BlockType.Slope)
         {
             if (Cameras.Instance.cameraState == CameraState.Forward)
             {

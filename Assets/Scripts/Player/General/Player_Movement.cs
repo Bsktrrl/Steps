@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -25,6 +26,7 @@ public class Player_Movement : Singleton<Player_Movement>
     //Other
     Vector3 endDestination;
     public bool iceGliding;
+    public bool slopeGliding;
 
 
     //--------------------
@@ -42,7 +44,8 @@ public class Player_Movement : Singleton<Player_Movement>
         if (movementStates == MovementStates.Moving /*&& endDestination != (Vector3.zero + (Vector3.up * heightOverBlock))*/
             && !Player_SwiftSwim.Instance.isSwiftSwimming_Up && !Player_SwiftSwim.Instance.isSwiftSwimming_Down
             && !Player_Ascend.Instance.isAscending && !Player_Descend.Instance.isDescending
-            && !Player_Dash.Instance.isDashing)
+            && !Player_Dash.Instance.isDashing
+            && !slopeGliding)
         {
             MovePlayer();
             PlayerHover();
@@ -69,11 +72,13 @@ public class Player_Movement : Singleton<Player_Movement>
     private void OnEnable()
     {
         Action_StepTaken += IceGlide;
+        Action_StepTaken += SlopeGlide;
     }
 
     private void OnDisable()
     {
         Action_StepTaken -= IceGlide;
+        Action_StepTaken -= SlopeGlide;
     }
 
 
@@ -421,6 +426,153 @@ public class Player_Movement : Singleton<Player_Movement>
         }
 
         iceGliding = false;
+    }
+
+    void SlopeGlide()
+    {
+        Player_BlockDetector.Instance.RaycastSetup();
+        Player_BlockDetector.Instance.Update_BlockStandingOn();
+
+        if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope)
+        {
+            slopeGliding = true;
+
+            PlayerStats.Instance.stats.steps_Current += PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
+
+            //Forward - Ladder is rotated 0
+            if (PlayerManager.Instance.block_StandingOn_Current.block.transform.rotation == Quaternion.Euler(0, 0, 0))
+            {
+                if (Cameras.Instance.cameraState == CameraState.Forward)
+                {
+                    if (PlayerManager.Instance.lookingDirection == Vector3.forward)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                    else if (PlayerManager.Instance.lookingDirection == Vector3.back)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InFront, 0);
+                }
+                else if (Cameras.Instance.cameraState == CameraState.Backward)
+                {
+                    if (PlayerManager.Instance.lookingDirection == Vector3.forward)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                    else if (PlayerManager.Instance.lookingDirection == Vector3.back)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InBack, 180);
+                }
+                else if (Cameras.Instance.cameraState == CameraState.Left)
+                {
+                    if (PlayerManager.Instance.lookingDirection == Vector3.forward)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                    else if (PlayerManager.Instance.lookingDirection == Vector3.back)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                }
+                else if (Cameras.Instance.cameraState == CameraState.Right)
+                {
+                    if (PlayerManager.Instance.lookingDirection == Vector3.forward)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                    else if (PlayerManager.Instance.lookingDirection == Vector3.back)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                }
+            }
+
+            //Back - Ladder is rotated 180
+            else if (PlayerManager.Instance.block_StandingOn_Current.block.transform.rotation == Quaternion.Euler(0, 180, 0))
+            {
+                if (Cameras.Instance.cameraState == CameraState.Forward)
+                {
+                    if (PlayerManager.Instance.lookingDirection == Vector3.forward)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InBack, 180);
+                    else if (PlayerManager.Instance.lookingDirection == Vector3.back)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                }
+                else if (Cameras.Instance.cameraState == CameraState.Backward)
+                {
+                    if (PlayerManager.Instance.lookingDirection == Vector3.forward)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InFront, 0);
+                    else if (PlayerManager.Instance.lookingDirection == Vector3.back)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                }
+                else if (Cameras.Instance.cameraState == CameraState.Left)
+                {
+                    if (PlayerManager.Instance.lookingDirection == Vector3.forward)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                    else if (PlayerManager.Instance.lookingDirection == Vector3.back)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                }
+                else if (Cameras.Instance.cameraState == CameraState.Right)
+                {
+                    if (PlayerManager.Instance.lookingDirection == Vector3.forward)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                    else if (PlayerManager.Instance.lookingDirection == Vector3.back)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                }
+            }
+
+            //Left - Ladder is rotated -90
+            else if (PlayerManager.Instance.block_StandingOn_Current.block.transform.rotation == Quaternion.Euler(0, -90, 0))
+            {
+                if (Cameras.Instance.cameraState == CameraState.Forward)
+                {
+                    if (PlayerManager.Instance.lookingDirection == Vector3.left)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                    else if (PlayerManager.Instance.lookingDirection == Vector3.right)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                }
+                else if (Cameras.Instance.cameraState == CameraState.Backward)
+                {
+                    if (PlayerManager.Instance.lookingDirection == Vector3.left)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                    else if (PlayerManager.Instance.lookingDirection == Vector3.right)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                }
+                else if (Cameras.Instance.cameraState == CameraState.Left)
+                {
+                    if (PlayerManager.Instance.lookingDirection == Vector3.left)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                    else if (PlayerManager.Instance.lookingDirection == Vector3.right)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InBack, 180);
+                }
+                else if (Cameras.Instance.cameraState == CameraState.Right)
+                {
+                    if (PlayerManager.Instance.lookingDirection == Vector3.left)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                    else if (PlayerManager.Instance.lookingDirection == Vector3.right)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InFront, 0);
+                }
+            }
+
+            //Right - Ladder is rotated 90
+            else if (PlayerManager.Instance.block_StandingOn_Current.block.transform.rotation == Quaternion.Euler(0, 90, 0))
+            {
+                if (Cameras.Instance.cameraState == CameraState.Forward)
+                {
+                    if (PlayerManager.Instance.lookingDirection == Vector3.left)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheRight, -90);
+                    else if (PlayerManager.Instance.lookingDirection == Vector3.right)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, -90);
+                }
+                else if (Cameras.Instance.cameraState == CameraState.Backward)
+                {
+                    if (PlayerManager.Instance.lookingDirection == Vector3.left)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheLeft, 90);
+                    else if (PlayerManager.Instance.lookingDirection == Vector3.right)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, 90);
+                }
+                else if (Cameras.Instance.cameraState == CameraState.Left)
+                {
+                    if (PlayerManager.Instance.lookingDirection == Vector3.left)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InFront, 180);
+                    else if (PlayerManager.Instance.lookingDirection == Vector3.right)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 180);
+                }
+                else if (Cameras.Instance.cameraState == CameraState.Right)
+                {
+                    if (PlayerManager.Instance.lookingDirection == Vector3.left)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InBack, 0);
+                    else if (PlayerManager.Instance.lookingDirection == Vector3.right)
+                        MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 0);
+                }
+            }
+        }
+
+        slopeGliding = false;
     }
 
 

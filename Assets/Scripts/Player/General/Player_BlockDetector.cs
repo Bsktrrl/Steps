@@ -493,7 +493,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
             if (hit.transform.GetComponent<BlockInfo>())
             {
-                if (hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Cube || hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Stair)
+                if (hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Cube || hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Stair || hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                 {
                     Raycast_Vertical_Hit(rayPointObject, direction);
                 }
@@ -645,15 +645,17 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
             #region On Stair
             //If standing on a Stair, and move into a wall
-            else if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair && blockType_Horizontal.blockType == BlockType.Cube)
+            else if ((PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair && blockType_Horizontal.blockType == BlockType.Cube)
+                || (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope && blockType_Horizontal.blockType == BlockType.Cube))
             {
                 canMove(direction, false);
             }
 
             //If standing on a Stair, and there is possible to move further up it
-            else if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair)
+            else if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair
+                     || PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope)
             {
-                if (blockType_Vertical.blockType == BlockType.Stair || blockType_Vertical.blockType == BlockType.Cube)
+                if (blockType_Vertical.blockType == BlockType.Stair || blockType_Vertical.blockType == BlockType.Slope || blockType_Vertical.blockType == BlockType.Cube)
                 {
                     canMove(direction, true);
                 }
@@ -689,7 +691,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     void UpdateRaycastingFromStair()
     {
-        if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair)
+        if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair || PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope)
         {
             //Front
             if (Physics.Raycast(detectorSpot_Stair_Front.transform.position, Vector3.down, out hit, maxDistance_Stair))
@@ -783,7 +785,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     void UpdateVerticalRaycastLength()
     {
-        if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair)
+        if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair || PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope)
         {
             maxDistance_Vertical = maxDistance_Vertical_Stair;
         }
@@ -793,7 +795,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         }
     }
 
-    void UpdateBlockLookingAt()
+    public void UpdateBlockLookingAt()
     {
         //lookDir_Temp = MainManager.Instance.playerBody.transform.rotation.eulerAngles.y;
         if (PlayerManager.Instance.playerBody.transform.rotation.eulerAngles.y == 0)
