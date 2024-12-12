@@ -391,6 +391,10 @@ public class Player_Movement : Singleton<Player_Movement>
     public void IceGlide()
     {
         Player_BlockDetector.Instance.RaycastSetup();
+
+        if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope) { iceGliding = false; return; }
+
+
         //Player_BlockDetector.Instance.Update_BlockStandingOn();
 
         if (PlayerManager.Instance.block_StandingOn_Current.block)
@@ -437,6 +441,12 @@ public class Player_Movement : Singleton<Player_Movement>
 
         if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope)
         {
+            //If IceGlide is attached to SlopeBock, ignore the slope if player has IceSpikes
+            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_IceGlide>())
+            {
+                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.IceSpikes || PlayerStats.Instance.stats.abilitiesGot_Permanent.IceSpikes) { return; }
+            }
+
             slopeGliding = true;
 
             PlayerStats.Instance.stats.steps_Current += PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
@@ -447,30 +457,54 @@ public class Player_Movement : Singleton<Player_Movement>
                 if (Cameras.Instance.cameraState == CameraState.Forward)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.forward)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                        lastMovementButtonPressed = ButtonsToPress.W;
+                    }
                     else if (PlayerManager.Instance.lookingDirection == Vector3.back)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InFront, 0);
+                        lastMovementButtonPressed = ButtonsToPress.W;
+                    }
                 }
                 else if (Cameras.Instance.cameraState == CameraState.Backward)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.forward)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                        lastMovementButtonPressed = ButtonsToPress.S;
+                    }
                     else if (PlayerManager.Instance.lookingDirection == Vector3.back)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InBack, 180);
+                        lastMovementButtonPressed = ButtonsToPress.S;
+                    }
                 }
                 else if (Cameras.Instance.cameraState == CameraState.Left)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.forward)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                        lastMovementButtonPressed = ButtonsToPress.A;
+                    }
                     else if (PlayerManager.Instance.lookingDirection == Vector3.back)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                        lastMovementButtonPressed = ButtonsToPress.A;
+                    }
                 }
                 else if (Cameras.Instance.cameraState == CameraState.Right)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.forward)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                        lastMovementButtonPressed = ButtonsToPress.D;
+                    }
                     else if (PlayerManager.Instance.lookingDirection == Vector3.back)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                        lastMovementButtonPressed = ButtonsToPress.D;
+                    }
                 }
             }
 
@@ -480,30 +514,54 @@ public class Player_Movement : Singleton<Player_Movement>
                 if (Cameras.Instance.cameraState == CameraState.Forward)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.forward)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InBack, 180);
+                        lastMovementButtonPressed = ButtonsToPress.S;
+                    }
                     else if (PlayerManager.Instance.lookingDirection == Vector3.back)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                        lastMovementButtonPressed = ButtonsToPress.S;
+                    }
                 }
                 else if (Cameras.Instance.cameraState == CameraState.Backward)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.forward)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InFront, 0);
+                        lastMovementButtonPressed = ButtonsToPress.W;
+                    }
                     else if (PlayerManager.Instance.lookingDirection == Vector3.back)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                        lastMovementButtonPressed = ButtonsToPress.W;
+                    }
                 }
                 else if (Cameras.Instance.cameraState == CameraState.Left)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.forward)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                        lastMovementButtonPressed = ButtonsToPress.D;
+                    }
                     else if (PlayerManager.Instance.lookingDirection == Vector3.back)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                        lastMovementButtonPressed = ButtonsToPress.D;
+                    }
                 }
                 else if (Cameras.Instance.cameraState == CameraState.Right)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.forward)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                        lastMovementButtonPressed = ButtonsToPress.A;
+                    }
                     else if (PlayerManager.Instance.lookingDirection == Vector3.back)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                        lastMovementButtonPressed = ButtonsToPress.A;
+                    }
                 }
             }
 
@@ -513,30 +571,54 @@ public class Player_Movement : Singleton<Player_Movement>
                 if (Cameras.Instance.cameraState == CameraState.Forward)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.left)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                        lastMovementButtonPressed = ButtonsToPress.A;
+                    }
                     else if (PlayerManager.Instance.lookingDirection == Vector3.right)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                        lastMovementButtonPressed = ButtonsToPress.A;
+                    }
                 }
                 else if (Cameras.Instance.cameraState == CameraState.Backward)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.left)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                        lastMovementButtonPressed = ButtonsToPress.D;
+                    }
                     else if (PlayerManager.Instance.lookingDirection == Vector3.right)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                        lastMovementButtonPressed = ButtonsToPress.D;
+                    }
                 }
                 else if (Cameras.Instance.cameraState == CameraState.Left)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.left)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                        lastMovementButtonPressed = ButtonsToPress.S;
+                    }
                     else if (PlayerManager.Instance.lookingDirection == Vector3.right)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InBack, 180);
+                        lastMovementButtonPressed = ButtonsToPress.S;
+                    }
                 }
                 else if (Cameras.Instance.cameraState == CameraState.Right)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.left)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                        lastMovementButtonPressed = ButtonsToPress.W;
+                    }
                     else if (PlayerManager.Instance.lookingDirection == Vector3.right)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InFront, 0);
+                        lastMovementButtonPressed = ButtonsToPress.W;
+                    }
                 }
             }
 
@@ -546,30 +628,54 @@ public class Player_Movement : Singleton<Player_Movement>
                 if (Cameras.Instance.cameraState == CameraState.Forward)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.left)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheRight, -90);
+                        lastMovementButtonPressed = ButtonsToPress.D;
+                    }
                     else if (PlayerManager.Instance.lookingDirection == Vector3.right)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, -90);
+                        lastMovementButtonPressed = ButtonsToPress.D;
+                    }
                 }
                 else if (Cameras.Instance.cameraState == CameraState.Backward)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.left)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheLeft, 90);
+                        lastMovementButtonPressed = ButtonsToPress.A;
+                    }
                     else if (PlayerManager.Instance.lookingDirection == Vector3.right)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, 90);
+                        lastMovementButtonPressed = ButtonsToPress.A;
+                    }
                 }
                 else if (Cameras.Instance.cameraState == CameraState.Left)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.left)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InFront, 180);
+                        lastMovementButtonPressed = ButtonsToPress.W;
+                    }
                     else if (PlayerManager.Instance.lookingDirection == Vector3.right)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 180);
+                        lastMovementButtonPressed = ButtonsToPress.W;
+                    }
                 }
                 else if (Cameras.Instance.cameraState == CameraState.Right)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.left)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InBack, 0);
+                        lastMovementButtonPressed = ButtonsToPress.S;
+                    }
                     else if (PlayerManager.Instance.lookingDirection == Vector3.right)
+                    {
                         MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 0);
+                        lastMovementButtonPressed = ButtonsToPress.S;
+                    }
                 }
             }
         }

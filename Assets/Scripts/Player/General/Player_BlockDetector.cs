@@ -698,7 +698,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             {
                 if (PlayerManager.Instance.block_Horizontal_InFront.block == null && PlayerManager.Instance.block_Vertical_InFront.block != null)
                 {
-                    if (PlayerManager.Instance.block_Vertical_InFront.blockType != BlockType.Stair)
+                    if (PlayerManager.Instance.block_Vertical_InFront.blockType != BlockType.Stair && PlayerManager.Instance.block_Vertical_InFront.blockType != BlockType.Slope)
                     {
                         Debug.DrawRay(detectorSpot_Stair_Front.transform.position, Vector3.down * hit.distance, Color.red);
                         PlayerManager.Instance.canMove_Forward = false;
@@ -719,7 +719,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             {
                 if (PlayerManager.Instance.block_Horizontal_InBack.block == null && PlayerManager.Instance.block_Vertical_InBack.block != null)
                 {
-                    if (PlayerManager.Instance.block_Vertical_InBack.blockType != BlockType.Stair)
+                    if (PlayerManager.Instance.block_Vertical_InBack.blockType != BlockType.Stair && PlayerManager.Instance.block_Vertical_InBack.blockType != BlockType.Slope)
                     {
                         Debug.DrawRay(detectorSpot_Stair_Back.transform.position, Vector3.down * hit.distance, Color.red);
                         PlayerManager.Instance.canMove_Back = false;
@@ -740,7 +740,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             {
                 if (PlayerManager.Instance.block_Horizontal_ToTheLeft.block == null && PlayerManager.Instance.block_Vertical_ToTheLeft.block != null)
                 {
-                    if (PlayerManager.Instance.block_Vertical_ToTheLeft.blockType != BlockType.Stair)
+                    if (PlayerManager.Instance.block_Vertical_ToTheLeft.blockType != BlockType.Stair && PlayerManager.Instance.block_Vertical_ToTheLeft.blockType != BlockType.Slope)
                     {
                         Debug.DrawRay(detectorSpot_Stair_Left.transform.position, Vector3.down * hit.distance, Color.red);
                         PlayerManager.Instance.canMove_Left = false;
@@ -761,7 +761,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             {
                 if (PlayerManager.Instance.block_Horizontal_ToTheRight.block == null && PlayerManager.Instance.block_Vertical_ToTheRight.block != null)
                 {
-                    if (PlayerManager.Instance.block_Vertical_ToTheRight.blockType != BlockType.Stair)
+                    if (PlayerManager.Instance.block_Vertical_ToTheRight.blockType != BlockType.Stair && PlayerManager.Instance.block_Vertical_ToTheRight.blockType != BlockType.Slope)
                     {
                         Debug.DrawRay(detectorSpot_Stair_Right.transform.position, Vector3.down * hit.distance, Color.red);
                         PlayerManager.Instance.canMove_Right = false;
