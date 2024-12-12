@@ -10,6 +10,7 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
     [SerializeField] float grapplingDistance = 5;
 
     [Header("Red Dot Object")]
+    [SerializeField] GameObject redDot_Parent;
     [SerializeField] GameObject redDot;
     GameObject redDotSceneObject;
 
@@ -22,6 +23,9 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
 
     Vector3 endDestination;
 
+    [SerializeField] GameObject blockUnderPlayer_Old;
+    [SerializeField] GameObject blockUnderPlayer_New;
+
 
     //--------------------
 
@@ -29,6 +33,7 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
     private void Start()
     {
         redDotSceneObject = Instantiate(redDot);
+        redDotSceneObject.transform.parent = redDot_Parent.transform;
         redDotSceneObject.SetActive(false);
 
         lineRenderer.positionCount = 2;
@@ -49,6 +54,7 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
     public void StartRaycastGrappling()
     {
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { EndLineRenderer(); return; }
+        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) { return; }
 
         UngoingRaycastGrappling();
     }
@@ -62,6 +68,7 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
     public void UngoingRaycastGrappling()
     {
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { EndLineRenderer(); return; }
+        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) { return; }
 
         endPoint = transform.position + (Player_BlockDetector.Instance.lookDir * grapplingDistance) + (-Player_BlockDetector.Instance.lookDir * 0.05f);
 
@@ -114,24 +121,29 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
 
     public bool CheckIfCanGrapple()
     {
-        if (redDotSceneObject.activeInHierarchy)
+        if (PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook || PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook)
         {
-            //Check if the block forward-under the targetBlock can be standing on (Raycast down from hit.point - 0.5 to get the block)
-            if (Physics.Raycast(endPoint + (-Player_BlockDetector.Instance.lookDir * 0.25f), Vector3.down, out hit, 1))
+            if (redDotSceneObject.activeInHierarchy)
             {
-                if (hit.transform.gameObject)
+                //Check if the block forward-under the targetBlock can be standing on (Raycast down from hit.point - 0.5 to get the block)
+                if (Physics.Raycast(endPoint + (-Player_BlockDetector.Instance.lookDir * 0.25f), Vector3.down, out hit, 1))
                 {
-                    if (hit.transform.gameObject.GetComponent<BlockInfo>())
+                    if (hit.transform.gameObject)
                     {
-                        //Set the block forward-under as the target position
-                        endDestination = hit.transform.gameObject.transform.position + (Vector3.up * Player_Movement.Instance.heightOverBlock);
+                        if (hit.transform.gameObject.GetComponent<BlockInfo>())
+                        {
+                            //Set the block forward-under as the target position
+                            endDestination = hit.transform.gameObject.transform.position + (Vector3.up * Player_Movement.Instance.heightOverBlock);
 
-                        return true;
+                            RaycastDown_Old();
+
+                            return true;
+                        }
                     }
                 }
             }
         }
-
+        
         return false;
     }
     public void PerformGrapplingMovement()
@@ -142,10 +154,22 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endDestination, 25 * Time.deltaTime);
 
         //Check if there is new blocks hovering over, to reduce the stepCount by this amount
+        RaycastDown_New();
+        if (blockUnderPlayer_Old != blockUnderPlayer_New && blockUnderPlayer_New.transform.position + (Vector3.up * Player_Movement.Instance.heightOverBlock) != endDestination)
+        {
+            PlayerStats.Instance.stats.steps_Current -= blockUnderPlayer_New.GetComponent<BlockInfo>().movementCost;
+            Player_Movement.Instance.Action_ResetBlockColorInvoke();
+        }
+        RaycastDown_Old();
+
+        //Move the GrapplingLine with the player
+        UngoingRaycastGrappling();
 
         //Snap into place when close enough     
         if (Vector3.Distance(PlayerManager.Instance.player.transform.position, endDestination) <= 0.05f)
         {
+            StopRaycastGrappling();
+
             PlayerManager.Instance.player.transform.position = endDestination;
             Player_Movement.Instance.movementStates = MovementStates.Still;
 
@@ -153,6 +177,34 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
             Player_Movement.Instance.Action_ResetBlockColorInvoke();
 
             isGrapplingHooking = false;
+        }
+    }
+    void RaycastDown_Old()
+    {
+        if (Physics.Raycast(gameObject.transform.position, Vector3.down, out hit, 1))
+        {
+            if (hit.transform.gameObject)
+            {
+                if (hit.transform.gameObject.GetComponent<BlockInfo>())
+                {
+                    blockUnderPlayer_Old = hit.transform.gameObject;
+                    print("1. Hit.name: " + hit.transform.gameObject.name);
+                }
+            }
+        }
+    }
+    void RaycastDown_New()
+    {
+        if (Physics.Raycast(gameObject.transform.position, Vector3.down, out hit, 1))
+        {
+            if (hit.transform.gameObject)
+            {
+                if (hit.transform.gameObject.GetComponent<BlockInfo>())
+                {
+                    blockUnderPlayer_New = hit.transform.gameObject;
+                    print("2. Hit.name: " + hit.transform.gameObject.name);
+                }
+            }
         }
     }
 }

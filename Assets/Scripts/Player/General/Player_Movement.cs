@@ -121,6 +121,27 @@ public class Player_Movement : Singleton<Player_Movement>
         //--------------------
 
 
+        //Grappling Hook
+        else if (Input.GetKey(KeyCode.F) && Input.GetKeyDown(KeyCode.C))
+        {
+            if (Player_GraplingHook.Instance.CheckIfCanGrapple())
+            {
+                Player_GraplingHook.Instance.PerformGrapplingMovement();
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.F))
+        {
+            Player_GraplingHook.Instance.StartRaycastGrappling();
+        }
+        else if (Input.GetKey(KeyCode.F))
+        {
+            Player_GraplingHook.Instance.UngoingRaycastGrappling();
+        }
+        else if (Input.GetKeyUp(KeyCode.F))
+        {
+            Player_GraplingHook.Instance.StopRaycastGrappling();
+        }
+
         //If pressing - UP - ASCEND
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
@@ -144,27 +165,6 @@ public class Player_Movement : Singleton<Player_Movement>
             {
                 gameObject.GetComponent<Player_Descend>().Descend();
             }
-        }
-
-        //Grappling Hook
-        else if (Input.GetKey(KeyCode.G) && Input.GetKeyDown(KeyCode.Space))
-        {
-            if (Player_GraplingHook.Instance.CheckIfCanGrapple())
-            {
-                Player_GraplingHook.Instance.PerformGrapplingMovement();
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.G))
-        {
-            Player_GraplingHook.Instance.StartRaycastGrappling();
-        }
-        else if (Input.GetKey(KeyCode.G))
-        {
-            Player_GraplingHook.Instance.UngoingRaycastGrappling();
-        }
-        else if (Input.GetKeyUp(KeyCode.G))
-        {
-            Player_GraplingHook.Instance.StopRaycastGrappling();
         }
 
         //If pressing - Dash - Space
