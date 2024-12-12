@@ -430,6 +430,8 @@ public class Player_Movement : Singleton<Player_Movement>
 
     void SlopeGlide()
     {
+        if (PlayerStats.Instance.stats.abilitiesGot_Temporary.HikerGear || PlayerStats.Instance.stats.abilitiesGot_Permanent.HikerGear) { return; }
+
         Player_BlockDetector.Instance.RaycastSetup();
         Player_BlockDetector.Instance.Update_BlockStandingOn();
 
