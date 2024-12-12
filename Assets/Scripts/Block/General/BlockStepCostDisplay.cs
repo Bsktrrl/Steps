@@ -94,7 +94,7 @@ public class BlockStepCostDisplay : MonoBehaviour
         //}
 
         //If the block is a Stair
-        if (gameObject.GetComponent<BlockInfo>().blockType == BlockType.Stair && gameObject.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+        if (gameObject.GetComponent<BlockInfo>().blockType == BlockType.Stair || gameObject.GetComponent<BlockInfo>().blockType == BlockType.Slope)
         {
             if (Cameras.Instance.cameraState == CameraState.Forward)
             {
