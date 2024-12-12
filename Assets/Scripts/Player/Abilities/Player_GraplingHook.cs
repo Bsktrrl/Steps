@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Timeline;
 
@@ -63,6 +64,8 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { EndLineRenderer(); return; }
 
         EndLineRenderer();
+        ResetRaycastBlockUnder();
+
         redDotSceneObject.SetActive(false);
     }
     public void UngoingRaycastGrappling()
@@ -159,6 +162,18 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
         {
             PlayerStats.Instance.stats.steps_Current -= blockUnderPlayer_New.GetComponent<BlockInfo>().movementCost;
             Player_Movement.Instance.Action_ResetBlockColorInvoke();
+
+            //If steps is < 0
+            if (PlayerStats.Instance.stats.steps_Current < 0)
+            {
+                PlayerStats.Instance.stats.steps_Current = 0;
+
+                StopRaycastGrappling();
+                isGrapplingHooking = false;
+                Player_Movement.Instance.movementStates = MovementStates.Still;
+
+                PlayerStats.Instance.RespawnPlayer();
+            }
         }
         RaycastDown_Old();
 
@@ -206,5 +221,10 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
                 }
             }
         }
+    }
+    void ResetRaycastBlockUnder()
+    {
+        blockUnderPlayer_Old = null;
+        blockUnderPlayer_New = null;
     }
 }
