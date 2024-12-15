@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player_Movement : Singleton<Player_Movement>
 {
@@ -27,6 +28,16 @@ public class Player_Movement : Singleton<Player_Movement>
     Vector3 endDestination;
     public bool iceGliding;
     public bool slopeGliding;
+    public bool isOnLadder;
+
+    [Header("Ladder Movement parameters")]
+    public GameObject ladderSteppedOn;
+    public bool ladderMovement;
+    public bool ladderMovement_Top;
+    public bool ladderMovement_ToBlock;
+    public Vector3 ladderTop_EndPos;
+    [SerializeField] GameObject ladderToApproach_Current;
+    GameObject ladder_Top;
 
 
     //--------------------
@@ -45,7 +56,7 @@ public class Player_Movement : Singleton<Player_Movement>
             && !Player_SwiftSwim.Instance.isSwiftSwimming_Up && !Player_SwiftSwim.Instance.isSwiftSwimming_Down
             && !Player_Ascend.Instance.isAscending && !Player_Descend.Instance.isDescending
             && !Player_Dash.Instance.isDashing
-            && !slopeGliding)
+            && !slopeGliding && !ladderMovement)
         {
             MovePlayer();
             PlayerHover();
@@ -57,6 +68,22 @@ public class Player_Movement : Singleton<Player_Movement>
         else if (Player_Ascend.Instance.isAscending || Player_Descend.Instance.isDescending)
         {
 
+        }
+        else if (ladderMovement_ToBlock)
+        {
+            LadderMovement_ToBlock();
+        }
+        else if (isOnLadder && ladderMovement_Top)
+        {
+            LadderMovement_Top();
+        }
+        else if (isOnLadder && ladderMovement)
+        {
+            LadderMovement(ladderToApproach_Current);
+        }
+        else if (isOnLadder)
+        {
+            
         }
         else
         {
@@ -93,33 +120,80 @@ public class Player_Movement : Singleton<Player_Movement>
         if (Cameras.Instance.isRotating) { return; }
         if (Player_Interact.Instance.isInteracting) { return; }
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return; }
+        if (ladderMovement) { return; }
+        if (ladderMovement_Top) { return; }
+
 
         //If pressing UP - Movement
         if (Input.GetKey(KeyCode.W))
         {
-            lastMovementButtonPressed = ButtonsToPress.W;
-            MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+            if (isOnLadder && Cameras.Instance.cameraState == CameraState.Forward && !PlayerManager.Instance.canMove_Forward)
+            {
+                MovePlayerOnLadder_UP();
+            }
+            else if (isOnLadder && Cameras.Instance.cameraState == CameraState.Backward && !PlayerManager.Instance.canMove_Back)
+            {
+                MovePlayerOnLadder_DOWN();
+            }
+            else
+            {
+                lastMovementButtonPressed = ButtonsToPress.W;
+                MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+            }
         }
 
         //If pressing DOWN - Movement
         else if (Input.GetKey(KeyCode.S))
         {
-            lastMovementButtonPressed = ButtonsToPress.S;
-            MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+            if (isOnLadder && Cameras.Instance.cameraState == CameraState.Backward && !PlayerManager.Instance.canMove_Back)
+            {
+                MovePlayerOnLadder_UP();
+            }
+            else if (isOnLadder && Cameras.Instance.cameraState == CameraState.Forward && !PlayerManager.Instance.canMove_Forward)
+            {
+                MovePlayerOnLadder_DOWN();
+            }
+            else
+            {
+                lastMovementButtonPressed = ButtonsToPress.S;
+                MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+            }
         }
 
         //If pressing LEFT - Movement
         else if (Input.GetKey(KeyCode.A))
         {
-            lastMovementButtonPressed = ButtonsToPress.A;
-            MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+            if (isOnLadder && Cameras.Instance.cameraState == CameraState.Left && !PlayerManager.Instance.canMove_Left)
+            {
+                MovePlayerOnLadder_UP();
+            }
+            else if (isOnLadder && Cameras.Instance.cameraState == CameraState.Right && !PlayerManager.Instance.canMove_Right)
+            {
+                MovePlayerOnLadder_DOWN();
+            }
+            else
+            {
+                lastMovementButtonPressed = ButtonsToPress.A;
+                MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+            }
         }
 
         //If pressing RIGHT - Movement
         else if (Input.GetKey(KeyCode.D))
         {
-            lastMovementButtonPressed = ButtonsToPress.D;
-            MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+            if (isOnLadder && Cameras.Instance.cameraState == CameraState.Right && !PlayerManager.Instance.canMove_Right)
+            {
+                MovePlayerOnLadder_UP();
+            }
+            else if (isOnLadder && Cameras.Instance.cameraState == CameraState.Left && !PlayerManager.Instance.canMove_Left)
+            {
+                MovePlayerOnLadder_DOWN();
+            }
+            else
+            {
+                lastMovementButtonPressed = ButtonsToPress.D;
+                MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+            }
         }
 
 
@@ -327,7 +401,6 @@ public class Player_Movement : Singleton<Player_Movement>
                             PlayerManager.Instance.player.transform.position = Vector3.MoveTowards(PlayerManager.Instance.player.transform.position, endDestination, (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementSpeed / 2) * Time.deltaTime);
                         else
                             PlayerManager.Instance.player.transform.position = Vector3.MoveTowards(PlayerManager.Instance.player.transform.position, endDestination, PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementSpeed * Time.deltaTime);
-
                     }
                 }
                 else
@@ -340,7 +413,6 @@ public class Player_Movement : Singleton<Player_Movement>
                             PlayerManager.Instance.player.transform.position = Vector3.MoveTowards(PlayerManager.Instance.player.transform.position, endDestination, (PlayerManager.Instance.block_MovingTowards.block.GetComponent<BlockInfo>().movementSpeed / 2) * Time.deltaTime);
                         else
                             PlayerManager.Instance.player.transform.position = Vector3.MoveTowards(PlayerManager.Instance.player.transform.position, endDestination, PlayerManager.Instance.block_MovingTowards.block.GetComponent<BlockInfo>().movementSpeed * Time.deltaTime);
-
                     }
                 }
             }
@@ -360,6 +432,95 @@ public class Player_Movement : Singleton<Player_Movement>
             PlayerManager.Instance.player.transform.position = endDestination;
             movementStates = MovementStates.Still;
 
+            Action_StepTakenInvoke();
+        }
+    }
+    void MovePlayerOnLadder_UP()
+    {
+        if (ladderMovement) { return; }
+
+        print("1. MovePlayerOnLadder_UP");
+
+        if (ladderSteppedOn)
+        {
+            if (ladderSteppedOn.GetComponent<Block_Ladder>().ladder_Over)
+            {
+                print("2. MovePlayerOnLadder_UP");
+                ladderToApproach_Current = ladderSteppedOn.GetComponent<Block_Ladder>().ladder_Over;
+                ladderMovement = true;
+            }
+            else
+            {
+                print("3. MovePlayerOnLadder_UP");
+                ladder_Top = ladderSteppedOn;
+                ladderMovement_Top = true;
+                LadderMovement_Top();
+            }
+        }
+    }
+    void MovePlayerOnLadder_DOWN()
+    {
+        if (ladderMovement) { return; }
+
+        print("1. MovePlayerOnLadder_UP");
+
+        if (ladderSteppedOn.GetComponent<Block_Ladder>().ladder_Under)
+        {
+            print("1. MovePlayerOnLadder_UP");
+            ladderToApproach_Current = ladderSteppedOn.GetComponent<Block_Ladder>().ladder_Under;
+            ladderMovement = true;
+        }
+    }
+    void LadderMovement(GameObject ladder)
+    {
+        if (ladder == null) { return; }
+
+        print("1. LadderMovement");
+
+        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, ladder.transform.position + (Vector3.up * heightOverBlock), ladder.GetComponent<BlockInfo>().movementSpeed * Time.deltaTime);
+
+        //Snap into place when close enough
+        if (Vector3.Distance(gameObject.transform.position, ladder.transform.position) <= 0.03f)
+        {
+            print("2. LadderMovement");
+
+            PlayerManager.Instance.player.transform.position = ladder.transform.position;
+
+            ladderMovement = false;
+
+            Action_StepTakenInvoke();
+        }
+    }
+    void LadderMovement_Top()
+    {
+        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, ladder_Top.transform.position + (Vector3.up * heightOverBlock), ladder_Top.GetComponent<BlockInfo>().movementSpeed * Time.deltaTime);
+
+        //Snap into place when close enough
+        if (Vector3.Distance(gameObject.transform.position, ladder_Top.transform.position + (Vector3.up * heightOverBlock)) <= 0.03f)
+        {
+            print("2. LadderMovement");
+
+            PlayerManager.Instance.player.transform.position = ladder_Top.transform.position + (Vector3.up * heightOverBlock);
+
+            ladderTop_EndPos = ladder_Top.transform.position + (Vector3.up * heightOverBlock) + Vector3.forward;
+
+            ladderMovement_Top = false;
+            ladderMovement_ToBlock = true;
+        }
+    }
+    void LadderMovement_ToBlock()
+    {
+        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, ladderTop_EndPos, 5 * Time.deltaTime);
+
+        //Snap into place when close enough
+        if (Vector3.Distance(gameObject.transform.position, ladderTop_EndPos) <= 0.03f)
+        {
+            print("3. LadderMovement");
+
+            PlayerManager.Instance.player.transform.position = ladderTop_EndPos;
+
+            ladderMovement_ToBlock = false;
+            isOnLadder = false;
             Action_StepTakenInvoke();
         }
     }

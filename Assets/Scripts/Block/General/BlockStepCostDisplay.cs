@@ -84,14 +84,7 @@ public class BlockStepCostDisplay : MonoBehaviour
 
     public void UpdateRotation()
     {
-        //Only rotate available blocks
-        //for (int i = 0; i < gameObject.GetComponent<BlockInfo>().propertyBlocks.Count; i++)
-        //{
-        //    if (gameObject.GetComponent<BlockInfo>().propertyBlocks[i].GetColor("_BaseColor") != Color.white * BlockManager.Instance.materialDarkeningValue)
-        //    {
-        //        return;
-        //    }
-        //}
+        if (gameObject.GetComponent<BlockInfo>().blockType == BlockType.Ladder) { return; }
 
         //If the block is a Stair
         if (gameObject.GetComponent<BlockInfo>().blockType == BlockType.Stair || gameObject.GetComponent<BlockInfo>().blockType == BlockType.Slope)
