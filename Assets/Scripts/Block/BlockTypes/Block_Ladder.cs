@@ -47,6 +47,54 @@ public class Block_Ladder : MonoBehaviour
     {
         if (other.gameObject == PlayerManager.Instance.player)
         {
+            //Rotate the player to face inwards to the ladder
+            switch (Cameras.Instance.cameraState)
+            {
+                case CameraState.Forward:
+                    if (transform.rotation.y == Quaternion.Euler(0, 0, 0).y)
+                        Player_Movement.Instance.SetPlayerBodyRotation(0);
+                    else if (transform.rotation.y == Quaternion.Euler(0, 180, 0).y)
+                        Player_Movement.Instance.SetPlayerBodyRotation(180);
+                    else if(transform.rotation.y == Quaternion.Euler(0, 90, 0).y)
+                        Player_Movement.Instance.SetPlayerBodyRotation(90);
+                    else if(transform.rotation.y == Quaternion.Euler(0, -90, 0).y)
+                        Player_Movement.Instance.SetPlayerBodyRotation(-90);
+                    break;
+                case CameraState.Backward:
+                    if (transform.rotation.y == Quaternion.Euler(0, 0, 0).y)
+                        Player_Movement.Instance.SetPlayerBodyRotation(180);
+                    else if (transform.rotation.y == Quaternion.Euler(0, 180, 0).y)
+                        Player_Movement.Instance.SetPlayerBodyRotation(0);
+                    else if (transform.rotation.y == Quaternion.Euler(0, 90, 0).y)
+                        Player_Movement.Instance.SetPlayerBodyRotation(-90);
+                    else if (transform.rotation.y == Quaternion.Euler(0, -90, 0).y)
+                        Player_Movement.Instance.SetPlayerBodyRotation(90);
+                    break;
+                case CameraState.Left:
+                    if (transform.rotation.y == Quaternion.Euler(0, 0, 0).y)
+                        Player_Movement.Instance.SetPlayerBodyRotation(-90);
+                    else if (transform.rotation.y == Quaternion.Euler(0, 180, 0).y)
+                        Player_Movement.Instance.SetPlayerBodyRotation(90);
+                    else if (transform.rotation.y == Quaternion.Euler(0, 90, 0).y)
+                        Player_Movement.Instance.SetPlayerBodyRotation(0);
+                    else if (transform.rotation.y == Quaternion.Euler(0, -90, 0).y)
+                        Player_Movement.Instance.SetPlayerBodyRotation(180);
+                    break;
+                case CameraState.Right:
+                    if (transform.rotation.y == Quaternion.Euler(0, 0, 0).y)
+                        Player_Movement.Instance.SetPlayerBodyRotation(90);
+                    else if (transform.rotation.y == Quaternion.Euler(0, 180, 0).y)
+                        Player_Movement.Instance.SetPlayerBodyRotation(-90);
+                    else if (transform.rotation.y == Quaternion.Euler(0, 90, 0).y)
+                        Player_Movement.Instance.SetPlayerBodyRotation(180);
+                    else if (transform.rotation.y == Quaternion.Euler(0, -90, 0).y)
+                        Player_Movement.Instance.SetPlayerBodyRotation(0);
+                    break;
+
+                default:
+                    break;
+            }
+
             //print("1. Player has entered Ladder");
 
             if (ladder_Over)

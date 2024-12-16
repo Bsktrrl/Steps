@@ -132,6 +132,7 @@ public class Cameras : Singleton<Cameras>
         if (Player_Interact.Instance.isInteracting) { return; }
         if (Player_Movement.Instance.iceGliding) { return; }
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (Player_Movement.Instance.ladderMovement_Top_ToBlock) { return; }
 
         //Rotate Camera
         if (Input.GetKeyDown(KeyCode.Q))
