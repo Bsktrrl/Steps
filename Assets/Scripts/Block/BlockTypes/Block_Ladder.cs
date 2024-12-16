@@ -51,43 +51,43 @@ public class Block_Ladder : MonoBehaviour
             switch (Cameras.Instance.cameraState)
             {
                 case CameraState.Forward:
-                    if (transform.rotation.y == Quaternion.Euler(0, 0, 0).y)
+                    if (transform.rotation.eulerAngles.y == 0)
                         Player_Movement.Instance.SetPlayerBodyRotation(0);
-                    else if (transform.rotation.y == Quaternion.Euler(0, 180, 0).y)
+                    else if (transform.rotation.eulerAngles.y == 180)
                         Player_Movement.Instance.SetPlayerBodyRotation(180);
-                    else if(transform.rotation.y == Quaternion.Euler(0, 90, 0).y)
+                    else if(transform.rotation.eulerAngles.y == 90)
                         Player_Movement.Instance.SetPlayerBodyRotation(90);
-                    else if(transform.rotation.y == Quaternion.Euler(0, -90, 0).y)
+                    else if(transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
                         Player_Movement.Instance.SetPlayerBodyRotation(-90);
                     break;
                 case CameraState.Backward:
-                    if (transform.rotation.y == Quaternion.Euler(0, 0, 0).y)
+                    if (transform.rotation.eulerAngles.y == 0)
                         Player_Movement.Instance.SetPlayerBodyRotation(180);
-                    else if (transform.rotation.y == Quaternion.Euler(0, 180, 0).y)
+                    else if (transform.rotation.eulerAngles.y == 180)
                         Player_Movement.Instance.SetPlayerBodyRotation(0);
-                    else if (transform.rotation.y == Quaternion.Euler(0, 90, 0).y)
+                    else if (transform.rotation.eulerAngles.y == 90)
                         Player_Movement.Instance.SetPlayerBodyRotation(-90);
-                    else if (transform.rotation.y == Quaternion.Euler(0, -90, 0).y)
+                    else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
                         Player_Movement.Instance.SetPlayerBodyRotation(90);
                     break;
                 case CameraState.Left:
-                    if (transform.rotation.y == Quaternion.Euler(0, 0, 0).y)
+                    if (transform.rotation.eulerAngles.y == 0)
                         Player_Movement.Instance.SetPlayerBodyRotation(-90);
-                    else if (transform.rotation.y == Quaternion.Euler(0, 180, 0).y)
+                    else if (transform.rotation.eulerAngles.y == 180)
                         Player_Movement.Instance.SetPlayerBodyRotation(90);
-                    else if (transform.rotation.y == Quaternion.Euler(0, 90, 0).y)
+                    else if (transform.rotation.eulerAngles.y == 90)
                         Player_Movement.Instance.SetPlayerBodyRotation(0);
-                    else if (transform.rotation.y == Quaternion.Euler(0, -90, 0).y)
+                    else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
                         Player_Movement.Instance.SetPlayerBodyRotation(180);
                     break;
                 case CameraState.Right:
-                    if (transform.rotation.y == Quaternion.Euler(0, 0, 0).y)
+                    if (transform.rotation.eulerAngles.y == 0)
                         Player_Movement.Instance.SetPlayerBodyRotation(90);
-                    else if (transform.rotation.y == Quaternion.Euler(0, 180, 0).y)
+                    else if (transform.rotation.eulerAngles.y == 180)
                         Player_Movement.Instance.SetPlayerBodyRotation(-90);
-                    else if (transform.rotation.y == Quaternion.Euler(0, 90, 0).y)
+                    else if (transform.rotation.eulerAngles.y == 90)
                         Player_Movement.Instance.SetPlayerBodyRotation(180);
-                    else if (transform.rotation.y == Quaternion.Euler(0, -90, 0).y)
+                    else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
                         Player_Movement.Instance.SetPlayerBodyRotation(0);
                     break;
 
