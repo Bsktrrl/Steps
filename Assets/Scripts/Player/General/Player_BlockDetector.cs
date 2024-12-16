@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Player_BlockDetector : Singleton<Player_BlockDetector>
@@ -493,13 +494,44 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
             if (hit.transform.GetComponent<BlockInfo>())
             {
-                if (hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Cube || hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Stair || hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                if (hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Ladder)
                 {
                     Raycast_Vertical_Hit(rayPointObject, direction);
+
+                    //if (direction == Vector3.forward)
+                    //    Player_Movement.Instance.isOnLadder_Forward = true;
+                    //else if (direction == Vector3.back)
+                    //    Player_Movement.Instance.isOnLadder_Back = true;
+                    //else if (direction == Vector3.left)
+                    //    Player_Movement.Instance.isOnLadder_Left = true;
+                    //else if (direction == Vector3.right)
+                    //    Player_Movement.Instance.isOnLadder_Right = true;
+                }
+                else if (hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Cube || hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Stair || hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                {
+                    Raycast_Vertical_Hit(rayPointObject, direction);
+
+                    //if (direction == Vector3.forward)
+                    //    Player_Movement.Instance.isOnLadder_Forward = false;
+                    //else if (direction == Vector3.back)
+                    //    Player_Movement.Instance.isOnLadder_Back = false;
+                    //else if (direction == Vector3.left)
+                    //    Player_Movement.Instance.isOnLadder_Left = false;
+                    //else if (direction == Vector3.right)
+                    //    Player_Movement.Instance.isOnLadder_Right = false;
                 }
                 else
                 {
                     Raycast_Vertical_NotHit(rayPointObject, direction);
+
+                    //if (direction == Vector3.forward)
+                    //    Player_Movement.Instance.isOnLadder_Forward = false;
+                    //else if (direction == Vector3.back)
+                    //    Player_Movement.Instance.isOnLadder_Back = false;
+                    //else if (direction == Vector3.left)
+                    //    Player_Movement.Instance.isOnLadder_Left = false;
+                    //else if (direction == Vector3.right)
+                    //    Player_Movement.Instance.isOnLadder_Right = false;
                 }
             }
         }

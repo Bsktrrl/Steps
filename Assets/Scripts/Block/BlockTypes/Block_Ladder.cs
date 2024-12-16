@@ -47,7 +47,7 @@ public class Block_Ladder : MonoBehaviour
     {
         if (other.gameObject == PlayerManager.Instance.player)
         {
-            print("1. Player has entered Ladder");
+            //print("1. Player has entered Ladder");
 
             if (ladder_Over)
             {
@@ -55,6 +55,7 @@ public class Block_Ladder : MonoBehaviour
                 ladder_Over.GetComponent<BlockInfo>().DarkenColors();
                 Player_Movement.Instance.isOnLadder = true;
             }
+
             if (ladder_Under)
             {
                 ladder_Under.GetComponent<BlockStepCostDisplay>().ShowDisplay();
@@ -62,21 +63,32 @@ public class Block_Ladder : MonoBehaviour
                 Player_Movement.Instance.isOnLadder = true;
             }
 
-            Player_Movement.Instance.ladderSteppedOn = gameObject;
+            if (!Player_Movement.Instance.ladderMovement_Top && !Player_Movement.Instance.ladderMovement_Down_ToBlock && Player_Movement.Instance.isOnLadder)
+            {
+                if (!ladder_Over && !Player_Movement.Instance.ladderSteppedOn
+                    && !Player_Movement.Instance.ladderMovement_Top_ToBlock && !Player_Movement.Instance.ladderMovement_Up)
+                {
+                    Player_Movement.Instance.ladderToApproach_Current = gameObject;
+                    Player_Movement.Instance.ladderMovement_Down_ToBlock = true;
+                }
+
+                Player_Movement.Instance.ladderSteppedOn = gameObject;
+            }
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject == PlayerManager.Instance.player)
         {
-            print("2. Player has exited Ladder");
+            //print("2. Player has exited Ladder");
 
             if (ladder_Over)
             {
                 ladder_Over.GetComponent<BlockStepCostDisplay>().HideDisplay();
                 ladder_Over.GetComponent<BlockInfo>().ResetColor();
 
-                if (!Player_Movement.Instance.ladderMovement && !Player_Movement.Instance.ladderMovement_Top && !Player_Movement.Instance.ladderMovement_ToBlock)
+                if (!Player_Movement.Instance.ladderMovement_Up && !Player_Movement.Instance.ladderMovement_Top && !Player_Movement.Instance.ladderMovement_Top_ToBlock
+                    && !Player_Movement.Instance.ladderMovement_Down)
                 {
                     Player_Movement.Instance.isOnLadder = false;
                     Player_Movement.Instance.ladderSteppedOn = null;
@@ -87,7 +99,8 @@ public class Block_Ladder : MonoBehaviour
                 ladder_Under.GetComponent<BlockStepCostDisplay>().HideDisplay();
                 ladder_Under.GetComponent<BlockInfo>().ResetColor();
 
-                if (!Player_Movement.Instance.ladderMovement && !Player_Movement.Instance.ladderMovement_Top && !Player_Movement.Instance.ladderMovement_ToBlock)
+                if (!Player_Movement.Instance.ladderMovement_Up && !Player_Movement.Instance.ladderMovement_Top && !Player_Movement.Instance.ladderMovement_Top_ToBlock
+                    && !Player_Movement.Instance.ladderMovement_Down)
                 {
                     Player_Movement.Instance.isOnLadder = false;
                     Player_Movement.Instance.ladderSteppedOn = null;
