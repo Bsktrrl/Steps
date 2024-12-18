@@ -164,6 +164,8 @@ public class Player_Movement : Singleton<Player_Movement>
                     MovePlayerOnLadder_UP();
                 else if (Cameras.Instance.cameraState == CameraState.Backward && !PlayerManager.Instance.canMove_Back)
                     MovePlayerOnLadder_DOWN();
+                else if (Ladder_Down_MoveAway())
+                    BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
             }
             else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 180)
             {
@@ -171,6 +173,8 @@ public class Player_Movement : Singleton<Player_Movement>
                     MovePlayerOnLadder_UP();
                 else if (Cameras.Instance.cameraState == CameraState.Forward && !PlayerManager.Instance.canMove_Back)
                     MovePlayerOnLadder_DOWN();
+                else if (Ladder_Down_MoveAway())
+                    BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
             }
             else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 90)
             {
@@ -178,6 +182,8 @@ public class Player_Movement : Singleton<Player_Movement>
                     MovePlayerOnLadder_UP();
                 else if (Cameras.Instance.cameraState == CameraState.Right && !PlayerManager.Instance.canMove_Back)
                     MovePlayerOnLadder_DOWN();
+                else if (Ladder_Down_MoveAway())
+                    BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
             }
             else if (isOnLadder && (ladderSteppedOn.transform.rotation.eulerAngles.y == -90 || ladderSteppedOn.transform.rotation.eulerAngles.y == 270))
             {
@@ -185,13 +191,14 @@ public class Player_Movement : Singleton<Player_Movement>
                     MovePlayerOnLadder_UP();
                 else if (Cameras.Instance.cameraState == CameraState.Left && !PlayerManager.Instance.canMove_Back)
                     MovePlayerOnLadder_DOWN();
+                else if (Ladder_Down_MoveAway())
+                    BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
             }
 
             //Normal Forward Press
             else
             {
-                lastMovementButtonPressed = ButtonsToPress.W;
-                MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
             }
         }
 
@@ -205,6 +212,8 @@ public class Player_Movement : Singleton<Player_Movement>
                     MovePlayerOnLadder_DOWN();
                 else if (Cameras.Instance.cameraState == CameraState.Backward && !PlayerManager.Instance.canMove_Back)
                     MovePlayerOnLadder_UP();
+                else if (Ladder_Down_MoveAway())
+                    BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
             }
             else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 180)
             {
@@ -212,6 +221,8 @@ public class Player_Movement : Singleton<Player_Movement>
                     MovePlayerOnLadder_DOWN();
                 else if (Cameras.Instance.cameraState == CameraState.Forward && !PlayerManager.Instance.canMove_Back)
                     MovePlayerOnLadder_UP();
+                else if (Ladder_Down_MoveAway())
+                    BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
             }
             else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 90)
             {
@@ -219,6 +230,8 @@ public class Player_Movement : Singleton<Player_Movement>
                     MovePlayerOnLadder_DOWN();
                 else if (Cameras.Instance.cameraState == CameraState.Right && !PlayerManager.Instance.canMove_Back)
                     MovePlayerOnLadder_UP();
+                else if (Ladder_Down_MoveAway())
+                    BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
             }
             else if (isOnLadder && (ladderSteppedOn.transform.rotation.eulerAngles.y == -90 || ladderSteppedOn.transform.rotation.eulerAngles.y == 270))
             {
@@ -226,13 +239,14 @@ public class Player_Movement : Singleton<Player_Movement>
                     MovePlayerOnLadder_DOWN();
                 else if (Cameras.Instance.cameraState == CameraState.Left && !PlayerManager.Instance.canMove_Back)
                     MovePlayerOnLadder_UP();
+                else if (Ladder_Down_MoveAway())
+                    BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
             }
 
             //Normal Backward Press
             else
             {
-                lastMovementButtonPressed = ButtonsToPress.S;
-                MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
             }
         }
 
@@ -246,6 +260,8 @@ public class Player_Movement : Singleton<Player_Movement>
                     MovePlayerOnLadder_UP();
                 else if (Cameras.Instance.cameraState == CameraState.Right && !PlayerManager.Instance.canMove_Right)
                     MovePlayerOnLadder_DOWN();
+                else if (Ladder_Down_MoveAway())
+                    BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
             }
             else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 180)
             {
@@ -253,6 +269,8 @@ public class Player_Movement : Singleton<Player_Movement>
                     MovePlayerOnLadder_UP();
                 else if (Cameras.Instance.cameraState == CameraState.Left && !PlayerManager.Instance.canMove_Right)
                     MovePlayerOnLadder_DOWN();
+                else if (Ladder_Down_MoveAway())
+                    BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
             }
             else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 90)
             {
@@ -260,6 +278,8 @@ public class Player_Movement : Singleton<Player_Movement>
                     MovePlayerOnLadder_UP();
                 else if (Cameras.Instance.cameraState == CameraState.Forward && !PlayerManager.Instance.canMove_Right)
                     MovePlayerOnLadder_DOWN();
+                else if (Ladder_Down_MoveAway())
+                    BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
             }
             else if (isOnLadder && (ladderSteppedOn.transform.rotation.eulerAngles.y == -90 || ladderSteppedOn.transform.rotation.eulerAngles.y == 270))
             {
@@ -267,12 +287,13 @@ public class Player_Movement : Singleton<Player_Movement>
                     MovePlayerOnLadder_UP();
                 else if (Cameras.Instance.cameraState == CameraState.Backward && !PlayerManager.Instance.canMove_Right)
                     MovePlayerOnLadder_DOWN();
+                else if (Ladder_Down_MoveAway())
+                    BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
             }
 
             else
             {
-                lastMovementButtonPressed = ButtonsToPress.A;
-                MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
             }
         }
 
@@ -286,6 +307,8 @@ public class Player_Movement : Singleton<Player_Movement>
                     MovePlayerOnLadder_DOWN();
                 else if (Cameras.Instance.cameraState == CameraState.Right && !PlayerManager.Instance.canMove_Right)
                     MovePlayerOnLadder_UP();
+                else if (Ladder_Down_MoveAway())
+                    BypassIsOnLadder(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
             }
             else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 180)
             {
@@ -293,6 +316,8 @@ public class Player_Movement : Singleton<Player_Movement>
                     MovePlayerOnLadder_DOWN();
                 else if (Cameras.Instance.cameraState == CameraState.Left && !PlayerManager.Instance.canMove_Right)
                     MovePlayerOnLadder_UP();
+                else if (Ladder_Down_MoveAway())
+                    BypassIsOnLadder(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
             }
             else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 90)
             {
@@ -300,6 +325,8 @@ public class Player_Movement : Singleton<Player_Movement>
                     MovePlayerOnLadder_DOWN();
                 else if (Cameras.Instance.cameraState == CameraState.Forward && !PlayerManager.Instance.canMove_Right)
                     MovePlayerOnLadder_UP();
+                else if (Ladder_Down_MoveAway())
+                    BypassIsOnLadder(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
             }
             else if (isOnLadder && (ladderSteppedOn.transform.rotation.eulerAngles.y == -90 || ladderSteppedOn.transform.rotation.eulerAngles.y == 270))
             {
@@ -307,12 +334,13 @@ public class Player_Movement : Singleton<Player_Movement>
                     MovePlayerOnLadder_DOWN();
                 else if (Cameras.Instance.cameraState == CameraState.Backward && !PlayerManager.Instance.canMove_Right)
                     MovePlayerOnLadder_UP();
+                else if (Ladder_Down_MoveAway())
+                    BypassIsOnLadder(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
             }
 
             else
             {
-                lastMovementButtonPressed = ButtonsToPress.D;
-                MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                BypassIsOnLadder(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
             }
         }
 
@@ -400,6 +428,11 @@ public class Player_Movement : Singleton<Player_Movement>
             QuitLevel();
         }
     }
+    void BypassIsOnLadder(ButtonsToPress button, bool canMove, DetectedBlockInfo detectedBlock, int rotation)
+    {
+        lastMovementButtonPressed = button;
+        MovementKeyIsPressed(canMove, detectedBlock, rotation);
+    }
     void MovementKeyIsPressed(bool canMove, DetectedBlockInfo block_Vertical, int rotation)
     {
         if (block_Vertical.block)
@@ -444,7 +477,7 @@ public class Player_Movement : Singleton<Player_Movement>
     }
     public void SetPlayerBodyRotation(int rotationValue)
     {
-        if (isOnLadder) { return; }
+        if (isOnLadder && !Ladder_Down_MoveAway()) { return; }
 
         //Set new Rotation - Based on the key input
         switch (Cameras.Instance.cameraState)
@@ -598,6 +631,7 @@ public class Player_Movement : Singleton<Player_Movement>
     //--------------------
 
 
+    #region Ladder
     void MovePlayerOnLadder_UP()
     {
         ResetLadderMovementParameters();
@@ -633,6 +667,8 @@ public class Player_Movement : Singleton<Player_Movement>
 
             ladder = null;
 
+            RaycastDarkenBlockOverLadder();
+
             //ladderMovement_Top_ToBlock = false;
             ladderMovement_Down_ToBlockFromTop = false;
             ladderMovement_Up = false;
@@ -642,12 +678,8 @@ public class Player_Movement : Singleton<Player_Movement>
     }
     void LadderMovement_Top()
     {
-        print("1. LadderMovement_Top");
-
         if (MovementTransition(ladder_Top.transform.position, ladder_Top.GetComponent<BlockInfo>().movementSpeed))
         {
-            print("2. LadderMovement_Top");
-
             if (ladderSteppedOn.transform.rotation.eulerAngles.y == 0)
                 ladderTop_EndPos = ladderSteppedOn.transform.position + Vector3.forward;
             else if (ladderSteppedOn.transform.rotation.eulerAngles.y == 180)
@@ -666,12 +698,8 @@ public class Player_Movement : Singleton<Player_Movement>
     }
     void LadderMovement_Top_ToBlock()
     {
-        print("1. LadderMovement_Top_ToBlock");
-
         if (MovementTransition(ladderTop_EndPos, 3))
         {
-            print("2. LadderMovement_Top_ToBlock");
-            
             ladderMovement_Down_ToBlockFromTop = false;
             ladderSteppedOn = null;
             ladderMovement_Top_ToBlock = false;
@@ -718,6 +746,7 @@ public class Player_Movement : Singleton<Player_Movement>
             //PlayerStats.Instance.stats.steps_Current -= ladder.GetComponent<BlockInfo>().movementCost;
             ladder = null;
 
+            //Action_resetBlockColor();
             Action_StepTakenInvoke();
 
             //If the lowest ladder-part
@@ -807,6 +836,8 @@ public class Player_Movement : Singleton<Player_Movement>
             {
                 if (MovementTransition(ladderToApproach_Current.GetComponent<Block_Ladder>().ladder_Under.transform.position, 3))
                 {
+                    RaycastDarkenBlockOverLadder();
+
                     ladderToApproach_Current = null;
 
                     ladderMovement_Down_ToBlockFromTop = false;
@@ -897,6 +928,71 @@ public class Player_Movement : Singleton<Player_Movement>
         ladderToApproach_Current = null;
         ladder_Top = null;
 }
+    void RaycastDarkenBlockOverLadder()
+    {
+        RaycastHit hit;
+
+        if (PlayerManager.Instance.playerBody.transform.rotation.eulerAngles.y == 0)
+        {
+            if (Physics.Raycast(transform.position + Vector3.up + Vector3.forward, Vector3.down, out hit, 1))
+            {
+                if (hit.transform.gameObject.GetComponent<BlockInfo>())
+                {
+                    hit.transform.gameObject.GetComponent<BlockInfo>().DarkenColors();
+                }
+            }
+        }
+        else if (PlayerManager.Instance.playerBody.transform.rotation.eulerAngles.y == 180)
+        {
+            if (Physics.Raycast(transform.position + Vector3.up + Vector3.back, Vector3.down, out hit, 1))
+            {
+                if (hit.transform.gameObject.GetComponent<BlockInfo>())
+                {
+                    hit.transform.gameObject.GetComponent<BlockInfo>().DarkenColors();
+                }
+            }
+        }
+        else if (PlayerManager.Instance.playerBody.transform.rotation.eulerAngles.y == 90)
+        {
+            if (Physics.Raycast(transform.position + Vector3.up + Vector3.right, Vector3.down, out hit, 1))
+            {
+                if (hit.transform.gameObject.GetComponent<BlockInfo>())
+                {
+                    hit.transform.gameObject.GetComponent<BlockInfo>().DarkenColors();
+                }
+            }
+        }
+        else if (PlayerManager.Instance.playerBody.transform.rotation.eulerAngles.y == -90)
+        {
+            print("111. True");
+            if (Physics.Raycast(transform.position + Vector3.up + Vector3.left, Vector3.down, out hit, 1))
+            {
+                print("222. True");
+                if (hit.transform.gameObject.GetComponent<BlockInfo>())
+                {
+                    print("333. Name: " + hit.transform.gameObject.name + " | Pos: " + hit.transform.gameObject.transform.position);
+                    hit.transform.gameObject.GetComponent<BlockInfo>().DarkenColors();
+                }
+            }
+        }
+    }
+
+    bool Ladder_Down_MoveAway()
+    {
+        if (isOnLadder && ladderSteppedOn)
+        {
+            if (ladderSteppedOn.GetComponent<Block_Ladder>())
+            {
+                if (ladderSteppedOn.GetComponent<Block_Ladder>().block_Under)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    #endregion
 
 
     //--------------------

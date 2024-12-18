@@ -78,15 +78,6 @@ public class PlayerStats : Singleton<PlayerStats>
         MapManager mapManagerIsActive = FindObjectOfType<MapManager>();
         if (!mapManagerIsActive) {  return; }
 
-        if (stats.abilitiesGot_Temporary != null)
-        {
-            print("1. stats.abilitiesGot_Temporary != null");
-        }
-        else
-        {
-            print("2. stats.abilitiesGot_Temporary == null");
-        }
-
         //Based on what's picked up in the level, assign active abilities to the player
         if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.FenceSneak)
             stats.abilitiesGot_Temporary.FenceSneak = true;
