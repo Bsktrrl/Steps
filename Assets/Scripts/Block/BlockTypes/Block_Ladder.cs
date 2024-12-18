@@ -8,6 +8,7 @@ public class Block_Ladder : MonoBehaviour
 
     public GameObject ladder_Over;
     public GameObject ladder_Under;
+    public GameObject block_Under;
 
     RaycastHit hit;
 
@@ -19,6 +20,7 @@ public class Block_Ladder : MonoBehaviour
     {
         castRay(Vector3.up, ref ladder_Over);
         castRay(Vector3.down, ref ladder_Under);
+        castRayForGround(Vector3.down, ref block_Under);
     }
 
 
@@ -32,6 +34,19 @@ public class Block_Ladder : MonoBehaviour
             if (hit.transform.gameObject)
             {
                 if (hit.transform.gameObject.GetComponent<Block_Ladder>())
+                {
+                    ladder = hit.transform.gameObject;
+                }
+            }
+        }
+    }
+    void castRayForGround(Vector3 dir, ref GameObject ladder)
+    {
+        if (Physics.Raycast(raycastPoint.transform.position, dir, out hit, 1))
+        {
+            if (hit.transform.gameObject)
+            {
+                if (hit.transform.gameObject.GetComponent<BlockInfo>().blockType != BlockType.Ladder)
                 {
                     ladder = hit.transform.gameObject;
                 }
@@ -111,13 +126,13 @@ public class Block_Ladder : MonoBehaviour
                 Player_Movement.Instance.isOnLadder = true;
             }
 
-            if (!Player_Movement.Instance.ladderMovement_Top && !Player_Movement.Instance.ladderMovement_Down_ToBlock && Player_Movement.Instance.isOnLadder)
+            if (!Player_Movement.Instance.ladderMovement_Top && !Player_Movement.Instance.ladderMovement_Down_ToBlockFromTop && Player_Movement.Instance.isOnLadder)
             {
                 if (!ladder_Over && !Player_Movement.Instance.ladderSteppedOn
                     && !Player_Movement.Instance.ladderMovement_Top_ToBlock && !Player_Movement.Instance.ladderMovement_Up)
                 {
                     Player_Movement.Instance.ladderToApproach_Current = gameObject;
-                    Player_Movement.Instance.ladderMovement_Down_ToBlock = true;
+                    Player_Movement.Instance.ladderMovement_Down_ToBlockFromTop = true;
                 }
 
                 Player_Movement.Instance.ladderSteppedOn = gameObject;

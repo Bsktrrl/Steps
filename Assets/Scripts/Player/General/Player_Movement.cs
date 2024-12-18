@@ -36,7 +36,8 @@ public class Player_Movement : Singleton<Player_Movement>
     public bool ladderMovement_Down;
     public bool ladderMovement_Top;
     public bool ladderMovement_Top_ToBlock;
-    public bool ladderMovement_Down_ToBlock;
+    public bool ladderMovement_Down_ToBlockFromTop;
+    public bool ladderMovement_Down_ToBottom;
     public Vector3 ladderTop_EndPos;
     public GameObject ladderToApproach_Current;
     GameObject ladder_Top;
@@ -66,7 +67,7 @@ public class Player_Movement : Singleton<Player_Movement>
             && !Player_SwiftSwim.Instance.isSwiftSwimming_Up && !Player_SwiftSwim.Instance.isSwiftSwimming_Down
             && !Player_Ascend.Instance.isAscending && !Player_Descend.Instance.isDescending
             && !Player_Dash.Instance.isDashing
-            && !slopeGliding && !ladderMovement_Up && !ladderMovement_Down)
+            && !slopeGliding && !ladderMovement_Up && !ladderMovement_Down && !ladderMovement_Down_ToBottom)
         {
             MovePlayer();
             PlayerHover();
@@ -79,9 +80,13 @@ public class Player_Movement : Singleton<Player_Movement>
         {
 
         }
-        else if (ladderMovement_Down_ToBlock)
+        else if (ladderMovement_Down_ToBottom)
         {
-            LadderMovement_Down_ToBlock();
+            LadderMovement_Down_ToBottom();
+        }
+        else if (ladderMovement_Down_ToBlockFromTop)
+        {
+            LadderMovement_Down_ToBlockFromTop();
         }
         else if (ladderMovement_Top_ToBlock)
         {
@@ -144,7 +149,9 @@ public class Player_Movement : Singleton<Player_Movement>
         if (ladderMovement_Down) { return; }
         if (ladderMovement_Top) { return; }
         if (ladderMovement_Top_ToBlock) { return; }
-        if (ladderMovement_Down_ToBlock) { return; }
+        if (ladderMovement_Down_ToBlockFromTop) { return; }
+        if (ladderMovement_Down_ToBottom) { return; }
+        
 
 
         //If pressing Forward - Movement
@@ -549,18 +556,18 @@ public class Player_Movement : Singleton<Player_Movement>
 
             Action_StepTakenInvoke();
 
-            //If stepping onto a ladder, for the top
-            if (ladderSteppedOn)
-                {
-                    if (ladderSteppedOn.GetComponent<Block_Ladder>())
-                    {
-                        if (ladderSteppedOn.GetComponent<Block_Ladder>().ladder_Over == null && !ladderMovement_Top_ToBlock && !ladderMovement_Top && !ladderMovement_Up)
-                        {
-                            ladderToApproach_Current = ladderSteppedOn;
-                            ladderMovement_Down_ToBlock = true;
-                        }
-                    }
-                }
+            ////If stepping onto a ladder, from the top
+            //if (ladderSteppedOn)
+            //{
+            //    if (ladderSteppedOn.GetComponent<Block_Ladder>())
+            //    {
+            //        if (ladderSteppedOn.GetComponent<Block_Ladder>().ladder_Over == null && !ladderMovement_Top_ToBlock && !ladderMovement_Top && !ladderMovement_Up)
+            //        {
+            //            ladderToApproach_Current = ladderSteppedOn;
+            //            ladderMovement_Down_ToBlock = true;
+            //        }
+            //    }
+            //}
         }
     }
     void PlayerHover()
@@ -609,7 +616,7 @@ public class Player_Movement : Singleton<Player_Movement>
             }
             else
             {
-                ladderMovement_Down_ToBlock = false;
+                ladderMovement_Down_ToBlockFromTop = false;
                 ladder_Top = ladderSteppedOn;
                 ladderMovement_Top = true;
                 LadderMovement_Top();
@@ -620,18 +627,14 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         if (ladder == null) { return; }
 
-        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, ladder.transform.position + (Vector3.up * heightOverBlock), 3 * Time.deltaTime);
-
-        //Snap into place when close enough
-        if (Vector3.Distance(gameObject.transform.position, ladder.transform.position) <= 0.03f)
+        if (MovementTransition(ladder.transform.position + Vector3.down, 3))
         {
-            PlayerManager.Instance.player.transform.position = ladder.transform.position;
             //PlayerStats.Instance.stats.steps_Current -= ladder.GetComponent<BlockInfo>().movementCost;
 
             ladder = null;
 
             //ladderMovement_Top_ToBlock = false;
-            ladderMovement_Down_ToBlock = false;
+            ladderMovement_Down_ToBlockFromTop = false;
             ladderMovement_Up = false;
 
             Action_StepTakenInvoke();
@@ -641,27 +644,22 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         print("1. LadderMovement_Top");
 
-        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, ladder_Top.transform.position + (Vector3.up * heightOverBlock), ladder_Top.GetComponent<BlockInfo>().movementSpeed * Time.deltaTime);
-
-        //Snap into place when close enough
-        if (Vector3.Distance(gameObject.transform.position, ladder_Top.transform.position + (Vector3.up * heightOverBlock)) <= 0.03f)
+        if (MovementTransition(ladder_Top.transform.position, ladder_Top.GetComponent<BlockInfo>().movementSpeed))
         {
             print("2. LadderMovement_Top");
 
-            PlayerManager.Instance.player.transform.position = ladder_Top.transform.position + (Vector3.up * heightOverBlock);
-
             if (ladderSteppedOn.transform.rotation.eulerAngles.y == 0)
-                ladderTop_EndPos = ladderSteppedOn.transform.position + (Vector3.up * heightOverBlock) + Vector3.forward;
+                ladderTop_EndPos = ladderSteppedOn.transform.position + Vector3.forward;
             else if (ladderSteppedOn.transform.rotation.eulerAngles.y == 180)
-                ladderTop_EndPos = ladderSteppedOn.transform.position + (Vector3.up * heightOverBlock) + Vector3.back;
+                ladderTop_EndPos = ladderSteppedOn.transform.position + Vector3.back;
             else if (ladderSteppedOn.transform.rotation.eulerAngles.y == 90)
-                ladderTop_EndPos = ladderSteppedOn.transform.position + (Vector3.up * heightOverBlock) + Vector3.right;
+                ladderTop_EndPos = ladderSteppedOn.transform.position + Vector3.right;
             else if (ladderSteppedOn.transform.rotation.eulerAngles.y == -90 || ladderSteppedOn.transform.rotation.eulerAngles.y == 270)
-                ladderTop_EndPos = ladderSteppedOn.transform.position + (Vector3.up * heightOverBlock) + Vector3.left;
+                ladderTop_EndPos = ladderSteppedOn.transform.position + Vector3.left;
 
             ladderSteppedOn = null;
             isOnLadder = false;
-            ladderMovement_Down_ToBlock = false;
+            ladderMovement_Down_ToBlockFromTop = false;
             ladderMovement_Top = false;
             ladderMovement_Top_ToBlock = true;
         }
@@ -670,16 +668,11 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         print("1. LadderMovement_Top_ToBlock");
 
-        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, ladderTop_EndPos, 3 * Time.deltaTime);
-
-        //Snap into place when close enough
-        if (Vector3.Distance(gameObject.transform.position, ladderTop_EndPos) <= 0.03f)
+        if (MovementTransition(ladderTop_EndPos, 3))
         {
             print("2. LadderMovement_Top_ToBlock");
-
-            PlayerManager.Instance.player.transform.position = ladderTop_EndPos;
-
-            ladderMovement_Down_ToBlock = false;
+            
+            ladderMovement_Down_ToBlockFromTop = false;
             ladderSteppedOn = null;
             ladderMovement_Top_ToBlock = false;
             isOnLadder = false;
@@ -720,54 +713,168 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         if (ladder == null) { ladderMovement_Down = false; return; }
 
-        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, (ladder.transform.position + Vector3.down) + (Vector3.up * heightOverBlock), 3 * Time.deltaTime);
-
-        //Snap into place when close enough
-        if (Vector3.Distance(gameObject.transform.position, ladder.transform.position) <= 0.03f)
+        if (MovementTransition((ladder.transform.position + Vector3.down), 3))
         {
-            PlayerManager.Instance.player.transform.position = ladder.transform.position;
             //PlayerStats.Instance.stats.steps_Current -= ladder.GetComponent<BlockInfo>().movementCost;
             ladder = null;
 
-            ladderMovement_Down = false;
-
             Action_StepTakenInvoke();
+
+            //If the lowest ladder-part
+            if (ladderSteppedOn.GetComponent<Block_Ladder>().block_Under)
+            {
+                ladderToApproach_Current = ladderSteppedOn;
+                ladderMovement_Down_ToBottom = true;
+            }
+
+            ladderMovement_Down = false;
         }
     }
-    void LadderMovement_Down_ToBlock()
+    void LadderMovement_Down_ToBottom()
     {
-        print("1. LadderMovement_Down_ToBlock");
+        if (ladderToApproach_Current.GetComponent<Block_Ladder>())
+        {
+            if (ladderToApproach_Current.GetComponent<Block_Ladder>().block_Under)
+            {
+                if (MovementTransition(ladderToApproach_Current.GetComponent<Block_Ladder>().block_Under.transform.position, 3))
+                {
+                    ladderToApproach_Current = null;
+
+                    ladderMovement_Down_ToBlockFromTop = false;
+                    isOnLadder = true;
+                    Action_StepTakenInvoke();
+
+                    ladderMovement_Down_ToBottom = false;
+
+                    //Rotate Player away from the ladder
+                    switch (Cameras.Instance.cameraState)
+                    {
+                        case CameraState.Forward:
+                            if (transform.rotation.eulerAngles.y == 0)
+                                SetPlayerBodyRotation(180);
+                            else if (transform.rotation.eulerAngles.y == 180)
+                                SetPlayerBodyRotation(0);
+                            else if (transform.rotation.eulerAngles.y == 90)
+                                SetPlayerBodyRotation(-90);
+                            else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+                                SetPlayerBodyRotation(90);
+                            break;
+                        case CameraState.Backward:
+                            if (transform.rotation.eulerAngles.y == 0)
+                                SetPlayerBodyRotation(0);
+                            else if (transform.rotation.eulerAngles.y == 180)
+                                SetPlayerBodyRotation(180);
+                            else if (transform.rotation.eulerAngles.y == 90)
+                                SetPlayerBodyRotation(90);
+                            else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+                                SetPlayerBodyRotation(-90);
+                            break;
+                        case CameraState.Left:
+                            if (transform.rotation.eulerAngles.y == 0)
+                                SetPlayerBodyRotation(90);
+                            else if (transform.rotation.eulerAngles.y == 180)
+                                SetPlayerBodyRotation(-90);
+                            else if (transform.rotation.eulerAngles.y == 90)
+                                SetPlayerBodyRotation(180);
+                            else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+                                SetPlayerBodyRotation(0);
+                            break;
+                        case CameraState.Right:
+                            if (transform.rotation.eulerAngles.y == 0)
+                                SetPlayerBodyRotation(-90);
+                            else if (transform.rotation.eulerAngles.y == 180)
+                                SetPlayerBodyRotation(90);
+                            else if (transform.rotation.eulerAngles.y == 90)
+                                SetPlayerBodyRotation(0);
+                            else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+                                SetPlayerBodyRotation(180);
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+    }
+    void LadderMovement_Down_ToBlockFromTop()
+    {
+        print("1. LadderMovement_Down_ToBlockFromTop");
 
         if (ladderToApproach_Current)
         {
             if (ladderToApproach_Current.GetComponent<Block_Ladder>().ladder_Under)
             {
-                gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, ladderToApproach_Current.GetComponent<Block_Ladder>().ladder_Under.transform.position + (Vector3.up * heightOverBlock), 3 * Time.deltaTime);
-
-                //Snap into place when close enough
-                if (Vector3.Distance(gameObject.transform.position, ladderToApproach_Current.GetComponent<Block_Ladder>().ladder_Under.transform.position + (Vector3.up * heightOverBlock)) <= 0.03f)
+                if (MovementTransition(ladderToApproach_Current.GetComponent<Block_Ladder>().ladder_Under.transform.position, 3))
                 {
-                    PlayerManager.Instance.player.transform.position = ladderToApproach_Current.GetComponent<Block_Ladder>().ladder_Under.transform.position + (Vector3.up * heightOverBlock);
                     ladderToApproach_Current = null;
 
-                    ladderMovement_Down_ToBlock = false;
+                    ladderMovement_Down_ToBlockFromTop = false;
                     isOnLadder = true;
                     Action_StepTakenInvoke();
                 }
             }
+
+            //If only 1 Ladder High
             else
             {
-                gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, ladderToApproach_Current.transform.position + Vector3.down + (Vector3.up * heightOverBlock), 3 * Time.deltaTime);
-
-                //Snap into place when close enough
-                if (Vector3.Distance(gameObject.transform.position, ladderToApproach_Current.transform.position + Vector3.down + (Vector3.up * heightOverBlock)) <= 0.03f)
+                if (MovementTransition((ladderToApproach_Current.transform.position + Vector3.down), 3))
                 {
-                    PlayerManager.Instance.player.transform.position = ladderToApproach_Current.transform.position + Vector3.down + (Vector3.up * heightOverBlock);
                     ladderToApproach_Current = null;
 
-                    ladderMovement_Down_ToBlock = false;
-                    isOnLadder = true;
+                    ladderMovement_Down_ToBlockFromTop = false;
+                    isOnLadder = false;
                     Action_StepTakenInvoke();
+
+                    print("100. Moved Down");
+
+                    //Rotate Player away from the ladder
+                    switch (Cameras.Instance.cameraState)
+                    {
+                        case CameraState.Forward:
+                            if (transform.rotation.eulerAngles.y == 0)
+                                SetPlayerBodyRotation(180);
+                            else if (transform.rotation.eulerAngles.y == 180)
+                                SetPlayerBodyRotation(0);
+                            else if (transform.rotation.eulerAngles.y == 90)
+                                SetPlayerBodyRotation(-90);
+                            else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+                                SetPlayerBodyRotation(90);
+                            break;
+                        case CameraState.Backward:
+                            if (transform.rotation.eulerAngles.y == 0)
+                                SetPlayerBodyRotation(0);
+                            else if (transform.rotation.eulerAngles.y == 180)
+                                SetPlayerBodyRotation(180);
+                            else if (transform.rotation.eulerAngles.y == 90)
+                                SetPlayerBodyRotation(90);
+                            else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+                                SetPlayerBodyRotation(-90);
+                            break;
+                        case CameraState.Left:
+                            if (transform.rotation.eulerAngles.y == 0)
+                                SetPlayerBodyRotation(90);
+                            else if (transform.rotation.eulerAngles.y == 180)
+                                SetPlayerBodyRotation(-90);
+                            else if (transform.rotation.eulerAngles.y == 90)
+                                SetPlayerBodyRotation(180);
+                            else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+                                SetPlayerBodyRotation(0);
+                            break;
+                        case CameraState.Right:
+                            if (transform.rotation.eulerAngles.y == 0)
+                                SetPlayerBodyRotation(-90);
+                            else if (transform.rotation.eulerAngles.y == 180)
+                                SetPlayerBodyRotation(90);
+                            else if (transform.rotation.eulerAngles.y == 90)
+                                SetPlayerBodyRotation(0);
+                            else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+                                SetPlayerBodyRotation(180);
+                            break;
+
+                        default:
+                            break;
+                    }
                 }
             }
         }
@@ -783,11 +890,32 @@ public class Player_Movement : Singleton<Player_Movement>
         ladderMovement_Top = false;
 
         ladderMovement_Top_ToBlock = false;
-        ladderMovement_Down_ToBlock = false;
+        ladderMovement_Down_ToBlockFromTop = false;
+
+        ladderMovement_Down_ToBottom = false;
 
         ladderToApproach_Current = null;
         ladder_Top = null;
 }
+
+
+    //--------------------
+
+
+    bool MovementTransition(Vector3 endPos, float speed)
+    {
+        transform.position = Vector3.MoveTowards(transform.position, endPos + (Vector3.up * heightOverBlock), speed * Time.deltaTime);
+
+        //Snap into place when close enough
+        if (Vector3.Distance(transform.position, endPos + (Vector3.up * heightOverBlock)) <= 0.03f)
+        {
+            transform.position = endPos + (Vector3.up * heightOverBlock);
+
+            return true;
+        }
+
+        return false;
+    }
 
 
     //--------------------
