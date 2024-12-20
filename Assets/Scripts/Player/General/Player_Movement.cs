@@ -803,17 +803,20 @@ public class Player_Movement : Singleton<Player_Movement>
 
         if (MovementTransition(ladder.transform.position + Vector3.down, 3))
         {
-            //PlayerStats.Instance.stats.steps_Current -= ladder.GetComponent<BlockInfo>().movementCost;
+            PlayerStats.Instance.stats.steps_Current -= ladder.GetComponent<BlockInfo>().movementCost;
 
             ladder = null;
 
             RaycastDarkenBlockOverLadder();
 
-            //ladderMovement_Top_ToBlock = false;
             ladderMovement_Down_ToBlockFromTop = false;
             ladderMovement_Up = false;
 
+            Player_BlockDetector.Instance.Update_BlockStandingOn();
+
+            print("1. Steps: " + PlayerStats.Instance.stats.steps_Current);
             Action_StepTakenInvoke();
+            print("2. Steps: " + PlayerStats.Instance.stats.steps_Current);
         }
     }
     void LadderMovement_Top()
@@ -840,6 +843,7 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         if (MovementTransition(ladderTop_EndPos, 3))
         {
+
             Ladder_PlayerRotation_Away();
 
             ladderMovement_Down_ToBlockFromTop = false;
@@ -847,6 +851,8 @@ public class Player_Movement : Singleton<Player_Movement>
             ladderMovement_Top_ToBlock = false;
             isOnLadder = false;
             Action_StepTakenInvoke();
+
+            PlayerStats.Instance.stats.steps_Current -= PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
         }
     }
 
@@ -886,10 +892,10 @@ public class Player_Movement : Singleton<Player_Movement>
 
         if (MovementTransition((ladder.transform.position + Vector3.down), 3))
         {
-            //PlayerStats.Instance.stats.steps_Current -= ladder.GetComponent<BlockInfo>().movementCost;
+            PlayerStats.Instance.stats.steps_Current -= ladder.GetComponent<BlockInfo>().movementCost;
+
             ladder = null;
 
-            //Action_resetBlockColor();
             Action_StepTakenInvoke();
 
             //If the lowest ladder-part
@@ -932,6 +938,8 @@ public class Player_Movement : Singleton<Player_Movement>
             {
                 if (MovementTransition(ladderToApproach_Current.GetComponent<Block_Ladder>().ladder_Under.transform.position, 3))
                 {
+                    PlayerStats.Instance.stats.steps_Current -= ladderToApproach_Current.GetComponent<BlockInfo>().movementCost;
+
                     RaycastDarkenBlockOverLadder();
 
                     ladderToApproach_Current = null;
