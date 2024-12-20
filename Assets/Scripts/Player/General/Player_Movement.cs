@@ -654,6 +654,8 @@ public class Player_Movement : Singleton<Player_Movement>
             //If ladder is the top one
             else
             {
+                Ladder_PlayerRotation_Into();
+
                 ladder_Top = ladderSteppedOn;
                 ladderMovement_Top = true;
                 ladderMovement_Down_ToBlockFromTop = false;
@@ -684,7 +686,6 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         if (MovementTransition(ladder_Top.transform.position, ladder_Top.GetComponent<BlockInfo>().movementSpeed))
         {
-
             if (ladderSteppedOn.transform.rotation.eulerAngles.y == 0)
                 ladderTop_EndPos = ladderSteppedOn.transform.position + Vector3.forward;
             else if (ladderSteppedOn.transform.rotation.eulerAngles.y == 180)
@@ -705,6 +706,8 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         if (MovementTransition(ladderTop_EndPos, 3))
         {
+            Ladder_PlayerRotation_Into();
+
             ladderMovement_Down_ToBlockFromTop = false;
             ladderSteppedOn = null;
             ladderMovement_Top_ToBlock = false;
@@ -769,10 +772,14 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         if (ladderToApproach_Current.GetComponent<Block_Ladder>())
         {
+            print("1. LadderMovement_Down_ToBottom");
+
             if (ladderToApproach_Current.GetComponent<Block_Ladder>().block_Under)
             {
+                print("2. LadderMovement_Down_ToBottom");
                 if (MovementTransition(ladderToApproach_Current.GetComponent<Block_Ladder>().block_Under.transform.position, 3))
                 {
+                    print("3. LadderMovement_Down_ToBottom");
                     ladderToApproach_Current = null;
 
                     ladderMovement_Down_ToBlockFromTop = false;
@@ -782,52 +789,7 @@ public class Player_Movement : Singleton<Player_Movement>
                     ladderMovement_Down_ToBottom = false;
 
                     //Rotate Player away from the ladder
-                    switch (Cameras.Instance.cameraState)
-                    {
-                        case CameraState.Forward:
-                            if (transform.rotation.eulerAngles.y == 0)
-                                SetPlayerBodyRotation(180);
-                            else if (transform.rotation.eulerAngles.y == 180)
-                                SetPlayerBodyRotation(0);
-                            else if (transform.rotation.eulerAngles.y == 90)
-                                SetPlayerBodyRotation(-90);
-                            else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
-                                SetPlayerBodyRotation(90);
-                            break;
-                        case CameraState.Backward:
-                            if (transform.rotation.eulerAngles.y == 0)
-                                SetPlayerBodyRotation(0);
-                            else if (transform.rotation.eulerAngles.y == 180)
-                                SetPlayerBodyRotation(180);
-                            else if (transform.rotation.eulerAngles.y == 90)
-                                SetPlayerBodyRotation(90);
-                            else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
-                                SetPlayerBodyRotation(-90);
-                            break;
-                        case CameraState.Left:
-                            if (transform.rotation.eulerAngles.y == 0)
-                                SetPlayerBodyRotation(90);
-                            else if (transform.rotation.eulerAngles.y == 180)
-                                SetPlayerBodyRotation(-90);
-                            else if (transform.rotation.eulerAngles.y == 90)
-                                SetPlayerBodyRotation(180);
-                            else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
-                                SetPlayerBodyRotation(0);
-                            break;
-                        case CameraState.Right:
-                            if (transform.rotation.eulerAngles.y == 0)
-                                SetPlayerBodyRotation(-90);
-                            else if (transform.rotation.eulerAngles.y == 180)
-                                SetPlayerBodyRotation(90);
-                            else if (transform.rotation.eulerAngles.y == 90)
-                                SetPlayerBodyRotation(0);
-                            else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
-                                SetPlayerBodyRotation(180);
-                            break;
-
-                        default:
-                            break;
-                    }
+                    Ladder_PlayerRotation_Away();
                 }
             }
         }
@@ -878,52 +840,7 @@ public class Player_Movement : Singleton<Player_Movement>
             //        print("100. Moved Down");
 
             //        //Rotate Player away from the ladder
-            //        switch (Cameras.Instance.cameraState)
-            //        {
-            //            case CameraState.Forward:
-            //                if (transform.rotation.eulerAngles.y == 0)
-            //                    SetPlayerBodyRotation(180);
-            //                else if (transform.rotation.eulerAngles.y == 180)
-            //                    SetPlayerBodyRotation(0);
-            //                else if (transform.rotation.eulerAngles.y == 90)
-            //                    SetPlayerBodyRotation(-90);
-            //                else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
-            //                    SetPlayerBodyRotation(90);
-            //                break;
-            //            case CameraState.Backward:
-            //                if (transform.rotation.eulerAngles.y == 0)
-            //                    SetPlayerBodyRotation(0);
-            //                else if (transform.rotation.eulerAngles.y == 180)
-            //                    SetPlayerBodyRotation(180);
-            //                else if (transform.rotation.eulerAngles.y == 90)
-            //                    SetPlayerBodyRotation(90);
-            //                else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
-            //                    SetPlayerBodyRotation(-90);
-            //                break;
-            //            case CameraState.Left:
-            //                if (transform.rotation.eulerAngles.y == 0)
-            //                    SetPlayerBodyRotation(90);
-            //                else if (transform.rotation.eulerAngles.y == 180)
-            //                    SetPlayerBodyRotation(-90);
-            //                else if (transform.rotation.eulerAngles.y == 90)
-            //                    SetPlayerBodyRotation(180);
-            //                else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
-            //                    SetPlayerBodyRotation(0);
-            //                break;
-            //            case CameraState.Right:
-            //                if (transform.rotation.eulerAngles.y == 0)
-            //                    SetPlayerBodyRotation(-90);
-            //                else if (transform.rotation.eulerAngles.y == 180)
-            //                    SetPlayerBodyRotation(90);
-            //                else if (transform.rotation.eulerAngles.y == 90)
-            //                    SetPlayerBodyRotation(0);
-            //                else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
-            //                    SetPlayerBodyRotation(180);
-            //                break;
-
-            //            default:
-            //                break;
-            //        }
+            //        Ladder_PlayerRotation_Away();
             //    }
             //}
         }
@@ -1009,6 +926,106 @@ public class Player_Movement : Singleton<Player_Movement>
         }
 
         return false;
+    }
+
+    void Ladder_PlayerRotation_Into()
+    {
+        //Rotate Player away from the ladder
+        switch (Cameras.Instance.cameraState)
+        {
+            case CameraState.Forward:
+                if (transform.rotation.eulerAngles.y == 0)
+                    SetPlayerBodyRotation(0);
+                else if (transform.rotation.eulerAngles.y == 180)
+                    SetPlayerBodyRotation(180);
+                else if (transform.rotation.eulerAngles.y == 90)
+                    SetPlayerBodyRotation(90);
+                else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+                    SetPlayerBodyRotation(-90);
+                break;
+            case CameraState.Backward:
+                if (transform.rotation.eulerAngles.y == 0)
+                    SetPlayerBodyRotation(180);
+                else if (transform.rotation.eulerAngles.y == 180)
+                    SetPlayerBodyRotation(0);
+                else if (transform.rotation.eulerAngles.y == 90)
+                    SetPlayerBodyRotation(-90);
+                else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+                    SetPlayerBodyRotation(90);
+                break;
+            case CameraState.Left:
+                if (transform.rotation.eulerAngles.y == 0)
+                    SetPlayerBodyRotation(-90);
+                else if (transform.rotation.eulerAngles.y == 180)
+                    SetPlayerBodyRotation(90);
+                else if (transform.rotation.eulerAngles.y == 90)
+                    SetPlayerBodyRotation(0);
+                else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+                    SetPlayerBodyRotation(180);
+                break;
+            case CameraState.Right:
+                if (transform.rotation.eulerAngles.y == 0)
+                    SetPlayerBodyRotation(90);
+                else if (transform.rotation.eulerAngles.y == 180)
+                    SetPlayerBodyRotation(-90);
+                else if (transform.rotation.eulerAngles.y == 90)
+                    SetPlayerBodyRotation(180);
+                else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+                    SetPlayerBodyRotation(0);
+                break;
+
+            default:
+                break;
+        }
+    }
+    void Ladder_PlayerRotation_Away()
+    {
+        switch (Cameras.Instance.cameraState)
+        {
+            case CameraState.Forward:
+                if (transform.rotation.eulerAngles.y == 0)
+                    SetPlayerBodyRotation(180);
+                else if (transform.rotation.eulerAngles.y == 180)
+                    SetPlayerBodyRotation(0);
+                else if (transform.rotation.eulerAngles.y == 90)
+                    SetPlayerBodyRotation(-90);
+                else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+                    SetPlayerBodyRotation(90);
+                break;
+            case CameraState.Backward:
+                if (transform.rotation.eulerAngles.y == 0)
+                    SetPlayerBodyRotation(0);
+                else if (transform.rotation.eulerAngles.y == 180)
+                    SetPlayerBodyRotation(180);
+                else if (transform.rotation.eulerAngles.y == 90)
+                    SetPlayerBodyRotation(90);
+                else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+                    SetPlayerBodyRotation(-90);
+                break;
+            case CameraState.Left:
+                if (transform.rotation.eulerAngles.y == 0)
+                    SetPlayerBodyRotation(90);
+                else if (transform.rotation.eulerAngles.y == 180)
+                    SetPlayerBodyRotation(-90);
+                else if (transform.rotation.eulerAngles.y == 90)
+                    SetPlayerBodyRotation(180);
+                else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+                    SetPlayerBodyRotation(0);
+                break;
+            case CameraState.Right:
+                if (transform.rotation.eulerAngles.y == 0)
+                    SetPlayerBodyRotation(-90);
+                else if (transform.rotation.eulerAngles.y == 180)
+                    SetPlayerBodyRotation(90);
+                else if (transform.rotation.eulerAngles.y == 90)
+                    SetPlayerBodyRotation(0);
+                else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+                    SetPlayerBodyRotation(180);
+                break;
+
+            default:
+                break;
+        }
     }
     #endregion
 
