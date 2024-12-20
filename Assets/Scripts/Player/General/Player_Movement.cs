@@ -710,6 +710,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
     void MovePlayerOnLadder_DOWN()
     {
+        Action_resetBlockColor();
         ResetLadderMovementParameters();
 
         if (ladderMovement_Down) { return; }
