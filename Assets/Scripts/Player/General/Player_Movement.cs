@@ -853,6 +853,8 @@ public class Player_Movement : Singleton<Player_Movement>
             Action_StepTakenInvoke();
 
             PlayerStats.Instance.stats.steps_Current -= PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
+
+            IceGlide();
         }
     }
 
