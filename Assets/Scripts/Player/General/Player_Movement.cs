@@ -57,10 +57,10 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (PlayerManager.Instance.block_StandingOn_Current.blockType != BlockType.Ladder)
             {
-                ladderMovement_Top_ToBlock = false;
+                //ladderMovement_Top_ToBlock = false;
             }
         }
-        
+
         KeyInputs();
 
         if (movementStates == MovementStates.Moving /*&& endDestination != (Vector3.zero + (Vector3.up * heightOverBlock))*/
@@ -80,14 +80,7 @@ public class Player_Movement : Singleton<Player_Movement>
         {
 
         }
-        else if (ladderMovement_Down_ToBottom)
-        {
-            LadderMovement_Down_ToBottom();
-        }
-        else if (ladderMovement_Down_ToBlockFromTop)
-        {
-            LadderMovement_Down_ToBlockFromTop();
-        }
+        
         else if (ladderMovement_Top_ToBlock)
         {
             LadderMovement_Top_ToBlock();
@@ -99,6 +92,14 @@ public class Player_Movement : Singleton<Player_Movement>
         else if (isOnLadder && ladderMovement_Up)
         {
             LadderMovement_UP(ref ladderToApproach_Current);
+        }
+        else if (ladderMovement_Down_ToBottom)
+        {
+            LadderMovement_Down_ToBottom();
+        }
+        else if (ladderMovement_Down_ToBlockFromTop)
+        {
+            LadderMovement_Down_ToBlockFromTop();
         }
         else if (isOnLadder && ladderMovement_Down)
         {
@@ -643,16 +644,19 @@ public class Player_Movement : Singleton<Player_Movement>
 
         if (ladderSteppedOn)
         {
+            //If ladder isn't the top one
             if (ladderSteppedOn.GetComponent<Block_Ladder>().ladder_Over)
             {
                 ladderToApproach_Current = ladderSteppedOn.GetComponent<Block_Ladder>().ladder_Over;
                 ladderMovement_Up = true;
             }
+
+            //If ladder is the top one
             else
             {
-                ladderMovement_Down_ToBlockFromTop = false;
                 ladder_Top = ladderSteppedOn;
                 ladderMovement_Top = true;
+                ladderMovement_Down_ToBlockFromTop = false;
                 LadderMovement_Top();
             }
         }
@@ -680,6 +684,7 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         if (MovementTransition(ladder_Top.transform.position, ladder_Top.GetComponent<BlockInfo>().movementSpeed))
         {
+
             if (ladderSteppedOn.transform.rotation.eulerAngles.y == 0)
                 ladderTop_EndPos = ladderSteppedOn.transform.position + Vector3.forward;
             else if (ladderSteppedOn.transform.rotation.eulerAngles.y == 180)
@@ -692,8 +697,8 @@ public class Player_Movement : Singleton<Player_Movement>
             ladderSteppedOn = null;
             isOnLadder = false;
             ladderMovement_Down_ToBlockFromTop = false;
-            ladderMovement_Top = false;
             ladderMovement_Top_ToBlock = true;
+            ladderMovement_Top = false;
         }
     }
     void LadderMovement_Top_ToBlock()
@@ -829,12 +834,11 @@ public class Player_Movement : Singleton<Player_Movement>
     }
     void LadderMovement_Down_ToBlockFromTop()
     {
-        print("1. LadderMovement_Down_ToBlockFromTop");
-
         if (ladderToApproach_Current)
         {
             if (ladderToApproach_Current.GetComponent<Block_Ladder>().ladder_Under)
             {
+                print("1. LadderMovement_Down_ToBlockFromTop");
                 if (MovementTransition(ladderToApproach_Current.GetComponent<Block_Ladder>().ladder_Under.transform.position, 3))
                 {
                     RaycastDarkenBlockOverLadder();
@@ -846,69 +850,82 @@ public class Player_Movement : Singleton<Player_Movement>
                     Action_StepTakenInvoke();
                 }
             }
-
-            //If only 1 Ladder High
             else
             {
-                if (MovementTransition((ladderToApproach_Current.transform.position + Vector3.down), 3))
+                print("2. LadderMovement_Down_ToBlockFromTop - Moved Down");
+
+                //If the lowest ladder-part
+                if (ladderSteppedOn.GetComponent<Block_Ladder>().block_Under)
                 {
-                    ladderToApproach_Current = null;
-
-                    ladderMovement_Down_ToBlockFromTop = false;
-                    isOnLadder = false;
-                    Action_StepTakenInvoke();
-
-                    print("100. Moved Down");
-
-                    //Rotate Player away from the ladder
-                    switch (Cameras.Instance.cameraState)
-                    {
-                        case CameraState.Forward:
-                            if (transform.rotation.eulerAngles.y == 0)
-                                SetPlayerBodyRotation(180);
-                            else if (transform.rotation.eulerAngles.y == 180)
-                                SetPlayerBodyRotation(0);
-                            else if (transform.rotation.eulerAngles.y == 90)
-                                SetPlayerBodyRotation(-90);
-                            else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
-                                SetPlayerBodyRotation(90);
-                            break;
-                        case CameraState.Backward:
-                            if (transform.rotation.eulerAngles.y == 0)
-                                SetPlayerBodyRotation(0);
-                            else if (transform.rotation.eulerAngles.y == 180)
-                                SetPlayerBodyRotation(180);
-                            else if (transform.rotation.eulerAngles.y == 90)
-                                SetPlayerBodyRotation(90);
-                            else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
-                                SetPlayerBodyRotation(-90);
-                            break;
-                        case CameraState.Left:
-                            if (transform.rotation.eulerAngles.y == 0)
-                                SetPlayerBodyRotation(90);
-                            else if (transform.rotation.eulerAngles.y == 180)
-                                SetPlayerBodyRotation(-90);
-                            else if (transform.rotation.eulerAngles.y == 90)
-                                SetPlayerBodyRotation(180);
-                            else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
-                                SetPlayerBodyRotation(0);
-                            break;
-                        case CameraState.Right:
-                            if (transform.rotation.eulerAngles.y == 0)
-                                SetPlayerBodyRotation(-90);
-                            else if (transform.rotation.eulerAngles.y == 180)
-                                SetPlayerBodyRotation(90);
-                            else if (transform.rotation.eulerAngles.y == 90)
-                                SetPlayerBodyRotation(0);
-                            else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
-                                SetPlayerBodyRotation(180);
-                            break;
-
-                        default:
-                            break;
-                    }
+                    ladderToApproach_Current = ladderSteppedOn;
+                    ladderMovement_Down_ToBottom = true;
                 }
+
+                ladderMovement_Down = false;
             }
+
+            ////If on the lowest ladder Unit
+            //else
+            //{
+            //    if (MovementTransition((ladderToApproach_Current.transform.position + Vector3.down), 3))
+            //    {
+            //        ladderToApproach_Current = null;
+
+            //        ladderMovement_Down_ToBlockFromTop = false;
+            //        isOnLadder = false;
+            //        Action_StepTakenInvoke();
+
+            //        print("100. Moved Down");
+
+            //        //Rotate Player away from the ladder
+            //        switch (Cameras.Instance.cameraState)
+            //        {
+            //            case CameraState.Forward:
+            //                if (transform.rotation.eulerAngles.y == 0)
+            //                    SetPlayerBodyRotation(180);
+            //                else if (transform.rotation.eulerAngles.y == 180)
+            //                    SetPlayerBodyRotation(0);
+            //                else if (transform.rotation.eulerAngles.y == 90)
+            //                    SetPlayerBodyRotation(-90);
+            //                else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+            //                    SetPlayerBodyRotation(90);
+            //                break;
+            //            case CameraState.Backward:
+            //                if (transform.rotation.eulerAngles.y == 0)
+            //                    SetPlayerBodyRotation(0);
+            //                else if (transform.rotation.eulerAngles.y == 180)
+            //                    SetPlayerBodyRotation(180);
+            //                else if (transform.rotation.eulerAngles.y == 90)
+            //                    SetPlayerBodyRotation(90);
+            //                else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+            //                    SetPlayerBodyRotation(-90);
+            //                break;
+            //            case CameraState.Left:
+            //                if (transform.rotation.eulerAngles.y == 0)
+            //                    SetPlayerBodyRotation(90);
+            //                else if (transform.rotation.eulerAngles.y == 180)
+            //                    SetPlayerBodyRotation(-90);
+            //                else if (transform.rotation.eulerAngles.y == 90)
+            //                    SetPlayerBodyRotation(180);
+            //                else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+            //                    SetPlayerBodyRotation(0);
+            //                break;
+            //            case CameraState.Right:
+            //                if (transform.rotation.eulerAngles.y == 0)
+            //                    SetPlayerBodyRotation(-90);
+            //                else if (transform.rotation.eulerAngles.y == 180)
+            //                    SetPlayerBodyRotation(90);
+            //                else if (transform.rotation.eulerAngles.y == 90)
+            //                    SetPlayerBodyRotation(0);
+            //                else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
+            //                    SetPlayerBodyRotation(180);
+            //                break;
+
+            //            default:
+            //                break;
+            //        }
+            //    }
+            //}
         }
     }
 
