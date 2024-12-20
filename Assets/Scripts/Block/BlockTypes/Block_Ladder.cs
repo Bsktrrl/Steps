@@ -65,52 +65,7 @@ public class Block_Ladder : MonoBehaviour
         if (other.gameObject == PlayerManager.Instance.player)
         {
             //Rotate the player to face inwards to the ladder
-            switch (Cameras.Instance.cameraState)
-            {
-                case CameraState.Forward:
-                    if (transform.rotation.eulerAngles.y == 0)
-                        Player_Movement.Instance.SetPlayerBodyRotation(0);
-                    else if (transform.rotation.eulerAngles.y == 180)
-                        Player_Movement.Instance.SetPlayerBodyRotation(180);
-                    else if(transform.rotation.eulerAngles.y == 90)
-                        Player_Movement.Instance.SetPlayerBodyRotation(90);
-                    else if(transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
-                        Player_Movement.Instance.SetPlayerBodyRotation(-90);
-                    break;
-                case CameraState.Backward:
-                    if (transform.rotation.eulerAngles.y == 0)
-                        Player_Movement.Instance.SetPlayerBodyRotation(180);
-                    else if (transform.rotation.eulerAngles.y == 180)
-                        Player_Movement.Instance.SetPlayerBodyRotation(0);
-                    else if (transform.rotation.eulerAngles.y == 90)
-                        Player_Movement.Instance.SetPlayerBodyRotation(-90);
-                    else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
-                        Player_Movement.Instance.SetPlayerBodyRotation(90);
-                    break;
-                case CameraState.Left:
-                    if (transform.rotation.eulerAngles.y == 0)
-                        Player_Movement.Instance.SetPlayerBodyRotation(-90);
-                    else if (transform.rotation.eulerAngles.y == 180)
-                        Player_Movement.Instance.SetPlayerBodyRotation(90);
-                    else if (transform.rotation.eulerAngles.y == 90)
-                        Player_Movement.Instance.SetPlayerBodyRotation(0);
-                    else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
-                        Player_Movement.Instance.SetPlayerBodyRotation(180);
-                    break;
-                case CameraState.Right:
-                    if (transform.rotation.eulerAngles.y == 0)
-                        Player_Movement.Instance.SetPlayerBodyRotation(90);
-                    else if (transform.rotation.eulerAngles.y == 180)
-                        Player_Movement.Instance.SetPlayerBodyRotation(-90);
-                    else if (transform.rotation.eulerAngles.y == 90)
-                        Player_Movement.Instance.SetPlayerBodyRotation(180);
-                    else if (transform.rotation.eulerAngles.y == -90 || transform.rotation.eulerAngles.y == 270)
-                        Player_Movement.Instance.SetPlayerBodyRotation(0);
-                    break;
-
-                default:
-                    break;
-            }
+            //Player_Movement.Instance.Ladder_PlayerRotation_Into();
 
             //print("1. Player has entered Ladder");
 
@@ -187,6 +142,7 @@ public class Block_Ladder : MonoBehaviour
                     Player_Movement.Instance.ladderSteppedOn = null;
                 }
             }
+
             if (ladder_Under)
             {
                 ladder_Under.GetComponent<BlockStepCostDisplay>().HideDisplay();
@@ -199,11 +155,22 @@ public class Block_Ladder : MonoBehaviour
                     Player_Movement.Instance.ladderSteppedOn = null;
                 }
             }
+            else
+            {
+                if (!Player_Movement.Instance.ladderMovement_Up && !Player_Movement.Instance.ladderMovement_Top && !Player_Movement.Instance.ladderMovement_Top_ToBlock
+                    && !Player_Movement.Instance.ladderMovement_Down
+                    && PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Ladder)
+                {
+                    Player_Movement.Instance.isOnLadder = false;
+                    Player_Movement.Instance.ladderSteppedOn = null;
+                }
+            }
 
             if (block_Under && !ladder_Over)
             {
                 if (!Player_Movement.Instance.ladderMovement_Up && !Player_Movement.Instance.ladderMovement_Top && !Player_Movement.Instance.ladderMovement_Top_ToBlock
-                    && !Player_Movement.Instance.ladderMovement_Down)
+                    && !Player_Movement.Instance.ladderMovement_Down
+                    && PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Ladder)
                 {
                     Player_Movement.Instance.isOnLadder = false;
                     Player_Movement.Instance.ladderSteppedOn = null;
