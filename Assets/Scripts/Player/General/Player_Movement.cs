@@ -41,6 +41,8 @@ public class Player_Movement : Singleton<Player_Movement>
     public Vector3 ladderTop_EndPos;
     public GameObject ladderToApproach_Current;
     GameObject ladder_Top;
+    [SerializeField] bool ladderAndIsOnTheGround;
+    RaycastHit hit;
 
 
     //--------------------
@@ -158,13 +160,20 @@ public class Player_Movement : Singleton<Player_Movement>
         //If pressing Forward - Movement
         if (Input.GetKey(KeyCode.W))
         {
+            RaycastUnderPlayer();
+
             //W-press on a ladder
             if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 0)
             {
                 if (Cameras.Instance.cameraState == CameraState.Forward && !PlayerManager.Instance.canMove_Forward)
                     MovePlayerOnLadder_UP();
                 else if (Cameras.Instance.cameraState == CameraState.Backward && !PlayerManager.Instance.canMove_Back)
-                    MovePlayerOnLadder_DOWN();
+                {
+                    if (!ladderAndIsOnTheGround)
+                        MovePlayerOnLadder_DOWN();
+                    else
+                        BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                }
                 else if (Ladder_Down_MoveAway())
                     BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
             }
@@ -173,7 +182,12 @@ public class Player_Movement : Singleton<Player_Movement>
                 if (Cameras.Instance.cameraState == CameraState.Backward && !PlayerManager.Instance.canMove_Forward)
                     MovePlayerOnLadder_UP();
                 else if (Cameras.Instance.cameraState == CameraState.Forward && !PlayerManager.Instance.canMove_Back)
-                    MovePlayerOnLadder_DOWN();
+                {
+                    if (!ladderAndIsOnTheGround)
+                        MovePlayerOnLadder_DOWN();
+                    else
+                        BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                }
                 else if (Ladder_Down_MoveAway())
                     BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
             }
@@ -182,7 +196,12 @@ public class Player_Movement : Singleton<Player_Movement>
                 if (Cameras.Instance.cameraState == CameraState.Left && !PlayerManager.Instance.canMove_Forward)
                     MovePlayerOnLadder_UP();
                 else if (Cameras.Instance.cameraState == CameraState.Right && !PlayerManager.Instance.canMove_Back)
-                    MovePlayerOnLadder_DOWN();
+                {
+                    if (!ladderAndIsOnTheGround)
+                        MovePlayerOnLadder_DOWN();
+                    else
+                        BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                }
                 else if (Ladder_Down_MoveAway())
                     BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
             }
@@ -191,7 +210,12 @@ public class Player_Movement : Singleton<Player_Movement>
                 if (Cameras.Instance.cameraState == CameraState.Right && !PlayerManager.Instance.canMove_Forward)
                     MovePlayerOnLadder_UP();
                 else if (Cameras.Instance.cameraState == CameraState.Left && !PlayerManager.Instance.canMove_Back)
-                    MovePlayerOnLadder_DOWN();
+                {
+                    if (!ladderAndIsOnTheGround)
+                        MovePlayerOnLadder_DOWN();
+                    else
+                        BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                }
                 else if (Ladder_Down_MoveAway())
                     BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
             }
@@ -206,20 +230,33 @@ public class Player_Movement : Singleton<Player_Movement>
         //If pressing Backward - Movement
         else if (Input.GetKey(KeyCode.S))
         {
+            RaycastUnderPlayer();
+
             //S-press on a ladder
             if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 0)
             {
                 if (Cameras.Instance.cameraState == CameraState.Forward && !PlayerManager.Instance.canMove_Forward)
-                    MovePlayerOnLadder_DOWN();
+                {
+                    if (!ladderAndIsOnTheGround)
+                        MovePlayerOnLadder_DOWN();
+                    else
+                        BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                }
                 else if (Cameras.Instance.cameraState == CameraState.Backward && !PlayerManager.Instance.canMove_Back)
                     MovePlayerOnLadder_UP();
                 else if (Ladder_Down_MoveAway())
                     BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+
             }
             else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 180)
             {
                 if (Cameras.Instance.cameraState == CameraState.Backward && !PlayerManager.Instance.canMove_Forward)
-                    MovePlayerOnLadder_DOWN();
+                {
+                    if (!ladderAndIsOnTheGround)
+                        MovePlayerOnLadder_DOWN();
+                    else
+                        BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                }
                 else if (Cameras.Instance.cameraState == CameraState.Forward && !PlayerManager.Instance.canMove_Back)
                     MovePlayerOnLadder_UP();
                 else if (Ladder_Down_MoveAway())
@@ -228,7 +265,12 @@ public class Player_Movement : Singleton<Player_Movement>
             else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 90)
             {
                 if (Cameras.Instance.cameraState == CameraState.Left && !PlayerManager.Instance.canMove_Forward)
-                    MovePlayerOnLadder_DOWN();
+                {
+                    if (!ladderAndIsOnTheGround)
+                        MovePlayerOnLadder_DOWN();
+                    else
+                        BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                }
                 else if (Cameras.Instance.cameraState == CameraState.Right && !PlayerManager.Instance.canMove_Back)
                     MovePlayerOnLadder_UP();
                 else if (Ladder_Down_MoveAway())
@@ -237,7 +279,12 @@ public class Player_Movement : Singleton<Player_Movement>
             else if (isOnLadder && (ladderSteppedOn.transform.rotation.eulerAngles.y == -90 || ladderSteppedOn.transform.rotation.eulerAngles.y == 270))
             {
                 if (Cameras.Instance.cameraState == CameraState.Right && !PlayerManager.Instance.canMove_Forward)
-                    MovePlayerOnLadder_DOWN();
+                {
+                    if (!ladderAndIsOnTheGround)
+                        MovePlayerOnLadder_DOWN();
+                    else
+                        BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                }
                 else if (Cameras.Instance.cameraState == CameraState.Left && !PlayerManager.Instance.canMove_Back)
                     MovePlayerOnLadder_UP();
                 else if (Ladder_Down_MoveAway())
@@ -254,13 +301,20 @@ public class Player_Movement : Singleton<Player_Movement>
         //If pressing Left - Movement
         else if (Input.GetKey(KeyCode.A))
         {
+            RaycastUnderPlayer();
+
             //A-press on a ladder
             if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 0)
             {
                 if (Cameras.Instance.cameraState == CameraState.Left && !PlayerManager.Instance.canMove_Left)
                     MovePlayerOnLadder_UP();
                 else if (Cameras.Instance.cameraState == CameraState.Right && !PlayerManager.Instance.canMove_Right)
-                    MovePlayerOnLadder_DOWN();
+                {
+                    if (!ladderAndIsOnTheGround)
+                        MovePlayerOnLadder_DOWN();
+                    else
+                        BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                }
                 else if (Ladder_Down_MoveAway())
                     BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
             }
@@ -269,7 +323,12 @@ public class Player_Movement : Singleton<Player_Movement>
                 if (Cameras.Instance.cameraState == CameraState.Right && !PlayerManager.Instance.canMove_Left)
                     MovePlayerOnLadder_UP();
                 else if (Cameras.Instance.cameraState == CameraState.Left && !PlayerManager.Instance.canMove_Right)
-                    MovePlayerOnLadder_DOWN();
+                {
+                    if (!ladderAndIsOnTheGround)
+                        MovePlayerOnLadder_DOWN();
+                    else
+                        BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                }
                 else if (Ladder_Down_MoveAway())
                     BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
             }
@@ -278,7 +337,12 @@ public class Player_Movement : Singleton<Player_Movement>
                 if (Cameras.Instance.cameraState == CameraState.Backward && !PlayerManager.Instance.canMove_Left)
                     MovePlayerOnLadder_UP();
                 else if (Cameras.Instance.cameraState == CameraState.Forward && !PlayerManager.Instance.canMove_Right)
-                    MovePlayerOnLadder_DOWN();
+                {
+                    if (!ladderAndIsOnTheGround)
+                        MovePlayerOnLadder_DOWN();
+                    else
+                        BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                }
                 else if (Ladder_Down_MoveAway())
                     BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
             }
@@ -287,7 +351,12 @@ public class Player_Movement : Singleton<Player_Movement>
                 if (Cameras.Instance.cameraState == CameraState.Forward && !PlayerManager.Instance.canMove_Left)
                     MovePlayerOnLadder_UP();
                 else if (Cameras.Instance.cameraState == CameraState.Backward && !PlayerManager.Instance.canMove_Right)
-                    MovePlayerOnLadder_DOWN();
+                {
+                    if (!ladderAndIsOnTheGround)
+                        MovePlayerOnLadder_DOWN();
+                    else
+                        BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                }
                 else if (Ladder_Down_MoveAway())
                     BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
             }
@@ -301,11 +370,18 @@ public class Player_Movement : Singleton<Player_Movement>
         //If pressing RIGHT - Movement
         else if (Input.GetKey(KeyCode.D))
         {
+            RaycastUnderPlayer();
+
             //D-press on a ladder
             if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 0)
             {
                 if (Cameras.Instance.cameraState == CameraState.Left && !PlayerManager.Instance.canMove_Left)
-                    MovePlayerOnLadder_DOWN();
+                {
+                    if (!ladderAndIsOnTheGround)
+                        MovePlayerOnLadder_DOWN();
+                    else
+                        BypassIsOnLadder(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                }
                 else if (Cameras.Instance.cameraState == CameraState.Right && !PlayerManager.Instance.canMove_Right)
                     MovePlayerOnLadder_UP();
                 else if (Ladder_Down_MoveAway())
@@ -314,7 +390,12 @@ public class Player_Movement : Singleton<Player_Movement>
             else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 180)
             {
                 if (Cameras.Instance.cameraState == CameraState.Right && !PlayerManager.Instance.canMove_Left)
-                    MovePlayerOnLadder_DOWN();
+                {
+                    if (!ladderAndIsOnTheGround)
+                        MovePlayerOnLadder_DOWN();
+                    else
+                        BypassIsOnLadder(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                }
                 else if (Cameras.Instance.cameraState == CameraState.Left && !PlayerManager.Instance.canMove_Right)
                     MovePlayerOnLadder_UP();
                 else if (Ladder_Down_MoveAway())
@@ -323,7 +404,12 @@ public class Player_Movement : Singleton<Player_Movement>
             else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 90)
             {
                 if (Cameras.Instance.cameraState == CameraState.Backward && !PlayerManager.Instance.canMove_Left)
-                    MovePlayerOnLadder_DOWN();
+                {
+                    if (!ladderAndIsOnTheGround)
+                        MovePlayerOnLadder_DOWN();
+                    else
+                        BypassIsOnLadder(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                }
                 else if (Cameras.Instance.cameraState == CameraState.Forward && !PlayerManager.Instance.canMove_Right)
                     MovePlayerOnLadder_UP();
                 else if (Ladder_Down_MoveAway())
@@ -332,7 +418,12 @@ public class Player_Movement : Singleton<Player_Movement>
             else if (isOnLadder && (ladderSteppedOn.transform.rotation.eulerAngles.y == -90 || ladderSteppedOn.transform.rotation.eulerAngles.y == 270))
             {
                 if (Cameras.Instance.cameraState == CameraState.Forward && !PlayerManager.Instance.canMove_Left)
-                    MovePlayerOnLadder_DOWN();
+                {
+                    if (!ladderAndIsOnTheGround)
+                        MovePlayerOnLadder_DOWN();
+                    else
+                        BypassIsOnLadder(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                }
                 else if (Cameras.Instance.cameraState == CameraState.Backward && !PlayerManager.Instance.canMove_Right)
                     MovePlayerOnLadder_UP();
                 else if (Ladder_Down_MoveAway())
@@ -428,6 +519,28 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             QuitLevel();
         }
+    }
+    void RaycastUnderPlayer()
+    {
+        if (Physics.Raycast(PlayerManager.Instance.player.transform.position, Vector3.down, out hit, 1))
+        {
+            if (hit.transform.gameObject)
+            {
+                if (hit.transform.gameObject.GetComponent<BlockInfo>())
+                {
+                    if (hit.transform.gameObject.GetComponent<BlockInfo>().blockType == BlockType.Cube)
+                        ladderAndIsOnTheGround = true;
+                    else
+                        ladderAndIsOnTheGround = false;
+                }
+                else
+                    ladderAndIsOnTheGround = false;
+            }
+            else
+                ladderAndIsOnTheGround = false;
+        }
+        else
+            ladderAndIsOnTheGround = false;
     }
     void BypassIsOnLadder(ButtonsToPress button, bool canMove, DetectedBlockInfo detectedBlock, int rotation)
     {
