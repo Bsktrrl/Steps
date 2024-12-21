@@ -31,6 +31,7 @@ public class PermanentAbility : MonoBehaviour
                     if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[j].isCompleted)
                     {
                         levelsCompletedCounter++;
+                        break;
                     }
                 }
             }
@@ -38,7 +39,7 @@ public class PermanentAbility : MonoBehaviour
 
         if (levelsCompletedCounter >= levelsToComplete.Count && levelsToComplete.Count > 0)
         {
-            print("1. Completed Biome and get an Ability");
+            print("1. Completed Biome and get an Ability | Counter: " + levelsCompletedCounter + " | CompleteCount: " + levelsToComplete.Count);
 
             for (int i = 0; i < permanentAbilityList.Count; i++)
             {
