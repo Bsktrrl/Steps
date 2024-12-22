@@ -518,7 +518,7 @@ public class Player_Movement : Singleton<Player_Movement>
             }
         }
 
-        //If pressing - Hammer - Enter
+        //If pressing - Hammer - C
         else if (Input.GetKeyDown(KeyCode.C))
         {
             if (gameObject.GetComponent<Player_Hammer>().playerCanHammer)

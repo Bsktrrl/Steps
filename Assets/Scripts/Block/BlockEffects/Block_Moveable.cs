@@ -7,7 +7,7 @@ public class Block_Moveable : MonoBehaviour
 {
     MovementDirection movementDirection;
 
-    bool canMove;
+    public bool canMove;
     bool isMoving;
     bool isIceGliding;
 
