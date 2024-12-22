@@ -117,7 +117,8 @@ public class Player_Dash : Singleton<Player_Dash>
 
         if (PlayerStats.Instance.stats.abilitiesGot_Permanent != null || PlayerStats.Instance.stats.abilitiesGot_Temporary != null)
         {
-            if (dashBlock_Current && !dashBlockOver_Current && (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash || PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash))
+            if ((dashBlock_Current && !dashBlockOver_Current && (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash || PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash)
+                || (dashBlock_Current && !dashBlockOver_Current.activeInHierarchy && (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash || PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash))))
             {
                 if (dashBlock_Current.GetComponent<BlockInfo>())
                 {
@@ -136,7 +137,8 @@ public class Player_Dash : Singleton<Player_Dash>
                     playerCanDash = true;
                 }
             }
-            else if ((PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit) && dashBlock_Current && dashBlockOver_Current && (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash || PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash))
+            else if (((PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit) && dashBlock_Current && dashBlockOver_Current && (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash || PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash))
+                || ((PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit) && !dashBlock_Current.activeInHierarchy && dashBlockOver_Current && (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash || PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash)))
             {
                 if (dashBlock_Current.GetComponent<BlockInfo>() && dashBlock_Current.GetComponent<Block_Water>())
                 {
