@@ -24,11 +24,15 @@ public class Player_Hammer : Singleton<Player_Hammer>
     {
         if (PlayerManager.Instance.block_LookingAt_Horizontal)
         {
-            if (PlayerManager.Instance.block_LookingAt_Horizontal.GetComponent<Block_Weak>())
+            if (PlayerManager.Instance.block_LookingAt_Horizontal.GetComponent<Block_Weak>()
+                && (PlayerStats.Instance.stats.abilitiesGot_Temporary.Hammer || PlayerStats.Instance.stats.abilitiesGot_Permanent.Hammer))
             {
                 playerCanHammer = true;
+                return;
             }
         }
+
+        playerCanHammer = false;
     }
 
     public void Hammer()
