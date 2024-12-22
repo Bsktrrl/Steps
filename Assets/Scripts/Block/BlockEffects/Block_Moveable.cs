@@ -121,33 +121,36 @@ public class Block_Moveable : MonoBehaviour
 
             if (hit.transform.gameObject)
             {
-                print("1. Look Horizontal");
                 canMove = false;
             }
             else
             {
-                if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject)
+                if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject && !isIceGliding)
                 {
-                    print("2. Look Horizontal");
+                    canMove = true;
+                }
+                else if (isIceGliding)
+                {
                     canMove = true;
                 }
                 else
                 {
-                    print("3. Look Horizontal");
                     canMove = false;
                 }
             }
         }
         else
         {
-            if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject)
+            if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject && !isIceGliding)
             {
-                print("4. Look Horizontal");
+                canMove = true;
+            }
+            else if (isIceGliding)
+            {
                 canMove = true;
             }
             else
             {
-                print("5. Look Horizontal");
                 canMove = false;
             }
         }
@@ -178,14 +181,16 @@ public class Block_Moveable : MonoBehaviour
             {
                 if (hit.transform.gameObject.GetComponent<BlockInfo>().blockType == BlockType.Cube)
                 {
-                    if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject)
+                    if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject && !isIceGliding)
                     {
-                        print("1. Look Vertical");
+                        canMove = true;
+                    }
+                    else if (isIceGliding)
+                    {
                         canMove = true;
                     }
                     else
                     {
-                        print("2. Look Vertical");
                         canMove = false;
                     }
 
@@ -203,7 +208,6 @@ public class Block_Moveable : MonoBehaviour
             }
         }
 
-        print("3. Look Vertical");
         canMove = false;
     }
 
