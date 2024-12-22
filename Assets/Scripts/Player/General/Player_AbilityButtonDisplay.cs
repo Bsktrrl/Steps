@@ -6,7 +6,7 @@ using UnityEngine;
 public class Player_AbilityButtonDisplay : MonoBehaviour
 {
     [Header("Parent")]
-    [SerializeField] GameObject buttonDisplay_Parent;
+    [SerializeField] GameObject buttonDisplay_Canvas;
     [SerializeField] GameObject buttonDisplay_FieldParent;
 
     [Header("Prefab")]
@@ -53,7 +53,7 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
     {
         Cameras.rotateCamera += RotateAbilityDisplay;
 
-        FIndAllMoveableBlocks();
+        FindAllMoveableBlocks();
     }
     private void Update()
     {
@@ -105,6 +105,14 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
     }
     void AddPrefab(Sprite _buttonSprite, Sprite _abilitySprite, string _abilityName)
     {
+        for (int i = 0; i < buttonDisplayList.Count; i++)
+        {
+            if (buttonDisplayList[i].GetComponent<AbilityDisplay>().abilityName.text == _abilityName)
+            {
+                return;
+            }
+        }
+
         buttonDisplayList.Add(Instantiate(buttonDisplay_Prefab));
         buttonDisplayList[buttonDisplayList.Count - 1].GetComponent<AbilityDisplay>().SetupAbilityDisplay(_buttonSprite, _abilitySprite, _abilityName);
         buttonDisplayList[buttonDisplayList.Count - 1].transform.parent = buttonDisplay_FieldParent.transform;
@@ -145,23 +153,23 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
         switch (Cameras.Instance.cameraState)
         {
             case CameraState.Forward:
-                buttonDisplay_Parent.transform.SetLocalPositionAndRotation(new Vector3(1.9f, 0, 0), Quaternion.Euler(0, 0, 0));
+                buttonDisplay_Canvas.transform.SetLocalPositionAndRotation(new Vector3(1.9f, 0, 0), Quaternion.Euler(0, 0, 0));
                 break;
             case CameraState.Backward:
-                buttonDisplay_Parent.transform.SetLocalPositionAndRotation(new Vector3(-1.9f, 0, 0), Quaternion.Euler(0, 180, 0));
+                buttonDisplay_Canvas.transform.SetLocalPositionAndRotation(new Vector3(-1.9f, 0, 0), Quaternion.Euler(0, 180, 0));
                 break;
             case CameraState.Left:
-                buttonDisplay_Parent.transform.SetLocalPositionAndRotation(new Vector3(-0.1f, 0, -2), Quaternion.Euler(0, 90, 0));
+                buttonDisplay_Canvas.transform.SetLocalPositionAndRotation(new Vector3(-0.1f, 0, -2), Quaternion.Euler(0, 90, 0));
                 break;
             case CameraState.Right:
-                buttonDisplay_Parent.transform.SetLocalPositionAndRotation(new Vector3(-0.1f, 0, 2), Quaternion.Euler(0, -90, 0));
+                buttonDisplay_Canvas.transform.SetLocalPositionAndRotation(new Vector3(-0.1f, 0, 2), Quaternion.Euler(0, -90, 0));
                 break;
 
             default:
                 break;
         }
     }
-    void FIndAllMoveableBlocks()
+    void FindAllMoveableBlocks()
     {
         moveableObjectsList = FindObjectsOfType<Block_Moveable>();
 
