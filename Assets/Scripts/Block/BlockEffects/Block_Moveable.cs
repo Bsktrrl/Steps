@@ -42,12 +42,14 @@ public class Block_Moveable : MonoBehaviour
     private void OnEnable()
     {
         Player_Movement.Action_StepTaken += RaycastForThePlayer;
+        Player_Movement.Action_BodyRotated += RaycastForThePlayer;
         Player_Movement.Action_PressMoveBlockButton += ActivateBlockMovement;
         PlayerStats.Action_RespawnPlayer += ResetBlockPos;
     }
     private void OnDisable()
     {
         Player_Movement.Action_StepTaken -= RaycastForThePlayer;
+        Player_Movement.Action_BodyRotated -= RaycastForThePlayer;
         Player_Movement.Action_PressMoveBlockButton -= ActivateBlockMovement;
         PlayerStats.Action_RespawnPlayer -= ResetBlockPos;
     }
@@ -119,16 +121,35 @@ public class Block_Moveable : MonoBehaviour
 
             if (hit.transform.gameObject)
             {
+                print("1. Look Horizontal");
                 canMove = false;
             }
             else
             {
-                canMove = true;
+                if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject)
+                {
+                    print("2. Look Horizontal");
+                    canMove = true;
+                }
+                else
+                {
+                    print("3. Look Horizontal");
+                    canMove = false;
+                }
             }
         }
         else
         {
-            canMove = true;
+            if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject)
+            {
+                print("4. Look Horizontal");
+                canMove = true;
+            }
+            else
+            {
+                print("5. Look Horizontal");
+                canMove = false;
+            }
         }
     }
 
@@ -157,7 +178,16 @@ public class Block_Moveable : MonoBehaviour
             {
                 if (hit.transform.gameObject.GetComponent<BlockInfo>().blockType == BlockType.Cube)
                 {
-                    canMove = true;
+                    if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject)
+                    {
+                        print("1. Look Vertical");
+                        canMove = true;
+                    }
+                    else
+                    {
+                        print("2. Look Vertical");
+                        canMove = false;
+                    }
 
                     if (hit.transform.gameObject.GetComponent<Block_IceGlide>())
                     {
@@ -173,6 +203,7 @@ public class Block_Moveable : MonoBehaviour
             }
         }
 
+        print("3. Look Vertical");
         canMove = false;
     }
 
