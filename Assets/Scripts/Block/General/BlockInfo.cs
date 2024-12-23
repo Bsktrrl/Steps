@@ -91,7 +91,6 @@ public class BlockInfo : MonoBehaviour
         Player_Movement.Action_resetBlockColor += ResetColor;
         PlayerStats.Action_RespawnToSavePos += ResetColor;
         PlayerStats.Action_RespawnPlayer += ResetBlock;
-        Player_Movement.Action_StepTaken += MakeStepSound;
     }
 
     private void OnDisable()
@@ -99,7 +98,6 @@ public class BlockInfo : MonoBehaviour
         Player_Movement.Action_resetBlockColor -= ResetColor;
         PlayerStats.Action_RespawnToSavePos -= ResetColor;
         PlayerStats.Action_RespawnPlayer -= ResetBlock;
-        Player_Movement.Action_StepTaken -= MakeStepSound;
     }
 
 
@@ -236,29 +234,38 @@ public class BlockInfo : MonoBehaviour
 
     public void ResetColor()
     {
-        for (int i = 0; i < propertyBlocks.Count; i++)
+        if (gameObject.GetComponent<BlockStepCostDisplay>())
         {
-            // Restore the color to full brightness
-            Color restoredColor = new Color();
-            if (hasOtherMaterial)
+            if (gameObject.GetComponent<BlockStepCostDisplay>().stepCostDisplay_Parent)
             {
-                restoredColor = material.color;
-            }
-            else
-            {
-                restoredColor = Color.white;
-            }
-           
-            // Set the original color in the MaterialPropertyBlock
-            propertyBlocks[i].SetColor("_BaseColor", restoredColor);
+                if (gameObject.GetComponent<BlockStepCostDisplay>().stepCostDisplay_Parent.activeInHierarchy)
+                {
+                    for (int i = 0; i < propertyBlocks.Count; i++)
+                    {
+                        // Restore the color to full brightness
+                        Color restoredColor = new Color();
+                        if (hasOtherMaterial)
+                        {
+                            restoredColor = material.color;
+                        }
+                        else
+                        {
+                            restoredColor = Color.white;
+                        }
 
-            // Apply the MaterialPropertyBlock to the renderer
-            objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
+                        // Set the original color in the MaterialPropertyBlock
+                        propertyBlocks[i].SetColor("_BaseColor", restoredColor);
 
-            //Hide StepCost
-            if (gameObject.GetComponent<BlockStepCostDisplay>())
-            {
-                gameObject.GetComponent<BlockStepCostDisplay>().HideDisplay();
+                        // Apply the MaterialPropertyBlock to the renderer
+                        objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
+
+                        //Hide StepCost
+                        if (gameObject.GetComponent<BlockStepCostDisplay>())
+                        {
+                            gameObject.GetComponent<BlockStepCostDisplay>().HideDisplay();
+                        }
+                    }
+                }
             }
         }
     }
@@ -267,7 +274,7 @@ public class BlockInfo : MonoBehaviour
     //--------------------
 
 
-    void MakeStepSound()
+    public void MakeStepSound()
     {
         if (stepSound_ClipList.Count > 0 && PlayerManager.Instance.block_StandingOn_Current.block == gameObject)
         {
@@ -290,6 +297,9 @@ public class BlockInfo : MonoBehaviour
 
     void ResetBlock()
     {
-        transform.position = startPos;
+        if (transform.position != startPos)
+        {
+            transform.position = startPos;
+        }
     }
 }

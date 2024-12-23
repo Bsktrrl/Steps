@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BlockStepCostDisplay : MonoBehaviour
 {
-    [SerializeField] GameObject stepCostDisplay_Parent;
+    public GameObject stepCostDisplay_Parent;
     [SerializeField] GameObject stepCostDisplay_Canvas;
     [SerializeField] GameObject stepCostText_Object;
 
@@ -143,7 +143,7 @@ public class BlockStepCostDisplay : MonoBehaviour
             }
         }
 
-        //If the block is a Cube - Complete
+        //If the block is a Cube
         else
         {
             if (Cameras.Instance.cameraState == CameraState.Forward)

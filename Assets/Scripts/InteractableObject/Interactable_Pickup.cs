@@ -8,6 +8,8 @@ public class Interactable_Pickup : MonoBehaviour
 {
     public static event Action Action_PickupGot;
 
+    public static event Action Action_FlippersGot;
+
     public Items itemReceived;
     public Abilities abilityReceived;
     public bool goal;
@@ -168,6 +170,7 @@ public class Interactable_Pickup : MonoBehaviour
             case Abilities.Flippers:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers = true;
                 MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flippers = true;
+                Action_FlippersGot?.Invoke();
                 break;
             case Abilities.LavaSuit:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.LavaSuit = true;

@@ -117,58 +117,62 @@ public class Player_Dash : Singleton<Player_Dash>
 
         if (PlayerStats.Instance.stats.abilitiesGot_Permanent != null || PlayerStats.Instance.stats.abilitiesGot_Temporary != null)
         {
-            if ((dashBlock_Current && !dashBlockOver_Current && (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash || PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash)
+            if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash || PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash)
+            {
+                if ((dashBlock_Current && !dashBlockOver_Current && (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash || PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash)
                 || (dashBlock_Current && !dashBlockOver_Current.activeInHierarchy && (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash || PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash))))
-            {
-                if (dashBlock_Current.GetComponent<BlockInfo>())
                 {
-                    if (dashBlock_Current != dashBlock_Previous)
+                    if (dashBlock_Current.GetComponent<BlockInfo>())
                     {
-                        if (dashBlock_Previous)
+                        if (dashBlock_Current != dashBlock_Previous)
                         {
-                            if (dashBlock_Previous.GetComponent<BlockInfo>())
+                            if (dashBlock_Previous)
                             {
-                                dashBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                                if (dashBlock_Previous.GetComponent<BlockInfo>())
+                                {
+                                    dashBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                                }
                             }
                         }
-                    }
 
-                    dashBlock_Current.GetComponent<BlockInfo>().DarkenColors();
-                    playerCanDash = true;
+                        dashBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                        playerCanDash = true;
+                    }
                 }
-            }
-            else if (((PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit) && dashBlock_Current && dashBlockOver_Current && (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash || PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash))
-                || ((PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit) && !dashBlock_Current.activeInHierarchy && dashBlockOver_Current && (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash || PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash)))
-            {
-                if (dashBlock_Current.GetComponent<BlockInfo>() && dashBlock_Current.GetComponent<Block_Water>())
+                else if (((PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit) && dashBlock_Current && dashBlockOver_Current && (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash || PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash))
+                    || ((PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit) && !dashBlock_Current.activeInHierarchy && dashBlockOver_Current && (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash || PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash)))
                 {
-                    if (dashBlock_Current != dashBlock_Previous)
+                    if (dashBlock_Current.GetComponent<BlockInfo>() && dashBlock_Current.GetComponent<Block_Water>())
                     {
-                        if (dashBlock_Previous)
+                        if (dashBlock_Current != dashBlock_Previous)
                         {
-                            if (dashBlock_Previous.GetComponent<BlockInfo>())
+                            if (dashBlock_Previous)
                             {
-                                dashBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                                if (dashBlock_Previous.GetComponent<BlockInfo>())
+                                {
+                                    dashBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                                }
                             }
                         }
-                    }
 
-                    dashBlock_Current.GetComponent<BlockInfo>().DarkenColors();
-                    playerCanDash = true;
+                        dashBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                        playerCanDash = true;
+                    }
                 }
-            }
-            else
-            {
-                if (dashBlock_Previous)
+                else
                 {
-                    if (dashBlock_Previous.GetComponent<BlockInfo>())
+                    if (dashBlock_Previous)
                     {
-                        dashBlock_Previous.GetComponent<BlockInfo>().ResetColor();
-                        dashBlock_Previous = null;
-                        playerCanDash = false;
+                        if (dashBlock_Previous.GetComponent<BlockInfo>())
+                        {
+                            dashBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                            dashBlock_Previous = null;
+                            playerCanDash = false;
+                        }
                     }
                 }
             }
+            
         }
         else
         {

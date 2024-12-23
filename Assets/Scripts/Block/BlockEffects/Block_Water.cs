@@ -7,11 +7,13 @@ public class Block_Water : MonoBehaviour
     private void OnEnable()
     {
         DataManager.Action_dataHasLoaded += UpdateMovementCostWithFlippers;
+        Interactable_Pickup.Action_FlippersGot += UpdateMovementCostWithFlippers;
     }
 
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= UpdateMovementCostWithFlippers;
+        Interactable_Pickup.Action_FlippersGot -= UpdateMovementCostWithFlippers;
     }
 
 
@@ -31,6 +33,7 @@ public class Block_Water : MonoBehaviour
                         if (gameObject.GetComponent<BlockInfo>())
                         {
                             gameObject.GetComponent<BlockInfo>().movementCost = 0;
+                            gameObject.GetComponent<BlockInfo>().movementSpeed = 4;
                         }
                     }
                 }
