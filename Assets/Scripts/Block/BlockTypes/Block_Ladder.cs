@@ -64,10 +64,18 @@ public class Block_Ladder : MonoBehaviour
     {
         if (other.gameObject == PlayerManager.Instance.player)
         {
-            //Rotate the player to face inwards to the ladder
-            //Player_Movement.Instance.Ladder_PlayerRotation_Into();
+            #region Sound
+            int sound = Random.Range(0, GetComponent<BlockInfo>().stepSound_ClipList.Count);
 
-            //print("1. Player has entered Ladder");
+            GetComponent<BlockInfo>().stepSound_Source.clip = GetComponent<BlockInfo>().stepSound_ClipList[sound];
+
+            float volume = Random.Range(0.75f, 1.25f);
+
+            if (GetComponent<BlockInfo>().stepSound_Volume > 0)
+                GetComponent<BlockInfo>().stepSound_Source.volume = GetComponent<BlockInfo>().stepSound_Volume * volume;
+
+            GetComponent<BlockInfo>().stepSound_Source.Play();
+            #endregion
 
             if (ladder_Over)
             {

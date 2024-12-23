@@ -14,9 +14,9 @@ public class BlockInfo : MonoBehaviour
     public Color stepCostText_Color;
 
     [Header("Step Sound")]
-    [SerializeField] float stepSound_Volume;
+    public float stepSound_Volume;
     public List<AudioClip> stepSound_ClipList;
-    AudioSource stepSound_Source;
+    [HideInInspector] public AudioSource stepSound_Source;
 
     [Header("Starting Position")]
     public Vector3 startPos;

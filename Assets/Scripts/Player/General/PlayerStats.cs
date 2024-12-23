@@ -203,6 +203,7 @@ public class PlayerStats : Singleton<PlayerStats>
 
         //Move player
         transform.position = MapManager.Instance.playerStartPos;
+        transform.SetPositionAndRotation(MapManager.Instance.playerStartPos, Quaternion.identity);
         Player_Movement.Instance.SetPlayerBodyRotation(0);
         RespawnPlayer_Action();
 
