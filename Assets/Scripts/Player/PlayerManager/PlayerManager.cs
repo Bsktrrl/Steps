@@ -57,12 +57,14 @@ public class PlayerManager : Singleton<PlayerManager>
     private void OnEnable()
     {
         DataManager.Action_dataHasLoaded += LoadPlayerStats;
+        Player_Movement.Action_StepTaken += StepsOnFallableBlock;
         Player_Movement.Action_StepTaken += MakeStepSound;
     }
 
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= LoadPlayerStats;
+        Player_Movement.Action_StepTaken -= StepsOnFallableBlock;
         Player_Movement.Action_StepTaken -= MakeStepSound;
     }
 
@@ -90,6 +92,16 @@ public class PlayerManager : Singleton<PlayerManager>
             if (block_StandingOn_Current.block.GetComponent<BlockInfo>())
             {
                 block_StandingOn_Current.block.GetComponent<BlockInfo>().MakeStepSound();
+            }
+        }
+    }
+    void StepsOnFallableBlock()
+    {
+        if (block_StandingOn_Current.block)
+        {
+            if (block_StandingOn_Current.block.GetComponent<Block_Falling>())
+            {
+                block_StandingOn_Current.block.GetComponent<Block_Falling>().StepsOnFallableBlock();
             }
         }
     }

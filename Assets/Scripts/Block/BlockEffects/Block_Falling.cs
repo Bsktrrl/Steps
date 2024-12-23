@@ -48,13 +48,11 @@ public class Block_Falling : MonoBehaviour
 
     private void OnEnable()
     {
-        Player_Movement.Action_StepTaken += StepsOnFallableBlock;
         PlayerStats.Action_RespawnPlayer += ResetBlock;
     }
 
     private void OnDisable()
     {
-        Player_Movement.Action_StepTaken -= StepsOnFallableBlock;
         PlayerStats.Action_RespawnPlayer -= ResetBlock;
     }
 
@@ -93,12 +91,9 @@ public class Block_Falling : MonoBehaviour
     //--------------------
 
 
-    void StepsOnFallableBlock()
+    public void StepsOnFallableBlock()
     {
-        if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject)
-        {
-            isSteppedOn = true;
-        }
+        isSteppedOn = true;
     }
 
 
