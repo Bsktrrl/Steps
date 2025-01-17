@@ -172,9 +172,9 @@ public class Interactable_Pickup : MonoBehaviour
                 MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flippers = true;
                 Action_FlippersGot?.Invoke();
                 break;
-            case Abilities.LavaSuit:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.LavaSuit = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.LavaSuit = true;
+            case Abilities.Flameable:
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flameable = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flameable = true;
                 break;
             case Abilities.LavaSwiftSwim:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.LavaSwiftSwim = true;
@@ -257,7 +257,7 @@ public enum Abilities
     SwiftSwim,
     Flippers,
 
-    LavaSuit,
+    Flameable,
     LavaSwiftSwim,
 
     HikerGear,

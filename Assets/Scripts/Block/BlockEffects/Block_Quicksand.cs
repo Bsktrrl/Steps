@@ -33,13 +33,13 @@ public class Block_Quicksand : MonoBehaviour
                 if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject)
                 {
                     print("3. SteppingOnQuicksand");
-                    PlayerManager.Instance.quicksandCounter += 1;
+                    Player_Quicksand.Instance.quicksandCounter += 1;
                 }
             }
             else
             {
                 print("5. SteppingOnQuicksand");
-                PlayerManager.Instance.quicksandCounter = 0;
+                Player_Quicksand.Instance.quicksandCounter = 0;
             }
         }
     }

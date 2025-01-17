@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Block_Ladder : MonoBehaviour
 {
-    GameObject raycastPoint;
+    [SerializeField] GameObject raycastPoint;
 
-    [HideInInspector] public GameObject ladder_Over;
-    [HideInInspector] public GameObject ladder_Under;
-    [HideInInspector] public GameObject block_Under;
+    public GameObject ladder_Over;
+    public GameObject ladder_Under;
+    public GameObject block_Under;
 
-    bool playerIsStandingOnTheGround;
+    [SerializeField] bool playerIsStandingOnTheGround;
 
     RaycastHit hit;
 

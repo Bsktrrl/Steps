@@ -148,7 +148,7 @@ public class LevelInfoDisplay : Singleton<LevelInfoDisplay>
             ability_SwiftSwim.gameObject.SetActive(true);
         if (level.abilitiesInLevel.Flippers)
             ability_Flippers.gameObject.SetActive(true);
-        if (level.abilitiesInLevel.LavaSuit)
+        if (level.abilitiesInLevel.Flameable)
             ability_LavaSuit.gameObject.SetActive(true);
         if (level.abilitiesInLevel.LavaSwiftSwim)
             ability_LavaSwiftSwim.gameObject.SetActive(true);

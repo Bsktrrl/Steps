@@ -46,15 +46,15 @@ public class Player_BodyHeight : MonoBehaviour
             {
                 print("Standing on QuickSand");
 
-                if (PlayerManager.Instance.quicksandCounter == 1)
+                if (Player_Quicksand.Instance.quicksandCounter == 1)
                     PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_QuickSand_1, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
-                else if (PlayerManager.Instance.quicksandCounter == 2)
+                else if (Player_Quicksand.Instance.quicksandCounter == 2)
                     PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_QuickSand_2, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
-                else if (PlayerManager.Instance.quicksandCounter == 3)
+                else if (Player_Quicksand.Instance.quicksandCounter == 3)
                     PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_QuickSand_3, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
-                else if (PlayerManager.Instance.quicksandCounter == 4)
+                else if (Player_Quicksand.Instance.quicksandCounter == 4)
                     PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_QuickSand_4, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
-                else if (PlayerManager.Instance.quicksandCounter == 5)
+                else if (Player_Quicksand.Instance.quicksandCounter == 5)
                     PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_QuickSand_5, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
                 else
                     PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_Normal, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);

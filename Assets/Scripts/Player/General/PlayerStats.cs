@@ -99,10 +99,10 @@ public class PlayerStats : Singleton<PlayerStats>
         else
             stats.abilitiesGot_Temporary.Flippers = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.LavaSuit)
-            stats.abilitiesGot_Temporary.LavaSuit = true;
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flameable)
+            stats.abilitiesGot_Temporary.Flameable = true;
         else
-            stats.abilitiesGot_Temporary.LavaSuit = false;
+            stats.abilitiesGot_Temporary.Flameable = false;
 
         if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.LavaSwiftSwim)
             stats.abilitiesGot_Temporary.LavaSwiftSwim = true;

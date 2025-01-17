@@ -6465,6 +6465,8 @@ GameObject:
   - component: {fileID: 4815799183020610750}
   - component: {fileID: 2377569446011846462}
   - component: {fileID: 8173112878224402115}
+  - component: {fileID: 7911760123166948170}
+  - component: {fileID: 8476888843546579569}
   m_Layer: 6
   m_Name: Player v3
   m_TagString: Player
@@ -6631,7 +6633,7 @@ MonoBehaviour:
       SwimSuit: 0
       SwiftSwim: 0
       Flippers: 0
-      LavaSuit: 0
+      Flameable: 0
       LavaSwiftSwim: 0
       HikerGear: 0
       IceSpikes: 0
@@ -6647,7 +6649,7 @@ MonoBehaviour:
       SwimSuit: 0
       SwiftSwim: 0
       Flippers: 0
-      LavaSuit: 0
+      Flameable: 0
       LavaSwiftSwim: 0
       HikerGear: 0
       IceSpikes: 0
@@ -6682,10 +6684,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c62a7cc69148c488ef1bad822ee621, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  height_Normal: 0
-  height_Stair: 0.5
-  height_Water: -0.8
-  height_Lava: -0.9
 --- !u!114 &13904960364419418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6715,7 +6713,6 @@ MonoBehaviour:
   ladderMovement_Down_ToBottom: 0
   ladderTop_EndPos: {x: 0, y: 0, z: 0}
   ladderToApproach_Current: {fileID: 0}
-  ladderAndIsOnTheGround: 0
 --- !u!114 &2942397174162899684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6757,10 +6754,6 @@ MonoBehaviour:
   detectorSpot_Stair_Back: {fileID: 937977188868993193}
   detectorSpot_Stair_Left: {fileID: 8825524400531118512}
   detectorSpot_Stair_Right: {fileID: 3873675504140058313}
-  maxDistance_Horizontal: 0.5
-  maxDistance_Vertical_Normal: 0.9
-  maxDistance_Vertical_Stair: 1.6
-  maxDistance_Stair: 0.75
   lookDir: {x: 0, y: 0, z: 0}
   lookDir_Temp: 0
 --- !u!114 &4400904070712247115
@@ -6873,7 +6866,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerIsPushed: 0
-  pushDirection: {x: 0, y: 0, z: 0}
 --- !u!114 &4815799183020610750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6923,8 +6915,33 @@ MonoBehaviour:
   redDot: {fileID: 1953159888427105127, guid: 84ab47ae664fb6f4197cd9f6eb0e6cbb, type: 3}
   lineRenderer: {fileID: 228480217323947535}
   isGrapplingHooking: 0
-  blockUnderPlayer_Old: {fileID: 0}
-  blockUnderPlayer_New: {fileID: 0}
+--- !u!114 &7911760123166948170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649856597487831825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e94a44dfe6bd19b40a1946f5c7e646c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  quicksandCounter: 0
+--- !u!114 &8476888843546579569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649856597487831825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a9a4b4e9bb08cc4cb160493ff28f6fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFlameable: 0
+  flameableStepCounter: 0
 --- !u!1 &6680482554464227565
 GameObject:
   m_ObjectHideFlags: 0
@@ -8119,7 +8136,7 @@ MonoBehaviour:
         SwimSuit: 0
         SwiftSwim: 0
         Flippers: 0
-        LavaSuit: 0
+        Flameable: 0
         LavaSwiftSwim: 0
         HikerGear: 0
         IceSpikes: 0
@@ -8135,7 +8152,7 @@ MonoBehaviour:
         SwimSuit: 0
         SwiftSwim: 0
         Flippers: 0
-        LavaSuit: 0
+        Flameable: 0
         LavaSwiftSwim: 0
         HikerGear: 0
         IceSpikes: 0
@@ -8160,7 +8177,7 @@ MonoBehaviour:
       SwimSuit: 0
       SwiftSwim: 0
       Flippers: 0
-      LavaSuit: 0
+      Flameable: 0
       LavaSwiftSwim: 0
       HikerGear: 0
       IceSpikes: 0
@@ -8176,7 +8193,7 @@ MonoBehaviour:
       SwimSuit: 0
       SwiftSwim: 0
       Flippers: 0
-      LavaSuit: 0
+      Flameable: 0
       LavaSwiftSwim: 0
       HikerGear: 0
       IceSpikes: 0

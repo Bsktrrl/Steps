@@ -156,7 +156,7 @@ public class UIManager : Singleton<UIManager>
                     SwiftSwim.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers)
                     Flippers.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.LavaSuit)
+                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flameable)
                     LavaSuit.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Temporary.LavaSwiftSwim)
                     LavaSwiftSwim.SetActive(true);
@@ -190,7 +190,7 @@ public class UIManager : Singleton<UIManager>
                     SwiftSwim.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers)
                     Flippers.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.LavaSuit)
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Flameable)
                     LavaSuit.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Permanent.LavaSwiftSwim)
                     LavaSwiftSwim.SetActive(true);

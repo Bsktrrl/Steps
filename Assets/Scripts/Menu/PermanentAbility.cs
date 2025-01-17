@@ -60,8 +60,8 @@ public class PermanentAbility : MonoBehaviour
                     case Abilities.Flippers:
                         PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers = true;
                         break;
-                    case Abilities.LavaSuit:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.LavaSuit = true;
+                    case Abilities.Flameable:
+                        PlayerStats.Instance.stats.abilitiesGot_Permanent.Flameable = true;
                         break;
                     case Abilities.LavaSwiftSwim:
                         PlayerStats.Instance.stats.abilitiesGot_Permanent.LavaSwiftSwim = true;
