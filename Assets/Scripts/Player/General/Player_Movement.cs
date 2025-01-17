@@ -20,26 +20,27 @@ public class Player_Movement : Singleton<Player_Movement>
 
     [Header("Player Movement over Blocks")]
     [HideInInspector] public float heightOverBlock = 0.95f;
-    public float fallSpeed = 6f;
+    [HideInInspector] public float fallSpeed = 6f;
 
     //Other
-    Vector3 endDestination;
+    [Header("Gliding")]
     public bool iceGliding;
     public bool slopeGliding;
+    [HideInInspector] Vector3 endDestination;
 
     [Header("Ladder Movement parameters")]
-    public bool isOnLadder;
-    public GameObject ladderSteppedOn;
-    public bool ladderMovement_Up;
-    public bool ladderMovement_Down;
-    public bool ladderMovement_Top;
-    public bool ladderMovement_Top_ToBlock;
-    public bool ladderMovement_Down_ToBlockFromTop;
-    public bool ladderMovement_Down_ToBottom;
-    public Vector3 ladderTop_EndPos;
-    public GameObject ladderToApproach_Current;
+    [HideInInspector] public bool isOnLadder;
+    [HideInInspector] public GameObject ladderSteppedOn;
+    [HideInInspector] public bool ladderMovement_Up;
+    [HideInInspector] public bool ladderMovement_Down;
+    [HideInInspector] public bool ladderMovement_Top;
+    [HideInInspector] public bool ladderMovement_Top_ToBlock;
+    [HideInInspector] public bool ladderMovement_Down_ToBlockFromTop;
+    [HideInInspector] public bool ladderMovement_Down_ToBottom;
+    [HideInInspector] public Vector3 ladderTop_EndPos;
+    [HideInInspector] public GameObject ladderToApproach_Current;
     GameObject ladder_Top;
-    [SerializeField] bool ladderAndIsOnTheGround;
+    bool ladderAndIsOnTheGround;
     RaycastHit hit;
 
 

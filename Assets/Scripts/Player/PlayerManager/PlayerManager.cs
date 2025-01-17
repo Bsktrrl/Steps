@@ -15,28 +15,28 @@ public class PlayerManager : Singleton<PlayerManager>
     public GameObject dataManagerObject;
 
     [Header("Player Block Moving Towards")]
-    public DetectedBlockInfo block_MovingTowards;
+    [HideInInspector] public DetectedBlockInfo block_MovingTowards;
 
     [Header("Player Block Looking At")]
     public Vector3 lookingDirection;
-    public GameObject block_LookingAt_Horizontal;
-    public GameObject block_LookingAt_Vertical;
+    [HideInInspector] public GameObject block_LookingAt_Horizontal;
+    [HideInInspector] public GameObject block_LookingAt_Vertical;
 
     [Header("Player Block Standing On Info")]
-    public DetectedBlockInfo block_StandingOn_Current;
-    public GameObject block_StandingOn_Previous;
+    [HideInInspector] public DetectedBlockInfo block_StandingOn_Current;
+    [HideInInspector] public GameObject block_StandingOn_Previous;
 
     [Header("Player Block Horizontal")]
-    public DetectedBlockInfo block_Horizontal_InFront;
-    public DetectedBlockInfo block_Horizontal_InBack;
-    public DetectedBlockInfo block_Horizontal_ToTheLeft;
-    public DetectedBlockInfo block_Horizontal_ToTheRight;
+    [HideInInspector] public DetectedBlockInfo block_Horizontal_InFront;
+    [HideInInspector] public DetectedBlockInfo block_Horizontal_InBack;
+    [HideInInspector] public DetectedBlockInfo block_Horizontal_ToTheLeft;
+    [HideInInspector] public DetectedBlockInfo block_Horizontal_ToTheRight;
 
     [Header("Player Block Vertical")]
-    public DetectedBlockInfo block_Vertical_InFront;
-    public DetectedBlockInfo block_Vertical_InBack;
-    public DetectedBlockInfo block_Vertical_ToTheLeft;
-    public DetectedBlockInfo block_Vertical_ToTheRight;
+    [HideInInspector] public DetectedBlockInfo block_Vertical_InFront;
+    [HideInInspector] public DetectedBlockInfo block_Vertical_InBack;
+    [HideInInspector] public DetectedBlockInfo block_Vertical_ToTheLeft;
+    [HideInInspector] public DetectedBlockInfo block_Vertical_ToTheRight;
 
     [Header("Player Movement Restrictions")]
     public bool canMove_Forward;
@@ -49,7 +49,7 @@ public class PlayerManager : Singleton<PlayerManager>
     public bool isTransportingPlayer;
 
     [Header("Quicksand")]
-    public int quicksandCounter;
+    [HideInInspector] public int quicksandCounter;
 
     #endregion
 

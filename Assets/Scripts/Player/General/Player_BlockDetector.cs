@@ -33,15 +33,15 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     [SerializeField] GameObject detectorSpot_Stair_Right;
 
     [Header("Raycast")]
-    [SerializeField] float maxDistance_Horizontal = 0.5f;
+    float maxDistance_Horizontal = 0.5f;
     float maxDistance_Vertical;
-    [SerializeField] float maxDistance_Vertical_Normal = 0.9f;
-    [SerializeField] float maxDistance_Vertical_Stair = 1.6f;
-    [SerializeField] float maxDistance_Stair = 0.75f;
+    float maxDistance_Vertical_Normal = 0.9f;
+    float maxDistance_Vertical_Stair = 1.6f;
+    float maxDistance_Stair = 0.75f;
     RaycastHit hit;
 
-    public Vector3 lookDir;
-    public float lookDir_Temp;
+    [HideInInspector] public Vector3 lookDir;
+    [HideInInspector] public float lookDir_Temp;
 
     bool canRunObjects;
 

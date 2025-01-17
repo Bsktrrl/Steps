@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Block_Snow : MonoBehaviour
 {
-    public List<GameObject> LOD_ObjectList = new List<GameObject>();
+    [HideInInspector] public List<GameObject> LOD_ObjectList = new List<GameObject>();
     float scale_Y_Value;
 
 
@@ -34,7 +34,7 @@ public class Block_Snow : MonoBehaviour
     }
     void SetRandomBlockHeight()
     {
-        scale_Y_Value = Random.Range(1, 1.2f);
+        scale_Y_Value = Random.Range(1, 1.3f);
 
         for (int i = 0; i < LOD_ObjectList.Count; i++)
         {

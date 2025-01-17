@@ -6,9 +6,9 @@ public class Player_Descend : Singleton<Player_Descend>
 {
     [Header("Descending")]
     public bool playerCanDescend;
-    public GameObject descendingBlock_Previous;
-    public GameObject descendingBlock_Current;
-    public GameObject descendingBlock_Target;
+    [HideInInspector] public GameObject descendingBlock_Previous;
+    [HideInInspector] public GameObject descendingBlock_Current;
+    [HideInInspector] public GameObject descendingBlock_Target;
     public float descendingDistance = 4;
     public float descendingSpeed = 20;
 

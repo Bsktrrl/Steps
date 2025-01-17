@@ -7,7 +7,7 @@ public class Block_Moveable : MonoBehaviour
 {
     MovementDirection movementDirection;
 
-    public bool canMove;
+    [HideInInspector] public bool canMove;
     bool isMoving;
     bool isIceGliding;
 

@@ -24,8 +24,8 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
 
     Vector3 endDestination;
 
-    [SerializeField] GameObject blockUnderPlayer_Old;
-    [SerializeField] GameObject blockUnderPlayer_New;
+    GameObject blockUnderPlayer_Old;
+    GameObject blockUnderPlayer_New;
 
 
     //--------------------

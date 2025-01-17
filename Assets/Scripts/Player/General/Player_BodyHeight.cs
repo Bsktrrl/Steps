@@ -5,11 +5,11 @@ using UnityEngine;
 public class Player_BodyHeight : MonoBehaviour
 {
     [Header("Local PlayerBody height level")]
-    [SerializeField] float height_Normal = 0;
+    float height_Normal = -0.2f;
 
-    [SerializeField] float height_Stair = 0.5f;
-    [SerializeField] float height_Water = -0.8f;
-    [SerializeField] float height_Lava = -0.9f;
+    float height_Stair = -0.2f;
+    float height_Water = -0.8f;
+    float height_Lava = -0.9f;
 
     float height_QuickSand_1 = -0.6f;
     float height_QuickSand_2 = -0.8f;
@@ -36,7 +36,7 @@ public class Player_BodyHeight : MonoBehaviour
         {
             if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair || PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope)
             {
-                //MainManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(MainManager.Instance.playerBody.transform.localPosition.x, stairHeight, MainManager.Instance.playerBody.transform.localPosition.z), MainManager.Instance.playerBody.transform.localRotation);
+                PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_Stair, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
             }
             else if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Water>())
             {

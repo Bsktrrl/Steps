@@ -7,10 +7,10 @@ public class Player_Dash : Singleton<Player_Dash>
 {
     [Header("Dashing")]
     public bool playerCanDash;
-    public GameObject dashBlock_Previous;
-    public GameObject dashBlock_Current;
-    public GameObject dashBlockOver_Current;
-    public GameObject dashBlock_Target;
+    [HideInInspector] public GameObject dashBlock_Previous;
+    [HideInInspector] public GameObject dashBlock_Current;
+    [HideInInspector] public GameObject dashBlockOver_Current;
+    [HideInInspector] public GameObject dashBlock_Target;
     public float dashSpeed = 8;
     public bool isDashing;
 

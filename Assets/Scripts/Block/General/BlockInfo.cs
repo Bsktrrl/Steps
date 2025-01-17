@@ -19,7 +19,7 @@ public class BlockInfo : MonoBehaviour
     [HideInInspector] public AudioSource stepSound_Source;
 
     [Header("Starting Position")]
-    public Vector3 startPos;
+    [HideInInspector] public Vector3 startPos;
 
     [Header("Material Rendering")]
     public bool hasOtherMaterial;
