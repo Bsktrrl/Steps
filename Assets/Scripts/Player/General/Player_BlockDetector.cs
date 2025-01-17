@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Player_BlockDetector : Singleton<Player_BlockDetector>
 {
+    public static event Action Action_isSwitchingBlocks;
+
     [Header("Player BlockDetector Parent")]
     public GameObject blockDetector_Parent;
 
@@ -171,12 +173,16 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
             if (hit.transform.GetComponent<BlockInfo>())
             {
-                PlayerManager.Instance.block_StandingOn_Previous = PlayerManager.Instance.block_StandingOn_Current.block;
-
                 PlayerManager.Instance.block_StandingOn_Current.block = hit.transform.gameObject;
                 PlayerManager.Instance.block_StandingOn_Current.blockPosition = hit.transform.position;
                 //MainManager.Instance.block_StandingOn_Current.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
                 PlayerManager.Instance.block_StandingOn_Current.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
+
+                if (PlayerManager.Instance.block_StandingOn_Previous != PlayerManager.Instance.block_StandingOn_Current.block /*&& !isSwitchingBlock*/)
+                {
+                    Action_isSwitchingBlocks_Invoke();
+                    PlayerManager.Instance.block_StandingOn_Previous = PlayerManager.Instance.block_StandingOn_Current.block;
+                }
             }
         }
         else
@@ -903,5 +909,11 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         }
 
         PlayerManager.Instance.lookingDirection = lookDir;
+    }
+
+    public void Action_isSwitchingBlocks_Invoke()
+    {
+        print("1. Action_isSwitchingBlocks");
+        Action_isSwitchingBlocks?.Invoke();
     }
 }

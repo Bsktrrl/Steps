@@ -531,6 +531,7 @@ GameObject:
   - component: {fileID: -1151310763788758775}
   - component: {fileID: 5657341258005261657}
   - component: {fileID: 4456897263557257024}
+  - component: {fileID: 3660692059048786849}
   m_Layer: 0
   m_Name: QuickSand Block
   m_TagString: Untagged
@@ -671,7 +672,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -704,3 +705,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3660692059048786849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6578807834414756869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02346668142202d49a55b6c12adde510, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -170,6 +170,8 @@ public class PlayerStats : Singleton<PlayerStats>
             }
         }
 
+        Player_Movement.Instance.Action_StepCostTakenInvoke();
+
         //If steps is < 0
         if (stats.steps_Current < 0)
         {

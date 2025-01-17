@@ -48,6 +48,9 @@ public class PlayerManager : Singleton<PlayerManager>
     public bool pauseGame;
     public bool isTransportingPlayer;
 
+    [Header("Quicksand")]
+    public int quicksandCounter;
+
     #endregion
 
 
