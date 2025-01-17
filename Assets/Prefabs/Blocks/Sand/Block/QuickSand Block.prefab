@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 1220514550575710079}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0, y: -0.05, z: 0}
+  m_LocalScale: {x: 1, y: 0.9, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2968730567509453691}
@@ -110,8 +110,8 @@ Transform:
   m_GameObject: {fileID: 1649324232903858034}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0, y: -0.05, z: 0}
+  m_LocalScale: {x: 1, y: 0.9, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2968730567509453691}
@@ -327,8 +327,8 @@ Transform:
   m_GameObject: {fileID: 4285069992568432185}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0, y: -0.05, z: 0}
+  m_LocalScale: {x: 1, y: 0.9, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2968730567509453691}
@@ -532,7 +532,7 @@ GameObject:
   - component: {fileID: 5657341258005261657}
   - component: {fileID: 4456897263557257024}
   m_Layer: 0
-  m_Name: Sand Block 3
+  m_Name: QuickSand Block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -611,6 +611,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4f88c18f553756142b3a5c01ff3ad82f, type: 3}
   - {fileID: 8300000, guid: 08e96d41fb52ab449819bfa332565247, type: 3}
   - {fileID: 8300000, guid: dbfbee47da7a9f94aa9a633fe7cb217c, type: 3}
+  stepSound_Source: {fileID: 0}
   startPos: {x: 0, y: 0, z: 0}
   hasOtherMaterial: 0
   upper_Front_Left: {fileID: 0}

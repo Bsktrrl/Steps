@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2895463245680118984}
   - component: {fileID: -8740826815263895628}
   - component: {fileID: 2253737314875618837}
+  - component: {fileID: 6708064040512777337}
   m_Layer: 0
   m_Name: Snow Block
   m_TagString: Untagged
@@ -148,6 +149,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b26ff26f4605fc3488e0d7617ec7c48e, type: 3}
   - {fileID: 8300000, guid: aa16601f7df56854395859fe329690ea, type: 3}
   - {fileID: 8300000, guid: c0cf86ca7fede174bb94a08e109362d7, type: 3}
+  stepSound_Source: {fileID: 0}
   startPos: {x: 0, y: 0, z: 0}
   hasOtherMaterial: 0
   upper_Front_Left: {fileID: 0}
@@ -192,6 +194,19 @@ MonoBehaviour:
   stepCostDisplay_Parent: {fileID: 1650358226143741817}
   stepCostDisplay_Canvas: {fileID: 2801997344074965207}
   stepCostText_Object: {fileID: 6662081030161435590}
+--- !u!114 &6708064040512777337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891232835175684516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f2de038c225494d8c00fafa7cb01b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LOD_ObjectList: []
 --- !u!1 &1650358226143741817
 GameObject:
   m_ObjectHideFlags: 0
