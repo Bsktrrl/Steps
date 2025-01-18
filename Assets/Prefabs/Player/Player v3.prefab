@@ -7551,6 +7551,7 @@ Transform:
   - {fileID: 7118486287847780610}
   - {fileID: 6509864194093460726}
   - {fileID: 7845094778471928698}
+  - {fileID: 5041053335065983102}
   m_Father: {fileID: 5013509160915303274}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7874376990678886421
@@ -8206,6 +8207,58 @@ MonoBehaviour:
       ControlStick: 0
   mapInfo_StoreList:
     map_SaveInfo_List: []
+--- !u!1 &8639407178807463783
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5041053335065983102}
+  - component: {fileID: 2792722944551152292}
+  m_Layer: 0
+  m_Name: Excel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5041053335065983102
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8639407178807463783}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5286349041414221409}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2792722944551152292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8639407178807463783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb91e5cabda15e4448710b4b1f58971a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NPC_List:
+  - {fileID: 4900000, guid: ec246a639ad3a834abd9c4423660f05f, type: 3}
+  startRow: 2
+  columns: 4
+  languageNames:
+  - English
+  - Norwegian
+  newDataObjectList: []
 --- !u!1 &8656412652616902794
 GameObject:
   m_ObjectHideFlags: 0
