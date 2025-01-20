@@ -398,6 +398,7 @@ GameObject:
   - component: {fileID: -3657267567613453642}
   - component: {fileID: 8395121042794423382}
   - component: {fileID: -6391659947308092658}
+  - component: {fileID: -2419957504876197346}
   m_Layer: 0
   m_Name: Sand Block 2
   m_TagString: Untagged
@@ -584,6 +585,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meltingBlock: {fileID: 3058484308888790858, guid: 0ce8329c87f6c184e9e4bf1a96258caf, type: 3}
+  meltingBlock_InScene: {fileID: 0}
+  isSteppedOn: 0
+--- !u!114 &-2419957504876197346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8000592938836553491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59c6303a3ae35d240abf10db01e61687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distance: 0
+  waitTime_BeforeFalling: 0.75
+  canFall: 0
 --- !u!1 &8068958394147515182
 GameObject:
   m_ObjectHideFlags: 0
