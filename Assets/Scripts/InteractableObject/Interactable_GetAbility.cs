@@ -34,8 +34,8 @@ public class Interactable_GetAbility : MonoBehaviour
                 case Abilities.Flameable:
                     PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flameable = true;
                     break;
-                case Abilities.LavaSwiftSwim:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.LavaSwiftSwim = true;
+                case Abilities.Jumping:
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Jumping = true;
                     break;
                 case Abilities.HikerGear:
                     PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.HikerGear = true;

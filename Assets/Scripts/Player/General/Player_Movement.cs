@@ -765,6 +765,8 @@ public class Player_Movement : Singleton<Player_Movement>
 
         movementStates = MovementStates.Still;
         SetPlayerBodyRotation(rotation);
+
+        print("10. Movement Stopped");
     }
     public void SetPlayerBodyRotation(int rotationValue)
     {
@@ -880,7 +882,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
             Player_BlockDetector.Instance.RaycastSetup();
 
-            Action_StepTakenInvoke();
+            Action_StepTaken_Invoke();
         }
     }
     void PlayerHover()
@@ -957,7 +959,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
             Player_BlockDetector.Instance.Update_BlockStandingOn();
 
-            Action_StepTakenInvoke();
+            Action_StepTaken_Invoke();
         }
     }
     void LadderMovement_Top()
@@ -990,7 +992,7 @@ public class Player_Movement : Singleton<Player_Movement>
             ladderSteppedOn = null;
             ladderMovement_Top_ToBlock = false;
             isOnLadder = false;
-            Action_StepTakenInvoke();
+            Action_StepTaken_Invoke();
 
             if (PlayerStats.Instance.stats.steps_Current < 0)
             {
@@ -1031,7 +1033,7 @@ public class Player_Movement : Singleton<Player_Movement>
                 isOnLadder = false;
                 ladderMovement_Down = false;
 
-                Action_StepTakenInvoke();
+                Action_StepTaken_Invoke();
             }
         }
     }
@@ -1045,7 +1047,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
             ladder = null;
 
-            Action_StepTakenInvoke();
+            Action_StepTaken_Invoke();
 
             //If the lowest ladder-part
             if (ladderSteppedOn.GetComponent<Block_Ladder>().block_Under)
@@ -1069,7 +1071,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
                     ladderMovement_Down_ToBlockFromTop = false;
                     isOnLadder = true;
-                    Action_StepTakenInvoke();
+                    Action_StepTaken_Invoke();
 
                     if (PlayerStats.Instance.stats.steps_Current <= 0)
                     {
@@ -1102,7 +1104,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
                     ladderMovement_Down_ToBlockFromTop = false;
                     isOnLadder = true;
-                    Action_StepTakenInvoke();
+                    Action_StepTaken_Invoke();
                 }
             }
             else
@@ -1371,19 +1373,27 @@ public class Player_Movement : Singleton<Player_Movement>
                 {
                     case ButtonsToPress.W:
                         if (PlayerManager.Instance.canMove_Forward)
+                        {
                             MovementKeyIsPressed(PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                        }
                         break;
                     case ButtonsToPress.S:
                         if (PlayerManager.Instance.canMove_Back)
+                        {
                             MovementKeyIsPressed(PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                        }
                         break;
                     case ButtonsToPress.A:
                         if (PlayerManager.Instance.canMove_Left)
+                        {
                             MovementKeyIsPressed(PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                        }
                         break;
                     case ButtonsToPress.D:
                         if (PlayerManager.Instance.canMove_Right)
+                        {
                             MovementKeyIsPressed(PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                        }
                         break;
 
                     default:
@@ -1654,7 +1664,7 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         Action_StepTakenEarly?.Invoke();
     }
-    public void Action_StepTakenInvoke()
+    public void Action_StepTaken_Invoke()
     {
         Action_StepTaken?.Invoke();
     }

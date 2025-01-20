@@ -1008,7 +1008,7 @@ GameObject:
   - component: {fileID: 1597876222905024455}
   - component: {fileID: 5067971456246064982}
   m_Layer: 5
-  m_Name: Ability - LavaSwiftSwim
+  m_Name: Ability - Jumping
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1061,7 +1061,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 30ea79ef79aea634e8875885669a1e12, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7a33eb0fde1ca9f4283413e33791447c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3371,17 +3371,17 @@ RectTransform:
   - {fileID: 6954833398227552716}
   - {fileID: 6109185041785067597}
   - {fileID: 4577175613950490607}
-  - {fileID: 5537805070470564331}
   - {fileID: 3106708238761269615}
   - {fileID: 247349895908864232}
   - {fileID: 6671411632016815020}
+  - {fileID: 4489744930839852895}
+  - {fileID: 1938000361439410685}
+  - {fileID: 5537805070470564331}
   - {fileID: 6799886768728862705}
   - {fileID: 6880443302973356279}
   - {fileID: 100362209333772999}
   - {fileID: 1460486134229904704}
-  - {fileID: 4489744930839852895}
   - {fileID: 2486512265017327410}
-  - {fileID: 1938000361439410685}
   - {fileID: 1699587421377062901}
   m_Father: {fileID: 7778904545822202419}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6468,6 +6468,7 @@ GameObject:
   - component: {fileID: 7911760123166948170}
   - component: {fileID: 8476888843546579569}
   - component: {fileID: 1191866112101601512}
+  - component: {fileID: 4493406416520661073}
   m_Layer: 6
   m_Name: Player v3
   m_TagString: Player
@@ -6635,7 +6636,7 @@ MonoBehaviour:
       SwiftSwim: 0
       Flippers: 0
       Flameable: 0
-      LavaSwiftSwim: 0
+      Jumping: 0
       HikerGear: 0
       IceSpikes: 0
       GrapplingHook: 0
@@ -6651,7 +6652,7 @@ MonoBehaviour:
       SwiftSwim: 0
       Flippers: 0
       Flameable: 0
-      LavaSwiftSwim: 0
+      Jumping: 0
       HikerGear: 0
       IceSpikes: 0
       GrapplingHook: 0
@@ -6957,6 +6958,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meltedBlocksList: []
+--- !u!114 &4493406416520661073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649856597487831825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dec0613bda867644a67ada4f8e299a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canJump: 0
+  jumpTarget: {fileID: 0}
 --- !u!1 &6680482554464227565
 GameObject:
   m_ObjectHideFlags: 0
@@ -8153,7 +8168,7 @@ MonoBehaviour:
         SwiftSwim: 0
         Flippers: 0
         Flameable: 0
-        LavaSwiftSwim: 0
+        Jumping: 0
         HikerGear: 0
         IceSpikes: 0
         GrapplingHook: 0
@@ -8169,7 +8184,7 @@ MonoBehaviour:
         SwiftSwim: 0
         Flippers: 0
         Flameable: 0
-        LavaSwiftSwim: 0
+        Jumping: 0
         HikerGear: 0
         IceSpikes: 0
         GrapplingHook: 0
@@ -8194,7 +8209,7 @@ MonoBehaviour:
       SwiftSwim: 0
       Flippers: 0
       Flameable: 0
-      LavaSwiftSwim: 0
+      Jumping: 0
       HikerGear: 0
       IceSpikes: 0
       GrapplingHook: 0
@@ -8210,7 +8225,7 @@ MonoBehaviour:
       SwiftSwim: 0
       Flippers: 0
       Flameable: 0
-      LavaSwiftSwim: 0
+      Jumping: 0
       HikerGear: 0
       IceSpikes: 0
       GrapplingHook: 0

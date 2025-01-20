@@ -63,8 +63,8 @@ public class PermanentAbility : MonoBehaviour
                     case Abilities.Flameable:
                         PlayerStats.Instance.stats.abilitiesGot_Permanent.Flameable = true;
                         break;
-                    case Abilities.LavaSwiftSwim:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.LavaSwiftSwim = true;
+                    case Abilities.Jumping:
+                        PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping = true;
                         break;
                     case Abilities.HikerGear:
                         PlayerStats.Instance.stats.abilitiesGot_Permanent.HikerGear = true;

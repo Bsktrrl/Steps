@@ -235,7 +235,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
                 //    Player_Movement.Instance.currentMovementCost = PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
                 //}
 
-                Player_Movement.Instance.Action_StepTakenInvoke();
+                Player_Movement.Instance.Action_StepTaken_Invoke();
                 Player_Movement.Instance.Action_ResetBlockColorInvoke();
                 isAscending = false;
             }

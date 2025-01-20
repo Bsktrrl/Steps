@@ -28,7 +28,7 @@ public class Stats
         abilitiesGot_Permanent.SwiftSwim = false;
         abilitiesGot_Permanent.Flippers = false;
         abilitiesGot_Permanent.Flameable = false;
-        abilitiesGot_Permanent.LavaSwiftSwim = false;
+        abilitiesGot_Permanent.Jumping = false;
         abilitiesGot_Permanent.HikerGear = false;
         abilitiesGot_Permanent.IceSpikes = false;
         abilitiesGot_Permanent.GrapplingHook = false;
@@ -44,7 +44,7 @@ public class Stats
         abilitiesGot_Temporary.SwiftSwim = false;
         abilitiesGot_Temporary.Flippers = false;
         abilitiesGot_Temporary.Flameable = false;
-        abilitiesGot_Temporary.LavaSwiftSwim = false;
+        abilitiesGot_Temporary.Jumping = false;
         abilitiesGot_Temporary.HikerGear = false;
         abilitiesGot_Temporary.IceSpikes = false;
         abilitiesGot_Temporary.GrapplingHook = false;
@@ -76,7 +76,7 @@ public class AbilitiesGot
     public bool SwiftSwim;
     public bool Flippers;
     public bool Flameable;
-    public bool LavaSwiftSwim;
+    public bool Jumping;
 
     public bool HikerGear; //Moving up Slopes
 

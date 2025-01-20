@@ -315,7 +315,7 @@ public class Player_Descend : Singleton<Player_Descend>
 
                 descendStepCorrection = false;
 
-                Player_Movement.Instance.Action_StepTakenInvoke();
+                Player_Movement.Instance.Action_StepTaken_Invoke();
                 Player_Movement.Instance.Action_ResetBlockColorInvoke();
                 isDescending = false;
             }

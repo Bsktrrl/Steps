@@ -178,7 +178,7 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
 
             swiftSwimBlock_Target = null;
             
-            Player_Movement.Instance.Action_StepTakenInvoke();
+            Player_Movement.Instance.Action_StepTaken_Invoke();
             Player_Movement.Instance.Action_ResetBlockColorInvoke();
         }
     }

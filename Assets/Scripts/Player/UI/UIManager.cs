@@ -158,7 +158,7 @@ public class UIManager : Singleton<UIManager>
                     Flippers.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flameable)
                     LavaSuit.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.LavaSwiftSwim)
+                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.Jumping)
                     LavaSwiftSwim.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Temporary.HikerGear)
                     HikerGear.SetActive(true);
@@ -192,7 +192,7 @@ public class UIManager : Singleton<UIManager>
                     Flippers.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Flameable)
                     LavaSuit.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.LavaSwiftSwim)
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping)
                     LavaSwiftSwim.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Permanent.HikerGear)
                     HikerGear.SetActive(true);

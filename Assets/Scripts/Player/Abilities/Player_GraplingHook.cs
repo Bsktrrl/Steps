@@ -188,7 +188,7 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
             PlayerManager.Instance.player.transform.position = endDestination;
             Player_Movement.Instance.movementStates = MovementStates.Still;
 
-            Player_Movement.Instance.Action_StepTakenInvoke();
+            Player_Movement.Instance.Action_StepTaken_Invoke();
             Player_Movement.Instance.Action_ResetBlockColorInvoke();
 
             isGrapplingHooking = false;
