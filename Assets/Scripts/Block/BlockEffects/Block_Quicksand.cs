@@ -24,21 +24,17 @@ public class Block_Quicksand : MonoBehaviour
 
     void SteppingOnQuicksand()
     {
-        print("1. SteppingOnQuicksand");
         if (PlayerManager.Instance.block_StandingOn_Current.block)
         {
-            print("2. SteppingOnQuicksand");
             if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Quicksand>())
             {
                 if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject)
                 {
-                    print("3. SteppingOnQuicksand");
                     Player_Quicksand.Instance.quicksandCounter += 1;
                 }
             }
             else
             {
-                print("5. SteppingOnQuicksand");
                 Player_Quicksand.Instance.quicksandCounter = 0;
             }
         }

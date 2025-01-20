@@ -6467,6 +6467,7 @@ GameObject:
   - component: {fileID: 8173112878224402115}
   - component: {fileID: 7911760123166948170}
   - component: {fileID: 8476888843546579569}
+  - component: {fileID: 1191866112101601512}
   m_Layer: 6
   m_Name: Player v3
   m_TagString: Player
@@ -6942,6 +6943,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFlameable: 0
   flameableStepCounter: 0
+  flameable_Material: {fileID: 2100000, guid: dcef710c812bdf64ca954fcf8545380b, type: 2}
+--- !u!114 &1191866112101601512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649856597487831825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 531e781120b2f2e42a20cceb536456ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meltedBlocksList: []
 --- !u!1 &6680482554464227565
 GameObject:
   m_ObjectHideFlags: 0

@@ -397,6 +397,7 @@ GameObject:
   - component: {fileID: 6375718900119547575}
   - component: {fileID: -3657267567613453642}
   - component: {fileID: 8395121042794423382}
+  - component: {fileID: -6391659947308092658}
   m_Layer: 0
   m_Name: Sand Block 2
   m_TagString: Untagged
@@ -525,6 +526,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4f88c18f553756142b3a5c01ff3ad82f, type: 3}
   - {fileID: 8300000, guid: 08e96d41fb52ab449819bfa332565247, type: 3}
   - {fileID: 8300000, guid: dbfbee47da7a9f94aa9a633fe7cb217c, type: 3}
+  stepSound_Source: {fileID: 0}
   startPos: {x: 0, y: 0, z: 0}
   hasOtherMaterial: 0
   upper_Front_Left: {fileID: 0}
@@ -569,6 +571,19 @@ MonoBehaviour:
   stepCostDisplay_Parent: {fileID: 8068958394147515182}
   stepCostDisplay_Canvas: {fileID: 8322998843960604380}
   stepCostText_Object: {fileID: 5690112192685832940}
+--- !u!114 &-6391659947308092658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8000592938836553491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dde6ba806fa6fc48a79c6c003ef1b31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meltingBlock: {fileID: 3058484308888790858, guid: 0ce8329c87f6c184e9e4bf1a96258caf, type: 3}
 --- !u!1 &8068958394147515182
 GameObject:
   m_ObjectHideFlags: 0

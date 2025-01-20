@@ -7,6 +7,7 @@ using UnityEngine;
 public class Player_BlockDetector : Singleton<Player_BlockDetector>
 {
     public static event Action Action_isSwitchingBlocks;
+    public static event Action Action_madeFirstRaycast;
 
     [Header("Player BlockDetector Parent")]
     public GameObject blockDetector_Parent;
@@ -51,6 +52,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     private void Start()
     {
+        RaycastSetup();
         PerformRaycast_Center_Vertical(detectorSpot_Vertical_Center, Vector3.down);
     }
     private void Update()
@@ -158,6 +160,8 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
         //Check for Stair Edge, to prevent moving off the Stair
         UpdateRaycastingFromStair();
+
+        Action_MadeFirstRaycast_Invoke();
     }
 
     public void Update_BlockStandingOn()
@@ -913,7 +917,10 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     public void Action_isSwitchingBlocks_Invoke()
     {
-        print("1. Action_isSwitchingBlocks");
         Action_isSwitchingBlocks?.Invoke();
+    }
+    public void Action_MadeFirstRaycast_Invoke()
+    {
+        Action_madeFirstRaycast?.Invoke();
     }
 }

@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: -2213300818971835917}
   - component: {fileID: -1320980997654095271}
   - component: {fileID: 8416494430106174675}
+  - component: {fileID: -7112150595188054546}
   m_Layer: 0
   m_Name: Ice Block
   m_TagString: Untagged
@@ -269,6 +270,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c57ca3ac41dbb0b4485e525970ea9a16, type: 3}
   - {fileID: 8300000, guid: 2d920c6acbd08fc468da9b729489d938, type: 3}
   - {fileID: 8300000, guid: fd4c2ea768e4d6041a9bf59047c13164, type: 3}
+  stepSound_Source: {fileID: 0}
   startPos: {x: 0, y: 0, z: 0}
   hasOtherMaterial: 0
   upper_Front_Left: {fileID: 0}
@@ -325,6 +327,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f471b6e3526af2344bb7c6067632caf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-7112150595188054546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1745866349663767517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dde6ba806fa6fc48a79c6c003ef1b31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meltingBlock: {fileID: 3694321592646543379, guid: 03495974f768d1b4794e615b9d45250c, type: 3}
 --- !u!1 &4385493174649225801
 GameObject:
   m_ObjectHideFlags: 0

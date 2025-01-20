@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Player_Movement : Singleton<Player_Movement>
 {
+    public static event Action Action_StepTakenEarly;
     public static event Action Action_StepTaken;
     public static event Action Action_StepCostTaken;
     public static event Action Action_BodyRotated;
@@ -70,6 +71,8 @@ public class Player_Movement : Singleton<Player_Movement>
             && !Player_Dash.Instance.isDashing
             && !slopeGliding && !ladderMovement_Up && !ladderMovement_Down && !ladderMovement_Down_ToBottom)
         {
+            Action_StepTakenEarly_Invoke();
+
             MovePlayer();
             PlayerHover();
         }
@@ -875,6 +878,8 @@ public class Player_Movement : Singleton<Player_Movement>
             PlayerManager.Instance.player.transform.position = endDestination;
             movementStates = MovementStates.Still;
 
+            Player_BlockDetector.Instance.RaycastSetup();
+
             Action_StepTakenInvoke();
         }
     }
@@ -1355,9 +1360,6 @@ public class Player_Movement : Singleton<Player_Movement>
 
         if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope) { iceGliding = false; return; }
 
-
-        //Player_BlockDetector.Instance.Update_BlockStandingOn();
-
         if (PlayerManager.Instance.block_StandingOn_Current.block)
         {
             if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_IceGlide>() && !PlayerStats.Instance.stats.abilitiesGot_Permanent.IceSpikes && !PlayerStats.Instance.stats.abilitiesGot_Temporary.IceSpikes)
@@ -1648,6 +1650,10 @@ public class Player_Movement : Singleton<Player_Movement>
     //--------------------
 
 
+    public void Action_StepTakenEarly_Invoke()
+    {
+        Action_StepTakenEarly?.Invoke();
+    }
     public void Action_StepTakenInvoke()
     {
         Action_StepTaken?.Invoke();

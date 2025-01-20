@@ -22,7 +22,6 @@ public class Block_Flameable : MonoBehaviour
 
     void CheckForPlayer()
     {
-        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.Flameable && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Flameable) { return; }
         if (!Player_Flameable.Instance.isFlameable) { return; }
 
 

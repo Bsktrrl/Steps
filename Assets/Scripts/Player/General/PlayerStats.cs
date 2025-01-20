@@ -7,7 +7,9 @@ using UnityEngine.SceneManagement;
 public class PlayerStats : Singleton<PlayerStats>
 {
     public static event Action Action_RespawnToSavePos;
+    public static event Action Action_RespawnPlayerEarly;
     public static event Action Action_RespawnPlayer;
+    public static event Action Action_RespawnPlayerLate;
 
     public static event Action updateCoins;
     public static event Action updateCollectable;
@@ -153,6 +155,8 @@ public class PlayerStats : Singleton<PlayerStats>
             stats.abilitiesGot_Temporary.ControlStick = true;
         else
             stats.abilitiesGot_Temporary.ControlStick = false;
+
+        Player_BlockDetector.Instance.Action_MadeFirstRaycast_Invoke();
     }
 
 
@@ -201,6 +205,8 @@ public class PlayerStats : Singleton<PlayerStats>
         PlayerManager.Instance.isTransportingPlayer = true;
         Player_Movement.Instance.movementStates = MovementStates.Moving;
 
+        RespawnPlayerEarly_Action();
+
         yield return new WaitForSeconds(waitTime);
 
         //Move player
@@ -228,6 +234,8 @@ public class PlayerStats : Singleton<PlayerStats>
 
         yield return new WaitForSeconds(waitTime * 25);
 
+        RespawnPlayerLate_Action();
+
         PlayerManager.Instance.pauseGame = false;
         PlayerManager.Instance.isTransportingPlayer = false;
     }
@@ -240,9 +248,17 @@ public class PlayerStats : Singleton<PlayerStats>
             yield return null;
         }
     }
+    public void RespawnPlayerEarly_Action()
+    {
+        Action_RespawnPlayerEarly?.Invoke();
+    }
     public void RespawnPlayer_Action()
     {
         Action_RespawnPlayer?.Invoke();
+    }
+    public void RespawnPlayerLate_Action()
+    {
+        Action_RespawnPlayerLate?.Invoke();
     }
     public void RespawnToSavePos_Action()
     {

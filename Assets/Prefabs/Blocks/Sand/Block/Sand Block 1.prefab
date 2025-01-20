@@ -527,10 +527,11 @@ GameObject:
   m_Component:
   - component: {fileID: 3231059835954190497}
   - component: {fileID: 2714884188719951642}
-  - component: {fileID: 5276211645924843105}
-  - component: {fileID: -2347707985016311305}
   - component: {fileID: -6979445506045297103}
   - component: {fileID: 9105547436927152953}
+  - component: {fileID: 5276211645924843105}
+  - component: {fileID: -2347707985016311305}
+  - component: {fileID: -1963106785368487441}
   m_Layer: 0
   m_Name: Sand Block 1
   m_TagString: Untagged
@@ -584,77 +585,6 @@ LODGroup:
     renderers:
     - renderer: {fileID: 4749871537973232609}
   m_Enabled: 1
---- !u!114 &5276211645924843105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4362435086534373249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a201269b3f988984da941a6b8a00096e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  blockType: 1
-  movementCost: 0
-  movementSpeed: 4
-  stepCostText_Color: {r: 0.9843138, g: 0.9686275, b: 0.6431373, a: 1}
-  stepSound_Volume: 0.75
-  stepSound_ClipList:
-  - {fileID: 8300000, guid: 648179f02878b9e4fac6731c934ab895, type: 3}
-  - {fileID: 8300000, guid: b3bc773b8c9a20047bef3b94d462181f, type: 3}
-  - {fileID: 8300000, guid: 885d93e2cef3aa14c84cc0b05300c879, type: 3}
-  - {fileID: 8300000, guid: 9bbcb6daae63a0643af4b0f30c593d7c, type: 3}
-  - {fileID: 8300000, guid: 360b3f29e658e6b4586b96d1746cde3c, type: 3}
-  - {fileID: 8300000, guid: 5644ba4033cee4e428b9ae11f84a4e66, type: 3}
-  - {fileID: 8300000, guid: 4f88c18f553756142b3a5c01ff3ad82f, type: 3}
-  - {fileID: 8300000, guid: 08e96d41fb52ab449819bfa332565247, type: 3}
-  - {fileID: 8300000, guid: dbfbee47da7a9f94aa9a633fe7cb217c, type: 3}
-  startPos: {x: 0, y: 0, z: 0}
-  hasOtherMaterial: 0
-  upper_Front_Left: {fileID: 0}
-  upper_Front: {fileID: 0}
-  upper_Front_Right: {fileID: 0}
-  upper_Center_Left: {fileID: 0}
-  upper_Center: {fileID: 0}
-  upper_Center_Right: {fileID: 0}
-  upper_Back_Left: {fileID: 0}
-  upper_Back: {fileID: 0}
-  upper_Back_Right: {fileID: 0}
-  center_Front_Left: {fileID: 0}
-  center_Front: {fileID: 0}
-  center_Front_Right: {fileID: 0}
-  center_Center_Left: {fileID: 0}
-  center_Center: {fileID: 0}
-  center_Center_Right: {fileID: 0}
-  center_Back_Left: {fileID: 0}
-  center_Back: {fileID: 0}
-  center_Back_Right: {fileID: 0}
-  lower_Front_Left: {fileID: 0}
-  lower_Front: {fileID: 0}
-  lower_Front_Right: {fileID: 0}
-  lower_Center_Left: {fileID: 0}
-  lower_Center: {fileID: 0}
-  lower_Center_Right: {fileID: 0}
-  lower_Back_Left: {fileID: 0}
-  lower_Back: {fileID: 0}
-  lower_Back_Right: {fileID: 0}
---- !u!114 &-2347707985016311305
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4362435086534373249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d25c0dc894158644699cb697a91b17a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stepCostDisplay_Parent: {fileID: 1786689438815256268}
-  stepCostDisplay_Canvas: {fileID: 782825135681980633}
-  stepCostText_Object: {fileID: 1495096944676283252}
 --- !u!65 &-6979445506045297103
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -703,3 +633,88 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5276211645924843105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4362435086534373249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a201269b3f988984da941a6b8a00096e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockType: 1
+  movementCost: 0
+  movementSpeed: 4
+  stepCostText_Color: {r: 0.9843138, g: 0.9686275, b: 0.6431373, a: 1}
+  stepSound_Volume: 0.75
+  stepSound_ClipList:
+  - {fileID: 8300000, guid: 648179f02878b9e4fac6731c934ab895, type: 3}
+  - {fileID: 8300000, guid: b3bc773b8c9a20047bef3b94d462181f, type: 3}
+  - {fileID: 8300000, guid: 885d93e2cef3aa14c84cc0b05300c879, type: 3}
+  - {fileID: 8300000, guid: 9bbcb6daae63a0643af4b0f30c593d7c, type: 3}
+  - {fileID: 8300000, guid: 360b3f29e658e6b4586b96d1746cde3c, type: 3}
+  - {fileID: 8300000, guid: 5644ba4033cee4e428b9ae11f84a4e66, type: 3}
+  - {fileID: 8300000, guid: 4f88c18f553756142b3a5c01ff3ad82f, type: 3}
+  - {fileID: 8300000, guid: 08e96d41fb52ab449819bfa332565247, type: 3}
+  - {fileID: 8300000, guid: dbfbee47da7a9f94aa9a633fe7cb217c, type: 3}
+  stepSound_Source: {fileID: 0}
+  startPos: {x: 0, y: 0, z: 0}
+  hasOtherMaterial: 0
+  upper_Front_Left: {fileID: 0}
+  upper_Front: {fileID: 0}
+  upper_Front_Right: {fileID: 0}
+  upper_Center_Left: {fileID: 0}
+  upper_Center: {fileID: 0}
+  upper_Center_Right: {fileID: 0}
+  upper_Back_Left: {fileID: 0}
+  upper_Back: {fileID: 0}
+  upper_Back_Right: {fileID: 0}
+  center_Front_Left: {fileID: 0}
+  center_Front: {fileID: 0}
+  center_Front_Right: {fileID: 0}
+  center_Center_Left: {fileID: 0}
+  center_Center: {fileID: 0}
+  center_Center_Right: {fileID: 0}
+  center_Back_Left: {fileID: 0}
+  center_Back: {fileID: 0}
+  center_Back_Right: {fileID: 0}
+  lower_Front_Left: {fileID: 0}
+  lower_Front: {fileID: 0}
+  lower_Front_Right: {fileID: 0}
+  lower_Center_Left: {fileID: 0}
+  lower_Center: {fileID: 0}
+  lower_Center_Right: {fileID: 0}
+  lower_Back_Left: {fileID: 0}
+  lower_Back: {fileID: 0}
+  lower_Back_Right: {fileID: 0}
+--- !u!114 &-2347707985016311305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4362435086534373249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d25c0dc894158644699cb697a91b17a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stepCostDisplay_Parent: {fileID: 1786689438815256268}
+  stepCostDisplay_Canvas: {fileID: 782825135681980633}
+  stepCostText_Object: {fileID: 1495096944676283252}
+--- !u!114 &-1963106785368487441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4362435086534373249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dde6ba806fa6fc48a79c6c003ef1b31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meltingBlock: {fileID: 3058484308888790858, guid: 0ce8329c87f6c184e9e4bf1a96258caf, type: 3}

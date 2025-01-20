@@ -58,8 +58,6 @@ public class NPCDialogueSheets : Singleton<NPCDialogueSheets>
             newDataObjectList[index].dialogueList.Add(new DialogueObject());
         }
 
-        print("DataList: " + newDataObjectList[index].dialogueList.Count + " | " + excelTableSize);
-
         //Fill the new element with data
         for (int i = 0; i < excelTableSize; i++)
         {
