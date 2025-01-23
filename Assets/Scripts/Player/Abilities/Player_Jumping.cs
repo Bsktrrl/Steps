@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player_Jumping : Singleton<Player_Jumping>
 {
+    [Header("Jumping")]
     [SerializeField] Vector3 jumpStartPos;
 
     [SerializeField] bool canJump_Forward;
@@ -11,17 +12,19 @@ public class Player_Jumping : Singleton<Player_Jumping>
     [SerializeField] bool canJump_Left;
     [SerializeField] bool canJump_Right;
 
-    RaycastHit hit;
-
-    float jumpHeight = 0.5f; // Maximum height of the jump
-    float jumpDuration = 0.2f; // Duration of the jump
-
-    bool isJumping = false;
-
     [SerializeField] GameObject jumpTarget_Forward;
     [SerializeField] GameObject jumpTarget_Back;
     [SerializeField] GameObject jumpTarget_Left;
     [SerializeField] GameObject jumpTarget_Right;
+
+    bool isJumping = false;
+
+    [Header("Other")]
+    RaycastHit hit;
+
+    float jumpHeight = 0.5f;
+    float jumpDuration = 0.2f;
+
 
 
     //--------------------
@@ -32,6 +35,36 @@ public class Player_Jumping : Singleton<Player_Jumping>
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.Jumping && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping) { return; }
         if (isJumping) { return; }
 
+        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (PlayerManager.Instance.pauseGame) { return; }
+        if (PlayerManager.Instance.isTransportingPlayer) { return; }
+
+        StartJumping();
+    }
+
+
+    //--------------------
+
+
+    private void OnEnable()
+    {
+        DataManager.Action_dataHasLoaded += CheckIfCanJump;
+        Player_Movement.Action_StepTaken += CheckIfCanJump;
+        Player_Movement.Action_BodyRotated += CheckIfCanJump;
+    }
+    private void OnDisable()
+    {
+        DataManager.Action_dataHasLoaded -= CheckIfCanJump;
+        Player_Movement.Action_StepTaken -= CheckIfCanJump;
+        Player_Movement.Action_BodyRotated -= CheckIfCanJump;
+    }
+
+
+    //--------------------
+
+
+    void StartJumping()
+    {
         switch (Cameras.Instance.cameraState)
         {
             case CameraState.Forward:
@@ -78,28 +111,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
                 break;
         }
     }
-
-
-    //--------------------
-
-
-    private void OnEnable()
-    {
-        DataManager.Action_dataHasLoaded += CheckIfCanJump;
-        Player_Movement.Action_StepTaken += CheckIfCanJump;
-        Player_Movement.Action_BodyRotated += CheckIfCanJump;
-    }
-    private void OnDisable()
-    {
-        DataManager.Action_dataHasLoaded -= CheckIfCanJump;
-        Player_Movement.Action_StepTaken -= CheckIfCanJump;
-        Player_Movement.Action_BodyRotated -= CheckIfCanJump;
-    }
-
-
-    //--------------------
-
-
+    
     void CheckIfCanJump()
     {
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.Jumping && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping) { return; }

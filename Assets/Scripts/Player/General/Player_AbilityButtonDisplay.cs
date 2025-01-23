@@ -70,7 +70,7 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
         Ability("Swift Swim Down", Player_SwiftSwim.Instance.canSwiftSwim_Down, button_ArrowUp, abilitySprite_SwiftSwim);
         Ability("Ascend", Player_Ascend.Instance.playerCanAscend, button_ArrowUp, abilitySprite_Ascend);
         Ability("Descend", Player_Descend.Instance.playerCanDescend, button_ArrowDown, abilitySprite_Descend);
-        Ability("Dash", Player_Dash.Instance.playerCanDash, button_Space, abilitySprite_Dash);
+        //Ability("Dash", Player_Dash.Instance.playerCanDash, button_Space, abilitySprite_Dash);
         Ability("Hammer", Player_Hammer.Instance.playerCanHammer, button_C, abilitySprite_Hammer);
 
         #region Moveable Block

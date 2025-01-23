@@ -663,14 +663,14 @@ public class Player_Movement : Singleton<Player_Movement>
             }
         }
 
-        //If pressing - Dash - Space
-        else if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (gameObject.GetComponent<Player_Dash>().playerCanDash)
-            {
-                gameObject.GetComponent<Player_Dash>().Dash();
-            }
-        }
+        ////If pressing - Dash - Space
+        //else if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    if (gameObject.GetComponent<Player_Dash>().playerCanDash)
+        //    {
+        //        gameObject.GetComponent<Player_Dash>().Dash();
+        //    }
+        //}
 
         //If pressing - Hammer - C
         else if (Input.GetKeyDown(KeyCode.C))
