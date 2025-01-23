@@ -245,7 +245,7 @@ public class Player_Dash : Singleton<Player_Dash>
                 {
                     if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>())
                     {
-                        Player_Movement.Instance.currentMovementCost = PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().GetMovementCost();
+                        Player_Movement.Instance.currentMovementCost = PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
                     }
                 }
 

@@ -7,6 +7,7 @@ public class BlockInfo : MonoBehaviour
     [Header("Stats")]
     //public BlockElement blockElement;
     public BlockType blockType;
+    public int movementCost_Temp;
     public int movementCost;
     public float movementSpeed;
 
@@ -68,6 +69,8 @@ public class BlockInfo : MonoBehaviour
 
     private void Start()
     {
+        movementCost_Temp = movementCost;
+
         startPos = transform.position;
         stepSound_Source = gameObject.AddComponent<AudioSource>();
 
@@ -167,28 +170,24 @@ public class BlockInfo : MonoBehaviour
     {
         return BlockPosManager.Instance.FindGameObjectAtPosition(transform.position + dir1 + dir2 + dir3, gameObject);
     }
-
-
-    public int GetMovementCost()
+    public Color SetTextColor(float moveCost)
     {
-        //If Moving with Free Cost - Pusher
-        if (/*PlayerManager.Instance.block_StandingOn_Previous == gameObject && !PlayerManager.Instance.block_StandingOn_Previous.GetComponent<Block_Pusher>() &&*/ PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
+        if (moveCost == movementCost_Temp)
         {
-            return 0;
+            return stepCostText_Color;
+        }
+        else if (moveCost < movementCost_Temp)
+        {
+            return BlockManager.Instance.cheap_TextColor;
+        }
+        else if (moveCost > movementCost_Temp)
+        {
+            return BlockManager.Instance.expensive_TextColor;
         }
 
-        //If Dashing with Free cost
-        else if (PlayerManager.Instance.player.GetComponent<Player_Dash>().dashBlock_Current == gameObject && PlayerManager.Instance.player.GetComponent<Player_Dash>().playerCanDash && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
-        {
-            return 0;
-        }
-
-        //If Moving with Normal Cost
-        else
-        {
-            return movementCost;
-        }
+        return stepCostText_Color;
     }
+
 
     //--------------------
 
@@ -229,6 +228,7 @@ public class BlockInfo : MonoBehaviour
             //Show StepCost
             if (gameObject.GetComponent<BlockStepCostDisplay>())
             {
+                //GetMovementCost();
                 gameObject.GetComponent<BlockStepCostDisplay>().ShowDisplay();
             }
         }

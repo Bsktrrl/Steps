@@ -9,13 +9,13 @@ public class Block_Quicksand : MonoBehaviour
     {
         Player_BlockDetector.Action_isSwitchingBlocks += SteppingOnQuicksand;
         PlayerStats.Action_RespawnPlayer += SteppingOnQuicksand;
-        Player_Movement.Action_StepCostTaken += ChangeMovementCost;
+        //Player_Movement.Action_StepCostTaken += ChangeMovementCost;
     }
     private void OnDisable()
     {
         Player_BlockDetector.Action_isSwitchingBlocks -= SteppingOnQuicksand;
         PlayerStats.Action_RespawnPlayer -= SteppingOnQuicksand;
-        Player_Movement.Action_StepCostTaken -= ChangeMovementCost;
+        //Player_Movement.Action_StepCostTaken -= ChangeMovementCost;
     }
 
 
@@ -28,6 +28,8 @@ public class Block_Quicksand : MonoBehaviour
         {
             if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Quicksand>())
             {
+                Player_Quicksand.Instance.isInQuicksand = true;
+
                 if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject)
                 {
                     Player_Quicksand.Instance.quicksandCounter += 1;
@@ -35,6 +37,7 @@ public class Block_Quicksand : MonoBehaviour
             }
             else
             {
+                Player_Quicksand.Instance.isInQuicksand = false;
                 Player_Quicksand.Instance.quicksandCounter = 0;
             }
         }
@@ -46,6 +49,7 @@ public class Block_Quicksand : MonoBehaviour
             if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Quicksand>())
             {
                 GetComponent<BlockInfo>().movementCost += 1;
+
                 return;
             }
         }

@@ -170,7 +170,7 @@ public class PlayerStats : Singleton<PlayerStats>
         {
             if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>() && !PlayerManager.Instance.isTransportingPlayer)
             {
-                stats.steps_Current -= PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().GetMovementCost();
+                stats.steps_Current -= PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
             }
         }
 

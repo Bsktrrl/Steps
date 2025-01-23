@@ -26,11 +26,11 @@ public class BlockStepCostDisplay : MonoBehaviour
         
         startRot_Y_CubeCanvas = Quaternion.Euler(gameObject.transform.rotation.x, gameObject.transform.rotation.y, gameObject.transform.rotation.z).y;
         startRot_Z_StairText = Quaternion.Euler(gameObject.transform.rotation.x, gameObject.transform.rotation.y, gameObject.transform.rotation.z).z;
-        stepCostText_Object.GetComponent<TextMeshProUGUI>().color = gameObject.GetComponent<BlockInfo>().stepCostText_Color;
 
         HideDisplay();
         UpdateRotation();
         UpdateStepCostTextValue(gameObject.GetComponent<BlockInfo>().movementCost);
+        stepCostText_Object.GetComponent<TextMeshProUGUI>().color = GetComponent<BlockInfo>().SetTextColor(gameObject.GetComponent<BlockInfo>().movementCost);
     }
 
 
@@ -53,17 +53,34 @@ public class BlockStepCostDisplay : MonoBehaviour
 
     public void ShowDisplay()
     {
+        //If Pushed
         if (PlayerManager.Instance.block_LookingAt_Vertical == gameObject && !PlayerManager.Instance.block_LookingAt_Vertical.GetComponent<Block_Pusher>() && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
-            UpdateStepCostTextValue(0);
-        else if (PlayerManager.Instance.player.GetComponent<Player_Dash>().dashBlock_Current == gameObject && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed && PlayerManager.Instance.player.GetComponent<Player_Dash>().playerCanDash)
-            UpdateStepCostTextValue(0);
-        else
-            UpdateStepCostTextValue(gameObject.GetComponent<BlockInfo>().movementCost);
+            SetMovementCost(0);
 
-        stepCostText_Object.GetComponent<TextMeshProUGUI>().color = gameObject.GetComponent<BlockInfo>().stepCostText_Color;
+        //If Dashed
+        else if (PlayerManager.Instance.player.GetComponent<Player_Dash>().dashBlock_Current == gameObject && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed && PlayerManager.Instance.player.GetComponent<Player_Dash>().playerCanDash)
+            SetMovementCost(0);
+
+        //If in quicksand
+        else if (Player_Quicksand.Instance.isInQuicksand && GetComponent<Block_Quicksand>())
+        {
+            SetMovementCost(Player_Quicksand.Instance.quicksandCounter);
+        }
+
+        //Other
+        else
+            SetMovementCost(gameObject.GetComponent<BlockInfo>().movementCost_Temp);
 
         stepCostDisplay_Parent.SetActive(true);
     }
+    void SetMovementCost(int value)
+    {
+        gameObject.GetComponent<BlockInfo>().movementCost = value;
+        UpdateStepCostTextValue(gameObject.GetComponent<BlockInfo>().movementCost);
+
+        stepCostText_Object.GetComponent<TextMeshProUGUI>().color = GetComponent<BlockInfo>().SetTextColor(gameObject.GetComponent<BlockInfo>().movementCost);
+    }
+
     public void HideDisplay()
     {
         stepCostDisplay_Parent.SetActive(false);
@@ -75,6 +92,7 @@ public class BlockStepCostDisplay : MonoBehaviour
 
     public void UpdateStepCostTextValue(float moveCost)
     {
+        //stepCostText_Object.GetComponent<TextMeshProUGUI>().color = GetComponent<BlockInfo>().SetTextColor(moveCost);
         stepCostText_Object.GetComponent<TextMeshProUGUI>().text = moveCost.ToString();
     }
 
