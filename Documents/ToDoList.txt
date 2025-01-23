@@ -4,6 +4,19 @@
 From meatings:
 - Corner Stair functionalty as Stair
 - Make better camera
+- Make MovementCostText have Green/Red options (in the "DarkenBlock" function)
+	- Make a new variable that saves the original movementCost, as a reference to the green/red text
+	- Add Green and Red colors to a new "BlockManager"-Script in the PlayerPrefab_Managers folder
+- Make Mud Block
+- Make Swamp Water Block
+- Make Roof Climb Ability 
+	- Hang upside down when Roof Climbing
+	- Change Camera position to under the player
+	- Change MovementCostText to under the block
+- Change "Jumping" and "Dash" to use movementButtons instead of the "Space"-button
+- Change "Grappling Hook"-button to become Activate and Release inasted of using 2 bottons for this action
+- Make Buttons compatiable with controllers
+
 
 
 Spring:
