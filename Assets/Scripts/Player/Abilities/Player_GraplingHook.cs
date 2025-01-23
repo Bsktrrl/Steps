@@ -1,14 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
-using UnityEngine.Timeline;
 
 public class Player_GraplingHook : Singleton<Player_GraplingHook>
 {
     [Header("Grappling Distance")]
-    [SerializeField] float grapplingDistance = 5;
+    float grapplingDistance = 4.55f;
+    float movementSpeed = 15;
 
     [Header("Red Dot Object")]
     [SerializeField] GameObject redDot_Parent;
@@ -20,7 +18,8 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
     Vector3 endPoint;
     public LineRenderer lineRenderer;
 
-    public bool isGrapplingHooking;
+    bool isSearchingGrappling;
+    [HideInInspector] public bool isGrapplingHooking;
 
     Vector3 endDestination;
 
@@ -42,9 +41,40 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
     }
     private void Update()
     {
+        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) { return; }
+
+        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (PlayerManager.Instance.pauseGame) { return; }
+        if (PlayerManager.Instance.isTransportingPlayer) { return; }
+
         if (isGrapplingHooking)
         {
             PerformGrapplingMovement();
+        }
+        else if (isSearchingGrappling)
+        {
+            if (Input.GetKeyUp(KeyCode.F))
+            {
+                if (CheckIfCanGrapple())
+                {
+                    PerformGrapplingMovement();
+                }
+                else
+                {
+                    StopRaycastGrappling();
+                }
+            }
+            else
+            {
+                UngoingRaycastGrappling();
+            }
+        } 
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                StartRaycastGrappling();
+            }
         }
     }
 
@@ -57,7 +87,7 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { EndLineRenderer(); return; }
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) { return; }
 
-        UngoingRaycastGrappling();
+        isSearchingGrappling = true;
     }
     public void StopRaycastGrappling()
     {
@@ -67,6 +97,8 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
         ResetRaycastBlockUnder();
 
         redDotSceneObject.SetActive(false);
+
+        isSearchingGrappling = false;
     }
     public void UngoingRaycastGrappling()
     {
@@ -152,9 +184,10 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
     public void PerformGrapplingMovement()
     {
         isGrapplingHooking = true;
+        isSearchingGrappling = false;
 
         //Move the player with the speed of 8 towards the target position (Have GrapplingHookLine and redDot visible and Update the GrapplingHookLine to fit the playerPos)
-        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endDestination, 25 * Time.deltaTime);
+        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endDestination, movementSpeed * Time.deltaTime);
 
         //Check if there is new blocks hovering over, to reduce the stepCount by this amount
         RaycastDown_New();
