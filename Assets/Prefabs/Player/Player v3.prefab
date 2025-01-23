@@ -6811,11 +6811,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8cf4b2c117432e41af3898f384b01b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ascendStartPos: {x: 0, y: 0, z: 0}
   playerCanAscend: 0
   ascendingBlock_Previous: {fileID: 0}
   ascendingBlock_Current: {fileID: 0}
   ascendingBlock_Target: {fileID: 0}
-  ascendingDistance: 3
+  ascendingDistance: 2
   ascendingSpeed: 15
   isAscending: 0
 --- !u!114 &6309488498664691021
@@ -6834,7 +6835,7 @@ MonoBehaviour:
   descendingBlock_Previous: {fileID: 0}
   descendingBlock_Current: {fileID: 0}
   descendingBlock_Target: {fileID: 0}
-  descendingDistance: 4
+  descendingDistance: 3
   descendingSpeed: 20
   isDescending: 0
 --- !u!114 &8122818156291192365
@@ -6849,14 +6850,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18d9d68a21ef0b44182bcd1978d39dbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCanDash: 0
-  dashBlock_Previous: {fileID: 0}
-  dashBlock_Current: {fileID: 0}
-  dashBlockOver_Current: {fileID: 0}
-  dashBlock_Target: {fileID: 0}
-  dashSpeed: 8
+  dashStartPos: {x: 0, y: 0, z: 0}
+  canDash_Forward: 0
+  canDash_Back: 0
+  canDash_Left: 0
+  canDash_Right: 0
+  dashTarget_Forward: {fileID: 0}
+  dashTarget_Back: {fileID: 0}
+  dashTarget_Left: {fileID: 0}
+  dashTarget_Right: {fileID: 0}
   isDashing: 0
-  hitDir: 0
 --- !u!114 &3819253442882266389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6931,6 +6934,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e94a44dfe6bd19b40a1946f5c7e646c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInQuicksand: 0
   quicksandCounter: 0
 --- !u!114 &8476888843546579569
 MonoBehaviour:
@@ -6972,8 +6976,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dec0613bda867644a67ada4f8e299a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canJump: 0
-  jumpTarget: {fileID: 0}
+  jumpStartPos: {x: 0, y: 0, z: 0}
+  canJump_Forward: 0
+  canJump_Back: 0
+  canJump_Left: 0
+  canJump_Right: 0
+  jumpTarget_Forward: {fileID: 0}
+  jumpTarget_Back: {fileID: 0}
+  jumpTarget_Left: {fileID: 0}
+  jumpTarget_Right: {fileID: 0}
 --- !u!1 &6680482554464227565
 GameObject:
   m_ObjectHideFlags: 0

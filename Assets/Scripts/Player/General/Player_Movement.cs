@@ -87,111 +87,39 @@ public class Player_Movement : Singleton<Player_Movement>
         
         else if (ladderMovement_Top_ToBlock)
         {
-            //if (PlayerStats.Instance.stats.steps_Current <= 0)
-            //{
-            //    RespawnBasedOnStepsCurrent();
-            //}
-            //else
-            //{
-            //    Ladder_PlayerRotation_Into();
-            //    LadderMovement_Top_ToBlock();
-            //}
-
             Ladder_PlayerRotation_Into();
             LadderMovement_Top_ToBlock();
         }
         else if (isOnLadder && ladderMovement_Top)
         {
-            //if (PlayerStats.Instance.stats.steps_Current <= 0)
-            //{
-            //    RespawnBasedOnStepsCurrent();
-            //}
-            //else
-            //{
-            //    Ladder_PlayerRotation_Into();
-            //    LadderMovement_Top();
-            //    Ladder_PlayerRotation_Into();
-            //}
-
             Ladder_PlayerRotation_Into();
             LadderMovement_Top();
             Ladder_PlayerRotation_Into();
         }
         else if (isOnLadder && ladderMovement_Up)
         {
-            //if (PlayerStats.Instance.stats.steps_Current <= 0)
-            //{
-            //    RespawnBasedOnStepsCurrent();
-            //}
-            //else
-            //{
-            //    Ladder_PlayerRotation_Into();
-            //    LadderMovement_UP(ref ladderToApproach_Current);
-            //    Ladder_PlayerRotation_Into();
-            //}
-
             Ladder_PlayerRotation_Into();
             LadderMovement_UP(ref ladderToApproach_Current);
             Ladder_PlayerRotation_Into();
         }
         else if (ladderMovement_Down_ToBottom)
         {
-            //if (PlayerStats.Instance.stats.steps_Current <= 0)
-            //{
-            //    RespawnBasedOnStepsCurrent();
-            //}
-            //else
-            //{
-            //    Ladder_PlayerRotation_Into();
-            //    LadderMovement_Down_ToBottom();
-            //}
-
             Ladder_PlayerRotation_Into();
             LadderMovement_Down_ToBottom();
         }
         else if (ladderMovement_Down_ToBlockFromTop)
         {
-            //if (PlayerStats.Instance.stats.steps_Current <= 0)
-            //{
-            //    RespawnBasedOnStepsCurrent();
-            //}
-            //else
-            //{
-            //    Ladder_PlayerRotation_Into();
-            //    LadderMovement_Down_ToBlockFromTop();
-            //}
-
             Ladder_PlayerRotation_Into();
             LadderMovement_Down_ToBlockFromTop();
         }
         else if (isOnLadder && ladderMovement_Down)
         {
-            //if (PlayerStats.Instance.stats.steps_Current <= 0)
-            //{
-            //    RespawnBasedOnStepsCurrent();
-            //}
-            //else
-            //{
-            //    Ladder_PlayerRotation_Into();
-            //    LadderMovement_DOWN(ref ladderToApproach_Current);
-            //    Ladder_PlayerRotation_Into();
-            //}
-
             Ladder_PlayerRotation_Into();
             LadderMovement_DOWN(ref ladderToApproach_Current);
             Ladder_PlayerRotation_Into();
         }
         else if (isOnLadder && !ladderAndIsOnTheGround)
         {
-            //if (PlayerStats.Instance.stats.steps_Current <= 0)
-            //{
-            //    RespawnBasedOnStepsCurrent();
-            //}
-            //else
-            //{
-            //    Ladder_PlayerRotation_Into();
-            //}
-
             Ladder_PlayerRotation_Into();
         }
         else if (isOnLadder )
@@ -638,39 +566,22 @@ public class Player_Movement : Singleton<Player_Movement>
             Player_GraplingHook.Instance.StopRaycastGrappling();
         }
 
-        //If pressing - UP - ASCEND
+        //If pressing -UP - ASCEND
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             if (gameObject.GetComponent<Player_SwiftSwim>().canSwiftSwim_Up)
             {
                 gameObject.GetComponent<Player_SwiftSwim>().SwiftSwim_Up();
             }
-            else if (gameObject.GetComponent<Player_Ascend>().playerCanAscend)
-            {
-                gameObject.GetComponent<Player_Ascend>().Ascend();
-            }
         }
-        //If pressing - DOWN - DESCEND
+        //If pressing -DOWN - DESCEND
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             if (gameObject.GetComponent<Player_SwiftSwim>().canSwiftSwim_Down)
             {
                 gameObject.GetComponent<Player_SwiftSwim>().SwiftSwim_Down();
             }
-            else if (gameObject.GetComponent<Player_Descend>().playerCanDescend)
-            {
-                gameObject.GetComponent<Player_Descend>().Descend();
-            }
         }
-
-        ////If pressing - Dash - Space
-        //else if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    if (gameObject.GetComponent<Player_Dash>().playerCanDash)
-        //    {
-        //        gameObject.GetComponent<Player_Dash>().Dash();
-        //    }
-        //}
 
         //If pressing - Hammer - C
         else if (Input.GetKeyDown(KeyCode.C))
