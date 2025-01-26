@@ -65,9 +65,9 @@ public class Player_Jumping : Singleton<Player_Jumping>
 
     void StartJumping()
     {
-        switch (Cameras_v2.Instance.cameraState)
+        switch (Cameras_v2.Instance.cameraRotationState)
         {
-            case CameraState.Forward:
+            case CameraRotationState.Forward:
                 if (Input.GetKeyDown(KeyCode.W) && canJump_Forward && jumpTarget_Forward)
                     StartCoroutine(JumpRoutine(jumpTarget_Forward));
                 else if (Input.GetKeyDown(KeyCode.S) && canJump_Back && jumpTarget_Back)
@@ -77,7 +77,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
                 else if (Input.GetKeyDown(KeyCode.D) && canJump_Right && jumpTarget_Right)
                     StartCoroutine(JumpRoutine(jumpTarget_Right));
                 break;
-            case CameraState.Backward:
+            case CameraRotationState.Backward:
                 if (Input.GetKeyDown(KeyCode.S) && canJump_Forward && jumpTarget_Forward)
                     StartCoroutine(JumpRoutine(jumpTarget_Forward));
                 else if (Input.GetKeyDown(KeyCode.W) && canJump_Back && jumpTarget_Back)
@@ -87,7 +87,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
                 else if (Input.GetKeyDown(KeyCode.A) && canJump_Right && jumpTarget_Right)
                     StartCoroutine(JumpRoutine(jumpTarget_Right));
                 break;
-            case CameraState.Left:
+            case CameraRotationState.Left:
                 if (Input.GetKeyDown(KeyCode.A) && canJump_Forward && jumpTarget_Forward)
                     StartCoroutine(JumpRoutine(jumpTarget_Forward));
                 else if (Input.GetKeyDown(KeyCode.D) && canJump_Back && jumpTarget_Back)
@@ -97,7 +97,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
                 else if (Input.GetKeyDown(KeyCode.W) && canJump_Right && jumpTarget_Right)
                     StartCoroutine(JumpRoutine(jumpTarget_Right));
                 break;
-            case CameraState.Right:
+            case CameraRotationState.Right:
                 if (Input.GetKeyDown(KeyCode.D) && canJump_Forward && jumpTarget_Forward)
                     StartCoroutine(JumpRoutine(jumpTarget_Forward));
                 else if (Input.GetKeyDown(KeyCode.A) && canJump_Back && jumpTarget_Back)

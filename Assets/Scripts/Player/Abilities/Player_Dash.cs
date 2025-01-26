@@ -84,9 +84,9 @@ public class Player_Dash : Singleton<Player_Dash>
 
     void StartDashing()
     {
-        switch (Cameras_v2.Instance.cameraState)
+        switch (Cameras_v2.Instance.cameraRotationState)
         {
-            case CameraState.Forward:
+            case CameraRotationState.Forward:
                 if (Input.GetKeyDown(KeyCode.W) && canDash_Forward && dashTarget_Forward)
                     StartCoroutine(DashRoutine(dashTarget_Forward));
                 else if (Input.GetKeyDown(KeyCode.S) && canDash_Back && dashTarget_Back)
@@ -96,7 +96,7 @@ public class Player_Dash : Singleton<Player_Dash>
                 else if (Input.GetKeyDown(KeyCode.D) && canDash_Right && dashTarget_Right)
                     StartCoroutine(DashRoutine(dashTarget_Right));
                 break;
-            case CameraState.Backward:
+            case CameraRotationState.Backward:
                 if (Input.GetKeyDown(KeyCode.S) && canDash_Forward && dashTarget_Forward)
                     StartCoroutine(DashRoutine(dashTarget_Forward));
                 else if (Input.GetKeyDown(KeyCode.W) && canDash_Back && dashTarget_Back)
@@ -106,7 +106,7 @@ public class Player_Dash : Singleton<Player_Dash>
                 else if (Input.GetKeyDown(KeyCode.A) && canDash_Right && dashTarget_Right)
                     StartCoroutine(DashRoutine(dashTarget_Right));
                 break;
-            case CameraState.Left:
+            case CameraRotationState.Left:
                 if (Input.GetKeyDown(KeyCode.A) && canDash_Forward && dashTarget_Forward)
                     StartCoroutine(DashRoutine(dashTarget_Forward));
                 else if (Input.GetKeyDown(KeyCode.D) && canDash_Back && dashTarget_Back)
@@ -116,7 +116,7 @@ public class Player_Dash : Singleton<Player_Dash>
                 else if (Input.GetKeyDown(KeyCode.W) && canDash_Right && dashTarget_Right)
                     StartCoroutine(DashRoutine(dashTarget_Right));
                 break;
-            case CameraState.Right:
+            case CameraRotationState.Right:
                 if (Input.GetKeyDown(KeyCode.D) && canDash_Forward && dashTarget_Forward)
                     StartCoroutine(DashRoutine(dashTarget_Forward));
                 else if (Input.GetKeyDown(KeyCode.A) && canDash_Back && dashTarget_Back)

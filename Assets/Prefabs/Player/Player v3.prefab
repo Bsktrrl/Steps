@@ -1914,11 +1914,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraAnchor: {fileID: 688149418265335786}
+  cameraOffset: {fileID: 2170447121049632369}
   cameraState: 0
+  cameraRotationState: 0
   directionFacing: {x: 0, y: 0, z: 0}
   rotationDuration: 0.2
   waitDelay: 0.1
   isRotating: 0
+  isCeilingRotating: 0
 --- !u!114 &1701320831085685727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1931,7 +1934,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef04d10a244f9f5498291433cd8708e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraState: 0
   cameraState_BeforeSwitching: 0
   directionFacing: {x: 0, y: 0, z: 0}
   directionTranslator: 

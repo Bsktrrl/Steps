@@ -152,18 +152,18 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
 
     void RotateAbilityDisplay()
     {
-        switch (Cameras_v2.Instance.cameraState)
+        switch (Cameras_v2.Instance.cameraRotationState)
         {
-            case CameraState.Forward:
+            case CameraRotationState.Forward:
                 buttonDisplay_Canvas.transform.SetLocalPositionAndRotation(new Vector3(1.9f, 0, 0), Quaternion.Euler(0, 0, 0));
                 break;
-            case CameraState.Backward:
+            case CameraRotationState.Backward:
                 buttonDisplay_Canvas.transform.SetLocalPositionAndRotation(new Vector3(-1.9f, 0, 0), Quaternion.Euler(0, 180, 0));
                 break;
-            case CameraState.Left:
+            case CameraRotationState.Left:
                 buttonDisplay_Canvas.transform.SetLocalPositionAndRotation(new Vector3(-0.1f, 0, -2), Quaternion.Euler(0, 90, 0));
                 break;
-            case CameraState.Right:
+            case CameraRotationState.Right:
                 buttonDisplay_Canvas.transform.SetLocalPositionAndRotation(new Vector3(-0.1f, 0, 2), Quaternion.Euler(0, -90, 0));
                 break;
 

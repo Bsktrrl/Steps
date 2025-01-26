@@ -101,7 +101,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         }
 
         //Check if something is in the way of movement
-        if (Cameras_v2.Instance.cameraState == CameraState.Forward)
+        if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward)
         {
             //Check if something is in the way
             PerformRaycast_Horizontal(detectorSpot_Horizontal_Front, Vector3.forward);
@@ -115,7 +115,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             PerformRaycast_Vertical(detectorSpot_Vertical_Left, Vector3.left);
             PerformRaycast_Vertical(detectorSpot_Vertical_Right, Vector3.right);
         }
-        else if (Cameras_v2.Instance.cameraState == CameraState.Backward)
+        else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Backward)
         {
             //Check if something is in the way
             PerformRaycast_Horizontal(detectorSpot_Horizontal_Front, Vector3.back);
@@ -129,7 +129,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             PerformRaycast_Vertical(detectorSpot_Vertical_Left, Vector3.right);
             PerformRaycast_Vertical(detectorSpot_Vertical_Right, Vector3.left);
         }
-        else if (Cameras_v2.Instance.cameraState == CameraState.Left)
+        else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Left)
         {
             //Check if something is in the way
             PerformRaycast_Horizontal(detectorSpot_Horizontal_Front, Vector3.right);
@@ -143,7 +143,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             PerformRaycast_Vertical(detectorSpot_Vertical_Left, Vector3.forward);
             PerformRaycast_Vertical(detectorSpot_Vertical_Right, Vector3.back);
         }
-        else if (Cameras_v2.Instance.cameraState == CameraState.Right)
+        else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Right)
         {
             //Check if something is in the way
             PerformRaycast_Horizontal(detectorSpot_Horizontal_Front, Vector3.left);
@@ -327,18 +327,18 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     {
         if (direction == Vector3.forward)
         {
-            switch (Cameras_v2.Instance.cameraState)
+            switch (Cameras_v2.Instance.cameraRotationState)
             {
-                case CameraState.Forward:
+                case CameraRotationState.Forward:
                     PlayerManager.Instance.canMove_Forward = false;
                     break;
-                case CameraState.Backward:
+                case CameraRotationState.Backward:
                     PlayerManager.Instance.canMove_Back = false;
                     break;
-                case CameraState.Left:
+                case CameraRotationState.Left:
                     PlayerManager.Instance.canMove_Left = false;
                     break;
-                case CameraState.Right:
+                case CameraRotationState.Right:
                     PlayerManager.Instance.canMove_Right = false;
                     break;
 
@@ -348,18 +348,18 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         }
         if (direction == Vector3.back)
         {
-            switch (Cameras_v2.Instance.cameraState)
+            switch (Cameras_v2.Instance.cameraRotationState)
             {
-                case CameraState.Forward:
+                case CameraRotationState.Forward:
                     PlayerManager.Instance.canMove_Back = false;
                     break;
-                case CameraState.Backward:
+                case CameraRotationState.Backward:
                     PlayerManager.Instance.canMove_Forward = false;
                     break;
-                case CameraState.Left:
+                case CameraRotationState.Left:
                     PlayerManager.Instance.canMove_Right = false;
                     break;
-                case CameraState.Right:
+                case CameraRotationState.Right:
                     PlayerManager.Instance.canMove_Left = false;
                     break;
 
@@ -369,18 +369,18 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         }
         if (direction == Vector3.left)
         {
-            switch (Cameras_v2.Instance.cameraState)
+            switch (Cameras_v2.Instance.cameraRotationState)
             {
-                case CameraState.Forward:
+                case CameraRotationState.Forward:
                     PlayerManager.Instance.canMove_Left = false;
                     break;
-                case CameraState.Backward:
+                case CameraRotationState.Backward:
                     PlayerManager.Instance.canMove_Right = false;
                     break;
-                case CameraState.Left:
+                case CameraRotationState.Left:
                     PlayerManager.Instance.canMove_Back = false;
                     break;
-                case CameraState.Right:
+                case CameraRotationState.Right:
                     PlayerManager.Instance.canMove_Forward = false;
                     break;
 
@@ -390,18 +390,18 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         }
         if (direction == Vector3.right)
         {
-            switch (Cameras_v2.Instance.cameraState)
+            switch (Cameras_v2.Instance.cameraRotationState)
             {
-                case CameraState.Forward:
+                case CameraRotationState.Forward:
                     PlayerManager.Instance.canMove_Right = false;
                     break;
-                case CameraState.Backward:
+                case CameraRotationState.Backward:
                     PlayerManager.Instance.canMove_Left = false;
                     break;
-                case CameraState.Left:
+                case CameraRotationState.Left:
                     PlayerManager.Instance.canMove_Forward = false;
                     break;
-                case CameraState.Right:
+                case CameraRotationState.Right:
                     PlayerManager.Instance.canMove_Back = false;
                     break;
 
@@ -414,18 +414,18 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     {
         if (direction == Vector3.forward)
         {
-            switch (Cameras_v2.Instance.cameraState)
+            switch (Cameras_v2.Instance.cameraRotationState)
             {
-                case CameraState.Forward:
+                case CameraRotationState.Forward:
                     PlayerManager.Instance.canMove_Forward = true;
                     break;
-                case CameraState.Backward:
+                case CameraRotationState.Backward:
                     PlayerManager.Instance.canMove_Back = true;
                     break;
-                case CameraState.Left:
+                case CameraRotationState.Left:
                     PlayerManager.Instance.canMove_Left = true;
                     break;
-                case CameraState.Right:
+                case CameraRotationState.Right:
                     PlayerManager.Instance.canMove_Right = true;
                     break;
 
@@ -435,18 +435,18 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         }
         if (direction == Vector3.back)
         {
-            switch (Cameras_v2.Instance.cameraState)
+            switch (Cameras_v2.Instance.cameraRotationState)
             {
-                case CameraState.Forward:
+                case CameraRotationState.Forward:
                     PlayerManager.Instance.canMove_Back = true;
                     break;
-                case CameraState.Backward:
+                case CameraRotationState.Backward:
                     PlayerManager.Instance.canMove_Forward = true;
                     break;
-                case CameraState.Left:
+                case CameraRotationState.Left:
                     PlayerManager.Instance.canMove_Right = true;
                     break;
-                case CameraState.Right:
+                case CameraRotationState.Right:
                     PlayerManager.Instance.canMove_Left = true;
                     break;
 
@@ -456,18 +456,18 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         }
         if (direction == Vector3.left)
         {
-            switch (Cameras_v2.Instance.cameraState)
+            switch (Cameras_v2.Instance.cameraRotationState)
             {
-                case CameraState.Forward:
+                case CameraRotationState.Forward:
                     PlayerManager.Instance.canMove_Left = true;
                     break;
-                case CameraState.Backward:
+                case CameraRotationState.Backward:
                     PlayerManager.Instance.canMove_Right = true;
                     break;
-                case CameraState.Left:
+                case CameraRotationState.Left:
                     PlayerManager.Instance.canMove_Back = true;
                     break;
-                case CameraState.Right:
+                case CameraRotationState.Right:
                     PlayerManager.Instance.canMove_Forward = true;
                     break;
 
@@ -477,18 +477,18 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         }
         if (direction == Vector3.right)
         {
-            switch (Cameras_v2.Instance.cameraState)
+            switch (Cameras_v2.Instance.cameraRotationState)
             {
-                case CameraState.Forward:
+                case CameraRotationState.Forward:
                     PlayerManager.Instance.canMove_Right = true;
                     break;
-                case CameraState.Backward:
+                case CameraRotationState.Backward:
                     PlayerManager.Instance.canMove_Left = true;
                     break;
-                case CameraState.Left:
+                case CameraRotationState.Left:
                     PlayerManager.Instance.canMove_Forward = true;
                     break;
-                case CameraState.Right:
+                case CameraRotationState.Right:
                     PlayerManager.Instance.canMove_Back = true;
                     break;
 

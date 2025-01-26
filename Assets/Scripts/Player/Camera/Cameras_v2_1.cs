@@ -11,7 +11,7 @@ public class Cameras_v1 : Singleton<Cameras_v1>
 
     [Header("Camera State")]
     //public CameraState cameraState;
-    [SerializeField] CameraState cameraState_BeforeSwitching;
+    [SerializeField] CameraRotationState cameraState_BeforeSwitching;
 
     public Vector3 directionFacing;
     [SerializeField] string directionTranslator;
