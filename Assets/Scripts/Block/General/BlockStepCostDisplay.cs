@@ -39,12 +39,12 @@ public class BlockStepCostDisplay : MonoBehaviour
 
     private void OnEnable()
     {
-        Cameras.rotateCamera += UpdateRotation;
+        Cameras_v2.rotateCamera += UpdateRotation;
     }
 
     private void OnDisable()
     {
-        Cameras.rotateCamera -= UpdateRotation;
+        Cameras_v2.rotateCamera -= UpdateRotation;
     }
 
 
@@ -107,7 +107,7 @@ public class BlockStepCostDisplay : MonoBehaviour
         //If the block is a Stair
         if (gameObject.GetComponent<BlockInfo>().blockType == BlockType.Stair || gameObject.GetComponent<BlockInfo>().blockType == BlockType.Slope)
         {
-            if (Cameras.Instance.cameraState == CameraState.Forward)
+            if (Cameras_v2.Instance.cameraState == CameraState.Forward)
             {
                 stepCostDisplay_Canvas.transform.localRotation = Quaternion.Euler(startRot_X_Canvas, 0, 0);
 
@@ -120,7 +120,7 @@ public class BlockStepCostDisplay : MonoBehaviour
                 if (gameObject.transform.localRotation.eulerAngles.y == 180)
                     stepCostText_Object.transform.localRotation = Quaternion.Euler(0, 0, 0);
             }
-            else if (Cameras.Instance.cameraState == CameraState.Backward)
+            else if (Cameras_v2.Instance.cameraState == CameraState.Backward)
             {
                 stepCostDisplay_Canvas.transform.localRotation = Quaternion.Euler(startRot_X_Canvas, 0, 0);
 
@@ -133,7 +133,7 @@ public class BlockStepCostDisplay : MonoBehaviour
                 if (gameObject.transform.localRotation.eulerAngles.y == 180)
                     stepCostText_Object.transform.localRotation = Quaternion.Euler(0, 0, 180);
             }
-            else if (Cameras.Instance.cameraState == CameraState.Left)
+            else if (Cameras_v2.Instance.cameraState == CameraState.Left)
             {
                 stepCostDisplay_Canvas.transform.localRotation = Quaternion.Euler(startRot_X_Canvas, 0, 0);
 
@@ -146,7 +146,7 @@ public class BlockStepCostDisplay : MonoBehaviour
                 if (gameObject.transform.localRotation.eulerAngles.y == 180)
                     stepCostText_Object.transform.localRotation = Quaternion.Euler(0, 0, -90);
             }
-            else if (Cameras.Instance.cameraState == CameraState.Right)
+            else if (Cameras_v2.Instance.cameraState == CameraState.Right)
             {
                 stepCostDisplay_Canvas.transform.localRotation = Quaternion.Euler(startRot_X_Canvas, 0, 0);
 
@@ -164,13 +164,13 @@ public class BlockStepCostDisplay : MonoBehaviour
         //If the block is a Cube
         else
         {
-            if (Cameras.Instance.cameraState == CameraState.Forward)
+            if (Cameras_v2.Instance.cameraState == CameraState.Forward)
                 stepCostDisplay_Canvas.transform.localRotation = Quaternion.Euler(startRot_X_Canvas, -gameObject.transform.eulerAngles.y + 0, 0);
-            else if (Cameras.Instance.cameraState == CameraState.Backward)
+            else if (Cameras_v2.Instance.cameraState == CameraState.Backward)
                 stepCostDisplay_Canvas.transform.localRotation = Quaternion.Euler(startRot_X_Canvas, -gameObject.transform.eulerAngles.y + 180, 0);
-            else if (Cameras.Instance.cameraState == CameraState.Left)
+            else if (Cameras_v2.Instance.cameraState == CameraState.Left)
                 stepCostDisplay_Canvas.transform.localRotation = Quaternion.Euler(startRot_X_Canvas, -gameObject.transform.eulerAngles.y + 90, 0);
-            else if (Cameras.Instance.cameraState == CameraState.Right)
+            else if (Cameras_v2.Instance.cameraState == CameraState.Right)
                 stepCostDisplay_Canvas.transform.localRotation = Quaternion.Euler(startRot_X_Canvas, -gameObject.transform.eulerAngles.y + -90, 0);
         }
     }
@@ -181,7 +181,7 @@ public class BlockStepCostDisplay : MonoBehaviour
 
     public void DestroyBlockStepCostDisplay()
     {
-        Cameras.rotateCamera -= UpdateRotation;
+        Cameras_v2.rotateCamera -= UpdateRotation;
 
         Destroy(this);
     }

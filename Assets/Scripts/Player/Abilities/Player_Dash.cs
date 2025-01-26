@@ -84,7 +84,7 @@ public class Player_Dash : Singleton<Player_Dash>
 
     void StartDashing()
     {
-        switch (Cameras.Instance.cameraState)
+        switch (Cameras_v2.Instance.cameraState)
         {
             case CameraState.Forward:
                 if (Input.GetKeyDown(KeyCode.W) && canDash_Forward && dashTarget_Forward)

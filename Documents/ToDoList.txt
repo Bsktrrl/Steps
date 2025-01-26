@@ -1,24 +1,24 @@
 ----- NEXT ON THE LIST -----
 
 
-From meatings:
-- Corner Stair functionalty as Stair
+From meatings (include in "Adrian_Camera" Branch):
 - Make better camera
 - Make Mud Block
 - Make Swamp Water Block
-- Make Lava Block trigger if adjacent in the playerHeight level
+- Make so that the Lava Block also trigger if it's adjacent in the playerHeight level or one level over the player
 - Make Roof Climb Ability 
 	- Hang upside down when Roof Climbing
 	- Change Camera position to under the player
 	- Change MovementCostText to under the block
-- Change "Jumping" and "Dash" to use movementButtons instead of the "Space"-button
-- Change "Grappling Hook"-button to become Activate and Release inasted of using 2 bottons for this action
+
 - Make Buttons compatiable with controllers
 
 
+---
 
-Spring:
-- Let the player move up 1 block (instead of using a ladder)
+
+Spring Block:
+- Bumps the player up 1 block (like using a ladder/WallClimbing)
 
 
 Ladder:
@@ -27,7 +27,7 @@ Ladder:
 
 
 Pickups
-- Can be raycasted through, so the player can Descend into a block with a pickup on
+- Must be able to raycasted through, so the player can Descend into a block with a pickup on
 
 
 ----- TASKS IN QUE -----
@@ -42,6 +42,7 @@ ButtonDisplay:
 
 Fence:
 - Fix the bug so that fences block the player, even if the fence is placed inside of a block space
+- Remove FenceSneak functionalty so the fences only work as Scenary
 
 
 ----- OTHER -----

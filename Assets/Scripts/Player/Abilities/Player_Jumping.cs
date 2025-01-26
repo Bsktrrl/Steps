@@ -65,7 +65,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
 
     void StartJumping()
     {
-        switch (Cameras.Instance.cameraState)
+        switch (Cameras_v2.Instance.cameraState)
         {
             case CameraState.Forward:
                 if (Input.GetKeyDown(KeyCode.W) && canJump_Forward && jumpTarget_Forward)

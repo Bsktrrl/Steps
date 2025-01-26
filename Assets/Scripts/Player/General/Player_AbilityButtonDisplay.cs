@@ -51,7 +51,7 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
 
     private void Start()
     {
-        Cameras.rotateCamera += RotateAbilityDisplay;
+        Cameras_v2.rotateCamera += RotateAbilityDisplay;
 
         FindAllMoveableBlocks();
     }
@@ -152,7 +152,7 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
 
     void RotateAbilityDisplay()
     {
-        switch (Cameras.Instance.cameraState)
+        switch (Cameras_v2.Instance.cameraState)
         {
             case CameraState.Forward:
                 buttonDisplay_Canvas.transform.SetLocalPositionAndRotation(new Vector3(1.9f, 0, 0), Quaternion.Euler(0, 0, 0));
