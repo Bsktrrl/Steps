@@ -65,7 +65,14 @@ public class Player_Flameable : Singleton<Player_Flameable>
                 AddFlameable();
             }
         }
-        
+        if (PlayerManager.Instance.block_Horizontal_InFront.block)
+        {
+            if (PlayerManager.Instance.block_Horizontal_InFront.block.GetComponent<Block_Lava>())
+            {
+                AddFlameable();
+            }
+        }
+
         if (PlayerManager.Instance.block_Vertical_InBack.block)
         {
             if (PlayerManager.Instance.block_Vertical_InBack.block.GetComponent<Block_Lava>())
@@ -73,7 +80,14 @@ public class Player_Flameable : Singleton<Player_Flameable>
                 AddFlameable();
             }
         }
-        
+        if (PlayerManager.Instance.block_Horizontal_InBack.block)
+        {
+            if (PlayerManager.Instance.block_Horizontal_InBack.block.GetComponent<Block_Lava>())
+            {
+                AddFlameable();
+            }
+        }
+
         if (PlayerManager.Instance.block_Vertical_ToTheLeft.block)
         {
             if (PlayerManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<Block_Lava>())
@@ -81,10 +95,24 @@ public class Player_Flameable : Singleton<Player_Flameable>
                 AddFlameable();
             }
         }
-        
+        if (PlayerManager.Instance.block_Horizontal_ToTheLeft.block)
+        {
+            if (PlayerManager.Instance.block_Horizontal_ToTheLeft.block.GetComponent<Block_Lava>())
+            {
+                AddFlameable();
+            }
+        }
+
         if (PlayerManager.Instance.block_Vertical_ToTheRight.block)
         {
             if (PlayerManager.Instance.block_Vertical_ToTheRight.block.GetComponent<Block_Lava>())
+            {
+                AddFlameable();
+            }
+        }
+        if (PlayerManager.Instance.block_Horizontal_ToTheRight.block)
+        {
+            if (PlayerManager.Instance.block_Horizontal_ToTheRight.block.GetComponent<Block_Lava>())
             {
                 AddFlameable();
             }
