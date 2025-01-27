@@ -23,6 +23,9 @@ public class Player_BodyHeight : MonoBehaviour
 
     private void Update()
     {
+        //Let the CeilingRotation animation take place
+        //if (Player_CeilingGrab.Instance.isCeilingRotation) { return; }
+
         SetPlayerBodyHeight();
     }
 
@@ -32,49 +35,65 @@ public class Player_BodyHeight : MonoBehaviour
 
     void SetPlayerBodyHeight()
     {
+        print("1. SetPlayerBodyHeight isRunning");
+
         if (PlayerManager.Instance.block_StandingOn_Current.block)
         {
+            //Stair
             if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair || PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope)
-            {
-                PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_Stair, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
-            }
+                PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Stair), ReturnRotation());
+
+            //Water
             else if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Water>())
-            {
-                PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_Water, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
-            }
+                PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Water), ReturnRotation());
+
+            //Quicksand
             else if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Quicksand>())
             {
-                print("Standing on QuickSand");
-
                 if (Player_Quicksand.Instance.quicksandCounter == 1)
-                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_QuickSand_1, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
+                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_1), ReturnRotation());
                 else if (Player_Quicksand.Instance.quicksandCounter == 2)
-                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_QuickSand_2, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
+                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_2), ReturnRotation());
                 else if (Player_Quicksand.Instance.quicksandCounter == 3)
-                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_QuickSand_3, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
+                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_3), ReturnRotation());
                 else if (Player_Quicksand.Instance.quicksandCounter == 4)
-                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_QuickSand_4, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
+                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_4), ReturnRotation());
                 else if (Player_Quicksand.Instance.quicksandCounter == 5)
-                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_QuickSand_5, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
+                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_5), ReturnRotation());
                 else
-                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_Normal, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
+                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Normal), ReturnRotation());
             }
+
+            //Lava
             else if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Lava>())
-            {
-                PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_Lava, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
-            }
+                PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Lava), ReturnRotation());
+
+            //Other
             else
-            {
-                PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_Normal, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
-            }
+                PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Normal), ReturnRotation());
         }
+
+        //SwiftSwim
         else if (Player_SwiftSwim.Instance.isSwiftSwimming_Up || Player_SwiftSwim.Instance.isSwiftSwimming_Down)
-        {
-            PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_Water, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
-        }
+            PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Water), ReturnRotation());
+
+        //Other
         else
-        {
-            PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, height_Normal, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
-        }
+            PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Normal), ReturnRotation());
+    }
+
+    Vector3 ReturnPosition(float value_Y)
+    {
+        if (Cameras_v2.Instance.cameraState == CameraState.GameplayCam)
+            return new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, value_Y, PlayerManager.Instance.playerBody.transform.localPosition.z);
+        else if (Cameras_v2.Instance.cameraState == CameraState.CeilingCam)
+            return new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, -value_Y, PlayerManager.Instance.playerBody.transform.localPosition.z);
+        else
+            return new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, value_Y, PlayerManager.Instance.playerBody.transform.localPosition.z);
+    }
+
+    Quaternion ReturnRotation()
+    {
+        return Quaternion.Euler(PlayerManager.Instance.playerBody.transform.localRotation.eulerAngles.x, PlayerManager.Instance.playerBody.transform.localRotation.eulerAngles.y, Player_CeilingGrab.Instance.playerCeilingRotationValue);
     }
 }

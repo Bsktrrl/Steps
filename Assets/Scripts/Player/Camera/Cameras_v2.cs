@@ -38,7 +38,6 @@ public class Cameras_v2 : Singleton<Cameras_v2>
     private void Update()
     {
         RotateCameraSetup();
-        CeilingCameraSetup();
     }
 
 
@@ -136,40 +135,7 @@ public class Cameras_v2 : Singleton<Cameras_v2>
         isRotating = false;
     }
 
-    void CeilingCameraSetup()
-    {
-        //Don't be able to switch camera angle before the rotation has been done
-        if (isRotating) { return; }
-        if (isCeilingRotating) { return; }
-        if (Player_Interact.Instance.isInteracting) { return; }
-        if (Player_Movement.Instance.iceGliding) { return; }
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
-        if (Player_Movement.Instance.ladderMovement_Top_ToBlock) { return; }
-
-        if (Input.GetKeyDown(KeyCode.C) && cameraState == CameraState.GameplayCam)
-        {
-            if (cameraRotationState == CameraRotationState.Forward)
-                StartCoroutine(CeilingCameraRotation(0));
-            else if (cameraRotationState == CameraRotationState.Backward)
-                StartCoroutine(CeilingCameraRotation(180));
-            else if (cameraRotationState == CameraRotationState.Left)
-                StartCoroutine(CeilingCameraRotation(90));
-            else if (cameraRotationState == CameraRotationState.Right)
-                StartCoroutine(CeilingCameraRotation(-90));
-        }
-        else if (Input.GetKeyDown(KeyCode.C) && cameraState == CameraState.CeilingCam)
-        {
-            if (cameraRotationState == CameraRotationState.Forward)
-                StartCoroutine(CeilingCameraRotation(0));
-            else if (cameraRotationState == CameraRotationState.Backward)
-                StartCoroutine(CeilingCameraRotation(180));
-            else if (cameraRotationState == CameraRotationState.Left)
-                StartCoroutine(CeilingCameraRotation(90));
-            else if (cameraRotationState == CameraRotationState.Right)
-                StartCoroutine(CeilingCameraRotation(-90));
-        }    
-    }
-    IEnumerator CeilingCameraRotation(float angle)
+    public IEnumerator CeilingCameraRotation(float angle)
     {
         isCeilingRotating = true;
         PlayerManager.Instance.pauseGame = true;

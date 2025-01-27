@@ -329,7 +329,8 @@ public class Cameras_v1 : Singleton<Cameras_v1>
     //    switch (cameraState)
     //    {
     //        case CameraState.Forward:
-    //            if (PlayerManager.Instance.playerBody.transform.rotation == Quaternion.Euler(new Vector3(0, 0, 0)))
+    //            if (
+    //            .rotation == Quaternion.Euler(new Vector3(0, 0, 0)))
     //            {
     //                directionFacing = Vector3.forward;
     //            }
