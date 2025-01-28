@@ -31,6 +31,8 @@ public class Player_Descend : Singleton<Player_Descend>
 
         if (!gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Descend && !gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Descend) { return; }
 
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
         if (PlayerManager.Instance.pauseGame) { return; }
         if (PlayerManager.Instance.isTransportingPlayer) { return; }

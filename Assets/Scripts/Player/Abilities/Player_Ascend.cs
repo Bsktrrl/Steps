@@ -31,6 +31,8 @@ public class Player_Ascend : Singleton<Player_Ascend>
 
         if (!gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Ascend && !gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Ascend) { return; }
 
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
         if (PlayerManager.Instance.pauseGame) { return; }
         if (PlayerManager.Instance.isTransportingPlayer) { return; }

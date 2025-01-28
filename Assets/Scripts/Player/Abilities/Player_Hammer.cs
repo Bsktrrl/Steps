@@ -13,6 +13,8 @@ public class Player_Hammer : Singleton<Player_Hammer>
 
     private void Update()
     {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         CheckIfBlockCanBeHammered();
     }
 

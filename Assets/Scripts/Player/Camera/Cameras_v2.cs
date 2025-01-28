@@ -56,7 +56,7 @@ public class Cameras_v2 : Singleton<Cameras_v2>
         if (isRotating) { return; }
         if (isCeilingRotating) { return; }
         if (Player_Interact.Instance.isInteracting) { return; }
-        if (Player_Movement.Instance.iceGliding) { return; }
+        if (Player_Movement.Instance.isIceGliding) { return; }
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
         if (Player_Movement.Instance.ladderMovement_Top_ToBlock) { return; }
         

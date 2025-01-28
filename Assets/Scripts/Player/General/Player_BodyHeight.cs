@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player_BodyHeight : Singleton<Player_BodyHeight>
 {
     [Header("Local PlayerBody height level")]
-    float height_Normal = -0.2f;
+    [HideInInspector] public float height_Normal = -0.2f;
 
     float height_Stair = -0.2f;
     float height_Water = -0.8f;
@@ -23,9 +23,6 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
 
     private void Update()
     {
-        //Let the CeilingRotation animation take place
-        //if (Player_CeilingGrab.Instance.isCeilingRotation) { return; }
-
         SetPlayerBodyHeight();
     }
 
@@ -35,7 +32,7 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
 
     void SetPlayerBodyHeight()
     {
-        print("1. SetPlayerBodyHeight isRunning");
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
         if (PlayerManager.Instance.block_StandingOn_Current.block)
         {

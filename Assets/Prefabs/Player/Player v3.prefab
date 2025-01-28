@@ -7199,10 +7199,11 @@ MonoBehaviour:
   currentMovementCost: 0
   movementStates: 0
   lastMovementButtonPressed: 0
+  movementSpeed: 0.2
   heightOverBlock: 0.95
   fallSpeed: 6
-  iceGliding: 0
-  slopeGliding: 0
+  isIceGliding: 0
+  isSlopeGliding: 0
   isOnLadder: 0
   ladderSteppedOn: {fileID: 0}
   ladderMovement_Up: 0
@@ -7316,6 +7317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c62a7cc69148c488ef1bad822ee621, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  height_Normal: -0.2
 --- !u!114 &2942397174162899684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7573,6 +7575,7 @@ MonoBehaviour:
   isCeilingGrabbing: 0
   isCeilingRotation: 0
   playerCeilingRotationValue: 0
+  playerBodyHeight_Ceiling: 0.4
 --- !u!1 &6680482554464227565
 GameObject:
   m_ObjectHideFlags: 0

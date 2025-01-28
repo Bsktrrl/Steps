@@ -29,6 +29,8 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
     {
         if (!canRun) { return; }
 
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         ActivateSwiftSwimRaycast();
 
         if (isSwiftSwimming_Up || isSwiftSwimming_Down)

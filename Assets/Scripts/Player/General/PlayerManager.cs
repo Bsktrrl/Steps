@@ -105,6 +105,37 @@ public class PlayerManager : Singleton<PlayerManager>
             }
         }
     }
+
+
+    public bool PreventButtonsOfTrigger()
+    {
+        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return false; }
+
+        if (Player_Movement.Instance.isSlopeGliding) { return false; }
+        if (Player_Movement.Instance.isIceGliding) { return false; }
+
+        if (pauseGame) { return false; }
+        if (isTransportingPlayer) { return false; }
+        if (Cameras_v2.Instance.isRotating) { return false; }
+        if (Player_Interact.Instance.isInteracting) { return false; }
+        if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
+        if (Player_Dash.Instance.isDashing) { return false; }
+        if (Player_Ascend.Instance.isAscending) { return false; }
+        if (Player_Descend.Instance.isDescending) { return false; }
+        if (Player_Jumping.Instance.isJumping) { return false; }
+        if (Player_SwiftSwim.Instance.isSwiftSwimming_Down) { return false; }
+        if (Player_SwiftSwim.Instance.isSwiftSwimming_Up) { return false; }
+        if (!Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
+
+        if (Player_Movement.Instance.ladderMovement_Up) { return false; }
+        if (Player_Movement.Instance.ladderMovement_Down) { return false; }
+        if (Player_Movement.Instance.ladderMovement_Top) { return false; }
+        if (Player_Movement.Instance.ladderMovement_Top_ToBlock) { return false; }
+        if (Player_Movement.Instance.ladderMovement_Down_ToBlockFromTop) { return false; }
+        if (Player_Movement.Instance.ladderMovement_Down_ToBottom) { return false; }
+
+        return true;
+    }
 }
 
 [Serializable]

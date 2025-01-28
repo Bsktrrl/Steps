@@ -58,6 +58,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     private void Update()
     {
         if (!canRunObjects) { return; }
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
         UpdateBlockLookingAt();
 
@@ -94,6 +95,8 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     public void RaycastSetup()
     {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         //Check which block the player stands on
         if (gameObject.GetComponent<Player_Movement>().movementStates == MovementStates.Moving)
         {
@@ -163,14 +166,43 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
         Action_MadeFirstRaycast_Invoke();
     }
+    public void ReycastReset()
+    {
+        PlayerManager.Instance.block_MovingTowards = null;
+
+        PlayerManager.Instance.block_LookingAt_Horizontal = null;
+        PlayerManager.Instance.block_LookingAt_Vertical = null;
+
+        //PlayerManager.Instance.block_StandingOn_Current = null;
+        //PlayerManager.Instance.block_StandingOn_Previous = null;
+
+        //PlayerManager.Instance.block_Horizontal_InFront = null;
+        //PlayerManager.Instance.block_Horizontal_InBack = null;
+        //PlayerManager.Instance.block_Horizontal_ToTheLeft = null;
+        //PlayerManager.Instance.block_Horizontal_ToTheRight = null;
+
+        //PlayerManager.Instance.block_Vertical_InFront = null;
+        //PlayerManager.Instance.block_Vertical_InBack = null;
+        //PlayerManager.Instance.block_Vertical_ToTheLeft = null;
+        //PlayerManager.Instance.block_Vertical_ToTheRight = null;
+
+        PlayerManager.Instance.canMove_Forward = false;
+        PlayerManager.Instance.canMove_Back = false;
+        PlayerManager.Instance.canMove_Left = false;
+        PlayerManager.Instance.canMove_Right = false;
+    }
 
     public void Update_BlockStandingOn()
     {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         PerformRaycast_Center_Vertical(detectorSpot_Vertical_Center, Vector3.down);
     }
 
     public void PerformRaycast_Center_Vertical(GameObject rayPointObject, Vector3 direction)
     {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         if (Physics.Raycast(rayPointObject.transform.position, direction, out hit, maxDistance_Horizontal))
         {
             Debug.DrawRay(rayPointObject.transform.position, direction * hit.distance, Color.green);
@@ -202,6 +234,8 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     void PerformRaycast_Horizontal(GameObject rayPointObject, Vector3 direction)
     {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         if (Physics.Raycast(rayPointObject.transform.position, direction, out hit, maxDistance_Horizontal))
         {
             Raycast_Horizontal_Hit(rayPointObject, direction);
@@ -213,6 +247,8 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     }
     void Raycast_Horizontal_Hit(GameObject rayPointObject, Vector3 direction)
     {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         Debug.DrawRay(rayPointObject.transform.position, direction * hit.distance, Color.red);
 
         if (hit.transform.GetComponent<BlockInfo>())
@@ -289,6 +325,8 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     }
     void Raycast_Horizontal_NotHit(GameObject rayPointObject, Vector3 direction)
     {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         Debug.DrawRay(rayPointObject.transform.position, direction * maxDistance_Horizontal, Color.green);
 
         if (rayPointObject == detectorSpot_Horizontal_Front)
@@ -325,6 +363,8 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     void CheckRaycastDirection_Horizontal(Vector3 direction)
     {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         if (direction == Vector3.forward)
         {
             switch (Cameras_v2.Instance.cameraRotationState)
@@ -412,6 +452,8 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     }
     void ResetRaycastDirection_Horizontal(Vector3 direction)
     {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         if (direction == Vector3.forward)
         {
             switch (Cameras_v2.Instance.cameraRotationState)
@@ -500,6 +542,8 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     void PerformRaycast_Vertical(GameObject rayPointObject, Vector3 direction)
     {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         if (Physics.Raycast(rayPointObject.transform.position, Vector3.down, out hit, maxDistance_Vertical))
         {
             Debug.DrawRay(rayPointObject.transform.position, Vector3.down * maxDistance_Vertical, Color.green);
@@ -556,6 +600,8 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     }
     void Raycast_Vertical_Hit(GameObject rayPointObject, Vector3 direction)
     {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         if (rayPointObject == detectorSpot_Vertical_Front)
         {
             PlayerManager.Instance.block_Vertical_InFront.block = hit.transform.gameObject;
@@ -587,6 +633,8 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     }
     void Raycast_Vertical_NotHit(GameObject rayPointObject, Vector3 direction)
     {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         Debug.DrawRay(rayPointObject.transform.position, Vector3.down * maxDistance_Vertical, Color.red);
 
         if (rayPointObject == detectorSpot_Vertical_Front)
@@ -620,6 +668,8 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     }
     void ResetRaycastDirection_Vertical(Vector3 direction)
     {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         if (direction == Vector3.forward)
         {
             ResetRaycastDirection(PlayerManager.Instance.block_Vertical_InFront, PlayerManager.Instance.block_Horizontal_InFront, Vector3.forward);
@@ -640,6 +690,8 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     void ResetRaycastDirection(DetectedBlockInfo blockType_Vertical, DetectedBlockInfo blockType_Horizontal, Vector3 direction)
     {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         if (blockType_Vertical.block)
         {
             #region Water Block
@@ -714,6 +766,8 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     void canMove(Vector3 direction, bool value)
     {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         if (direction == Vector3.forward)
         {
             PlayerManager.Instance.canMove_Forward = value;
@@ -735,6 +789,8 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     void UpdateRaycastingFromStair()
     {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair || PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope)
         {
             //Front
@@ -829,6 +885,8 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     void UpdateVerticalRaycastLength()
     {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair || PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope)
         {
             maxDistance_Vertical = maxDistance_Vertical_Stair;
@@ -841,6 +899,8 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     public void UpdateBlockLookingAt()
     {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         //lookDir_Temp = MainManager.Instance.playerBody.transform.rotation.eulerAngles.y;
         if (PlayerManager.Instance.playerBody.transform.rotation.eulerAngles.y == 0)
             lookDir_Temp = 0;

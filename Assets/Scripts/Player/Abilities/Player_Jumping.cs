@@ -33,6 +33,9 @@ public class Player_Jumping : Singleton<Player_Jumping>
     private void Update()
     {
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.Jumping && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping) { return; }
+
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         if (isJumping) { return; }
 
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }

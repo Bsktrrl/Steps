@@ -11,6 +11,8 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     float playerRotationDuration_Ceiling = 0.5f;
     public float playerCeilingRotationValue;
 
+    public float playerBodyHeight_Ceiling = 0.4f;
+
     RaycastHit hit;
 
 
@@ -34,7 +36,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         if (Cameras_v2.Instance.isRotating) { return; }
         if (Cameras_v2.Instance.isCeilingRotating) { return; }
         if (Player_Interact.Instance.isInteracting) { return; }
-        if (Player_Movement.Instance.iceGliding) { return; }
+        if (Player_Movement.Instance.isIceGliding) { return; }
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
         if (Player_Movement.Instance.ladderMovement_Top_ToBlock) { return; }
 
@@ -89,6 +91,13 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     {
         isCeilingRotation = true;
 
+        if (Cameras_v2.Instance.cameraState == CameraState.CeilingCam || Cameras_v2.Instance.cameraState == CameraState.GameplayCam)
+        {
+            Player_Movement.Instance.Action_ResetBlockColorInvoke();
+            Player_BlockDetector.Instance.ReycastReset();
+            Player_Movement.Instance.ResetCeilingBlockColor();
+        }
+
         // Record the starting rotation
         Vector3 startPosition = PlayerManager.Instance.playerBody.transform.localPosition;
         Quaternion startRotation = PlayerManager.Instance.playerBody.transform.rotation;
@@ -100,12 +109,12 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         //Set endPosition for playerBody
         if (Cameras_v2.Instance.cameraState == CameraState.GameplayCam)
         {
-            endPosition = new Vector3(0, -0.2f, 0);
+            endPosition = new Vector3(0, Player_BodyHeight.Instance.height_Normal, 0);
             endRotation = Quaternion.Euler(0, PlayerManager.Instance.playerBody.transform.localRotation.eulerAngles.y, angle);
         }
         else if (Cameras_v2.Instance.cameraState == CameraState.CeilingCam)
         {
-            endPosition = new Vector3(0, 0.2f, 0);
+            endPosition = new Vector3(0, playerBodyHeight_Ceiling, 0);
             endRotation = Quaternion.Euler(0, PlayerManager.Instance.playerBody.transform.localRotation.eulerAngles.y, angle);
         }
 
@@ -131,11 +140,18 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 
         Player_BlockDetector.Instance.RaycastSetup();
 
+        if (Cameras_v2.Instance.cameraState == CameraState.GameplayCam)
+        {
+            isCeilingGrabbing = false;
+        }
+        else if (Cameras_v2.Instance.cameraState == CameraState.CeilingCam)
+        {
+            Player_Movement.Instance.DarkenCeilingBlocks();
+            Player_BlockDetector.Instance.ReycastReset();
+        }
+
         PlayerManager.Instance.pauseGame = false;
         isCeilingRotation = false;
-
-        if (Cameras_v2.Instance.cameraState == CameraState.GameplayCam)
-            isCeilingGrabbing = false;
     }
 
     public void ResetCeilingGrab()

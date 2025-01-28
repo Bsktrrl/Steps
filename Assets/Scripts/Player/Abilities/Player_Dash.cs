@@ -45,6 +45,8 @@ public class Player_Dash : Singleton<Player_Dash>
 
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash) { return; }
 
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         if (isDashing) { return; }
 
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }

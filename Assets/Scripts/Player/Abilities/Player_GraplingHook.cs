@@ -43,6 +43,8 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
     {
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) { return; }
 
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
         if (PlayerManager.Instance.pauseGame) { return; }
         if (PlayerManager.Instance.isTransportingPlayer) { return; }
