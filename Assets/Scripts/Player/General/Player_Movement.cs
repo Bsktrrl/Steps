@@ -1610,7 +1610,6 @@ public class Player_Movement : Singleton<Player_Movement>
         }
     }
 }
-
 public enum MovementStates
 {
     Still,
@@ -1631,12 +1630,6 @@ public enum ButtonsToPress
     Space,
     X,
 
-}
-public enum MovementState
-{
-    Still,
-
-    Moving
 }
 
 public enum MovementDirection

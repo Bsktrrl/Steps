@@ -17,7 +17,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
     [SerializeField] GameObject jumpTarget_Left;
     [SerializeField] GameObject jumpTarget_Right;
 
-    bool isJumping = false;
+    public bool isJumping = false;
 
     [Header("Other")]
     RaycastHit hit;

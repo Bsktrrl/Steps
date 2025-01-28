@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_BodyHeight : MonoBehaviour
+public class Player_BodyHeight : Singleton<Player_BodyHeight>
 {
     [Header("Local PlayerBody height level")]
     float height_Normal = -0.2f;

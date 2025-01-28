@@ -57,10 +57,6 @@ public class BlockStepCostDisplay : MonoBehaviour
         if (PlayerManager.Instance.block_LookingAt_Vertical == gameObject && !PlayerManager.Instance.block_LookingAt_Vertical.GetComponent<Block_Pusher>() && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
             SetMovementCost(0);
 
-        //If Dashed
-        //else if (PlayerManager.Instance.player.GetComponent<Player_Dash>().dashBlock_Current == gameObject && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed && PlayerManager.Instance.player.GetComponent<Player_Dash>().playerCanDash)
-        //    SetMovementCost(0);
-
         //If in quicksand
         else if (Player_Quicksand.Instance.isInQuicksand && GetComponent<Block_Quicksand>())
         {
