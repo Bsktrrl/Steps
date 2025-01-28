@@ -53,6 +53,8 @@ public class BlockStepCostDisplay : MonoBehaviour
 
     public void ShowDisplay()
     {
+        //UpdatePosition();
+
         //If Pushed
         if (PlayerManager.Instance.block_LookingAt_Vertical == gameObject && !PlayerManager.Instance.block_LookingAt_Vertical.GetComponent<Block_Pusher>() && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
             SetMovementCost(0);
@@ -168,6 +170,17 @@ public class BlockStepCostDisplay : MonoBehaviour
                 stepCostDisplay_Canvas.transform.localRotation = Quaternion.Euler(startRot_X_Canvas, -gameObject.transform.eulerAngles.y + 90, 0);
             else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Right)
                 stepCostDisplay_Canvas.transform.localRotation = Quaternion.Euler(startRot_X_Canvas, -gameObject.transform.eulerAngles.y + -90, 0);
+        }
+    }
+    public void UpdatePosition()
+    {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+        {
+            stepCostDisplay_Canvas.transform.position = new Vector3(0, 0.55f, 0);
+        }
+        else
+        {
+            stepCostDisplay_Canvas.transform.position = new Vector3(0, -0.55f, 0);
         }
     }
 

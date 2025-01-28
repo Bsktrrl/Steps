@@ -137,4 +137,17 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         if (Cameras_v2.Instance.cameraState == CameraState.GameplayCam)
             isCeilingGrabbing = false;
     }
+
+    public void ResetCeilingGrab()
+    {
+        if (isCeilingGrabbing)
+        {
+            playerCeilingRotationValue = 0;
+            PlayerManager.Instance.playerBody.transform.rotation = Quaternion.Euler(0, 0, 0);
+
+            Cameras_v2.Instance.cameraState = CameraState.GameplayCam;
+
+            isCeilingGrabbing = false;
+        }
+    }
 }

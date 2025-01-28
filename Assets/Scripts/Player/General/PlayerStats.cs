@@ -215,6 +215,10 @@ public class PlayerStats : Singleton<PlayerStats>
         Player_Movement.Instance.SetPlayerBodyRotation(0);
         RespawnPlayer_Action();
 
+        //Reset for CeilingAbility
+        Player_CeilingGrab.Instance.ResetCeilingGrab();
+        Cameras_v2.Instance.ResetCameraRotation();
+
         yield return new WaitForSeconds(waitTime);
 
         //Rest Block colors
@@ -248,6 +252,7 @@ public class PlayerStats : Singleton<PlayerStats>
             yield return null;
         }
     }
+
     public void RespawnPlayerEarly_Action()
     {
         Action_RespawnPlayerEarly?.Invoke();

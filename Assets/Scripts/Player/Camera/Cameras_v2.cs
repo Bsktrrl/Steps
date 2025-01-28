@@ -24,6 +24,12 @@ public class Cameras_v2 : Singleton<Cameras_v2>
     public bool isRotating;
     public bool isCeilingRotating;
 
+    [Header("Positions")]
+    Vector3 originalPos = new Vector3(0, 4.3f, -9.2f);
+    Quaternion originalRot = Quaternion.Euler(27, 0, 0);
+    Vector3 ceilingGrabPos = new Vector3(0, -2f, -9.2f);
+    Quaternion ceilingGrabRot = Quaternion.Euler(-27, 0, 0);
+
 
     //--------------------
 
@@ -156,12 +162,12 @@ public class Cameras_v2 : Singleton<Cameras_v2>
 
         if (cameraState == CameraState.GameplayCam)
         {
-            endPosition = new Vector3(0, 4.3f, -9.2f);
+            endPosition = originalPos;
             endRotation = Quaternion.Euler(27, angle, 0);
         }
         else if (cameraState == CameraState.CeilingCam)
         {
-            endPosition = new Vector3(0, -2f, -9.2f);
+            endPosition = ceilingGrabPos;
             endRotation = Quaternion.Euler(-27, angle, 0);
         }
 
@@ -185,6 +191,12 @@ public class Cameras_v2 : Singleton<Cameras_v2>
 
         PlayerManager.Instance.pauseGame = false;
         isCeilingRotating = false;
+    }
+
+    public void ResetCameraRotation()
+    {
+        cameraOffset.transform.localPosition = originalPos;
+        cameraOffset.transform.rotation = originalRot;
     }
 
     void SetBlockDetectorDirection()
