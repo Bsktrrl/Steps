@@ -149,17 +149,14 @@ public class Player_Dash : Singleton<Player_Dash>
     }
     bool CheckIfCanDash(ref GameObject target, Vector3 dir)
     {
-        print("0. Dash");
         ResetDarkenColorIfStepsIsGone(ref target);
 
         //Raycast target +1
         if (Physics.Raycast(gameObject.transform.position, dir, out hit, 1))
         {
-            print("1. Dash");
         }
         else
         {
-            print("2. Dash");
             ResetTargetBlock(ref target);
             target = null;
             return false;
@@ -168,7 +165,6 @@ public class Player_Dash : Singleton<Player_Dash>
         //Raycast target +2
         if (Physics.Raycast(gameObject.transform.position + (dir * 2), dir, out hit, 1))
         {
-            print("3. Dash");
             ResetTargetBlock(ref target);
             target = null;
             return false;
@@ -179,7 +175,6 @@ public class Player_Dash : Singleton<Player_Dash>
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
-                print("4. Dash");
                 target = hit.transform.gameObject;
             }
         }
@@ -189,15 +184,12 @@ public class Player_Dash : Singleton<Player_Dash>
         {
             if (target.GetComponent<BlockInfo>())
             {
-                print("5. Dash");
                 target.GetComponent<BlockInfo>().DarkenColors();
             }
         }
 
         ResetDarkenColorIfStepsIsGone(ref target);
 
-
-        print("6. Dash");
         return true;
     }
     void ResetDarkenColorIfStepsIsGone(ref GameObject target)

@@ -1920,6 +1920,10 @@ MonoBehaviour:
   directionFacing: {x: 0, y: 0, z: 0}
   isRotating: 0
   isCeilingRotating: 0
+  cameraAnchor_originalPos: {x: 0, y: 0, z: 0}
+  cameraAnchor_originalRot: {x: 0, y: 0, z: 0, w: 0}
+  cameraOffset_originalPos: {x: 0, y: 0, z: 0}
+  cameraOffset_originalRot: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &1701320831085685727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3728,10 +3732,10 @@ RectTransform:
   - {fileID: 6671411632016815020}
   - {fileID: 4489744930839852895}
   - {fileID: 1938000361439410685}
+  - {fileID: 100362209333772999}
   - {fileID: 5537805070470564331}
   - {fileID: 6799886768728862705}
   - {fileID: 6880443302973356279}
-  - {fileID: 100362209333772999}
   - {fileID: 1460486134229904704}
   - {fileID: 2486512265017327410}
   - {fileID: 1699587421377062901}
@@ -6752,7 +6756,7 @@ GameObject:
   - component: {fileID: 8103482287527375242}
   - component: {fileID: 8217835934365977090}
   m_Layer: 5
-  m_Name: Ability - ClimbingGear
+  m_Name: Ability - CeilingGrab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6805,7 +6809,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 644c6db5eca324e498261f7d1377ccc8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5e4a090462ca910439ae5010d103de8a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7272,7 +7276,7 @@ MonoBehaviour:
       IceSpikes: 0
       GrapplingHook: 0
       Hammer: 0
-      ClimbingGear: 0
+      CeilingGrab: 0
       Dash: 0
       Ascend: 0
       Descend: 0
@@ -7288,7 +7292,7 @@ MonoBehaviour:
       IceSpikes: 0
       GrapplingHook: 0
       Hammer: 0
-      ClimbingGear: 0
+      CeilingGrab: 0
       Dash: 0
       Ascend: 0
       Descend: 0
@@ -8777,7 +8781,7 @@ MonoBehaviour:
         IceSpikes: 0
         GrapplingHook: 0
         Hammer: 0
-        ClimbingGear: 0
+        CeilingGrab: 0
         Dash: 0
         Ascend: 0
         Descend: 0
@@ -8793,7 +8797,7 @@ MonoBehaviour:
         IceSpikes: 0
         GrapplingHook: 0
         Hammer: 0
-        ClimbingGear: 0
+        CeilingGrab: 0
         Dash: 0
         Ascend: 0
         Descend: 0
@@ -8818,7 +8822,7 @@ MonoBehaviour:
       IceSpikes: 0
       GrapplingHook: 0
       Hammer: 0
-      ClimbingGear: 0
+      CeilingGrab: 0
       Dash: 0
       Ascend: 0
       Descend: 0
@@ -8834,7 +8838,7 @@ MonoBehaviour:
       IceSpikes: 0
       GrapplingHook: 0
       Hammer: 0
-      ClimbingGear: 0
+      CeilingGrab: 0
       Dash: 0
       Ascend: 0
       Descend: 0

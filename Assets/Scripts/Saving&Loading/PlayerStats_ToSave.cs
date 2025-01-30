@@ -33,7 +33,7 @@ public class Stats
         abilitiesGot_Permanent.IceSpikes = false;
         abilitiesGot_Permanent.GrapplingHook = false;
         abilitiesGot_Permanent.Hammer = false;
-        abilitiesGot_Permanent.ClimbingGear = false;
+        abilitiesGot_Permanent.CeilingGrab = false;
         abilitiesGot_Permanent.Dash = false;
         abilitiesGot_Permanent.Ascend = false;
         abilitiesGot_Permanent.Descend = false;
@@ -49,7 +49,7 @@ public class Stats
         abilitiesGot_Temporary.IceSpikes = false;
         abilitiesGot_Temporary.GrapplingHook = false;
         abilitiesGot_Temporary.Hammer = false;
-        abilitiesGot_Temporary.ClimbingGear = false;
+        abilitiesGot_Temporary.CeilingGrab = false;
         abilitiesGot_Temporary.Dash = false;
         abilitiesGot_Temporary.Ascend = false;
         abilitiesGot_Temporary.Descend = false;
@@ -83,7 +83,7 @@ public class AbilitiesGot
     public bool IceSpikes;
     public bool GrapplingHook;
     public bool Hammer;
-    public bool ClimbingGear;
+    public bool CeilingGrab;
     public bool Dash;
     public bool Ascend;
     public bool Descend;

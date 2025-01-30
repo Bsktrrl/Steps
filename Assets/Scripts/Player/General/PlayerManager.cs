@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerManager : Singleton<PlayerManager>
 {
@@ -53,6 +54,10 @@ public class PlayerManager : Singleton<PlayerManager>
 
     //--------------------
 
+    private void Update()
+    {
+        RespawnPlayerIfToLow();
+    }
 
     private void OnEnable()
     {
@@ -135,6 +140,19 @@ public class PlayerManager : Singleton<PlayerManager>
         if (Player_Movement.Instance.ladderMovement_Down_ToBottom) { return false; }
 
         return true;
+    }
+
+
+
+    //--------------------
+
+
+    void RespawnPlayerIfToLow()
+    {
+        if (transform.position.y <= -5)
+        {
+            PlayerStats.Instance.RespawnPlayer();
+        }
     }
 }
 

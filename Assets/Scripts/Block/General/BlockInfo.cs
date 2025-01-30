@@ -13,6 +13,7 @@ public class BlockInfo : MonoBehaviour
 
     [Header("StepCost Color")]
     public Color stepCostText_Color;
+    public Color stepCostText_ColorUnder;
 
     [Header("Step Sound")]
     public float stepSound_Volume;
@@ -174,7 +175,17 @@ public class BlockInfo : MonoBehaviour
     {
         if (moveCost == movementCost_Temp)
         {
-            return stepCostText_Color;
+            if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+            {
+                if (stepCostText_ColorUnder.a == 0 || (stepCostText_ColorUnder.r == 0 && stepCostText_ColorUnder.g == 0 && stepCostText_ColorUnder.b == 0))
+                    return stepCostText_Color;
+                else
+                    return stepCostText_ColorUnder;
+            }
+            else
+            {
+                return stepCostText_Color;
+            }
         }
         else if (moveCost < movementCost_Temp)
         {

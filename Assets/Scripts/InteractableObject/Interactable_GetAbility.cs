@@ -50,8 +50,8 @@ public class Interactable_GetAbility : MonoBehaviour
                 case Abilities.Hammer:
                     PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Hammer = true;
                     break;
-                case Abilities.ClimbingGear:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.ClimbingGear = true;
+                case Abilities.CeilingGrab:
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.CeilingGrab = true;
                     break;
                 case Abilities.Dash:
                     PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Dash = true;

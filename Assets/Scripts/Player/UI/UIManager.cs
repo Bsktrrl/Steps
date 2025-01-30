@@ -168,7 +168,7 @@ public class UIManager : Singleton<UIManager>
                     GrapplingHook.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Temporary.Hammer)
                     Hammer.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.ClimbingGear)
+                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.CeilingGrab)
                     ClimbingGear.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash)
                     Dash.SetActive(true);
@@ -202,7 +202,7 @@ public class UIManager : Singleton<UIManager>
                     GrapplingHook.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Hammer)
                     Hammer.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimbingGear)
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab)
                     ClimbingGear.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash)
                     Dash.SetActive(true);

@@ -131,10 +131,10 @@ public class PlayerStats : Singleton<PlayerStats>
         else
             stats.abilitiesGot_Temporary.Hammer = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.ClimbingGear)
-            stats.abilitiesGot_Temporary.ClimbingGear = true;
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.CeilingGrab)
+            stats.abilitiesGot_Temporary.CeilingGrab = true;
         else
-            stats.abilitiesGot_Temporary.ClimbingGear = false;
+            stats.abilitiesGot_Temporary.CeilingGrab = false;
 
         if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Dash)
             stats.abilitiesGot_Temporary.Dash = true;
@@ -212,12 +212,10 @@ public class PlayerStats : Singleton<PlayerStats>
         //Move player
         transform.position = MapManager.Instance.playerStartPos;
         transform.SetPositionAndRotation(MapManager.Instance.playerStartPos, Quaternion.identity);
-        Player_Movement.Instance.SetPlayerBodyRotation(0);
         RespawnPlayer_Action();
 
         //Reset for CeilingAbility
         Player_CeilingGrab.Instance.ResetCeilingGrab();
-        Cameras_v2.Instance.ResetCameraRotation();
 
         yield return new WaitForSeconds(waitTime);
 
@@ -237,6 +235,10 @@ public class PlayerStats : Singleton<PlayerStats>
         //stats.ResetTempStats(); //Reset all tempAbilities to not be active
 
         yield return new WaitForSeconds(waitTime * 25);
+
+        Player_Movement.Instance.SetPlayerBodyRotation(0);
+        Cameras_v2.Instance.ResetCameraRotation();
+        Cameras_v2.Instance.ResetCameraRotation();
 
         RespawnPlayerLate_Action();
 

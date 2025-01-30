@@ -160,7 +160,7 @@ public class LevelInfoDisplay : Singleton<LevelInfoDisplay>
             ability_GrapplingHook.gameObject.SetActive(true);
         if (level.abilitiesInLevel.Hammer)
             ability_Hammer.gameObject.SetActive(true);
-        if (level.abilitiesInLevel.ClimbingGear)
+        if (level.abilitiesInLevel.CeilingGrab)
             ability_ClimbingGear.gameObject.SetActive(true);
         if (level.abilitiesInLevel.Dash)
             ability_Dash.gameObject.SetActive(true);

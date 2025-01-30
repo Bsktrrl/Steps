@@ -1,9 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 {
+    public static event Action Action_grabCeiling;
+    public static event Action Action_releaseCeiling;
+
     [SerializeField] bool canCeilingGrab;
     public bool isCeilingGrabbing;
     public bool isCeilingRotation;
@@ -15,14 +19,32 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 
     RaycastHit hit;
 
+    [SerializeField] GameObject ceilingGrabBlock;
+
 
     //--------------------
 
 
     private void Update()
     {
+        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.CeilingGrab && !PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab) {  return; }
+
         RaycastCeiling();
         CeilingCameraSetup();
+
+        if (Player_Movement.Instance.movementStates == MovementStates.Still)
+        {
+            CheckBlockStandingUnder();
+        }
+    }
+
+    private void OnEnable()
+    {
+        Player_Movement.Action_StepTakenEarly += ResetDarkenColor;
+    }
+    private void OnDisable()
+    {
+        Player_Movement.Action_StepTakenEarly -= ResetDarkenColor;
     }
 
 
@@ -75,12 +97,19 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
+                if (!isCeilingGrabbing)
+                {
+                    hit.transform.gameObject.GetComponent<BlockInfo>().DarkenColors();
+                    ceilingGrabBlock = hit.transform.gameObject;
+                }
+                
                 canCeilingGrab = true;
                 return;
             }
         }
 
         canCeilingGrab = false;
+        ceilingGrabBlock = null;
     }
 
 
@@ -138,16 +167,25 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         PlayerManager.Instance.playerBody.transform.localPosition = endPosition;
         PlayerManager.Instance.playerBody.transform.rotation = endRotation;
 
-        Player_BlockDetector.Instance.RaycastSetup();
-
+        //Moving back to ground
         if (Cameras_v2.Instance.cameraState == CameraState.GameplayCam)
         {
+            print("1. RotateToGround");
             isCeilingGrabbing = false;
+            Player_BlockDetector.Instance.RaycastSetup();
+
+            yield return new WaitForSeconds(0.02f);
+            Action_releaseCeiling?.Invoke();
         }
+        //Moving to ceiling
         else if (Cameras_v2.Instance.cameraState == CameraState.CeilingCam)
         {
+            print("2. RotateToCeiling");
+            Player_BlockDetector.Instance.RaycastSetup();
+            CheckBlockStandingUnder();
             Player_Movement.Instance.DarkenCeilingBlocks();
             Player_BlockDetector.Instance.ReycastReset();
+            Action_grabCeiling?.Invoke();
         }
 
         PlayerManager.Instance.pauseGame = false;
@@ -161,9 +199,102 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             playerCeilingRotationValue = 0;
             PlayerManager.Instance.playerBody.transform.rotation = Quaternion.Euler(0, 0, 0);
 
-            Cameras_v2.Instance.cameraState = CameraState.GameplayCam;
-
             isCeilingGrabbing = false;
+        }
+    }
+
+    public void CheckBlockStandingUnder()
+    {
+        if (!isCeilingGrabbing) { return; }
+
+        if (Player_Movement.Instance.movementStates == MovementStates.Still)
+        {
+            if (Physics.Raycast(transform.position, Vector3.up, out hit, 1))
+            {
+                if (hit.transform.GetComponent<BlockInfo>())
+                {
+                    PlayerManager.Instance.block_StandingOn_Current.block = hit.transform.gameObject;
+                    PlayerManager.Instance.block_StandingOn_Current.blockPosition = hit.transform.position;
+                    PlayerManager.Instance.block_StandingOn_Current.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
+
+                    if (PlayerManager.Instance.block_StandingOn_Previous != PlayerManager.Instance.block_StandingOn_Current.block)
+                    {
+                        Player_BlockDetector.Instance.Action_isSwitchingBlocks_Invoke();
+                        PlayerManager.Instance.block_StandingOn_Previous = PlayerManager.Instance.block_StandingOn_Current.block;
+                    }
+
+                    gameObject.transform.position = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + Vector3.down + (Vector3.down * (1 - Player_Movement.Instance.heightOverBlock));
+                }
+            }
+            else
+            {
+                PlayerManager.Instance.block_StandingOn_Current.block = null;
+                PlayerManager.Instance.block_StandingOn_Current.blockPosition = Vector3.zero;
+                PlayerManager.Instance.block_StandingOn_Current.blockType = BlockType.None;
+            }
+        }
+        else if (Player_Movement.Instance.movementStates == MovementStates.Moving)
+        {
+            if (Physics.Raycast(transform.position, Vector3.up, out hit, 1))
+            {
+                if (hit.transform.GetComponent<BlockInfo>())
+                {
+                    PlayerManager.Instance.block_StandingOn_Current.block = hit.transform.gameObject;
+                    PlayerManager.Instance.block_StandingOn_Current.blockPosition = hit.transform.position;
+                    PlayerManager.Instance.block_StandingOn_Current.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
+
+                    if (PlayerManager.Instance.block_StandingOn_Previous != PlayerManager.Instance.block_StandingOn_Current.block)
+                    {
+                        Player_BlockDetector.Instance.Action_isSwitchingBlocks_Invoke();
+                        PlayerManager.Instance.block_StandingOn_Previous = PlayerManager.Instance.block_StandingOn_Current.block;
+                    }
+
+                    //IceBlock
+                    if (hit.transform.GetComponent<Block_IceGlide>() && Player_Movement.Instance.movementStates == MovementStates.Moving)
+                    {
+                        switch (Player_Movement.Instance.lastMovementButtonPressed)
+                        {
+                            case ButtonsToPress.None:
+                                break;
+                            case ButtonsToPress.W:
+                                Player_Movement.Instance.StartCeilingGrabMovement(Vector3.forward);
+                                return;
+                            case ButtonsToPress.S:
+                                Player_Movement.Instance.StartCeilingGrabMovement(Vector3.back);
+                                return;
+                            case ButtonsToPress.A:
+                                Player_Movement.Instance.StartCeilingGrabMovement(Vector3.left);
+                                return;
+                            case ButtonsToPress.D:
+                                Player_Movement.Instance.StartCeilingGrabMovement(Vector3.right);
+                                return;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                PlayerManager.Instance.block_StandingOn_Current.block = null;
+                PlayerManager.Instance.block_StandingOn_Current.blockPosition = Vector3.zero;
+                PlayerManager.Instance.block_StandingOn_Current.blockType = BlockType.None;
+            }
+
+            Player_Movement.Instance.movementStates = MovementStates.Still;
+            PlayerManager.Instance.pauseGame = false;
+            PlayerManager.Instance.isTransportingPlayer = false;
+
+            Player_Movement.Instance.Action_ResetBlockColorInvoke();
+            Player_Movement.Instance.Action_StepTaken_Invoke();
+        }
+    }
+
+    void ResetDarkenColor()
+    {
+        if (ceilingGrabBlock)
+        {
+            ceilingGrabBlock.GetComponent<BlockInfo>().ResetColor();
         }
     }
 }

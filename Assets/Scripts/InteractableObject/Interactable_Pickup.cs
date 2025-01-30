@@ -197,9 +197,9 @@ public class Interactable_Pickup : MonoBehaviour
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Hammer = true;
                 MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Hammer = true;
                 break;
-            case Abilities.ClimbingGear:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.ClimbingGear = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.ClimbingGear = true;
+            case Abilities.CeilingGrab:
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.CeilingGrab = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.CeilingGrab = true;
                 break;
             case Abilities.Dash:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Dash = true;
@@ -251,27 +251,29 @@ public enum Abilities
 {
     None,
 
-    FenceSneak,
+    FenceSneak, //Out
 
     SwimSuit,
     SwiftSwim,
     Flippers,
 
-    Flameable,
+    Flameable, //Out
+
     Jumping,
 
-    HikerGear,
-    ClimbingGear,
+    HikerGear, //Out
 
-    IceSpikes,
+    CeilingGrab,
+
+    IceSpikes, //Out
 
     Dash,
     Ascend,
     Descend,
 
-    Hammer,
+    Hammer, //Out
 
     GrapplingHook,
 
-    ControlStick,
+    ControlStick, //Out
 }

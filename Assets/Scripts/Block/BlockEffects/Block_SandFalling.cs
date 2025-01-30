@@ -9,7 +9,8 @@ public class Block_SandFalling : MonoBehaviour
     float waitCounter;
 
     [Header("Checked If Stepped On")]
-    bool isSteppedOn;
+    [SerializeField] bool isSteppedOn;
+    [SerializeField] bool canFall;
 
     [Header("Runtime Stats")]
     Vector3 endPos;
@@ -22,7 +23,6 @@ public class Block_SandFalling : MonoBehaviour
 
     RaycastHit hit;
 
-    [SerializeField] bool canFall;
 
 
     //--------------------
@@ -84,13 +84,21 @@ public class Block_SandFalling : MonoBehaviour
     private void OnEnable()
     {
         Player_Movement.Action_StepTaken += CheckIfStandingOn;
+        Player_CeilingGrab.Action_releaseCeiling += CheckIfStandingOn;
+        Player_Movement.Action_LandedFromFalling += CheckIfStandingOn;
         PlayerStats.Action_RespawnPlayerEarly += ResetBlock;
+
+        Player_Movement.Action_LandedFromFalling += CheckIfStandingOn;
     }
 
     private void OnDisable()
     {
         Player_Movement.Action_StepTaken -= CheckIfStandingOn;
+        Player_CeilingGrab.Action_releaseCeiling -= CheckIfStandingOn;
+        Player_Movement.Action_LandedFromFalling -= CheckIfStandingOn;
         PlayerStats.Action_RespawnPlayerEarly -= ResetBlock;
+
+        Player_Movement.Action_LandedFromFalling -= CheckIfStandingOn;
     }
 
 
@@ -123,7 +131,7 @@ public class Block_SandFalling : MonoBehaviour
     {
         if (!canFall) { return; }
 
-        if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject && !isSteppedOn)
+        if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject && !isSteppedOn && !Player_CeilingGrab.Instance.isCeilingGrabbing && Player_Movement.Instance.movementStates != MovementStates.Falling)
         {
             isSteppedOn = true;
         }

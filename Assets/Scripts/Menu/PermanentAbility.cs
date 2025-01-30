@@ -69,8 +69,8 @@ public class PermanentAbility : MonoBehaviour
                     case Abilities.HikerGear:
                         PlayerStats.Instance.stats.abilitiesGot_Permanent.HikerGear = true;
                         break;
-                    case Abilities.ClimbingGear:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimbingGear = true;
+                    case Abilities.CeilingGrab:
+                        PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab = true;
                         break;
                     case Abilities.IceSpikes:
                         PlayerStats.Instance.stats.abilitiesGot_Permanent.IceSpikes = true;

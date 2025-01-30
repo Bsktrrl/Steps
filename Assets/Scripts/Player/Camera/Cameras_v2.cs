@@ -9,7 +9,7 @@ public class Cameras_v2 : Singleton<Cameras_v2>
     public static event Action rotateCamera;
 
     [Header("Camera Objects")]
-    [SerializeField] GameObject cameraAnchor;
+    public GameObject cameraAnchor;
     [SerializeField] GameObject cameraOffset;
 
     [Header("States")]
@@ -25,10 +25,13 @@ public class Cameras_v2 : Singleton<Cameras_v2>
     public bool isCeilingRotating;
 
     [Header("Positions")]
-    Vector3 originalPos = new Vector3(0, 4.3f, -9.2f);
-    Quaternion originalRot = Quaternion.Euler(27, 0, 0);
-    Vector3 ceilingGrabPos = new Vector3(0, -2f, -9.2f);
-    Quaternion ceilingGrabRot = Quaternion.Euler(-27, 0, 0);
+    [SerializeField] Vector3 cameraAnchor_originalPos;
+    [SerializeField] Quaternion cameraAnchor_originalRot;
+    [SerializeField] Vector3 cameraOffset_originalPos /*= new Vector3(0, 4.3f, -9.2f)*/;
+    [SerializeField] Quaternion cameraOffset_originalRot;
+    Vector3 cameraOffset_ceilingGrabPos = new Vector3(0, -2f, -9.2f);
+    float cameraTilt_Original = 27;
+    float cameraTilt_Ceiling = -17;
 
 
     //--------------------
@@ -38,6 +41,12 @@ public class Cameras_v2 : Singleton<Cameras_v2>
     {
         cameraRotationState = CameraRotationState.Forward;
         directionFacing = Vector3.forward;
+
+        cameraAnchor_originalPos = cameraAnchor.transform.localPosition;
+        cameraAnchor_originalRot = cameraAnchor.transform.rotation;
+
+        cameraOffset_originalPos = cameraOffset.transform.localPosition;
+        cameraOffset_originalRot = cameraOffset.transform.rotation;
 
         AdjustFacingDirection();
     }
@@ -162,13 +171,13 @@ public class Cameras_v2 : Singleton<Cameras_v2>
 
         if (cameraState == CameraState.GameplayCam)
         {
-            endPosition = originalPos;
-            endRotation = Quaternion.Euler(27, angle, 0);
+            endPosition = cameraOffset_originalPos;
+            endRotation = Quaternion.Euler(cameraTilt_Original, angle, 0);
         }
         else if (cameraState == CameraState.CeilingCam)
         {
-            endPosition = ceilingGrabPos;
-            endRotation = Quaternion.Euler(-27, angle, 0);
+            endPosition = cameraOffset_ceilingGrabPos;
+            endRotation = Quaternion.Euler(cameraTilt_Ceiling, angle, 0);
         }
 
         float elapsed = 0f;
@@ -195,8 +204,18 @@ public class Cameras_v2 : Singleton<Cameras_v2>
 
     public void ResetCameraRotation()
     {
-        cameraOffset.transform.localPosition = originalPos;
-        cameraOffset.transform.rotation = originalRot;
+        cameraOffset.transform.localPosition = cameraOffset_originalPos;
+        cameraOffset.transform.rotation = cameraOffset_originalRot;
+
+        cameraAnchor.transform.localPosition = cameraAnchor_originalPos;
+        cameraAnchor.transform.rotation = cameraAnchor_originalRot;
+
+        cameraAnchor.transform.rotation = Quaternion.Euler(cameraAnchor_originalRot.eulerAngles.x, 0, 0);
+
+        cameraRotationState = CameraRotationState.Forward;
+        cameraState = CameraState.GameplayCam;
+
+        SetBlockDetectorDirection();
     }
 
     void SetBlockDetectorDirection()

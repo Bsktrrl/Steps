@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Overlays;
 using UnityEngine;
 
 public class Block_Snow : MonoBehaviour
 {
     [HideInInspector] public List<GameObject> LOD_ObjectList = new List<GameObject>();
-    float scale_Y_Value;
+    [SerializeField] float scale_Y_Value;
 
 
     //--------------------
@@ -16,6 +17,17 @@ public class Block_Snow : MonoBehaviour
         GetLOD();
         SetRandomBlockHeight();
         ChangeStepCounterPosition();
+    }
+
+    private void OnEnable()
+    {
+        Player_CeilingGrab.Action_grabCeiling += ChangeStepCounterPosition;
+        Player_CeilingGrab.Action_releaseCeiling += ChangeStepCounterPosition;
+    }
+    private void OnDisable()
+    {
+        Player_CeilingGrab.Action_grabCeiling -= ChangeStepCounterPosition;
+        Player_CeilingGrab.Action_releaseCeiling -= ChangeStepCounterPosition;
     }
 
 
@@ -45,6 +57,14 @@ public class Block_Snow : MonoBehaviour
     {
         GameObject parentObject = GetComponent<BlockStepCostDisplay>().stepCostDisplay_Parent;
 
-        parentObject.transform.SetLocalPositionAndRotation(new Vector3(parentObject.transform.localPosition.x, scale_Y_Value - 1, parentObject.transform.localPosition.z), Quaternion.identity);
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+        {
+            //parentObject.transform.SetLocalPositionAndRotation(new Vector3(parentObject.transform.localPosition.x, (transform.position.y - (scale_Y_Value / 2)), parentObject.transform.localPosition.z), Quaternion.identity);
+            parentObject.transform.SetLocalPositionAndRotation(new Vector3(parentObject.transform.localPosition.x, (- 1 - (scale_Y_Value - 1) - (scale_Y_Value / 10)), parentObject.transform.localPosition.z), Quaternion.identity);
+        }
+        else
+        {
+            parentObject.transform.SetLocalPositionAndRotation(new Vector3(parentObject.transform.localPosition.x, (scale_Y_Value - 1), parentObject.transform.localPosition.z), Quaternion.identity);
+        }
     }
 }

@@ -201,8 +201,6 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     public void PerformRaycast_Center_Vertical(GameObject rayPointObject, Vector3 direction)
     {
-        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
-
         if (Physics.Raycast(rayPointObject.transform.position, direction, out hit, maxDistance_Horizontal))
         {
             Debug.DrawRay(rayPointObject.transform.position, direction * hit.distance, Color.green);
