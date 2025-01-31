@@ -42,7 +42,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
         if (PlayerManager.Instance.pauseGame) { return; }
         if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
-        StartJumping();
+        //StartJumping();
     }
 
 
@@ -114,7 +114,125 @@ public class Player_Jumping : Singleton<Player_Jumping>
                 break;
         }
     }
-    
+    bool JumpCheck()
+    {
+        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.Jumping && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping) { return false; }
+
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return false; }
+
+        if (isJumping) { return false; }
+
+        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return false; }
+        if (PlayerManager.Instance.pauseGame) { return false; }
+        if (PlayerManager.Instance.isTransportingPlayer) { return false; }
+
+        return true;
+    }
+    public void Jump_Forward()
+    {
+        if (!JumpCheck()) { return; }
+
+        switch (Cameras_v2.Instance.cameraRotationState)
+        {
+            case CameraRotationState.Forward:
+                if (canJump_Forward && jumpTarget_Forward)
+                    StartCoroutine(JumpRoutine(jumpTarget_Forward));
+                break;
+            case CameraRotationState.Backward:
+                if (canJump_Back && jumpTarget_Back)
+                    StartCoroutine(JumpRoutine(jumpTarget_Back));
+                break;
+            case CameraRotationState.Left:
+                if (canJump_Right && jumpTarget_Right)
+                    StartCoroutine(JumpRoutine(jumpTarget_Right));
+                break;
+            case CameraRotationState.Right:
+                if (canJump_Left && jumpTarget_Left)
+                    StartCoroutine(JumpRoutine(jumpTarget_Left));
+                break;
+            default:
+                break;
+        }
+    }
+    public void Jump_Backward()
+    {
+        if (!JumpCheck()) { return; }
+
+        switch (Cameras_v2.Instance.cameraRotationState)
+        {
+            case CameraRotationState.Forward:
+                if (canJump_Back && jumpTarget_Back)
+                    StartCoroutine(JumpRoutine(jumpTarget_Back));
+                break;
+            case CameraRotationState.Backward:
+                if (canJump_Forward && jumpTarget_Forward)
+                    StartCoroutine(JumpRoutine(jumpTarget_Forward));
+                break;
+            case CameraRotationState.Left:
+                if (canJump_Left && jumpTarget_Left)
+                    StartCoroutine(JumpRoutine(jumpTarget_Left));
+                break;
+            case CameraRotationState.Right:
+                if (canJump_Right && jumpTarget_Right)
+                    StartCoroutine(JumpRoutine(jumpTarget_Right));
+                break;
+            default:
+                break;
+        }
+    }
+    public void Jump_Left()
+    {
+        if (!JumpCheck()) { return; }
+
+        switch (Cameras_v2.Instance.cameraRotationState)
+        {
+            case CameraRotationState.Forward:
+                if (canJump_Left && jumpTarget_Left)
+                    StartCoroutine(JumpRoutine(jumpTarget_Left));
+                break;
+            case CameraRotationState.Backward:
+                if (canJump_Right && jumpTarget_Right)
+                    StartCoroutine(JumpRoutine(jumpTarget_Right));
+                break;
+            case CameraRotationState.Left:
+                if (canJump_Forward && jumpTarget_Forward)
+                    StartCoroutine(JumpRoutine(jumpTarget_Forward));
+                break;
+            case CameraRotationState.Right:
+                if (canJump_Back && jumpTarget_Back)
+                    StartCoroutine(JumpRoutine(jumpTarget_Back));
+                break;
+            default:
+                break;
+        }
+    }
+    public void Jump_Right()
+    {
+        if (!JumpCheck()) { return; }
+
+        switch (Cameras_v2.Instance.cameraRotationState)
+        {
+            case CameraRotationState.Forward:
+                if (canJump_Right && jumpTarget_Right)
+                    StartCoroutine(JumpRoutine(jumpTarget_Right));
+                break;
+            case CameraRotationState.Backward:
+                if (canJump_Left && jumpTarget_Left)
+                    StartCoroutine(JumpRoutine(jumpTarget_Left));
+                break;
+            case CameraRotationState.Left:
+                if (canJump_Back && jumpTarget_Back)
+                    StartCoroutine(JumpRoutine(jumpTarget_Back));
+                break;
+            case CameraRotationState.Right:
+                if (canJump_Forward && jumpTarget_Forward)
+                    StartCoroutine(JumpRoutine(jumpTarget_Forward));
+                break;
+            default:
+                break;
+        }
+    }
+
     void CheckIfCanJump()
     {
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.Jumping && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping) { return; }

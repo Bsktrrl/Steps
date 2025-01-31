@@ -30,7 +30,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.CeilingGrab && !PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab) {  return; }
 
         RaycastCeiling();
-        CeilingCameraSetup();
+        //CeilingGrab();
 
         if (Player_Movement.Instance.movementStates == MovementStates.Still)
         {
@@ -51,7 +51,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     //--------------------
 
 
-    void CeilingCameraSetup()
+    public void CeilingGrab()
     {
         //Don't be able to switch camera angle before the rotation has been done
         if (!canCeilingGrab) { return; }
@@ -62,7 +62,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
         if (Player_Movement.Instance.ladderMovement_Top_ToBlock) { return; }
 
-        if (Input.GetKeyDown(KeyCode.C) && Cameras_v2.Instance.cameraState == CameraState.GameplayCam)
+        if (/*Input.GetKeyDown(KeyCode.C) &&*/ Cameras_v2.Instance.cameraState == CameraState.GameplayCam)
         {
             isCeilingGrabbing = true;
 
@@ -77,7 +77,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 
             StartCoroutine(RotateToCeiling(180));
         }
-        else if (Input.GetKeyDown(KeyCode.C) && Cameras_v2.Instance.cameraState == CameraState.CeilingCam)
+        else if (/*Input.GetKeyDown(KeyCode.C) &&*/ Cameras_v2.Instance.cameraState == CameraState.CeilingCam)
         {
             if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward)
                 StartCoroutine(Cameras_v2.Instance.CeilingCameraRotation(0));

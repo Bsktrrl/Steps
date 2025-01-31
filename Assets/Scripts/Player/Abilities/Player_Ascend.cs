@@ -27,30 +27,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
 
     private void Update()
     {
-        if (!canRun) { return; }
-
-        if (!gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Ascend && !gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Ascend) { return; }
-
-        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
-
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
-        if (PlayerManager.Instance.pauseGame) { return; }
-        if (PlayerManager.Instance.isTransportingPlayer) { return; }
-        
-        if (RaycastForAscending())
-        {
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                if (PlayerStats.Instance.stats.steps_Current <= 0 && ascendingBlock_Target.GetComponent<BlockInfo>().movementCost > 0)
-                {
-                    PlayerStats.Instance.RespawnPlayer();
-                }
-                else
-                {
-                    StartCoroutine(Ascend());
-                }
-            }
-        }
+        RaycastForAscending();
     }
 
     private void OnEnable()
@@ -71,6 +48,27 @@ public class Player_Ascend : Singleton<Player_Ascend>
     //--------------------
 
 
+    public void RunAscend()
+    {
+        if (!canRun) { return; }
+        if (!gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Ascend && !gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Ascend) { return; }
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (PlayerManager.Instance.pauseGame) { return; }
+        if (PlayerManager.Instance.isTransportingPlayer) { return; }
+
+        if (RaycastForAscending())
+        {
+            if (PlayerStats.Instance.stats.steps_Current <= 0 && ascendingBlock_Target.GetComponent<BlockInfo>().movementCost > 0)
+            {
+                PlayerStats.Instance.RespawnPlayer();
+            }
+            else
+            {
+                StartCoroutine(Ascend());
+            }
+        }
+    }
     bool RaycastForAscending()
     {
         if (gameObject.GetComponent<PlayerStats>())

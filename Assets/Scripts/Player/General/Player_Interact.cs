@@ -110,7 +110,7 @@ public class Player_Interact : Singleton<Player_Interact>
         }
     }
 
-    void InteractWithObject()
+    public void InteractWithObject()
     {
         //Don't be able to perform interaction if the Object is Interacted With
         if (isInteracting) { return;  }

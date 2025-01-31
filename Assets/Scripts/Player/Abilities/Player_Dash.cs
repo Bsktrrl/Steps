@@ -25,24 +25,12 @@ public class Player_Dash : Singleton<Player_Dash>
 
     float dashDuration = 0.2f;
 
-    //public GameObject dashBlock_Previous;
-    //public GameObject dashBlock_Current;
-    //public GameObject dashBlockOver_Current;
-    //public float dashSpeed = 8;
-
-
-    //[SerializeField] HitDirection hitDir;
-
-    //bool canRun;
-
 
     //--------------------
 
 
     private void Update()
     {
-        //if (!canRun) { return; }
-
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash) { return; }
 
         if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
@@ -53,12 +41,7 @@ public class Player_Dash : Singleton<Player_Dash>
         if (PlayerManager.Instance.pauseGame) { return; }
         if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
-        StartDashing();
-
-
-        //CheckHitDirection();
-        //CheckForDash();
-        //PerformDashMovement();
+        //StartDashing();
     }
 
     private void OnEnable()
@@ -74,10 +57,6 @@ public class Player_Dash : Singleton<Player_Dash>
         DataManager.Action_dataHasLoaded += CheckIfCanDash;
         Player_Movement.Action_StepTaken += CheckIfCanDash;
         Player_Movement.Action_BodyRotated += CheckIfCanDash;
-    }
-    void StartRunningObject()
-    {
-        //canRun = true;
     }
 
 
@@ -132,6 +111,129 @@ public class Player_Dash : Singleton<Player_Dash>
                 break;
         }
     }
+    bool DashChecks()
+    {
+        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash) { return false; }
+
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return false; }
+
+        if (isDashing) { return false; }
+
+        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return false; }
+        if (PlayerManager.Instance.pauseGame) { return false; }
+        if (PlayerManager.Instance.isTransportingPlayer) { return false; }
+
+        return true;
+    }
+    public void Dash_Forward()
+    {
+        if (!DashChecks()) { return; }
+
+        switch (Cameras_v2.Instance.cameraRotationState)
+        {
+            case CameraRotationState.Forward:
+                if (canDash_Forward && dashTarget_Forward)
+                    StartCoroutine(DashRoutine(dashTarget_Forward));
+                break;
+            case CameraRotationState.Backward:
+                if (canDash_Back && dashTarget_Back)
+                    StartCoroutine(DashRoutine(dashTarget_Back));
+                break;
+            case CameraRotationState.Left:
+                if (canDash_Right && dashTarget_Right)
+                    StartCoroutine(DashRoutine(dashTarget_Right));
+                break;
+            case CameraRotationState.Right:
+                if (canDash_Left && dashTarget_Left)
+                    StartCoroutine(DashRoutine(dashTarget_Left));
+                break;
+            default:
+                break;
+        }
+    }
+    public void Dash_Backward()
+    {
+        if (!DashChecks()) { return; }
+
+        switch (Cameras_v2.Instance.cameraRotationState)
+        {
+            case CameraRotationState.Forward:
+                if (canDash_Back && dashTarget_Back)
+                    StartCoroutine(DashRoutine(dashTarget_Back));
+                break;
+            case CameraRotationState.Backward:
+                if (canDash_Forward && dashTarget_Forward)
+                    StartCoroutine(DashRoutine(dashTarget_Forward));
+                break;
+            case CameraRotationState.Left:
+                if (canDash_Left && dashTarget_Left)
+                    StartCoroutine(DashRoutine(dashTarget_Left));
+                break;
+            case CameraRotationState.Right:
+                if (canDash_Right && dashTarget_Right)
+                    StartCoroutine(DashRoutine(dashTarget_Right));
+                break;
+            default:
+                break;
+        }
+    }
+    public void Dash_Left()
+    {
+        if (!DashChecks()) { return; }
+
+        switch (Cameras_v2.Instance.cameraRotationState)
+        {
+            case CameraRotationState.Forward:
+                if (canDash_Left && dashTarget_Left)
+                    StartCoroutine(DashRoutine(dashTarget_Left));
+                break;
+            case CameraRotationState.Backward:
+                if (canDash_Right && dashTarget_Right)
+                    StartCoroutine(DashRoutine(dashTarget_Right));
+                break;
+            case CameraRotationState.Left:
+                if (canDash_Forward && dashTarget_Forward)
+                    StartCoroutine(DashRoutine(dashTarget_Forward));
+                break;
+            case CameraRotationState.Right:
+                if (canDash_Back && dashTarget_Back)
+                    StartCoroutine(DashRoutine(dashTarget_Back));
+                break;
+            default:
+                break;
+        }
+    }
+    public void Dash_Right()
+    {
+        if (!DashChecks()) { return; }
+
+        switch (Cameras_v2.Instance.cameraRotationState)
+        {
+            case CameraRotationState.Forward:
+                if (canDash_Right && dashTarget_Right)
+                    StartCoroutine(DashRoutine(dashTarget_Right));
+                break;
+            case CameraRotationState.Backward:
+                if (canDash_Left && dashTarget_Left)
+                    StartCoroutine(DashRoutine(dashTarget_Left));
+                break;
+            case CameraRotationState.Left:
+                if (canDash_Back && dashTarget_Back)
+                    StartCoroutine(DashRoutine(dashTarget_Back));
+                break;
+            case CameraRotationState.Right:
+                if (canDash_Forward && dashTarget_Forward)
+                    StartCoroutine(DashRoutine(dashTarget_Forward));
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    //--------------------
+
+
     void CheckIfCanDash()
     {
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash) { return; }
@@ -154,6 +256,12 @@ public class Player_Dash : Singleton<Player_Dash>
         //Raycast target +1
         if (Physics.Raycast(gameObject.transform.position, dir, out hit, 1))
         {
+            if (hit.transform.gameObject.GetComponent<Block_Water>() || hit.transform.gameObject.GetComponent<Block_Moveable>())
+            {
+                ResetTargetBlock(ref target);
+                target = null;
+                return false;
+            }
         }
         else
         {

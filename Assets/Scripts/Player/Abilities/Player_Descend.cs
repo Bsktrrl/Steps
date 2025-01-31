@@ -27,30 +27,7 @@ public class Player_Descend : Singleton<Player_Descend>
 
     private void Update()
     {
-        if (!canRun) { return; }
-
-        if (!gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Descend && !gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Descend) { return; }
-
-        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
-
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
-        if (PlayerManager.Instance.pauseGame) { return; }
-        if (PlayerManager.Instance.isTransportingPlayer) { return; }
-
-        if (RaycastForDescending())
-        {
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                if (PlayerStats.Instance.stats.steps_Current <= 0 && descendingBlock_Target.GetComponent<BlockInfo>().movementCost > 0)
-                {
-                    PlayerStats.Instance.RespawnPlayer();
-                }
-                else
-                {
-                    StartCoroutine(Descend());
-                }
-            }
-        }
+        RaycastForDescending();
     }
 
     private void OnEnable()
@@ -71,6 +48,30 @@ public class Player_Descend : Singleton<Player_Descend>
     //--------------------
 
 
+    public void RunDescend()
+    {
+        if (!canRun) { return; }
+
+        if (!gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Descend && !gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Descend) { return; }
+
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
+        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (PlayerManager.Instance.pauseGame) { return; }
+        if (PlayerManager.Instance.isTransportingPlayer) { return; }
+
+        if (RaycastForDescending())
+        {
+            if (PlayerStats.Instance.stats.steps_Current <= 0 && descendingBlock_Target.GetComponent<BlockInfo>().movementCost > 0)
+            {
+                PlayerStats.Instance.RespawnPlayer();
+            }
+            else
+            {
+                StartCoroutine(Descend());
+            }
+        }
+    }
     bool RaycastForDescending()
     {
         if (gameObject.GetComponent<PlayerStats>())

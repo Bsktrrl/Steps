@@ -55,7 +55,7 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return; }
 
-        KeyInputs();
+        //KeyInputs();
 
         if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
@@ -595,7 +595,7 @@ public class Player_Movement : Singleton<Player_Movement>
         //--------------------
 
 
-        //If pressing -UP - ASCEND
+        //If pressing -UP - SwiftSwim Up
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
@@ -605,7 +605,7 @@ public class Player_Movement : Singleton<Player_Movement>
                 gameObject.GetComponent<Player_SwiftSwim>().SwiftSwim_Up();
             }
         }
-        //If pressing -DOWN - DESCEND
+        //If pressing -DOWN - SwiftSwim Down
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
@@ -627,7 +627,7 @@ public class Player_Movement : Singleton<Player_Movement>
             }
             else
             {
-                Action_PressMoveBlockButton?.Invoke();
+                Action_PressMoveBlockButtonInvoke();
             }
         }
 
@@ -643,6 +643,478 @@ public class Player_Movement : Singleton<Player_Movement>
             QuitLevel();
         }
     }
+    bool KeyInputsChecks()
+    {
+        if (movementStates == MovementStates.Moving) { return false; }
+
+        if (PlayerManager.Instance.pauseGame) { return false; }
+        if (PlayerManager.Instance.isTransportingPlayer) { return false; }
+        if (Cameras_v2.Instance.isRotating) { return false; }
+        if (Player_Interact.Instance.isInteracting) { return false; }
+        if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
+
+        if (ladderMovement_Up) { return false; }
+        if (ladderMovement_Down) { return false; }
+        if (ladderMovement_Top) { return false; }
+        if (ladderMovement_Top_ToBlock) { return false; }
+        if (ladderMovement_Down_ToBlockFromTop) { return false; }
+        if (ladderMovement_Down_ToBottom) { return false; }
+
+        return true;
+    }
+    public void Key_MoveForward()
+    {
+        if (!KeyInputsChecks()) { return; }
+
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+        {
+            lastMovementButtonPressed = ButtonsToPress.W;
+            StartCeilingGrabMovement(Vector3.forward);
+        }
+        else
+        {
+            RaycastUnderPlayer_CheckIfOnTheLowestLadder();
+
+            //W-press on a ladder
+            if (ladderSteppedOn)
+            {
+                if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 0)
+                {
+                    if (PlayerStats.Instance.stats.steps_Current <= 0)
+                    {
+                        RespawnBasedOnStepsCurrent();
+                    }
+
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward && !PlayerManager.Instance.canMove_Forward)
+                    {
+                        MovePlayerOnLadder_UP();
+                    }
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Backward && !PlayerManager.Instance.canMove_Back)
+                    {
+                        if (!ladderAndIsOnTheGround)
+                        {
+                            MovePlayerOnLadder_DOWN();
+                        }
+                        else
+                        {
+                            BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                        }
+                    }
+                    else if (Ladder_Down_MoveAway())
+                    {
+                        BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                    }
+                }
+                else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 180)
+                {
+                    if (PlayerStats.Instance.stats.steps_Current <= 0)
+                    {
+                        RespawnBasedOnStepsCurrent();
+                    }
+
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Backward && !PlayerManager.Instance.canMove_Forward)
+                        MovePlayerOnLadder_UP();
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward && !PlayerManager.Instance.canMove_Back)
+                    {
+                        if (!ladderAndIsOnTheGround)
+                            MovePlayerOnLadder_DOWN();
+                        else
+                            BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                    }
+                    else if (Ladder_Down_MoveAway())
+                        BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                }
+                else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 90)
+                {
+                    if (PlayerStats.Instance.stats.steps_Current <= 0)
+                    {
+                        RespawnBasedOnStepsCurrent();
+                    }
+
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Left && !PlayerManager.Instance.canMove_Forward)
+                        MovePlayerOnLadder_UP();
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Right && !PlayerManager.Instance.canMove_Back)
+                    {
+                        if (!ladderAndIsOnTheGround)
+                            MovePlayerOnLadder_DOWN();
+                        else
+                            BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                    }
+                    else if (Ladder_Down_MoveAway())
+                        BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                }
+                else if (isOnLadder && (ladderSteppedOn.transform.rotation.eulerAngles.y == -90 || ladderSteppedOn.transform.rotation.eulerAngles.y == 270))
+                {
+                    if (PlayerStats.Instance.stats.steps_Current <= 0)
+                    {
+                        RespawnBasedOnStepsCurrent();
+                    }
+
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Right && !PlayerManager.Instance.canMove_Forward)
+                        MovePlayerOnLadder_UP();
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Left && !PlayerManager.Instance.canMove_Back)
+                    {
+                        if (!ladderAndIsOnTheGround)
+                            MovePlayerOnLadder_DOWN();
+                        else
+                            BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                    }
+                    else if (Ladder_Down_MoveAway())
+                        BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+                }
+            }
+
+            //Normal Forward Press
+            else
+            {
+                BypassIsOnLadder(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
+            }
+        }
+    }
+    public void Key_MoveBackward()
+    {
+        if (!KeyInputsChecks()) { return; }
+
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+        {
+            lastMovementButtonPressed = ButtonsToPress.S;
+            StartCeilingGrabMovement(Vector3.back);
+        }
+        else
+        {
+            RaycastUnderPlayer_CheckIfOnTheLowestLadder();
+
+            //S-press on a ladder
+            if (ladderSteppedOn)
+            {
+                if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 0)
+                {
+                    if (PlayerStats.Instance.stats.steps_Current <= 0)
+                    {
+                        RespawnBasedOnStepsCurrent();
+                    }
+
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward && !PlayerManager.Instance.canMove_Forward)
+                    {
+                        if (!ladderAndIsOnTheGround)
+                            MovePlayerOnLadder_DOWN();
+                        else
+                            BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                    }
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Backward && !PlayerManager.Instance.canMove_Back)
+                        MovePlayerOnLadder_UP();
+                    else if (Ladder_Down_MoveAway())
+                        BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+
+                }
+                else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 180)
+                {
+                    if (PlayerStats.Instance.stats.steps_Current <= 0)
+                    {
+                        RespawnBasedOnStepsCurrent();
+                    }
+
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Backward && !PlayerManager.Instance.canMove_Forward)
+                    {
+                        if (!ladderAndIsOnTheGround)
+                            MovePlayerOnLadder_DOWN();
+                        else
+                            BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                    }
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward && !PlayerManager.Instance.canMove_Back)
+                        MovePlayerOnLadder_UP();
+                    else if (Ladder_Down_MoveAway())
+                        BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                }
+                else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 90)
+                {
+                    if (PlayerStats.Instance.stats.steps_Current <= 0)
+                    {
+                        RespawnBasedOnStepsCurrent();
+                    }
+
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Left && !PlayerManager.Instance.canMove_Forward)
+                    {
+                        if (!ladderAndIsOnTheGround)
+                            MovePlayerOnLadder_DOWN();
+                        else
+                            BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                    }
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Right && !PlayerManager.Instance.canMove_Back)
+                        MovePlayerOnLadder_UP();
+                    else if (Ladder_Down_MoveAway())
+                        BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                }
+                else if (isOnLadder && (ladderSteppedOn.transform.rotation.eulerAngles.y == -90 || ladderSteppedOn.transform.rotation.eulerAngles.y == 270))
+                {
+                    if (PlayerStats.Instance.stats.steps_Current <= 0)
+                    {
+                        RespawnBasedOnStepsCurrent();
+                    }
+
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Right && !PlayerManager.Instance.canMove_Forward)
+                    {
+                        if (!ladderAndIsOnTheGround)
+                            MovePlayerOnLadder_DOWN();
+                        else
+                            BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                    }
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Left && !PlayerManager.Instance.canMove_Back)
+                        MovePlayerOnLadder_UP();
+                    else if (Ladder_Down_MoveAway())
+                        BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+                }
+            }
+
+            //Normal Backward Press
+            else
+            {
+                BypassIsOnLadder(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
+            }
+        }
+    }
+    public void Key_MoveLeft()
+    {
+        if (!KeyInputsChecks()) { return; }
+
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+        {
+            lastMovementButtonPressed = ButtonsToPress.A;
+            StartCeilingGrabMovement(Vector3.left);
+        }
+        else
+        {
+            RaycastUnderPlayer_CheckIfOnTheLowestLadder();
+
+            //A-press on a ladder
+            if (ladderSteppedOn)
+            {
+                if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 0)
+                {
+                    if (PlayerStats.Instance.stats.steps_Current <= 0)
+                    {
+                        RespawnBasedOnStepsCurrent();
+                    }
+
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Left && !PlayerManager.Instance.canMove_Left)
+                        MovePlayerOnLadder_UP();
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Right && !PlayerManager.Instance.canMove_Right)
+                    {
+                        if (!ladderAndIsOnTheGround)
+                            MovePlayerOnLadder_DOWN();
+                        else
+                            BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                    }
+                    else if (Ladder_Down_MoveAway())
+                        BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                }
+                else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 180)
+                {
+                    if (PlayerStats.Instance.stats.steps_Current <= 0)
+                    {
+                        RespawnBasedOnStepsCurrent();
+                    }
+
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Right && !PlayerManager.Instance.canMove_Left)
+                        MovePlayerOnLadder_UP();
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Left && !PlayerManager.Instance.canMove_Right)
+                    {
+                        if (!ladderAndIsOnTheGround)
+                            MovePlayerOnLadder_DOWN();
+                        else
+                            BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                    }
+                    else if (Ladder_Down_MoveAway())
+                        BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                }
+                else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 90)
+                {
+                    if (PlayerStats.Instance.stats.steps_Current <= 0)
+                    {
+                        RespawnBasedOnStepsCurrent();
+                    }
+
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Backward && !PlayerManager.Instance.canMove_Left)
+                        MovePlayerOnLadder_UP();
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward && !PlayerManager.Instance.canMove_Right)
+                    {
+                        if (!ladderAndIsOnTheGround)
+                            MovePlayerOnLadder_DOWN();
+                        else
+                            BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                    }
+                    else if (Ladder_Down_MoveAway())
+                        BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                }
+                else if (isOnLadder && (ladderSteppedOn.transform.rotation.eulerAngles.y == -90 || ladderSteppedOn.transform.rotation.eulerAngles.y == 270))
+                {
+                    if (PlayerStats.Instance.stats.steps_Current <= 0)
+                    {
+                        RespawnBasedOnStepsCurrent();
+                    }
+
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward && !PlayerManager.Instance.canMove_Left)
+                        MovePlayerOnLadder_UP();
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Backward && !PlayerManager.Instance.canMove_Right)
+                    {
+                        if (!ladderAndIsOnTheGround)
+                            MovePlayerOnLadder_DOWN();
+                        else
+                            BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                    }
+                    else if (Ladder_Down_MoveAway())
+                        BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+                }
+            }
+
+            else
+            {
+                BypassIsOnLadder(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
+            }
+        }
+    }
+    public void Key_MoveRight()
+    {
+        if (!KeyInputsChecks()) { return; }
+
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+        {
+            lastMovementButtonPressed = ButtonsToPress.D;
+            StartCeilingGrabMovement(Vector3.right);
+        }
+        else
+        {
+            RaycastUnderPlayer_CheckIfOnTheLowestLadder();
+
+            //D-press on a ladder
+            if (ladderSteppedOn)
+            {
+                if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 0)
+                {
+                    if (PlayerStats.Instance.stats.steps_Current <= 0)
+                    {
+                        RespawnBasedOnStepsCurrent();
+                    }
+
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Left && !PlayerManager.Instance.canMove_Left)
+                    {
+                        if (!ladderAndIsOnTheGround)
+                            MovePlayerOnLadder_DOWN();
+                        else
+                            BypassIsOnLadder(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                    }
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Right && !PlayerManager.Instance.canMove_Right)
+                        MovePlayerOnLadder_UP();
+                    else if (Ladder_Down_MoveAway())
+                        BypassIsOnLadder(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                }
+                else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 180)
+                {
+                    if (PlayerStats.Instance.stats.steps_Current <= 0)
+                    {
+                        RespawnBasedOnStepsCurrent();
+                    }
+
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Right && !PlayerManager.Instance.canMove_Left)
+                    {
+                        if (!ladderAndIsOnTheGround)
+                            MovePlayerOnLadder_DOWN();
+                        else
+                            BypassIsOnLadder(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                    }
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Left && !PlayerManager.Instance.canMove_Right)
+                        MovePlayerOnLadder_UP();
+                    else if (Ladder_Down_MoveAway())
+                        BypassIsOnLadder(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                }
+                else if (isOnLadder && ladderSteppedOn.transform.rotation.eulerAngles.y == 90)
+                {
+                    if (PlayerStats.Instance.stats.steps_Current <= 0)
+                    {
+                        RespawnBasedOnStepsCurrent();
+                    }
+
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Backward && !PlayerManager.Instance.canMove_Left)
+                    {
+                        if (!ladderAndIsOnTheGround)
+                            MovePlayerOnLadder_DOWN();
+                        else
+                            BypassIsOnLadder(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                    }
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward && !PlayerManager.Instance.canMove_Right)
+                        MovePlayerOnLadder_UP();
+                    else if (Ladder_Down_MoveAway())
+                        BypassIsOnLadder(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                }
+                else if (isOnLadder && (ladderSteppedOn.transform.rotation.eulerAngles.y == -90 || ladderSteppedOn.transform.rotation.eulerAngles.y == 270))
+                {
+                    if (PlayerStats.Instance.stats.steps_Current <= 0)
+                    {
+                        RespawnBasedOnStepsCurrent();
+                    }
+
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward && !PlayerManager.Instance.canMove_Left)
+                    {
+                        if (!ladderAndIsOnTheGround)
+                            MovePlayerOnLadder_DOWN();
+                        else
+                            BypassIsOnLadder(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                    }
+                    else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Backward && !PlayerManager.Instance.canMove_Right)
+                        MovePlayerOnLadder_UP();
+                    else if (Ladder_Down_MoveAway())
+                        BypassIsOnLadder(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+                }
+            }
+
+            else
+            {
+                BypassIsOnLadder(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
+            }
+        }
+    }
+
+
+    public void Key_SwiftSwimUp()
+    {
+        if (!KeyInputsChecks()) { return; }
+
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
+        if (gameObject.GetComponent<Player_SwiftSwim>().canSwiftSwim_Up)
+        {
+            gameObject.GetComponent<Player_SwiftSwim>().SwiftSwim_Up();
+        }
+    }
+    public void Key_SwiftSwimDown()
+    {
+        if (!KeyInputsChecks()) { return; }
+
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
+        if (gameObject.GetComponent<Player_SwiftSwim>().canSwiftSwim_Down)
+        {
+            gameObject.GetComponent<Player_SwiftSwim>().SwiftSwim_Down();
+        }
+    }
+
+    public void Key_Respawn()
+    {
+        if (!KeyInputsChecks()) { return; }
+
+        PlayerStats.Instance.RespawnPlayer();
+    }
+    public void Key_Quit()
+    {
+        if (!KeyInputsChecks()) { return; }
+
+        QuitLevel();
+    }
+
+
+    //--------------------
+
+
     void RaycastUnderPlayer_CheckIfOnTheLowestLadder()
     {
         if (Physics.Raycast(PlayerManager.Instance.player.transform.position, Vector3.down, out hit, 1))
@@ -844,21 +1316,18 @@ public class Player_Movement : Singleton<Player_Movement>
         float distance = 1;
         if (PlayerManager.Instance.block_StandingOn_Current.block)
         {
-            print("1. isFalling");
             distance = Vector3.Distance(transform.position, PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * heightOverBlock));
         }
 
         //Start Fall if standing still and no block is under the player
         if (movementStates == MovementStates.Still && !PlayerManager.Instance.block_StandingOn_Current.block)
         {
-            print("1. PlayerHover");
             movementStates = MovementStates.Falling;
             gameObject.transform.position = gameObject.transform.position + (Vector3.down * fallSpeed * Time.deltaTime);
         }
         //Land the fall
         else if (movementStates == MovementStates.Falling && distance <= 0.95f /*0.15*/)
         {
-            print("2. PlayerHover");
             gameObject.transform.position = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * heightOverBlock);
             movementStates = MovementStates.Still;
             Action_LandedFromFalling?.Invoke();
@@ -866,7 +1335,6 @@ public class Player_Movement : Singleton<Player_Movement>
         //Continue fall
         else if (movementStates == MovementStates.Falling)
         {
-            print("3. PlayerHover");
             FallingRaycast();
             gameObject.transform.position = gameObject.transform.position + (Vector3.down * fallSpeed * Time.deltaTime);
             movementStates = MovementStates.Falling;
@@ -875,7 +1343,6 @@ public class Player_Movement : Singleton<Player_Movement>
         //Hover over blocks you're standing on
         else if (movementStates == MovementStates.Still && PlayerManager.Instance.block_StandingOn_Current.block)
         {
-            print("4. PlayerHover");
             Player_BlockDetector.Instance.Update_BlockStandingOn();
             gameObject.transform.position = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * heightOverBlock);
         }
@@ -1858,6 +2325,10 @@ public class Player_Movement : Singleton<Player_Movement>
     public void Action_ResetBlockColorInvoke()
     {
         Action_resetBlockColor?.Invoke();
+    }
+    public void Action_PressMoveBlockButtonInvoke()
+    {
+        Action_PressMoveBlockButton?.Invoke();
     }
 
 

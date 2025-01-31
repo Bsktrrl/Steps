@@ -18,7 +18,7 @@ public class Cameras_v2 : Singleton<Cameras_v2>
     public Vector3 directionFacing;
 
     [Header("Parameters")]
-    float rotationDuration_Movement = 0.5f;
+    float rotationDuration_Movement = 0.35f;
     float rotationDuration_Ceiling = 0.5f;
     float waitDelay = 0.1f;
     public bool isRotating;
@@ -61,6 +61,62 @@ public class Cameras_v2 : Singleton<Cameras_v2>
 
     void RotateCameraSetup()
     {
+        ////Don't be able to switch camera angle before the rotation has been done
+        //if (isRotating) { return; }
+        //if (isCeilingRotating) { return; }
+        //if (Player_Interact.Instance.isInteracting) { return; }
+        //if (Player_Movement.Instance.isIceGliding) { return; }
+        //if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        //if (Player_Movement.Instance.ladderMovement_Top_ToBlock) { return; }
+        
+        ////Rotate Camera
+        //if (Input.GetKeyDown(KeyCode.Q) || Input.GetKey(KeyCode.Q))
+        //{
+        //    switch (cameraRotationState)
+        //    {
+        //        case CameraRotationState.Forward:
+        //            cameraRotationState = CameraRotationState.Left;
+        //            break;
+        //        case CameraRotationState.Backward:
+        //            cameraRotationState = CameraRotationState.Right;
+        //            break;
+        //        case CameraRotationState.Left:
+        //            cameraRotationState = CameraRotationState.Backward;
+        //            break;
+        //        case CameraRotationState.Right:
+        //            cameraRotationState = CameraRotationState.Forward;
+        //            break;
+        //        default:
+        //            break;
+        //    }
+
+        //    StartCoroutine(RotateCamera(90));
+        //}
+        //if (Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.E))
+        //{
+        //    switch (cameraRotationState)
+        //    {
+        //        case CameraRotationState.Forward:
+        //            cameraRotationState = CameraRotationState.Right;
+        //            break;
+        //        case CameraRotationState.Backward:
+        //            cameraRotationState = CameraRotationState.Left;
+        //            break;
+        //        case CameraRotationState.Left:
+        //            cameraRotationState = CameraRotationState.Forward;
+        //            break;
+        //        case CameraRotationState.Right:
+        //            cameraRotationState = CameraRotationState.Backward;
+        //            break;
+        //        default:
+        //            break;
+        //    }
+
+        //    StartCoroutine(RotateCamera(-90));
+        //}
+    }
+    public void RotateCameraX()
+    {
         //Don't be able to switch camera angle before the rotation has been done
         if (isRotating) { return; }
         if (isCeilingRotating) { return; }
@@ -68,53 +124,60 @@ public class Cameras_v2 : Singleton<Cameras_v2>
         if (Player_Movement.Instance.isIceGliding) { return; }
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
         if (Player_Movement.Instance.ladderMovement_Top_ToBlock) { return; }
-        
+
         //Rotate Camera
-        if (Input.GetKeyDown(KeyCode.Q) || Input.GetKey(KeyCode.Q))
+        switch (cameraRotationState)
         {
-            switch (cameraRotationState)
-            {
-                case CameraRotationState.Forward:
-                    cameraRotationState = CameraRotationState.Left;
-                    break;
-                case CameraRotationState.Backward:
-                    cameraRotationState = CameraRotationState.Right;
-                    break;
-                case CameraRotationState.Left:
-                    cameraRotationState = CameraRotationState.Backward;
-                    break;
-                case CameraRotationState.Right:
-                    cameraRotationState = CameraRotationState.Forward;
-                    break;
-                default:
-                    break;
-            }
-
-            StartCoroutine(RotateCamera(90));
+            case CameraRotationState.Forward:
+                cameraRotationState = CameraRotationState.Left;
+                break;
+            case CameraRotationState.Backward:
+                cameraRotationState = CameraRotationState.Right;
+                break;
+            case CameraRotationState.Left:
+                cameraRotationState = CameraRotationState.Backward;
+                break;
+            case CameraRotationState.Right:
+                cameraRotationState = CameraRotationState.Forward;
+                break;
+            default:
+                break;
         }
-        if (Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.E))
-        {
-            switch (cameraRotationState)
-            {
-                case CameraRotationState.Forward:
-                    cameraRotationState = CameraRotationState.Right;
-                    break;
-                case CameraRotationState.Backward:
-                    cameraRotationState = CameraRotationState.Left;
-                    break;
-                case CameraRotationState.Left:
-                    cameraRotationState = CameraRotationState.Forward;
-                    break;
-                case CameraRotationState.Right:
-                    cameraRotationState = CameraRotationState.Backward;
-                    break;
-                default:
-                    break;
-            }
 
-            StartCoroutine(RotateCamera(-90));
-        }
+        StartCoroutine(RotateCamera(90));
     }
+    public void RotateCameraY()
+    {
+        //Don't be able to switch camera angle before the rotation has been done
+        if (isRotating) { return; }
+        if (isCeilingRotating) { return; }
+        if (Player_Interact.Instance.isInteracting) { return; }
+        if (Player_Movement.Instance.isIceGliding) { return; }
+        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (Player_Movement.Instance.ladderMovement_Top_ToBlock) { return; }
+
+        //Rotate Camera
+        switch (cameraRotationState)
+        {
+            case CameraRotationState.Forward:
+                cameraRotationState = CameraRotationState.Right;
+                break;
+            case CameraRotationState.Backward:
+                cameraRotationState = CameraRotationState.Left;
+                break;
+            case CameraRotationState.Left:
+                cameraRotationState = CameraRotationState.Forward;
+                break;
+            case CameraRotationState.Right:
+                cameraRotationState = CameraRotationState.Backward;
+                break;
+            default:
+                break;
+        }
+
+        StartCoroutine(RotateCamera(-90));
+    }
+    
     IEnumerator RotateCamera(float angle)
     {
         rotateCamera?.Invoke();
