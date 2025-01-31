@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player_Pusher : MonoBehaviour
 {
     public bool playerIsPushed;
-    [SerializeField] Vector3 pushDirection;
+    Vector3 pushDirection;
 
 
     //--------------------

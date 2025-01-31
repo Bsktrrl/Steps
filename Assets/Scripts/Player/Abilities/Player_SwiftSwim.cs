@@ -8,16 +8,16 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
     public bool canSwiftSwim_Up;
     public bool canSwiftSwim_Down;
 
-    public GameObject swiftSwim_Up_Obj;
-    public GameObject swiftSwim_Down_Obj;
+    [HideInInspector] public GameObject swiftSwim_Up_Obj;
+    [HideInInspector] public GameObject swiftSwim_Down_Obj;
 
-    public GameObject swiftSwimBlock_Target;
+    [HideInInspector] public GameObject swiftSwimBlock_Target;
 
     public bool isSwiftSwimming_Up;
     public bool isSwiftSwimming_Down;
 
     RaycastHit hit;
-    public Vector3 targetPos;
+    [HideInInspector] public Vector3 targetPos;
 
     bool canRun;
 
@@ -28,6 +28,8 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
     private void Update()
     {
         if (!canRun) { return; }
+
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
         ActivateSwiftSwimRaycast();
 
@@ -178,7 +180,7 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
 
             swiftSwimBlock_Target = null;
             
-            Player_Movement.Instance.Action_StepTakenInvoke();
+            Player_Movement.Instance.Action_StepTaken_Invoke();
             Player_Movement.Instance.Action_ResetBlockColorInvoke();
         }
     }

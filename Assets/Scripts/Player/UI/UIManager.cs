@@ -156,9 +156,9 @@ public class UIManager : Singleton<UIManager>
                     SwiftSwim.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers)
                     Flippers.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.LavaSuit)
+                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flameable)
                     LavaSuit.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.LavaSwiftSwim)
+                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.Jumping)
                     LavaSwiftSwim.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Temporary.HikerGear)
                     HikerGear.SetActive(true);
@@ -168,7 +168,7 @@ public class UIManager : Singleton<UIManager>
                     GrapplingHook.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Temporary.Hammer)
                     Hammer.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.ClimbingGear)
+                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.CeilingGrab)
                     ClimbingGear.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash)
                     Dash.SetActive(true);
@@ -190,9 +190,9 @@ public class UIManager : Singleton<UIManager>
                     SwiftSwim.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers)
                     Flippers.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.LavaSuit)
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Flameable)
                     LavaSuit.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.LavaSwiftSwim)
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping)
                     LavaSwiftSwim.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Permanent.HikerGear)
                     HikerGear.SetActive(true);
@@ -202,7 +202,7 @@ public class UIManager : Singleton<UIManager>
                     GrapplingHook.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Hammer)
                     Hammer.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimbingGear)
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab)
                     ClimbingGear.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash)
                     Dash.SetActive(true);

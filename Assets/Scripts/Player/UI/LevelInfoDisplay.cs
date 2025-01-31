@@ -148,9 +148,9 @@ public class LevelInfoDisplay : Singleton<LevelInfoDisplay>
             ability_SwiftSwim.gameObject.SetActive(true);
         if (level.abilitiesInLevel.Flippers)
             ability_Flippers.gameObject.SetActive(true);
-        if (level.abilitiesInLevel.LavaSuit)
+        if (level.abilitiesInLevel.Flameable)
             ability_LavaSuit.gameObject.SetActive(true);
-        if (level.abilitiesInLevel.LavaSwiftSwim)
+        if (level.abilitiesInLevel.Jumping)
             ability_LavaSwiftSwim.gameObject.SetActive(true);
         if (level.abilitiesInLevel.HikerGear)
             ability_HikerGear.gameObject.SetActive(true);
@@ -160,7 +160,7 @@ public class LevelInfoDisplay : Singleton<LevelInfoDisplay>
             ability_GrapplingHook.gameObject.SetActive(true);
         if (level.abilitiesInLevel.Hammer)
             ability_Hammer.gameObject.SetActive(true);
-        if (level.abilitiesInLevel.ClimbingGear)
+        if (level.abilitiesInLevel.CeilingGrab)
             ability_ClimbingGear.gameObject.SetActive(true);
         if (level.abilitiesInLevel.Dash)
             ability_Dash.gameObject.SetActive(true);

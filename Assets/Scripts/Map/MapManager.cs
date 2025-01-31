@@ -9,7 +9,7 @@ public class MapManager : Singleton<MapManager>
 
     [Header("Player")]
     [SerializeField] GameObject playerObject;
-    [SerializeField] GameObject playerObjectInScene;
+    GameObject playerObjectInScene;
     public Vector3 playerStartPos;
 
     [Header("Sound")]
@@ -17,7 +17,7 @@ public class MapManager : Singleton<MapManager>
     [SerializeField] List<AudioSource> mapAudioSourceList;
 
     [Header("MapManager")]
-    public Map_SaveInfo mapInfo_ToSave = new Map_SaveInfo();
+    [HideInInspector] public Map_SaveInfo mapInfo_ToSave = new Map_SaveInfo();
 
 
     BlockInfo[] blockInfoList;

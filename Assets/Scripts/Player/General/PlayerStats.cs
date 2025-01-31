@@ -7,7 +7,9 @@ using UnityEngine.SceneManagement;
 public class PlayerStats : Singleton<PlayerStats>
 {
     public static event Action Action_RespawnToSavePos;
+    public static event Action Action_RespawnPlayerEarly;
     public static event Action Action_RespawnPlayer;
+    public static event Action Action_RespawnPlayerLate;
 
     public static event Action updateCoins;
     public static event Action updateCollectable;
@@ -99,15 +101,15 @@ public class PlayerStats : Singleton<PlayerStats>
         else
             stats.abilitiesGot_Temporary.Flippers = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.LavaSuit)
-            stats.abilitiesGot_Temporary.LavaSuit = true;
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flameable)
+            stats.abilitiesGot_Temporary.Flameable = true;
         else
-            stats.abilitiesGot_Temporary.LavaSuit = false;
+            stats.abilitiesGot_Temporary.Flameable = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.LavaSwiftSwim)
-            stats.abilitiesGot_Temporary.LavaSwiftSwim = true;
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Jumping)
+            stats.abilitiesGot_Temporary.Jumping = true;
         else
-            stats.abilitiesGot_Temporary.LavaSwiftSwim = false;
+            stats.abilitiesGot_Temporary.Jumping = false;
 
         if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.HikerGear)
             stats.abilitiesGot_Temporary.HikerGear = true;
@@ -129,10 +131,10 @@ public class PlayerStats : Singleton<PlayerStats>
         else
             stats.abilitiesGot_Temporary.Hammer = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.ClimbingGear)
-            stats.abilitiesGot_Temporary.ClimbingGear = true;
+        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.CeilingGrab)
+            stats.abilitiesGot_Temporary.CeilingGrab = true;
         else
-            stats.abilitiesGot_Temporary.ClimbingGear = false;
+            stats.abilitiesGot_Temporary.CeilingGrab = false;
 
         if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Dash)
             stats.abilitiesGot_Temporary.Dash = true;
@@ -153,6 +155,8 @@ public class PlayerStats : Singleton<PlayerStats>
             stats.abilitiesGot_Temporary.ControlStick = true;
         else
             stats.abilitiesGot_Temporary.ControlStick = false;
+
+        Player_BlockDetector.Instance.Action_MadeFirstRaycast_Invoke();
     }
 
 
@@ -166,9 +170,11 @@ public class PlayerStats : Singleton<PlayerStats>
         {
             if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>() && !PlayerManager.Instance.isTransportingPlayer)
             {
-                stats.steps_Current -= PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().GetMovementCost();
+                stats.steps_Current -= PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
             }
         }
+
+        Player_Movement.Instance.Action_StepCostTakenInvoke();
 
         //If steps is < 0
         if (stats.steps_Current < 0)
@@ -199,13 +205,17 @@ public class PlayerStats : Singleton<PlayerStats>
         PlayerManager.Instance.isTransportingPlayer = true;
         Player_Movement.Instance.movementStates = MovementStates.Moving;
 
+        RespawnPlayerEarly_Action();
+
         yield return new WaitForSeconds(waitTime);
 
         //Move player
         transform.position = MapManager.Instance.playerStartPos;
         transform.SetPositionAndRotation(MapManager.Instance.playerStartPos, Quaternion.identity);
-        Player_Movement.Instance.SetPlayerBodyRotation(0);
         RespawnPlayer_Action();
+
+        //Reset for CeilingAbility
+        Player_CeilingGrab.Instance.ResetCeilingGrab();
 
         yield return new WaitForSeconds(waitTime);
 
@@ -226,6 +236,12 @@ public class PlayerStats : Singleton<PlayerStats>
 
         yield return new WaitForSeconds(waitTime * 25);
 
+        Player_Movement.Instance.SetPlayerBodyRotation(0);
+        Cameras_v2.Instance.ResetCameraRotation();
+        Cameras_v2.Instance.ResetCameraRotation();
+
+        RespawnPlayerLate_Action();
+
         PlayerManager.Instance.pauseGame = false;
         PlayerManager.Instance.isTransportingPlayer = false;
     }
@@ -238,9 +254,18 @@ public class PlayerStats : Singleton<PlayerStats>
             yield return null;
         }
     }
+
+    public void RespawnPlayerEarly_Action()
+    {
+        Action_RespawnPlayerEarly?.Invoke();
+    }
     public void RespawnPlayer_Action()
     {
         Action_RespawnPlayer?.Invoke();
+    }
+    public void RespawnPlayerLate_Action()
+    {
+        Action_RespawnPlayerLate?.Invoke();
     }
     public void RespawnToSavePos_Action()
     {

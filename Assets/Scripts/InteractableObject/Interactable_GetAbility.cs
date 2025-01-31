@@ -31,11 +31,11 @@ public class Interactable_GetAbility : MonoBehaviour
                 case Abilities.Flippers:
                     PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers = true;
                     break;
-                case Abilities.LavaSuit:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.LavaSuit = true;
+                case Abilities.Flameable:
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flameable = true;
                     break;
-                case Abilities.LavaSwiftSwim:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.LavaSwiftSwim = true;
+                case Abilities.Jumping:
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Jumping = true;
                     break;
                 case Abilities.HikerGear:
                     PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.HikerGear = true;
@@ -50,8 +50,8 @@ public class Interactable_GetAbility : MonoBehaviour
                 case Abilities.Hammer:
                     PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Hammer = true;
                     break;
-                case Abilities.ClimbingGear:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.ClimbingGear = true;
+                case Abilities.CeilingGrab:
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.CeilingGrab = true;
                     break;
                 case Abilities.Dash:
                     PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Dash = true;

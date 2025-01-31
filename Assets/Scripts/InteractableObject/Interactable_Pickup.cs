@@ -172,13 +172,13 @@ public class Interactable_Pickup : MonoBehaviour
                 MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flippers = true;
                 Action_FlippersGot?.Invoke();
                 break;
-            case Abilities.LavaSuit:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.LavaSuit = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.LavaSuit = true;
+            case Abilities.Flameable:
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flameable = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flameable = true;
                 break;
-            case Abilities.LavaSwiftSwim:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.LavaSwiftSwim = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.LavaSwiftSwim = true;
+            case Abilities.Jumping:
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Jumping = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Jumping = true;
                 break;
             case Abilities.HikerGear:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.HikerGear = true;
@@ -197,9 +197,9 @@ public class Interactable_Pickup : MonoBehaviour
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Hammer = true;
                 MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Hammer = true;
                 break;
-            case Abilities.ClimbingGear:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.ClimbingGear = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.ClimbingGear = true;
+            case Abilities.CeilingGrab:
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.CeilingGrab = true;
+                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.CeilingGrab = true;
                 break;
             case Abilities.Dash:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Dash = true;
@@ -251,27 +251,29 @@ public enum Abilities
 {
     None,
 
-    FenceSneak,
+    FenceSneak, //Out
 
     SwimSuit,
     SwiftSwim,
     Flippers,
 
-    LavaSuit,
-    LavaSwiftSwim,
+    Flameable, //Out
 
-    HikerGear,
-    ClimbingGear,
+    Jumping,
 
-    IceSpikes,
+    HikerGear, //Out
+
+    CeilingGrab,
+
+    IceSpikes, //Out
 
     Dash,
     Ascend,
     Descend,
 
-    Hammer,
+    Hammer, //Out
 
     GrapplingHook,
 
-    ControlStick,
+    ControlStick, //Out
 }

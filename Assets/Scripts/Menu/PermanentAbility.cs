@@ -60,17 +60,17 @@ public class PermanentAbility : MonoBehaviour
                     case Abilities.Flippers:
                         PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers = true;
                         break;
-                    case Abilities.LavaSuit:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.LavaSuit = true;
+                    case Abilities.Flameable:
+                        PlayerStats.Instance.stats.abilitiesGot_Permanent.Flameable = true;
                         break;
-                    case Abilities.LavaSwiftSwim:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.LavaSwiftSwim = true;
+                    case Abilities.Jumping:
+                        PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping = true;
                         break;
                     case Abilities.HikerGear:
                         PlayerStats.Instance.stats.abilitiesGot_Permanent.HikerGear = true;
                         break;
-                    case Abilities.ClimbingGear:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimbingGear = true;
+                    case Abilities.CeilingGrab:
+                        PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab = true;
                         break;
                     case Abilities.IceSpikes:
                         PlayerStats.Instance.stats.abilitiesGot_Permanent.IceSpikes = true;

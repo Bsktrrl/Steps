@@ -39,6 +39,8 @@ public class Block_Elevator_Normal : MonoBehaviour
                 ElevatorMovement_ToStartPos();
             }
         }
+
+        CheckIfDarkenBlock();
     }
     private void OnEnable()
     {
@@ -131,6 +133,30 @@ public class Block_Elevator_Normal : MonoBehaviour
     void ResetBlock()
     {
         moveToEndPos = true;
+
+        StartCoroutine(BlockWaiting());
+    }
+
+
+    //--------------------
+
+
+    void CheckIfDarkenBlock()
+    {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+        {
+            if (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) >= 1.5f)
+                GetComponent<BlockInfo>().ResetColor();
+            else
+                GetComponent<BlockInfo>().DarkenColors();
+        }
+        else
+        {
+            if (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) >= 1.1f)
+                GetComponent<BlockInfo>().ResetColor();
+            else
+                GetComponent<BlockInfo>().DarkenColors();
+        }
     }
 }
 

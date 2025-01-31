@@ -5,19 +5,21 @@ using UnityEngine;
 public class Player_Descend : Singleton<Player_Descend>
 {
     [Header("Descending")]
+    [SerializeField] Vector3 descendStartPos;
+
     public bool playerCanDescend;
-    public GameObject descendingBlock_Previous;
-    public GameObject descendingBlock_Current;
-    public GameObject descendingBlock_Target;
-    public float descendingDistance = 4;
+    [HideInInspector] public GameObject descendingBlock_Previous;
+    [HideInInspector] public GameObject descendingBlock_Current;
+    [HideInInspector] public GameObject descendingBlock_Target;
+    public float descendingDistance = 3;
     public float descendingSpeed = 20;
 
     public bool isDescending;
+    float descendDuration = 0.1f;
 
     RaycastHit hit;
 
     bool canRun;
-    bool descendStepCorrection;
 
 
     //--------------------
@@ -25,14 +27,7 @@ public class Player_Descend : Singleton<Player_Descend>
 
     private void Update()
     {
-        if (!canRun) { return; }
-
-        if (RaycastForDescending())
-            playerCanDescend = true;
-        else
-            playerCanDescend = false;
-
-        PerformDescendMovement();
+        RaycastForDescending();
     }
 
     private void OnEnable()
@@ -53,6 +48,30 @@ public class Player_Descend : Singleton<Player_Descend>
     //--------------------
 
 
+    public void RunDescend()
+    {
+        if (!canRun) { return; }
+
+        if (!gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Descend && !gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Descend) { return; }
+
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
+        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (PlayerManager.Instance.pauseGame) { return; }
+        if (PlayerManager.Instance.isTransportingPlayer) { return; }
+
+        if (RaycastForDescending())
+        {
+            if (PlayerStats.Instance.stats.steps_Current <= 0 && descendingBlock_Target.GetComponent<BlockInfo>().movementCost > 0)
+            {
+                PlayerStats.Instance.RespawnPlayer();
+            }
+            else
+            {
+                StartCoroutine(Descend());
+            }
+        }
+    }
     bool RaycastForDescending()
     {
         if (gameObject.GetComponent<PlayerStats>())
@@ -235,6 +254,8 @@ public class Player_Descend : Singleton<Player_Descend>
         {
             descendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
         }
+
+        descendingBlock_Target = descendingBlock_Current;
     }
     void DescendingIsNOTAllowed()
     {
@@ -260,65 +281,59 @@ public class Player_Descend : Singleton<Player_Descend>
     //--------------------
 
 
-    public void Descend()
+    IEnumerator Descend()
     {
-        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Descend || gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Descend)
+        isDescending = true;
+
+        descendStartPos = gameObject.transform.position;
+
+        PlayerManager.Instance.pauseGame = true;
+        PlayerManager.Instance.isTransportingPlayer = true;
+        Player_Movement.Instance.movementStates = MovementStates.Moving;
+
+        Vector3 startPosition = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * Player_Movement.Instance.heightOverBlock);
+        Vector3 endPosition;
+        if (descendingBlock_Target)
+            endPosition = descendingBlock_Target.transform.position + (Vector3.up * (Player_Movement.Instance.heightOverBlock));
+        else
+            endPosition = descendStartPos;
+
+        float elapsedTime = 0f;
+        float targetDistance = Vector3.Distance(gameObject.transform.position, endPosition);
+
+
+        while (elapsedTime < (descendDuration * targetDistance))
         {
-            if (PlayerStats.Instance.stats.steps_Current <= 0)
-            {
-                PlayerStats.Instance.RespawnPlayer();
-            }
-            else
-            {
-                Player_Movement.Instance.movementStates = MovementStates.Moving;
-                PlayerManager.Instance.pauseGame = true;
-                PlayerManager.Instance.isTransportingPlayer = true;
-                isDescending = true;
+            elapsedTime += Time.deltaTime;
 
-                descendingBlock_Target = descendingBlock_Current;
-            }
+            // Calculate the progress (0 to 1) of the jump
+            float progress = elapsedTime / (descendDuration * targetDistance);
+
+            // Interpolate the forward position
+            Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, progress);
+
+            // Update the player's position
+            transform.position = currentPosition;
+
+            yield return null;
         }
-    }
 
-    void PerformDescendMovement()
-    {
-        if (isDescending)
-        {
-            Vector3 targetPos = descendingBlock_Target.transform.position + (Vector3.up * Player_Movement.Instance.heightOverBlock);
+        // Ensure the player lands exactly at the end position
+        transform.position = endPosition;
 
-            PlayerManager.Instance.player.transform.position = Vector3.MoveTowards(PlayerManager.Instance.player.transform.position, targetPos, descendingSpeed * Time.deltaTime);
+        Player_BlockDetector.Instance.RaycastSetup();
 
-            //if (PlayerManager.Instance.block_StandingOn_Current != null && !descendStepCorrection)
-            //{
-            //    if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>())
-            //    {
-            //        PlayerStats.Instance.stats.steps_Current += PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
-            //        descendStepCorrection = true;
-            //    }
-            //}
+        Player_Movement.Instance.movementStates = MovementStates.Still;
+        PlayerManager.Instance.pauseGame = false;
+        PlayerManager.Instance.isTransportingPlayer = false;
 
-            //Snap into place when close enough
-            if (Vector3.Distance(PlayerManager.Instance.player.transform.position, targetPos) <= 0.03f)
-            {
-                PlayerManager.Instance.player.transform.position = targetPos;
+        Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
 
-                Player_Movement.Instance.movementStates = MovementStates.Still;
-                PlayerManager.Instance.pauseGame = false;
-                PlayerManager.Instance.isTransportingPlayer = false;
+        Player_BlockDetector.Instance.Update_BlockStandingOn();
 
-                Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
+        Player_Movement.Instance.Action_ResetBlockColorInvoke();
+        Player_Movement.Instance.Action_StepTaken_Invoke();
 
-                //if (descendingBlock_Target.GetComponent<BlockInfo>() /*PlayerManager.Instance.block_StandingOn_Current.block*/)
-                //{
-                //    Player_Movement.Instance.currentMovementCost = descendingBlock_Target.GetComponent<BlockInfo>().movementCost /*PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost*/;
-                //}
-
-                descendStepCorrection = false;
-
-                Player_Movement.Instance.Action_StepTakenInvoke();
-                Player_Movement.Instance.Action_ResetBlockColorInvoke();
-                isDescending = false;
-            }
-        }
+        isDescending = false;
     }
 }

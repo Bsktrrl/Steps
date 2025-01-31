@@ -5,14 +5,17 @@ using UnityEngine;
 public class Player_Ascend : Singleton<Player_Ascend>
 {
     [Header("Ascending")]
+    [SerializeField] Vector3 ascendStartPos;
+
     public bool playerCanAscend;
-    public GameObject ascendingBlock_Previous;
-    public GameObject ascendingBlock_Current;
-    public GameObject ascendingBlock_Target;
-    public float ascendingDistance = 3;
+    [HideInInspector] public GameObject ascendingBlock_Previous;
+    [HideInInspector] public GameObject ascendingBlock_Current;
+    [HideInInspector] public GameObject ascendingBlock_Target;
+    public float ascendingDistance = 2;
     public float ascendingSpeed = 15;
 
     public bool isAscending;
+    float ascendDuration = 0.1f;
 
     RaycastHit hit;
 
@@ -24,14 +27,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
 
     private void Update()
     {
-        if (!canRun) { return; }
-
-        if (RaycastForAscending())
-            playerCanAscend = true;
-        else
-            playerCanAscend = false;
-
-        PerformAscendMovement();
+        RaycastForAscending();
     }
 
     private void OnEnable()
@@ -52,6 +48,27 @@ public class Player_Ascend : Singleton<Player_Ascend>
     //--------------------
 
 
+    public void RunAscend()
+    {
+        if (!canRun) { return; }
+        if (!gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Ascend && !gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Ascend) { return; }
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (PlayerManager.Instance.pauseGame) { return; }
+        if (PlayerManager.Instance.isTransportingPlayer) { return; }
+
+        if (RaycastForAscending())
+        {
+            if (PlayerStats.Instance.stats.steps_Current <= 0 && ascendingBlock_Target.GetComponent<BlockInfo>().movementCost > 0)
+            {
+                PlayerStats.Instance.RespawnPlayer();
+            }
+            else
+            {
+                StartCoroutine(Ascend());
+            }
+        }
+    }
     bool RaycastForAscending()
     {
         if (gameObject.GetComponent<PlayerStats>())
@@ -167,6 +184,8 @@ public class Player_Ascend : Singleton<Player_Ascend>
         {
             ascendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
         }
+
+        ascendingBlock_Target = ascendingBlock_Current;
     }
     void AscendingIsNOTAllowed()
     {
@@ -191,54 +210,58 @@ public class Player_Ascend : Singleton<Player_Ascend>
 
     //--------------------
 
-
-    public void Ascend()
+    private IEnumerator Ascend()
     {
-        if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Ascend || gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Ascend)
+        isAscending = true;
+
+        ascendStartPos = gameObject.transform.position;
+
+        PlayerManager.Instance.pauseGame = true;
+        PlayerManager.Instance.isTransportingPlayer = true;
+        Player_Movement.Instance.movementStates = MovementStates.Moving;
+
+        Vector3 startPosition = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * Player_Movement.Instance.heightOverBlock);
+        Vector3 endPosition;
+        if (ascendingBlock_Target)
+            endPosition = ascendingBlock_Target.transform.position + (Vector3.up * (Player_Movement.Instance.heightOverBlock));
+        else
+            endPosition = ascendStartPos;
+
+        float elapsedTime = 0f;
+        float targetDistance = Vector3.Distance(gameObject.transform.position, endPosition);
+
+        while (elapsedTime < (ascendDuration * targetDistance))
         {
-            if (PlayerStats.Instance.stats.steps_Current <= 0)
-            {
-                PlayerStats.Instance.RespawnPlayer();
-            }
-            else
-            {
-                PlayerManager.Instance.pauseGame = true;
-                PlayerManager.Instance.isTransportingPlayer = true;
-                isAscending = true;
-                Player_Movement.Instance.movementStates = MovementStates.Moving;
+            elapsedTime += Time.deltaTime;
 
-                ascendingBlock_Target = ascendingBlock_Current;
-            }
+            // Calculate the progress (0 to 1) of the jump
+            float progress = elapsedTime / (ascendDuration * targetDistance);
+
+            // Interpolate the forward position
+            Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, progress);
+
+            // Update the player's position
+            transform.position = currentPosition;
+
+            yield return null;
         }
-    }
-    void PerformAscendMovement()
-    {
-        if (isAscending)
-        {
-            Vector3 targetPos = ascendingBlock_Target.transform.position + (Vector3.up * Player_Movement.Instance.heightOverBlock);
 
-            PlayerManager.Instance.player.transform.position = Vector3.MoveTowards(PlayerManager.Instance.player.transform.position, targetPos, ascendingSpeed * Time.deltaTime);
+        // Ensure the player lands exactly at the end position
+        transform.position = endPosition;
 
-            //Snap into place when close enough
-            if (Vector3.Distance(PlayerManager.Instance.player.transform.position, targetPos) <= 0.03f)
-            {
-                PlayerManager.Instance.player.transform.position = targetPos;
+        Player_BlockDetector.Instance.RaycastSetup();
 
-                Player_Movement.Instance.movementStates = MovementStates.Still;
-                PlayerManager.Instance.pauseGame = false;
-                PlayerManager.Instance.isTransportingPlayer = false;
+        Player_Movement.Instance.movementStates = MovementStates.Still;
+        PlayerManager.Instance.pauseGame = false;
+        PlayerManager.Instance.isTransportingPlayer = false;
+        
+        Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
 
-                Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
+        Player_BlockDetector.Instance.Update_BlockStandingOn();
 
-                //if (PlayerManager.Instance.block_StandingOn_Current.block)
-                //{
-                //    Player_Movement.Instance.currentMovementCost = PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
-                //}
+        Player_Movement.Instance.Action_ResetBlockColorInvoke();
+        Player_Movement.Instance.Action_StepTaken_Invoke();
 
-                Player_Movement.Instance.Action_StepTakenInvoke();
-                Player_Movement.Instance.Action_ResetBlockColorInvoke();
-                isAscending = false;
-            }
-        }
+        isAscending = false;
     }
 }

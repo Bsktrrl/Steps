@@ -7,11 +7,13 @@ public class BlockInfo : MonoBehaviour
     [Header("Stats")]
     //public BlockElement blockElement;
     public BlockType blockType;
+    [HideInInspector] public int movementCost_Temp;
     public int movementCost;
     public float movementSpeed;
 
     [Header("StepCost Color")]
     public Color stepCostText_Color;
+    public Color stepCostText_ColorUnder;
 
     [Header("Step Sound")]
     public float stepSound_Volume;
@@ -19,7 +21,7 @@ public class BlockInfo : MonoBehaviour
     [HideInInspector] public AudioSource stepSound_Source;
 
     [Header("Starting Position")]
-    public Vector3 startPos;
+    [HideInInspector] public Vector3 startPos;
 
     [Header("Material Rendering")]
     public bool hasOtherMaterial;
@@ -68,6 +70,8 @@ public class BlockInfo : MonoBehaviour
 
     private void Start()
     {
+        movementCost_Temp = movementCost;
+
         startPos = transform.position;
         stepSound_Source = gameObject.AddComponent<AudioSource>();
 
@@ -88,6 +92,7 @@ public class BlockInfo : MonoBehaviour
 
     private void OnEnable()
     {
+        Player_Movement.Action_BodyRotated += ResetColor;
         Player_Movement.Action_resetBlockColor += ResetColor;
         PlayerStats.Action_RespawnToSavePos += ResetColor;
         PlayerStats.Action_RespawnPlayer += ResetBlock;
@@ -95,6 +100,7 @@ public class BlockInfo : MonoBehaviour
 
     private void OnDisable()
     {
+        Player_Movement.Action_BodyRotated -= ResetColor;
         Player_Movement.Action_resetBlockColor -= ResetColor;
         PlayerStats.Action_RespawnToSavePos -= ResetColor;
         PlayerStats.Action_RespawnPlayer -= ResetBlock;
@@ -165,28 +171,34 @@ public class BlockInfo : MonoBehaviour
     {
         return BlockPosManager.Instance.FindGameObjectAtPosition(transform.position + dir1 + dir2 + dir3, gameObject);
     }
-
-
-    public int GetMovementCost()
+    public Color SetTextColor(float moveCost)
     {
-        //If Moving with Free Cost - Pusher
-        if (/*PlayerManager.Instance.block_StandingOn_Previous == gameObject && !PlayerManager.Instance.block_StandingOn_Previous.GetComponent<Block_Pusher>() &&*/ PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
+        if (moveCost == movementCost_Temp)
         {
-            return 0;
+            if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+            {
+                if (stepCostText_ColorUnder.a == 0 || (stepCostText_ColorUnder.r == 0 && stepCostText_ColorUnder.g == 0 && stepCostText_ColorUnder.b == 0))
+                    return stepCostText_Color;
+                else
+                    return stepCostText_ColorUnder;
+            }
+            else
+            {
+                return stepCostText_Color;
+            }
+        }
+        else if (moveCost < movementCost_Temp)
+        {
+            return BlockManager.Instance.cheap_TextColor;
+        }
+        else if (moveCost > movementCost_Temp)
+        {
+            return BlockManager.Instance.expensive_TextColor;
         }
 
-        //If Dashing with Free cost
-        else if (PlayerManager.Instance.player.GetComponent<Player_Dash>().dashBlock_Current == gameObject && PlayerManager.Instance.player.GetComponent<Player_Dash>().playerCanDash && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
-        {
-            return 0;
-        }
-
-        //If Moving with Normal Cost
-        else
-        {
-            return movementCost;
-        }
+        return stepCostText_Color;
     }
+
 
     //--------------------
 
@@ -227,6 +239,7 @@ public class BlockInfo : MonoBehaviour
             //Show StepCost
             if (gameObject.GetComponent<BlockStepCostDisplay>())
             {
+                //GetMovementCost();
                 gameObject.GetComponent<BlockStepCostDisplay>().ShowDisplay();
             }
         }

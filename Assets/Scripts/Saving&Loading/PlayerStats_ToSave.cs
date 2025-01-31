@@ -27,13 +27,13 @@ public class Stats
         abilitiesGot_Permanent.SwimSuit = false;
         abilitiesGot_Permanent.SwiftSwim = false;
         abilitiesGot_Permanent.Flippers = false;
-        abilitiesGot_Permanent.LavaSuit = false;
-        abilitiesGot_Permanent.LavaSwiftSwim = false;
+        abilitiesGot_Permanent.Flameable = false;
+        abilitiesGot_Permanent.Jumping = false;
         abilitiesGot_Permanent.HikerGear = false;
         abilitiesGot_Permanent.IceSpikes = false;
         abilitiesGot_Permanent.GrapplingHook = false;
         abilitiesGot_Permanent.Hammer = false;
-        abilitiesGot_Permanent.ClimbingGear = false;
+        abilitiesGot_Permanent.CeilingGrab = false;
         abilitiesGot_Permanent.Dash = false;
         abilitiesGot_Permanent.Ascend = false;
         abilitiesGot_Permanent.Descend = false;
@@ -43,13 +43,13 @@ public class Stats
         abilitiesGot_Temporary.SwimSuit = false;
         abilitiesGot_Temporary.SwiftSwim = false;
         abilitiesGot_Temporary.Flippers = false;
-        abilitiesGot_Temporary.LavaSuit = false;
-        abilitiesGot_Temporary.LavaSwiftSwim = false;
+        abilitiesGot_Temporary.Flameable = false;
+        abilitiesGot_Temporary.Jumping = false;
         abilitiesGot_Temporary.HikerGear = false;
         abilitiesGot_Temporary.IceSpikes = false;
         abilitiesGot_Temporary.GrapplingHook = false;
         abilitiesGot_Temporary.Hammer = false;
-        abilitiesGot_Temporary.ClimbingGear = false;
+        abilitiesGot_Temporary.CeilingGrab = false;
         abilitiesGot_Temporary.Dash = false;
         abilitiesGot_Temporary.Ascend = false;
         abilitiesGot_Temporary.Descend = false;
@@ -75,15 +75,15 @@ public class AbilitiesGot
     public bool SwimSuit;
     public bool SwiftSwim;
     public bool Flippers;
-    public bool LavaSuit;
-    public bool LavaSwiftSwim;
+    public bool Flameable;
+    public bool Jumping;
 
     public bool HikerGear; //Moving up Slopes
 
     public bool IceSpikes;
     public bool GrapplingHook;
     public bool Hammer;
-    public bool ClimbingGear;
+    public bool CeilingGrab;
     public bool Dash;
     public bool Ascend;
     public bool Descend;
