@@ -9,13 +9,11 @@ public class Block_Quicksand : MonoBehaviour
     {
         Player_BlockDetector.Action_isSwitchingBlocks += SteppingOnQuicksand;
         PlayerStats.Action_RespawnPlayer += SteppingOnQuicksand;
-        //Player_Movement.Action_StepCostTaken += ChangeMovementCost;
     }
     private void OnDisable()
     {
         Player_BlockDetector.Action_isSwitchingBlocks -= SteppingOnQuicksand;
         PlayerStats.Action_RespawnPlayer -= SteppingOnQuicksand;
-        //Player_Movement.Action_StepCostTaken -= ChangeMovementCost;
     }
 
 

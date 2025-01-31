@@ -9,6 +9,8 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
 
     float height_Stair = -0.2f;
     float height_Water = -0.8f;
+    float height_SwampWater = -0.6f;
+    float height_Mud = -1f;
     float height_Lava = -0.9f;
 
     float height_QuickSand_1 = -0.6f;
@@ -43,6 +45,14 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
             //Water
             else if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Water>())
                 PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Water), ReturnRotation());
+
+            //Swamp Water
+            else if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_SwampWater>())
+                PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_SwampWater), ReturnRotation());
+
+            //Mud
+            else if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Mud>())
+                PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Mud), ReturnRotation());
 
             //Quicksand
             else if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Quicksand>())

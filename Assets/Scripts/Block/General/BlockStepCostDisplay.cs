@@ -63,6 +63,40 @@ public class BlockStepCostDisplay : MonoBehaviour
             SetMovementCost(Player_Quicksand.Instance.quicksandCounter);
         }
 
+        //If in SwampWater
+        else if (Player_SwampWater.Instance.isInSwampWater)
+        {
+            if (GetComponent<BlockInfo>().movementCost_Temp == 0)
+                 SetMovementCost(0);
+            else if (GetComponent<BlockInfo>().movementCost_Temp == 1)
+                SetMovementCost(0);
+            else if (GetComponent<BlockInfo>().movementCost_Temp == 2)
+                SetMovementCost(1);
+            else if (GetComponent<BlockInfo>().movementCost_Temp == 3)
+                SetMovementCost(2);
+            else if (GetComponent<BlockInfo>().movementCost_Temp == 4)
+                SetMovementCost(3);
+            else if (GetComponent<BlockInfo>().movementCost_Temp == 5)
+                SetMovementCost(4);
+        }
+
+        //If in Mud
+        else if (Player_Mud.Instance.isInMud)
+        {
+            if (GetComponent<BlockInfo>().movementCost_Temp == 0)
+                SetMovementCost(1);
+            else if (GetComponent<BlockInfo>().movementCost_Temp == 1)
+                SetMovementCost(2);
+            else if (GetComponent<BlockInfo>().movementCost_Temp == 2)
+                SetMovementCost(3);
+            else if (GetComponent<BlockInfo>().movementCost_Temp == 3)
+                SetMovementCost(4);
+            else if (GetComponent<BlockInfo>().movementCost_Temp == 4)
+                SetMovementCost(5);
+            else if (GetComponent<BlockInfo>().movementCost_Temp == 5)
+                SetMovementCost(6);
+        }
+
         //Other
         else
             SetMovementCost(gameObject.GetComponent<BlockInfo>().movementCost_Temp);

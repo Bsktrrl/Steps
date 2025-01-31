@@ -7046,6 +7046,8 @@ GameObject:
   - component: {fileID: 1191866112101601512}
   - component: {fileID: 4493406416520661073}
   - component: {fileID: 7902258033444329433}
+  - component: {fileID: 5719477613546976637}
+  - component: {fileID: 6240145603939652248}
   m_Layer: 6
   m_Name: Player v3
   m_TagString: Player
@@ -7580,6 +7582,35 @@ MonoBehaviour:
   isCeilingRotation: 0
   playerCeilingRotationValue: 0
   playerBodyHeight_Ceiling: 0.4
+  ceilingGrabBlock: {fileID: 0}
+--- !u!114 &5719477613546976637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649856597487831825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15bf8127d1f6e6e43a0b89959b50c6df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInSwampWater: 0
+  swampWaterCounter: 0
+--- !u!114 &6240145603939652248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649856597487831825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9151b6c7fda748f45ba06f3df1700883, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInMud: 0
+  mudCounter: 0
 --- !u!1 &6680482554464227565
 GameObject:
   m_ObjectHideFlags: 0
