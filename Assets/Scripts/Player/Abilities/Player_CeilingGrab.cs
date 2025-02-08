@@ -60,7 +60,6 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         if (Player_Interact.Instance.isInteracting) { return; }
         if (Player_Movement.Instance.isIceGliding) { return; }
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
-        if (Player_Movement.Instance.ladderMovement_Top_ToBlock) { return; }
 
         if (/*Input.GetKeyDown(KeyCode.C) &&*/ Cameras_v2.Instance.cameraState == CameraState.GameplayCam)
         {

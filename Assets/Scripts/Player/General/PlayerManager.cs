@@ -145,13 +145,6 @@ public class PlayerManager : Singleton<PlayerManager>
         if (Player_SwiftSwim.Instance.isSwiftSwimming_Up) { return false; }
         if (!Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
 
-        if (Player_Movement.Instance.ladderMovement_Up) { return false; }
-        if (Player_Movement.Instance.ladderMovement_Down) { return false; }
-        if (Player_Movement.Instance.ladderMovement_Top) { return false; }
-        if (Player_Movement.Instance.ladderMovement_Top_ToBlock) { return false; }
-        if (Player_Movement.Instance.ladderMovement_Down_ToBlockFromTop) { return false; }
-        if (Player_Movement.Instance.ladderMovement_Down_ToBottom) { return false; }
-
         return true;
     }
 
