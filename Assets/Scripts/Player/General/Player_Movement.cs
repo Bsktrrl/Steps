@@ -34,10 +34,24 @@ public class Player_Movement : Singleton<Player_Movement>
     [Header("CeilingGrab")]
     RaycastHit hit;
 
+    [Header("Ladder")]
+    public Vector3 ladderEndPos_Up;
+    public Vector3 ladderEndPos_Down;
+    public bool isMovingOnLadder_Up;
+    public bool isMovingOnLadder_Down;
+
+    Vector3 ladderClimbPos_Start;
+    Vector3 ladderClimbPos_End;
+    public int ladderPartsToClimb;
+
 
     //--------------------
 
 
+    private void Start()
+    {
+        FindLadderExitBlock();
+    }
     private void Update()
     {
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return; }
@@ -90,6 +104,9 @@ public class Player_Movement : Singleton<Player_Movement>
         Action_StepTaken += SlopeGlide;
 
         Action_StepTaken += DarkenCeilingBlocks;
+
+        Action_StepTaken += FindLadderExitBlock;
+        PlayerStats.Action_RespawnPlayer += FindLadderExitBlock;
     }
 
     private void OnDisable()
@@ -98,134 +115,15 @@ public class Player_Movement : Singleton<Player_Movement>
         Action_StepTaken -= SlopeGlide;
 
         Action_StepTaken -= DarkenCeilingBlocks;
+
+        Action_StepTaken -= FindLadderExitBlock;
+        PlayerStats.Action_RespawnPlayer -= FindLadderExitBlock;
     }
 
 
     //--------------------
 
 
-    void KeyInputs()
-    {
-        if (movementStates == MovementStates.Moving) { return; }
-
-        if (PlayerManager.Instance.pauseGame) { return; }
-        if (PlayerManager.Instance.isTransportingPlayer) { return; }
-        if (Cameras_v2.Instance.isRotating) { return; }
-        if (Player_Interact.Instance.isInteracting) { return; }
-        if (Player_GraplingHook.Instance.isGrapplingHooking) { return; }
-
-
-        //--------------------
-
-
-        //If pressing Forward - Movement
-        if (Input.GetKey(KeyCode.W))
-        {
-            if (Player_CeilingGrab.Instance.isCeilingGrabbing)
-            {
-                lastMovementButtonPressed = ButtonsToPress.W;
-                StartCeilingGrabMovement(Vector3.forward);
-            }
-            else
-            {
-                PrepareMovement(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
-            }
-        }
-
-        //If pressing Backward - Movement
-        else if (Input.GetKey(KeyCode.S))
-        {
-            if (Player_CeilingGrab.Instance.isCeilingGrabbing)
-            {
-                lastMovementButtonPressed = ButtonsToPress.S;
-                StartCeilingGrabMovement(Vector3.back);
-            }
-            else
-            {
-                PrepareMovement(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
-            }
-        }
-
-        //If pressing Left - Movement
-        else if (Input.GetKey(KeyCode.A))
-        {
-            if (Player_CeilingGrab.Instance.isCeilingGrabbing)
-            {
-                lastMovementButtonPressed = ButtonsToPress.A;
-                StartCeilingGrabMovement(Vector3.left);
-            }
-            else
-            {
-                PrepareMovement(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
-            }
-        }
-
-        //If pressing RIGHT - Movement
-        else if (Input.GetKey(KeyCode.D))
-        {
-            if (Player_CeilingGrab.Instance.isCeilingGrabbing)
-            {
-                lastMovementButtonPressed = ButtonsToPress.D;
-                StartCeilingGrabMovement(Vector3.right);
-            }
-            else
-            {
-                PrepareMovement(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
-            }
-        }
-
-
-        //--------------------
-
-
-        //If pressing -UP - SwiftSwim Up
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
-
-            if (gameObject.GetComponent<Player_SwiftSwim>().canSwiftSwim_Up)
-            {
-                gameObject.GetComponent<Player_SwiftSwim>().SwiftSwim_Up();
-            }
-        }
-        //If pressing -DOWN - SwiftSwim Down
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
-
-            if (gameObject.GetComponent<Player_SwiftSwim>().canSwiftSwim_Down)
-            {
-                gameObject.GetComponent<Player_SwiftSwim>().SwiftSwim_Down();
-            }
-        }
-
-        //If pressing - Hammer - C
-        else if (Input.GetKeyDown(KeyCode.C))
-        {
-            if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
-
-            if (gameObject.GetComponent<Player_Hammer>().playerCanHammer)
-            {
-                gameObject.GetComponent<Player_Hammer>().Hammer();
-            }
-            else
-            {
-                Action_PressMoveBlockButtonInvoke();
-            }
-        }
-
-        //If pressing - Respawn
-        else if (Input.GetKeyDown(KeyCode.R))
-        {
-            PlayerStats.Instance.RespawnPlayer();
-        }
-
-        //If pressing - Quit
-        else if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            QuitLevel();
-        }
-    }
     bool KeyInputsChecks()
     {
         if (movementStates == MovementStates.Moving) { return false; }
@@ -247,6 +145,14 @@ public class Player_Movement : Singleton<Player_Movement>
             lastMovementButtonPressed = ButtonsToPress.W;
             StartCeilingGrabMovement(Vector3.forward);
         }
+        else if (CheckLaddersToEnter_Up(DirectionCalculator(Vector3.forward)))
+        {
+            StartCoroutine(PerformLadderMovement_Up(DirectionCalculator(Vector3.forward), GetLadderExitPart_Up(DirectionCalculator(Vector3.forward))));
+        }
+        else if (CheckLaddersToEnter_Down(DirectionCalculator(Vector3.forward)))
+        {
+            StartCoroutine(PerformLadderMovement_Down(DirectionCalculator(Vector3.forward), GetLadderExitPart_Down(DirectionCalculator(Vector3.forward))));
+        }
         else
         {
             PrepareMovement(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
@@ -260,6 +166,14 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             lastMovementButtonPressed = ButtonsToPress.S;
             StartCeilingGrabMovement(Vector3.back);
+        }
+        else if (CheckLaddersToEnter_Up(DirectionCalculator(Vector3.back)))
+        {
+            StartCoroutine(PerformLadderMovement_Up(DirectionCalculator(Vector3.back), GetLadderExitPart_Up(DirectionCalculator(Vector3.back))));
+        }
+        else if (CheckLaddersToEnter_Down(DirectionCalculator(Vector3.back)))
+        {
+            StartCoroutine(PerformLadderMovement_Down(DirectionCalculator(Vector3.back), GetLadderExitPart_Down(DirectionCalculator(Vector3.back))));
         }
         else
         {
@@ -275,6 +189,14 @@ public class Player_Movement : Singleton<Player_Movement>
             lastMovementButtonPressed = ButtonsToPress.A;
             StartCeilingGrabMovement(Vector3.left);
         }
+        else if (CheckLaddersToEnter_Up(DirectionCalculator(Vector3.left)))
+        {
+            StartCoroutine(PerformLadderMovement_Up(DirectionCalculator(Vector3.left), GetLadderExitPart_Up(DirectionCalculator(Vector3.left))));
+        }
+        else if (CheckLaddersToEnter_Down(DirectionCalculator(Vector3.left)))
+        {
+            StartCoroutine(PerformLadderMovement_Down(DirectionCalculator(Vector3.left), GetLadderExitPart_Down(DirectionCalculator(Vector3.left))));
+        }
         else
         {
             PrepareMovement(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
@@ -288,6 +210,14 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             lastMovementButtonPressed = ButtonsToPress.D;
             StartCeilingGrabMovement(Vector3.right);
+        }
+        else if (CheckLaddersToEnter_Up(DirectionCalculator(Vector3.right)))
+        {
+            StartCoroutine(PerformLadderMovement_Up(DirectionCalculator(Vector3.right), GetLadderExitPart_Up(DirectionCalculator(Vector3.right))));
+        }
+        else if (CheckLaddersToEnter_Down(DirectionCalculator(Vector3.right)))
+        {
+            StartCoroutine(PerformLadderMovement_Down(DirectionCalculator(Vector3.right), GetLadderExitPart_Down(DirectionCalculator(Vector3.right))));
         }
         else
         {
@@ -764,28 +694,343 @@ public class Player_Movement : Singleton<Player_Movement>
 
     #region Ladder
     
-
-
-    #endregion
-
-
-    //--------------------
-
-
-    bool MovementTransition(Vector3 endPos, float speed)
+    void FindLadderExitBlock()
     {
-        transform.position = Vector3.MoveTowards(transform.position, endPos + (Vector3.up * heightOverBlock), speed * Time.deltaTime);
-
-        //Snap into place when close enough
-        if (Vector3.Distance(transform.position, endPos + (Vector3.up * heightOverBlock)) <= 0.03f)
+        CheckAvailableLadderExitBlocks(DirectionCalculator(Vector3.forward));
+        CheckAvailableLadderExitBlocks(DirectionCalculator(Vector3.back));
+        CheckAvailableLadderExitBlocks(DirectionCalculator(Vector3.left));
+        CheckAvailableLadderExitBlocks(DirectionCalculator(Vector3.right));
+    }
+    void CheckAvailableLadderExitBlocks(Vector3 dir)
+    {
+        //Check from the bottom and up
+        if (Physics.Raycast(transform.position, dir, out hit, 1))
         {
-            transform.position = endPos + (Vector3.up * heightOverBlock);
-
-            return true;
+            if (hit.transform.gameObject.GetComponent<Block_Ladder_New>())
+            {
+                hit.transform.gameObject.GetComponent<Block_Ladder_New>().DarkenExitBlock_Up(dir);
+            }
         }
 
+        //Check from the top and down
+        if (Physics.Raycast(transform.position + (dir * 0.65f), Vector3.down, out hit, 1))
+        {
+            if (hit.transform.gameObject.GetComponent<Block_Ladder_New>())
+            {
+                hit.transform.gameObject.GetComponent<Block_Ladder_New>().DarkenExitBlock_Down();
+            }
+        }
+    }
+
+    bool CheckLaddersToEnter_Up(Vector3 dir)
+    {
+        //Check from the bottom and up
+        if (Physics.Raycast(transform.position, dir, out hit, 1))
+        {
+            if (hit.transform.gameObject.GetComponent<Block_Ladder_New>())
+            {
+                return true;
+            }
+        }
+
+        //If no ladder is found
         return false;
     }
+    bool CheckLaddersToEnter_Down(Vector3 dir)
+    {
+        //Check from the top and down
+        if (Physics.Raycast(transform.position + (dir * 0.65f), Vector3.down, out hit, 1))
+        {
+            if (hit.transform.gameObject.GetComponent<Block_Ladder_New>())
+            {
+                return true;
+            }
+        }
+
+        //If no ladder is found
+        return false;
+    }
+
+    GameObject GetLadderExitPart_Up(Vector3 dir)
+    {
+        //Check from the bottom and up
+        if (Physics.Raycast(transform.position, dir, out hit, 1))
+        {
+            if (hit.transform.gameObject.GetComponent<Block_Ladder_New>())
+            {
+                return hit.transform.gameObject.GetComponent<Block_Ladder_New>().lastLadderPart_Up;
+            }
+        }
+
+        return null;
+    }
+    GameObject GetLadderExitPart_Down(Vector3 dir)
+    {
+        //Check from the top and down
+        if (Physics.Raycast(transform.position + (dir * 0.65f), Vector3.down, out hit, 1))
+        {
+            if (hit.transform.gameObject.GetComponent<Block_Ladder_New>())
+            {
+                return hit.transform.gameObject.GetComponent<Block_Ladder_New>().lastLadderPart_Down;
+            }
+        }
+
+        return null;
+    }
+
+    IEnumerator PerformLadderMovement_Up(Vector3 dir, GameObject targetPosObj)
+    {
+        Action_ResetBlockColorInvoke();
+
+        if (dir == Vector3.forward)
+            SetPlayerBodyRotation(0);
+        else if (dir == Vector3.back)
+            SetPlayerBodyRotation(180);
+        else if (dir == Vector3.left)
+            SetPlayerBodyRotation(-90);
+        else if (dir == Vector3.right)
+            SetPlayerBodyRotation(90);
+
+        #region Setup Movement Parameters
+
+        isMovingOnLadder_Up = true;
+        ladderClimbPos_Start = transform.position;
+
+        movementStates = MovementStates.Moving;
+        PlayerManager.Instance.pauseGame = true;
+        PlayerManager.Instance.isTransportingPlayer = true;
+
+        Vector3 startPosition;
+        Vector3 endPosition;
+        float ladderClimbDuration = 0;
+        float elapsedTime = 0;
+
+        #endregion
+
+
+        #region Move To Top LadderPart
+
+        startPosition = transform.position;
+        endPosition = targetPosObj.transform.position + (Vector3.up * heightOverBlock);
+
+        ladderClimbDuration = Vector3.Distance(startPosition, endPosition) * 0.4f;
+        elapsedTime = 0f;
+
+        //Move to the top ladder
+        while (elapsedTime < ladderClimbDuration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            // Calculate the progress of the ladderMovement
+            float progress = elapsedTime / ladderClimbDuration;
+
+            // Interpolate the up/down position
+            Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, progress);
+
+            // Update the player's position
+            transform.position = currentPosition;
+
+            Action_ResetBlockColorInvoke();
+
+            yield return null;
+        }
+
+        // Ensure the player lands exactly at the end position
+        transform.position = endPosition;
+
+        #endregion
+
+        #region Move To ExitBlock
+
+        endPosition = startPosition + dir;
+        if (Physics.Raycast(transform.position + dir, Vector3.down, out hit, 1))
+        {
+            if (hit.transform.gameObject.GetComponent<BlockInfo>())
+            {
+                endPosition = hit.transform.gameObject.transform.position + (Vector3.up * heightOverBlock);
+            }
+        }
+
+        startPosition = transform.position;
+
+        ladderClimbDuration = 0.4f;
+        elapsedTime = 0f;
+
+        //Move to the top ladder
+        while (elapsedTime < ladderClimbDuration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            // Calculate the progress of the ladderMovement
+            float progress = elapsedTime / ladderClimbDuration;
+
+            // Interpolate the up/down position
+            Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, progress);
+
+            // Update the player's position
+            transform.position = currentPosition;
+
+            Action_ResetBlockColorInvoke();
+
+            yield return null;
+        }
+
+        // Ensure the player lands exactly at the end position
+        transform.position = endPosition;
+
+        #endregion
+
+
+        #region Setup StopMovement Parameters
+
+        Player_BlockDetector.Instance.RaycastSetup();
+
+        isMovingOnLadder_Up = false;
+
+        movementStates = MovementStates.Still;
+        PlayerManager.Instance.pauseGame = false;
+        PlayerManager.Instance.isTransportingPlayer = false;
+
+        Player_BlockDetector.Instance.Update_BlockStandingOn();
+
+        FindLadderExitBlock();
+        Action_ResetBlockColorInvoke();
+        Action_StepTaken_Invoke();
+
+        #endregion
+    }
+    IEnumerator PerformLadderMovement_Down(Vector3 dir, GameObject targetPosObj)
+    {
+        Action_ResetBlockColorInvoke();
+
+        #region Setup Movement Parameters
+
+        isMovingOnLadder_Down = true;
+        ladderClimbPos_Start = transform.position;
+
+        movementStates = MovementStates.Moving;
+        PlayerManager.Instance.pauseGame = true;
+        PlayerManager.Instance.isTransportingPlayer = true;
+
+        Vector3 startPosition;
+        Vector3 endPosition;
+        float ladderClimbDuration = 0;
+        float elapsedTime = 0;
+
+        #endregion
+
+        if (dir == Vector3.forward)
+            SetPlayerBodyRotation(0);
+        else if (dir == Vector3.back)
+            SetPlayerBodyRotation(180);
+        else if (dir == Vector3.left)
+            SetPlayerBodyRotation(-90);
+        else if (dir == Vector3.right)
+            SetPlayerBodyRotation(90);
+
+        #region Move From ExitBlock
+
+        startPosition = transform.position;
+        endPosition = startPosition + dir;
+
+        ladderClimbDuration = 0.4f;
+        elapsedTime = 0f;
+
+        //Move to the top ladder
+        while (elapsedTime < ladderClimbDuration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            // Calculate the progress of the ladderMovement
+            float progress = elapsedTime / ladderClimbDuration;
+
+            // Interpolate the up/down position
+            Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, progress);
+
+            // Update the player's position
+            transform.position = currentPosition;
+
+            Action_ResetBlockColorInvoke();
+
+            yield return null;
+        }
+
+        // Ensure the player lands exactly at the end position
+        transform.position = endPosition;
+
+        #endregion
+
+        if (dir == Vector3.forward)
+            SetPlayerBodyRotation(180);
+        else if (dir == Vector3.back)
+            SetPlayerBodyRotation(0);
+        else if (dir == Vector3.left)
+            SetPlayerBodyRotation(90);
+        else if (dir == Vector3.right)
+            SetPlayerBodyRotation(-90);
+
+        #region Move To Bottom LadderPart
+
+        startPosition = transform.position;
+        endPosition = targetPosObj.transform.position/* + (Vector3.up * heightOverBlock)*/;
+
+        ladderClimbDuration = Vector3.Distance(startPosition, endPosition) * 0.4f;
+        elapsedTime = 0f;
+
+        //Move to the bottom ladder
+        while (elapsedTime < ladderClimbDuration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            // Calculate the progress of the ladderMovement
+            float progress = elapsedTime / ladderClimbDuration;
+
+            // Interpolate the up/down position
+            Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, progress);
+
+            // Update the player's position
+            transform.position = currentPosition;
+
+            Action_ResetBlockColorInvoke();
+
+            yield return null;
+        }
+
+        // Ensure the player lands exactly at the end position
+        transform.position = endPosition;
+
+        #endregion
+
+
+        if (dir == Vector3.forward)
+            SetPlayerBodyRotation(0);
+        else if (dir == Vector3.back)
+            SetPlayerBodyRotation(180);
+        else if (dir == Vector3.left)
+            SetPlayerBodyRotation(-90);
+        else if (dir == Vector3.right)
+            SetPlayerBodyRotation(90);
+
+        #region Setup StopMovement Parameters
+
+        Player_BlockDetector.Instance.RaycastSetup();
+
+        isMovingOnLadder_Down = false;
+
+        movementStates = MovementStates.Still;
+        PlayerManager.Instance.pauseGame = false;
+        PlayerManager.Instance.isTransportingPlayer = false;
+
+        Player_BlockDetector.Instance.Update_BlockStandingOn();
+
+        FindLadderExitBlock();
+        Action_ResetBlockColorInvoke();
+        Action_StepTaken_Invoke();
+
+        #endregion
+    }
+
+    #endregion
 
 
     //--------------------

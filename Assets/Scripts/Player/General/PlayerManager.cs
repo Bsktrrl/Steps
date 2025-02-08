@@ -171,44 +171,37 @@ public class PlayerManager : Singleton<PlayerManager>
         Player_Movement.Instance.Key_MoveForward();
         Player_Dash.Instance.Dash_Forward();
         Player_Jumping.Instance.Jump_Forward();
-        print("OnForward");
     }
     void OnBackward()
     {
         Player_Movement.Instance.Key_MoveBackward();
         Player_Dash.Instance.Dash_Backward();
         Player_Jumping.Instance.Jump_Backward();
-        print("OnBackward");
     }
     void OnLeft()
     {
         Player_Movement.Instance.Key_MoveLeft();
         Player_Dash.Instance.Dash_Left();
         Player_Jumping.Instance.Jump_Left();
-        print("OnLeft");
     }
     void OnRight()
     {
         Player_Movement.Instance.Key_MoveRight();
         Player_Dash.Instance.Dash_Right();
         Player_Jumping.Instance.Jump_Right();
-        print("OnRight");
     }
     void OnCameraRotateX()
     {
         Cameras_v2.Instance.RotateCameraX();
-        print("OnCameraRotateX");
     }
     void OnCameraRotateY()
     {
         Cameras_v2.Instance.RotateCameraY();
-        print("OnCameraRotateY");
     }
     void OnAbilityUp()
     {
         Player_Movement.Instance.Key_SwiftSwimUp();
         Player_Ascend.Instance.RunAscend();
-        print("OnAbilityUp");
     }
     void OnAbilityDown()
     {
@@ -216,32 +209,26 @@ public class PlayerManager : Singleton<PlayerManager>
         Player_Interact.Instance.InteractWithObject();
         Player_Descend.Instance.RunDescend();
         Player_Movement.Instance.Action_PressMoveBlockButtonInvoke();
-        print("OnAbilityDown");
     }
     void OnAbilityLeft()
     {
         Player_CeilingGrab.Instance.CeilingGrab();
-        print("OnAbilityLeft");
     }
     void OnAbilityRight_DownPress()
     {
         Player_GraplingHook.Instance.StartGrappling();
-        print("OnAbilityRight_DownPress");
     }
     void OnAbilityRight_RelesePress()
     {
         Player_GraplingHook.Instance.StopGrappling();
-        print("OnAbilityRight_RelesePress");
     }
     void OnRespawn()
     {
         Player_Movement.Instance.Key_Respawn();
-        print("OnRespawn");
     }
     void OnQuit()
     {
         Player_Movement.Instance.Key_Quit();
-        print("OnQuit");
     }
 }
 
