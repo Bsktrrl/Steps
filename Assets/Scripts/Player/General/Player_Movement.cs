@@ -43,6 +43,7 @@ public class Player_Movement : Singleton<Player_Movement>
     Vector3 ladderClimbPos_Start;
     Vector3 ladderClimbPos_End;
     public int ladderPartsToClimb;
+    [SerializeField] Quaternion ladderToEnterRot;
 
 
     //--------------------
@@ -313,64 +314,81 @@ public class Player_Movement : Singleton<Player_Movement>
         movementStates = MovementStates.Still;
         SetPlayerBodyRotation(rotation);
     }
-    public void SetPlayerBodyRotation(int rotationValue)
+    public void SetPlayerBodyRotation(float rotationValue)
     {
         if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
-        //Set new Rotation - Based on the key input
-        switch (Cameras_v2.Instance.cameraRotationState)
+        //Ladder Rotation - Rotate together with the ladder
+        if (isMovingOnLadder_Up || isMovingOnLadder_Down)
         {
-            case CameraRotationState.Forward:
-                PlayerManager.Instance.playerBody.transform.SetPositionAndRotation(PlayerManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 0 + rotationValue, 0));
-                
-                if (rotationValue == 0 || rotationValue == 360)
-                    Cameras_v2.Instance.directionFacing = Vector3.forward;
-                else if (rotationValue == 180)
-                    Cameras_v2.Instance.directionFacing = Vector3.back;
-                else if (rotationValue == 90)
-                    Cameras_v2.Instance.directionFacing = Vector3.right;
-                else if (rotationValue == -90 || rotationValue == 270)
-                    Cameras_v2.Instance.directionFacing = Vector3.left;
-                break;
-            case CameraRotationState.Backward:
-                PlayerManager.Instance.playerBody.transform.SetPositionAndRotation(PlayerManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 180 + rotationValue, 0));
-                
-                if (180 + rotationValue == 0 || 180 + rotationValue == 360)
-                    Cameras_v2.Instance.directionFacing = Vector3.back;
-                else if (180 + rotationValue == 180)
-                    Cameras_v2.Instance.directionFacing = Vector3.forward;
-                else if (180 + rotationValue == 90)
-                    Cameras_v2.Instance.directionFacing = Vector3.left;
-                else if (180 + rotationValue == -90 || 180 + rotationValue == 270)
-                    Cameras_v2.Instance.directionFacing = Vector3.right;
-                break;
-            case CameraRotationState.Left:
-                PlayerManager.Instance.playerBody.transform.SetPositionAndRotation(PlayerManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 90 + rotationValue, 0));
-                
-                if (90 + rotationValue == 0 || 90 + rotationValue == 360)
-                    Cameras_v2.Instance.directionFacing = Vector3.left;
-                else if (90 + rotationValue == 180)
-                    Cameras_v2.Instance.directionFacing = Vector3.right;
-                else if (90 + rotationValue == 90)
-                    Cameras_v2.Instance.directionFacing = Vector3.forward;
-                else if (90 + rotationValue == -90 || 90 + rotationValue == 270)
-                    Cameras_v2.Instance.directionFacing = Vector3.back;
-                break;
-            case CameraRotationState.Right:
-                PlayerManager.Instance.playerBody.transform.SetPositionAndRotation(PlayerManager.Instance.playerBody.transform.position, Quaternion.Euler(0, -90 + rotationValue, 0));
-                
-                if (-90 + rotationValue == 0 || -90 + rotationValue == 360)
-                    Cameras_v2.Instance.directionFacing = Vector3.right;
-                else if (-90 + rotationValue == 180 || -90 + rotationValue == -180)
-                    Cameras_v2.Instance.directionFacing = Vector3.left;
-                else if (-90 + rotationValue == 90)
-                    Cameras_v2.Instance.directionFacing = Vector3.back;
-                else if (-90 + rotationValue == -90 || -90 + rotationValue == 270)
-                    Cameras_v2.Instance.directionFacing = Vector3.forward;
-                break;
+            if (rotationValue == int.MinValue)
+            {
+                PlayerManager.Instance.playerBody.transform.SetPositionAndRotation(PlayerManager.Instance.playerBody.transform.position, ladderToEnterRot);
+            }
+            else
+            {
+                PlayerManager.Instance.playerBody.transform.SetPositionAndRotation(PlayerManager.Instance.playerBody.transform.position, ladderToEnterRot * Quaternion.Euler(0, 180, 0));
+            }
+        }
 
-            default:
-                break;
+        //Normal Rotation
+        else
+        {
+            //Set new Rotation - Based on the key input
+            switch (Cameras_v2.Instance.cameraRotationState)
+            {
+                case CameraRotationState.Forward:
+                    PlayerManager.Instance.playerBody.transform.SetPositionAndRotation(PlayerManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 0 + rotationValue, 0));
+
+                    if (rotationValue == 0 || rotationValue == 360)
+                        Cameras_v2.Instance.directionFacing = Vector3.forward;
+                    else if (rotationValue == 180)
+                        Cameras_v2.Instance.directionFacing = Vector3.back;
+                    else if (rotationValue == 90)
+                        Cameras_v2.Instance.directionFacing = Vector3.right;
+                    else if (rotationValue == -90 || rotationValue == 270)
+                        Cameras_v2.Instance.directionFacing = Vector3.left;
+                    break;
+                case CameraRotationState.Backward:
+                    PlayerManager.Instance.playerBody.transform.SetPositionAndRotation(PlayerManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 180 + rotationValue, 0));
+
+                    if (180 + rotationValue == 0 || 180 + rotationValue == 360)
+                        Cameras_v2.Instance.directionFacing = Vector3.back;
+                    else if (180 + rotationValue == 180)
+                        Cameras_v2.Instance.directionFacing = Vector3.forward;
+                    else if (180 + rotationValue == 90)
+                        Cameras_v2.Instance.directionFacing = Vector3.left;
+                    else if (180 + rotationValue == -90 || 180 + rotationValue == 270)
+                        Cameras_v2.Instance.directionFacing = Vector3.right;
+                    break;
+                case CameraRotationState.Left:
+                    PlayerManager.Instance.playerBody.transform.SetPositionAndRotation(PlayerManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 90 + rotationValue, 0));
+
+                    if (90 + rotationValue == 0 || 90 + rotationValue == 360)
+                        Cameras_v2.Instance.directionFacing = Vector3.left;
+                    else if (90 + rotationValue == 180)
+                        Cameras_v2.Instance.directionFacing = Vector3.right;
+                    else if (90 + rotationValue == 90)
+                        Cameras_v2.Instance.directionFacing = Vector3.forward;
+                    else if (90 + rotationValue == -90 || 90 + rotationValue == 270)
+                        Cameras_v2.Instance.directionFacing = Vector3.back;
+                    break;
+                case CameraRotationState.Right:
+                    PlayerManager.Instance.playerBody.transform.SetPositionAndRotation(PlayerManager.Instance.playerBody.transform.position, Quaternion.Euler(0, -90 + rotationValue, 0));
+
+                    if (-90 + rotationValue == 0 || -90 + rotationValue == 360)
+                        Cameras_v2.Instance.directionFacing = Vector3.right;
+                    else if (-90 + rotationValue == 180 || -90 + rotationValue == -180)
+                        Cameras_v2.Instance.directionFacing = Vector3.left;
+                    else if (-90 + rotationValue == 90)
+                        Cameras_v2.Instance.directionFacing = Vector3.back;
+                    else if (-90 + rotationValue == -90 || -90 + rotationValue == 270)
+                        Cameras_v2.Instance.directionFacing = Vector3.forward;
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         Action_BodyRotated?.Invoke();
@@ -696,10 +714,10 @@ public class Player_Movement : Singleton<Player_Movement>
     
     void FindLadderExitBlock()
     {
-        CheckAvailableLadderExitBlocks(DirectionCalculator(Vector3.forward));
-        CheckAvailableLadderExitBlocks(DirectionCalculator(Vector3.back));
-        CheckAvailableLadderExitBlocks(DirectionCalculator(Vector3.left));
-        CheckAvailableLadderExitBlocks(DirectionCalculator(Vector3.right));
+        CheckAvailableLadderExitBlocks(Vector3.forward);
+        CheckAvailableLadderExitBlocks(Vector3.back);
+        CheckAvailableLadderExitBlocks(Vector3.left);
+        CheckAvailableLadderExitBlocks(Vector3.right);
     }
     void CheckAvailableLadderExitBlocks(Vector3 dir)
     {
@@ -758,6 +776,7 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (hit.transform.gameObject.GetComponent<Block_Ladder_New>())
             {
+                ladderToEnterRot = hit.transform.rotation;
                 return hit.transform.gameObject.GetComponent<Block_Ladder_New>().lastLadderPart_Up;
             }
         }
@@ -771,6 +790,7 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (hit.transform.gameObject.GetComponent<Block_Ladder_New>())
             {
+                ladderToEnterRot = hit.transform.rotation;
                 return hit.transform.gameObject.GetComponent<Block_Ladder_New>().lastLadderPart_Down;
             }
         }
@@ -781,15 +801,6 @@ public class Player_Movement : Singleton<Player_Movement>
     IEnumerator PerformLadderMovement_Up(Vector3 dir, GameObject targetPosObj)
     {
         Action_ResetBlockColorInvoke();
-
-        if (dir == Vector3.forward)
-            SetPlayerBodyRotation(0);
-        else if (dir == Vector3.back)
-            SetPlayerBodyRotation(180);
-        else if (dir == Vector3.left)
-            SetPlayerBodyRotation(-90);
-        else if (dir == Vector3.right)
-            SetPlayerBodyRotation(90);
 
         #region Setup Movement Parameters
 
@@ -807,6 +818,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
         #endregion
 
+        SetPlayerBodyRotation(int.MinValue);
 
         #region Move To Top LadderPart
 
@@ -919,14 +931,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
         #endregion
 
-        if (dir == Vector3.forward)
-            SetPlayerBodyRotation(0);
-        else if (dir == Vector3.back)
-            SetPlayerBodyRotation(180);
-        else if (dir == Vector3.left)
-            SetPlayerBodyRotation(-90);
-        else if (dir == Vector3.right)
-            SetPlayerBodyRotation(90);
+        SetPlayerBodyRotation(0);
 
         #region Move From ExitBlock
 
@@ -960,14 +965,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
         #endregion
 
-        if (dir == Vector3.forward)
-            SetPlayerBodyRotation(180);
-        else if (dir == Vector3.back)
-            SetPlayerBodyRotation(0);
-        else if (dir == Vector3.left)
-            SetPlayerBodyRotation(90);
-        else if (dir == Vector3.right)
-            SetPlayerBodyRotation(-90);
+        SetPlayerBodyRotation(int.MinValue);
 
         #region Move To Bottom LadderPart
 
@@ -1001,15 +999,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
         #endregion
 
-
-        if (dir == Vector3.forward)
-            SetPlayerBodyRotation(0);
-        else if (dir == Vector3.back)
-            SetPlayerBodyRotation(180);
-        else if (dir == Vector3.left)
-            SetPlayerBodyRotation(-90);
-        else if (dir == Vector3.right)
-            SetPlayerBodyRotation(90);
+        SetPlayerBodyRotation(0);
 
         #region Setup StopMovement Parameters
 
