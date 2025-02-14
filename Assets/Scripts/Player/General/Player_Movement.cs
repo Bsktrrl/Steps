@@ -473,7 +473,7 @@ public class Player_Movement : Singleton<Player_Movement>
             gameObject.transform.position = gameObject.transform.position + (Vector3.down * fallSpeed * Time.deltaTime);
         }
         //Land the fall
-        else if (movementStates == MovementStates.Falling && distance <= 0.95f /*0.15*/)
+        else if (movementStates == MovementStates.Falling && distance <= 0.1f /*0.15*/)
         {
             gameObject.transform.position = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * heightOverBlock);
             movementStates = MovementStates.Still;
@@ -1094,7 +1094,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
             PlayerStats.Instance.stats.steps_Current += PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
 
-            //Forward - Ladder is rotated 0
+            //Forward - Slope is rotated 0
             if (PlayerManager.Instance.block_StandingOn_Current.block.transform.rotation == Quaternion.Euler(0, 0, 0))
             {
                 if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward)
@@ -1151,7 +1151,7 @@ public class Player_Movement : Singleton<Player_Movement>
                 }
             }
 
-            //Back - Ladder is rotated 180
+            //Back - Slope is rotated 180
             else if (PlayerManager.Instance.block_StandingOn_Current.block.transform.rotation == Quaternion.Euler(0, 180, 0))
             {
                 if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward)
@@ -1208,7 +1208,7 @@ public class Player_Movement : Singleton<Player_Movement>
                 }
             }
 
-            //Left - Ladder is rotated -90
+            //Left - Slope is rotated -90
             else if (PlayerManager.Instance.block_StandingOn_Current.block.transform.rotation == Quaternion.Euler(0, -90, 0))
             {
                 if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward)
@@ -1265,7 +1265,7 @@ public class Player_Movement : Singleton<Player_Movement>
                 }
             }
 
-            //Right - Ladder is rotated 90
+            //Right - Slope is rotated 90
             else if (PlayerManager.Instance.block_StandingOn_Current.block.transform.rotation == Quaternion.Euler(0, 90, 0))
             {
                 if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward)
