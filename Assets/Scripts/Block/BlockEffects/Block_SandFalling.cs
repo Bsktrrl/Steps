@@ -156,6 +156,8 @@ public class Block_SandFalling : MonoBehaviour
     }
     void Falling()
     {
+        GetComponent<BoxCollider>().enabled = false;
+
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endPos, PlayerManager.Instance.player.GetComponent<Player_Movement>().fallSpeed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, endPos) <= 0.03f)
@@ -200,6 +202,7 @@ public class Block_SandFalling : MonoBehaviour
 
     public void ResetBlock()
     {
+        GetComponent<BoxCollider>().enabled = true;
         waitCounter = 0;
 
         isSteppedOn = false;

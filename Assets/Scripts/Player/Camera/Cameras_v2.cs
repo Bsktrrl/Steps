@@ -123,7 +123,6 @@ public class Cameras_v2 : Singleton<Cameras_v2>
         if (Player_Interact.Instance.isInteracting) { return; }
         if (Player_Movement.Instance.isIceGliding) { return; }
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
-        if (Player_Movement.Instance.ladderMovement_Top_ToBlock) { return; }
 
         //Rotate Camera
         switch (cameraRotationState)
@@ -154,7 +153,6 @@ public class Cameras_v2 : Singleton<Cameras_v2>
         if (Player_Interact.Instance.isInteracting) { return; }
         if (Player_Movement.Instance.isIceGliding) { return; }
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
-        if (Player_Movement.Instance.ladderMovement_Top_ToBlock) { return; }
 
         //Rotate Camera
         switch (cameraRotationState)
