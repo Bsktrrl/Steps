@@ -132,9 +132,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 6
+  movementCost_Temp: 0
   movementCost: 1
   movementSpeed: 5
   stepCostText_Color: {r: 0.8196079, g: 0.9215687, b: 0.85098046, a: 1}
+  stepCostText_ColorUnder: {r: 0, g: 0, b: 0, a: 0}
   stepSound_Volume: 1
   stepSound_ClipList:
   - {fileID: 8300000, guid: 90502903ea0732947b8a173c14e1c46d, type: 3}
@@ -147,6 +149,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 41cde15ea068fc041ae208dd78dbb4ac, type: 3}
   - {fileID: 8300000, guid: 91ee21c2144029942a3f214ac504b8d0, type: 3}
   - {fileID: 8300000, guid: c262b2fe2d375f54f99001ff299df043, type: 3}
+  stepSound_Source: {fileID: 0}
   startPos: {x: 0, y: 0, z: 0}
   hasOtherMaterial: 1
   upper_Front_Left: {fileID: 0}

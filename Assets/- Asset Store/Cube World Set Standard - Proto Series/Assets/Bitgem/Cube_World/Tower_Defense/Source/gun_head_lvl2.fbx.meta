@@ -1,51 +1,121 @@
 fileFormatVersion: 2
 guid: 8da01616c29c24412a1f13c76932ea0a
 ModelImporter:
-  serializedVersion: 22
-  fileIDToRecycleName:
-    100000: gun_barrel_lvl2_LOD0
-    100002: gun_barrel_lvl2_LOD1
-    100004: gun_barrel_lvl2_LOD2
-    100006: gun_head_lvl2_LOD0
-    100008: gun_head_lvl2_LOD1
-    100010: gun_head_lvl2_LOD2
-    100012: //RootNode
-    400000: gun_barrel_lvl2_LOD0
-    400002: gun_barrel_lvl2_LOD1
-    400004: gun_barrel_lvl2_LOD2
-    400006: gun_head_lvl2_LOD0
-    400008: gun_head_lvl2_LOD1
-    400010: gun_head_lvl2_LOD2
-    400012: //RootNode
-    2100000: cw_tower_defense_mat
-    2300000: gun_barrel_lvl2_LOD0
-    2300002: gun_barrel_lvl2_LOD1
-    2300004: gun_barrel_lvl2_LOD2
-    2300006: gun_head_lvl2_LOD0
-    2300008: gun_head_lvl2_LOD1
-    2300010: gun_head_lvl2_LOD2
-    3300000: gun_barrel_lvl2_LOD0
-    3300002: gun_barrel_lvl2_LOD1
-    3300004: gun_barrel_lvl2_LOD2
-    3300006: gun_head_lvl2_LOD0
-    3300008: gun_head_lvl2_LOD1
-    3300010: gun_head_lvl2_LOD2
-    4300000: gun_head_lvl2_LOD0
-    4300002: gun_head_lvl2_LOD1
-    4300004: gun_head_lvl2_LOD2
-    4300006: gun_barrel_lvl2_LOD0
-    4300008: gun_barrel_lvl2_LOD1
-    4300010: gun_barrel_lvl2_LOD2
-    9500000: //RootNode
-    20500000: //RootNode
+  serializedVersion: 22200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: gun_barrel_lvl2_LOD0
+  - first:
+      1: 100002
+    second: gun_barrel_lvl2_LOD1
+  - first:
+      1: 100004
+    second: gun_barrel_lvl2_LOD2
+  - first:
+      1: 100006
+    second: gun_head_lvl2_LOD0
+  - first:
+      1: 100008
+    second: gun_head_lvl2_LOD1
+  - first:
+      1: 100010
+    second: gun_head_lvl2_LOD2
+  - first:
+      1: 100012
+    second: //RootNode
+  - first:
+      4: 400000
+    second: gun_barrel_lvl2_LOD0
+  - first:
+      4: 400002
+    second: gun_barrel_lvl2_LOD1
+  - first:
+      4: 400004
+    second: gun_barrel_lvl2_LOD2
+  - first:
+      4: 400006
+    second: gun_head_lvl2_LOD0
+  - first:
+      4: 400008
+    second: gun_head_lvl2_LOD1
+  - first:
+      4: 400010
+    second: gun_head_lvl2_LOD2
+  - first:
+      4: 400012
+    second: //RootNode
+  - first:
+      21: 2100000
+    second: cw_tower_defense_mat
+  - first:
+      23: 2300000
+    second: gun_barrel_lvl2_LOD0
+  - first:
+      23: 2300002
+    second: gun_barrel_lvl2_LOD1
+  - first:
+      23: 2300004
+    second: gun_barrel_lvl2_LOD2
+  - first:
+      23: 2300006
+    second: gun_head_lvl2_LOD0
+  - first:
+      23: 2300008
+    second: gun_head_lvl2_LOD1
+  - first:
+      23: 2300010
+    second: gun_head_lvl2_LOD2
+  - first:
+      33: 3300000
+    second: gun_barrel_lvl2_LOD0
+  - first:
+      33: 3300002
+    second: gun_barrel_lvl2_LOD1
+  - first:
+      33: 3300004
+    second: gun_barrel_lvl2_LOD2
+  - first:
+      33: 3300006
+    second: gun_head_lvl2_LOD0
+  - first:
+      33: 3300008
+    second: gun_head_lvl2_LOD1
+  - first:
+      33: 3300010
+    second: gun_head_lvl2_LOD2
+  - first:
+      43: 4300000
+    second: gun_head_lvl2_LOD0
+  - first:
+      43: 4300002
+    second: gun_head_lvl2_LOD1
+  - first:
+      43: 4300004
+    second: gun_head_lvl2_LOD2
+  - first:
+      43: 4300006
+    second: gun_barrel_lvl2_LOD0
+  - first:
+      43: 4300008
+    second: gun_barrel_lvl2_LOD1
+  - first:
+      43: 4300010
+    second: gun_barrel_lvl2_LOD2
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      205: 20500000
+    second: //RootNode
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: cw_tower_defense_mat
-    second: {fileID: 2100000, guid: ab08612e63d71e8419000749e3c68d16, type: 2}
+    second: {fileID: 2100000, guid: 6d33dedcf93266a42b719ccebb837517, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -54,6 +124,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -62,6 +133,7 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -79,32 +151,49 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 0
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -114,14 +203,19 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 0
   humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
