@@ -292,7 +292,7 @@ GameObject:
   - component: {fileID: 637782804517391595}
   - component: {fileID: 3390249119756866681}
   - component: {fileID: 3777200665227406201}
-  - component: {fileID: 1230132010412791627}
+  - component: {fileID: 3083042628871215818}
   m_Layer: 0
   m_Name: Wood Ladder
   m_TagString: Untagged
@@ -394,7 +394,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1230132010412791627
+--- !u!114 &3083042628871215818
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -403,8 +403,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5885767538957264795}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d2a792848767464aa4b04f39ac2b64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   raycastPoint: {fileID: 1000199850979757825}
   lastLadderPart_Up: {fileID: 0}
   lastLadderPart_Down: {fileID: 0}
+  exitBlock_Up: {fileID: 0}
+  exitBlock_Down: {fileID: 0}
