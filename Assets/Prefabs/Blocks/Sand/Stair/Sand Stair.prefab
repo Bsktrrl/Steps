@@ -129,9 +129,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 2
+  movementCost_Temp: 0
   movementCost: 1
   movementSpeed: 3
-  stepCostText_Color: {r: 0.9725491, g: 0.9333334, b: 0.6313726, a: 1}
+  stepCostText_Color: {r: 0.9843137, g: 0.96862745, b: 0.6431373, a: 1}
+  stepCostText_ColorUnder: {r: 0, g: 0, b: 0, a: 0}
   stepSound_Volume: 0.75
   stepSound_ClipList:
   - {fileID: 8300000, guid: 648179f02878b9e4fac6731c934ab895, type: 3}
@@ -143,6 +145,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4f88c18f553756142b3a5c01ff3ad82f, type: 3}
   - {fileID: 8300000, guid: 08e96d41fb52ab449819bfa332565247, type: 3}
   - {fileID: 8300000, guid: dbfbee47da7a9f94aa9a633fe7cb217c, type: 3}
+  stepSound_Source: {fileID: 0}
   startPos: {x: 0, y: 0, z: 0}
   hasOtherMaterial: 1
   upper_Front_Left: {fileID: 0}
@@ -295,7 +298,7 @@ Transform:
   m_GameObject: {fileID: 2664947608512553523}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.085, z: 0.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
