@@ -227,12 +227,12 @@ public class BlockStepCostDisplay : MonoBehaviour
     {
         if (Player_CeilingGrab.Instance.isCeilingGrabbing)
         {
-            if (!GetComponent<Block_Snow>())
+            if (!GetComponent<Block_Snow>() && GetComponent<BlockInfo>().blockType != BlockType.Stair && GetComponent<BlockInfo>().blockType != BlockType.Slope)
                 stepCostDisplay_Canvas.transform.localPosition = new Vector3(0, -0.55f, 0);
         }
         else
         {
-            if (!GetComponent<Block_Snow>())
+            if (!GetComponent<Block_Snow>() && GetComponent<BlockInfo>().blockType != BlockType.Stair && GetComponent<BlockInfo>().blockType != BlockType.Slope)
                 stepCostDisplay_Canvas.transform.localPosition = new Vector3(0, 0.55f, 0);
         }
     }

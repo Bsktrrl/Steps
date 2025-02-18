@@ -32,23 +32,7 @@ public class Block_SandFalling : MonoBehaviour
     {
         GetLODObjects();
 
-        //Check if the Block has another block under itself
-        if (Physics.Raycast(gameObject.transform.position, Vector3.down, out hit, 1))
-        {
-            if (hit.transform.gameObject.GetComponent<BlockInfo>())
-            {
-                canFall = false;
-                return;
-            }
-            else
-            {
-                canFall = true;
-            }
-        }
-        else
-        {
-            canFall = true;
-        }
+        CheckIfCanFall();
 
         //Get endPos
         if (Physics.Raycast(gameObject.transform.position, Vector3.down, out hit))
@@ -119,8 +103,49 @@ public class Block_SandFalling : MonoBehaviour
                 LOD_ObjectsList.Add(child.gameObject);
             }
 
-            objectInitialRotation = child.transform.rotation;
+            objectInitialRotation = /*child.*/transform.rotation;
         }
+    }
+
+
+    //--------------------
+
+
+    void CheckIfCanFall()
+    {
+        //Check if the Block has another block under itself
+        if (GetComponent<BlockInfo>().blockType == BlockType.Stair)
+        {
+            if (Physics.Raycast(gameObject.transform.position + (Vector3.up * 0.5f), Vector3.down, out hit, 1))
+            {
+                if (hit.transform.gameObject.GetComponent<BlockInfo>())
+                {
+                    canFall = false;
+                    return;
+                }
+            }
+        }
+        else
+        {
+            if (Physics.Raycast(gameObject.transform.position, Vector3.down, out hit, 1))
+            {
+                if (hit.transform.gameObject.GetComponent<BlockInfo>())
+                {
+                    if (GetComponent<Block_Slab>())
+                    {
+                        canFall = true;
+                        return;
+                    }
+                    else
+                    {
+                        canFall = false;
+                        return;
+                    }
+                }
+            }
+        }
+        
+        canFall = true;
     }
 
 
@@ -156,7 +181,10 @@ public class Block_SandFalling : MonoBehaviour
     }
     void Falling()
     {
-        GetComponent<BoxCollider>().enabled = false;
+        if (GetComponent<BoxCollider>())
+            GetComponent<BoxCollider>().enabled = false;
+        else if (GetComponent<MeshCollider>())
+            GetComponent<MeshCollider>().enabled = false;
 
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endPos, PlayerManager.Instance.player.GetComponent<Player_Movement>().fallSpeed * Time.deltaTime);
 
@@ -188,10 +216,10 @@ public class Block_SandFalling : MonoBehaviour
             for (int i = 0; i < LOD_ObjectsList.Count; i++)
             {
                 float shakeValue = Mathf.Sin(Time.time * shakingSpeed) * shakingIntensity;
-                Vector3 currentRotation = transform.localEulerAngles;
+                Vector3 currentRotation = transform.eulerAngles;
                 currentRotation.x = objectInitialRotation.x + shakeValue;
 
-                LOD_ObjectsList[i].transform.localEulerAngles = currentRotation;
+                LOD_ObjectsList[i].transform.eulerAngles = currentRotation;
             }
         }
     }
@@ -202,7 +230,11 @@ public class Block_SandFalling : MonoBehaviour
 
     public void ResetBlock()
     {
-        GetComponent<BoxCollider>().enabled = true;
+        if (GetComponent<BoxCollider>())
+            GetComponent<BoxCollider>().enabled = true;
+        else if (GetComponent<MeshCollider>())
+            GetComponent<MeshCollider>().enabled = true;
+
         waitCounter = 0;
 
         isSteppedOn = false;

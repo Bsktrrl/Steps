@@ -190,6 +190,7 @@ public class PlayerManager : Singleton<PlayerManager>
         Player_Dash.Instance.Dash_Right();
         Player_Jumping.Instance.Jump_Right();
     }
+
     void OnCameraRotateX()
     {
         Cameras_v2.Instance.RotateCameraX();
