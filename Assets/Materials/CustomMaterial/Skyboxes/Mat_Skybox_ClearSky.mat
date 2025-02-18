@@ -79,6 +79,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 01712917e0f91b0449a1a7ef8d7e913f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_5290514a72ab4ba4929ac4bac782a8a1_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 01712917e0f91b0449a1a7ef8d7e913f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_58cbf199871146a48678679e31070f35_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: 01712917e0f91b0449a1a7ef8d7e913f, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -114,12 +118,13 @@ Material:
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _ClearSkies: 0.67
-    - _CloudBrightness: 0.5
+    - _CloudBrightness: 1
     - _CloudBrightnessIntensity: 1
     - _CloudDarkBrightness: 1
-    - _CloudDarkness: 1.5
+    - _CloudDarkness: 1
     - _CloudDensity: 1
     - _CloudQuantity: 1
+    - _CloudSharpness: 1
     - _CloudSize: 1
     - _Contrast: 1
     - _Cull: 2
@@ -153,6 +158,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
+    - _SunSize: 1
     - _Surface: 0
     - _WindSpeed: 1
     - _WorkflowMode: 1
@@ -167,9 +173,10 @@ Material:
     - _GroundLakeColor: {r: 0.3058824, g: 0.6352941, b: 0.6705883, a: 1}
     - _GroundSecondaryColor: {r: 0.30588236, g: 0.63529414, b: 0.67058825, a: 1}
     - _GroundTopColor: {r: 0.74509805, g: 0.8862746, b: 0.1764706, a: 1}
-    - _SkyBottomColor: {r: 0.46666667, g: 0.80784315, b: 0.75686276, a: 1}
-    - _SkyTopColor: {r: 0.30588236, g: 0.63529414, b: 0.67058825, a: 1}
+    - _SkyBottomColor: {r: 0.4431373, g: 0.7843138, b: 0.74509805, a: 1}
+    - _SkyTopColor: {r: 0.58431375, g: 0.94117653, b: 0.8196079, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - _SunColor: {r: 0.9960785, g: 0.9529412, b: 0.5607843, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &2389634903884177514
 MonoBehaviour:
