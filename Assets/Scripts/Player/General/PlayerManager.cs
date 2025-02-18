@@ -53,6 +53,15 @@ public class PlayerManager : Singleton<PlayerManager>
     public bool pauseGame;
     public bool isTransportingPlayer;
 
+    [Header("KeyPresses")]
+    public bool forward_isPressed;
+    public bool back_isPressed;
+    public bool left_isPressed;
+    public bool right_isPressed;
+
+    public bool cameraX_isPressed;
+    public bool cameraY_isPressed;
+
     #endregion
 
 
@@ -69,7 +78,7 @@ public class PlayerManager : Singleton<PlayerManager>
     }
     private void Update()
     {
-        RespawnPlayerIfToLow();
+        RespawnPlayerIfToLowInMapHeight();
     }
 
     private void OnEnable()
@@ -153,7 +162,7 @@ public class PlayerManager : Singleton<PlayerManager>
     //--------------------
 
 
-    void RespawnPlayerIfToLow()
+    void RespawnPlayerIfToLowInMapHeight()
     {
         if (transform.position.y <= -5)
         {
@@ -166,29 +175,53 @@ public class PlayerManager : Singleton<PlayerManager>
     //--------------------
 
 
-    void OnForward()
+    void OnForward_Down()
     {
-        Player_Movement.Instance.Key_MoveForward();
-        Player_Dash.Instance.Dash_Forward();
-        Player_Jumping.Instance.Jump_Forward();
+        forward_isPressed = true;
+
+        //Player_Movement.Instance.Key_MoveForward();
+        //Player_Dash.Instance.Dash_Forward();
+        //Player_Jumping.Instance.Jump_Forward();
     }
-    void OnBackward()
+    void OnForward_Up()
     {
-        Player_Movement.Instance.Key_MoveBackward();
-        Player_Dash.Instance.Dash_Backward();
-        Player_Jumping.Instance.Jump_Backward();
+        forward_isPressed = false;
     }
-    void OnLeft()
+    void OnBackward_Down()
     {
-        Player_Movement.Instance.Key_MoveLeft();
-        Player_Dash.Instance.Dash_Left();
-        Player_Jumping.Instance.Jump_Left();
+        back_isPressed = true;
+
+        //Player_Movement.Instance.Key_MoveBackward();
+        //Player_Dash.Instance.Dash_Backward();
+        //Player_Jumping.Instance.Jump_Backward();
     }
-    void OnRight()
+    void OnBackward_Up()
     {
-        Player_Movement.Instance.Key_MoveRight();
-        Player_Dash.Instance.Dash_Right();
-        Player_Jumping.Instance.Jump_Right();
+        back_isPressed = false;
+    }
+    void OnLeft_Down()
+    {
+        left_isPressed = true;
+
+        //Player_Movement.Instance.Key_MoveLeft();
+        //Player_Dash.Instance.Dash_Left();
+        //Player_Jumping.Instance.Jump_Left();
+    }
+    void OnLeft_Up()
+    {
+        left_isPressed = false;
+    }
+    void OnRight_Down()
+    {
+        right_isPressed = true;
+
+        //Player_Movement.Instance.Key_MoveRight();
+        //Player_Dash.Instance.Dash_Right();
+        //Player_Jumping.Instance.Jump_Right();
+    }
+    void OnRight_Up()
+    {
+        right_isPressed = false;
     }
 
     void OnCameraRotateX()

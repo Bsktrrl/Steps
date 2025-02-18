@@ -42,7 +42,14 @@ public class Player_Jumping : Singleton<Player_Jumping>
         if (PlayerManager.Instance.pauseGame) { return; }
         if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
-        //StartJumping();
+        if (PlayerManager.Instance.forward_isPressed)
+            Jump_Forward();
+        else if (PlayerManager.Instance.back_isPressed)
+            Jump_Backward();
+        else if (PlayerManager.Instance.left_isPressed)
+            Jump_Left();
+        else if (PlayerManager.Instance.right_isPressed)
+            Jump_Right();
     }
 
 

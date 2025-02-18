@@ -55,10 +55,16 @@ public class Player_Movement : Singleton<Player_Movement>
     }
     private void Update()
     {
+        if (PlayerManager.Instance.forward_isPressed)
+            Key_MoveForward();
+        else if (PlayerManager.Instance.back_isPressed)
+            Key_MoveBackward();
+        else if(PlayerManager.Instance.left_isPressed)
+            Key_MoveLeft();
+        else if(PlayerManager.Instance.right_isPressed)
+            Key_MoveRight();
+
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return; }
-
-        //KeyInputs();
-
         if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
         if (movementStates == MovementStates.Moving

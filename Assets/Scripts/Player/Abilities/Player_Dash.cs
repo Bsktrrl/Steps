@@ -41,7 +41,14 @@ public class Player_Dash : Singleton<Player_Dash>
         if (PlayerManager.Instance.pauseGame) { return; }
         if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
-        //StartDashing();
+        if (PlayerManager.Instance.forward_isPressed)
+            Dash_Forward();
+        else if (PlayerManager.Instance.back_isPressed)
+            Dash_Backward();
+        else if (PlayerManager.Instance.left_isPressed)
+            Dash_Left();
+        else if (PlayerManager.Instance.right_isPressed)
+            Dash_Right();
     }
 
     private void OnEnable()
@@ -54,9 +61,9 @@ public class Player_Dash : Singleton<Player_Dash>
     private void OnDisable()
     {
         //DataManager.Action_dataHasLoaded -= StartRunningObject;
-        DataManager.Action_dataHasLoaded += CheckIfCanDash;
-        Player_Movement.Action_StepTaken += CheckIfCanDash;
-        Player_Movement.Action_BodyRotated += CheckIfCanDash;
+        DataManager.Action_dataHasLoaded -= CheckIfCanDash;
+        Player_Movement.Action_StepTaken -= CheckIfCanDash;
+        Player_Movement.Action_BodyRotated -= CheckIfCanDash;
     }
 
 

@@ -6,16 +6,25 @@
             "id": "f24e43b6-dcf5-48c7-8242-493154a64bd8",
             "actions": [
                 {
-                    "name": "Forward",
+                    "name": "Forward_Down",
                     "type": "Button",
                     "id": "698dd996-43b0-44a5-a792-4385cd8476b7",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press",
+                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Backward",
+                    "name": "Forward_Up",
+                    "type": "Button",
+                    "id": "8282b741-e069-41c2-95d9-cd28074c081c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Backward_Down",
                     "type": "Button",
                     "id": "f9e0f72d-325a-4de9-8bb2-e104ab3a9ee5",
                     "expectedControlType": "Button",
@@ -24,7 +33,16 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Left",
+                    "name": "Backward_Up",
+                    "type": "Button",
+                    "id": "2fbc98d3-8bf9-4cf0-829c-e22502d206ab",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Left_Down",
                     "type": "Button",
                     "id": "595f16cd-19a0-428e-8f64-f9293489938a",
                     "expectedControlType": "Button",
@@ -33,12 +51,30 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Right",
+                    "name": "Left_Up",
+                    "type": "Button",
+                    "id": "9c31b299-341e-4736-a10b-b79f515a3ac1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Right_Down",
                     "type": "Button",
                     "id": "9965efa7-33e9-4806-baae-d25af22b9e05",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Right_Up",
+                    "type": "Button",
+                    "id": "75955030-b0f8-4d33-8a9a-a4d8767bd1b4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)",
                     "initialStateCheck": false
                 },
                 {
@@ -131,7 +167,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Forward",
+                    "action": "Forward_Down",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -142,7 +178,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Forward",
+                    "action": "Forward_Down",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -153,7 +189,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Backward",
+                    "action": "Backward_Down",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -164,7 +200,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Backward",
+                    "action": "Backward_Down",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -175,7 +211,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Left",
+                    "action": "Left_Down",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -186,7 +222,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Left",
+                    "action": "Left_Down",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -197,7 +233,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Right",
+                    "action": "Right_Down",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -208,7 +244,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Right",
+                    "action": "Right_Down",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -429,6 +465,94 @@
                     "processors": "",
                     "groups": "",
                     "action": "AbilityRight_RelesePress",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "26d785ca-036f-4ee7-9ea0-7d5e739a7db4",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Forward_Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2b4b0ac2-0a4e-40c8-89bc-681e9b61d7b9",
+                    "path": "<Keyboard>/#(W)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Forward_Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "125c5e19-44a5-417f-9701-e961b089c256",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Backward_Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "75fa4698-c6aa-428c-9ce4-c0ea129b4a12",
+                    "path": "<Keyboard>/#(S)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Backward_Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2339d31d-b3e7-4bea-a0c2-3d6d0c30ac04",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left_Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "afbb416f-9d92-49ab-832e-1e07dc8437d8",
+                    "path": "<Keyboard>/#(A)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left_Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "96a7635a-29d9-457e-924e-7db0d8d9c647",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right_Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "62b543bb-12a2-4883-90ed-137349dc8310",
+                    "path": "<Keyboard>/#(D)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right_Up",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
