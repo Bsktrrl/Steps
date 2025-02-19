@@ -39,12 +39,12 @@ public class BlockStepCostDisplay : MonoBehaviour
 
     private void OnEnable()
     {
-        Cameras_v2.rotateCamera += UpdateRotation;
+        Cameras_v2.rotateCamera_End += UpdateRotation;
     }
 
     private void OnDisable()
     {
-        Cameras_v2.rotateCamera -= UpdateRotation;
+        Cameras_v2.rotateCamera_End -= UpdateRotation;
     }
 
 
@@ -136,8 +136,7 @@ public class BlockStepCostDisplay : MonoBehaviour
 
     public void UpdateRotation()
     {
-        if (gameObject.GetComponent<BlockInfo>().blockType == BlockType.Ladder) { return; }
-
+        //If ceilingGrabbing
         if (Player_CeilingGrab.Instance.isCeilingGrabbing)
         {
             //If the block is a Cube
@@ -150,6 +149,8 @@ public class BlockStepCostDisplay : MonoBehaviour
             else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Right)
                 stepCostDisplay_Canvas.transform.localRotation = Quaternion.Euler(startRot_X_Canvas, -gameObject.transform.eulerAngles.y + 90, 0);
         }
+
+        //If normal movement
         else
         {
             //If the block is a Stair
@@ -213,16 +214,92 @@ public class BlockStepCostDisplay : MonoBehaviour
             else
             {
                 if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward)
+                {
                     stepCostDisplay_Canvas.transform.localRotation = Quaternion.Euler(startRot_X_Canvas, -gameObject.transform.eulerAngles.y + 0, 0);
+
+                    RotateBlockCheck(new Vector3(0, 0, 0) + GetBlockOrientationWithCamera());
+                }
                 else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Backward)
+                {
                     stepCostDisplay_Canvas.transform.localRotation = Quaternion.Euler(startRot_X_Canvas, -gameObject.transform.eulerAngles.y + 180, 0);
+
+                    RotateBlockCheck(new Vector3(0, 180, 0) + GetBlockOrientationWithCamera());
+                }
                 else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Left)
+                {
                     stepCostDisplay_Canvas.transform.localRotation = Quaternion.Euler(startRot_X_Canvas, -gameObject.transform.eulerAngles.y + 90, 0);
+
+                    RotateBlockCheck(new Vector3(0, 90, 0) + GetBlockOrientationWithCamera());
+                }
                 else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Right)
+                {
                     stepCostDisplay_Canvas.transform.localRotation = Quaternion.Euler(startRot_X_Canvas, -gameObject.transform.eulerAngles.y + -90, 0);
+
+                    RotateBlockCheck(new Vector3(0, -90, 0) + GetBlockOrientationWithCamera());
+                }
             }
         }
     }
+    Vector3 GetBlockOrientationWithCamera()
+    {
+        switch (Cameras_v2.Instance.cameraRotationState)
+        {
+            case CameraRotationState.Forward:
+                return new Vector3(0, 0, 0);
+            case CameraRotationState.Backward:
+                return new Vector3(0, 180, 0);
+            case CameraRotationState.Left:
+                return new Vector3(0, -90, 0);
+            case CameraRotationState.Right:
+                return new Vector3(0, 90, 0);
+
+            default:
+                break;
+        }
+
+        return Vector3.zero;
+    }
+    void RotateBlockCheck(Vector3 rotation)
+    {
+        if (transform.rotation == Quaternion.Euler(0, 0, 0))
+            stepCostDisplay_Parent.transform.localRotation = Quaternion.Euler(0 + rotation.x, 0 + rotation.y, 0 + rotation.z);
+
+        else if (transform.rotation == Quaternion.Euler(0, 0, 90))
+            stepCostDisplay_Parent.transform.localRotation = Quaternion.Euler(0 + rotation.x, 0 + rotation.y, -90 + rotation.z);
+        else if (transform.rotation == Quaternion.Euler(0, 0, 180))
+            stepCostDisplay_Parent.transform.localRotation = Quaternion.Euler(0 + rotation.x, 0 + rotation.y, 180 + rotation.z);
+        else if (transform.rotation == Quaternion.Euler(0, 0, -90))
+            stepCostDisplay_Parent.transform.localRotation = Quaternion.Euler(0 + rotation.x, 0 + rotation.y, 90 + rotation.z);
+
+        else if (transform.rotation == Quaternion.Euler(90, 0, 0))
+            stepCostDisplay_Parent.transform.localRotation = Quaternion.Euler(-90 + rotation.x, 0 + rotation.y, 0 + rotation.z);
+        else if (transform.rotation == Quaternion.Euler(180, 0, 0))
+            stepCostDisplay_Parent.transform.localRotation = Quaternion.Euler(180 + rotation.x, 180 + rotation.y, 0 + rotation.z);
+        else if (transform.rotation == Quaternion.Euler(-90, 0, 0))
+            stepCostDisplay_Parent.transform.localRotation = Quaternion.Euler(90 + rotation.x, 0 + rotation.y, 0 + rotation.z);
+
+        else if (transform.rotation == Quaternion.Euler(90, 0, 90))
+            stepCostDisplay_Parent.transform.localRotation = Quaternion.Euler(-90 + rotation.x, 0 + rotation.y, 0 + rotation.z);
+        else if (transform.rotation == Quaternion.Euler(180, 0, 90))
+            stepCostDisplay_Parent.transform.localRotation = Quaternion.Euler(0 + rotation.x, 0 + rotation.y, 90 + rotation.z);
+        else if (transform.rotation == Quaternion.Euler(-90, 0, 90))
+            stepCostDisplay_Parent.transform.localRotation = Quaternion.Euler(90 + rotation.x, 0 + rotation.y, 0 + rotation.z);
+
+        else if (transform.rotation == Quaternion.Euler(90, 0, 180))
+            stepCostDisplay_Parent.transform.localRotation = Quaternion.Euler(-90 + rotation.x, 0 + rotation.y, 0 + rotation.z);
+        else if (transform.rotation == Quaternion.Euler(180, 0, 180))
+            stepCostDisplay_Parent.transform.localRotation = Quaternion.Euler(0 + rotation.x, 0 + rotation.y, 0 + rotation.z);
+        else if (transform.rotation == Quaternion.Euler(-90, 0, 180))
+            stepCostDisplay_Parent.transform.localRotation = Quaternion.Euler(90 + rotation.x, 0 + rotation.y, 0 + rotation.z);
+
+        else if (transform.rotation == Quaternion.Euler(90, 0, -90))
+            stepCostDisplay_Parent.transform.localRotation = Quaternion.Euler(-90 + rotation.x, 0 + rotation.y, 0 + rotation.z);
+        else if (transform.rotation == Quaternion.Euler(180, 0, -90))
+            stepCostDisplay_Parent.transform.localRotation = Quaternion.Euler(0 + rotation.x, 0 + rotation.y, -90 + rotation.z);
+        else if (transform.rotation == Quaternion.Euler(-90, 0, -90))
+            stepCostDisplay_Parent.transform.localRotation = Quaternion.Euler(90 + rotation.x, 0 + rotation.y, 0 + rotation.z);
+    }
+
     public void UpdatePosition()
     {
         if (Player_CeilingGrab.Instance.isCeilingGrabbing)
@@ -247,7 +324,7 @@ public class BlockStepCostDisplay : MonoBehaviour
 
     public void DestroyBlockStepCostDisplay()
     {
-        Cameras_v2.rotateCamera -= UpdateRotation;
+        Cameras_v2.rotateCamera_Start -= UpdateRotation;
 
         Destroy(this);
     }

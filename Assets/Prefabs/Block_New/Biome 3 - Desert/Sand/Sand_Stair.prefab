@@ -421,7 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a201269b3f988984da941a6b8a00096e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockType: 2
+  blockType: 3
   movementCost_Temp: 0
   movementCost: 1
   movementSpeed: 3
@@ -495,6 +495,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59c6303a3ae35d240abf10db01e61687, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSteppedOn: 0
+  canFall: 0
 --- !u!4 &1776855020074143413 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0712773cd7df46b43b9de3bbb598a4a0, type: 3}

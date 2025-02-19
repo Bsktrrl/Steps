@@ -255,69 +255,33 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             {
                 PlayerManager.Instance.block_Horizontal_InFront.block = hit.transform.gameObject;
                 PlayerManager.Instance.block_Horizontal_InFront.blockPosition = hit.transform.position;
-                //MainManager.Instance.block_Horizontal_InFront.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
                 PlayerManager.Instance.block_Horizontal_InFront.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
 
-                if (PlayerManager.Instance.block_Horizontal_InFront.blockType == BlockType.Fence
-                    && (PlayerStats.Instance.stats.abilitiesGot_Permanent.FenceSneak || PlayerStats.Instance.stats.abilitiesGot_Temporary.FenceSneak))
-                {
-                    ResetRaycastDirection_Horizontal(direction);
-                }
-                else
-                {
-                    CheckRaycastDirection_Horizontal(direction);
-                }
+                CheckRaycastDirection_Horizontal(direction);
             }
             else if (rayPointObject == detectorSpot_Horizontal_Back)
             {
                 PlayerManager.Instance.block_Horizontal_InBack.block = hit.transform.gameObject;
                 PlayerManager.Instance.block_Horizontal_InBack.blockPosition = hit.transform.position;
-                //MainManager.Instance.block_Horizontal_InBack.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
                 PlayerManager.Instance.block_Horizontal_InBack.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
 
-                if (PlayerManager.Instance.block_Horizontal_InBack.blockType == BlockType.Fence
-                    && (PlayerStats.Instance.stats.abilitiesGot_Permanent.FenceSneak || PlayerStats.Instance.stats.abilitiesGot_Temporary.FenceSneak))
-                {
-                    ResetRaycastDirection_Horizontal(direction);
-                }
-                else
-                {
-                    CheckRaycastDirection_Horizontal(direction);
-                }
+                CheckRaycastDirection_Horizontal(direction);
             }
             else if (rayPointObject == detectorSpot_Horizontal_Left)
             {
                 PlayerManager.Instance.block_Horizontal_ToTheLeft.block = hit.transform.gameObject;
                 PlayerManager.Instance.block_Horizontal_ToTheLeft.blockPosition = hit.transform.position;
-                //MainManager.Instance.block_Horizontal_ToTheLeft.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
                 PlayerManager.Instance.block_Horizontal_ToTheLeft.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
 
-                if (PlayerManager.Instance.block_Horizontal_ToTheLeft.blockType == BlockType.Fence
-                    && (PlayerStats.Instance.stats.abilitiesGot_Permanent.FenceSneak || PlayerStats.Instance.stats.abilitiesGot_Temporary.FenceSneak))
-                {
-                    ResetRaycastDirection_Horizontal(direction);
-                }
-                else
-                {
-                    CheckRaycastDirection_Horizontal(direction);
-                }
+                CheckRaycastDirection_Horizontal(direction);
             }
             else if (rayPointObject == detectorSpot_Horizontal_Right)
             {
                 PlayerManager.Instance.block_Horizontal_ToTheRight.block = hit.transform.gameObject;
                 PlayerManager.Instance.block_Horizontal_ToTheRight.blockPosition = hit.transform.position;
-                //MainManager.Instance.block_Horizontal_ToTheRight.blockElement = hit.transform.GetComponent<BlockInfo>().blockElement;
                 PlayerManager.Instance.block_Horizontal_ToTheRight.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
 
-                if (PlayerManager.Instance.block_Horizontal_ToTheRight.blockType == BlockType.Fence
-                    && (PlayerStats.Instance.stats.abilitiesGot_Permanent.FenceSneak || PlayerStats.Instance.stats.abilitiesGot_Temporary.FenceSneak))
-                {
-                    ResetRaycastDirection_Horizontal(direction);
-                }
-                else
-                {
-                    CheckRaycastDirection_Horizontal(direction);
-                }
+                CheckRaycastDirection_Horizontal(direction);
             }
         }
     }
@@ -548,44 +512,13 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
             if (hit.transform.GetComponent<BlockInfo>())
             {
-                if (hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Ladder)
+                if (hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Cube || hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Stair || hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                 {
                     Raycast_Vertical_Hit(rayPointObject, direction);
-
-                    //if (direction == Vector3.forward)
-                    //    Player_Movement.Instance.isOnLadder_Forward = true;
-                    //else if (direction == Vector3.back)
-                    //    Player_Movement.Instance.isOnLadder_Back = true;
-                    //else if (direction == Vector3.left)
-                    //    Player_Movement.Instance.isOnLadder_Left = true;
-                    //else if (direction == Vector3.right)
-                    //    Player_Movement.Instance.isOnLadder_Right = true;
-                }
-                else if (hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Cube || hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Stair || hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Slope)
-                {
-                    Raycast_Vertical_Hit(rayPointObject, direction);
-
-                    //if (direction == Vector3.forward)
-                    //    Player_Movement.Instance.isOnLadder_Forward = false;
-                    //else if (direction == Vector3.back)
-                    //    Player_Movement.Instance.isOnLadder_Back = false;
-                    //else if (direction == Vector3.left)
-                    //    Player_Movement.Instance.isOnLadder_Left = false;
-                    //else if (direction == Vector3.right)
-                    //    Player_Movement.Instance.isOnLadder_Right = false;
                 }
                 else
                 {
                     Raycast_Vertical_NotHit(rayPointObject, direction);
-
-                    //if (direction == Vector3.forward)
-                    //    Player_Movement.Instance.isOnLadder_Forward = false;
-                    //else if (direction == Vector3.back)
-                    //    Player_Movement.Instance.isOnLadder_Back = false;
-                    //else if (direction == Vector3.left)
-                    //    Player_Movement.Instance.isOnLadder_Left = false;
-                    //else if (direction == Vector3.right)
-                    //    Player_Movement.Instance.isOnLadder_Right = false;
                 }
             }
         }

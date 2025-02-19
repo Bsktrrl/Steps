@@ -17,10 +17,7 @@ public enum BlockType
     None,
 
     Cube,
+    Slab,
     Stair,
-    Ladder,
-    Chest,
-
-    Fence,
     Slope,
 }

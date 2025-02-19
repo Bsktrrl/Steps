@@ -207,9 +207,6 @@ public class BlockInfo : MonoBehaviour
     {
         if (PlayerManager.Instance.player.GetComponent<Player_Dash>().isDashing) { return; }
 
-        //Don't darken Fences
-        if (blockType == BlockType.Fence) { return; }
-
         if (PlayerStats.Instance.stats.steps_Current <= 0 && movementCost > 0 /*|| PlayerStats.Instance.stats.steps_Current < movementCost*/)
         {
             ResetColor();

@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class Cameras_v2 : Singleton<Cameras_v2>
 {
-    public static event Action rotateCamera;
+    public static event Action rotateCamera_Start;
+    public static event Action rotateCamera_End;
 
     [Header("Camera Objects")]
     public GameObject cameraAnchor;
@@ -178,7 +179,7 @@ public class Cameras_v2 : Singleton<Cameras_v2>
     
     IEnumerator RotateCamera(float angle)
     {
-        rotateCamera?.Invoke();
+        rotateCamera_Start?.Invoke();
 
         isRotating = true;
         PlayerManager.Instance.pauseGame = true;
@@ -209,6 +210,8 @@ public class Cameras_v2 : Singleton<Cameras_v2>
 
         PlayerManager.Instance.pauseGame = false;
         isRotating = false;
+
+        rotateCamera_End?.Invoke();
     }
 
     public IEnumerator CeilingCameraRotation(float angle)

@@ -51,7 +51,7 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
 
     private void Start()
     {
-        Cameras_v2.rotateCamera += RotateAbilityDisplay;
+        Cameras_v2.rotateCamera_Start += RotateAbilityDisplay;
 
         FindAllMoveableBlocks();
     }

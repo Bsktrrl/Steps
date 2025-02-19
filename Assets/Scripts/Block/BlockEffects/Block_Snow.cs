@@ -7,6 +7,7 @@ public class Block_Snow : MonoBehaviour
 {
     [HideInInspector] public List<GameObject> LOD_ObjectList = new List<GameObject>();
     [SerializeField] float scale_Y_Value;
+    [SerializeField] float localInitialPos_Y;
 
 
     //--------------------
@@ -15,7 +16,10 @@ public class Block_Snow : MonoBehaviour
     private void Start()
     {
         GetLOD();
+
+        SetLocalInitialPos_Y();
         SetRandomBlockHeight();
+
         ChangeStepCounterPosition();
     }
 
@@ -44,9 +48,16 @@ public class Block_Snow : MonoBehaviour
             LOD_ObjectList.Add(meshFilter.gameObject); // Add the GameObject to the list
         }
     }
+    void SetLocalInitialPos_Y()
+    {
+        localInitialPos_Y = GetComponent<BlockStepCostDisplay>().stepCostDisplay_Parent.transform.localPosition.y;
+    }
     void SetRandomBlockHeight()
     {
-        scale_Y_Value = Random.Range(1, 1.3f);
+        if (GetComponent<Block_Slab>())
+            scale_Y_Value = Random.Range(0.3f, 0.6f);
+        else
+            scale_Y_Value = Random.Range(1, 1.3f);
 
         for (int i = 0; i < LOD_ObjectList.Count; i++)
         {
@@ -59,12 +70,14 @@ public class Block_Snow : MonoBehaviour
 
         if (Player_CeilingGrab.Instance.isCeilingGrabbing)
         {
-            //parentObject.transform.SetLocalPositionAndRotation(new Vector3(parentObject.transform.localPosition.x, (transform.position.y - (scale_Y_Value / 2)), parentObject.transform.localPosition.z), Quaternion.identity);
             parentObject.transform.SetLocalPositionAndRotation(new Vector3(parentObject.transform.localPosition.x, (- 1 - (scale_Y_Value - 1) - (scale_Y_Value / 10)), parentObject.transform.localPosition.z), Quaternion.identity);
         }
         else
         {
-            parentObject.transform.SetLocalPositionAndRotation(new Vector3(parentObject.transform.localPosition.x, (scale_Y_Value - 1), parentObject.transform.localPosition.z), Quaternion.identity);
+            if (GetComponent<Block_Slab>())
+                parentObject.transform.SetLocalPositionAndRotation(new Vector3(parentObject.transform.localPosition.x, (scale_Y_Value / 2) - (localInitialPos_Y * 2), parentObject.transform.localPosition.z), Quaternion.identity);
+            else
+                parentObject.transform.SetLocalPositionAndRotation(new Vector3(parentObject.transform.localPosition.x, (scale_Y_Value - 1) /*- (localInitialPos_Y * 2)*/, parentObject.transform.localPosition.z), Quaternion.identity);
         }
     }
 }
