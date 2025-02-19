@@ -499,7 +499,6 @@ GameObject:
   - component: {fileID: -8819657648693349318}
   - component: {fileID: -4497441376897358016}
   - component: {fileID: 649598099138777075}
-  - component: {fileID: -6180413164355646348}
   - component: {fileID: 5897615969962187951}
   m_Layer: 0
   m_Name: Ice Slab
@@ -614,7 +613,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a201269b3f988984da941a6b8a00096e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockType: 1
+  blockType: 2
   movementCost_Temp: 0
   movementCost: 0
   movementSpeed: 10
@@ -687,18 +686,6 @@ MonoBehaviour:
   stepCostDisplay_Parent: {fileID: 8592660458317237858}
   stepCostDisplay_Canvas: {fileID: 6667757825329926087}
   stepCostText_Object: {fileID: 5636382640978990328}
---- !u!114 &-6180413164355646348
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7973629113959537282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb7a58216ff840e47b49bea5564dc4db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5897615969962187951
 MonoBehaviour:
   m_ObjectHideFlags: 0

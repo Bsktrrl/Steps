@@ -531,7 +531,6 @@ GameObject:
   - component: {fileID: -1123600580293932278}
   - component: {fileID: 7391431407361038109}
   - component: {fileID: -9053846819528810529}
-  - component: {fileID: 4380621620999797701}
   m_Layer: 0
   m_Name: Stone Slab
   m_TagString: Untagged
@@ -645,7 +644,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a201269b3f988984da941a6b8a00096e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockType: 1
+  blockType: 2
   movementCost_Temp: 0
   movementCost: 1
   movementSpeed: 4
@@ -708,15 +707,3 @@ MonoBehaviour:
   stepCostDisplay_Parent: {fileID: 4323485375478483329}
   stepCostDisplay_Canvas: {fileID: 3559513065256294442}
   stepCostText_Object: {fileID: 4029224876775054861}
---- !u!114 &4380621620999797701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9214849134270302621}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb7a58216ff840e47b49bea5564dc4db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

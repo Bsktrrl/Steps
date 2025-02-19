@@ -131,7 +131,7 @@ public class Block_SandFalling : MonoBehaviour
             {
                 if (hit.transform.gameObject.GetComponent<BlockInfo>())
                 {
-                    if (GetComponent<Block_Slab>())
+                    if (hit.transform.gameObject.GetComponent<BlockInfo>().blockType == BlockType.Slab)
                     {
                         canFall = true;
                         return;

@@ -94,7 +94,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
                                 }
 
                                 //If Ascending block is a Slab and it's empty over it
-                                else if (hit.transform.GetComponent<Block_Slab>() && !hit.transform.GetComponent<BlockInfo>().upper_Center)
+                                else if (hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Slab && !hit.transform.GetComponent<BlockInfo>().upper_Center)
                                 {
                                     //print("2. Ascending - Slab and noting over");
                                     AscendingIsAllowed();
@@ -104,7 +104,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
                                 //If the space over the blockHit is a Slab
                                 else if (hit.transform.GetComponent<BlockInfo>().upper_Center != null)
                                 {
-                                    if (hit.transform.GetComponent<BlockInfo>().upper_Center.GetComponent<Block_Slab>())
+                                    if (hit.transform.GetComponent<BlockInfo>().upper_Center.GetComponent<BlockInfo>().blockType == BlockType.Slab)
                                     {
                                         //print("3. Ascending - Block over is a Slab");
                                         AscendingIsAllowed();

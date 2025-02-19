@@ -54,7 +54,7 @@ public class Block_Snow : MonoBehaviour
     }
     void SetRandomBlockHeight()
     {
-        if (GetComponent<Block_Slab>())
+        if (GetComponent<BlockInfo>().blockType == BlockType.Slab)
             scale_Y_Value = Random.Range(0.3f, 0.6f);
         else
             scale_Y_Value = Random.Range(1, 1.3f);
@@ -74,7 +74,7 @@ public class Block_Snow : MonoBehaviour
         }
         else
         {
-            if (GetComponent<Block_Slab>())
+            if (GetComponent<BlockInfo>().blockType == BlockType.Slab)
                 parentObject.transform.SetLocalPositionAndRotation(new Vector3(parentObject.transform.localPosition.x, (scale_Y_Value / 2) - (localInitialPos_Y * 2), parentObject.transform.localPosition.z), Quaternion.identity);
             else
                 parentObject.transform.SetLocalPositionAndRotation(new Vector3(parentObject.transform.localPosition.x, (scale_Y_Value - 1) /*- (localInitialPos_Y * 2)*/, parentObject.transform.localPosition.z), Quaternion.identity);

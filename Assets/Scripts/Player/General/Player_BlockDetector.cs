@@ -512,7 +512,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
             if (hit.transform.GetComponent<BlockInfo>())
             {
-                if (hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Cube || hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Stair || hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                if (hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Cube || hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Slab || hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Stair || hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                 {
                     Raycast_Vertical_Hit(rayPointObject, direction);
                 }
@@ -682,7 +682,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             else if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair
                      || PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope)
             {
-                if (blockType_Vertical.blockType == BlockType.Stair || blockType_Vertical.blockType == BlockType.Slope || blockType_Vertical.blockType == BlockType.Cube)
+                if (blockType_Vertical.blockType == BlockType.Stair || blockType_Vertical.blockType == BlockType.Slope || blockType_Vertical.blockType == BlockType.Cube || blockType_Vertical.blockType == BlockType.Slab)
                 {
                     canMove(direction, true);
                 }

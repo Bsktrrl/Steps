@@ -531,7 +531,6 @@ GameObject:
   - component: {fileID: -3153546874612216231}
   - component: {fileID: 7238446204562132273}
   - component: {fileID: -2359383679407194019}
-  - component: {fileID: 7321199641867392077}
   m_Layer: 0
   m_Name: Wood Slab - Dark - Spikes
   m_TagString: Untagged
@@ -645,7 +644,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a201269b3f988984da941a6b8a00096e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockType: 1
+  blockType: 2
   movementCost_Temp: 0
   movementCost: 1
   movementSpeed: 4
@@ -703,15 +702,3 @@ MonoBehaviour:
   stepCostDisplay_Parent: {fileID: 2728139747580075342}
   stepCostDisplay_Canvas: {fileID: 3807027208256988394}
   stepCostText_Object: {fileID: 1535202960001108959}
---- !u!114 &7321199641867392077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5176319256464975451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb7a58216ff840e47b49bea5564dc4db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
