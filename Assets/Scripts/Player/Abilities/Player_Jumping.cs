@@ -42,7 +42,14 @@ public class Player_Jumping : Singleton<Player_Jumping>
         if (PlayerManager.Instance.pauseGame) { return; }
         if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
-        //StartJumping();
+        if (PlayerManager.Instance.forward_isPressed && !PlayerManager.Instance.canMove_Forward)
+            Jump_Forward();
+        else if (PlayerManager.Instance.back_isPressed && !PlayerManager.Instance.canMove_Back)
+            Jump_Backward();
+        else if (PlayerManager.Instance.left_isPressed && !PlayerManager.Instance.canMove_Left)
+            Jump_Left();
+        else if (PlayerManager.Instance.right_isPressed && !PlayerManager.Instance.canMove_Right)
+            Jump_Right();
     }
 
 
@@ -68,7 +75,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
 
     void StartJumping()
     {
-        switch (Cameras_v2.Instance.cameraRotationState)
+        switch (CameraController.Instance.cameraRotationState)
         {
             case CameraRotationState.Forward:
                 if (Input.GetKeyDown(KeyCode.W) && canJump_Forward && jumpTarget_Forward)
@@ -132,7 +139,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
     {
         if (!JumpCheck()) { return; }
 
-        switch (Cameras_v2.Instance.cameraRotationState)
+        switch (CameraController.Instance.cameraRotationState)
         {
             case CameraRotationState.Forward:
                 if (canJump_Forward && jumpTarget_Forward)
@@ -158,7 +165,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
     {
         if (!JumpCheck()) { return; }
 
-        switch (Cameras_v2.Instance.cameraRotationState)
+        switch (CameraController.Instance.cameraRotationState)
         {
             case CameraRotationState.Forward:
                 if (canJump_Back && jumpTarget_Back)
@@ -184,7 +191,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
     {
         if (!JumpCheck()) { return; }
 
-        switch (Cameras_v2.Instance.cameraRotationState)
+        switch (CameraController.Instance.cameraRotationState)
         {
             case CameraRotationState.Forward:
                 if (canJump_Left && jumpTarget_Left)
@@ -210,7 +217,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
     {
         if (!JumpCheck()) { return; }
 
-        switch (Cameras_v2.Instance.cameraRotationState)
+        switch (CameraController.Instance.cameraRotationState)
         {
             case CameraRotationState.Forward:
                 if (canJump_Right && jumpTarget_Right)

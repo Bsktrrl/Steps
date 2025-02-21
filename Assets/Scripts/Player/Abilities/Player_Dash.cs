@@ -41,7 +41,14 @@ public class Player_Dash : Singleton<Player_Dash>
         if (PlayerManager.Instance.pauseGame) { return; }
         if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
-        //StartDashing();
+        if (PlayerManager.Instance.forward_isPressed && !PlayerManager.Instance.canMove_Forward)
+            Dash_Forward();
+        else if (PlayerManager.Instance.back_isPressed && !PlayerManager.Instance.canMove_Back)
+            Dash_Backward();
+        else if (PlayerManager.Instance.left_isPressed && !PlayerManager.Instance.canMove_Left)
+            Dash_Left();
+        else if (PlayerManager.Instance.right_isPressed && !PlayerManager.Instance.canMove_Right)
+            Dash_Right();
     }
 
     private void OnEnable()
@@ -54,9 +61,9 @@ public class Player_Dash : Singleton<Player_Dash>
     private void OnDisable()
     {
         //DataManager.Action_dataHasLoaded -= StartRunningObject;
-        DataManager.Action_dataHasLoaded += CheckIfCanDash;
-        Player_Movement.Action_StepTaken += CheckIfCanDash;
-        Player_Movement.Action_BodyRotated += CheckIfCanDash;
+        DataManager.Action_dataHasLoaded -= CheckIfCanDash;
+        Player_Movement.Action_StepTaken -= CheckIfCanDash;
+        Player_Movement.Action_BodyRotated -= CheckIfCanDash;
     }
 
 
@@ -65,7 +72,7 @@ public class Player_Dash : Singleton<Player_Dash>
 
     void StartDashing()
     {
-        switch (Cameras_v2.Instance.cameraRotationState)
+        switch (CameraController.Instance.cameraRotationState)
         {
             case CameraRotationState.Forward:
                 if (Input.GetKeyDown(KeyCode.W) && canDash_Forward && dashTarget_Forward)
@@ -129,7 +136,7 @@ public class Player_Dash : Singleton<Player_Dash>
     {
         if (!DashChecks()) { return; }
 
-        switch (Cameras_v2.Instance.cameraRotationState)
+        switch (CameraController.Instance.cameraRotationState)
         {
             case CameraRotationState.Forward:
                 if (canDash_Forward && dashTarget_Forward)
@@ -155,7 +162,7 @@ public class Player_Dash : Singleton<Player_Dash>
     {
         if (!DashChecks()) { return; }
 
-        switch (Cameras_v2.Instance.cameraRotationState)
+        switch (CameraController.Instance.cameraRotationState)
         {
             case CameraRotationState.Forward:
                 if (canDash_Back && dashTarget_Back)
@@ -181,7 +188,7 @@ public class Player_Dash : Singleton<Player_Dash>
     {
         if (!DashChecks()) { return; }
 
-        switch (Cameras_v2.Instance.cameraRotationState)
+        switch (CameraController.Instance.cameraRotationState)
         {
             case CameraRotationState.Forward:
                 if (canDash_Left && dashTarget_Left)
@@ -207,7 +214,7 @@ public class Player_Dash : Singleton<Player_Dash>
     {
         if (!DashChecks()) { return; }
 
-        switch (Cameras_v2.Instance.cameraRotationState)
+        switch (CameraController.Instance.cameraRotationState)
         {
             case CameraRotationState.Forward:
                 if (canDash_Right && dashTarget_Right)

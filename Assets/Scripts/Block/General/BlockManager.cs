@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class BlockManager : Singleton<BlockManager>
 {
     [Header("Material Darkening Value")]
@@ -17,10 +18,18 @@ public enum BlockType
     None,
 
     Cube,
+    Slab,
     Stair,
-    Ladder,
-    Chest,
-
-    Fence,
     Slope,
+}
+
+public enum BlockElement
+{
+    None,
+
+    Grass,
+    Wood,
+    Sand,
+    Sandstone,
+
 }

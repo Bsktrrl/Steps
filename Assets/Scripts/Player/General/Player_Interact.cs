@@ -26,16 +26,16 @@ public class Player_Interact : Singleton<Player_Interact>
 
     void CheckForInteractableObject()
     {
-        switch (Cameras_v2.Instance.cameraRotationState)
+        switch (CameraController.Instance.cameraRotationState)
         {
             case CameraRotationState.Forward:
-                if (PlayerManager.Instance.block_Horizontal_InFront != null && Cameras_v2.Instance.directionFacing == Vector3.forward)
+                if (PlayerManager.Instance.block_Horizontal_InFront != null && CameraController.Instance.directionFacing == Vector3.forward)
                     PerformInteraction(PlayerManager.Instance.block_Horizontal_InFront);
-                else if (PlayerManager.Instance.block_Horizontal_InBack != null && Cameras_v2.Instance.directionFacing == Vector3.back)
+                else if (PlayerManager.Instance.block_Horizontal_InBack != null && CameraController.Instance.directionFacing == Vector3.back)
                     PerformInteraction(PlayerManager.Instance.block_Horizontal_InBack);
-                else if (PlayerManager.Instance.block_Horizontal_ToTheLeft != null && Cameras_v2.Instance.directionFacing == Vector3.left)
+                else if (PlayerManager.Instance.block_Horizontal_ToTheLeft != null && CameraController.Instance.directionFacing == Vector3.left)
                     PerformInteraction(PlayerManager.Instance.block_Horizontal_ToTheLeft);
-                else if (PlayerManager.Instance.block_Horizontal_ToTheRight != null && Cameras_v2.Instance.directionFacing == Vector3.right)
+                else if (PlayerManager.Instance.block_Horizontal_ToTheRight != null && CameraController.Instance.directionFacing == Vector3.right)
                     PerformInteraction(PlayerManager.Instance.block_Horizontal_ToTheRight);
                 else
                 {
@@ -44,13 +44,13 @@ public class Player_Interact : Singleton<Player_Interact>
                 }
                 break;
             case CameraRotationState.Backward:
-                if (PlayerManager.Instance.block_Horizontal_InBack != null && Cameras_v2.Instance.directionFacing == Vector3.forward)
+                if (PlayerManager.Instance.block_Horizontal_InBack != null && CameraController.Instance.directionFacing == Vector3.forward)
                     PerformInteraction(PlayerManager.Instance.block_Horizontal_InFront);
-                else if (PlayerManager.Instance.block_Horizontal_InFront != null && Cameras_v2.Instance.directionFacing == Vector3.back)
+                else if (PlayerManager.Instance.block_Horizontal_InFront != null && CameraController.Instance.directionFacing == Vector3.back)
                     PerformInteraction(PlayerManager.Instance.block_Horizontal_InBack);
-                else if (PlayerManager.Instance.block_Horizontal_ToTheRight != null && Cameras_v2.Instance.directionFacing == Vector3.left)
+                else if (PlayerManager.Instance.block_Horizontal_ToTheRight != null && CameraController.Instance.directionFacing == Vector3.left)
                     PerformInteraction(PlayerManager.Instance.block_Horizontal_ToTheLeft);
-                else if (PlayerManager.Instance.block_Horizontal_ToTheLeft != null && Cameras_v2.Instance.directionFacing == Vector3.right)
+                else if (PlayerManager.Instance.block_Horizontal_ToTheLeft != null && CameraController.Instance.directionFacing == Vector3.right)
                     PerformInteraction(PlayerManager.Instance.block_Horizontal_ToTheRight);
                 else
                 {
@@ -59,13 +59,13 @@ public class Player_Interact : Singleton<Player_Interact>
                 }
                 break;
             case CameraRotationState.Left:
-                if (PlayerManager.Instance.block_Horizontal_ToTheLeft != null && Cameras_v2.Instance.directionFacing == Vector3.forward)
+                if (PlayerManager.Instance.block_Horizontal_ToTheLeft != null && CameraController.Instance.directionFacing == Vector3.forward)
                     PerformInteraction(PlayerManager.Instance.block_Horizontal_InFront);
-                else if (PlayerManager.Instance.block_Horizontal_ToTheRight != null && Cameras_v2.Instance.directionFacing == Vector3.back)
+                else if (PlayerManager.Instance.block_Horizontal_ToTheRight != null && CameraController.Instance.directionFacing == Vector3.back)
                     PerformInteraction(PlayerManager.Instance.block_Horizontal_InBack);
-                else if (PlayerManager.Instance.block_Horizontal_InFront != null && Cameras_v2.Instance.directionFacing == Vector3.left)
+                else if (PlayerManager.Instance.block_Horizontal_InFront != null && CameraController.Instance.directionFacing == Vector3.left)
                     PerformInteraction(PlayerManager.Instance.block_Horizontal_ToTheLeft);
-                else if (PlayerManager.Instance.block_Horizontal_InBack != null && Cameras_v2.Instance.directionFacing == Vector3.right)
+                else if (PlayerManager.Instance.block_Horizontal_InBack != null && CameraController.Instance.directionFacing == Vector3.right)
                     PerformInteraction(PlayerManager.Instance.block_Horizontal_ToTheRight);
                 else
                 {
@@ -74,13 +74,13 @@ public class Player_Interact : Singleton<Player_Interact>
                 }
                 break;
             case CameraRotationState.Right:
-                if (PlayerManager.Instance.block_Horizontal_ToTheRight != null && Cameras_v2.Instance.directionFacing == Vector3.forward)
+                if (PlayerManager.Instance.block_Horizontal_ToTheRight != null && CameraController.Instance.directionFacing == Vector3.forward)
                     PerformInteraction(PlayerManager.Instance.block_Horizontal_InFront);
-                else if (PlayerManager.Instance.block_Horizontal_ToTheLeft != null && Cameras_v2.Instance.directionFacing == Vector3.back)
+                else if (PlayerManager.Instance.block_Horizontal_ToTheLeft != null && CameraController.Instance.directionFacing == Vector3.back)
                     PerformInteraction(PlayerManager.Instance.block_Horizontal_InBack);
-                else if (PlayerManager.Instance.block_Horizontal_InBack != null && Cameras_v2.Instance.directionFacing == Vector3.left)
+                else if (PlayerManager.Instance.block_Horizontal_InBack != null && CameraController.Instance.directionFacing == Vector3.left)
                     PerformInteraction(PlayerManager.Instance.block_Horizontal_ToTheLeft);
-                else if (PlayerManager.Instance.block_Horizontal_InFront != null && Cameras_v2.Instance.directionFacing == Vector3.right)
+                else if (PlayerManager.Instance.block_Horizontal_InFront != null && CameraController.Instance.directionFacing == Vector3.right)
                     PerformInteraction(PlayerManager.Instance.block_Horizontal_ToTheRight);
                 else
                 {

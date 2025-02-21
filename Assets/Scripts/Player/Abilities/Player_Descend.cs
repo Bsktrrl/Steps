@@ -93,7 +93,7 @@ public class Player_Descend : Singleton<Player_Descend>
                                 {
                                     if (hit.transform.GetComponent<BlockInfo>().upper_Center)
                                     {
-                                        if (hit.transform.GetComponent<BlockInfo>().upper_Center.GetComponent<Block_Slab>())
+                                        if (hit.transform.GetComponent<BlockInfo>().upper_Center.GetComponent<BlockInfo>().blockType == BlockType.Slab)
                                         {
                                             //print("1. Descending - WaterBlock with Slab over");
                                             DescendingIsAllowed();
@@ -115,11 +115,11 @@ public class Player_Descend : Singleton<Player_Descend>
                                 }
 
                                 //If Descending block is a Slab
-                                else if (hit.transform.GetComponent<Block_Slab>())
+                                else if (hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Slab)
                                 {
                                     if (hit.transform.GetComponent<BlockInfo>().upper_Center)
                                     {
-                                        if (hit.transform.GetComponent<BlockInfo>().upper_Center.GetComponent<Block_Slab>())
+                                        if (hit.transform.GetComponent<BlockInfo>().upper_Center.GetComponent<BlockInfo>().blockType == BlockType.Slab)
                                         {
                                             //print("4. Descending - Slab with Slab over");
                                             DescendingIsAllowed();
@@ -162,7 +162,7 @@ public class Player_Descend : Singleton<Player_Descend>
                                 else if (hit.transform.GetComponent<BlockInfo>().upper_Center)
                                 {
                                     //If space over the blockHit has a Slab 
-                                    if (hit.transform.GetComponent<BlockInfo>().upper_Center.GetComponent<Block_Slab>())
+                                    if (hit.transform.GetComponent<BlockInfo>().upper_Center.GetComponent<BlockInfo>().blockType == BlockType.Slab)
                                     {
                                         //If blockHit is Water
                                         if (hit.transform.GetComponent<Block_Water>())
@@ -204,7 +204,7 @@ public class Player_Descend : Singleton<Player_Descend>
                                 }
 
                                 //if ((hit.transform.GetComponent<BlockInfo>().upper_Center == null && hit.transform.position != gameObject.transform.position + (Vector3.down * gameObject.GetComponent<Player_Movement>().heightOverBlock) + Vector3.down)
-                                //    || hit.transform.GetComponent<BlockInfo>().upper_Center.GetComponent<Block_Slab>()
+                                //    || hit.transform.GetComponent<BlockInfo>().upper_Center.GetComponent<BlockInfo>().blockType == BlockType.Slab
                                 //    || (hit.transform.GetComponent<BlockInfo>().upper_Center.GetComponent<Block_Water>() && hit.transform.position != gameObject.transform.position + (Vector3.down * gameObject.GetComponent<Player_Movement>().heightOverBlock) + Vector3.down && PlayerStats.Instance.stats.abilitiesGot.SwimSuit))
                                 //{
                                 //    DescendingIsAllowed();

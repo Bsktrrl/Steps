@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4454345480955054035
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4418828074990884557}
+  - component: {fileID: 5810466023685760520}
+  - component: {fileID: 1304006001389175484}
+  - component: {fileID: 7404543377278903886}
+  m_Layer: 0
+  m_Name: MapInfo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4418828074990884557
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4454345480955054035}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5810466023685760520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4454345480955054035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4627d61d1ff55d24ca6d619083615775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerObject: {fileID: 6649856597487831825, guid: c3b8f5cc0d6decf4180d542299975521, type: 3}
+  playerStartPos: {x: 0, y: 0, z: 0}
+  mapAudioList: []
+  mapAudioSourceList: []
+  mapInfo_ToSave:
+    mapName: 
+    isCompleted: 0
+    coinList: []
+    collectableList: []
+    maxStepList: []
+    abilityList: []
+    abilitiesInLevel:
+      FenceSneak: 0
+      SwimSuit: 0
+      SwiftSwim: 0
+      Flippers: 0
+      Flameable: 0
+      Jumping: 0
+      HikerGear: 0
+      IceSpikes: 0
+      GrapplingHook: 0
+      Hammer: 0
+      CeilingGrab: 0
+      Dash: 1
+      Ascend: 0
+      Descend: 0
+      ControlStick: 0
+    abilitiesGotInLevel:
+      FenceSneak: 0
+      SwimSuit: 0
+      SwiftSwim: 0
+      Flippers: 0
+      Flameable: 0
+      Jumping: 0
+      HikerGear: 0
+      IceSpikes: 0
+      GrapplingHook: 0
+      Hammer: 0
+      CeilingGrab: 0
+      Dash: 0
+      Ascend: 0
+      Descend: 0
+      ControlStick: 0
+--- !u!114 &1304006001389175484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4454345480955054035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc6632bf648d1b24396c0b4b89770f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7404543377278903886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4454345480955054035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93e2450214a29bb429b661030591eda5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectBlock_SpawnPoint_Canvas: {fileID: 5489040499038146418, guid: 1fe245bf6b85f454a9d4e3d22bb75c36, type: 3}
+  effectBlock_RefillSteps_Canvas: {fileID: 5333353878207418333, guid: c15042a420351f74798e75f19b3c2427, type: 3}
+  effectBlock_Pusher_Canvas: {fileID: 4753081916304187777, guid: 2520ff04a59c15e40858d6ae4fa17774, type: 3}
+  effectBlock_Teleporter_Canvas: {fileID: 9028685008627244395, guid: 23c09c74a6594244cbff05953e982042, type: 3}
+  effectBlock_Moveable_Canvas: {fileID: 9204031149310481577, guid: 4df3b1ec638cc6143ae66f0ab3c71ee0, type: 3}

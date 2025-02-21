@@ -51,7 +51,7 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
 
     private void Start()
     {
-        Cameras_v2.rotateCamera += RotateAbilityDisplay;
+        CameraController.rotateCamera_Start += RotateAbilityDisplay;
 
         FindAllMoveableBlocks();
     }
@@ -71,7 +71,6 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
         Ability("Ascend", Player_Ascend.Instance.playerCanAscend, button_ArrowUp, abilitySprite_Ascend);
         Ability("Descend", Player_Descend.Instance.playerCanDescend, button_ArrowDown, abilitySprite_Descend);
         //Ability("Dash", Player_Dash.Instance.playerCanDash, button_Space, abilitySprite_Dash);
-        Ability("Hammer", Player_Hammer.Instance.playerCanHammer, button_C, abilitySprite_Hammer);
 
         #region Moveable Block
         bool canMoveBlock = false;
@@ -152,7 +151,7 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
 
     void RotateAbilityDisplay()
     {
-        switch (Cameras_v2.Instance.cameraRotationState)
+        switch (CameraController.Instance.cameraRotationState)
         {
             case CameraRotationState.Forward:
                 buttonDisplay_Canvas.transform.SetLocalPositionAndRotation(new Vector3(1.9f, 0, 0), Quaternion.Euler(0, 0, 0));

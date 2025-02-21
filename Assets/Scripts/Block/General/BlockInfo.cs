@@ -7,6 +7,7 @@ public class BlockInfo : MonoBehaviour
     [Header("Stats")]
     //public BlockElement blockElement;
     public BlockType blockType;
+    public BlockElement blockElement;
     [HideInInspector] public int movementCost_Temp;
     public int movementCost;
     public float movementSpeed;
@@ -206,9 +207,6 @@ public class BlockInfo : MonoBehaviour
     public void DarkenColors()
     {
         if (PlayerManager.Instance.player.GetComponent<Player_Dash>().isDashing) { return; }
-
-        //Don't darken Fences
-        if (blockType == BlockType.Fence) { return; }
 
         if (PlayerStats.Instance.stats.steps_Current <= 0 && movementCost > 0 /*|| PlayerStats.Instance.stats.steps_Current < movementCost*/)
         {

@@ -1,14 +1,21 @@
 ----- NEXT ON THE LIST -----
 
 
+ResetPlayer
+- Fix the bug where the blocks that have moved/falled cannot be moved onto, or the player clips it when moving into, after respawning
+	- Happens if the block has gone completely to the bottom and got hidden, not if respawned during its fall
+
+
+---
+
+
 From meetings (include in "Adrian_Camera" Branch):
 - Make CeilingGrab Ability 
 	- Fix IceGlide lag
 
-Ladder:
-- Fix ladder movement
-	- Fix IceGlide to a cliff with a ladder
-	- Fix SetPlayerBodyRotation in the "Player_Movement"-script to work with the new "DirectionCalculator()"
+Make BlockPrefabs:
+- Wood Slope
+
 
 
 ---
@@ -18,34 +25,55 @@ Spring Block:
 - Bumps the player up 1 block (like using a ladder/WallClimbing)
 
 
-Ladder:
-- RespawnPlayer can clip through if holding the button down
-- Don't show DarkenColors on Blocks to the side, when on the ladder
-
-
 Pickups
-- Must be able to raycasted through, so the player can Descend into a block with a pickup on
+- Must be able to be raycasted through, so the player can Dash/Descend into a block with a pickup on
 
 
 ----- TASKS IN QUE -----
 
 
-ButtonDisplay:
-- GrapplingHook Button Display
+- New ButtonDisplay
 
 
 ----- LATER -----
 
 
-Fence:
-- Fix the bug so that fences block the player, even if the fence is placed inside of a block space
-- Remove FenceSneak functionalty so the fences only work as Scenary
+
 
 
 ----- OTHER -----
 
 
+b56f3a
+d9d488
+
 Cameras:
 Old: X:0 Y:3.5 Z:8.25 	FOV:40 Min:31 Max:55
 New: X:0 Y:2.5 Z:5   	FOV:68 Min:49 Max:83
 New: X:0 Y:2.35 Z:4.8   FOV:60 Min:45 Max:75
+
+
+Cube Block Orientation:
+0  | 0 | 0 |  | 0 | 0 | 0
+
+0  | 0 |  90 |	| 0 | 0 | -90
+0  | 0 | 180 |	| 0 | 0 | 180
+0  | 0 | -90 |	| 0 | 0 |  90
+
+ 90 | 0 | 0  |  | -90 |   0 | 0
+180 | 0 | 0  |  | 180 | 180 | 0
+-90 | 0 | 0  |	| 90  |   0 | 0
+
+ 90 | 0 |  90 |	| -90 | 0 |  0
+180 | 0 |  90 |	|   0 | 0 | 90
+-90 | 0 |  90 |	|  90 | 0 |  0
+
+ 90 | 0 | 180 |	| -90 | 0 |  0
+180 | 0 | 180 |	|   0 | 0 |  0
+-90 | 0 | 180 |	|  90 | 0 |  0
+
+ 90 | 0 | -90 |	| -90 | 0 |  0
+180 | 0 | -90 |	|   0 | 0 |-90
+-90 | 0 | -90 |	|  90 | 0 |  0
+
+
