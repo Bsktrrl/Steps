@@ -261,6 +261,8 @@ public class Player_Movement : Singleton<Player_Movement>
         if (!KeyInputsChecks()) { return; }
 
         PlayerStats.Instance.RespawnPlayer();
+
+        Action_StepTaken_Invoke();
     }
     public void Key_Quit()
     {
@@ -484,6 +486,7 @@ public class Player_Movement : Singleton<Player_Movement>
             gameObject.transform.position = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * heightOverBlock);
             movementStates = MovementStates.Still;
             Action_LandedFromFalling?.Invoke();
+            Action_StepTaken_Invoke();
         }
         //Continue fall
         else if (movementStates == MovementStates.Falling)

@@ -2,13 +2,38 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+[ExecuteInEditMode]
 public class Block_Teleport : MonoBehaviour
 {
     public static event Action Action_StartTeleport;
     public static event Action Action_EndTeleport;
 
     public GameObject newLandingSpot;
+    GameObject newLandingSpot_Temp;
+    public Color teleport_Color;
+    Color teleport_Color_Temp;
+
+    EffectBlockManager effectBlockManager;
+
+
+    //--------------------
+
+
+    private void Awake()
+    {
+        effectBlockManager = FindObjectOfType<EffectBlockManager>();
+    }
+    private void Start()
+    {
+        SetColor();
+    }
+
+    private void Update()
+    {
+        SetTeleportLinkColors();
+    }
 
 
     //--------------------
@@ -26,6 +51,68 @@ public class Block_Teleport : MonoBehaviour
         Player_Movement.Action_StepTaken -= TeleportPlayer;
         Action_StartTeleport -= StartTeleport_Action;
         Action_EndTeleport -= EndTeleport_Action;
+    }
+
+
+    //--------------------
+
+
+    void SetTeleportLinkColors()
+    {
+        if (newLandingSpot)
+        {
+            //Check if Teleporter has been linked
+            if (newLandingSpot_Temp != newLandingSpot)
+            {
+                newLandingSpot_Temp = newLandingSpot;
+
+                if (newLandingSpot.GetComponent<Block_Teleport>())
+                {
+                    newLandingSpot.GetComponent<Block_Teleport>().newLandingSpot = gameObject;
+
+                    SetColor();
+                }
+            }
+
+            //Check if teleportImageColor has changed
+            if (teleport_Color_Temp != teleport_Color)
+            {
+                teleport_Color_Temp = teleport_Color;
+
+                if (newLandingSpot.GetComponent<Block_Teleport>())
+                {
+                    SetColor();
+                }
+            }
+        }
+        else
+        {
+            SetColor();
+        }
+    }
+    void SetColor()
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.GetComponent<EffectBlock_Reference>() != null)
+            {
+                child.GetComponent<EffectBlock_Reference>().gameObject.GetComponentInChildren<Image>().color = teleport_Color;
+            }
+        }
+
+        if (!newLandingSpot) { return; }
+        if (!newLandingSpot.GetComponent<Block_Teleport>()) { return; }
+
+        if (newLandingSpot.GetComponent<Block_Teleport>())
+            newLandingSpot.GetComponent<Block_Teleport>().teleport_Color = teleport_Color;
+
+        foreach (Transform child in newLandingSpot.transform)
+        {
+            if (child.GetComponent<EffectBlock_Reference>() != null)
+            {
+                child.GetComponent<EffectBlock_Reference>().gameObject.GetComponentInChildren<Image>().color = teleport_Color;
+            }
+        }
     }
 
 

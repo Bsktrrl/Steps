@@ -342,7 +342,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: caee05ef1c7d0e24c87ce89f872c0ca3, type: 3}
       propertyPath: m_Name
-      value: Quicksand
+      value: Quicksand_Cube
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -366,6 +366,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: caee05ef1c7d0e24c87ce89f872c0ca3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6113255645975982268}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: caee05ef1c7d0e24c87ce89f872c0ca3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7409096720871984446}
   m_SourcePrefab: {fileID: 100100000, guid: caee05ef1c7d0e24c87ce89f872c0ca3, type: 3}
 --- !u!4 &3507490235857606840 stripped
 Transform:
@@ -438,6 +441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 1
+  blockElement: 0
   movementCost_Temp: 0
   movementCost: 0
   movementSpeed: 4
@@ -509,5 +513,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02346668142202d49a55b6c12adde510, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7409096720871984446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4316360930280718850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

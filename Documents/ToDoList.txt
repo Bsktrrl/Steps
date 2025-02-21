@@ -1,13 +1,29 @@
 ----- NEXT ON THE LIST -----
 
 
+EffectBlocks:
+- Add RefillSteps
+- Add Pusher
+- Add Teleporter
+	- Add an array of colors that displays based on what's linked
+- Add MoveableBlock automatic functionalty
+
+- Add colors to the rest of the blocks we have selected as of now
+- Add EffectBlock functionalty with SnowCube and SnowSlab
+
+
+ResetPlayer
+- Fix the bug where the blocks that have moved/falled cannot be moved onto, or th eplayer clips it when moving into
+
+
+---
+
+
 From meetings (include in "Adrian_Camera" Branch):
 - Make CeilingGrab Ability 
 	- Fix IceGlide lag
 
 Make BlockPrefabs:
-- Sandstone Slab x4
-- Wood Stair
 - Wood Slope
 
 
@@ -20,7 +36,7 @@ Spring Block:
 
 
 Pickups
-- Must be able to raycasted through, so the player can Dash/Descend into a block with a pickup on
+- Must be able to be raycasted through, so the player can Dash/Descend into a block with a pickup on
 
 
 ----- TASKS IN QUE -----

@@ -318,7 +318,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d8df4978346c73042bc6b86cd779b22c, type: 3}
       propertyPath: m_Name
-      value: Lava
+      value: Lava_Cube
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -342,6 +342,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d8df4978346c73042bc6b86cd779b22c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 964108256093289030}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d8df4978346c73042bc6b86cd779b22c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -40813282909094434}
   m_SourcePrefab: {fileID: 100100000, guid: d8df4978346c73042bc6b86cd779b22c, type: 3}
 --- !u!1 &4636505707394346779 stripped
 GameObject:
@@ -409,6 +412,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 1
+  blockElement: 0
   movementCost_Temp: 0
   movementCost: 3
   movementSpeed: 1
@@ -471,6 +475,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f00a56ed3fc5884695b6caeedc6f6b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-40813282909094434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4636505707394346779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &5409946633020372385 stripped

@@ -351,6 +351,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100006, guid: 25e46c639c41c644f866e83174a4b42a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 755001591189959622}
+    - targetCorrespondingSourceObject: {fileID: 100006, guid: 25e46c639c41c644f866e83174a4b42a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8399465676714638554}
   m_SourcePrefab: {fileID: 100100000, guid: 25e46c639c41c644f866e83174a4b42a, type: 3}
 --- !u!4 &2858507034037047999 stripped
 Transform:
@@ -423,6 +426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 2
+  blockElement: 2
   movementCost_Temp: 0
   movementCost: 1
   movementSpeed: 4
@@ -480,3 +484,15 @@ MonoBehaviour:
   stepCostDisplay_Parent: {fileID: 403837908300149100}
   stepCostDisplay_Canvas: {fileID: 5543881316902305807}
   stepCostText_Object: {fileID: 7764092634820822289}
+--- !u!114 &-8399465676714638554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2858507034037079711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

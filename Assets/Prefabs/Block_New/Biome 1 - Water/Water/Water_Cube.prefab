@@ -318,7 +318,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1482de2aeb7a9ac4d8496fe429254bd9, type: 3}
       propertyPath: m_Name
-      value: Water Block v.2
+      value: Water_Cube
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -342,6 +342,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1482de2aeb7a9ac4d8496fe429254bd9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3120514379454973117}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1482de2aeb7a9ac4d8496fe429254bd9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6873554885972096646}
   m_SourcePrefab: {fileID: 100100000, guid: 1482de2aeb7a9ac4d8496fe429254bd9, type: 3}
 --- !u!4 &2332966413725121179 stripped
 Transform:
@@ -414,6 +417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 1
+  blockElement: 0
   movementCost_Temp: 0
   movementCost: 2
   movementSpeed: 2
@@ -483,5 +487,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c389548175a41b6488f82975eaccefc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6873554885972096646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3110734153225658401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

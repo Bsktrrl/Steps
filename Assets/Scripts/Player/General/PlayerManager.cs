@@ -178,10 +178,6 @@ public class PlayerManager : Singleton<PlayerManager>
     void OnForward_Down()
     {
         forward_isPressed = true;
-
-        //Player_Movement.Instance.Key_MoveForward();
-        //Player_Dash.Instance.Dash_Forward();
-        //Player_Jumping.Instance.Jump_Forward();
     }
     void OnForward_Up()
     {
@@ -190,10 +186,6 @@ public class PlayerManager : Singleton<PlayerManager>
     void OnBackward_Down()
     {
         back_isPressed = true;
-
-        //Player_Movement.Instance.Key_MoveBackward();
-        //Player_Dash.Instance.Dash_Backward();
-        //Player_Jumping.Instance.Jump_Backward();
     }
     void OnBackward_Up()
     {
@@ -202,10 +194,6 @@ public class PlayerManager : Singleton<PlayerManager>
     void OnLeft_Down()
     {
         left_isPressed = true;
-
-        //Player_Movement.Instance.Key_MoveLeft();
-        //Player_Dash.Instance.Dash_Left();
-        //Player_Jumping.Instance.Jump_Left();
     }
     void OnLeft_Up()
     {
@@ -214,10 +202,6 @@ public class PlayerManager : Singleton<PlayerManager>
     void OnRight_Down()
     {
         right_isPressed = true;
-
-        //Player_Movement.Instance.Key_MoveRight();
-        //Player_Dash.Instance.Dash_Right();
-        //Player_Jumping.Instance.Jump_Right();
     }
     void OnRight_Up()
     {

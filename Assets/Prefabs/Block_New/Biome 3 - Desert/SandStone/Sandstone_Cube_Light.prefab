@@ -278,7 +278,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100006, guid: 33e6d6db5dcd1a34cb10641c0bfc6dae, type: 3}
       propertyPath: m_Name
-      value: Sandstone_Cub_Light
+      value: Sandstone_Cube_Light
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: 33e6d6db5dcd1a34cb10641c0bfc6dae, type: 3}
       propertyPath: m_LocalPosition.x
@@ -339,6 +339,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100006, guid: 33e6d6db5dcd1a34cb10641c0bfc6dae, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5657449366082685660}
+    - targetCorrespondingSourceObject: {fileID: 100006, guid: 33e6d6db5dcd1a34cb10641c0bfc6dae, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -7476718059051128865}
   m_SourcePrefab: {fileID: 100100000, guid: 33e6d6db5dcd1a34cb10641c0bfc6dae, type: 3}
 --- !u!4 &3363523809363857787 stripped
 Transform:
@@ -411,6 +414,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 1
+  blockElement: 4
   movementCost_Temp: 0
   movementCost: 1
   movementSpeed: 4
@@ -472,3 +476,15 @@ MonoBehaviour:
   stepCostDisplay_Parent: {fileID: 7683595349913120452}
   stepCostDisplay_Canvas: {fileID: 8377557331556895811}
   stepCostText_Object: {fileID: 675416095202273442}
+--- !u!114 &-7476718059051128865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3363523809363889499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

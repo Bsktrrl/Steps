@@ -342,6 +342,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100006, guid: e2bcd16def08fe54ea7282bb8a1b910d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1742050340709460714}
+    - targetCorrespondingSourceObject: {fileID: 100006, guid: e2bcd16def08fe54ea7282bb8a1b910d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -27280535044760617}
   m_SourcePrefab: {fileID: 100100000, guid: e2bcd16def08fe54ea7282bb8a1b910d, type: 3}
 --- !u!4 &4998555064734887735 stripped
 Transform:
@@ -414,6 +417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 1
+  blockElement: 3
   movementCost_Temp: 0
   movementCost: 0
   movementSpeed: 4
@@ -487,3 +491,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59c6303a3ae35d240abf10db01e61687, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSteppedOn: 0
+  canFall: 0
+--- !u!114 &-27280535044760617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4998555064735314711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectBlock_SpawnPoint_isAdded: 0
+  effectBlock_SpawnPoint_Canvas: {fileID: 0}

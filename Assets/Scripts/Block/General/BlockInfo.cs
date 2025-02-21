@@ -7,6 +7,7 @@ public class BlockInfo : MonoBehaviour
     [Header("Stats")]
     //public BlockElement blockElement;
     public BlockType blockType;
+    public BlockElement blockElement;
     [HideInInspector] public int movementCost_Temp;
     public int movementCost;
     public float movementSpeed;
