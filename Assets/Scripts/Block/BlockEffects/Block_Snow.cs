@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Overlays;
@@ -5,6 +6,8 @@ using UnityEngine;
 
 public class Block_Snow : MonoBehaviour
 {
+    public static event Action Action_SnowSetup_End;
+
     [HideInInspector] public List<GameObject> LOD_ObjectList = new List<GameObject>();
     [SerializeField] float scale_Y_Value;
     [SerializeField] float localInitialPos_Y;
@@ -21,6 +24,8 @@ public class Block_Snow : MonoBehaviour
         SetRandomBlockHeight();
 
         ChangeStepCounterPosition();
+
+        Action_SnowSetup_End?.Invoke();
     }
 
     private void OnEnable()
@@ -55,9 +60,9 @@ public class Block_Snow : MonoBehaviour
     void SetRandomBlockHeight()
     {
         if (GetComponent<BlockInfo>().blockType == BlockType.Slab)
-            scale_Y_Value = Random.Range(0.3f, 0.6f);
+            scale_Y_Value = UnityEngine.Random.Range(0.3f, 0.6f);
         else
-            scale_Y_Value = Random.Range(1, 1.3f);
+            scale_Y_Value = UnityEngine.Random.Range(1, 1.3f);
 
         for (int i = 0; i < LOD_ObjectList.Count; i++)
         {

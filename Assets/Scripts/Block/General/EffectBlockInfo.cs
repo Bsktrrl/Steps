@@ -27,9 +27,6 @@ public class EffectBlockInfo : MonoBehaviour
     private void Start()
     {
         SetWaitTime();
-
-        //GetComponent<BlockInfo>().movementCost_Temp = 0;
-        //GetComponent<BlockInfo>().movementCost = 0;
     }
 
     private void Update()
@@ -37,6 +34,9 @@ public class EffectBlockInfo : MonoBehaviour
         //Only trigger on Cubes and Slabs
         if (GetComponent<BlockInfo>().blockType != BlockType.Cube && GetComponent<BlockInfo>().blockType != BlockType.Slab) { return; }
         if (effectBlock_SpawnPoint_isAdded) { return; }
+        if (effectBlock_RefillSteps_isAdded) { return; }
+        if (effectBlock_Pusher_isAdded) { return; }
+        if (effectBlock_Teleporter_isAdded) { return; }
 
         counter += Time.deltaTime;
 
@@ -51,6 +51,16 @@ public class EffectBlockInfo : MonoBehaviour
             SetWaitTime();
         }
     }
+
+    private void OnEnable()
+    {
+        Block_Snow.Action_SnowSetup_End += AdjustPosition;
+    }
+    private void OnDisable()
+    {
+        Block_Snow.Action_SnowSetup_End -= AdjustPosition;
+    }
+
 
 
     //--------------------
@@ -67,6 +77,9 @@ public class EffectBlockInfo : MonoBehaviour
         {
             effectBlock_SpawnPoint_isAdded = true;
 
+            GetComponent<BlockInfo>().movementCost_Temp = 0;
+            GetComponent<BlockInfo>().movementCost = 0;
+
             foreach (Transform child in transform)
             {
                 if (child.GetComponent<EffectBlock_Reference>())
@@ -77,7 +90,8 @@ public class EffectBlockInfo : MonoBehaviour
 
             GameObject effectBlock_SpawnPoint_Canvas = Instantiate(effectBlockManager.effectBlock_SpawnPoint_Canvas, transform);
 
-            ChangeColor(ref effectBlock_SpawnPoint_Canvas);
+            AdjustPosition();
+            ChangeColor();
 
             GetComponent<BlockInfo>().movementCost_Temp = 0;
             GetComponent<BlockInfo>().movementCost = 0;
@@ -89,6 +103,9 @@ public class EffectBlockInfo : MonoBehaviour
         {
             effectBlock_RefillSteps_isAdded = true;
 
+            GetComponent<BlockInfo>().movementCost_Temp = 0;
+            GetComponent<BlockInfo>().movementCost = 0;
+
             foreach (Transform child in transform)
             {
                 if (child.GetComponent<EffectBlock_Reference>())
@@ -99,7 +116,8 @@ public class EffectBlockInfo : MonoBehaviour
 
             GameObject effectBlock_RefillSteps_Canvas = Instantiate(effectBlockManager.effectBlock_RefillSteps_Canvas, transform);
 
-            ChangeColor(ref effectBlock_RefillSteps_Canvas);
+            AdjustPosition();
+            ChangeColor();
 
             GetComponent<BlockInfo>().movementCost_Temp = 0;
             GetComponent<BlockInfo>().movementCost = 0;
@@ -111,6 +129,9 @@ public class EffectBlockInfo : MonoBehaviour
         {
             effectBlock_Pusher_isAdded = true;
 
+            GetComponent<BlockInfo>().movementCost_Temp = 0;
+            GetComponent<BlockInfo>().movementCost = 0;
+
             foreach (Transform child in transform)
             {
                 if (child.GetComponent<EffectBlock_Reference>())
@@ -121,7 +142,8 @@ public class EffectBlockInfo : MonoBehaviour
 
             GameObject effectBlock_Pusher_Canvas = Instantiate(effectBlockManager.effectBlock_Pusher_Canvas, transform);
 
-            ChangeColor(ref effectBlock_Pusher_Canvas);
+            AdjustPosition();
+            ChangeColor();
         }
     }
     void CheckForEffectBlockUpdate_Teleporter()
@@ -129,6 +151,9 @@ public class EffectBlockInfo : MonoBehaviour
         if (GetComponent<Block_Teleport>() && !effectBlock_Teleporter_isAdded)
         {
             effectBlock_Teleporter_isAdded = true;
+
+            GetComponent<BlockInfo>().movementCost_Temp = 0;
+            GetComponent<BlockInfo>().movementCost = 0;
 
             foreach (Transform child in transform)
             {
@@ -140,32 +165,37 @@ public class EffectBlockInfo : MonoBehaviour
 
             GameObject effectBlock_Teleporter_Canvas = Instantiate(effectBlockManager.effectBlock_Teleporter_Canvas, transform);
 
-            ChangeColor(ref effectBlock_Teleporter_Canvas);
+            AdjustPosition();
+            ChangeColor();
         }
     }
 
-    void ChangeColor(ref GameObject canvas)
+    void ChangeColor()
     {
-        switch (GetComponent<BlockInfo>().blockElement)
+        Color colorTemp = new Color(GetComponent<BlockInfo>().stepCostText_Color.r - 0.25f, GetComponent<BlockInfo>().stepCostText_Color.g - 0.25f, GetComponent<BlockInfo>().stepCostText_Color.b - 0.25f, 1);
+
+        foreach (Transform child in transform)
         {
-            case BlockElement.None:
-                break;
+            if (child.GetComponent<EffectBlock_Reference>())
+            {
+                child.GetComponentInChildren<Image>().color = colorTemp;
 
-            case BlockElement.Grass:
-                canvas.GetComponentInChildren<Image>().color = effectBlockManager.color_Grass;
                 break;
-            case BlockElement.Wood:
-                canvas.GetComponentInChildren<Image>().color = effectBlockManager.color_Wood;
-                break;
-            case BlockElement.Sand:
-                canvas.GetComponentInChildren<Image>().color = effectBlockManager.color_Sand;
-                break;
-            case BlockElement.Sandstone:
-                canvas.GetComponentInChildren<Image>().color = effectBlockManager.color_SandBlock;
-                break;
+            }
+        }
+    }
+    void AdjustPosition()
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.GetComponent<EffectBlock_Reference>())
+            {
+                float temp = GetComponent<BlockStepCostDisplay>().stepCostDisplay_Parent.transform.localPosition.y;
 
-            default:
+                child.GetComponent<RectTransform>().localPosition = new Vector3(0, (temp + 0.55f), 0);
+
                 break;
+            }
         }
     }
 }
