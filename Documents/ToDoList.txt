@@ -1,15 +1,9 @@
 ----- NEXT ON THE LIST -----
 
 
-EffectBlocks:
-- Add MoveableBlock automatic functionalty as an Effectblock
-
-- Add colors to the rest of the blockTypes we have selected as of now
-- Add EffectBlock canvas-functionalty with SnowCube and SnowSlab
-
-
 ResetPlayer
-- Fix the bug where the blocks that have moved/falled cannot be moved onto, or th eplayer clips it when moving into
+- Fix the bug where the blocks that have moved/falled cannot be moved onto, or the player clips it when moving into, after respawning
+	- Happens if the block has gone completely to the bottom and got hidden, not if respawned during its fall
 
 
 ---

@@ -237,8 +237,8 @@ public class PlayerStats : Singleton<PlayerStats>
         yield return new WaitForSeconds(waitTime * 25);
 
         Player_Movement.Instance.SetPlayerBodyRotation(0);
-        Cameras_v2.Instance.ResetCameraRotation();
-        Cameras_v2.Instance.ResetCameraRotation();
+        CameraController.Instance.ResetCameraRotation();
+        CameraController.Instance.ResetCameraRotation();
 
         RespawnPlayerLate_Action();
 

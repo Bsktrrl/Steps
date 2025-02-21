@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block_Meltable : MonoBehaviour
+public class Block_BurnTransforming : MonoBehaviour
 {
     [SerializeField] GameObject meltingBlock;
     [SerializeField] GameObject meltingBlock_InScene;
@@ -42,7 +42,7 @@ public class Block_Meltable : MonoBehaviour
 
     void MeltBlock()
     {
-        if (!Player_Flameable.Instance.isFlameable) { return; }
+        if (!Player_Burning.Instance.isBurning) { return; }
 
         if (!isSteppedOn) { return; }
 
@@ -53,7 +53,7 @@ public class Block_Meltable : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
 
         meltingBlock_InScene = Instantiate(meltingBlock, transform.position, Quaternion.identity);
-        Player_Meltable.Instance.AddMeltedBlockToList(meltingBlock_InScene);
+        Player_BurnChanging.Instance.AddMeltedBlockToList(meltingBlock_InScene);
         gameObject.SetActive(false);
 
         isSteppedOn = false;

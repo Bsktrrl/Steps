@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block_UpdateSpawnPoint : MonoBehaviour
+public class Block_SpawnPoint : MonoBehaviour
 {
     private void OnEnable()
     {

@@ -83,11 +83,6 @@ public class MapManager : Singleton<MapManager>
             {
                 block.gameObject.GetComponent<Block_Falling>().ResetBlock();
             }
-
-            if (block.gameObject.GetComponent<Block_Weak>())
-            {
-                block.gameObject.GetComponent<Block_Weak>().ResetBlock();
-            }
         }
     }
 

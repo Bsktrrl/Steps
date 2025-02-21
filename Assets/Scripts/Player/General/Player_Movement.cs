@@ -137,7 +137,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
         if (PlayerManager.Instance.pauseGame) { return false; }
         if (PlayerManager.Instance.isTransportingPlayer) { return false; }
-        if (Cameras_v2.Instance.isRotating) { return false; }
+        if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
 
@@ -343,55 +343,55 @@ public class Player_Movement : Singleton<Player_Movement>
         else
         {
             //Set new Rotation - Based on the key input
-            switch (Cameras_v2.Instance.cameraRotationState)
+            switch (CameraController.Instance.cameraRotationState)
             {
                 case CameraRotationState.Forward:
                     PlayerManager.Instance.playerBody.transform.SetPositionAndRotation(PlayerManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 0 + rotationValue, 0));
 
                     if (rotationValue == 0 || rotationValue == 360)
-                        Cameras_v2.Instance.directionFacing = Vector3.forward;
+                        CameraController.Instance.directionFacing = Vector3.forward;
                     else if (rotationValue == 180)
-                        Cameras_v2.Instance.directionFacing = Vector3.back;
+                        CameraController.Instance.directionFacing = Vector3.back;
                     else if (rotationValue == 90)
-                        Cameras_v2.Instance.directionFacing = Vector3.right;
+                        CameraController.Instance.directionFacing = Vector3.right;
                     else if (rotationValue == -90 || rotationValue == 270)
-                        Cameras_v2.Instance.directionFacing = Vector3.left;
+                        CameraController.Instance.directionFacing = Vector3.left;
                     break;
                 case CameraRotationState.Backward:
                     PlayerManager.Instance.playerBody.transform.SetPositionAndRotation(PlayerManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 180 + rotationValue, 0));
 
                     if (180 + rotationValue == 0 || 180 + rotationValue == 360)
-                        Cameras_v2.Instance.directionFacing = Vector3.back;
+                        CameraController.Instance.directionFacing = Vector3.back;
                     else if (180 + rotationValue == 180)
-                        Cameras_v2.Instance.directionFacing = Vector3.forward;
+                        CameraController.Instance.directionFacing = Vector3.forward;
                     else if (180 + rotationValue == 90)
-                        Cameras_v2.Instance.directionFacing = Vector3.left;
+                        CameraController.Instance.directionFacing = Vector3.left;
                     else if (180 + rotationValue == -90 || 180 + rotationValue == 270)
-                        Cameras_v2.Instance.directionFacing = Vector3.right;
+                        CameraController.Instance.directionFacing = Vector3.right;
                     break;
                 case CameraRotationState.Left:
                     PlayerManager.Instance.playerBody.transform.SetPositionAndRotation(PlayerManager.Instance.playerBody.transform.position, Quaternion.Euler(0, 90 + rotationValue, 0));
 
                     if (90 + rotationValue == 0 || 90 + rotationValue == 360)
-                        Cameras_v2.Instance.directionFacing = Vector3.left;
+                        CameraController.Instance.directionFacing = Vector3.left;
                     else if (90 + rotationValue == 180)
-                        Cameras_v2.Instance.directionFacing = Vector3.right;
+                        CameraController.Instance.directionFacing = Vector3.right;
                     else if (90 + rotationValue == 90)
-                        Cameras_v2.Instance.directionFacing = Vector3.forward;
+                        CameraController.Instance.directionFacing = Vector3.forward;
                     else if (90 + rotationValue == -90 || 90 + rotationValue == 270)
-                        Cameras_v2.Instance.directionFacing = Vector3.back;
+                        CameraController.Instance.directionFacing = Vector3.back;
                     break;
                 case CameraRotationState.Right:
                     PlayerManager.Instance.playerBody.transform.SetPositionAndRotation(PlayerManager.Instance.playerBody.transform.position, Quaternion.Euler(0, -90 + rotationValue, 0));
 
                     if (-90 + rotationValue == 0 || -90 + rotationValue == 360)
-                        Cameras_v2.Instance.directionFacing = Vector3.right;
+                        CameraController.Instance.directionFacing = Vector3.right;
                     else if (-90 + rotationValue == 180 || -90 + rotationValue == -180)
-                        Cameras_v2.Instance.directionFacing = Vector3.left;
+                        CameraController.Instance.directionFacing = Vector3.left;
                     else if (-90 + rotationValue == 90)
-                        Cameras_v2.Instance.directionFacing = Vector3.back;
+                        CameraController.Instance.directionFacing = Vector3.back;
                     else if (-90 + rotationValue == -90 || -90 + rotationValue == 270)
-                        Cameras_v2.Instance.directionFacing = Vector3.forward;
+                        CameraController.Instance.directionFacing = Vector3.forward;
                     break;
 
                 default:
@@ -733,18 +733,18 @@ public class Player_Movement : Singleton<Player_Movement>
         //Check from the bottom and up
         if (Physics.Raycast(transform.position, dir, out hit, 1))
         {
-            if (hit.transform.gameObject.GetComponent<Block_Ladder_New>())
+            if (hit.transform.gameObject.GetComponent<Block_Ladder>())
             {
-                hit.transform.gameObject.GetComponent<Block_Ladder_New>().DarkenExitBlock_Up(dir);
+                hit.transform.gameObject.GetComponent<Block_Ladder>().DarkenExitBlock_Up(dir);
             }
         }
 
         //Check from the top and down
         if (Physics.Raycast(transform.position + (dir * 0.65f), Vector3.down, out hit, 1))
         {
-            if (hit.transform.gameObject.GetComponent<Block_Ladder_New>())
+            if (hit.transform.gameObject.GetComponent<Block_Ladder>())
             {
-                hit.transform.gameObject.GetComponent<Block_Ladder_New>().DarkenExitBlock_Down();
+                hit.transform.gameObject.GetComponent<Block_Ladder>().DarkenExitBlock_Down();
             }
         }
     }
@@ -754,7 +754,7 @@ public class Player_Movement : Singleton<Player_Movement>
         //Check from the bottom and up
         if (Physics.Raycast(transform.position, dir, out hit, 1))
         {
-            if (hit.transform.gameObject.GetComponent<Block_Ladder_New>())
+            if (hit.transform.gameObject.GetComponent<Block_Ladder>())
             {
                 return true;
             }
@@ -768,7 +768,7 @@ public class Player_Movement : Singleton<Player_Movement>
         //Check from the top and down
         if (Physics.Raycast(transform.position + (dir * 0.65f), Vector3.down, out hit, 1))
         {
-            if (hit.transform.gameObject.GetComponent<Block_Ladder_New>())
+            if (hit.transform.gameObject.GetComponent<Block_Ladder>())
             {
                 return true;
             }
@@ -783,10 +783,10 @@ public class Player_Movement : Singleton<Player_Movement>
         //Check from the bottom and up
         if (Physics.Raycast(transform.position, dir, out hit, 1))
         {
-            if (hit.transform.gameObject.GetComponent<Block_Ladder_New>())
+            if (hit.transform.gameObject.GetComponent<Block_Ladder>())
             {
                 ladderToEnterRot = hit.transform.rotation;
-                return hit.transform.gameObject.GetComponent<Block_Ladder_New>().lastLadderPart_Up;
+                return hit.transform.gameObject.GetComponent<Block_Ladder>().lastLadderPart_Up;
             }
         }
 
@@ -797,10 +797,10 @@ public class Player_Movement : Singleton<Player_Movement>
         //Check from the top and down
         if (Physics.Raycast(transform.position + (dir * 0.65f), Vector3.down, out hit, 1))
         {
-            if (hit.transform.gameObject.GetComponent<Block_Ladder_New>())
+            if (hit.transform.gameObject.GetComponent<Block_Ladder>())
             {
                 ladderToEnterRot = hit.transform.rotation;
-                return hit.transform.gameObject.GetComponent<Block_Ladder_New>().lastLadderPart_Down;
+                return hit.transform.gameObject.GetComponent<Block_Ladder>().lastLadderPart_Down;
             }
         }
 
@@ -1106,7 +1106,7 @@ public class Player_Movement : Singleton<Player_Movement>
             //Forward - Slope is rotated 0
             if (PlayerManager.Instance.block_StandingOn_Current.block.transform.rotation == Quaternion.Euler(0, 0, 0))
             {
-                if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward)
+                if (CameraController.Instance.cameraRotationState == CameraRotationState.Forward)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.forward)
                     {
@@ -1119,7 +1119,7 @@ public class Player_Movement : Singleton<Player_Movement>
                         lastMovementButtonPressed = ButtonsToPress.W;
                     }
                 }
-                else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Backward)
+                else if (CameraController.Instance.cameraRotationState == CameraRotationState.Backward)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.forward)
                     {
@@ -1132,7 +1132,7 @@ public class Player_Movement : Singleton<Player_Movement>
                         lastMovementButtonPressed = ButtonsToPress.S;
                     }
                 }
-                else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Left)
+                else if (CameraController.Instance.cameraRotationState == CameraRotationState.Left)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.forward)
                     {
@@ -1145,7 +1145,7 @@ public class Player_Movement : Singleton<Player_Movement>
                         lastMovementButtonPressed = ButtonsToPress.A;
                     }
                 }
-                else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Right)
+                else if (CameraController.Instance.cameraRotationState == CameraRotationState.Right)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.forward)
                     {
@@ -1163,7 +1163,7 @@ public class Player_Movement : Singleton<Player_Movement>
             //Back - Slope is rotated 180
             else if (PlayerManager.Instance.block_StandingOn_Current.block.transform.rotation == Quaternion.Euler(0, 180, 0))
             {
-                if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward)
+                if (CameraController.Instance.cameraRotationState == CameraRotationState.Forward)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.forward)
                     {
@@ -1176,7 +1176,7 @@ public class Player_Movement : Singleton<Player_Movement>
                         lastMovementButtonPressed = ButtonsToPress.S;
                     }
                 }
-                else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Backward)
+                else if (CameraController.Instance.cameraRotationState == CameraRotationState.Backward)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.forward)
                     {
@@ -1189,7 +1189,7 @@ public class Player_Movement : Singleton<Player_Movement>
                         lastMovementButtonPressed = ButtonsToPress.W;
                     }
                 }
-                else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Left)
+                else if (CameraController.Instance.cameraRotationState == CameraRotationState.Left)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.forward)
                     {
@@ -1202,7 +1202,7 @@ public class Player_Movement : Singleton<Player_Movement>
                         lastMovementButtonPressed = ButtonsToPress.D;
                     }
                 }
-                else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Right)
+                else if (CameraController.Instance.cameraRotationState == CameraRotationState.Right)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.forward)
                     {
@@ -1220,7 +1220,7 @@ public class Player_Movement : Singleton<Player_Movement>
             //Left - Slope is rotated -90
             else if (PlayerManager.Instance.block_StandingOn_Current.block.transform.rotation == Quaternion.Euler(0, -90, 0))
             {
-                if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward)
+                if (CameraController.Instance.cameraRotationState == CameraRotationState.Forward)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.left)
                     {
@@ -1233,7 +1233,7 @@ public class Player_Movement : Singleton<Player_Movement>
                         lastMovementButtonPressed = ButtonsToPress.A;
                     }
                 }
-                else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Backward)
+                else if (CameraController.Instance.cameraRotationState == CameraRotationState.Backward)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.left)
                     {
@@ -1246,7 +1246,7 @@ public class Player_Movement : Singleton<Player_Movement>
                         lastMovementButtonPressed = ButtonsToPress.D;
                     }
                 }
-                else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Left)
+                else if (CameraController.Instance.cameraRotationState == CameraRotationState.Left)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.left)
                     {
@@ -1259,7 +1259,7 @@ public class Player_Movement : Singleton<Player_Movement>
                         lastMovementButtonPressed = ButtonsToPress.S;
                     }
                 }
-                else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Right)
+                else if (CameraController.Instance.cameraRotationState == CameraRotationState.Right)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.left)
                     {
@@ -1277,7 +1277,7 @@ public class Player_Movement : Singleton<Player_Movement>
             //Right - Slope is rotated 90
             else if (PlayerManager.Instance.block_StandingOn_Current.block.transform.rotation == Quaternion.Euler(0, 90, 0))
             {
-                if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward)
+                if (CameraController.Instance.cameraRotationState == CameraRotationState.Forward)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.left)
                     {
@@ -1290,7 +1290,7 @@ public class Player_Movement : Singleton<Player_Movement>
                         lastMovementButtonPressed = ButtonsToPress.D;
                     }
                 }
-                else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Backward)
+                else if (CameraController.Instance.cameraRotationState == CameraRotationState.Backward)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.left)
                     {
@@ -1303,7 +1303,7 @@ public class Player_Movement : Singleton<Player_Movement>
                         lastMovementButtonPressed = ButtonsToPress.A;
                     }
                 }
-                else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Left)
+                else if (CameraController.Instance.cameraRotationState == CameraRotationState.Left)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.left)
                     {
@@ -1316,7 +1316,7 @@ public class Player_Movement : Singleton<Player_Movement>
                         lastMovementButtonPressed = ButtonsToPress.W;
                     }
                 }
-                else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Right)
+                else if (CameraController.Instance.cameraRotationState == CameraRotationState.Right)
                 {
                     if (PlayerManager.Instance.lookingDirection == Vector3.left)
                     {
@@ -1366,7 +1366,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
     public Vector3 DirectionCalculator(Vector3 direction)
     {
-        switch (Cameras_v2.Instance.cameraRotationState)
+        switch (CameraController.Instance.cameraRotationState)
         {
             case CameraRotationState.Forward:
                 if (direction == Vector3.forward)

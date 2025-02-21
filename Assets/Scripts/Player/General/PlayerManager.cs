@@ -143,7 +143,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
         if (pauseGame) { return false; }
         if (isTransportingPlayer) { return false; }
-        if (Cameras_v2.Instance.isRotating) { return false; }
+        if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
         if (Player_Dash.Instance.isDashing) { return false; }
@@ -210,11 +210,11 @@ public class PlayerManager : Singleton<PlayerManager>
 
     void OnCameraRotateX()
     {
-        Cameras_v2.Instance.RotateCameraX();
+        CameraController.Instance.RotateCameraX();
     }
     void OnCameraRotateY()
     {
-        Cameras_v2.Instance.RotateCameraY();
+        CameraController.Instance.RotateCameraY();
     }
     void OnAbilityUp()
     {
@@ -223,10 +223,10 @@ public class PlayerManager : Singleton<PlayerManager>
     }
     void OnAbilityDown()
     {
-        Player_Movement.Instance.Key_SwiftSwimDown();
         Player_Interact.Instance.InteractWithObject();
-        Player_Descend.Instance.RunDescend();
         Player_Movement.Instance.Action_PressMoveBlockButtonInvoke();
+        Player_Movement.Instance.Key_SwiftSwimDown();
+        Player_Descend.Instance.RunDescend();
     }
     void OnAbilityLeft()
     {

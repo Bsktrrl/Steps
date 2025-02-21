@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block_Flameable : MonoBehaviour
+public class Block_Burnable : MonoBehaviour
 {
     private void OnEnable()
     {
@@ -22,10 +22,10 @@ public class Block_Flameable : MonoBehaviour
 
     void CheckForPlayer()
     {
-        if (!Player_Flameable.Instance.isFlameable) { return; }
+        if (!Player_Burning.Instance.isBurning) { return; }
 
 
-        if (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) <= 1.1f && Player_Flameable.Instance.flameableStepCounter <= 5)
+        if (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) <= 1.1f && Player_Burning.Instance.flameableStepCounter <= 5)
         {
             DestroyWeakBlock();
         }

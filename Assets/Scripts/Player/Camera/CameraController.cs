@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
-public class Cameras_v2 : Singleton<Cameras_v2>
+public class CameraController : Singleton<CameraController>
 {
     public static event Action rotateCamera_Start;
     public static event Action rotateCamera_End;

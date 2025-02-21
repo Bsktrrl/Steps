@@ -55,37 +55,37 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     {
         //Don't be able to switch camera angle before the rotation has been done
         if (!canCeilingGrab) { return; }
-        if (Cameras_v2.Instance.isRotating) { return; }
-        if (Cameras_v2.Instance.isCeilingRotating) { return; }
+        if (CameraController.Instance.isRotating) { return; }
+        if (CameraController.Instance.isCeilingRotating) { return; }
         if (Player_Interact.Instance.isInteracting) { return; }
         if (Player_Movement.Instance.isIceGliding) { return; }
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
 
-        if (/*Input.GetKeyDown(KeyCode.C) &&*/ Cameras_v2.Instance.cameraState == CameraState.GameplayCam)
+        if (/*Input.GetKeyDown(KeyCode.C) &&*/ CameraController.Instance.cameraState == CameraState.GameplayCam)
         {
             isCeilingGrabbing = true;
 
-            if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward)
-                StartCoroutine(Cameras_v2.Instance.CeilingCameraRotation(0));
-            else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Backward)
-                StartCoroutine(Cameras_v2.Instance.CeilingCameraRotation(180));
-            else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Left)
-                StartCoroutine(Cameras_v2.Instance.CeilingCameraRotation(90));
-            else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Right)
-                StartCoroutine(Cameras_v2.Instance.CeilingCameraRotation(-90));
+            if (CameraController.Instance.cameraRotationState == CameraRotationState.Forward)
+                StartCoroutine(CameraController.Instance.CeilingCameraRotation(0));
+            else if (CameraController.Instance.cameraRotationState == CameraRotationState.Backward)
+                StartCoroutine(CameraController.Instance.CeilingCameraRotation(180));
+            else if (CameraController.Instance.cameraRotationState == CameraRotationState.Left)
+                StartCoroutine(CameraController.Instance.CeilingCameraRotation(90));
+            else if (CameraController.Instance.cameraRotationState == CameraRotationState.Right)
+                StartCoroutine(CameraController.Instance.CeilingCameraRotation(-90));
 
             StartCoroutine(RotateToCeiling(180));
         }
-        else if (/*Input.GetKeyDown(KeyCode.C) &&*/ Cameras_v2.Instance.cameraState == CameraState.CeilingCam)
+        else if (/*Input.GetKeyDown(KeyCode.C) &&*/ CameraController.Instance.cameraState == CameraState.CeilingCam)
         {
-            if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Forward)
-                StartCoroutine(Cameras_v2.Instance.CeilingCameraRotation(0));
-            else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Backward)
-                StartCoroutine(Cameras_v2.Instance.CeilingCameraRotation(180));
-            else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Left)
-                StartCoroutine(Cameras_v2.Instance.CeilingCameraRotation(90));
-            else if (Cameras_v2.Instance.cameraRotationState == CameraRotationState.Right)
-                StartCoroutine(Cameras_v2.Instance.CeilingCameraRotation(-90));
+            if (CameraController.Instance.cameraRotationState == CameraRotationState.Forward)
+                StartCoroutine(CameraController.Instance.CeilingCameraRotation(0));
+            else if (CameraController.Instance.cameraRotationState == CameraRotationState.Backward)
+                StartCoroutine(CameraController.Instance.CeilingCameraRotation(180));
+            else if (CameraController.Instance.cameraRotationState == CameraRotationState.Left)
+                StartCoroutine(CameraController.Instance.CeilingCameraRotation(90));
+            else if (CameraController.Instance.cameraRotationState == CameraRotationState.Right)
+                StartCoroutine(CameraController.Instance.CeilingCameraRotation(-90));
 
             StartCoroutine(RotateToCeiling(0));
         }
@@ -119,7 +119,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     {
         isCeilingRotation = true;
 
-        if (Cameras_v2.Instance.cameraState == CameraState.CeilingCam || Cameras_v2.Instance.cameraState == CameraState.GameplayCam)
+        if (CameraController.Instance.cameraState == CameraState.CeilingCam || CameraController.Instance.cameraState == CameraState.GameplayCam)
         {
             Player_Movement.Instance.Action_ResetBlockColorInvoke();
             Player_BlockDetector.Instance.ReycastReset();
@@ -135,12 +135,12 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         Quaternion endRotation = new Quaternion();
 
         //Set endPosition for playerBody
-        if (Cameras_v2.Instance.cameraState == CameraState.GameplayCam)
+        if (CameraController.Instance.cameraState == CameraState.GameplayCam)
         {
             endPosition = new Vector3(0, Player_BodyHeight.Instance.height_Normal, 0);
             endRotation = Quaternion.Euler(0, PlayerManager.Instance.playerBody.transform.localRotation.eulerAngles.y, angle);
         }
-        else if (Cameras_v2.Instance.cameraState == CameraState.CeilingCam)
+        else if (CameraController.Instance.cameraState == CameraState.CeilingCam)
         {
             endPosition = new Vector3(0, playerBodyHeight_Ceiling, 0);
             endRotation = Quaternion.Euler(0, PlayerManager.Instance.playerBody.transform.localRotation.eulerAngles.y, angle);
@@ -167,7 +167,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         PlayerManager.Instance.playerBody.transform.rotation = endRotation;
 
         //Moving back to ground
-        if (Cameras_v2.Instance.cameraState == CameraState.GameplayCam)
+        if (CameraController.Instance.cameraState == CameraState.GameplayCam)
         {
             print("1. RotateToGround");
             isCeilingGrabbing = false;
@@ -177,7 +177,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             Action_releaseCeiling?.Invoke();
         }
         //Moving to ceiling
-        else if (Cameras_v2.Instance.cameraState == CameraState.CeilingCam)
+        else if (CameraController.Instance.cameraState == CameraState.CeilingCam)
         {
             print("2. RotateToCeiling");
             Player_BlockDetector.Instance.RaycastSetup();

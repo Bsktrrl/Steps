@@ -5460,8 +5460,6 @@ GameObject:
   - component: {fileID: 2660076382798168572}
   - component: {fileID: 2942397174162899684}
   - component: {fileID: 4400904070712247115}
-  - component: {fileID: 8829352719723179710}
-  - component: {fileID: 2138064633352391507}
   - component: {fileID: 7150252727903198799}
   - component: {fileID: 6309488498664691021}
   - component: {fileID: 8122818156291192365}
@@ -5811,33 +5809,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a93c2a28a45611840a38c1f24c5007fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8829352719723179710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6649856597487831825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eeecaf1a506a1764a9fdac5ab3973bb0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  blockCrack: {fileID: 1901055088007959049, guid: 931b42b9e3cbdd24f9560b18dc903ac8, type: 3}
-  playerCanHammer: 0
---- !u!114 &2138064633352391507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6649856597487831825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fee5347ba57187409bc0fdd21bf99e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveableObjectTexture_Prefab: {fileID: 1901055088007959049, guid: 4df3b1ec638cc6143ae66f0ab3c71ee0, type: 3}
 --- !u!114 &7150252727903198799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5990,7 +5961,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a9a4b4e9bb08cc4cb160493ff28f6fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isFlameable: 0
+  isBurning: 0
   flameableStepCounter: 0
   flameable_Material: {fileID: 2100000, guid: dcef710c812bdf64ca954fcf8545380b, type: 2}
 --- !u!114 &1191866112101601512

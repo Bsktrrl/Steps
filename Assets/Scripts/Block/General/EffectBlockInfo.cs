@@ -11,10 +11,11 @@ public class EffectBlockInfo : MonoBehaviour
 
     EffectBlockManager effectBlockManager = new EffectBlockManager();
 
-    bool effectBlock_SpawnPoint_isAdded;
-    bool effectBlock_RefillSteps_isAdded;
-    bool effectBlock_Pusher_isAdded;
-    bool effectBlock_Teleporter_isAdded;
+    [SerializeField] bool effectBlock_SpawnPoint_isAdded;
+    [SerializeField] bool effectBlock_RefillSteps_isAdded;
+    [SerializeField] bool effectBlock_Pusher_isAdded;
+    [SerializeField] bool effectBlock_Teleporter_isAdded;
+    [SerializeField] bool effectBlock_Moveable_isAdded;
 
 
     //--------------------
@@ -46,6 +47,7 @@ public class EffectBlockInfo : MonoBehaviour
             CheckForEffectBlockUpdate_RefillSteps();
             CheckForEffectBlockUpdate_Pusher();
             CheckForEffectBlockUpdate_Teleporter();
+            CheckForEffectBlockUpdate_Moveable();
 
             counter = 0;
             SetWaitTime();
@@ -73,7 +75,7 @@ public class EffectBlockInfo : MonoBehaviour
 
     void CheckForEffectBlockUpdate_SpawnPoint()
     {
-        if (GetComponent<Block_UpdateSpawnPoint>() && !effectBlock_SpawnPoint_isAdded)
+        if (GetComponent<Block_SpawnPoint>() && !effectBlock_SpawnPoint_isAdded)
         {
             effectBlock_SpawnPoint_isAdded = true;
 
@@ -169,6 +171,26 @@ public class EffectBlockInfo : MonoBehaviour
             ChangeColor();
         }
     }
+    void CheckForEffectBlockUpdate_Moveable()
+    {
+        if (GetComponent<Block_Moveable>() && !effectBlock_Moveable_isAdded)
+        {
+            effectBlock_Moveable_isAdded = true;
+
+            foreach (Transform child in transform)
+            {
+                if (child.GetComponent<EffectBlock_Reference>())
+                {
+                    return;
+                }
+            }
+
+            GameObject effectBlock_Moveable_Canvas = Instantiate(effectBlockManager.effectBlock_Moveable_Canvas, transform);
+
+            AdjustPosition();
+            ChangeColor();
+        }
+    }
 
     void ChangeColor()
     {
@@ -178,9 +200,10 @@ public class EffectBlockInfo : MonoBehaviour
         {
             if (child.GetComponent<EffectBlock_Reference>())
             {
-                child.GetComponentInChildren<Image>().color = colorTemp;
-
-                break;
+                foreach (Transform childchild in child)
+                {
+                    childchild.GetComponentInChildren<Image>().color = colorTemp;
+                }
             }
         }
     }

@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_Flameable : Singleton<Player_Flameable>
+public class Player_Burning : Singleton<Player_Burning>
 {
-    public bool isFlameable;
+    public bool isBurning;
     public int flameableStepCounter;
 
     Material original_Material;
@@ -50,9 +50,9 @@ public class Player_Flameable : Singleton<Player_Flameable>
     {
         if (PlayerManager.Instance.block_StandingOn_Current.block && !firstTimeCheck)
         {
-            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Meltable>())
+            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_BurnTransforming>())
             {
-                PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Meltable>().isSteppedOn = true;
+                PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_BurnTransforming>().isSteppedOn = true;
 
                 firstTimeCheck = true;
             }
@@ -121,7 +121,7 @@ public class Player_Flameable : Singleton<Player_Flameable>
 
     void CheckFlameableCounter()
     {
-        if (!isFlameable) { return; }
+        if (!isBurning) { return; }
 
         flameableStepCounter += 1;
 
@@ -142,14 +142,14 @@ public class Player_Flameable : Singleton<Player_Flameable>
     }
     void AddFlameable()
     {
-        isFlameable = true;
+        isBurning = true;
         flameableStepCounter = 0;
 
         gameObject.GetComponent<PlayerManager>().playerBody.transform.GetComponentInChildren<MeshRenderer>().material = flameable_Material;
     }
     void RemoveFlameable()
     {
-        isFlameable = false;
+        isBurning = false;
         flameableStepCounter = 0;
 
         firstTimeCheck = false;

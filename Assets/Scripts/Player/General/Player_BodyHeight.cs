@@ -91,9 +91,9 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
 
     Vector3 ReturnPosition(float value_Y)
     {
-        if (Cameras_v2.Instance.cameraState == CameraState.GameplayCam)
+        if (CameraController.Instance.cameraState == CameraState.GameplayCam)
             return new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, value_Y, PlayerManager.Instance.playerBody.transform.localPosition.z);
-        else if (Cameras_v2.Instance.cameraState == CameraState.CeilingCam)
+        else if (CameraController.Instance.cameraState == CameraState.CeilingCam)
             return new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, -value_Y, PlayerManager.Instance.playerBody.transform.localPosition.z);
         else
             return new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, value_Y, PlayerManager.Instance.playerBody.transform.localPosition.z);

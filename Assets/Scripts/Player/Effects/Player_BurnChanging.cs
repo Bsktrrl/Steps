@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_Meltable : Singleton<Player_Meltable>
+public class Player_BurnChanging : Singleton<Player_BurnChanging>
 {
     [SerializeField] List<GameObject> meltedBlocksList = new List<GameObject>();
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Block_Ladder_New : MonoBehaviour
+public class Block_Ladder : MonoBehaviour
 {
     [SerializeField] GameObject raycastPoint;
 
@@ -65,9 +65,9 @@ public class Block_Ladder_New : MonoBehaviour
             {
                 if (Physics.Raycast(lastLadderPart_Up.transform.position, Vector3.up, out hit, 1))
                 {
-                    if (hit.transform.gameObject.GetComponent<Block_Ladder_New>())
+                    if (hit.transform.gameObject.GetComponent<Block_Ladder>())
                     {
-                        lastLadderPart_Up = hit.transform.gameObject.GetComponent<Block_Ladder_New>().raycastPoint;
+                        lastLadderPart_Up = hit.transform.gameObject.GetComponent<Block_Ladder>().raycastPoint;
                         tempObject = hit.transform.gameObject;
                     }
                     else
@@ -106,9 +106,9 @@ public class Block_Ladder_New : MonoBehaviour
             {
                 if (Physics.Raycast(lastLadderPart_Down.transform.position, Vector3.down, out hit, 1))
                 {
-                    if (hit.transform.gameObject.GetComponent<Block_Ladder_New>())
+                    if (hit.transform.gameObject.GetComponent<Block_Ladder>())
                     {
-                        lastLadderPart_Down = hit.transform.gameObject.GetComponent<Block_Ladder_New>().raycastPoint;
+                        lastLadderPart_Down = hit.transform.gameObject.GetComponent<Block_Ladder>().raycastPoint;
                         tempObject = hit.transform.gameObject;
                     }
                     else
