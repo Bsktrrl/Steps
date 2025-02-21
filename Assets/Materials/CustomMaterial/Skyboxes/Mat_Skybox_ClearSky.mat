@@ -87,6 +87,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 01712917e0f91b0449a1a7ef8d7e913f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_ae36d629cb8d44ff98c6bbd4be67246a_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 45a5b4a2749498a409a26ea50acdf580, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_eadb839c7e294a62a0f7d2006316cfce_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: 01712917e0f91b0449a1a7ef8d7e913f, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -143,7 +147,7 @@ Material:
     - _GroundHeight: 0.75
     - _GroundLakeDensity: 0.26
     - _GroundSecondaryColorAmount: 0
-    - _GroundSecondaryDensity: 0.5
+    - _GroundSecondaryDensity: 0.45
     - _GroundSecondaryEdge: 1
     - _GroundSecondaryFade: 1
     - _GroundSize: 0.06
@@ -153,6 +157,8 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _RiverQuantity: 1
+    - _RiverSize: 15
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -170,10 +176,14 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GroundBottomColor: {r: 0.5529412, g: 0.6745098, b: 0.14901961, a: 1}
+    - _GroundColor1: {r: 0.7450981, g: 0.8862746, b: 0.1764706, a: 1}
+    - _GroundColor2: {r: 0.5529412, g: 0.6745098, b: 0.1490196, a: 1}
     - _GroundLakeColor: {r: 0.3058824, g: 0.6352941, b: 0.6705883, a: 1}
     - _GroundSecondaryColor: {r: 0.30588236, g: 0.63529414, b: 0.67058825, a: 1}
     - _GroundTopColor: {r: 0.74509805, g: 0.8862746, b: 0.1764706, a: 1}
     - _SkyBottomColor: {r: 0.4431373, g: 0.7843138, b: 0.74509805, a: 1}
+    - _SkyColor1: {r: 0.5843138, g: 0.9411765, b: 0.8196079, a: 1}
+    - _SkyColor2: {r: 0.4431373, g: 0.7843138, b: 0.7450981, a: 1}
     - _SkyTopColor: {r: 0.58431375, g: 0.94117653, b: 0.8196079, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _SunColor: {r: 0.9960785, g: 0.9529412, b: 0.5607843, a: 1}
