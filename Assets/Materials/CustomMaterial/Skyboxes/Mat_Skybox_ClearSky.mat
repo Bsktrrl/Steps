@@ -63,6 +63,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_050a909b16be46cb92c21c86eec22b20_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 01712917e0f91b0449a1a7ef8d7e913f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_0d73d103aacd41b4a1966c58020065d1_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: 01712917e0f91b0449a1a7ef8d7e913f, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -144,13 +148,16 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _GroundDensity: 1
+    - _GroundEdge: 1
     - _GroundHeight: 0.75
     - _GroundLakeDensity: 0.26
     - _GroundSecondaryColorAmount: 0
-    - _GroundSecondaryDensity: 0.45
-    - _GroundSecondaryEdge: 1
+    - _GroundSecondaryDensity: 0.5
+    - _GroundSecondaryEdge: 0.5
     - _GroundSecondaryFade: 1
-    - _GroundSize: 0.06
+    - _GroundSecondarySize: 1
+    - _GroundSize: 1
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
@@ -159,6 +166,7 @@ Material:
     - _ReceiveShadows: 1
     - _RiverQuantity: 1
     - _RiverSize: 15
+    - _Rivers: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -178,15 +186,17 @@ Material:
     - _GroundBottomColor: {r: 0.5529412, g: 0.6745098, b: 0.14901961, a: 1}
     - _GroundColor1: {r: 0.7450981, g: 0.8862746, b: 0.1764706, a: 1}
     - _GroundColor2: {r: 0.5529412, g: 0.6745098, b: 0.1490196, a: 1}
+    - _GroundExtraColor: {r: 0.3058824, g: 0.6352941, b: 0.6705883, a: 1}
     - _GroundLakeColor: {r: 0.3058824, g: 0.6352941, b: 0.6705883, a: 1}
     - _GroundSecondaryColor: {r: 0.30588236, g: 0.63529414, b: 0.67058825, a: 1}
     - _GroundTopColor: {r: 0.74509805, g: 0.8862746, b: 0.1764706, a: 1}
     - _SkyBottomColor: {r: 0.4431373, g: 0.7843138, b: 0.74509805, a: 1}
     - _SkyColor1: {r: 0.5843138, g: 0.9411765, b: 0.8196079, a: 1}
-    - _SkyColor2: {r: 0.4431373, g: 0.7843138, b: 0.7450981, a: 1}
+    - _SkyColor2: {r: 0.5254902, g: 0.8784314, b: 0.7921569, a: 1}
     - _SkyTopColor: {r: 0.58431375, g: 0.94117653, b: 0.8196079, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _SunColor: {r: 0.9960785, g: 0.9529412, b: 0.5607843, a: 1}
+    - _Vector2: {r: 0, g: 0.75, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2389634903884177514
 MonoBehaviour:
