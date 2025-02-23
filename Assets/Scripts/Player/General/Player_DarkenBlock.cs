@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_DarkenBlock : MonoBehaviour
+public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
 {
 
     private void Start()
@@ -19,31 +19,32 @@ public class Player_DarkenBlock : MonoBehaviour
     //--------------------
 
 
-    void UpdateDarkenBlockWhenButtonIsPressed()
+    public void UpdateDarkenBlockWhenButtonIsPressed()
     {
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
 
-        //If a key is held down, don't show the new darkening blocks
-        if (Input.GetKey(KeyCode.W)
-            || Input.GetKey(KeyCode.S)
-            || Input.GetKey(KeyCode.A)
-            || Input.GetKey(KeyCode.D)) { }
+        if (PlayerManager.Instance.forward_isPressed
+            || PlayerManager.Instance.back_isPressed
+            || PlayerManager.Instance.left_isPressed
+            || PlayerManager.Instance.right_isPressed)
+        {
+            
+        }
         else
         {
             UpdateDarkenBlocks();
         }
 
-        //When a key is pressed up
-        if (Input.GetKeyUp(KeyCode.W)
-            || Input.GetKeyUp(KeyCode.S)
-            || Input.GetKeyUp(KeyCode.A)
-            || Input.GetKeyUp(KeyCode.D))
+        if (!PlayerManager.Instance.forward_isPressed
+            && !PlayerManager.Instance.back_isPressed
+            && !PlayerManager.Instance.left_isPressed
+            && !PlayerManager.Instance.right_isPressed)
         {
             UpdateDarkenBlocks();
         }
     }
 
-    void UpdateDarkenBlocks()
+    public void UpdateDarkenBlocks()
     {
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
 
