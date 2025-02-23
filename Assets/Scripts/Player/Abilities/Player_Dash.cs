@@ -41,83 +41,35 @@ public class Player_Dash : Singleton<Player_Dash>
         if (PlayerManager.Instance.pauseGame) { return; }
         if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
-        if (PlayerManager.Instance.forward_isPressed && !PlayerManager.Instance.canMove_Forward)
+        //SetDashDirections();
+
+        if (PlayerManager.Instance.forward_isPressed /*&& !PlayerManager.Instance.canMove_Forward*/)
             Dash_Forward();
-        else if (PlayerManager.Instance.back_isPressed && !PlayerManager.Instance.canMove_Back)
+        else if (PlayerManager.Instance.back_isPressed /*&& !PlayerManager.Instance.canMove_Back*/)
             Dash_Backward();
-        else if (PlayerManager.Instance.left_isPressed && !PlayerManager.Instance.canMove_Left)
+        else if (PlayerManager.Instance.left_isPressed /*&& !PlayerManager.Instance.canMove_Left*/)
             Dash_Left();
-        else if (PlayerManager.Instance.right_isPressed && !PlayerManager.Instance.canMove_Right)
+        else if (PlayerManager.Instance.right_isPressed /*&& !PlayerManager.Instance.canMove_Right*/)
             Dash_Right();
     }
 
     private void OnEnable()
     {
-        //DataManager.Action_dataHasLoaded += StartRunningObject;
-        DataManager.Action_dataHasLoaded += CheckIfCanDash;
-        Player_Movement.Action_StepTaken += CheckIfCanDash;
-        Player_Movement.Action_BodyRotated += CheckIfCanDash;
+        DataManager.Action_dataHasLoaded += SetDashDirections;
+        Player_Movement.Action_StepTaken += SetDashDirections;
+        Player_Movement.Action_BodyRotated += SetDashDirections;
     }
     private void OnDisable()
     {
-        //DataManager.Action_dataHasLoaded -= StartRunningObject;
-        DataManager.Action_dataHasLoaded -= CheckIfCanDash;
-        Player_Movement.Action_StepTaken -= CheckIfCanDash;
-        Player_Movement.Action_BodyRotated -= CheckIfCanDash;
+        DataManager.Action_dataHasLoaded -= SetDashDirections;
+        Player_Movement.Action_StepTaken -= SetDashDirections;
+        Player_Movement.Action_BodyRotated -= SetDashDirections;
     }
 
 
     //--------------------
 
 
-    void StartDashing()
-    {
-        switch (CameraController.Instance.cameraRotationState)
-        {
-            case CameraRotationState.Forward:
-                if (Input.GetKeyDown(KeyCode.W) && canDash_Forward && dashTarget_Forward)
-                    StartCoroutine(DashRoutine(dashTarget_Forward));
-                else if (Input.GetKeyDown(KeyCode.S) && canDash_Back && dashTarget_Back)
-                    StartCoroutine(DashRoutine(dashTarget_Back));
-                else if (Input.GetKeyDown(KeyCode.A) && canDash_Left && dashTarget_Left)
-                    StartCoroutine(DashRoutine(dashTarget_Left));
-                else if (Input.GetKeyDown(KeyCode.D) && canDash_Right && dashTarget_Right)
-                    StartCoroutine(DashRoutine(dashTarget_Right));
-                break;
-            case CameraRotationState.Backward:
-                if (Input.GetKeyDown(KeyCode.S) && canDash_Forward && dashTarget_Forward)
-                    StartCoroutine(DashRoutine(dashTarget_Forward));
-                else if (Input.GetKeyDown(KeyCode.W) && canDash_Back && dashTarget_Back)
-                    StartCoroutine(DashRoutine(dashTarget_Back));
-                else if (Input.GetKeyDown(KeyCode.D) && canDash_Left && dashTarget_Left)
-                    StartCoroutine(DashRoutine(dashTarget_Left));
-                else if (Input.GetKeyDown(KeyCode.A) && canDash_Right && dashTarget_Right)
-                    StartCoroutine(DashRoutine(dashTarget_Right));
-                break;
-            case CameraRotationState.Left:
-                if (Input.GetKeyDown(KeyCode.A) && canDash_Forward && dashTarget_Forward)
-                    StartCoroutine(DashRoutine(dashTarget_Forward));
-                else if (Input.GetKeyDown(KeyCode.D) && canDash_Back && dashTarget_Back)
-                    StartCoroutine(DashRoutine(dashTarget_Back));
-                else if (Input.GetKeyDown(KeyCode.S) && canDash_Left && dashTarget_Left)
-                    StartCoroutine(DashRoutine(dashTarget_Left));
-                else if (Input.GetKeyDown(KeyCode.W) && canDash_Right && dashTarget_Right)
-                    StartCoroutine(DashRoutine(dashTarget_Right));
-                break;
-            case CameraRotationState.Right:
-                if (Input.GetKeyDown(KeyCode.D) && canDash_Forward && dashTarget_Forward)
-                    StartCoroutine(DashRoutine(dashTarget_Forward));
-                else if (Input.GetKeyDown(KeyCode.A) && canDash_Back && dashTarget_Back)
-                    StartCoroutine(DashRoutine(dashTarget_Back));
-                else if (Input.GetKeyDown(KeyCode.W) && canDash_Left && dashTarget_Left)
-                    StartCoroutine(DashRoutine(dashTarget_Left));
-                else if (Input.GetKeyDown(KeyCode.S) && canDash_Right && dashTarget_Right)
-                    StartCoroutine(DashRoutine(dashTarget_Right));
-                break;
-            default:
-                break;
-        }
-    }
     bool DashChecks()
     {
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash) { return false; }
@@ -139,18 +91,22 @@ public class Player_Dash : Singleton<Player_Dash>
         switch (CameraController.Instance.cameraRotationState)
         {
             case CameraRotationState.Forward:
+                //canDash_Forward = CheckIfCanDash(ref dashTarget_Forward, Vector3.forward);
                 if (canDash_Forward && dashTarget_Forward)
                     StartCoroutine(DashRoutine(dashTarget_Forward));
                 break;
             case CameraRotationState.Backward:
+                //canDash_Back = CheckIfCanDash(ref dashTarget_Back, Vector3.back);
                 if (canDash_Back && dashTarget_Back)
                     StartCoroutine(DashRoutine(dashTarget_Back));
                 break;
             case CameraRotationState.Left:
+                //canDash_Right = CheckIfCanDash(ref dashTarget_Right, Vector3.right);
                 if (canDash_Right && dashTarget_Right)
                     StartCoroutine(DashRoutine(dashTarget_Right));
                 break;
             case CameraRotationState.Right:
+                //canDash_Left = CheckIfCanDash(ref dashTarget_Left, Vector3.left);
                 if (canDash_Left && dashTarget_Left)
                     StartCoroutine(DashRoutine(dashTarget_Left));
                 break;
@@ -165,18 +121,22 @@ public class Player_Dash : Singleton<Player_Dash>
         switch (CameraController.Instance.cameraRotationState)
         {
             case CameraRotationState.Forward:
+                //canDash_Back = CheckIfCanDash(ref dashTarget_Back, Vector3.back);
                 if (canDash_Back && dashTarget_Back)
                     StartCoroutine(DashRoutine(dashTarget_Back));
                 break;
             case CameraRotationState.Backward:
+                //canDash_Forward = CheckIfCanDash(ref dashTarget_Forward, Vector3.forward);
                 if (canDash_Forward && dashTarget_Forward)
                     StartCoroutine(DashRoutine(dashTarget_Forward));
                 break;
             case CameraRotationState.Left:
+                //canDash_Left = CheckIfCanDash(ref dashTarget_Left, Vector3.left);
                 if (canDash_Left && dashTarget_Left)
                     StartCoroutine(DashRoutine(dashTarget_Left));
                 break;
             case CameraRotationState.Right:
+                //canDash_Right = CheckIfCanDash(ref dashTarget_Right, Vector3.right);
                 if (canDash_Right && dashTarget_Right)
                     StartCoroutine(DashRoutine(dashTarget_Right));
                 break;
@@ -191,18 +151,22 @@ public class Player_Dash : Singleton<Player_Dash>
         switch (CameraController.Instance.cameraRotationState)
         {
             case CameraRotationState.Forward:
+                //canDash_Left = CheckIfCanDash(ref dashTarget_Left, Vector3.left);
                 if (canDash_Left && dashTarget_Left)
                     StartCoroutine(DashRoutine(dashTarget_Left));
                 break;
             case CameraRotationState.Backward:
+                //canDash_Right = CheckIfCanDash(ref dashTarget_Right, Vector3.right);
                 if (canDash_Right && dashTarget_Right)
                     StartCoroutine(DashRoutine(dashTarget_Right));
                 break;
             case CameraRotationState.Left:
+                //canDash_Forward = CheckIfCanDash(ref dashTarget_Forward, Vector3.forward);
                 if (canDash_Forward && dashTarget_Forward)
                     StartCoroutine(DashRoutine(dashTarget_Forward));
                 break;
             case CameraRotationState.Right:
+                //canDash_Back = CheckIfCanDash(ref dashTarget_Back, Vector3.back);
                 if (canDash_Back && dashTarget_Back)
                     StartCoroutine(DashRoutine(dashTarget_Back));
                 break;
@@ -217,18 +181,22 @@ public class Player_Dash : Singleton<Player_Dash>
         switch (CameraController.Instance.cameraRotationState)
         {
             case CameraRotationState.Forward:
+                //canDash_Right = CheckIfCanDash(ref dashTarget_Right, Vector3.right);
                 if (canDash_Right && dashTarget_Right)
                     StartCoroutine(DashRoutine(dashTarget_Right));
                 break;
             case CameraRotationState.Backward:
+                //canDash_Left = CheckIfCanDash(ref dashTarget_Left, Vector3.left);
                 if (canDash_Left && dashTarget_Left)
                     StartCoroutine(DashRoutine(dashTarget_Left));
                 break;
             case CameraRotationState.Left:
+                //canDash_Back = CheckIfCanDash(ref dashTarget_Back, Vector3.back);
                 if (canDash_Back && dashTarget_Back)
                     StartCoroutine(DashRoutine(dashTarget_Back));
                 break;
             case CameraRotationState.Right:
+                //canDash_Forward = CheckIfCanDash(ref dashTarget_Forward, Vector3.forward);
                 if (canDash_Forward && dashTarget_Forward)
                     StartCoroutine(DashRoutine(dashTarget_Forward));
                 break;
@@ -241,8 +209,13 @@ public class Player_Dash : Singleton<Player_Dash>
     //--------------------
 
 
-    void CheckIfCanDash()
+    void SetDashDirections()
     {
+        canDash_Forward = false;
+        canDash_Back = false;
+        canDash_Left = false;
+        canDash_Right = false;
+
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash) { return; }
 
         ResetTargetBlock(ref dashTarget_Forward);
@@ -263,7 +236,52 @@ public class Player_Dash : Singleton<Player_Dash>
         //Raycast target +1
         if (Physics.Raycast(gameObject.transform.position, dir, out hit, 1))
         {
-            if (hit.transform.gameObject.GetComponent<Block_Water>() || hit.transform.gameObject.GetComponent<Block_Moveable>())
+            //if (/*hit.transform.gameObject.GetComponent<Block_Water>() ||*/ hit.transform.gameObject.GetComponent<Block_Moveable>())
+            //{
+            //    ResetTargetBlock(ref target);
+            //    target = null;
+            //    return false;
+            //}
+        }
+        else
+        {
+            ResetTargetBlock(ref target);
+            target = null;
+            return false;
+        }
+
+        //Raycast target +2
+        if (Physics.Raycast(gameObject.transform.position + dir, dir, out hit, 1))
+        {
+            if (hit.transform.gameObject.GetComponent<BlockInfo>())
+            {
+                ResetTargetBlock(ref target);
+                target = null;
+                return false;
+            }
+        }
+
+        //Raycast down from target +2
+        if (Physics.Raycast(gameObject.transform.position + (dir * 2), Vector3.down, out hit, 1))
+        {
+            if (hit.transform.gameObject.GetComponent<BlockInfo>())
+            {
+                target = hit.transform.gameObject;
+
+                //Darken color in target block
+                if (target)
+                {
+                    if (target.GetComponent<BlockInfo>())
+                    {
+                        target.GetComponent<BlockInfo>().DarkenColors();
+                    }
+                }
+
+                ResetDarkenColorIfStepsIsGone(ref target);
+
+                return true;
+            }
+            else
             {
                 ResetTargetBlock(ref target);
                 target = null;
@@ -274,38 +292,8 @@ public class Player_Dash : Singleton<Player_Dash>
         {
             ResetTargetBlock(ref target);
             target = null;
-            return false;
+            return false; 
         }
-
-        //Raycast target +2
-        if (Physics.Raycast(gameObject.transform.position + (dir * 2), dir, out hit, 1))
-        {
-            ResetTargetBlock(ref target);
-            target = null;
-            return false;
-        }
-
-        //Raycast down from target +2
-        if (Physics.Raycast(gameObject.transform.position + (dir * 2), Vector3.down, out hit, 1))
-        {
-            if (hit.transform.gameObject.GetComponent<BlockInfo>())
-            {
-                target = hit.transform.gameObject;
-            }
-        }
-
-        //Darken color in target block
-        if (target)
-        {
-            if (target.GetComponent<BlockInfo>())
-            {
-                target.GetComponent<BlockInfo>().DarkenColors();
-            }
-        }
-
-        ResetDarkenColorIfStepsIsGone(ref target);
-
-        return true;
     }
     void ResetDarkenColorIfStepsIsGone(ref GameObject target)
     {
