@@ -42,14 +42,34 @@ public class Player_Jumping : Singleton<Player_Jumping>
         if (PlayerManager.Instance.pauseGame) { return; }
         if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
-        if (PlayerManager.Instance.forward_isPressed && !PlayerManager.Instance.canMove_Forward)
+        print("0. Jump");
+
+        CheckIfCanJump();
+
+        if (PlayerManager.Instance.forward_isPressed /*&& !PlayerManager.Instance.canMove_Forward*/)
+        {
+            print("0. Jump_Forward");
+
             Jump_Forward();
-        else if (PlayerManager.Instance.back_isPressed && !PlayerManager.Instance.canMove_Back)
+        }
+        else if (PlayerManager.Instance.back_isPressed /*&& !PlayerManager.Instance.canMove_Back*/)
+        {
+            print("0. Jump_Backward");
+
             Jump_Backward();
-        else if (PlayerManager.Instance.left_isPressed && !PlayerManager.Instance.canMove_Left)
+        }
+        else if (PlayerManager.Instance.left_isPressed /*&& !PlayerManager.Instance.canMove_Left*/)
+        {
+            print("0. Jump_Left");
+
             Jump_Left();
-        else if (PlayerManager.Instance.right_isPressed && !PlayerManager.Instance.canMove_Right)
+        }
+        else if (PlayerManager.Instance.right_isPressed /*&& !PlayerManager.Instance.canMove_Right*/)
+        {
+            print("0. Jump_Right");
+
             Jump_Right();
+        }
     }
 
 
@@ -73,54 +93,6 @@ public class Player_Jumping : Singleton<Player_Jumping>
     //--------------------
 
 
-    void StartJumping()
-    {
-        switch (CameraController.Instance.cameraRotationState)
-        {
-            case CameraRotationState.Forward:
-                if (Input.GetKeyDown(KeyCode.W) && canJump_Forward && jumpTarget_Forward)
-                    StartCoroutine(JumpRoutine(jumpTarget_Forward));
-                else if (Input.GetKeyDown(KeyCode.S) && canJump_Back && jumpTarget_Back)
-                    StartCoroutine(JumpRoutine(jumpTarget_Back));
-                else if (Input.GetKeyDown(KeyCode.A) && canJump_Left && jumpTarget_Left)
-                    StartCoroutine(JumpRoutine(jumpTarget_Left));
-                else if (Input.GetKeyDown(KeyCode.D) && canJump_Right && jumpTarget_Right)
-                    StartCoroutine(JumpRoutine(jumpTarget_Right));
-                break;
-            case CameraRotationState.Backward:
-                if (Input.GetKeyDown(KeyCode.S) && canJump_Forward && jumpTarget_Forward)
-                    StartCoroutine(JumpRoutine(jumpTarget_Forward));
-                else if (Input.GetKeyDown(KeyCode.W) && canJump_Back && jumpTarget_Back)
-                    StartCoroutine(JumpRoutine(jumpTarget_Back));
-                else if (Input.GetKeyDown(KeyCode.D) && canJump_Left && jumpTarget_Left)
-                    StartCoroutine(JumpRoutine(jumpTarget_Left));
-                else if (Input.GetKeyDown(KeyCode.A) && canJump_Right && jumpTarget_Right)
-                    StartCoroutine(JumpRoutine(jumpTarget_Right));
-                break;
-            case CameraRotationState.Left:
-                if (Input.GetKeyDown(KeyCode.A) && canJump_Forward && jumpTarget_Forward)
-                    StartCoroutine(JumpRoutine(jumpTarget_Forward));
-                else if (Input.GetKeyDown(KeyCode.D) && canJump_Back && jumpTarget_Back)
-                    StartCoroutine(JumpRoutine(jumpTarget_Back));
-                else if (Input.GetKeyDown(KeyCode.S) && canJump_Left && jumpTarget_Left)
-                    StartCoroutine(JumpRoutine(jumpTarget_Left));
-                else if (Input.GetKeyDown(KeyCode.W) && canJump_Right && jumpTarget_Right)
-                    StartCoroutine(JumpRoutine(jumpTarget_Right));
-                break;
-            case CameraRotationState.Right:
-                if (Input.GetKeyDown(KeyCode.D) && canJump_Forward && jumpTarget_Forward)
-                    StartCoroutine(JumpRoutine(jumpTarget_Forward));
-                else if (Input.GetKeyDown(KeyCode.A) && canJump_Back && jumpTarget_Back)
-                    StartCoroutine(JumpRoutine(jumpTarget_Back));
-                else if (Input.GetKeyDown(KeyCode.W) && canJump_Left && jumpTarget_Left)
-                    StartCoroutine(JumpRoutine(jumpTarget_Left));
-                else if (Input.GetKeyDown(KeyCode.S) && canJump_Right && jumpTarget_Right)
-                    StartCoroutine(JumpRoutine(jumpTarget_Right));
-                break;
-            default:
-                break;
-        }
-    }
     bool JumpCheck()
     {
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.Jumping && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping) { return false; }
@@ -138,6 +110,8 @@ public class Player_Jumping : Singleton<Player_Jumping>
     public void Jump_Forward()
     {
         if (!JumpCheck()) { return; }
+
+        print("1. Jump_Forward");
 
         switch (CameraController.Instance.cameraRotationState)
         {
@@ -163,6 +137,8 @@ public class Player_Jumping : Singleton<Player_Jumping>
     }
     public void Jump_Backward()
     {
+        print("2. Jump_Backward");
+
         if (!JumpCheck()) { return; }
 
         switch (CameraController.Instance.cameraRotationState)
@@ -189,6 +165,8 @@ public class Player_Jumping : Singleton<Player_Jumping>
     }
     public void Jump_Left()
     {
+        print("3. Jump_Left");
+
         if (!JumpCheck()) { return; }
 
         switch (CameraController.Instance.cameraRotationState)
@@ -215,6 +193,8 @@ public class Player_Jumping : Singleton<Player_Jumping>
     }
     public void Jump_Right()
     {
+        print("4. Jump_Right");
+
         if (!JumpCheck()) { return; }
 
         switch (CameraController.Instance.cameraRotationState)
