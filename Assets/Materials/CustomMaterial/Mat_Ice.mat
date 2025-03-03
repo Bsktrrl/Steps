@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_Lava
+  m_Name: Mat_Ice
   m_Shader: {fileID: -6465566751694194690, guid: ddd437d34990d8a44a3d9d52fec9f66c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -185,19 +185,19 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Reflectiveness: 0
+    - _Reflectiveness: 0.25
     - _SeeThrough: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
-    - _Smothness: 0
+    - _Smothness: 0.75
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _Transparency: 0.25
-    - _WaveDensity: 0.5
-    - _WaveSpeed: 0.75
-    - _WaveStrength: 1
+    - _Transparency: 0.5
+    - _WaveDensity: 0
+    - _WaveSpeed: 0
+    - _WaveStrength: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _smoothness: 0.75
