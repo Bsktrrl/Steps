@@ -2,19 +2,36 @@
 
 
 ResetPlayer:
-- Fix the bug where the blocks that have moved/falled cannot be moved onto, or the player clips it when moving into, after respawning
+- Fix the bug where the blocks that have moved/falled cannot be moved onto, and that the player clips it when moving into, after respawning
 	- Happens if the block has gone completely to the bottom and got hidden, not if respawned during its fall
 
+
+Block Colors:
+- Make an algorithm that changes the colors a bit darker, based on the position of the blocks x and z level
+	- Add this effect to the darkenBlock-function
+
+Numbers:
+- Add functionalty for the number animations on adjacent blocks
+- Add animation to darkenblock visibility
+
+Menu:
+- Make the new Overwordl Menu
+- Make menus compatible with controller
 
 ---
 
 
-- Make CeilingGrab Ability 
-	- Fix IceGlide lag
-
 Make BlockPrefabs:
 - Wood Slope
 
+
+From meetings
+- CeilingGrab Ability 
+	- Fix IceGlide lag
+- Weak Ice block
+	- Becomes water after moving from it
+- Iceicle
+	- Make the iceicle shake before it drops when the player is under it, respawing the player if it hits the player
 
 
 ---
