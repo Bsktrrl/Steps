@@ -30,6 +30,11 @@ public class BlockInfo : MonoBehaviour
     List<Renderer> objectRenderers = new List<Renderer>();
     [HideInInspector] public List<MaterialPropertyBlock> propertyBlocks = new List<MaterialPropertyBlock>();
 
+    bool colorTint_isActive;
+    bool color_isDarkened;
+
+    float tintValue = 0.95f;
+
     #region Adjacent Blocks
     [Header("Adjacent Blocks - Upper")]
     [HideInInspector] public GameObject upper_Front_Left;
@@ -85,6 +90,8 @@ public class BlockInfo : MonoBehaviour
         SetObjectRenderer();
         SetPropertyBlock();
         GetAdjacentBlocksInfo();
+
+        CheckIfColorIsTinted();
     }
 
 
@@ -214,33 +221,11 @@ public class BlockInfo : MonoBehaviour
             return;
         }
 
-        //Darken all materials attached
-        for (int i = 0; i < propertyBlocks.Count; i++)
-        {
-            // Darken the color
-            Color darkenedColor = new Color();
-            if (hasOtherMaterial)
-            {
-                darkenedColor = material.color * BlockManager.Instance.materialDarkeningValue;
-            }
-            else
-            {
-                darkenedColor = Color.white * BlockManager.Instance.materialDarkeningValue;
-            }
+        color_isDarkened = true;
 
-            // Set the new color in the MaterialPropertyBlock
-            propertyBlocks[i].SetColor("_BaseColor", darkenedColor);
+        UpdatePropertyBlock();
 
-            // Apply the MaterialPropertyBlock to the renderer
-            objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
-
-            //Show StepCost
-            if (gameObject.GetComponent<BlockStepCostDisplay>())
-            {
-                //GetMovementCost();
-                gameObject.GetComponent<BlockStepCostDisplay>().ShowDisplay();
-            }
-        }
+        color_isDarkened = false;
     }
 
     public void ResetColor()
@@ -254,15 +239,7 @@ public class BlockInfo : MonoBehaviour
                     for (int i = 0; i < propertyBlocks.Count; i++)
                     {
                         // Restore the color to full brightness
-                        Color restoredColor = new Color();
-                        if (hasOtherMaterial)
-                        {
-                            restoredColor = material.color;
-                        }
-                        else
-                        {
-                            restoredColor = Color.white;
-                        }
+                        Color restoredColor = ResetColorTint();
 
                         // Set the original color in the MaterialPropertyBlock
                         propertyBlocks[i].SetColor("_BaseColor", restoredColor);
@@ -278,6 +255,89 @@ public class BlockInfo : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+
+    //--------------------
+
+
+    void CheckIfColorIsTinted()
+    {
+        // Get the whole number position (rounding to nearest int)
+        int x = Mathf.RoundToInt(transform.position.x);
+        int z = Mathf.RoundToInt(transform.position.z);
+
+        // Determine state based on checkerboard pattern
+        if ((x + z) % 2 == 0)
+        {
+            colorTint_isActive = true;
+        }
+        else
+        {
+            colorTint_isActive = false;
+        }
+
+        UpdatePropertyBlock();
+    }
+    void UpdatePropertyBlock()
+    {
+        // Darken the color
+        Color darkenedColor = SetColorTint();
+
+        //Darken all materials attached
+        for (int i = 0; i < propertyBlocks.Count; i++)
+        {
+            // Set the new color in the MaterialPropertyBlock
+            propertyBlocks[i].SetColor("_BaseColor", darkenedColor);
+
+            // Apply the MaterialPropertyBlock to the renderer
+            objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
+
+            //Show StepCost
+            if (gameObject.GetComponent<BlockStepCostDisplay>())
+            {
+                //GetMovementCost();
+                gameObject.GetComponent<BlockStepCostDisplay>().ShowDisplay();
+            }
+        }
+    }
+    Color SetColorTint()
+    {
+        if (color_isDarkened)
+        {
+            if (colorTint_isActive)
+            {
+                return Color.white * tintValue * BlockManager.Instance.materialDarkeningValue;
+            }
+            else
+            {
+                return Color.white * BlockManager.Instance.materialDarkeningValue;
+            }
+        }
+        else
+        {
+            if (colorTint_isActive)
+            {
+                return Color.white * tintValue;
+            }
+            else
+            {
+                return Color.white;
+            }
+        }
+
+
+    }
+    Color ResetColorTint()
+    {
+        if (colorTint_isActive)
+        {
+            return Color.white * tintValue;
+        }
+        else
+        {
+            return Color.white;
         }
     }
 

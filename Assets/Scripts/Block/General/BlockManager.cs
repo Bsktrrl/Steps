@@ -6,7 +6,7 @@ using UnityEngine;
 public class BlockManager : Singleton<BlockManager>
 {
     [Header("Material Darkening Value")]
-    public float materialDarkeningValue = 0.5f;
+    public float materialDarkeningValue = 0.25f;
 
     [Header("Darkening Text Colors")]
     public Color cheap_TextColor;
