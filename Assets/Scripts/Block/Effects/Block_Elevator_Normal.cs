@@ -146,14 +146,14 @@ public class Block_Elevator_Normal : MonoBehaviour
         if (Player_CeilingGrab.Instance.isCeilingGrabbing)
         {
             if (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) >= 1.5f)
-                GetComponent<BlockInfo>().ResetColor();
+                GetComponent<BlockInfo>().ResetDarkenColor();
             else
                 GetComponent<BlockInfo>().DarkenColors();
         }
         else
         {
             if (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) >= 1.1f)
-                GetComponent<BlockInfo>().ResetColor();
+                GetComponent<BlockInfo>().ResetDarkenColor();
             else
                 GetComponent<BlockInfo>().DarkenColors();
         }

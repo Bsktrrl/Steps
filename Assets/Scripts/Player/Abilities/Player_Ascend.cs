@@ -164,7 +164,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
             {
                 if (ascendingBlock_Previous.GetComponent<BlockInfo>())
                 {
-                    ascendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                    ascendingBlock_Previous.GetComponent<BlockInfo>().ResetDarkenColor();
                 }
             }
         }
@@ -193,7 +193,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
         {
             if (ascendingBlock_Current.GetComponent<BlockInfo>())
             {
-                ascendingBlock_Current.GetComponent<BlockInfo>().ResetColor();
+                ascendingBlock_Current.GetComponent<BlockInfo>().ResetDarkenColor();
                 ascendingBlock_Current = null;
             }
         }
@@ -201,7 +201,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
         {
             if (ascendingBlock_Previous.GetComponent<BlockInfo>())
             {
-                ascendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                ascendingBlock_Previous.GetComponent<BlockInfo>().ResetDarkenColor();
                 ascendingBlock_Previous = null;
             }
         }

@@ -664,7 +664,7 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (targetObject_forward.GetComponent<BlockInfo>())
             {
-                targetObject_forward.GetComponent<BlockInfo>().ResetColor();
+                targetObject_forward.GetComponent<BlockInfo>().ResetDarkenColor();
             }
         }
            
@@ -673,7 +673,7 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (targetObject_back.GetComponent<BlockInfo>())
             {
-                targetObject_back.GetComponent<BlockInfo>().ResetColor();
+                targetObject_back.GetComponent<BlockInfo>().ResetDarkenColor();
             }
         }
 
@@ -682,7 +682,7 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (targetObject_left.GetComponent<BlockInfo>())
             {
-                targetObject_left.GetComponent<BlockInfo>().ResetColor();
+                targetObject_left.GetComponent<BlockInfo>().ResetDarkenColor();
             }
         }
 
@@ -691,7 +691,7 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (targetObject_right.GetComponent<BlockInfo>())
             {
-                targetObject_right.GetComponent<BlockInfo>().ResetColor();
+                targetObject_right.GetComponent<BlockInfo>().ResetDarkenColor();
             }
         }
     }

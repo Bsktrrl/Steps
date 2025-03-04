@@ -304,7 +304,7 @@ public class Player_Dash : Singleton<Player_Dash>
             {
                 if (target.GetComponent<BlockInfo>().movementCost > 0)
                 {
-                    target.GetComponent<BlockInfo>().ResetColor();
+                    target.GetComponent<BlockInfo>().ResetDarkenColor();
                 }
             }
         }
@@ -314,7 +314,7 @@ public class Player_Dash : Singleton<Player_Dash>
         //Reset Darken Color
         if (target)
         {
-            target.GetComponent<BlockInfo>().ResetColor();
+            target.GetComponent<BlockInfo>().ResetDarkenColor();
             target = null;
         }
     }

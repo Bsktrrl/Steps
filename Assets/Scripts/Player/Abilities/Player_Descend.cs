@@ -234,7 +234,7 @@ public class Player_Descend : Singleton<Player_Descend>
             {
                 if (descendingBlock_Previous.GetComponent<BlockInfo>())
                 {
-                    descendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                    descendingBlock_Previous.GetComponent<BlockInfo>().ResetDarkenColor();
                 }
             }
         }
@@ -263,7 +263,7 @@ public class Player_Descend : Singleton<Player_Descend>
         {
             if (descendingBlock_Current.GetComponent<BlockInfo>())
             {
-                descendingBlock_Current.GetComponent<BlockInfo>().ResetColor();
+                descendingBlock_Current.GetComponent<BlockInfo>().ResetDarkenColor();
                 descendingBlock_Current = null;
             }
         }
@@ -271,7 +271,7 @@ public class Player_Descend : Singleton<Player_Descend>
         {
             if (descendingBlock_Previous.GetComponent<BlockInfo>())
             {
-                descendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                descendingBlock_Previous.GetComponent<BlockInfo>().ResetDarkenColor();
                 descendingBlock_Previous = null;
             }
         }

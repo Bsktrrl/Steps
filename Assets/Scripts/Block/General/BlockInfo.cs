@@ -35,6 +35,8 @@ public class BlockInfo : MonoBehaviour
 
     float tintValue = 0.95f;
 
+    NumberDisplay numberDisplay;
+
     #region Adjacent Blocks
     [Header("Adjacent Blocks - Upper")]
     [HideInInspector] public GameObject upper_Front_Left;
@@ -76,6 +78,8 @@ public class BlockInfo : MonoBehaviour
 
     private void Start()
     {
+        numberDisplay = GetComponentInChildren<NumberDisplay>();
+
         movementCost_Temp = movementCost;
 
         startPos = transform.position;
@@ -92,6 +96,13 @@ public class BlockInfo : MonoBehaviour
         GetAdjacentBlocksInfo();
 
         CheckIfColorIsTinted();
+
+        //Show StepCost
+        if (numberDisplay)
+        {
+            //GetMovementCost();
+            numberDisplay.HideNumber();
+        }
     }
 
 
@@ -100,17 +111,17 @@ public class BlockInfo : MonoBehaviour
 
     private void OnEnable()
     {
-        Player_Movement.Action_BodyRotated += ResetColor;
-        Player_Movement.Action_resetBlockColor += ResetColor;
-        PlayerStats.Action_RespawnToSavePos += ResetColor;
+        Player_Movement.Action_BodyRotated += ResetDarkenColor;
+        Player_Movement.Action_resetBlockColor += ResetDarkenColor;
+        PlayerStats.Action_RespawnToSavePos += ResetDarkenColor;
         PlayerStats.Action_RespawnPlayer += ResetBlock;
     }
 
     private void OnDisable()
     {
-        Player_Movement.Action_BodyRotated -= ResetColor;
-        Player_Movement.Action_resetBlockColor -= ResetColor;
-        PlayerStats.Action_RespawnToSavePos -= ResetColor;
+        Player_Movement.Action_BodyRotated -= ResetDarkenColor;
+        Player_Movement.Action_resetBlockColor -= ResetDarkenColor;
+        PlayerStats.Action_RespawnToSavePos -= ResetDarkenColor;
         PlayerStats.Action_RespawnPlayer -= ResetBlock;
     }
 
@@ -205,7 +216,7 @@ public class BlockInfo : MonoBehaviour
         }
 
         return stepCostText_Color;
-    }
+    } //Change This
 
 
     //--------------------
@@ -215,9 +226,9 @@ public class BlockInfo : MonoBehaviour
     {
         if (PlayerManager.Instance.player.GetComponent<Player_Dash>().isDashing) { return; }
 
-        if (PlayerStats.Instance.stats.steps_Current <= 0 && movementCost > 0 /*|| PlayerStats.Instance.stats.steps_Current < movementCost*/)
+        if (PlayerStats.Instance.stats.steps_Current <= 0 && movementCost > 0)
         {
-            ResetColor();
+            ResetDarkenColor();
             return;
         }
 
@@ -228,32 +239,23 @@ public class BlockInfo : MonoBehaviour
         color_isDarkened = false;
     }
 
-    public void ResetColor()
+    public void ResetDarkenColor()
     {
-        if (gameObject.GetComponent<BlockStepCostDisplay>())
+        if (numberDisplay)
         {
-            if (gameObject.GetComponent<BlockStepCostDisplay>().stepCostDisplay_Parent)
+            for (int i = 0; i < propertyBlocks.Count; i++)
             {
-                if (gameObject.GetComponent<BlockStepCostDisplay>().stepCostDisplay_Parent.activeInHierarchy)
-                {
-                    for (int i = 0; i < propertyBlocks.Count; i++)
-                    {
-                        // Restore the color to full brightness
-                        Color restoredColor = ResetColorTint();
+                // Restore the color to full brightness
+                Color restoredColor = ResetColorTint();
 
-                        // Set the original color in the MaterialPropertyBlock
-                        propertyBlocks[i].SetColor("_BaseColor", restoredColor);
+                // Set the original color in the MaterialPropertyBlock
+                propertyBlocks[i].SetColor("_BaseColor", restoredColor);
 
-                        // Apply the MaterialPropertyBlock to the renderer
-                        objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
+                // Apply the MaterialPropertyBlock to the renderer
+                objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
 
-                        //Hide StepCost
-                        if (gameObject.GetComponent<BlockStepCostDisplay>())
-                        {
-                            gameObject.GetComponent<BlockStepCostDisplay>().HideDisplay();
-                        }
-                    }
-                }
+                //Hide StepCost
+                numberDisplay.HideNumber();
             }
         }
     }
@@ -295,10 +297,10 @@ public class BlockInfo : MonoBehaviour
             objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
 
             //Show StepCost
-            if (gameObject.GetComponent<BlockStepCostDisplay>())
+            if (numberDisplay)
             {
                 //GetMovementCost();
-                gameObject.GetComponent<BlockStepCostDisplay>().ShowDisplay();
+                numberDisplay.ShowNumber();
             }
         }
     }

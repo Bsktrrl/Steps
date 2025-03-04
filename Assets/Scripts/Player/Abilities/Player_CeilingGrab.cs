@@ -293,7 +293,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     {
         if (ceilingGrabBlock)
         {
-            ceilingGrabBlock.GetComponent<BlockInfo>().ResetColor();
+            ceilingGrabBlock.GetComponent<BlockInfo>().ResetDarkenColor();
         }
     }
 }

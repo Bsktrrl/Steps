@@ -42,32 +42,22 @@ public class Player_Jumping : Singleton<Player_Jumping>
         if (PlayerManager.Instance.pauseGame) { return; }
         if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
-        print("0. Jump");
-
         CheckIfCanJump();
 
         if (PlayerManager.Instance.forward_isPressed /*&& !PlayerManager.Instance.canMove_Forward*/)
         {
-            print("0. Jump_Forward");
-
             Jump_Forward();
         }
         else if (PlayerManager.Instance.back_isPressed /*&& !PlayerManager.Instance.canMove_Back*/)
         {
-            print("0. Jump_Backward");
-
             Jump_Backward();
         }
         else if (PlayerManager.Instance.left_isPressed /*&& !PlayerManager.Instance.canMove_Left*/)
         {
-            print("0. Jump_Left");
-
             Jump_Left();
         }
         else if (PlayerManager.Instance.right_isPressed /*&& !PlayerManager.Instance.canMove_Right*/)
         {
-            print("0. Jump_Right");
-
             Jump_Right();
         }
     }
@@ -286,7 +276,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
             {
                 if (target.GetComponent<BlockInfo>().movementCost > 0)
                 {
-                    target.GetComponent<BlockInfo>().ResetColor();
+                    target.GetComponent<BlockInfo>().ResetDarkenColor();
                 }
             }
         }
@@ -296,7 +286,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
         //Reset Darken Color
         if (target)
         {
-            target.GetComponent<BlockInfo>().ResetColor();
+            target.GetComponent<BlockInfo>().ResetDarkenColor();
             target = null;
         }
     }
