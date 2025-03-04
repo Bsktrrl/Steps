@@ -3,33 +3,38 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class NumberDisplay : MonoBehaviour
 {
-    [SerializeField] float duration = 0.25f;
-    [SerializeField] float blandShapeWeightValue = 0.70f;
+    BlockInfo blockInfo;
+
+    [HideInInspector] public float duration = 0.2f;
+    float blandShapeWeightValue = 60;
 
     [SerializeField] SkinnedMeshRenderer numberMeshRenderer;
     [SerializeField] List<Mesh> numberMeshList;
 
-    bool animation_isRunning = false;
-
     float startRot_X_Number;
 
-    BlockInfo blockInfo;
+
+    [Header("Material Rendering")]
+    List<Renderer> objectRenderers = new List<Renderer>();
+    [HideInInspector] public List<MaterialPropertyBlock> propertyBlocks = new List<MaterialPropertyBlock>();
 
 
     //--------------------
 
 
-    private void Awake()
-    {
-        SetNumberColor();
-        HideNumber();
-    }
     private void Start()
     {
         blockInfo = GetComponentInParent<BlockInfo>();
+
+        SetObjectRenderer();
+        SetPropertyBlock();
+
+        SetNumberColors(SetNumberColor_MoreOrLess(blockInfo.movementCost));
+        HideNumber();
 
         if (blockInfo.blockType == BlockType.Stair || blockInfo.blockType == BlockType.Slope)
             startRot_X_Number = 45;
@@ -51,9 +56,45 @@ public class NumberDisplay : MonoBehaviour
     //--------------------
 
 
-    void DisplayNumber(int index)
+    void SetObjectRenderer()
     {
-        numberMeshRenderer.sharedMesh = numberMeshList[index];
+        //Set objectRenderers
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            //for (int j = 0; j < transform.GetChild(i).GetComponent<SkinnedMeshRenderer>().materials.Length; j++)
+            //{
+            //    if (transform.GetChild(i).GetComponent<SkinnedMeshRenderer>().materials[j])
+            //    {
+            //        objectRenderers.Add(transform.GetChild(i).GetComponent<SkinnedMeshRenderer>());
+            //    }
+            //}
+
+            if (transform.GetChild(i).GetComponent<SkinnedMeshRenderer>())
+            {
+                objectRenderers.Add(transform.GetChild(i).GetComponent<SkinnedMeshRenderer>());
+            }
+        }
+    }
+    void SetPropertyBlock()
+    {
+        // Initialize property blocks and get original colors
+        for (int i = 0; i < objectRenderers.Count; i++)
+        {
+            MaterialPropertyBlock block = new MaterialPropertyBlock();
+            objectRenderers[i].GetPropertyBlock(block);
+            propertyBlocks.Add(block);
+        }
+    }
+
+
+    //--------------------
+
+
+    void DisplayNumber(int value)
+    {
+        numberMeshRenderer.sharedMesh = numberMeshList[value];
+
+        SetNumberColors(SetNumberColor_MoreOrLess(value));
 
         StartCoroutine(NumberAnimation(numberMeshRenderer, duration));
     }
@@ -123,10 +164,8 @@ public class NumberDisplay : MonoBehaviour
     //--------------------
 
 
-    private IEnumerator NumberAnimation(SkinnedMeshRenderer mesh, float time)
+    IEnumerator NumberAnimation(SkinnedMeshRenderer mesh, float time)
     {
-        animation_isRunning = true;
-
         float elapsedTime = 0f;
 
         float currentValue = 0;
@@ -135,22 +174,67 @@ public class NumberDisplay : MonoBehaviour
         {
             currentValue = Mathf.Lerp(blandShapeWeightValue, 0, elapsedTime / time);
             mesh.SetBlendShapeWeight(0, currentValue);
+
             elapsedTime += Time.deltaTime;
+
             yield return null;
         }
 
-        currentValue = 0;
-
-        animation_isRunning = false;
+        mesh.SetBlendShapeWeight(0, currentValue);
     }
 
 
     //--------------------
 
 
-    void SetNumberColor()
+    void SetNumberColors(Color movementCostColor)
     {
-        //Set color to the color given in BlockInfo
+        for (int i = 0; i < propertyBlocks.Count; i++)
+        {
+            // Set the original color in the MaterialPropertyBlock
+            propertyBlocks[i].SetColor("_BaseColor", movementCostColor);
+
+            // Apply the MaterialPropertyBlock to the renderer
+            objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
+        }
+    }
+    public Color SetNumberColor_MoreOrLess(float moveCost)
+    {
+        Color tempTintColor = new Color();
+
+        if (blockInfo.colorTint_isActive)
+        {
+            tempTintColor = Color.white * blockInfo.tintValue;
+        }
+        else
+        {
+            tempTintColor = Color.white;
+        }
+
+        if (moveCost == blockInfo.movementCost_Temp)
+        {
+            if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+            {
+                if (blockInfo.stepCostText_ColorUnder.a == 0 || (blockInfo.stepCostText_ColorUnder.r == 0 && blockInfo.stepCostText_ColorUnder.g == 0 && blockInfo.stepCostText_ColorUnder.b == 0))
+                    return blockInfo.stepCostText_Color * tempTintColor;
+                else
+                    return blockInfo.stepCostText_ColorUnder * tempTintColor;
+            }
+            else
+            {
+                return blockInfo.stepCostText_Color * tempTintColor;
+            }
+        }
+        else if (moveCost < blockInfo.movementCost_Temp)
+        {
+            return BlockManager.Instance.cheap_TextColor * tempTintColor;
+        }
+        else if (moveCost > blockInfo.movementCost_Temp)
+        {
+            return BlockManager.Instance.expensive_TextColor * tempTintColor;
+        }
+
+        return blockInfo.stepCostText_Color * tempTintColor;
     }
 
 

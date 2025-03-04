@@ -26,7 +26,15 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
 
     public void UpdateDarkenBlockWhenButtonIsPressed()
     {
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { block_hasBeenDarkened = false; return; }
+        if (Player_Movement.Instance.movementStates == MovementStates.Moving)
+        {
+            if (block_hasBeenDarkened)
+            {
+                block_hasBeenDarkened = false;
+            }
+            
+            return; 
+        }
 
         if (PlayerManager.Instance.forward_isPressed
             || PlayerManager.Instance.back_isPressed

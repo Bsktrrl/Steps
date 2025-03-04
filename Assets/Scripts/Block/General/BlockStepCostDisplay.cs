@@ -30,7 +30,7 @@ public class BlockStepCostDisplay : MonoBehaviour
         HideDisplay();
         UpdateRotation();
         UpdateStepCostTextValue(gameObject.GetComponent<BlockInfo>().movementCost);
-        stepCostText_Object.GetComponent<TextMeshProUGUI>().color = GetComponent<BlockInfo>().SetTextColor(gameObject.GetComponent<BlockInfo>().movementCost);
+        //stepCostText_Object.GetComponent<TextMeshProUGUI>().color = GetComponent<BlockInfo>().SetNUmberColor_MoreOrLess(gameObject.GetComponent<BlockInfo>().movementCost);
     }
 
 
@@ -112,7 +112,7 @@ public class BlockStepCostDisplay : MonoBehaviour
         gameObject.GetComponent<BlockInfo>().movementCost = value;
         UpdateStepCostTextValue(gameObject.GetComponent<BlockInfo>().movementCost);
 
-        stepCostText_Object.GetComponent<TextMeshProUGUI>().color = GetComponent<BlockInfo>().SetTextColor(gameObject.GetComponent<BlockInfo>().movementCost);
+        //stepCostText_Object.GetComponent<TextMeshProUGUI>().color = GetComponent<BlockInfo>().SetNUmberColor_MoreOrLess(gameObject.GetComponent<BlockInfo>().movementCost);
     }
 
     public void HideDisplay()
@@ -315,7 +315,7 @@ public class BlockStepCostDisplay : MonoBehaviour
     }
     void UpdateColor()
     {
-        stepCostText_Object.GetComponent<TextMeshProUGUI>().color = GetComponent<BlockInfo>().SetTextColor(gameObject.GetComponent<BlockInfo>().movementCost);
+        //stepCostText_Object.GetComponent<TextMeshProUGUI>().color = GetComponent<BlockInfo>().SetNUmberColor_MoreOrLess(gameObject.GetComponent<BlockInfo>().movementCost);
     }
 
 

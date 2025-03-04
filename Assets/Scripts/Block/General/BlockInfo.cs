@@ -25,17 +25,17 @@ public class BlockInfo : MonoBehaviour
     [HideInInspector] public Vector3 startPos;
 
     [Header("Material Rendering")]
-    public bool hasOtherMaterial;
-    Material material;
     List<Renderer> objectRenderers = new List<Renderer>();
     [HideInInspector] public List<MaterialPropertyBlock> propertyBlocks = new List<MaterialPropertyBlock>();
 
-    bool colorTint_isActive;
+    public bool colorTint_isActive;
     bool color_isDarkened;
 
-    float tintValue = 0.95f;
+    public float tintValue = 0.95f;
 
     NumberDisplay numberDisplay;
+
+    bool finishedSetup;
 
     #region Adjacent Blocks
     [Header("Adjacent Blocks - Upper")]
@@ -84,15 +84,10 @@ public class BlockInfo : MonoBehaviour
 
         startPos = transform.position;
         stepSound_Source = gameObject.AddComponent<AudioSource>();
-
-        if (hasOtherMaterial)
-        {
-            material = gameObject.GetComponentInChildren<MeshRenderer>().material;
-            stepCostText_Color = gameObject.GetComponentInChildren<MeshRenderer>().material.GetColor("_BaseColor");
-        }
         
         SetObjectRenderer();
         SetPropertyBlock();
+
         GetAdjacentBlocksInfo();
 
         CheckIfColorIsTinted();
@@ -103,6 +98,10 @@ public class BlockInfo : MonoBehaviour
             //GetMovementCost();
             numberDisplay.HideNumber();
         }
+
+        UpdatePropertyBlock();
+
+        finishedSetup = true;
     }
 
 
@@ -190,33 +189,6 @@ public class BlockInfo : MonoBehaviour
     {
         return BlockPosManager.Instance.FindGameObjectAtPosition(transform.position + dir1 + dir2 + dir3, gameObject);
     }
-    public Color SetTextColor(float moveCost)
-    {
-        if (moveCost == movementCost_Temp)
-        {
-            if (Player_CeilingGrab.Instance.isCeilingGrabbing)
-            {
-                if (stepCostText_ColorUnder.a == 0 || (stepCostText_ColorUnder.r == 0 && stepCostText_ColorUnder.g == 0 && stepCostText_ColorUnder.b == 0))
-                    return stepCostText_Color;
-                else
-                    return stepCostText_ColorUnder;
-            }
-            else
-            {
-                return stepCostText_Color;
-            }
-        }
-        else if (moveCost < movementCost_Temp)
-        {
-            return BlockManager.Instance.cheap_TextColor;
-        }
-        else if (moveCost > movementCost_Temp)
-        {
-            return BlockManager.Instance.expensive_TextColor;
-        }
-
-        return stepCostText_Color;
-    } //Change This
 
 
     //--------------------
@@ -246,7 +218,7 @@ public class BlockInfo : MonoBehaviour
             for (int i = 0; i < propertyBlocks.Count; i++)
             {
                 // Restore the color to full brightness
-                Color restoredColor = ResetColorTint();
+                Color restoredColor = ResetBlockColorTint();
 
                 // Set the original color in the MaterialPropertyBlock
                 propertyBlocks[i].SetColor("_BaseColor", restoredColor);
@@ -284,27 +256,49 @@ public class BlockInfo : MonoBehaviour
     }
     void UpdatePropertyBlock()
     {
-        // Darken the color
-        Color darkenedColor = SetColorTint();
-
         //Darken all materials attached
         for (int i = 0; i < propertyBlocks.Count; i++)
         {
-            // Set the new color in the MaterialPropertyBlock
-            propertyBlocks[i].SetColor("_BaseColor", darkenedColor);
-
-            // Apply the MaterialPropertyBlock to the renderer
-            objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
-
-            //Show StepCost
             if (numberDisplay)
             {
-                //GetMovementCost();
-                numberDisplay.ShowNumber();
+                StartCoroutine(DarkenBlockFadeAnimation(i, numberDisplay.duration));
             }
         }
+
+        //Show StepCost
+        if (numberDisplay && finishedSetup)
+        {
+            numberDisplay.ShowNumber();
+        }
     }
-    Color SetColorTint()
+    IEnumerator DarkenBlockFadeAnimation(int index, float time)
+    {
+        float elapsedTime = 0f;
+        Color startColor = GetBlockColorTint();
+        float startAlpha = startColor.a;
+        float endAlpha = 0f;
+
+        while (elapsedTime < time)
+        {
+            float newAlpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / time);
+            Color newColor = new Color(startColor.r, startColor.g, startColor.b, newAlpha);
+
+            //Update the MaterialPropertyBlock
+            propertyBlocks[index].SetColor("_BaseColor", newColor);
+            objectRenderers[index].SetPropertyBlock(propertyBlocks[index]);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        //Ensure final value is exactly the target
+        Color finalColor = new Color(startColor.r, startColor.g, startColor.b, endAlpha);
+        propertyBlocks[index].SetColor("_BaseColor", finalColor);
+        objectRenderers[index].SetPropertyBlock(propertyBlocks[index]);
+    }
+
+
+    Color GetBlockColorTint()
     {
         if (color_isDarkened)
         {
@@ -328,10 +322,8 @@ public class BlockInfo : MonoBehaviour
                 return Color.white;
             }
         }
-
-
     }
-    Color ResetColorTint()
+    Color ResetBlockColorTint()
     {
         if (colorTint_isActive)
         {
