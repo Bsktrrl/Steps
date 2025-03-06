@@ -344,44 +344,21 @@ public class NumberDisplay : MonoBehaviour
             }
         }
     }
-    void GetBlockOrientationWithCamera()
-    {
-        if (!transform.GetChild(0).gameObject.activeInHierarchy) { return; }
-        //if (!cameraController.isRotating) { return; }
-
-
-        //-----
-
-
-        numberRotation = Quaternion.Euler(transform.GetChild(0).transform.localRotation.x, transform.GetChild(0).transform.localRotation.y + 180 + cameraController.cameraAnchor.transform.localEulerAngles.y, transform.GetChild(0).transform.localRotation.z);
-        transform.GetChild(0).transform.localRotation = numberRotation;
-
-        //if (CameraController.Instance.cameraRotationState == CameraRotationState.Forward)
-        //{
-        //    tempTransform = Quaternion.Euler(tempTransform.x, tempTransform.y + cameraController.cameraAnchor.transform.localRotation.y, tempTransform.z);
-        //    transform.GetChild(0).transform.localRotation = tempTransform;
-        //}
-        //else if (CameraController.Instance.cameraRotationState == CameraRotationState.Backward)
-        //{
-        //    tempTransform = Quaternion.Euler(tempTransform.x, tempTransform.y + 0, tempTransform.z);
-        //    transform.GetChild(0).transform.localRotation = tempTransform;
-        //}
-        //else if (CameraController.Instance.cameraRotationState == CameraRotationState.Left)
-        //{
-        //    tempTransform = Quaternion.Euler(tempTransform.x, tempTransform.y - 90, tempTransform.z);
-        //    transform.GetChild(0).transform.localRotation = tempTransform;
-        //}
-        //else if (CameraController.Instance.cameraRotationState == CameraRotationState.Right)
-        //{
-        //    tempTransform = Quaternion.Euler(tempTransform.x, tempTransform.y + 90, tempTransform.z);
-        //    transform.GetChild(0).transform.localRotation = tempTransform;
-        //}
-    }
     void RotateBlockCheck()
     {
         //[0, 0, 0] - [0, 0, 0]
         if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(0, 0, 0))
             transform.localRotation = Quaternion.Euler(0, 0, 0);
+        //[0, 90, 0] - [0, 0, 0]
+        if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(0, 90, 0))
+            transform.localRotation = Quaternion.Euler(0, -90, 0);
+        //[0, 180, 0] - [0, 0, 0]
+        if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(0, 180, 0))
+            transform.localRotation = Quaternion.Euler(0, 180, 0);
+        //[0, -90, 0] - [0, 0, 0]
+        if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(0, -90, 0)
+            || blockInfo.gameObject.transform.rotation == Quaternion.Euler(0, 270, 0))
+            transform.localRotation = Quaternion.Euler(0, 90, 0);
 
         //[0, 0, 90] - [0, 0, -90]
         else if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(0, 0, 90))
@@ -441,6 +418,17 @@ public class NumberDisplay : MonoBehaviour
                  || blockInfo.gameObject.transform.rotation == Quaternion.Euler(-90, 0, 270)
                  || blockInfo.gameObject.transform.rotation == Quaternion.Euler(270, 0, -90))
             transform.localRotation = Quaternion.Euler(0, 90, 90);
+    }
+    void GetBlockOrientationWithCamera()
+    {
+        if (!transform.GetChild(0).gameObject.activeInHierarchy) { return; }
+
+
+        //-----
+
+
+        numberRotation = Quaternion.Euler(transform.GetChild(0).transform.localRotation.x, transform.GetChild(0).transform.localRotation.y + 180 + cameraController.cameraAnchor.transform.localEulerAngles.y, transform.GetChild(0).transform.localRotation.z);
+        transform.GetChild(0).transform.localRotation = numberRotation;
     }
 
 
