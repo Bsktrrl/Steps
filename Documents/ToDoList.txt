@@ -11,9 +11,13 @@ Block Colors:
 	- Add this effect to the darkenBlock-function
 
 Numbers:
-- Add animation to darkenblock visibility
-- Add number rotation with camera rotation
+- Add animation to darkenBlock visibility
+- Add number-rotation with camera rotation
 - Fix number don't show at start and at respawn
+- Apply "Number_Parent"-prefab to all block
+	- Add "Number_Parent" to all Cubes, Stairs, Slopes and Slabs
+- Fix delayed darkenBlock to prevent it from keep staying darkened if the player is moving a bit fast
+- Check Rotation from all sides, no matter how the block is orientated
 
 Menu:
 - Make the new Overwordl Menu
@@ -37,6 +41,8 @@ From meetings
 	- Becomes water after moving from it
 - Iceicle
 	- Make the iceicle shake before it drops when the player is under it, respawing the player if it hits the player
+- Elevator
+	- Make elevators that can move in a route, not only one direction and back
 
 
 ---
@@ -75,6 +81,9 @@ New: X:0 Y:2.35 Z:4.8   FOV:60 Min:45 Max:75
 
 
 Cube Block Orientation:
+
+----- Old (Canvas)
+
 0  | 0 | 0 |  | 0 | 0 | 0
 
 0  | 0 |  90 |	| 0 | 0 | -90
@@ -97,4 +106,26 @@ Cube Block Orientation:
 180 | 0 | -90 |	|   0 | 0 |-90
 -90 | 0 | -90 |	|  90 | 0 |  0
 
+----- New (3D Assets)
 
+0  | 0 | 0 |  | 0 | 0 | 0
+
+0  | 0 |  90 |	| 0 | 0 | -90
+0  | 0 | 180 |	| 0 | 0 | 180
+0  | 0 | -90 |	| 0 | 0 |  90
+
+ 90 | 0 | 0  |  | -90 | 0 | 0
+180 | 0 | 0  |  | 180 | 0 | 0
+-90 | 0 | 0  |	| 90  | 0 | 0
+
+ 90 | 0 | 90 |	|   0 |  90 | -90
+180 | 0 | 90 |	| 180 |   0 |  90
+-90 | 0 | 90 |	|   0 | -90 | -90
+
+ 90 | 0 | 180 |	|  90 |  90 | -90
+180 | 0 | 180 |	|   0 | 180 |   0
+-90 | 0 | 180 |	| -90 | -90 | -90
+
+ 90 | 0 | -90 |	|   0 | -90 |  90
+180 | 0 | -90 |	| 180 |   0 | -90
+-90 | 0 | -90 |	|   0 |  90 |  90

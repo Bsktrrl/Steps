@@ -99,8 +99,6 @@ public class BlockInfo : MonoBehaviour
             numberDisplay.HideNumber();
         }
 
-        UpdatePropertyBlock();
-
         finishedSetup = true;
     }
 
