@@ -332,116 +332,100 @@ public class NumberDisplay : MonoBehaviour
             //If the block is a Cube or Slab
             else
             {
-                if (CameraController.Instance.cameraRotationState == CameraRotationState.Forward)
-                {
-                    //.rotation = Quaternion.Euler(0, /*-gameObject.transform.eulerAngles.y + */0, 0);
-
-                    RotateBlockCheck(new Vector3(0, 0, 0) /*+ GetBlockOrientationWithCamera()*/);
-                }
-                else if (CameraController.Instance.cameraRotationState == CameraRotationState.Backward)
-                {
-                    //transform.rotation = Quaternion.Euler(0, /*-gameObject.transform.eulerAngles.y + */180, 0);
-
-                    RotateBlockCheck(new Vector3(0, 0, 0) /*+ GetBlockOrientationWithCamera()*/);
-                }
-                else if (CameraController.Instance.cameraRotationState == CameraRotationState.Left)
-                {
-                    //transform.rotation = Quaternion.Euler(0, /*-gameObject.transform.eulerAngles.y + */90, 0);
-
-                    RotateBlockCheck(new Vector3(0, 0, 0) /*+ GetBlockOrientationWithCamera()*/);
-                }
-                else if (CameraController.Instance.cameraRotationState == CameraRotationState.Right)
-                {
-                    //transform.rotation = Quaternion.Euler(0, /*-gameObject.transform.eulerAngles.y + */-90, 0);
-
-                    RotateBlockCheck(new Vector3(0, 0, 0) /*+ GetBlockOrientationWithCamera()*/);
-                }
+                GetBlockOrientationWithCamera();
+                RotateBlockCheck();
             }
         }
     }
-    Vector3 GetBlockOrientationWithCamera()
+    void GetBlockOrientationWithCamera()
     {
-        switch (CameraController.Instance.cameraRotationState)
+        Quaternion tempTransform = transform.GetChild(0).transform.localRotation;
+
+        if (CameraController.Instance.cameraRotationState == CameraRotationState.Forward)
         {
-            case CameraRotationState.Forward:
-                return new Vector3(0, 0, 0);
-            case CameraRotationState.Backward:
-                return new Vector3(0, 180, 0);
-            case CameraRotationState.Left:
-                return new Vector3(0, -90, 0);
-            case CameraRotationState.Right:
-                return new Vector3(0, 90, 0);
-
-            default:
-                break;
+            tempTransform = Quaternion.Euler(tempTransform.x, tempTransform.y + 180, tempTransform.z);
+            transform.GetChild(0).transform.localRotation = tempTransform;
         }
-
-        return Vector3.zero;
+        else if (CameraController.Instance.cameraRotationState == CameraRotationState.Backward)
+        {
+            tempTransform = Quaternion.Euler(tempTransform.x, tempTransform.y + 0, tempTransform.z);
+            transform.GetChild(0).transform.localRotation = tempTransform;
+        }
+        else if (CameraController.Instance.cameraRotationState == CameraRotationState.Left)
+        {
+            tempTransform = Quaternion.Euler(tempTransform.x, tempTransform.y - 90, tempTransform.z);
+            transform.GetChild(0).transform.localRotation = tempTransform;
+        }
+        else if (CameraController.Instance.cameraRotationState == CameraRotationState.Right)
+        {
+            tempTransform = Quaternion.Euler(tempTransform.x, tempTransform.y + 90, tempTransform.z);
+            transform.GetChild(0).transform.localRotation = tempTransform;
+        }
     }
-    void RotateBlockCheck(Vector3 rotation)
+    void RotateBlockCheck()
     {
         //[0, 0, 0] - [0, 0, 0]
         if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(0, 0, 0))
-            transform.localRotation = Quaternion.Euler(0 + rotation.x, 0 + rotation.y, 0 + rotation.z);
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
 
         //[0, 0, 90] - [0, 0, -90]
         else if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(0, 0, 90))
-            transform.localRotation = Quaternion.Euler(0 + rotation.x, 0 + rotation.y, -90 + rotation.z);
+            transform.localRotation = Quaternion.Euler(0, 0, -90);
         //[0, 0, 180] - [0, 0, 180]
         else if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(0, 0, 180))
-            transform.localRotation = Quaternion.Euler(0 + rotation.x, 0 + rotation.y, 180 + rotation.z);
+            transform.localRotation = Quaternion.Euler(0, 0, 180);
         //[0, 0, -90] - [0, 0, 90]
         else if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(0, 0, -90)
                  || blockInfo.gameObject.transform.rotation == Quaternion.Euler(0, 0, 270))
-            transform.localRotation = Quaternion.Euler(0 + rotation.x, 0 + rotation.y, 90 + rotation.z);
+            transform.localRotation = Quaternion.Euler(0, 0, 90);
 
         //[90, 0, 0] - [-90, 0, 0]
         else if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(90, 0, 0))
-            transform.localRotation = Quaternion.Euler(-90 + rotation.x, 0 + rotation.y, 0 + rotation.z);
+            transform.localRotation = Quaternion.Euler(-90, 0, 0);
         //[180, 0, 0] - [180, 0, 0]
         else if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(180, 0, 0))
-            transform.localRotation = Quaternion.Euler(180 + rotation.x, 0 + rotation.y, 0 + rotation.z);
+            transform.localRotation = Quaternion.Euler(180, 0, 0);
         //[-90, 0, 0] - [90, 0, 0]
         else if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(-90, 0, 0)
                  || blockInfo.gameObject.transform.rotation == Quaternion.Euler(270, 0, 0))
-            transform.localRotation = Quaternion.Euler(90 + rotation.x, 0 + rotation.y, 0 + rotation.z);
+            transform.localRotation = Quaternion.Euler(90, 0, 0);
 
         //[90, 0, 90] - [0, 90, -90]
         else if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(90, 0, 90))
-            transform.localRotation = Quaternion.Euler(0 + rotation.x, 90 + rotation.y, -90 + rotation.z);
+            transform.localRotation = Quaternion.Euler(0, 90, -90);
         //[180, 0, 90] - [180, 0, 90]
         else if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(180, 0, 90))
-            transform.localRotation = Quaternion.Euler(180 + rotation.x, 0 + rotation.y, 90 + rotation.z);
+            transform.localRotation = Quaternion.Euler(180, 0, 90);
         //[-90, 0, 90] - [0, -90, -90]
         else if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(-90, 0, 90)
                  || blockInfo.gameObject.transform.rotation == Quaternion.Euler(270, 0, 90))
-            transform.localRotation = Quaternion.Euler(0 + rotation.x, -90 + rotation.y, -90 + rotation.z);
+            transform.localRotation = Quaternion.Euler(0, -90, -90);
 
         //[90, 0, 180] - [90, 90, -90]
         else if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(90, 0, 180))
-            transform.localRotation = Quaternion.Euler(90 + rotation.x, 90 + rotation.y, -90 + rotation.z);
+            transform.localRotation = Quaternion.Euler(90, 90, -90);
         //[180, 0, 180] - [0, 180, 0]
         else if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(180, 0, 180))
-            transform.localRotation = Quaternion.Euler(0 + rotation.x, 180 + rotation.y, 0 + rotation.z);
+            transform.localRotation = Quaternion.Euler(0, 180, 0);
         //[-90, 0, 180] - [-90, -90, -90]
         else if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(-90, 0, 180)
                  || blockInfo.gameObject.transform.rotation == Quaternion.Euler(270, 0, 180))
-            transform.localRotation = Quaternion.Euler(-90 + rotation.x, -90 + rotation.y, -90 + rotation.z);
+            transform.localRotation = Quaternion.Euler(-90, -90, -90);
 
         //[90, 0, -90] - [0, -90, 90]
         else if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(90, 0, -90)
                  || blockInfo.gameObject.transform.rotation == Quaternion.Euler(90, 0, 270))
-            transform.localRotation = Quaternion.Euler(0 + rotation.x, -90 + rotation.y, 90 + rotation.z);
+            transform.localRotation = Quaternion.Euler(0, -90, 90);
         //[180, 0, -90] - [180, 0, -90]
         else if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(180, 0, -90)
                  || blockInfo.gameObject.transform.rotation == Quaternion.Euler(180, 0, 270))
-            transform.localRotation = Quaternion.Euler(180 + rotation.x, 0 + rotation.y, -90 + rotation.z);
+            transform.localRotation = Quaternion.Euler(180, 0, -90);
         //[-90, 0, -90] - [0, 90, 90]
         else if (blockInfo.gameObject.transform.rotation == Quaternion.Euler(-90, 0, -90)
                  || blockInfo.gameObject.transform.rotation == Quaternion.Euler(270, 0, 270)
                  || blockInfo.gameObject.transform.rotation == Quaternion.Euler(-90, 0, 270)
                  || blockInfo.gameObject.transform.rotation == Quaternion.Euler(270, 0, -90))
-            transform.localRotation = Quaternion.Euler(0 + rotation.x, 90 + rotation.y, 90 + rotation.z);
+            transform.localRotation = Quaternion.Euler(0, 90, 90);
     }
 
 
