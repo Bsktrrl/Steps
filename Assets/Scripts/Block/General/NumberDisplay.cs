@@ -9,6 +9,7 @@ public class NumberDisplay : MonoBehaviour
 {
     BlockInfo blockInfo;
     Player_BlockDetector player_BlockDetector;
+    CameraController cameraController;
 
     [HideInInspector] public float duration = 0.2f;
     float blandShapeWeightValue = 60;
@@ -18,6 +19,7 @@ public class NumberDisplay : MonoBehaviour
 
     float startRot_X_Number;
 
+    Quaternion numberRotation;
 
     [Header("Material Rendering")]
     List<Renderer> objectRenderers = new List<Renderer>();
@@ -35,6 +37,7 @@ public class NumberDisplay : MonoBehaviour
     {
         blockInfo = GetComponentInParent<BlockInfo>();
         player_BlockDetector = FindObjectOfType<Player_BlockDetector>();
+        cameraController = FindObjectOfType<CameraController>();
 
         SetObjectRenderer();
         SetPropertyBlock();
@@ -52,6 +55,10 @@ public class NumberDisplay : MonoBehaviour
         }
 
         UpdateRotation();
+    }
+    private void Update()
+    {
+        GetBlockOrientationWithCamera();
     }
 
     private void OnEnable()
@@ -332,35 +339,43 @@ public class NumberDisplay : MonoBehaviour
             //If the block is a Cube or Slab
             else
             {
-                GetBlockOrientationWithCamera();
                 RotateBlockCheck();
+                //GetBlockOrientationWithCamera();
             }
         }
     }
     void GetBlockOrientationWithCamera()
     {
-        Quaternion tempTransform = transform.GetChild(0).transform.localRotation;
+        if (!transform.GetChild(0).gameObject.activeInHierarchy) { return; }
+        //if (!cameraController.isRotating) { return; }
 
-        if (CameraController.Instance.cameraRotationState == CameraRotationState.Forward)
-        {
-            tempTransform = Quaternion.Euler(tempTransform.x, tempTransform.y + 180, tempTransform.z);
-            transform.GetChild(0).transform.localRotation = tempTransform;
-        }
-        else if (CameraController.Instance.cameraRotationState == CameraRotationState.Backward)
-        {
-            tempTransform = Quaternion.Euler(tempTransform.x, tempTransform.y + 0, tempTransform.z);
-            transform.GetChild(0).transform.localRotation = tempTransform;
-        }
-        else if (CameraController.Instance.cameraRotationState == CameraRotationState.Left)
-        {
-            tempTransform = Quaternion.Euler(tempTransform.x, tempTransform.y - 90, tempTransform.z);
-            transform.GetChild(0).transform.localRotation = tempTransform;
-        }
-        else if (CameraController.Instance.cameraRotationState == CameraRotationState.Right)
-        {
-            tempTransform = Quaternion.Euler(tempTransform.x, tempTransform.y + 90, tempTransform.z);
-            transform.GetChild(0).transform.localRotation = tempTransform;
-        }
+
+        //-----
+
+
+        numberRotation = Quaternion.Euler(transform.GetChild(0).transform.localRotation.x, transform.GetChild(0).transform.localRotation.y + 180 + cameraController.cameraAnchor.transform.localEulerAngles.y, transform.GetChild(0).transform.localRotation.z);
+        transform.GetChild(0).transform.localRotation = numberRotation;
+
+        //if (CameraController.Instance.cameraRotationState == CameraRotationState.Forward)
+        //{
+        //    tempTransform = Quaternion.Euler(tempTransform.x, tempTransform.y + cameraController.cameraAnchor.transform.localRotation.y, tempTransform.z);
+        //    transform.GetChild(0).transform.localRotation = tempTransform;
+        //}
+        //else if (CameraController.Instance.cameraRotationState == CameraRotationState.Backward)
+        //{
+        //    tempTransform = Quaternion.Euler(tempTransform.x, tempTransform.y + 0, tempTransform.z);
+        //    transform.GetChild(0).transform.localRotation = tempTransform;
+        //}
+        //else if (CameraController.Instance.cameraRotationState == CameraRotationState.Left)
+        //{
+        //    tempTransform = Quaternion.Euler(tempTransform.x, tempTransform.y - 90, tempTransform.z);
+        //    transform.GetChild(0).transform.localRotation = tempTransform;
+        //}
+        //else if (CameraController.Instance.cameraRotationState == CameraRotationState.Right)
+        //{
+        //    tempTransform = Quaternion.Euler(tempTransform.x, tempTransform.y + 90, tempTransform.z);
+        //    transform.GetChild(0).transform.localRotation = tempTransform;
+        //}
     }
     void RotateBlockCheck()
     {

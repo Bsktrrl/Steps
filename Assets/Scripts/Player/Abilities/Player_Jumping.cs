@@ -101,8 +101,6 @@ public class Player_Jumping : Singleton<Player_Jumping>
     {
         if (!JumpCheck()) { return; }
 
-        print("1. Jump_Forward");
-
         switch (CameraController.Instance.cameraRotationState)
         {
             case CameraRotationState.Forward:
@@ -127,8 +125,6 @@ public class Player_Jumping : Singleton<Player_Jumping>
     }
     public void Jump_Backward()
     {
-        print("2. Jump_Backward");
-
         if (!JumpCheck()) { return; }
 
         switch (CameraController.Instance.cameraRotationState)
@@ -155,8 +151,6 @@ public class Player_Jumping : Singleton<Player_Jumping>
     }
     public void Jump_Left()
     {
-        print("3. Jump_Left");
-
         if (!JumpCheck()) { return; }
 
         switch (CameraController.Instance.cameraRotationState)
@@ -183,8 +177,6 @@ public class Player_Jumping : Singleton<Player_Jumping>
     }
     public void Jump_Right()
     {
-        print("4. Jump_Right");
-
         if (!JumpCheck()) { return; }
 
         switch (CameraController.Instance.cameraRotationState)
