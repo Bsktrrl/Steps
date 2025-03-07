@@ -25,19 +25,16 @@ public class Player_Ascend : Singleton<Player_Ascend>
     //--------------------
 
 
-    private void Update()
-    {
-        RaycastForAscending();
-    }
-
     private void OnEnable()
     {
         DataManager.Action_dataHasLoaded += StartRunningObject;
+        Player_Movement.Action_StepTaken += PrepareForRaycastForAscending;
     }
 
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= StartRunningObject;
+        Player_Movement.Action_StepTaken -= PrepareForRaycastForAscending;
     }
     void StartRunningObject()
     {
@@ -68,6 +65,11 @@ public class Player_Ascend : Singleton<Player_Ascend>
                 StartCoroutine(Ascend());
             }
         }
+    }
+
+    void PrepareForRaycastForAscending()
+    {
+        RaycastForAscending();
     }
     bool RaycastForAscending()
     {

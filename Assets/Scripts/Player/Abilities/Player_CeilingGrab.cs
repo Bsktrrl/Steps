@@ -27,7 +27,26 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 
     private void Update()
     {
-        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.CeilingGrab && !PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab) {  return; }
+        //UpdateRaycastCeiling();
+    }
+
+    private void OnEnable()
+    {
+        Player_Movement.Action_StepTakenEarly += ResetDarkenColor;
+        Player_Movement.Action_StepTaken += UpdateRaycastCeiling;
+    }
+    private void OnDisable()
+    {
+        Player_Movement.Action_StepTakenEarly -= ResetDarkenColor;
+        Player_Movement.Action_StepTaken -= UpdateRaycastCeiling;
+    }
+
+
+    //--------------------
+
+    void UpdateRaycastCeiling()
+    {
+        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.CeilingGrab && !PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab) { return; }
 
         RaycastCeiling();
         //CeilingGrab();
@@ -37,20 +56,6 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             CheckBlockStandingUnder();
         }
     }
-
-    private void OnEnable()
-    {
-        Player_Movement.Action_StepTakenEarly += ResetDarkenColor;
-    }
-    private void OnDisable()
-    {
-        Player_Movement.Action_StepTakenEarly -= ResetDarkenColor;
-    }
-
-
-    //--------------------
-
-
     public void CeilingGrab()
     {
         //Don't be able to switch camera angle before the rotation has been done
