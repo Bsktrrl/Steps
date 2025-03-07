@@ -124,6 +124,8 @@ public class NumberDisplay : MonoBehaviour
 
     void DisplayNumber(int value)
     {
+        blockInfo.movementCost = value;
+
         numberMeshRenderer.sharedMesh = numberMeshList[value];
 
         SetNumberColors(SetNumberColor_MoreOrLess(value));
