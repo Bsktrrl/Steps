@@ -73,6 +73,13 @@ public class Player_Ascend : Singleton<Player_Ascend>
     }
     bool RaycastForAscending()
     {
+        //Don't Ascend
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+        {
+            AscendingIsNOTAllowed();
+            return false;
+        }
+
         if (gameObject.GetComponent<PlayerStats>())
         {
             if (gameObject.GetComponent<PlayerStats>().stats != null)

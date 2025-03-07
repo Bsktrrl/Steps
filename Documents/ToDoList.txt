@@ -13,7 +13,14 @@ Numbers:
 - Add fade-in animation to the darkenBlock visibility
 - Fix so that numbers appear at start of game and when respawn
 - Fix delayed darkenBlock to prevent it from keep staying darkened if the player is moving a bit fast to another block
-- Make sure new 3D number assets are working on SnowBlock
+
+CeilingGrab
+- Make sure new 3D number assets are working on SnowBlock in CeilingGrab
+- Exiting CeilingGrab don't trigger darkenblock and numbers to be shown
+- When CeilingGrab, the block you grab onto will not show its Number when moving adjacent (only the first time)
+
+Mud & SwampWater
+- The numbers are changing, but the stepAmount taken is the same as standard
 
 Menu:
 - Make the new Overworld Menu

@@ -75,6 +75,13 @@ public class Player_Descend : Singleton<Player_Descend>
     }
     bool RaycastForDescending()
     {
+        //Don't Descend
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+        {
+            DescendingIsNOTAllowed();
+            return false;
+        }
+
         if (gameObject.GetComponent<PlayerStats>())
         {
             if (gameObject.GetComponent<PlayerStats>().stats != null)

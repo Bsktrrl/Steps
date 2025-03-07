@@ -278,16 +278,6 @@ public class NumberDisplay : MonoBehaviour
         //If ceilingGrabbing
         if (Player_CeilingGrab.Instance.isCeilingGrabbing)
         {
-            ////If the block is a Cube
-            //if (CameraController.Instance.cameraRotationState == CameraRotationState.Forward)
-            //    transform.rotation = Quaternion.Euler(startRot_X_Number, -gameObject.transform.eulerAngles.y + 180, 0);
-            //else if (CameraController.Instance.cameraRotationState == CameraRotationState.Backward)
-            //    transform.rotation = Quaternion.Euler(startRot_X_Number, -gameObject.transform.eulerAngles.y + 0, 0);
-            //else if (CameraController.Instance.cameraRotationState == CameraRotationState.Left)
-            //    transform.rotation = Quaternion.Euler(startRot_X_Number, -gameObject.transform.eulerAngles.y + -90, 0);
-            //else if (CameraController.Instance.cameraRotationState == CameraRotationState.Right)
-            //    transform.rotation = Quaternion.Euler(startRot_X_Number, -gameObject.transform.eulerAngles.y + 90, 0);
-
             RotateBlockCheck_Cube_CeilingGrab();
         }
 

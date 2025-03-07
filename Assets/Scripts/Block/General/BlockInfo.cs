@@ -263,6 +263,12 @@ public class BlockInfo : MonoBehaviour
             }
         }
 
+        //Change 3D Number Asset if CeilingGrabbing
+        if (GetComponent<Block_Snow>())
+        {
+            GetComponent<Block_Snow>().ChangeStepCounterPosition();
+        }
+
         //Show StepCost
         if (numberDisplay && finishedSetup)
         {
