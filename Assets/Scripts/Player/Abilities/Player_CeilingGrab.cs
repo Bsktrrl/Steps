@@ -25,11 +25,6 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     //--------------------
 
 
-    private void Update()
-    {
-        //UpdateRaycastCeiling();
-    }
-
     private void OnEnable()
     {
         Player_Movement.Action_StepTakenEarly += ResetDarkenColor;
