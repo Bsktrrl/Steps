@@ -7,20 +7,18 @@ ResetPlayer:
 
 
 Block Colors:
-- Make an algorithm that changes the colors a bit darker, based on the position of the blocks x and z level
-	- Add this effect to the darkenBlock-function
+- Add the Tint-effect to the darkenBlock-function to display acurate darkening of any tinted and non-tinted block
 
 Numbers:
-- Apply numbers to Slab, Stair and Slope
-- Apply numbers to CeilingGrab
-- Add animation to darkenBlock visibility
-- Fix so that numbers appear at start and at respawn
 - Apply "Number_Parent"-prefab to all block
 	- Add "Number_Parent" to all Cubes, Stairs, Slopes and Slabs
-- Fix delayed darkenBlock to prevent it from keep staying darkened if the player is moving a bit fast
+- Add fade-in animation to the darkenBlock visibility
+- Fix so that numbers appear at start of game and when respawn
+- Fix delayed darkenBlock to prevent it from keep staying darkened if the player is moving a bit fast to another block
+- Fix CeilingGrab under Staris and Slopes
 
 Menu:
-- Make the new Overwordl Menu
+- Make the new Overworld Menu
 - Make menus compatible with controller
 
 Character Creator
@@ -111,7 +109,7 @@ Cube Block Orientation:
 
 ----- New (3D Assets)
 
-0  | 0 | 0 |  | 0 | 0 | 0
+0  |   0 | 0 |  |   0 |   0 | 0
 
 0  | 0 |  90 |	| 0 | 0 | -90
 0  | 0 | 180 |	| 0 | 0 | 180
@@ -132,6 +130,33 @@ Cube Block Orientation:
  90 | 0 | -90 |	|   0 | -90 |  90
 180 | 0 | -90 |	| 180 |   0 | -90
 -90 | 0 | -90 |	|   0 |  90 |  90
+
+----- Ceiling Grab (3D Assets)
+
+0  |   0 | 0 |  | 180 |   0 | 0
+0  |  90 | 0 |  | 180 | -90 | 0
+0  | 180 | 0 |  | 180 | 180 | 0
+0  | -90 | 0 |  | 180 |  90 | 0
+
+0  | 0 |  90 |	| 180 |   0 |  90
+0  | 0 | 180 |	|   0 | 180 |   0
+0  | 0 | -90 |	| 180 |   0 | -90
+
+ 90 | 0 | 0  |  |  90 | 0 | 0
+180 | 0 | 0  |  |   0 | 0 | 0
+-90 | 0 | 0  |	| -90 | 0 | 0
+
+x  90 | 0 | 90 |	| -90 |   0 | -90
+180 | 0 | 90 |	|   0 |   0 | -90
+-90 | 0 | 90 |	| 180 | -90 |  90
+
+ 90 | 0 | 180 |	| -90 |  90 |  90
+180 | 0 | 180 |	| 180 | 180 |   0
+-90 | 0 | 180 |	|  90 |  90 | -90
+
+ 90 | 0 | -90 |	| 0 |  90 |  90
+180 | 0 | -90 |	| 0 |   0 |  90
+-90 | 0 | -90 |	| 0 | -90 |  90
 
 
 ----- Stairs
