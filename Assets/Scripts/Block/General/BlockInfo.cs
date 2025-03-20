@@ -78,6 +78,9 @@ public class BlockInfo : MonoBehaviour
 
     private void Start()
     {
+        tintValue = 0.92f;
+        //tintValue = 0.4f;
+
         numberDisplay = GetComponentInChildren<NumberDisplay>();
 
         movementCost_Temp = movementCost;

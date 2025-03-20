@@ -32,4 +32,7 @@ public enum BlockElement
     Sand,
     Sandstone,
 
+    Stone,
+    Lava,
+
 }
