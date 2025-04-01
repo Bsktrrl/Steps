@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
 {
+    bool block_hasBeenDarkened;
+
+
+    //--------------------
+
 
     private void Start()
     {
@@ -21,7 +26,15 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
 
     public void UpdateDarkenBlockWhenButtonIsPressed()
     {
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (Player_Movement.Instance.movementStates == MovementStates.Moving)
+        {
+            if (block_hasBeenDarkened)
+            {
+                block_hasBeenDarkened = false;
+            }
+            
+            return; 
+        }
 
         if (PlayerManager.Instance.forward_isPressed
             || PlayerManager.Instance.back_isPressed
@@ -32,7 +45,10 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
         }
         else
         {
-            UpdateDarkenBlocks();
+            if (!block_hasBeenDarkened)
+            {
+                UpdateDarkenBlocks();
+            }
         }
 
         if (!PlayerManager.Instance.forward_isPressed
@@ -40,7 +56,10 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
             && !PlayerManager.Instance.left_isPressed
             && !PlayerManager.Instance.right_isPressed)
         {
-            UpdateDarkenBlocks();
+            if (!block_hasBeenDarkened)
+            {
+                UpdateDarkenBlocks();
+            }
         }
     }
 
@@ -64,7 +83,7 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
                     else
                     {
                         if (PlayerManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>())
-                            PlayerManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>().ResetColor();
+                            PlayerManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>().ResetDarkenColor();
                     }
                 }
             }
@@ -87,7 +106,7 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
                     else
                     {
                         if (PlayerManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>())
-                            PlayerManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>().ResetColor();
+                            PlayerManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>().ResetDarkenColor();
                     }
                 }
             }
@@ -110,7 +129,7 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
                     else
                     {
                         if (PlayerManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>())
-                            PlayerManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>().ResetColor();
+                            PlayerManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>().ResetDarkenColor();
                     }
                 }
             }
@@ -133,7 +152,7 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
                     else
                     {
                         if (PlayerManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>())
-                            PlayerManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>().ResetColor();
+                            PlayerManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>().ResetDarkenColor();
                     }
                 }
             }
@@ -147,8 +166,10 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
             if (PlayerManager.Instance.block_StandingOn_Current.block)
             {
                 if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>())
-                    PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().ResetColor();
+                    PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().ResetDarkenColor();
             }
         }
+
+        block_hasBeenDarkened = true;
     }
 }

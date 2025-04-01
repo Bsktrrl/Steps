@@ -8,6 +8,8 @@ public class Block_Snow : MonoBehaviour
 {
     public static event Action Action_SnowSetup_End;
 
+    [SerializeField] GameObject numberDisplayObject;
+
     [HideInInspector] public List<GameObject> LOD_ObjectList = new List<GameObject>();
     [SerializeField] float scale_Y_Value;
     [SerializeField] float localInitialPos_Y;
@@ -20,23 +22,11 @@ public class Block_Snow : MonoBehaviour
     {
         GetLOD();
 
-        SetLocalInitialPos_Y();
         SetRandomBlockHeight();
 
         ChangeStepCounterPosition();
 
         Action_SnowSetup_End?.Invoke();
-    }
-
-    private void OnEnable()
-    {
-        Player_CeilingGrab.Action_grabCeiling += ChangeStepCounterPosition;
-        Player_CeilingGrab.Action_releaseCeiling += ChangeStepCounterPosition;
-    }
-    private void OnDisable()
-    {
-        Player_CeilingGrab.Action_grabCeiling -= ChangeStepCounterPosition;
-        Player_CeilingGrab.Action_releaseCeiling -= ChangeStepCounterPosition;
     }
 
 
@@ -53,10 +43,7 @@ public class Block_Snow : MonoBehaviour
             LOD_ObjectList.Add(meshFilter.gameObject); // Add the GameObject to the list
         }
     }
-    void SetLocalInitialPos_Y()
-    {
-        localInitialPos_Y = GetComponent<BlockStepCostDisplay>().stepCostDisplay_Parent.transform.localPosition.y;
-    }
+
     void SetRandomBlockHeight()
     {
         if (GetComponent<BlockInfo>().blockType == BlockType.Slab)
@@ -69,20 +56,17 @@ public class Block_Snow : MonoBehaviour
             LOD_ObjectList[i].transform.localScale = new Vector3(1, scale_Y_Value, 1);
         }
     }
-    void ChangeStepCounterPosition()
+    public void ChangeStepCounterPosition()
     {
-        GameObject parentObject = GetComponent<BlockStepCostDisplay>().stepCostDisplay_Parent;
+        float childScale_Y = transform.GetChild(0).transform.localScale.y;
 
         if (Player_CeilingGrab.Instance.isCeilingGrabbing)
         {
-            parentObject.transform.SetLocalPositionAndRotation(new Vector3(parentObject.transform.localPosition.x, (- 1 - (scale_Y_Value - 1) - (scale_Y_Value / 10)), parentObject.transform.localPosition.z), Quaternion.identity);
+            numberDisplayObject.transform.localPosition = new Vector3(0, -Mathf.Abs((1 - childScale_Y) / 2), 0);
         }
         else
         {
-            if (GetComponent<BlockInfo>().blockType == BlockType.Slab)
-                parentObject.transform.SetLocalPositionAndRotation(new Vector3(parentObject.transform.localPosition.x, (scale_Y_Value / 2) - (localInitialPos_Y * 2), parentObject.transform.localPosition.z), Quaternion.identity);
-            else
-                parentObject.transform.SetLocalPositionAndRotation(new Vector3(parentObject.transform.localPosition.x, (scale_Y_Value - 1) /*- (localInitialPos_Y * 2)*/, parentObject.transform.localPosition.z), Quaternion.identity);
+            numberDisplayObject.transform.localPosition = new Vector3(0, Mathf.Abs((1 - childScale_Y) / 2), 0);
         }
     }
 }

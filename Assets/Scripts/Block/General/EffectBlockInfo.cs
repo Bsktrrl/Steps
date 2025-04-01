@@ -9,6 +9,8 @@ public class EffectBlockInfo : MonoBehaviour
     float counter;
     float waitTime;
 
+    CameraController cameraController;
+
     EffectBlockManager effectBlockManager = new EffectBlockManager();
 
     [SerializeField] bool effectBlock_SpawnPoint_isAdded;
@@ -28,6 +30,8 @@ public class EffectBlockInfo : MonoBehaviour
     private void Start()
     {
         SetWaitTime();
+
+        cameraController = FindObjectOfType<CameraController>();
     }
 
     private void Update()
@@ -213,9 +217,9 @@ public class EffectBlockInfo : MonoBehaviour
         {
             if (child.GetComponent<EffectBlock_Reference>())
             {
-                float temp = GetComponent<BlockStepCostDisplay>().stepCostDisplay_Parent.transform.localPosition.y;
+                //float temp = GetComponent<BlockStepCostDisplay>().stepCostDisplay_Parent.transform.localPosition.y;
 
-                child.GetComponent<RectTransform>().localPosition = new Vector3(0, (temp + 0.55f), 0);
+                child.GetComponent<RectTransform>().localPosition = new Vector3(0, (transform.localEulerAngles.y + 0.55f), 0);
 
                 break;
             }

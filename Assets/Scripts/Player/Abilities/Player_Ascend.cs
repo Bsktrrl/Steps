@@ -25,19 +25,16 @@ public class Player_Ascend : Singleton<Player_Ascend>
     //--------------------
 
 
-    private void Update()
-    {
-        RaycastForAscending();
-    }
-
     private void OnEnable()
     {
         DataManager.Action_dataHasLoaded += StartRunningObject;
+        Player_Movement.Action_StepTaken += PrepareForRaycastForAscending;
     }
 
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= StartRunningObject;
+        Player_Movement.Action_StepTaken -= PrepareForRaycastForAscending;
     }
     void StartRunningObject()
     {
@@ -69,8 +66,20 @@ public class Player_Ascend : Singleton<Player_Ascend>
             }
         }
     }
+
+    void PrepareForRaycastForAscending()
+    {
+        RaycastForAscending();
+    }
     bool RaycastForAscending()
     {
+        //Don't Ascend
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+        {
+            AscendingIsNOTAllowed();
+            return false;
+        }
+
         if (gameObject.GetComponent<PlayerStats>())
         {
             if (gameObject.GetComponent<PlayerStats>().stats != null)
@@ -164,7 +173,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
             {
                 if (ascendingBlock_Previous.GetComponent<BlockInfo>())
                 {
-                    ascendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                    ascendingBlock_Previous.GetComponent<BlockInfo>().ResetDarkenColor();
                 }
             }
         }
@@ -193,7 +202,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
         {
             if (ascendingBlock_Current.GetComponent<BlockInfo>())
             {
-                ascendingBlock_Current.GetComponent<BlockInfo>().ResetColor();
+                ascendingBlock_Current.GetComponent<BlockInfo>().ResetDarkenColor();
                 ascendingBlock_Current = null;
             }
         }
@@ -201,7 +210,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
         {
             if (ascendingBlock_Previous.GetComponent<BlockInfo>())
             {
-                ascendingBlock_Previous.GetComponent<BlockInfo>().ResetColor();
+                ascendingBlock_Previous.GetComponent<BlockInfo>().ResetDarkenColor();
                 ascendingBlock_Previous = null;
             }
         }

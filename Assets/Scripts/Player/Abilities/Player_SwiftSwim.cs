@@ -109,7 +109,7 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
         {
             if (swiftSwim_Up_Obj)
             {
-                swiftSwim_Up_Obj.GetComponent<BlockInfo>().ResetColor();
+                swiftSwim_Up_Obj.GetComponent<BlockInfo>().ResetDarkenColor();
                 swiftSwim_Up_Obj = null;
             }
         }
@@ -117,7 +117,7 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
         {
             if (swiftSwim_Down_Obj)
             {
-                swiftSwim_Down_Obj.GetComponent<BlockInfo>().ResetColor();
+                swiftSwim_Down_Obj.GetComponent<BlockInfo>().ResetDarkenColor();
                 swiftSwim_Down_Obj = null;
             }
         }

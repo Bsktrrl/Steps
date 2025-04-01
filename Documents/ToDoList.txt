@@ -7,16 +7,28 @@ ResetPlayer:
 
 
 Block Colors:
-- Make an algorithm that changes the colors a bit darker, based on the position of the blocks x and z level
-	- Add this effect to the darkenBlock-function
+- Add the Tint-effect to the darkenBlock-function to display acurate darkening of any tinted and non-tinted block
 
 Numbers:
-- Add functionalty for the number animations on adjacent blocks
-- Add animation to darkenblock visibility
+- Add fade-in animation to the darkenBlock visibility
+- Fix so that numbers appear at start of game and upon respawn
+- Fix delayed darkenBlock to prevent it from keep staying darkened if the player is moving a bit fast to another block
+
+CeilingGrab
+- Exiting CeilingGrab don't trigger darkenblock and numbers to be shown on hte ground
+- When CeilingGrab, the block you grab onto will not show its Number when moving adjacent (only the first time)
+- Fix IceGlide lag
+
+Pusher
+- Pusher doesn't work because of new system in "ShowNumber"-function in the "NumberDisplayed"-script
 
 Menu:
-- Make the new Overwordl Menu
+- Make the new Overworld Menu
 - Make menus compatible with controller
+
+Character Creator
+- Make a simple character creator to be used at the start og a new save and at the start of the Dusk Age
+
 
 ---
 
@@ -26,12 +38,25 @@ Make BlockPrefabs:
 
 
 From meetings
-- CeilingGrab Ability 
-	- Fix IceGlide lag
 - Weak Ice block
-	- Becomes water after moving from it
+	- Becomes water after moving away from it
 - Iceicle
 	- Make the iceicle shake before it drops when the player is under it, respawing the player if it hits the player
+- Elevator
+	- Change elevators to move in a route, not one direction and back
+- Switches (that make brass blocks move when pressed)
+	- Adjacent switch
+	- Step-on switch
+	- Linked step-on switch
+UI:
+- Change Step stats to become "Zelda Hearts"-like
+	- Have a something changed on the +3 Steps aquired
+- Remove the other UI elements
+
+Menus:
+- Settings:
+	- Toggle "Show Numbers" of the Steps
+
 
 
 ---
@@ -70,7 +95,13 @@ New: X:0 Y:2.35 Z:4.8   FOV:60 Min:45 Max:75
 
 
 Cube Block Orientation:
-0  | 0 | 0 |  | 0 | 0 | 0
+
+----- Old (Canvas)
+
+0  |   0 | 0 |  | 0 |  0 | 0
+0  |  90 | 0 |  | 0 | 90 | 0
+0  | 180 | 0 |  | 0 |  0 | 0
+0  | -90 | 0 |  | 0 |  0 | 0
 
 0  | 0 |  90 |	| 0 | 0 | -90
 0  | 0 | 180 |	| 0 | 0 | 180
@@ -92,4 +123,77 @@ Cube Block Orientation:
 180 | 0 | -90 |	|   0 | 0 |-90
 -90 | 0 | -90 |	|  90 | 0 |  0
 
+----- New (3D Assets)
 
+0  |   0 | 0 |  |   0 |   0 | 0
+
+0  | 0 |  90 |	| 0 | 0 | -90
+0  | 0 | 180 |	| 0 | 0 | 180
+0  | 0 | -90 |	| 0 | 0 |  90
+
+ 90 | 0 | 0  |  | -90 | 0 | 0
+180 | 0 | 0  |  | 180 | 0 | 0
+-90 | 0 | 0  |	| 90  | 0 | 0
+
+ 90 | 0 | 90 |	|   0 |  90 | -90
+180 | 0 | 90 |	| 180 |   0 |  90
+-90 | 0 | 90 |	|   0 | -90 | -90
+
+ 90 | 0 | 180 |	|  90 |  90 | -90
+180 | 0 | 180 |	|   0 | 180 |   0
+-90 | 0 | 180 |	| -90 | -90 | -90
+
+ 90 | 0 | -90 |	|   0 | -90 |  90
+180 | 0 | -90 |	| 180 |   0 | -90
+-90 | 0 | -90 |	|   0 |  90 |  90
+
+----- Ceiling Grab (3D Assets)
+
+0  |   0 | 0 |  | 180 |   0 | 0
+0  |  90 | 0 |  | 180 | -90 | 0
+0  | 180 | 0 |  | 180 | 180 | 0
+0  | -90 | 0 |  | 180 |  90 | 0
+
+0  | 0 |  90 |	| 180 |   0 |  90
+0  | 0 | 180 |	|   0 | 180 |   0
+0  | 0 | -90 |	| 180 |   0 | -90
+
+ 90 | 0 | 0  |  |  90 | 0 | 0
+180 | 0 | 0  |  |   0 | 0 | 0
+-90 | 0 | 0  |	| -90 | 0 | 0
+
+x  90 | 0 | 90 |	| -90 |   0 | -90
+180 | 0 | 90 |	|   0 |   0 | -90
+-90 | 0 | 90 |	| 180 | -90 |  90
+
+ 90 | 0 | 180 |	| -90 |  90 |  90
+180 | 0 | 180 |	| 180 | 180 |   0
+-90 | 0 | 180 |	|  90 |  90 | -90
+
+ 90 | 0 | -90 |	| 0 |  90 |  90
+180 | 0 | -90 |	| 0 |   0 |  90
+-90 | 0 | -90 |	| 0 | -90 |  90
+
+
+----- Stairs
+
+
+F - 0 | 0 | 0 |  | -45 | 180 |   0
+R - 0 | 0 | 0 |  |   0 |  90 |  45
+B - 0 | 0 | 0 |  |  45 |   0 |   0
+L - 0 | 0 | 0 |  |   0 | -90 | -45
+
+F - 0 | 90 | 0 |  |   0 |  90 |  45
+R - 0 | 90 | 0 |  |  45 |   0 |   0
+B - 0 | 90 | 0 |  |   0 | -90 | -45
+L - 0 | 90 | 0 |  | -45 | 180 |   0
+
+F - 0 | 180 | 0 |  |  45 |   0 |   0
+R - 0 | 180 | 0 |  |   0 | -90 | -45
+B - 0 | 180 | 0 |  | -45 | 180 |   0
+L - 0 | 180 | 0 |  |   0 |  90 |  45
+
+F - 0 | -90 | 0 |  |   0 | -90 | -45
+R - 0 | -90 | 0 |  | -45 | 180 |   0
+B - 0 | -90 | 0 |  |   0 |  90 |  45
+L - 0 | -90 | 0 |  |  45 |   0 |   0
