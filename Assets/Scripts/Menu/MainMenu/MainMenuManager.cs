@@ -11,6 +11,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
     [SerializeField] GameObject overworldMenu_BiomesSelected_Parent;
     [SerializeField] GameObject overworldMenu_BiomesBig_Parent;
     [SerializeField] GameObject infoMenu_Parent;
+    [SerializeField] GameObject settingsMenu_Parent;
 
     [SerializeField] GameObject Biome_0_Parent;
     [SerializeField] GameObject Biome_1_Parent;
@@ -19,11 +20,20 @@ public class MainMenuManager : Singleton<MainMenuManager>
     [SerializeField] GameObject Biome_4_Parent;
     [SerializeField] GameObject Biome_5_Parent;
     [SerializeField] GameObject Biome_6_Parent;
-    [SerializeField] GameObject Biome_7_Parent;
-    [SerializeField] GameObject Biome_8_Parent;
 
     [Header("Menu State")]
     public MenuState menuState;
+
+
+    //--------------------
+
+
+    private void Start()
+    {
+        HideAllMenus();
+
+        mainMenu_Parent.SetActive(true);
+    }
 
 
     //--------------------
@@ -84,33 +94,11 @@ public class MainMenuManager : Singleton<MainMenuManager>
             case MenuState.Info_Menu:
                 Menu_Info();
                 break;
-
-            case MenuState.Biome_0:
-                Menu_Biome_0();
+            case MenuState.Settings_Menu:
+                Menu_Settings();
                 break;
-            case MenuState.Biome_1:
-                Menu_Biome_1();
-                break;
-            case MenuState.Biome_2:
-                Menu_Biome_2();
-                break;
-            case MenuState.Biome_3:
-                Menu_Biome_3();
-                break;
-            case MenuState.Biome_4:
-                Menu_Biome_4();
-                break;
-            case MenuState.Biome_5:
-                Menu_Biome_5();
-                break;
-            case MenuState.Biome_6:
-                Menu_Biome_6();
-                break;
-            case MenuState.Biome_7:
-                Menu_Biome_7();
-                break;
-            case MenuState.Biome_8:
-                Menu_Biome_8();
+            case MenuState.Biome_Menu:
+                Menu_Biome();
                 break;
 
             default:
@@ -149,105 +137,24 @@ public class MainMenuManager : Singleton<MainMenuManager>
         //Open the InfoMenu
         infoMenu_Parent.SetActive(true);
     }
-
-    void Menu_Biome_0()
+    void Menu_Settings()
     {
         //Close any other menu
         HideAllMenus();
 
         //Open the InfoMenu
-        overworldMenu_Parent.SetActive(true);
-        overworldMenu_BiomesSelected_Parent.SetActive(false);
-        overworldMenu_BiomesBig_Parent.SetActive(true);
-        Biome_0_Parent.SetActive(true);
+        settingsMenu_Parent.SetActive(true);
     }
-    void Menu_Biome_1()
+
+    void Menu_Biome()
     {
         //Close any other menu
-        HideAllMenus();
+        //HideAllMenus();
+
+        Menu_Overworld();
 
         //Open the InfoMenu
-        overworldMenu_Parent.SetActive(true);
-        overworldMenu_BiomesSelected_Parent.SetActive(false);
-        overworldMenu_BiomesBig_Parent.SetActive(true);
-        Biome_1_Parent.SetActive(true);
-    }
-    void Menu_Biome_2()
-    {
-        //Close any other menu
-        HideAllMenus();
-
-        //Open the InfoMenu
-        overworldMenu_Parent.SetActive(true);
-        overworldMenu_BiomesSelected_Parent.SetActive(false);
-        overworldMenu_BiomesBig_Parent.SetActive(true);
-        Biome_2_Parent.SetActive(true);
-    }
-    void Menu_Biome_3()
-    {
-        //Close any other menu
-        HideAllMenus();
-
-        //Open the InfoMenu
-        overworldMenu_Parent.SetActive(true);
-        overworldMenu_BiomesSelected_Parent.SetActive(false);
-        overworldMenu_BiomesBig_Parent.SetActive(true);
-        Biome_3_Parent.SetActive(true);
-    }
-    void Menu_Biome_4()
-    {
-        //Close any other menu
-        HideAllMenus();
-
-        //Open the InfoMenu
-        overworldMenu_Parent.SetActive(true);
-        overworldMenu_BiomesSelected_Parent.SetActive(false);
-        overworldMenu_BiomesBig_Parent.SetActive(true);
-        Biome_4_Parent.SetActive(true);
-    }
-    void Menu_Biome_5()
-    {
-        //Close any other menu
-        HideAllMenus();
-
-        //Open the InfoMenu
-        overworldMenu_Parent.SetActive(true);
-        overworldMenu_BiomesSelected_Parent.SetActive(false);
-        overworldMenu_BiomesBig_Parent.SetActive(true);
-        Biome_5_Parent.SetActive(true);
-    }
-    void Menu_Biome_6()
-    {
-        //Close any other menu
-        HideAllMenus();
-
-        //Open the InfoMenu
-        overworldMenu_Parent.SetActive(true);
-        overworldMenu_BiomesSelected_Parent.SetActive(false);
-        overworldMenu_BiomesBig_Parent.SetActive(true);
-        Biome_6_Parent.SetActive(true);
-    }
-    void Menu_Biome_7()
-    {
-        //Close any other menu
-        HideAllMenus();
-
-        //Open the InfoMenu
-        overworldMenu_Parent.SetActive(true);
-        overworldMenu_BiomesSelected_Parent.SetActive(false);
-        overworldMenu_BiomesBig_Parent.SetActive(true);
-        Biome_7_Parent.SetActive(true);
-    }
-    void Menu_Biome_8()
-    {
-        //Close any other menu
-        HideAllMenus();
-
-        //Open the InfoMenu
-        overworldMenu_Parent.SetActive(true);
-        overworldMenu_BiomesSelected_Parent.SetActive(false);
-        overworldMenu_BiomesBig_Parent.SetActive(true);
-        Biome_8_Parent.SetActive(true);
+        OverWorldManager.Instance.levelPanel.SetActive(true);
     }
 
 
@@ -259,6 +166,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
         mainMenu_Parent.SetActive(false);
         infoMenu_Parent.SetActive(false);
         overworldMenu_Parent.SetActive(false);
+        settingsMenu_Parent.SetActive(false);
 
         Biome_0_Parent.SetActive(false);
         Biome_1_Parent.SetActive(false);
@@ -267,8 +175,6 @@ public class MainMenuManager : Singleton<MainMenuManager>
         Biome_4_Parent.SetActive(false);
         Biome_5_Parent.SetActive(false);
         Biome_6_Parent.SetActive(false);
-        Biome_7_Parent.SetActive(false);
-        Biome_8_Parent.SetActive(false);
     }
 
     #endregion

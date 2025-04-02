@@ -30,33 +30,12 @@ public class MenuStates : Singleton<MenuStates>
                 MainMenuManager.Instance.menuState = MenuState.Info_Menu;
                 break;
 
-            case MenuState.Biome_0:
-                MainMenuManager.Instance.menuState = MenuState.Biome_0;
+            case MenuState.Biome_Menu:
+                MainMenuManager.Instance.menuState = MenuState.Biome_Menu;
                 break;
-            case MenuState.Biome_1:
-                MainMenuManager.Instance.menuState = MenuState.Biome_1;
-                break;
-            case MenuState.Biome_2:
-                MainMenuManager.Instance.menuState = MenuState.Biome_2;
-                break;
-            case MenuState.Biome_3:
-                MainMenuManager.Instance.menuState = MenuState.Biome_3;
-                break;
-            case MenuState.Biome_4:
-                MainMenuManager.Instance.menuState = MenuState.Biome_4;
-                break;
-            case MenuState.Biome_5:
-                MainMenuManager.Instance.menuState = MenuState.Biome_5;
-                break;
-            case MenuState.Biome_6:
-                MainMenuManager.Instance.menuState = MenuState.Biome_6;
-                break;
-            case MenuState.Biome_7:
-                MainMenuManager.Instance.menuState = MenuState.Biome_7;
-                break;
-            case MenuState.Biome_8:
-                MainMenuManager.Instance.menuState = MenuState.Biome_8;
-                break;
+
+            case MenuState.Settings_Menu:
+                MainMenuManager.Instance.menuState = MenuState.Settings_Menu;
                 break;
 
             default:
@@ -86,14 +65,7 @@ public enum MenuState
     Main_Menu,
     Overworld_Menu,
     Info_Menu,
+    Settings_Menu,
 
-    Biome_0,
-    Biome_1,
-    Biome_2,
-    Biome_3,
-    Biome_4,
-    Biome_5,
-    Biome_6,
-    Biome_7,
-    Biome_8,
+    Biome_Menu,
 }

@@ -5,10 +5,6 @@ ResetPlayer:
 - Fix the bug where the blocks that have moved/falled cannot be moved onto, and that the player clips it when moving into, after respawning
 	- Happens if the block has gone completely to the bottom and got hidden, not if respawned during its fall
 
-
-Block Colors:
-- Add the Tint-effect to the darkenBlock-function to display acurate darkening of any tinted and non-tinted block
-
 Numbers:
 - Add fade-in animation to the darkenBlock visibility
 - Fix so that numbers appear at start of game and upon respawn
@@ -26,8 +22,10 @@ Menu:
 - Make the new Overworld Menu
 - Make menus compatible with controller
 
-Character Creator
-- Make a simple character creator to be used at the start og a new save and at the start of the Dusk Age
+EffectBlocks:
+- Make Prefabs of new EffectBlocks
+- Make the symbol rotate in the air
+- Make the effect spawn above blocks if its script is attached
 
 
 ---
@@ -35,7 +33,6 @@ Character Creator
 
 Make BlockPrefabs:
 - Wood Slope
-
 
 From meetings
 - Weak Ice block
@@ -58,8 +55,11 @@ Menus:
 	- Toggle "Show Numbers" of the Steps
 
 
-
 ---
+
+
+Character Creator
+- Make a simple character creator to be used at the start og a new save and at the start of the Dusk Age
 
 
 Spring Block:
