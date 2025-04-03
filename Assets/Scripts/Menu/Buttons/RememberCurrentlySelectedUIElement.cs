@@ -8,8 +8,8 @@ public class RememberCurrentlySelectedUIElement : Singleton<RememberCurrentlySel
 {
     public static event Action Action_ChangedSelectedUIElement;
 
-    [SerializeField] EventSystem eventSystem;
-    [SerializeField] GameObject lastSelectedUIElement;
+    public EventSystem eventSystem;
+    public GameObject currentSelectedUIElement;
 
 
     //--------------------
@@ -19,15 +19,15 @@ public class RememberCurrentlySelectedUIElement : Singleton<RememberCurrentlySel
     {
         if (!eventSystem) { return; }
 
-        if (eventSystem.currentSelectedGameObject && lastSelectedUIElement != eventSystem.currentSelectedGameObject)
+        if (eventSystem.currentSelectedGameObject && currentSelectedUIElement != eventSystem.currentSelectedGameObject)
         {
-            lastSelectedUIElement = eventSystem.currentSelectedGameObject;
+            currentSelectedUIElement = eventSystem.currentSelectedGameObject;
         }
 
-        if (!eventSystem.currentSelectedGameObject && lastSelectedUIElement)
+        if (!eventSystem.currentSelectedGameObject && currentSelectedUIElement)
         {
-            eventSystem.SetSelectedGameObject(lastSelectedUIElement);
-            Action_ChangedSelectedUIElement?.Invoke();
+            eventSystem.SetSelectedGameObject(currentSelectedUIElement);
+            Action_ChangedSelectedUIElement_Invoke();
         }
     }
 
@@ -44,6 +44,16 @@ public class RememberCurrentlySelectedUIElement : Singleton<RememberCurrentlySel
             Debug.Log("Did not find an EventSystem in the Scene. ", this);
         }
 
-        lastSelectedUIElement = eventSystem.firstSelectedGameObject;
+        currentSelectedUIElement = eventSystem.firstSelectedGameObject;
+    }
+
+
+    //--------------------
+
+
+    public void Action_ChangedSelectedUIElement_Invoke()
+    {
+        Action_ChangedSelectedUIElement?.Invoke();
+        print("1. Action_ChangedSelectedUIElement");
     }
 }
