@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class OverWorldManager : Singleton<OverWorldManager>
 {
+    [Header("States")]
+    public RegionState regionState;
+    public LevelState levelState;
+
     [Header("Panel")]
     public GameObject levelPanel_Ice;
     public GameObject levelPanel_Stone;
@@ -29,10 +33,7 @@ public class OverWorldManager : Singleton<OverWorldManager>
     public Image region_Swamp;
     public Image region_Industrial;
 
-    [Header("States")]
-    public RegionState regionState;
-    public LevelState levelState;
-
+    #region RegionLevel Sprites
     [Header("RegionLevel Sprites")]
     [SerializeField] Sprite ice_Normal;
     [SerializeField] Sprite ice_Selected;
@@ -93,6 +94,7 @@ public class OverWorldManager : Singleton<OverWorldManager>
     [SerializeField] Sprite industrial_5;
     [SerializeField] Sprite industrial_6;
     [SerializeField] Sprite industrial_Void;
+    #endregion
 
 
     //--------------------
@@ -107,10 +109,97 @@ public class OverWorldManager : Singleton<OverWorldManager>
     private void OnEnable()
     {
         RememberCurrentlySelectedUIElement.Action_ChangedSelectedUIElement += CheckStates;
+
+        //LoadUIElementState_IfExitsFromALevel();
     }
     private void OnDisable()
     {
         RememberCurrentlySelectedUIElement.Action_ChangedSelectedUIElement -= CheckStates;
+    }
+
+
+    //--------------------
+
+
+    void LoadUIElementState_IfExitsFromALevel()
+    {
+        if (DataManager.Instance.overWorldStates_StoreList.regionState != RegionState.None && DataManager.Instance.overWorldStates_StoreList.levelState != LevelState.None)
+        {
+            ChangeStates(DataManager.Instance.overWorldStates_StoreList.regionState, DataManager.Instance.overWorldStates_StoreList.levelState);
+
+            switch (regionState)
+            {
+                case RegionState.None:
+                    break;
+
+                //1. Ice
+                case RegionState.Ice:
+                    SetSelected(levelPanel_Ice);
+                    break;
+                
+                //2. Stone
+                case RegionState.Stone:
+                    SetSelected(levelPanel_Stone);
+                    break;
+                
+                //3. Grass
+                case RegionState.Grass:
+                    SetSelected(levelPanel_Grass);
+                    break;
+                
+                //4. Desert
+                case RegionState.Desert:
+                    SetSelected(levelPanel_Desert);
+                    break;
+                
+                //5. Swamp
+                case RegionState.Swamp:
+                    SetSelected(levelPanel_Swamp);
+                    break;
+                
+                //6. Industrial
+                case RegionState.Industrial:
+                    SetSelected(levelPanel_Industrial);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+
+    void SetSelected(GameObject obj)
+    {
+        switch (levelState)
+        {
+            case LevelState.None:
+                break;
+
+            case LevelState.First:
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(obj.transform.GetChild(0).gameObject);
+                break;
+            case LevelState.Second:
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(obj.transform.GetChild(1).gameObject);
+                break;
+            case LevelState.Third:
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(obj.transform.GetChild(2).gameObject);
+                break;
+            case LevelState.Forth:
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(obj.transform.GetChild(3).gameObject);
+                break;
+            case LevelState.Fifth:
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(obj.transform.GetChild(4).gameObject);
+                break;
+            case LevelState.Sixth:
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(obj.transform.GetChild(5).gameObject);
+                break;
+            case LevelState.edge:
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(obj.transform.GetChild(6).gameObject);
+                break;
+
+            default:
+                break;
+        }
     }
 
 
@@ -123,6 +212,8 @@ public class OverWorldManager : Singleton<OverWorldManager>
         levelState = _levelState;
 
         CheckStates();
+
+        RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(regionState, levelState);
     }
 
     void CheckStates()

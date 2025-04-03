@@ -144,15 +144,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     void Menu_Biome()
     {
-        //Close any other menu
-        //HideAllMenus();
-
-        //Menu_Overworld();
-
         overworldMenu_Parent.SetActive(true);
-
-        //Open the correct Panel
-        //OverWorldManager.Instance.levelPanel_Ice.SetActive(true);
     }
 
 
@@ -194,6 +186,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
     public void QuitButton_isPressed()
     {
         print("Quit Game");
+
+        RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(RegionState.None, LevelState.None);
 
         menuState = MenuState.Main_Menu;
 

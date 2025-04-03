@@ -11,6 +11,8 @@ public class RememberCurrentlySelectedUIElement : Singleton<RememberCurrentlySel
     public EventSystem eventSystem;
     public GameObject currentSelectedUIElement;
 
+    [SerializeField] OverWorldStates overWorldStates;
+
 
     //--------------------
 
@@ -59,8 +61,30 @@ public class RememberCurrentlySelectedUIElement : Singleton<RememberCurrentlySel
     //--------------------
 
 
+    public void SaveSelectedUIElement(RegionState _regionState, LevelState _levelState)
+    {
+        OverWorldStates temp = new OverWorldStates();
+
+        temp.regionState = _regionState;
+        temp.levelState = _levelState;
+
+        overWorldStates = temp;
+        DataManager.Instance.overWorldStates_StoreList = overWorldStates;
+    }
+
+
+    //--------------------
+
+
     public void Action_ChangedSelectedUIElement_Invoke()
     {
         Action_ChangedSelectedUIElement?.Invoke();
     }
+}
+
+[Serializable]
+public class OverWorldStates
+{
+    public RegionState regionState;
+    public LevelState levelState;
 }

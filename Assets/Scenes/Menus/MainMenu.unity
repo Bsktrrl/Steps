@@ -19902,6 +19902,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb0a28187848864dbfb83d13039207b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionState: 0
+  levelState: 0
   levelPanel_Ice: {fileID: 1173689181}
   levelPanel_Stone: {fileID: 152833914}
   levelPanel_Grass: {fileID: 177036345}
@@ -19920,8 +19922,6 @@ MonoBehaviour:
   region_Desert: {fileID: 1138810540}
   region_Swamp: {fileID: 2144892445}
   region_Industrial: {fileID: 1354626248}
-  regionState: 0
-  levelState: 0
   ice_Normal: {fileID: 21300000, guid: 48bc237b2db8dac4baceccd82411ab64, type: 3}
   ice_Selected: {fileID: 21300000, guid: 298200a444e9f2e428dcb5a78d00c25d, type: 3}
   ice_1: {fileID: 21300000, guid: f8e013bf63f7d584ba066ff3d2269bff, type: 3}
@@ -21981,6 +21981,9 @@ MonoBehaviour:
         ControlStick: 0
     mapInfo_SaveList:
       map_SaveInfo_List: []
+    overWorldStates_SaveList:
+      regionState: 0
+      levelState: 0
   menuState_Store: 0
   playerStats_Store:
     steps_Max: 0
@@ -22022,6 +22025,9 @@ MonoBehaviour:
       ControlStick: 0
   mapInfo_StoreList:
     map_SaveInfo_List: []
+  overWorldStates_StoreList:
+    regionState: 0
+    levelState: 0
 --- !u!1001 &1659561593
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24906,6 +24912,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventSystem: {fileID: 1999907176}
   currentSelectedUIElement: {fileID: 0}
+  overWorldStates:
+    regionState: 0
+    levelState: 0
 --- !u!114 &1892071876
 MonoBehaviour:
   m_ObjectHideFlags: 0

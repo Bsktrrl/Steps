@@ -29,6 +29,9 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
     //All stored Maps info
     /*[HideInInspector]*/ public Map_SaveInfoList mapInfo_StoreList = new Map_SaveInfoList();
+
+    //Overworld States
+    [HideInInspector] public OverWorldStates overWorldStates_StoreList = new OverWorldStates();
     #endregion
 
 
@@ -43,6 +46,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.menuState_Store = gameData.menuState_Save;
         this.playerStats_Store = gameData.playerStats_Save;
         this.mapInfo_StoreList = gameData.mapInfo_SaveList;
+        this.overWorldStates_StoreList = gameData.overWorldStates_SaveList;
 
         #endregion
 
@@ -84,6 +88,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         gameData.menuState_Save = this.menuState_Store;
         gameData.mapInfo_SaveList = this.mapInfo_StoreList;
         gameData.playerStats_Save = this.playerStats_Store;
+        gameData.overWorldStates_SaveList = this.overWorldStates_StoreList;
 
         print("Data has Saved");
     }

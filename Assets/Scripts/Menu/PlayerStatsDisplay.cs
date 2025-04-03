@@ -10,32 +10,23 @@ public class PlayerStatsDisplay : MonoBehaviour
     [SerializeField] TextMeshProUGUI coinAmountDisplay;
     [SerializeField] TextMeshProUGUI collectableAmountDisplay;
 
-    bool canRun;
-
 
     //--------------------
 
 
     private void Update()
     {
-        //if (!canRun) { return; }
-
         SetPlayerStatsDisplay();
     }
+
     private void OnEnable()
     {
         SetPlayerStatsDisplay();
-        //SaveLoad_PlayerStats.playerStats_hasLoaded += HasLoaded;
     }
     private void OnDisable()
     {
-        //SaveLoad_PlayerStats.playerStats_hasLoaded -= HasLoaded;
-    }
 
-    //void HasLoaded()
-    //{
-    //    canRun = true;
-    //}
+    }
 
 
     //--------------------
