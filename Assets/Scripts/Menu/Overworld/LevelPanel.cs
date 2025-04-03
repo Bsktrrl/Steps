@@ -19,14 +19,6 @@ public class LevelPanel : Singleton<LevelPanel>
 
     public void ChangePanelBackgroundColor(Color color)
     {
-        //panel_Level_1.color = color;
-        //panel_Level_2.color = color;
-        //panel_Level_3.color = color;
-        //panel_Level_4.color = color;
-        //panel_Level_5.color = color;
-        //panel_Level_6.color = color;
-        //panel_Level_Void.color = color;
-
         ColorBlock cb = new ColorBlock();
         cb.colorMultiplier = 1;
         cb.normalColor = Color.white;
