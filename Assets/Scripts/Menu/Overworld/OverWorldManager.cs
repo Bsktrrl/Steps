@@ -6,7 +6,12 @@ using UnityEngine.UI;
 public class OverWorldManager : Singleton<OverWorldManager>
 {
     [Header("Panel")]
-    public GameObject levelPanel;
+    public GameObject levelPanel_Ice;
+    public GameObject levelPanel_Stone;
+    public GameObject levelPanel_Grass;
+    public GameObject levelPanel_Desert;
+    public GameObject levelPanel_Swamp;
+    public GameObject levelPanel_Industrial;
 
     [Header("images")]
     public Image region_Ice;

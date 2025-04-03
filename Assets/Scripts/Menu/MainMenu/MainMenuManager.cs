@@ -2,6 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 
 public class MainMenuManager : Singleton<MainMenuManager>
 {
@@ -30,9 +33,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     private void Start()
     {
-        HideAllMenus();
-
-        mainMenu_Parent.SetActive(true);
+        menuState = MenuState.Main_Menu;
     }
 
 
@@ -64,11 +65,6 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     void SetMenu()
     {
-        //if (DataManager.Instance.menuState_Store == MenuState.None)
-        //    menuState = MenuState.Main_Menu;
-        //else
-        //    menuState = DataManager.Instance.menuState_Store;
-
         menuState = DataManager.Instance.menuState_Store;
 
         MenusOnMenuState();
@@ -153,8 +149,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
         Menu_Overworld();
 
-        //Open the InfoMenu
-        OverWorldManager.Instance.levelPanel.SetActive(true);
+        //Open the correct Panel
+        //OverWorldManager.Instance.levelPanel_Ice.SetActive(true);
     }
 
 

@@ -29,13 +29,12 @@ public class MenuStates : Singleton<MenuStates>
             case MenuState.Info_Menu:
                 MainMenuManager.Instance.menuState = MenuState.Info_Menu;
                 break;
+            case MenuState.Settings_Menu:
+                MainMenuManager.Instance.menuState = MenuState.Settings_Menu;
+                break;
 
             case MenuState.Biome_Menu:
                 MainMenuManager.Instance.menuState = MenuState.Biome_Menu;
-                break;
-
-            case MenuState.Settings_Menu:
-                MainMenuManager.Instance.menuState = MenuState.Settings_Menu;
                 break;
 
             default:

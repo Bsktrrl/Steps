@@ -87,8 +87,9 @@ GameObject:
   - component: {fileID: 8368905741107674656}
   - component: {fileID: 1878484463773412661}
   - component: {fileID: 1814084887984308522}
-  - component: {fileID: -1173558634531830735}
+  - component: {fileID: 2940069101335760876}
   - component: {fileID: 4597319644786569910}
+  - component: {fileID: -1173558634531830735}
   m_Layer: 5
   m_Name: LevelButton
   m_TagString: Untagged
@@ -210,6 +211,37 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2940069101335760876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5666577594912976797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3daf9d1bba00f541ae3c61b5a04c183, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventSystem: {fileID: 0}
+  selectOnCancel: {fileID: 0}
+  menuState_ToSelect: 0
+  levelState_ToSelect: 0
+  regionState_ToSelect: 0
+--- !u!114 &4597319644786569910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5666577594912976797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86e833d29b40ce0478e704aab27631b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 1814084887984308522}
+  levelState: 0
 --- !u!114 &-1173558634531830735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,17 +277,3 @@ MonoBehaviour:
     Ascend: 0
     Descend: 0
     ControlStick: 0
---- !u!114 &4597319644786569910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5666577594912976797}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86e833d29b40ce0478e704aab27631b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button: {fileID: 1814084887984308522}
-  levelState: 0

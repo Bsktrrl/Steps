@@ -19,15 +19,23 @@ public class RememberCurrentlySelectedUIElement : Singleton<RememberCurrentlySel
     {
         if (!eventSystem) { return; }
 
+        //If changing SelectedElement
         if (eventSystem.currentSelectedGameObject && currentSelectedUIElement != eventSystem.currentSelectedGameObject)
         {
             currentSelectedUIElement = eventSystem.currentSelectedGameObject;
+
+            if (currentSelectedUIElement.GetComponent<RegionButton>())
+            {
+                OverWorldManager.Instance.ChangeStates(currentSelectedUIElement.GetComponent<RegionButton>().regionState, OverWorldManager.Instance.levelState);
+            }
+
+            Action_ChangedSelectedUIElement_Invoke();
         }
 
+        //If no SelectedElement
         if (!eventSystem.currentSelectedGameObject && currentSelectedUIElement)
         {
             eventSystem.SetSelectedGameObject(currentSelectedUIElement);
-            Action_ChangedSelectedUIElement_Invoke();
         }
     }
 
@@ -54,6 +62,5 @@ public class RememberCurrentlySelectedUIElement : Singleton<RememberCurrentlySel
     public void Action_ChangedSelectedUIElement_Invoke()
     {
         Action_ChangedSelectedUIElement?.Invoke();
-        print("1. Action_ChangedSelectedUIElement");
     }
 }
