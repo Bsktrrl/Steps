@@ -71,5 +71,7 @@ public class Button_SelectOnCancel : MonoBehaviour
         MainMenuManager.Instance.menuState = menuState_ToSelect;
         OverWorldManager.Instance.regionState = regionState_ToSelect;
         OverWorldManager.Instance.levelState = levelState_ToSelect;
+
+        RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(regionState_ToSelect, levelState_ToSelect);
     }
 }

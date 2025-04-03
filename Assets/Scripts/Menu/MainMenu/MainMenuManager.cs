@@ -9,8 +9,8 @@ using UnityEngine.InputSystem.LowLevel;
 public class MainMenuManager : Singleton<MainMenuManager>
 {
     [Header("MenusOnMenuState")]
-    [SerializeField] GameObject mainMenu_Parent;
-    [SerializeField] GameObject overworldMenu_Parent;
+    public GameObject mainMenu_Parent;
+    public GameObject overworldMenu_Parent;
     [SerializeField] GameObject overworldMenu_BiomesSelected_Parent;
     [SerializeField] GameObject overworldMenu_BiomesBig_Parent;
     [SerializeField] GameObject infoMenu_Parent;
@@ -31,6 +31,10 @@ public class MainMenuManager : Singleton<MainMenuManager>
     //--------------------
 
 
+    private void Awake()
+    {
+        Menu_Main();
+    }
     private void Start()
     {
         menuState = MenuState.Main_Menu;

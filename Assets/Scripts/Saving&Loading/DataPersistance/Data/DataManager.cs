@@ -31,7 +31,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     /*[HideInInspector]*/ public Map_SaveInfoList mapInfo_StoreList = new Map_SaveInfoList();
 
     //Overworld States
-    [HideInInspector] public OverWorldStates overWorldStates_StoreList = new OverWorldStates();
+    /*[HideInInspector]*/ public OverWorldStates overWorldStates_StoreList = new OverWorldStates();
     #endregion
 
 
@@ -65,6 +65,13 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         {
             SaveLoad_PlayerStats.Instance.LoadData();
             print("2. PlayerStat has Loaded");
+        }
+
+        OverWorldManager tempOverworld = FindObjectOfType<OverWorldManager>();
+        if (tempOverworld)
+        {
+            OverWorldManager.Instance.LoadUIElementState_IfExitsFromALevel();
+            print("3. UIElementState has Loaded");
         }
 
         #endregion

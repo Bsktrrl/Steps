@@ -15,7 +15,7 @@ public class GameData
     /*[HideInInspector]*/ public Map_SaveInfoList mapInfo_SaveList = new Map_SaveInfoList();
 
     //Overworld States
-    [HideInInspector] public OverWorldStates overWorldStates_SaveList = new OverWorldStates();
+    /*[HideInInspector]*/ public OverWorldStates overWorldStates_SaveList = new OverWorldStates();
 
 
     //--------------------

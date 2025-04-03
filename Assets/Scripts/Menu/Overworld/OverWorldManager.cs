@@ -109,23 +109,28 @@ public class OverWorldManager : Singleton<OverWorldManager>
     private void OnEnable()
     {
         RememberCurrentlySelectedUIElement.Action_ChangedSelectedUIElement += CheckStates;
-
-        //LoadUIElementState_IfExitsFromALevel();
+        DataManager.Action_dataHasLoaded += LoadUIElementState_IfExitsFromALevel;
     }
     private void OnDisable()
     {
         RememberCurrentlySelectedUIElement.Action_ChangedSelectedUIElement -= CheckStates;
+        DataManager.Action_dataHasLoaded -= LoadUIElementState_IfExitsFromALevel;
     }
 
 
     //--------------------
 
 
-    void LoadUIElementState_IfExitsFromALevel()
+    public void LoadUIElementState_IfExitsFromALevel()
     {
-        if (DataManager.Instance.overWorldStates_StoreList.regionState != RegionState.None && DataManager.Instance.overWorldStates_StoreList.levelState != LevelState.None)
+        if (DataManager.Instance.overWorldStates_StoreList.regionState != RegionState.None && DataManager.Instance.overWorldStates_StoreList.levelState != LevelState.None
+            && MainMenuManager.Instance.overworldMenu_Parent.activeInHierarchy)
         {
-            ChangeStates(DataManager.Instance.overWorldStates_StoreList.regionState, DataManager.Instance.overWorldStates_StoreList.levelState);
+            RememberCurrentlySelectedUIElement.Instance.overWorldStates = DataManager.Instance.overWorldStates_StoreList;
+
+            print("200. UIElementState - Load From Save - R: " + RememberCurrentlySelectedUIElement.Instance.overWorldStates.regionState + " | L: " + RememberCurrentlySelectedUIElement.Instance.overWorldStates.levelState);
+
+            ChangeStates(RememberCurrentlySelectedUIElement.Instance.overWorldStates.regionState, RememberCurrentlySelectedUIElement.Instance.overWorldStates.levelState);
 
             switch (regionState)
             {
@@ -134,31 +139,37 @@ public class OverWorldManager : Singleton<OverWorldManager>
 
                 //1. Ice
                 case RegionState.Ice:
+                    levelPanel_Ice.SetActive(true);
                     SetSelected(levelPanel_Ice);
                     break;
                 
                 //2. Stone
                 case RegionState.Stone:
+                    levelPanel_Stone.SetActive(true);
                     SetSelected(levelPanel_Stone);
                     break;
                 
                 //3. Grass
                 case RegionState.Grass:
+                    levelPanel_Grass.SetActive(true);
                     SetSelected(levelPanel_Grass);
                     break;
                 
                 //4. Desert
                 case RegionState.Desert:
+                    levelPanel_Desert.SetActive(true);
                     SetSelected(levelPanel_Desert);
                     break;
                 
                 //5. Swamp
                 case RegionState.Swamp:
+                    levelPanel_Swamp.SetActive(true);
                     SetSelected(levelPanel_Swamp);
                     break;
                 
                 //6. Industrial
                 case RegionState.Industrial:
+                    levelPanel_Industrial.SetActive(true);
                     SetSelected(levelPanel_Industrial);
                     break;
 
