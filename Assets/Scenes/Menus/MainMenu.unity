@@ -271,7 +271,6 @@ GameObject:
   m_Component:
   - component: {fileID: 17842243}
   - component: {fileID: 17842245}
-  - component: {fileID: 17842244}
   m_Layer: 5
   m_Name: Industrial - LP
   m_TagString: Untagged
@@ -305,25 +304,6 @@ RectTransform:
   m_AnchoredPosition: {x: 730, y: 0}
   m_SizeDelta: {x: 240, y: 940}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &17842244
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 17842242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab9d1ecc3e2025845a0304625e9ab244, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panel_Level_1: {fileID: 700027198}
-  panel_Level_2: {fileID: 692187235}
-  panel_Level_3: {fileID: 1604903560}
-  panel_Level_4: {fileID: 600672433}
-  panel_Level_5: {fileID: 1176032654}
-  panel_Level_6: {fileID: 1627193294}
-  panel_Level_Void: {fileID: 2019071376}
 --- !u!114 &17842245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -959,6 +939,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c86c2baf5c03ae4291b19090032b470, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6add1a8bcf5f1704c9a76d854bf6383a, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: eb8bfa7f6bae5534e93965bba8223741, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6add1a8bcf5f1704c9a76d854bf6383a, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c86c2baf5c03ae4291b19090032b470, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: e4e0853e2ae0edc4983e5ba351b6aa8c, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: feb39d881eb1add4aa2dc942de98e0e6, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: e4e0853e2ae0edc4983e5ba351b6aa8c, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1200,7 +1228,6 @@ GameObject:
   m_Component:
   - component: {fileID: 152833915}
   - component: {fileID: 152833917}
-  - component: {fileID: 152833916}
   m_Layer: 5
   m_Name: Stone - LP
   m_TagString: Untagged
@@ -1234,25 +1261,6 @@ RectTransform:
   m_AnchoredPosition: {x: 730, y: 0}
   m_SizeDelta: {x: 240, y: 940}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &152833916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 152833914}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab9d1ecc3e2025845a0304625e9ab244, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panel_Level_1: {fileID: 1094754742}
-  panel_Level_2: {fileID: 1128080774}
-  panel_Level_3: {fileID: 673926675}
-  panel_Level_4: {fileID: 652457498}
-  panel_Level_5: {fileID: 1659561594}
-  panel_Level_6: {fileID: 1221715630}
-  panel_Level_Void: {fileID: 989362812}
 --- !u!114 &152833917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1287,7 +1295,6 @@ GameObject:
   m_Component:
   - component: {fileID: 177036346}
   - component: {fileID: 177036348}
-  - component: {fileID: 177036347}
   m_Layer: 5
   m_Name: Grass - LP
   m_TagString: Untagged
@@ -1321,25 +1328,6 @@ RectTransform:
   m_AnchoredPosition: {x: 730, y: 0}
   m_SizeDelta: {x: 240, y: 940}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &177036347
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 177036345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab9d1ecc3e2025845a0304625e9ab244, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panel_Level_1: {fileID: 492732407}
-  panel_Level_2: {fileID: 424958130}
-  panel_Level_3: {fileID: 2130058672}
-  panel_Level_4: {fileID: 1307266288}
-  panel_Level_5: {fileID: 597961580}
-  panel_Level_6: {fileID: 403603072}
-  panel_Level_Void: {fileID: 1457198007}
 --- !u!114 &177036348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1678,6 +1666,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: cd77e7695da58e54db852389c61ee69f, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 012da988b327d174a9317e02eeb8c479, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6a303e9a4116cb0458caa65b9ec6ae44, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 012da988b327d174a9317e02eeb8c479, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: cd77e7695da58e54db852389c61ee69f, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 95149b617b357ed4fbdf6d49a0941754, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 39aed39d402c68943b32ff1f77e60f4b, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 95149b617b357ed4fbdf6d49a0941754, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1831,7 +1867,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 2
-  eventSystem: {fileID: 0}
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -2094,7 +2129,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 2
-  eventSystem: {fileID: 0}
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -3166,6 +3200,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c86c2baf5c03ae4291b19090032b470, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6add1a8bcf5f1704c9a76d854bf6383a, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: eb8bfa7f6bae5534e93965bba8223741, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6add1a8bcf5f1704c9a76d854bf6383a, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c86c2baf5c03ae4291b19090032b470, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: e4e0853e2ae0edc4983e5ba351b6aa8c, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: feb39d881eb1add4aa2dc942de98e0e6, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: e4e0853e2ae0edc4983e5ba351b6aa8c, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3349,7 +3431,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 5
-  eventSystem: {fileID: 0}
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -3407,7 +3488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.77647066, g: 0.9960785, b: 0.9960785, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3526,7 +3607,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 5
-  eventSystem: {fileID: 1999907176}
   uiElementToSelect: {fileID: 7593983839699730513}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -3543,7 +3623,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 1214710827}
-  menuToOpen: {fileID: 1974100046}
+  menuToOpen: {fileID: 1723724837}
   menuToClose: {fileID: 2058110170}
   menuState_ToSelect: 1
   levelState_ToSelect: 0
@@ -3688,6 +3768,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18934f572ed35b14aacfaecbf2c9b284, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c3d91a8943bc63419ca28629f1aef04, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: d0c4a17e184307545844d29915682d98, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c3d91a8943bc63419ca28629f1aef04, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18934f572ed35b14aacfaecbf2c9b284, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 367fbdea375108c49accf2b76874361b, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 1fa397dec99bb8347a09bca688cb7ab6, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 367fbdea375108c49accf2b76874361b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3933,6 +4061,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6f849b548591740448479518cea8bc80, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: b9cc8af176a594e449a4fb9ef833bc78, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: cd325842150a591498ce89a5b64b621e, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: b9cc8af176a594e449a4fb9ef833bc78, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6f849b548591740448479518cea8bc80, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0667ba86e052dc24f8d98a0bec9aab56, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 1535e16202d6a62479610cf4f6798be0, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0667ba86e052dc24f8d98a0bec9aab56, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3965,6 +4141,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &437868904 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7429604548242019253, guid: dbfee099e6359ac4785904751ae42563, type: 3}
+  m_PrefabInstance: {fileID: 1991958050}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &440708207
 GameObject:
   m_ObjectHideFlags: 0
@@ -4019,7 +4200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.69803923, g: 0.9686275, b: 0.6039216, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4138,7 +4319,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 5
-  eventSystem: {fileID: 1999907176}
   uiElementToSelect: {fileID: 492732407}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -4155,7 +4335,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 1214710827}
-  menuToOpen: {fileID: 1974100046}
+  menuToOpen: {fileID: 1723724837}
   menuToClose: {fileID: 2058110170}
   menuState_ToSelect: 1
   levelState_ToSelect: 0
@@ -4626,6 +4806,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 3d1c93812d951644a86ea6ca10405ca8, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e24bd753fac60347aa3a7558525a5d7, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0081a8b5f0becef48b52e676a65ddb42, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e24bd753fac60347aa3a7558525a5d7, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 3d1c93812d951644a86ea6ca10405ca8, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 996602df7d8f18c45b2f575fd90de09a, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 01da3dfc9c849814290592ebc17a8a81, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 996602df7d8f18c45b2f575fd90de09a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4713,6 +4941,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c3592981424de6468e94bb53e26aeb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onlyWhenSelected: 0
+  waitTimerRange: {x: 0.5, y: 1}
   waveImage: {fileID: 515573335}
   waveSpriteList:
   - {fileID: 21300000, guid: d5d57f9aee121cf4ba996d1b790773a2, type: 3}
@@ -4809,7 +5039,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 2
-  eventSystem: {fileID: 0}
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -5111,7 +5340,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 2
-  eventSystem: {fileID: 0}
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -5707,6 +5935,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 96286e488cdf28848a938bee091763e4, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 866d2a439e8de1f48aff4c87de8f5669, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 5b965130be34e1040a4c1ea0ac8bb6db, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 866d2a439e8de1f48aff4c87de8f5669, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 96286e488cdf28848a938bee091763e4, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: f4cb0cba7a332d24193d782d8dfe70cc, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 62525d52884866d4984c714962941897, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: f4cb0cba7a332d24193d782d8dfe70cc, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5940,6 +6216,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: cd77e7695da58e54db852389c61ee69f, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 012da988b327d174a9317e02eeb8c479, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6a303e9a4116cb0458caa65b9ec6ae44, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 012da988b327d174a9317e02eeb8c479, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: cd77e7695da58e54db852389c61ee69f, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 95149b617b357ed4fbdf6d49a0941754, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 39aed39d402c68943b32ff1f77e60f4b, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 95149b617b357ed4fbdf6d49a0941754, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6196,6 +6520,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1173689182}
     m_Modifications:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: levelToPlay
+      value: Water - Level 1 - 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -6375,6 +6703,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18934f572ed35b14aacfaecbf2c9b284, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c3d91a8943bc63419ca28629f1aef04, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: d0c4a17e184307545844d29915682d98, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c3d91a8943bc63419ca28629f1aef04, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18934f572ed35b14aacfaecbf2c9b284, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 367fbdea375108c49accf2b76874361b, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 1fa397dec99bb8347a09bca688cb7ab6, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 367fbdea375108c49accf2b76874361b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6466,7 +6842,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.85098046, g: 0.8117648, b: 0.7411765, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6585,7 +6961,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 5
-  eventSystem: {fileID: 1999907176}
   uiElementToSelect: {fileID: 1094754742}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -6602,7 +6977,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 1214710827}
-  menuToOpen: {fileID: 1974100046}
+  menuToOpen: {fileID: 1723724837}
   menuToClose: {fileID: 2058110170}
   menuState_ToSelect: 1
   levelState_ToSelect: 0
@@ -6921,6 +7296,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: cd77e7695da58e54db852389c61ee69f, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 012da988b327d174a9317e02eeb8c479, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6a303e9a4116cb0458caa65b9ec6ae44, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 012da988b327d174a9317e02eeb8c479, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: cd77e7695da58e54db852389c61ee69f, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 95149b617b357ed4fbdf6d49a0941754, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 39aed39d402c68943b32ff1f77e60f4b, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 95149b617b357ed4fbdf6d49a0941754, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7286,6 +7709,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18d98c5053d75e3448e418cd31c94fd1, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 139ede17c7c9b70438f24110aa3fe48d, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 4862783cac7498941994f4a0b7d2b281, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 139ede17c7c9b70438f24110aa3fe48d, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18d98c5053d75e3448e418cd31c94fd1, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: cca00b66aa6dc1d4c8da0238fe06cbc6, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 332c59c47891d9140870aa75dedc7735, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: cca00b66aa6dc1d4c8da0238fe06cbc6, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7645,6 +8116,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18934f572ed35b14aacfaecbf2c9b284, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c3d91a8943bc63419ca28629f1aef04, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: d0c4a17e184307545844d29915682d98, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c3d91a8943bc63419ca28629f1aef04, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18934f572ed35b14aacfaecbf2c9b284, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 367fbdea375108c49accf2b76874361b, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 1fa397dec99bb8347a09bca688cb7ab6, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 367fbdea375108c49accf2b76874361b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8104,6 +8623,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 3d1c93812d951644a86ea6ca10405ca8, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e24bd753fac60347aa3a7558525a5d7, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0081a8b5f0becef48b52e676a65ddb42, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e24bd753fac60347aa3a7558525a5d7, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 3d1c93812d951644a86ea6ca10405ca8, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 996602df7d8f18c45b2f575fd90de09a, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 01da3dfc9c849814290592ebc17a8a81, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 996602df7d8f18c45b2f575fd90de09a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8337,6 +8904,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: cd77e7695da58e54db852389c61ee69f, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 012da988b327d174a9317e02eeb8c479, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6a303e9a4116cb0458caa65b9ec6ae44, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 012da988b327d174a9317e02eeb8c479, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: cd77e7695da58e54db852389c61ee69f, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 95149b617b357ed4fbdf6d49a0941754, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 39aed39d402c68943b32ff1f77e60f4b, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 95149b617b357ed4fbdf6d49a0941754, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8578,6 +9193,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c86c2baf5c03ae4291b19090032b470, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6add1a8bcf5f1704c9a76d854bf6383a, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: eb8bfa7f6bae5534e93965bba8223741, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6add1a8bcf5f1704c9a76d854bf6383a, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c86c2baf5c03ae4291b19090032b470, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: e4e0853e2ae0edc4983e5ba351b6aa8c, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: feb39d881eb1add4aa2dc942de98e0e6, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: e4e0853e2ae0edc4983e5ba351b6aa8c, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9071,6 +9734,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18934f572ed35b14aacfaecbf2c9b284, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c3d91a8943bc63419ca28629f1aef04, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: d0c4a17e184307545844d29915682d98, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c3d91a8943bc63419ca28629f1aef04, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18934f572ed35b14aacfaecbf2c9b284, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 367fbdea375108c49accf2b76874361b, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 1fa397dec99bb8347a09bca688cb7ab6, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 367fbdea375108c49accf2b76874361b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9526,6 +10237,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18d98c5053d75e3448e418cd31c94fd1, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 139ede17c7c9b70438f24110aa3fe48d, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 4862783cac7498941994f4a0b7d2b281, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 139ede17c7c9b70438f24110aa3fe48d, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18d98c5053d75e3448e418cd31c94fd1, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: cca00b66aa6dc1d4c8da0238fe06cbc6, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 332c59c47891d9140870aa75dedc7735, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: cca00b66aa6dc1d4c8da0238fe06cbc6, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10137,7 +10896,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 2
-  eventSystem: {fileID: 0}
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -10321,7 +11079,6 @@ GameObject:
   m_Component:
   - component: {fileID: 880588600}
   - component: {fileID: 880588602}
-  - component: {fileID: 880588601}
   m_Layer: 5
   m_Name: Swamp - LP
   m_TagString: Untagged
@@ -10355,25 +11112,6 @@ RectTransform:
   m_AnchoredPosition: {x: 730, y: 0}
   m_SizeDelta: {x: 240, y: 940}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &880588601
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 880588599}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab9d1ecc3e2025845a0304625e9ab244, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panel_Level_1: {fileID: 924785214}
-  panel_Level_2: {fileID: 925566447}
-  panel_Level_3: {fileID: 816750169}
-  panel_Level_4: {fileID: 216439079}
-  panel_Level_5: {fileID: 1130865782}
-  panel_Level_6: {fileID: 739040644}
-  panel_Level_Void: {fileID: 1754585607}
 --- !u!114 &880588602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10653,6 +11391,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3269627658152024833, guid: 6fb0bac386ee75b47807af5f4e13c5f3, type: 3}
   m_PrefabInstance: {fileID: 464247774}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &903097737 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7429604548242019253, guid: dbfee099e6359ac4785904751ae42563, type: 3}
+  m_PrefabInstance: {fileID: 6813428837173470074}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &920439580
 GameObject:
   m_ObjectHideFlags: 0
@@ -10872,6 +11615,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 3d1c93812d951644a86ea6ca10405ca8, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e24bd753fac60347aa3a7558525a5d7, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0081a8b5f0becef48b52e676a65ddb42, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e24bd753fac60347aa3a7558525a5d7, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 3d1c93812d951644a86ea6ca10405ca8, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 996602df7d8f18c45b2f575fd90de09a, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 01da3dfc9c849814290592ebc17a8a81, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 996602df7d8f18c45b2f575fd90de09a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11097,6 +11888,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18934f572ed35b14aacfaecbf2c9b284, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c3d91a8943bc63419ca28629f1aef04, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: d0c4a17e184307545844d29915682d98, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c3d91a8943bc63419ca28629f1aef04, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18934f572ed35b14aacfaecbf2c9b284, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 367fbdea375108c49accf2b76874361b, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 1fa397dec99bb8347a09bca688cb7ab6, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 367fbdea375108c49accf2b76874361b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11355,7 +12194,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 12
-  eventSystem: {fileID: 0}
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -12159,6 +12997,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6f849b548591740448479518cea8bc80, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: b9cc8af176a594e449a4fb9ef833bc78, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: cd325842150a591498ce89a5b64b621e, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: b9cc8af176a594e449a4fb9ef833bc78, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6f849b548591740448479518cea8bc80, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0667ba86e052dc24f8d98a0bec9aab56, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 1535e16202d6a62479610cf4f6798be0, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0667ba86e052dc24f8d98a0bec9aab56, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12522,7 +13408,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 2
-  eventSystem: {fileID: 0}
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -12630,12 +13515,30 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3801963254039540224, guid: dbfee099e6359ac4785904751ae42563, type: 3}
   m_PrefabInstance: {fileID: 6813428837173470074}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 903097737}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1050186726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903097737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3daf9d1bba00f541ae3c61b5a04c183, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectOnCancel: {fileID: 1288783375}
+  menuToOpen: {fileID: 1723724837}
+  menuToClose: {fileID: 1513174517}
+  menuState_ToSelect: 1
+  levelState_ToSelect: 0
+  regionState_ToSelect: 0
 --- !u!1 &1073476608
 GameObject:
   m_ObjectHideFlags: 0
@@ -12937,6 +13840,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 3d1c93812d951644a86ea6ca10405ca8, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e24bd753fac60347aa3a7558525a5d7, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0081a8b5f0becef48b52e676a65ddb42, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e24bd753fac60347aa3a7558525a5d7, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 3d1c93812d951644a86ea6ca10405ca8, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 996602df7d8f18c45b2f575fd90de09a, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 01da3dfc9c849814290592ebc17a8a81, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 996602df7d8f18c45b2f575fd90de09a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13162,6 +14113,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18934f572ed35b14aacfaecbf2c9b284, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c3d91a8943bc63419ca28629f1aef04, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: d0c4a17e184307545844d29915682d98, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c3d91a8943bc63419ca28629f1aef04, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18934f572ed35b14aacfaecbf2c9b284, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 367fbdea375108c49accf2b76874361b, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 1fa397dec99bb8347a09bca688cb7ab6, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 367fbdea375108c49accf2b76874361b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13399,6 +14398,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 96286e488cdf28848a938bee091763e4, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 866d2a439e8de1f48aff4c87de8f5669, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 5b965130be34e1040a4c1ea0ac8bb6db, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 866d2a439e8de1f48aff4c87de8f5669, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 96286e488cdf28848a938bee091763e4, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: f4cb0cba7a332d24193d782d8dfe70cc, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 62525d52884866d4984c714962941897, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: f4cb0cba7a332d24193d782d8dfe70cc, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13490,7 +14537,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9568628, g: 0.9215687, b: 0.73333335, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13609,7 +14656,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 5
-  eventSystem: {fileID: 1999907176}
   uiElementToSelect: {fileID: 1350779289}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -13626,7 +14672,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 1214710827}
-  menuToOpen: {fileID: 1974100046}
+  menuToOpen: {fileID: 1723724837}
   menuToClose: {fileID: 2058110170}
   menuState_ToSelect: 1
   levelState_ToSelect: 0
@@ -14336,7 +15382,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1173689182}
   - component: {fileID: 1173689183}
-  - component: {fileID: 1173689184}
   m_Layer: 5
   m_Name: Ice - LP
   m_TagString: Untagged
@@ -14394,25 +15439,6 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: -7}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &1173689184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1173689181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab9d1ecc3e2025845a0304625e9ab244, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panel_Level_1: {fileID: 7593983839699730513}
-  panel_Level_2: {fileID: 611972957}
-  panel_Level_3: {fileID: 1904634458}
-  panel_Level_4: {fileID: 2140161114}
-  panel_Level_5: {fileID: 1279632648}
-  panel_Level_6: {fileID: 1701185943}
-  panel_Level_Void: {fileID: 429056337}
 --- !u!1001 &1176032653
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14613,6 +15639,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 96286e488cdf28848a938bee091763e4, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 866d2a439e8de1f48aff4c87de8f5669, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 5b965130be34e1040a4c1ea0ac8bb6db, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 866d2a439e8de1f48aff4c87de8f5669, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 96286e488cdf28848a938bee091763e4, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: f4cb0cba7a332d24193d782d8dfe70cc, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 62525d52884866d4984c714962941897, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: f4cb0cba7a332d24193d782d8dfe70cc, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15221,6 +16295,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c86c2baf5c03ae4291b19090032b470, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6add1a8bcf5f1704c9a76d854bf6383a, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: eb8bfa7f6bae5534e93965bba8223741, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6add1a8bcf5f1704c9a76d854bf6383a, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c86c2baf5c03ae4291b19090032b470, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: e4e0853e2ae0edc4983e5ba351b6aa8c, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: feb39d881eb1add4aa2dc942de98e0e6, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: e4e0853e2ae0edc4983e5ba351b6aa8c, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15678,7 +16800,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 2
-  eventSystem: {fileID: 0}
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -15922,7 +17043,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 4
-  eventSystem: {fileID: 0}
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -16126,6 +17246,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 96286e488cdf28848a938bee091763e4, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 866d2a439e8de1f48aff4c87de8f5669, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 5b965130be34e1040a4c1ea0ac8bb6db, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 866d2a439e8de1f48aff4c87de8f5669, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 96286e488cdf28848a938bee091763e4, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: f4cb0cba7a332d24193d782d8dfe70cc, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 62525d52884866d4984c714962941897, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: f4cb0cba7a332d24193d782d8dfe70cc, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16906,6 +18074,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: cd77e7695da58e54db852389c61ee69f, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 012da988b327d174a9317e02eeb8c479, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6a303e9a4116cb0458caa65b9ec6ae44, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 012da988b327d174a9317e02eeb8c479, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: cd77e7695da58e54db852389c61ee69f, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 95149b617b357ed4fbdf6d49a0941754, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 39aed39d402c68943b32ff1f77e60f4b, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 95149b617b357ed4fbdf6d49a0941754, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -17387,6 +18603,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 3d1c93812d951644a86ea6ca10405ca8, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e24bd753fac60347aa3a7558525a5d7, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0081a8b5f0becef48b52e676a65ddb42, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e24bd753fac60347aa3a7558525a5d7, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 3d1c93812d951644a86ea6ca10405ca8, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 996602df7d8f18c45b2f575fd90de09a, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 01da3dfc9c849814290592ebc17a8a81, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 996602df7d8f18c45b2f575fd90de09a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -17478,7 +18742,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5921569, g: 0.5882353, b: 0.5921569, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -17597,7 +18861,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 5
-  eventSystem: {fileID: 1999907176}
   uiElementToSelect: {fileID: 700027198}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -17614,7 +18877,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 1214710827}
-  menuToOpen: {fileID: 1974100046}
+  menuToOpen: {fileID: 1723724837}
   menuToClose: {fileID: 2058110170}
   menuState_ToSelect: 1
   levelState_ToSelect: 0
@@ -17931,7 +19194,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 2
-  eventSystem: {fileID: 0}
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -18264,6 +19526,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6f849b548591740448479518cea8bc80, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: b9cc8af176a594e449a4fb9ef833bc78, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: cd325842150a591498ce89a5b64b621e, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: b9cc8af176a594e449a4fb9ef833bc78, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6f849b548591740448479518cea8bc80, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0667ba86e052dc24f8d98a0bec9aab56, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 1535e16202d6a62479610cf4f6798be0, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0667ba86e052dc24f8d98a0bec9aab56, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -18598,6 +19908,12 @@ MonoBehaviour:
   levelPanel_Desert: {fileID: 1944044434}
   levelPanel_Swamp: {fileID: 880588599}
   levelPanel_Industrial: {fileID: 17842242}
+  levelPanel_Ice_FirstLevel: {fileID: 7593983839699730512}
+  levelPanel_Stone_FirstLevel: {fileID: 1094754744}
+  levelPanel_Grass_FirstLevel: {fileID: 492732409}
+  levelPanel_Desert_FirstLevel: {fileID: 1350779291}
+  levelPanel_Swamp_FirstLevel: {fileID: 924785216}
+  levelPanel_Industrial_FirstLevel: {fileID: 700027200}
   region_Ice: {fileID: 422883902}
   region_Stone: {fileID: 627073063}
   region_Grass: {fileID: 440708209}
@@ -19521,7 +20837,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 7
-  eventSystem: {fileID: 0}
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -19755,6 +21070,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18d98c5053d75e3448e418cd31c94fd1, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 139ede17c7c9b70438f24110aa3fe48d, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 4862783cac7498941994f4a0b7d2b281, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 139ede17c7c9b70438f24110aa3fe48d, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18d98c5053d75e3448e418cd31c94fd1, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: cca00b66aa6dc1d4c8da0238fe06cbc6, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 332c59c47891d9140870aa75dedc7735, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: cca00b66aa6dc1d4c8da0238fe06cbc6, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20067,6 +21430,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 96286e488cdf28848a938bee091763e4, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 866d2a439e8de1f48aff4c87de8f5669, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 5b965130be34e1040a4c1ea0ac8bb6db, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 866d2a439e8de1f48aff4c87de8f5669, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 96286e488cdf28848a938bee091763e4, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: f4cb0cba7a332d24193d782d8dfe70cc, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 62525d52884866d4984c714962941897, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: f4cb0cba7a332d24193d782d8dfe70cc, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20308,6 +21719,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c86c2baf5c03ae4291b19090032b470, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6add1a8bcf5f1704c9a76d854bf6383a, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: eb8bfa7f6bae5534e93965bba8223741, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6add1a8bcf5f1704c9a76d854bf6383a, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c86c2baf5c03ae4291b19090032b470, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: e4e0853e2ae0edc4983e5ba351b6aa8c, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: feb39d881eb1add4aa2dc942de98e0e6, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: e4e0853e2ae0edc4983e5ba351b6aa8c, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20763,6 +22222,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 96286e488cdf28848a938bee091763e4, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 866d2a439e8de1f48aff4c87de8f5669, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 5b965130be34e1040a4c1ea0ac8bb6db, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 866d2a439e8de1f48aff4c87de8f5669, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 96286e488cdf28848a938bee091763e4, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: f4cb0cba7a332d24193d782d8dfe70cc, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 62525d52884866d4984c714962941897, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: f4cb0cba7a332d24193d782d8dfe70cc, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -21072,81 +22579,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1670275591}
   m_CullTransparentMesh: 1
---- !u!1 &1677513225
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1677513226}
-  - component: {fileID: 1677513228}
-  - component: {fileID: 1677513227}
-  m_Layer: 5
-  m_Name: Borders
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1677513226
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677513225}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2058110171}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1677513227
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677513225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1a67d5c6bd6f32b4e92a0a4f930356d3, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1677513228
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677513225}
-  m_CullTransparentMesh: 1
 --- !u!1001 &1678977897
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21339,6 +22771,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18d98c5053d75e3448e418cd31c94fd1, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 139ede17c7c9b70438f24110aa3fe48d, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 4862783cac7498941994f4a0b7d2b281, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 139ede17c7c9b70438f24110aa3fe48d, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18d98c5053d75e3448e418cd31c94fd1, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: cca00b66aa6dc1d4c8da0238fe06cbc6, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 332c59c47891d9140870aa75dedc7735, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: cca00b66aa6dc1d4c8da0238fe06cbc6, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -21580,6 +23060,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c86c2baf5c03ae4291b19090032b470, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6add1a8bcf5f1704c9a76d854bf6383a, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: eb8bfa7f6bae5534e93965bba8223741, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6add1a8bcf5f1704c9a76d854bf6383a, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c86c2baf5c03ae4291b19090032b470, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: e4e0853e2ae0edc4983e5ba351b6aa8c, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: feb39d881eb1add4aa2dc942de98e0e6, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: e4e0853e2ae0edc4983e5ba351b6aa8c, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -22031,6 +23559,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6f849b548591740448479518cea8bc80, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: b9cc8af176a594e449a4fb9ef833bc78, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: cd325842150a591498ce89a5b64b621e, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: b9cc8af176a594e449a4fb9ef833bc78, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6f849b548591740448479518cea8bc80, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0667ba86e052dc24f8d98a0bec9aab56, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 1535e16202d6a62479610cf4f6798be0, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0667ba86e052dc24f8d98a0bec9aab56, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -23016,7 +24592,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 11
-  eventSystem: {fileID: 0}
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -23292,6 +24867,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1892071874}
+  - component: {fileID: 1892071877}
   - component: {fileID: 1892071875}
   - component: {fileID: 1892071876}
   m_Layer: 0
@@ -23344,6 +24920,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventSystem: {fileID: 1999907176}
   cancel_Button: {fileID: -4661237038945069658, guid: f47729a96eb496149972e7058d44f3a7, type: 3}
+--- !u!114 &1892071877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892071873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: f47729a96eb496149972e7058d44f3a7, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: PlayerMovement
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1896489595
 GameObject:
   m_ObjectHideFlags: 0
@@ -23428,6 +25034,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1173689182}
     m_Modifications:
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: levelToPlay
+      value: Water - Level 1 - 2
+      objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
       value: 2
@@ -23612,6 +25222,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18d98c5053d75e3448e418cd31c94fd1, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 139ede17c7c9b70438f24110aa3fe48d, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 4862783cac7498941994f4a0b7d2b281, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 139ede17c7c9b70438f24110aa3fe48d, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18d98c5053d75e3448e418cd31c94fd1, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: cca00b66aa6dc1d4c8da0238fe06cbc6, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 332c59c47891d9140870aa75dedc7735, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: cca00b66aa6dc1d4c8da0238fe06cbc6, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -23795,7 +25453,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 6
-  eventSystem: {fileID: 0}
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -23809,7 +25466,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1944044435}
   - component: {fileID: 1944044437}
-  - component: {fileID: 1944044436}
   m_Layer: 5
   m_Name: Desert - LP
   m_TagString: Untagged
@@ -23843,25 +25499,6 @@ RectTransform:
   m_AnchoredPosition: {x: 730, y: 0}
   m_SizeDelta: {x: 240, y: 940}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1944044436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1944044434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab9d1ecc3e2025845a0304625e9ab244, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panel_Level_1: {fileID: 1350779289}
-  panel_Level_2: {fileID: 783881202}
-  panel_Level_3: {fileID: 1678977898}
-  panel_Level_4: {fileID: 706314525}
-  panel_Level_5: {fileID: 1616681543}
-  panel_Level_6: {fileID: 102509353}
-  panel_Level_Void: {fileID: 2066284784}
 --- !u!114 &1944044437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24032,7 +25669,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 9
-  eventSystem: {fileID: 0}
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -24196,8 +25832,8 @@ RectTransform:
   m_Children:
   - {fileID: 807025091}
   - {fileID: 1723724838}
-  - {fileID: 1513174518}
   - {fileID: 1078648179}
+  - {fileID: 1513174518}
   - {fileID: 978013600}
   - {fileID: 2058110171}
   - {fileID: 1806583253}
@@ -24354,7 +25990,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 10
-  eventSystem: {fileID: 0}
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -24493,7 +26128,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7429604548242019253, guid: dbfee099e6359ac4785904751ae42563, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1991958056}
   m_SourcePrefab: {fileID: 100100000, guid: dbfee099e6359ac4785904751ae42563, type: 3}
 --- !u!224 &1991958051 stripped
 RectTransform:
@@ -24505,12 +26143,30 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3801963254039540224, guid: dbfee099e6359ac4785904751ae42563, type: 3}
   m_PrefabInstance: {fileID: 1991958050}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 437868904}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1991958056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437868904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3daf9d1bba00f541ae3c61b5a04c183, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectOnCancel: {fileID: 2074749183}
+  menuToOpen: {fileID: 1723724837}
+  menuToClose: {fileID: 1078648178}
+  menuState_ToSelect: 1
+  levelState_ToSelect: 0
+  regionState_ToSelect: 0
 --- !u!1 &1991960623 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3778571808553910370, guid: 7741f76fb84b8e84ba8d3e05eba7691b, type: 3}
@@ -24740,7 +26396,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 8
-  eventSystem: {fileID: 0}
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -24952,6 +26607,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6f849b548591740448479518cea8bc80, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: b9cc8af176a594e449a4fb9ef833bc78, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: cd325842150a591498ce89a5b64b621e, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: b9cc8af176a594e449a4fb9ef833bc78, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6f849b548591740448479518cea8bc80, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0667ba86e052dc24f8d98a0bec9aab56, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 1535e16202d6a62479610cf4f6798be0, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0667ba86e052dc24f8d98a0bec9aab56, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -25357,7 +27060,6 @@ RectTransform:
   m_Children:
   - {fileID: 951731529}
   - {fileID: 515573333}
-  - {fileID: 1677513226}
   - {fileID: 1550072383}
   - {fileID: 1485358178}
   - {fileID: 920439581}
@@ -25598,6 +27300,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6f849b548591740448479518cea8bc80, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: b9cc8af176a594e449a4fb9ef833bc78, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: cd325842150a591498ce89a5b64b621e, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: b9cc8af176a594e449a4fb9ef833bc78, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6f849b548591740448479518cea8bc80, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0667ba86e052dc24f8d98a0bec9aab56, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 1535e16202d6a62479610cf4f6798be0, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0667ba86e052dc24f8d98a0bec9aab56, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -26104,7 +27854,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 2
-  eventSystem: {fileID: 0}
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -26631,6 +28380,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18d98c5053d75e3448e418cd31c94fd1, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 139ede17c7c9b70438f24110aa3fe48d, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 4862783cac7498941994f4a0b7d2b281, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 139ede17c7c9b70438f24110aa3fe48d, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18d98c5053d75e3448e418cd31c94fd1, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: cca00b66aa6dc1d4c8da0238fe06cbc6, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 332c59c47891d9140870aa75dedc7735, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: cca00b66aa6dc1d4c8da0238fe06cbc6, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -26864,6 +28661,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: cd77e7695da58e54db852389c61ee69f, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 012da988b327d174a9317e02eeb8c479, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6a303e9a4116cb0458caa65b9ec6ae44, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 012da988b327d174a9317e02eeb8c479, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: cd77e7695da58e54db852389c61ee69f, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 95149b617b357ed4fbdf6d49a0941754, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 39aed39d402c68943b32ff1f77e60f4b, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 95149b617b357ed4fbdf6d49a0941754, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -26955,7 +28800,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8705883, g: 0.73333335, b: 0.9568628, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -27074,7 +28919,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 5
-  eventSystem: {fileID: 1999907176}
   uiElementToSelect: {fileID: 924785214}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
@@ -27091,7 +28935,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 1214710827}
-  menuToOpen: {fileID: 1974100046}
+  menuToOpen: {fileID: 1723724837}
   menuToClose: {fileID: 2058110170}
   menuState_ToSelect: 1
   levelState_ToSelect: 0
@@ -27231,7 +29075,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7429604548242019253, guid: dbfee099e6359ac4785904751ae42563, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1050186726}
   m_SourcePrefab: {fileID: 100100000, guid: dbfee099e6359ac4785904751ae42563, type: 3}
 --- !u!1001 &7593983839699730510
 PrefabInstance:
@@ -27241,6 +29088,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1173689182}
     m_Modifications:
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: levelToPlay
+      value: Tutorial
+      objectReference: {fileID: 0}
     - target: {fileID: 384179937895888748, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -27417,6 +29268,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimer
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: onlyWhenSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waitTimerRange.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 3d1c93812d951644a86ea6ca10405ca8, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e24bd753fac60347aa3a7558525a5d7, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0081a8b5f0becef48b52e676a65ddb42, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e24bd753fac60347aa3a7558525a5d7, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 3d1c93812d951644a86ea6ca10405ca8, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 996602df7d8f18c45b2f575fd90de09a, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 01da3dfc9c849814290592ebc17a8a81, type: 3}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 996602df7d8f18c45b2f575fd90de09a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

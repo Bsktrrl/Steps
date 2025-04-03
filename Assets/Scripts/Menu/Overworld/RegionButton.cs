@@ -21,28 +21,28 @@ public class RegionButton : MonoBehaviour
                 break;
 
             case RegionState.Ice:
-                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Ice.transform.GetChild(0).gameObject);
                 OverWorldManager.Instance.levelPanel_Ice.SetActive(true);
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Ice.transform.GetChild(0).gameObject);
                 break;
             case RegionState.Stone:
-                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Stone.transform.GetChild(0).gameObject);
                 OverWorldManager.Instance.levelPanel_Stone.SetActive(true);
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Stone.transform.GetChild(0).gameObject);
                 break;
             case RegionState.Grass:
-                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Grass.transform.GetChild(0).gameObject);
                 OverWorldManager.Instance.levelPanel_Grass.SetActive(true);
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Grass.transform.GetChild(0).gameObject);
                 break;
             case RegionState.Desert:
-                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Desert.transform.GetChild(0).gameObject);
                 OverWorldManager.Instance.levelPanel_Desert.SetActive(true);
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Desert.transform.GetChild(0).gameObject);
                 break;
             case RegionState.Swamp:
-                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Swamp.transform.GetChild(0).gameObject);
                 OverWorldManager.Instance.levelPanel_Swamp.SetActive(true);
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Swamp.transform.GetChild(0).gameObject);
                 break;
             case RegionState.Industrial:
-                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Industrial.transform.GetChild(0).gameObject);
                 OverWorldManager.Instance.levelPanel_Industrial.SetActive(true);
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Industrial.transform.GetChild(0).gameObject);
                 break;
 
             default:

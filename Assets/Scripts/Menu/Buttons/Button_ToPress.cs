@@ -10,13 +10,11 @@ public class Button_ToPress : MonoBehaviour
     [SerializeField] MenuState newMenuState;
 
     [Header("Setup")]
-    [SerializeField] EventSystem eventSystem;
     [SerializeField] Selectable uiElementToSelect;
 
     [Header("Visualization")]
     [SerializeField] bool showVisualization;
     [SerializeField] Color navigationColor = Color.cyan;
-
 
 
     //--------------------
@@ -33,9 +31,7 @@ public class Button_ToPress : MonoBehaviour
 
     private void Reset()
     {
-       eventSystem = FindObjectOfType<EventSystem>();
-
-        if (eventSystem == null)
+        if (ActionButtonsManager.Instance.eventSystem == null)
         {
             Debug.Log("Did not find an EventSystem in the Scene. ", this);
         }
@@ -43,7 +39,7 @@ public class Button_ToPress : MonoBehaviour
 
     void JumpToElement()
     {
-        if (eventSystem == null)
+        if (ActionButtonsManager.Instance.eventSystem == null)
         {
             Debug.Log("This item has no EventSystem referenced yet.");
         }
@@ -53,7 +49,7 @@ public class Button_ToPress : MonoBehaviour
             Debug.Log("This should jump where? ", this);
         }
 
-        eventSystem.SetSelectedGameObject(uiElementToSelect.gameObject);
+        ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(uiElementToSelect.gameObject);
     }
 
 

@@ -13,6 +13,14 @@ public class OverWorldManager : Singleton<OverWorldManager>
     public GameObject levelPanel_Swamp;
     public GameObject levelPanel_Industrial;
 
+    [Header("Panel")]
+    public GameObject levelPanel_Ice_FirstLevel;
+    public GameObject levelPanel_Stone_FirstLevel;
+    public GameObject levelPanel_Grass_FirstLevel;
+    public GameObject levelPanel_Desert_FirstLevel;
+    public GameObject levelPanel_Swamp_FirstLevel;
+    public GameObject levelPanel_Industrial_FirstLevel;
+
     [Header("images")]
     public Image region_Ice;
     public Image region_Stone;

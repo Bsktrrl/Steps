@@ -12,6 +12,9 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
     [Header("Button Navigation")]
     public InputActionReference cancel_Button;
 
+    [Header("Input System")]
+    PlayerControls playerControls;
+
 
     //--------------------
 
@@ -19,5 +22,19 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
     private void Reset()
     {
         eventSystem = FindObjectOfType<EventSystem>();
+    }
+
+    private void Start()
+    {
+        playerControls = new PlayerControls();
+    }
+
+
+    //--------------------
+
+
+    void OnMenu_Back()
+    {
+        //print("1. Back Button is Pressed");
     }
 }

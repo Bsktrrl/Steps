@@ -147,7 +147,9 @@ public class MainMenuManager : Singleton<MainMenuManager>
         //Close any other menu
         //HideAllMenus();
 
-        Menu_Overworld();
+        //Menu_Overworld();
+
+        overworldMenu_Parent.SetActive(true);
 
         //Open the correct Panel
         //OverWorldManager.Instance.levelPanel_Ice.SetActive(true);

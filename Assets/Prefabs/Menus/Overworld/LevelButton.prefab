@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 1814084887984308522}
   - component: {fileID: 2940069101335760876}
   - component: {fileID: 4597319644786569910}
+  - component: {fileID: 5924539168468555278}
   - component: {fileID: -1173558634531830735}
   m_Layer: 5
   m_Name: LevelButton
@@ -223,8 +224,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3daf9d1bba00f541ae3c61b5a04c183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventSystem: {fileID: 0}
   selectOnCancel: {fileID: 0}
+  menuToOpen: {fileID: 0}
+  menuToClose: {fileID: 0}
   menuState_ToSelect: 0
   levelState_ToSelect: 0
   regionState_ToSelect: 0
@@ -242,6 +244,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 1814084887984308522}
   levelState: 0
+--- !u!114 &5924539168468555278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5666577594912976797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3592981424de6468e94bb53e26aeb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waveImage: {fileID: 384179937895888748}
+  waveSpriteList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &-1173558634531830735
 MonoBehaviour:
   m_ObjectHideFlags: 0
