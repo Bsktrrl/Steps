@@ -262,7 +262,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shineHor: {fileID: 2870597327188355720}
   shineDia: {fileID: 3590525949552716574}
-  rotationObject: {fileID: 0}
+  rotationObject: {fileID: 4457471201105082702}
   pointLight: {fileID: 0}
   size: 1
 --- !u!1 &4457471201105082702
@@ -276,7 +276,6 @@ GameObject:
   - component: {fileID: 4818353879483523120}
   - component: {fileID: 4742029040146595767}
   - component: {fileID: 1707300590523777585}
-  - component: {fileID: 6888266615691345470}
   m_Layer: 0
   m_Name: Essence
   m_TagString: Untagged
@@ -294,7 +293,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.33, y: 0.33, z: 0.33}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3496939234456819679}
@@ -306,7 +305,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4457471201105082702}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -3490418028346287992, guid: 1482de2aeb7a9ac4d8496fe429254bd9, type: 3}
 --- !u!23 &1707300590523777585
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -327,7 +326,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ac21ddb806a0c6a458ad40cd626b7925, type: 2}
+  - {fileID: 2100000, guid: 8a991fe8f8d960941af80316d01168a7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -349,27 +348,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &6888266615691345470
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4457471201105082702}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7190039616570232088
 GameObject:
   m_ObjectHideFlags: 0
@@ -657,7 +635,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.5
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -710,7 +688,7 @@ ParticleSystem:
     startSizeY:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2
+      scalar: 1
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -763,7 +741,7 @@ ParticleSystem:
     startSizeZ:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.5
       minScalar: 1
       maxCurve:
         serializedVersion: 2
