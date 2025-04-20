@@ -5,25 +5,27 @@ using UnityEngine;
 public class PickupScript : MonoBehaviour
 {
     [SerializeField] private GameObject shineHor;
+    private float shineHorSize;
     [SerializeField] private GameObject shineDia;
+    private float shineDiaSize;
     [SerializeField] private GameObject rotationObject;
+    [SerializeField] private GameObject scaleObject;
+    private float scaleObjectSize;
     [SerializeField] private Light pointLight;
-    [SerializeField] private int size;
-    private float shineSize;
 
     void Start()
     {
-        if (size == 0)
+        if(shineHor != null)
         {
-            shineSize = 0.05f;
+            shineHorSize = shineHor.transform.localScale.x;
         }
-        else if (size == 1)
+        if (shineDia != null)
         {
-            shineSize = 0.075f;
+            shineDiaSize = shineDia.transform.localScale.x;
         }
-        else
+        if(scaleObject != null)
         {
-            shineSize = 0.1f;
+            scaleObjectSize = scaleObject.transform.localScale.x;
         }
     }
 
@@ -32,15 +34,15 @@ public class PickupScript : MonoBehaviour
         if(shineHor != null)
         {
             shineHor.transform.LookAt(Camera.main.transform);
-            shineHor.transform.localEulerAngles += new Vector3(90, Mathf.Sin(Time.time * 2) * shineSize*100, 0);
-            shineHor.transform.localScale = new Vector3(shineSize, shineSize, shineSize) + Vector3.one * Mathf.Sin(Time.time * 3) * shineSize/10;
+            shineHor.transform.localEulerAngles += new Vector3(90, Mathf.Sin(Time.time * 2) * shineHorSize*100, 0);
+            shineHor.transform.localScale = new Vector3(shineHorSize, shineHorSize, shineHorSize) + Vector3.one * Mathf.Sin(Time.time * 3) * shineHorSize/10;
         }
 
         if(shineDia != null)
         {
             shineDia.transform.LookAt(Camera.main.transform);
-            shineDia.transform.localEulerAngles += new Vector3(90, Mathf.Sin(Time.time * 2 + Mathf.PI) * shineSize*100, 0);
-            shineDia.transform.localScale = new Vector3(shineSize, shineSize, shineSize) + Vector3.one * Mathf.Sin(Time.time * 3 + Mathf.PI) * shineSize/10;
+            shineDia.transform.localEulerAngles += new Vector3(90, Mathf.Sin(Time.time * 2 + Mathf.PI) * shineDiaSize*100, 0);
+            shineDia.transform.localScale = new Vector3(shineDiaSize, shineDiaSize, shineDiaSize) + Vector3.one * Mathf.Sin(Time.time * 3 + Mathf.PI) * shineDiaSize / 10;
         }
 
         if(pointLight != null)
@@ -51,6 +53,11 @@ public class PickupScript : MonoBehaviour
         if(rotationObject != null)
         {
             rotationObject.transform.eulerAngles += new Vector3(0, 100 * Time.deltaTime, 0);
+        }
+
+        if(scaleObject != null)
+        {
+            scaleObject.transform.localScale = new Vector3(scaleObjectSize, scaleObjectSize, scaleObjectSize) + Vector3.one * Mathf.Sin(Time.time * 3) * scaleObjectSize / 7;
         }
     }
 }
