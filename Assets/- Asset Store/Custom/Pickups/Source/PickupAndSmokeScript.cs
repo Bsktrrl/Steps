@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PickupScript : MonoBehaviour
+public class PickupAndSmokeScript : MonoBehaviour
 {
     [SerializeField] private GameObject shineHor;
     private float shineHorSize;
