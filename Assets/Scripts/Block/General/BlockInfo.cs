@@ -111,7 +111,7 @@ public class BlockInfo : MonoBehaviour
 
     private void OnEnable()
     {
-        Player_Movement.Action_BodyRotated += ResetDarkenColor;
+        //Player_Movement.Action_BodyRotated += ResetDarkenColor;
         Player_Movement.Action_resetBlockColor += ResetDarkenColor;
         PlayerStats.Action_RespawnToSavePos += ResetDarkenColor;
         PlayerStats.Action_RespawnPlayer += ResetBlock;
@@ -119,7 +119,7 @@ public class BlockInfo : MonoBehaviour
 
     private void OnDisable()
     {
-        Player_Movement.Action_BodyRotated -= ResetDarkenColor;
+        //Player_Movement.Action_BodyRotated -= ResetDarkenColor;
         Player_Movement.Action_resetBlockColor -= ResetDarkenColor;
         PlayerStats.Action_RespawnToSavePos -= ResetDarkenColor;
         PlayerStats.Action_RespawnPlayer -= ResetBlock;

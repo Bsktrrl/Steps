@@ -130,6 +130,7 @@ public class Player_Movement : Singleton<Player_Movement>
     //--------------------
 
 
+    #region Key inputs
     bool KeyInputsChecks()
     {
         if (movementStates == MovementStates.Moving) { return false; }
@@ -269,6 +270,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
         QuitLevel();
     }
+    #endregion
 
 
     //--------------------
