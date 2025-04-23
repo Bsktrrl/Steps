@@ -11,7 +11,7 @@ Block Colors:
 
 Numbers:
 - Add fade-in animation to the darkenBlock visibility
-- Fix so that numbers appear at start of game and upon respawn
+- Fix so that numbers appear at the start of game and upon respawn
 - Fix delayed darkenBlock to prevent it from keep staying darkened if the player is moving a bit fast to another block
 
 CeilingGrab
@@ -21,13 +21,6 @@ CeilingGrab
 
 Pusher
 - Pusher doesn't work because of new system in "ShowNumber"-function in the "NumberDisplayed"-script
-
-Menu:
-- Make the new Overworld Menu
-- Make menus compatible with controller
-
-Character Creator
-- Make a simple character creator to be used at the start og a new save and at the start of the Dusk Age
 
 
 ---
@@ -50,24 +43,24 @@ From meetings
 	- Linked step-on switch
 UI:
 - Change Step stats to become "Zelda Hearts"-like
-	- Have a something changed on the +3 Steps aquired
+	- Have something changed slightly on the +3 Steps when aquired
 - Remove the other UI elements
 
 Menus:
 - Settings:
 	- Toggle "Show Numbers" of the Steps
 
+Pickups
+- Must be able to be raycasted through, so the player can Dash/Descend into a block with a pickup on
 
 
 ---
 
 
-Spring Block:
-- Bumps the player up 1 block (like using a ladder/WallClimbing)
+Character Creator
+- Make a simple character creator to be used at the start og a new save and at the start of the Dusk Age
 
 
-Pickups
-- Must be able to be raycasted through, so the player can Dash/Descend into a block with a pickup on
 
 
 ----- TASKS IN QUE -----
