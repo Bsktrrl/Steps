@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6091848721831342627}
+  - component: {fileID: 9509419605776075}
   m_Layer: 0
   m_Name: Smoke_StepsRefill
   m_TagString: Untagged
@@ -34,6 +35,23 @@ Transform:
   - {fileID: 167972835957865640}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9509419605776075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5607910448600395393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b7d8b98d5e6db745ba897d924b8c268, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shineHor: {fileID: 0}
+  shineDia: {fileID: 0}
+  rotationObject: {fileID: 0}
+  scaleObject: {fileID: 7098214038581965203}
+  pointLight: {fileID: 0}
 --- !u!1 &8975239017874194818
 GameObject:
   m_ObjectHideFlags: 0
@@ -4985,6 +5003,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3682de0cac49a4a4b945ef9585498cbd, type: 3}
+--- !u!1 &7098214038581965203 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3682de0cac49a4a4b945ef9585498cbd, type: 3}
+  m_PrefabInstance: {fileID: 7944496933380508866}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7622971994349120297 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3682de0cac49a4a4b945ef9585498cbd, type: 3}
