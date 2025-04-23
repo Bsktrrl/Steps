@@ -4,10 +4,15 @@
 ResetPlayer:
 - Fix the bug where the blocks that have moved/falled cannot be moved onto, and that the player clips it when moving into, after respawning
 	- Happens if the block has gone completely to the bottom and got hidden, not if respawned during its fall
+- When turing, the blocks is not updated
+
+
+Block Colors:
+- Add the Tint-effect to the darkenBlock-function to display acurate darkening of any tinted and non-tinted block
 
 Numbers:
 - Add fade-in animation to the darkenBlock visibility
-- Fix so that numbers appear at start of game and upon respawn
+- Fix so that numbers appear at the start of game and upon respawn
 - Fix delayed darkenBlock to prevent it from keep staying darkened if the player is moving a bit fast to another block
 
 CeilingGrab
@@ -15,17 +20,11 @@ CeilingGrab
 - When CeilingGrab, the block you grab onto will not show its Number when moving adjacent (only the first time)
 - Fix IceGlide lag
 
+Effect Blocks:
+- Add all new Effects to the effect block when their script is attached
+
 Pusher
 - Pusher doesn't work because of new system in "ShowNumber"-function in the "NumberDisplayed"-script
-
-Menu:
-- Add LevelInfo with new possible and updated pickups
-
-
-EffectBlocks:
-- Make Prefabs of new EffectBlocks
-- Make the symbol rotate in the air
-- Make the effect spawn above blocks if its script is attached
 
 
 ---
@@ -33,6 +32,7 @@ EffectBlocks:
 
 Make BlockPrefabs:
 - Wood Slope
+
 
 From meetings
 - Weak Ice block
@@ -47,12 +47,15 @@ From meetings
 	- Linked step-on switch
 UI:
 - Change Step stats to become "Zelda Hearts"-like
-	- Have a something changed on the +3 Steps aquired
+	- Have something changed slightly on the +3 Steps when aquired
 - Remove the other UI elements
 
 Menus:
 - Settings:
 	- Toggle "Show Numbers" of the Steps
+
+Pickups
+- Must be able to be raycasted through, so the player can Dash/Descend into a block with a pickup on
 
 
 ---
@@ -62,12 +65,6 @@ Character Creator
 - Make a simple character creator to be used at the start og a new save and at the start of the Dusk Age
 
 
-Spring Block:
-- Bumps the player up 1 block (like using a ladder/WallClimbing)
-
-
-Pickups
-- Must be able to be raycasted through, so the player can Dash/Descend into a block with a pickup on
 
 
 ----- TASKS IN QUE -----
