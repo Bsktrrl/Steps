@@ -33,6 +33,8 @@ public class LoadLevel : MonoBehaviour
 
         if (!string.IsNullOrEmpty(levelToPlay))
         {
+            RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(OverWorldManager.Instance.regionState, OverWorldManager.Instance.levelState);
+
             StartCoroutine(LoadSceneCoroutine(levelToPlay));
         }
     }

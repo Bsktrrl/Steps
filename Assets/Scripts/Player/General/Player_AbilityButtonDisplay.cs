@@ -51,13 +51,20 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
 
     private void Start()
     {
-        CameraController.rotateCamera_Start += RotateAbilityDisplay;
-
         FindAllMoveableBlocks();
     }
     private void Update()
     {
         UpdateButtonDisplay();
+    }
+
+    private void OnEnable()
+    {
+        CameraController.rotateCamera_Start += RotateAbilityDisplay;
+    }
+    private void OnDisable()
+    {
+        CameraController.rotateCamera_Start -= RotateAbilityDisplay;
     }
 
 

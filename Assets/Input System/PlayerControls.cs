@@ -179,6 +179,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Menu_Back"",
+                    ""type"": ""Button"",
+                    ""id"": ""dcb7f92d-9aee-4ee7-82a8-ac0247e8ec10"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -577,6 +586,50 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Right_Up"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""52c85c67-284f-4c8d-a6b8-b0fc10a81ac0"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu_Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9bd9afcf-c6fb-408b-9da3-aca0996ff617"",
+                    ""path"": ""<XInputController>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu_Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4a480ae5-2dec-4244-b3e9-015747f468c8"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu_Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7d19db38-1b61-45ad-90d0-a8155769632c"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu_Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -602,6 +655,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerMovement_AbilityRight_RelesePress = m_PlayerMovement.FindAction("AbilityRight_RelesePress", throwIfNotFound: true);
         m_PlayerMovement_Respawn = m_PlayerMovement.FindAction("Respawn", throwIfNotFound: true);
         m_PlayerMovement_Quit = m_PlayerMovement.FindAction("Quit", throwIfNotFound: true);
+        m_PlayerMovement_Menu_Back = m_PlayerMovement.FindAction("Menu_Back", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -680,6 +734,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_AbilityRight_RelesePress;
     private readonly InputAction m_PlayerMovement_Respawn;
     private readonly InputAction m_PlayerMovement_Quit;
+    private readonly InputAction m_PlayerMovement_Menu_Back;
     public struct PlayerMovementActions
     {
         private @PlayerControls m_Wrapper;
@@ -701,6 +756,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @AbilityRight_RelesePress => m_Wrapper.m_PlayerMovement_AbilityRight_RelesePress;
         public InputAction @Respawn => m_Wrapper.m_PlayerMovement_Respawn;
         public InputAction @Quit => m_Wrapper.m_PlayerMovement_Quit;
+        public InputAction @Menu_Back => m_Wrapper.m_PlayerMovement_Menu_Back;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -761,6 +817,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Quit.started += instance.OnQuit;
             @Quit.performed += instance.OnQuit;
             @Quit.canceled += instance.OnQuit;
+            @Menu_Back.started += instance.OnMenu_Back;
+            @Menu_Back.performed += instance.OnMenu_Back;
+            @Menu_Back.canceled += instance.OnMenu_Back;
         }
 
         private void UnregisterCallbacks(IPlayerMovementActions instance)
@@ -816,6 +875,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Quit.started -= instance.OnQuit;
             @Quit.performed -= instance.OnQuit;
             @Quit.canceled -= instance.OnQuit;
+            @Menu_Back.started -= instance.OnMenu_Back;
+            @Menu_Back.performed -= instance.OnMenu_Back;
+            @Menu_Back.canceled -= instance.OnMenu_Back;
         }
 
         public void RemoveCallbacks(IPlayerMovementActions instance)
@@ -852,5 +914,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnAbilityRight_RelesePress(InputAction.CallbackContext context);
         void OnRespawn(InputAction.CallbackContext context);
         void OnQuit(InputAction.CallbackContext context);
+        void OnMenu_Back(InputAction.CallbackContext context);
     }
 }
