@@ -51,71 +51,11 @@ public class CameraController : Singleton<CameraController>
 
         AdjustFacingDirection();
     }
-    private void Update()
-    {
-        RotateCameraSetup();
-    }
 
 
     //--------------------
 
 
-    void RotateCameraSetup()
-    {
-        ////Don't be able to switch camera angle before the rotation has been done
-        //if (isRotating) { return; }
-        //if (isCeilingRotating) { return; }
-        //if (Player_Interact.Instance.isInteracting) { return; }
-        //if (Player_Movement.Instance.isIceGliding) { return; }
-        //if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
-        //if (Player_Movement.Instance.ladderMovement_Top_ToBlock) { return; }
-        
-        ////Rotate Camera
-        //if (Input.GetKeyDown(KeyCode.Q) || Input.GetKey(KeyCode.Q))
-        //{
-        //    switch (cameraRotationState)
-        //    {
-        //        case CameraRotationState.Forward:
-        //            cameraRotationState = CameraRotationState.Left;
-        //            break;
-        //        case CameraRotationState.Backward:
-        //            cameraRotationState = CameraRotationState.Right;
-        //            break;
-        //        case CameraRotationState.Left:
-        //            cameraRotationState = CameraRotationState.Backward;
-        //            break;
-        //        case CameraRotationState.Right:
-        //            cameraRotationState = CameraRotationState.Forward;
-        //            break;
-        //        default:
-        //            break;
-        //    }
-
-        //    StartCoroutine(RotateCamera(90));
-        //}
-        //if (Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.E))
-        //{
-        //    switch (cameraRotationState)
-        //    {
-        //        case CameraRotationState.Forward:
-        //            cameraRotationState = CameraRotationState.Right;
-        //            break;
-        //        case CameraRotationState.Backward:
-        //            cameraRotationState = CameraRotationState.Left;
-        //            break;
-        //        case CameraRotationState.Left:
-        //            cameraRotationState = CameraRotationState.Forward;
-        //            break;
-        //        case CameraRotationState.Right:
-        //            cameraRotationState = CameraRotationState.Backward;
-        //            break;
-        //        default:
-        //            break;
-        //    }
-
-        //    StartCoroutine(RotateCamera(-90));
-        //}
-    }
     public void RotateCameraX()
     {
         //Don't be able to switch camera angle before the rotation has been done
@@ -124,6 +64,7 @@ public class CameraController : Singleton<CameraController>
         if (Player_Interact.Instance.isInteracting) { return; }
         if (Player_Movement.Instance.isIceGliding) { return; }
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
         //Rotate Camera
         switch (cameraRotationState)
@@ -154,6 +95,7 @@ public class CameraController : Singleton<CameraController>
         if (Player_Interact.Instance.isInteracting) { return; }
         if (Player_Movement.Instance.isIceGliding) { return; }
         if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
         //Rotate Camera
         switch (cameraRotationState)
@@ -268,16 +210,17 @@ public class CameraController : Singleton<CameraController>
 
     public void ResetCameraRotation()
     {
+        cameraRotationState = CameraRotationState.Forward;
+        cameraState = CameraState.GameplayCam;
+
+        cameraAnchor.transform.rotation = Quaternion.Euler(cameraAnchor_originalRot.eulerAngles.x, 0, 0);
+
         cameraOffset.transform.localPosition = cameraOffset_originalPos;
         cameraOffset.transform.rotation = cameraOffset_originalRot;
 
         cameraAnchor.transform.localPosition = cameraAnchor_originalPos;
         cameraAnchor.transform.rotation = cameraAnchor_originalRot;
 
-        cameraAnchor.transform.rotation = Quaternion.Euler(cameraAnchor_originalRot.eulerAngles.x, 0, 0);
-
-        cameraRotationState = CameraRotationState.Forward;
-        cameraState = CameraState.GameplayCam;
 
         SetBlockDetectorDirection();
     }

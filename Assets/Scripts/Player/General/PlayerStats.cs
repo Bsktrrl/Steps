@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class PlayerStats : Singleton<PlayerStats>
 {
     public static event Action Action_RespawnToSavePos;
+
     public static event Action Action_RespawnPlayerEarly;
     public static event Action Action_RespawnPlayer;
     public static event Action Action_RespawnPlayerLate;
@@ -191,17 +192,11 @@ public class PlayerStats : Singleton<PlayerStats>
         print("Respawn Player");
 
         StartCoroutine(ResetplayerPos(0.01f));
-
-        //if (!string.IsNullOrEmpty(SceneManager.GetActiveScene().name))
-        //{
-        //    StartCoroutine(LoadSceneCoroutine(SceneManager.GetActiveScene().name));
-        //}
     }
 
     IEnumerator ResetplayerPos(float waitTime)
     {
         //Set Pause parameters
-        PlayerManager.Instance.pauseGame = true;
         PlayerManager.Instance.isTransportingPlayer = true;
         Player_Movement.Instance.movementStates = MovementStates.Moving;
 
@@ -212,6 +207,7 @@ public class PlayerStats : Singleton<PlayerStats>
         //Move player
         transform.position = MapManager.Instance.playerStartPos;
         transform.SetPositionAndRotation(MapManager.Instance.playerStartPos, Quaternion.identity);
+
         RespawnPlayer_Action();
 
         //Reset for CeilingAbility
@@ -225,24 +221,20 @@ public class PlayerStats : Singleton<PlayerStats>
         //Refill Steps to max + stepPickups gotten
         RefillStepsToMax();
 
-        //Update active abilities acording to the MapInfo
+        //Update active abilities aCcording to the MapInfo
         UpdateActiveAbilities();
 
         //Update the UI
         UIManager.Instance.UpdateUI();
         Player_Movement.Instance.movementStates = MovementStates.Still;
 
-        //stats.ResetTempStats(); //Reset all tempAbilities to not be active
-
-        yield return new WaitForSeconds(waitTime * 25);
-
+        CameraController.Instance.ResetCameraRotation();
         Player_Movement.Instance.SetPlayerBodyRotation(0);
-        CameraController.Instance.ResetCameraRotation();
-        CameraController.Instance.ResetCameraRotation();
+
+        //yield return new WaitForSeconds(waitTime * 25);
 
         RespawnPlayerLate_Action();
 
-        PlayerManager.Instance.pauseGame = false;
         PlayerManager.Instance.isTransportingPlayer = false;
     }
     private IEnumerator LoadSceneCoroutine(string sceneName)
