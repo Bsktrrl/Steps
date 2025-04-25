@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
 {
-    bool block_hasBeenDarkened;
+    public bool block_hasBeenDarkened;
 
 
     //--------------------
@@ -13,11 +13,23 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
 
     private void Start()
     {
+        block_hasBeenDarkened = false;
+
         UpdateDarkenBlocks();
     }
     private void Update()
     {
         UpdateDarkenBlockWhenButtonIsPressed();
+    }
+    private void OnEnable()
+    {
+        PlayerStats.Action_RespawnPlayerLate += UpdateDarkenBlocks;
+        DataManager.Action_dataHasLoaded += SetStartingDarkenBlock;
+    }
+    private void OnDisable()
+    {
+        PlayerStats.Action_RespawnPlayerLate -= UpdateDarkenBlocks;
+        DataManager.Action_dataHasLoaded -= SetStartingDarkenBlock;
     }
 
 
@@ -65,12 +77,15 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
 
     public void UpdateDarkenBlocks()
     {
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        //if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
 
         //Darken block in the front of player
         if (PlayerManager.Instance.block_Horizontal_InFront != null)
         {
-            if (PlayerManager.Instance.block_Horizontal_InFront.block == null && PlayerManager.Instance.block_Vertical_InFront.block == null) { }
+            if (PlayerManager.Instance.block_Horizontal_InFront.block == null && PlayerManager.Instance.block_Vertical_InFront.block == null)
+            { 
+
+            }
             else
             {
                 if (PlayerManager.Instance.block_Vertical_InFront.block)
@@ -78,7 +93,7 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
                     if (PlayerManager.Instance.canMove_Forward)
                     {
                         if (PlayerManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>())
-                            PlayerManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>().DarkenColors();
+                            PlayerManager.Instance.block_Vertical_InFront.block.GetComponent<BlockInfo>().SetDarkenColors();
                     }
                     else
                     {
@@ -93,7 +108,10 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
         //Darken block in the back of player
         if (PlayerManager.Instance.block_Horizontal_InBack != null)
         {
-            if (PlayerManager.Instance.block_Horizontal_InBack.block == null && PlayerManager.Instance.block_Vertical_InBack.block == null) { }
+            if (PlayerManager.Instance.block_Horizontal_InBack.block == null && PlayerManager.Instance.block_Vertical_InBack.block == null)
+            { 
+            
+            }
             else
             {
                 if (PlayerManager.Instance.block_Vertical_InBack.block)
@@ -101,7 +119,7 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
                     if (PlayerManager.Instance.canMove_Back)
                     {
                         if (PlayerManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>())
-                            PlayerManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>().DarkenColors();
+                            PlayerManager.Instance.block_Vertical_InBack.block.GetComponent<BlockInfo>().SetDarkenColors();
                     }
                     else
                     {
@@ -116,7 +134,10 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
         //Darken block to the left of player
         if (PlayerManager.Instance.block_Horizontal_ToTheLeft != null)
         {
-            if (PlayerManager.Instance.block_Horizontal_ToTheLeft.block == null && PlayerManager.Instance.block_Vertical_ToTheLeft.block == null) { }
+            if (PlayerManager.Instance.block_Horizontal_ToTheLeft.block == null && PlayerManager.Instance.block_Vertical_ToTheLeft.block == null) 
+            {
+            
+            }
             else
             {
                 if (PlayerManager.Instance.block_Vertical_ToTheLeft.block)
@@ -124,7 +145,7 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
                     if (PlayerManager.Instance.canMove_Left)
                     {
                         if (PlayerManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>())
-                            PlayerManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>().DarkenColors();
+                            PlayerManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<BlockInfo>().SetDarkenColors();
                     }
                     else
                     {
@@ -139,7 +160,10 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
         //Darken block to the right of player
         if (PlayerManager.Instance.block_Horizontal_ToTheRight != null)
         {
-            if (PlayerManager.Instance.block_Horizontal_ToTheRight.block == null && PlayerManager.Instance.block_Vertical_ToTheRight.block == null) { }
+            if (PlayerManager.Instance.block_Horizontal_ToTheRight.block == null && PlayerManager.Instance.block_Vertical_ToTheRight.block == null)
+            { 
+            
+            }
             else
             {
                 if (PlayerManager.Instance.block_Vertical_ToTheRight.block)
@@ -147,7 +171,7 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
                     if (PlayerManager.Instance.canMove_Right)
                     {
                         if (PlayerManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>())
-                            PlayerManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>().DarkenColors();
+                            PlayerManager.Instance.block_Vertical_ToTheRight.block.GetComponent<BlockInfo>().SetDarkenColors();
                     }
                     else
                     {
@@ -160,7 +184,10 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
         
 
         //Lighten Block player is standing on
-        if (PlayerManager.Instance.block_StandingOn_Current.block == null) { }
+        if (PlayerManager.Instance.block_StandingOn_Current.block == null) 
+        { 
+        
+        }
         else
         {
             if (PlayerManager.Instance.block_StandingOn_Current.block)
@@ -171,5 +198,16 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
         }
 
         block_hasBeenDarkened = true;
+    }
+
+
+    //--------------------
+
+
+    public void SetStartingDarkenBlock()
+    {
+        Player_BlockDetector.Instance.RaycastSetup();
+
+        UpdateDarkenBlocks();
     }
 }

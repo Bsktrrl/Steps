@@ -36,6 +36,7 @@ public class PlayerStats : Singleton<PlayerStats>
     private void OnEnable()
     {
         Player_Movement.Action_StepTaken += TakeAStep;
+        //DataManager.Action_dataHasLoaded += RespawnPlayer;
         DataManager.Action_dataHasLoaded += RefillStepsToMax;
         DataManager.Action_dataHasLoaded += UpdateActiveAbilities;
     }
@@ -43,6 +44,7 @@ public class PlayerStats : Singleton<PlayerStats>
     private void OnDisable()
     {
         Player_Movement.Action_StepTaken -= TakeAStep;
+        //DataManager.Action_dataHasLoaded -= RespawnPlayer;
         DataManager.Action_dataHasLoaded -= RefillStepsToMax;
         DataManager.Action_dataHasLoaded -= UpdateActiveAbilities;
     }
@@ -213,6 +215,8 @@ public class PlayerStats : Singleton<PlayerStats>
         //Reset for CeilingAbility
         Player_CeilingGrab.Instance.ResetCeilingGrab();
 
+        Player_DarkenBlock.Instance.block_hasBeenDarkened = false;
+
         yield return new WaitForSeconds(waitTime);
 
         //Rest Block colors
@@ -221,7 +225,7 @@ public class PlayerStats : Singleton<PlayerStats>
         //Refill Steps to max + stepPickups gotten
         RefillStepsToMax();
 
-        //Update active abilities aCcording to the MapInfo
+        //Update active abilities according to the MapInfo
         UpdateActiveAbilities();
 
         //Update the UI
@@ -231,7 +235,11 @@ public class PlayerStats : Singleton<PlayerStats>
         CameraController.Instance.ResetCameraRotation();
         Player_Movement.Instance.SetPlayerBodyRotation(0);
 
+        Player_DarkenBlock.Instance.SetStartingDarkenBlock();
+
         //yield return new WaitForSeconds(waitTime * 25);
+
+        
 
         RespawnPlayerLate_Action();
 
@@ -246,6 +254,10 @@ public class PlayerStats : Singleton<PlayerStats>
             yield return null;
         }
     }
+
+
+    //--------------------
+
 
     public void RespawnPlayerEarly_Action()
     {

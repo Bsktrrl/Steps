@@ -255,12 +255,12 @@ public class Player_Descend : Singleton<Player_Descend>
             }
             else
             {
-                descendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                descendingBlock_Current.GetComponent<BlockInfo>().SetDarkenColors();
             }
         }
         else
         {
-            descendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+            descendingBlock_Current.GetComponent<BlockInfo>().SetDarkenColors();
         }
 
         descendingBlock_Target = descendingBlock_Current;

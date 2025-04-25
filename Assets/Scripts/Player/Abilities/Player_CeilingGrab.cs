@@ -98,7 +98,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             {
                 if (!isCeilingGrabbing)
                 {
-                    hit.transform.gameObject.GetComponent<BlockInfo>().DarkenColors();
+                    hit.transform.gameObject.GetComponent<BlockInfo>().SetDarkenColors();
                     ceilingGrabBlock = hit.transform.gameObject;
                 }
                 

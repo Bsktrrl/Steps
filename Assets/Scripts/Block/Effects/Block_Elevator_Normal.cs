@@ -148,14 +148,14 @@ public class Block_Elevator_Normal : MonoBehaviour
             if (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) >= 1.5f)
                 GetComponent<BlockInfo>().ResetDarkenColor();
             else
-                GetComponent<BlockInfo>().DarkenColors();
+                GetComponent<BlockInfo>().SetDarkenColors();
         }
         else
         {
             if (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) >= 1.1f)
                 GetComponent<BlockInfo>().ResetDarkenColor();
             else
-                GetComponent<BlockInfo>().DarkenColors();
+                GetComponent<BlockInfo>().SetDarkenColors();
         }
     }
 }

@@ -186,12 +186,12 @@ public class Player_Ascend : Singleton<Player_Ascend>
             }
             else
             {
-                ascendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+                ascendingBlock_Current.GetComponent<BlockInfo>().SetDarkenColors();
             }
         }
         else
         {
-            ascendingBlock_Current.GetComponent<BlockInfo>().DarkenColors();
+            ascendingBlock_Current.GetComponent<BlockInfo>().SetDarkenColors();
         }
 
         ascendingBlock_Target = ascendingBlock_Current;

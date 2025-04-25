@@ -273,7 +273,7 @@ public class Player_Dash : Singleton<Player_Dash>
                 {
                     if (target.GetComponent<BlockInfo>())
                     {
-                        target.GetComponent<BlockInfo>().DarkenColors();
+                        target.GetComponent<BlockInfo>().SetDarkenColors();
                     }
                 }
 

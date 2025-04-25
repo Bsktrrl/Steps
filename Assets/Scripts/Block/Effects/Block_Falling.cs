@@ -181,7 +181,7 @@ public class Block_Falling : MonoBehaviour
         isStandingOnBlock = false;
         isMoving = false;
 
-        print("isSteppedOn: " + isSteppedOn + " | isStandingOnBlock: " + isStandingOnBlock + " | isMoving: " + isMoving + " | waitCounter: " + waitCounter);
+        //print("isSteppedOn: " + isSteppedOn + " | isStandingOnBlock: " + isStandingOnBlock + " | isMoving: " + isMoving + " | waitCounter: " + waitCounter);
 
         waitCounter = 0;
 

@@ -251,7 +251,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
         {
             if (target.GetComponent<BlockInfo>())
             {
-                target.GetComponent<BlockInfo>().DarkenColors();
+                target.GetComponent<BlockInfo>().SetDarkenColors();
             }
         }
 

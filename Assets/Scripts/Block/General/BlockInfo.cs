@@ -38,6 +38,8 @@ public class BlockInfo : MonoBehaviour
 
     bool finishedSetup;
 
+    [SerializeField] bool darkenColorsIsOn;
+    
     #region Adjacent Blocks
     [Header("Adjacent Blocks - Upper")]
     [HideInInspector] public GameObject upper_Front_Left;
@@ -112,7 +114,6 @@ public class BlockInfo : MonoBehaviour
 
     private void OnEnable()
     {
-        //Player_Movement.Action_BodyRotated += ResetDarkenColor;
         Player_Movement.Action_resetBlockColor += ResetDarkenColor;
         PlayerStats.Action_RespawnToSavePos += ResetDarkenColor;
         PlayerStats.Action_RespawnPlayer += ResetBlock;
@@ -120,7 +121,6 @@ public class BlockInfo : MonoBehaviour
 
     private void OnDisable()
     {
-        //Player_Movement.Action_BodyRotated -= ResetDarkenColor;
         Player_Movement.Action_resetBlockColor -= ResetDarkenColor;
         PlayerStats.Action_RespawnToSavePos -= ResetDarkenColor;
         PlayerStats.Action_RespawnPlayer -= ResetBlock;
@@ -196,7 +196,7 @@ public class BlockInfo : MonoBehaviour
     //--------------------
 
 
-    public void DarkenColors()
+    public void SetDarkenColors()
     {
         if (PlayerManager.Instance.player.GetComponent<Player_Dash>().isDashing) { return; }
 
@@ -205,6 +205,8 @@ public class BlockInfo : MonoBehaviour
             ResetDarkenColor();
             return;
         }
+
+        if (darkenColorsIsOn) { return; }
 
         color_isDarkened = true;
 
@@ -231,6 +233,8 @@ public class BlockInfo : MonoBehaviour
                 //Hide StepCost
                 numberDisplay.HideNumber();
             }
+
+            darkenColorsIsOn = false;
         }
     }
 
@@ -258,6 +262,8 @@ public class BlockInfo : MonoBehaviour
     }
     void UpdateBlock_Darken()
     {
+        darkenColorsIsOn = true;
+
         //Darken all materials attached
         for (int i = 0; i < propertyBlocks.Count; i++)
         {

@@ -176,7 +176,7 @@ public class Block_Ladder : MonoBehaviour
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
-                hit.transform.gameObject.GetComponent<BlockInfo>().DarkenColors();
+                hit.transform.gameObject.GetComponent<BlockInfo>().SetDarkenColors();
             }
         }
     }
@@ -189,7 +189,7 @@ public class Block_Ladder : MonoBehaviour
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
-                hit.transform.gameObject.GetComponent<BlockInfo>().DarkenColors();
+                hit.transform.gameObject.GetComponent<BlockInfo>().SetDarkenColors();
             }
         }
     }
