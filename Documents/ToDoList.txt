@@ -2,20 +2,16 @@
 
 1.
 RespawnPlayer:
-	- The Camera isn't resetting correctly
-	- Fix the bug where the blocks that have moved/falled cannot be moved onto, and that the player clips it when moving into, after respawning
-		- Happens if the block has gone completely to the bottom and got hidden, not if respawned during its fall
-	- When turing, the blocks is not updated
 - Fix so that numbers appear at the start of game and upon respawn
 
 2.
 Numbers:
-- Add fade-in animation to the darkenBlock visibility
-- Fix delayed darkenBlock to prevent it from keep staying darkened if the player is moving a bit fast to another block
+	- Fix delayed darkenBlock to prevent it from keep staying darkened if the player is moving a bit fast to another block
+- Numbers and DarkenBlock will usally not show when entering a stair
 
 3.
 Effect Blocks:
-- Add all new Effects to a Block when their effect block script is attached
+- Add all new Effect-prefabs to a Block when their "Effect Block"-script is attached
 	- SpawnPoint
 	- RefillSteps
 	- Pusher
@@ -28,18 +24,18 @@ Pusher
 
 5.
 CeilingGrab:
-- Exiting CeilingGrab don't trigger darkenblock and numbers to be shown on hte ground
+- Exiting CeilingGrab don't trigger darkenblock and numbers to be shown on the ground
 - When CeilingGrab, the block you grab onto will not show its Number when moving adjacent (only the first time)
 - Fix IceGlide lag
 
 6.
 Adjacent Blocks:
 - Remove Adjacent Blocks from "BlockInfo"
-	- Make sure all abilieis can be performed
+	- Make sure all abilieis can be performed without it
 
 7.
 Pickups:
-- Must be able to be raycasted through, so the player can Dash/Descend into a block with a pickup on
+- Must be able to be raycasted through, so the player can Dash/Descend into a block with a pickup on it
 
 8.
 Elevator:
@@ -52,7 +48,8 @@ Skybox
 ---
 
 10.
-Make Levels
+Levels
+- Make new Levels
 
 ---
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -93,7 +94,7 @@ public class BlockInfo : MonoBehaviour
 
         GetAdjacentBlocksInfo();
 
-        CheckIfColorIsTinted();
+        TintBlock_CheckerPattern();
 
         //Show StepCost
         if (numberDisplay)
@@ -207,7 +208,7 @@ public class BlockInfo : MonoBehaviour
 
         color_isDarkened = true;
 
-        UpdatePropertyBlock();
+        UpdateBlock_Darken();
 
         color_isDarkened = false;
     }
@@ -237,7 +238,7 @@ public class BlockInfo : MonoBehaviour
     //--------------------
 
 
-    void CheckIfColorIsTinted()
+    void TintBlock_CheckerPattern()
     {
         // Get the whole number position (rounding to nearest int)
         int x = Mathf.RoundToInt(transform.position.x);
@@ -253,20 +254,23 @@ public class BlockInfo : MonoBehaviour
             colorTint_isActive = false;
         }
 
-        UpdatePropertyBlock();
+        UpdateBlock_Darken();
     }
-    void UpdatePropertyBlock()
+    void UpdateBlock_Darken()
     {
         //Darken all materials attached
         for (int i = 0; i < propertyBlocks.Count; i++)
         {
             if (numberDisplay)
             {
-                StartCoroutine(DarkenBlockFadeAnimation(i, numberDisplay.duration));
+                //Ensure final value is exactly the target
+                Color finalColor = GetBlockColorTint();
+                propertyBlocks[i].SetColor("_BaseColor", finalColor);
+                objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
             }
         }
 
-        //Change 3D Number Asset if CeilingGrabbing
+        //Change StepCost 3D Asset Pos on Snow
         if (GetComponent<Block_Snow>())
         {
             GetComponent<Block_Snow>().ChangeStepCounterPosition();
@@ -278,32 +282,6 @@ public class BlockInfo : MonoBehaviour
             numberDisplay.ShowNumber();
         }
     }
-    IEnumerator DarkenBlockFadeAnimation(int index, float time)
-    {
-        float elapsedTime = 0f;
-        Color startColor = GetBlockColorTint();
-        float startAlpha = startColor.a;
-        float endAlpha = 0f;
-
-        while (elapsedTime < time)
-        {
-            float newAlpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / time);
-            Color newColor = new Color(startColor.r, startColor.g, startColor.b, newAlpha);
-
-            //Update the MaterialPropertyBlock
-            propertyBlocks[index].SetColor("_BaseColor", newColor);
-            objectRenderers[index].SetPropertyBlock(propertyBlocks[index]);
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        //Ensure final value is exactly the target
-        Color finalColor = new Color(startColor.r, startColor.g, startColor.b, endAlpha);
-        propertyBlocks[index].SetColor("_BaseColor", finalColor);
-        objectRenderers[index].SetPropertyBlock(propertyBlocks[index]);
-    }
-
 
     Color GetBlockColorTint()
     {
@@ -350,11 +328,11 @@ public class BlockInfo : MonoBehaviour
     {
         if (stepSound_ClipList.Count > 0 && PlayerManager.Instance.block_StandingOn_Current.block == gameObject)
         {
-            int sound = Random.Range(0, stepSound_ClipList.Count);
+            int sound = UnityEngine.Random.Range(0, stepSound_ClipList.Count);
 
             stepSound_Source.clip = stepSound_ClipList[sound];
 
-            float volume = Random.Range(0.75f, 1.25f);
+            float volume = UnityEngine.Random.Range(0.75f, 1.25f);
 
             if (stepSound_Volume > 0)
                 stepSound_Source.volume = stepSound_Volume * volume;
