@@ -38,7 +38,7 @@ public class BlockInfo : MonoBehaviour
 
     bool finishedSetup;
 
-    [SerializeField] bool darkenColorsIsOn;
+    public bool blockIsDark;
     
     #region Adjacent Blocks
     [Header("Adjacent Blocks - Upper")]
@@ -198,6 +198,8 @@ public class BlockInfo : MonoBehaviour
 
     public void SetDarkenColors()
     {
+        if (blockIsDark) { return; }
+
         if (PlayerManager.Instance.player.GetComponent<Player_Dash>().isDashing) { return; }
 
         if (PlayerStats.Instance.stats.steps_Current <= 0 && movementCost > 0)
@@ -205,8 +207,6 @@ public class BlockInfo : MonoBehaviour
             ResetDarkenColor();
             return;
         }
-
-        if (darkenColorsIsOn) { return; }
 
         color_isDarkened = true;
 
@@ -234,7 +234,7 @@ public class BlockInfo : MonoBehaviour
                 numberDisplay.HideNumber();
             }
 
-            darkenColorsIsOn = false;
+            blockIsDark = false;
         }
     }
 
@@ -262,7 +262,9 @@ public class BlockInfo : MonoBehaviour
     }
     void UpdateBlock_Darken()
     {
-        darkenColorsIsOn = true;
+        print("1. blockIsDark: " + blockIsDark);
+
+        if (blockIsDark) { return; }
 
         //Darken all materials attached
         for (int i = 0; i < propertyBlocks.Count; i++)
@@ -287,6 +289,8 @@ public class BlockInfo : MonoBehaviour
         {
             numberDisplay.ShowNumber();
         }
+
+        blockIsDark = true;
     }
 
     Color GetBlockColorTint()

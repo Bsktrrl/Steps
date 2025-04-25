@@ -28,7 +28,7 @@ public class Interactable_Movement : MonoBehaviour
     }
     private void Update()
     {
-        gameObject.transform.SetLocalPositionAndRotation(SetPosition(), Quaternion.Euler(0, SetRotation_Y(), 0));
+        gameObject.transform.SetPositionAndRotation(SetPosition(), Quaternion.Euler(0, SetRotation_Y(), 0));
     }
 
 

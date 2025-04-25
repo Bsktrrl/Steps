@@ -2,12 +2,15 @@
 
 1.
 RespawnPlayer:
-- Fix so that numbers appear at the start of game and upon respawn
+	- Fix so that numbers appear upon respawn
+- Fix so that numbers appear at the start of game 
+- Ascend/Descend doesn't activate when respawing
 
 2.
 Numbers:
 	- Fix delayed darkenBlock to prevent it from keep staying darkened if the player is moving a bit fast to another block
-- Numbers and DarkenBlock will usally not show when entering a stair
+	- Numbers and DarkenBlock will usally not show when entering a stair
+- MoveableBlocks must be updated with darkenBlocks and Numbers
 
 3.
 Effect Blocks:

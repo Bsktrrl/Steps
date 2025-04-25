@@ -235,7 +235,7 @@ public class PlayerStats : Singleton<PlayerStats>
         CameraController.Instance.ResetCameraRotation();
         Player_Movement.Instance.SetPlayerBodyRotation(0);
 
-        Player_DarkenBlock.Instance.SetStartingDarkenBlock();
+        //Player_DarkenBlock.Instance.SetStartingDarkenBlock();
 
         //yield return new WaitForSeconds(waitTime * 25);
 
