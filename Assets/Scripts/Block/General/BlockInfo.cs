@@ -96,6 +96,7 @@ public class BlockInfo : MonoBehaviour
 
         GetAdjacentBlocksInfo();
 
+        ResetDarkenColor();
         TintBlock_CheckerPattern();
 
         //Show StepCost
@@ -106,6 +107,8 @@ public class BlockInfo : MonoBehaviour
         }
 
         finishedSetup = true;
+
+        blockIsDark = false;
     }
 
 
@@ -233,9 +236,9 @@ public class BlockInfo : MonoBehaviour
                 //Hide StepCost
                 numberDisplay.HideNumber();
             }
-
-            blockIsDark = false;
         }
+
+        blockIsDark = false;
     }
 
 
@@ -262,8 +265,6 @@ public class BlockInfo : MonoBehaviour
     }
     void UpdateBlock_Darken()
     {
-        print("1. blockIsDark: " + blockIsDark);
-
         if (blockIsDark) { return; }
 
         //Darken all materials attached
@@ -293,7 +294,7 @@ public class BlockInfo : MonoBehaviour
         blockIsDark = true;
     }
 
-    Color GetBlockColorTint()
+    public Color GetBlockColorTint()
     {
         if (color_isDarkened)
         {

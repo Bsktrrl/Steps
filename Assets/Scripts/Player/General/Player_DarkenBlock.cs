@@ -1,6 +1,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
@@ -17,6 +18,11 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
     public GameObject moveTarget_Left;
     public GameObject moveTarget_Right;
 
+    public GameObject moveTarget_Forward_Temp;
+    public GameObject moveTarget_Back_Temp;
+    public GameObject moveTarget_Left_Temp;
+    public GameObject moveTarget_Right_Temp;
+
     [Header("Other")]
     RaycastHit hit;
 
@@ -30,12 +36,20 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
     {
         block_hasBeenDarkened = false;
 
-        SetMoveDirections();
+        //SetMoveDirections();
     }
     private void Update()
     {
         RemoveDarkenBlockWhenKeyPressed();
         SetMoveDirections();
+    }
+    private void OnEnable()
+    {
+        //DataManager.Action_dataHasLoaded += SetMoveDirections;
+    }
+    private void OnDisable()
+    {
+        //DataManager.Action_dataHasLoaded -= SetMoveDirections;
     }
 
 
@@ -44,6 +58,11 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
 
     void SetMoveDirections()
     {
+        if (CameraController.Instance.isRotating) { return; }
+
+        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (movementButtonIsPressed) { return; }
+
         canMove_Forward = false;
         canMove_Back = false;
         canMove_Left = false;
@@ -70,44 +89,27 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
                 ResetTargetBlock(ref moveTarget_Right);
         }
 
-        //ResetTargetBlock(ref moveTarget_Forward);
-        //ResetTargetBlock(ref moveTarget_Back);
-        //ResetTargetBlock(ref moveTarget_Left);
-        //ResetTargetBlock(ref moveTarget_Right);
-
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
-        if (movementButtonIsPressed) { return; }
-
-        //Check if can Move and get MoveTarget
-        canMove_Forward = CheckIfCanMove(ref moveTarget_Forward, Vector3.forward, PlayerManager.Instance.canMove_Forward);
-        canMove_Back = CheckIfCanMove(ref moveTarget_Back, Vector3.back, PlayerManager.Instance.canMove_Back);
-        canMove_Left = CheckIfCanMove(ref moveTarget_Left, Vector3.left, PlayerManager.Instance.canMove_Left);
-        canMove_Right = CheckIfCanMove(ref moveTarget_Right, Vector3.right, PlayerManager.Instance.canMove_Right);
+        //Check if I can Move and get MoveTarget
+        canMove_Forward = CheckIfCanMove(ref moveTarget_Forward, /*Vector3.forward*/ Player_Movement.Instance.DirectionCalculator(Vector3.forward)/*, PlayerManager.Instance.canMove_Forward*/);
+        canMove_Back = CheckIfCanMove(ref moveTarget_Back, /*Vector3.back*/ Player_Movement.Instance.DirectionCalculator(Vector3.back)/*, PlayerManager.Instance.canMove_Back*/);
+        canMove_Left = CheckIfCanMove(ref moveTarget_Left, /*Vector3.left*/ Player_Movement.Instance.DirectionCalculator(Vector3.left)/*, PlayerManager.Instance.canMove_Left*/);
+        canMove_Right = CheckIfCanMove(ref moveTarget_Right, /*Vector3.right*/ Player_Movement.Instance.DirectionCalculator(Vector3.right)/*, PlayerManager.Instance.canMove_Right*/);
     }
-    bool CheckIfCanMove(ref GameObject target, Vector3 dir, bool canMove)
+    bool CheckIfCanMove(ref GameObject target, Vector3 dir/*, bool canMove*/)
     {
-        if (!canMove)
-        {
-            ResetTargetBlock(ref target);
-            target = null;
-            return false;
-        }
-
-        ResetDarkenColorIfStepsIsGone(ref target);
-
         //If standing on a Stair or Slope
         if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair || PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope)
         {
-            return RaycastFromTarget(ref target, Vector3.up + dir, 2);
+            return RaycastFromTarget(ref target, Vector3.up + dir, 2/*, canMove*/);
         }
 
         //If standing on a Cube
         else
         {
-            return RaycastFromTarget(ref target, dir, 1);
+            return RaycastFromTarget(ref target, dir, 1/*, canMove*/);
         }
     }
-    bool RaycastFromTarget(ref GameObject target, Vector3 dir, float length)
+    bool RaycastFromTarget(ref GameObject target, Vector3 dir, float length/*, bool canMove*/)
     {
         //Raycast down from target
         if (Physics.Raycast(gameObject.transform.position + dir, Vector3.down, out hit, length))
@@ -121,7 +123,34 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
                 {
                     if (target.GetComponent<BlockInfo>())
                     {
-                        target.GetComponent<BlockInfo>().SetDarkenColors();
+                        if (target.GetComponent<BlockInfo>().blockIsDark)
+                        {
+                            if ((target == PlayerManager.Instance.block_Vertical_InFront.block /*&& PlayerManager.Instance.canMove_Forward*/)
+                                || (target == PlayerManager.Instance.block_Vertical_InBack.block /*&& PlayerManager.Instance.canMove_Back*/)
+                                || (target == PlayerManager.Instance.block_Vertical_ToTheLeft.block /*&& PlayerManager.Instance.canMove_Left*/)
+                                || (target == PlayerManager.Instance.block_Vertical_ToTheRight.block /*&& PlayerManager.Instance.canMove_Right*/))
+                            {
+                                print("1. RaycastFromTarget");
+                            }
+                            else
+                            {
+                                print("2. RaycastFromTarget");
+
+                                ResetTargetBlock(ref target);
+                            }
+                        }
+                        else
+                        {
+                            if ((target == PlayerManager.Instance.block_Vertical_InFront.block && PlayerManager.Instance.canMove_Forward)
+                                || (target == PlayerManager.Instance.block_Vertical_InBack.block && PlayerManager.Instance.canMove_Back)
+                                || (target == PlayerManager.Instance.block_Vertical_ToTheLeft.block && PlayerManager.Instance.canMove_Left)
+                                || (target == PlayerManager.Instance.block_Vertical_ToTheRight.block && PlayerManager.Instance.canMove_Right))
+                            {
+                                print("3. RaycastFromTarget");
+
+                                target.GetComponent<BlockInfo>().SetDarkenColors();
+                            }
+                        }
                     }
                 }
 
@@ -131,15 +160,13 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
             }
             else
             {
-                ResetTargetBlock(ref target);
-                target = null;
+                //ResetTargetBlock(ref target);
                 return false;
             }
         }
         else
         {
-            ResetTargetBlock(ref target);
-            target = null;
+            //ResetTargetBlock(ref target);
             return false;
         }
     }
@@ -162,6 +189,8 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
         //Reset Darken Color
         if (target)
         {
+            print("100. ResetTargetBlock");
+
             target.GetComponent<BlockInfo>().ResetDarkenColor();
             target = null;
         }

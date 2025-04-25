@@ -8,8 +8,11 @@ public class Player_Movement : Singleton<Player_Movement>
     public static event Action Action_StepTakenEarly;
     public static event Action Action_StepTaken;
     public static event Action Action_StepCostTaken;
+
     public static event Action Action_BodyRotated;
+
     public static event Action Action_resetBlockColor;
+
     public static event Action Action_PressMoveBlockButton;
     public static event Action Action_LandedFromFalling;
 

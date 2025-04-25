@@ -76,12 +76,12 @@ public class NumberDisplay : MonoBehaviour
 
     private void OnEnable()
     {
-        CameraController.rotateCamera_End += UpdateRotation;
+        CameraController.Action_RotateCamera_End += UpdateRotation;
     }
 
     private void OnDisable()
     {
-        CameraController.rotateCamera_End -= UpdateRotation;
+        CameraController.Action_RotateCamera_End -= UpdateRotation;
     }
 
 
@@ -492,7 +492,7 @@ public class NumberDisplay : MonoBehaviour
 
     public void DestroyBlockStepCostDisplay()
     {
-        CameraController.rotateCamera_Start -= UpdateRotation;
+        CameraController.Action_RotateCamera_Start -= UpdateRotation;
 
         Destroy(this);
     }
