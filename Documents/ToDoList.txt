@@ -1,13 +1,5 @@
 ----- NEXT ON THE LIST -----
 
-2.
-Numbers:
-- Elevator Blocks must be updated with darkenBlocks and Numbers
-	- Elevator make adjacent Blocks Darken and don't reset them when not adjacent 
-- Cannot Dash out from elevator (and enable DarkenBlocks)
-- CeilingGrab have to work with the new DarkenBlock system
-	- Move Off from the roof must have Darken-indicator without number (because it's always free to move off the roof)
-
 3.
 Effect Blocks:
 - Add all new Effect-prefabs to a Block when their "Effect Block"-script is attached
@@ -23,8 +15,12 @@ Pusher
 
 5.
 CeilingGrab:
+- CeilingGrab have to work with the new DarkenBlock system
+	- Move Off from the roof must have Darken-indicator without number (because it's always free to move off the roof)
 - When CeilingGrab, the block you grab onto will not show its Number when moving adjacent (only the first time)
 - Fix IceGlide lag
+- When dropping from a CeilingGrab, Darkeningblocks are updated wrong
+- At GameStart, player cannot Ceilinggrab from its startPos
 
 6.
 Adjacent Blocks:

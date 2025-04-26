@@ -29,11 +29,13 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     {
         Player_Movement.Action_StepTakenEarly += ResetDarkenColor;
         Player_Movement.Action_StepTaken += UpdateRaycastCeiling;
+        DataManager.Action_dataHasLoaded += UpdateRaycastCeiling;
     }
     private void OnDisable()
     {
         Player_Movement.Action_StepTakenEarly -= ResetDarkenColor;
         Player_Movement.Action_StepTaken -= UpdateRaycastCeiling;
+        DataManager.Action_dataHasLoaded -= UpdateRaycastCeiling;
     }
 
 

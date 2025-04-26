@@ -215,7 +215,7 @@ MonoBehaviour:
   movementCost: 1
   movementSpeed: 3
   stepCostText_Color: {r: 0.5647059, g: 0.7647059, b: 0.22745098, a: 1}
-  stepCostText_ColorUnder: {r: 0.28235295, g: 0.35686275, b: 0.101960786, a: 1}
+  stepCostText_ColorUnder: {r: 0, g: 0, b: 0, a: 1}
   stepSound_Volume: 1
   stepSound_ClipList:
   - {fileID: 8300000, guid: 90502903ea0732947b8a173c14e1c46d, type: 3}
@@ -232,6 +232,7 @@ MonoBehaviour:
   startPos: {x: 0, y: 0, z: 0}
   colorTint_isActive: 0
   tintValue: 0.95
+  blockIsDark: 0
   upper_Front_Left: {fileID: 0}
   upper_Front: {fileID: 0}
   upper_Front_Right: {fileID: 0}

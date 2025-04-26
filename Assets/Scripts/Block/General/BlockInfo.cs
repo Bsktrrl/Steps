@@ -124,6 +124,7 @@ public class BlockInfo : MonoBehaviour
         Player_Movement.Action_resetBlockColor += ResetDarkenColor;
         PlayerStats.Action_RespawnToSavePos += ResetDarkenColor;
         PlayerStats.Action_RespawnPlayer += ResetBlock;
+        Player_Movement.Action_LandedFromFalling += ResetDarkenColor;
     }
 
     private void OnDisable()
@@ -131,6 +132,7 @@ public class BlockInfo : MonoBehaviour
         Player_Movement.Action_resetBlockColor -= ResetDarkenColor;
         PlayerStats.Action_RespawnToSavePos -= ResetDarkenColor;
         PlayerStats.Action_RespawnPlayer -= ResetBlock;
+        Player_Movement.Action_LandedFromFalling -= ResetDarkenColor;
     }
 
 
