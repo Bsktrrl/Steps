@@ -71,12 +71,16 @@ public class Player_Jumping : Singleton<Player_Jumping>
         DataManager.Action_dataHasLoaded += CheckIfCanJump_OnAction;
         Player_Movement.Action_StepTaken += CheckIfCanJump_OnAction;
         Player_Movement.Action_BodyRotated += CheckIfCanJump_OnAction;
+
+        PlayerStats.Action_RespawnPlayer += ResetDarkenOnRespawn;
     }
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= CheckIfCanJump_OnAction;
         Player_Movement.Action_StepTaken -= CheckIfCanJump_OnAction;
         Player_Movement.Action_BodyRotated -= CheckIfCanJump_OnAction;
+
+        PlayerStats.Action_RespawnPlayer -= ResetDarkenOnRespawn;
     }
 
 
@@ -284,6 +288,14 @@ public class Player_Jumping : Singleton<Player_Jumping>
             target.GetComponent<BlockInfo>().ResetDarkenColor();
             target = null;
         }
+    }
+
+    void ResetDarkenOnRespawn()
+    {
+        ResetTargetBlock(ref jumpTarget_Forward);
+        ResetTargetBlock(ref jumpTarget_Back);
+        ResetTargetBlock(ref jumpTarget_Left);
+        ResetTargetBlock(ref jumpTarget_Right);
     }
 
 

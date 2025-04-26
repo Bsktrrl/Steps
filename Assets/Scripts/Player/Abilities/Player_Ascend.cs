@@ -28,13 +28,17 @@ public class Player_Ascend : Singleton<Player_Ascend>
     private void OnEnable()
     {
         DataManager.Action_dataHasLoaded += StartRunningObject;
+        DataManager.Action_dataHasLoaded += PrepareForRaycastForAscending;
         Player_Movement.Action_StepTaken += PrepareForRaycastForAscending;
+        PlayerStats.Action_RespawnPlayerLate += PrepareForRaycastForAscending;
     }
 
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= StartRunningObject;
+        DataManager.Action_dataHasLoaded -= PrepareForRaycastForAscending;
         Player_Movement.Action_StepTaken -= PrepareForRaycastForAscending;
+        PlayerStats.Action_RespawnPlayerLate -= PrepareForRaycastForAscending;
     }
     void StartRunningObject()
     {

@@ -8,7 +8,7 @@ RespawnPlayer:
 
 2.
 Numbers:
-- Fix blinking on "Jump" DarkenBlocks when rotating camera
+	- Fix blinking on "Jump" DarkenBlocks when rotating camera
 - Elevator Blocks must be updated with darkenBlocks and Numbers
 - CeilingGrab have to work with the new DarkenBlock system
 	- Move Off from the roof must have Darken-indicator without number (because it's always free to move off the roof)
@@ -39,6 +39,7 @@ Adjacent Blocks:
 7.
 Pickups:
 - Must be able to be raycasted through, so the player can Dash/Descend into a block with a pickup on it
+- Pickups are also blocking raycasting for DarkenBlocks
 
 8.
 Elevator:
