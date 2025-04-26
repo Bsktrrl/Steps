@@ -232,12 +232,7 @@ public class Player_Dash : Singleton<Player_Dash>
         //Raycast target +1
         if (Physics.Raycast(gameObject.transform.position, dir, out hit, 1))
         {
-            //if (/*hit.transform.gameObject.GetComponent<Block_Water>() ||*/ hit.transform.gameObject.GetComponent<Block_Moveable>())
-            //{
-            //    ResetTargetBlock(ref target);
-            //    target = null;
-            //    return false;
-            //}
+
         }
         else
         {
