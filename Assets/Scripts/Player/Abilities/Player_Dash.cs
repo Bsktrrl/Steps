@@ -41,13 +41,13 @@ public class Player_Dash : Singleton<Player_Dash>
         if (PlayerManager.Instance.pauseGame) { return; }
         if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
-        if (PlayerManager.Instance.forward_isPressed /*&& !PlayerManager.Instance.canMove_Forward*/)
+        if (PlayerManager.Instance.forward_isPressed)
             Dash_Forward();
-        else if (PlayerManager.Instance.back_isPressed /*&& !PlayerManager.Instance.canMove_Back*/)
+        else if (PlayerManager.Instance.back_isPressed)
             Dash_Backward();
-        else if (PlayerManager.Instance.left_isPressed /*&& !PlayerManager.Instance.canMove_Left*/)
+        else if (PlayerManager.Instance.left_isPressed)
             Dash_Left();
-        else if (PlayerManager.Instance.right_isPressed /*&& !PlayerManager.Instance.canMove_Right*/)
+        else if (PlayerManager.Instance.right_isPressed)
             Dash_Right();
     }
 
@@ -55,11 +55,13 @@ public class Player_Dash : Singleton<Player_Dash>
     {
         DataManager.Action_dataHasLoaded += SetDashDirections;
         Player_Movement.Action_StepTaken += SetDashDirections;
+        PlayerStats.Action_RespawnPlayerLate += SetDashDirections;
     }
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= SetDashDirections;
         Player_Movement.Action_StepTaken -= SetDashDirections;
+        PlayerStats.Action_RespawnPlayerLate -= SetDashDirections;
     }
 
 
