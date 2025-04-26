@@ -110,6 +110,10 @@ public class BlockInfo : MonoBehaviour
 
         blockIsDark = false;
     }
+    private void Update()
+    {
+        CheckDarkeningWhenPlayerIsOnElevator();
+    }
 
 
     //--------------------
@@ -193,6 +197,42 @@ public class BlockInfo : MonoBehaviour
     GameObject FindBlock(Vector3 dir1, Vector3 dir2, Vector3 dir3)
     {
         return BlockPosManager.Instance.FindGameObjectAtPosition(transform.position + dir1 + dir2 + dir3, gameObject);
+    }
+
+
+    //--------------------
+
+
+    void CheckDarkeningWhenPlayerIsOnElevator()
+    {
+        if (blockIsDark)
+        {
+            if (PlayerManager.Instance.block_StandingOn_Current.block)
+            {
+                if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator_Normal>()
+                || PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator_StepOn>())
+                {
+                    if ((gameObject == PlayerManager.Instance.block_Vertical_InFront.block && PlayerManager.Instance.canMove_Forward)
+                        || (gameObject == PlayerManager.Instance.block_Vertical_InBack.block && PlayerManager.Instance.canMove_Back)
+                        || (gameObject == PlayerManager.Instance.block_Vertical_ToTheLeft.block && PlayerManager.Instance.canMove_Left)
+                        || (gameObject == PlayerManager.Instance.block_Vertical_ToTheRight.block && PlayerManager.Instance.canMove_Right))
+                    {
+                        //SetDarkenColors();
+                    }
+                    else if ((gameObject == Player_Jumping.Instance.jumpTarget_Forward && Player_Jumping.Instance.canJump_Forward)
+                             || (gameObject == Player_Jumping.Instance.jumpTarget_Back && Player_Jumping.Instance.canJump_Back)
+                             || (gameObject == Player_Jumping.Instance.jumpTarget_Left && Player_Jumping.Instance.canJump_Left)
+                             || (gameObject == Player_Jumping.Instance.jumpTarget_Right && Player_Jumping.Instance.canJump_Right))
+                    {
+                        //SetDarkenColors();
+                    }
+                    else
+                    {
+                        ResetDarkenColor();
+                    }
+                }
+            }
+        }
     }
 
 

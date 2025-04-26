@@ -49,6 +49,8 @@ public class Player_Dash : Singleton<Player_Dash>
             Dash_Left();
         else if (PlayerManager.Instance.right_isPressed)
             Dash_Right();
+
+        OnElevator();
     }
 
     private void OnEnable()
@@ -207,6 +209,17 @@ public class Player_Dash : Singleton<Player_Dash>
     //--------------------
 
 
+    void OnElevator()
+    {
+        if (PlayerManager.Instance.block_StandingOn_Current.block)
+        {
+            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator_Normal>()
+            || PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator_StepOn>())
+            {
+                SetDashDirections();
+            }
+        }
+    }
     void SetDashDirections()
     {
         canDash_Forward = false;

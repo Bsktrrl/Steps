@@ -6,8 +6,8 @@ public class Block_Elevator_Normal : MonoBehaviour
 {
     public elevatorDirection elevatorDirection;
     public int distance;
-    public float movementSpeed = 5f;
-    public float waitingTime = 2f;
+    public float movementSpeed = 1f;
+    public float waitingTime = 60f;
 
     Vector3 startPos;
     Vector3 endPos;
@@ -121,7 +121,7 @@ public class Block_Elevator_Normal : MonoBehaviour
     {
         waiting = true;
 
-        yield return new WaitForSeconds(waitingTime);
+        yield return new WaitForSeconds(waitingTime * Time.deltaTime);
 
         waiting = false;
     }
@@ -145,17 +145,47 @@ public class Block_Elevator_Normal : MonoBehaviour
     {
         if (Player_CeilingGrab.Instance.isCeilingGrabbing)
         {
-            if (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) >= 1.5f)
-                GetComponent<BlockInfo>().ResetDarkenColor();
+            if (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) >= 1.75f)
+            {
+                if (gameObject.GetComponent<BlockInfo>().blockIsDark)
+                {
+                    gameObject.GetComponent<BlockInfo>().ResetDarkenColor();
+                }
+            }
             else
-                GetComponent<BlockInfo>().SetDarkenColors();
+            {
+                if (!gameObject.GetComponent<BlockInfo>().blockIsDark)
+                {
+                    gameObject.GetComponent<BlockInfo>().SetDarkenColors();
+                }
+            }   
         }
         else
         {
-            if (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) >= 1.1f)
-                GetComponent<BlockInfo>().ResetDarkenColor();
+            if (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) >= 1.4f)
+            {
+                if (gameObject.GetComponent<BlockInfo>().blockIsDark)
+                {
+                    //print("1. CheckIfDarkenBlock | Distance: " + Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position));
+
+                    gameObject.GetComponent<BlockInfo>().blockIsDark = false;
+
+                    gameObject.GetComponent<BlockInfo>().ResetDarkenColor();
+
+                    print("1. CheckIfDarkenBlock | IsDark: " + gameObject.GetComponent<BlockInfo>().blockIsDark);
+                }
+            }
             else
-                GetComponent<BlockInfo>().SetDarkenColors();
+            {
+                if (!gameObject.GetComponent<BlockInfo>().blockIsDark)
+                {
+                    print("2. CheckIfDarkenBlock | IsDark: " + gameObject.GetComponent<BlockInfo>().blockIsDark);
+
+                    //print("3. CheckIfDarkenBlock | Distance: " + Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position));
+
+                    gameObject.GetComponent<BlockInfo>().SetDarkenColors();
+                }
+            }
         }
     }
 }

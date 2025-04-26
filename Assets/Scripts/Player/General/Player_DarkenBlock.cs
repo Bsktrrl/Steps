@@ -106,7 +106,7 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
                 //Darken color in target block
                 if (target)
                 {
-                    if (target.GetComponent<BlockInfo>())
+                    if (target.GetComponent<BlockInfo>() && PlayerManager.Instance.block_StandingOn_Current.block)
                     {
                         if (target.GetComponent<BlockInfo>().blockIsDark)
                         {

@@ -1,12 +1,10 @@
 ----- NEXT ON THE LIST -----
 
-1.
-RespawnPlayer:
-- "Dash" doesen't work upon pressing the respawn button, but works when respawn because of 0 steps left, and isn't Darkened on any respawn
-
 2.
 Numbers:
 - Elevator Blocks must be updated with darkenBlocks and Numbers
+	- Elevator make adjacent Blocks Darken and don't reset them when not adjacent 
+- Cannot Dash out from elevator (and enable DarkenBlocks)
 - CeilingGrab have to work with the new DarkenBlock system
 	- Move Off from the roof must have Darken-indicator without number (because it's always free to move off the roof)
 
