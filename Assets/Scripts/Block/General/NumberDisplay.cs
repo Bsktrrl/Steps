@@ -116,6 +116,21 @@ public class NumberDisplay : MonoBehaviour
 
     void DisplayNumber(int value)
     {
+        if (value == -1)
+        {
+            //Change later to fit -1 asset from Mushroom circle
+
+            return;
+        }
+        else if (value == -2)
+        {
+            return;
+        }
+        else if (value <= -3)
+        {
+            return;
+        }
+
         blockInfo.movementCost = value;
 
         numberMeshRenderer.sharedMesh = numberMeshList[value];
