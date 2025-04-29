@@ -1,17 +1,13 @@
 ----- NEXT ON THE LIST -----
 
-3.
-Effect Blocks:
-- Add all new Effect-prefabs to a Block when their "Effect Block"-script is attached
-	- SpawnPoint
-	- RefillSteps
-	- Pusher
-	- Teleporter
-	- Moveable
+3. Effect Blocks:
+- EffectBlocks spawn in more than 1 clones as children, over time
 
 4.
-Pusher
+Pusher & Teleporter
 - Pusher doesn't work because of new system in "ShowNumber"-function in the "NumberDisplayed"-script
+- Teleporter must have linked colors that works
+- Adjust Position on Snow
 
 5.
 CeilingGrab:
@@ -31,6 +27,7 @@ Pickups:
 8.
 Elevator:
 - Change elevators to move in a route, not one direction and back
+- Elevator gets Darkened if moving into range of the player, but 1 block higher, so that the player are looking at its wall
 
 9.
 Skybox

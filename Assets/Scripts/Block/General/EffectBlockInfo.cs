@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[ExecuteInEditMode]
+[ExecuteAlways]
 public class EffectBlockInfo : MonoBehaviour
 {
     float counter;
@@ -11,6 +11,7 @@ public class EffectBlockInfo : MonoBehaviour
 
     EffectBlockManager effectBlockManager = new EffectBlockManager();
 
+    [Header("Is Added")]
     [SerializeField] bool effectBlock_SpawnPoint_isAdded;
     [SerializeField] bool effectBlock_RefillSteps_isAdded;
     [SerializeField] bool effectBlock_Pusher_isAdded;
@@ -18,7 +19,7 @@ public class EffectBlockInfo : MonoBehaviour
     [SerializeField] bool effectBlock_Moveable_isAdded;
     [SerializeField] bool effectBlock_MushroomCircle_isAdded;
 
-
+    [Header("Child List")]
     [SerializeField] List<GameObject> blockEffectHolding_List;
 
 
@@ -28,6 +29,8 @@ public class EffectBlockInfo : MonoBehaviour
     private void Awake()
     {
         effectBlockManager = FindObjectOfType<EffectBlockManager>();
+
+        CheckEffectBlockInChildRecursively(transform);
     }
     private void Start()
     {
@@ -39,12 +42,13 @@ public class EffectBlockInfo : MonoBehaviour
         //Only trigger on Cubes and Slabs
         if (GetComponent<BlockInfo>().blockType != BlockType.Cube && GetComponent<BlockInfo>().blockType != BlockType.Slab) { return; }
 
-        if (blockEffectHolding_List.Count > 1) { return; }
+        if (HasAnyEffectBlockChild()) { return; }
 
         if (effectBlock_SpawnPoint_isAdded) { return; }
         if (effectBlock_RefillSteps_isAdded) { return; }
         if (effectBlock_Pusher_isAdded) { return; }
         if (effectBlock_Teleporter_isAdded) { return; }
+        if (effectBlock_Moveable_isAdded) { return; }
         if (effectBlock_MushroomCircle_isAdded) { return; }
 
         counter += Time.deltaTime;
@@ -73,6 +77,43 @@ public class EffectBlockInfo : MonoBehaviour
     }
 
 
+    //--------------------
+
+
+    void CheckEffectBlockInChildRecursively(Transform parent)
+    {
+        if (GetComponent<Block_SpawnPoint>())
+        {
+            effectBlock_SpawnPoint_isAdded = true;
+            CheckForEffectBlockUpdate_SpawnPoint();
+        }
+        else if (GetComponent<Block_RefillSteps>())
+        {
+            effectBlock_RefillSteps_isAdded = true;
+            CheckForEffectBlockUpdate_RefillSteps();
+        }
+        else if (GetComponent<Block_Pusher>())
+        {
+            effectBlock_Pusher_isAdded = true;
+            CheckForEffectBlockUpdate_Pusher();
+        }
+        else if (GetComponent<Block_Teleport>())
+        {
+            effectBlock_Teleporter_isAdded = true;
+            CheckForEffectBlockUpdate_Teleporter();
+        }
+        else if (GetComponent<Block_Moveable>())
+        {
+            effectBlock_Moveable_isAdded = true;
+            CheckForEffectBlockUpdate_Moveable();
+        }
+        else if (GetComponent<Block_MushroomCircle>())
+        {
+            effectBlock_MushroomCircle_isAdded = true;
+            CheckForEffectBlockUpdate_MushroomCircle();
+        }
+    }
+
 
     //--------------------
 
@@ -84,8 +125,11 @@ public class EffectBlockInfo : MonoBehaviour
 
     void CheckForEffectBlockUpdate_SpawnPoint()
     {
-        if (!effectBlockManager.effectBlock_SpawnPoint_Prefab) { return; }
         if (!GetComponent<Block_SpawnPoint>()) { return; }
+
+        ChangeMovementCost(0);
+
+        if (!effectBlockManager.effectBlock_SpawnPoint_Prefab) { return; }
         if (effectBlock_SpawnPoint_isAdded) { return; }
 
 
@@ -93,8 +137,6 @@ public class EffectBlockInfo : MonoBehaviour
 
 
         effectBlock_SpawnPoint_isAdded = true;
-
-        ChangeMovementCost(0);
 
         InstantiateEffectBlock(effectBlockManager.effectBlock_SpawnPoint_Prefab);
 
@@ -105,8 +147,11 @@ public class EffectBlockInfo : MonoBehaviour
     }
     void CheckForEffectBlockUpdate_RefillSteps()
     {
-        if (!effectBlockManager.effectBlock_RefillSteps_Prefab) { return; }
         if (!GetComponent<Block_RefillSteps>()) { return; }
+
+        ChangeMovementCost(0);
+
+        if (!effectBlockManager.effectBlock_RefillSteps_Prefab) { return; }
         if (effectBlock_RefillSteps_isAdded) { return; }
 
 
@@ -114,8 +159,6 @@ public class EffectBlockInfo : MonoBehaviour
 
 
         effectBlock_RefillSteps_isAdded = true;
-
-        ChangeMovementCost(0);
 
         InstantiateEffectBlock(effectBlockManager.effectBlock_RefillSteps_Prefab);
 
@@ -126,8 +169,11 @@ public class EffectBlockInfo : MonoBehaviour
     }
     void CheckForEffectBlockUpdate_Pusher()
     {
-        if (!effectBlockManager.effectBlock_Pusher_Prefab) { return; }
         if (!GetComponent<Block_Pusher>()) { return; }
+
+        ChangeMovementCost(0);
+
+        if (!effectBlockManager.effectBlock_Pusher_Prefab) { return; }
         if (effectBlock_Pusher_isAdded) { return; }
 
 
@@ -135,8 +181,6 @@ public class EffectBlockInfo : MonoBehaviour
 
 
         effectBlock_Pusher_isAdded = true;
-
-        ChangeMovementCost(0);
 
         InstantiateEffectBlock(effectBlockManager.effectBlock_Pusher_Prefab);
 
@@ -147,8 +191,11 @@ public class EffectBlockInfo : MonoBehaviour
     }
     void CheckForEffectBlockUpdate_Teleporter()
     {
-        if (!effectBlockManager.effectBlock_Teleporter_Prefab) { return; }
         if (!GetComponent<Block_Teleport>()) { return; }
+
+        ChangeMovementCost(0);
+
+        if (!effectBlockManager.effectBlock_Teleporter_Prefab) { return; }
         if (effectBlock_Teleporter_isAdded) { return; }
 
 
@@ -185,8 +232,11 @@ public class EffectBlockInfo : MonoBehaviour
     }
     void CheckForEffectBlockUpdate_MushroomCircle()
     {
-        if (!effectBlockManager.effectBlock_MushroomCircle_Prefab) { return; }
         if (!GetComponent<Block_MushroomCircle>()) { return; }
+
+        ChangeMovementCost(-1);
+
+        if (!effectBlockManager.effectBlock_MushroomCircle_Prefab) { return; }
         if (effectBlock_MushroomCircle_isAdded) { return; }
 
 
@@ -194,8 +244,6 @@ public class EffectBlockInfo : MonoBehaviour
 
 
         effectBlock_MushroomCircle_isAdded = true;
-
-        ChangeMovementCost(-1);
 
         InstantiateEffectBlock(effectBlockManager.effectBlock_MushroomCircle_Prefab);
 
@@ -207,23 +255,22 @@ public class EffectBlockInfo : MonoBehaviour
 
     void InstantiateEffectBlock(GameObject effectBlock)
     {
-        //Add EffectBlock if there isn't any
-        if (blockEffectHolding_List.Count <= 0)
+        if (HasAnyEffectBlockChild()) return;
+
+        GameObject instance = Instantiate(effectBlock, transform);
+        blockEffectHolding_List.Add(instance);
+
+        // Special case for teleporter
+        var teleport = GetComponent<Block_Teleport>();
+        if (teleport)
         {
-            blockEffectHolding_List.Add(Instantiate(effectBlock, transform));
+            teleport.SetupTeleporter();
         }
 
-        //Check for multiple EffectBlocks
-        if (blockEffectHolding_List.Count > 1)
-        {
-            for (int i = blockEffectHolding_List.Count - 1; i < 1; i--)
-            {
-                DestroyImmediate(blockEffectHolding_List[i]);
-
-                blockEffectHolding_List.RemoveAt(i);
-            }
-        }
+        // Optional: if you're worried about duplicates later
+        RemoveDuplicateEffectBlocks();
     }
+   
     void ChangeMovementCost(int cost)
     {
         GetComponent<BlockInfo>().movementCost_Temp = cost;
@@ -271,5 +318,31 @@ public class EffectBlockInfo : MonoBehaviour
         //        break;
         //    }
         //}
+    }
+
+    bool HasAnyEffectBlockChild()
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.GetComponent<EffectBlock_Reference>()) return true;
+        }
+        return false;
+    }
+    void RemoveDuplicateEffectBlocks()
+    {
+        var seen = new HashSet<GameObject>();
+        for (int i = blockEffectHolding_List.Count - 1; i >= 0; i--)
+        {
+            var obj = blockEffectHolding_List[i];
+            if (!obj || seen.Contains(obj))
+            {
+                if (obj) DestroyImmediate(obj);
+                blockEffectHolding_List.RemoveAt(i);
+            }
+            else
+            {
+                seen.Add(obj);
+            }
+        }
     }
 }
