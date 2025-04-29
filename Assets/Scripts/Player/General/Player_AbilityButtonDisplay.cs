@@ -60,11 +60,11 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
 
     private void OnEnable()
     {
-        CameraController.rotateCamera_Start += RotateAbilityDisplay;
+        CameraController.Action_RotateCamera_Start += RotateAbilityDisplay;
     }
     private void OnDisable()
     {
-        CameraController.rotateCamera_Start -= RotateAbilityDisplay;
+        CameraController.Action_RotateCamera_Start -= RotateAbilityDisplay;
     }
 
 

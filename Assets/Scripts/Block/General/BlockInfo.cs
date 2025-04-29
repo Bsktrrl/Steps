@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,6 +38,8 @@ public class BlockInfo : MonoBehaviour
 
     bool finishedSetup;
 
+    public bool blockIsDark;
+    
     #region Adjacent Blocks
     [Header("Adjacent Blocks - Upper")]
     [HideInInspector] public GameObject upper_Front_Left;
@@ -93,7 +96,8 @@ public class BlockInfo : MonoBehaviour
 
         GetAdjacentBlocksInfo();
 
-        CheckIfColorIsTinted();
+        ResetDarkenColor();
+        TintBlock_CheckerPattern();
 
         //Show StepCost
         if (numberDisplay)
@@ -103,6 +107,12 @@ public class BlockInfo : MonoBehaviour
         }
 
         finishedSetup = true;
+
+        blockIsDark = false;
+    }
+    private void Update()
+    {
+        CheckDarkeningWhenPlayerIsOnElevator();
     }
 
 
@@ -111,18 +121,18 @@ public class BlockInfo : MonoBehaviour
 
     private void OnEnable()
     {
-        Player_Movement.Action_BodyRotated += ResetDarkenColor;
         Player_Movement.Action_resetBlockColor += ResetDarkenColor;
         PlayerStats.Action_RespawnToSavePos += ResetDarkenColor;
         PlayerStats.Action_RespawnPlayer += ResetBlock;
+        Player_Movement.Action_LandedFromFalling += ResetDarkenColor;
     }
 
     private void OnDisable()
     {
-        Player_Movement.Action_BodyRotated -= ResetDarkenColor;
         Player_Movement.Action_resetBlockColor -= ResetDarkenColor;
         PlayerStats.Action_RespawnToSavePos -= ResetDarkenColor;
         PlayerStats.Action_RespawnPlayer -= ResetBlock;
+        Player_Movement.Action_LandedFromFalling -= ResetDarkenColor;
     }
 
 
@@ -195,8 +205,46 @@ public class BlockInfo : MonoBehaviour
     //--------------------
 
 
-    public void DarkenColors()
+    void CheckDarkeningWhenPlayerIsOnElevator()
     {
+        if (blockIsDark)
+        {
+            if (PlayerManager.Instance.block_StandingOn_Current.block)
+            {
+                if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator_Normal>()
+                || PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator_StepOn>())
+                {
+                    if ((gameObject == PlayerManager.Instance.block_Vertical_InFront.block && PlayerManager.Instance.canMove_Forward)
+                        || (gameObject == PlayerManager.Instance.block_Vertical_InBack.block && PlayerManager.Instance.canMove_Back)
+                        || (gameObject == PlayerManager.Instance.block_Vertical_ToTheLeft.block && PlayerManager.Instance.canMove_Left)
+                        || (gameObject == PlayerManager.Instance.block_Vertical_ToTheRight.block && PlayerManager.Instance.canMove_Right))
+                    {
+                        //SetDarkenColors();
+                    }
+                    else if ((gameObject == Player_Jumping.Instance.jumpTarget_Forward && Player_Jumping.Instance.canJump_Forward)
+                             || (gameObject == Player_Jumping.Instance.jumpTarget_Back && Player_Jumping.Instance.canJump_Back)
+                             || (gameObject == Player_Jumping.Instance.jumpTarget_Left && Player_Jumping.Instance.canJump_Left)
+                             || (gameObject == Player_Jumping.Instance.jumpTarget_Right && Player_Jumping.Instance.canJump_Right))
+                    {
+                        //SetDarkenColors();
+                    }
+                    else
+                    {
+                        ResetDarkenColor();
+                    }
+                }
+            }
+        }
+    }
+
+
+    //--------------------
+
+
+    public void SetDarkenColors()
+    {
+        if (blockIsDark) { return; }
+
         if (PlayerManager.Instance.player.GetComponent<Player_Dash>().isDashing) { return; }
 
         if (PlayerStats.Instance.stats.steps_Current <= 0 && movementCost > 0)
@@ -207,7 +255,7 @@ public class BlockInfo : MonoBehaviour
 
         color_isDarkened = true;
 
-        UpdatePropertyBlock();
+        UpdateBlock_Darken();
 
         color_isDarkened = false;
     }
@@ -231,13 +279,15 @@ public class BlockInfo : MonoBehaviour
                 numberDisplay.HideNumber();
             }
         }
+
+        blockIsDark = false;
     }
 
 
     //--------------------
 
 
-    void CheckIfColorIsTinted()
+    void TintBlock_CheckerPattern()
     {
         // Get the whole number position (rounding to nearest int)
         int x = Mathf.RoundToInt(transform.position.x);
@@ -253,20 +303,25 @@ public class BlockInfo : MonoBehaviour
             colorTint_isActive = false;
         }
 
-        UpdatePropertyBlock();
+        UpdateBlock_Darken();
     }
-    void UpdatePropertyBlock()
+    void UpdateBlock_Darken()
     {
+        if (blockIsDark) { return; }
+
         //Darken all materials attached
         for (int i = 0; i < propertyBlocks.Count; i++)
         {
             if (numberDisplay)
             {
-                StartCoroutine(DarkenBlockFadeAnimation(i, numberDisplay.duration));
+                //Ensure final value is exactly the target
+                Color finalColor = GetBlockColorTint();
+                propertyBlocks[i].SetColor("_BaseColor", finalColor);
+                objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
             }
         }
 
-        //Change 3D Number Asset if CeilingGrabbing
+        //Change StepCost 3D Asset Pos on Snow
         if (GetComponent<Block_Snow>())
         {
             GetComponent<Block_Snow>().ChangeStepCounterPosition();
@@ -277,35 +332,11 @@ public class BlockInfo : MonoBehaviour
         {
             numberDisplay.ShowNumber();
         }
-    }
-    IEnumerator DarkenBlockFadeAnimation(int index, float time)
-    {
-        float elapsedTime = 0f;
-        Color startColor = GetBlockColorTint();
-        float startAlpha = startColor.a;
-        float endAlpha = 0f;
 
-        while (elapsedTime < time)
-        {
-            float newAlpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / time);
-            Color newColor = new Color(startColor.r, startColor.g, startColor.b, newAlpha);
-
-            //Update the MaterialPropertyBlock
-            propertyBlocks[index].SetColor("_BaseColor", newColor);
-            objectRenderers[index].SetPropertyBlock(propertyBlocks[index]);
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        //Ensure final value is exactly the target
-        Color finalColor = new Color(startColor.r, startColor.g, startColor.b, endAlpha);
-        propertyBlocks[index].SetColor("_BaseColor", finalColor);
-        objectRenderers[index].SetPropertyBlock(propertyBlocks[index]);
+        blockIsDark = true;
     }
 
-
-    Color GetBlockColorTint()
+    public Color GetBlockColorTint()
     {
         if (color_isDarkened)
         {
@@ -350,11 +381,11 @@ public class BlockInfo : MonoBehaviour
     {
         if (stepSound_ClipList.Count > 0 && PlayerManager.Instance.block_StandingOn_Current.block == gameObject)
         {
-            int sound = Random.Range(0, stepSound_ClipList.Count);
+            int sound = UnityEngine.Random.Range(0, stepSound_ClipList.Count);
 
             stepSound_Source.clip = stepSound_ClipList[sound];
 
-            float volume = Random.Range(0.75f, 1.25f);
+            float volume = UnityEngine.Random.Range(0.75f, 1.25f);
 
             if (stepSound_Volume > 0)
                 stepSound_Source.volume = stepSound_Volume * volume;

@@ -8,8 +8,11 @@ public class Player_Movement : Singleton<Player_Movement>
     public static event Action Action_StepTakenEarly;
     public static event Action Action_StepTaken;
     public static event Action Action_StepCostTaken;
+
     public static event Action Action_BodyRotated;
+
     public static event Action Action_resetBlockColor;
+
     public static event Action Action_PressMoveBlockButton;
     public static event Action Action_LandedFromFalling;
 
@@ -130,6 +133,7 @@ public class Player_Movement : Singleton<Player_Movement>
     //--------------------
 
 
+    #region Key inputs
     bool KeyInputsChecks()
     {
         if (movementStates == MovementStates.Moving) { return false; }
@@ -269,6 +273,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
         QuitLevel();
     }
+    #endregion
 
 
     //--------------------
@@ -623,7 +628,7 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (targetObject_forward.GetComponent<BlockInfo>())
             {
-                targetObject_forward.GetComponent<BlockInfo>().DarkenColors();
+                targetObject_forward.GetComponent<BlockInfo>().SetDarkenColors();
             }
         }
 
@@ -632,7 +637,7 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (targetObject_back.GetComponent<BlockInfo>())
             {
-                targetObject_back.GetComponent<BlockInfo>().DarkenColors();
+                targetObject_back.GetComponent<BlockInfo>().SetDarkenColors();
             }
         }
 
@@ -641,7 +646,7 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (targetObject_left.GetComponent<BlockInfo>())
             {
-                targetObject_left.GetComponent<BlockInfo>().DarkenColors();
+                targetObject_left.GetComponent<BlockInfo>().SetDarkenColors();
             }
         }
 
@@ -650,7 +655,7 @@ public class Player_Movement : Singleton<Player_Movement>
         {
             if (targetObject_right.GetComponent<BlockInfo>())
             {
-                targetObject_right.GetComponent<BlockInfo>().DarkenColors();
+                targetObject_right.GetComponent<BlockInfo>().SetDarkenColors();
             }
         }
     }

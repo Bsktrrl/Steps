@@ -76,12 +76,12 @@ public class NumberDisplay : MonoBehaviour
 
     private void OnEnable()
     {
-        CameraController.rotateCamera_End += UpdateRotation;
+        CameraController.Action_RotateCamera_End += UpdateRotation;
     }
 
     private void OnDisable()
     {
-        CameraController.rotateCamera_End -= UpdateRotation;
+        CameraController.Action_RotateCamera_End -= UpdateRotation;
     }
 
 
@@ -93,14 +93,6 @@ public class NumberDisplay : MonoBehaviour
         //Set objectRenderers
         for (int i = 0; i < transform.childCount; i++)
         {
-            //for (int j = 0; j < transform.GetChild(i).GetComponent<SkinnedMeshRenderer>().materials.Length; j++)
-            //{
-            //    if (transform.GetChild(i).GetComponent<SkinnedMeshRenderer>().materials[j])
-            //    {
-            //        objectRenderers.Add(transform.GetChild(i).GetComponent<SkinnedMeshRenderer>());
-            //    }
-            //}
-
             if (transform.GetChild(i).GetComponent<SkinnedMeshRenderer>())
             {
                 objectRenderers.Add(transform.GetChild(i).GetComponent<SkinnedMeshRenderer>());
@@ -137,7 +129,6 @@ public class NumberDisplay : MonoBehaviour
         //If Pushed
         if (PlayerManager.Instance.block_LookingAt_Vertical == gameObject && !PlayerManager.Instance.block_LookingAt_Vertical.GetComponent<Block_Pusher>() && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
         {
-            print("1. Pushed");
             DisplayNumber(0);
         }
 
@@ -500,7 +491,7 @@ public class NumberDisplay : MonoBehaviour
 
     public void DestroyBlockStepCostDisplay()
     {
-        CameraController.rotateCamera_Start -= UpdateRotation;
+        CameraController.Action_RotateCamera_Start -= UpdateRotation;
 
         Destroy(this);
     }

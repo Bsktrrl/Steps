@@ -84,12 +84,12 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
                                 if (dir == Vector3.up)
                                 {
                                     swiftSwim_Up_Obj = hit.transform.gameObject;
-                                    swiftSwim_Up_Obj.GetComponent<BlockInfo>().DarkenColors();
+                                    swiftSwim_Up_Obj.GetComponent<BlockInfo>().SetDarkenColors();
                                 }
                                 else if (dir == Vector3.down)
                                 {
                                     swiftSwim_Down_Obj = hit.transform.gameObject;
-                                    swiftSwim_Down_Obj.GetComponent<BlockInfo>().DarkenColors();
+                                    swiftSwim_Down_Obj.GetComponent<BlockInfo>().SetDarkenColors();
                                 }
 
                                 return true;

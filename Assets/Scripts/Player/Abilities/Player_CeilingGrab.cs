@@ -29,11 +29,13 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     {
         Player_Movement.Action_StepTakenEarly += ResetDarkenColor;
         Player_Movement.Action_StepTaken += UpdateRaycastCeiling;
+        DataManager.Action_dataHasLoaded += UpdateRaycastCeiling;
     }
     private void OnDisable()
     {
         Player_Movement.Action_StepTakenEarly -= ResetDarkenColor;
         Player_Movement.Action_StepTaken -= UpdateRaycastCeiling;
+        DataManager.Action_dataHasLoaded -= UpdateRaycastCeiling;
     }
 
 
@@ -98,7 +100,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             {
                 if (!isCeilingGrabbing)
                 {
-                    hit.transform.gameObject.GetComponent<BlockInfo>().DarkenColors();
+                    hit.transform.gameObject.GetComponent<BlockInfo>().SetDarkenColors();
                     ceilingGrabBlock = hit.transform.gameObject;
                 }
                 

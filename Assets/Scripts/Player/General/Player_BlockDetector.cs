@@ -81,7 +81,6 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         DataManager.Action_dataHasLoaded += StartRunningObject;
         PlayerStats.Action_RespawnPlayer += RaycastSetup;
         PlayerStats.Action_RespawnPlayer += Update_BlockStandingOn;
-        //PlayerStats.Action_RespawnPlayerLate += RaycastSetup;
 
         Player_Movement.Action_BodyRotated += UpdateBlockLookingAt;
     }
@@ -91,7 +90,6 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         DataManager.Action_dataHasLoaded -= StartRunningObject;
         PlayerStats.Action_RespawnPlayer -= RaycastSetup;
         PlayerStats.Action_RespawnPlayer -= Update_BlockStandingOn;
-        //PlayerStats.Action_RespawnPlayerLate -= RaycastSetup;
 
         Player_Movement.Action_BodyRotated -= UpdateBlockLookingAt;
     }

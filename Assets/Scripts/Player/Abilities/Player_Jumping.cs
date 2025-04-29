@@ -7,15 +7,15 @@ public class Player_Jumping : Singleton<Player_Jumping>
     [Header("Jumping")]
     [SerializeField] Vector3 jumpStartPos;
 
-    [SerializeField] bool canJump_Forward;
-    [SerializeField] bool canJump_Back;
-    [SerializeField] bool canJump_Left;
-    [SerializeField] bool canJump_Right;
+    public bool canJump_Forward;
+    public bool canJump_Back;
+    public bool canJump_Left;
+    public bool canJump_Right;
 
-    [SerializeField] GameObject jumpTarget_Forward;
-    [SerializeField] GameObject jumpTarget_Back;
-    [SerializeField] GameObject jumpTarget_Left;
-    [SerializeField] GameObject jumpTarget_Right;
+    public GameObject jumpTarget_Forward;
+    public GameObject jumpTarget_Back;
+    public GameObject jumpTarget_Left;
+    public GameObject jumpTarget_Right;
 
     public bool isJumping = false;
 
@@ -24,7 +24,6 @@ public class Player_Jumping : Singleton<Player_Jumping>
 
     float jumpHeight = 0.5f;
     float jumpDuration = 0.2f;
-
 
 
     //--------------------
@@ -42,7 +41,8 @@ public class Player_Jumping : Singleton<Player_Jumping>
         if (PlayerManager.Instance.pauseGame) { return; }
         if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
-        CheckIfCanJump();
+        //CheckIfCanJump_OnAction();
+        CheckIfICanJump_Update();
 
         if (PlayerManager.Instance.forward_isPressed /*&& !PlayerManager.Instance.canMove_Forward*/)
         {
@@ -60,6 +60,8 @@ public class Player_Jumping : Singleton<Player_Jumping>
         {
             Jump_Right();
         }
+
+        OnElevator();
     }
 
 
@@ -68,21 +70,35 @@ public class Player_Jumping : Singleton<Player_Jumping>
 
     private void OnEnable()
     {
-        DataManager.Action_dataHasLoaded += CheckIfCanJump;
-        Player_Movement.Action_StepTaken += CheckIfCanJump;
-        Player_Movement.Action_BodyRotated += CheckIfCanJump;
+        DataManager.Action_dataHasLoaded += CheckIfCanJump_OnAction;
+        Player_Movement.Action_StepTaken += CheckIfCanJump_OnAction;
+        Player_Movement.Action_BodyRotated += CheckIfCanJump_OnAction;
+
+        PlayerStats.Action_RespawnPlayer += ResetDarkenOnRespawn;
     }
     private void OnDisable()
     {
-        DataManager.Action_dataHasLoaded -= CheckIfCanJump;
-        Player_Movement.Action_StepTaken -= CheckIfCanJump;
-        Player_Movement.Action_BodyRotated -= CheckIfCanJump;
+        DataManager.Action_dataHasLoaded -= CheckIfCanJump_OnAction;
+        Player_Movement.Action_StepTaken -= CheckIfCanJump_OnAction;
+        Player_Movement.Action_BodyRotated -= CheckIfCanJump_OnAction;
+
+        PlayerStats.Action_RespawnPlayer -= ResetDarkenOnRespawn;
     }
 
 
     //--------------------
 
-
+    void OnElevator()
+    {
+        if (PlayerManager.Instance.block_StandingOn_Current.block)
+        {
+            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator_Normal>()
+            || PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator_StepOn>())
+            {
+                CheckIfCanJump_OnAction();
+            }
+        }
+    }
     bool JumpCheck()
     {
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.Jumping && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping) { return false; }
@@ -202,7 +218,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
         }
     }
 
-    void CheckIfCanJump()
+    void CheckIfCanJump_OnAction()
     {
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.Jumping && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping) { return; }
 
@@ -211,12 +227,19 @@ public class Player_Jumping : Singleton<Player_Jumping>
         ResetTargetBlock(ref jumpTarget_Left);
         ResetTargetBlock(ref jumpTarget_Right);
 
+        CheckIfICanJump_Update();
+    }
+    void CheckIfICanJump_Update()
+    {
+        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.Jumping && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping) { return; }
+
         //Check if can Jump and get JumpTarget
         canJump_Forward = CheckIfCanJump(ref jumpTarget_Forward, Vector3.forward);
         canJump_Back = CheckIfCanJump(ref jumpTarget_Back, Vector3.back);
         canJump_Left = CheckIfCanJump(ref jumpTarget_Left, Vector3.left);
         canJump_Right = CheckIfCanJump(ref jumpTarget_Right, Vector3.right);
     }
+
     bool CheckIfCanJump(ref GameObject target, Vector3 dir)
     {
         ResetDarkenColorIfStepsIsGone(ref target);
@@ -251,7 +274,10 @@ public class Player_Jumping : Singleton<Player_Jumping>
         {
             if (target.GetComponent<BlockInfo>())
             {
-                target.GetComponent<BlockInfo>().DarkenColors();
+                if (!target.GetComponent<BlockInfo>().blockIsDark)
+                {
+                    target.GetComponent<BlockInfo>().SetDarkenColors();
+                }
             }
         }
 
@@ -281,6 +307,14 @@ public class Player_Jumping : Singleton<Player_Jumping>
             target.GetComponent<BlockInfo>().ResetDarkenColor();
             target = null;
         }
+    }
+
+    void ResetDarkenOnRespawn()
+    {
+        ResetTargetBlock(ref jumpTarget_Forward);
+        ResetTargetBlock(ref jumpTarget_Back);
+        ResetTargetBlock(ref jumpTarget_Left);
+        ResetTargetBlock(ref jumpTarget_Right);
     }
 
 
@@ -328,7 +362,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
         // Ensure the player lands exactly at the end position
         transform.position = endPosition + (Vector3.down * 0.1f);
 
-        Player_BlockDetector.Instance.RaycastSetup();
+        //Player_BlockDetector.Instance.RaycastSetup();
 
         isJumping = false;
         Player_Movement.Instance.movementStates = MovementStates.Still;
