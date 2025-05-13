@@ -9,7 +9,7 @@ public class EffectBlockInfo : MonoBehaviour
     float counter;
     float waitTime;
 
-    EffectBlockManager effectBlockManager = new EffectBlockManager();
+    EffectBlockManager effectBlockManager;
 
     [Header("Is Added")]
     [SerializeField] bool effectBlock_SpawnPoint_isAdded;

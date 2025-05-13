@@ -1,13 +1,25 @@
 ----- NEXT ON THE LIST -----
 
-3. Effect Blocks:
-- EffectBlocks spawn in more than 1 clones as children, over time
+2. Pitch Deck
+O Write the rest of the text
+	- Change "Archie - End 1" to become less cinematic
+- Add 3/6 smaller images as part of a level, for each biome
+- Add 2 images of Essence pickup and Skin Pickup
+- Make 2 images where the one level is a "Dusk Age"-version of the other
+- Make part of levels to make video clips of the gameplay from
+
+3.
+Effect Blocks:
+- Add all new Effect-prefabs to a Block when their "Effect Block"-script is attached
+	- SpawnPoint
+	- RefillSteps
+	- Pusher
+	- Teleporter
+	- Moveable
 
 4.
-Pusher & Teleporter
+Pusher
 - Pusher doesn't work because of new system in "ShowNumber"-function in the "NumberDisplayed"-script
-- Teleporter must have linked colors that works
-- Adjust Position on Snow
 
 5.
 CeilingGrab:
@@ -27,15 +39,23 @@ Pickups:
 8.
 Elevator:
 - Change elevators to move in a route, not one direction and back
-- Elevator gets Darkened if moving into range of the player, but 1 block higher, so that the player are looking at its wall
 
 9.
-Skybox
+Skybox:
 - Change skybox to fit the new theme
+
+10.
+Jumping:
+- Jumping must be possible if the player can jump over lava or water (if swimming is not learned)
+
+11.
+Movement & Camera
+- When rotating the camera, in narrow places, not all number_Display updates correctly
+- Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
 
 ---
 
-10.
+12.
 Levels
 - Make new Levels
 

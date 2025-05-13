@@ -257,16 +257,41 @@ public class Player_Jumping : Singleton<Player_Jumping>
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
-                target = hit.transform.gameObject;
+                if (hit.transform.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Lava)
+                {
+                    ResetTargetBlock(ref target);
+                    target = null;
+                    return false;
+                }
+                else
+                {
+                    target = hit.transform.gameObject;
+                }
             }
         }
 
         //Raycast down from forward +1 to see if there is a block adjacent
         if (Physics.Raycast(gameObject.transform.position + (dir * 1), Vector3.down, out hit, 1))
         {
-            ResetTargetBlock(ref target);
-            target = null;
-            return false;
+            if (hit.transform.gameObject.GetComponent<BlockInfo>())
+            {
+                if (hit.transform.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Lava)
+                {
+                    //Continue if there is a lava block in between
+                }
+                else
+                {
+                    ResetTargetBlock(ref target);
+                    target = null;
+                    return false;
+                }
+            }
+            else
+            {
+                ResetTargetBlock(ref target);
+                target = null;
+                return false;
+            }
         }
 
         //Darken color in target block

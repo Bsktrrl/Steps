@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player_GraplingHook : Singleton<Player_GraplingHook>
 {
     [Header("Grappling Distance")]
-    float grapplingDistance = 4.55f;
+    float grapplingDistance = 5.55f;
     float movementSpeed = 15;
 
     [Header("Red Dot Object")]
@@ -98,7 +98,7 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
         {
             if (hit.transform.gameObject)
             {
-                if (hit.transform.gameObject.GetComponent<BlockInfo>())
+                if (hit.transform.gameObject.GetComponent<BlockInfo>() || hit.transform.gameObject.GetComponent<Block_Ladder>())
                 {
                     endPoint = hit.point + (-Player_BlockDetector.Instance.lookDir * 0.05f);
                     redDotSceneObject.transform.position = endPoint;
@@ -198,7 +198,7 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
                     if (hit.transform.gameObject)
                     {
                         print("5. CheckIfCanGrapple");
-                        if (hit.transform.gameObject.GetComponent<BlockInfo>())
+                        if (hit.transform.gameObject.GetComponent<BlockInfo>() || hit.transform.gameObject.GetComponent<Block_Ladder>())
                         {
                             print("6. CheckIfCanGrapple");
                             //Set the block forward-under as the target position

@@ -5797,6 +5797,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a93c2a28a45611840a38c1f24c5007fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  block_hasBeenDarkened: 0
+  canMove_Forward: 0
+  canMove_Back: 0
+  canMove_Left: 0
+  canMove_Right: 0
+  moveTarget_Forward: {fileID: 0}
+  moveTarget_Back: {fileID: 0}
+  moveTarget_Left: {fileID: 0}
+  moveTarget_Right: {fileID: 0}
 --- !u!114 &2923936148599222782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7045,6 +7054,9 @@ MonoBehaviour:
         ControlStick: 0
     mapInfo_SaveList:
       map_SaveInfo_List: []
+    overWorldStates_SaveList:
+      regionState: 0
+      levelState: 0
   menuState_Store: 0
   playerStats_Store:
     steps_Max: 0
@@ -7086,6 +7098,9 @@ MonoBehaviour:
       ControlStick: 0
   mapInfo_StoreList:
     map_SaveInfo_List: []
+  overWorldStates_StoreList:
+    regionState: 0
+    levelState: 0
 --- !u!1 &8639407178807463783
 GameObject:
   m_ObjectHideFlags: 0
