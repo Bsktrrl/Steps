@@ -46,5 +46,8 @@ public enum BlockElement
 
     Brass,
     Gold,
-    Metal
+    Metal,
+
+    Wood_SwampWater,
+    Wood_Jungle
 }

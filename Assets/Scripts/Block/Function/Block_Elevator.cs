@@ -7,7 +7,7 @@ using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCou
 public class Block_Elevator : MonoBehaviour
 {
     [Header("Elevator Stats")]
-    public float movementSpeed = 1;
+    public float movementSpeed = 2;
     public float waitingTime = 1;
     public bool pressureElevator;
 
@@ -226,6 +226,6 @@ public class MovementPath
     public int distance;
     public bool waitAfterMoving;
 
-    public Vector3 startPos;
-    public Vector3 endPos;
+    [HideInInspector] public Vector3 startPos;
+    [HideInInspector] public Vector3 endPos;
 }
