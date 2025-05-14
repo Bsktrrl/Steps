@@ -9,6 +9,7 @@ public class Block_Elevator : MonoBehaviour
     [Header("Elevator Stats")]
     public float movementSpeed = 1;
     public float waitingTime = 1;
+    public bool pressureElevator;
 
     [Header("Movement Path")]
     [SerializeField] List<MovementPath> movementPath;
@@ -23,6 +24,9 @@ public class Block_Elevator : MonoBehaviour
 
     private void Start()
     {
+        if (gameObject.GetComponent<Block_Elevator_StepOn>())
+            pressureElevator = true;
+
         CalculateMovementPath();
     }
     private void Update()
@@ -30,7 +34,17 @@ public class Block_Elevator : MonoBehaviour
         //Moving towards new endPos
         if (!waiting && moveToPos)
         {
-            ElevatorMovement(pathSegmentCounter);
+            if (pressureElevator)
+            {
+                if (gameObject.GetComponent<Block_Elevator_StepOn>().isStandingOnBlock)
+                {
+                    ElevatorMovement(pathSegmentCounter);
+                }
+            }
+            else
+            {
+                ElevatorMovement(pathSegmentCounter);
+            }
         }
 
         CheckIfDarkenBlock();
@@ -139,6 +153,7 @@ public class Block_Elevator : MonoBehaviour
     void ResetBlock()
     {
         moveToPos = true;
+        pathSegmentCounter = 0;
 
         StartCoroutine(BlockWaiting(waitingTime));
     }

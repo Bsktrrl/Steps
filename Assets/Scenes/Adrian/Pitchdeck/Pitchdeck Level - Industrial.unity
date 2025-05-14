@@ -25390,6 +25390,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8469855453085548018, guid: 5e00f50dcf19d5444be365807155f2cd, type: 3}
   m_PrefabInstance: {fileID: 1445001162}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1445113419 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 235478208904104962, guid: 37605ab87c5862c41aa0bbc017bff2cb, type: 3}
+  m_PrefabInstance: {fileID: 1954474463}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1448028779
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34094,13 +34099,81 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 235478208904104962, guid: 37605ab87c5862c41aa0bbc017bff2cb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1954474471}
+    - targetCorrespondingSourceObject: {fileID: 235478208904104962, guid: 37605ab87c5862c41aa0bbc017bff2cb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1954474470}
   m_SourcePrefab: {fileID: 100100000, guid: 37605ab87c5862c41aa0bbc017bff2cb, type: 3}
 --- !u!4 &1954474464 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 580760402869311160, guid: 37605ab87c5862c41aa0bbc017bff2cb, type: 3}
   m_PrefabInstance: {fileID: 1954474463}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1954474470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445113419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe6c648dc1c1ccc4bbc93007bad607ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isStandingOnBlock: 0
+--- !u!114 &1954474471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445113419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3708beebcb60888449efe582466e0143, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 2
+  waitingTime: 1
+  pressureElevator: 0
+  movementPath:
+  - elevatorDirection: 1
+    distance: 2
+    waitAfterMoving: 0
+    startPos: {x: 0, y: 0, z: 0}
+    endPos: {x: 0, y: 0, z: 0}
+  - elevatorDirection: 3
+    distance: 2
+    waitAfterMoving: 0
+    startPos: {x: 0, y: 0, z: 0}
+    endPos: {x: 0, y: 0, z: 0}
+  - elevatorDirection: 1
+    distance: 1
+    waitAfterMoving: 1
+    startPos: {x: 0, y: 0, z: 0}
+    endPos: {x: 0, y: 0, z: 0}
+  - elevatorDirection: 2
+    distance: 1
+    waitAfterMoving: 0
+    startPos: {x: 0, y: 0, z: 0}
+    endPos: {x: 0, y: 0, z: 0}
+  - elevatorDirection: 4
+    distance: 2
+    waitAfterMoving: 0
+    startPos: {x: 0, y: 0, z: 0}
+    endPos: {x: 0, y: 0, z: 0}
+  - elevatorDirection: 2
+    distance: 2
+    waitAfterMoving: 1
+    startPos: {x: 0, y: 0, z: 0}
+    endPos: {x: 0, y: 0, z: 0}
+  moveToPos: 0
+  waiting: 1
+  pathSegmentCounter: 0
 --- !u!1001 &1954506683
 PrefabInstance:
   m_ObjectHideFlags: 0
