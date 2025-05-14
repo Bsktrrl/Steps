@@ -213,7 +213,7 @@ public class Player_Dash : Singleton<Player_Dash>
     {
         if (PlayerManager.Instance.block_StandingOn_Current.block)
         {
-            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator_Normal>()
+            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator>()
             || PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator_StepOn>())
             {
                 SetDashDirections();

@@ -61,7 +61,6 @@ public class NPCDialogueSheets : Singleton<NPCDialogueSheets>
         //Fill the new element with data
         for (int i = 0; i < excelTableSize; i++)
         {
-            int result;
             newDataObjectList[index].dialogueList[i] = new DialogueObject();
 
             //Description

@@ -92,7 +92,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
     {
         if (PlayerManager.Instance.block_StandingOn_Current.block)
         {
-            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator_Normal>()
+            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator>()
             || PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator_StepOn>())
             {
                 CheckIfCanJump_OnAction();

@@ -211,7 +211,7 @@ public class BlockInfo : MonoBehaviour
         {
             if (PlayerManager.Instance.block_StandingOn_Current.block)
             {
-                if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator_Normal>()
+                if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator>()
                 || PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator_StepOn>())
                 {
                     if ((gameObject == PlayerManager.Instance.block_Vertical_InFront.block && PlayerManager.Instance.canMove_Forward)
