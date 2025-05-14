@@ -34,5 +34,17 @@ public enum BlockElement
 
     Stone,
     Lava,
+    Quicksand,
+    Mud,
+    SwampWater,
 
+    Rock,
+    Clay,
+    Brick,
+    SwampGrass,
+    ColdWood,
+
+    Brass,
+    Gold,
+    Metal
 }

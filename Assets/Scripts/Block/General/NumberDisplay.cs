@@ -124,6 +124,8 @@ public class NumberDisplay : MonoBehaviour
         }
         else if (value == -2)
         {
+            //Change later to fit -2 asset from Mushroom circle
+
             return;
         }
         else if (value <= -3)

@@ -29,16 +29,16 @@ public class BlockInfo : MonoBehaviour
     List<Renderer> objectRenderers = new List<Renderer>();
     [HideInInspector] public List<MaterialPropertyBlock> propertyBlocks = new List<MaterialPropertyBlock>();
 
-    public bool colorTint_isActive;
+    [HideInInspector] public bool colorTint_isActive;
     bool color_isDarkened;
 
-    public float tintValue = 0.95f;
+    [HideInInspector] public float tintValue = 0.95f;
 
     NumberDisplay numberDisplay;
 
     bool finishedSetup;
 
-    public bool blockIsDark;
+    [HideInInspector] public bool blockIsDark;
     
     #region Adjacent Blocks
     [Header("Adjacent Blocks - Upper")]
