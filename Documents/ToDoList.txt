@@ -1,5 +1,17 @@
 ----- NEXT ON THE LIST -----
 
+2. Pitch Deck
+O Write the rest of the text
+	- Change "Archie - End 1" to become less cinematic
+- Add 3/6 smaller images as part of a level, for each biome
+- Add 2 images of Essence pickup and Skin Pickup
+- Make 2 images where the one level is a "Dusk Age"-version of the other
+- Make part of levels to make video clips of the gameplay from
+
+2.
+Step loss on Respawn
+- Max Steps are reset upon Respawn, even if you get StepsUp from Pickups
+
 3.
 Effect Blocks:
 - Add all new Effect-prefabs to a Block when their "Effect Block"-script is attached
@@ -27,18 +39,34 @@ Adjacent Blocks:
 Pickups:
 - Must be able to be raycasted through, so the player can Dash/Descend into a block with a pickup on it
 - Pickups are also blocking raycasting for DarkenBlocks
-
-8.
-Elevator:
-- Change elevators to move in a route, not one direction and back
+- Cannot jump onto blocks with pickups
 
 9.
-Skybox
+Skybox:
 - Change skybox to fit the new theme
+
+10.
+Jumping:
+- Jumping must be possible if the player can jump over lava or water (if swimming is not learned)
+
+11.
+Movement & Camera
+- When rotating the camera, in narrow places, not all number_Display updates correctly
+- Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
+
+12.
+Number Display:
+- Add -1 and -2 to NumberDisplay
+
+13.
+Slopes
+- Slopes are buggy
+	- Speed is way too fast
+	- Can glitch up the slope if holding in the move-button
 
 ---
 
-10.
+13.
 Levels
 - Make new Levels
 
@@ -93,6 +121,11 @@ Character Creator:
 
 
 ----- OTHER -----
+
+Camera:
+- FOV: 75
+- Camera Offset: 0, 3, -6.5
+
 
 
 b56f3a

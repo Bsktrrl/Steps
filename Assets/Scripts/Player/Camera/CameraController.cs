@@ -49,6 +49,7 @@ public class CameraController : Singleton<CameraController>
         cameraOffset_originalPos = cameraOffset.transform.localPosition;
         cameraOffset_originalRot = cameraOffset.transform.rotation;
 
+        SetBlockDetectorDirection();
         AdjustFacingDirection();
     }
 

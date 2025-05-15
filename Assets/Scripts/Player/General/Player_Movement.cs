@@ -1047,7 +1047,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
         if (PlayerManager.Instance.block_StandingOn_Current.block)
         {
-            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_IceGlide>() && !PlayerStats.Instance.stats.abilitiesGot_Permanent.IceSpikes && !PlayerStats.Instance.stats.abilitiesGot_Temporary.IceSpikes)
+            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_IceGlide>())
             {
                 isIceGliding = true;
                 PlayerStats.Instance.stats.steps_Current += PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
