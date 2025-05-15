@@ -260,6 +260,11 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
         if (hit.transform.GetComponent<BlockInfo>())
         {
+            //if (hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Fence)
+            //{
+            //    return;
+            //}
+
             if (rayPointObject == detectorSpot_Horizontal_Front)
             {
                 PlayerManager.Instance.block_Horizontal_InFront.block = hit.transform.gameObject;
@@ -292,6 +297,12 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
                 CheckRaycastDirection_Horizontal(direction);
             }
+        }
+
+        //Prevent movement if something is blocking the way for the player
+        else
+        {
+            CheckRaycastDirection_Horizontal(direction);
         }
     }
     void Raycast_Horizontal_NotHit(GameObject rayPointObject, Vector3 direction)

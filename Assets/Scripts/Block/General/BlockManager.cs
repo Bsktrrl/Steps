@@ -21,6 +21,8 @@ public enum BlockType
     Slab,
     Stair,
     Slope,
+
+    Fence,
 }
 
 public enum BlockElement
