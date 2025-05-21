@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 1
-  blockElement: 0
+  blockElement: 21
   movementCost_Temp: 0
   movementCost: 1
   movementSpeed: 3
@@ -176,6 +176,7 @@ MonoBehaviour:
   startPos: {x: 0, y: 0, z: 0}
   colorTint_isActive: 0
   tintValue: 0.95
+  blockIsDark: 0
   upper_Front_Left: {fileID: 0}
   upper_Front: {fileID: 0}
   upper_Front_Right: {fileID: 0}
@@ -251,6 +252,8 @@ MonoBehaviour:
   effectBlock_Pusher_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
+  effectBlock_MushroomCircle_isAdded: 0
+  blockEffectHolding_List: []
 --- !u!1001 &6575008068681962659
 PrefabInstance:
   m_ObjectHideFlags: 0

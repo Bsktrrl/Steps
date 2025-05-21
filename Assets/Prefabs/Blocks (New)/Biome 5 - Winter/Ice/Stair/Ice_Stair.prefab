@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &5456093373447596065
+--- !u!1001 &2317550896829776492
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 58ccf9c6c5b305047b360125fd075548, type: 3}
       propertyPath: m_Name
-      value: Ice_Stair
+      value: Ice_Stair_Straight
       objectReference: {fileID: 0}
     - target: {fileID: 6263607840304014181, guid: 58ccf9c6c5b305047b360125fd075548, type: 3}
       propertyPath: m_LocalPosition.y
@@ -69,33 +69,38 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 58ccf9c6c5b305047b360125fd075548, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1092806304737846459}
+      addedObject: {fileID: 6886525797476037769}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 58ccf9c6c5b305047b360125fd075548, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7123994357218041651}
+      addedObject: {fileID: 2959517243733265780}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 58ccf9c6c5b305047b360125fd075548, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7385690730737727856}
+      addedObject: {fileID: -1215353581612169794}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 58ccf9c6c5b305047b360125fd075548, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2632562709664498758}
+      addedObject: {fileID: -4989213218592083854}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 58ccf9c6c5b305047b360125fd075548, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5568859616904230041}
+      addedObject: {fileID: -6553055961664927209}
   m_SourcePrefab: {fileID: 100100000, guid: 58ccf9c6c5b305047b360125fd075548, type: 3}
---- !u!1 &5149472351665640816 stripped
+--- !u!4 &2856163140948731271 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 58ccf9c6c5b305047b360125fd075548, type: 3}
+  m_PrefabInstance: {fileID: 2317550896829776492}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3236101945498304317 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 58ccf9c6c5b305047b360125fd075548, type: 3}
-  m_PrefabInstance: {fileID: 5456093373447596065}
+  m_PrefabInstance: {fileID: 2317550896829776492}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &7123994357218041651
+--- !u!64 &2959517243733265780
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5149472351665640816}
+  m_GameObject: {fileID: 3236101945498304317}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -111,13 +116,13 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300004, guid: e0baf42a40b5ec348be5877a32f38262, type: 3}
---- !u!54 &7385690730737727856
+--- !u!54 &-1215353581612169794
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5149472351665640816}
+  m_GameObject: {fileID: 3236101945498304317}
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
@@ -138,20 +143,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2632562709664498758
+--- !u!114 &-4989213218592083854
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5149472351665640816}
+  m_GameObject: {fileID: 3236101945498304317}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a201269b3f988984da941a6b8a00096e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 3
-  blockElement: 0
+  blockElement: 20
   movementCost_Temp: 0
   movementCost: 0
   movementSpeed: 10
@@ -183,6 +188,7 @@ MonoBehaviour:
   startPos: {x: 0, y: 0, z: 0}
   colorTint_isActive: 0
   tintValue: 0.95
+  blockIsDark: 0
   upper_Front_Left: {fileID: 0}
   upper_Front: {fileID: 0}
   upper_Front_Right: {fileID: 0}
@@ -210,30 +216,25 @@ MonoBehaviour:
   lower_Back_Left: {fileID: 0}
   lower_Back: {fileID: 0}
   lower_Back_Right: {fileID: 0}
---- !u!114 &5568859616904230041
+--- !u!114 &-6553055961664927209
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5149472351665640816}
+  m_GameObject: {fileID: 3236101945498304317}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f471b6e3526af2344bb7c6067632caf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &5493627928242130890 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 58ccf9c6c5b305047b360125fd075548, type: 3}
-  m_PrefabInstance: {fileID: 5456093373447596065}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &7584886008727820003
+--- !u!1001 &4177469711688582865
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 5493627928242130890}
+    m_TransformParent: {fileID: 2856163140948731271}
     m_Modifications:
     - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_Name
@@ -284,8 +285,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
---- !u!4 &1092806304737846459 stripped
+--- !u!4 &6886525797476037769 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7379288899374920280, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
-  m_PrefabInstance: {fileID: 7584886008727820003}
+  m_PrefabInstance: {fileID: 4177469711688582865}
   m_PrefabAsset: {fileID: 0}

@@ -230,7 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 2
-  blockElement: 0
+  blockElement: 20
   movementCost_Temp: 0
   movementCost: 0
   movementSpeed: 10
@@ -262,6 +262,7 @@ MonoBehaviour:
   startPos: {x: 0, y: 0, z: 0}
   colorTint_isActive: 0
   tintValue: 0.95
+  blockIsDark: 0
   upper_Front_Left: {fileID: 0}
   upper_Front: {fileID: 0}
   upper_Front_Right: {fileID: 0}
@@ -333,6 +334,8 @@ MonoBehaviour:
   effectBlock_Pusher_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
+  effectBlock_MushroomCircle_isAdded: 0
+  blockEffectHolding_List: []
 --- !u!4 &3561963363603263105 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400006, guid: 8de9d39fc2df34846b685fe977168dbd, type: 3}
