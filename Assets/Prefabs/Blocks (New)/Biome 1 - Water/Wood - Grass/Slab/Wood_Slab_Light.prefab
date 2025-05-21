@@ -170,8 +170,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.3, z: 1}
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Size: {x: 1, y: 0.5, z: 1}
+  m_Center: {x: 0, y: 0.35, z: 0}
 --- !u!54 &3744130331268091044
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -229,33 +229,7 @@ MonoBehaviour:
   startPos: {x: 0, y: 0, z: 0}
   colorTint_isActive: 0
   tintValue: 0.95
-  upper_Front_Left: {fileID: 0}
-  upper_Front: {fileID: 0}
-  upper_Front_Right: {fileID: 0}
-  upper_Center_Left: {fileID: 0}
-  upper_Center: {fileID: 0}
-  upper_Center_Right: {fileID: 0}
-  upper_Back_Left: {fileID: 0}
-  upper_Back: {fileID: 0}
-  upper_Back_Right: {fileID: 0}
-  center_Front_Left: {fileID: 0}
-  center_Front: {fileID: 0}
-  center_Front_Right: {fileID: 0}
-  center_Center_Left: {fileID: 0}
-  center_Center: {fileID: 0}
-  center_Center_Right: {fileID: 0}
-  center_Back_Left: {fileID: 0}
-  center_Back: {fileID: 0}
-  center_Back_Right: {fileID: 0}
-  lower_Front_Left: {fileID: 0}
-  lower_Front: {fileID: 0}
-  lower_Front_Right: {fileID: 0}
-  lower_Center_Left: {fileID: 0}
-  lower_Center: {fileID: 0}
-  lower_Center_Right: {fileID: 0}
-  lower_Back_Left: {fileID: 0}
-  lower_Back: {fileID: 0}
-  lower_Back_Right: {fileID: 0}
+  blockIsDark: 0
 --- !u!114 &5251237982338123550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,6 +247,8 @@ MonoBehaviour:
   effectBlock_Pusher_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
+  effectBlock_MushroomCircle_isAdded: 0
+  blockEffectHolding_List: []
 --- !u!4 &8767048860746802684 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400006, guid: f288b2c54a7460342b8118ed6b9cf2a6, type: 3}

@@ -19,7 +19,6 @@ public class MapManager : Singleton<MapManager>
     [Header("MapManager")]
     [HideInInspector] public Map_SaveInfo mapInfo_ToSave = new Map_SaveInfo();
 
-
     BlockInfo[] blockInfoList;
     Interactable_Pickup[] pickupInfoList;
 

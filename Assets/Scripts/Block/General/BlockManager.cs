@@ -55,5 +55,7 @@ public enum BlockElement
 
     Ice,
     Snow,
-    Ice_Grass
+    Ice_Grass,
+
+    Water
 }

@@ -17,9 +17,9 @@ public class Player_Ascend : Singleton<Player_Ascend>
     public bool isAscending;
     float ascendDuration = 0.1f;
 
-    RaycastHit hit;
-
     bool canRun;
+
+    float rayLength = 2f;
 
 
     //--------------------
@@ -92,71 +92,88 @@ public class Player_Ascend : Singleton<Player_Ascend>
                 {
                     if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Ascend || gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Ascend)
                     {
-                        if (Physics.Raycast(transform.position, Vector3.up, out hit, ascendingDistance))
+                        Vector3 origin = transform.position + (Vector3.up * 0.1f);
+
+                        // 1. Check for a cube directly above the player
+                        if (Physics.Raycast(origin, Vector3.up, out RaycastHit hit1, rayLength))
                         {
-                            Debug.DrawRay(transform.position, Vector3.up * ascendingDistance, Color.cyan);
+                            float verticalDistance = Mathf.Abs(hit1.point.y) - Mathf.Abs(transform.position.y);
 
-                            if (hit.transform.GetComponent<BlockInfo>())
+                            print("verticalDistance: " + verticalDistance + " | RayLength: " + rayLength);
+
+                            if (verticalDistance > rayLength)
                             {
-                                //If Ascending block is a WaterBlock
-                                if (hit.transform.GetComponent<Block_Water>() && (PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers || PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim || PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers || PlayerStats.Instance.stats.abilitiesGot_Temporary.SwiftSwim))
-                                {
-                                    //print("1. Ascending - WaterBlock");
-                                    AscendingIsAllowed();
-                                    return true;
-                                }
+                                // Block too high to ascend to
+                                AscendingIsNOTAllowed();
+                                return false;
+                            }
 
-                                //If Ascending block is a Slab and it's empty over it
-                                else if (hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Slab && !hit.transform.GetComponent<BlockInfo>().upper_Center)
-                                {
-                                    //print("2. Ascending - Slab and noting over");
-                                    AscendingIsAllowed();
-                                    return true;
-                                }
+                            if (hit1.collider.GetComponent<BlockInfo>() == null)
+                            {
+                                print("1. Ascend");
 
-                                //If the space over the blockHit is a Slab
-                                else if (hit.transform.GetComponent<BlockInfo>().upper_Center != null)
+                                AscendingIsNOTAllowed();
+                                return false; // Hit something that's not a block
+                            }
+
+                            Vector3 secondRayOrigin = hit1.collider.transform.position + (Vector3.up * 0.3f);
+                            if (Physics.Raycast(secondRayOrigin, Vector3.up, out RaycastHit hit2, 1))
+                            {
+                                BlockInfo secondBlock = hit2.collider.GetComponent<BlockInfo>();
+                                if (secondBlock != null)
                                 {
-                                    if (hit.transform.GetComponent<BlockInfo>().upper_Center.GetComponent<BlockInfo>().blockType == BlockType.Slab)
+                                    // v CASE 1: First block is Water and Player can Swim — allow regardless of second block
+                                    if (hit1.collider.GetComponent<BlockInfo>().blockElement == BlockElement.Water && PlayerHasSwimAbility())
                                     {
-                                        //print("3. Ascending - Block over is a Slab");
-                                        AscendingIsAllowed();
+                                        AscendingIsAllowed(hit1.transform.gameObject);
                                         return true;
                                     }
-                                    else
-                                    {
-                                        //print("4. Ascending - Block over is NOT a Slab");
-                                        AscendingIsNOTAllowed();
-                                        return false;
-                                    }
-                                }
 
-                                //If available space over the blockHit is empty
-                                else if (!hit.transform.GetComponent<BlockInfo>().upper_Center)
-                                {
-                                    //If Ascending block is a WaterBlock
-                                    if (hit.transform.GetComponent<Block_Water>())
+                                    // v CASE 2: Second block is Water and Player can Swim
+                                    if (secondBlock.blockElement == BlockElement.Water && PlayerHasSwimAbility())
                                     {
-                                        // print("5. Ascending - Empty but Water is Hit");
-                                        AscendingIsNOTAllowed();
-                                        return false;
-                                    }
-                                    else
-                                    {
-                                        //print("6. Ascending - Empty");
-                                        AscendingIsAllowed();
+                                        AscendingIsAllowed(hit1.transform.gameObject);
                                         return true;
                                     }
-                                }
 
-                                //If not allowed to Ascend
+                                    // v CASE 3: Second block is a slab — allow
+                                    if (secondBlock.blockType == BlockType.Slab)
+                                    {
+                                        AscendingIsAllowed(hit1.transform.gameObject);
+                                        return true;
+                                    }
+
+                                    // x CASE 4: Solid second block above — block
+                                    AscendingIsNOTAllowed();
+                                    return false;
+                                }
+                            }
+
+                            print("4. Ascend");
+
+                            //Check water compatability
+                            if (hit1.collider.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+                            {
+                                if (PlayerHasSwimAbility())
+                                {
+                                    AscendingIsAllowed(hit1.transform.gameObject);
+                                    return true;
+                                }
                                 else
                                 {
                                     AscendingIsNOTAllowed();
                                     return false;
                                 }
                             }
+                            
+                            // First block exists, second does not — can ascend
+                            AscendingIsAllowed(hit1.transform.gameObject);
+                            return true;
                         }
+
+                        // No block above the player — cannot ascend
+                        AscendingIsNOTAllowed();
+                        return false;
                     }
                 }
             }
@@ -166,10 +183,21 @@ public class Player_Ascend : Singleton<Player_Ascend>
         AscendingIsNOTAllowed();
         return false;
     }
-    void AscendingIsAllowed()
+    bool PlayerHasSwimAbility()
+    {
+        var stats = PlayerStats.Instance.stats;
+        return stats.abilitiesGot_Permanent.SwimSuit ||
+               stats.abilitiesGot_Permanent.Flippers ||
+               stats.abilitiesGot_Permanent.SwiftSwim ||
+               stats.abilitiesGot_Temporary.SwimSuit ||
+               stats.abilitiesGot_Temporary.Flippers ||
+               stats.abilitiesGot_Temporary.SwiftSwim;
+    }
+
+    void AscendingIsAllowed(GameObject hitObject)
     {
         ascendingBlock_Previous = ascendingBlock_Current;
-        ascendingBlock_Current = hit.transform.gameObject;
+        ascendingBlock_Current = hitObject;
 
         if (ascendingBlock_Current != ascendingBlock_Previous)
         {
