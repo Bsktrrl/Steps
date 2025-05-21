@@ -34,10 +34,13 @@ public class MainMenuManager : Singleton<MainMenuManager>
     private void Awake()
     {
         Menu_Main();
+        menuState = MenuState.Main_Menu;
     }
     private void Start()
     {
         menuState = MenuState.Main_Menu;
+
+        Menu_Main();
     }
 
 
@@ -83,6 +86,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
         switch (menuState)
         {
             case MenuState.None:
+                Menu_Main();
                 break;
 
             case MenuState.Main_Menu:
@@ -102,6 +106,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
                 break;
 
             default:
+                Menu_Main();
                 break;
         }
     }
