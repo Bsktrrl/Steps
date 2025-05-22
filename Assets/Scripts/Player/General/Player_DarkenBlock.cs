@@ -97,7 +97,7 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
     bool RaycastFromTarget(ref GameObject target, Vector3 dir, float length)
     {
         //Raycast down from target
-        if (Physics.Raycast(gameObject.transform.position + dir, Vector3.down, out hit, length))
+        if (Physics.Raycast(gameObject.transform.position + dir, Vector3.down, out hit, length, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {

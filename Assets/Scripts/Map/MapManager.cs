@@ -12,6 +12,9 @@ public class MapManager : Singleton<MapManager>
     GameObject playerObjectInScene;
     public Vector3 playerStartPos;
 
+    [Header("LayerMask for Raycasting")]
+    public LayerMask pickup_LayerMask;
+
     [Header("Sound")]
     public List<AudioTrack> mapAudioList;
     [SerializeField] List<AudioSource> mapAudioSourceList;
@@ -29,6 +32,8 @@ public class MapManager : Singleton<MapManager>
     private void Awake()
     {
         SpawnPlayerObject();
+
+        pickup_LayerMask = ~pickup_LayerMask; //Corrects the error that resulted in all raycasts to only focus on the pickups instead of the other way around
     }
     private void Start()
     {

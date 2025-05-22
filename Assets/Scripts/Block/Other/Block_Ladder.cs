@@ -63,7 +63,7 @@ public class Block_Ladder : MonoBehaviour
             //Find the top ladderPart in the ladder
             while (!findLastLadder)
             {
-                if (Physics.Raycast(lastLadderPart_Up.transform.position, Vector3.up, out hit, 1))
+                if (Physics.Raycast(lastLadderPart_Up.transform.position, Vector3.up, out hit, 1, MapManager.Instance.pickup_LayerMask))
                 {
                     if (hit.transform.gameObject.GetComponent<Block_Ladder>())
                     {
@@ -104,7 +104,7 @@ public class Block_Ladder : MonoBehaviour
             //Find the top ladderPart in the ladder
             while (!findLastLadder)
             {
-                if (Physics.Raycast(lastLadderPart_Down.transform.position, Vector3.down, out hit, 1))
+                if (Physics.Raycast(lastLadderPart_Down.transform.position, Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
                 {
                     if (hit.transform.gameObject.GetComponent<Block_Ladder>())
                     {
@@ -137,7 +137,7 @@ public class Block_Ladder : MonoBehaviour
     void FindExitBlock_Up(Vector3 dir)
     {
         //Find the exitBlock to the ladder
-        if (Physics.Raycast(lastLadderPart_Up.transform.position + Vector3.up + (dir * 0.5f), Vector3.down, out hit, 1))
+        if (Physics.Raycast(lastLadderPart_Up.transform.position + Vector3.up + (dir * 0.5f), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
@@ -151,7 +151,7 @@ public class Block_Ladder : MonoBehaviour
     void FindExitBlock_Down()
     {
         //Find the exitBlock to the ladder
-        if (Physics.Raycast(lastLadderPart_Down.transform.position, Vector3.down, out hit, 1))
+        if (Physics.Raycast(lastLadderPart_Down.transform.position, Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
@@ -172,7 +172,7 @@ public class Block_Ladder : MonoBehaviour
         if (!lastLadderPart_Up) { return; }
 
         //Find the exitBlock to the ladder
-        if (Physics.Raycast(lastLadderPart_Up.transform.position + Vector3.up + (dir * 0.5f), Vector3.down, out hit, 1))
+        if (Physics.Raycast(lastLadderPart_Up.transform.position + Vector3.up + (dir * 0.5f), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
@@ -185,7 +185,7 @@ public class Block_Ladder : MonoBehaviour
         if (!lastLadderPart_Down) { return; }
 
         //Find the exitBlock to the ladder
-        if (Physics.Raycast(lastLadderPart_Down.transform.position, Vector3.down, out hit, 1))
+        if (Physics.Raycast(lastLadderPart_Down.transform.position, Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {

@@ -245,7 +245,7 @@ public class Player_Dash : Singleton<Player_Dash>
         ResetDarkenColorIfStepsIsGone(ref target);
 
         //Raycast target +1
-        if (Physics.Raycast(gameObject.transform.position, dir, out hit, 1))
+        if (Physics.Raycast(gameObject.transform.position, dir, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
 
         }
@@ -257,7 +257,7 @@ public class Player_Dash : Singleton<Player_Dash>
         }
 
         //Raycast target +2
-        if (Physics.Raycast(gameObject.transform.position + dir, dir, out hit, 1))
+        if (Physics.Raycast(gameObject.transform.position + dir, dir, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
@@ -268,7 +268,7 @@ public class Player_Dash : Singleton<Player_Dash>
         }
 
         //Raycast down from target +2
-        if (Physics.Raycast(gameObject.transform.position + (dir * 2), Vector3.down, out hit, 1))
+        if (Physics.Raycast(gameObject.transform.position + (dir * 2), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {

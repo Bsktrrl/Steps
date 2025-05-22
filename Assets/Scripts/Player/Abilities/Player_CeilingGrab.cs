@@ -94,7 +94,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     }
     void RaycastCeiling()
     {
-        if (Physics.Raycast(transform.position, Vector3.up, out hit, 1))
+        if (Physics.Raycast(transform.position, Vector3.up, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
@@ -210,7 +210,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 
         if (Player_Movement.Instance.movementStates == MovementStates.Still)
         {
-            if (Physics.Raycast(transform.position, Vector3.up, out hit, 1))
+            if (Physics.Raycast(transform.position, Vector3.up, out hit, 1, MapManager.Instance.pickup_LayerMask))
             {
                 if (hit.transform.GetComponent<BlockInfo>())
                 {
@@ -236,7 +236,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         }
         else if (Player_Movement.Instance.movementStates == MovementStates.Moving)
         {
-            if (Physics.Raycast(transform.position, Vector3.up, out hit, 1))
+            if (Physics.Raycast(transform.position, Vector3.up, out hit, 1, MapManager.Instance.pickup_LayerMask))
             {
                 if (hit.transform.GetComponent<BlockInfo>())
                 {

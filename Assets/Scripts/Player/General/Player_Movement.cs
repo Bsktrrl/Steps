@@ -537,13 +537,13 @@ public class Player_Movement : Singleton<Player_Movement>
     GameObject CeilingGrabMovementCheck(Vector3 direction)
     {
         //Check if direction is blocked by a block
-        if (Physics.Raycast(transform.position, direction, out hit, 1))
+        if (Physics.Raycast(transform.position, direction, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             return null;
         }
 
         //Check if there is a block to move into
-        if (Physics.Raycast(transform.position + direction, Vector3.up, out hit, 1))
+        if (Physics.Raycast(transform.position + direction, Vector3.up, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             return hit.transform.gameObject;
         }
@@ -708,7 +708,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
     void FallingRaycast()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, out hit))
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
@@ -735,7 +735,7 @@ public class Player_Movement : Singleton<Player_Movement>
     void CheckAvailableLadderExitBlocks(Vector3 dir)
     {
         //Check from the bottom and up
-        if (Physics.Raycast(transform.position, dir, out hit, 1))
+        if (Physics.Raycast(transform.position, dir, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<Block_Ladder>())
             {
@@ -744,7 +744,7 @@ public class Player_Movement : Singleton<Player_Movement>
         }
 
         //Check from the top and down
-        if (Physics.Raycast(transform.position + (dir * 0.65f), Vector3.down, out hit, 1))
+        if (Physics.Raycast(transform.position + (dir * 0.65f), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<Block_Ladder>())
             {
@@ -756,7 +756,7 @@ public class Player_Movement : Singleton<Player_Movement>
     bool CheckLaddersToEnter_Up(Vector3 dir)
     {
         //Check from the bottom and up
-        if (Physics.Raycast(transform.position, dir, out hit, 1))
+        if (Physics.Raycast(transform.position, dir, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<Block_Ladder>())
             {
@@ -770,7 +770,7 @@ public class Player_Movement : Singleton<Player_Movement>
     bool CheckLaddersToEnter_Down(Vector3 dir)
     {
         //Check from the top and down
-        if (Physics.Raycast(transform.position + (dir * 0.65f), Vector3.down, out hit, 1))
+        if (Physics.Raycast(transform.position + (dir * 0.65f), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<Block_Ladder>())
             {
@@ -785,7 +785,7 @@ public class Player_Movement : Singleton<Player_Movement>
     GameObject GetLadderExitPart_Up(Vector3 dir)
     {
         //Check from the bottom and up
-        if (Physics.Raycast(transform.position, dir, out hit, 1))
+        if (Physics.Raycast(transform.position, dir, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<Block_Ladder>())
             {
@@ -799,7 +799,7 @@ public class Player_Movement : Singleton<Player_Movement>
     GameObject GetLadderExitPart_Down(Vector3 dir)
     {
         //Check from the top and down
-        if (Physics.Raycast(transform.position + (dir * 0.65f), Vector3.down, out hit, 1))
+        if (Physics.Raycast(transform.position + (dir * 0.65f), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<Block_Ladder>())
             {
@@ -868,7 +868,7 @@ public class Player_Movement : Singleton<Player_Movement>
         #region Move To ExitBlock
 
         endPosition = startPosition + dir;
-        if (Physics.Raycast(transform.position + dir, Vector3.down, out hit, 1))
+        if (Physics.Raycast(transform.position + dir, Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {

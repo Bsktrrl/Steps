@@ -210,7 +210,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
 
     public void PerformRaycast_Center_Vertical(GameObject rayPointObject, Vector3 direction)
     {
-        if (Physics.Raycast(rayPointObject.transform.position, direction, out hit, maxDistance_Horizontal))
+        if (Physics.Raycast(rayPointObject.transform.position, direction, out hit, maxDistance_Horizontal, MapManager.Instance.pickup_LayerMask))
         {
             Debug.DrawRay(rayPointObject.transform.position, direction * hit.distance, Color.green);
 
@@ -243,7 +243,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     {
         if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
-        if (Physics.Raycast(rayPointObject.transform.position, direction, out hit, maxDistance_Horizontal))
+        if (Physics.Raycast(rayPointObject.transform.position, direction, out hit, maxDistance_Horizontal, MapManager.Instance.pickup_LayerMask))
         {
             Raycast_Horizontal_Hit(rayPointObject, direction);
         }
@@ -526,7 +526,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
     {
         if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
-        if (Physics.Raycast(rayPointObject.transform.position, Vector3.down, out hit, maxDistance_Vertical))
+        if (Physics.Raycast(rayPointObject.transform.position, Vector3.down, out hit, maxDistance_Vertical, MapManager.Instance.pickup_LayerMask))
         {
             Debug.DrawRay(rayPointObject.transform.position, Vector3.down * maxDistance_Vertical, Color.green);
 
@@ -745,7 +745,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair || PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope)
         {
             //Front
-            if (Physics.Raycast(detectorSpot_Stair_Front.transform.position, Vector3.down, out hit, maxDistance_Stair))
+            if (Physics.Raycast(detectorSpot_Stair_Front.transform.position, Vector3.down, out hit, maxDistance_Stair, MapManager.Instance.pickup_LayerMask))
             {
                 if (PlayerManager.Instance.block_Horizontal_InFront.block == null && PlayerManager.Instance.block_Vertical_InFront.block != null)
                 {
@@ -766,7 +766,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             }
 
             //Back
-            if (Physics.Raycast(detectorSpot_Stair_Back.transform.position, Vector3.down, out hit, maxDistance_Stair))
+            if (Physics.Raycast(detectorSpot_Stair_Back.transform.position, Vector3.down, out hit, maxDistance_Stair, MapManager.Instance.pickup_LayerMask))
             {
                 if (PlayerManager.Instance.block_Horizontal_InBack.block == null && PlayerManager.Instance.block_Vertical_InBack.block != null)
                 {
@@ -787,7 +787,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             }
 
             //Left
-            if (Physics.Raycast(detectorSpot_Stair_Left.transform.position, Vector3.down, out hit, maxDistance_Stair))
+            if (Physics.Raycast(detectorSpot_Stair_Left.transform.position, Vector3.down, out hit, maxDistance_Stair, MapManager.Instance.pickup_LayerMask))
             {
                 if (PlayerManager.Instance.block_Horizontal_ToTheLeft.block == null && PlayerManager.Instance.block_Vertical_ToTheLeft.block != null)
                 {
@@ -808,7 +808,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             }
 
             //Right
-            if (Physics.Raycast(detectorSpot_Stair_Right.transform.position, Vector3.down, out hit, maxDistance_Stair))
+            if (Physics.Raycast(detectorSpot_Stair_Right.transform.position, Vector3.down, out hit, maxDistance_Stair, MapManager.Instance.pickup_LayerMask))
             {
                 if (PlayerManager.Instance.block_Horizontal_ToTheRight.block == null && PlayerManager.Instance.block_Vertical_ToTheRight.block != null)
                 {
@@ -882,7 +882,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             lookDir = Vector3.right;
 
         //Get BlockLookingAt - Horizontal
-        if (Physics.Raycast(transform.position, lookDir, out hit, 1))
+        if (Physics.Raycast(transform.position, lookDir, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             Debug.DrawRay(transform.position, lookDir, Color.blue);
 
@@ -903,7 +903,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
         }
 
         //Get BlockLookingAt - Vertical
-        if (Physics.Raycast((transform.position + (Vector3.up * 0.25f)) + lookDir, Vector3.down, out hit, 1.5f))
+        if (Physics.Raycast((transform.position + (Vector3.up * 0.25f)) + lookDir, Vector3.down, out hit, 1.5f, MapManager.Instance.pickup_LayerMask))
         {
             Debug.DrawRay((transform.position + (Vector3.up * 0.25f)) + lookDir, Vector3.down, Color.blue);
 

@@ -101,7 +101,7 @@ public class Player_Descend : Singleton<Player_Descend>
                         print("1. Descend");
 
                         // 1. Check for a block directly below the player's current block
-                        if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit1, 0.5f))
+                        if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit1, 0.5f, MapManager.Instance.pickup_LayerMask))
                         {
                             print("2. Descend");
 
@@ -149,7 +149,7 @@ public class Player_Descend : Singleton<Player_Descend>
 
                         print("5. Descend");
 
-                        if (Physics.Raycast(secondRayOrigin, Vector3.down, out RaycastHit hit2, rayLength))
+                        if (Physics.Raycast(secondRayOrigin, Vector3.down, out RaycastHit hit2, rayLength, MapManager.Instance.pickup_LayerMask))
                         {
                             float verticalDistance = hit2.point.y - transform.position.y;
 

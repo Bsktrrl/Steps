@@ -1,50 +1,38 @@
 ----- NEXT ON THE LIST -----
 
-2.
+1.
 Respawn:
 - Max Steps are reset upon Respawn, even if you get StepsUp from Pickups
 - Falling blocks cannot be ascended/descend through before respawning twice
 
-3.
+2.
 Effect Blocks:
 - Add all new Effect-prefabs to a Block when their "Effect Block"-script is attached
 	- Moveable
 
-4.
+3.
 Pusher:
 - Pusher doesn't work because of new system in "ShowNumber"-function in the "NumberDisplayed"-script
 
-5.
+4.
 CeilingGrab:
 - When CeilingGrab, the block you grab onto will not show its Number when moving adjacent (only the first time)
 - Fix IceGlide lag
 
-6.
-Adjacent Blocks:
-- Remove Adjacent Blocks from "BlockInfo"
-	- Make sure all abilities can be performed without it
-
-7.
-Pickups:
-- Must be able to be raycasted through, so the player can Dash/Descend into a block with a pickup on it
-- Pickups are also blocking raycasting for DarkenBlocks
-- Cannot jump onto blocks with pickups
-
-
-8.
+5.
 Jumping:
-- Jumping must be possible if the player can jump over lava or water (if swimming is not learned)
+- Jumping must be possible to perform over lava, or water (if swimming is not learned)
 
-9.
+6.
 Movement & Camera
 - When rotating the camera, in narrow places, not all number_Display updates correctly
 - Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
 
-10.
+7.
 Number Display:
 - Add -1 and -2 to NumberDisplay
 
-11.
+8.
 Slopes
 - Slopes are buggy
 	- Speed is way too fast (on some slopes)
@@ -52,7 +40,7 @@ Slopes
 
 ---
 
-12.
+9.
 Levels
 - Make new Levels
 

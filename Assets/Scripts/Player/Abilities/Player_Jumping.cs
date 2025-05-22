@@ -245,7 +245,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
         ResetDarkenColorIfStepsIsGone(ref target);
 
         //Raycast forward +2
-        if (Physics.Raycast(gameObject.transform.position, dir, out hit, 2))
+        if (Physics.Raycast(gameObject.transform.position, dir, out hit, 2, MapManager.Instance.pickup_LayerMask))
         {
             ResetTargetBlock(ref target);
             target = null;
@@ -253,7 +253,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
         }
 
         //Raycast down from forward +2
-        if (Physics.Raycast(gameObject.transform.position + (dir * 2), Vector3.down, out hit, 1))
+        if (Physics.Raycast(gameObject.transform.position + (dir * 2), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
@@ -271,7 +271,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
         }
 
         //Raycast down from forward +1 to see if there is a block adjacent
-        if (Physics.Raycast(gameObject.transform.position + (dir * 1), Vector3.down, out hit, 1))
+        if (Physics.Raycast(gameObject.transform.position + (dir * 1), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {

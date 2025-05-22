@@ -95,7 +95,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
                         Vector3 origin = transform.position + (Vector3.up * 0.1f);
 
                         // 1. Check for a cube directly above the player
-                        if (Physics.Raycast(origin, Vector3.up, out RaycastHit hit1, rayLength))
+                        if (Physics.Raycast(origin, Vector3.up, out RaycastHit hit1, rayLength, MapManager.Instance.pickup_LayerMask))
                         {
                             float verticalDistance = Mathf.Abs(hit1.point.y) - Mathf.Abs(transform.position.y);
 
@@ -117,7 +117,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
                             }
 
                             Vector3 secondRayOrigin = hit1.collider.transform.position + (Vector3.up * 0.3f);
-                            if (Physics.Raycast(secondRayOrigin, Vector3.up, out RaycastHit hit2, 1))
+                            if (Physics.Raycast(secondRayOrigin, Vector3.up, out RaycastHit hit2, 1, MapManager.Instance.pickup_LayerMask))
                             {
                                 BlockInfo secondBlock = hit2.collider.GetComponent<BlockInfo>();
                                 if (secondBlock != null)
