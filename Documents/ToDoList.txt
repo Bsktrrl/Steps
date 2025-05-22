@@ -1,9 +1,9 @@
 ----- NEXT ON THE LIST -----
 
+
 1.
 Respawn:
 - Falling blocks cannot be ascended/descend through before respawning twice
-- Leave some time room where the controls cannot be used
 
 2.
 Pusher:
@@ -16,7 +16,7 @@ CeilingGrab:
 
 4.
 Movement & Camera
-- When rotating the camera, in narrow places, not all number_Display updates correctly
+- When rotating the camera, in narrow places, not all number_Display updates correctly (check all possible rotations of a Cube to see if something is wrong)
 - Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
 
 5.
@@ -25,33 +25,43 @@ HUD:
 	- Have something changed slightly on the +3 Steps when aquired
 - Remove the other UI elements
 
+6.
+Overworld:
+- Add "coming soon..." to the level buttons that don't have a level yet
+- Mark non-playable levels in an understandable bg color
+
+
 ---
 
 
 6.
 Levels
-- Make new Levels
-
----
+- Make Levels for prototype
 
 
-Make BlockPrefabs:
-- Wood Slope
 
 
-From meetings
-- Weak Ice block
-	- Becomes water after moving away from it
-- Iceicle
-	- Make the iceicle shake before it drops when the player is under it, respawing the player if it hits the player
-- Switches (that make brass blocks move when pressed)
-	- Adjacent switch
-	- Step-on switch
-	- Linked step-on switch
 
-Menus:
-- Settings:
-	- Toggle "Show Numbers" of the Steps
+----- TASKS SOON TO BE IMPLEMENTED -----
+
+
+Weak Ice block:
+- Becomes water after moving away from it
+
+
+Iceicle:
+- Make the iceicle shake before it drops when the player is under it, respawing the player if it hits the player
+
+
+Switches: (that make brass blocks move when pressed)
+- Adjacent switch
+- Step-on switch
+- Linked step-on switch
+
+
+Settings Menu:
+- Toggle "Show Numbers" of the Steps on the HUD
+
 
 Effect Blocks:
 - Add all new Effect-prefabs to a Block when their "Effect Block"-script is attached
@@ -59,8 +69,22 @@ Effect Blocks:
 
 
 
----
 
+
+----- TASKS IN QUE -----
+
+
+Dialogue System:
+- Implement a dialogue system
+- Include:
+	- Description
+	- Text
+	- Player Animation
+	- NPC Animation
+	- Cutscene
+
+AbilityButton Display:
+- New ButtonDisplay on the player
 
 Character Creator:
 - Make a simple character creator to be used at the start og a new save and at the start of the Dusk Age
@@ -68,19 +92,9 @@ Character Creator:
 
 
 
------ TASKS IN QUE -----
-
-
-- New ButtonDisplay on the player
-
-
------ LATER -----
-
-
-
-
 
 ----- OTHER -----
+
 
 Camera:
 - FOV: 75
