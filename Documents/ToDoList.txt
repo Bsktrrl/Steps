@@ -2,45 +2,33 @@
 
 1.
 Respawn:
-- Max Steps are reset upon Respawn, even if you get StepsUp from Pickups
 - Falling blocks cannot be ascended/descend through before respawning twice
+- Leave some time room where the controls cannot be used
 
 2.
-Effect Blocks:
-- Add all new Effect-prefabs to a Block when their "Effect Block"-script is attached
-	- Moveable
-
-3.
 Pusher:
 - Pusher doesn't work because of new system in "ShowNumber"-function in the "NumberDisplayed"-script
 
-4.
+3.
 CeilingGrab:
 - When CeilingGrab, the block you grab onto will not show its Number when moving adjacent (only the first time)
 - Fix IceGlide lag
 
-5.
-Jumping:
-- Jumping must be possible to perform over lava, or water (if swimming is not learned)
-
-6.
+4.
 Movement & Camera
 - When rotating the camera, in narrow places, not all number_Display updates correctly
 - Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
 
-7.
-Slopes
-- Slopes are buggy
-	- Speed is way too fast (on some slopes)
-	- Can glitch up the slope if holding in the move-button
-
-8.
-Abilities:
-- Temporary abilities must be removed when starting a new level
+5.
+HUD:
+- Change Step stats to become "Zelda Hearts"-like
+	- Have something changed slightly on the +3 Steps when aquired
+- Remove the other UI elements
 
 ---
 
-8.
+
+6.
 Levels
 - Make new Levels
 
@@ -60,16 +48,14 @@ From meetings
 	- Adjacent switch
 	- Step-on switch
 	- Linked step-on switch
-UI:
-- Change Step stats to become "Zelda Hearts"-like
-	- Have something changed slightly on the +3 Steps when aquired
-- Remove the other UI elements
-
 
 Menus:
 - Settings:
 	- Toggle "Show Numbers" of the Steps
 
+Effect Blocks:
+- Add all new Effect-prefabs to a Block when their "Effect Block"-script is attached
+	- Moveable
 
 
 

@@ -259,7 +259,7 @@ public class PlayerStats : Singleton<PlayerStats>
 
         //yield return new WaitForSeconds(waitTime * 25);
 
-        
+        yield return new WaitForSeconds(waitTime * 30);
 
         RespawnPlayerLate_Action();
 
