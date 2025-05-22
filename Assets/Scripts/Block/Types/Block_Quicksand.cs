@@ -40,18 +40,4 @@ public class Block_Quicksand : MonoBehaviour
             }
         }
     }
-    void ChangeMovementCost()
-    {
-        if (PlayerManager.Instance.block_StandingOn_Current.block)
-        {
-            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Quicksand>())
-            {
-                GetComponent<BlockInfo>().movementCost += 1;
-
-                return;
-            }
-        }
-
-        GetComponent<BlockInfo>().movementCost = 0;
-    }
 }

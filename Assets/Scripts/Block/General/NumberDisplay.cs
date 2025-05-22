@@ -58,7 +58,7 @@ public class NumberDisplay : MonoBehaviour
         }
         else
         {
-            transform.GetChild(0).transform.localPosition = new Vector3(0, 0.48f, 0);
+            //transform.GetChild(0).transform.localPosition = new Vector3(0, 0.48f, 0);
             startRot_X_Number = 0;
         }
 
@@ -116,29 +116,23 @@ public class NumberDisplay : MonoBehaviour
 
     void DisplayNumber(int value)
     {
+        blockInfo.movementCost = value;
+        SetNumberColors(SetNumberColor_MoreOrLess(value));
+
         if (value == -1)
         {
-            //Change later to fit -1 asset from Mushroom circle
-
-            return;
+            value = 10;
         }
         else if (value == -2)
         {
-            //Change later to fit -2 asset from Mushroom circle
-
-            return;
+            value = 11;
         }
         else if (value <= -3)
         {
             return;
         }
 
-        blockInfo.movementCost = value;
-
         numberMeshRenderer.sharedMesh = numberMeshList[value];
-
-        SetNumberColors(SetNumberColor_MoreOrLess(value));
-
         StartCoroutine(NumberAnimation(numberMeshRenderer, duration));
     }
     public void ShowNumber()
@@ -150,7 +144,7 @@ public class NumberDisplay : MonoBehaviour
         }
 
         //If in quicksand
-        else if (Player_Quicksand.Instance.isInQuicksand && GetComponent<Block_Quicksand>())
+        else if (Player_Quicksand.Instance.isInQuicksand && GetComponentInParent<Block_Quicksand>())
         {
             DisplayNumber(Player_Quicksand.Instance.quicksandCounter);
         }
@@ -158,8 +152,10 @@ public class NumberDisplay : MonoBehaviour
         //If in SwampWater
         else if (Player_SwampWater.Instance.isInSwampWater)
         {
-            if (blockInfo.movementCost_Temp == 0)
-                DisplayNumber(0);
+            if (blockInfo.movementCost_Temp == -1)
+                DisplayNumber(-2);
+            else if(blockInfo.movementCost_Temp == 0)
+                DisplayNumber(-1);
             else if (blockInfo.movementCost_Temp == 1)
                 DisplayNumber(0);
             else if (blockInfo.movementCost_Temp == 2)
@@ -187,6 +183,12 @@ public class NumberDisplay : MonoBehaviour
                 DisplayNumber(5);
             else if (blockInfo.movementCost_Temp == 5)
                 DisplayNumber(6);
+            else if (blockInfo.movementCost_Temp == 6)
+                DisplayNumber(7);
+            else if (blockInfo.movementCost_Temp == 7)
+                DisplayNumber(8);
+            else if (blockInfo.movementCost_Temp == 8)
+                DisplayNumber(9);
         }
 
         //Other

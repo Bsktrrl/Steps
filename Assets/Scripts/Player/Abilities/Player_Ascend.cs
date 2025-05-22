@@ -99,7 +99,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
                         {
                             float verticalDistance = Mathf.Abs(hit1.point.y) - Mathf.Abs(transform.position.y);
 
-                            print("verticalDistance: " + verticalDistance + " | RayLength: " + rayLength);
+                            //print("verticalDistance: " + verticalDistance + " | RayLength: " + rayLength);
 
                             if (verticalDistance > rayLength)
                             {
