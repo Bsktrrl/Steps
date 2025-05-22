@@ -157,65 +157,65 @@ public class Interactable_Pickup : MonoBehaviour
 
             case Abilities.FenceSneak:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.FenceSneak = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.FenceSneak = true;
+                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.FenceSneak = true;
                 break;
             case Abilities.SwimSuit:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SwimSuit = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwimSuit = true;
+                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwimSuit = true;
                 break;
             case Abilities.SwiftSwim:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SwiftSwim = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwiftSwim = true;
+                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwiftSwim = true;
                 break;
             case Abilities.Flippers:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flippers = true;
+                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flippers = true;
                 Action_FlippersGot?.Invoke();
                 break;
             case Abilities.Flameable:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flameable = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flameable = true;
+                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flameable = true;
                 break;
             case Abilities.Jumping:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Jumping = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Jumping = true;
+                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Jumping = true;
                 break;
             case Abilities.HikerGear:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.HikerGear = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.HikerGear = true;
+                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.HikerGear = true;
                 break;
 
             case Abilities.IceSpikes:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.IceSpikes = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.IceSpikes = true;
+                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.IceSpikes = true;
                 break;
             case Abilities.GrapplingHook:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.GrapplingHook = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.GrapplingHook = true;
+                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.GrapplingHook = true;
                 break;
             case Abilities.Hammer:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Hammer = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Hammer = true;
+                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Hammer = true;
                 break;
             case Abilities.CeilingGrab:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.CeilingGrab = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.CeilingGrab = true;
+                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.CeilingGrab = true;
                 break;
             case Abilities.Dash:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Dash = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Dash = true;
+                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Dash = true;
                 break;
             case Abilities.Ascend:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Ascend = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Ascend = true;
+                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Ascend = true;
                 break;
             case Abilities.Descend:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Descend = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Descend = true;
+                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Descend = true;
                 break;
             case Abilities.ControlStick:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.ControlStick = true;
-                MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.ControlStick = true;
+                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.ControlStick = true;
                 break;
 
             default:

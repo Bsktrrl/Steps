@@ -21,7 +21,7 @@ public class Map_SaveInfo
     public List<AbilityInfo> abilityList = new List<AbilityInfo>();
 
     public AbilitiesGot abilitiesInLevel;
-    public AbilitiesGot abilitiesGotInLevel;
+    //public AbilitiesGot abilitiesGotInLevel;
 
 
     //--------------------

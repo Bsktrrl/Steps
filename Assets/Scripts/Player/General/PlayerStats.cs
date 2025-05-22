@@ -78,86 +78,106 @@ public class PlayerStats : Singleton<PlayerStats>
         stats.steps_Max = 7 + counter;
         stats.steps_Current = stats.steps_Max;
     }
+    void ResetActiveAbilities()
+    {
+        PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.FenceSneak = false;
+        PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SwimSuit = false;
+        PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SwiftSwim = false;
+        PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers = false;
+        PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flameable = false;
+        PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Jumping = false;
+        PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.HikerGear = false;
+        PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.IceSpikes = false;
+        PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.GrapplingHook = false;
+        PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Hammer = false;
+        PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.CeilingGrab = false;
+        PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Dash = false;
+        PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Ascend = false;
+        PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Descend = false;
+        PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.ControlStick = false;
+    }
     void UpdateActiveAbilities()
     {
+        ResetActiveAbilities();
+
         MapManager mapManagerIsActive = FindObjectOfType<MapManager>();
         if (!mapManagerIsActive) {  return; }
 
         //Based on what's picked up in the level, assign active abilities to the player
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.FenceSneak)
-            stats.abilitiesGot_Temporary.FenceSneak = true;
-        else
-            stats.abilitiesGot_Temporary.FenceSneak = false;
+        //if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.FenceSneak)
+        //    stats.abilitiesGot_Temporary.FenceSneak = true;
+        //else
+        //    stats.abilitiesGot_Temporary.FenceSneak = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwimSuit)
-            stats.abilitiesGot_Temporary.SwimSuit = true;
-        else
-            stats.abilitiesGot_Temporary.SwimSuit = false;
+        //if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwimSuit)
+        //    stats.abilitiesGot_Temporary.SwimSuit = true;
+        //else
+        //    stats.abilitiesGot_Temporary.SwimSuit = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwiftSwim)
-            stats.abilitiesGot_Temporary.SwiftSwim = true;
-        else
-            stats.abilitiesGot_Temporary.SwiftSwim = false;
+        //if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwiftSwim)
+        //    stats.abilitiesGot_Temporary.SwiftSwim = true;
+        //else
+        //    stats.abilitiesGot_Temporary.SwiftSwim = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flippers)
-            stats.abilitiesGot_Temporary.Flippers = true;
-        else
-            stats.abilitiesGot_Temporary.Flippers = false;
+        //if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flippers)
+        //    stats.abilitiesGot_Temporary.Flippers = true;
+        //else
+        //    stats.abilitiesGot_Temporary.Flippers = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flameable)
-            stats.abilitiesGot_Temporary.Flameable = true;
-        else
-            stats.abilitiesGot_Temporary.Flameable = false;
+        //if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flameable)
+        //    stats.abilitiesGot_Temporary.Flameable = true;
+        //else
+        //    stats.abilitiesGot_Temporary.Flameable = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Jumping)
-            stats.abilitiesGot_Temporary.Jumping = true;
-        else
-            stats.abilitiesGot_Temporary.Jumping = false;
+        //if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Jumping)
+        //    stats.abilitiesGot_Temporary.Jumping = true;
+        //else
+        //    stats.abilitiesGot_Temporary.Jumping = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.HikerGear)
-            stats.abilitiesGot_Temporary.HikerGear = true;
-        else
-            stats.abilitiesGot_Temporary.HikerGear = false;
+        //if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.HikerGear)
+        //    stats.abilitiesGot_Temporary.HikerGear = true;
+        //else
+        //    stats.abilitiesGot_Temporary.HikerGear = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.IceSpikes)
-            stats.abilitiesGot_Temporary.IceSpikes = true;
-        else
-            stats.abilitiesGot_Temporary.IceSpikes = false;
+        //if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.IceSpikes)
+        //    stats.abilitiesGot_Temporary.IceSpikes = true;
+        //else
+        //    stats.abilitiesGot_Temporary.IceSpikes = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.GrapplingHook)
-            stats.abilitiesGot_Temporary.GrapplingHook = true;
-        else
-            stats.abilitiesGot_Temporary.GrapplingHook = false;
+        //if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.GrapplingHook)
+        //    stats.abilitiesGot_Temporary.GrapplingHook = true;
+        //else
+        //    stats.abilitiesGot_Temporary.GrapplingHook = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Hammer)
-            stats.abilitiesGot_Temporary.Hammer = true;
-        else
-            stats.abilitiesGot_Temporary.Hammer = false;
+        //if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Hammer)
+        //    stats.abilitiesGot_Temporary.Hammer = true;
+        //else
+        //    stats.abilitiesGot_Temporary.Hammer = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.CeilingGrab)
-            stats.abilitiesGot_Temporary.CeilingGrab = true;
-        else
-            stats.abilitiesGot_Temporary.CeilingGrab = false;
+        //if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.CeilingGrab)
+        //    stats.abilitiesGot_Temporary.CeilingGrab = true;
+        //else
+        //    stats.abilitiesGot_Temporary.CeilingGrab = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Dash)
-            stats.abilitiesGot_Temporary.Dash = true;
-        else
-            stats.abilitiesGot_Temporary.Dash = false;
+        //if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Dash)
+        //    stats.abilitiesGot_Temporary.Dash = true;
+        //else
+        //    stats.abilitiesGot_Temporary.Dash = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Ascend)
-            stats.abilitiesGot_Temporary.Ascend = true;
-        else
-            stats.abilitiesGot_Temporary.Ascend = false;
+        //if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Ascend)
+        //    stats.abilitiesGot_Temporary.Ascend = true;
+        //else
+        //    stats.abilitiesGot_Temporary.Ascend = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Descend)
-            stats.abilitiesGot_Temporary.Descend = true;
-        else
-            stats.abilitiesGot_Temporary.Descend = false;
+        //if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Descend)
+        //    stats.abilitiesGot_Temporary.Descend = true;
+        //else
+        //    stats.abilitiesGot_Temporary.Descend = false;
 
-        if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.ControlStick)
-            stats.abilitiesGot_Temporary.ControlStick = true;
-        else
-            stats.abilitiesGot_Temporary.ControlStick = false;
+        //if (MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.ControlStick)
+        //    stats.abilitiesGot_Temporary.ControlStick = true;
+        //else
+        //    stats.abilitiesGot_Temporary.ControlStick = false;
 
         Player_BlockDetector.Instance.Action_MadeFirstRaycast_Invoke();
     }
@@ -226,7 +246,7 @@ public class PlayerStats : Singleton<PlayerStats>
         RefillStepsToMax();
 
         //Update active abilities according to the MapInfo
-        UpdateActiveAbilities();
+        //UpdateActiveAbilities();
 
         //Update the UI
         UIManager.Instance.UpdateUI();

@@ -259,6 +259,14 @@ public class Player_Jumping : Singleton<Player_Jumping>
             {
                 if (hit.transform.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Lava)
                 {
+                    //Reset if there is a lava block at the endPos
+                    ResetTargetBlock(ref target);
+                    target = null;
+                    return false;
+                }
+                if (hit.transform.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !PlayerHasSwimAbility())
+                {
+                    //Reset if there is a water block at the endPos, and the player doesn't know Swimming
                     ResetTargetBlock(ref target);
                     target = null;
                     return false;
@@ -278,6 +286,10 @@ public class Player_Jumping : Singleton<Player_Jumping>
                 if (hit.transform.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Lava)
                 {
                     //Continue if there is a lava block in between
+                }
+                else if (hit.transform.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !PlayerHasSwimAbility())
+                {
+                    //Continue if there is a water block in between, and the player doesn't know Swimming
                 }
                 else
                 {
@@ -309,6 +321,16 @@ public class Player_Jumping : Singleton<Player_Jumping>
         ResetDarkenColorIfStepsIsGone(ref target);
 
         return true;
+    }
+    bool PlayerHasSwimAbility()
+    {
+        var stats = PlayerStats.Instance.stats;
+        return stats.abilitiesGot_Permanent.SwimSuit ||
+               stats.abilitiesGot_Permanent.Flippers ||
+               stats.abilitiesGot_Permanent.SwiftSwim ||
+               stats.abilitiesGot_Temporary.SwimSuit ||
+               stats.abilitiesGot_Temporary.Flippers ||
+               stats.abilitiesGot_Temporary.SwiftSwim;
     }
     void ResetDarkenColorIfStepsIsGone(ref GameObject target)
     {
