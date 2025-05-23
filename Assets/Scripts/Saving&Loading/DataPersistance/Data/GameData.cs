@@ -23,7 +23,10 @@ public class GameData
 
     public GameData()
     {
-        //Input All Lists to clear
-        //playerStats_Save.ResetStats();
+        //Input Everything to clear up the file
+        menuState_Save = MenuState.None;
+        playerStats_Save = new Stats();
+        mapInfo_SaveList = new Map_SaveInfoList();
+        overWorldStates_SaveList = new OverWorldStates();
     }
 }

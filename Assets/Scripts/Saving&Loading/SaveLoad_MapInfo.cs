@@ -8,33 +8,24 @@ public class SaveLoad_MapInfo : Singleton<SaveLoad_MapInfo>
     public void LoadData()
     {
         //Don't save MapInfo if not in a level
-        MainMenuManager mainMenuManager = FindObjectOfType<MainMenuManager>();
-        if (mainMenuManager) { return; }
+        if (FindObjectOfType<MainMenuManager>()) return;
 
-        if (DataManager.Instance.mapInfo_StoreList != null)
+        var list = DataManager.Instance.mapInfo_StoreList?.map_SaveInfo_List;
+        if (list != null)
         {
-            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List != null)
+            foreach (var mapInfo in list)
             {
-                for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count; i++)
+                if (mapInfo.mapName == SceneManager.GetActiveScene().name)
                 {
-                    print("MapName: " + DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName + " | Saved Name: " + SceneManager.GetActiveScene().name);
-
-                    if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName == SceneManager.GetActiveScene().name)
-                    {
-                        print("MapInfo is already in the system");
-
-                        MapManager.Instance.mapInfo_ToSave = DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i];
-                        MapManager.Instance.mapInfo_ToSave.CorrectingMapObjects();
-                        SaveGame();
-
-                        return;
-                    }
+                    MapManager.Instance.mapInfo_ToSave = mapInfo;
+                    MapManager.Instance.mapInfo_ToSave.CorrectingMapObjects();
+                    return; // Loaded, no need to save here
                 }
             }
         }
 
         MapManager.Instance.mapInfo_ToSave.SetupMap();
-        SaveGame();
+        // Don't call SaveGame() here
     }
     public void SaveGame()
     {

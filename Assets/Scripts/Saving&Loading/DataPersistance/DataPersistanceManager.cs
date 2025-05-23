@@ -7,9 +7,9 @@ using UnityEngine.SceneManagement;
 public class DataPersistanceManager : Singleton<DataPersistanceManager>
 {
     [Header("File Storage Config")]
-    [SerializeField] string fileName;
+    public string fileName;
 
-    GameData gameData;
+    public GameData gameData;
     List<IDataPersistance> dataPersistanceObjects;
     FileDataHandler dataHandler;
 
@@ -43,7 +43,13 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
     public void NewGame()
     {
-        this.gameData = new GameData();
+        this.gameData = new GameData(); // create fresh data
+
+        // Clear the DataManager's stores explicitly
+        DataManager.Instance.Load_NewGame_Data(this.gameData);
+
+        // Save the new clean data
+        SaveGame();
     }
     public void LoadGame()
     {

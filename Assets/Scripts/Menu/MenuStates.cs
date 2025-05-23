@@ -67,4 +67,6 @@ public enum MenuState
     Settings_Menu,
 
     Biome_Menu,
+
+    NewGame_Menu,
 }

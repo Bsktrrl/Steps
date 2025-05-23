@@ -7,6 +7,13 @@ using UnityEngine.SceneManagement;
 public class Map_SaveInfoList
 {
     public List<Map_SaveInfo> map_SaveInfo_List = new List<Map_SaveInfo>();
+
+    public Map_SaveInfoList()
+    {
+        if (map_SaveInfo_List == null)
+            map_SaveInfo_List = new List<Map_SaveInfo>();
+    }
+
 }
 
 [Serializable]

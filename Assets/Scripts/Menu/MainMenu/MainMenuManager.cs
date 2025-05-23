@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -11,18 +12,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
     [Header("MenusOnMenuState")]
     public GameObject mainMenu_Parent;
     public GameObject overworldMenu_Parent;
-    //[SerializeField] GameObject overworldMenu_BiomesSelected_Parent;
-    //[SerializeField] GameObject overworldMenu_BiomesBig_Parent;
     [SerializeField] GameObject infoMenu_Parent;
     [SerializeField] GameObject settingsMenu_Parent;
-
-    //[SerializeField] GameObject Biome_0_Parent;
-    //[SerializeField] GameObject Biome_1_Parent;
-    //[SerializeField] GameObject Biome_2_Parent;
-    //[SerializeField] GameObject Biome_3_Parent;
-    //[SerializeField] GameObject Biome_4_Parent;
-    //[SerializeField] GameObject Biome_5_Parent;
-    //[SerializeField] GameObject Biome_6_Parent;
 
     [Header("Menu State")]
     public MenuState menuState;

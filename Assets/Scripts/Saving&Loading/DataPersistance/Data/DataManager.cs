@@ -99,4 +99,16 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
         print("Data has Saved");
     }
+
+
+    //--------------------
+
+
+    public void Load_NewGame_Data(GameData newData)
+    {
+        this.menuState_Store = newData.menuState_Save;
+        this.playerStats_Store = newData.playerStats_Save;
+        this.mapInfo_StoreList = newData.mapInfo_SaveList;
+        this.overWorldStates_StoreList = newData.overWorldStates_SaveList;
+    }
 }
