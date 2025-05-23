@@ -73,7 +73,7 @@ public class RememberCurrentlySelectedUIElement : Singleton<RememberCurrentlySel
 
         DataPersistanceManager.instance.SaveGame();
 
-        print("1000. SaveSelectedUIElement - R: " + DataManager.Instance.overWorldStates_StoreList.regionState + " | L: " + DataManager.Instance.overWorldStates_StoreList.levelState);
+        //print("1000. SaveSelectedUIElement - R: " + DataManager.Instance.overWorldStates_StoreList.regionState + " | L: " + DataManager.Instance.overWorldStates_StoreList.levelState);
     }
 
 

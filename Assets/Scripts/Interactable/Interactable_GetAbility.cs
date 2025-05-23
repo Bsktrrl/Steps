@@ -19,9 +19,6 @@ public class Interactable_GetAbility : MonoBehaviour
                 case Abilities.None:
                     break;
 
-                case Abilities.FenceSneak:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.FenceSneak = true;
-                    break;
                 case Abilities.SwimSuit:
                     PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SwimSuit = true;
                     break;
@@ -31,24 +28,12 @@ public class Interactable_GetAbility : MonoBehaviour
                 case Abilities.Flippers:
                     PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers = true;
                     break;
-                case Abilities.Flameable:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flameable = true;
-                    break;
                 case Abilities.Jumping:
                     PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Jumping = true;
                     break;
-                case Abilities.HikerGear:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.HikerGear = true;
-                    break;
 
-                case Abilities.IceSpikes:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.IceSpikes = true;
-                    break;
                 case Abilities.GrapplingHook:
                     PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.GrapplingHook = true;
-                    break;
-                case Abilities.Hammer:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Hammer = true;
                     break;
                 case Abilities.CeilingGrab:
                     PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.CeilingGrab = true;
@@ -61,9 +46,6 @@ public class Interactable_GetAbility : MonoBehaviour
                     break;
                 case Abilities.Descend:
                     PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Descend = true;
-                    break;
-                case Abilities.ControlStick:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.ControlStick = true;
                     break;
 
                 default:

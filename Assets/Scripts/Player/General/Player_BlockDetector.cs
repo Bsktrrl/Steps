@@ -671,14 +671,7 @@ public class Player_BlockDetector : Singleton<Player_BlockDetector>
             //If block is Lava, you cannot move into it
             else if (blockType_Vertical.block.GetComponent<Block_Lava>())
             {
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Flameable || PlayerStats.Instance.stats.abilitiesGot_Temporary.Flameable)
-                {
-                    canMove(direction, false);
-                }
-                else
-                {
-                    canMove(direction, false);
-                }
+                canMove(direction, false);
             }
             #endregion
 

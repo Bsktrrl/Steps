@@ -16,5 +16,7 @@ public class NewGameButton : MonoBehaviour
         }
 
         DataPersistanceManager.instance.NewGame();
+
+        MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List.Clear();
     }
 }

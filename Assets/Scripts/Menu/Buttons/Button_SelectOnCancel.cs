@@ -51,8 +51,7 @@ public class Button_SelectOnCancel : MonoBehaviour
 
         if (selectOnCancel == null)
         {
-            Debug.Log("This should jump where? ", this);
-            return;
+            Debug.Log("This should jump where? ", this);            return;
         }
 
 

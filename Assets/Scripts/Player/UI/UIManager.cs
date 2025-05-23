@@ -148,26 +148,16 @@ public class UIManager : Singleton<UIManager>
         {
             if (PlayerStats.Instance.stats.abilitiesGot_Temporary != null)
             {
-                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.FenceSneak)
-                    FenceSneak.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit)
                     SwimSuit.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Temporary.SwiftSwim)
                     SwiftSwim.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers)
                     Flippers.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flameable)
-                    LavaSuit.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Temporary.Jumping)
                     LavaSwiftSwim.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.HikerGear)
-                    HikerGear.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.IceSpikes)
-                    IceSpikes.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook)
                     GrapplingHook.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.Hammer)
-                    Hammer.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Temporary.CeilingGrab)
                     ClimbingGear.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash)
@@ -176,32 +166,20 @@ public class UIManager : Singleton<UIManager>
                     Ascend.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Temporary.Descend)
                     Descend.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.ControlStick)
-                    ControlStick.SetActive(true);
             }
 
             if (PlayerStats.Instance.stats.abilitiesGot_Permanent != null)
             {
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.FenceSneak)
-                    FenceSneak.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit)
                     SwimSuit.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim)
                     SwiftSwim.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers)
                     Flippers.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Flameable)
-                    LavaSuit.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping)
                     LavaSwiftSwim.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.HikerGear)
-                    HikerGear.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.IceSpikes)
-                    IceSpikes.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook)
                     GrapplingHook.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Hammer)
-                    Hammer.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab)
                     ClimbingGear.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash)
@@ -210,8 +188,6 @@ public class UIManager : Singleton<UIManager>
                     Ascend.SetActive(true);
                 if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Descend)
                     Descend.SetActive(true);
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.ControlStick)
-                    ControlStick.SetActive(true);
             }
         }
     }

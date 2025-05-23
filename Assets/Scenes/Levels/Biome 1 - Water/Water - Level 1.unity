@@ -7582,6 +7582,68 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 224524606976356097, guid: 721e005951fe45240b7da307d931c319, type: 3}
   m_PrefabInstance: {fileID: 324619864}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &334382668
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1200405977}
+    m_Modifications:
+    - target: {fileID: 316240344482881497, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 316240344482881497, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316240344482881497, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 316240344482881497, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 316240344482881497, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316240344482881497, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316240344482881497, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316240344482881497, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316240344482881497, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316240344482881497, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 929025259188696139, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: m_Name
+      value: Essence (9)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+--- !u!4 &334382669 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 316240344482881497, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+  m_PrefabInstance: {fileID: 334382668}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &335485463
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28572,6 +28634,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1095952401}
     m_Modifications:
+    - target: {fileID: -6149332069252737807, guid: e5fca9bbc7cf2ce48a27a7737c91120d, type: 3}
+      propertyPath: movementCost
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8521584256946859663, guid: e5fca9bbc7cf2ce48a27a7737c91120d, type: 3}
       propertyPath: m_Name
       value: Grass_Stair (1)
@@ -42743,6 +42809,7 @@ Transform:
   - {fileID: 1829468799}
   - {fileID: 1981183917}
   - {fileID: 1565309786}
+  - {fileID: 334382669}
   - {fileID: 1491489009}
   - {fileID: 890134887}
   - {fileID: 76234539}
@@ -45491,6 +45558,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1095952401}
     m_Modifications:
+    - target: {fileID: -6149332069252737807, guid: e5fca9bbc7cf2ce48a27a7737c91120d, type: 3}
+      propertyPath: movementCost
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8521584256946859663, guid: e5fca9bbc7cf2ce48a27a7737c91120d, type: 3}
       propertyPath: m_Name
       value: Grass_Stair
@@ -52703,6 +52774,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1095952401}
     m_Modifications:
+    - target: {fileID: -6149332069252737807, guid: e5fca9bbc7cf2ce48a27a7737c91120d, type: 3}
+      propertyPath: movementCost
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8521584256946859663, guid: e5fca9bbc7cf2ce48a27a7737c91120d, type: 3}
       propertyPath: m_Name
       value: Grass_Stair (2)

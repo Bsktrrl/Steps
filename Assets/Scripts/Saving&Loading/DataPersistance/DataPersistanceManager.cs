@@ -79,8 +79,6 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
         //Save that data to a file using the "data handler"
         dataHandler.Save(gameData);
-
-        print("File is Saved");
     }
 
 

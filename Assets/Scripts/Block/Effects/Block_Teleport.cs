@@ -198,13 +198,6 @@ public class Block_Teleport : MonoBehaviour
         Player_BlockDetector.Instance.Update_BlockStandingOn();
         Player_BlockDetector.Instance.RaycastSetup();
         Player_Movement.Instance.Action_StepTaken_Invoke();
-
-        if (!PlayerStats.Instance.stats.abilitiesGot_Permanent.IceSpikes && !PlayerStats.Instance.stats.abilitiesGot_Temporary.IceSpikes)
-        {
-            yield return new WaitForSeconds(waitTime * 20);
-
-            Player_Movement.Instance.IceGlide();
-        }
         
         Action_EndTeleport?.Invoke();
     }
