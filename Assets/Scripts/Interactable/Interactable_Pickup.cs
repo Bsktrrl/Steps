@@ -81,6 +81,7 @@ public class Interactable_Pickup : MonoBehaviour
                     }
 
                     MarkedAsTaken();
+                    Action_PickupGot_isActive();
                 }
             }
         }

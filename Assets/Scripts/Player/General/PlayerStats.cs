@@ -77,6 +77,8 @@ public class PlayerStats : Singleton<PlayerStats>
 
         stats.steps_Max = 7 + counter;
         stats.steps_Current = stats.steps_Max;
+
+
     }
     void ResetActiveAbilities()
     {
