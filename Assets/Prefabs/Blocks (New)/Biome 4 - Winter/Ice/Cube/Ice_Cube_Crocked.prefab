@@ -139,6 +139,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 63a615f264e4da84a88850ee71460d2c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1657501659904466414}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 63a615f264e4da84a88850ee71460d2c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4484005223990974151}
   m_SourcePrefab: {fileID: 100100000, guid: 63a615f264e4da84a88850ee71460d2c, type: 3}
 --- !u!1 &8235642726990013252 stripped
 GameObject:
@@ -284,6 +287,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meltingBlock: {fileID: 3110734153225658401, guid: e4a7c5de511c76649ac540949830bae6, type: 3}
   meltingBlock_InScene: {fileID: 0}
+  isSteppedOn: 0
+--- !u!114 &-4484005223990974151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8235642726990013252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bb8eb588a6af654db7da6e3d8297e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originalBlock: {fileID: 0}
+  newBlock: {fileID: 4024518173278913618, guid: fd21eb6ce94256e4cb85aaea88c9f2cb, type: 3}
   isSteppedOn: 0
 --- !u!4 &8719305061214501374 stripped
 Transform:
