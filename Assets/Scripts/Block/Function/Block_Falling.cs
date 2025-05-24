@@ -15,8 +15,6 @@ public class Block_Falling : MonoBehaviour
 
     [Header("Runtime Stats")]
     Vector3 endPos;
-    bool isStandingOnBlock;
-    bool isMoving;
 
     [Header("FallingAnimation")]
     float shakingIntensity = 3;
@@ -125,7 +123,6 @@ public class Block_Falling : MonoBehaviour
 
         if (Vector3.Distance(transform.position, endPos) <= 0.03f)
         {
-            isMoving = false;
             HideBlock();
             PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().Update_BlockStandingOn();
         }
@@ -178,8 +175,6 @@ public class Block_Falling : MonoBehaviour
         waitCounter = 0;
 
         isSteppedOn = false;
-        isStandingOnBlock = false;
-        isMoving = false;
 
         //print("isSteppedOn: " + isSteppedOn + " | isStandingOnBlock: " + isStandingOnBlock + " | isMoving: " + isMoving + " | waitCounter: " + waitCounter);
 

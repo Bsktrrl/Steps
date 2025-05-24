@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Block_SpawnPoint : MonoBehaviour
 {
+    public static event Action Action_SpawnPointEntered;
+
     private void OnEnable()
     {
         Player_Movement.Action_StepTaken += UpdateSpawnPos;
@@ -32,6 +35,8 @@ public class Block_SpawnPoint : MonoBehaviour
             yield return new WaitForSeconds(waitTime);
 
             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current = PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max;
+
+            Action_SpawnPointEntered?.Invoke();
         }
     }
 }

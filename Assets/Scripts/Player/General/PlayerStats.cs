@@ -12,10 +12,6 @@ public class PlayerStats : Singleton<PlayerStats>
     public static event Action Action_RespawnPlayer;
     public static event Action Action_RespawnPlayerLate;
 
-    public static event Action updateCoins;
-    public static event Action updateCollectable;
-    public static event Action updateStepsMax;
-
     public Vector3 savePos;
 
     public Stats stats = new Stats();
@@ -207,9 +203,6 @@ public class PlayerStats : Singleton<PlayerStats>
             stats.steps_Current = 0;
             RespawnPlayer();
         }
-
-        //Update the stepCounter UI
-        UIManager.Instance.UpdateUI();
     }
     public void RespawnPlayer()
     {
@@ -250,8 +243,6 @@ public class PlayerStats : Singleton<PlayerStats>
         //Update active abilities according to the MapInfo
         //UpdateActiveAbilities();
 
-        //Update the UI
-        UIManager.Instance.UpdateUI();
         Player_Movement.Instance.movementStates = MovementStates.Still;
 
         CameraController.Instance.ResetCameraRotation();

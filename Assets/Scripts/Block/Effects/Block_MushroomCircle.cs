@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Block_MushroomCircle : MonoBehaviour
 {
+    public static event Action Action_MushroomCircleEntered;
+
     private void OnEnable()
     {
         Player_Movement.Action_StepTaken += Refill_1_Step;
@@ -22,7 +25,7 @@ public class Block_MushroomCircle : MonoBehaviour
     {
         if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject)
         {
-            //Nothing works
+            Action_MushroomCircleEntered?.Invoke();
         }
     }
 }

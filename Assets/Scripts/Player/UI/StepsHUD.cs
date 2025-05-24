@@ -18,6 +18,9 @@ public class StepsHUD : MonoBehaviour
         PlayerStats.Action_RespawnPlayerLate += UpdateStepsDisplay;
         Player_Movement.Action_StepTaken += UpdateStepsDisplay;
         DataManager.Action_dataHasLoaded += UpdateStepsDisplay;
+        Block_SpawnPoint.Action_SpawnPointEntered += UpdateStepsDisplay;
+        Block_RefillSteps.Action_RefillStepsEntered += UpdateStepsDisplay;
+        Block_MushroomCircle.Action_MushroomCircleEntered += UpdateStepsDisplay;
     }
     private void OnDisable()
     {
@@ -25,6 +28,9 @@ public class StepsHUD : MonoBehaviour
         PlayerStats.Action_RespawnPlayerLate -= UpdateStepsDisplay;
         Player_Movement.Action_StepTaken -= UpdateStepsDisplay;
         DataManager.Action_dataHasLoaded -= UpdateStepsDisplay;
+        Block_SpawnPoint.Action_SpawnPointEntered -= UpdateStepsDisplay;
+        Block_RefillSteps.Action_RefillStepsEntered -= UpdateStepsDisplay;
+        Block_MushroomCircle.Action_MushroomCircleEntered -= UpdateStepsDisplay;
     }
 
 

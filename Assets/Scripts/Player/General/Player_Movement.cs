@@ -271,7 +271,11 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         if (!KeyInputsChecks()) { return; }
 
-        QuitLevel();
+        RememberCurrentlySelectedUIElement.Instance.currentSelectedUIElement = PauseMenuManager.Instance.pauseMenu_StartButton;
+        PauseMenuManager.Instance.OpenPauseMenu();
+        PlayerManager.Instance.pauseGame = true;
+
+        //QuitLevel();
     }
     #endregion
 

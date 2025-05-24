@@ -17,8 +17,6 @@ public class NumberDisplay : MonoBehaviour
     [SerializeField] SkinnedMeshRenderer numberMeshRenderer;
     [SerializeField] List<Mesh> numberMeshList;
 
-    float startRot_X_Number;
-
     Quaternion numberRotation;
 
     [Header("Material Rendering")]
@@ -59,7 +57,6 @@ public class NumberDisplay : MonoBehaviour
         else
         {
             //transform.GetChild(0).transform.localPosition = new Vector3(0, 0.48f, 0);
-            startRot_X_Number = 0;
         }
 
         if (player_BlockDetector)

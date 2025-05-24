@@ -108,54 +108,57 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
                 levelName.text = activeLevelObject.GetComponent<LoadLevel>().levelToPlay;
 
             //Find the correct mapInfo
-            for (int i = 0; i < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List.Count; i++)
+            if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List.Count > 0)
             {
-                if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].mapName == activeLevelObject.GetComponent<LoadLevel>().levelToPlay)
+                for (global::System.Int32 i = 0; i < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List.Count; i++)
                 {
-                    //Glueplant aquired
-                    if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].isCompleted)
-                        glueplant_Aquired.text = "1 / 1";
-                    else
-                        glueplant_Aquired.text = "0 / 1";
-
-                    //Essence aquired
-                    int essenceCounter = 0;
-                    for (int j = 0; j < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].coinList.Count; j++)
+                    if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].mapName == activeLevelObject.GetComponent<LoadLevel>().levelToPlay)
                     {
-                        if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].coinList[j].isTaken)
-                        {
-                            essenceCounter++;
-                        }
-                    }
-                    Essence_Aquired.text = essenceCounter + " / 10";
+                        //Glueplant aquired
+                        if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].isCompleted)
+                            glueplant_Aquired.text = "1 / 1";
+                        else
+                            glueplant_Aquired.text = "0 / 1";
 
-                    //Skin aquired
-                    int skinCounter = 0;
-                    for (int j = 0; j < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].collectableList.Count; j++)
-                    {
-                        if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].collectableList[j].isTaken)
+                        //Essence aquired
+                        int essenceCounter = 0;
+                        for (int j = 0; j < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].coinList.Count; j++)
                         {
-                            skinCounter++;
+                            if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].coinList[j].isTaken)
+                            {
+                                essenceCounter++;
+                            }
                         }
-                    }
-                    Skin_Aquired.text = skinCounter + " / 1";
+                        Essence_Aquired.text = essenceCounter + " / 10";
 
-                    //StepMax aquired
-                    int stepsCounter = 0;
-                    for (int j = 0; j < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].maxStepList.Count; j++)
-                    {
-                        if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].maxStepList[j].isTaken)
+                        //Skin aquired
+                        int skinCounter = 0;
+                        for (int j = 0; j < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].collectableList.Count; j++)
                         {
-                            stepsCounter++;
+                            if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].collectableList[j].isTaken)
+                            {
+                                skinCounter++;
+                            }
                         }
+                        Skin_Aquired.text = skinCounter + " / 1";
+
+                        //StepMax aquired
+                        int stepsCounter = 0;
+                        for (int j = 0; j < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].maxStepList.Count; j++)
+                        {
+                            if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].maxStepList[j].isTaken)
+                            {
+                                stepsCounter++;
+                            }
+                        }
+                        StepsMax_Aquired.text = stepsCounter + " / 3";
+
+                        foundLevel = true;
+                        break;
                     }
-                    StepsMax_Aquired.text = stepsCounter + " / 3";
                 }
-
-                foundLevel = true;
-                break;
             }
-
+            
             //Get Skin Type to get in the Level
             skinImage.sprite = SelectSpriteForLevel(activeLevelObject.GetComponent<LoadLevel>().skinTypeInLevel);
 

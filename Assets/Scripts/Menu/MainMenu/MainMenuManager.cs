@@ -157,14 +157,6 @@ public class MainMenuManager : Singleton<MainMenuManager>
         infoMenu_Parent.SetActive(false);
         overworldMenu_Parent.SetActive(false);
         settingsMenu_Parent.SetActive(false);
-
-        //Biome_0_Parent.SetActive(false);
-        //Biome_1_Parent.SetActive(false);
-        //Biome_2_Parent.SetActive(false);
-        //Biome_3_Parent.SetActive(false);
-        //Biome_4_Parent.SetActive(false);
-        //Biome_5_Parent.SetActive(false);
-        //Biome_6_Parent.SetActive(false);
     }
 
     #endregion

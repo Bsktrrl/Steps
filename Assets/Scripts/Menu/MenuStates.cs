@@ -69,4 +69,7 @@ public enum MenuState
     Biome_Menu,
 
     NewGame_Menu,
+    Pause_Menu_Main,
+    Pause_Menu_Settings,
+    Pause_Menu_Info
 }

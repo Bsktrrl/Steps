@@ -19,8 +19,8 @@ public class MapManager : Singleton<MapManager>
     public List<AudioTrack> mapAudioList;
     [SerializeField] List<AudioSource> mapAudioSourceList;
 
-    [Header("MapManager")]
-    [HideInInspector] public Map_SaveInfo mapInfo_ToSave = new Map_SaveInfo();
+    [Header("MapInfo")]
+    public Map_SaveInfo mapInfo_ToSave = new Map_SaveInfo();
 
     BlockInfo[] blockInfoList;
     Interactable_Pickup[] pickupInfoList;

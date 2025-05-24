@@ -49,7 +49,36 @@ public class Button_ToPress : MonoBehaviour
             Debug.Log("This should jump where? ", this);
         }
 
-        ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(uiElementToSelect.gameObject);
+        if (uiElementToSelect.gameObject)
+        {
+            ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(uiElementToSelect.gameObject);
+        }
+
+        //PauseMenu
+        switch (newMenuState)
+        {
+            case MenuState.None:
+                break;
+
+            case MenuState.Pause_Menu_Main:
+                PauseMenuManager.Instance.pauseMenu_MainMenu_Parent.SetActive(true);
+                PauseMenuManager.Instance.pauseMenu_Settings_Parent.SetActive(false);
+                PauseMenuManager.Instance.pauseMenu_Info_Parent.SetActive(false);
+                break;
+            case MenuState.Pause_Menu_Settings:
+                PauseMenuManager.Instance.pauseMenu_MainMenu_Parent.SetActive(false);
+                PauseMenuManager.Instance.pauseMenu_Settings_Parent.SetActive(true);
+                PauseMenuManager.Instance.pauseMenu_Info_Parent.SetActive(false);
+                break;
+            case MenuState.Pause_Menu_Info:
+                PauseMenuManager.Instance.pauseMenu_MainMenu_Parent.SetActive(false);
+                PauseMenuManager.Instance.pauseMenu_Settings_Parent.SetActive(false);
+                PauseMenuManager.Instance.pauseMenu_Info_Parent.SetActive(true);
+                break;
+
+            default:
+                break;
+        }
     }
 
 
