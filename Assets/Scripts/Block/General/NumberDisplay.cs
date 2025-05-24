@@ -139,24 +139,18 @@ public class NumberDisplay : MonoBehaviour
         //If Pushed
         if (PlayerManager.Instance.block_LookingAt_Vertical == transform.parent.gameObject && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
         {
-            print("1. Pusher");
-
             DisplayNumber(0);
         }
 
         //If in quicksand
         else if (Player_Quicksand.Instance.isInQuicksand && GetComponentInParent<Block_Quicksand>())
         {
-            print("1. Quicksand");
-
             DisplayNumber(Player_Quicksand.Instance.quicksandCounter);
         }
 
         //If in SwampWater
         else if (Player_SwampWater.Instance.isInSwampWater)
         {
-            print("1. SwampWater");
-
             if (blockInfo.movementCost_Temp == -1)
                 DisplayNumber(-2);
             else if(blockInfo.movementCost_Temp == 0)
@@ -176,8 +170,6 @@ public class NumberDisplay : MonoBehaviour
         //If in Mud
         else if (Player_Mud.Instance.isInMud)
         {
-            print("1. Mud");
-
             if (blockInfo.movementCost_Temp == 0)
                 DisplayNumber(1);
             else if (blockInfo.movementCost_Temp == 1)
@@ -201,8 +193,6 @@ public class NumberDisplay : MonoBehaviour
         //Other
         else
         {
-            print("1. Other");
-
             DisplayNumber(blockInfo.movementCost_Temp);
         }
 
