@@ -16,6 +16,9 @@ public class Player_Movement : Singleton<Player_Movement>
     public static event Action Action_PressMoveBlockButton;
     public static event Action Action_LandedFromFalling;
 
+    [Header("mainMenu_Name")]
+    [SerializeField] string mainMenu_Name;
+
     [Header("Current Movement Cost")]
     public int currentMovementCost;
 
@@ -274,8 +277,6 @@ public class Player_Movement : Singleton<Player_Movement>
         RememberCurrentlySelectedUIElement.Instance.currentSelectedUIElement = PauseMenuManager.Instance.pauseMenu_StartButton;
         PauseMenuManager.Instance.OpenPauseMenu();
         PlayerManager.Instance.pauseGame = true;
-
-        //QuitLevel();
     }
     #endregion
 
@@ -1413,12 +1414,11 @@ public class Player_Movement : Singleton<Player_Movement>
 
     //--------------------
 
-
     public void QuitLevel()
     {
-        if (!string.IsNullOrEmpty("MainMenu"))
+        if (!string.IsNullOrEmpty(mainMenu_Name))
         {
-            StartCoroutine(LoadSceneCoroutine("MainMenu"));
+            StartCoroutine(LoadSceneCoroutine(mainMenu_Name));
         }
     }
 

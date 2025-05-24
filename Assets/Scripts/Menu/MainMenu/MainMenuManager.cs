@@ -22,16 +22,19 @@ public class MainMenuManager : Singleton<MainMenuManager>
     //--------------------
 
 
-    private void Awake()
-    {
-        Menu_Main();
-        menuState = MenuState.Main_Menu;
-    }
+    //private void Awake()
+    //{
+    //    Menu_Main();
+    //    menuState = MenuState.Main_Menu;
+    //}
     private void Start()
     {
-        menuState = MenuState.Main_Menu;
+        if (DataManager.Instance.menuState_Store == MenuState.None)
+        {
+            menuState = MenuState.Main_Menu;
 
-        Menu_Main();
+            Menu_Main();
+        }
     }
 
 
