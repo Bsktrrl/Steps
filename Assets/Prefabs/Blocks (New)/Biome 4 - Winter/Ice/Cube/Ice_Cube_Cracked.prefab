@@ -70,13 +70,13 @@ PrefabInstance:
       addedObject: {fileID: -739259844587445997}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9984987cde2fcb94aabf82956ef9bc49, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -1225087653099379901}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9984987cde2fcb94aabf82956ef9bc49, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1622394093005452331}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9984987cde2fcb94aabf82956ef9bc49, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1931417073532418989}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9984987cde2fcb94aabf82956ef9bc49, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -2382573997378405212}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9984987cde2fcb94aabf82956ef9bc49, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -5080737445935169431}
   m_SourcePrefab: {fileID: 100100000, guid: 9984987cde2fcb94aabf82956ef9bc49, type: 3}
 --- !u!1 &4024518173278913618 stripped
 GameObject:
@@ -177,60 +177,6 @@ MonoBehaviour:
   colorTint_isActive: 0
   tintValue: 0.95
   blockIsDark: 0
-  upper_Front_Left: {fileID: 0}
-  upper_Front: {fileID: 0}
-  upper_Front_Right: {fileID: 0}
-  upper_Center_Left: {fileID: 0}
-  upper_Center: {fileID: 0}
-  upper_Center_Right: {fileID: 0}
-  upper_Back_Left: {fileID: 0}
-  upper_Back: {fileID: 0}
-  upper_Back_Right: {fileID: 0}
-  center_Front_Left: {fileID: 0}
-  center_Front: {fileID: 0}
-  center_Front_Right: {fileID: 0}
-  center_Center_Left: {fileID: 0}
-  center_Center: {fileID: 0}
-  center_Center_Right: {fileID: 0}
-  center_Back_Left: {fileID: 0}
-  center_Back: {fileID: 0}
-  center_Back_Right: {fileID: 0}
-  lower_Front_Left: {fileID: 0}
-  lower_Front: {fileID: 0}
-  lower_Front_Right: {fileID: 0}
-  lower_Center_Left: {fileID: 0}
-  lower_Center: {fileID: 0}
-  lower_Center_Right: {fileID: 0}
-  lower_Back_Left: {fileID: 0}
-  lower_Back: {fileID: 0}
-  lower_Back_Right: {fileID: 0}
---- !u!114 &-1225087653099379901
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4024518173278913618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f471b6e3526af2344bb7c6067632caf4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1622394093005452331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4024518173278913618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1dde6ba806fa6fc48a79c6c003ef1b31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  meltingBlock: {fileID: 3110734153225658401, guid: e4a7c5de511c76649ac540949830bae6, type: 3}
-  meltingBlock_InScene: {fileID: 0}
-  isSteppedOn: 0
 --- !u!114 &1931417073532418989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,6 +196,33 @@ MonoBehaviour:
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
   blockEffectHolding_List: []
+--- !u!114 &-2382573997378405212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4024518173278913618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f471b6e3526af2344bb7c6067632caf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-5080737445935169431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4024518173278913618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bb8eb588a6af654db7da6e3d8297e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originalBlock: {fileID: 0}
+  newBlock: {fileID: 3110734153225658401, guid: e4a7c5de511c76649ac540949830bae6, type: 3}
+  isSteppedOn: 0
 --- !u!4 &4364592049649131240 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9984987cde2fcb94aabf82956ef9bc49, type: 3}

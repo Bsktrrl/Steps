@@ -70,13 +70,13 @@ PrefabInstance:
       addedObject: {fileID: -2141417041855890483}
     - targetCorrespondingSourceObject: {fileID: 100006, guid: 8de9d39fc2df34846b685fe977168dbd, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 5869131005368599289}
+    - targetCorrespondingSourceObject: {fileID: 100006, guid: 8de9d39fc2df34846b685fe977168dbd, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 302578660921778016}
     - targetCorrespondingSourceObject: {fileID: 100006, guid: 8de9d39fc2df34846b685fe977168dbd, type: 3}
       insertIndex: -1
       addedObject: {fileID: -2087341298913706898}
-    - targetCorrespondingSourceObject: {fileID: 100006, guid: 8de9d39fc2df34846b685fe977168dbd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5869131005368599289}
   m_SourcePrefab: {fileID: 100100000, guid: 8de9d39fc2df34846b685fe977168dbd, type: 3}
 --- !u!1 &3561963363602838177 stripped
 GameObject:
@@ -177,33 +177,25 @@ MonoBehaviour:
   colorTint_isActive: 0
   tintValue: 0.95
   blockIsDark: 0
-  upper_Front_Left: {fileID: 0}
-  upper_Front: {fileID: 0}
-  upper_Front_Right: {fileID: 0}
-  upper_Center_Left: {fileID: 0}
-  upper_Center: {fileID: 0}
-  upper_Center_Right: {fileID: 0}
-  upper_Back_Left: {fileID: 0}
-  upper_Back: {fileID: 0}
-  upper_Back_Right: {fileID: 0}
-  center_Front_Left: {fileID: 0}
-  center_Front: {fileID: 0}
-  center_Front_Right: {fileID: 0}
-  center_Center_Left: {fileID: 0}
-  center_Center: {fileID: 0}
-  center_Center_Right: {fileID: 0}
-  center_Back_Left: {fileID: 0}
-  center_Back: {fileID: 0}
-  center_Back_Right: {fileID: 0}
-  lower_Front_Left: {fileID: 0}
-  lower_Front: {fileID: 0}
-  lower_Front_Right: {fileID: 0}
-  lower_Center_Left: {fileID: 0}
-  lower_Center: {fileID: 0}
-  lower_Center_Right: {fileID: 0}
-  lower_Back_Left: {fileID: 0}
-  lower_Back: {fileID: 0}
-  lower_Back_Right: {fileID: 0}
+--- !u!114 &5869131005368599289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3561963363602838177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectBlock_SpawnPoint_isAdded: 0
+  effectBlock_RefillSteps_isAdded: 0
+  effectBlock_Pusher_isAdded: 0
+  effectBlock_Teleporter_isAdded: 0
+  effectBlock_Moveable_isAdded: 0
+  effectBlock_MushroomCircle_isAdded: 0
+  blockEffectHolding_List: []
 --- !u!114 &302578660921778016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,25 +223,6 @@ MonoBehaviour:
   meltingBlock: {fileID: 3110734153225658401, guid: e4a7c5de511c76649ac540949830bae6, type: 3}
   meltingBlock_InScene: {fileID: 0}
   isSteppedOn: 0
---- !u!114 &5869131005368599289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3561963363602838177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectBlock_SpawnPoint_isAdded: 0
-  effectBlock_RefillSteps_isAdded: 0
-  effectBlock_Pusher_isAdded: 0
-  effectBlock_Teleporter_isAdded: 0
-  effectBlock_Moveable_isAdded: 0
-  effectBlock_MushroomCircle_isAdded: 0
-  blockEffectHolding_List: []
 --- !u!4 &3561963363603263105 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400006, guid: 8de9d39fc2df34846b685fe977168dbd, type: 3}

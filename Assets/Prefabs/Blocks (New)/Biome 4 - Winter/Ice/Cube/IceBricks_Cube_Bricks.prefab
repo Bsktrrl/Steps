@@ -132,13 +132,13 @@ PrefabInstance:
       addedObject: {fileID: -6381658823344770354}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a57cff0e5ae2401469be61b627a1f9a2, type: 3}
       insertIndex: -1
+      addedObject: {fileID: -8065155069094617403}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a57cff0e5ae2401469be61b627a1f9a2, type: 3}
+      insertIndex: -1
       addedObject: {fileID: -8118601246545090629}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a57cff0e5ae2401469be61b627a1f9a2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7765028999219061011}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a57cff0e5ae2401469be61b627a1f9a2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -8065155069094617403}
   m_SourcePrefab: {fileID: 100100000, guid: a57cff0e5ae2401469be61b627a1f9a2, type: 3}
 --- !u!1 &7387968374919790240 stripped
 GameObject:
@@ -239,33 +239,25 @@ MonoBehaviour:
   colorTint_isActive: 0
   tintValue: 0.95
   blockIsDark: 0
-  upper_Front_Left: {fileID: 0}
-  upper_Front: {fileID: 0}
-  upper_Front_Right: {fileID: 0}
-  upper_Center_Left: {fileID: 0}
-  upper_Center: {fileID: 0}
-  upper_Center_Right: {fileID: 0}
-  upper_Back_Left: {fileID: 0}
-  upper_Back: {fileID: 0}
-  upper_Back_Right: {fileID: 0}
-  center_Front_Left: {fileID: 0}
-  center_Front: {fileID: 0}
-  center_Front_Right: {fileID: 0}
-  center_Center_Left: {fileID: 0}
-  center_Center: {fileID: 0}
-  center_Center_Right: {fileID: 0}
-  center_Back_Left: {fileID: 0}
-  center_Back: {fileID: 0}
-  center_Back_Right: {fileID: 0}
-  lower_Front_Left: {fileID: 0}
-  lower_Front: {fileID: 0}
-  lower_Front_Right: {fileID: 0}
-  lower_Center_Left: {fileID: 0}
-  lower_Center: {fileID: 0}
-  lower_Center_Right: {fileID: 0}
-  lower_Back_Left: {fileID: 0}
-  lower_Back: {fileID: 0}
-  lower_Back_Right: {fileID: 0}
+--- !u!114 &-8065155069094617403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7387968374919790240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectBlock_SpawnPoint_isAdded: 0
+  effectBlock_RefillSteps_isAdded: 0
+  effectBlock_Pusher_isAdded: 0
+  effectBlock_Teleporter_isAdded: 0
+  effectBlock_Moveable_isAdded: 0
+  effectBlock_MushroomCircle_isAdded: 0
+  blockEffectHolding_List: []
 --- !u!114 &-8118601246545090629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,25 +285,6 @@ MonoBehaviour:
   meltingBlock: {fileID: 3110734153225658401, guid: e4a7c5de511c76649ac540949830bae6, type: 3}
   meltingBlock_InScene: {fileID: 0}
   isSteppedOn: 0
---- !u!114 &-8065155069094617403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7387968374919790240}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectBlock_SpawnPoint_isAdded: 0
-  effectBlock_RefillSteps_isAdded: 0
-  effectBlock_Pusher_isAdded: 0
-  effectBlock_Teleporter_isAdded: 0
-  effectBlock_Moveable_isAdded: 0
-  effectBlock_MushroomCircle_isAdded: 0
-  blockEffectHolding_List: []
 --- !u!4 &7911846755658474522 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a57cff0e5ae2401469be61b627a1f9a2, type: 3}
