@@ -19,17 +19,17 @@ Movement & Camera
 
 
 4.
-Weak IceBlock:
-- Becomes water after moving away from it
+Switches:
+- Make Brass Blocks move when switch is pressed (make a new script that activates the elevator script of a linked block, like "Block_Elevator_Step-on" that needs to be added to a block to activate it when walking on the block. This script (attached on the switch) needs to communicate with the linked elevator, so drag-drop the linked elevator's GameObject into a slot in the Switch-scripts and activate/deactivate it from there when the switch is on/off)
+	- Adjacent/Wall switch
+	- Step-on/Floor switch
+	- Linked step-on switch
 
-5.
-Iceicle:
-- Make the iceicle shake before it drops when the player is under it, respawing the player if it hits the player
 
 ---
 
 
-4.
+5.
 Levels
 - Make Levels for the prototype
 
@@ -40,14 +40,8 @@ Levels
 ----- TASKS SOON TO BE IMPLEMENTED -----
 
 
-Switches: (which make brass blocks move when pressed)
-- Adjacent switch
-- Step-on switch
-- Linked step-on switch
-
-
 Settings Menu:
-- Toggle "Show Numbers" of the Steps on the HUD
+- Toggle "Show Numbers" of the Steps available on the HUD
 
 
 Effect Blocks:
