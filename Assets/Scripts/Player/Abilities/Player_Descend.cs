@@ -197,7 +197,6 @@ public class Player_Descend : Singleton<Player_Descend>
 
         //Don't Descend
 
-        print("10. Descend");
         DescendingIsNOTAllowed();
         return false;
     }

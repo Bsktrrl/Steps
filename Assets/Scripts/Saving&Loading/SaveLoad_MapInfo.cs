@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,7 +26,6 @@ public class SaveLoad_MapInfo : Singleton<SaveLoad_MapInfo>
         }
 
         MapManager.Instance.mapInfo_ToSave.SetupMap();
-        // Don't call SaveGame() here
     }
     public void SaveGame()
     {

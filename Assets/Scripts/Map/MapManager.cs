@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class MapManager : Singleton<MapManager>
 {
-    //public static event Action mapInfo_hasLoaded;
-
     [Header("Player")]
     [SerializeField] GameObject playerObject;
     GameObject playerObjectInScene;

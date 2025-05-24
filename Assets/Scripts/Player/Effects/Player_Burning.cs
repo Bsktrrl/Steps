@@ -149,11 +149,14 @@ public class Player_Burning : Singleton<Player_Burning>
     }
     void RemoveFlameable()
     {
-        isBurning = false;
-        flameableStepCounter = 0;
+        if (isBurning)
+        {
+            isBurning = false;
+            flameableStepCounter = 0;
 
-        firstTimeCheck = false;
+            firstTimeCheck = false;
 
-        gameObject.GetComponent<PlayerManager>().playerBody.transform.GetComponentInChildren<MeshRenderer>().material = original_Material;
+            gameObject.GetComponent<PlayerManager>().playerBody.transform.GetComponentInChildren<MeshRenderer>().material = original_Material;
+        }
     }
 }

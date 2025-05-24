@@ -19,12 +19,16 @@ public class Map_SaveInfoList
 [Serializable]
 public class Map_SaveInfo
 {
+    public static event Action Action_SetupMap_hasLoaded;
+
     public string mapName;
     public bool isCompleted;
 
     public List<CoinInfo> coinList = new List<CoinInfo>();
     public List<CollectableInfo> collectableList = new List<CollectableInfo>();
     public List<MaxStepInfo> maxStepList = new List<MaxStepInfo>();
+
+    public SkinType skintype;
 
     public AbilitiesGot abilitiesInLevel;
     //public AbilitiesGot abilitiesGotInLevel;
@@ -38,6 +42,8 @@ public class Map_SaveInfo
     {
         SetMapName();
         AddInteractableInfo();
+
+        Action_SetupMap_hasLoaded?.Invoke();
     }
     void SetMapName()
     {

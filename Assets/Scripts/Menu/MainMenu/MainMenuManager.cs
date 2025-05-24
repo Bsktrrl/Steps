@@ -1,11 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
 
 public class MainMenuManager : Singleton<MainMenuManager>
 {
@@ -22,11 +15,10 @@ public class MainMenuManager : Singleton<MainMenuManager>
     //--------------------
 
 
-    //private void Awake()
-    //{
-    //    Menu_Main();
-    //    menuState = MenuState.Main_Menu;
-    //}
+    private void Awake()
+    {
+        HideAllMenus();
+    }
     private void Start()
     {
         if (DataManager.Instance.menuState_Store == MenuState.None)
@@ -123,9 +115,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
         //Close any other menu
         HideAllMenus();
 
-        ////Open the OverworldMenu
-        //overworldMenu_BiomesSelected_Parent.SetActive(true);
-        //overworldMenu_BiomesBig_Parent.SetActive(false);
+        //Open the OverworldMenu
         overworldMenu_Parent.SetActive(true);
     }
     void Menu_Info()
