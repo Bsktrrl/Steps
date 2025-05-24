@@ -14,6 +14,11 @@ public class MenuStates : Singleton<MenuStates>
 
     public void ChangeMenuState(MenuState state)
     {
+        if (FindObjectOfType<MapManager>())
+        {
+            return;
+        }
+
         switch (state)
         {
             case MenuState.None:
@@ -35,6 +40,18 @@ public class MenuStates : Singleton<MenuStates>
 
             case MenuState.Biome_Menu:
                 MainMenuManager.Instance.menuState = MenuState.Biome_Menu;
+                break;
+
+            case MenuState.Pause_Menu_Main:
+                MainMenuManager.Instance.menuState = MenuState.Pause_Menu_Main;
+                break;
+
+            case MenuState.Pause_Menu_Settings:
+                MainMenuManager.Instance.menuState = MenuState.Pause_Menu_Settings;
+                break;
+
+            case MenuState.Pause_Menu_Info:
+                MainMenuManager.Instance.menuState = MenuState.Pause_Menu_Info;
                 break;
 
             default:
