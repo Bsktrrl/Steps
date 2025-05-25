@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_TreeLeaves
-  m_Shader: {fileID: -6465566751694194690, guid: 4a2977ae690940542b63fc966351a7a5, type: 3}
+  m_Name: Mat_FoliageBreathing
+  m_Shader: {fileID: -6465566751694194690, guid: 5f68e273014f08f4991f144db160d5f0, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: 8f279dd5d2d04dc4abf5d8e7cf77e382, type: 3}
+        m_Texture: {fileID: 2800000, guid: a3b5f9dac2bb06b4d8d5f905ff2a981a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColor:
@@ -91,7 +91,7 @@ Material:
         m_Texture: {fileID: 2800000, guid: 01712917e0f91b0449a1a7ef8d7e913f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Triplanar_a76a0930952c4e9281fd74fa9b5f6b12_Texture_1_Texture2D:
+    - _Triplanar_5d258d6c9db941f394e34e30e39d5333_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: 01712917e0f91b0449a1a7ef8d7e913f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -113,6 +113,11 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
+    - _BreathDensity: 0.5
+    - _BreathDuration: 1.5
+    - _BreathSpeed: 1
+    - _BreathStrength: 0.5
+    - _Breathing: 1
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -129,6 +134,9 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _PumpSpeed: 0.5
+    - _PumpStrength: 0.5
+    - _Pumping: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -138,7 +146,8 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _WindDensity: 2
+    - _UpperBreathLimit: 1
+    - _WindDensity: 0.5
     - _WindSpeed: 0.5
     - _WindStrength: 0.5
     - _WorkflowMode: 1
