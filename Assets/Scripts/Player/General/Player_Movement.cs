@@ -264,7 +264,12 @@ public class Player_Movement : Singleton<Player_Movement>
 
     public void Key_Respawn()
     {
-        if (!KeyInputsChecks()) { return; }
+        //if (!KeyInputsChecks()) { return; }
+
+        if (PlayerManager.Instance.pauseGame) { return; }
+        if (CameraController.Instance.isRotating) { return; }
+        if (Player_Interact.Instance.isInteracting) { return; }
+        if (Player_GraplingHook.Instance.isGrapplingHooking) { return; }
 
         PlayerStats.Instance.RespawnPlayer();
 

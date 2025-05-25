@@ -12,6 +12,7 @@ public class Block_Falling : MonoBehaviour
 
     [Header("Checked If Stepped On")]
     bool isSteppedOn;
+    [SerializeField] bool resettingBlock;
 
     [Header("Runtime Stats")]
     Vector3 endPos;
@@ -100,7 +101,10 @@ public class Block_Falling : MonoBehaviour
 
     bool CheckIfReadyToFall()
     {
-        if (isSteppedOn)
+        if (resettingBlock)
+            isSteppedOn = false;
+
+        if (isSteppedOn && !resettingBlock)
         {
             FallingAlertAnimation();
 
@@ -117,6 +121,9 @@ public class Block_Falling : MonoBehaviour
     }
     void Falling()
     {
+        if (resettingBlock)
+            isSteppedOn = false;
+
         //gameObject.transform.position = gameObject.transform.position + (Vector3.down * MainManager.Instance.player.GetComponent<Player_Movement>().fallSpeed * Time.deltaTime);
 
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endPos, PlayerManager.Instance.player.GetComponent<Player_Movement>().fallSpeed * Time.deltaTime);
@@ -129,6 +136,9 @@ public class Block_Falling : MonoBehaviour
     }
     void FallingAlertAnimation()
     {
+        if (resettingBlock)
+            isSteppedOn = false;
+
         //When falling, straighten up the rotation from the shaking
         if (waitCounter >= waitTime_BeforeFalling)
         {
@@ -172,16 +182,35 @@ public class Block_Falling : MonoBehaviour
 
     public void ResetBlock()
     {
-        waitCounter = 0;
+        resettingBlock = true;
 
         isSteppedOn = false;
+        StopAllCoroutines();
 
-        //print("isSteppedOn: " + isSteppedOn + " | isStandingOnBlock: " + isStandingOnBlock + " | isMoving: " + isMoving + " | waitCounter: " + waitCounter);
+        if (GetComponent<BoxCollider>())
+            GetComponent<BoxCollider>().enabled = true;
+        else if (GetComponent<MeshCollider>())
+            GetComponent<MeshCollider>().enabled = true;
 
         waitCounter = 0;
 
         transform.position = gameObject.GetComponent<BlockInfo>().startPos;
 
-        ShowBlock();
+        StartCoroutine(ResetBlockWaiting(0.1f));
+
+        gameObject.SetActive(true);
+    }
+    IEnumerator ResetBlockWaiting(float waitTime)
+    {
+        isSteppedOn = false;
+
+        yield return new WaitForSeconds(waitTime);
+
+        if (GetComponent<BoxCollider>())
+            GetComponent<BoxCollider>().enabled = true;
+        else if (GetComponent<MeshCollider>())
+            GetComponent<MeshCollider>().enabled = true;
+
+        resettingBlock = false;
     }
 }

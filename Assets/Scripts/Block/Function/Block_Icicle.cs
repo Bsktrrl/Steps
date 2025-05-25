@@ -26,6 +26,7 @@ public class Block_Icicle : MonoBehaviour
 
     [SerializeField] bool isDetectingPlayer;
     [SerializeField] bool hasFallen;
+    [SerializeField] bool resettingBlock;
 
 
     //--------------------
@@ -123,7 +124,13 @@ public class Block_Icicle : MonoBehaviour
 
     bool CheckIfReadyToFall()
     {
-        if (isDetectingPlayer)
+        if (resettingBlock)
+        {
+            hasFallen = false;
+            isDetectingPlayer = false;
+        }
+
+        if (isDetectingPlayer && !resettingBlock)
         {
             FallingAlertAnimation();
 
@@ -160,6 +167,12 @@ public class Block_Icicle : MonoBehaviour
     }
     void FallingAlertAnimation()
     {
+        if (resettingBlock)
+        {
+            hasFallen = false;
+            isDetectingPlayer = false;
+        }
+
         //When falling, straighten up the rotation from the shaking
         if (waitCounter >= waitTime_BeforeFalling)
         {
@@ -186,6 +199,12 @@ public class Block_Icicle : MonoBehaviour
     }
     void Falling()
     {
+        if (resettingBlock)
+        {
+            hasFallen = false;
+            isDetectingPlayer = false;
+        }
+
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endPos, PlayerManager.Instance.player.GetComponent<Player_Movement>().fallSpeed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, endPos) <= 0.03f)
@@ -223,9 +242,32 @@ public class Block_Icicle : MonoBehaviour
     //--------------------
 
 
+    //public void ResetBlock()
+    //{
+    //    HideBlock();
+
+    //    waitCounter = 0;
+
+    //    transform.position = startPos;
+
+    //    isDetectingPlayer = false;
+    //    hasFallen = false;
+
+    //    ShowBlock();
+    //}
+
     public void ResetBlock()
     {
-        HideBlock();
+        //HideBlock();
+
+        resettingBlock = true;
+
+        StopAllCoroutines();
+
+        if (GetComponent<BoxCollider>())
+            GetComponent<BoxCollider>().enabled = true;
+        else if (GetComponent<MeshCollider>())
+            GetComponent<MeshCollider>().enabled = true;
 
         waitCounter = 0;
 
@@ -234,6 +276,20 @@ public class Block_Icicle : MonoBehaviour
         isDetectingPlayer = false;
         hasFallen = false;
 
+        StartCoroutine(ResetBlockWaiting(0.1f));
+
+        gameObject.SetActive(true);
+    }
+    IEnumerator ResetBlockWaiting(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        if (GetComponent<BoxCollider>())
+            GetComponent<BoxCollider>().enabled = true;
+        else if (GetComponent<MeshCollider>())
+            GetComponent<MeshCollider>().enabled = true;
+
         ShowBlock();
+        resettingBlock = false;
     }
 }
