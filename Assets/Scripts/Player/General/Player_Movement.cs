@@ -16,6 +16,9 @@ public class Player_Movement : Singleton<Player_Movement>
     public static event Action Action_PressMoveBlockButton;
     public static event Action Action_LandedFromFalling;
 
+    [Header("mainMenu_Name")]
+    [SerializeField] string mainMenu_Name;
+
     [Header("Current Movement Cost")]
     public int currentMovementCost;
 
@@ -261,7 +264,12 @@ public class Player_Movement : Singleton<Player_Movement>
 
     public void Key_Respawn()
     {
-        if (!KeyInputsChecks()) { return; }
+        //if (!KeyInputsChecks()) { return; }
+
+        if (PlayerManager.Instance.pauseGame) { return; }
+        if (CameraController.Instance.isRotating) { return; }
+        if (Player_Interact.Instance.isInteracting) { return; }
+        if (Player_GraplingHook.Instance.isGrapplingHooking) { return; }
 
         PlayerStats.Instance.RespawnPlayer();
 
@@ -271,7 +279,9 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         if (!KeyInputsChecks()) { return; }
 
-        QuitLevel();
+        RememberCurrentlySelectedUIElement.Instance.currentSelectedUIElement = PauseMenuManager.Instance.pauseMenu_StartButton;
+        PauseMenuManager.Instance.OpenPauseMenu();
+        PlayerManager.Instance.pauseGame = true;
     }
     #endregion
 
@@ -420,10 +430,7 @@ public class Player_Movement : Singleton<Player_Movement>
                         PlayerManager.Instance.player.transform.position = Vector3.MoveTowards(PlayerManager.Instance.player.transform.position, endDestination, 5 * Time.deltaTime);
                     else
                     {
-                        if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_IceGlide>() && (PlayerStats.Instance.stats.abilitiesGot_Permanent.IceSpikes || PlayerStats.Instance.stats.abilitiesGot_Temporary.IceSpikes))
-                            PlayerManager.Instance.player.transform.position = Vector3.MoveTowards(PlayerManager.Instance.player.transform.position, endDestination, (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementSpeed / 2) * Time.deltaTime);
-                        else
-                            PlayerManager.Instance.player.transform.position = Vector3.MoveTowards(PlayerManager.Instance.player.transform.position, endDestination, PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementSpeed * Time.deltaTime);
+                        PlayerManager.Instance.player.transform.position = Vector3.MoveTowards(PlayerManager.Instance.player.transform.position, endDestination, PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementSpeed * Time.deltaTime);
                     }
                 }
                 else
@@ -432,10 +439,7 @@ public class Player_Movement : Singleton<Player_Movement>
                         PlayerManager.Instance.player.transform.position = Vector3.MoveTowards(PlayerManager.Instance.player.transform.position, endDestination, 5 * Time.deltaTime);
                     else
                     {
-                        if (PlayerManager.Instance.block_MovingTowards.block.GetComponent<Block_IceGlide>() && (PlayerStats.Instance.stats.abilitiesGot_Permanent.IceSpikes || PlayerStats.Instance.stats.abilitiesGot_Temporary.IceSpikes))
-                            PlayerManager.Instance.player.transform.position = Vector3.MoveTowards(PlayerManager.Instance.player.transform.position, endDestination, (PlayerManager.Instance.block_MovingTowards.block.GetComponent<BlockInfo>().movementSpeed / 2) * Time.deltaTime);
-                        else
-                            PlayerManager.Instance.player.transform.position = Vector3.MoveTowards(PlayerManager.Instance.player.transform.position, endDestination, PlayerManager.Instance.block_MovingTowards.block.GetComponent<BlockInfo>().movementSpeed * Time.deltaTime);
+                        PlayerManager.Instance.player.transform.position = Vector3.MoveTowards(PlayerManager.Instance.player.transform.position, endDestination, PlayerManager.Instance.block_MovingTowards.block.GetComponent<BlockInfo>().movementSpeed * Time.deltaTime);
                     }
                 }
             }
@@ -537,13 +541,13 @@ public class Player_Movement : Singleton<Player_Movement>
     GameObject CeilingGrabMovementCheck(Vector3 direction)
     {
         //Check if direction is blocked by a block
-        if (Physics.Raycast(transform.position, direction, out hit, 1))
+        if (Physics.Raycast(transform.position, direction, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             return null;
         }
 
         //Check if there is a block to move into
-        if (Physics.Raycast(transform.position + direction, Vector3.up, out hit, 1))
+        if (Physics.Raycast(transform.position + direction, Vector3.up, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             return hit.transform.gameObject;
         }
@@ -708,7 +712,7 @@ public class Player_Movement : Singleton<Player_Movement>
 
     void FallingRaycast()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, out hit))
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
@@ -735,7 +739,7 @@ public class Player_Movement : Singleton<Player_Movement>
     void CheckAvailableLadderExitBlocks(Vector3 dir)
     {
         //Check from the bottom and up
-        if (Physics.Raycast(transform.position, dir, out hit, 1))
+        if (Physics.Raycast(transform.position, dir, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<Block_Ladder>())
             {
@@ -744,7 +748,7 @@ public class Player_Movement : Singleton<Player_Movement>
         }
 
         //Check from the top and down
-        if (Physics.Raycast(transform.position + (dir * 0.65f), Vector3.down, out hit, 1))
+        if (Physics.Raycast(transform.position + (dir * 0.65f), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<Block_Ladder>())
             {
@@ -756,7 +760,7 @@ public class Player_Movement : Singleton<Player_Movement>
     bool CheckLaddersToEnter_Up(Vector3 dir)
     {
         //Check from the bottom and up
-        if (Physics.Raycast(transform.position, dir, out hit, 1))
+        if (Physics.Raycast(transform.position, dir, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<Block_Ladder>())
             {
@@ -770,7 +774,7 @@ public class Player_Movement : Singleton<Player_Movement>
     bool CheckLaddersToEnter_Down(Vector3 dir)
     {
         //Check from the top and down
-        if (Physics.Raycast(transform.position + (dir * 0.65f), Vector3.down, out hit, 1))
+        if (Physics.Raycast(transform.position + (dir * 0.65f), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<Block_Ladder>())
             {
@@ -785,7 +789,7 @@ public class Player_Movement : Singleton<Player_Movement>
     GameObject GetLadderExitPart_Up(Vector3 dir)
     {
         //Check from the bottom and up
-        if (Physics.Raycast(transform.position, dir, out hit, 1))
+        if (Physics.Raycast(transform.position, dir, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<Block_Ladder>())
             {
@@ -799,7 +803,7 @@ public class Player_Movement : Singleton<Player_Movement>
     GameObject GetLadderExitPart_Down(Vector3 dir)
     {
         //Check from the top and down
-        if (Physics.Raycast(transform.position + (dir * 0.65f), Vector3.down, out hit, 1))
+        if (Physics.Raycast(transform.position + (dir * 0.65f), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<Block_Ladder>())
             {
@@ -868,7 +872,7 @@ public class Player_Movement : Singleton<Player_Movement>
         #region Move To ExitBlock
 
         endPosition = startPosition + dir;
-        if (Physics.Raycast(transform.position + dir, Vector3.down, out hit, 1))
+        if (Physics.Raycast(transform.position + dir, Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
@@ -1090,19 +1094,11 @@ public class Player_Movement : Singleton<Player_Movement>
 
     void SlopeGlide()
     {
-        if (PlayerStats.Instance.stats.abilitiesGot_Temporary.HikerGear || PlayerStats.Instance.stats.abilitiesGot_Permanent.HikerGear) { return; }
-
         Player_BlockDetector.Instance.RaycastSetup();
         Player_BlockDetector.Instance.Update_BlockStandingOn();
 
         if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope)
         {
-            //If IceGlide is attached to SlopeBock, ignore the slope if player has IceSpikes
-            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_IceGlide>())
-            {
-                if (PlayerStats.Instance.stats.abilitiesGot_Temporary.IceSpikes || PlayerStats.Instance.stats.abilitiesGot_Permanent.IceSpikes) { return; }
-            }
-
             isSlopeGliding = true;
 
             PlayerStats.Instance.stats.steps_Current += PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
@@ -1423,12 +1419,11 @@ public class Player_Movement : Singleton<Player_Movement>
 
     //--------------------
 
-
     public void QuitLevel()
     {
-        if (!string.IsNullOrEmpty("MainMenu"))
+        if (!string.IsNullOrEmpty(mainMenu_Name))
         {
-            StartCoroutine(LoadSceneCoroutine("MainMenu"));
+            StartCoroutine(LoadSceneCoroutine(mainMenu_Name));
         }
     }
 

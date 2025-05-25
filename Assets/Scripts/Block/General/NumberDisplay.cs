@@ -17,13 +17,14 @@ public class NumberDisplay : MonoBehaviour
     [SerializeField] SkinnedMeshRenderer numberMeshRenderer;
     [SerializeField] List<Mesh> numberMeshList;
 
-    float startRot_X_Number;
-
     Quaternion numberRotation;
 
     [Header("Material Rendering")]
     List<Renderer> objectRenderers = new List<Renderer>();
     [HideInInspector] public List<MaterialPropertyBlock> propertyBlocks = new List<MaterialPropertyBlock>();
+
+    [Tooltip("Offset above the cube surface")]
+    public float offsetAboveSurface = 0.1f;
 
 
     //--------------------
@@ -58,8 +59,7 @@ public class NumberDisplay : MonoBehaviour
         }
         else
         {
-            transform.GetChild(0).transform.localPosition = new Vector3(0, 0.48f, 0);
-            startRot_X_Number = 0;
+            //transform.GetChild(0).transform.localPosition = new Vector3(0, 0.48f, 0);
         }
 
         if (player_BlockDetector)
@@ -77,11 +77,15 @@ public class NumberDisplay : MonoBehaviour
     private void OnEnable()
     {
         CameraController.Action_RotateCamera_End += UpdateRotation;
+        Player_CeilingGrab.Action_raycastCeiling += UpdateRotation;
+        Player_CeilingGrab.Action_releaseCeiling += UpdateRotation;
     }
 
     private void OnDisable()
     {
         CameraController.Action_RotateCamera_End -= UpdateRotation;
+        Player_CeilingGrab.Action_raycastCeiling -= UpdateRotation;
+        Player_CeilingGrab.Action_releaseCeiling -= UpdateRotation;
     }
 
 
@@ -116,41 +120,35 @@ public class NumberDisplay : MonoBehaviour
 
     void DisplayNumber(int value)
     {
+        blockInfo.movementCost = value;
+        SetNumberColors(SetNumberColor_MoreOrLess(value));
+
         if (value == -1)
         {
-            //Change later to fit -1 asset from Mushroom circle
-
-            return;
+            value = 10;
         }
         else if (value == -2)
         {
-            //Change later to fit -2 asset from Mushroom circle
-
-            return;
+            value = 11;
         }
         else if (value <= -3)
         {
             return;
         }
 
-        blockInfo.movementCost = value;
-
         numberMeshRenderer.sharedMesh = numberMeshList[value];
-
-        SetNumberColors(SetNumberColor_MoreOrLess(value));
-
         StartCoroutine(NumberAnimation(numberMeshRenderer, duration));
     }
     public void ShowNumber()
     {
         //If Pushed
-        if (PlayerManager.Instance.block_LookingAt_Vertical == gameObject && !PlayerManager.Instance.block_LookingAt_Vertical.GetComponent<Block_Pusher>() && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
+        if (PlayerManager.Instance.block_LookingAt_Vertical == transform.parent.gameObject && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
         {
             DisplayNumber(0);
         }
 
         //If in quicksand
-        else if (Player_Quicksand.Instance.isInQuicksand && GetComponent<Block_Quicksand>())
+        else if (Player_Quicksand.Instance.isInQuicksand && GetComponentInParent<Block_Quicksand>())
         {
             DisplayNumber(Player_Quicksand.Instance.quicksandCounter);
         }
@@ -158,8 +156,10 @@ public class NumberDisplay : MonoBehaviour
         //If in SwampWater
         else if (Player_SwampWater.Instance.isInSwampWater)
         {
-            if (blockInfo.movementCost_Temp == 0)
-                DisplayNumber(0);
+            if (blockInfo.movementCost_Temp == -1)
+                DisplayNumber(-2);
+            else if(blockInfo.movementCost_Temp == 0)
+                DisplayNumber(-1);
             else if (blockInfo.movementCost_Temp == 1)
                 DisplayNumber(0);
             else if (blockInfo.movementCost_Temp == 2)
@@ -187,6 +187,12 @@ public class NumberDisplay : MonoBehaviour
                 DisplayNumber(5);
             else if (blockInfo.movementCost_Temp == 5)
                 DisplayNumber(6);
+            else if (blockInfo.movementCost_Temp == 6)
+                DisplayNumber(7);
+            else if (blockInfo.movementCost_Temp == 7)
+                DisplayNumber(8);
+            else if (blockInfo.movementCost_Temp == 8)
+                DisplayNumber(9);
         }
 
         //Other
@@ -286,10 +292,17 @@ public class NumberDisplay : MonoBehaviour
 
     public void UpdateRotation()
     {
-        //If ceilingGrabbing
-        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+        //If this block can be ceilinggrabbed
+        if (Player_CeilingGrab.Instance.ceilingGrabBlock == transform.parent.gameObject)
         {
-            RotateBlockCheck_Cube_CeilingGrab();
+            PositionOnBottomOfParentCube();
+        }
+
+        //If ceilingGrabbing
+        else if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+        {
+            //RotateBlockCheck_Cube_CeilingGrab();
+            PositionOnBottomOfParentCube();
         }
 
         //If normal movement
@@ -304,7 +317,8 @@ public class NumberDisplay : MonoBehaviour
             //If the block is a Cube or Slab
             else
             {
-                RotateBlockCheck_Cube();
+                //RotateBlockCheck_Cube();
+                PositionOnTopOfParentCube();
             }
         }
     }
@@ -511,5 +525,63 @@ public class NumberDisplay : MonoBehaviour
         CameraController.Action_RotateCamera_Start -= UpdateRotation;
 
         Destroy(this);
+    }
+
+
+    //--------------------
+
+
+    public void PositionOnTopOfParentCube()
+    {
+        if (transform.parent == null)
+        {
+            Debug.LogWarning("NumberDisplay has no parent to align with.");
+            return;
+        }
+
+        Transform parent = transform.parent;
+
+        // Use parent's up direction to find top in world space
+        Vector3 topDirection = parent.up;
+
+        // Use parent's Y-scale as height (assuming cube is upright)
+        float cubeHeight = parent.localScale.y;
+
+        // Compute world position for the top center of the cube
+        Vector3 worldTopPosition = parent.position + topDirection * (cubeHeight / 2f + offsetAboveSurface - 0.6f);
+
+        // Apply the world position
+        transform.position = worldTopPosition;
+
+        // Keep the number upright in world space
+        transform.rotation = Quaternion.identity;
+        // Optional: if you want the number to always face the camera:
+        // transform.rotation = Quaternion.LookRotation(Camera.main.transform.forward, Vector3.up);
+    }
+
+    public void PositionOnBottomOfParentCube()
+    {
+        if (transform.parent == null)
+        {
+            Debug.LogWarning("NumberDisplay has no parent to align with.");
+            return;
+        }
+
+        Transform parent = transform.parent;
+
+        // Get the parent's "down" direction
+        Vector3 bottomDirection = -parent.up;
+
+        // Use parent's Y scale for height
+        float cubeHeight = parent.localScale.y;
+
+        // World position at bottom of the cube
+        Vector3 worldBottomPosition = parent.position + bottomDirection * (cubeHeight / 2f + offsetAboveSurface - 0.6f);
+
+        // Move the number object to the bottom in world space
+        transform.position = worldBottomPosition;
+
+        // Make the number face downward in world space
+        transform.up = Vector3.down;
     }
 }

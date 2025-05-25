@@ -68,9 +68,13 @@ public class Button_SelectOnCancel : MonoBehaviour
         if (menuToClose)
             menuToClose.SetActive(false);
 
-        MainMenuManager.Instance.menuState = menuState_ToSelect;
-        OverWorldManager.Instance.regionState = regionState_ToSelect;
-        OverWorldManager.Instance.levelState = levelState_ToSelect;
+        //Make sure that mainMenu isn't tried accessed during gameplay
+        if (menuState_ToSelect != MenuState.Pause_Menu_Main && menuState_ToSelect != MenuState.Pause_Menu_Settings && menuState_ToSelect != MenuState.Pause_Menu_Info)
+        {
+            MainMenuManager.Instance.menuState = menuState_ToSelect;
+            OverWorldManager.Instance.regionState = regionState_ToSelect;
+            OverWorldManager.Instance.levelState = levelState_ToSelect;
+        }
 
         RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(regionState_ToSelect, levelState_ToSelect);
     }

@@ -48,9 +48,6 @@ public class PermanentAbility : MonoBehaviour
                     case Abilities.None:
                         break;
 
-                    case Abilities.FenceSneak:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.FenceSneak = true;
-                        break;
                     case Abilities.SwimSuit:
                         PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit = true;
                         break;
@@ -60,20 +57,11 @@ public class PermanentAbility : MonoBehaviour
                     case Abilities.Flippers:
                         PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers = true;
                         break;
-                    case Abilities.Flameable:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.Flameable = true;
-                        break;
                     case Abilities.Jumping:
                         PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping = true;
                         break;
-                    case Abilities.HikerGear:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.HikerGear = true;
-                        break;
                     case Abilities.CeilingGrab:
                         PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab = true;
-                        break;
-                    case Abilities.IceSpikes:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.IceSpikes = true;
                         break;
                     case Abilities.Dash:
                         PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash = true;
@@ -84,14 +72,8 @@ public class PermanentAbility : MonoBehaviour
                     case Abilities.Descend:
                         PlayerStats.Instance.stats.abilitiesGot_Permanent.Descend = true;
                         break;
-                    case Abilities.Hammer:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.Hammer = true;
-                        break;
                     case Abilities.GrapplingHook:
                         PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook = true;
-                        break;
-                    case Abilities.ControlStick:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.ControlStick = true;
                         break;
 
                     default:

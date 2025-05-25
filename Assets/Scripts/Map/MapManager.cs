@@ -5,20 +5,20 @@ using UnityEngine;
 
 public class MapManager : Singleton<MapManager>
 {
-    //public static event Action mapInfo_hasLoaded;
-
     [Header("Player")]
     [SerializeField] GameObject playerObject;
     GameObject playerObjectInScene;
     public Vector3 playerStartPos;
 
+    [Header("LayerMask for Raycasting")]
+    public LayerMask pickup_LayerMask;
+
     [Header("Sound")]
     public List<AudioTrack> mapAudioList;
     [SerializeField] List<AudioSource> mapAudioSourceList;
 
-    [Header("MapManager")]
-    [HideInInspector] public Map_SaveInfo mapInfo_ToSave = new Map_SaveInfo();
-
+    [Header("MapInfo")]
+    public Map_SaveInfo mapInfo_ToSave = new Map_SaveInfo();
 
     BlockInfo[] blockInfoList;
     Interactable_Pickup[] pickupInfoList;
@@ -30,6 +30,8 @@ public class MapManager : Singleton<MapManager>
     private void Awake()
     {
         SpawnPlayerObject();
+
+        pickup_LayerMask = ~pickup_LayerMask; //Corrects the error that resulted in all raycasts to only focus on the pickups instead of the other way around
     }
     private void Start()
     {

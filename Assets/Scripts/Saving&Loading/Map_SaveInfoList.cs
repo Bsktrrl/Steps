@@ -7,21 +7,31 @@ using UnityEngine.SceneManagement;
 public class Map_SaveInfoList
 {
     public List<Map_SaveInfo> map_SaveInfo_List = new List<Map_SaveInfo>();
+
+    public Map_SaveInfoList()
+    {
+        if (map_SaveInfo_List == null)
+            map_SaveInfo_List = new List<Map_SaveInfo>();
+    }
+
 }
 
 [Serializable]
 public class Map_SaveInfo
 {
+    public static event Action Action_SetupMap_hasLoaded;
+
     public string mapName;
     public bool isCompleted;
 
     public List<CoinInfo> coinList = new List<CoinInfo>();
     public List<CollectableInfo> collectableList = new List<CollectableInfo>();
     public List<MaxStepInfo> maxStepList = new List<MaxStepInfo>();
-    public List<AbilityInfo> abilityList = new List<AbilityInfo>();
+
+    public SkinType skintype;
 
     public AbilitiesGot abilitiesInLevel;
-    public AbilitiesGot abilitiesGotInLevel;
+    //public AbilitiesGot abilitiesGotInLevel;
 
 
     //--------------------
@@ -32,6 +42,8 @@ public class Map_SaveInfo
     {
         SetMapName();
         AddInteractableInfo();
+
+        Action_SetupMap_hasLoaded?.Invoke();
     }
     void SetMapName()
     {
@@ -71,17 +83,6 @@ public class Map_SaveInfo
                 maxStepInfo.isTaken = false;
 
                 maxStepList.Add(maxStepInfo);
-            }
-
-            //Abilities
-            else if (obj.abilityReceived != Abilities.None)
-            {
-                AbilityInfo abilitiesInfo = new AbilityInfo();
-                abilitiesInfo.abilityObj = obj.gameObject;
-                abilitiesInfo.pos = obj.gameObject.transform.position;
-                abilitiesInfo.isTaken = false;
-
-                abilityList.Add(abilitiesInfo);
             }
         }
     }
@@ -181,14 +182,6 @@ public class CollectableInfo
 public class MaxStepInfo
 {
     public GameObject maxStepObj;
-    public Vector3 pos;
-    public bool isTaken;
-}
-
-[Serializable]
-public class AbilityInfo
-{
-    public GameObject abilityObj;
     public Vector3 pos;
     public bool isTaken;
 }

@@ -7,6 +7,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 {
     public static event Action Action_grabCeiling;
     public static event Action Action_releaseCeiling;
+    public static event Action Action_raycastCeiling;
 
     [SerializeField] bool canCeilingGrab;
     public bool isCeilingGrabbing;
@@ -19,7 +20,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 
     RaycastHit hit;
 
-    [SerializeField] GameObject ceilingGrabBlock;
+    public GameObject ceilingGrabBlock;
 
 
     //--------------------
@@ -30,12 +31,14 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         Player_Movement.Action_StepTakenEarly += ResetDarkenColor;
         Player_Movement.Action_StepTaken += UpdateRaycastCeiling;
         DataManager.Action_dataHasLoaded += UpdateRaycastCeiling;
+        PlayerStats.Action_RespawnPlayerEarly += ResetStats;
     }
     private void OnDisable()
     {
         Player_Movement.Action_StepTakenEarly -= ResetDarkenColor;
         Player_Movement.Action_StepTaken -= UpdateRaycastCeiling;
         DataManager.Action_dataHasLoaded -= UpdateRaycastCeiling;
+        PlayerStats.Action_RespawnPlayerEarly -= ResetStats;
     }
 
 
@@ -76,7 +79,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             else if (CameraController.Instance.cameraRotationState == CameraRotationState.Right)
                 StartCoroutine(CameraController.Instance.CeilingCameraRotation(-90));
 
-            StartCoroutine(RotateToCeiling(180));
+            StartCoroutine(RotateToOrFromCeiling(180));
         }
         else if (/*Input.GetKeyDown(KeyCode.C) &&*/ CameraController.Instance.cameraState == CameraState.CeilingCam)
         {
@@ -89,12 +92,12 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             else if (CameraController.Instance.cameraRotationState == CameraRotationState.Right)
                 StartCoroutine(CameraController.Instance.CeilingCameraRotation(-90));
 
-            StartCoroutine(RotateToCeiling(0));
+            StartCoroutine(RotateToOrFromCeiling(0));
         }
     }
     void RaycastCeiling()
     {
-        if (Physics.Raycast(transform.position, Vector3.up, out hit, 1))
+        if (Physics.Raycast(transform.position, Vector3.up, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
@@ -102,6 +105,9 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
                 {
                     hit.transform.gameObject.GetComponent<BlockInfo>().SetDarkenColors();
                     ceilingGrabBlock = hit.transform.gameObject;
+
+                    print("10. ceilingGrabBlock = hit.transform.gameObject");
+                    Action_raycastCeiling?.Invoke();
                 }
                 
                 canCeilingGrab = true;
@@ -117,7 +123,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     //--------------------
 
 
-    IEnumerator RotateToCeiling(float angle)
+    IEnumerator RotateToOrFromCeiling(float angle)
     {
         isCeilingRotation = true;
 
@@ -191,6 +197,9 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 
         PlayerManager.Instance.pauseGame = false;
         isCeilingRotation = false;
+
+        Action_raycastCeiling?.Invoke();
+        RaycastCeiling();
     }
 
     public void ResetCeilingGrab()
@@ -210,7 +219,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 
         if (Player_Movement.Instance.movementStates == MovementStates.Still)
         {
-            if (Physics.Raycast(transform.position, Vector3.up, out hit, 1))
+            if (Physics.Raycast(transform.position, Vector3.up, out hit, 1, MapManager.Instance.pickup_LayerMask))
             {
                 if (hit.transform.GetComponent<BlockInfo>())
                 {
@@ -236,7 +245,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         }
         else if (Player_Movement.Instance.movementStates == MovementStates.Moving)
         {
-            if (Physics.Raycast(transform.position, Vector3.up, out hit, 1))
+            if (Physics.Raycast(transform.position, Vector3.up, out hit, 1, MapManager.Instance.pickup_LayerMask))
             {
                 if (hit.transform.GetComponent<BlockInfo>())
                 {
@@ -297,5 +306,19 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         {
             ceilingGrabBlock.GetComponent<BlockInfo>().ResetDarkenColor();
         }
+    }
+
+
+    //--------------------
+
+
+    void ResetStats()
+    {
+        ResetCeilingGrab();
+
+        canCeilingGrab = false;
+        isCeilingGrabbing = false;
+        isCeilingRotation = false;
+        ceilingGrabBlock = null;
     }
 }

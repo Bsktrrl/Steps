@@ -94,7 +94,7 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
 
         endPoint = transform.position + (Player_BlockDetector.Instance.lookDir * grapplingDistance) + (-Player_BlockDetector.Instance.lookDir * 0.05f);
 
-        if (Physics.Raycast(transform.position, Player_BlockDetector.Instance.lookDir, out hit, grapplingDistance))
+        if (Physics.Raycast(transform.position, Player_BlockDetector.Instance.lookDir, out hit, grapplingDistance, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject)
             {
@@ -192,7 +192,7 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
             {
                 print("3. CheckIfCanGrapple");
                 //Check if the block forward-under the targetBlock can be standing on (Raycast down from hit.point - 0.5 to get the block)
-                if (Physics.Raycast(endPoint + (-Player_BlockDetector.Instance.lookDir * 0.25f), Vector3.down, out hit, 1))
+                if (Physics.Raycast(endPoint + (-Player_BlockDetector.Instance.lookDir * 0.25f), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
                 {
                     print("4. CheckIfCanGrapple");
                     if (hit.transform.gameObject)
@@ -265,7 +265,7 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
     }
     void RaycastDown_Old()
     {
-        if (Physics.Raycast(gameObject.transform.position, Vector3.down, out hit, 1))
+        if (Physics.Raycast(gameObject.transform.position, Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject)
             {
@@ -279,7 +279,7 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
     }
     void RaycastDown_New()
     {
-        if (Physics.Raycast(gameObject.transform.position, Vector3.down, out hit, 1))
+        if (Physics.Raycast(gameObject.transform.position, Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject)
             {

@@ -71,7 +71,7 @@ public class Block_Moveable : MonoBehaviour
     {
         if (movementDirection != MovementDirection.None) { return; }
 
-        if (Physics.Raycast(gameObject.transform.position, direction, out hit, 1))
+        if (Physics.Raycast(gameObject.transform.position, direction, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             Debug.DrawRay(gameObject.transform.position, direction * hit.distance, Color.green);
 
@@ -111,7 +111,7 @@ public class Block_Moveable : MonoBehaviour
     }
     void Raycast_Horizontal(Vector3 direction)
     {
-        if (Physics.Raycast(gameObject.transform.position, direction, out hit, 1))
+        if (Physics.Raycast(gameObject.transform.position, direction, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             Debug.DrawRay(gameObject.transform.position, direction, Color.green);
 
@@ -169,7 +169,7 @@ public class Block_Moveable : MonoBehaviour
     }
     void Raycast_Vertical(Vector3 direction)
     {
-        if (Physics.Raycast(gameObject.transform.position + direction, Vector3.down, out hit, 1))
+        if (Physics.Raycast(gameObject.transform.position + direction, Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             Debug.DrawRay(gameObject.transform.position + direction, Vector3.down, Color.green);
 
@@ -261,7 +261,7 @@ public class Block_Moveable : MonoBehaviour
         if (!canMove) { return false; }
 
         //Raycast the block under to see if there is an IceBlock there
-        if (Physics.Raycast(gameObject.transform.position, Vector3.down, out hit, 1))
+        if (Physics.Raycast(gameObject.transform.position, Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
             Debug.DrawRay(gameObject.transform.position, Vector3.down, Color.green);
 

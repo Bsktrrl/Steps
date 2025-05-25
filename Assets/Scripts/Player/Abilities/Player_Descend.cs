@@ -21,6 +21,8 @@ public class Player_Descend : Singleton<Player_Descend>
 
     bool canRun;
 
+    float rayLength = 2;
+
 
     //--------------------
 
@@ -94,151 +96,125 @@ public class Player_Descend : Singleton<Player_Descend>
                 {
                     if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Descend || gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Descend)
                     {
-                        if (Physics.Raycast(transform.position + Vector3.down, Vector3.down, out hit, descendingDistance))
+                        Vector3 origin = transform.position + (Vector3.down * 1f); // Start from block below player
+
+                        print("1. Descend");
+
+                        // 1. Check for a block directly below the player's current block
+                        if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit1, 0.5f, MapManager.Instance.pickup_LayerMask))
                         {
-                            Debug.DrawRay(transform.position + Vector3.down, Vector3.down * descendingDistance, Color.yellow);
+                            print("2. Descend");
 
-                            if (hit.transform.GetComponent<BlockInfo>())
+                            BlockInfo blockBelow = hit1.collider.GetComponent<BlockInfo>();
+
+                            if (blockBelow != null)
                             {
-                                //If Descending block is a WaterBlock
-                                if (hit.transform.GetComponent<Block_Water>() && (PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers || PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim || PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers || PlayerStats.Instance.stats.abilitiesGot_Temporary.SwiftSwim))
+                                // Block directly below — allow only if it's water AND player can swim
+                                if (blockBelow.blockElement == BlockElement.Water)
                                 {
-                                    if (hit.transform.GetComponent<BlockInfo>().upper_Center)
+                                    if (PlayerHasSwimAbility())
                                     {
-                                        if (hit.transform.GetComponent<BlockInfo>().upper_Center.GetComponent<BlockInfo>().blockType == BlockType.Slab)
-                                        {
-                                            //print("1. Descending - WaterBlock with Slab over");
-                                            DescendingIsAllowed();
-                                            return true;
-                                        }
-                                        else
-                                        {
-                                            //print("2. Descending - WaterBlock with a Block over");
-                                            DescendingIsNOTAllowed();
-                                            return false;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        //print("3. Descending - WaterBlock with Empty over");
-                                        DescendingIsAllowed();
+                                        print("3. Descend");
+
+                                        DescendingIsAllowed(hit1.transform.gameObject);
                                         return true;
                                     }
-                                }
-
-                                //If Descending block is a Slab
-                                else if (hit.transform.GetComponent<BlockInfo>().blockType == BlockType.Slab)
-                                {
-                                    if (hit.transform.GetComponent<BlockInfo>().upper_Center)
-                                    {
-                                        if (hit.transform.GetComponent<BlockInfo>().upper_Center.GetComponent<BlockInfo>().blockType == BlockType.Slab)
-                                        {
-                                            //print("4. Descending - Slab with Slab over");
-                                            DescendingIsAllowed();
-                                            return true;
-                                        }
-                                        else
-                                        {
-                                            //print("5. Descending - Slab with a Block over");
-                                            DescendingIsNOTAllowed();
-                                            return false;
-                                        }
-                                    }
                                     else
                                     {
-                                        //print("6. Descending - Slab with Empty over");
-                                        DescendingIsAllowed();
-                                        return true;
-                                    }
-                                }
+                                        print("3.5 Descend");
 
-                                //If space over the blockHit is empty 
-                                else if (!hit.transform.GetComponent<BlockInfo>().upper_Center)
-                                {
-                                    //If Descending block is a WaterBlock
-                                    if (hit.transform.GetComponent<Block_Water>())
-                                    {
-                                        //print("7. Descending - Empty over but Water is Hit");
-                                        DescendingIsNOTAllowed();
-                                        return false;
-                                    }
-                                    else
-                                    {
-                                        //print("8. Descending - Block with Empty over");
-                                        DescendingIsAllowed();
-                                        return true;
-                                    }
-                                }
-
-                                //If space over the blockHit has a Block 
-                                else if (hit.transform.GetComponent<BlockInfo>().upper_Center)
-                                {
-                                    //If space over the blockHit has a Slab 
-                                    if (hit.transform.GetComponent<BlockInfo>().upper_Center.GetComponent<BlockInfo>().blockType == BlockType.Slab)
-                                    {
-                                        //If blockHit is Water
-                                        if (hit.transform.GetComponent<Block_Water>())
-                                        {
-                                            //Can Swim
-                                            if (PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers || PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim || PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers || PlayerStats.Instance.stats.abilitiesGot_Temporary.SwiftSwim)
-                                            {
-                                                //print("9. Descending - WaterBlock with Slab over - CanSwim");
-                                                DescendingIsAllowed();
-                                                return true;
-                                            }
-                                            else
-                                            {
-                                                //print("10. Descending - WaterBlock with Slab over - CanNOTSwim");
-                                                DescendingIsNOTAllowed();
-                                                return false;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            //print("11. Descending - Block with Slab over");
-                                            DescendingIsAllowed();
-                                            return true;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        //print("12. Descending - Block with Block over");
+                                        // Solid or non-swimmable water block — block descend
                                         DescendingIsNOTAllowed();
                                         return false;
                                     }
                                 }
-
-                                //If not allowed to Descend
-                                else
+                                //Allow if it's a Slab
+                                else if (blockBelow.blockType == BlockType.Slab)
                                 {
-                                    DescendingIsNOTAllowed();
-                                    return false;
+                                    print("3.6 Descend");
+
+                                    DescendingIsAllowed(hit1.transform.gameObject);
+                                    return true;
                                 }
 
-                                //if ((hit.transform.GetComponent<BlockInfo>().upper_Center == null && hit.transform.position != gameObject.transform.position + (Vector3.down * gameObject.GetComponent<Player_Movement>().heightOverBlock) + Vector3.down)
-                                //    || hit.transform.GetComponent<BlockInfo>().upper_Center.GetComponent<BlockInfo>().blockType == BlockType.Slab
-                                //    || (hit.transform.GetComponent<BlockInfo>().upper_Center.GetComponent<Block_Water>() && hit.transform.position != gameObject.transform.position + (Vector3.down * gameObject.GetComponent<Player_Movement>().heightOverBlock) + Vector3.down && PlayerStats.Instance.stats.abilitiesGot.SwimSuit))
-                                //{
-                                //    DescendingIsAllowed();
-                                //    return true;
-                                //}
+                                    print("4. Descend");
+
+                                DescendingIsNOTAllowed();
+                                return false;
                             }
                         }
 
-                        
+                        // 2. No adjacent block — check further down
+                        Vector3 secondRayOrigin = origin + (Vector3.down * 1f); // Start one unit lower (i.e. 2 units below player)
+
+                        print("5. Descend");
+
+                        if (Physics.Raycast(secondRayOrigin, Vector3.down, out RaycastHit hit2, rayLength, MapManager.Instance.pickup_LayerMask))
+                        {
+                            float verticalDistance = hit2.point.y - transform.position.y;
+
+                            if (verticalDistance > (rayLength + 1))
+                            {
+                                // Block too high to ascend to
+                                DescendingIsNOTAllowed();
+                                return false;
+                            }
+
+                            print("6. Descend");
+
+                            BlockInfo lowerBlock = hit2.collider.GetComponent<BlockInfo>();
+
+                            if (lowerBlock != null)
+                            {
+                                if (lowerBlock.blockElement == BlockElement.Water)
+                                {
+                                    if (PlayerHasSwimAbility())
+                                    {
+                                        print("7. Descend");
+
+                                        DescendingIsAllowed(hit2.transform.gameObject);
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        print("8. Descend");
+
+                                        DescendingIsNOTAllowed();
+                                        return false;
+                                    }
+                                }
+
+                                print("9. Descend");
+
+                                DescendingIsAllowed(hit2.transform.gameObject);
+                                return true;
+                            }
+                        }
                     }
                 }
             }
         }
 
         //Don't Descend
+
         DescendingIsNOTAllowed();
         return false;
     }
-    void DescendingIsAllowed()
+    bool PlayerHasSwimAbility()
+    {
+        var stats = PlayerStats.Instance.stats;
+        return stats.abilitiesGot_Permanent.SwimSuit ||
+               stats.abilitiesGot_Permanent.Flippers ||
+               stats.abilitiesGot_Permanent.SwiftSwim ||
+               stats.abilitiesGot_Temporary.SwimSuit ||
+               stats.abilitiesGot_Temporary.Flippers ||
+               stats.abilitiesGot_Temporary.SwiftSwim;
+    }
+
+    void DescendingIsAllowed(GameObject hitObject)
     {
         descendingBlock_Previous = descendingBlock_Current;
-        descendingBlock_Current = hit.transform.gameObject;
+        descendingBlock_Current = hitObject;
 
         if (descendingBlock_Current != descendingBlock_Previous)
         {

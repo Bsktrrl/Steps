@@ -73,7 +73,7 @@ public class RememberCurrentlySelectedUIElement : Singleton<RememberCurrentlySel
 
         DataPersistanceManager.instance.SaveGame();
 
-        print("1000. SaveSelectedUIElement - R: " + DataManager.Instance.overWorldStates_StoreList.regionState + " | L: " + DataManager.Instance.overWorldStates_StoreList.levelState);
+        //print("1000. SaveSelectedUIElement - R: " + DataManager.Instance.overWorldStates_StoreList.regionState + " | L: " + DataManager.Instance.overWorldStates_StoreList.levelState);
     }
 
 
@@ -82,6 +82,10 @@ public class RememberCurrentlySelectedUIElement : Singleton<RememberCurrentlySel
 
     public void Action_ChangedSelectedUIElement_Invoke()
     {
+        //Make sure this Event isn't updating during gameplay in a level
+        if (transform.GetComponentInParent<PlayerManager>())
+            return;
+
         Action_ChangedSelectedUIElement?.Invoke();
     }
 }

@@ -11,6 +11,7 @@ public class Block_SandFalling : MonoBehaviour
     [Header("Checked If Stepped On")]
     [SerializeField] bool isSteppedOn;
     [SerializeField] bool canFall;
+    [SerializeField] bool resettingBlock;
 
     [Header("Runtime Stats")]
     Vector3 endPos;
@@ -35,7 +36,7 @@ public class Block_SandFalling : MonoBehaviour
         CheckIfCanFall();
 
         //Get endPos
-        if (Physics.Raycast(gameObject.transform.position, Vector3.down, out hit))
+        if (Physics.Raycast(gameObject.transform.position, Vector3.down, out hit, MapManager.Instance.pickup_LayerMask, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
@@ -116,7 +117,7 @@ public class Block_SandFalling : MonoBehaviour
         //Check if the Block has another block under itself
         if (GetComponent<BlockInfo>().blockType == BlockType.Stair)
         {
-            if (Physics.Raycast(gameObject.transform.position + (Vector3.up * 0.5f), Vector3.down, out hit, 1))
+            if (Physics.Raycast(gameObject.transform.position + (Vector3.up * 0.5f), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
             {
                 if (hit.transform.gameObject.GetComponent<BlockInfo>())
                 {
@@ -127,7 +128,7 @@ public class Block_SandFalling : MonoBehaviour
         }
         else
         {
-            if (Physics.Raycast(gameObject.transform.position, Vector3.down, out hit, 1))
+            if (Physics.Raycast(gameObject.transform.position, Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
             {
                 if (hit.transform.gameObject.GetComponent<BlockInfo>())
                 {
@@ -164,7 +165,10 @@ public class Block_SandFalling : MonoBehaviour
 
     bool CheckIfReadyToFall()
     {
-        if (isSteppedOn)
+        if (resettingBlock)
+            isSteppedOn = false;
+
+        if (isSteppedOn && !resettingBlock)
         {
             FallingAlertAnimation();
 
@@ -181,6 +185,9 @@ public class Block_SandFalling : MonoBehaviour
     }
     void Falling()
     {
+        if (resettingBlock)
+            isSteppedOn = false;
+
         if (GetComponent<BoxCollider>())
             GetComponent<BoxCollider>().enabled = false;
         else if (GetComponent<MeshCollider>())
@@ -199,6 +206,9 @@ public class Block_SandFalling : MonoBehaviour
     }
     void FallingAlertAnimation()
     {
+        if (resettingBlock)
+            isSteppedOn = false;
+
         //When falling, straighten up the rotation from the shaking
         if (waitCounter >= waitTime_BeforeFalling)
         {
@@ -230,6 +240,11 @@ public class Block_SandFalling : MonoBehaviour
 
     public void ResetBlock()
     {
+        resettingBlock = true;
+
+        isSteppedOn = false;
+        StopAllCoroutines();
+
         if (GetComponent<BoxCollider>())
             GetComponent<BoxCollider>().enabled = true;
         else if (GetComponent<MeshCollider>())
@@ -237,12 +252,23 @@ public class Block_SandFalling : MonoBehaviour
 
         waitCounter = 0;
 
-        isSteppedOn = false;
-
-        waitCounter = 0;
-
         transform.position = gameObject.GetComponent<BlockInfo>().startPos;
 
+        StartCoroutine(ResetBlockWaiting(0.1f));
+
         gameObject.SetActive(true);
+    }
+    IEnumerator ResetBlockWaiting(float waitTime)
+    {
+        isSteppedOn = false;
+
+        yield return new WaitForSeconds(waitTime);
+
+        if (GetComponent<BoxCollider>())
+            GetComponent<BoxCollider>().enabled = true;
+        else if (GetComponent<MeshCollider>())
+            GetComponent<MeshCollider>().enabled = true;
+
+        resettingBlock = false;
     }
 }

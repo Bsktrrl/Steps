@@ -75,12 +75,10 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
                 {
                     if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.SwiftSwim || gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SwiftSwim)
                     {
-                        if (Physics.Raycast(gameObject.transform.position + Vector3.down, dir, out hit, 1))
+                        if (Physics.Raycast(gameObject.transform.position + Vector3.down, dir, out hit, 1, MapManager.Instance.pickup_LayerMask))
                         {
                             if (hit.transform.gameObject.GetComponent<Block_Water>())
                             {
-                                //Debug.DrawRay(gameObject.transform.position, dir, Color.yellow, 1);
-
                                 if (dir == Vector3.up)
                                 {
                                     swiftSwim_Up_Obj = hit.transform.gameObject;

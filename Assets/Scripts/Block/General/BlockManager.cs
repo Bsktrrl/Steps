@@ -51,5 +51,11 @@ public enum BlockElement
     Metal,
 
     Wood_SwampWater,
-    Wood_Jungle
+    Wood_Jungle,
+
+    Ice,
+    Snow,
+    Ice_Grass,
+
+    Water
 }

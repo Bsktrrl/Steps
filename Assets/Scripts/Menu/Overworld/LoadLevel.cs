@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class LoadLevel : MonoBehaviour
 {
+    [Header("Ready to add to the Game")]
+    public bool readyToBePlayedAndDisplayed;
+
     [Header("Levels")]
     public string levelToPlay;
 
@@ -14,12 +17,13 @@ public class LoadLevel : MonoBehaviour
     public Sprite levelSprite;
 
     [Header("Unlock Requirement")]
-    public int coinsRequirement;
-    public int collectableRequirement;
     public List<GameObject> levelsToBeFinished;
 
     [SerializeField] bool canPlay;
     public bool isCompleted;
+
+    [Header("In the Level")]
+    public SkinType skinTypeInLevel;
 
     public AbilitiesGot abilitiesInLevel;
 
@@ -54,11 +58,6 @@ public class LoadLevel : MonoBehaviour
 
     public bool CheckIfCanBePlayed()
     {
-        if (coinsRequirement <= 0 && collectableRequirement <= 0 && levelsToBeFinished.Count <= 0)
-        {
-            return true;
-        }
-
         //print("0. Error: " + levelToPlay);
         if (PlayerStats.Instance.stats != null)
         {
@@ -68,38 +67,34 @@ public class LoadLevel : MonoBehaviour
                 //print("2. Error: " + levelToPlay);
                 if (PlayerStats.Instance.stats.itemsGot != null)
                 {
-                    //print("3. Error: " + levelToPlay + " | " + PlayerStats.Instance.stats.itemsGot.coin + " >= " + coinsRequirement + " | " + PlayerStats.Instance.stats.itemsGot.collectable + " >= " + collectableRequirement);
-                    if (PlayerStats.Instance.stats.itemsGot.coin >= coinsRequirement && PlayerStats.Instance.stats.itemsGot.collectable >= collectableRequirement)
-                    {
-                        //print("4. Error: " + levelToPlay);
-                        int counter = 0;
+                    //print("4. Error: " + levelToPlay);
+                    int counter = 0;
 
-                        if (MenuLevelInfo.Instance.mapInfo_ToSave != null)
+                    if (MenuLevelInfo.Instance.mapInfo_ToSave != null)
+                    {
+                        //print("5. Error: " + levelToPlay);
+                        if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List != null)
                         {
-                            //print("5. Error: " + levelToPlay);
-                            if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List != null)
+                            //print("6. Error: " + levelToPlay);
+                            foreach (Map_SaveInfo mapInfo in MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List)
                             {
-                                //print("6. Error: " + levelToPlay);
-                                foreach (Map_SaveInfo mapInfo in MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List)
+                                //print("7. Error: " + levelToPlay);
+                                for (int i = 0; i < levelsToBeFinished.Count; i++)
                                 {
-                                    //print("7. Error: " + levelToPlay);
-                                    for (int i = 0; i < levelsToBeFinished.Count; i++)
+                                    if (mapInfo.mapName == levelsToBeFinished[i].GetComponent<LoadLevel>().levelToPlay)
                                     {
-                                        if (mapInfo.mapName == levelsToBeFinished[i].GetComponent<LoadLevel>().levelToPlay)
+                                        if (mapInfo.isCompleted)
                                         {
-                                            if (mapInfo.isCompleted)
-                                            {
-                                                levelsToBeFinished[i].GetComponent<LoadLevel>().isCompleted = true;
-                                                counter++;
-                                            }
+                                            levelsToBeFinished[i].GetComponent<LoadLevel>().isCompleted = true;
+                                            counter++;
                                         }
                                     }
                                 }
+                            }
 
-                                if (counter >= levelsToBeFinished.Count)
-                                {
-                                    return true;
-                                }
+                            if (counter >= levelsToBeFinished.Count)
+                            {
+                                return true;
                             }
                         }
                     }
