@@ -204,6 +204,7 @@ public class CameraController : Singleton<CameraController>
         cameraOffset.transform.rotation = endRotation;
 
         SetBlockDetectorDirection();
+        AdjustFacingDirection();
 
         yield return new WaitForSeconds(waitDelay); // Wait for the next frame
 
