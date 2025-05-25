@@ -3,15 +3,14 @@
 
 1.
 CeilingGrab:
-- When CeilingGrab, the block you grab onto will not show its Number when moving adjacent (only the first time)
-- Fix IceGlide lag
+- Fix the problem that doesn't let the movement to be done in one smoot motion (it stops and updates DarkenBlock in-between each block of movement)
+	- Fix IceGlide lag
+	- Remake the CeilingGrabing movmeent based on the normal movement
 
 
 2.
 Movement & Camera
-- When rotating the camera, in narrow places, not all number_Display updates correctly (check all possible rotations of a Cube to see if something is wrong)
 - Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
-- When able to CeilingGrab, don't display number on the top
 
 
 3.

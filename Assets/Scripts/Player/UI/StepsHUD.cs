@@ -86,11 +86,14 @@ public class StepsHUD : MonoBehaviour
 
     void ChangeTransparency(int index, bool isUsed)
     {
-        Color originalColor = stepsIconList[index].GetComponent<Image>().color;
+        if (index < stepsIconList.Count)
+        {
+            Color originalColor = stepsIconList[index].GetComponent<Image>().color;
 
-        if (isUsed)
-            stepsIconList[index].GetComponent<Image>().color = new Color(originalColor.r, originalColor.g, originalColor.b, iconTransparencyValue);
-        else
-            stepsIconList[index].GetComponent<Image>().color = new Color(originalColor.r, originalColor.g, originalColor.b, 1);
+            if (isUsed)
+                stepsIconList[index].GetComponent<Image>().color = new Color(originalColor.r, originalColor.g, originalColor.b, iconTransparencyValue);
+            else
+                stepsIconList[index].GetComponent<Image>().color = new Color(originalColor.r, originalColor.g, originalColor.b, 1);
+        }
     }
 }

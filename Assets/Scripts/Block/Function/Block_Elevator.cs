@@ -175,7 +175,9 @@ public class Block_Elevator : MonoBehaviour
             }
             else
             {
-                if (!gameObject.GetComponent<BlockInfo>().blockIsDark)
+                if (!gameObject.GetComponent<BlockInfo>().blockIsDark
+                    && ((gameObject.transform.position.y < (PlayerManager.Instance.player.transform.position.y + 1) || PlayerStats.Instance.stats.abilitiesGot_Temporary.Descend || PlayerStats.Instance.stats.abilitiesGot_Permanent.Descend)
+                    || (gameObject.transform.position.y < (PlayerManager.Instance.player.transform.position.y - 1) || PlayerStats.Instance.stats.abilitiesGot_Temporary.Ascend || PlayerStats.Instance.stats.abilitiesGot_Permanent.Ascend)))
                 {
                     gameObject.GetComponent<BlockInfo>().SetDarkenColors();
                 }
@@ -196,7 +198,9 @@ public class Block_Elevator : MonoBehaviour
             }
             else
             {
-                if (!gameObject.GetComponent<BlockInfo>().blockIsDark)
+                if (!gameObject.GetComponent<BlockInfo>().blockIsDark
+                    && ((gameObject.transform.position.y < (PlayerManager.Instance.player.transform.position.y + 1) || PlayerStats.Instance.stats.abilitiesGot_Temporary.Descend || PlayerStats.Instance.stats.abilitiesGot_Permanent.Descend)
+                    || (gameObject.transform.position.y < (PlayerManager.Instance.player.transform.position.y - 1) || PlayerStats.Instance.stats.abilitiesGot_Temporary.Ascend || PlayerStats.Instance.stats.abilitiesGot_Permanent.Ascend)))
                 {
                     //print("3. CheckIfDarkenBlock | Distance: " + Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position));
 
