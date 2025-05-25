@@ -2,34 +2,34 @@
 
 
 1.
-Respawn:
-- Falling blocks cannot be ascended/descend through before respawning twice
-
-
-2.
 CeilingGrab:
 - When CeilingGrab, the block you grab onto will not show its Number when moving adjacent (only the first time)
 - Fix IceGlide lag
 
 
-3.
+2.
 Movement & Camera
 - When rotating the camera, in narrow places, not all number_Display updates correctly (check all possible rotations of a Cube to see if something is wrong)
 - Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
+- When able to CeilingGrab, don't display number on the top
 
 
-4.
+3.
 Switches:
 - Make Brass Blocks move when switch is pressed (make a new script that activates the elevator script of a linked block, like "Block_Elevator_Step-on" that needs to be added to a block to activate it when walking on the block. This script (attached on the switch) needs to communicate with the linked elevator, so drag-drop the linked elevator's GameObject into a slot in the Switch-scripts and activate/deactivate it from there when the switch is on/off)
 	- Adjacent/Wall switch
 	- Step-on/Floor switch
 	- Linked step-on switch
 
+4.
+Info Menu:
+- Set Controls (controller and keyboard)in Info Menu
+
 
 ---
 
 
-5.
+4.
 Levels
 - Make Levels for the prototype
 

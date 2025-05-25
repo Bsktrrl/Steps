@@ -21,7 +21,7 @@ public class CameraController : Singleton<CameraController>
     [Header("Parameters")]
     float rotationDuration_Movement = 0.35f;
     float rotationDuration_Ceiling = 0.5f;
-    float waitDelay = 0.1f;
+    float waitDelay = 0.05f;
     public bool isRotating;
     public bool isCeilingRotating;
 
@@ -204,6 +204,8 @@ public class CameraController : Singleton<CameraController>
         cameraOffset.transform.rotation = endRotation;
 
         SetBlockDetectorDirection();
+
+        yield return new WaitForSeconds(waitDelay); // Wait for the next frame
 
         PlayerManager.Instance.pauseGame = false;
         isCeilingRotating = false;
