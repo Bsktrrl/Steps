@@ -9,9 +9,16 @@ Switches:
 	- Linked step-on switch
 - Button_Floor: Activate elevator when standing on it
 - Button_Switch: Activate after stepping on it (needs to step on it again to deactivate the elevator)
-- 
+
 
 2.
+Movement & Camera:
+- Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
+	- Sometimes, when rotation to the left twice, the player move in the looking direction after moving
+	- Almost always when at the edge of something, where not all 4 adjacent blocks can be moved to (maybe blocks isn't updated to "null" when the camera is rotating, so it keeps old blocks when they should have been "null"?
+
+
+3.
 Info Menu:
 - Set Controls (controller and keyboard)in Info Menu
 
@@ -34,11 +41,6 @@ CeilingGrab:
 - Fix the problem that doesn't let the movement to be done in one smoot motion (it stops and updates DarkenBlock in-between each block of movement)
 	- Fix IceGlide lag
 	- Remake the CeilingGrabing movement based on the normal movement
-
-
-Movement & Camera
-- Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
-	- Sometimes, when rotation to the left twice, the player move in the looking direction after moving
 
 
 Settings Menu:

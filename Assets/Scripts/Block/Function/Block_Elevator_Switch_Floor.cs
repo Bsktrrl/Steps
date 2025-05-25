@@ -40,8 +40,6 @@ public class Block_Elevator_Switch_Floor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        print("1. OnTriggerEnter");
-
         if (elevatorIsActivated)
         {
             ButtonAnimation_Off();
