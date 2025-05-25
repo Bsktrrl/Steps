@@ -2,25 +2,16 @@
 
 
 1.
-CeilingGrab:
-- Fix the problem that doesn't let the movement to be done in one smoot motion (it stops and updates DarkenBlock in-between each block of movement)
-	- Fix IceGlide lag
-	- Remake the CeilingGrabing movmeent based on the normal movement
-
-
-2.
-Movement & Camera
-- Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
-
-
-3.
 Switches:
 - Make Brass Blocks move when switch is pressed (make a new script that activates the elevator script of a linked block, like "Block_Elevator_Step-on" that needs to be added to a block to activate it when walking on the block. This script (attached on the switch) needs to communicate with the linked elevator, so drag-drop the linked elevator's GameObject into a slot in the Switch-scripts and activate/deactivate it from there when the switch is on/off)
 	- Adjacent/Wall switch
 	- Step-on/Floor switch
 	- Linked step-on switch
+- Button_Floor: Activate elevator when standing on it
+- Button_Switch: Activate after stepping on it (needs to step on it again to deactivate the elevator)
+- 
 
-4.
+2.
 Info Menu:
 - Set Controls (controller and keyboard)in Info Menu
 
@@ -37,6 +28,17 @@ Levels
 
 
 ----- TASKS SOON TO BE IMPLEMENTED -----
+
+
+CeilingGrab:
+- Fix the problem that doesn't let the movement to be done in one smoot motion (it stops and updates DarkenBlock in-between each block of movement)
+	- Fix IceGlide lag
+	- Remake the CeilingGrabing movement based on the normal movement
+
+
+Movement & Camera
+- Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
+	- Sometimes, when rotation to the left twice, the player move in the looking direction after moving
 
 
 Settings Menu:

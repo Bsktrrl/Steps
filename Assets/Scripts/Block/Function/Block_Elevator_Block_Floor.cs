@@ -6,9 +6,22 @@ public class Block_Elevator_Block_Floor : MonoBehaviour
 {
     [SerializeField] GameObject elevatorToActivate;
 
+    private List<SkinnedMeshRenderer> lodRenderers = new List<SkinnedMeshRenderer>();
+
 
     //--------------------
 
+
+    private void Start()
+    {
+        foreach (var smr in GetComponentsInChildren<SkinnedMeshRenderer>())
+        {
+            if (smr.name.Contains("LOD"))
+            {
+                lodRenderers.Add(smr);
+            }
+        }
+    }
 
     private void OnEnable()
     {
@@ -25,10 +38,12 @@ public class Block_Elevator_Block_Floor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        ButtonAnimation_On();
         ActivationSetup(other, true);
     }
     private void OnTriggerExit(Collider other)
     {
+        ButtonAnimation_Off();
         ActivationSetup(other, false);
     }
 
@@ -51,6 +66,25 @@ public class Block_Elevator_Block_Floor : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
 
         elevatorToActivate.GetComponent<Block_Elevator>().elevatorIsActivated = activationState;
+    }
+
+
+    //--------------------
+
+
+    void ButtonAnimation_On()
+    {
+        foreach (var lod in lodRenderers)
+        {
+            lod.SetBlendShapeWeight(0, 100);
+        }
+    }
+    void ButtonAnimation_Off()
+    {
+        foreach (var lod in lodRenderers)
+        {
+            lod.SetBlendShapeWeight(0, 0);
+        }
     }
 
 

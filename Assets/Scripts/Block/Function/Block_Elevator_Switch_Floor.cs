@@ -8,9 +8,22 @@ public class Block_Elevator_Switch_Floor : MonoBehaviour
 
     public bool elevatorIsActivated;
 
+    private List<SkinnedMeshRenderer> lodRenderers = new List<SkinnedMeshRenderer>();
+
 
     //--------------------
 
+
+    private void Start()
+    {
+        foreach (var smr in GetComponentsInChildren<SkinnedMeshRenderer>())
+        {
+            if (smr.name.Contains("LOD"))
+            {
+                lodRenderers.Add(smr);
+            }
+        }
+    }
 
     private void OnEnable()
     {
@@ -30,9 +43,15 @@ public class Block_Elevator_Switch_Floor : MonoBehaviour
         print("1. OnTriggerEnter");
 
         if (elevatorIsActivated)
+        {
+            ButtonAnimation_Off();
             ActivationSetup(other, false);
+        }
         else
+        {
+            ButtonAnimation_On();
             ActivationSetup(other, true);
+        }
     }
 
 
@@ -56,6 +75,25 @@ public class Block_Elevator_Switch_Floor : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
 
         elevatorToActivate.GetComponent<Block_Elevator>().elevatorIsActivated = activationState;
+    }
+
+
+    //--------------------
+
+
+    void ButtonAnimation_On()
+    {
+        foreach (var lod in lodRenderers)
+        {
+            lod.SetBlendShapeWeight(1, 100);
+        }
+    }
+    void ButtonAnimation_Off()
+    {
+        foreach (var lod in lodRenderers)
+        {
+            lod.SetBlendShapeWeight(1, 0);
+        }
     }
 
 
