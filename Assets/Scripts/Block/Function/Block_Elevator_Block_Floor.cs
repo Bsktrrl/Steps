@@ -6,8 +6,6 @@ public class Block_Elevator_Block_Floor : MonoBehaviour
 {
     [SerializeField] GameObject elevatorToActivate;
 
-    public bool isStandingOnBlock;
-
 
     //--------------------
 
@@ -27,14 +25,10 @@ public class Block_Elevator_Block_Floor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        print("1. OnTriggerEnter");
-
         ActivationSetup(other, true);
     }
     private void OnTriggerExit(Collider other)
     {
-        print("2. OnTriggerExit");
-
         ActivationSetup(other, false);
     }
 
@@ -42,23 +36,21 @@ public class Block_Elevator_Block_Floor : MonoBehaviour
     //--------------------
 
 
-    void ActivationSetup(Collider other, bool activateState)
+    void ActivationSetup(Collider other, bool activationState)
     {
         if (other.transform.gameObject.CompareTag("Player"))
         {
-            if (activateState)
-                StartCoroutine(DelayActivation(0.2f, activateState));
+            if (activationState)
+                StartCoroutine(DelayActivation(0.2f, activationState));
             else
-                StartCoroutine(DelayActivation(0, activateState));
+                StartCoroutine(DelayActivation(0, activationState));
         }
     }
-    IEnumerator DelayActivation(float waitTime, bool activateState)
+    IEnumerator DelayActivation(float waitTime, bool activationState)
     {
-        isStandingOnBlock = activateState;
-
         yield return new WaitForSeconds(waitTime);
 
-        elevatorToActivate.GetComponent<Block_Elevator>().elevatorIsActivated = activateState;
+        elevatorToActivate.GetComponent<Block_Elevator>().elevatorIsActivated = activationState;
     }
 
 
@@ -68,7 +60,5 @@ public class Block_Elevator_Block_Floor : MonoBehaviour
     void ResetButton()
     {
         StopAllCoroutines();
-
-        isStandingOnBlock = false;
     }
 }
