@@ -48,6 +48,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8368077686504252211, guid: 6b373dd0a427716449d95e87679f4e7e, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: -4314773779944421031, guid: 6b373dd0a427716449d95e87679f4e7e, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: -2280124753738824721, guid: 6b373dd0a427716449d95e87679f4e7e, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.65
@@ -72,6 +80,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Switch_Button_Floor
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6b373dd0a427716449d95e87679f4e7e, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 1697851205065446517, guid: 6b373dd0a427716449d95e87679f4e7e, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.65
@@ -91,6 +103,10 @@ PrefabInstance:
     - target: {fileID: 1697851205065446517, guid: 6b373dd0a427716449d95e87679f4e7e, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3000329479569775535, guid: 6b373dd0a427716449d95e87679f4e7e, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 5979320616854562778, guid: 6b373dd0a427716449d95e87679f4e7e, type: 3}
       propertyPath: m_LocalScale.x
@@ -192,4 +208,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elevatorToActivate: {fileID: 0}
-  isStandingOnBlock: 0

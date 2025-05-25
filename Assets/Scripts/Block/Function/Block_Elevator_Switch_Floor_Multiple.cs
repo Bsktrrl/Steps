@@ -107,14 +107,14 @@ public class Block_Elevator_Switch_Floor_Multiple : MonoBehaviour
     {
         foreach (var lod in lodRenderers)
         {
-            lod.SetBlendShapeWeight(0, 100);
+            lod.SetBlendShapeWeight(1, 100);
         }
     }
     public void ButtonAnimation_Off()
     {
         foreach (var lod in lodRenderers)
         {
-            lod.SetBlendShapeWeight(0, 0);
+            lod.SetBlendShapeWeight(1, 0);
         }
     }
 

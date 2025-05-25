@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8068922684308080137, guid: 02d3e7698d74080439b02dbfc3ece61c, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: -2671334927056423516, guid: 02d3e7698d74080439b02dbfc3ece61c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.65
@@ -92,6 +96,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Switch_Button_Floor_Multiple
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 02d3e7698d74080439b02dbfc3ece61c, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 3043304221146218816, guid: 02d3e7698d74080439b02dbfc3ece61c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.65
@@ -112,6 +120,14 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5241453563692632595, guid: 02d3e7698d74080439b02dbfc3ece61c, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789120055823435942, guid: 02d3e7698d74080439b02dbfc3ece61c, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -124,7 +140,7 @@ PrefabInstance:
       addedObject: {fileID: -6762624544030853049}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 02d3e7698d74080439b02dbfc3ece61c, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -1407148895303633168}
+      addedObject: {fileID: 7140220071002216329}
   m_SourcePrefab: {fileID: 100100000, guid: 02d3e7698d74080439b02dbfc3ece61c, type: 3}
 --- !u!1 &4610876942895486865 stripped
 GameObject:
@@ -179,7 +195,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-1407148895303633168
+--- !u!114 &7140220071002216329
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -188,10 +204,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4610876942895486865}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e908742f276794c49bb6fc80aa87650b, type: 3}
+  m_Script: {fileID: 11500000, guid: de903ae2743e738489f48e8bb2b0cf56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  linkedSwitches: []
   elevatorToActivate: {fileID: 0}
+  linkedSwitches: []
   elevatorIsActivated: 0
   lodRenderers: []
