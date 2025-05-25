@@ -77,11 +77,15 @@ public class NumberDisplay : MonoBehaviour
     private void OnEnable()
     {
         CameraController.Action_RotateCamera_End += UpdateRotation;
+        Player_CeilingGrab.Action_raycastCeiling += UpdateRotation;
+        Player_CeilingGrab.Action_releaseCeiling += UpdateRotation;
     }
 
     private void OnDisable()
     {
         CameraController.Action_RotateCamera_End -= UpdateRotation;
+        Player_CeilingGrab.Action_raycastCeiling -= UpdateRotation;
+        Player_CeilingGrab.Action_releaseCeiling -= UpdateRotation;
     }
 
 
@@ -137,8 +141,6 @@ public class NumberDisplay : MonoBehaviour
     }
     public void ShowNumber()
     {
-        //Player_BlockDetector.Instance.UpdateBlockLookingAt();
-
         //If Pushed
         if (PlayerManager.Instance.block_LookingAt_Vertical == transform.parent.gameObject && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
         {
@@ -290,8 +292,14 @@ public class NumberDisplay : MonoBehaviour
 
     public void UpdateRotation()
     {
+        //If this block can be ceilinggrabbed
+        if (Player_CeilingGrab.Instance.ceilingGrabBlock == transform.parent.gameObject)
+        {
+            PositionOnBottomOfParentCube();
+        }
+
         //If ceilingGrabbing
-        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+        else if (Player_CeilingGrab.Instance.isCeilingGrabbing)
         {
             //RotateBlockCheck_Cube_CeilingGrab();
             PositionOnBottomOfParentCube();
