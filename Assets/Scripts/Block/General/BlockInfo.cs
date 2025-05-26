@@ -328,6 +328,15 @@ public class BlockInfo : MonoBehaviour
     //--------------------
 
 
+    public Vector3 GetFacingDirection()
+    {
+        return transform.TransformDirection(Vector3.left); // local -X
+    }
+
+
+    //--------------------
+
+
     void ResetBlock()
     {
         if (transform.position != startPos)
