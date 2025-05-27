@@ -296,11 +296,11 @@ public class Player_Jumping : Singleton<Player_Jumping>
                     stairForward.Normalize();
 
                     float dot = Vector3.Dot(stairForward, toPlayer);
-                    Debug.Log($"Stair to player dot: {dot}");
+                    //Debug.Log($"Stair to player dot: {dot}");
 
                     if (dot < 0.7f) // stair is NOT facing the player
                     {
-                        Debug.Log("Stair is not facing the player. Jump blocked.");
+                        //Debug.Log("Stair is not facing the player. Jump blocked.");
                         ResetTargetBlock(ref target);
                         target = null;
                         return false;
@@ -319,6 +319,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
         if (Physics.Raycast(transform.position + dir * 2f, Vector3.down, out hit, 1f, MapManager.Instance.pickup_LayerMask))
         {
             var blockInfo = hit.transform.GetComponent<BlockInfo>();
+
             if (blockInfo == null ||
                 blockInfo.blockElement == BlockElement.Lava ||
                 (blockInfo.blockElement == BlockElement.Water && !PlayerHasSwimAbility()))
@@ -326,6 +327,24 @@ public class Player_Jumping : Singleton<Player_Jumping>
                 ResetTargetBlock(ref target);
                 target = null;
                 return false;
+            }
+            else if (blockInfo.blockType == BlockType.Stair ||
+                     blockInfo.blockType == BlockType.Slope)
+            {
+                print("1. Stair");
+                //Alow jumping when Stair and Slope is on the same hight level as the player
+                if ((transform.position.y - blockInfo.gameObject.transform.transform.position.y) != 0.45f )
+                {
+                    print("2. Stair: " + (transform.position.y - blockInfo.gameObject.transform.transform.position.y));
+                    ResetTargetBlock(ref target);
+                    target = null;
+                    return false;
+                }
+                else
+                {
+                    print("3. Stair");
+                    target = hit.transform.gameObject;
+                }
             }
             else
             {
@@ -336,17 +355,21 @@ public class Player_Jumping : Singleton<Player_Jumping>
         // Step 3: Raycast down from forward+1 (block between player and stair)
         if (Physics.Raycast(transform.position + dir, Vector3.down, out hit, 1f, MapManager.Instance.pickup_LayerMask))
         {
+            //print("3. Stair");
             var blockInfo = hit.transform.GetComponent<BlockInfo>();
+
             if (blockInfo == null)
             {
+                //print("4. Stair");
                 ResetTargetBlock(ref target);
                 target = null;
                 return false;
             }
 
-            if (blockInfo.blockElement != BlockElement.Lava &&
+            else if (blockInfo.blockElement != BlockElement.Lava &&
                 !(blockInfo.blockElement == BlockElement.Water && !PlayerHasSwimAbility()))
             {
+                print("5. Stair");
                 ResetTargetBlock(ref target);
                 target = null;
                 return false;
