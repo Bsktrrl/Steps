@@ -1054,6 +1054,7 @@ public class Player_Movement : Singleton<Player_Movement>
             if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_IceGlide>())
             {
                 isIceGliding = true;
+
                 PlayerStats.Instance.stats.steps_Current += PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
 
                 switch (lastMovementButtonPressed)

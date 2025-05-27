@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_Pusher : MonoBehaviour
+public class Player_Pusher : Singleton<Player_Pusher>
 {
     public bool playerIsPushed;
     Vector3 pushDirection;

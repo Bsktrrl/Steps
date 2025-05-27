@@ -144,6 +144,8 @@ public class NumberDisplay : MonoBehaviour
         //If Pushed
         if (PlayerManager.Instance.block_LookingAt_Vertical == transform.parent.gameObject && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
         {
+            print("1. PLayer is Pushed");
+
             DisplayNumber(0);
         }
 
