@@ -313,6 +313,12 @@ public class Player_Jumping : Singleton<Player_Jumping>
                     return false;
                 }
             }
+            else
+            {
+                ResetTargetBlock(ref target);
+                target = null;
+                return false;
+            }
         }
 
         // Step 2: Raycast down from forward+2 (landing spot)
@@ -331,18 +337,15 @@ public class Player_Jumping : Singleton<Player_Jumping>
             else if (blockInfo.blockType == BlockType.Stair ||
                      blockInfo.blockType == BlockType.Slope)
             {
-                print("1. Stair");
                 //Alow jumping when Stair and Slope is on the same hight level as the player
-                if ((transform.position.y - blockInfo.gameObject.transform.transform.position.y) != 0.45f )
+                if ((transform.position.y - blockInfo.gameObject.transform.transform.position.y) > 0.5f && (transform.position.y - blockInfo.gameObject.transform.transform.position.y) < 0.4f)
                 {
-                    print("2. Stair: " + (transform.position.y - blockInfo.gameObject.transform.transform.position.y));
                     ResetTargetBlock(ref target);
                     target = null;
                     return false;
                 }
                 else
                 {
-                    print("3. Stair");
                     target = hit.transform.gameObject;
                 }
             }
@@ -369,7 +372,6 @@ public class Player_Jumping : Singleton<Player_Jumping>
             else if (blockInfo.blockElement != BlockElement.Lava &&
                 !(blockInfo.blockElement == BlockElement.Water && !PlayerHasSwimAbility()))
             {
-                print("5. Stair");
                 ResetTargetBlock(ref target);
                 target = null;
                 return false;
