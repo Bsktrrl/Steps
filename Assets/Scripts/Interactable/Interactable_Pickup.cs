@@ -74,6 +74,7 @@ public class Interactable_Pickup : MonoBehaviour
                             break;
                         case Items.IncreaseMaxSteps:
                             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max += 1 /*itemReceived.amount*/;
+                            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current += 1 /*itemReceived.amount*/;
                             break;
 
                         default:

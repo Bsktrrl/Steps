@@ -260,7 +260,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
             jumpDirXZ.Normalize();
 
             float dot = Vector3.Dot(stairForward, jumpDirXZ);
-            Debug.Log($"Jump direction dot with stair under player: {dot}");
+            //Debug.Log($"Jump direction dot with stair under player: {dot}");
 
             if (dot < 0.7f)
             {
@@ -337,16 +337,18 @@ public class Player_Jumping : Singleton<Player_Jumping>
             else if (blockInfo.blockType == BlockType.Stair ||
                      blockInfo.blockType == BlockType.Slope)
             {
-                //Alow jumping when Stair and Slope is on the same hight level as the player
-                if ((transform.position.y - blockInfo.gameObject.transform.transform.position.y) > 0.5f && (transform.position.y - blockInfo.gameObject.transform.transform.position.y) < 0.4f)
+                //Allow jumping ONLY when Stair and Slope is on the same hight level as the player
+                if ((transform.position.y - blockInfo.gameObject.transform.transform.position.y) > 0.445f && (transform.position.y - blockInfo.gameObject.transform.transform.position.y) < 0.455f)
                 {
-                    ResetTargetBlock(ref target);
-                    target = null;
-                    return false;
+                    print("1. Stair Jump: " + (transform.position.y - blockInfo.gameObject.transform.transform.position.y));
+                    target = hit.transform.gameObject;
                 }
                 else
                 {
-                    target = hit.transform.gameObject;
+                    print("2. Stair Jump: " + (transform.position.y - blockInfo.gameObject.transform.transform.position.y));
+                    ResetTargetBlock(ref target);
+                    target = null;
+                    return false;
                 }
             }
             else if (PlayerStats.Instance.stats.steps_Current <= 0 && blockInfo.movementCost > 0)
