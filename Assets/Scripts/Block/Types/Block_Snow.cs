@@ -63,10 +63,12 @@ public class Block_Snow : MonoBehaviour
         if (Player_CeilingGrab.Instance.isCeilingGrabbing)
         {
             numberDisplayObject.transform.localPosition = new Vector3(0, -Mathf.Abs((1 - childScale_Y) / 2), 0);
+            numberDisplayObject.GetComponent<NumberDisplay>().localStartHeight = numberDisplayObject.transform.localPosition.y;
         }
         else
         {
             numberDisplayObject.transform.localPosition = new Vector3(0, Mathf.Abs((1 - childScale_Y) / 2), 0);
+            numberDisplayObject.GetComponent<NumberDisplay>().localStartHeight = numberDisplayObject.transform.localPosition.y;
         }
     }
 }
