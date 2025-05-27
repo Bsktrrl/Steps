@@ -298,7 +298,13 @@ public class Player_Movement : Singleton<Player_Movement>
     {
         if (block_Vertical.block)
         {
-            if (PlayerStats.Instance.stats.steps_Current <= 0 && block_Vertical.block.GetComponent<BlockInfo>().movementCost > 0)
+            if (PlayerStats.Instance.stats.steps_Current <= 0
+                && (block_Vertical.block.GetComponent<BlockInfo>().blockElement == BlockElement.Water || block_Vertical.block.GetComponent<BlockInfo>().blockElement == BlockElement.Lava)
+                && !PlayerHasSwimAbility() && PlayerHasJumpingAbility())
+            {
+                
+            }
+            else if (PlayerStats.Instance.stats.steps_Current <= 0 && block_Vertical.block.GetComponent<BlockInfo>().movementCost > 0)
             {
                 PlayerStats.Instance.RespawnPlayer();
                 return;
@@ -512,6 +518,23 @@ public class Player_Movement : Singleton<Player_Movement>
         }
     }
 
+    bool PlayerHasSwimAbility()
+    {
+        var stats = PlayerStats.Instance.stats;
+        return stats.abilitiesGot_Permanent.SwimSuit ||
+               stats.abilitiesGot_Permanent.Flippers ||
+               stats.abilitiesGot_Permanent.SwiftSwim ||
+               stats.abilitiesGot_Temporary.SwimSuit ||
+               stats.abilitiesGot_Temporary.Flippers ||
+               stats.abilitiesGot_Temporary.SwiftSwim;
+    }
+    bool PlayerHasJumpingAbility()
+    {
+        var stats = PlayerStats.Instance.stats;
+        return stats.abilitiesGot_Permanent.Jumping ||
+               stats.abilitiesGot_Temporary.Jumping;
+    }
+
 
     //--------------------
 
@@ -524,7 +547,6 @@ public class Player_Movement : Singleton<Player_Movement>
 
         if (targetObject)
         {
-            print("10. IceGlide");
             StartCoroutine(CeilingGrabMoveRoutine(targetObject, direction));
         }
         else

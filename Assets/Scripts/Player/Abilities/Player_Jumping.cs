@@ -121,19 +121,19 @@ public class Player_Jumping : Singleton<Player_Jumping>
         {
             case CameraRotationState.Forward:
                 if (canJump_Forward && jumpTarget_Forward)
-                    StartCoroutine(JumpRoutine(jumpTarget_Forward));
+                    StartCoroutine(PerformJump(jumpTarget_Forward));
                 break;
             case CameraRotationState.Backward:
                 if (canJump_Back && jumpTarget_Back)
-                    StartCoroutine(JumpRoutine(jumpTarget_Back));
+                    StartCoroutine(PerformJump(jumpTarget_Back));
                 break;
             case CameraRotationState.Left:
                 if (canJump_Right && jumpTarget_Right)
-                    StartCoroutine(JumpRoutine(jumpTarget_Right));
+                    StartCoroutine(PerformJump(jumpTarget_Right));
                 break;
             case CameraRotationState.Right:
                 if (canJump_Left && jumpTarget_Left)
-                    StartCoroutine(JumpRoutine(jumpTarget_Left));
+                    StartCoroutine(PerformJump(jumpTarget_Left));
                 break;
             default:
                 break;
@@ -147,19 +147,19 @@ public class Player_Jumping : Singleton<Player_Jumping>
         {
             case CameraRotationState.Forward:
                 if (canJump_Back && jumpTarget_Back)
-                    StartCoroutine(JumpRoutine(jumpTarget_Back));
+                    StartCoroutine(PerformJump(jumpTarget_Back));
                 break;
             case CameraRotationState.Backward:
                 if (canJump_Forward && jumpTarget_Forward)
-                    StartCoroutine(JumpRoutine(jumpTarget_Forward));
+                    StartCoroutine(PerformJump(jumpTarget_Forward));
                 break;
             case CameraRotationState.Left:
                 if (canJump_Left && jumpTarget_Left)
-                    StartCoroutine(JumpRoutine(jumpTarget_Left));
+                    StartCoroutine(PerformJump(jumpTarget_Left));
                 break;
             case CameraRotationState.Right:
                 if (canJump_Right && jumpTarget_Right)
-                    StartCoroutine(JumpRoutine(jumpTarget_Right));
+                    StartCoroutine(PerformJump(jumpTarget_Right));
                 break;
             default:
                 break;
@@ -173,19 +173,19 @@ public class Player_Jumping : Singleton<Player_Jumping>
         {
             case CameraRotationState.Forward:
                 if (canJump_Left && jumpTarget_Left)
-                    StartCoroutine(JumpRoutine(jumpTarget_Left));
+                    StartCoroutine(PerformJump(jumpTarget_Left));
                 break;
             case CameraRotationState.Backward:
                 if (canJump_Right && jumpTarget_Right)
-                    StartCoroutine(JumpRoutine(jumpTarget_Right));
+                    StartCoroutine(PerformJump(jumpTarget_Right));
                 break;
             case CameraRotationState.Left:
                 if (canJump_Forward && jumpTarget_Forward)
-                    StartCoroutine(JumpRoutine(jumpTarget_Forward));
+                    StartCoroutine(PerformJump(jumpTarget_Forward));
                 break;
             case CameraRotationState.Right:
                 if (canJump_Back && jumpTarget_Back)
-                    StartCoroutine(JumpRoutine(jumpTarget_Back));
+                    StartCoroutine(PerformJump(jumpTarget_Back));
                 break;
             default:
                 break;
@@ -199,19 +199,19 @@ public class Player_Jumping : Singleton<Player_Jumping>
         {
             case CameraRotationState.Forward:
                 if (canJump_Right && jumpTarget_Right)
-                    StartCoroutine(JumpRoutine(jumpTarget_Right));
+                    StartCoroutine(PerformJump(jumpTarget_Right));
                 break;
             case CameraRotationState.Backward:
                 if (canJump_Left && jumpTarget_Left)
-                    StartCoroutine(JumpRoutine(jumpTarget_Left));
+                    StartCoroutine(PerformJump(jumpTarget_Left));
                 break;
             case CameraRotationState.Left:
                 if (canJump_Back && jumpTarget_Back)
-                    StartCoroutine(JumpRoutine(jumpTarget_Back));
+                    StartCoroutine(PerformJump(jumpTarget_Back));
                 break;
             case CameraRotationState.Right:
                 if (canJump_Forward && jumpTarget_Forward)
-                    StartCoroutine(JumpRoutine(jumpTarget_Forward));
+                    StartCoroutine(PerformJump(jumpTarget_Forward));
                 break;
             default:
                 break;
@@ -349,6 +349,12 @@ public class Player_Jumping : Singleton<Player_Jumping>
                     target = hit.transform.gameObject;
                 }
             }
+            else if (PlayerStats.Instance.stats.steps_Current <= 0 && blockInfo.movementCost > 0)
+            {
+                ResetTargetBlock(ref target);
+                target = null;
+                return false;
+            }
             else
             {
                 target = hit.transform.gameObject;
@@ -358,12 +364,10 @@ public class Player_Jumping : Singleton<Player_Jumping>
         // Step 3: Raycast down from forward+1 (block between player and stair)
         if (Physics.Raycast(transform.position + dir, Vector3.down, out hit, 1f, MapManager.Instance.pickup_LayerMask))
         {
-            //print("3. Stair");
             var blockInfo = hit.transform.GetComponent<BlockInfo>();
 
             if (blockInfo == null)
             {
-                //print("4. Stair");
                 ResetTargetBlock(ref target);
                 target = null;
                 return false;
@@ -438,7 +442,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
     //--------------------
 
 
-    private IEnumerator JumpRoutine(GameObject target)
+    private IEnumerator PerformJump(GameObject target)
     {
         isJumping = true;
         jumpStartPos = gameObject.transform.position;
