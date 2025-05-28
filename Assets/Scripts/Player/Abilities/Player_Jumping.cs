@@ -121,19 +121,19 @@ public class Player_Jumping : Singleton<Player_Jumping>
         {
             case CameraRotationState.Forward:
                 if (canJump_Forward && jumpTarget_Forward)
-                    StartCoroutine(JumpRoutine(jumpTarget_Forward));
+                    StartCoroutine(PerformJump(jumpTarget_Forward));
                 break;
             case CameraRotationState.Backward:
                 if (canJump_Back && jumpTarget_Back)
-                    StartCoroutine(JumpRoutine(jumpTarget_Back));
+                    StartCoroutine(PerformJump(jumpTarget_Back));
                 break;
             case CameraRotationState.Left:
                 if (canJump_Right && jumpTarget_Right)
-                    StartCoroutine(JumpRoutine(jumpTarget_Right));
+                    StartCoroutine(PerformJump(jumpTarget_Right));
                 break;
             case CameraRotationState.Right:
                 if (canJump_Left && jumpTarget_Left)
-                    StartCoroutine(JumpRoutine(jumpTarget_Left));
+                    StartCoroutine(PerformJump(jumpTarget_Left));
                 break;
             default:
                 break;
@@ -147,19 +147,19 @@ public class Player_Jumping : Singleton<Player_Jumping>
         {
             case CameraRotationState.Forward:
                 if (canJump_Back && jumpTarget_Back)
-                    StartCoroutine(JumpRoutine(jumpTarget_Back));
+                    StartCoroutine(PerformJump(jumpTarget_Back));
                 break;
             case CameraRotationState.Backward:
                 if (canJump_Forward && jumpTarget_Forward)
-                    StartCoroutine(JumpRoutine(jumpTarget_Forward));
+                    StartCoroutine(PerformJump(jumpTarget_Forward));
                 break;
             case CameraRotationState.Left:
                 if (canJump_Left && jumpTarget_Left)
-                    StartCoroutine(JumpRoutine(jumpTarget_Left));
+                    StartCoroutine(PerformJump(jumpTarget_Left));
                 break;
             case CameraRotationState.Right:
                 if (canJump_Right && jumpTarget_Right)
-                    StartCoroutine(JumpRoutine(jumpTarget_Right));
+                    StartCoroutine(PerformJump(jumpTarget_Right));
                 break;
             default:
                 break;
@@ -173,19 +173,19 @@ public class Player_Jumping : Singleton<Player_Jumping>
         {
             case CameraRotationState.Forward:
                 if (canJump_Left && jumpTarget_Left)
-                    StartCoroutine(JumpRoutine(jumpTarget_Left));
+                    StartCoroutine(PerformJump(jumpTarget_Left));
                 break;
             case CameraRotationState.Backward:
                 if (canJump_Right && jumpTarget_Right)
-                    StartCoroutine(JumpRoutine(jumpTarget_Right));
+                    StartCoroutine(PerformJump(jumpTarget_Right));
                 break;
             case CameraRotationState.Left:
                 if (canJump_Forward && jumpTarget_Forward)
-                    StartCoroutine(JumpRoutine(jumpTarget_Forward));
+                    StartCoroutine(PerformJump(jumpTarget_Forward));
                 break;
             case CameraRotationState.Right:
                 if (canJump_Back && jumpTarget_Back)
-                    StartCoroutine(JumpRoutine(jumpTarget_Back));
+                    StartCoroutine(PerformJump(jumpTarget_Back));
                 break;
             default:
                 break;
@@ -199,19 +199,19 @@ public class Player_Jumping : Singleton<Player_Jumping>
         {
             case CameraRotationState.Forward:
                 if (canJump_Right && jumpTarget_Right)
-                    StartCoroutine(JumpRoutine(jumpTarget_Right));
+                    StartCoroutine(PerformJump(jumpTarget_Right));
                 break;
             case CameraRotationState.Backward:
                 if (canJump_Left && jumpTarget_Left)
-                    StartCoroutine(JumpRoutine(jumpTarget_Left));
+                    StartCoroutine(PerformJump(jumpTarget_Left));
                 break;
             case CameraRotationState.Left:
                 if (canJump_Back && jumpTarget_Back)
-                    StartCoroutine(JumpRoutine(jumpTarget_Back));
+                    StartCoroutine(PerformJump(jumpTarget_Back));
                 break;
             case CameraRotationState.Right:
                 if (canJump_Forward && jumpTarget_Forward)
-                    StartCoroutine(JumpRoutine(jumpTarget_Forward));
+                    StartCoroutine(PerformJump(jumpTarget_Forward));
                 break;
             default:
                 break;
@@ -244,52 +244,67 @@ public class Player_Jumping : Singleton<Player_Jumping>
     {
         ResetDarkenColorIfStepsIsGone(ref target);
 
-        //Raycast forward +2
-        if (Physics.Raycast(gameObject.transform.position, dir, out hit, 2, MapManager.Instance.pickup_LayerMask))
-        {
-            ResetTargetBlock(ref target);
-            target = null;
-            return false;
-        }
+        RaycastHit hit;
 
-        //Raycast down from forward +2
-        if (Physics.Raycast(gameObject.transform.position + (dir * 2), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
+        // Step 0: Check if player is standing on a stair/slope and is jumping in the same direction
+        if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair || PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope)
         {
-            if (hit.transform.gameObject.GetComponent<BlockInfo>())
+            // Get forward of the block in XZ
+            Vector3 stairForward = PlayerManager.Instance.block_StandingOn_Current.block.transform.forward;
+            stairForward.y = 0;
+            stairForward.Normalize();
+
+            // Get jump direction in XZ
+            Vector3 jumpDirXZ = dir;
+            jumpDirXZ.y = 0;
+            jumpDirXZ.Normalize();
+
+            float dot = Vector3.Dot(stairForward, jumpDirXZ);
+            //Debug.Log($"Jump direction dot with stair under player: {dot}");
+
+            if (dot < 0.7f)
             {
-                if (hit.transform.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Lava)
-                {
-                    //Reset if there is a lava block at the endPos
-                    ResetTargetBlock(ref target);
-                    target = null;
-                    return false;
-                }
-                if (hit.transform.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !PlayerHasSwimAbility())
-                {
-                    //Reset if there is a water block at the endPos, and the player doesn't know Swimming
-                    ResetTargetBlock(ref target);
-                    target = null;
-                    return false;
-                }
-                else
-                {
-                    target = hit.transform.gameObject;
-                }
+                Debug.Log("Player is standing on stair/slope but not jumping in its forward direction. Jump blocked.");
+                ResetTargetBlock(ref target);
+                target = null;
+                return false;
             }
         }
 
-        //Raycast down from forward +1 to see if there is a block adjacent
-        if (Physics.Raycast(gameObject.transform.position + (dir * 1), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
+
+        // Step 1: Raycast forward +2 to see what we are jumping over/into
+        if (Physics.Raycast(transform.position, dir, out hit, 2f, MapManager.Instance.pickup_LayerMask))
         {
-            if (hit.transform.gameObject.GetComponent<BlockInfo>())
+            var blockInfo = hit.transform.GetComponent<BlockInfo>();
+
+            if (blockInfo != null)
             {
-                if (hit.transform.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Lava)
+                //Check if hitting a Stair or Slope
+                if (blockInfo.blockType == BlockType.Stair || blockInfo.blockType == BlockType.Slope)
                 {
-                    //Continue if there is a lava block in between
-                }
-                else if (hit.transform.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !PlayerHasSwimAbility())
-                {
-                    //Continue if there is a water block in between, and the player doesn't know Swimming
+                    Transform blockTransform = hit.transform;
+                    Transform playerTransform = PlayerManager.Instance.playerBody.transform;
+
+                    // Vector from stair to player, XZ only
+                    Vector3 toPlayer = playerTransform.position - blockTransform.position;
+                    toPlayer.y = 0;
+                    toPlayer.Normalize();
+
+                    // Stair's forward vector in XZ
+                    Vector3 stairForward = blockTransform.forward;
+                    stairForward.y = 0;
+                    stairForward.Normalize();
+
+                    float dot = Vector3.Dot(stairForward, toPlayer);
+                    //Debug.Log($"Stair to player dot: {dot}");
+
+                    if (dot < 0.7f) // stair is NOT facing the player
+                    {
+                        //Debug.Log("Stair is not facing the player. Jump blocked.");
+                        ResetTargetBlock(ref target);
+                        target = null;
+                        return false;
+                    }
                 }
                 else
                 {
@@ -306,22 +321,83 @@ public class Player_Jumping : Singleton<Player_Jumping>
             }
         }
 
-        //Darken color in target block
+        // Step 2: Raycast down from forward+2 (landing spot)
+        if (Physics.Raycast(transform.position + dir * 2f, Vector3.down, out hit, 1f, MapManager.Instance.pickup_LayerMask))
+        {
+            var blockInfo = hit.transform.GetComponent<BlockInfo>();
+
+            if (blockInfo == null ||
+                blockInfo.blockElement == BlockElement.Lava ||
+                (blockInfo.blockElement == BlockElement.Water && !PlayerHasSwimAbility()))
+            {
+                ResetTargetBlock(ref target);
+                target = null;
+                return false;
+            }
+            else if (blockInfo.blockType == BlockType.Stair ||
+                     blockInfo.blockType == BlockType.Slope)
+            {
+                //Allow jumping ONLY when Stair and Slope is on the same hight level as the player
+                if ((transform.position.y - blockInfo.gameObject.transform.transform.position.y) > 0.445f && (transform.position.y - blockInfo.gameObject.transform.transform.position.y) < 0.455f)
+                {
+                    print("1. Stair Jump: " + (transform.position.y - blockInfo.gameObject.transform.transform.position.y));
+                    target = hit.transform.gameObject;
+                }
+                else
+                {
+                    print("2. Stair Jump: " + (transform.position.y - blockInfo.gameObject.transform.transform.position.y));
+                    ResetTargetBlock(ref target);
+                    target = null;
+                    return false;
+                }
+            }
+            else if (PlayerStats.Instance.stats.steps_Current <= 0 && blockInfo.movementCost > 0)
+            {
+                ResetTargetBlock(ref target);
+                target = null;
+                return false;
+            }
+            else
+            {
+                target = hit.transform.gameObject;
+            }
+        }
+
+        // Step 3: Raycast down from forward+1 (block between player and stair)
+        if (Physics.Raycast(transform.position + dir, Vector3.down, out hit, 1f, MapManager.Instance.pickup_LayerMask))
+        {
+            var blockInfo = hit.transform.GetComponent<BlockInfo>();
+
+            if (blockInfo == null)
+            {
+                ResetTargetBlock(ref target);
+                target = null;
+                return false;
+            }
+
+            else if (blockInfo.blockElement != BlockElement.Lava &&
+                !(blockInfo.blockElement == BlockElement.Water && !PlayerHasSwimAbility()))
+            {
+                ResetTargetBlock(ref target);
+                target = null;
+                return false;
+            }
+        }
+
+        // Step 4: Darken target block
         if (target)
         {
-            if (target.GetComponent<BlockInfo>())
+            var info = target.GetComponent<BlockInfo>();
+            if (info != null && !info.blockIsDark)
             {
-                if (!target.GetComponent<BlockInfo>().blockIsDark)
-                {
-                    target.GetComponent<BlockInfo>().SetDarkenColors();
-                }
+                info.SetDarkenColors();
             }
         }
 
         ResetDarkenColorIfStepsIsGone(ref target);
-
         return true;
     }
+
     bool PlayerHasSwimAbility()
     {
         var stats = PlayerStats.Instance.stats;
@@ -368,7 +444,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
     //--------------------
 
 
-    private IEnumerator JumpRoutine(GameObject target)
+    private IEnumerator PerformJump(GameObject target)
     {
         isJumping = true;
         jumpStartPos = gameObject.transform.position;

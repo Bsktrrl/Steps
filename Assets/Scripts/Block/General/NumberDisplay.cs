@@ -26,6 +26,8 @@ public class NumberDisplay : MonoBehaviour
     [Tooltip("Offset above the cube surface")]
     public float offsetAboveSurface = 0.1f;
 
+    public float localStartHeight = 0;
+
 
     //--------------------
 
@@ -61,7 +63,6 @@ public class NumberDisplay : MonoBehaviour
         {
             //transform.GetChild(0).transform.localPosition = new Vector3(0, 0.48f, 0);
         }
-
         if (player_BlockDetector)
         {
             player_BlockDetector.RaycastSetup();
@@ -144,6 +145,8 @@ public class NumberDisplay : MonoBehaviour
         //If Pushed
         if (PlayerManager.Instance.block_LookingAt_Vertical == transform.parent.gameObject && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
         {
+            print("1. PLayer is Pushed");
+
             DisplayNumber(0);
         }
 
@@ -548,8 +551,16 @@ public class NumberDisplay : MonoBehaviour
         float cubeHeight = parent.localScale.y;
 
         // Compute world position for the top center of the cube
-        Vector3 worldTopPosition = parent.position + topDirection * (cubeHeight / 2f + offsetAboveSurface - 0.6f);
-
+        Vector3 worldTopPosition = Vector3.zero;
+        if (transform.parent.gameObject.GetComponent<Block_Snow>())
+        {
+            worldTopPosition = parent.position + topDirection * (cubeHeight / 2f + offsetAboveSurface - 0.6f) + (Vector3.up * localStartHeight);
+        }
+        else
+        {
+            worldTopPosition = parent.position + topDirection * (cubeHeight / 2f + offsetAboveSurface - 0.6f);
+        }
+        
         // Apply the world position
         transform.position = worldTopPosition;
 
@@ -576,7 +587,7 @@ public class NumberDisplay : MonoBehaviour
         float cubeHeight = parent.localScale.y;
 
         // World position at bottom of the cube
-        Vector3 worldBottomPosition = parent.position + bottomDirection * (cubeHeight / 2f + offsetAboveSurface - 0.6f);
+        Vector3 worldBottomPosition = parent.position + bottomDirection * (cubeHeight / 2f + offsetAboveSurface - 0.6f) + (Vector3.up * localStartHeight);
 
         // Move the number object to the bottom in world space
         transform.position = worldBottomPosition;
