@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.075, y: 0.075, z: 0.075}
+  m_LocalScale: {x: 0.07, y: 0.07, z: 0.07}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3496939234456819679}
@@ -135,7 +135,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.075, y: 0.075, z: 0.075}
+  m_LocalScale: {x: 0.07, y: 0.07, z: 0.07}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3496939234456819679}
@@ -263,8 +263,8 @@ MonoBehaviour:
   shineHor: {fileID: 2870597327188355720}
   shineDia: {fileID: 3590525949552716574}
   rotationObject: {fileID: 4457471201105082702}
+  scaleObject: {fileID: 0}
   pointLight: {fileID: 0}
-  size: 1
 --- !u!1 &4457471201105082702
 GameObject:
   m_ObjectHideFlags: 0
@@ -1218,7 +1218,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.25
       minScalar: 10
       maxCurve:
         serializedVersion: 2

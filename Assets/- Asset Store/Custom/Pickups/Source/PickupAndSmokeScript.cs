@@ -5,9 +5,9 @@ using UnityEngine;
 public class PickupAndSmokeScript : MonoBehaviour
 {
     [SerializeField] private GameObject shineHor;
-    private float shineHorSize;
+    private Vector3 shineHorSize;
     [SerializeField] private GameObject shineDia;
-    private float shineDiaSize;
+    private Vector3 shineDiaSize;
     [SerializeField] private GameObject rotationObject;
     [SerializeField] private GameObject scaleObject;
     private float scaleObjectSize;
@@ -17,11 +17,11 @@ public class PickupAndSmokeScript : MonoBehaviour
     {
         if(shineHor != null)
         {
-            shineHorSize = shineHor.transform.localScale.x;
+            shineHorSize = shineHor.transform.localScale;
         }
         if (shineDia != null)
         {
-            shineDiaSize = shineDia.transform.localScale.x;
+            shineDiaSize = shineDia.transform.localScale;
         }
         if(scaleObject != null)
         {
@@ -34,15 +34,15 @@ public class PickupAndSmokeScript : MonoBehaviour
         if(shineHor != null)
         {
             shineHor.transform.LookAt(Camera.main.transform);
-            shineHor.transform.localEulerAngles += new Vector3(90, Mathf.Sin(Time.time * 2) * shineHorSize*100, 0);
-            shineHor.transform.localScale = new Vector3(shineHorSize, shineHorSize, shineHorSize) + Vector3.one * Mathf.Sin(Time.time * 3) * shineHorSize/10;
+            shineHor.transform.localEulerAngles += new Vector3(90, Mathf.Sin(Time.time * 2) * shineHorSize.x*100, 0);
+            shineHor.transform.localScale = shineHorSize + Vector3.one * Mathf.Sin(Time.time * 3) * shineHorSize.x/10;
         }
 
         if(shineDia != null)
         {
             shineDia.transform.LookAt(Camera.main.transform);
-            shineDia.transform.localEulerAngles += new Vector3(90, Mathf.Sin(Time.time * 2 + Mathf.PI) * shineDiaSize*100, 0);
-            shineDia.transform.localScale = new Vector3(shineDiaSize, shineDiaSize, shineDiaSize) + Vector3.one * Mathf.Sin(Time.time * 3 + Mathf.PI) * shineDiaSize / 10;
+            shineDia.transform.localEulerAngles += new Vector3(90, Mathf.Sin(Time.time * 2 + Mathf.PI) * shineDiaSize.x*100, 0);
+            shineDia.transform.localScale = shineDiaSize + Vector3.one * Mathf.Sin(Time.time * 3 + Mathf.PI) * shineDiaSize.x / 10;
         }
 
         if(pointLight != null)
