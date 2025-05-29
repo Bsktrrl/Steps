@@ -247,7 +247,12 @@ public class Player_Dash : Singleton<Player_Dash>
         //Raycast target +1
         if (Physics.Raycast(gameObject.transform.position, dir, out hit, 1, MapManager.Instance.pickup_LayerMask))
         {
-
+            if (hit.transform.gameObject.GetComponent<BlockInfo>() == null)
+            {
+                ResetTargetBlock(ref target);
+                target = null;
+                return false;
+            }
         }
         else
         {

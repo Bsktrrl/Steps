@@ -7,19 +7,9 @@ public class Player_Burning : Singleton<Player_Burning>
     public bool isBurning;
     public int flameableStepCounter;
 
-    Material original_Material;
-    [SerializeField] Material flameable_Material;
+    [SerializeField] GameObject flameEffectObject;
 
     bool firstTimeCheck;
-
-
-    //--------------------
-
-
-    private void Start()
-    {
-        original_Material = gameObject.GetComponent<PlayerManager>().playerBody.transform.GetComponentInChildren<MeshRenderer>().material;
-    }
 
 
     //--------------------
@@ -145,7 +135,7 @@ public class Player_Burning : Singleton<Player_Burning>
         isBurning = true;
         flameableStepCounter = 0;
 
-        gameObject.GetComponent<PlayerManager>().playerBody.transform.GetComponentInChildren<MeshRenderer>().material = flameable_Material;
+        flameEffectObject.SetActive(true);
     }
     void RemoveFlameable()
     {
@@ -154,9 +144,9 @@ public class Player_Burning : Singleton<Player_Burning>
             isBurning = false;
             flameableStepCounter = 0;
 
-            firstTimeCheck = false;
+            flameEffectObject.SetActive(false);
 
-            gameObject.GetComponent<PlayerManager>().playerBody.transform.GetComponentInChildren<MeshRenderer>().material = original_Material;
+            firstTimeCheck = false;
         }
     }
 }
