@@ -17,8 +17,6 @@ public class Player_Descend : Singleton<Player_Descend>
     public bool isDescending;
     float descendDuration = 0.1f;
 
-    RaycastHit hit;
-
     bool canRun;
 
     float rayLength = 2;
@@ -133,6 +131,13 @@ public class Player_Descend : Singleton<Player_Descend>
                                 {
                                     print("3.6 Descend");
 
+                                    DescendingIsAllowed(hit1.transform.gameObject);
+                                    return true;
+                                }
+
+                                //Alow if standing on a slab
+                                else if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slab)
+                                {
                                     DescendingIsAllowed(hit1.transform.gameObject);
                                     return true;
                                 }
