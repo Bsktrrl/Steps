@@ -47,9 +47,9 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
 
         if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
         if (PlayerManager.Instance.pauseGame) { return; }
-        if (PlayerManager.Instance.isTransportingPlayer) { return; }
+        //if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
         if (isSearchingGrappling)
         {
@@ -69,14 +69,14 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
 
     public void StartRaycastGrappling()
     {
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { EndLineRenderer(); return; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { EndLineRenderer(); return; }
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) { return; }
 
         isSearchingGrappling = true;
     }
     public void StopRaycastGrappling()
     {
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { EndLineRenderer(); return; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { EndLineRenderer(); return; }
 
         EndLineRenderer();
         ResetRaycastBlockUnder();
@@ -89,18 +89,18 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
     }
     public void UngoingRaycastGrappling()
     {
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { EndLineRenderer(); return; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { EndLineRenderer(); return; }
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) { return; }
 
-        endPoint = transform.position + (Player_BlockDetector.Instance.lookDir * grapplingDistance) + (-Player_BlockDetector.Instance.lookDir * 0.05f);
+        endPoint = transform.position + (Movement.Instance.lookDir * grapplingDistance) + (-Movement.Instance.lookDir * 0.05f);
 
-        if (Physics.Raycast(transform.position, Player_BlockDetector.Instance.lookDir, out hit, grapplingDistance, MapManager.Instance.pickup_LayerMask))
+        if (Physics.Raycast(transform.position, Movement.Instance.lookDir, out hit, grapplingDistance, MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject)
             {
                 if (hit.transform.gameObject.GetComponent<BlockInfo>() || hit.transform.gameObject.GetComponent<Block_Ladder>())
                 {
-                    endPoint = hit.point + (-Player_BlockDetector.Instance.lookDir * 0.05f);
+                    endPoint = hit.point + (-Movement.Instance.lookDir * 0.05f);
                     redDotSceneObject.transform.position = endPoint;
 
                     redDotSceneObject.transform.rotation = Quaternion.LookRotation(hit.normal);
@@ -147,9 +147,9 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
 
         if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
         if (PlayerManager.Instance.pauseGame) { return; }
-        if (PlayerManager.Instance.isTransportingPlayer) { return; }
+        //if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
         if (!isSearchingGrappling)
         {
@@ -162,9 +162,9 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
 
         if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
         if (PlayerManager.Instance.pauseGame) { return; }
-        if (PlayerManager.Instance.isTransportingPlayer) { return; }
+        //if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
         if (isGrapplingHooking) { return; }
 
@@ -192,7 +192,7 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
             {
                 print("3. CheckIfCanGrapple");
                 //Check if the block forward-under the targetBlock can be standing on (Raycast down from hit.point - 0.5 to get the block)
-                if (Physics.Raycast(endPoint + (-Player_BlockDetector.Instance.lookDir * 0.25f), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
+                if (Physics.Raycast(endPoint + (-Movement.Instance.lookDir * 0.25f), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
                 {
                     print("4. CheckIfCanGrapple");
                     if (hit.transform.gameObject)
@@ -202,7 +202,7 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
                         {
                             print("6. CheckIfCanGrapple");
                             //Set the block forward-under as the target position
-                            endDestination = hit.transform.gameObject.transform.position + (Vector3.up * Player_Movement.Instance.heightOverBlock);
+                            endDestination = hit.transform.gameObject.transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
 
                             RaycastDown_Old();
 
@@ -227,10 +227,9 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
 
         //Check if there is new blocks hovering over, to reduce the stepCount by this amount
         RaycastDown_New();
-        if (blockUnderPlayer_Old != blockUnderPlayer_New && blockUnderPlayer_New.transform.position + (Vector3.up * Player_Movement.Instance.heightOverBlock) != endDestination)
+        if (blockUnderPlayer_Old != blockUnderPlayer_New && blockUnderPlayer_New.transform.position + (Vector3.up * Movement.Instance.heightOverBlock) != endDestination)
         {
             PlayerStats.Instance.stats.steps_Current -= blockUnderPlayer_New.GetComponent<BlockInfo>().movementCost;
-            Player_Movement.Instance.Action_ResetBlockColorInvoke();
 
             //If steps is < 0
             if (PlayerStats.Instance.stats.steps_Current < 0)
@@ -239,7 +238,7 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
 
                 StopRaycastGrappling();
                 isGrapplingHooking = false;
-                Player_Movement.Instance.movementStates = MovementStates.Still;
+                Movement.Instance.SetMovementState(MovementStates.Still);
 
                 PlayerStats.Instance.RespawnPlayer();
             }
@@ -255,10 +254,9 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
             StopRaycastGrappling();
 
             PlayerManager.Instance.player.transform.position = endDestination;
-            Player_Movement.Instance.movementStates = MovementStates.Still;
+            Movement.Instance.SetMovementState(MovementStates.Still);
 
-            Player_Movement.Instance.Action_StepTaken_Invoke();
-            Player_Movement.Instance.Action_ResetBlockColorInvoke();
+            Movement.Instance.Action_StepTaken_Invoke();
 
             isGrapplingHooking = false;
         }

@@ -16,7 +16,7 @@ public class StepsHUD : MonoBehaviour
     {
         Interactable_Pickup.Action_PickupGot += UpdateStepsDisplay;
         PlayerStats.Action_RespawnPlayerLate += UpdateStepsDisplay;
-        Player_Movement.Action_StepTaken += UpdateStepsDisplay;
+        Movement.Action_StepTaken += UpdateStepsDisplay;
         DataManager.Action_dataHasLoaded += UpdateStepsDisplay;
         Block_SpawnPoint.Action_SpawnPointEntered += UpdateStepsDisplay;
         Block_RefillSteps.Action_RefillStepsEntered += UpdateStepsDisplay;
@@ -26,7 +26,7 @@ public class StepsHUD : MonoBehaviour
     {
         Interactable_Pickup.Action_PickupGot -= UpdateStepsDisplay;
         PlayerStats.Action_RespawnPlayerLate -= UpdateStepsDisplay;
-        Player_Movement.Action_StepTaken -= UpdateStepsDisplay;
+        Movement.Action_StepTaken -= UpdateStepsDisplay;
         DataManager.Action_dataHasLoaded -= UpdateStepsDisplay;
         Block_SpawnPoint.Action_SpawnPointEntered -= UpdateStepsDisplay;
         Block_RefillSteps.Action_RefillStepsEntered -= UpdateStepsDisplay;

@@ -130,12 +130,12 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
         if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.SwiftSwim || gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SwiftSwim)
         {
             PlayerManager.Instance.pauseGame = true;
-            PlayerManager.Instance.isTransportingPlayer = true;
-            Player_Movement.Instance.movementStates = MovementStates.Moving;
+            //PlayerManager.Instance.isTransportingPlayer = true;
+            Movement.Instance.SetMovementState(MovementStates.Moving);
             isSwiftSwimming_Up = true;
 
             swiftSwimBlock_Target = swiftSwim_Up_Obj;
-            targetPos = swiftSwimBlock_Target.transform.position /*+ Vector3.up*/ + (Vector3.up * Player_Movement.Instance.heightOverBlock);
+            targetPos = swiftSwimBlock_Target.transform.position /*+ Vector3.up*/ + (Vector3.up * Movement.Instance.heightOverBlock);
         }
     }
     public void SwiftSwim_Down()
@@ -143,12 +143,12 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
         if (gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.SwiftSwim || gameObject.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SwiftSwim)
         {
             PlayerManager.Instance.pauseGame = true;
-            PlayerManager.Instance.isTransportingPlayer = true;
-            Player_Movement.Instance.movementStates = MovementStates.Moving;
+            //PlayerManager.Instance.isTransportingPlayer = true;
+            Movement.Instance.SetMovementState(MovementStates.Moving);
             isSwiftSwimming_Down = true;
 
             swiftSwimBlock_Target = swiftSwim_Down_Obj;
-            targetPos = swiftSwimBlock_Target.transform.position /*+ Vector3.down*/ + (Vector3.up * Player_Movement.Instance.heightOverBlock);
+            targetPos = swiftSwimBlock_Target.transform.position /*+ Vector3.down*/ + (Vector3.up * Movement.Instance.heightOverBlock);
         }
     }
     void PerformSwiftSwimMovement()
@@ -161,25 +161,17 @@ public class Player_SwiftSwim : Singleton<Player_SwiftSwim>
         {
             transform.position = targetPos;
 
-            Player_Movement.Instance.movementStates = MovementStates.Still;
+            Movement.Instance.SetMovementState(MovementStates.Still);
             PlayerManager.Instance.pauseGame = false;
-            PlayerManager.Instance.isTransportingPlayer = false;
+            //PlayerManager.Instance.isTransportingPlayer = false;
 
             isSwiftSwimming_Up = false;
             isSwiftSwimming_Down = false;
             targetPos = Vector3.zero;
 
-            Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
-
-            if (PlayerManager.Instance.block_StandingOn_Current.block)
-            {
-                Player_Movement.Instance.currentMovementCost = PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<BlockInfo>().movementCost;
-            }
-
             swiftSwimBlock_Target = null;
             
-            Player_Movement.Instance.Action_StepTaken_Invoke();
-            Player_Movement.Instance.Action_ResetBlockColorInvoke();
+            Movement.Instance.Action_StepTaken_Invoke();
         }
     }
 }

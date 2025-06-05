@@ -6,12 +6,12 @@ public class Block_Mud : MonoBehaviour
 {
     private void OnEnable()
     {
-        Player_BlockDetector.Action_isSwitchingBlocks += SteppingOnMud;
+        Movement.Action_isSwitchingBlocks += SteppingOnMud;
         PlayerStats.Action_RespawnPlayer += SteppingOnMud;
     }
     private void OnDisable()
     {
-        Player_BlockDetector.Action_isSwitchingBlocks -= SteppingOnMud;
+        Movement.Action_isSwitchingBlocks -= SteppingOnMud;
         PlayerStats.Action_RespawnPlayer -= SteppingOnMud;
     }
 

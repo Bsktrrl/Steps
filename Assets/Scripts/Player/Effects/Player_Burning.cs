@@ -17,19 +17,17 @@ public class Player_Burning : Singleton<Player_Burning>
 
     private void OnEnable()
     {
-        Player_BlockDetector.Action_isSwitchingBlocks += BecomeFlameable;
-        Player_Movement.Action_StepTaken += BecomeFlameable;
-        Player_Movement.Action_StepTaken += CheckFlameableCounter;
+        Movement.Action_isSwitchingBlocks += BecomeFlameable;
+        Movement.Action_StepTaken += BecomeFlameable;
+        Movement.Action_StepTaken += CheckFlameableCounter;
         PlayerStats.Action_RespawnPlayer += RemoveFlameable;
-        Player_BlockDetector.Action_madeFirstRaycast += BecomeFlameable;
     }
     private void OnDisable()
     {
-        Player_BlockDetector.Action_isSwitchingBlocks -= BecomeFlameable;
-        Player_Movement.Action_StepTaken -= BecomeFlameable;
-        Player_Movement.Action_StepTaken -= CheckFlameableCounter;
+        Movement.Action_isSwitchingBlocks -= BecomeFlameable;
+        Movement.Action_StepTaken -= BecomeFlameable;
+        Movement.Action_StepTaken -= CheckFlameableCounter;
         PlayerStats.Action_RespawnPlayerEarly -= RemoveFlameable;
-        Player_BlockDetector.Action_madeFirstRaycast -= BecomeFlameable;
     }
 
 

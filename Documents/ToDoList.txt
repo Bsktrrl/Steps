@@ -1,5 +1,19 @@
 ----- NEXT ON THE LIST -----
 
+1.
+Refacture Movements
+- Remove Player_BlockDetector
+- Remove Player_Movement
+- Functions:
+	- Make available Block detector raycast that checks available movements
+		- Incorporate DarkenBlock to available Blocks
+	- Make generic Movement function
+		- Always check the block standing on, when moving
+	- Make new iceglide function
+	- Change code in abilities to fit the new system
+		- Update Ascend/Descend detection in tick, only if elevator block is near the player		- Make new CeilingGrab functionalty, to make the player hanging DOWN from the ceiling
+	- Rotate playerBody to fit slopes and "fall" down stairs (for each step)
+
 
 0. Slabs doesn't push the player backwards when moving onto it
 

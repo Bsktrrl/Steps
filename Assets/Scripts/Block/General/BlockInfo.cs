@@ -30,7 +30,7 @@ public class BlockInfo : MonoBehaviour
     [HideInInspector] public List<MaterialPropertyBlock> propertyBlocks = new List<MaterialPropertyBlock>();
 
     [HideInInspector] public bool colorTint_isActive;
-    bool color_isDarkened;
+    bool color_isAboutToBeDarkened;
 
     [HideInInspector] public float tintValue = 0.95f;
 
@@ -61,7 +61,7 @@ public class BlockInfo : MonoBehaviour
         SetObjectRenderer();
         SetPropertyBlock();
 
-        ResetDarkenColor();
+        //ResetDarkenColor();
         TintBlock_CheckerPattern();
 
         //Show StepCost
@@ -86,18 +86,18 @@ public class BlockInfo : MonoBehaviour
 
     private void OnEnable()
     {
-        Player_Movement.Action_resetBlockColor += ResetDarkenColor;
+        //Movement.Action_resetBlockColor += ResetDarkenColor;
         PlayerStats.Action_RespawnToSavePos += ResetDarkenColor;
         PlayerStats.Action_RespawnPlayer += ResetBlock;
-        Player_Movement.Action_LandedFromFalling += ResetDarkenColor;
+        //Movement.Action_LandedFromFalling += ResetDarkenColor;
     }
 
     private void OnDisable()
     {
-        Player_Movement.Action_resetBlockColor -= ResetDarkenColor;
+        //Movement.Action_resetBlockColor -= ResetDarkenColor;
         PlayerStats.Action_RespawnToSavePos -= ResetDarkenColor;
         PlayerStats.Action_RespawnPlayer -= ResetBlock;
-        Player_Movement.Action_LandedFromFalling -= ResetDarkenColor;
+        //Movement.Action_LandedFromFalling -= ResetDarkenColor;
     }
 
 
@@ -174,7 +174,6 @@ public class BlockInfo : MonoBehaviour
     public void SetDarkenColors()
     {
         if (blockIsDark) { return; }
-
         if (PlayerManager.Instance.player.GetComponent<Player_Dash>().isDashing) { return; }
 
         if (PlayerStats.Instance.stats.steps_Current <= 0 && movementCost > 0)
@@ -183,11 +182,11 @@ public class BlockInfo : MonoBehaviour
             return;
         }
 
-        color_isDarkened = true;
+        color_isAboutToBeDarkened = true;
 
         UpdateBlock_Darken();
 
-        color_isDarkened = false;
+        color_isAboutToBeDarkened = false;
     }
 
     public void ResetDarkenColor()
@@ -268,7 +267,7 @@ public class BlockInfo : MonoBehaviour
 
     public Color GetBlockColorTint()
     {
-        if (color_isDarkened)
+        if (color_isAboutToBeDarkened)
         {
             if (colorTint_isActive)
             {

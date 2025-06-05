@@ -6,12 +6,12 @@ public class Block_SwampWater : MonoBehaviour
 {
     private void OnEnable()
     {
-        Player_BlockDetector.Action_isSwitchingBlocks += SteppingOnSwampWater;
+        Movement.Action_isSwitchingBlocks += SteppingOnSwampWater;
         PlayerStats.Action_RespawnPlayer += SteppingOnSwampWater;
     }
     private void OnDisable()
     {
-        Player_BlockDetector.Action_isSwitchingBlocks -= SteppingOnSwampWater;
+        Movement.Action_isSwitchingBlocks -= SteppingOnSwampWater;
         PlayerStats.Action_RespawnPlayer -= SteppingOnSwampWater;
     }
 

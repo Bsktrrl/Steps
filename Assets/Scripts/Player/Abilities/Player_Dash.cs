@@ -37,9 +37,9 @@ public class Player_Dash : Singleton<Player_Dash>
 
         if (isDashing) { return; }
 
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
         if (PlayerManager.Instance.pauseGame) { return; }
-        if (PlayerManager.Instance.isTransportingPlayer) { return; }
+        //if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
         if (PlayerManager.Instance.forward_isPressed)
             Dash_Forward();
@@ -56,13 +56,13 @@ public class Player_Dash : Singleton<Player_Dash>
     private void OnEnable()
     {
         DataManager.Action_dataHasLoaded += SetDashDirections;
-        Player_Movement.Action_StepTaken += SetDashDirections;
+        Movement.Action_StepTaken += SetDashDirections;
         PlayerStats.Action_RespawnPlayerLate += SetDashDirections;
     }
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= SetDashDirections;
-        Player_Movement.Action_StepTaken -= SetDashDirections;
+        Movement.Action_StepTaken -= SetDashDirections;
         PlayerStats.Action_RespawnPlayerLate -= SetDashDirections;
     }
 
@@ -78,9 +78,8 @@ public class Player_Dash : Singleton<Player_Dash>
 
         if (isDashing) { return false; }
 
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return false; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
         if (PlayerManager.Instance.pauseGame) { return false; }
-        if (PlayerManager.Instance.isTransportingPlayer) { return false; }
 
         return true;
     }
@@ -339,14 +338,14 @@ public class Player_Dash : Singleton<Player_Dash>
         isDashing = true;
         dashStartPos = gameObject.transform.position;
 
-        Player_Movement.Instance.movementStates = MovementStates.Moving;
+        Movement.Instance.SetMovementState(MovementStates.Moving);
         PlayerManager.Instance.pauseGame = true;
-        PlayerManager.Instance.isTransportingPlayer = true;
+        //PlayerManager.Instance.isTransportingPlayer = true;
 
-        Vector3 startPosition = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * Player_Movement.Instance.heightOverBlock);
+        Vector3 startPosition = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
         Vector3 endPosition;
         if (target)
-            endPosition = target.transform.position + (Vector3.up * (Player_Movement.Instance.heightOverBlock));
+            endPosition = target.transform.position + (Vector3.up * (Movement.Instance.heightOverBlock));
         else
             endPosition = dashStartPos;
 
@@ -375,17 +374,11 @@ public class Player_Dash : Singleton<Player_Dash>
         // Ensure the player lands exactly at the end position
         transform.position = endPosition;
 
-        Player_BlockDetector.Instance.RaycastSetup();
-
         isDashing = false;
-        Player_Movement.Instance.movementStates = MovementStates.Still;
+        Movement.Instance.SetMovementState(MovementStates.Still);
         PlayerManager.Instance.pauseGame = false;
-        PlayerManager.Instance.isTransportingPlayer = false;
 
-        Player_BlockDetector.Instance.Update_BlockStandingOn();
-
-        Player_Movement.Instance.Action_ResetBlockColorInvoke();
-        Player_Movement.Instance.Action_StepTaken_Invoke();
+        Movement.Instance.Action_StepTaken_Invoke();
     }
 }
 

@@ -17,14 +17,14 @@ public class Player_Pusher : Singleton<Player_Pusher>
     }
     private void OnEnable()
     {
-        Player_Movement.Action_StepTaken += CheckPush;
-        Player_Movement.Action_BodyRotated += CheckIfNotPushed;
+        Movement.Action_StepTaken += CheckPush;
+        Movement.Action_BodyRotated += CheckIfNotPushed;
     }
 
     private void OnDisable()
     {
-        Player_Movement.Action_StepTaken -= CheckPush;
-        Player_Movement.Action_BodyRotated -= CheckIfNotPushed;
+        Movement.Action_StepTaken -= CheckPush;
+        Movement.Action_BodyRotated -= CheckIfNotPushed;
     }
 
 

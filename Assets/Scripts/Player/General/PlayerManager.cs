@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : Singleton<PlayerManager>
 {
@@ -51,7 +49,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
     [Header("Game Paused")]
     public bool pauseGame;
-    public bool isTransportingPlayer;
+    //public bool isTransportingPlayer;
 
     [Header("KeyPresses")]
     public bool forward_isPressed;
@@ -61,6 +59,9 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public bool cameraX_isPressed;
     public bool cameraY_isPressed;
+
+    [Header("mainMenu_Name")]
+    [SerializeField] string mainMenu_Name;
 
     #endregion
 
@@ -84,15 +85,15 @@ public class PlayerManager : Singleton<PlayerManager>
     private void OnEnable()
     {
         DataManager.Action_dataHasLoaded += LoadPlayerStats;
-        Player_Movement.Action_StepTaken += StepsOnFallableBlock;
-        Player_Movement.Action_StepTaken += MakeStepSound;
+        Movement.Action_StepTaken += StepsOnFallableBlock;
+        Movement.Action_StepTaken += MakeStepSound;
     }
 
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= LoadPlayerStats;
-        Player_Movement.Action_StepTaken -= StepsOnFallableBlock;
-        Player_Movement.Action_StepTaken -= MakeStepSound;
+        Movement.Action_StepTaken -= StepsOnFallableBlock;
+        Movement.Action_StepTaken -= MakeStepSound;
     }
 
 
@@ -136,13 +137,9 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public bool PreventButtonsOfTrigger()
     {
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return false; }
-
-        if (Player_Movement.Instance.isSlopeGliding) { return false; }
-        if (Player_Movement.Instance.isIceGliding) { return false; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
 
         if (pauseGame) { return false; }
-        if (isTransportingPlayer) { return false; }
         if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
@@ -217,14 +214,14 @@ public class PlayerManager : Singleton<PlayerManager>
     }
     void OnAbilityUp()
     {
-        Player_Movement.Instance.Key_SwiftSwimUp();
+        Player_KeyInputs.Instance.Key_SwiftSwimUp();
         Player_Ascend.Instance.RunAscend();
     }
     void OnAbilityDown()
     {
         Player_Interact.Instance.InteractWithObject();
-        Player_Movement.Instance.Action_PressMoveBlockButtonInvoke();
-        Player_Movement.Instance.Key_SwiftSwimDown();
+        //Player_KeyInputs.Instance.Action_PressMoveBlockButtonInvoke();
+        Player_KeyInputs.Instance.Key_SwiftSwimDown();
         Player_Descend.Instance.RunDescend();
     }
     void OnAbilityLeft()
@@ -241,11 +238,46 @@ public class PlayerManager : Singleton<PlayerManager>
     }
     void OnRespawn()
     {
-        Player_Movement.Instance.Key_Respawn();
+        Player_KeyInputs.Instance.Key_Respawn();
     }
     void OnQuit()
     {
-        Player_Movement.Instance.Key_Quit();
+        Player_KeyInputs.Instance.Key_Quit();
+    }
+
+
+    //--------------------
+
+
+    public void PauseGame()
+    {
+        pauseGame = true;
+    }
+    public void UnpauseGame()
+    {
+        pauseGame = false;
+    }
+
+
+    //--------------------
+
+
+    public void QuitLevel()
+    {
+        if (!string.IsNullOrEmpty(mainMenu_Name))
+        {
+            StartCoroutine(LoadSceneCoroutine(mainMenu_Name));
+        }
+    }
+
+    private IEnumerator LoadSceneCoroutine(string sceneName)
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
+        while (!operation.isDone)
+        {
+            Debug.Log($"Loading progress: {operation.progress * 100}%");
+            yield return null;
+        }
     }
 }
 

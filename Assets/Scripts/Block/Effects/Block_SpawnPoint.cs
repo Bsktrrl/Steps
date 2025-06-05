@@ -9,12 +9,12 @@ public class Block_SpawnPoint : MonoBehaviour
 
     private void OnEnable()
     {
-        Player_Movement.Action_StepTaken += UpdateSpawnPos;
+        Movement.Action_StepTaken += UpdateSpawnPos;
     }
 
     private void OnDisable()
     {
-        Player_Movement.Action_StepTaken -= UpdateSpawnPos;
+        Movement.Action_StepTaken -= UpdateSpawnPos;
     }
 
 
@@ -25,7 +25,7 @@ public class Block_SpawnPoint : MonoBehaviour
     {
         if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject)
         {
-            MapManager.Instance.playerStartPos = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * Player_Movement.Instance.heightOverBlock);
+            MapManager.Instance.playerStartPos = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
 
             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current = PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max;
             StartCoroutine(ResetSteps(0.01f));

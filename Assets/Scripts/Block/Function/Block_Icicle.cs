@@ -205,15 +205,13 @@ public class Block_Icicle : MonoBehaviour
             isDetectingPlayer = false;
         }
 
-        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endPos, PlayerManager.Instance.player.GetComponent<Player_Movement>().fallSpeed * Time.deltaTime);
+        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endPos, PlayerManager.Instance.player.GetComponent<Movement>().fallSpeed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, endPos) <= 0.03f)
         {
             gameObject.transform.position = endPos;
 
             hasFallen = true;
-
-            Player_BlockDetector.Instance.RaycastSetup();
 
             if (endBlock)
             {

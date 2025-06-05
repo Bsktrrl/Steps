@@ -37,16 +37,16 @@ public class Block_Moveable : MonoBehaviour
 
     private void OnEnable()
     {
-        Player_Movement.Action_StepTaken += RaycastForThePlayer;
-        Player_Movement.Action_BodyRotated += RaycastForThePlayer;
-        Player_Movement.Action_PressMoveBlockButton += ActivateBlockMovement;
+        Movement.Action_StepTaken += RaycastForThePlayer;
+        Movement.Action_BodyRotated += RaycastForThePlayer;
+        //Player_Movement.Action_PressMoveBlockButton += ActivateBlockMovement;
         PlayerStats.Action_RespawnPlayer += ResetBlockPos;
     }
     private void OnDisable()
     {
-        Player_Movement.Action_StepTaken -= RaycastForThePlayer;
-        Player_Movement.Action_BodyRotated -= RaycastForThePlayer;
-        Player_Movement.Action_PressMoveBlockButton -= ActivateBlockMovement;
+        Movement.Action_StepTaken -= RaycastForThePlayer;
+        Movement.Action_BodyRotated -= RaycastForThePlayer;
+        //Player_Movement.Action_PressMoveBlockButton -= ActivateBlockMovement;
         PlayerStats.Action_RespawnPlayer -= ResetBlockPos;
     }
 
@@ -217,7 +217,7 @@ public class Block_Moveable : MonoBehaviour
         if (movementDirection == MovementDirection.Left && PlayerManager.Instance.lookingDirection != Vector3.left) { return; }
         if (movementDirection == MovementDirection.Right && PlayerManager.Instance.lookingDirection != Vector3.right) { return; }
 
-        PlayerManager.Instance.isTransportingPlayer = true;
+        //PlayerManager.Instance.isTransportingPlayer = true;
         isMoving = true;
     }
     void PerformMovement(float movementSpeed)
@@ -245,7 +245,7 @@ public class Block_Moveable : MonoBehaviour
             {
                 isMoving = false;
                 isIceGliding = false;
-                PlayerManager.Instance.isTransportingPlayer = false;
+               // PlayerManager.Instance.isTransportingPlayer = false;
 
                 RaycastForThePlayer();
             }

@@ -7,6 +7,6 @@ public class PauseMenu_ExitLevel_Button : MonoBehaviour
 {
     public void ExitLevelButton_isPressed()
     {
-        Player_Movement.Instance.QuitLevel();
+        PlayerManager.Instance.QuitLevel();
     }
 }

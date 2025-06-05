@@ -37,9 +37,9 @@ public class Player_Jumping : Singleton<Player_Jumping>
 
         if (isJumping) { return; }
 
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
         if (PlayerManager.Instance.pauseGame) { return; }
-        if (PlayerManager.Instance.isTransportingPlayer) { return; }
+        //if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
         //CheckIfCanJump_OnAction();
         CheckIfICanJump_Update();
@@ -71,16 +71,16 @@ public class Player_Jumping : Singleton<Player_Jumping>
     private void OnEnable()
     {
         DataManager.Action_dataHasLoaded += CheckIfCanJump_OnAction;
-        Player_Movement.Action_StepTaken += CheckIfCanJump_OnAction;
-        Player_Movement.Action_BodyRotated += CheckIfCanJump_OnAction;
+        Movement.Action_StepTaken += CheckIfCanJump_OnAction;
+        Movement.Action_BodyRotated += CheckIfCanJump_OnAction;
 
         PlayerStats.Action_RespawnPlayer += ResetDarkenOnRespawn;
     }
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= CheckIfCanJump_OnAction;
-        Player_Movement.Action_StepTaken -= CheckIfCanJump_OnAction;
-        Player_Movement.Action_BodyRotated -= CheckIfCanJump_OnAction;
+        Movement.Action_StepTaken -= CheckIfCanJump_OnAction;
+        Movement.Action_BodyRotated -= CheckIfCanJump_OnAction;
 
         PlayerStats.Action_RespawnPlayer -= ResetDarkenOnRespawn;
     }
@@ -107,9 +107,9 @@ public class Player_Jumping : Singleton<Player_Jumping>
 
         if (isJumping) { return false; }
 
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return false; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
         if (PlayerManager.Instance.pauseGame) { return false; }
-        if (PlayerManager.Instance.isTransportingPlayer) { return false; }
+        //if (PlayerManager.Instance.isTransportingPlayer) { return false; }
 
         return true;
     }
@@ -449,14 +449,14 @@ public class Player_Jumping : Singleton<Player_Jumping>
         isJumping = true;
         jumpStartPos = gameObject.transform.position;
 
-        Player_Movement.Instance.movementStates = MovementStates.Moving;
+        Movement.Instance.SetMovementState(MovementStates.Moving);
         PlayerManager.Instance.pauseGame = true;
-        PlayerManager.Instance.isTransportingPlayer = true;
+        //PlayerManager.Instance.isTransportingPlayer = true;
 
-        Vector3 startPosition = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * Player_Movement.Instance.heightOverBlock);
+        Vector3 startPosition = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
         Vector3 endPosition;
         if (target)
-            endPosition = target.transform.position + (Vector3.up * (Player_Movement.Instance.heightOverBlock + 0.1f));
+            endPosition = target.transform.position + (Vector3.up * (Movement.Instance.heightOverBlock + 0.1f));
         else
             endPosition = jumpStartPos;
 
@@ -488,13 +488,9 @@ public class Player_Jumping : Singleton<Player_Jumping>
         //Player_BlockDetector.Instance.RaycastSetup();
 
         isJumping = false;
-        Player_Movement.Instance.movementStates = MovementStates.Still;
+        Movement.Instance.SetMovementState(MovementStates.Still);
         PlayerManager.Instance.pauseGame = false;
-        PlayerManager.Instance.isTransportingPlayer = false;
 
-        Player_BlockDetector.Instance.Update_BlockStandingOn();
-
-        Player_Movement.Instance.Action_ResetBlockColorInvoke();
-        Player_Movement.Instance.Action_StepTaken_Invoke();
+        Movement.Instance.Action_StepTaken_Invoke();
     }
 }

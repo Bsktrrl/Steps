@@ -14,15 +14,15 @@ public class Block_BurnTransforming : MonoBehaviour
 
     private void OnEnable()
     {
-        Player_BlockDetector.Action_isSwitchingBlocks += CheckIfSteppenOn;
-        Player_Movement.Action_StepTaken += MeltBlock;
+        Movement.Action_isSwitchingBlocks += CheckIfSteppenOn;
+        Movement.Action_StepTaken += MeltBlock;
         PlayerStats.Action_RespawnPlayerEarly += ResetBlock;
     }
 
     private void OnDisable()
     {
-        Player_BlockDetector.Action_isSwitchingBlocks -= CheckIfSteppenOn;
-        Player_Movement.Action_StepTaken -= MeltBlock;
+        Movement.Action_isSwitchingBlocks -= CheckIfSteppenOn;
+        Movement.Action_StepTaken -= MeltBlock;
         PlayerStats.Action_RespawnPlayerEarly -= ResetBlock;
     }
 

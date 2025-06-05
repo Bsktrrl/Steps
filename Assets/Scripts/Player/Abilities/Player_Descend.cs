@@ -29,7 +29,7 @@ public class Player_Descend : Singleton<Player_Descend>
     {
         DataManager.Action_dataHasLoaded += StartRunningObject;
         DataManager.Action_dataHasLoaded += PrepareForRaycastForDecending;
-        Player_Movement.Action_StepTaken += PrepareForRaycastForDecending;
+        Movement.Action_StepTaken += PrepareForRaycastForDecending;
         PlayerStats.Action_RespawnPlayerLate += PrepareForRaycastForDecending;
     }
 
@@ -37,7 +37,7 @@ public class Player_Descend : Singleton<Player_Descend>
     {
         DataManager.Action_dataHasLoaded -= StartRunningObject;
         DataManager.Action_dataHasLoaded -= PrepareForRaycastForDecending;
-        Player_Movement.Action_StepTaken -= PrepareForRaycastForDecending;
+        Movement.Action_StepTaken -= PrepareForRaycastForDecending;
         PlayerStats.Action_RespawnPlayerLate -= PrepareForRaycastForDecending;
     }
     void StartRunningObject()
@@ -57,9 +57,9 @@ public class Player_Descend : Singleton<Player_Descend>
 
         if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
         if (PlayerManager.Instance.pauseGame) { return; }
-        if (PlayerManager.Instance.isTransportingPlayer) { return; }
+        //if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
         if (RaycastForDescending())
         {
@@ -281,13 +281,13 @@ public class Player_Descend : Singleton<Player_Descend>
         descendStartPos = gameObject.transform.position;
 
         PlayerManager.Instance.pauseGame = true;
-        PlayerManager.Instance.isTransportingPlayer = true;
-        Player_Movement.Instance.movementStates = MovementStates.Moving;
+        //PlayerManager.Instance.isTransportingPlayer = true;
+        Movement.Instance.SetMovementState(MovementStates.Moving);
 
-        Vector3 startPosition = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * Player_Movement.Instance.heightOverBlock);
+        Vector3 startPosition = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
         Vector3 endPosition;
         if (descendingBlock_Target)
-            endPosition = descendingBlock_Target.transform.position + (Vector3.up * (Player_Movement.Instance.heightOverBlock));
+            endPosition = descendingBlock_Target.transform.position + (Vector3.up * (Movement.Instance.heightOverBlock));
         else
             endPosition = descendStartPos;
 
@@ -314,18 +314,10 @@ public class Player_Descend : Singleton<Player_Descend>
         // Ensure the player lands exactly at the end position
         transform.position = endPosition;
 
-        Player_BlockDetector.Instance.RaycastSetup();
-
-        Player_Movement.Instance.movementStates = MovementStates.Still;
+        Movement.Instance.SetMovementState(MovementStates.Still);
         PlayerManager.Instance.pauseGame = false;
-        PlayerManager.Instance.isTransportingPlayer = false;
 
-        Player_BlockDetector.Instance.PerformRaycast_Center_Vertical(Player_BlockDetector.Instance.detectorSpot_Vertical_Center, Vector3.down);
-
-        Player_BlockDetector.Instance.Update_BlockStandingOn();
-
-        Player_Movement.Instance.Action_ResetBlockColorInvoke();
-        Player_Movement.Instance.Action_StepTaken_Invoke();
+        Movement.Instance.Action_StepTaken_Invoke();
 
         isDescending = false;
     }

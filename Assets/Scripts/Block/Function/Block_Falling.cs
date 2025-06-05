@@ -126,12 +126,11 @@ public class Block_Falling : MonoBehaviour
 
         //gameObject.transform.position = gameObject.transform.position + (Vector3.down * MainManager.Instance.player.GetComponent<Player_Movement>().fallSpeed * Time.deltaTime);
 
-        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endPos, PlayerManager.Instance.player.GetComponent<Player_Movement>().fallSpeed * Time.deltaTime);
+        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endPos, PlayerManager.Instance.player.GetComponent<Movement>().fallSpeed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, endPos) <= 0.03f)
         {
             HideBlock();
-            PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().Update_BlockStandingOn();
         }
     }
     void FallingAlertAnimation()

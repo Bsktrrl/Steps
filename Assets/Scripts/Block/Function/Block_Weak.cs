@@ -15,15 +15,15 @@ public class Block_Weak : MonoBehaviour
 
     private void OnEnable()
     {
-        Player_BlockDetector.Action_isSwitchingBlocks += CheckIfSteppenOn;
-        Player_Movement.Action_StepTaken += DisolveBlock;
+        Movement.Action_isSwitchingBlocks += CheckIfSteppenOn;
+        Movement.Action_StepTaken += DisolveBlock;
         PlayerStats.Action_RespawnPlayerEarly += ResetBlock;
     }
 
     private void OnDisable()
     {
-        Player_BlockDetector.Action_isSwitchingBlocks -= CheckIfSteppenOn;
-        Player_Movement.Action_StepTaken -= DisolveBlock;
+        Movement.Action_isSwitchingBlocks -= CheckIfSteppenOn;
+        Movement.Action_StepTaken -= DisolveBlock;
         PlayerStats.Action_RespawnPlayerEarly -= ResetBlock;
     }
 

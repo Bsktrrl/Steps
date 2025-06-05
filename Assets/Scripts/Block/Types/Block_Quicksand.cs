@@ -7,12 +7,12 @@ public class Block_Quicksand : MonoBehaviour
 {
     private void OnEnable()
     {
-        Player_BlockDetector.Action_isSwitchingBlocks += SteppingOnQuicksand;
+        Movement.Action_isSwitchingBlocks += SteppingOnQuicksand;
         PlayerStats.Action_RespawnPlayer += SteppingOnQuicksand;
     }
     private void OnDisable()
     {
-        Player_BlockDetector.Action_isSwitchingBlocks -= SteppingOnQuicksand;
+        Movement.Action_isSwitchingBlocks -= SteppingOnQuicksand;
         PlayerStats.Action_RespawnPlayer -= SteppingOnQuicksand;
     }
 

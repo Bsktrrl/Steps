@@ -26,22 +26,22 @@ public class Block_Ladder : MonoBehaviour
 
         if (transform.rotation.y == 0)
         {
-            FindExitBlock_Up(Player_Movement.Instance.DirectionCalculator(Vector3.forward));
+            FindExitBlock_Up(Movement.Instance.UpdatedDir(Vector3.forward));
             FindExitBlock_Down();
         }
         else if (transform.rotation.y == 180)
         {
-            FindExitBlock_Up(Player_Movement.Instance.DirectionCalculator(Vector3.back));
+            FindExitBlock_Up(Movement.Instance.UpdatedDir(Vector3.back));
             FindExitBlock_Down();
         }
         else if (transform.rotation.y == -90)
         {
-            FindExitBlock_Up(Player_Movement.Instance.DirectionCalculator(Vector3.left));
+            FindExitBlock_Up(Movement.Instance.UpdatedDir(Vector3.left));
             FindExitBlock_Down();
         }
         else if (transform.rotation.y == 90)
         {
-            FindExitBlock_Up(Player_Movement.Instance.DirectionCalculator(Vector3.right));
+            FindExitBlock_Up(Movement.Instance.UpdatedDir(Vector3.right));
             FindExitBlock_Down();
         }
 

@@ -9,12 +9,12 @@ public class Block_MushroomCircle : MonoBehaviour
 
     private void OnEnable()
     {
-        Player_Movement.Action_StepTaken += Refill_1_Step;
+        Movement.Action_StepTaken += Refill_1_Step;
     }
 
     private void OnDisable()
     {
-        Player_Movement.Action_StepTaken -= Refill_1_Step;
+        Movement.Action_StepTaken -= Refill_1_Step;
     }
 
 

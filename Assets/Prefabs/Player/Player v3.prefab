@@ -6187,6 +6187,8 @@ GameObject:
   - component: {fileID: 8255754922040810588}
   - component: {fileID: 82882239988338960}
   - component: {fileID: 6442351723837406448}
+  - component: {fileID: 2542980385125829506}
+  - component: {fileID: 2890779019269473121}
   - component: {fileID: 13904960364419418}
   - component: {fileID: 8763539080269035516}
   - component: {fileID: 3547600018388646701}
@@ -6382,14 +6384,13 @@ MonoBehaviour:
   canMove_Left: 0
   canMove_Right: 0
   pauseGame: 0
-  isTransportingPlayer: 0
   forward_isPressed: 0
   back_isPressed: 0
   left_isPressed: 0
   right_isPressed: 0
   cameraX_isPressed: 0
   cameraY_isPressed: 0
---- !u!114 &13904960364419418
+--- !u!114 &2542980385125829506
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6397,6 +6398,74 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6649856597487831825}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b2798961207cba45b3877e01d633d32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMoving: 0
+  movementStates: 0
+  heightOverBlock: 0.95
+  movementSpeed: 0.2
+  fallSpeed: 6
+  isCeilingGrabbing: 0
+  moveToBlock_Forward:
+    canMoveTo: 0
+    targetBlock: {fileID: 0}
+  moveToBlock_Back:
+    canMoveTo: 0
+    targetBlock: {fileID: 0}
+  moveToBlock_Left:
+    canMoveTo: 0
+    targetBlock: {fileID: 0}
+  moveToBlock_Right:
+    canMoveTo: 0
+    targetBlock: {fileID: 0}
+  moveToBlock_Ascend:
+    canMoveTo: 0
+    targetBlock: {fileID: 0}
+  moveToBlock_Descend:
+    canMoveTo: 0
+    targetBlock: {fileID: 0}
+  moveToBlock_SwiftSwimUp:
+    canMoveTo: 0
+    targetBlock: {fileID: 0}
+  moveToBlock_SwiftSwimDown:
+    canMoveTo: 0
+    targetBlock: {fileID: 0}
+  moveToBlock_Dash:
+    canMoveTo: 0
+    targetBlock: {fileID: 0}
+  moveToBlock_Jump:
+    canMoveTo: 0
+    targetBlock: {fileID: 0}
+  moveToBlock_GrapplingHook:
+    canMoveTo: 0
+    targetBlock: {fileID: 0}
+--- !u!114 &2890779019269473121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649856597487831825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53dad0b64e37f474e821ae4878909098, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ladderEndPos_Up: {x: 0, y: 0, z: 0}
+  ladderEndPos_Down: {x: 0, y: 0, z: 0}
+  isMovingOnLadder_Up: 0
+  isMovingOnLadder_Down: 0
+  ladderToEnterRot: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &13904960364419418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649856597487831825}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7372d8dda08135a46aca0e64988e5c42, type: 3}
   m_Name: 
@@ -6423,7 +6492,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6649856597487831825}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed0666eb48b708a4babd7b24ea7ae847, type: 3}
   m_Name: 
