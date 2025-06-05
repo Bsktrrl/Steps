@@ -47,7 +47,7 @@ public class Block_Snow : MonoBehaviour
     void SetRandomBlockHeight()
     {
         if (GetComponent<BlockInfo>().blockType == BlockType.Slab)
-            scale_Y_Value = UnityEngine.Random.Range(0.3f, 0.6f);
+            scale_Y_Value = UnityEngine.Random.Range(1f, 1.3f);
         else
             scale_Y_Value = UnityEngine.Random.Range(1, 1.3f);
 
@@ -67,8 +67,16 @@ public class Block_Snow : MonoBehaviour
         }
         else
         {
-            numberDisplayObject.transform.localPosition = new Vector3(0, Mathf.Abs((1 - childScale_Y) / 2), 0);
-            numberDisplayObject.GetComponent<NumberDisplay>().localStartHeight = numberDisplayObject.transform.localPosition.y;
+            if (GetComponent<BlockInfo>().blockType == BlockType.Slab)
+            {
+                numberDisplayObject.transform.localPosition = new Vector3(0, Mathf.Abs(((1 - childScale_Y) / 2) / 10), 0);
+                numberDisplayObject.GetComponent<NumberDisplay>().localStartHeight = numberDisplayObject.transform.localPosition.y;
+            }
+            else
+            {
+                numberDisplayObject.transform.localPosition = new Vector3(0, Mathf.Abs((1 - childScale_Y) / 2), 0);
+                numberDisplayObject.GetComponent<NumberDisplay>().localStartHeight = numberDisplayObject.transform.localPosition.y;
+            }
         }
     }
 }
