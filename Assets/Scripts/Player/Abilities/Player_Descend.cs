@@ -30,7 +30,7 @@ public class Player_Descend : Singleton<Player_Descend>
         DataManager.Action_dataHasLoaded += StartRunningObject;
         DataManager.Action_dataHasLoaded += PrepareForRaycastForDecending;
         Movement.Action_StepTaken += PrepareForRaycastForDecending;
-        PlayerStats.Action_RespawnPlayerLate += PrepareForRaycastForDecending;
+        Movement.Action_RespawnPlayerLate += PrepareForRaycastForDecending;
     }
 
     private void OnDisable()
@@ -38,7 +38,7 @@ public class Player_Descend : Singleton<Player_Descend>
         DataManager.Action_dataHasLoaded -= StartRunningObject;
         DataManager.Action_dataHasLoaded -= PrepareForRaycastForDecending;
         Movement.Action_StepTaken -= PrepareForRaycastForDecending;
-        PlayerStats.Action_RespawnPlayerLate -= PrepareForRaycastForDecending;
+        Movement.Action_RespawnPlayerLate -= PrepareForRaycastForDecending;
     }
     void StartRunningObject()
     {
@@ -65,7 +65,7 @@ public class Player_Descend : Singleton<Player_Descend>
         {
             if (PlayerStats.Instance.stats.steps_Current <= 0 && descendingBlock_Target.GetComponent<BlockInfo>().movementCost > 0)
             {
-                PlayerStats.Instance.RespawnPlayer();
+                Movement.Instance.RespawnPlayer();
             }
             else
             {
@@ -136,7 +136,7 @@ public class Player_Descend : Singleton<Player_Descend>
                                 }
 
                                 //Alow if standing on a slab
-                                else if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slab)
+                                else if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slab)
                                 {
                                     DescendingIsAllowed(hit1.transform.gameObject);
                                     return true;
@@ -284,7 +284,7 @@ public class Player_Descend : Singleton<Player_Descend>
         //PlayerManager.Instance.isTransportingPlayer = true;
         Movement.Instance.SetMovementState(MovementStates.Moving);
 
-        Vector3 startPosition = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
+        Vector3 startPosition = Movement.Instance.blockStandingOn.transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
         Vector3 endPosition;
         if (descendingBlock_Target)
             endPosition = descendingBlock_Target.transform.position + (Vector3.up * (Movement.Instance.heightOverBlock));

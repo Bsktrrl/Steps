@@ -41,14 +41,14 @@ public class Player_Dash : Singleton<Player_Dash>
         if (PlayerManager.Instance.pauseGame) { return; }
         //if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
-        if (PlayerManager.Instance.forward_isPressed)
-            Dash_Forward();
-        else if (PlayerManager.Instance.back_isPressed)
-            Dash_Backward();
-        else if (PlayerManager.Instance.left_isPressed)
-            Dash_Left();
-        else if (PlayerManager.Instance.right_isPressed)
-            Dash_Right();
+        //if (PlayerManager.Instance.forward_isPressed)
+        //    Dash_Forward();
+        //else if (PlayerManager.Instance.back_isPressed)
+        //    Dash_Backward();
+        //else if (PlayerManager.Instance.left_isPressed)
+        //    Dash_Left();
+        //else if (PlayerManager.Instance.right_isPressed)
+        //    Dash_Right();
 
         OnElevator();
     }
@@ -57,13 +57,13 @@ public class Player_Dash : Singleton<Player_Dash>
     {
         DataManager.Action_dataHasLoaded += SetDashDirections;
         Movement.Action_StepTaken += SetDashDirections;
-        PlayerStats.Action_RespawnPlayerLate += SetDashDirections;
+        Movement.Action_RespawnPlayerLate += SetDashDirections;
     }
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= SetDashDirections;
         Movement.Action_StepTaken -= SetDashDirections;
-        PlayerStats.Action_RespawnPlayerLate -= SetDashDirections;
+        Movement.Action_RespawnPlayerLate -= SetDashDirections;
     }
 
 
@@ -210,10 +210,10 @@ public class Player_Dash : Singleton<Player_Dash>
 
     void OnElevator()
     {
-        if (PlayerManager.Instance.block_StandingOn_Current.block)
+        if (Movement.Instance.blockStandingOn)
         {
-            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator>()
-            || PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator_StepOn>())
+            if (Movement.Instance.blockStandingOn.GetComponent<Block_Elevator>()
+            || Movement.Instance.blockStandingOn.GetComponent<Block_Elevator_StepOn>())
             {
                 SetDashDirections();
             }
@@ -342,7 +342,7 @@ public class Player_Dash : Singleton<Player_Dash>
         PlayerManager.Instance.pauseGame = true;
         //PlayerManager.Instance.isTransportingPlayer = true;
 
-        Vector3 startPosition = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
+        Vector3 startPosition = Movement.Instance.blockStandingOn.transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
         Vector3 endPosition;
         if (target)
             endPosition = target.transform.position + (Vector3.up * (Movement.Instance.heightOverBlock));

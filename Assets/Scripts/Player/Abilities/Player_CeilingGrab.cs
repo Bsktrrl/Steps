@@ -30,13 +30,13 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     {
         Movement.Action_StepTaken += UpdateRaycastCeiling;
         DataManager.Action_dataHasLoaded += UpdateRaycastCeiling;
-        PlayerStats.Action_RespawnPlayerEarly += ResetStats;
+        Movement.Action_RespawnPlayerEarly += ResetStats;
     }
     private void OnDisable()
     {
         Movement.Action_StepTaken -= UpdateRaycastCeiling;
         DataManager.Action_dataHasLoaded -= UpdateRaycastCeiling;
-        PlayerStats.Action_RespawnPlayerEarly -= ResetStats;
+        Movement.Action_RespawnPlayerEarly -= ResetStats;
     }
 
 
@@ -210,24 +210,24 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             {
                 if (hit.transform.GetComponent<BlockInfo>())
                 {
-                    PlayerManager.Instance.block_StandingOn_Current.block = hit.transform.gameObject;
-                    PlayerManager.Instance.block_StandingOn_Current.blockPosition = hit.transform.position;
-                    PlayerManager.Instance.block_StandingOn_Current.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
+                    Movement.Instance.blockStandingOn = hit.transform.gameObject;
+                    Movement.Instance.blockStandingOn.transform.position = hit.transform.position;
+                    Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType = hit.transform.GetComponent<BlockInfo>().blockType;
 
-                    if (PlayerManager.Instance.block_StandingOn_Previous != PlayerManager.Instance.block_StandingOn_Current.block)
+                    if (Movement.Instance.blockStandingOn_Previous != Movement.Instance.blockStandingOn)
                     {
                         Movement.Instance.Action_isSwitchingBlocks_Invoke();
-                        PlayerManager.Instance.block_StandingOn_Previous = PlayerManager.Instance.block_StandingOn_Current.block;
+                        Movement.Instance.blockStandingOn_Previous = Movement.Instance.blockStandingOn;
                     }
 
-                    gameObject.transform.position = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + Vector3.down + (Vector3.down * (1 - Movement.Instance.heightOverBlock));
+                    gameObject.transform.position = Movement.Instance.blockStandingOn.transform.position + Vector3.down + (Vector3.down * (1 - Movement.Instance.heightOverBlock));
                 }
             }
             else
             {
-                PlayerManager.Instance.block_StandingOn_Current.block = null;
-                PlayerManager.Instance.block_StandingOn_Current.blockPosition = Vector3.zero;
-                PlayerManager.Instance.block_StandingOn_Current.blockType = BlockType.None;
+                Movement.Instance.blockStandingOn = null;
+                Movement.Instance.blockStandingOn.transform.position = Vector3.zero;
+                Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType = BlockType.None;
             }
         }
         else if (Movement.Instance.GetMovementState() == MovementStates.Moving)
@@ -236,14 +236,14 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             {
                 if (hit.transform.GetComponent<BlockInfo>())
                 {
-                    PlayerManager.Instance.block_StandingOn_Current.block = hit.transform.gameObject;
-                    PlayerManager.Instance.block_StandingOn_Current.blockPosition = hit.transform.position;
-                    PlayerManager.Instance.block_StandingOn_Current.blockType = hit.transform.GetComponent<BlockInfo>().blockType;
+                    Movement.Instance.blockStandingOn = hit.transform.gameObject;
+                    Movement.Instance.blockStandingOn.transform.position = hit.transform.position;
+                    Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType = hit.transform.GetComponent<BlockInfo>().blockType;
 
-                    if (PlayerManager.Instance.block_StandingOn_Previous != PlayerManager.Instance.block_StandingOn_Current.block)
+                    if (Movement.Instance.blockStandingOn_Previous != Movement.Instance.blockStandingOn)
                     {
                         Movement.Instance.Action_isSwitchingBlocks_Invoke();
-                        PlayerManager.Instance.block_StandingOn_Previous = PlayerManager.Instance.block_StandingOn_Current.block;
+                        Movement.Instance.blockStandingOn_Previous = Movement.Instance.blockStandingOn;
                     }
 
                     //IceBlock
@@ -273,9 +273,9 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             }
             else
             {
-                PlayerManager.Instance.block_StandingOn_Current.block = null;
-                PlayerManager.Instance.block_StandingOn_Current.blockPosition = Vector3.zero;
-                PlayerManager.Instance.block_StandingOn_Current.blockType = BlockType.None;
+                Movement.Instance.blockStandingOn = null;
+                Movement.Instance.blockStandingOn.transform.position = Vector3.zero;
+                Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType = BlockType.None;
             }
 
             Movement.Instance.SetMovementState(MovementStates.Still);

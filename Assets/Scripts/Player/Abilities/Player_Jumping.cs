@@ -44,22 +44,22 @@ public class Player_Jumping : Singleton<Player_Jumping>
         //CheckIfCanJump_OnAction();
         CheckIfICanJump_Update();
 
-        if (PlayerManager.Instance.forward_isPressed /*&& !PlayerManager.Instance.canMove_Forward*/)
-        {
-            Jump_Forward();
-        }
-        else if (PlayerManager.Instance.back_isPressed /*&& !PlayerManager.Instance.canMove_Back*/)
-        {
-            Jump_Backward();
-        }
-        else if (PlayerManager.Instance.left_isPressed /*&& !PlayerManager.Instance.canMove_Left*/)
-        {
-            Jump_Left();
-        }
-        else if (PlayerManager.Instance.right_isPressed /*&& !PlayerManager.Instance.canMove_Right*/)
-        {
-            Jump_Right();
-        }
+        //if (PlayerManager.Instance.forward_isPressed /*&& !PlayerManager.Instance.canMove_Forward*/)
+        //{
+        //    Jump_Forward();
+        //}
+        //else if (PlayerManager.Instance.back_isPressed /*&& !PlayerManager.Instance.canMove_Back*/)
+        //{
+        //    Jump_Backward();
+        //}
+        //else if (PlayerManager.Instance.left_isPressed /*&& !PlayerManager.Instance.canMove_Left*/)
+        //{
+        //    Jump_Left();
+        //}
+        //else if (PlayerManager.Instance.right_isPressed /*&& !PlayerManager.Instance.canMove_Right*/)
+        //{
+        //    Jump_Right();
+        //}
 
         OnElevator();
     }
@@ -74,7 +74,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
         Movement.Action_StepTaken += CheckIfCanJump_OnAction;
         Movement.Action_BodyRotated += CheckIfCanJump_OnAction;
 
-        PlayerStats.Action_RespawnPlayer += ResetDarkenOnRespawn;
+        Movement.Action_RespawnPlayer += ResetDarkenOnRespawn;
     }
     private void OnDisable()
     {
@@ -82,7 +82,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
         Movement.Action_StepTaken -= CheckIfCanJump_OnAction;
         Movement.Action_BodyRotated -= CheckIfCanJump_OnAction;
 
-        PlayerStats.Action_RespawnPlayer -= ResetDarkenOnRespawn;
+        Movement.Action_RespawnPlayer -= ResetDarkenOnRespawn;
     }
 
 
@@ -90,10 +90,10 @@ public class Player_Jumping : Singleton<Player_Jumping>
 
     void OnElevator()
     {
-        if (PlayerManager.Instance.block_StandingOn_Current.block)
+        if (Movement.Instance.blockStandingOn)
         {
-            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator>()
-            || PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator_StepOn>())
+            if (Movement.Instance.blockStandingOn.GetComponent<Block_Elevator>()
+            || Movement.Instance.blockStandingOn.GetComponent<Block_Elevator_StepOn>())
             {
                 CheckIfCanJump_OnAction();
             }
@@ -247,10 +247,10 @@ public class Player_Jumping : Singleton<Player_Jumping>
         RaycastHit hit;
 
         // Step 0: Check if player is standing on a stair/slope and is jumping in the same direction
-        if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair || PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope)
+        if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair || Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
         {
             // Get forward of the block in XZ
-            Vector3 stairForward = PlayerManager.Instance.block_StandingOn_Current.block.transform.forward;
+            Vector3 stairForward = Movement.Instance.blockStandingOn.transform.forward;
             stairForward.y = 0;
             stairForward.Normalize();
 
@@ -453,7 +453,7 @@ public class Player_Jumping : Singleton<Player_Jumping>
         PlayerManager.Instance.pauseGame = true;
         //PlayerManager.Instance.isTransportingPlayer = true;
 
-        Vector3 startPosition = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
+        Vector3 startPosition = Movement.Instance.blockStandingOn.transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
         Vector3 endPosition;
         if (target)
             endPosition = target.transform.position + (Vector3.up * (Movement.Instance.heightOverBlock + 0.1f));

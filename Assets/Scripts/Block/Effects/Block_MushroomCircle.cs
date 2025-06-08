@@ -23,7 +23,7 @@ public class Block_MushroomCircle : MonoBehaviour
 
     void Refill_1_Step()
     {
-        if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject)
+        if (Movement.Instance.blockStandingOn == gameObject)
         {
             Action_MushroomCircleEntered?.Invoke();
         }

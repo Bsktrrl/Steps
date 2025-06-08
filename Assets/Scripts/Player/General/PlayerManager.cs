@@ -7,9 +7,6 @@ public class PlayerManager : Singleton<PlayerManager>
 {
     #region Variables
 
-    [Header("Input System")]
-    PlayerControls playerControls; 
-
     [Header("Player Object")]
     public GameObject player;
     public GameObject playerBody;
@@ -21,44 +18,36 @@ public class PlayerManager : Singleton<PlayerManager>
     public DetectedBlockInfo block_MovingTowards;
 
     [Header("Player Block Looking At")]
-    public Vector3 lookingDirection;
+    //public Vector3 lookingDirection;
     public GameObject block_LookingAt_Horizontal;
     public GameObject block_LookingAt_Vertical;
 
     [Header("Player Block Standing On Info")]
-    public DetectedBlockInfo block_StandingOn_Current;
-    public GameObject block_StandingOn_Previous;
+    //public DetectedBlockInfo block_StandingOn_Current;
+    //public GameObject block_StandingOn_Previous;
 
     [Header("Player Block Horizontal")]
-    public DetectedBlockInfo block_Horizontal_InFront;
-    public DetectedBlockInfo block_Horizontal_InBack;
-    public DetectedBlockInfo block_Horizontal_ToTheLeft;
-    public DetectedBlockInfo block_Horizontal_ToTheRight;
+    //public DetectedBlockInfo block_Horizontal_InFront;
+    //public DetectedBlockInfo block_Horizontal_InBack;
+    //public DetectedBlockInfo block_Horizontal_ToTheLeft;
+    //public DetectedBlockInfo block_Horizontal_ToTheRight;
 
-    [Header("Player Block Vertical")]
-    public DetectedBlockInfo block_Vertical_InFront;
-    public DetectedBlockInfo block_Vertical_InBack;
-    public DetectedBlockInfo block_Vertical_ToTheLeft;
-    public DetectedBlockInfo block_Vertical_ToTheRight;
+    //[Header("Player Block Vertical")]
+    //public DetectedBlockInfo block_Vertical_InFront;
+    //public DetectedBlockInfo block_Vertical_InBack;
+    //public DetectedBlockInfo block_Vertical_ToTheLeft;
+    //public DetectedBlockInfo block_Vertical_ToTheRight;
 
     [Header("Player Movement Restrictions")]
-    public bool canMove_Forward;
-    public bool canMove_Back;
-    public bool canMove_Left;
-    public bool canMove_Right;
+    //public bool canMove_Forward;
+    //public bool canMove_Back;
+    //public bool canMove_Left;
+    //public bool canMove_Right;
 
     [Header("Game Paused")]
     public bool pauseGame;
     //public bool isTransportingPlayer;
 
-    [Header("KeyPresses")]
-    public bool forward_isPressed;
-    public bool back_isPressed;
-    public bool left_isPressed;
-    public bool right_isPressed;
-
-    public bool cameraX_isPressed;
-    public bool cameraY_isPressed;
 
     [Header("mainMenu_Name")]
     [SerializeField] string mainMenu_Name;
@@ -69,14 +58,6 @@ public class PlayerManager : Singleton<PlayerManager>
     //--------------------
 
 
-    private void Start()
-    {
-        playerControls = new PlayerControls();
-
-        //Change Cursor State
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
-    }
     private void Update()
     {
         RespawnPlayerIfToLowInMapHeight();
@@ -115,21 +96,21 @@ public class PlayerManager : Singleton<PlayerManager>
 
     void MakeStepSound()
     {
-        if (block_StandingOn_Current.block)
+        if (Movement.Instance.blockStandingOn)
         {
-            if (block_StandingOn_Current.block.GetComponent<BlockInfo>())
+            if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>())
             {
-                block_StandingOn_Current.block.GetComponent<BlockInfo>().MakeStepSound();
+                Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().MakeStepSound();
             }
         }
     }
     void StepsOnFallableBlock()
     {
-        if (block_StandingOn_Current.block)
+        if (Movement.Instance.blockStandingOn)
         {
-            if (block_StandingOn_Current.block.GetComponent<Block_Falling>())
+            if (Movement.Instance.blockStandingOn.GetComponent<Block_Falling>())
             {
-                block_StandingOn_Current.block.GetComponent<Block_Falling>().StepsOnFallableBlock();
+                Movement.Instance.blockStandingOn.GetComponent<Block_Falling>().StepsOnFallableBlock();
             }
         }
     }
@@ -163,86 +144,8 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         if (transform.position.y <= -5)
         {
-            PlayerStats.Instance.RespawnPlayer();
+            Movement.Instance.RespawnPlayer();
         }
-    }
-
-
-    //--------------------
-
-
-    void OnForward_Down()
-    {
-        forward_isPressed = true;
-    }
-    void OnForward_Up()
-    {
-        forward_isPressed = false;
-    }
-    void OnBackward_Down()
-    {
-        back_isPressed = true;
-    }
-    void OnBackward_Up()
-    {
-        back_isPressed = false;
-    }
-    void OnLeft_Down()
-    {
-        left_isPressed = true;
-    }
-    void OnLeft_Up()
-    {
-        left_isPressed = false;
-    }
-    void OnRight_Down()
-    {
-        right_isPressed = true;
-    }
-    void OnRight_Up()
-    {
-        right_isPressed = false;
-    }
-
-    void OnCameraRotateX()
-    {
-        CameraController.Instance.RotateCameraX();
-    }
-    void OnCameraRotateY()
-    {
-        CameraController.Instance.RotateCameraY();
-    }
-    void OnAbilityUp()
-    {
-        Player_KeyInputs.Instance.Key_SwiftSwimUp();
-        Player_Ascend.Instance.RunAscend();
-    }
-    void OnAbilityDown()
-    {
-        Player_Interact.Instance.InteractWithObject();
-        //Player_KeyInputs.Instance.Action_PressMoveBlockButtonInvoke();
-        Player_KeyInputs.Instance.Key_SwiftSwimDown();
-        Player_Descend.Instance.RunDescend();
-    }
-    void OnAbilityLeft()
-    {
-        Player_CeilingGrab.Instance.CeilingGrab();
-    }
-    void OnAbilityRight_DownPress()
-    {
-        Player_GraplingHook.Instance.StartGrappling();
-    }
-    void OnAbilityRight_RelesePress()
-    {
-        Player_GraplingHook.Instance.StopGrappling();
-    }
-    void OnRespawn()
-    {
-        Player_KeyInputs.Instance.Key_Respawn();
-    }
-    void OnQuit()
-    {
-        Player_KeyInputs.Instance.Key_Quit();
     }
 
 

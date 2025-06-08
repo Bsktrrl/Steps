@@ -6188,6 +6188,7 @@ GameObject:
   - component: {fileID: 82882239988338960}
   - component: {fileID: 6442351723837406448}
   - component: {fileID: 2542980385125829506}
+  - component: {fileID: 5230471732307156174}
   - component: {fileID: 2890779019269473121}
   - component: {fileID: 13904960364419418}
   - component: {fileID: 8763539080269035516}
@@ -6339,57 +6340,10 @@ MonoBehaviour:
     block: {fileID: 0}
     blockPosition: {x: 0, y: 0, z: 0}
     blockType: 0
-  lookingDirection: {x: 0, y: 0, z: 0}
   block_LookingAt_Horizontal: {fileID: 0}
   block_LookingAt_Vertical: {fileID: 0}
-  block_StandingOn_Current:
-    block: {fileID: 0}
-    blockPosition: {x: 0, y: 0, z: 0}
-    blockType: 0
-  block_StandingOn_Previous: {fileID: 0}
-  block_Horizontal_InFront:
-    block: {fileID: 0}
-    blockPosition: {x: 0, y: 0, z: 0}
-    blockType: 0
-  block_Horizontal_InBack:
-    block: {fileID: 0}
-    blockPosition: {x: 0, y: 0, z: 0}
-    blockType: 0
-  block_Horizontal_ToTheLeft:
-    block: {fileID: 0}
-    blockPosition: {x: 0, y: 0, z: 0}
-    blockType: 0
-  block_Horizontal_ToTheRight:
-    block: {fileID: 0}
-    blockPosition: {x: 0, y: 0, z: 0}
-    blockType: 0
-  block_Vertical_InFront:
-    block: {fileID: 0}
-    blockPosition: {x: 0, y: 0, z: 0}
-    blockType: 0
-  block_Vertical_InBack:
-    block: {fileID: 0}
-    blockPosition: {x: 0, y: 0, z: 0}
-    blockType: 0
-  block_Vertical_ToTheLeft:
-    block: {fileID: 0}
-    blockPosition: {x: 0, y: 0, z: 0}
-    blockType: 0
-  block_Vertical_ToTheRight:
-    block: {fileID: 0}
-    blockPosition: {x: 0, y: 0, z: 0}
-    blockType: 0
-  canMove_Forward: 0
-  canMove_Back: 0
-  canMove_Left: 0
-  canMove_Right: 0
   pauseGame: 0
-  forward_isPressed: 0
-  back_isPressed: 0
-  left_isPressed: 0
-  right_isPressed: 0
-  cameraX_isPressed: 0
-  cameraY_isPressed: 0
+  mainMenu_Name: 
 --- !u!114 &2542980385125829506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6408,6 +6362,11 @@ MonoBehaviour:
   movementSpeed: 0.2
   fallSpeed: 6
   isCeilingGrabbing: 0
+  lookingDirection: {x: 0, y: 0, z: 0}
+  blockStandingOn: {fileID: 0}
+  blockStandingOn_Previous: {fileID: 0}
+  lookDir: {x: 0, y: 0, z: 0}
+  lookDir_Temp: 0
   moveToBlock_Forward:
     canMoveTo: 0
     targetBlock: {fileID: 0}
@@ -6441,6 +6400,27 @@ MonoBehaviour:
   moveToBlock_GrapplingHook:
     canMoveTo: 0
     targetBlock: {fileID: 0}
+  moveToCeilingGrabbing:
+    canMoveTo: 0
+    targetBlock: {fileID: 0}
+--- !u!114 &5230471732307156174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649856597487831825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5f39c7c3651b2244b75a9dcc3dd801b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forward_isPressed: 0
+  back_isPressed: 0
+  left_isPressed: 0
+  right_isPressed: 0
+  cameraX_isPressed: 0
+  cameraY_isPressed: 0
 --- !u!114 &2890779019269473121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6457,6 +6437,7 @@ MonoBehaviour:
   ladderEndPos_Down: {x: 0, y: 0, z: 0}
   isMovingOnLadder_Up: 0
   isMovingOnLadder_Down: 0
+  ladderPartsToClimb: 0
   ladderToEnterRot: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &13904960364419418
 MonoBehaviour:
@@ -6470,21 +6451,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7372d8dda08135a46aca0e64988e5c42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenu_Name: MainMenu
-  currentMovementCost: 0
-  movementStates: 0
-  lastMovementButtonPressed: 0
-  movementSpeed: 0.2
-  heightOverBlock: 0.95
-  fallSpeed: 6
-  isIceGliding: 0
-  isSlopeGliding: 0
-  ladderEndPos_Up: {x: 0, y: 0, z: 0}
-  ladderEndPos_Down: {x: 0, y: 0, z: 0}
-  isMovingOnLadder_Up: 0
-  isMovingOnLadder_Down: 0
-  ladderPartsToClimb: 0
-  ladderToEnterRot: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &8763539080269035516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6497,22 +6463,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed0666eb48b708a4babd7b24ea7ae847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockDetector_Parent: {fileID: 6275573274900617012}
-  detectorSpot_Vertical_Center: {fileID: 4912080950871335806}
-  detectorSpot_Horizontal_Front: {fileID: 8092326320429631284}
-  detectorSpot_Horizontal_Back: {fileID: 3204339842424160647}
-  detectorSpot_Horizontal_Left: {fileID: 1838067046176621683}
-  detectorSpot_Horizontal_Right: {fileID: 5646832375403321220}
-  detectorSpot_Vertical_Front: {fileID: 422540866372044643}
-  detectorSpot_Vertical_Back: {fileID: 3269664700601806440}
-  detectorSpot_Vertical_Left: {fileID: 6680482554464227565}
-  detectorSpot_Vertical_Right: {fileID: 762738624458386619}
-  detectorSpot_Stair_Front: {fileID: 7532377577672336589}
-  detectorSpot_Stair_Back: {fileID: 937977188868993193}
-  detectorSpot_Stair_Left: {fileID: 8825524400531118512}
-  detectorSpot_Stair_Right: {fileID: 3873675504140058313}
-  lookDir: {x: 0, y: 0, z: 0}
-  lookDir_Temp: 0
 --- !u!114 &3547600018388646701
 MonoBehaviour:
   m_ObjectHideFlags: 0

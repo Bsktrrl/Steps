@@ -8,12 +8,12 @@ public class Block_Quicksand : MonoBehaviour
     private void OnEnable()
     {
         Movement.Action_isSwitchingBlocks += SteppingOnQuicksand;
-        PlayerStats.Action_RespawnPlayer += SteppingOnQuicksand;
+        Movement.Action_RespawnPlayer += SteppingOnQuicksand;
     }
     private void OnDisable()
     {
         Movement.Action_isSwitchingBlocks -= SteppingOnQuicksand;
-        PlayerStats.Action_RespawnPlayer -= SteppingOnQuicksand;
+        Movement.Action_RespawnPlayer -= SteppingOnQuicksand;
     }
 
 
@@ -22,13 +22,13 @@ public class Block_Quicksand : MonoBehaviour
 
     void SteppingOnQuicksand()
     {
-        if (PlayerManager.Instance.block_StandingOn_Current.block)
+        if (Movement.Instance.blockStandingOn)
         {
-            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Quicksand>())
+            if (Movement.Instance.blockStandingOn.GetComponent<Block_Quicksand>())
             {
                 Player_Quicksand.Instance.isInQuicksand = true;
 
-                if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject)
+                if (Movement.Instance.blockStandingOn == gameObject)
                 {
                     Player_Quicksand.Instance.quicksandCounter += 1;
                 }

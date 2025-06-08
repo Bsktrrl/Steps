@@ -27,11 +27,11 @@ public class Block_Elevator_Switch_Floor : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerStats.Action_RespawnPlayer += ResetButton;
+        Movement.Action_RespawnPlayer += ResetButton;
     }
     private void OnDisable()
     {
-        PlayerStats.Action_RespawnPlayer -= ResetButton;
+        Movement.Action_RespawnPlayer -= ResetButton;
     }
 
 

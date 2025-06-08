@@ -38,19 +38,19 @@ public class Player_Pusher : Singleton<Player_Pusher>
     }
     void CheckIfPushed()
     {
-        if (PlayerManager.Instance.block_StandingOn_Current.block)
+        if (Movement.Instance.blockStandingOn)
         {
-            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Pusher>())
+            if (Movement.Instance.blockStandingOn.GetComponent<Block_Pusher>())
             {
                 playerIsPushed = true;
-                pushDirection = PlayerManager.Instance.lookingDirection;
+                pushDirection = Movement.Instance.lookingDirection;
             }
         }
     }
 
     void CheckIfNotPushed()
     {
-        if (PlayerManager.Instance.lookingDirection != pushDirection)
+        if (Movement.Instance.lookingDirection != pushDirection)
         {
             playerIsPushed = false;
             pushDirection = Vector3.zero;

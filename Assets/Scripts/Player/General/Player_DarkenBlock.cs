@@ -178,10 +178,10 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
 
     void RemoveDarkenBlockWhenKeyPressed()
     {
-        if (PlayerManager.Instance.forward_isPressed
-            || PlayerManager.Instance.back_isPressed
-            || PlayerManager.Instance.left_isPressed
-            || PlayerManager.Instance.right_isPressed)
+        if (Player_KeyInputs.Instance.forward_isPressed
+            || Player_KeyInputs.Instance.back_isPressed
+            || Player_KeyInputs.Instance.left_isPressed
+            || Player_KeyInputs.Instance.right_isPressed)
         {
             if (Movement.Instance.GetMovementState() == MovementStates.Moving)
             {
@@ -189,10 +189,10 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
             }
         }
 
-        if (!PlayerManager.Instance.forward_isPressed
-            && !PlayerManager.Instance.back_isPressed
-            && !PlayerManager.Instance.left_isPressed
-            && !PlayerManager.Instance.right_isPressed)
+        if (!Player_KeyInputs.Instance.forward_isPressed
+            && !Player_KeyInputs.Instance.back_isPressed
+            && !Player_KeyInputs.Instance.left_isPressed
+            && !Player_KeyInputs.Instance.right_isPressed)
         {
             if (Movement.Instance.GetMovementState() == MovementStates.Still)
             {

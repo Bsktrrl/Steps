@@ -166,7 +166,7 @@ public class Block_Teleport : MonoBehaviour
 
     void TeleportPlayer()
     {
-        if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject && newLandingSpot)
+        if (Movement.Instance.blockStandingOn == gameObject && newLandingSpot)
         {
             StartCoroutine(TeleportWait(0.005f));
         }

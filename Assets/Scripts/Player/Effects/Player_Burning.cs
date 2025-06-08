@@ -20,14 +20,14 @@ public class Player_Burning : Singleton<Player_Burning>
         Movement.Action_isSwitchingBlocks += BecomeFlameable;
         Movement.Action_StepTaken += BecomeFlameable;
         Movement.Action_StepTaken += CheckFlameableCounter;
-        PlayerStats.Action_RespawnPlayer += RemoveFlameable;
+        Movement.Action_RespawnPlayer += RemoveFlameable;
     }
     private void OnDisable()
     {
         Movement.Action_isSwitchingBlocks -= BecomeFlameable;
         Movement.Action_StepTaken -= BecomeFlameable;
         Movement.Action_StepTaken -= CheckFlameableCounter;
-        PlayerStats.Action_RespawnPlayerEarly -= RemoveFlameable;
+        Movement.Action_RespawnPlayerEarly -= RemoveFlameable;
     }
 
 
@@ -36,75 +36,75 @@ public class Player_Burning : Singleton<Player_Burning>
 
     void BecomeFlameable()
     {
-        if (PlayerManager.Instance.block_StandingOn_Current.block && !firstTimeCheck)
+        if (Movement.Instance.blockStandingOn && !firstTimeCheck)
         {
-            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_BurnTransforming>())
+            if (Movement.Instance.blockStandingOn.GetComponent<Block_BurnTransforming>())
             {
-                PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_BurnTransforming>().isSteppedOn = true;
+                Movement.Instance.blockStandingOn.GetComponent<Block_BurnTransforming>().isSteppedOn = true;
 
                 firstTimeCheck = true;
             }
         }
 
-        if (PlayerManager.Instance.block_Vertical_InFront.block)
-        {
-            if (PlayerManager.Instance.block_Vertical_InFront.block.GetComponent<Block_Lava>())
-            {
-                AddFlameable();
-            }
-        }
-        if (PlayerManager.Instance.block_Horizontal_InFront.block)
-        {
-            if (PlayerManager.Instance.block_Horizontal_InFront.block.GetComponent<Block_Lava>())
-            {
-                AddFlameable();
-            }
-        }
+        //if (PlayerManager.Instance.block_Vertical_InFront.block)
+        //{
+        //    if (PlayerManager.Instance.block_Vertical_InFront.block.GetComponent<Block_Lava>())
+        //    {
+        //        AddFlameable();
+        //    }
+        //}
+        //if (PlayerManager.Instance.block_Horizontal_InFront.block)
+        //{
+        //    if (PlayerManager.Instance.block_Horizontal_InFront.block.GetComponent<Block_Lava>())
+        //    {
+        //        AddFlameable();
+        //    }
+        //}
 
-        if (PlayerManager.Instance.block_Vertical_InBack.block)
-        {
-            if (PlayerManager.Instance.block_Vertical_InBack.block.GetComponent<Block_Lava>())
-            {
-                AddFlameable();
-            }
-        }
-        if (PlayerManager.Instance.block_Horizontal_InBack.block)
-        {
-            if (PlayerManager.Instance.block_Horizontal_InBack.block.GetComponent<Block_Lava>())
-            {
-                AddFlameable();
-            }
-        }
+        //if (PlayerManager.Instance.block_Vertical_InBack.block)
+        //{
+        //    if (PlayerManager.Instance.block_Vertical_InBack.block.GetComponent<Block_Lava>())
+        //    {
+        //        AddFlameable();
+        //    }
+        //}
+        //if (PlayerManager.Instance.block_Horizontal_InBack.block)
+        //{
+        //    if (PlayerManager.Instance.block_Horizontal_InBack.block.GetComponent<Block_Lava>())
+        //    {
+        //        AddFlameable();
+        //    }
+        //}
 
-        if (PlayerManager.Instance.block_Vertical_ToTheLeft.block)
-        {
-            if (PlayerManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<Block_Lava>())
-            {
-                AddFlameable();
-            }
-        }
-        if (PlayerManager.Instance.block_Horizontal_ToTheLeft.block)
-        {
-            if (PlayerManager.Instance.block_Horizontal_ToTheLeft.block.GetComponent<Block_Lava>())
-            {
-                AddFlameable();
-            }
-        }
+        //if (PlayerManager.Instance.block_Vertical_ToTheLeft.block)
+        //{
+        //    if (PlayerManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<Block_Lava>())
+        //    {
+        //        AddFlameable();
+        //    }
+        //}
+        //if (PlayerManager.Instance.block_Horizontal_ToTheLeft.block)
+        //{
+        //    if (PlayerManager.Instance.block_Horizontal_ToTheLeft.block.GetComponent<Block_Lava>())
+        //    {
+        //        AddFlameable();
+        //    }
+        //}
 
-        if (PlayerManager.Instance.block_Vertical_ToTheRight.block)
-        {
-            if (PlayerManager.Instance.block_Vertical_ToTheRight.block.GetComponent<Block_Lava>())
-            {
-                AddFlameable();
-            }
-        }
-        if (PlayerManager.Instance.block_Horizontal_ToTheRight.block)
-        {
-            if (PlayerManager.Instance.block_Horizontal_ToTheRight.block.GetComponent<Block_Lava>())
-            {
-                AddFlameable();
-            }
-        }
+        //if (PlayerManager.Instance.block_Vertical_ToTheRight.block)
+        //{
+        //    if (PlayerManager.Instance.block_Vertical_ToTheRight.block.GetComponent<Block_Lava>())
+        //    {
+        //        AddFlameable();
+        //    }
+        //}
+        //if (PlayerManager.Instance.block_Horizontal_ToTheRight.block)
+        //{
+        //    if (PlayerManager.Instance.block_Horizontal_ToTheRight.block.GetComponent<Block_Lava>())
+        //    {
+        //        AddFlameable();
+        //    }
+        //}
     }
 
     void CheckFlameableCounter()
@@ -120,9 +120,9 @@ public class Player_Burning : Singleton<Player_Burning>
         }
 
         //Remove Flameable in water
-        if (PlayerManager.Instance.block_StandingOn_Current.block)
+        if (Movement.Instance.blockStandingOn)
         {
-            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Water>())
+            if (Movement.Instance.blockStandingOn.GetComponent<Block_Water>())
             {
                 RemoveFlameable();
             }

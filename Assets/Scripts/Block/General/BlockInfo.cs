@@ -86,18 +86,14 @@ public class BlockInfo : MonoBehaviour
 
     private void OnEnable()
     {
-        //Movement.Action_resetBlockColor += ResetDarkenColor;
-        PlayerStats.Action_RespawnToSavePos += ResetDarkenColor;
-        PlayerStats.Action_RespawnPlayer += ResetBlock;
-        //Movement.Action_LandedFromFalling += ResetDarkenColor;
+        Movement.Action_RespawnToSavePos += ResetDarkenColor;
+        Movement.Action_RespawnPlayer += ResetBlock;
     }
 
     private void OnDisable()
     {
-        //Movement.Action_resetBlockColor -= ResetDarkenColor;
-        PlayerStats.Action_RespawnToSavePos -= ResetDarkenColor;
-        PlayerStats.Action_RespawnPlayer -= ResetBlock;
-        //Movement.Action_LandedFromFalling -= ResetDarkenColor;
+        Movement.Action_RespawnToSavePos -= ResetDarkenColor;
+        Movement.Action_RespawnPlayer -= ResetBlock;
     }
 
 
@@ -137,34 +133,34 @@ public class BlockInfo : MonoBehaviour
 
     void CheckDarkeningWhenPlayerIsOnElevator()
     {
-        if (blockIsDark)
-        {
-            if (PlayerManager.Instance.block_StandingOn_Current.block)
-            {
-                if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator>()
-                || PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator_StepOn>())
-                {
-                    if ((gameObject == PlayerManager.Instance.block_Vertical_InFront.block && PlayerManager.Instance.canMove_Forward)
-                        || (gameObject == PlayerManager.Instance.block_Vertical_InBack.block && PlayerManager.Instance.canMove_Back)
-                        || (gameObject == PlayerManager.Instance.block_Vertical_ToTheLeft.block && PlayerManager.Instance.canMove_Left)
-                        || (gameObject == PlayerManager.Instance.block_Vertical_ToTheRight.block && PlayerManager.Instance.canMove_Right))
-                    {
-                        //SetDarkenColors();
-                    }
-                    else if ((gameObject == Player_Jumping.Instance.jumpTarget_Forward && Player_Jumping.Instance.canJump_Forward)
-                             || (gameObject == Player_Jumping.Instance.jumpTarget_Back && Player_Jumping.Instance.canJump_Back)
-                             || (gameObject == Player_Jumping.Instance.jumpTarget_Left && Player_Jumping.Instance.canJump_Left)
-                             || (gameObject == Player_Jumping.Instance.jumpTarget_Right && Player_Jumping.Instance.canJump_Right))
-                    {
-                        //SetDarkenColors();
-                    }
-                    else
-                    {
-                        ResetDarkenColor();
-                    }
-                }
-            }
-        }
+        //if (blockIsDark)
+        //{
+        //    if (Movement.Instance.blockStandingOn)
+        //    {
+        //        if (Movement.Instance.blockStandingOn.GetComponent<Block_Elevator>()
+        //        || Movement.Instance.blockStandingOn.GetComponent<Block_Elevator_StepOn>())
+        //        {
+        //            if ((gameObject == PlayerManager.Instance.block_Vertical_InFront.block && PlayerManager.Instance.canMove_Forward)
+        //                || (gameObject == PlayerManager.Instance.block_Vertical_InBack.block && PlayerManager.Instance.canMove_Back)
+        //                || (gameObject == PlayerManager.Instance.block_Vertical_ToTheLeft.block && PlayerManager.Instance.canMove_Left)
+        //                || (gameObject == PlayerManager.Instance.block_Vertical_ToTheRight.block && PlayerManager.Instance.canMove_Right))
+        //            {
+        //                //SetDarkenColors();
+        //            }
+        //            else if ((gameObject == Player_Jumping.Instance.jumpTarget_Forward && Player_Jumping.Instance.canJump_Forward)
+        //                     || (gameObject == Player_Jumping.Instance.jumpTarget_Back && Player_Jumping.Instance.canJump_Back)
+        //                     || (gameObject == Player_Jumping.Instance.jumpTarget_Left && Player_Jumping.Instance.canJump_Left)
+        //                     || (gameObject == Player_Jumping.Instance.jumpTarget_Right && Player_Jumping.Instance.canJump_Right))
+        //            {
+        //                //SetDarkenColors();
+        //            }
+        //            else
+        //            {
+        //                ResetDarkenColor();
+        //            }
+        //        }
+        //    }
+        //}
     }
 
 
@@ -308,7 +304,7 @@ public class BlockInfo : MonoBehaviour
 
     public void MakeStepSound()
     {
-        if (stepSound_ClipList.Count > 0 && PlayerManager.Instance.block_StandingOn_Current.block == gameObject)
+        if (stepSound_ClipList.Count > 0 && Movement.Instance.blockStandingOn == gameObject)
         {
             int sound = UnityEngine.Random.Range(0, stepSound_ClipList.Count);
 

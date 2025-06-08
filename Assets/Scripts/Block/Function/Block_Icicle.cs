@@ -55,12 +55,12 @@ public class Block_Icicle : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerStats.Action_RespawnPlayer += ResetBlock;
+        Movement.Action_RespawnPlayer += ResetBlock;
     }
 
     private void OnDisable()
     {
-        PlayerStats.Action_RespawnPlayer -= ResetBlock;
+        Movement.Action_RespawnPlayer -= ResetBlock;
     }
 
 
@@ -81,7 +81,7 @@ public class Block_Icicle : MonoBehaviour
 
         PlayerManager.Instance.pauseGame = false;
 
-        PlayerStats.Instance.RespawnPlayer();
+        Movement.Instance.RespawnPlayer();
     }
 
 

@@ -30,7 +30,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
         DataManager.Action_dataHasLoaded += StartRunningObject;
         DataManager.Action_dataHasLoaded += PrepareForRaycastForAscending;
         Movement.Action_StepTaken += PrepareForRaycastForAscending;
-        PlayerStats.Action_RespawnPlayerLate += PrepareForRaycastForAscending;
+        Movement.Action_RespawnPlayerLate += PrepareForRaycastForAscending;
     }
 
     private void OnDisable()
@@ -38,7 +38,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
         DataManager.Action_dataHasLoaded -= StartRunningObject;
         DataManager.Action_dataHasLoaded -= PrepareForRaycastForAscending;
         Movement.Action_StepTaken -= PrepareForRaycastForAscending;
-        PlayerStats.Action_RespawnPlayerLate -= PrepareForRaycastForAscending;
+        Movement.Action_RespawnPlayerLate -= PrepareForRaycastForAscending;
     }
     void StartRunningObject()
     {
@@ -62,7 +62,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
         {
             if (PlayerStats.Instance.stats.steps_Current <= 0 && ascendingBlock_Target.GetComponent<BlockInfo>().movementCost > 0)
             {
-                PlayerStats.Instance.RespawnPlayer();
+                Movement.Instance.RespawnPlayer();
             }
             else
             {
@@ -264,7 +264,7 @@ public class Player_Ascend : Singleton<Player_Ascend>
         //PlayerManager.Instance.isTransportingPlayer = true;
         Movement.Instance.SetMovementState(MovementStates.Moving);
 
-        Vector3 startPosition = PlayerManager.Instance.block_StandingOn_Current.block.transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
+        Vector3 startPosition = Movement.Instance.blockStandingOn.transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
         Vector3 endPosition;
         if (ascendingBlock_Target)
             endPosition = ascendingBlock_Target.transform.position + (Vector3.up * (Movement.Instance.heightOverBlock));

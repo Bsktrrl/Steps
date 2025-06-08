@@ -36,26 +36,26 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
     {
         if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
-        if (PlayerManager.Instance.block_StandingOn_Current.block)
+        if (Movement.Instance.blockStandingOn)
         {
             //Stair
-            if (PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Stair || PlayerManager.Instance.block_StandingOn_Current.blockType == BlockType.Slope)
+            if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair || Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                 PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Stair), ReturnRotation());
 
             //Water
-            else if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Water>())
+            else if (Movement.Instance.blockStandingOn.GetComponent<Block_Water>())
                 PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Water), ReturnRotation());
 
             //Swamp Water
-            else if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_SwampWater>())
+            else if (Movement.Instance.blockStandingOn.GetComponent<Block_SwampWater>())
                 PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_SwampWater), ReturnRotation());
 
             //Mud
-            else if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Mud>())
+            else if (Movement.Instance.blockStandingOn.GetComponent<Block_Mud>())
                 PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Mud), ReturnRotation());
 
             //Quicksand
-            else if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Quicksand>())
+            else if (Movement.Instance.blockStandingOn.GetComponent<Block_Quicksand>())
             {
                 if (Player_Quicksand.Instance.quicksandCounter == 1)
                     PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_1), ReturnRotation());
@@ -72,7 +72,7 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
             }
 
             //Lava
-            else if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Lava>())
+            else if (Movement.Instance.blockStandingOn.GetComponent<Block_Lava>())
                 PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Lava), ReturnRotation());
 
             //Other

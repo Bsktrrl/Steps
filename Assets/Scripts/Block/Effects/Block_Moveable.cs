@@ -39,15 +39,13 @@ public class Block_Moveable : MonoBehaviour
     {
         Movement.Action_StepTaken += RaycastForThePlayer;
         Movement.Action_BodyRotated += RaycastForThePlayer;
-        //Player_Movement.Action_PressMoveBlockButton += ActivateBlockMovement;
-        PlayerStats.Action_RespawnPlayer += ResetBlockPos;
+        Movement.Action_RespawnPlayer += ResetBlockPos;
     }
     private void OnDisable()
     {
         Movement.Action_StepTaken -= RaycastForThePlayer;
         Movement.Action_BodyRotated -= RaycastForThePlayer;
-        //Player_Movement.Action_PressMoveBlockButton -= ActivateBlockMovement;
-        PlayerStats.Action_RespawnPlayer -= ResetBlockPos;
+        Movement.Action_RespawnPlayer -= ResetBlockPos;
     }
 
 
@@ -212,10 +210,10 @@ public class Block_Moveable : MonoBehaviour
         if (movementDirection == MovementDirection.None) { return; }
         if (!canMove) { return; }
 
-        if (movementDirection == MovementDirection.Forward && PlayerManager.Instance.lookingDirection != Vector3.forward) { return; }
-        if (movementDirection == MovementDirection.Backward && PlayerManager.Instance.lookingDirection != Vector3.back) { return; }
-        if (movementDirection == MovementDirection.Left && PlayerManager.Instance.lookingDirection != Vector3.left) { return; }
-        if (movementDirection == MovementDirection.Right && PlayerManager.Instance.lookingDirection != Vector3.right) { return; }
+        //if (movementDirection == MovementDirection.Forward && PlayerManager.Instance.lookingDirection != Vector3.forward) { return; }
+        //if (movementDirection == MovementDirection.Backward && PlayerManager.Instance.lookingDirection != Vector3.back) { return; }
+        //if (movementDirection == MovementDirection.Left && PlayerManager.Instance.lookingDirection != Vector3.left) { return; }
+        //if (movementDirection == MovementDirection.Right && PlayerManager.Instance.lookingDirection != Vector3.right) { return; }
 
         //PlayerManager.Instance.isTransportingPlayer = true;
         isMoving = true;

@@ -240,7 +240,7 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
                 isGrapplingHooking = false;
                 Movement.Instance.SetMovementState(MovementStates.Still);
 
-                PlayerStats.Instance.RespawnPlayer();
+                Movement.Instance.RespawnPlayer();
             }
         }
         RaycastDown_Old();

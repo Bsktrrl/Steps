@@ -7,12 +7,12 @@ public class Block_Mud : MonoBehaviour
     private void OnEnable()
     {
         Movement.Action_isSwitchingBlocks += SteppingOnMud;
-        PlayerStats.Action_RespawnPlayer += SteppingOnMud;
+        Movement.Action_RespawnPlayer += SteppingOnMud;
     }
     private void OnDisable()
     {
         Movement.Action_isSwitchingBlocks -= SteppingOnMud;
-        PlayerStats.Action_RespawnPlayer -= SteppingOnMud;
+        Movement.Action_RespawnPlayer -= SteppingOnMud;
     }
 
 
@@ -21,9 +21,9 @@ public class Block_Mud : MonoBehaviour
 
     void SteppingOnMud()
     {
-        if (PlayerManager.Instance.block_StandingOn_Current.block)
+        if (Movement.Instance.blockStandingOn)
         {
-            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Mud>())
+            if (Movement.Instance.blockStandingOn.GetComponent<Block_Mud>())
             {
                 Player_Mud.Instance.isInMud = true;
             }

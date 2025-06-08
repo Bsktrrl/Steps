@@ -1,11 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 
 public class Movement : Singleton<Movement>
 {
+    public static event Action Action_RespawnToSavePos;
+    public static event Action Action_RespawnPlayerEarly;
+    public static event Action Action_RespawnPlayer;
+    public static event Action Action_RespawnPlayerLate;
+
     public static event Action Action_StepTaken;
+    public static event Action Action_StepTaken_Late;
     public static event Action Action_BodyRotated;
     public static event Action Action_isSwitchingBlocks;
     public static event Action Action_LandedFromFalling;
@@ -16,14 +24,18 @@ public class Movement : Singleton<Movement>
 
     [Header("Stats")]
     public float heightOverBlock = 0.95f;
+    [HideInInspector] public float baseTime = 1;
     [HideInInspector] public float movementSpeed = 0.2f;
     [HideInInspector] public float fallSpeed = 6f;
+    public Vector3 savePos;
 
     [Header("CeilingGrab")]
     [SerializeField] bool isCeilingGrabbing;
 
     [Header("BlockIsStandingOn")]
+    public Vector3 lookingDirection;
     public GameObject blockStandingOn;
+    public GameObject blockStandingOn_Previous;
 
     [Header("LookDirection")]
     [HideInInspector] public Vector3 lookDir;
@@ -54,6 +66,8 @@ public class Movement : Singleton<Movement>
 
     private void Start()
     {
+        savePos = transform.position;
+
         UpdateAvailableMovementBlocks();
     }
     private void Update()
@@ -61,6 +75,10 @@ public class Movement : Singleton<Movement>
         if (GetMovementState() == MovementStates.Moving)
         {
             UpdateBlockStandingOn();
+        }
+        else
+        {
+            MovementSetup();
         }
     }
 
@@ -70,20 +88,24 @@ public class Movement : Singleton<Movement>
 
     private void OnEnable()
     {
-        Action_StepTaken += UpdateAvailableMovementBlocks;
+        Action_StepTaken_Late += UpdateAvailableMovementBlocks;
         Action_LandedFromFalling += UpdateAvailableMovementBlocks;
         Action_BodyRotated += UpdateAvailableMovementBlocks;
+        Action_StepTaken += TakeAStep;
     }
     private void OnDisable()
     {
-        Action_StepTaken -= UpdateAvailableMovementBlocks;
+        Action_StepTaken_Late -= UpdateAvailableMovementBlocks;
         Action_LandedFromFalling -= UpdateAvailableMovementBlocks;
         Action_BodyRotated -= UpdateAvailableMovementBlocks;
+        Action_StepTaken -= TakeAStep;
     }
 
 
     //--------------------
 
+
+    #region Movement Functions
 
     void UpdateAvailableMovementBlocks()
     {
@@ -238,6 +260,100 @@ public class Movement : Singleton<Movement>
                stats.abilitiesGot_Temporary.CeilingGrab;
     }
 
+    #endregion
+
+
+    //--------------------
+ 
+
+    void SetDarkenBlocks()
+    {
+        if (Player_KeyInputs.Instance.forward_isPressed || Player_KeyInputs.Instance.back_isPressed || Player_KeyInputs.Instance.left_isPressed || Player_KeyInputs.Instance.right_isPressed) { return; }
+
+        if (moveToBlock_Forward.targetBlock)
+            SetAvailableBlock(moveToBlock_Forward.targetBlock);
+        if (moveToBlock_Back.targetBlock)
+            SetAvailableBlock(moveToBlock_Back.targetBlock);
+        if (moveToBlock_Left.targetBlock)
+            SetAvailableBlock(moveToBlock_Left.targetBlock);
+        if (moveToBlock_Right.targetBlock)
+            SetAvailableBlock(moveToBlock_Right.targetBlock);
+
+        if (moveToBlock_Ascend.targetBlock)
+            SetAvailableBlock(moveToBlock_Ascend.targetBlock);
+        if (moveToBlock_Descend.targetBlock)
+            SetAvailableBlock(moveToBlock_Descend.targetBlock);
+
+        if (moveToBlock_SwiftSwimUp.targetBlock)
+            SetAvailableBlock(moveToBlock_SwiftSwimUp.targetBlock);
+        if (moveToBlock_SwiftSwimDown.targetBlock)
+            SetAvailableBlock(moveToBlock_SwiftSwimDown.targetBlock);
+
+        if (moveToBlock_Dash.targetBlock)
+            SetAvailableBlock(moveToBlock_Dash.targetBlock);
+        if (moveToBlock_Jump.targetBlock)
+            SetAvailableBlock(moveToBlock_Jump.targetBlock);
+        if (moveToBlock_GrapplingHook.targetBlock)
+            SetAvailableBlock(moveToBlock_GrapplingHook.targetBlock);
+        if (moveToCeilingGrabbing.targetBlock)
+            SetAvailableBlock(moveToCeilingGrabbing.targetBlock);
+    }
+    void ResetDarkenBlocks()
+    {
+        if (moveToBlock_Forward.targetBlock)
+            ResetAvailableBlock(moveToBlock_Forward.targetBlock);
+        if (moveToBlock_Back.targetBlock)
+            ResetAvailableBlock(moveToBlock_Back.targetBlock);
+        if (moveToBlock_Left.targetBlock)
+            ResetAvailableBlock(moveToBlock_Left.targetBlock);
+        if (moveToBlock_Right.targetBlock)
+            ResetAvailableBlock(moveToBlock_Right.targetBlock);
+
+        if (moveToBlock_Ascend.targetBlock)
+            ResetAvailableBlock(moveToBlock_Ascend.targetBlock);
+        if (moveToBlock_Descend.targetBlock)
+            ResetAvailableBlock(moveToBlock_Descend.targetBlock);
+
+        if (moveToBlock_SwiftSwimUp.targetBlock)
+            ResetAvailableBlock(moveToBlock_SwiftSwimUp.targetBlock);
+        if (moveToBlock_SwiftSwimDown.targetBlock)
+            ResetAvailableBlock(moveToBlock_SwiftSwimDown.targetBlock);
+
+        if (moveToBlock_Dash.targetBlock)
+            ResetAvailableBlock(moveToBlock_Dash.targetBlock);
+        if (moveToBlock_Jump.targetBlock)
+            ResetAvailableBlock(moveToBlock_Jump.targetBlock);
+        if (moveToBlock_GrapplingHook.targetBlock)
+            ResetAvailableBlock(moveToBlock_GrapplingHook.targetBlock);
+        if (moveToCeilingGrabbing.targetBlock)
+            ResetAvailableBlock(moveToCeilingGrabbing.targetBlock);
+    }
+    public void SetAvailableBlock(GameObject obj)
+    {
+        if (obj.GetComponent<BlockInfo>())
+        {
+            if (!obj.GetComponent<BlockInfo>().blockIsDark)
+            {
+                if (PlayerStats.Instance.stats.steps_Current <= 0 && obj.GetComponent<BlockInfo>().movementCost <= 0)
+                    obj.GetComponent<BlockInfo>().SetDarkenColors();
+                else if (PlayerStats.Instance.stats.steps_Current <= 0)
+                    ResetAvailableBlock(obj);
+                else
+                    obj.GetComponent<BlockInfo>().SetDarkenColors();
+            }
+        }
+    }
+    public void ResetAvailableBlock(GameObject obj)
+    {
+        if (obj.GetComponent<BlockInfo>())
+        {
+            if (obj.GetComponent<BlockInfo>().blockIsDark)
+            {
+                obj.GetComponent<BlockInfo>().ResetDarkenColor();
+            }
+        }
+    }
+
 
     //--------------------
 
@@ -264,115 +380,78 @@ public class Movement : Singleton<Movement>
         return RaycastHitObjects.None;
     }
 
-    void SetDarkenBlocks()
+    void MovementSetup()
     {
-        if (moveToBlock_Forward.targetBlock)
-            moveToBlock_Forward.targetBlock.GetComponent<BlockInfo>().SetDarkenColors();
-        if (moveToBlock_Back.targetBlock)
-            moveToBlock_Back.targetBlock.GetComponent<BlockInfo>().SetDarkenColors();
-        if (moveToBlock_Left.targetBlock)
-            moveToBlock_Left.targetBlock.GetComponent<BlockInfo>().SetDarkenColors();
-        if (moveToBlock_Right.targetBlock)
-            moveToBlock_Right.targetBlock.GetComponent<BlockInfo>().SetDarkenColors();
-
-        if (moveToBlock_Ascend.targetBlock)
-            moveToBlock_Ascend.targetBlock.GetComponent<BlockInfo>().SetDarkenColors();
-        if (moveToBlock_Descend.targetBlock)
-            moveToBlock_Descend.targetBlock.GetComponent<BlockInfo>().SetDarkenColors();
-
-        if (moveToBlock_SwiftSwimUp.targetBlock)
-            moveToBlock_SwiftSwimUp.targetBlock.GetComponent<BlockInfo>().SetDarkenColors();
-        if (moveToBlock_SwiftSwimDown.targetBlock)
-            moveToBlock_SwiftSwimDown.targetBlock.GetComponent<BlockInfo>().SetDarkenColors();
-
-        if (moveToBlock_Dash.targetBlock)
-            moveToBlock_Dash.targetBlock.GetComponent<BlockInfo>().SetDarkenColors();
-        if (moveToBlock_Jump.targetBlock)
-            moveToBlock_Jump.targetBlock.GetComponent<BlockInfo>().SetDarkenColors();
-        if (moveToBlock_GrapplingHook.targetBlock)
-            moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().SetDarkenColors();
-        if (moveToCeilingGrabbing.targetBlock)
-            moveToCeilingGrabbing.targetBlock.GetComponent<BlockInfo>().SetDarkenColors();
+        if (Player_KeyInputs.Instance.forward_isPressed)
+            PerformMovement(moveToBlock_Forward);
+        else if (Player_KeyInputs.Instance.back_isPressed)
+            PerformMovement(moveToBlock_Back);
+        else if (Player_KeyInputs.Instance.left_isPressed)
+            PerformMovement(moveToBlock_Left);
+        else if (Player_KeyInputs.Instance.right_isPressed)
+            PerformMovement(moveToBlock_Right);
     }
-    void ResetDarkenBlocks()
-    {
-        if (moveToBlock_Forward.targetBlock)
-            moveToBlock_Forward.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-        if (moveToBlock_Back.targetBlock)
-            moveToBlock_Back.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-        if (moveToBlock_Left.targetBlock)
-            moveToBlock_Left.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-        if (moveToBlock_Right.targetBlock)
-            moveToBlock_Right.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-
-        if (moveToBlock_Ascend.targetBlock)
-            moveToBlock_Ascend.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-        if (moveToBlock_Descend.targetBlock)
-            moveToBlock_Descend.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-
-        if (moveToBlock_SwiftSwimUp.targetBlock)
-            moveToBlock_SwiftSwimUp.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-        if (moveToBlock_SwiftSwimDown.targetBlock)
-            moveToBlock_SwiftSwimDown.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-
-        if (moveToBlock_Dash.targetBlock)
-            moveToBlock_Dash.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-        if (moveToBlock_Jump.targetBlock)
-            moveToBlock_Jump.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-        if (moveToBlock_GrapplingHook.targetBlock)
-            moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-        if (moveToCeilingGrabbing.targetBlock)
-            moveToCeilingGrabbing.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-    }
-    public void SetAvailableBlock(GameObject obj)
-    {
-        if (obj.GetComponent<BlockInfo>())
-        {
-            if (!obj.GetComponent<BlockInfo>().blockIsDark)
-            {
-                obj.GetComponent<BlockInfo>().SetDarkenColors();
-            }
-        }
-    }
-    public void ResetAvailableBlock(GameObject obj)
-    {
-        if (obj.GetComponent<BlockInfo>())
-        {
-            if (obj.GetComponent<BlockInfo>().blockIsDark)
-            {
-                obj.GetComponent<BlockInfo>().ResetDarkenColor();
-            }
-        }
-    }
-
-    public void PerformMovement(Vector3 startPos, MoveOptions canMoveBlock, float speed)
+    public void PerformMovement(MoveOptions canMoveBlock)
     {
         if(canMoveBlock.canMoveTo)
         {
-            StartCoroutine(Move(startPos, canMoveBlock.targetBlock.transform.position, speed));
+            if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost)
+            {
+                ResetDarkenBlocks();
+
+                if (Player_KeyInputs.Instance.forward_isPressed)
+                    RotatePlayerBody(0);
+                else if (Player_KeyInputs.Instance.back_isPressed)
+                    RotatePlayerBody(180);
+                else if (Player_KeyInputs.Instance.left_isPressed)
+                    RotatePlayerBody(-90);
+                else if (Player_KeyInputs.Instance.right_isPressed)
+                    RotatePlayerBody(90);
+
+                StartCoroutine(Move(canMoveBlock.targetBlock.transform.position));
+            }
+            else
+            {
+                RespawnPlayer();
+            }
         }
     }
 
-    private IEnumerator Move(Vector3 startPos, Vector3 endPos, float speed)
+    private IEnumerator Move(Vector3 endPos)
     {
+        Vector3 startPos = transform.position;
+        Vector3 newEndPos = endPos + (Vector3.up * heightOverBlock);
+
         movementStates = MovementStates.Moving;
 
         float elapsed = 0f;
+        float distance = Vector3.Distance(startPos, newEndPos);
 
-        while (elapsed < speed)
+        while (elapsed < 1f)
         {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / speed);
-            PlayerManager.Instance.player.transform.position = Vector3.Lerp(startPos, endPos, t);
+            //Get current speed based on the current block
+            float currentSpeed = baseTime / blockStandingOn.GetComponent<BlockInfo>().movementSpeed;
+
+            //Invert speed relation: higher speed value = faster movement
+            float speedFactor = 1f / Mathf.Max(currentSpeed, 0.01f); // avoid divide by zero
+            float moveStep = Time.deltaTime * speedFactor;
+
+            elapsed += moveStep;
+
+            float t = Mathf.Clamp01(elapsed);
+            transform.position = Vector3.Lerp(startPos, newEndPos, t);
 
             yield return null;
         }
 
-        PlayerManager.Instance.player.transform.position = endPos;
+        transform.position = newEndPos;
+
+        UpdateBlockLookingAt();
 
         movementStates = MovementStates.Still;
         Action_StepTaken_Invoke();
     }
+
 
 
     //--------------------
@@ -517,7 +596,7 @@ public class Movement : Singleton<Movement>
                 break;
         }
 
-        PlayerManager.Instance.lookingDirection = lookDir;
+        Movement.Instance.lookingDirection = lookDir;
     }
 
 
@@ -577,6 +656,72 @@ public class Movement : Singleton<Movement>
         return Vector3.forward;
     }
 
+    public void TakeAStep()
+    {
+        //Reduce available steps
+        if (blockStandingOn)
+        {
+            if (blockStandingOn.GetComponent<BlockInfo>() /*&& !PlayerManager.Instance.isTransportingPlayer*/ && !Player_Pusher.Instance.playerIsPushed)
+            {
+                PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
+            }
+        }
+
+        //If steps is < 0
+        if (PlayerStats.Instance.stats.steps_Current < 0)
+        {
+            PlayerStats.Instance.stats.steps_Current = 0;
+            RespawnPlayer();
+        }
+
+        Action_StepTaken_Late_Invoke();
+    }
+    public void RespawnPlayer()
+    {
+        print("Respawn Player");
+
+        StartCoroutine(ResetplayerPos(0.01f));
+    }
+
+    IEnumerator ResetplayerPos(float waitTime)
+    {
+        Player_KeyInputs.Instance.forward_isPressed = false;
+        Player_KeyInputs.Instance.back_isPressed = false;
+        Player_KeyInputs.Instance.left_isPressed = false;
+        Player_KeyInputs.Instance.right_isPressed = false;
+
+        SetMovementState(MovementStates.Moving);
+
+        RespawnPlayerEarly_Action();
+
+        yield return new WaitForSeconds(waitTime);
+
+        //Move player
+        transform.position = MapManager.Instance.playerStartPos;
+        transform.SetPositionAndRotation(MapManager.Instance.playerStartPos, Quaternion.identity);
+
+        RespawnPlayer_Action();
+
+        //Reset for CeilingAbility
+        Player_CeilingGrab.Instance.ResetCeilingGrab();
+
+        Player_DarkenBlock.Instance.block_hasBeenDarkened = false;
+
+        yield return new WaitForSeconds(waitTime);
+
+        //Refill Steps to max + stepPickups gotten
+        PlayerStats.Instance.RefillStepsToMax();
+
+        SetMovementState(MovementStates.Still);
+
+        CameraController.Instance.ResetCameraRotation();
+        RotatePlayerBody(180);
+
+        yield return new WaitForSeconds(waitTime * 30);
+
+        RespawnPlayerLate_Action();
+    }
+
 
     //--------------------
 
@@ -590,9 +735,17 @@ public class Movement : Singleton<Movement>
         return movementStates; 
     }
 
+
+    //--------------------
+
+
     public void Action_StepTaken_Invoke()
     {
         Action_StepTaken?.Invoke();
+    }
+    public void Action_StepTaken_Late_Invoke()
+    {
+        Action_StepTaken_Late?.Invoke();
     }
     public void Action_BodyRotated_Invoke()
     {
@@ -607,7 +760,24 @@ public class Movement : Singleton<Movement>
         Action_LandedFromFalling?.Invoke();
     }
 
-    
+
+    public void RespawnPlayerEarly_Action()
+    {
+        Action_RespawnPlayerEarly?.Invoke();
+    }
+    public void RespawnPlayer_Action()
+    {
+        Action_RespawnPlayer?.Invoke();
+    }
+    public void RespawnPlayerLate_Action()
+    {
+        Action_RespawnPlayerLate?.Invoke();
+    }
+    public void RespawnToSavePos_Action()
+    {
+        Action_RespawnToSavePos?.Invoke();
+    }
+
 }
 
 [Serializable]

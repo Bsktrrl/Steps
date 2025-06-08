@@ -12,15 +12,15 @@ public class Player_BurnChanging : Singleton<Player_BurnChanging>
 
     private void OnEnable()
     {
-        PlayerStats.Action_RespawnPlayer += RemoveMeltedBlocks;
-        PlayerStats.Action_RespawnPlayerLate += RemoveMeltedBlocks;
+        Movement.Action_RespawnPlayer += RemoveMeltedBlocks;
+        Movement.Action_RespawnPlayerLate += RemoveMeltedBlocks;
         meltedBlocksList.Clear();
     }
 
     private void OnDisable()
     {
-        PlayerStats.Action_RespawnPlayer -= RemoveMeltedBlocks;
-        PlayerStats.Action_RespawnPlayerLate -= RemoveMeltedBlocks;
+        Movement.Action_RespawnPlayer -= RemoveMeltedBlocks;
+        Movement.Action_RespawnPlayerLate -= RemoveMeltedBlocks;
         meltedBlocksList.Clear();
     }
 

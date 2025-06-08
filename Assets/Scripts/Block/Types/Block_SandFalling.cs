@@ -71,7 +71,7 @@ public class Block_SandFalling : MonoBehaviour
         Movement.Action_StepTaken += CheckIfStandingOn;
         Player_CeilingGrab.Action_releaseCeiling += CheckIfStandingOn;
         Movement.Action_LandedFromFalling += CheckIfStandingOn;
-        PlayerStats.Action_RespawnPlayerEarly += ResetBlock;
+        Movement.Action_RespawnPlayerEarly += ResetBlock;
     }
 
     private void OnDisable()
@@ -79,7 +79,7 @@ public class Block_SandFalling : MonoBehaviour
         Movement.Action_StepTaken -= CheckIfStandingOn;
         Player_CeilingGrab.Action_releaseCeiling -= CheckIfStandingOn;
         Movement.Action_LandedFromFalling -= CheckIfStandingOn;
-        PlayerStats.Action_RespawnPlayerEarly -= ResetBlock;
+        Movement.Action_RespawnPlayerEarly -= ResetBlock;
     }
 
 
@@ -153,7 +153,7 @@ public class Block_SandFalling : MonoBehaviour
     {
         if (!canFall) { return; }
 
-        if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject && !isSteppedOn && !Player_CeilingGrab.Instance.isCeilingGrabbing && Movement.Instance.GetMovementState() != MovementStates.Falling)
+        if (Movement.Instance.blockStandingOn == gameObject && !isSteppedOn && !Player_CeilingGrab.Instance.isCeilingGrabbing && Movement.Instance.GetMovementState() != MovementStates.Falling)
         {
             isSteppedOn = true;
         }

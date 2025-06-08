@@ -63,12 +63,12 @@ public class Block_Elevator : MonoBehaviour
     }
     private void OnEnable()
     {
-        PlayerStats.Action_RespawnPlayer += ResetBlock;
+        Movement.Action_RespawnPlayer += ResetBlock;
     }
 
     private void OnDisable()
     {
-        PlayerStats.Action_RespawnPlayer -= ResetBlock;
+        Movement.Action_RespawnPlayer -= ResetBlock;
     }
 
 

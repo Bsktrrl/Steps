@@ -17,14 +17,14 @@ public class Block_Weak : MonoBehaviour
     {
         Movement.Action_isSwitchingBlocks += CheckIfSteppenOn;
         Movement.Action_StepTaken += DisolveBlock;
-        PlayerStats.Action_RespawnPlayerEarly += ResetBlock;
+        Movement.Action_RespawnPlayerEarly += ResetBlock;
     }
 
     private void OnDisable()
     {
         Movement.Action_isSwitchingBlocks -= CheckIfSteppenOn;
         Movement.Action_StepTaken -= DisolveBlock;
-        PlayerStats.Action_RespawnPlayerEarly -= ResetBlock;
+        Movement.Action_RespawnPlayerEarly -= ResetBlock;
     }
 
 
@@ -33,7 +33,7 @@ public class Block_Weak : MonoBehaviour
 
     void CheckIfSteppenOn()
     {
-        if (PlayerManager.Instance.block_StandingOn_Previous == gameObject)
+        if (Movement.Instance.blockStandingOn_Previous == gameObject)
             isSteppedOn = true;
         else
         {

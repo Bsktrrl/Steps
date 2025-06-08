@@ -4,129 +4,118 @@ using UnityEngine;
 
 public class Player_KeyInputs : Singleton<Player_KeyInputs>
 {
+    [Header("Input System")]
+    public PlayerControls playerControls;
+
+    [Header("KeyPresses")]
+    public bool forward_isPressed;
+    public bool back_isPressed;
+    public bool left_isPressed;
+    public bool right_isPressed;
+
+    public bool cameraX_isPressed;
+    public bool cameraY_isPressed;
+
+
+    //--------------------
+
+
+    private void Start()
+    {
+        playerControls = new PlayerControls();
+    }
+
+
+    //--------------------
+
+
+    void OnForward_Down()
+    {
+        forward_isPressed = true;
+    }
+    void OnForward_Up()
+    {
+        forward_isPressed = false;
+    }
+    void OnBackward_Down()
+    {
+        back_isPressed = true;
+    }
+    void OnBackward_Up()
+    {
+        back_isPressed = false;
+    }
+    void OnLeft_Down()
+    {
+        left_isPressed = true;
+    }
+    void OnLeft_Up()
+    {
+        left_isPressed = false;
+    }
+    void OnRight_Down()
+    {
+        right_isPressed = true;
+    }
+    void OnRight_Up()
+    {
+        right_isPressed = false;
+    }
+
+    void OnAbilityUp()
+    {
+        Player_Ascend.Instance.RunAscend();
+    }
+    void OnAbilityDown()
+    {
+        Player_Interact.Instance.InteractWithObject();
+        Player_Descend.Instance.RunDescend();
+    }
+    void OnAbilityLeft()
+    {
+        Player_CeilingGrab.Instance.CeilingGrab();
+    }
+    void OnAbilityRight_DownPress()
+    {
+        Player_GraplingHook.Instance.StartGrappling();
+    }
+    void OnAbilityRight_RelesePress()
+    {
+        Player_GraplingHook.Instance.StopGrappling();
+    }
+
+    void OnCameraRotateX()
+    {
+        CameraController.Instance.RotateCameraX();
+    }
+    void OnCameraRotateY()
+    {
+        CameraController.Instance.RotateCameraY();
+    }
+
+    void OnRespawn()
+    {
+        Player_KeyInputs.Instance.Key_Respawn();
+    }
+    void OnQuit()
+    {
+        Player_KeyInputs.Instance.Key_Quit();
+    }
+
+
+    //--------------------
+
+
     bool KeyInputsChecks()
     {
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
 
         if (PlayerManager.Instance.pauseGame) { return false; }
-        //if (PlayerManager.Instance.isTransportingPlayer) { return false; }
         if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
 
         return true;
-    }
-    public void Key_MoveForward()
-    {
-        if (!KeyInputsChecks()) { return; }
-
-        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
-        {
-            //lastMovementButtonPressed = ButtonsToPress.W;
-            //StartCeilingGrabMovement(Vector3.forward);
-        }
-        else if (Player_LadderMovement.Instance.CheckLaddersToEnter_Up(Movement.Instance.UpdatedDir(Vector3.forward)))
-        {
-            StartCoroutine(Player_LadderMovement.Instance.PerformLadderMovement_Up(Movement.Instance.UpdatedDir(Vector3.forward), Player_LadderMovement.Instance.GetLadderExitPart_Up(Movement.Instance.UpdatedDir(Vector3.forward))));
-        }
-        else if (Player_LadderMovement.Instance.CheckLaddersToEnter_Down(Movement.Instance.UpdatedDir(Vector3.forward)))
-        {
-            StartCoroutine(Player_LadderMovement.Instance.PerformLadderMovement_Down(Movement.Instance.UpdatedDir(Vector3.forward), Player_LadderMovement.Instance.GetLadderExitPart_Down(Movement.Instance.UpdatedDir(Vector3.forward))));
-        }
-        else
-        {
-            //PrepareMovement(ButtonsToPress.W, PlayerManager.Instance.canMove_Forward, PlayerManager.Instance.block_Vertical_InFront, 0);
-        }
-    }
-    public void Key_MoveBackward()
-    {
-        if (!KeyInputsChecks()) { return; }
-
-        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
-        {
-            //lastMovementButtonPressed = ButtonsToPress.S;
-            //StartCeilingGrabMovement(Vector3.back);
-        }
-        else if (Player_LadderMovement.Instance.CheckLaddersToEnter_Up(Movement.Instance.UpdatedDir(Vector3.back)))
-        {
-            StartCoroutine(Player_LadderMovement.Instance.PerformLadderMovement_Up(Movement.Instance.UpdatedDir(Vector3.back), Player_LadderMovement.Instance.GetLadderExitPart_Up(Movement.Instance.UpdatedDir(Vector3.back))));
-        }
-        else if (Player_LadderMovement.Instance.CheckLaddersToEnter_Down(Movement.Instance.UpdatedDir(Vector3.back)))
-        {
-            StartCoroutine(Player_LadderMovement.Instance.PerformLadderMovement_Down(Movement.Instance.UpdatedDir(Vector3.back), Player_LadderMovement.Instance.GetLadderExitPart_Down(Movement.Instance.UpdatedDir(Vector3.back))));
-        }
-        else
-        {
-            //PrepareMovement(ButtonsToPress.S, PlayerManager.Instance.canMove_Back, PlayerManager.Instance.block_Vertical_InBack, 180);
-        }
-    }
-    public void Key_MoveLeft()
-    {
-        if (!KeyInputsChecks()) { return; }
-
-        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
-        {
-            //lastMovementButtonPressed = ButtonsToPress.A;
-            //StartCeilingGrabMovement(Vector3.left);
-        }
-        else if (Player_LadderMovement.Instance.CheckLaddersToEnter_Up(Movement.Instance.UpdatedDir(Vector3.left)))
-        {
-            StartCoroutine(Player_LadderMovement.Instance.PerformLadderMovement_Up(Movement.Instance.UpdatedDir(Vector3.left), Player_LadderMovement.Instance.GetLadderExitPart_Up(Movement.Instance.UpdatedDir(Vector3.left))));
-        }
-        else if (Player_LadderMovement.Instance.CheckLaddersToEnter_Down(Movement.Instance.UpdatedDir(Vector3.left)))
-        {
-            StartCoroutine(Player_LadderMovement.Instance.PerformLadderMovement_Down(Movement.Instance.UpdatedDir(Vector3.left), Player_LadderMovement.Instance.GetLadderExitPart_Down(Movement.Instance.UpdatedDir(Vector3.left))));
-        }
-        else
-        {
-            //PrepareMovement(ButtonsToPress.A, PlayerManager.Instance.canMove_Left, PlayerManager.Instance.block_Vertical_ToTheLeft, -90);
-        }
-    }
-    public void Key_MoveRight()
-    {
-        if (!KeyInputsChecks()) { return; }
-
-        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
-        {
-            //lastMovementButtonPressed = ButtonsToPress.D;
-            //StartCeilingGrabMovement(Vector3.right);
-        }
-        else if (Player_LadderMovement.Instance.CheckLaddersToEnter_Up(Movement.Instance.UpdatedDir(Vector3.right)))
-        {
-            StartCoroutine(Player_LadderMovement.Instance.PerformLadderMovement_Up(Movement.Instance.UpdatedDir(Vector3.right), Player_LadderMovement.Instance.GetLadderExitPart_Up(Movement.Instance.UpdatedDir(Vector3.right))));
-        }
-        else if (Player_LadderMovement.Instance.CheckLaddersToEnter_Down(Movement.Instance.UpdatedDir(Vector3.right)))
-        {
-            StartCoroutine(Player_LadderMovement.Instance.PerformLadderMovement_Down(Movement.Instance.UpdatedDir(Vector3.right), Player_LadderMovement.Instance.GetLadderExitPart_Down(Movement.Instance.UpdatedDir(Vector3.right))));
-        }
-        else
-        {
-            //PrepareMovement(ButtonsToPress.D, PlayerManager.Instance.canMove_Right, PlayerManager.Instance.block_Vertical_ToTheRight, 90);
-        }
-    }
-
-
-    public void Key_SwiftSwimUp()
-    {
-        if (!KeyInputsChecks()) { return; }
-
-        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
-
-        if (gameObject.GetComponent<Player_SwiftSwim>().canSwiftSwim_Up)
-        {
-            gameObject.GetComponent<Player_SwiftSwim>().SwiftSwim_Up();
-        }
-    }
-    public void Key_SwiftSwimDown()
-    {
-        if (!KeyInputsChecks()) { return; }
-
-        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
-
-        if (gameObject.GetComponent<Player_SwiftSwim>().canSwiftSwim_Down)
-        {
-            gameObject.GetComponent<Player_SwiftSwim>().SwiftSwim_Down();
-        }
     }
 
     public void Key_Respawn()
@@ -136,7 +125,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Player_Interact.Instance.isInteracting) { return; }
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return; }
 
-        PlayerStats.Instance.RespawnPlayer();
+        Movement.Instance.RespawnPlayer();
 
         Movement.Instance.Action_StepTaken_Invoke();
     }
