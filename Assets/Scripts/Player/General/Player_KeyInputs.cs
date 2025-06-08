@@ -8,13 +8,13 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     public PlayerControls playerControls;
 
     [Header("KeyPresses")]
-    public bool forward_isPressed;
-    public bool back_isPressed;
-    public bool left_isPressed;
-    public bool right_isPressed;
+    public bool forward_isPressed = false;
+    public bool back_isPressed = false;
+    public bool left_isPressed = false;
+    public bool right_isPressed = false;
 
-    public bool cameraX_isPressed;
-    public bool cameraY_isPressed;
+    public bool cameraX_isPressed = false;
+    public bool cameraY_isPressed = false;
 
 
     //--------------------
@@ -126,8 +126,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return; }
 
         Movement.Instance.RespawnPlayer();
-
-        //Movement.Instance.Action_StepTaken_Invoke();
     }
     public void Key_Quit()
     {

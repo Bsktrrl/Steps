@@ -48,6 +48,10 @@ public class BlockInfo : MonoBehaviour
     //--------------------
 
 
+    private void Awake()
+    {
+        startPos = transform.position;
+    }
     private void Start()
     {
         tintValue = 0.92f;
@@ -57,7 +61,6 @@ public class BlockInfo : MonoBehaviour
 
         movementCost_Temp = movementCost;
 
-        startPos = transform.position;
         stepSound_Source = gameObject.AddComponent<AudioSource>();
         
         SetObjectRenderer();

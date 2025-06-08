@@ -38,7 +38,6 @@ public class MapManager : Singleton<MapManager>
         blockInfoList = FindObjectsOfType<BlockInfo>();
         pickupInfoList = FindObjectsOfType<Interactable_Pickup>();
 
-        playerStartPos = playerStartPos + new Vector3(0, -1 + Movement.Instance.heightOverBlock, 0);
         Movement.Instance.RotatePlayerBody(180);
 
         PlayAudio();
@@ -73,6 +72,8 @@ public class MapManager : Singleton<MapManager>
     void SpawnPlayerObject()
     {
         playerObjectInScene = Instantiate(playerObject);
+
+        playerStartPos = playerStartPos + new Vector3(0, -1 + Movement.Instance.heightOverBlock, 0);
         playerObjectInScene.transform.position = playerStartPos;
     }
 
