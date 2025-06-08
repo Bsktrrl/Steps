@@ -37,6 +37,13 @@ public class Block_Falling : MonoBehaviour
     {
         if (CheckIfReadyToFall())
         {
+            gameObject.GetComponent<BlockInfo>().movementState = MovementStates.Falling;
+
+            if (gameObject == Movement.Instance.blockStandingOn)
+            {
+                Movement.Instance.StartFalling();
+            }
+
             Falling();
         }
     }
@@ -130,6 +137,8 @@ public class Block_Falling : MonoBehaviour
 
         if (Vector3.Distance(transform.position, endPos) <= 0.03f)
         {
+            gameObject.GetComponent<BlockInfo>().movementState = MovementStates.Still;
+
             HideBlock();
         }
     }
@@ -163,6 +172,7 @@ public class Block_Falling : MonoBehaviour
         }
     }
 
+
     //--------------------
 
 
@@ -192,6 +202,8 @@ public class Block_Falling : MonoBehaviour
             GetComponent<MeshCollider>().enabled = true;
 
         waitCounter = 0;
+
+        gameObject.GetComponent<BlockInfo>().movementState = MovementStates.Still;
 
         transform.position = gameObject.GetComponent<BlockInfo>().startPos;
 

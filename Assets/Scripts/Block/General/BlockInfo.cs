@@ -13,6 +13,8 @@ public class BlockInfo : MonoBehaviour
     public int movementCost;
     public float movementSpeed;
 
+    public MovementStates movementState;
+
     [Header("StepCost Color")]
     public Color stepCostText_Color;
     public Color stepCostText_ColorUnder;

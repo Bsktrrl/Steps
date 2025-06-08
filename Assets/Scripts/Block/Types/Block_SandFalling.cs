@@ -58,6 +58,13 @@ public class Block_SandFalling : MonoBehaviour
 
         if (CheckIfReadyToFall())
         {
+            gameObject.GetComponent<BlockInfo>().movementState = MovementStates.Falling;
+
+            if (gameObject == Movement.Instance.blockStandingOn)
+            {
+                Movement.Instance.StartFalling();
+            }
+
             Falling();
         }
     }
@@ -184,16 +191,19 @@ public class Block_SandFalling : MonoBehaviour
         if (resettingBlock)
             isSteppedOn = false;
 
-        if (GetComponent<BoxCollider>())
-            GetComponent<BoxCollider>().enabled = false;
-        else if (GetComponent<MeshCollider>())
-            GetComponent<MeshCollider>().enabled = false;
+        //if (GetComponent<BoxCollider>())
+        //    GetComponent<BoxCollider>().enabled = false;
+        //else if (GetComponent<MeshCollider>())
+        //    GetComponent<MeshCollider>().enabled = false;
 
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endPos, PlayerManager.Instance.player.GetComponent<Movement>().fallSpeed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, endPos) <= 0.03f)
         {
-            gameObject.SetActive(false);
+            gameObject.GetComponent<BlockInfo>().movementState = MovementStates.Still;
+
+            HideBlock();
+
             isSteppedOn = false;
             waitCounter = 0;
             transform.position = gameObject.GetComponent<BlockInfo>().startPos;
@@ -233,6 +243,19 @@ public class Block_SandFalling : MonoBehaviour
     //--------------------
 
 
+    void HideBlock()
+    {
+        gameObject.SetActive(false);
+    }
+    public void ShowBlock()
+    {
+        gameObject.SetActive(true);
+    }
+
+
+    //--------------------
+
+
     public void ResetBlock()
     {
         resettingBlock = true;
@@ -245,13 +268,15 @@ public class Block_SandFalling : MonoBehaviour
         else if (GetComponent<MeshCollider>())
             GetComponent<MeshCollider>().enabled = true;
 
+        gameObject.GetComponent<BlockInfo>().movementState = MovementStates.Still;
+
         waitCounter = 0;
 
         transform.position = gameObject.GetComponent<BlockInfo>().startPos;
 
         StartCoroutine(ResetBlockWaiting(0.1f));
 
-        gameObject.SetActive(true);
+        ShowBlock();
     }
     IEnumerator ResetBlockWaiting(float waitTime)
     {

@@ -76,6 +76,13 @@ public class Movement : Singleton<Movement>
         {
             UpdateBlockStandingOn();
         }
+        else if (GetMovementState() == MovementStates.Falling)
+        {
+            UpdateBlockStandingOn();
+            PlayerIsFalling();
+
+            EndFalling();
+        }
         else
         {
             MovementSetup();
@@ -89,22 +96,24 @@ public class Movement : Singleton<Movement>
     private void OnEnable()
     {
         Action_StepTaken_Late += UpdateAvailableMovementBlocks;
-        Action_RespawnPlayerEarly += ResetDarkenBlocks;
         Action_RespawnPlayerLate += UpdateAvailableMovementBlocks;
         Action_LandedFromFalling += UpdateAvailableMovementBlocks;
-        CameraController.Action_RotateCamera_End += UpdateBlocks;
-        //Action_BodyRotated += UpdateAvailableMovementBlocks;
+
+        Action_RespawnPlayerEarly += ResetDarkenBlocks;
         Action_StepTaken += TakeAStep;
+
+        CameraController.Action_RotateCamera_End += UpdateBlocks;
     }
     private void OnDisable()
     {
         Action_StepTaken_Late -= UpdateAvailableMovementBlocks;
-        Action_RespawnPlayerEarly -= ResetDarkenBlocks;
         Action_RespawnPlayerLate -= UpdateAvailableMovementBlocks;
         Action_LandedFromFalling -= UpdateAvailableMovementBlocks;
-        CameraController.Action_RotateCamera_End -= UpdateBlocks;
-        //Action_BodyRotated -= UpdateAvailableMovementBlocks;
+
+        Action_RespawnPlayerEarly -= ResetDarkenBlocks;
         Action_StepTaken -= TakeAStep;
+
+        CameraController.Action_RotateCamera_End -= UpdateBlocks;
     }
 
 
@@ -483,16 +492,26 @@ public class Movement : Singleton<Movement>
             
         }
     }
-    void FallingMovement()
+    public void StartFalling()
     {
-        SetMovementState(MovementStates.Moving);
+        if (blockStandingOn.GetComponent<BlockInfo>().movementState == MovementStates.Falling)
+        {
+            SetMovementState(MovementStates.Falling);
 
-
-
-
-
-        SetMovementState(MovementStates.Still);
-        Action_LandedFromFalling_Invoke();
+            ResetDarkenBlocks();
+        }
+    }
+    void PlayerIsFalling()
+    {
+        gameObject.transform.transform.position = blockStandingOn.transform.position + (Vector3.up * heightOverBlock);
+    }
+    void EndFalling()
+    {
+        if (blockStandingOn.GetComponent<BlockInfo>().movementState != MovementStates.Falling)
+        {
+            SetMovementState(MovementStates.Still);
+            Action_LandedFromFalling_Invoke();
+        }
     }
 
     void FollowElevatorBlockMovement()
