@@ -89,15 +89,21 @@ public class Movement : Singleton<Movement>
     private void OnEnable()
     {
         Action_StepTaken_Late += UpdateAvailableMovementBlocks;
+        Action_RespawnPlayerEarly += ResetDarkenBlocks;
+        Action_RespawnPlayerLate += UpdateAvailableMovementBlocks;
         Action_LandedFromFalling += UpdateAvailableMovementBlocks;
-        Action_BodyRotated += UpdateAvailableMovementBlocks;
+        CameraController.Action_RotateCamera_End += UpdateBlocks;
+        //Action_BodyRotated += UpdateAvailableMovementBlocks;
         Action_StepTaken += TakeAStep;
     }
     private void OnDisable()
     {
         Action_StepTaken_Late -= UpdateAvailableMovementBlocks;
+        Action_RespawnPlayerEarly -= ResetDarkenBlocks;
+        Action_RespawnPlayerLate -= UpdateAvailableMovementBlocks;
         Action_LandedFromFalling -= UpdateAvailableMovementBlocks;
-        Action_BodyRotated -= UpdateAvailableMovementBlocks;
+        CameraController.Action_RotateCamera_End -= UpdateBlocks;
+        //Action_BodyRotated -= UpdateAvailableMovementBlocks;
         Action_StepTaken -= TakeAStep;
     }
 
@@ -111,6 +117,12 @@ public class Movement : Singleton<Movement>
     {
         ResetDarkenBlocks();
 
+        UpdateBlocks();
+
+        SetDarkenBlocks();
+    }
+    void UpdateBlocks()
+    {
         UpdateBlockStandingOn();
         UpdateNormalMovement();
         UpdateAscendMovement();
@@ -121,8 +133,6 @@ public class Movement : Singleton<Movement>
         UpdateJumpMovement();
         UpdateGrapplingHookMovement();
         UpdateCeilingGrabMovement();
-
-        SetDarkenBlocks();
     }
     void UpdateBlockStandingOn()
     {
@@ -153,7 +163,8 @@ public class Movement : Singleton<Movement>
     }
     void UpdateNormalMovements(MoveOptions moveOption, Vector3 dir)
     {
-        GameObject outObj = null;
+        GameObject outObj1 = null;
+        GameObject outObj2 = null;
         Vector3 playerPos = PlayerManager.Instance.player.transform.position;
 
         Vector3 rayDir = Vector3.zero;
@@ -163,17 +174,22 @@ public class Movement : Singleton<Movement>
         else
             rayDir = Vector3.down;
 
-        if (PerformMovementRaycast(playerPos, dir, 1, out outObj) == RaycastHitObjects.None
-           && PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj) == RaycastHitObjects.BlockInfo)
+        if (PerformMovementRaycast(playerPos, dir, 1, out outObj1) == RaycastHitObjects.None
+           && PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
         {
-            moveOption.canMoveTo = true;
-            moveOption.targetBlock = outObj;
+            //Check if it's a Water Block
+            if (outObj2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+            {
+                if (PlayerHasSwimAbility())
+                    Block_Is_Target(moveOption, outObj2);
+                else
+                    Block_IsNot_Target(moveOption);
+            }
+            else
+                Block_Is_Target(moveOption, outObj2);
         }
         else
-        {
-            moveOption.canMoveTo = false;
-            moveOption.targetBlock = null;
-        }
+            Block_IsNot_Target(moveOption);
     }
 
     void UpdateAscendMovement()
@@ -207,6 +223,17 @@ public class Movement : Singleton<Movement>
     void UpdateCeilingGrabMovement()
     {
 
+    }
+
+    void Block_Is_Target(MoveOptions moveOption, GameObject obj)
+    {
+        moveOption.canMoveTo = true;
+        moveOption.targetBlock = obj;
+    }
+    void Block_IsNot_Target(MoveOptions moveOption)
+    {
+        moveOption.canMoveTo = false;
+        moveOption.targetBlock = null;
     }
 
 
@@ -382,38 +409,30 @@ public class Movement : Singleton<Movement>
 
     void MovementSetup()
     {
-        if (Player_KeyInputs.Instance.forward_isPressed)
+        //Rotate Player
+        RotatePlayerBody_Setup();
+
+        //Perform Movement, if possible
+        if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Forward.targetBlock && moveToBlock_Forward.canMoveTo)
             PerformMovement(moveToBlock_Forward);
-        else if (Player_KeyInputs.Instance.back_isPressed)
+        else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Back.targetBlock && moveToBlock_Back.canMoveTo)
             PerformMovement(moveToBlock_Back);
-        else if (Player_KeyInputs.Instance.left_isPressed)
+        else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Left.targetBlock && moveToBlock_Left.canMoveTo)
             PerformMovement(moveToBlock_Left);
-        else if (Player_KeyInputs.Instance.right_isPressed)
+        else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Right.targetBlock && moveToBlock_Right.canMoveTo)
             PerformMovement(moveToBlock_Right);
     }
     public void PerformMovement(MoveOptions canMoveBlock)
     {
-        if(canMoveBlock.canMoveTo)
+        if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost)
         {
-            if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost)
-            {
-                ResetDarkenBlocks();
+            ResetDarkenBlocks();
 
-                if (Player_KeyInputs.Instance.forward_isPressed)
-                    RotatePlayerBody(0);
-                else if (Player_KeyInputs.Instance.back_isPressed)
-                    RotatePlayerBody(180);
-                else if (Player_KeyInputs.Instance.left_isPressed)
-                    RotatePlayerBody(-90);
-                else if (Player_KeyInputs.Instance.right_isPressed)
-                    RotatePlayerBody(90);
-
-                StartCoroutine(Move(canMoveBlock.targetBlock.transform.position));
-            }
-            else
-            {
-                RespawnPlayer();
-            }
+            StartCoroutine(Move(canMoveBlock.targetBlock.transform.position));
+        }
+        else
+        {
+            RespawnPlayer();
         }
     }
 
@@ -503,6 +522,17 @@ public class Movement : Singleton<Movement>
     void CheckCurrentBlockStandingOn()
     {
 
+    }
+    void RotatePlayerBody_Setup()
+    {
+        if (Player_KeyInputs.Instance.forward_isPressed)
+            RotatePlayerBody(0);
+        else if (Player_KeyInputs.Instance.back_isPressed)
+            RotatePlayerBody(180);
+        else if (Player_KeyInputs.Instance.left_isPressed)
+            RotatePlayerBody(-90);
+        else if (Player_KeyInputs.Instance.right_isPressed)
+            RotatePlayerBody(90);
     }
     public void RotatePlayerBody(float rotationValue)
     {
@@ -680,10 +710,9 @@ public class Movement : Singleton<Movement>
     {
         print("Respawn Player");
 
-        StartCoroutine(ResetplayerPos(0.01f));
+        StartCoroutine(Resetplayer(0.01f));
     }
-
-    IEnumerator ResetplayerPos(float waitTime)
+    IEnumerator Resetplayer(float waitTime)
     {
         Player_KeyInputs.Instance.forward_isPressed = false;
         Player_KeyInputs.Instance.back_isPressed = false;
@@ -700,25 +729,24 @@ public class Movement : Singleton<Movement>
         transform.position = MapManager.Instance.playerStartPos;
         transform.SetPositionAndRotation(MapManager.Instance.playerStartPos, Quaternion.identity);
 
-        RespawnPlayer_Action();
-
         //Reset for CeilingAbility
         Player_CeilingGrab.Instance.ResetCeilingGrab();
 
-        Player_DarkenBlock.Instance.block_hasBeenDarkened = false;
+        //Player_DarkenBlock.Instance.block_hasBeenDarkened = false;
 
         yield return new WaitForSeconds(waitTime);
 
         //Refill Steps to max + stepPickups gotten
         PlayerStats.Instance.RefillStepsToMax();
 
-        SetMovementState(MovementStates.Still);
-
         CameraController.Instance.ResetCameraRotation();
         RotatePlayerBody(180);
 
+        RespawnPlayer_Action();
+
         yield return new WaitForSeconds(waitTime * 30);
 
+        SetMovementState(MovementStates.Still);
         RespawnPlayerLate_Action();
     }
 
@@ -777,7 +805,6 @@ public class Movement : Singleton<Movement>
     {
         Action_RespawnToSavePos?.Invoke();
     }
-
 }
 
 [Serializable]

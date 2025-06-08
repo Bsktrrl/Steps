@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
 {
-    public bool block_hasBeenDarkened;
+    //public bool block_hasBeenDarkened;
 
     public bool canMove_Forward;
     public bool canMove_Back;
@@ -29,7 +29,7 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
 
     private void Start()
     {
-        block_hasBeenDarkened = false;
+        //block_hasBeenDarkened = false;
     }
     private void Update()
     {

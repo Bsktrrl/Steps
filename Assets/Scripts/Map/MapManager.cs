@@ -39,6 +39,7 @@ public class MapManager : Singleton<MapManager>
         pickupInfoList = FindObjectsOfType<Interactable_Pickup>();
 
         playerStartPos = playerStartPos + new Vector3(0, -1 + Movement.Instance.heightOverBlock, 0);
+        Movement.Instance.RotatePlayerBody(180);
 
         PlayAudio();
     }

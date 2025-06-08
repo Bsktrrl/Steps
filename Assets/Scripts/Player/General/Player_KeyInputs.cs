@@ -127,7 +127,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         Movement.Instance.RespawnPlayer();
 
-        Movement.Instance.Action_StepTaken_Invoke();
+        //Movement.Instance.Action_StepTaken_Invoke();
     }
     public void Key_Quit()
     {
