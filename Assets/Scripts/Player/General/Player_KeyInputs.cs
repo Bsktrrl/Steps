@@ -31,8 +31,9 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnForward_Down()
     {
-        if (!CameraController.Instance.isRotating && !PlayerManager.Instance.pauseGame)
-            forward_isPressed = true;
+        if (!ButtonChecks()) { return; }
+
+        forward_isPressed = true;
     }
     void OnForward_Up()
     {
@@ -40,8 +41,9 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnBackward_Down()
     {
-        if (!CameraController.Instance.isRotating && !PlayerManager.Instance.pauseGame)
-            back_isPressed = true;
+        if (!ButtonChecks()) { return; }
+
+        back_isPressed = true;
     }
     void OnBackward_Up()
     {
@@ -49,8 +51,9 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnLeft_Down()
     {
-        if (!CameraController.Instance.isRotating && !PlayerManager.Instance.pauseGame)
-            left_isPressed = true;
+        if (!ButtonChecks()) { return; }
+
+        left_isPressed = true;
     }
     void OnLeft_Up()
     {
@@ -58,69 +61,100 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnRight_Down()
     {
-        if (!CameraController.Instance.isRotating && !PlayerManager.Instance.pauseGame)
-            right_isPressed = true;
+        if (!ButtonChecks()) { return; }
+
+        right_isPressed = true;
     }
     void OnRight_Up()
     {
         right_isPressed = false;
     }
 
+
+    //--------------------
+
+
     void OnAbilityUp()
     {
-        Player_Ascend.Instance.RunAscend();
+        if (!ButtonChecks()) { return; }
+
+        Movement.Instance.RunAscend();
     }
     void OnAbilityDown()
     {
-        Player_Interact.Instance.InteractWithObject();
+        if (!ButtonChecks()) { return; }
+
+        //Player_Interact.Instance.InteractWithObject();
         Player_Descend.Instance.RunDescend();
     }
     void OnAbilityLeft()
     {
+        if (!ButtonChecks()) { return; }
+
         Player_CeilingGrab.Instance.CeilingGrab();
     }
     void OnAbilityRight_DownPress()
     {
+        if (!ButtonChecks()) { return; }
+
         Player_GraplingHook.Instance.StartGrappling();
     }
     void OnAbilityRight_RelesePress()
     {
+        if (!ButtonChecks()) { return; }
+
         Player_GraplingHook.Instance.StopGrappling();
-    }
-
-    void OnCameraRotateX()
-    {
-        CameraController.Instance.RotateCameraX();
-    }
-    void OnCameraRotateY()
-    {
-        CameraController.Instance.RotateCameraY();
-    }
-
-    void OnRespawn()
-    {
-        Player_KeyInputs.Instance.Key_Respawn();
-    }
-    void OnQuit()
-    {
-        Player_KeyInputs.Instance.Key_Quit();
     }
 
 
     //--------------------
 
 
-    bool KeyInputsChecks()
+    void OnCameraRotateX()
+    {
+        if (!ButtonChecks()) { return; }
+
+        CameraController.Instance.RotateCameraX();
+    }
+    void OnCameraRotateY()
+    {
+        if (!ButtonChecks()) { return; }
+
+        CameraController.Instance.RotateCameraY();
+    }
+
+
+    //--------------------
+
+
+    void OnRespawn()
+    {
+        if (!ButtonChecks()) { return; }
+
+        Player_KeyInputs.Instance.Key_Respawn();
+    }
+    void OnQuit()
+    {
+        if (!ButtonChecks()) { return; }
+
+        Player_KeyInputs.Instance.Key_Quit();
+    }
+
+    bool ButtonChecks()
     {
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
 
         if (PlayerManager.Instance.pauseGame) { return false; }
         if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
-        if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
 
         return true;
     }
+
+
+    //--------------------
+
 
     public void Key_Respawn()
     {
@@ -133,7 +167,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     public void Key_Quit()
     {
-        if (!KeyInputsChecks()) { return; }
+        if (!ButtonChecks()) { return; }
 
         RememberCurrentlySelectedUIElement.Instance.currentSelectedUIElement = PauseMenuManager.Instance.pauseMenu_StartButton;
         PauseMenuManager.Instance.OpenPauseMenu();

@@ -25,7 +25,10 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
 
     private void Update()
     {
-        SetPlayerBodyHeight();
+        if (Movement.Instance.movementStates == MovementStates.Moving)
+        {
+            SetPlayerBodyHeight();
+        }
     }
 
 

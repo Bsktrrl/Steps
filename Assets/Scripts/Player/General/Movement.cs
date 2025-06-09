@@ -135,7 +135,7 @@ public class Movement : Singleton<Movement>
     {
         UpdateBlockStandingOn();
 
-        if (blockStandingOn)
+        if (blockStandingOn && movementStates == MovementStates.Still)
         {
             UpdateNormalMovement();
             UpdateAscendMovement();
@@ -181,6 +181,9 @@ public class Movement : Singleton<Movement>
     }
     void UpdateNormalMovements(MoveOptions moveOption, Vector3 dir)
     {
+        if (!blockStandingOn) { return; }
+        if (!blockStandingOn.GetComponent<BlockInfo>()) { return; }
+
         GameObject outObj1 = null;
         GameObject outObj2 = null;
         Vector3 playerPos = PlayerManager.Instance.player.transform.position;
@@ -193,7 +196,7 @@ public class Movement : Singleton<Movement>
             rayDir = Vector3.down;
 
         //If standing on a Stair
-        if (blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair)
+        if (blockStandingOn != null && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair)
         {
             Vector3 stairForward = blockStandingOn.transform.forward;
             Vector3 stairBackward = -stairForward;
@@ -295,7 +298,7 @@ public class Movement : Singleton<Movement>
                 if (moveOption.canMoveTo)
                 {
                     //RotatePlayerBody(blockStandingOn.transform.forward.y);
-                    PerformMovement(moveOption);
+                    PerformMovement(moveOption, MovementStates.Moving);
                 }
                 else
                 {
@@ -360,7 +363,35 @@ public class Movement : Singleton<Movement>
 
     void UpdateAscendMovement()
     {
+        if (!PlayerHasAscendAbility())
+        {
+            Block_IsNot_Target(moveToBlock_Ascend);
+            return;
+        }
 
+        GameObject outObj1 = null;
+        GameObject outObj2 = null;
+        Vector3 playerPos = PlayerManager.Instance.player.transform.position;
+
+        if (PerformMovementRaycast(playerPos, Vector3.up, 2, out outObj1) == RaycastHitObjects.BlockInfo
+            && PerformMovementRaycast(outObj1.transform.position, Vector3.up, 1, out outObj2) == RaycastHitObjects.None)
+        {
+            if (outObj1.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+            {
+                if (PlayerHasSwimAbility())
+                    Block_Is_Target(moveToBlock_Ascend, outObj1);
+                else
+                    Block_IsNot_Target(moveToBlock_Ascend);
+            }
+            else if (outObj1 != blockStandingOn)
+            {
+                Block_Is_Target(moveToBlock_Ascend, outObj1);
+            }
+            else
+                Block_IsNot_Target(moveToBlock_Ascend);
+        }
+        else
+            Block_IsNot_Target(moveToBlock_Ascend);
     }
     void UpdateDescendMovement()
     {
@@ -406,6 +437,7 @@ public class Movement : Singleton<Movement>
     //--------------------
 
 
+    #region PlayerHasAbility
     bool PlayerHasSwimAbility()
     {
         var stats = PlayerStats.Instance.stats;
@@ -454,6 +486,18 @@ public class Movement : Singleton<Movement>
     }
 
     #endregion
+    
+    #endregion
+
+
+    //--------------------
+
+
+    public void RunAscend()
+    {
+        if (moveToBlock_Ascend.canMoveTo)
+            PerformMovement(moveToBlock_Ascend, MovementStates.Ability);
+    }
 
 
     //--------------------
@@ -581,21 +625,21 @@ public class Movement : Singleton<Movement>
 
         //Perform Movement, if possible
         if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Forward.targetBlock && moveToBlock_Forward.canMoveTo)
-            PerformMovement(moveToBlock_Forward);
+            PerformMovement(moveToBlock_Forward, MovementStates.Moving);
         else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Back.targetBlock && moveToBlock_Back.canMoveTo)
-            PerformMovement(moveToBlock_Back);
+            PerformMovement(moveToBlock_Back, MovementStates.Moving);
         else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Left.targetBlock && moveToBlock_Left.canMoveTo)
-            PerformMovement(moveToBlock_Left);
+            PerformMovement(moveToBlock_Left, MovementStates.Moving);
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Right.targetBlock && moveToBlock_Right.canMoveTo)
-            PerformMovement(moveToBlock_Right);
+            PerformMovement(moveToBlock_Right, MovementStates.Moving);
     }
-    public void PerformMovement(MoveOptions canMoveBlock)
+    public void PerformMovement(MoveOptions canMoveBlock, MovementStates moveState)
     {
         if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost)
         {
             ResetDarkenBlocks();
 
-            StartCoroutine(Move(canMoveBlock.targetBlock.transform.position));
+            StartCoroutine(Move(canMoveBlock.targetBlock.transform.position, moveState));
         }
         else
         {
@@ -606,15 +650,15 @@ public class Movement : Singleton<Movement>
     {
         ResetDarkenBlocks();
 
-        StartCoroutine(Move(targetPos));
+        StartCoroutine(Move(targetPos, MovementStates.Moving));
     }
 
-    private IEnumerator Move(Vector3 endPos)
+    private IEnumerator Move(Vector3 endPos, MovementStates moveState)
     {
         Vector3 startPos = transform.position;
         Vector3 newEndPos = endPos + (Vector3.up * heightOverBlock);
 
-        movementStates = MovementStates.Moving;
+        movementStates = moveState;
 
         float elapsed = 0f;
         float distance = Vector3.Distance(startPos, newEndPos);
@@ -624,7 +668,8 @@ public class Movement : Singleton<Movement>
             //Get current speed based on the current block
             float currentSpeed = 0;
             if (blockStandingOn)
-                currentSpeed = baseTime / blockStandingOn.GetComponent<BlockInfo>().movementSpeed;
+                if (blockStandingOn.GetComponent<BlockInfo>())
+                    currentSpeed = baseTime / blockStandingOn.GetComponent<BlockInfo>().movementSpeed;
             else
                 currentSpeed = baseTime / fallSpeed;
 
@@ -651,6 +696,8 @@ public class Movement : Singleton<Movement>
 
     //--------------------
 
+
+    #region Falling
 
     public void StartFallingWithBlock()
     {
@@ -690,13 +737,10 @@ public class Movement : Singleton<Movement>
             }
         }
     }
+    
+    #endregion
 
     void IceGlideMovement()
-    {
-
-    }
-
-    void SlopeGlideMovement()
     {
 
     }
@@ -715,10 +759,6 @@ public class Movement : Singleton<Movement>
     //--------------------
 
 
-    void CheckCurrentBlockStandingOn()
-    {
-
-    }
     void RotatePlayerBody_Setup()
     {
         if (Player_KeyInputs.Instance.forward_isPressed)
@@ -890,7 +930,6 @@ public class Movement : Singleton<Movement>
             if (blockStandingOn.GetComponent<BlockInfo>() /*&& !PlayerManager.Instance.isTransportingPlayer*/ && !Player_Pusher.Instance.playerIsPushed)
             {
                 PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
-                print("10. TakeAStep - StepsCost");
             }
         }
 
@@ -1020,7 +1059,9 @@ public enum MovementStates
 {
     Still,
     Moving,
-    Falling
+    Falling,
+
+    Ability
 }
 public enum MovementDirection
 {
