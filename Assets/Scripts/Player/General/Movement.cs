@@ -69,7 +69,6 @@ public class Movement : Singleton<Movement>
         savePos = transform.position;
 
         RespawnPlayer();
-        //UpdateAvailableMovementBlocks();
     }
     private void Update()
     {
@@ -185,142 +184,136 @@ public class Movement : Singleton<Movement>
             rayDir = Vector3.down;
 
         //If standing on a Stair
-        //if (blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair)
-        //{
-        //    Vector3 stairForward = blockStandingOn.transform.forward;
-        //    Vector3 stairBackward = -stairForward;
-
-        //    if (dir != stairForward && dir != stairBackward)
-        //    {
-        //        Block_IsNot_Target(moveOption);
-        //        return;
-        //    }
-
-        //    stairForward.y = 0;
-        //    stairBackward.y = 0;
-        //    stairForward.Normalize();
-        //    stairBackward.Normalize();
-
-        //    foreach (Vector3 stairDir in new[] { stairForward, stairBackward })
-        //    {
-        //        if (PerformMovementRaycast(playerPos, stairDir, 1, out outObj1) == RaycastHitObjects.None &&
-        //            PerformMovementRaycast(playerPos + stairDir, stairDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
-        //        {
-        //            if (outObj2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
-        //            {
-        //                if (PlayerHasSwimAbility())
-        //                    Block_Is_Target(moveOption, outObj2);
-        //                else
-        //                    Block_IsNot_Target(moveOption);
-        //            }
-        //            else
-        //                Block_Is_Target(moveOption, outObj2);
-
-        //            return;
-        //        }
-        //    }
-        //}
-
-        ////If standing on a Slope
-        //else if (blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair)
-        //{
-
-        //}
-
-        //If standing on the Ground
-        //else
-        //{
-        //    if (PerformMovementRaycast(playerPos, dir, 1, out outObj1) == RaycastHitObjects.None
-        //    && PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
-        //    {
-        //        //Check if it's a Water Block where the player want to move
-        //        if (outObj2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
-        //        {
-        //            if (PlayerHasSwimAbility())
-        //                Block_Is_Target(moveOption, outObj2);
-        //            else
-        //                Block_IsNot_Target(moveOption);
-        //        }
-        //        else
-        //            Block_Is_Target(moveOption, outObj2);
-
-        //        return;
-        //    }
-        //    else
-        //    {
-        //        //Check if it's a Stair or Slope in front of the player
-        //        if (outObj1)
-        //        {
-        //            BlockInfo blockInfo = outObj1.GetComponent<BlockInfo>();
-
-        //            if (blockInfo != null && (blockInfo.blockType == BlockType.Stair || blockInfo.blockType == BlockType.Slope))
-        //            {
-        //                Vector3 stairForward = outObj1.transform.forward;
-        //                Vector3 toPlayer = (transform.position - outObj1.transform.position).normalized;
-
-        //                float dot = Vector3.Dot(stairForward, toPlayer);
-
-        //                if (dot > 0.5f) // Adjust threshold as needed
-        //                {
-        //                    //Stair is facing the player
-        //                    Block_Is_Target(moveOption, outObj1);
-        //                }
-        //                else
-        //                {
-        //                    //Stair is facing away from the player
-        //                    Block_IsNot_Target(moveOption);
-        //                }
-
-        //                return;
-        //            }
-        //        }
-        //    }
-        //}
-
-        if (PerformMovementRaycast(playerPos, dir, 1, out outObj1) == RaycastHitObjects.None //Front = None
-        && PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo) //Front-Down = Block
+        if (blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair)
         {
-            //Check if it's a Water Block where the player want to move
-            if (outObj2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+            Vector3 stairForward = blockStandingOn.transform.forward;
+            Vector3 stairBackward = -stairForward;
+
+            //stairForward.y = 0;
+            //stairBackward.y = 0;
+            stairForward.Normalize();
+            stairBackward.Normalize();
+
+            //Down the Stair
+            if (dir == stairForward)
             {
-                if (PlayerHasSwimAbility())
-                    Block_Is_Target(moveOption, outObj2);
+                if (PerformMovementRaycast(playerPos, stairForward, 1, out outObj1) == RaycastHitObjects.None
+                    && PerformMovementRaycast(playerPos + (stairForward / 1.5f), rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
+                {
+                    if (outObj2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+                    {
+                        if (PlayerHasSwimAbility())
+                            Block_Is_Target(moveOption, outObj2);
+                        else
+                            Block_IsNot_Target(moveOption);
+                    }
+                    else if (outObj2 != blockStandingOn)
+                    {
+                        Block_Is_Target(moveOption, outObj2);
+                    }
+                    else
+                        Block_IsNot_Target(moveOption);
+                }
                 else
                     Block_IsNot_Target(moveOption);
             }
+
+            //Up the Stair
+            else if (dir == stairBackward)
+            {
+                if (PerformMovementRaycast(playerPos + Vector3.up, stairBackward, 1, out outObj1) == RaycastHitObjects.None
+                    && PerformMovementRaycast(playerPos + Vector3.up + stairBackward, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
+                {
+                    if (outObj2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+                    {
+                        if (PlayerHasSwimAbility())
+                            Block_Is_Target(moveOption, outObj2);
+                        else
+                            Block_IsNot_Target(moveOption);
+                    }
+                    else if (outObj2 != blockStandingOn)
+                    {
+                        Block_Is_Target(moveOption, outObj2);
+                    }
+                    else
+                        Block_IsNot_Target(moveOption);
+                }
+                else
+                    Block_IsNot_Target(moveOption);
+            }
+
+            //If another Stair or Slope is connected at the sides
             else
             {
-                Block_Is_Target(moveOption, outObj2);
+                if (PerformMovementRaycast(playerPos, dir, 1, out outObj1) == RaycastHitObjects.None &&
+                        PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
+                {
+                    if (outObj2.GetComponent<BlockInfo>().blockType == BlockType.Stair || outObj2.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                    {
+                        Block_Is_Target(moveOption, outObj2);
+                    }
+                    else
+                        Block_IsNot_Target(moveOption);
+                }
+                else
+                    Block_IsNot_Target(moveOption);
             }
 
             return;
         }
+
+        //If standing on a Slope
+        else if (blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair)
+        {
+
+        }
+
+        //If standing on the Ground
         else
         {
-            //Check if it's a Stair or Slope in front of the player
-            if (outObj1)
+            if (PerformMovementRaycast(playerPos, dir, 1, out outObj1) == RaycastHitObjects.None
+            && PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
             {
-                BlockInfo blockInfo = outObj1.GetComponent<BlockInfo>();
-
-                if (blockInfo != null && (blockInfo.blockType == BlockType.Stair || blockInfo.blockType == BlockType.Slope))
+                //Check if it's a Water Block where the player want to move
+                if (outObj2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
                 {
-                    Vector3 stairForward = outObj1.transform.forward;
-                    Vector3 toPlayer = (transform.position - outObj1.transform.position).normalized;
-
-                    float dot = Vector3.Dot(stairForward, toPlayer);
-
-                    if (dot > 0.5f) // Adjust threshold as needed
-                    {
-                        //Stair is facing the player
-                        Block_Is_Target(moveOption, outObj1);
-                    }
+                    if (PlayerHasSwimAbility())
+                        Block_Is_Target(moveOption, outObj2);
                     else
-                    {
-                        //Stair is facing away from the player
                         Block_IsNot_Target(moveOption);
-                    }
+                }
+                else
+                    Block_Is_Target(moveOption, outObj2);
 
-                    return;
+                return;
+            }
+            else
+            {
+                //Check if it's a Stair or Slope in front of the player
+                if (outObj1)
+                {
+                    BlockInfo blockInfo = outObj1.GetComponent<BlockInfo>();
+
+                    if (blockInfo != null && (blockInfo.blockType == BlockType.Stair || blockInfo.blockType == BlockType.Slope))
+                    {
+                        Vector3 stairForward = outObj1.transform.forward;
+                        Vector3 toPlayer = (transform.position - outObj1.transform.position).normalized;
+
+                        float dot = Vector3.Dot(stairForward, toPlayer);
+
+                        if (dot > 0.5f) // Adjust threshold as needed
+                        {
+                            //Stair is facing the player
+                            Block_Is_Target(moveOption, outObj1);
+                        }
+                        else
+                        {
+                            //Stair is facing away from the player
+                            Block_IsNot_Target(moveOption);
+                        }
+
+                        return;
+                    }
                 }
             }
         }
@@ -435,29 +428,13 @@ public class Movement : Singleton<Movement>
 
 
         if (moveToBlock_Forward.targetBlock)
-        {
             SetAvailableBlock(moveToBlock_Forward.targetBlock);
-
-            print("1. SetDarkenBlock");
-        }
         if (moveToBlock_Back.targetBlock)
-        {
             SetAvailableBlock(moveToBlock_Back.targetBlock);
-
-            print("2. SetDarkenBlock");
-        }
         if (moveToBlock_Left.targetBlock)
-        {
             SetAvailableBlock(moveToBlock_Left.targetBlock);
-
-            print("3. SetDarkenBlock");
-        }
         if (moveToBlock_Right.targetBlock)
-        {
             SetAvailableBlock(moveToBlock_Right.targetBlock);
-
-            print("4. SetDarkenBlock");
-        }
 
         if (moveToBlock_Ascend.targetBlock)
             SetAvailableBlock(moveToBlock_Ascend.targetBlock);
