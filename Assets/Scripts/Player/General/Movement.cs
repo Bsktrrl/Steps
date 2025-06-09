@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
@@ -133,15 +134,23 @@ public class Movement : Singleton<Movement>
     void UpdateBlocks()
     {
         UpdateBlockStandingOn();
-        UpdateNormalMovement();
-        UpdateAscendMovement();
-        UpdateDescendMovement();
-        UpdateSwiftSwimUpMovement();
-        UpdateSwiftSwimDownMovement();
-        UpdateDashMovement();
-        UpdateJumpMovement();
-        UpdateGrapplingHookMovement();
-        UpdateCeilingGrabMovement();
+
+        if (blockStandingOn)
+        {
+            UpdateNormalMovement();
+            UpdateAscendMovement();
+            UpdateDescendMovement();
+            UpdateSwiftSwimUpMovement();
+            UpdateSwiftSwimDownMovement();
+            UpdateDashMovement();
+            UpdateJumpMovement();
+            UpdateGrapplingHookMovement();
+            UpdateCeilingGrabMovement();
+        }
+        else
+        {
+            StartFallingWithNoBlock();
+        }
     }
     void UpdateBlockStandingOn()
     {
@@ -263,9 +272,37 @@ public class Movement : Singleton<Movement>
         }
 
         //If standing on a Slope
-        else if (blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair)
+        else if (blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
         {
+            Vector3 slopeForward = blockStandingOn.transform.forward;
+            slopeForward.Normalize();
 
+            if (dir == slopeForward)
+            {
+                if (PerformMovementRaycast(playerPos, slopeForward, 1, out outObj1) == RaycastHitObjects.None
+                && PerformMovementRaycast(playerPos + (slopeForward / 1.5f), rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
+                {
+                    if (outObj2 != blockStandingOn)
+                    {
+                        Block_Is_Target(moveOption, outObj2);
+                    }
+                    else
+                        Block_IsNot_Target(moveOption);
+                }
+                else
+                    Block_IsNot_Target(moveOption);
+
+                if (moveOption.canMoveTo)
+                {
+                    //RotatePlayerBody(blockStandingOn.transform.forward.y);
+                    PerformMovement(moveOption);
+                }
+                else
+                {
+                    //If there isn't any block to stand on
+                    PerformMovement(blockStandingOn.transform.position + slopeForward + (Vector3.down * 0.5f));
+                }
+            }
         }
 
         //If standing on the Ground
@@ -565,6 +602,12 @@ public class Movement : Singleton<Movement>
             RespawnPlayer();
         }
     }
+    public void PerformMovement(Vector3 targetPos)
+    {
+        ResetDarkenBlocks();
+
+        StartCoroutine(Move(targetPos));
+    }
 
     private IEnumerator Move(Vector3 endPos)
     {
@@ -579,7 +622,11 @@ public class Movement : Singleton<Movement>
         while (elapsed < 1f)
         {
             //Get current speed based on the current block
-            float currentSpeed = baseTime / blockStandingOn.GetComponent<BlockInfo>().movementSpeed;
+            float currentSpeed = 0;
+            if (blockStandingOn)
+                currentSpeed = baseTime / blockStandingOn.GetComponent<BlockInfo>().movementSpeed;
+            else
+                currentSpeed = baseTime / fallSpeed;
 
             //Invert speed relation: higher speed value = faster movement
             float speedFactor = 1f / Mathf.Max(currentSpeed, 0.01f); // avoid divide by zero
@@ -605,7 +652,7 @@ public class Movement : Singleton<Movement>
     //--------------------
 
 
-    public void StartFalling()
+    public void StartFallingWithBlock()
     {
         if (blockStandingOn.GetComponent<BlockInfo>().movementState == MovementStates.Falling)
         {
@@ -613,6 +660,12 @@ public class Movement : Singleton<Movement>
 
             ResetDarkenBlocks();
         }
+    }
+    void StartFallingWithNoBlock()
+    {
+        SetMovementState(MovementStates.Falling);
+
+        ResetDarkenBlocks();
     }
     void PlayerIsFalling()
     {
@@ -628,10 +681,13 @@ public class Movement : Singleton<Movement>
     }
     void EndFalling()
     {
-        if (blockStandingOn.GetComponent<BlockInfo>().movementState != MovementStates.Falling)
+        if (blockStandingOn)
         {
-            SetMovementState(MovementStates.Still);
-            Action_LandedFromFalling_Invoke();
+            if (blockStandingOn.GetComponent<BlockInfo>().movementState != MovementStates.Falling)
+            {
+                SetMovementState(MovementStates.Still);
+                Action_LandedFromFalling_Invoke();
+            }
         }
     }
 
@@ -834,6 +890,7 @@ public class Movement : Singleton<Movement>
             if (blockStandingOn.GetComponent<BlockInfo>() /*&& !PlayerManager.Instance.isTransportingPlayer*/ && !Player_Pusher.Instance.playerIsPushed)
             {
                 PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
+                print("10. TakeAStep - StepsCost");
             }
         }
 
@@ -848,8 +905,6 @@ public class Movement : Singleton<Movement>
     }
     public void RespawnPlayer()
     {
-        print("Respawn Player");
-
         StartCoroutine(Resetplayer(0.01f));
     }
     IEnumerator Resetplayer(float waitTime)

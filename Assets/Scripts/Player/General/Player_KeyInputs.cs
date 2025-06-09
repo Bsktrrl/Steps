@@ -31,7 +31,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnForward_Down()
     {
-        forward_isPressed = true;
+        if (!CameraController.Instance.isRotating && !PlayerManager.Instance.pauseGame)
+            forward_isPressed = true;
     }
     void OnForward_Up()
     {
@@ -39,7 +40,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnBackward_Down()
     {
-        back_isPressed = true;
+        if (!CameraController.Instance.isRotating && !PlayerManager.Instance.pauseGame)
+            back_isPressed = true;
     }
     void OnBackward_Up()
     {
@@ -47,7 +49,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnLeft_Down()
     {
-        left_isPressed = true;
+        if (!CameraController.Instance.isRotating && !PlayerManager.Instance.pauseGame)
+            left_isPressed = true;
     }
     void OnLeft_Up()
     {
@@ -55,7 +58,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnRight_Down()
     {
-        right_isPressed = true;
+        if (!CameraController.Instance.isRotating && !PlayerManager.Instance.pauseGame)
+            right_isPressed = true;
     }
     void OnRight_Up()
     {

@@ -62,7 +62,7 @@ public class Block_SandFalling : MonoBehaviour
 
             if (gameObject == Movement.Instance.blockStandingOn)
             {
-                Movement.Instance.StartFalling();
+                Movement.Instance.StartFallingWithBlock();
             }
 
             Falling();

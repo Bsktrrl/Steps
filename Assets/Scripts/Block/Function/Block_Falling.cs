@@ -41,7 +41,7 @@ public class Block_Falling : MonoBehaviour
 
             if (gameObject == Movement.Instance.blockStandingOn)
             {
-                Movement.Instance.StartFalling();
+                Movement.Instance.StartFallingWithBlock();
             }
 
             Falling();
