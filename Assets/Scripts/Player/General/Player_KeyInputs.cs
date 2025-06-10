@@ -31,7 +31,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnForward_Down()
     {
-        if (!ButtonChecks()) { return; }
+        if (!ButtonChecks_Movement()) { return; }
 
         forward_isPressed = true;
     }
@@ -41,7 +41,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnBackward_Down()
     {
-        if (!ButtonChecks()) { return; }
+        if (!ButtonChecks_Movement()) { return; }
 
         back_isPressed = true;
     }
@@ -51,7 +51,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnLeft_Down()
     {
-        if (!ButtonChecks()) { return; }
+        if (!ButtonChecks_Movement()) { return; }
 
         left_isPressed = true;
     }
@@ -61,7 +61,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnRight_Down()
     {
-        if (!ButtonChecks()) { return; }
+        if (!ButtonChecks_Movement()) { return; }
 
         right_isPressed = true;
     }
@@ -76,32 +76,32 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnAbilityUp()
     {
-        if (!ButtonChecks()) { return; }
+        if (!ButtonChecks_Other()) { return; }
 
         Movement.Instance.RunAscend();
     }
     void OnAbilityDown()
     {
-        if (!ButtonChecks()) { return; }
+        if (!ButtonChecks_Other()) { return; }
 
         //Player_Interact.Instance.InteractWithObject();
-        Player_Descend.Instance.RunDescend();
+        Movement.Instance.RunDescend();
     }
     void OnAbilityLeft()
     {
-        if (!ButtonChecks()) { return; }
+        if (!ButtonChecks_Other()) { return; }
 
         Player_CeilingGrab.Instance.CeilingGrab();
     }
     void OnAbilityRight_DownPress()
     {
-        if (!ButtonChecks()) { return; }
+        if (!ButtonChecks_Other()) { return; }
 
         Player_GraplingHook.Instance.StartGrappling();
     }
     void OnAbilityRight_RelesePress()
     {
-        if (!ButtonChecks()) { return; }
+        if (!ButtonChecks_Other()) { return; }
 
         Player_GraplingHook.Instance.StopGrappling();
     }
@@ -112,13 +112,15 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnCameraRotateX()
     {
-        if (!ButtonChecks()) { return; }
+        if (!ButtonChecks_Other()) { return; }
+        if (Movement.Instance.isUpdatingDarkenBlocks) { return; }
 
         CameraController.Instance.RotateCameraX();
     }
     void OnCameraRotateY()
     {
-        if (!ButtonChecks()) { return; }
+        if (!ButtonChecks_Other()) { return; }
+        if (Movement.Instance.isUpdatingDarkenBlocks) { return; }
 
         CameraController.Instance.RotateCameraY();
     }
@@ -129,18 +131,28 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnRespawn()
     {
-        if (!ButtonChecks()) { return; }
+        if (!ButtonChecks_Other()) { return; }
 
         Player_KeyInputs.Instance.Key_Respawn();
     }
     void OnQuit()
     {
-        if (!ButtonChecks()) { return; }
+        if (!ButtonChecks_Other()) { return; }
 
         Player_KeyInputs.Instance.Key_Quit();
     }
 
-    bool ButtonChecks()
+    bool ButtonChecks_Movement()
+    {
+        if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
+
+        if (PlayerManager.Instance.pauseGame) { return false; }
+        if (CameraController.Instance.isRotating) { return false; }
+        if (Player_Interact.Instance.isInteracting) { return false; }
+
+        return true;
+    }
+    bool ButtonChecks_Other()
     {
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
         if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
@@ -167,7 +179,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     public void Key_Quit()
     {
-        if (!ButtonChecks()) { return; }
+        if (!ButtonChecks_Other()) { return; }
 
         RememberCurrentlySelectedUIElement.Instance.currentSelectedUIElement = PauseMenuManager.Instance.pauseMenu_StartButton;
         PauseMenuManager.Instance.OpenPauseMenu();
