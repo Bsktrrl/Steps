@@ -118,7 +118,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""AbilityUp"",
+                    ""name"": ""AbilityUp_Down"",
                     ""type"": ""Button"",
                     ""id"": ""e637ea5d-6d4a-42c4-a0df-f508be8f5c16"",
                     ""expectedControlType"": ""Button"",
@@ -127,12 +127,30 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""AbilityDown"",
+                    ""name"": ""AbilityUp_Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""4d7e45b4-d548-4a30-a1cc-6cff58127fdd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AbilityDown_Down"",
                     ""type"": ""Button"",
                     ""id"": ""537a764c-f061-43a7-9aec-a04b41f24c36"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AbilityDown_Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""c6e95a46-ec3e-42f8-b590-3b0800d306e3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -330,7 +348,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AbilityUp"",
+                    ""action"": ""AbilityUp_Down"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -341,7 +359,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AbilityUp"",
+                    ""action"": ""AbilityUp_Down"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -352,7 +370,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AbilityDown"",
+                    ""action"": ""AbilityDown_Down"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -363,7 +381,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AbilityDown"",
+                    ""action"": ""AbilityDown_Down"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -630,6 +648,50 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Menu_Back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""249a91fa-4cb0-439a-b000-b557a0bd54fa"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AbilityUp_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6419b243-4d8e-4c7e-ad37-fa9955afdf13"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AbilityUp_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f1f098fd-1b29-43e5-a5dc-181c7418b2bb"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AbilityDown_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""42e18646-9010-4d5d-b940-9b24fc4ce0c6"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AbilityDown_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -648,8 +710,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerMovement_Right_Up = m_PlayerMovement.FindAction("Right_Up", throwIfNotFound: true);
         m_PlayerMovement_CameraRotateX = m_PlayerMovement.FindAction("CameraRotateX", throwIfNotFound: true);
         m_PlayerMovement_CameraRotateY = m_PlayerMovement.FindAction("CameraRotateY", throwIfNotFound: true);
-        m_PlayerMovement_AbilityUp = m_PlayerMovement.FindAction("AbilityUp", throwIfNotFound: true);
-        m_PlayerMovement_AbilityDown = m_PlayerMovement.FindAction("AbilityDown", throwIfNotFound: true);
+        m_PlayerMovement_AbilityUp_Down = m_PlayerMovement.FindAction("AbilityUp_Down", throwIfNotFound: true);
+        m_PlayerMovement_AbilityUp_Up = m_PlayerMovement.FindAction("AbilityUp_Up", throwIfNotFound: true);
+        m_PlayerMovement_AbilityDown_Down = m_PlayerMovement.FindAction("AbilityDown_Down", throwIfNotFound: true);
+        m_PlayerMovement_AbilityDown_Up = m_PlayerMovement.FindAction("AbilityDown_Up", throwIfNotFound: true);
         m_PlayerMovement_AbilityLeft = m_PlayerMovement.FindAction("AbilityLeft", throwIfNotFound: true);
         m_PlayerMovement_AbilityRight_DownPress = m_PlayerMovement.FindAction("AbilityRight_DownPress", throwIfNotFound: true);
         m_PlayerMovement_AbilityRight_RelesePress = m_PlayerMovement.FindAction("AbilityRight_RelesePress", throwIfNotFound: true);
@@ -727,8 +791,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_Right_Up;
     private readonly InputAction m_PlayerMovement_CameraRotateX;
     private readonly InputAction m_PlayerMovement_CameraRotateY;
-    private readonly InputAction m_PlayerMovement_AbilityUp;
-    private readonly InputAction m_PlayerMovement_AbilityDown;
+    private readonly InputAction m_PlayerMovement_AbilityUp_Down;
+    private readonly InputAction m_PlayerMovement_AbilityUp_Up;
+    private readonly InputAction m_PlayerMovement_AbilityDown_Down;
+    private readonly InputAction m_PlayerMovement_AbilityDown_Up;
     private readonly InputAction m_PlayerMovement_AbilityLeft;
     private readonly InputAction m_PlayerMovement_AbilityRight_DownPress;
     private readonly InputAction m_PlayerMovement_AbilityRight_RelesePress;
@@ -749,8 +815,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Right_Up => m_Wrapper.m_PlayerMovement_Right_Up;
         public InputAction @CameraRotateX => m_Wrapper.m_PlayerMovement_CameraRotateX;
         public InputAction @CameraRotateY => m_Wrapper.m_PlayerMovement_CameraRotateY;
-        public InputAction @AbilityUp => m_Wrapper.m_PlayerMovement_AbilityUp;
-        public InputAction @AbilityDown => m_Wrapper.m_PlayerMovement_AbilityDown;
+        public InputAction @AbilityUp_Down => m_Wrapper.m_PlayerMovement_AbilityUp_Down;
+        public InputAction @AbilityUp_Up => m_Wrapper.m_PlayerMovement_AbilityUp_Up;
+        public InputAction @AbilityDown_Down => m_Wrapper.m_PlayerMovement_AbilityDown_Down;
+        public InputAction @AbilityDown_Up => m_Wrapper.m_PlayerMovement_AbilityDown_Up;
         public InputAction @AbilityLeft => m_Wrapper.m_PlayerMovement_AbilityLeft;
         public InputAction @AbilityRight_DownPress => m_Wrapper.m_PlayerMovement_AbilityRight_DownPress;
         public InputAction @AbilityRight_RelesePress => m_Wrapper.m_PlayerMovement_AbilityRight_RelesePress;
@@ -796,12 +864,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @CameraRotateY.started += instance.OnCameraRotateY;
             @CameraRotateY.performed += instance.OnCameraRotateY;
             @CameraRotateY.canceled += instance.OnCameraRotateY;
-            @AbilityUp.started += instance.OnAbilityUp;
-            @AbilityUp.performed += instance.OnAbilityUp;
-            @AbilityUp.canceled += instance.OnAbilityUp;
-            @AbilityDown.started += instance.OnAbilityDown;
-            @AbilityDown.performed += instance.OnAbilityDown;
-            @AbilityDown.canceled += instance.OnAbilityDown;
+            @AbilityUp_Down.started += instance.OnAbilityUp_Down;
+            @AbilityUp_Down.performed += instance.OnAbilityUp_Down;
+            @AbilityUp_Down.canceled += instance.OnAbilityUp_Down;
+            @AbilityUp_Up.started += instance.OnAbilityUp_Up;
+            @AbilityUp_Up.performed += instance.OnAbilityUp_Up;
+            @AbilityUp_Up.canceled += instance.OnAbilityUp_Up;
+            @AbilityDown_Down.started += instance.OnAbilityDown_Down;
+            @AbilityDown_Down.performed += instance.OnAbilityDown_Down;
+            @AbilityDown_Down.canceled += instance.OnAbilityDown_Down;
+            @AbilityDown_Up.started += instance.OnAbilityDown_Up;
+            @AbilityDown_Up.performed += instance.OnAbilityDown_Up;
+            @AbilityDown_Up.canceled += instance.OnAbilityDown_Up;
             @AbilityLeft.started += instance.OnAbilityLeft;
             @AbilityLeft.performed += instance.OnAbilityLeft;
             @AbilityLeft.canceled += instance.OnAbilityLeft;
@@ -854,12 +928,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @CameraRotateY.started -= instance.OnCameraRotateY;
             @CameraRotateY.performed -= instance.OnCameraRotateY;
             @CameraRotateY.canceled -= instance.OnCameraRotateY;
-            @AbilityUp.started -= instance.OnAbilityUp;
-            @AbilityUp.performed -= instance.OnAbilityUp;
-            @AbilityUp.canceled -= instance.OnAbilityUp;
-            @AbilityDown.started -= instance.OnAbilityDown;
-            @AbilityDown.performed -= instance.OnAbilityDown;
-            @AbilityDown.canceled -= instance.OnAbilityDown;
+            @AbilityUp_Down.started -= instance.OnAbilityUp_Down;
+            @AbilityUp_Down.performed -= instance.OnAbilityUp_Down;
+            @AbilityUp_Down.canceled -= instance.OnAbilityUp_Down;
+            @AbilityUp_Up.started -= instance.OnAbilityUp_Up;
+            @AbilityUp_Up.performed -= instance.OnAbilityUp_Up;
+            @AbilityUp_Up.canceled -= instance.OnAbilityUp_Up;
+            @AbilityDown_Down.started -= instance.OnAbilityDown_Down;
+            @AbilityDown_Down.performed -= instance.OnAbilityDown_Down;
+            @AbilityDown_Down.canceled -= instance.OnAbilityDown_Down;
+            @AbilityDown_Up.started -= instance.OnAbilityDown_Up;
+            @AbilityDown_Up.performed -= instance.OnAbilityDown_Up;
+            @AbilityDown_Up.canceled -= instance.OnAbilityDown_Up;
             @AbilityLeft.started -= instance.OnAbilityLeft;
             @AbilityLeft.performed -= instance.OnAbilityLeft;
             @AbilityLeft.canceled -= instance.OnAbilityLeft;
@@ -907,8 +987,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnRight_Up(InputAction.CallbackContext context);
         void OnCameraRotateX(InputAction.CallbackContext context);
         void OnCameraRotateY(InputAction.CallbackContext context);
-        void OnAbilityUp(InputAction.CallbackContext context);
-        void OnAbilityDown(InputAction.CallbackContext context);
+        void OnAbilityUp_Down(InputAction.CallbackContext context);
+        void OnAbilityUp_Up(InputAction.CallbackContext context);
+        void OnAbilityDown_Down(InputAction.CallbackContext context);
+        void OnAbilityDown_Up(InputAction.CallbackContext context);
         void OnAbilityLeft(InputAction.CallbackContext context);
         void OnAbilityRight_DownPress(InputAction.CallbackContext context);
         void OnAbilityRight_RelesePress(InputAction.CallbackContext context);

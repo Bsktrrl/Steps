@@ -13,6 +13,9 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     public bool left_isPressed = false;
     public bool right_isPressed = false;
 
+    public bool up_isPressed = false;
+    public bool down_isPressed = false;
+
     public bool cameraX_isPressed = false;
     public bool cameraY_isPressed = false;
 
@@ -74,19 +77,43 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     //--------------------
 
 
-    void OnAbilityUp()
+    void OnAbilityUp_Down()
     {
-        if (!ButtonChecks_Other()) { return; }
+        if (!ButtonChecks_Movement()) { return; }
 
-        if (!Movement.Instance.RunSwiftSwimUp())
-            Movement.Instance.RunAscend();
+        up_isPressed = true;
+
+        //if (!Movement.Instance.RunSwiftSwimUp())
+        //    Movement.Instance.RunAscend();
     }
-    void OnAbilityDown()
+    void OnAbilityUp_Up()
     {
-        if (!ButtonChecks_Other()) { return; }
+        if (!ButtonChecks_Movement()) { return; }
+
+        up_isPressed = false;
+
+        //if (!Movement.Instance.RunSwiftSwimUp())
+        //    Movement.Instance.RunAscend();
+    }
+    void OnAbilityDown_Down()
+    {
+        if (!ButtonChecks_Movement()) { return; }
         
-        if (!Movement.Instance.RunSwiftSwimDown())
-            Movement.Instance.RunDescend();
+        down_isPressed = true;
+
+        //if (!Movement.Instance.RunSwiftSwimDown())
+        //    Movement.Instance.RunDescend();
+
+        //Player_Interact.Instance.InteractWithObject();
+    }
+    void OnAbilityDown_Up()
+    {
+        if (!ButtonChecks_Movement()) { return; }
+
+        down_isPressed = false;
+
+        //if (!Movement.Instance.RunSwiftSwimDown())
+        //    Movement.Instance.RunDescend();
 
         //Player_Interact.Instance.InteractWithObject();
     }

@@ -27,7 +27,7 @@ public class Movement : Singleton<Movement>
     public float heightOverBlock = 0.95f;
     [HideInInspector] public float baseTime = 1;
     [HideInInspector] public float movementSpeed = 0.2f;
-    [HideInInspector] public float fallSpeed = 6f;
+    [HideInInspector] public float fallSpeed = 8f;
     public Vector3 savePos;
 
     [Header("CeilingGrab")]
@@ -140,10 +140,13 @@ public class Movement : Singleton<Movement>
         if (blockStandingOn /*&& movementStates == MovementStates.Still*/)
         {
             UpdateNormalMovement();
+
+            UpdateSwiftSwimUpMovement(); //Must come before Ascend
+            UpdateSwiftSwimDownMovement();//Must come before Descend
+
             UpdateAscendMovement();
             UpdateDescendMovement();
-            UpdateSwiftSwimUpMovement();
-            UpdateSwiftSwimDownMovement();
+
             UpdateDashMovement();
             UpdateJumpMovement();
             UpdateGrapplingHookMovement();
@@ -322,10 +325,10 @@ public class Movement : Singleton<Movement>
         //If standing on a Cube/Slab
         else
         {
+            //If there is a Water Block where the player want to move
             if (PerformMovementRaycast(playerPos, dir, 1, out outObj1) == RaycastHitObjects.None
             && PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
             {
-                //Check if it's a Water Block where the player want to move
                 if (outObj2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
                 {
                     if (PlayerHasSwimAbility())
@@ -338,42 +341,13 @@ public class Movement : Singleton<Movement>
 
                 return;
             }
-
-            //If looking at a Water block with another Water block under it
-            else if (PerformMovementRaycast(playerPos, dir, 1, out outObj1) == RaycastHitObjects.BlockInfo
-            && PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
-            {
-                print("1. Movement");
-                if (outObj1.GetComponent<BlockInfo>().blockElement == BlockElement.Water && outObj2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
-                {
-                    print("2. Movement");
-                    if (PlayerHasSwimAbility())
-                    {
-                        Block_Is_Target(moveOption, outObj2);
-
-                        print("3. Movement: " + moveOption + " | " + outObj2.name);
-                    }
-                    else
-                    {
-                        Block_IsNot_Target(moveOption);
-                        print("4. Movement");
-                    }
-                }
-                else
-                {
-                    Block_IsNot_Target(moveOption);
-                    print("5. Movement");
-                }
-
-                return;
-            }
             else
             {
-                //Check if it's a Stair, Slope or Water in front of the player
                 if (outObj1)
                 {
                     BlockInfo blockInfo1 = outObj1.GetComponent<BlockInfo>();
 
+                    //Check if it's a Stair, Slope or Water in front of the player
                     if (blockInfo1 != null && (blockInfo1.blockType == BlockType.Stair || blockInfo1.blockType == BlockType.Slope))
                     {
                         Vector3 stairForward = outObj1.transform.forward;
@@ -381,19 +355,34 @@ public class Movement : Singleton<Movement>
 
                         float dot = Vector3.Dot(stairForward, toPlayer);
 
-                        if (dot > 0.5f) // Adjust threshold as needed
-                        {
-                            //Stair/Slope is facing the player
+                        //Stair/Slope is facing the player
+                        if (dot > 0.5f)
                             Block_Is_Target(moveOption, outObj1);
-                        }
+
+                        //Stair/Slope is facing away from the player
                         else
-                        {
-                            //Stair/Slope is facing away from the player
                             Block_IsNot_Target(moveOption);
-                        }
 
                         return;
                     }
+
+                    //If looking at a Water block with another Water block under it
+                    else if (PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
+                    {
+                        if (outObj1.GetComponent<BlockInfo>().blockElement == BlockElement.Water && outObj2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+                        {
+                            if (PlayerHasSwimAbility())
+                                Block_Is_Target(moveOption, outObj2);
+                            else
+                                Block_IsNot_Target(moveOption);
+                        }
+                        else
+                            Block_IsNot_Target(moveOption);
+
+                        return;
+                    }
+                    else
+                        Block_IsNot_Target(moveOption);
                 }
             }
         }
@@ -401,8 +390,56 @@ public class Movement : Singleton<Movement>
         Block_IsNot_Target(moveOption);
     }
 
+    void UpdateSwiftSwimUpMovement()
+    {
+        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.SwiftSwim && !PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim)
+        {
+            Block_IsNot_Target(moveToBlock_SwiftSwimUp);
+            return;
+        }
+
+        GameObject outObj1 = null;
+        Vector3 playerPos = PlayerManager.Instance.player.transform.position;
+
+        if (PerformMovementRaycast(blockStandingOn.transform.position, Vector3.up, 1, out outObj1) == RaycastHitObjects.BlockInfo)
+        {
+            BlockInfo hitBlock= outObj1.GetComponent<BlockInfo>();
+
+            if (hitBlock.blockElement == BlockElement.Water)
+                Block_Is_Target(moveToBlock_SwiftSwimUp, outObj1);
+            else
+                Block_IsNot_Target(moveToBlock_SwiftSwimUp);
+        }
+        else
+            Block_IsNot_Target(moveToBlock_SwiftSwimUp);
+    }
+    void UpdateSwiftSwimDownMovement()
+    {
+        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.SwiftSwim && !PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim)
+        {
+            Block_IsNot_Target(moveToBlock_SwiftSwimDown);
+            return;
+        }
+
+        GameObject outObj1 = null;
+        Vector3 playerPos = PlayerManager.Instance.player.transform.position;
+
+        if (PerformMovementRaycast(blockStandingOn.transform.position, Vector3.down, 1, out outObj1) == RaycastHitObjects.BlockInfo)
+        {
+            BlockInfo hitBlock = outObj1.GetComponent<BlockInfo>();
+
+            if (hitBlock.blockElement == BlockElement.Water)
+                Block_Is_Target(moveToBlock_SwiftSwimDown, outObj1);
+            else
+                Block_IsNot_Target(moveToBlock_SwiftSwimDown);
+        }
+        else
+            Block_IsNot_Target(moveToBlock_SwiftSwimDown);
+    }
     void UpdateAscendMovement()
     {
+        if (moveToBlock_SwiftSwimUp.canMoveTo) { Block_IsNot_Target(moveToBlock_Ascend); return; }
+
         if (!PlayerHasAscendAbility())
         {
             Block_IsNot_Target(moveToBlock_Ascend);
@@ -527,6 +564,8 @@ public class Movement : Singleton<Movement>
     }
     void UpdateDescendMovement()
     {
+        if (moveToBlock_SwiftSwimDown.canMoveTo) { Block_IsNot_Target(moveToBlock_Descend); return; }
+
         if (!PlayerHasDescendAbility())
         {
             Block_IsNot_Target(moveToBlock_Descend);
@@ -600,14 +639,6 @@ public class Movement : Singleton<Movement>
         }
         else
             Block_IsNot_Target(moveToBlock_Descend);
-    }
-    void UpdateSwiftSwimUpMovement()
-    {
-
-    }
-    void UpdateSwiftSwimDownMovement()
-    {
-
     }
     void UpdateDashMovement()
     {
@@ -699,7 +730,7 @@ public class Movement : Singleton<Movement>
 
     void SetDarkenBlocks()
     {
-        if (Player_KeyInputs.Instance.forward_isPressed || Player_KeyInputs.Instance.back_isPressed || Player_KeyInputs.Instance.left_isPressed || Player_KeyInputs.Instance.right_isPressed) { return; }
+        if (Player_KeyInputs.Instance.forward_isPressed || Player_KeyInputs.Instance.back_isPressed || Player_KeyInputs.Instance.left_isPressed || Player_KeyInputs.Instance.right_isPressed || Player_KeyInputs.Instance.down_isPressed || Player_KeyInputs.Instance.up_isPressed) { return; }
         if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling) { return; }
 
         if (moveToBlock_Forward.targetBlock)
@@ -781,10 +812,12 @@ public class Movement : Singleton<Movement>
     {
         if (obj.GetComponent<BlockInfo>())
         {
-            if (obj.GetComponent<BlockInfo>().blockIsDark)
-            {
-                obj.GetComponent<BlockInfo>().ResetDarkenColor();
-            }
+            //if (obj.GetComponent<BlockInfo>().blockIsDark)
+            //{
+            //    obj.GetComponent<BlockInfo>().ResetDarkenColor();
+            //}
+
+            obj.GetComponent<BlockInfo>().ResetDarkenColor();
         }
     }
 
@@ -792,41 +825,51 @@ public class Movement : Singleton<Movement>
     //--------------------
 
 
-    public bool RunAscend()
+    void RunUpButton()
     {
-        if (moveToBlock_Ascend.canMoveTo)
-        {
-            PerformMovement(moveToBlock_Ascend, MovementStates.Ability, 4);
-            return true;
-        }
-        else
-            return false;
+        if (!RunSwiftSwimUp())
+            RunAscend();
     }
-    public bool RunDescend()
+    void RunDownButton()
     {
-        if (moveToBlock_Descend.canMoveTo)
-        {
-            PerformMovement(moveToBlock_Descend, MovementStates.Ability, 4);
-            return true;
-        }
-        else
-            return false;
+        if (!RunSwiftSwimDown())
+            RunDescend();
     }
-    public bool RunSwiftSwimUp()
+    bool RunSwiftSwimUp()
     {
         if (moveToBlock_SwiftSwimUp.canMoveTo)
         {
-            PerformMovement(moveToBlock_SwiftSwimUp, MovementStates.Ability, 2);
+            PerformMovement(moveToBlock_SwiftSwimUp, MovementStates.Moving, 2);
             return true;
         }
         else
             return false;
     }
-    public bool RunSwiftSwimDown()
+    bool RunSwiftSwimDown()
     {
         if (moveToBlock_SwiftSwimDown.canMoveTo)
         {
-            PerformMovement(moveToBlock_SwiftSwimDown, MovementStates.Ability, 2);
+            PerformMovement(moveToBlock_SwiftSwimDown, MovementStates.Moving, 2);
+            return true;
+        }
+        else
+            return false;
+    }
+    bool RunAscend()
+    {
+        if (moveToBlock_Ascend.canMoveTo)
+        {
+            PerformMovement(moveToBlock_Ascend, MovementStates.Moving, 8);
+            return true;
+        }
+        else
+            return false;
+    }
+    bool RunDescend()
+    {
+        if (moveToBlock_Descend.canMoveTo)
+        {
+            PerformMovement(moveToBlock_Descend, MovementStates.Moving, 8);
             return true;
         }
         else
@@ -836,6 +879,8 @@ public class Movement : Singleton<Movement>
 
     //--------------------
 
+
+    #region Movement
 
     public RaycastHitObjects PerformMovementRaycast(Vector3 objPos, Vector3 dir, float distance, out GameObject obj)
     {
@@ -873,6 +918,15 @@ public class Movement : Singleton<Movement>
             PerformMovement(moveToBlock_Left, MovementStates.Moving, blockStandingOn.GetComponent<BlockInfo>().movementSpeed);
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Right.targetBlock && moveToBlock_Right.canMoveTo)
             PerformMovement(moveToBlock_Right, MovementStates.Moving, blockStandingOn.GetComponent<BlockInfo>().movementSpeed);
+
+        else if (Player_KeyInputs.Instance.up_isPressed && moveToBlock_SwiftSwimUp.targetBlock && moveToBlock_SwiftSwimUp.canMoveTo)
+            RunUpButton();
+        else if (Player_KeyInputs.Instance.down_isPressed && moveToBlock_SwiftSwimDown.targetBlock && moveToBlock_SwiftSwimDown.canMoveTo)
+            RunDownButton();
+        else if (Player_KeyInputs.Instance.up_isPressed && moveToBlock_Ascend.targetBlock && moveToBlock_Ascend.canMoveTo)
+            RunUpButton();
+        else if (Player_KeyInputs.Instance.down_isPressed && moveToBlock_Descend.targetBlock && moveToBlock_Descend.canMoveTo)
+            RunDownButton();
     }
     public void PerformMovement(MoveOptions canMoveBlock, MovementStates moveState, float movementSpeed)
     {
@@ -896,31 +950,32 @@ public class Movement : Singleton<Movement>
 
     private IEnumerator Move(Vector3 endPos, MovementStates moveState, float movementSpeed)
     {
+        print("1. Move: speed: " + movementSpeed);
+        float counter = 0;
+
         Vector3 startPos = transform.position;
-        Vector3 newEndPos = endPos + (Vector3.up * heightOverBlock) /*+ (Vector3.up * Player_BodyHeight.Instance.SetPlayerBodyHeight())*/;
+        Vector3 newEndPos = endPos + (Vector3.up * heightOverBlock);
 
         movementStates = moveState;
 
         float elapsed = 0f;
         float distance = Vector3.Distance(startPos, newEndPos);
 
-        while (elapsed < 1f)
+        float currentSpeed;
+        if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>())
+            currentSpeed = baseTime / movementSpeed;
+        else
+            currentSpeed = baseTime / fallSpeed;
+
+        float speedFactor = 1f / Mathf.Max(currentSpeed, 0.01f);
+        float duration = distance / speedFactor; //movement time scales with distance and speed
+
+        while (elapsed < duration)
         {
-            //Get current speed based on the current block
-            float currentSpeed = 0;
-            if (blockStandingOn)
-                if (blockStandingOn.GetComponent<BlockInfo>())
-                    currentSpeed = baseTime / movementSpeed;
-            else
-                currentSpeed = baseTime / fallSpeed;
+            counter += Time.deltaTime;
+            elapsed += Time.deltaTime;
 
-            //Invert speed relation: higher speed value = faster movement
-            float speedFactor = 1f / Mathf.Max(currentSpeed, 0.01f); // avoid divide by zero
-            float moveStep = Time.deltaTime * speedFactor;
-
-            elapsed += moveStep;
-
-            float t = Mathf.Clamp01(elapsed);
+            float t = Mathf.Clamp01(elapsed / duration);
             transform.position = Vector3.Lerp(startPos, newEndPos, t);
 
             yield return null;
@@ -932,7 +987,12 @@ public class Movement : Singleton<Movement>
 
         movementStates = MovementStates.Still;
         Action_StepTaken_Invoke();
+
+        print("2. Move: speed: " + movementSpeed + " | Counter: " + counter);
     }
+
+
+    #endregion
 
 
     //--------------------
@@ -1010,6 +1070,8 @@ public class Movement : Singleton<Movement>
     //--------------------
 
 
+    #region Rotating Player
+
     void RotatePlayerBody_Setup()
     {
         if (Player_KeyInputs.Instance.forward_isPressed)
@@ -1083,6 +1145,8 @@ public class Movement : Singleton<Movement>
         if (angle < 0) angle += 360f;
         return angle;
     }
+
+    #endregion
 
     public void UpdateBlockLookingAt()
     {
@@ -1173,6 +1237,10 @@ public class Movement : Singleton<Movement>
         return Vector3.forward;
     }
 
+
+    //--------------------
+
+
     public void TakeAStep()
     {
         //Reduce available steps
@@ -1203,6 +1271,8 @@ public class Movement : Singleton<Movement>
         Player_KeyInputs.Instance.back_isPressed = false;
         Player_KeyInputs.Instance.left_isPressed = false;
         Player_KeyInputs.Instance.right_isPressed = false;
+        Player_KeyInputs.Instance.up_isPressed = false;
+        Player_KeyInputs.Instance.down_isPressed = false;
 
         SetMovementState(MovementStates.Moving);
 

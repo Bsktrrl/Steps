@@ -181,7 +181,9 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
         if (Player_KeyInputs.Instance.forward_isPressed
             || Player_KeyInputs.Instance.back_isPressed
             || Player_KeyInputs.Instance.left_isPressed
-            || Player_KeyInputs.Instance.right_isPressed)
+            || Player_KeyInputs.Instance.right_isPressed
+            || Player_KeyInputs.Instance.up_isPressed
+            || Player_KeyInputs.Instance.down_isPressed)
         {
             if (Movement.Instance.GetMovementState() == MovementStates.Moving)
             {
@@ -192,7 +194,9 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
         if (!Player_KeyInputs.Instance.forward_isPressed
             && !Player_KeyInputs.Instance.back_isPressed
             && !Player_KeyInputs.Instance.left_isPressed
-            && !Player_KeyInputs.Instance.right_isPressed)
+            && !Player_KeyInputs.Instance.right_isPressed
+            && !Player_KeyInputs.Instance.up_isPressed
+            && !Player_KeyInputs.Instance.down_isPressed)
         {
             if (Movement.Instance.GetMovementState() == MovementStates.Still)
             {
