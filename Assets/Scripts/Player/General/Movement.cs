@@ -282,18 +282,51 @@ public class Movement : Singleton<Movement>
             //If another Stair or Slope is connected at the sides
             else
             {
-                if (PerformMovementRaycast(playerPos, dir, 1, out outObj1) == RaycastHitObjects.None &&
-                        PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
+                //if (PerformMovementRaycast(playerPos, dir, 1, out outObj1) == RaycastHitObjects.None &&
+                //        PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
+                //{
+                //    if (outObj2.GetComponent<BlockInfo>().blockType == BlockType.Stair || outObj2.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                //    {
+                //        Block_Is_Target(moveOption, outObj2);
+                //    }
+                //    else
+                //        Block_IsNot_Target(moveOption);
+                //}
+                //else
+                //    Block_IsNot_Target(moveOption);
+
+                if (PerformMovementRaycast(playerPos, dir, 1, out outObj1) == RaycastHitObjects.None && PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
                 {
-                    if (outObj2.GetComponent<BlockInfo>().blockType == BlockType.Stair || outObj2.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                    BlockInfo targetInfo = outObj2.GetComponent<BlockInfo>();
+
+                    if (targetInfo.blockType == BlockType.Stair || targetInfo.blockType == BlockType.Slope)
                     {
-                        Block_Is_Target(moveOption, outObj2);
+                        // Compare forward directions flattened to XZ
+                        Vector3 forwardCurrent = blockStandingOn.transform.forward;
+                        Vector3 forwardTarget = outObj2.transform.forward;
+
+                        forwardCurrent.y = 0;
+                        forwardTarget.y = 0;
+
+                        forwardCurrent.Normalize();
+                        forwardTarget.Normalize();
+
+                        float dot = Vector3.Dot(forwardCurrent, forwardTarget);
+
+                        if (dot > 0.9f) // Check for same direction
+                            Block_Is_Target(moveOption, outObj2);
+                        else
+                            Block_IsNot_Target(moveOption);
                     }
                     else
+                    {
                         Block_IsNot_Target(moveOption);
+                    }
                 }
                 else
+                {
                     Block_IsNot_Target(moveOption);
+                }
             }
 
             return;
@@ -362,7 +395,7 @@ public class Movement : Singleton<Movement>
                 return;
             }
 
-            //IF the first hit is a Block
+            //If the first hit is a Block
             else
             {
                 if (outObj1)
@@ -724,10 +757,172 @@ public class Movement : Singleton<Movement>
         else
             Block_IsNot_Target(moveOption);
     }
+    
     void UpdateJumpMovement()
     {
+        //Forward
+        UpdateJumpMovements(moveToBlock_Jump_Forward, UpdatedDir(Vector3.forward));
 
+        //Back
+        UpdateJumpMovements(moveToBlock_Jump_Back, UpdatedDir(Vector3.back));
+
+        //Left
+        UpdateJumpMovements(moveToBlock_Jump_Left, UpdatedDir(Vector3.left));
+
+        //Right
+        UpdateJumpMovements(moveToBlock_Jump_Right, UpdatedDir(Vector3.right));
     }
+    void UpdateJumpMovements(MoveOptions moveOption, Vector3 dir)
+    {
+        if (!PlayerHasJumpAbility())
+        {
+            Block_IsNot_Target(moveOption);
+            return;
+        }
+
+        GameObject finalTarget = null;
+        Vector3 playerPos = PlayerManager.Instance.player.transform.position;
+        Vector3 rayDir = isCeilingGrabbing ? Vector3.up : Vector3.down;
+
+        //Try raycasts with two different height offsets (normal and stair)
+        bool success =
+            TryPerformJumpWithCorrection(playerPos, dir, -0.25f, out finalTarget) ||
+            TryPerformJumpWithCorrection(playerPos, dir, 0.25f, out finalTarget);
+
+        if (success)
+        {
+            BlockInfo info = finalTarget.GetComponent<BlockInfo>();
+
+            if (info.blockElement == BlockElement.Water)
+            {
+                if (PlayerHasSwimAbility())
+                    Block_Is_Target(moveOption, finalTarget);
+                else
+                    Block_IsNot_Target(moveOption);
+            }
+            else if (info.blockType == BlockType.Stair || info.blockType == BlockType.Slope)
+            {
+                Vector3 toPlayerFlat = -dir.normalized;
+                Vector3 blockForwardFlat = finalTarget.transform.forward;
+                blockForwardFlat.y = 0;
+                blockForwardFlat.Normalize();
+
+                float dot = Vector3.Dot(blockForwardFlat, toPlayerFlat);
+
+                if (dot < -0.9f) // Only jump to stair/slope if it faces away from player
+                    Block_Is_Target(moveOption, finalTarget);
+                else
+                    Block_IsNot_Target(moveOption);
+            }
+            else if (finalTarget != blockStandingOn)
+            {
+                Block_Is_Target(moveOption, finalTarget);
+            }
+            else
+            {
+                Block_IsNot_Target(moveOption);
+            }
+        }
+
+        else if (PerformMovementRaycast(playerPos, dir, 1, out GameObject outObj_1) == RaycastHitObjects.None &&
+            PerformMovementRaycast(playerPos + dir, rayDir, 1, out GameObject outObj_2) == RaycastHitObjects.BlockInfo &&
+            PerformMovementRaycast(playerPos + dir, dir, 1, out GameObject outObj_3) == RaycastHitObjects.None &&
+            PerformMovementRaycast(playerPos + dir + dir, rayDir, 1, out GameObject outObj_4) == RaycastHitObjects.BlockInfo &&
+            (outObj_2.GetComponent<BlockInfo>().blockType == BlockType.Stair || outObj_2.GetComponent<BlockInfo>().blockType == BlockType.Slope))
+        {
+            Vector3 stairForwardFlat = outObj_2.transform.forward;
+            stairForwardFlat.y = 0;
+            stairForwardFlat.Normalize();
+
+            Vector3 dirFlat = dir;
+            dirFlat.y = 0;
+            dirFlat.Normalize();
+
+            float dot = Vector3.Dot(stairForwardFlat, dirFlat);
+
+            // Only block the jump if stair is facing directly AWAY from player
+            if (dot > 0.9f)
+            {
+                Block_IsNot_Target(moveOption);
+            }
+            else
+            {
+                Block_Is_Target(moveOption, outObj_4);
+            }
+        }
+
+
+        //Jumping directly onto a stair/slope facing the player
+        else if (PerformMovementRaycast(playerPos, dir, 1, out GameObject outObj1) == RaycastHitObjects.None &&
+            PerformMovementRaycast(playerPos + dir, rayDir, 1, out GameObject outObj2) == RaycastHitObjects.None &&
+            PerformMovementRaycast(playerPos + dir, dir, 1, out GameObject outObj3) == RaycastHitObjects.BlockInfo)
+        {
+            BlockInfo info = outObj3.GetComponent<BlockInfo>();
+
+            if (info.blockType == BlockType.Stair || info.blockType == BlockType.Slope)
+            {
+                Vector3 toPlayerFlat = -dir.normalized;
+                Vector3 stairForwardFlat = outObj3.transform.forward;
+                stairForwardFlat.y = 0;
+                stairForwardFlat.Normalize();
+
+                float dot = Vector3.Dot(stairForwardFlat, toPlayerFlat);
+
+                if (dot > 0.9f) // Only jump to stair/slope if it faces the player
+                    Block_Is_Target(moveOption, outObj3);
+                else
+                    Block_IsNot_Target(moveOption);
+            }
+            else
+            {
+                Block_IsNot_Target(moveOption);
+            }
+        }
+        else
+        {
+            print("4. Success");
+            Block_IsNot_Target(moveOption);
+        }
+    }
+    bool TryPerformJumpWithCorrection(Vector3 playerPos, Vector3 dir, float correction, out GameObject targetBlock)
+    {
+        GameObject o1, o2, o3, o4;
+        Vector3 rayDir = isCeilingGrabbing ? Vector3.up : Vector3.down;
+
+        targetBlock = null;
+
+        if (PerformMovementRaycast(playerPos + (-rayDir * correction), dir, 1, out o1) == RaycastHitObjects.None &&
+            PerformMovementRaycast(playerPos + dir + (-rayDir * correction), rayDir, 1, out o2) == RaycastHitObjects.None &&
+            PerformMovementRaycast(playerPos + dir + (-rayDir * correction), dir, 1, out o3) == RaycastHitObjects.None &&
+            PerformMovementRaycast(playerPos + dir + dir + (-rayDir * correction), rayDir, 1, out o4) == RaycastHitObjects.BlockInfo)
+        {
+            targetBlock = o4;
+            return true;
+        }
+
+        //else if (PerformMovementRaycast(playerPos + (-rayDir * correction), dir, 1, out o1) == RaycastHitObjects.None &&
+        //    PerformMovementRaycast(playerPos + dir + (-rayDir * correction), rayDir, 1, out o2) == RaycastHitObjects.BlockInfo && (o2.GetComponent<BlockInfo>().blockType == BlockType.Stair || o2.GetComponent<BlockInfo>().blockType == BlockType.Slope) &&
+        //    PerformMovementRaycast(playerPos + dir + (-rayDir * correction), dir, 1, out o3) == RaycastHitObjects.None &&
+        //    PerformMovementRaycast(playerPos + dir + dir + (-rayDir * correction), rayDir, 1, out o4) == RaycastHitObjects.BlockInfo)
+        //{
+        //    Vector3 toPlayerFlat = -dir.normalized;
+        //    Vector3 stairForwardFlat = o2.transform.forward;
+        //    stairForwardFlat.y = 0;
+        //    stairForwardFlat.Normalize();
+
+        //    float dot = Vector3.Dot(stairForwardFlat, toPlayerFlat);
+
+        //    if (dot < 0.9f) // Only jump to stair/slope if it faces the player
+        //        Block_Is_Target(moveOption, o4);
+        //    else
+        //        Block_IsNot_Target(moveOption);
+        //}
+
+        return false;
+    }
+
+
+
     void UpdateGrapplingHookMovement()
     {
 
@@ -769,7 +964,7 @@ public class Movement : Singleton<Movement>
         return stats.abilitiesGot_Permanent.Dash ||
                stats.abilitiesGot_Temporary.Dash;
     }
-    bool PlayerHasJumpingAbility()
+    bool PlayerHasJumpAbility()
     {
         var stats = PlayerStats.Instance.stats;
         return stats.abilitiesGot_Permanent.Jumping ||
@@ -1076,7 +1271,6 @@ public class Movement : Singleton<Movement>
 
     private IEnumerator Move(Vector3 endPos, MovementStates moveState, float movementSpeed)
     {
-        print("1. Move: speed: " + movementSpeed);
         float counter = 0;
 
         Vector3 startPos = transform.position;
@@ -1113,8 +1307,6 @@ public class Movement : Singleton<Movement>
 
         movementStates = MovementStates.Still;
         Action_StepTaken_Invoke();
-
-        print("2. Move: speed: " + movementSpeed + " | Counter: " + counter);
     }
 
 
