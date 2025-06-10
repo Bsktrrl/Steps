@@ -28,6 +28,7 @@ public class Movement : Singleton<Movement>
     [HideInInspector] public float baseTime = 1;
     [HideInInspector] public float movementSpeed = 0.2f;
     [HideInInspector] public float fallSpeed = 8f;
+    [HideInInspector] public float abilitySpeed = 8f;
     public Vector3 savePos;
 
     [Header("CeilingGrab")]
@@ -54,8 +55,16 @@ public class Movement : Singleton<Movement>
     public MoveOptions moveToBlock_SwiftSwimUp;
     public MoveOptions moveToBlock_SwiftSwimDown;
 
-    public MoveOptions moveToBlock_Dash;
-    public MoveOptions moveToBlock_Jump;
+    public MoveOptions moveToBlock_Dash_Forward;
+    public MoveOptions moveToBlock_Dash_Back;
+    public MoveOptions moveToBlock_Dash_Left;
+    public MoveOptions moveToBlock_Dash_Right;
+
+    public MoveOptions moveToBlock_Jump_Forward;
+    public MoveOptions moveToBlock_Jump_Back;
+    public MoveOptions moveToBlock_Jump_Left;
+    public MoveOptions moveToBlock_Jump_Right;
+
     public MoveOptions moveToBlock_GrapplingHook;
     public MoveOptions moveToCeilingGrabbing;
 
@@ -148,6 +157,7 @@ public class Movement : Singleton<Movement>
             UpdateDescendMovement();
 
             UpdateDashMovement();
+
             UpdateJumpMovement();
             UpdateGrapplingHookMovement();
             UpdateCeilingGrabMovement();
@@ -179,6 +189,7 @@ public class Movement : Singleton<Movement>
             Action_isSwitchingBlocks_Invoke();
         }
     }
+
     void UpdateNormalMovement()
     {
         //Forward
@@ -640,9 +651,65 @@ public class Movement : Singleton<Movement>
         else
             Block_IsNot_Target(moveToBlock_Descend);
     }
+
     void UpdateDashMovement()
     {
+        //Forward
+        UpdateDashMovements(moveToBlock_Dash_Forward, UpdatedDir(Vector3.forward));
 
+        //Back
+        UpdateDashMovements(moveToBlock_Dash_Back, UpdatedDir(Vector3.back));
+
+        //Left
+        UpdateDashMovements(moveToBlock_Dash_Left, UpdatedDir(Vector3.left));
+
+        //Right
+        UpdateDashMovements(moveToBlock_Dash_Right, UpdatedDir(Vector3.right));
+    }
+    void UpdateDashMovements(MoveOptions moveOption, Vector3 dir)
+    {
+        if (!PlayerHasDashAbility())
+        {
+            Block_IsNot_Target(moveOption);
+            return;
+        }
+
+        GameObject outObj1 = null;
+        GameObject outObj2 = null;
+        GameObject outObj3 = null;
+        Vector3 playerPos = PlayerManager.Instance.player.transform.position;
+
+        Vector3 rayDir = Vector3.zero;
+
+        if (isCeilingGrabbing)
+            rayDir = Vector3.up;
+        else
+            rayDir = Vector3.down;
+
+        float correction = 0;
+        if (blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair)
+            correction = 0.25f;
+
+        if (PerformMovementRaycast(playerPos + (Vector3.up * correction), dir, 1, out outObj1) == RaycastHitObjects.BlockInfo
+            && PerformMovementRaycast(playerPos + dir + (Vector3.up * correction), dir, 1, out outObj2) == RaycastHitObjects.None
+            && PerformMovementRaycast(playerPos + dir + dir + (Vector3.up * correction), rayDir, 1, out outObj3) == RaycastHitObjects.BlockInfo)
+        {
+            if (outObj3.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+            {
+                if (PlayerHasSwimAbility())
+                    Block_Is_Target(moveOption, outObj3);
+                else
+                    Block_IsNot_Target(moveOption);
+            }
+            else if (outObj3 != blockStandingOn)
+            {
+                Block_Is_Target(moveOption, outObj3);
+            }
+            else
+                Block_IsNot_Target(moveOption);
+        }
+        else
+            Block_IsNot_Target(moveOption);
     }
     void UpdateJumpMovement()
     {
@@ -752,10 +819,24 @@ public class Movement : Singleton<Movement>
         if (moveToBlock_SwiftSwimDown.targetBlock)
             SetAvailableBlock(moveToBlock_SwiftSwimDown.targetBlock);
 
-        if (moveToBlock_Dash.targetBlock)
-            SetAvailableBlock(moveToBlock_Dash.targetBlock);
-        if (moveToBlock_Jump.targetBlock)
-            SetAvailableBlock(moveToBlock_Jump.targetBlock);
+        if (moveToBlock_Dash_Forward.targetBlock)
+            SetAvailableBlock(moveToBlock_Dash_Forward.targetBlock);
+        if (moveToBlock_Dash_Back.targetBlock)
+            SetAvailableBlock(moveToBlock_Dash_Back.targetBlock);
+        if (moveToBlock_Dash_Left.targetBlock)
+            SetAvailableBlock(moveToBlock_Dash_Left.targetBlock);
+        if (moveToBlock_Dash_Right.targetBlock)
+            SetAvailableBlock(moveToBlock_Dash_Right.targetBlock);
+
+        if (moveToBlock_Jump_Forward.targetBlock)
+            SetAvailableBlock(moveToBlock_Jump_Forward.targetBlock);
+        if (moveToBlock_Jump_Back.targetBlock)
+            SetAvailableBlock(moveToBlock_Jump_Back.targetBlock);
+        if (moveToBlock_Jump_Left.targetBlock)
+            SetAvailableBlock(moveToBlock_Jump_Left.targetBlock);
+        if (moveToBlock_Jump_Right.targetBlock)
+            SetAvailableBlock(moveToBlock_Jump_Right.targetBlock);
+
         if (moveToBlock_GrapplingHook.targetBlock)
             SetAvailableBlock(moveToBlock_GrapplingHook.targetBlock);
         if (moveToCeilingGrabbing.targetBlock)
@@ -782,10 +863,24 @@ public class Movement : Singleton<Movement>
         if (moveToBlock_SwiftSwimDown.targetBlock)
             ResetAvailableBlock(moveToBlock_SwiftSwimDown.targetBlock);
 
-        if (moveToBlock_Dash.targetBlock)
-            ResetAvailableBlock(moveToBlock_Dash.targetBlock);
-        if (moveToBlock_Jump.targetBlock)
-            ResetAvailableBlock(moveToBlock_Jump.targetBlock);
+        if (moveToBlock_Dash_Forward.targetBlock)
+            ResetAvailableBlock(moveToBlock_Dash_Forward.targetBlock);
+        if (moveToBlock_Dash_Back.targetBlock)
+            ResetAvailableBlock(moveToBlock_Dash_Back.targetBlock);
+        if (moveToBlock_Dash_Left.targetBlock)
+            ResetAvailableBlock(moveToBlock_Dash_Left.targetBlock);
+        if (moveToBlock_Dash_Right.targetBlock)
+            ResetAvailableBlock(moveToBlock_Dash_Right.targetBlock);
+
+        if (moveToBlock_Jump_Forward.targetBlock)
+            ResetAvailableBlock(moveToBlock_Jump_Forward.targetBlock);
+        if (moveToBlock_Jump_Back.targetBlock)
+            ResetAvailableBlock(moveToBlock_Jump_Back.targetBlock);
+        if (moveToBlock_Jump_Left.targetBlock)
+            ResetAvailableBlock(moveToBlock_Jump_Left.targetBlock);
+        if (moveToBlock_Jump_Right.targetBlock)
+            ResetAvailableBlock(moveToBlock_Jump_Right.targetBlock);
+
         if (moveToBlock_GrapplingHook.targetBlock)
             ResetAvailableBlock(moveToBlock_GrapplingHook.targetBlock);
         if (moveToCeilingGrabbing.targetBlock)
@@ -859,7 +954,7 @@ public class Movement : Singleton<Movement>
     {
         if (moveToBlock_Ascend.canMoveTo)
         {
-            PerformMovement(moveToBlock_Ascend, MovementStates.Moving, 8);
+            PerformMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
             return true;
         }
         else
@@ -869,7 +964,7 @@ public class Movement : Singleton<Movement>
     {
         if (moveToBlock_Descend.canMoveTo)
         {
-            PerformMovement(moveToBlock_Descend, MovementStates.Moving, 8);
+            PerformMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
             return true;
         }
         else
@@ -918,6 +1013,24 @@ public class Movement : Singleton<Movement>
             PerformMovement(moveToBlock_Left, MovementStates.Moving, blockStandingOn.GetComponent<BlockInfo>().movementSpeed);
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Right.targetBlock && moveToBlock_Right.canMoveTo)
             PerformMovement(moveToBlock_Right, MovementStates.Moving, blockStandingOn.GetComponent<BlockInfo>().movementSpeed);
+
+        else if(Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Dash_Forward.targetBlock && moveToBlock_Dash_Forward.canMoveTo)
+            PerformMovement(moveToBlock_Dash_Forward, MovementStates.Moving, abilitySpeed);
+        else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Dash_Back.targetBlock && moveToBlock_Dash_Back.canMoveTo)
+            PerformMovement(moveToBlock_Dash_Back, MovementStates.Moving, abilitySpeed);
+        else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Dash_Left.targetBlock && moveToBlock_Dash_Left.canMoveTo)
+            PerformMovement(moveToBlock_Dash_Left, MovementStates.Moving, abilitySpeed);
+        else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Dash_Right.targetBlock && moveToBlock_Dash_Right.canMoveTo)
+            PerformMovement(moveToBlock_Dash_Right, MovementStates.Moving, abilitySpeed);
+
+        else if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Jump_Forward.targetBlock && moveToBlock_Jump_Forward.canMoveTo)
+            PerformMovement(moveToBlock_Jump_Forward, MovementStates.Moving, abilitySpeed);
+        else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Jump_Back.targetBlock && moveToBlock_Jump_Back.canMoveTo)
+            PerformMovement(moveToBlock_Jump_Back, MovementStates.Moving, abilitySpeed);
+        else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Jump_Left.targetBlock && moveToBlock_Jump_Left.canMoveTo)
+            PerformMovement(moveToBlock_Jump_Left, MovementStates.Moving, abilitySpeed);
+        else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Jump_Right.targetBlock && moveToBlock_Jump_Right.canMoveTo)
+            PerformMovement(moveToBlock_Jump_Right, MovementStates.Moving, abilitySpeed);
 
         else if (Player_KeyInputs.Instance.up_isPressed && moveToBlock_SwiftSwimUp.targetBlock && moveToBlock_SwiftSwimUp.canMoveTo)
             RunUpButton();
