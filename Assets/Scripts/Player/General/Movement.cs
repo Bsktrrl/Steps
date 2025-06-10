@@ -336,14 +336,23 @@ public class Movement : Singleton<Movement>
         //If standing on a Cube/Slab
         else
         {
-            //If there is a Water Block where the player want to move
             if (PerformMovementRaycast(playerPos, dir, 1, out outObj1) == RaycastHitObjects.None
             && PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
             {
+                //If there is a Water Block where the player want to move
                 if (outObj2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
                 {
                     if (PlayerHasSwimAbility())
                         Block_Is_Target(moveOption, outObj2);
+                    else
+                        Block_IsNot_Target(moveOption);
+                }
+                else if (outObj2.GetComponent<BlockInfo>().blockType == BlockType.Stair || outObj2.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                {
+                    if (transform.position.y > outObj2.transform.position.y + 0.5f && Vector3.Dot(outObj2.transform.forward, dir.normalized) > 0.5f)
+                    {
+                        Block_Is_Target(moveOption, outObj2);
+                    }
                     else
                         Block_IsNot_Target(moveOption);
                 }
@@ -352,13 +361,14 @@ public class Movement : Singleton<Movement>
 
                 return;
             }
+
+            //IF the first hit is a Block
             else
             {
                 if (outObj1)
                 {
                     BlockInfo blockInfo1 = outObj1.GetComponent<BlockInfo>();
 
-                    //Check if it's a Stair, Slope or Water in front of the player
                     if (blockInfo1 != null && (blockInfo1.blockType == BlockType.Stair || blockInfo1.blockType == BlockType.Slope))
                     {
                         Vector3 stairForward = outObj1.transform.forward;
@@ -366,11 +376,14 @@ public class Movement : Singleton<Movement>
 
                         float dot = Vector3.Dot(stairForward, toPlayer);
 
-                        //Stair/Slope is facing the player
+                        // CASE 1: Stair is facing the player
                         if (dot > 0.5f)
+                        {
                             Block_Is_Target(moveOption, outObj1);
-
-                        //Stair/Slope is facing away from the player
+                        }
+                        // CASE 2: Player is above the stair AND moving down in its forward direction
+                        else if (transform.position.y > outObj1.transform.position.y + 0.5f && Vector3.Dot(stairForward, dir.normalized) > 0.5f)
+                            Block_Is_Target(moveOption, outObj1);
                         else
                             Block_IsNot_Target(moveOption);
 
