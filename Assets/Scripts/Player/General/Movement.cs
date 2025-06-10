@@ -319,7 +319,7 @@ public class Movement : Singleton<Movement>
             }
         }
 
-        //If standing on the Ground
+        //If standing on a Cube/Slab
         else
         {
             if (PerformMovementRaycast(playerPos, dir, 1, out outObj1) == RaycastHitObjects.None
@@ -338,14 +338,43 @@ public class Movement : Singleton<Movement>
 
                 return;
             }
+
+            //If looking at a Water block with another Water block under it
+            else if (PerformMovementRaycast(playerPos, dir, 1, out outObj1) == RaycastHitObjects.BlockInfo
+            && PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
+            {
+                print("1. Movement");
+                if (outObj1.GetComponent<BlockInfo>().blockElement == BlockElement.Water && outObj2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+                {
+                    print("2. Movement");
+                    if (PlayerHasSwimAbility())
+                    {
+                        Block_Is_Target(moveOption, outObj2);
+
+                        print("3. Movement: " + moveOption + " | " + outObj2.name);
+                    }
+                    else
+                    {
+                        Block_IsNot_Target(moveOption);
+                        print("4. Movement");
+                    }
+                }
+                else
+                {
+                    Block_IsNot_Target(moveOption);
+                    print("5. Movement");
+                }
+
+                return;
+            }
             else
             {
-                //Check if it's a Stair or Slope in front of the player
+                //Check if it's a Stair, Slope or Water in front of the player
                 if (outObj1)
                 {
-                    BlockInfo blockInfo = outObj1.GetComponent<BlockInfo>();
+                    BlockInfo blockInfo1 = outObj1.GetComponent<BlockInfo>();
 
-                    if (blockInfo != null && (blockInfo.blockType == BlockType.Stair || blockInfo.blockType == BlockType.Slope))
+                    if (blockInfo1 != null && (blockInfo1.blockType == BlockType.Stair || blockInfo1.blockType == BlockType.Slope))
                     {
                         Vector3 stairForward = outObj1.transform.forward;
                         Vector3 toPlayer = (transform.position - outObj1.transform.position).normalized;
@@ -354,12 +383,12 @@ public class Movement : Singleton<Movement>
 
                         if (dot > 0.5f) // Adjust threshold as needed
                         {
-                            //Stair is facing the player
+                            //Stair/Slope is facing the player
                             Block_Is_Target(moveOption, outObj1);
                         }
                         else
                         {
-                            //Stair is facing away from the player
+                            //Stair/Slope is facing away from the player
                             Block_IsNot_Target(moveOption);
                         }
 
@@ -763,15 +792,45 @@ public class Movement : Singleton<Movement>
     //--------------------
 
 
-    public void RunAscend()
+    public bool RunAscend()
     {
         if (moveToBlock_Ascend.canMoveTo)
+        {
             PerformMovement(moveToBlock_Ascend, MovementStates.Ability, 4);
+            return true;
+        }
+        else
+            return false;
     }
-    public void RunDescend()
+    public bool RunDescend()
     {
         if (moveToBlock_Descend.canMoveTo)
+        {
             PerformMovement(moveToBlock_Descend, MovementStates.Ability, 4);
+            return true;
+        }
+        else
+            return false;
+    }
+    public bool RunSwiftSwimUp()
+    {
+        if (moveToBlock_SwiftSwimUp.canMoveTo)
+        {
+            PerformMovement(moveToBlock_SwiftSwimUp, MovementStates.Ability, 2);
+            return true;
+        }
+        else
+            return false;
+    }
+    public bool RunSwiftSwimDown()
+    {
+        if (moveToBlock_SwiftSwimDown.canMoveTo)
+        {
+            PerformMovement(moveToBlock_SwiftSwimDown, MovementStates.Ability, 2);
+            return true;
+        }
+        else
+            return false;
     }
 
 

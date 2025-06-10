@@ -78,14 +78,17 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     {
         if (!ButtonChecks_Other()) { return; }
 
-        Movement.Instance.RunAscend();
+        if (!Movement.Instance.RunSwiftSwimUp())
+            Movement.Instance.RunAscend();
     }
     void OnAbilityDown()
     {
         if (!ButtonChecks_Other()) { return; }
+        
+        if (!Movement.Instance.RunSwiftSwimDown())
+            Movement.Instance.RunDescend();
 
         //Player_Interact.Instance.InteractWithObject();
-        Movement.Instance.RunDescend();
     }
     void OnAbilityLeft()
     {
