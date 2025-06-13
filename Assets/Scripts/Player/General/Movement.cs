@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class Movement : Singleton<Movement>
 {
@@ -22,10 +23,10 @@ public class Movement : Singleton<Movement>
 
     [Header("Stats")]
     public float heightOverBlock = 0.95f;
-    [HideInInspector] public float baseTime = 1;
-    [HideInInspector] public float movementSpeed = 0.2f;
-    [HideInInspector] public float fallSpeed = 8f;
-    [HideInInspector] public float abilitySpeed = 8f;
+    float baseTime = 1;
+    public float fallSpeed = 8f;
+    float abilitySpeed = 8;
+    float grapplingLength = 5;
     public Vector3 savePos;
 
     [Header("CeilingGrab")]
@@ -64,8 +65,14 @@ public class Movement : Singleton<Movement>
 
     public MoveOptions moveToBlock_GrapplingHook;
     public MoveOptions moveToCeilingGrabbing;
+    public Vector3 tempGrapplingTaregtPos;
 
     public bool isUpdatingDarkenBlocks;
+
+    public bool performGrapplingHooking;
+    public bool grapplingTargetHasBeenSet;
+    public bool grapplingTowardsStair;
+    public List<GameObject> grapplingObjects = new List<GameObject>();
 
     RaycastHit hit;
 
@@ -95,9 +102,10 @@ public class Movement : Singleton<Movement>
             MovementSetup();
         }
 
-        if (Player_KeyInputs.Instance.grapplingHook_isPressed)
+        if (Player_KeyInputs.Instance.grapplingHook_isPressed && !grapplingTargetHasBeenSet)
         {
             UpdateGrapplingHookMovement(moveToBlock_GrapplingHook, lookDir);
+            grapplingTargetHasBeenSet = true;
         }
     }
 
@@ -111,10 +119,14 @@ public class Movement : Singleton<Movement>
         Action_RespawnPlayerLate += UpdateAvailableMovementBlocks;
         Action_LandedFromFalling += UpdateAvailableMovementBlocks;
 
+        Action_RespawnPlayerEarly += RespawnUnderGrappling;
+
         Action_BodyRotated += UpdateLookDir;
 
         Action_RespawnPlayerEarly += ResetDarkenBlocks;
         Action_StepTaken += TakeAStep;
+
+        Action_isSwitchingBlocks += UpdateStepsAmonutWhenGrapplingMoving;
 
         CameraController.Action_RotateCamera_End += UpdateBlocks;
     }
@@ -124,10 +136,14 @@ public class Movement : Singleton<Movement>
         Action_RespawnPlayerLate -= UpdateAvailableMovementBlocks;
         Action_LandedFromFalling -= UpdateAvailableMovementBlocks;
 
+        Action_RespawnPlayerEarly -= RespawnUnderGrappling;
+
         Action_BodyRotated -= UpdateLookDir;
 
         Action_RespawnPlayerEarly -= ResetDarkenBlocks;
         Action_StepTaken -= TakeAStep;
+
+        Action_isSwitchingBlocks -= UpdateStepsAmonutWhenGrapplingMoving;
 
         CameraController.Action_RotateCamera_End -= UpdateBlocks;
     }
@@ -923,33 +939,42 @@ public class Movement : Singleton<Movement>
         GameObject outObj1 = null;
         Vector3 playerPos = transform.position;
 
-        if (PerformMovementRaycast(playerPos, dir, 5, out outObj1) == RaycastHitObjects.BlockInfo)
+        if (PerformMovementRaycast(playerPos, dir, grapplingLength, out outObj1) == RaycastHitObjects.BlockInfo)
         {
             Collider objCollider = outObj1.GetComponent<Collider>();
             Vector3 contactPoint = objCollider != null
-                ? objCollider.ClosestPoint(playerPos + dir * 5f)
-                : outObj1.transform.position + (Vector3.forward * 5) + dir;
+                ? objCollider.ClosestPoint(playerPos + dir * (grapplingLength + 1))
+                : outObj1.transform.position + (Vector3.forward * (grapplingLength + 1));
 
             Player_GraplingHook.Instance.endPoint = contactPoint + (-dir * 0.05f);
 
-            Player_GraplingHook.Instance.redDotSceneObject.transform.SetPositionAndRotation(Player_GraplingHook.Instance.endPoint - dir, Quaternion.LookRotation(dir));
+            Block_Is_Target(moveOption, outObj1);
+
+            if (moveOption.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Stair || moveOption.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                grapplingTowardsStair = true;
+            else
+                grapplingTowardsStair = false;
+
+            // Check if Stari/Slope is facing the player
+            Vector3 toPlayer = (transform.position - moveToBlock_GrapplingHook.targetBlock.transform.position).normalized;
+            bool StairIsFacingPlayer = (moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Stair || moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope) && Vector3.Dot(moveToBlock_GrapplingHook.targetBlock.transform.forward, toPlayer) > 0.5f;
+
+            if (StairIsFacingPlayer)
+                Player_GraplingHook.Instance.redDotSceneObject.transform.SetPositionAndRotation(Player_GraplingHook.Instance.endPoint - (dir * 0.5f), Quaternion.LookRotation(dir));
+            else
+                Player_GraplingHook.Instance.redDotSceneObject.transform.SetPositionAndRotation(Player_GraplingHook.Instance.endPoint - dir, Quaternion.LookRotation(dir));
+
             Player_GraplingHook.Instance.redDotSceneObject.SetActive(true);
             Player_GraplingHook.Instance.RunLineReader();
 
-            Block_Is_Target(moveOption, outObj1);
+            UpdateBlocksOnTheGrapplingWay(moveOption);
 
             return;
         }
         else
         {
-            //Collider objCollider = outObj1.GetComponent<Collider>();
-            //Vector3 contactPoint = objCollider != null
-            //    ? objCollider.ClosestPoint(playerPos + dir * 5f)
-            //    : outObj1.transform.position;
+            Player_GraplingHook.Instance.endPoint = transform.position + (dir * grapplingLength);
 
-            Player_GraplingHook.Instance.endPoint = transform.position + (dir * 5);
-
-            //Player_GraplingHook.Instance.redDotSceneObject.transform.SetPositionAndRotation(Player_GraplingHook.Instance.endPoint - dir, Quaternion.Euler(dir));
             Player_GraplingHook.Instance.redDotSceneObject.SetActive(false);
             Player_GraplingHook.Instance.RunLineReader();
 
@@ -964,16 +989,18 @@ public class Movement : Singleton<Movement>
             //Prevent Grappling when standing against a wall
             if (Vector3.Distance(transform.position, moveToBlock_GrapplingHook.targetBlock.transform.position) > 1.1f)
             {
-                print("1. UpdateGrapplingHookMovement | Distance: " + Vector3.Distance(transform.position, moveToBlock_GrapplingHook.targetBlock.transform.position));
+                tempGrapplingTaregtPos = moveToBlock_GrapplingHook.targetBlock.transform.position;
+                performGrapplingHooking = true;
                 RunGrapplingHook();
 
                 Player_GraplingHook.Instance.isGrapplingHooking = false;
+                grapplingTargetHasBeenSet = false;
+
+                ResetBlocksOnTheGrapplingWay();
 
                 return;
             }
         }
-
-        print("2. UpdateGrapplingHookMovement");
 
         if (moveToBlock_GrapplingHook != null)
             Block_IsNot_Target(moveToBlock_GrapplingHook);
@@ -981,6 +1008,69 @@ public class Movement : Singleton<Movement>
         Player_GraplingHook.Instance.redDotSceneObject.SetActive(false);
         Player_GraplingHook.Instance.EndLineRenderer();
         Player_GraplingHook.Instance.isGrapplingHooking = false;
+        grapplingTargetHasBeenSet = false;
+    }
+    void UpdateBlocksOnTheGrapplingWay(MoveOptions moveOption)
+    {
+        Vector3 playerPos = transform.position; // or wherever your player is
+        Vector3 dir = (moveOption.targetBlock.transform.position - playerPos).normalized; // direction from player to hit
+        float totalDistance = Vector3.Distance(playerPos, moveOption.targetBlock.transform.position);
+        int steps = Mathf.FloorToInt(totalDistance); // one check per unit
+
+        GameObject outObj1 = null;
+
+        for (int i = 1; i <= steps - 1; i++)
+        {
+            Vector3 samplePos = playerPos + dir * i; // sample point along the line
+
+            // Cast downward from slightly above to ensure hit
+            if (PerformMovementRaycast(samplePos, Vector3.down, 1, out outObj1) == RaycastHitObjects.BlockInfo)
+            {
+                grapplingObjects.Add(outObj1);
+
+                grapplingObjects[grapplingObjects.Count - 1].GetComponent<BlockInfo>().SetDarkenColors();
+            }
+        }
+
+        if (grapplingTowardsStair)
+        {
+            if (PerformMovementRaycast(playerPos + dir * (steps - 1), dir, 1, out outObj1) == RaycastHitObjects.BlockInfo)
+            {
+                grapplingObjects.Add(outObj1);
+
+                grapplingObjects[grapplingObjects.Count - 1].GetComponent<BlockInfo>().SetDarkenColors();
+            }
+        }
+    }
+    void ResetBlocksOnTheGrapplingWay()
+    {
+        for (int i = grapplingObjects.Count - 1; i >= 0; i--)
+        {
+            grapplingObjects[i].GetComponent<BlockInfo>().ResetDarkenColor();
+            grapplingObjects.RemoveAt(i);
+        }
+    }
+    void UpdateStepsAmonutWhenGrapplingMoving()
+    {
+        if (performGrapplingHooking && blockStandingOn
+            && ((grapplingTowardsStair && Vector3.Distance(transform.position, tempGrapplingTaregtPos) > 1.5f) || (!grapplingTowardsStair && Vector3.Distance(blockStandingOn.transform.position, tempGrapplingTaregtPos) > 1.5f)))
+        {
+            if (PlayerStats.Instance.stats.steps_Current < 0)
+            {
+                RespawnPlayer();
+                return;
+            }
+
+            PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
+            StepsHUD.Instance.UpdateStepsDisplay();
+        }
+    }
+    void RespawnUnderGrappling()
+    {
+        grapplingTowardsStair = false;
+        performGrapplingHooking = false;
+        grapplingTargetHasBeenSet = false;
+        ResetBlocksOnTheGrapplingWay();
     }
 
     void UpdateCeilingGrabMovement()
@@ -1238,9 +1328,19 @@ public class Movement : Singleton<Movement>
     {
         if (moveToBlock_GrapplingHook.canMoveTo)
         {
-            PerformMovement(moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down, abilitySpeed + 5);
+            if (moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Stair || moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+            {
+                // Check if Stari/Slope is facing the player
+                Vector3 toPlayer = (transform.position - moveToBlock_GrapplingHook.targetBlock.transform.position).normalized;
+                bool isFacingPlayer = Vector3.Dot(moveToBlock_GrapplingHook.targetBlock.transform.forward, toPlayer) > 0.5f;
 
-            //Also substract steps from blocks grappeled over
+                if (isFacingPlayer)
+                    PerformMovement(moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down + (Vector3.up * 0.95f) + lookDir, abilitySpeed + grapplingLength);
+                else
+                    PerformMovement(moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down + (Vector3.up * 0.5f), abilitySpeed + grapplingLength);
+            }
+            else
+                PerformMovement(moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down, abilitySpeed + grapplingLength);
 
             moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
             Block_IsNot_Target(moveToBlock_GrapplingHook);
@@ -1386,6 +1486,8 @@ public class Movement : Singleton<Movement>
         UpdateLookDir();
 
         movementStates = MovementStates.Still;
+        performGrapplingHooking = false;
+
         Action_StepTaken_Invoke();
     }
 
@@ -1661,6 +1763,7 @@ public class Movement : Singleton<Movement>
     }
     public void RespawnPlayer()
     {
+        StopAllCoroutines();
         StartCoroutine(Resetplayer(0.01f));
     }
     IEnumerator Resetplayer(float waitTime)
@@ -1735,6 +1838,7 @@ public class Movement : Singleton<Movement>
     }
     public void Action_isSwitchingBlocks_Invoke()
     {
+        print("100. Action_isSwitchingBlocks_Invoke");
         Action_isSwitchingBlocks?.Invoke();
     }
     public void Action_LandedFromFalling_Invoke()

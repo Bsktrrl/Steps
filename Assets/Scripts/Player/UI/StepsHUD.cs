@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StepsHUD : MonoBehaviour
+public class StepsHUD : Singleton<StepsHUD>
 {
     [SerializeField] List<GameObject> stepsIconList = new List<GameObject>();
 
@@ -37,8 +37,10 @@ public class StepsHUD : MonoBehaviour
     //--------------------
 
 
-    void UpdateStepsDisplay()
+    public void UpdateStepsDisplay()
     {
+        if (PlayerStats.Instance.stats.steps_Current < 0) { return; }
+
         //Make non-tranparency based on amount of steps left
         for (int i = 0; i < PlayerStats.Instance.stats.steps_Current; i++)
         {
