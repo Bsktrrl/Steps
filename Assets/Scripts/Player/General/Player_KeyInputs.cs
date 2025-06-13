@@ -16,6 +16,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     public bool up_isPressed = false;
     public bool down_isPressed = false;
 
+    public bool grapplingHook_isPressed = false;
+
     public bool cameraX_isPressed = false;
     public bool cameraY_isPressed = false;
 
@@ -72,37 +74,23 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     {
         right_isPressed = false;
     }
-
-
-    //--------------------
-
-
     void OnAbilityUp_Down()
     {
         if (!ButtonChecks_Movement()) { return; }
 
         up_isPressed = true;
-
-        //if (!Movement.Instance.RunSwiftSwimUp())
-        //    Movement.Instance.RunAscend();
     }
     void OnAbilityUp_Up()
     {
         if (!ButtonChecks_Movement()) { return; }
 
         up_isPressed = false;
-
-        //if (!Movement.Instance.RunSwiftSwimUp())
-        //    Movement.Instance.RunAscend();
     }
     void OnAbilityDown_Down()
     {
         if (!ButtonChecks_Movement()) { return; }
         
         down_isPressed = true;
-
-        //if (!Movement.Instance.RunSwiftSwimDown())
-        //    Movement.Instance.RunDescend();
 
         //Player_Interact.Instance.InteractWithObject();
     }
@@ -112,28 +100,32 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         down_isPressed = false;
 
-        //if (!Movement.Instance.RunSwiftSwimDown())
-        //    Movement.Instance.RunDescend();
-
         //Player_Interact.Instance.InteractWithObject();
     }
+
+
+    //--------------------
+
+
     void OnAbilityLeft()
     {
         if (!ButtonChecks_Other()) { return; }
 
         Player_CeilingGrab.Instance.CeilingGrab();
     }
+
     void OnAbilityRight_DownPress()
     {
         if (!ButtonChecks_Other()) { return; }
 
-        Player_GraplingHook.Instance.StartGrappling();
+        grapplingHook_isPressed = true;
     }
     void OnAbilityRight_RelesePress()
     {
         if (!ButtonChecks_Other()) { return; }
 
-        Player_GraplingHook.Instance.StopGrappling();
+        grapplingHook_isPressed = false;
+        Movement.Instance.UpdateGrapplingHookMovement_Release();
     }
 
 

@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 
 public class Movement : Singleton<Movement>
@@ -97,6 +94,11 @@ public class Movement : Singleton<Movement>
         {
             MovementSetup();
         }
+
+        if (Player_KeyInputs.Instance.grapplingHook_isPressed)
+        {
+            UpdateGrapplingHookMovement(moveToBlock_GrapplingHook, lookDir);
+        }
     }
 
 
@@ -109,6 +111,8 @@ public class Movement : Singleton<Movement>
         Action_RespawnPlayerLate += UpdateAvailableMovementBlocks;
         Action_LandedFromFalling += UpdateAvailableMovementBlocks;
 
+        Action_BodyRotated += UpdateLookDir;
+
         Action_RespawnPlayerEarly += ResetDarkenBlocks;
         Action_StepTaken += TakeAStep;
 
@@ -119,6 +123,8 @@ public class Movement : Singleton<Movement>
         Action_StepTaken_Late -= UpdateAvailableMovementBlocks;
         Action_RespawnPlayerLate -= UpdateAvailableMovementBlocks;
         Action_LandedFromFalling -= UpdateAvailableMovementBlocks;
+
+        Action_BodyRotated -= UpdateLookDir;
 
         Action_RespawnPlayerEarly -= ResetDarkenBlocks;
         Action_StepTaken -= TakeAStep;
@@ -159,7 +165,7 @@ public class Movement : Singleton<Movement>
             UpdateDashMovement();
 
             UpdateJumpMovement();
-            UpdateGrapplingHookMovement();
+            //UpdateGrapplingHookMovement();
             UpdateCeilingGrabMovement();
         }
         else
@@ -900,33 +906,83 @@ public class Movement : Singleton<Movement>
             return true;
         }
 
-        //else if (PerformMovementRaycast(playerPos + (-rayDir * correction), dir, 1, out o1) == RaycastHitObjects.None &&
-        //    PerformMovementRaycast(playerPos + dir + (-rayDir * correction), rayDir, 1, out o2) == RaycastHitObjects.BlockInfo && (o2.GetComponent<BlockInfo>().blockType == BlockType.Stair || o2.GetComponent<BlockInfo>().blockType == BlockType.Slope) &&
-        //    PerformMovementRaycast(playerPos + dir + (-rayDir * correction), dir, 1, out o3) == RaycastHitObjects.None &&
-        //    PerformMovementRaycast(playerPos + dir + dir + (-rayDir * correction), rayDir, 1, out o4) == RaycastHitObjects.BlockInfo)
-        //{
-        //    Vector3 toPlayerFlat = -dir.normalized;
-        //    Vector3 stairForwardFlat = o2.transform.forward;
-        //    stairForwardFlat.y = 0;
-        //    stairForwardFlat.Normalize();
-
-        //    float dot = Vector3.Dot(stairForwardFlat, toPlayerFlat);
-
-        //    if (dot < 0.9f) // Only jump to stair/slope if it faces the player
-        //        Block_Is_Target(moveOption, o4);
-        //    else
-        //        Block_IsNot_Target(moveOption);
-        //}
-
         return false;
     }
 
-
-
-    void UpdateGrapplingHookMovement()
+    public void UpdateGrapplingHookMovement(MoveOptions moveOption, Vector3 dir)
     {
+        if (!PlayerHasGrapplingHookAbility())
+        {
+            Block_IsNot_Target(moveOption);
+            return;
+        }
 
+        Player_GraplingHook.Instance.isGrapplingHooking = true;
+        Player_GraplingHook.Instance.EndLineRenderer();
+
+        GameObject outObj1 = null;
+        Vector3 playerPos = transform.position;
+
+        if (PerformMovementRaycast(playerPos, dir, 5, out outObj1) == RaycastHitObjects.BlockInfo)
+        {
+            Collider objCollider = outObj1.GetComponent<Collider>();
+            Vector3 contactPoint = objCollider != null
+                ? objCollider.ClosestPoint(playerPos + dir * 5f)
+                : outObj1.transform.position + (Vector3.forward * 5) + dir;
+
+            Player_GraplingHook.Instance.endPoint = contactPoint + (-dir * 0.05f);
+
+            Player_GraplingHook.Instance.redDotSceneObject.transform.SetPositionAndRotation(Player_GraplingHook.Instance.endPoint - dir, Quaternion.LookRotation(dir));
+            Player_GraplingHook.Instance.redDotSceneObject.SetActive(true);
+            Player_GraplingHook.Instance.RunLineReader();
+
+            Block_Is_Target(moveOption, outObj1);
+
+            return;
+        }
+        else
+        {
+            //Collider objCollider = outObj1.GetComponent<Collider>();
+            //Vector3 contactPoint = objCollider != null
+            //    ? objCollider.ClosestPoint(playerPos + dir * 5f)
+            //    : outObj1.transform.position;
+
+            Player_GraplingHook.Instance.endPoint = transform.position + (dir * 5);
+
+            //Player_GraplingHook.Instance.redDotSceneObject.transform.SetPositionAndRotation(Player_GraplingHook.Instance.endPoint - dir, Quaternion.Euler(dir));
+            Player_GraplingHook.Instance.redDotSceneObject.SetActive(false);
+            Player_GraplingHook.Instance.RunLineReader();
+
+            Block_IsNot_Target(moveOption);
+            return;
+        }  
     }
+    public void UpdateGrapplingHookMovement_Release()
+    {
+        if (moveToBlock_GrapplingHook.targetBlock && moveToBlock_GrapplingHook.canMoveTo)
+        {
+            //Prevent Grappling when standing against a wall
+            if (Vector3.Distance(transform.position, moveToBlock_GrapplingHook.targetBlock.transform.position) > 1.1f)
+            {
+                print("1. UpdateGrapplingHookMovement | Distance: " + Vector3.Distance(transform.position, moveToBlock_GrapplingHook.targetBlock.transform.position));
+                RunGrapplingHook();
+
+                Player_GraplingHook.Instance.isGrapplingHooking = false;
+
+                return;
+            }
+        }
+
+        print("2. UpdateGrapplingHookMovement");
+
+        if (moveToBlock_GrapplingHook != null)
+            Block_IsNot_Target(moveToBlock_GrapplingHook);
+
+        Player_GraplingHook.Instance.redDotSceneObject.SetActive(false);
+        Player_GraplingHook.Instance.EndLineRenderer();
+        Player_GraplingHook.Instance.isGrapplingHooking = false;
+    }
+
     void UpdateCeilingGrabMovement()
     {
 
@@ -1005,7 +1061,7 @@ public class Movement : Singleton<Movement>
 
     void SetDarkenBlocks()
     {
-        if (Player_KeyInputs.Instance.forward_isPressed || Player_KeyInputs.Instance.back_isPressed || Player_KeyInputs.Instance.left_isPressed || Player_KeyInputs.Instance.right_isPressed || Player_KeyInputs.Instance.down_isPressed || Player_KeyInputs.Instance.up_isPressed) { return; }
+        if (Player_KeyInputs.Instance.forward_isPressed || Player_KeyInputs.Instance.back_isPressed || Player_KeyInputs.Instance.left_isPressed || Player_KeyInputs.Instance.right_isPressed || Player_KeyInputs.Instance.up_isPressed || Player_KeyInputs.Instance.down_isPressed || Player_KeyInputs.Instance.grapplingHook_isPressed) { return; }
         if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling) { return; }
 
         if (moveToBlock_Forward.targetBlock)
@@ -1178,6 +1234,19 @@ public class Movement : Singleton<Movement>
         else
             return false;
     }
+    void RunGrapplingHook()
+    {
+        if (moveToBlock_GrapplingHook.canMoveTo)
+        {
+            PerformMovement(moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down, abilitySpeed + 5);
+
+            //Also substract steps from blocks grappeled over
+
+            moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
+            Block_IsNot_Target(moveToBlock_GrapplingHook);
+            Player_GraplingHook.Instance.EndLineRenderer();
+        }
+    }
 
 
     //--------------------
@@ -1212,7 +1281,7 @@ public class Movement : Singleton<Movement>
         //Rotate Player
         RotatePlayerBody_Setup();
 
-        //Perform Movement, if possible
+        //Perform Normal Movement, if possible
         if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Forward.targetBlock && moveToBlock_Forward.canMoveTo)
             PerformMovement(moveToBlock_Forward, MovementStates.Moving, blockStandingOn.GetComponent<BlockInfo>().movementSpeed);
         else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Back.targetBlock && moveToBlock_Back.canMoveTo)
@@ -1222,7 +1291,8 @@ public class Movement : Singleton<Movement>
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Right.targetBlock && moveToBlock_Right.canMoveTo)
             PerformMovement(moveToBlock_Right, MovementStates.Moving, blockStandingOn.GetComponent<BlockInfo>().movementSpeed);
 
-        else if(Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Dash_Forward.targetBlock && moveToBlock_Dash_Forward.canMoveTo)
+        //Perform Dash Movement, if possible
+        else if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Dash_Forward.targetBlock && moveToBlock_Dash_Forward.canMoveTo)
             PerformMovement(moveToBlock_Dash_Forward, MovementStates.Moving, abilitySpeed);
         else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Dash_Back.targetBlock && moveToBlock_Dash_Back.canMoveTo)
             PerformMovement(moveToBlock_Dash_Back, MovementStates.Moving, abilitySpeed);
@@ -1231,6 +1301,7 @@ public class Movement : Singleton<Movement>
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Dash_Right.targetBlock && moveToBlock_Dash_Right.canMoveTo)
             PerformMovement(moveToBlock_Dash_Right, MovementStates.Moving, abilitySpeed);
 
+        //Perform Jump Movement, if possible
         else if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Jump_Forward.targetBlock && moveToBlock_Jump_Forward.canMoveTo)
             PerformMovement(moveToBlock_Jump_Forward, MovementStates.Moving, abilitySpeed);
         else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Jump_Back.targetBlock && moveToBlock_Jump_Back.canMoveTo)
@@ -1240,10 +1311,13 @@ public class Movement : Singleton<Movement>
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Jump_Right.targetBlock && moveToBlock_Jump_Right.canMoveTo)
             PerformMovement(moveToBlock_Jump_Right, MovementStates.Moving, abilitySpeed);
 
+        //Perform SwiftSwim Movement, if possible
         else if (Player_KeyInputs.Instance.up_isPressed && moveToBlock_SwiftSwimUp.targetBlock && moveToBlock_SwiftSwimUp.canMoveTo)
             RunUpButton();
         else if (Player_KeyInputs.Instance.down_isPressed && moveToBlock_SwiftSwimDown.targetBlock && moveToBlock_SwiftSwimDown.canMoveTo)
             RunDownButton();
+
+        //Perform Ascend/Descend Movement, if possible
         else if (Player_KeyInputs.Instance.up_isPressed && moveToBlock_Ascend.targetBlock && moveToBlock_Ascend.canMoveTo)
             RunUpButton();
         else if (Player_KeyInputs.Instance.down_isPressed && moveToBlock_Descend.targetBlock && moveToBlock_Descend.canMoveTo)
@@ -1267,6 +1341,12 @@ public class Movement : Singleton<Movement>
         ResetDarkenBlocks();
 
         StartCoroutine(Move(targetPos, MovementStates.Moving, blockStandingOn.GetComponent<BlockInfo>().movementSpeed));
+    }
+    public void PerformMovement(Vector3 targetPos, float movementSpeed)
+    {
+        ResetDarkenBlocks();
+
+        StartCoroutine(Move(targetPos, MovementStates.Moving, movementSpeed));
     }
 
     private IEnumerator Move(Vector3 endPos, MovementStates moveState, float movementSpeed)
@@ -1303,7 +1383,7 @@ public class Movement : Singleton<Movement>
 
         transform.position = newEndPos;
 
-        UpdateBlockLookingAt();
+        UpdateLookDir();
 
         movementStates = MovementStates.Still;
         Action_StepTaken_Invoke();
@@ -1466,7 +1546,7 @@ public class Movement : Singleton<Movement>
 
     #endregion
 
-    public void UpdateBlockLookingAt()
+    public void UpdateLookDir()
     {
         float yRotation = Mathf.Round(PlayerManager.Instance.playerBody.transform.rotation.eulerAngles.y) % 360;
 
@@ -1495,7 +1575,7 @@ public class Movement : Singleton<Movement>
                 break;
         }
 
-        Movement.Instance.lookingDirection = lookDir;
+        lookingDirection = lookDir;
     }
 
 
@@ -1591,6 +1671,7 @@ public class Movement : Singleton<Movement>
         Player_KeyInputs.Instance.right_isPressed = false;
         Player_KeyInputs.Instance.up_isPressed = false;
         Player_KeyInputs.Instance.down_isPressed = false;
+        Player_KeyInputs.Instance.grapplingHook_isPressed = false;
 
         SetMovementState(MovementStates.Moving);
 
