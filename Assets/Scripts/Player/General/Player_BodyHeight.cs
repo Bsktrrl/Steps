@@ -25,11 +25,6 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
 
     private void Update()
     {
-        //if (Movement.Instance.movementStates == MovementStates.Moving)
-        //{
-        //    SetPlayerBodyHeight();
-        //}
-
         SetPlayerBodyHeight();
     }
 
@@ -40,6 +35,7 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
     public float SetPlayerBodyHeight()
     {
         if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return 0; }
+        if (Movement.Instance.performGrapplingHooking) { return height_Normal; }
 
         if (Movement.Instance.blockStandingOn)
         {

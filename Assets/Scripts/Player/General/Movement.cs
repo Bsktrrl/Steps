@@ -74,6 +74,8 @@ public class Movement : Singleton<Movement>
     public bool grapplingTowardsStair;
     public List<GameObject> grapplingObjects = new List<GameObject>();
 
+    public Vector3 previousPosition;
+
     RaycastHit hit;
 
 
@@ -83,6 +85,7 @@ public class Movement : Singleton<Movement>
     private void Start()
     {
         savePos = transform.position;
+        previousPosition = transform.position;
 
         RespawnPlayer();
     }
@@ -127,6 +130,7 @@ public class Movement : Singleton<Movement>
         Action_StepTaken += TakeAStep;
 
         Action_isSwitchingBlocks += UpdateStepsAmonutWhenGrapplingMoving;
+        Action_StepTaken += IceGlideMovement;
 
         CameraController.Action_RotateCamera_End += UpdateBlocks;
     }
@@ -144,6 +148,7 @@ public class Movement : Singleton<Movement>
         Action_StepTaken -= TakeAStep;
 
         Action_isSwitchingBlocks -= UpdateStepsAmonutWhenGrapplingMoving;
+        Action_StepTaken -= IceGlideMovement;
 
         CameraController.Action_RotateCamera_End -= UpdateBlocks;
     }
@@ -304,19 +309,6 @@ public class Movement : Singleton<Movement>
             //If another Stair or Slope is connected at the sides
             else
             {
-                //if (PerformMovementRaycast(playerPos, dir, 1, out outObj1) == RaycastHitObjects.None &&
-                //        PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
-                //{
-                //    if (outObj2.GetComponent<BlockInfo>().blockType == BlockType.Stair || outObj2.GetComponent<BlockInfo>().blockType == BlockType.Slope)
-                //    {
-                //        Block_Is_Target(moveOption, outObj2);
-                //    }
-                //    else
-                //        Block_IsNot_Target(moveOption);
-                //}
-                //else
-                //    Block_IsNot_Target(moveOption);
-
                 if (PerformMovementRaycast(playerPos, dir, 1, out outObj1) == RaycastHitObjects.None && PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
                 {
                     BlockInfo targetInfo = outObj2.GetComponent<BlockInfo>();
@@ -422,46 +414,49 @@ public class Movement : Singleton<Movement>
             {
                 if (outObj1)
                 {
-                    BlockInfo blockInfo1 = outObj1.GetComponent<BlockInfo>();
-
-                    if (blockInfo1 != null && (blockInfo1.blockType == BlockType.Stair || blockInfo1.blockType == BlockType.Slope))
+                    if (outObj1.GetComponent<BlockInfo>())
                     {
-                        Vector3 stairForward = outObj1.transform.forward;
-                        Vector3 toPlayer = (transform.position - outObj1.transform.position).normalized;
+                        BlockInfo blockInfo1 = outObj1.GetComponent<BlockInfo>();
 
-                        float dot = Vector3.Dot(stairForward, toPlayer);
-
-                        // CASE 1: Stair is facing the player
-                        if (dot > 0.5f)
+                        if (blockInfo1 != null && (blockInfo1.blockType == BlockType.Stair || blockInfo1.blockType == BlockType.Slope))
                         {
-                            Block_Is_Target(moveOption, outObj1);
-                        }
-                        // CASE 2: Player is above the stair AND moving down in its forward direction
-                        else if (transform.position.y > outObj1.transform.position.y + 0.5f && Vector3.Dot(stairForward, dir.normalized) > 0.5f)
-                            Block_Is_Target(moveOption, outObj1);
-                        else
-                            Block_IsNot_Target(moveOption);
+                            Vector3 stairForward = outObj1.transform.forward;
+                            Vector3 toPlayer = (transform.position - outObj1.transform.position).normalized;
 
-                        return;
-                    }
+                            float dot = Vector3.Dot(stairForward, toPlayer);
 
-                    //If looking at a Water block with another Water block under it
-                    else if (PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
-                    {
-                        if (outObj1.GetComponent<BlockInfo>().blockElement == BlockElement.Water && outObj2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
-                        {
-                            if (PlayerHasSwimAbility())
-                                Block_Is_Target(moveOption, outObj2);
+                            // CASE 1: Stair is facing the player
+                            if (dot > 0.5f)
+                            {
+                                Block_Is_Target(moveOption, outObj1);
+                            }
+                            // CASE 2: Player is above the stair AND moving down in its forward direction
+                            else if (transform.position.y > outObj1.transform.position.y + 0.5f && Vector3.Dot(stairForward, dir.normalized) > 0.5f)
+                                Block_Is_Target(moveOption, outObj1);
                             else
                                 Block_IsNot_Target(moveOption);
+
+                            return;
+                        }
+
+                        //If looking at a Water block with another Water block under it
+                        else if (PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
+                        {
+                            if (outObj1.GetComponent<BlockInfo>().blockElement == BlockElement.Water && outObj2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+                            {
+                                if (PlayerHasSwimAbility())
+                                    Block_Is_Target(moveOption, outObj2);
+                                else
+                                    Block_IsNot_Target(moveOption);
+                            }
+                            else
+                                Block_IsNot_Target(moveOption);
+
+                            return;
                         }
                         else
                             Block_IsNot_Target(moveOption);
-
-                        return;
                     }
-                    else
-                        Block_IsNot_Target(moveOption);
                 }
             }
         }
@@ -1425,6 +1420,11 @@ public class Movement : Singleton<Movement>
     }
     public void PerformMovement(MoveOptions canMoveBlock, MovementStates moveState, float movementSpeed)
     {
+        if (canMoveBlock == null) { return; }
+        if (canMoveBlock.targetBlock == null) { return; }
+        if (!canMoveBlock.targetBlock.GetComponent<BlockInfo>()) { return; }
+        if (PlayerStats.Instance.stats == null) { return; }
+
         if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost)
         {
             ResetDarkenBlocks();
@@ -1452,6 +1452,7 @@ public class Movement : Singleton<Movement>
     private IEnumerator Move(Vector3 endPos, MovementStates moveState, float movementSpeed)
     {
         float counter = 0;
+        previousPosition = transform.position;
 
         Vector3 startPos = transform.position;
         Vector3 newEndPos = endPos + (Vector3.up * heightOverBlock);
@@ -1548,13 +1549,64 @@ public class Movement : Singleton<Movement>
             }
         }
     }
-    
+
     #endregion
 
     void IceGlideMovement()
     {
+        if (!blockStandingOn) return;
 
+        if (blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Ice)
+        {
+            print("1. IceGlide");
+
+            MoveOptions moveOption = new MoveOptions();
+
+            // Get movement direction from position delta
+            Vector3 movementDelta = transform.position - previousPosition;
+            Vector3 horizontalDirection = new Vector3(movementDelta.x, 0, movementDelta.z);
+
+            Vector3 cardinalDir = GetMovingDirection(horizontalDirection);
+
+            if (cardinalDir == Vector3.forward)
+                moveOption = moveToBlock_Forward;
+            else if (cardinalDir == Vector3.back)
+                moveOption = moveToBlock_Back;
+            else if (cardinalDir == Vector3.left)
+                moveOption = moveToBlock_Left;
+            else if (cardinalDir == Vector3.right)
+                moveOption = moveToBlock_Right;
+            else
+                return; // No movement
+
+            PerformMovement(moveOption, MovementStates.Moving, blockStandingOn.GetComponent<BlockInfo>().movementSpeed);
+        }
+
+        // Update previous position for next frame
+        previousPosition = transform.position;
     }
+
+
+    Vector3 GetMovingDirection(Vector3 direction)
+    {
+        direction.y = 0;
+        direction.Normalize();
+
+        float forwardDot = Vector3.Dot(direction, UpdatedDir(Vector3.forward));
+        float backDot = Vector3.Dot(direction, UpdatedDir(Vector3.back));
+        float leftDot = Vector3.Dot(direction, UpdatedDir(Vector3.left));
+        float rightDot = Vector3.Dot(direction, UpdatedDir(Vector3.right));
+
+        float maxDot = Mathf.Max(forwardDot, backDot, leftDot, rightDot);
+
+        if (maxDot == forwardDot) return Vector3.forward;
+        if (maxDot == backDot) return Vector3.back;
+        if (maxDot == leftDot) return Vector3.left;
+        if (maxDot == rightDot) return Vector3.right;
+
+        return Vector3.zero; // fallback
+    }
+
 
     void LadderMovement()
     {
@@ -1802,6 +1854,7 @@ public class Movement : Singleton<Movement>
         RespawnPlayer_Action();
 
         yield return new WaitForSeconds(waitTime * 30);
+        previousPosition = transform.position;
 
         SetMovementState(MovementStates.Still);
         RespawnPlayerLate_Action();
@@ -1824,6 +1877,8 @@ public class Movement : Singleton<Movement>
     //--------------------
 
 
+    #region Actions
+
     public void Action_StepTaken_Invoke()
     {
         Action_StepTaken?.Invoke();
@@ -1838,7 +1893,6 @@ public class Movement : Singleton<Movement>
     }
     public void Action_isSwitchingBlocks_Invoke()
     {
-        print("100. Action_isSwitchingBlocks_Invoke");
         Action_isSwitchingBlocks?.Invoke();
     }
     public void Action_LandedFromFalling_Invoke()
@@ -1863,6 +1917,8 @@ public class Movement : Singleton<Movement>
     {
         Action_RespawnToSavePos?.Invoke();
     }
+
+    #endregion
 }
 
 [Serializable]

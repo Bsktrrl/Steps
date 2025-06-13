@@ -152,6 +152,8 @@ public class CameraController : Singleton<CameraController>
         PlayerManager.Instance.pauseGame = false;
         isRotating = false;
 
+        Movement.Instance.previousPosition = transform.position;
+
         Action_RotateCamera_End?.Invoke();
     }
 
