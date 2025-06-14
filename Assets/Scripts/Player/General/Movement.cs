@@ -107,8 +107,6 @@ public class Movement : Singleton<Movement>
         savePos = transform.position;
         previousPosition = transform.position;
 
-        //FindLadderExitBlock();
-
         RespawnPlayer();
     }
     private void Update()
@@ -155,9 +153,6 @@ public class Movement : Singleton<Movement>
         Action_StepTaken_Late += RunIceGliding;
 
         CameraController.Action_RotateCamera_End += UpdateBlocks;
-
-        //Action_StepTaken += FindLadderExitBlock;
-        //Action_RespawnPlayer += FindLadderExitBlock;
     }
     private void OnDisable()
     {
@@ -176,9 +171,6 @@ public class Movement : Singleton<Movement>
         Action_StepTaken_Late -= RunIceGliding;
 
         CameraController.Action_RotateCamera_End -= UpdateBlocks;
-
-        //Action_StepTaken -= FindLadderExitBlock;
-        //Action_RespawnPlayer -= FindLadderExitBlock;
     }
 
 
@@ -1925,7 +1917,6 @@ public class Movement : Singleton<Movement>
         float targetY = 0;
         targetY = targetPosObj.transform.eulerAngles.y;
         PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(PlayerManager.Instance.playerBody.transform.localPosition, Quaternion.Euler(0, targetY, 0));
-        //RotatePlayerBody(targetPosObj.transform.localRotation.eulerAngles.y);
 
         #region Move From ExitBlock
 
@@ -2011,9 +2002,6 @@ public class Movement : Singleton<Movement>
 
         targetY = targetPosObj.transform.eulerAngles.y + 180;
         PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(PlayerManager.Instance.playerBody.transform.localPosition, Quaternion.Euler(0, targetY, 0));
-        //RotatePlayerBody(UpdatedDir(targetPosObj.transform.eulerAngles).y);
-        //transform.SetPositionAndRotation(transform.position, Quaternion.Euler(0, targetY, 0));
-        //RotatePlayerBody(-targetPosObj.transform.localRotation.eulerAngles.y);
 
         isMovingOnLadder_Down = false;
 
