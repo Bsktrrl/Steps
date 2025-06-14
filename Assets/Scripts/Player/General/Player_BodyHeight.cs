@@ -39,95 +39,106 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
 
         if (Movement.Instance.blockStandingOn)
         {
-            //Stair
-            if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair || Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+            if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>())
             {
-                PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Stair), ReturnRotation());
-                return height_Stair;
-            }
+                //Stair
+                if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair || Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                {
+                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Stair), ReturnRotation());
+                    return height_Stair;
+                }
 
-            //Water
-            else if (Movement.Instance.blockStandingOn.GetComponent<Block_Water>())
-            {
-                PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Water), ReturnRotation());
-                return height_Water;
-            }
+                //Water
+                else if (Movement.Instance.blockStandingOn.GetComponent<Block_Water>())
+                {
+                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Water), ReturnRotation());
+                    return height_Water;
+                }
 
-            //Swamp Water
-            else if (Movement.Instance.blockStandingOn.GetComponent<Block_SwampWater>())
-            {
-                PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_SwampWater), ReturnRotation());
-                return height_SwampWater;
-            }
+                //Swamp Water
+                else if (Movement.Instance.blockStandingOn.GetComponent<Block_SwampWater>())
+                {
+                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_SwampWater), ReturnRotation());
+                    return height_SwampWater;
+                }
 
-            //Mud
-            else if (Movement.Instance.blockStandingOn.GetComponent<Block_Mud>())
-            {
-                PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Mud), ReturnRotation());
-                return height_Mud;
-            }
+                //Mud
+                else if (Movement.Instance.blockStandingOn.GetComponent<Block_Mud>())
+                {
+                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Mud), ReturnRotation());
+                    return height_Mud;
+                }
 
-            //Quicksand
-            else if (Movement.Instance.blockStandingOn.GetComponent<Block_Quicksand>())
-            {
-                if (Player_Quicksand.Instance.quicksandCounter == 0)
+                //Quicksand
+                else if (Movement.Instance.blockStandingOn.GetComponent<Block_Quicksand>())
                 {
-                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Normal), ReturnRotation());
-                    return height_Normal;
+                    if (Player_Quicksand.Instance.quicksandCounter == 0)
+                    {
+                        PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Normal), ReturnRotation());
+                        return height_Normal;
+                    }
+                    else if (Player_Quicksand.Instance.quicksandCounter == 1)
+                    {
+                        PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_1), ReturnRotation());
+                        return height_QuickSand_1;
+                    }
+                    else if (Player_Quicksand.Instance.quicksandCounter == 2)
+                    {
+                        PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_2), ReturnRotation());
+                        return height_QuickSand_2;
+                    }
+                    else if (Player_Quicksand.Instance.quicksandCounter == 3)
+                    {
+                        PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_3), ReturnRotation());
+                        return height_QuickSand_3;
+                    }
+                    else if (Player_Quicksand.Instance.quicksandCounter == 4)
+                    {
+                        PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_4), ReturnRotation());
+                        return height_QuickSand_4;
+                    }
+                    else if (Player_Quicksand.Instance.quicksandCounter == 5)
+                    {
+                        PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_5), ReturnRotation());
+                        return height_QuickSand_5;
+                    }
+                    else
+                    {
+                        PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Normal), ReturnRotation());
+                        return height_Normal;
+                    }
                 }
-                else if (Player_Quicksand.Instance.quicksandCounter == 1)
+
+                //Lava
+                else if (Movement.Instance.blockStandingOn.GetComponent<Block_Lava>())
                 {
-                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_1), ReturnRotation());
-                    return height_QuickSand_1;
+                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Lava), ReturnRotation());
+                    return height_Lava;
                 }
-                else if (Player_Quicksand.Instance.quicksandCounter == 2)
-                {
-                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_2), ReturnRotation());
-                    return height_QuickSand_2;
-                }
-                else if (Player_Quicksand.Instance.quicksandCounter == 3)
-                {
-                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_3), ReturnRotation());
-                    return height_QuickSand_3;
-                }
-                else if (Player_Quicksand.Instance.quicksandCounter == 4)
-                {
-                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_4), ReturnRotation());
-                    return height_QuickSand_4;
-                }
-                else if (Player_Quicksand.Instance.quicksandCounter == 5)
-                {
-                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_5), ReturnRotation());
-                    return height_QuickSand_5;
-                }
+
+                //Other
                 else
                 {
                     PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Normal), ReturnRotation());
                     return height_Normal;
                 }
             }
-
-            //Lava
-            else if (Movement.Instance.blockStandingOn.GetComponent<Block_Lava>())
-            {
-                PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Lava), ReturnRotation());
-                return height_Lava;
-            }
-
+            
             //Other
             else
             {
                 PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Normal), ReturnRotation());
                 return height_Normal;
             }
+
         }
 
         //SwiftSwim
-        else if (Player_SwiftSwim.Instance.isSwiftSwimming_Up || Player_SwiftSwim.Instance.isSwiftSwimming_Down)
-        {
-            PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Water), ReturnRotation());
-            return height_Water;
-        }
+        //else if (Movement.Instance.isSwiftSwimming_Up || Movement.Instance.isSwiftSwimming_Down)
+        //{
+        //    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Water), ReturnRotation());
+        //    return height_Water;
+        //}
 
         //Other
         else

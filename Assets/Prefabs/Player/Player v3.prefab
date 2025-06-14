@@ -6189,7 +6189,6 @@ GameObject:
   - component: {fileID: 6442351723837406448}
   - component: {fileID: 2542980385125829506}
   - component: {fileID: 5230471732307156174}
-  - component: {fileID: 2890779019269473121}
   - component: {fileID: 13904960364419418}
   - component: {fileID: 8763539080269035516}
   - component: {fileID: 3547600018388646701}
@@ -6197,11 +6196,6 @@ GameObject:
   - component: {fileID: 2942397174162899684}
   - component: {fileID: 4400904070712247115}
   - component: {fileID: 2923936148599222782}
-  - component: {fileID: 4815799183020610750}
-  - component: {fileID: 7150252727903198799}
-  - component: {fileID: 6309488498664691021}
-  - component: {fileID: 8122818156291192365}
-  - component: {fileID: 4493406416520661073}
   - component: {fileID: 8173112878224402115}
   - component: {fileID: 7902258033444329433}
   - component: {fileID: 2377569446011846462}
@@ -6359,10 +6353,7 @@ MonoBehaviour:
   isMoving: 0
   movementStates: 0
   heightOverBlock: 0.95
-  baseTime: 1
-  movementSpeed: 0.2
   fallSpeed: 6
-  abilitySpeed: 8
   savePos: {x: 0, y: 0, z: 0}
   isCeilingGrabbing: 0
   lookingDirection: {x: 0, y: 0, z: 0}
@@ -6424,7 +6415,32 @@ MonoBehaviour:
   moveToCeilingGrabbing:
     canMoveTo: 0
     targetBlock: {fileID: 0}
+  tempGrapplingTaregtPos: {x: 0, y: 0, z: 0}
+  moveToLadder_Forward:
+    canMoveTo: 0
+    targetBlock: {fileID: 0}
+  moveToLadder_Back:
+    canMoveTo: 0
+    targetBlock: {fileID: 0}
+  moveToLadder_Left:
+    canMoveTo: 0
+    targetBlock: {fileID: 0}
+  moveToLadder_Right:
+    canMoveTo: 0
+    targetBlock: {fileID: 0}
   isUpdatingDarkenBlocks: 0
+  performGrapplingHooking: 0
+  grapplingTargetHasBeenSet: 0
+  grapplingTowardsStair: 0
+  grapplingObjects: []
+  previousPosition: {x: 0, y: 0, z: 0}
+  teleportMovementDir: {x: 0, y: 0, z: 0}
+  ladderEndPos_Up: {x: 0, y: 0, z: 0}
+  ladderEndPos_Down: {x: 0, y: 0, z: 0}
+  isMovingOnLadder_Up: 0
+  isMovingOnLadder_Down: 0
+  ladderPartsToClimb: 0
+  ladderToEnterRot: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &5230471732307156174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6446,24 +6462,6 @@ MonoBehaviour:
   grapplingHook_isPressed: 0
   cameraX_isPressed: 0
   cameraY_isPressed: 0
---- !u!114 &2890779019269473121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6649856597487831825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53dad0b64e37f474e821ae4878909098, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ladderEndPos_Up: {x: 0, y: 0, z: 0}
-  ladderEndPos_Down: {x: 0, y: 0, z: 0}
-  isMovingOnLadder_Up: 0
-  isMovingOnLadder_Down: 0
-  ladderPartsToClimb: 0
-  ladderToEnterRot: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &13904960364419418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6586,110 +6584,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4702decde6ef2740baf9bf66e49979c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4815799183020610750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6649856597487831825}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5816911b3ff9534789a8b4947047764, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canSwiftSwim_Up: 0
-  canSwiftSwim_Down: 0
-  swiftSwim_Up_Obj: {fileID: 0}
-  swiftSwim_Down_Obj: {fileID: 0}
-  swiftSwimBlock_Target: {fileID: 0}
-  isSwiftSwimming_Up: 0
-  isSwiftSwimming_Down: 0
-  targetPos: {x: 0, y: 0, z: 0}
---- !u!114 &7150252727903198799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6649856597487831825}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8cf4b2c117432e41af3898f384b01b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ascendStartPos: {x: 0, y: 0, z: 0}
-  playerCanAscend: 0
-  ascendingBlock_Previous: {fileID: 0}
-  ascendingBlock_Current: {fileID: 0}
-  ascendingBlock_Target: {fileID: 0}
-  ascendingDistance: 2
-  ascendingSpeed: 15
-  isAscending: 0
---- !u!114 &6309488498664691021
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6649856597487831825}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 103dadbe27081e9419f4e98e1139488b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  descendStartPos: {x: 0, y: 0, z: 0}
-  playerCanDescend: 0
-  descendingBlock_Previous: {fileID: 0}
-  descendingBlock_Current: {fileID: 0}
-  descendingBlock_Target: {fileID: 0}
-  descendingDistance: 3
-  descendingSpeed: 20
-  isDescending: 0
---- !u!114 &8122818156291192365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6649856597487831825}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18d9d68a21ef0b44182bcd1978d39dbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dashStartPos: {x: 0, y: 0, z: 0}
-  canDash_Forward: 0
-  canDash_Back: 0
-  canDash_Left: 0
-  canDash_Right: 0
-  dashTarget_Forward: {fileID: 0}
-  dashTarget_Back: {fileID: 0}
-  dashTarget_Left: {fileID: 0}
-  dashTarget_Right: {fileID: 0}
-  isDashing: 0
---- !u!114 &4493406416520661073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6649856597487831825}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1dec0613bda867644a67ada4f8e299a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jumpStartPos: {x: 0, y: 0, z: 0}
-  canJump_Forward: 0
-  canJump_Back: 0
-  canJump_Left: 0
-  canJump_Right: 0
-  jumpTarget_Forward: {fileID: 0}
-  jumpTarget_Back: {fileID: 0}
-  jumpTarget_Left: {fileID: 0}
-  jumpTarget_Right: {fileID: 0}
-  isJumping: 0
 --- !u!114 &8173112878224402115
 MonoBehaviour:
   m_ObjectHideFlags: 0

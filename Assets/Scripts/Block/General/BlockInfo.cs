@@ -175,7 +175,6 @@ public class BlockInfo : MonoBehaviour
     public void SetDarkenColors()
     {
         if (blockIsDark) { return; }
-        if (PlayerManager.Instance.player.GetComponent<Player_Dash>().isDashing) { return; }
 
         if (PlayerStats.Instance.stats.steps_Current <= 0 && movementCost > 0)
         {

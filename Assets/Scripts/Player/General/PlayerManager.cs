@@ -124,12 +124,12 @@ public class PlayerManager : Singleton<PlayerManager>
         if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
-        if (Player_Dash.Instance.isDashing) { return false; }
-        if (Player_Ascend.Instance.isAscending) { return false; }
-        if (Player_Descend.Instance.isDescending) { return false; }
-        if (Player_Jumping.Instance.isJumping) { return false; }
-        if (Player_SwiftSwim.Instance.isSwiftSwimming_Down) { return false; }
-        if (Player_SwiftSwim.Instance.isSwiftSwimming_Up) { return false; }
+        //if (Player_Dash.Instance.isDashing) { return false; }
+        //if (Player_Ascend.Instance.isAscending) { return false; }
+        //if (Player_Descend.Instance.isDescending) { return false; }
+        //if (Player_Jumping.Instance.isJumping) { return false; }
+        //if (Player_SwiftSwim.Instance.isSwiftSwimming_Down) { return false; }
+        //if (Player_SwiftSwim.Instance.isSwiftSwimming_Up) { return false; }
         if (!Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
 
         return true;
