@@ -11,6 +11,9 @@ public class Movement : Singleton<Movement>
     public static event Action Action_RespawnPlayer;
     public static event Action Action_RespawnPlayerLate;
 
+    public static event Action Action_UpdatedBlocks;
+
+    public static event Action Action_StepTaken_Early;
     public static event Action Action_StepTaken;
     public static event Action Action_StepTaken_Late;
     public static event Action Action_BodyRotated;
@@ -75,6 +78,7 @@ public class Movement : Singleton<Movement>
     public List<GameObject> grapplingObjects = new List<GameObject>();
 
     public Vector3 previousPosition;
+    public Vector3 teleportMovementDir;
 
     RaycastHit hit;
 
@@ -130,7 +134,7 @@ public class Movement : Singleton<Movement>
         Action_StepTaken += TakeAStep;
 
         Action_isSwitchingBlocks += UpdateStepsAmonutWhenGrapplingMoving;
-        Action_StepTaken += IceGlideMovement;
+        Action_StepTaken_Late += RunIceGliding;
 
         CameraController.Action_RotateCamera_End += UpdateBlocks;
     }
@@ -148,7 +152,7 @@ public class Movement : Singleton<Movement>
         Action_StepTaken -= TakeAStep;
 
         Action_isSwitchingBlocks -= UpdateStepsAmonutWhenGrapplingMoving;
-        Action_StepTaken -= IceGlideMovement;
+        Action_StepTaken_Late -= RunIceGliding;
 
         CameraController.Action_RotateCamera_End -= UpdateBlocks;
     }
@@ -166,6 +170,8 @@ public class Movement : Singleton<Movement>
         UpdateBlocks();
 
         SetDarkenBlocks();
+
+        Action_UpdatedBlocks?.Invoke();
     }
     void UpdateBlocks()
     {
@@ -196,7 +202,7 @@ public class Movement : Singleton<Movement>
 
         isUpdatingDarkenBlocks = false;
     }
-    void UpdateBlockStandingOn()
+    public void UpdateBlockStandingOn()
     {
         GameObject obj = null;
         GameObject objTemp = blockStandingOn;
@@ -1451,6 +1457,8 @@ public class Movement : Singleton<Movement>
 
     private IEnumerator Move(Vector3 endPos, MovementStates moveState, float movementSpeed)
     {
+        Action_StepTaken_Early_Invoke();
+
         float counter = 0;
         previousPosition = transform.position;
 
@@ -1552,42 +1560,52 @@ public class Movement : Singleton<Movement>
 
     #endregion
 
-    void IceGlideMovement()
+    void RunIceGliding()
+    {
+        IceGlideMovement(false);
+    }
+    public void IceGlideMovement(bool canIceGlide)
     {
         if (!blockStandingOn) return;
 
-        if (blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Ice)
+        if (blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Ice
+            && ((blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair || blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope) || (blockStandingOn.GetComponent<EffectBlockInfo>() && !blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_Teleporter_isAdded) || canIceGlide))
         {
             print("1. IceGlide");
 
             MoveOptions moveOption = new MoveOptions();
 
-            // Get movement direction from position delta
-            Vector3 movementDelta = transform.position - previousPosition;
-            Vector3 horizontalDirection = new Vector3(movementDelta.x, 0, movementDelta.z);
+            Vector3 movementDir = Vector3.zero;
+            if (!canIceGlide)
+            {
+                Vector3 movementDelta = transform.position - previousPosition;
+                Vector3 horizontalDirection = new Vector3(movementDelta.x, 0, movementDelta.z);
 
-            Vector3 cardinalDir = GetMovingDirection(horizontalDirection);
+                movementDir = GetMovingDirection(horizontalDirection);
+            }
+            else
+            {
+                movementDir = teleportMovementDir;
+            }
 
-            if (cardinalDir == Vector3.forward)
+            if (movementDir == Vector3.forward)
                 moveOption = moveToBlock_Forward;
-            else if (cardinalDir == Vector3.back)
+            else if (movementDir == Vector3.back)
                 moveOption = moveToBlock_Back;
-            else if (cardinalDir == Vector3.left)
+            else if (movementDir == Vector3.left)
                 moveOption = moveToBlock_Left;
-            else if (cardinalDir == Vector3.right)
+            else if (movementDir == Vector3.right)
                 moveOption = moveToBlock_Right;
             else
-                return; // No movement
+                return;
 
             PerformMovement(moveOption, MovementStates.Moving, blockStandingOn.GetComponent<BlockInfo>().movementSpeed);
+
+            //Update previous position for next frame
+            previousPosition = transform.position;
         }
-
-        // Update previous position for next frame
-        previousPosition = transform.position;
     }
-
-
-    Vector3 GetMovingDirection(Vector3 direction)
+    public Vector3 GetMovingDirection(Vector3 direction)
     {
         direction.y = 0;
         direction.Normalize();
@@ -1879,6 +1897,10 @@ public class Movement : Singleton<Movement>
 
     #region Actions
 
+    public void Action_StepTaken_Early_Invoke()
+    {
+        Action_StepTaken_Early?.Invoke();
+    }
     public void Action_StepTaken_Invoke()
     {
         Action_StepTaken?.Invoke();

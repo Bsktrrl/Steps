@@ -168,6 +168,10 @@ public class Block_Teleport : MonoBehaviour
     {
         if (Movement.Instance.blockStandingOn == gameObject && newLandingSpot)
         {
+            Vector3 movementDelta = transform.position - Movement.Instance.previousPosition;
+            Vector3 horizontalDirection = new Vector3(movementDelta.x, 0, movementDelta.z);
+            Movement.Instance.teleportMovementDir = Movement.Instance.GetMovingDirection(horizontalDirection);
+
             StartCoroutine(TeleportWait(0.005f));
         }
     }
@@ -195,9 +199,15 @@ public class Block_Teleport : MonoBehaviour
 
         PlayerStats.Instance.stats.steps_Current = stepTemp - gameObject.GetComponent<Block_Teleport>().newLandingSpot.GetComponent<BlockInfo>().movementCost;
 
+        yield return new WaitForSeconds(waitTime);
+
+        Movement.Instance.UpdateBlockStandingOn();
+
         Movement.Instance.Action_StepTaken_Invoke();
         
         Action_EndTeleport?.Invoke();
+
+        Movement.Instance.IceGlideMovement(true);
     }
 
     void StartTeleport_Action()
