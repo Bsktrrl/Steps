@@ -96,6 +96,8 @@ public class Movement : Singleton<Movement>
     public int ladderPartsToClimb;
     [SerializeField] Quaternion ladderToEnterRot;
 
+    public Vector3 elevatorPos_Previous;
+
     RaycastHit hit;
 
 
@@ -106,6 +108,7 @@ public class Movement : Singleton<Movement>
     {
         savePos = transform.position;
         previousPosition = transform.position;
+        elevatorPos_Previous = transform.position;
 
         RespawnPlayer();
     }
@@ -129,6 +132,11 @@ public class Movement : Singleton<Movement>
         {
             UpdateGrapplingHookMovement(moveToBlock_GrapplingHook, lookDir);
             grapplingTargetHasBeenSet = true;
+        }
+
+        if (blockStandingOn && blockStandingOn.GetComponent<Block_Elevator>())
+        {
+            FollowElevatorBlockMovement();
         }
     }
 
@@ -179,7 +187,7 @@ public class Movement : Singleton<Movement>
 
     #region Movement Functions
 
-    void UpdateAvailableMovementBlocks()
+    public void UpdateAvailableMovementBlocks()
     {
         ResetDarkenBlocks();
 
@@ -189,7 +197,7 @@ public class Movement : Singleton<Movement>
 
         Action_UpdatedBlocks?.Invoke();
     }
-    void UpdateBlocks()
+    public void UpdateBlocks()
     {
         isUpdatingDarkenBlocks = true;
 
@@ -2018,7 +2026,7 @@ public class Movement : Singleton<Movement>
 
     void FollowElevatorBlockMovement()
     {
-
+        
     }
 
 
@@ -2205,7 +2213,6 @@ public class Movement : Singleton<Movement>
     }
     public void RespawnPlayer()
     {
-        StopAllCoroutines();
         StartCoroutine(Resetplayer(0.01f));
     }
     IEnumerator Resetplayer(float waitTime)
@@ -2217,6 +2224,9 @@ public class Movement : Singleton<Movement>
         Player_KeyInputs.Instance.up_isPressed = false;
         Player_KeyInputs.Instance.down_isPressed = false;
         Player_KeyInputs.Instance.grapplingHook_isPressed = false;
+
+        Player_KeyInputs.Instance.cameraX_isPressed = false;
+        Player_KeyInputs.Instance.cameraY_isPressed = false;
 
         SetMovementState(MovementStates.Moving);
 
@@ -2248,6 +2258,8 @@ public class Movement : Singleton<Movement>
 
         SetMovementState(MovementStates.Still);
         RespawnPlayerLate_Action();
+
+        StopAllCoroutines();
     }
 
 
