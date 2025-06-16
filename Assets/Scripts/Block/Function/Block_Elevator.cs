@@ -148,7 +148,7 @@ public class Block_Elevator : MonoBehaviour
 
         if (Movement.Instance.blockStandingOn != gameObject && (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) <= 1.4f) && (distance > -1f && distance < -0.9f) /*&& !hasCheckedForPlayer*/)
         {
-            print("2. CheckIfInRangeOfPlayer | Elevator: " + transform.position.y + " | Player: " + PlayerManager.Instance.player.transform.position.y + " | Distance: " + distance);
+            //print("2. CheckIfInRangeOfPlayer | Elevator: " + transform.position.y + " | Player: " + PlayerManager.Instance.player.transform.position.y + " | Distance: " + distance);
             Movement.Instance.UpdateBlocks();
             hasCheckedForPlayer = true;
         }
@@ -185,11 +185,12 @@ public class Block_Elevator : MonoBehaviour
             float delta = Vector3.Distance(transform.position, lastPosition);
             accumulatedDistance += delta;
 
-            if (accumulatedDistance >= 0.5f /*Vector3.Distance(Movement.Instance.elevatorPos_Previous, transform.position) >= 1f*/)
+            if (accumulatedDistance >= 0.1f /*Vector3.Distance(Movement.Instance.elevatorPos_Previous, transform.position) >= 1f*/)
             {
                 accumulatedDistance = 0;
                 Movement.Instance.elevatorPos_Previous = transform.position;
-                Movement.Instance.UpdateAvailableMovementBlocks();
+                Movement.Instance.UpdateBlocks();
+                Movement.Instance.SetDarkenBlocks();
             }
 
             lastPosition = transform.position;

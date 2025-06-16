@@ -1107,11 +1107,21 @@ public class Movement : Singleton<Movement>
 
     void Block_Is_Target(MoveOptions moveOption, GameObject obj)
     {
+        if (moveOption.targetBlock && moveOption.targetBlock != obj && moveOption.targetBlock.GetComponent<BlockInfo>() && moveOption.targetBlock.GetComponent<BlockInfo>().blockIsDark)
+        {
+            moveOption.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
+        }
+
         moveOption.canMoveTo = true;
         moveOption.targetBlock = obj;
     }
     void Block_IsNot_Target(MoveOptions moveOption)
     {
+        if (moveOption.targetBlock && moveOption.targetBlock.GetComponent<BlockInfo>() && moveOption.targetBlock.GetComponent<BlockInfo>().blockIsDark)
+        {
+            moveOption.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
+        }
+
         moveOption.canMoveTo = false;
         moveOption.targetBlock = null;
     }
@@ -1178,7 +1188,7 @@ public class Movement : Singleton<Movement>
 
     #region SetBlocks
 
-    void SetDarkenBlocks()
+    public void SetDarkenBlocks()
     {
         if (Player_KeyInputs.Instance.forward_isPressed || Player_KeyInputs.Instance.back_isPressed || Player_KeyInputs.Instance.left_isPressed || Player_KeyInputs.Instance.right_isPressed || Player_KeyInputs.Instance.up_isPressed || Player_KeyInputs.Instance.down_isPressed || Player_KeyInputs.Instance.grapplingHook_isPressed) { return; }
         if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling) { return; }
@@ -1299,11 +1309,6 @@ public class Movement : Singleton<Movement>
     {
         if (obj.GetComponent<BlockInfo>())
         {
-            //if (obj.GetComponent<BlockInfo>().blockIsDark)
-            //{
-            //    obj.GetComponent<BlockInfo>().ResetDarkenColor();
-            //}
-
             obj.GetComponent<BlockInfo>().ResetDarkenColor();
         }
     }
