@@ -97,6 +97,8 @@ public class Movement : Singleton<Movement>
     [SerializeField] Quaternion ladderToEnterRot;
 
     public Vector3 elevatorPos_Previous;
+    private Transform elevatorBeingFollowed = null;
+    private Vector3 elevatorOffset = Vector3.zero;
 
     RaycastHit hit;
 
@@ -132,11 +134,6 @@ public class Movement : Singleton<Movement>
         {
             UpdateGrapplingHookMovement(moveToBlock_GrapplingHook, lookDir);
             grapplingTargetHasBeenSet = true;
-        }
-
-        if (blockStandingOn && blockStandingOn.GetComponent<Block_Elevator>())
-        {
-            FollowElevatorBlockMovement();
         }
     }
 
@@ -1504,7 +1501,7 @@ public class Movement : Singleton<Movement>
         {
             ResetDarkenBlocks();
 
-            StartCoroutine(Move(canMoveBlock.targetBlock.transform.position, moveState, movementSpeed));
+            StartCoroutine(Move(canMoveBlock.targetBlock.transform.position, moveState, movementSpeed, canMoveBlock));
         }
         else
         {
@@ -1515,19 +1512,45 @@ public class Movement : Singleton<Movement>
     {
         ResetDarkenBlocks();
 
-        StartCoroutine(Move(targetPos, MovementStates.Moving, blockStandingOn.GetComponent<BlockInfo>().movementSpeed));
+        StartCoroutine(Move(targetPos, MovementStates.Moving, blockStandingOn.GetComponent<BlockInfo>().movementSpeed, null));
     }
     public void PerformMovement(Vector3 targetPos, float movementSpeed)
     {
         ResetDarkenBlocks();
 
-        StartCoroutine(Move(targetPos, MovementStates.Moving, movementSpeed));
+        StartCoroutine(Move(targetPos, MovementStates.Moving, movementSpeed, null));
     }
 
-    private IEnumerator Move(Vector3 endPos, MovementStates moveState, float movementSpeed)
+    private IEnumerator Move(Vector3 endPos, MovementStates moveState, float movementSpeed, MoveOptions moveOptions)
     {
         Action_StepTaken_Early_Invoke();
 
+        if (moveOptions != null && moveOptions.targetBlock)
+        {
+            //Move onto a moving block
+            if (moveOptions.targetBlock.GetComponent<Block_Elevator>())
+            {
+                yield return ElevatorMovement(moveState, movementSpeed, moveOptions);
+            }
+
+            //Move onto a block
+            else
+            {
+                yield return NormalMovement(endPos, moveState, movementSpeed);
+            }
+        }
+
+        //Move to a position, not a block
+        else
+        {
+            yield return NormalMovement(endPos, moveState, movementSpeed);
+        }
+
+        Action_StepTaken_Invoke();
+    }
+
+    IEnumerator NormalMovement(Vector3 endPos, MovementStates moveState, float movementSpeed)
+    {
         float counter = 0;
         previousPosition = transform.position;
 
@@ -1565,9 +1588,52 @@ public class Movement : Singleton<Movement>
 
         movementStates = MovementStates.Still;
         performGrapplingHooking = false;
-
-        Action_StepTaken_Invoke();
     }
+    IEnumerator ElevatorMovement(MovementStates moveState, float movementSpeed, MoveOptions moveOptions)
+    {
+        float counter = 0f;
+        previousPosition = transform.position;
+
+        Transform targetBlockTransform = moveOptions.targetBlock.transform;
+        Vector3 startPos = transform.position;
+        Vector3 targetOffset = new Vector3(0f, heightOverBlock, 0f);
+        Vector3 endPos = targetBlockTransform.position + targetOffset;
+
+        movementStates = moveState;
+
+        float elapsed = 0f;
+        float distance = Vector3.Distance(startPos, endPos);
+
+        float currentSpeed = baseTime / movementSpeed;
+        float speedFactor = 1f / Mathf.Max(currentSpeed, 0.01f);
+        float duration = distance / speedFactor;
+
+        while (elapsed < duration)
+        {
+            counter += Time.deltaTime;
+            elapsed += Time.deltaTime;
+
+            float t = Mathf.Clamp01(elapsed / duration);
+            Vector3 targetPosition = Vector3.Lerp(startPos, endPos, t);
+            transform.position = targetPosition;
+
+            yield return null;
+        }
+
+        // Snap exactly to final position atop the elevator
+        transform.position = targetBlockTransform.position + targetOffset;
+
+        // Store reference to elevator and relative offset for syncing elsewhere
+        elevatorBeingFollowed = targetBlockTransform;
+        elevatorOffset = targetOffset;
+
+        UpdateLookDir();
+
+        movementStates = MovementStates.Still;
+        performGrapplingHooking = false;
+    }
+
+
 
 
     #endregion
@@ -1617,7 +1683,7 @@ public class Movement : Singleton<Movement>
     }
     void EndFalling()
     {
-        if (blockStandingOn)
+        if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>())
         {
             if (blockStandingOn.GetComponent<BlockInfo>().movementState != MovementStates.Falling)
             {
@@ -1638,6 +1704,7 @@ public class Movement : Singleton<Movement>
     public void IceGlideMovement(bool canIceGlide)
     {
         if (!blockStandingOn) return;
+        if (!blockStandingOn.GetComponent<BlockInfo>()) return;
 
         if (blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Ice
             && ((blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair || blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope) || (blockStandingOn.GetComponent<EffectBlockInfo>() && !blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_Teleporter_isAdded) || canIceGlide))
@@ -2028,11 +2095,6 @@ public class Movement : Singleton<Movement>
     }
 
     #endregion
-
-    void FollowElevatorBlockMovement()
-    {
-        
-    }
 
 
     //--------------------

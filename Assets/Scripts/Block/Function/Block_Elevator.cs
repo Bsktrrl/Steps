@@ -69,16 +69,21 @@ public class Block_Elevator : MonoBehaviour
             }
         }
 
+        //Check distance before updating DarkenBlocks
+
         //CheckIfInRangeOfPlayer();
         //CheckIfDarkenBlock();
         UpdateBlocks();
 
-        UpdateBlocksCounter += Time.deltaTime;
-        if (UpdateBlocksCounter > 0.15f)
+        if (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) <= 2f)
         {
-            UpdateBlocksCounter = 0;
-            Movement.Instance.UpdateBlocks();
-            Movement.Instance.SetDarkenBlocks();
+            UpdateBlocksCounter += Time.deltaTime;
+            if (UpdateBlocksCounter > 0.05f)
+            {
+                UpdateBlocksCounter = 0;
+                Movement.Instance.UpdateBlocks();
+                Movement.Instance.SetDarkenBlocks();
+            }
         }
     }
     private void OnEnable()
