@@ -191,6 +191,8 @@ public class BlockInfo : MonoBehaviour
 
     public void ResetDarkenColor()
     {
+        if (!blockIsDark) { return; }
+
         if (numberDisplay)
         {
             for (int i = 0; i < propertyBlocks.Count; i++)

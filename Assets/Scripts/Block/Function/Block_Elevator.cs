@@ -29,6 +29,8 @@ public class Block_Elevator : MonoBehaviour
     [SerializeField] bool hasCheckedForPlayer;
     bool playerIsOn;
 
+    float UpdateBlocksCounter = 0;
+
 
     //--------------------
 
@@ -67,9 +69,17 @@ public class Block_Elevator : MonoBehaviour
             }
         }
 
-        CheckIfInRangeOfPlayer();
-        CheckIfDarkenBlock();
+        //CheckIfInRangeOfPlayer();
+        //CheckIfDarkenBlock();
         UpdateBlocks();
+
+        UpdateBlocksCounter += Time.deltaTime;
+        if (UpdateBlocksCounter > 0.15f)
+        {
+            UpdateBlocksCounter = 0;
+            Movement.Instance.UpdateBlocks();
+            Movement.Instance.SetDarkenBlocks();
+        }
     }
     private void OnEnable()
     {
@@ -150,11 +160,16 @@ public class Block_Elevator : MonoBehaviour
         {
             //print("2. CheckIfInRangeOfPlayer | Elevator: " + transform.position.y + " | Player: " + PlayerManager.Instance.player.transform.position.y + " | Distance: " + distance);
             Movement.Instance.UpdateBlocks();
-            hasCheckedForPlayer = true;
+            hasCheckedForPlayer = false;
         }
         else /*if (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) > 1.4f)*/
         {
-            hasCheckedForPlayer = false;
+            if (!hasCheckedForPlayer)
+            {
+                Movement.Instance.UpdateBlocks();
+            }
+
+            hasCheckedForPlayer = true;
         }
 
         //else
@@ -178,7 +193,7 @@ public class Block_Elevator : MonoBehaviour
         }
 
         //Update blocks underway
-        if (Movement.Instance.blockStandingOn == gameObject && Movement.Instance.movementStates == MovementStates.Still /*&& isMoving*/)
+        if (Movement.Instance.blockStandingOn == gameObject && Movement.Instance.movementStates == MovementStates.Still)
         {
             PlayerManager.Instance.player.transform.position = transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
 
