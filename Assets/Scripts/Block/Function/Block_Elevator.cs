@@ -83,6 +83,12 @@ public class Block_Elevator : MonoBehaviour
                 UpdateBlocksCounter = 0;
                 Movement.Instance.UpdateBlocks();
                 Movement.Instance.SetDarkenBlocks();
+                Player_CeilingGrab.Instance.RaycastCeiling();
+
+                //if (!Player_CeilingGrab.Instance.cannotCeilingRaycast)
+                //{
+                        //Player_CeilingGrab.Instance.RaycastCeiling();
+                //}
             }
         }
     }
@@ -198,9 +204,18 @@ public class Block_Elevator : MonoBehaviour
         }
 
         //Update blocks underway
-        if (Movement.Instance.blockStandingOn == gameObject && Movement.Instance.movementStates == MovementStates.Still)
+        if (Movement.Instance.blockStandingOn == gameObject && Movement.Instance.movementStates == MovementStates.Still && !Player_CeilingGrab.Instance.isCeilingRotation_OFF)
         {
-            PlayerManager.Instance.player.transform.position = transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
+            Vector3 rayDir = Vector3.zero;
+            if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+                rayDir = Vector3.down;
+            else
+                rayDir = Vector3.up;
+
+            if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+                PlayerManager.Instance.player.transform.position = transform.position + (rayDir * (Movement.Instance.heightOverBlock - (Player_BodyHeight.Instance.height_Normal) / 2));
+            else
+                PlayerManager.Instance.player.transform.position = transform.position + (rayDir * Movement.Instance.heightOverBlock);
 
             float delta = Vector3.Distance(transform.position, lastPosition);
             accumulatedDistance += delta;

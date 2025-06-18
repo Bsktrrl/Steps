@@ -127,7 +127,7 @@ public class Movement : Singleton<Movement>
             MovementSetup();
         }
 
-        if (Player_KeyInputs.Instance.grapplingHook_isPressed && !grapplingTargetHasBeenSet)
+        if (Player_KeyInputs.Instance.grapplingHook_isPressed && !grapplingTargetHasBeenSet && !Player_CeilingGrab.Instance.isCeilingGrabbing)
         {
             UpdateGrapplingHookMovement(moveToBlock_GrapplingHook, lookDir);
             grapplingTargetHasBeenSet = true;
@@ -211,8 +211,6 @@ public class Movement : Singleton<Movement>
 
             UpdateJumpMovement();
 
-            UpdateCeilingGrabMovement();
-
             FindLadderExitBlock();
         }
         else
@@ -222,6 +220,7 @@ public class Movement : Singleton<Movement>
 
         isUpdatingDarkenBlocks = false;
     }
+    
     public void UpdateBlockStandingOn()
     {
         GameObject obj = null;
@@ -230,9 +229,13 @@ public class Movement : Singleton<Movement>
 
         Vector3 rayDir = Vector3.zero;
         if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+        {
             rayDir = Vector3.up;
+        }
         else
+        {
             rayDir = Vector3.down;
+        }
 
         PerformMovementRaycast(playerPos, rayDir, 1, out obj);
 
@@ -1101,11 +1104,6 @@ public class Movement : Singleton<Movement>
         ResetBlocksOnTheGrapplingWay();
     }
 
-    void UpdateCeilingGrabMovement()
-    {
-        
-    }
-
     void Block_Is_Target(MoveOptions moveOption, GameObject obj)
     {
         if (moveOption.targetBlock && moveOption.targetBlock != obj && moveOption.targetBlock.GetComponent<BlockInfo>() && moveOption.targetBlock.GetComponent<BlockInfo>().blockIsDark)
@@ -1567,8 +1565,8 @@ public class Movement : Singleton<Movement>
         Vector3 startPos = transform.position;
 
         Vector3 newEndPos = endPos + (rayDir * heightOverBlock);
-        //if (Player_CeilingGrab.Instance.isCeilingGrabbing)
-        //    newEndPos = endPos + (rayDir * (heightOverBlock - (Player_BodyHeight.Instance.height_Normal) / 2)); //Change HeightOverBlock sligtly when ceilinggrab (it moves some up before snapping in place
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+            newEndPos = endPos + (rayDir * (heightOverBlock - (Player_BodyHeight.Instance.height_Normal) / 2)); //Change HeightOverBlock sligtly when ceilinggrab (it moves some up before snapping in place
 
         movementStates = moveState;
 
@@ -1651,9 +1649,6 @@ public class Movement : Singleton<Movement>
         movementStates = MovementStates.Still;
         performGrapplingHooking = false;
     }
-
-
-
 
     #endregion
 
@@ -2143,7 +2138,7 @@ public class Movement : Singleton<Movement>
 
         if (Player_CeilingGrab.Instance.isCeilingGrabbing)
         {
-            print("1. Get isCeilingGrabbing");
+            print("2. Get isCeilingGrabbing");
             rotZ = -180;
         }
        

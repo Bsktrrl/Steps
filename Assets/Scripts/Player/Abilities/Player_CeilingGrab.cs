@@ -13,6 +13,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     [SerializeField] bool canCeilingGrab;
     public bool isCeilingGrabbing;
     public bool isCeilingRotation;
+    public bool isCeilingRotation_OFF;
 
     float playerRotationDuration_Ceiling = 0.5f;
     public float playerCeilingRotationValue;
@@ -95,7 +96,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             StartCoroutine(RotateToOrFromCeiling(0));
         }
     }
-    void RaycastCeiling()
+    public void RaycastCeiling()
     {
         GameObject outObject1;
 
@@ -163,6 +164,11 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             yield return null; // Wait for the next frame
         }
 
+        if (CameraController.Instance.cameraState == CameraState.GameplayCam)
+            isCeilingRotation_OFF = true;
+        else if (CameraController.Instance.cameraState == CameraState.CeilingCam)
+            isCeilingRotation_OFF = false;
+
         // Ensure the final rotation is set exactly
         PlayerManager.Instance.playerBody.transform.localPosition = endPosition;
         PlayerManager.Instance.playerBody.transform.rotation = endRotation;
@@ -170,9 +176,8 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         //Moving back to ground
         if (CameraController.Instance.cameraState == CameraState.GameplayCam)
         {
-            print("1. RotateToGround");
+            //print("1. RotateToGround");
             isCeilingGrabbing = false;
-            Movement.Instance.heightOverBlock = Movement.Instance.heightOverBlock;
 
             yield return new WaitForSeconds(0.02f);
             Action_releaseCeiling?.Invoke();
@@ -180,7 +185,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         //Moving to ceiling
         else if (CameraController.Instance.cameraState == CameraState.CeilingCam)
         {
-            print("2. RotateToCeiling");
+            //print("2. RotateToCeiling");
             CheckBlockStandingUnder();
             Action_grabCeiling?.Invoke();
         }
@@ -192,6 +197,9 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         Movement.Instance.Action_BodyRotated_Invoke();
         Movement.Instance.UpdateAvailableMovementBlocks();
         RaycastCeiling();
+
+        if (CameraController.Instance.cameraState == CameraState.GameplayCam)
+            isCeilingRotation_OFF = false;
     }
 
     public void ResetCeilingGrab()
@@ -202,7 +210,6 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             PlayerManager.Instance.playerBody.transform.rotation = Quaternion.Euler(0, 0, 0);
 
             isCeilingGrabbing = false;
-            Movement.Instance.heightOverBlock = Movement.Instance.heightOverBlock;
         }
     }
 

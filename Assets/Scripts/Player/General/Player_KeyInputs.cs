@@ -155,13 +155,13 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     {
         if (!ButtonChecks_Other()) { return; }
 
-        Player_KeyInputs.Instance.Key_Respawn();
+        Key_Respawn();
     }
     void OnQuit()
     {
         if (!ButtonChecks_Other()) { return; }
 
-        Player_KeyInputs.Instance.Key_Quit();
+        Key_Quit();
     }
 
     bool ButtonChecks_Movement()
@@ -171,6 +171,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (PlayerManager.Instance.pauseGame) { return false; }
         if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
+        if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
 
         return true;
     }
@@ -179,6 +180,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
         if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
 
+        if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
         if (PlayerManager.Instance.pauseGame) { return false; }
         if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
