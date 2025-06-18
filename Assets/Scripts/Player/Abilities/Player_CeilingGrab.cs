@@ -110,10 +110,18 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
                 Action_raycastCeiling?.Invoke();
             }
 
-            outObject1.GetComponent<BlockInfo>().ResetDarkenColor();
+            if (outObject1.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !Movement.Instance.PlayerHasSwimAbility())
+            {
 
-            canCeilingGrab = true;
-            return;
+            }
+            else
+            {
+                outObject1.GetComponent<BlockInfo>().ResetDarkenColor();
+
+                canCeilingGrab = true;
+                return;
+            }
+            
         }
 
         canCeilingGrab = false;

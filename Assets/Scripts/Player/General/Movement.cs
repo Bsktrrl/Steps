@@ -1130,7 +1130,7 @@ public class Movement : Singleton<Movement>
 
 
     #region PlayerHasAbility
-    bool PlayerHasSwimAbility()
+    public bool PlayerHasSwimAbility()
     {
         var stats = PlayerStats.Instance.stats;
         return stats.abilitiesGot_Permanent.SwimSuit ||
