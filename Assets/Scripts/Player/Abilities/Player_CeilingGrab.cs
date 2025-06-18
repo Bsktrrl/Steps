@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
@@ -67,6 +68,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         if (/*Input.GetKeyDown(KeyCode.C) &&*/ CameraController.Instance.cameraState == CameraState.GameplayCam)
         {
             isCeilingGrabbing = true;
+            Movement.Instance.heightOverBlock = Movement.Instance.heightOverBlock;
 
             if (CameraController.Instance.cameraRotationState == CameraRotationState.Forward)
                 StartCoroutine(CameraController.Instance.CeilingCameraRotation(0));
@@ -95,22 +97,25 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     }
     void RaycastCeiling()
     {
-        if (Physics.Raycast(transform.position, Vector3.up, out hit, 1, MapManager.Instance.pickup_LayerMask))
-        {
-            if (hit.transform.gameObject.GetComponent<BlockInfo>())
-            {
-                if (!isCeilingGrabbing)
-                {
-                    hit.transform.gameObject.GetComponent<BlockInfo>().SetDarkenColors();
-                    ceilingGrabBlock = hit.transform.gameObject;
+        GameObject outObject1;
 
-                    print("10. ceilingGrabBlock = hit.transform.gameObject");
-                    Action_raycastCeiling?.Invoke();
-                }
-                
-                canCeilingGrab = true;
-                return;
+        print("1. ceilingGrabBlock");
+        if (Movement.Instance.PerformMovementRaycast(transform.position, Vector3.up, 1, out outObject1) == RaycastHitObjects.BlockInfo)
+        {
+            print("2. ceilingGrabBlock");
+            if (!isCeilingGrabbing)
+            {
+                outObject1.GetComponent<BlockInfo>().SetDarkenColors();
+                ceilingGrabBlock = outObject1;
+
+                print("3. ceilingGrabBlock");
+                Action_raycastCeiling?.Invoke();
             }
+
+            outObject1.GetComponent<BlockInfo>().ResetDarkenColor();
+
+            canCeilingGrab = true;
+            return;
         }
 
         canCeilingGrab = false;
@@ -170,6 +175,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         {
             print("1. RotateToGround");
             isCeilingGrabbing = false;
+            Movement.Instance.heightOverBlock = Movement.Instance.heightOverBlock;
 
             yield return new WaitForSeconds(0.02f);
             Action_releaseCeiling?.Invoke();
@@ -186,6 +192,8 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         isCeilingRotation = false;
 
         Action_raycastCeiling?.Invoke();
+        Movement.Instance.Action_BodyRotated_Invoke();
+        Movement.Instance.UpdateAvailableMovementBlocks();
         RaycastCeiling();
     }
 
@@ -197,6 +205,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             PlayerManager.Instance.playerBody.transform.rotation = Quaternion.Euler(0, 0, 0);
 
             isCeilingGrabbing = false;
+            Movement.Instance.heightOverBlock = Movement.Instance.heightOverBlock;
         }
     }
 

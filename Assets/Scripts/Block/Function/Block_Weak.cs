@@ -43,7 +43,7 @@ public class Block_Weak : MonoBehaviour
 
     void DisolveBlock()
     {
-        if (!isSteppedOn) { return; }
+        if (!isSteppedOn || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
         StartCoroutine(WaitBeforeDisolveBlock(0.005f));
     }

@@ -56,7 +56,7 @@ public class Block_SandFalling : MonoBehaviour
     {
         if (!canFall) { return; }
 
-        if (CheckIfReadyToFall())
+        if (CheckIfReadyToFall() /*&& !Player_CeilingGrab.Instance.isCeilingGrabbing*/)
         {
             gameObject.GetComponent<BlockInfo>().movementState = MovementStates.Falling;
 

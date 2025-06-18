@@ -6,6 +6,7 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
 {
     [Header("Local PlayerBody height level")]
     [HideInInspector] public float height_Normal = -0.2f;
+    [HideInInspector] public float height_CeilingGrab = 0f;
 
     float height_Stair = -0.2f;
     float height_Water = -0.8f;
@@ -119,7 +120,10 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
                 //Other
                 else
                 {
-                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Normal), ReturnRotation());
+                    if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+                        PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_CeilingGrab), ReturnRotation());
+                    else
+                        PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Normal), ReturnRotation());
                     return height_Normal;
                 }
             }

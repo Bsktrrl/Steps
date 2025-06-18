@@ -35,7 +35,7 @@ public class Block_Falling : MonoBehaviour
     }
     private void Update()
     {
-        if (CheckIfReadyToFall())
+        if (CheckIfReadyToFall() /*&& !Player_CeilingGrab.Instance.isCeilingGrabbing*/)
         {
             gameObject.GetComponent<BlockInfo>().movementState = MovementStates.Falling;
 

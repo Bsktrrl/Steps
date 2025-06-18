@@ -32,9 +32,6 @@ public class Movement : Singleton<Movement>
     float grapplingLength = 5;
     public Vector3 savePos;
 
-    [Header("CeilingGrab")]
-    [SerializeField] bool isCeilingGrabbing;
-
     [Header("BlockIsStandingOn")]
     public Vector3 lookingDirection;
     public GameObject blockStandingOn;
@@ -229,8 +226,15 @@ public class Movement : Singleton<Movement>
     {
         GameObject obj = null;
         GameObject objTemp = blockStandingOn;
+        Vector3 playerPos = PlayerManager.Instance.player.transform.position;
 
-        PerformMovementRaycast(PlayerManager.Instance.player.transform.position, Vector3.down, 1, out obj);
+        Vector3 rayDir = Vector3.zero;
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+            rayDir = Vector3.up;
+        else
+            rayDir = Vector3.down;
+
+        PerformMovementRaycast(playerPos, rayDir, 1, out obj);
 
         if (blockStandingOn != obj)
         {
@@ -271,7 +275,7 @@ public class Movement : Singleton<Movement>
 
         Vector3 rayDir = Vector3.zero;
 
-        if (isCeilingGrabbing)
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
             rayDir = Vector3.up;
         else
             rayDir = Vector3.down;
@@ -773,7 +777,7 @@ public class Movement : Singleton<Movement>
 
         Vector3 rayDir = Vector3.zero;
 
-        if (isCeilingGrabbing)
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
             rayDir = Vector3.up;
         else
             rayDir = Vector3.down;
@@ -828,7 +832,7 @@ public class Movement : Singleton<Movement>
 
         GameObject finalTarget = null;
         Vector3 playerPos = PlayerManager.Instance.player.transform.position;
-        Vector3 rayDir = isCeilingGrabbing ? Vector3.up : Vector3.down;
+        Vector3 rayDir = Player_CeilingGrab.Instance.isCeilingGrabbing ? Vector3.up : Vector3.down;
 
         //Try raycasts with two different height offsets (normal and stair)
         bool success =
@@ -933,7 +937,7 @@ public class Movement : Singleton<Movement>
     bool TryPerformJumpWithCorrection(Vector3 playerPos, Vector3 dir, float correction, out GameObject targetBlock)
     {
         GameObject o1, o2, o3, o4;
-        Vector3 rayDir = isCeilingGrabbing ? Vector3.up : Vector3.down;
+        Vector3 rayDir = Player_CeilingGrab.Instance.isCeilingGrabbing ? Vector3.up : Vector3.down;
 
         targetBlock = null;
 
@@ -1099,7 +1103,7 @@ public class Movement : Singleton<Movement>
 
     void UpdateCeilingGrabMovement()
     {
-
+        
     }
 
     void Block_Is_Target(MoveOptions moveOption, GameObject obj)
@@ -1551,11 +1555,20 @@ public class Movement : Singleton<Movement>
 
     IEnumerator NormalMovement(Vector3 endPos, MovementStates moveState, float movementSpeed)
     {
+        Vector3 rayDir = Vector3.zero;
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+            rayDir = Vector3.down;
+        else
+            rayDir = Vector3.up;
+
         float counter = 0;
         previousPosition = transform.position;
 
         Vector3 startPos = transform.position;
-        Vector3 newEndPos = endPos + (Vector3.up * heightOverBlock);
+
+        Vector3 newEndPos = endPos + (rayDir * heightOverBlock);
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+            newEndPos = endPos + (rayDir * (heightOverBlock - (Player_BodyHeight.Instance.height_Normal) / 2)); //Change HeightOverBlock sligtly when ceilinggrab (it moves some up before snapping in place
 
         movementStates = moveState;
 
@@ -1646,7 +1659,7 @@ public class Movement : Singleton<Movement>
 
     public void StartFallingWithBlock()
     {
-        if (blockStandingOn.GetComponent<BlockInfo>().movementState == MovementStates.Falling)
+        if (blockStandingOn.GetComponent<BlockInfo>().movementState == MovementStates.Falling && !Player_CeilingGrab.Instance.isCeilingGrabbing)
         {
             SetMovementState(MovementStates.Falling);
 
@@ -1655,9 +1668,12 @@ public class Movement : Singleton<Movement>
     }
     void StartFallingWithNoBlock()
     {
-        SetMovementState(MovementStates.Falling);
+        if (!Player_CeilingGrab.Instance.isCeilingGrabbing)
+        {
+            SetMovementState(MovementStates.Falling);
 
-        ResetDarkenBlocks();
+            ResetDarkenBlocks();
+        }
     }
     void PlayerIsFalling()
     {
@@ -2117,9 +2133,17 @@ public class Movement : Singleton<Movement>
     {
         Transform playerBody = PlayerManager.Instance.playerBody.transform;
 
+        float rotZ = 0;
+
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+        {
+            print("1. Get isCeilingGrabbing");
+            rotZ = -180;
+        }
+       
         float baseRotation = GetBaseCameraRotation(CameraController.Instance.cameraRotationState);
         float finalYRotation = NormalizeAngle(baseRotation + rotationValue);
-        Quaternion newRotation = Quaternion.Euler(0, finalYRotation, 0);
+        Quaternion newRotation = Quaternion.Euler(0, finalYRotation, rotZ);
         playerBody.SetPositionAndRotation(playerBody.position, newRotation);
 
         CameraController.Instance.directionFacing = GetFacingDirection(finalYRotation);

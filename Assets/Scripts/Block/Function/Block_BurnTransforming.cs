@@ -42,7 +42,7 @@ public class Block_BurnTransforming : MonoBehaviour
 
     void MeltBlock()
     {
-        if (!Player_Burning.Instance.isBurning) { return; }
+        if (!Player_Burning.Instance.isBurning || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
         if (!isSteppedOn) { return; }
 

@@ -106,7 +106,7 @@ public class PlayerManager : Singleton<PlayerManager>
     }
     void StepsOnFallableBlock()
     {
-        if (Movement.Instance.blockStandingOn)
+        if (Movement.Instance.blockStandingOn && !Player_CeilingGrab.Instance.isCeilingGrabbing)
         {
             if (Movement.Instance.blockStandingOn.GetComponent<Block_Falling>())
             {
