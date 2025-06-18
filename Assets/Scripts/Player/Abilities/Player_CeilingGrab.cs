@@ -99,16 +99,13 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     {
         GameObject outObject1;
 
-        print("1. ceilingGrabBlock");
         if (Movement.Instance.PerformMovementRaycast(transform.position, Vector3.up, 1, out outObject1) == RaycastHitObjects.BlockInfo)
         {
-            print("2. ceilingGrabBlock");
             if (!isCeilingGrabbing)
             {
                 outObject1.GetComponent<BlockInfo>().SetDarkenColors();
                 ceilingGrabBlock = outObject1;
 
-                print("3. ceilingGrabBlock");
                 Action_raycastCeiling?.Invoke();
             }
 

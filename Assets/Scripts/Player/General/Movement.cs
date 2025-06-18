@@ -1567,8 +1567,8 @@ public class Movement : Singleton<Movement>
         Vector3 startPos = transform.position;
 
         Vector3 newEndPos = endPos + (rayDir * heightOverBlock);
-        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
-            newEndPos = endPos + (rayDir * (heightOverBlock - (Player_BodyHeight.Instance.height_Normal) / 2)); //Change HeightOverBlock sligtly when ceilinggrab (it moves some up before snapping in place
+        //if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+        //    newEndPos = endPos + (rayDir * (heightOverBlock - (Player_BodyHeight.Instance.height_Normal) / 2)); //Change HeightOverBlock sligtly when ceilinggrab (it moves some up before snapping in place
 
         movementStates = moveState;
 
@@ -1604,12 +1604,18 @@ public class Movement : Singleton<Movement>
     }
     IEnumerator ElevatorMovement(MovementStates moveState, float movementSpeed, MoveOptions moveOptions)
     {
+        Vector3 rayDir = Vector3.zero;
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+            rayDir = Vector3.down;
+        else
+            rayDir = Vector3.up;
+
         float counter = 0f;
         previousPosition = transform.position;
 
         Transform targetBlockTransform = moveOptions.targetBlock.transform;
         Vector3 startPos = transform.position;
-        Vector3 targetOffset = new Vector3(0f, heightOverBlock, 0f);
+        Vector3 targetOffset = new Vector3(0f, (rayDir * (heightOverBlock - (Player_BodyHeight.Instance.height_Normal) / 2)).y, 0f);
         Vector3 endPos = targetBlockTransform.position + targetOffset;
 
         movementStates = moveState;

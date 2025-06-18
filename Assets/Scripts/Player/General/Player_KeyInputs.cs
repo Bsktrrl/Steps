@@ -76,7 +76,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnAbilityUp_Down()
     {
-        if (!ButtonChecks_Movement()) { return; }
+        if (!ButtonChecks_Movement() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
         up_isPressed = true;
     }
@@ -88,7 +88,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnAbilityDown_Down()
     {
-        if (!ButtonChecks_Movement()) { return; }
+        if (!ButtonChecks_Movement() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
         
         down_isPressed = true;
 
@@ -116,7 +116,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnAbilityRight_DownPress()
     {
-        if (!ButtonChecks_Other()) { return; }
+        if (!ButtonChecks_Other() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
         grapplingHook_isPressed = true;
     }
