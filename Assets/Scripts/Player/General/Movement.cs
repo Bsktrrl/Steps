@@ -150,6 +150,7 @@ public class Movement : Singleton<Movement>
 
         Action_RespawnPlayerEarly += ResetDarkenBlocks;
         Action_StepTaken += TakeAStep;
+        Action_StepTaken += UpdateAvailableMovementBlocks;
 
         Action_isSwitchingBlocks += UpdateStepsAmonutWhenGrapplingMoving;
         Action_StepTaken_Late += RunIceGliding;
@@ -168,6 +169,7 @@ public class Movement : Singleton<Movement>
 
         Action_RespawnPlayerEarly -= ResetDarkenBlocks;
         Action_StepTaken -= TakeAStep;
+        Action_StepTaken -= UpdateAvailableMovementBlocks;
 
         Action_isSwitchingBlocks -= UpdateStepsAmonutWhenGrapplingMoving;
         Action_StepTaken_Late -= RunIceGliding;
@@ -219,6 +221,8 @@ public class Movement : Singleton<Movement>
         }
 
         isUpdatingDarkenBlocks = false;
+
+        CameraController.Instance.isRotating = false;
     }
     
     public void UpdateBlockStandingOn()
@@ -226,6 +230,11 @@ public class Movement : Singleton<Movement>
         GameObject obj = null;
         GameObject objTemp = blockStandingOn;
         Vector3 playerPos = PlayerManager.Instance.player.transform.position;
+
+        if (blockStandingOn_Previous != blockStandingOn && !Player_CeilingGrab.Instance.isCeilingGrabbing)
+        {
+            blockStandingOn_Previous = blockStandingOn;
+        }
 
         Vector3 rayDir = Vector3.zero;
         if (Player_CeilingGrab.Instance.isCeilingGrabbing)
@@ -904,6 +913,22 @@ public class Movement : Singleton<Movement>
             }
         }
 
+        //If jumping over a water block
+        else if (PerformMovementRaycast(playerPos, dir, 1, out GameObject outObj_5) == RaycastHitObjects.None &&
+            PerformMovementRaycast(playerPos + dir, rayDir, 1, out GameObject outObj_6) == RaycastHitObjects.BlockInfo &&
+            PerformMovementRaycast(playerPos + dir, dir, 1, out GameObject outObj_7) == RaycastHitObjects.None &&
+            PerformMovementRaycast(playerPos + dir + dir, rayDir, 1, out GameObject outObj_8) == RaycastHitObjects.BlockInfo)
+        {
+            if (outObj_6.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+            {
+                if (PlayerHasSwimAbility())
+                    Block_IsNot_Target(moveOption);
+                else
+                    Block_Is_Target(moveOption, outObj_8);
+            }
+            else
+                Block_IsNot_Target(moveOption);
+        }
 
         //Jumping directly onto a stair/slope facing the player
         else if (PerformMovementRaycast(playerPos, dir, 1, out GameObject outObj1) == RaycastHitObjects.None &&
@@ -931,9 +956,43 @@ public class Movement : Singleton<Movement>
                 Block_IsNot_Target(moveOption);
             }
         }
+
+        //Jumping directly onto a stair/slope facing the player, if the block in between is a waterblock
+        else if (PerformMovementRaycast(playerPos, dir, 1, out GameObject outObj4) == RaycastHitObjects.None &&
+            PerformMovementRaycast(playerPos + dir, rayDir, 1, out GameObject outObj5) == RaycastHitObjects.BlockInfo &&
+            PerformMovementRaycast(playerPos + dir, dir, 1, out GameObject outObj6) == RaycastHitObjects.BlockInfo)
+        {
+            if (outObj6.GetComponent<BlockInfo>().blockType == BlockType.Stair || outObj6.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+            {
+                if (outObj5.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+                {
+                    if (PlayerHasSwimAbility())
+                    {
+                        Block_IsNot_Target(moveOption);
+                    }
+                    else
+                    {
+                        Vector3 toPlayerFlat = -dir.normalized;
+                        Vector3 stairForwardFlat = outObj6.transform.forward;
+                        stairForwardFlat.y = 0;
+                        stairForwardFlat.Normalize();
+
+                        float dot = Vector3.Dot(stairForwardFlat, toPlayerFlat);
+
+                        if (dot > 0.9f) // Only jump to stair/slope if it faces the player
+                            Block_Is_Target(moveOption, outObj6);
+                        else
+                            Block_IsNot_Target(moveOption);
+                    }
+                }
+            }
+            else
+            {
+                Block_IsNot_Target(moveOption);
+            }
+        }
         else
         {
-            print("4. Success");
             Block_IsNot_Target(moveOption);
         }
     }
@@ -944,6 +1003,7 @@ public class Movement : Singleton<Movement>
 
         targetBlock = null;
 
+        //Ordinary jump
         if (PerformMovementRaycast(playerPos + (-rayDir * correction), dir, 1, out o1) == RaycastHitObjects.None &&
             PerformMovementRaycast(playerPos + dir + (-rayDir * correction), rayDir, 1, out o2) == RaycastHitObjects.None &&
             PerformMovementRaycast(playerPos + dir + (-rayDir * correction), dir, 1, out o3) == RaycastHitObjects.None &&
@@ -951,6 +1011,26 @@ public class Movement : Singleton<Movement>
         {
             targetBlock = o4;
             return true;
+        }
+
+        //If there is a waterBlock in-between
+        else if (PerformMovementRaycast(playerPos + (-rayDir * correction), dir, 1, out o1) == RaycastHitObjects.None &&
+            PerformMovementRaycast(playerPos + dir + (-rayDir * correction), rayDir, 1, out o2) == RaycastHitObjects.BlockInfo &&
+            PerformMovementRaycast(playerPos + dir + (-rayDir * correction), dir, 1, out o3) == RaycastHitObjects.None &&
+            PerformMovementRaycast(playerPos + dir + dir + (-rayDir * correction), rayDir, 1, out o4) == RaycastHitObjects.BlockInfo)
+        {
+            if (o2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+            {
+                if (PlayerHasSwimAbility())
+                {
+                    return false;
+                }
+                else
+                {
+                    targetBlock = o4;
+                    return true;
+                }
+            }
         }
 
         return false;
@@ -1106,8 +1186,9 @@ public class Movement : Singleton<Movement>
 
     void Block_Is_Target(MoveOptions moveOption, GameObject obj)
     {
-        if (moveOption.targetBlock && moveOption.targetBlock != obj && moveOption.targetBlock.GetComponent<BlockInfo>() && moveOption.targetBlock.GetComponent<BlockInfo>().blockIsDark)
+        if (moveOption.targetBlock && moveOption.targetBlock != obj && moveOption.targetBlock.GetComponent<BlockInfo>() && moveOption.targetBlock.GetComponent<BlockInfo>().blockIsDark && !CameraController.Instance.isRotating && !CameraController.Instance.isCeilingRotating)
         {
+            print("1. Rotating: " + CameraController.Instance.isRotating);
             moveOption.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
         }
 
@@ -1116,8 +1197,9 @@ public class Movement : Singleton<Movement>
     }
     void Block_IsNot_Target(MoveOptions moveOption)
     {
-        if (moveOption.targetBlock && moveOption.targetBlock.GetComponent<BlockInfo>() && moveOption.targetBlock.GetComponent<BlockInfo>().blockIsDark)
+        if (moveOption.targetBlock && moveOption.targetBlock.GetComponent<BlockInfo>() && moveOption.targetBlock.GetComponent<BlockInfo>().blockIsDark && !CameraController.Instance.isRotating && !CameraController.Instance.isCeilingRotating)
         {
+            print("2. Rotating: " + CameraController.Instance.isRotating);
             moveOption.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
         }
 
@@ -1726,8 +1808,6 @@ public class Movement : Singleton<Movement>
         if (blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Ice
             && ((blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair || blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope) || (blockStandingOn.GetComponent<EffectBlockInfo>() && !blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_Teleporter_isAdded) || canIceGlide))
         {
-            print("1. IceGlide");
-
             MoveOptions moveOption = new MoveOptions();
 
             Vector3 movementDir = Vector3.zero;

@@ -57,6 +57,7 @@ public class Block_BurnTransforming : MonoBehaviour
         gameObject.SetActive(false);
 
         isSteppedOn = false;
+        Movement.Instance.UpdateAvailableMovementBlocks();
     }
 
     public void ResetBlock()

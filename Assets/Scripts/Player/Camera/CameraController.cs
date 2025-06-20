@@ -150,7 +150,6 @@ public class CameraController : Singleton<CameraController>
         yield return new WaitForSeconds(waitDelay); // Wait for the next frame
 
         PlayerManager.Instance.pauseGame = false;
-        isRotating = false;
 
         Movement.Instance.previousPosition = transform.position;
 
