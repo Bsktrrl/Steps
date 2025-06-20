@@ -40,7 +40,7 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
 
         if (Movement.Instance.blockStandingOn)
         {
-            if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>())
+            if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && !Movement.Instance.isDashing && !Movement.Instance.isJumping && !Movement.Instance.isGrapplingHooking)
             {
                 //Stair
                 if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair || Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)

@@ -99,6 +99,10 @@ public class Movement : Singleton<Movement>
 
     RaycastHit hit;
 
+    public bool isJumping;
+    public bool isGrapplingHooking;
+    public bool isDashing;
+
 
     //--------------------
 
@@ -1454,6 +1458,8 @@ public class Movement : Singleton<Movement>
     {
         if (moveToBlock_GrapplingHook.canMoveTo)
         {
+            isGrapplingHooking = true;
+
             if (moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Stair || moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
             {
                 // Check if Stari/Slope is facing the player
@@ -1544,23 +1550,23 @@ public class Movement : Singleton<Movement>
 
         //Perform Dash Movement, if possible
         else if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Dash_Forward.targetBlock && moveToBlock_Dash_Forward.canMoveTo)
-            PerformMovement(moveToBlock_Dash_Forward, MovementStates.Moving, abilitySpeed);
+            PerformMovement(moveToBlock_Dash_Forward, MovementStates.Moving, abilitySpeed, ref isDashing);
         else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Dash_Back.targetBlock && moveToBlock_Dash_Back.canMoveTo)
-            PerformMovement(moveToBlock_Dash_Back, MovementStates.Moving, abilitySpeed);
+            PerformMovement(moveToBlock_Dash_Back, MovementStates.Moving, abilitySpeed, ref isDashing);
         else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Dash_Left.targetBlock && moveToBlock_Dash_Left.canMoveTo)
-            PerformMovement(moveToBlock_Dash_Left, MovementStates.Moving, abilitySpeed);
+            PerformMovement(moveToBlock_Dash_Left, MovementStates.Moving, abilitySpeed, ref isDashing);
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Dash_Right.targetBlock && moveToBlock_Dash_Right.canMoveTo)
-            PerformMovement(moveToBlock_Dash_Right, MovementStates.Moving, abilitySpeed);
+            PerformMovement(moveToBlock_Dash_Right, MovementStates.Moving, abilitySpeed, ref isDashing);
 
         //Perform Jump Movement, if possible
         else if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Jump_Forward.targetBlock && moveToBlock_Jump_Forward.canMoveTo)
-            PerformMovement(moveToBlock_Jump_Forward, MovementStates.Moving, abilitySpeed);
+            PerformMovement(moveToBlock_Jump_Forward, MovementStates.Moving, abilitySpeed, ref isJumping);
         else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Jump_Back.targetBlock && moveToBlock_Jump_Back.canMoveTo)
-            PerformMovement(moveToBlock_Jump_Back, MovementStates.Moving, abilitySpeed);
+            PerformMovement(moveToBlock_Jump_Back, MovementStates.Moving, abilitySpeed, ref isJumping);
         else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Jump_Left.targetBlock && moveToBlock_Jump_Left.canMoveTo)
-            PerformMovement(moveToBlock_Jump_Left, MovementStates.Moving, abilitySpeed);
+            PerformMovement(moveToBlock_Jump_Left, MovementStates.Moving, abilitySpeed, ref isJumping);
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Jump_Right.targetBlock && moveToBlock_Jump_Right.canMoveTo)
-            PerformMovement(moveToBlock_Jump_Right, MovementStates.Moving, abilitySpeed);
+            PerformMovement(moveToBlock_Jump_Right, MovementStates.Moving, abilitySpeed, ref isJumping);
 
         //Perform SwiftSwim Movement, if possible
         else if (Player_KeyInputs.Instance.up_isPressed && moveToBlock_SwiftSwimUp.targetBlock && moveToBlock_SwiftSwimUp.canMoveTo)
@@ -1573,6 +1579,27 @@ public class Movement : Singleton<Movement>
             RunUpButton();
         else if (Player_KeyInputs.Instance.down_isPressed && moveToBlock_Descend.targetBlock && moveToBlock_Descend.canMoveTo)
             RunDownButton();
+    }
+    public void PerformMovement(MoveOptions canMoveBlock, MovementStates moveState, float movementSpeed, ref bool isMoving)
+    {
+        if (canMoveBlock == null) { return; }
+        if (canMoveBlock.targetBlock == null) { return; }
+        if (!canMoveBlock.targetBlock.GetComponent<BlockInfo>()) { return; }
+        if (PlayerStats.Instance.stats == null) { return; }
+
+        if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost)
+        {
+            print("1. PerformMovement");
+            isMoving = true;
+
+            ResetDarkenBlocks();
+
+            StartCoroutine(Move(canMoveBlock.targetBlock.transform.position, moveState, movementSpeed, canMoveBlock));
+        }
+        else
+        {
+            RespawnPlayer();
+        }
     }
     public void PerformMovement(MoveOptions canMoveBlock, MovementStates moveState, float movementSpeed)
     {
@@ -1629,6 +1656,10 @@ public class Movement : Singleton<Movement>
         {
             yield return NormalMovement(endPos, moveState, movementSpeed);
         }
+
+        isJumping = false;
+        isGrapplingHooking = false;
+        isDashing = false;
 
         Action_StepTaken_Invoke();
     }

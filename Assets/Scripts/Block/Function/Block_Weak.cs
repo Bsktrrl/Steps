@@ -56,6 +56,8 @@ public class Block_Weak : MonoBehaviour
         gameObject.SetActive(false);
 
         isSteppedOn = false;
+
+        Movement.Instance.UpdateAvailableMovementBlocks();
     }
 
     public void ResetBlock()
