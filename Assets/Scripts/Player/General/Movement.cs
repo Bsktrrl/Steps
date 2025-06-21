@@ -102,6 +102,7 @@ public class Movement : Singleton<Movement>
     public bool isJumping;
     public bool isGrapplingHooking;
     public bool isDashing;
+    public bool isIceGliding;
 
 
     //--------------------
@@ -144,7 +145,7 @@ public class Movement : Singleton<Movement>
 
     private void OnEnable()
     {
-        Action_StepTaken_Late += UpdateAvailableMovementBlocks;
+        Action_StepTaken += UpdateAvailableMovementBlocks;
         Action_RespawnPlayerLate += UpdateAvailableMovementBlocks;
         Action_LandedFromFalling += UpdateAvailableMovementBlocks;
 
@@ -154,7 +155,7 @@ public class Movement : Singleton<Movement>
 
         Action_RespawnPlayerEarly += ResetDarkenBlocks;
         Action_StepTaken += TakeAStep;
-        Action_StepTaken += UpdateAvailableMovementBlocks;
+        //Action_StepTaken += UpdateAvailableMovementBlocks;
 
         Action_isSwitchingBlocks += UpdateStepsAmonutWhenGrapplingMoving;
         Action_StepTaken_Late += RunIceGliding;
@@ -163,7 +164,7 @@ public class Movement : Singleton<Movement>
     }
     private void OnDisable()
     {
-        Action_StepTaken_Late -= UpdateAvailableMovementBlocks;
+        Action_StepTaken -= UpdateAvailableMovementBlocks;
         Action_RespawnPlayerLate -= UpdateAvailableMovementBlocks;
         Action_LandedFromFalling -= UpdateAvailableMovementBlocks;
 
@@ -173,7 +174,7 @@ public class Movement : Singleton<Movement>
 
         Action_RespawnPlayerEarly -= ResetDarkenBlocks;
         Action_StepTaken -= TakeAStep;
-        Action_StepTaken -= UpdateAvailableMovementBlocks;
+        //Action_StepTaken -= UpdateAvailableMovementBlocks;
 
         Action_isSwitchingBlocks -= UpdateStepsAmonutWhenGrapplingMoving;
         Action_StepTaken_Late -= RunIceGliding;
@@ -1660,6 +1661,7 @@ public class Movement : Singleton<Movement>
         isJumping = false;
         isGrapplingHooking = false;
         isDashing = false;
+        isIceGliding = false;
 
         Action_StepTaken_Invoke();
     }
@@ -1841,9 +1843,12 @@ public class Movement : Singleton<Movement>
         {
             MoveOptions moveOption = new MoveOptions();
 
+            isIceGliding = true;
+
             Vector3 movementDir = Vector3.zero;
             if (!canIceGlide)
             {
+                print("1. PerformMovement");
                 Vector3 movementDelta = transform.position - previousPosition;
                 Vector3 horizontalDirection = new Vector3(movementDelta.x, 0, movementDelta.z);
 
@@ -1851,16 +1856,17 @@ public class Movement : Singleton<Movement>
             }
             else
             {
+                print("2. PerformMovement");
                 movementDir = teleportMovementDir;
             }
 
-            if (movementDir == Vector3.forward)
+            if (movementDir == Vector3.forward && moveToBlock_Forward.canMoveTo && moveToBlock_Forward.targetBlock != blockStandingOn)
                 moveOption = moveToBlock_Forward;
-            else if (movementDir == Vector3.back)
+            else if (movementDir == Vector3.back && moveToBlock_Back.canMoveTo && moveToBlock_Forward.targetBlock != blockStandingOn)
                 moveOption = moveToBlock_Back;
-            else if (movementDir == Vector3.left)
+            else if (movementDir == Vector3.left && moveToBlock_Left.canMoveTo && moveToBlock_Forward.targetBlock != blockStandingOn)
                 moveOption = moveToBlock_Left;
-            else if (movementDir == Vector3.right)
+            else if (movementDir == Vector3.right && moveToBlock_Right.canMoveTo && moveToBlock_Forward.targetBlock != blockStandingOn)
                 moveOption = moveToBlock_Right;
             else
                 return;
