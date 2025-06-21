@@ -1224,10 +1224,10 @@ RectTransform:
   - {fileID: 490107727}
   m_Father: {fileID: 707072584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 122.5, y: -207.5}
+  m_SizeDelta: {x: 290, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &145834256
 GameObject:
@@ -1274,7 +1274,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62b77201f7fe31c44b3a42fa93f84024, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  savePos: {x: 0, y: 0, z: 0}
   stats:
     steps_Max: 5
     steps_Current: 5
@@ -4633,7 +4632,7 @@ PrefabInstance:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelSprite
       value: 
-      objectReference: {fileID: 21300000, guid: 4b8974dace14a804d911737ee0907e77, type: 3}
+      objectReference: {fileID: 21300000, guid: 39db7ad0caa30594fb23f554e8743a9d, type: 3}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelToPlay
       value: Water - Level 1
@@ -5230,10 +5229,10 @@ RectTransform:
   - {fileID: 1880725121}
   m_Father: {fileID: 707072584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 122.5, y: -292.5}
+  m_SizeDelta: {x: 290, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &590129962
 GameObject:
@@ -12435,17 +12434,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a42c402c3fdefc546aaed9bde5b3f285, type: 3}
   - {fileID: 21300000, guid: 2763fa7684bd18a4a9c00f3b95ffdc2b, type: 3}
   - {fileID: 21300000, guid: a42c402c3fdefc546aaed9bde5b3f285, type: 3}
---- !u!114 &1103628747 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 384179937895888748, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
-  m_PrefabInstance: {fileID: 2140161111}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1128080773
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15200,6 +15188,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 177036346}
     m_Modifications:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: canPlay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelToPlay
       value: Water - Level 4
       objectReference: {fileID: 0}
@@ -17632,10 +17624,10 @@ RectTransform:
   - {fileID: 650431156}
   m_Father: {fileID: 707072584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 122.5, y: -122.5}
+  m_SizeDelta: {x: 290, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1580117012
 GameObject:
@@ -20545,10 +20537,10 @@ RectTransform:
   - {fileID: 1564737503}
   m_Father: {fileID: 707072584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 122.5, y: -37.5}
+  m_SizeDelta: {x: 290, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1779299605
 GameObject:
@@ -21675,7 +21667,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -22684,7 +22676,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2058110171
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24038,12 +24030,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 1173689182}
     m_Modifications:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: canPlay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelToPlay
-      value: Ice - Level 4
+      value: Winter - Level 4
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.data[0]
@@ -24060,7 +24056,7 @@ PrefabInstance:
     - target: {fileID: 384179937895888748, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: e037874832aa85543b7fece6c1776b2e, type: 3}
+      objectReference: {fileID: 21300000, guid: cd77e7695da58e54db852389c61ee69f, type: 3}
     - target: {fileID: 1814084887984308522, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: m_TargetGraphic
       value: 
@@ -24277,14 +24273,10 @@ PrefabInstance:
       propertyPath: waveSpriteList.Array.data[7]
       value: 
       objectReference: {fileID: 21300000, guid: 95149b617b357ed4fbdf6d49a0941754, type: 3}
-    m_RemovedComponents:
-    - {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5666577594912976797, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
-      insertIndex: 6
-      addedObject: {fileID: 2140161122}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
 --- !u!224 &2140161112 stripped
 RectTransform:
@@ -24318,30 +24310,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2140161122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2140161113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c3592981424de6468e94bb53e26aeb0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onlyWhenSelected: 1
-  waitTimerRange: {x: 0.1, y: 0.1}
-  waveImage: {fileID: 1103628747}
-  waveSpriteList:
-  - {fileID: 21300000, guid: e037874832aa85543b7fece6c1776b2e, type: 3}
-  - {fileID: 21300000, guid: 761d80779067035478bf17f7d3799369, type: 3}
-  - {fileID: 21300000, guid: 334f512e8ff145a4cb276658725ff12c, type: 3}
-  - {fileID: 21300000, guid: 761d80779067035478bf17f7d3799369, type: 3}
-  - {fileID: 21300000, guid: e037874832aa85543b7fece6c1776b2e, type: 3}
-  - {fileID: 21300000, guid: a42c402c3fdefc546aaed9bde5b3f285, type: 3}
-  - {fileID: 21300000, guid: 2763fa7684bd18a4a9c00f3b95ffdc2b, type: 3}
-  - {fileID: 21300000, guid: a42c402c3fdefc546aaed9bde5b3f285, type: 3}
 --- !u!1 &2144892443
 GameObject:
   m_ObjectHideFlags: 0
