@@ -46,14 +46,14 @@ public class Block_Teleport : MonoBehaviour
 
     private void OnEnable()
     {
-        Player_Movement.Action_StepTaken += TeleportPlayer;
+        Movement.Action_StepTaken += TeleportPlayer;
         Action_StartTeleport += StartTeleport_Action;
         Action_EndTeleport += EndTeleport_Action;
     }
 
     private void OnDisable()
     {
-        Player_Movement.Action_StepTaken -= TeleportPlayer;
+        Movement.Action_StepTaken -= TeleportPlayer;
         Action_StartTeleport -= StartTeleport_Action;
         Action_EndTeleport -= EndTeleport_Action;
     }
@@ -166,8 +166,12 @@ public class Block_Teleport : MonoBehaviour
 
     void TeleportPlayer()
     {
-        if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject && newLandingSpot)
+        if (Movement.Instance.blockStandingOn == gameObject && newLandingSpot)
         {
+            Vector3 movementDelta = transform.position - Movement.Instance.previousPosition;
+            Vector3 horizontalDirection = new Vector3(movementDelta.x, 0, movementDelta.z);
+            Movement.Instance.teleportMovementDir = Movement.Instance.GetMovingDirection(horizontalDirection);
+
             StartCoroutine(TeleportWait(0.005f));
         }
     }
@@ -176,38 +180,42 @@ public class Block_Teleport : MonoBehaviour
     {
         int stepTemp = PlayerStats.Instance.stats.steps_Current;
 
-        PlayerManager.Instance.isTransportingPlayer = true;
+        //PlayerManager.Instance.isTransportingPlayer = true;
         PlayerManager.Instance.pauseGame = true;
-        Player_Movement.Instance.movementStates = MovementStates.Moving;
+        Movement.Instance.SetMovementState(MovementStates.Moving);
 
         Action_StartTeleport?.Invoke();
 
         yield return new WaitForSeconds(waitTime);
 
         Vector3 newPos = gameObject.GetComponent<Block_Teleport>().newLandingSpot.transform.position;
-        PlayerManager.Instance.player.transform.position = new Vector3(newPos.x, newPos.y + PlayerManager.Instance.player.GetComponent<Player_Movement>().heightOverBlock, newPos.z);
+        PlayerManager.Instance.player.transform.position = new Vector3(newPos.x, newPos.y + PlayerManager.Instance.player.GetComponent<Movement>().heightOverBlock, newPos.z);
 
         yield return new WaitForSeconds(waitTime);
 
-        Player_Movement.Instance.movementStates = MovementStates.Still;
-        PlayerManager.Instance.isTransportingPlayer = false;
+        Movement.Instance.SetMovementState(MovementStates.Still);
+        //PlayerManager.Instance.isTransportingPlayer = false;
         PlayerManager.Instance.pauseGame = false;
 
         PlayerStats.Instance.stats.steps_Current = stepTemp - gameObject.GetComponent<Block_Teleport>().newLandingSpot.GetComponent<BlockInfo>().movementCost;
 
-        Player_BlockDetector.Instance.Update_BlockStandingOn();
-        Player_BlockDetector.Instance.RaycastSetup();
-        Player_Movement.Instance.Action_StepTaken_Invoke();
+        yield return new WaitForSeconds(waitTime);
+
+        Movement.Instance.UpdateBlockStandingOn();
+
+        Movement.Instance.Action_StepTaken_Invoke();
         
         Action_EndTeleport?.Invoke();
+
+        Movement.Instance.IceGlideMovement(true);
     }
 
     void StartTeleport_Action()
     {
-        Player_Movement.Action_StepTaken -= TeleportPlayer;
+        Movement.Action_StepTaken -= TeleportPlayer;
     }
     void EndTeleport_Action()
     {
-        Player_Movement.Action_StepTaken += TeleportPlayer;
+        Movement.Action_StepTaken += TeleportPlayer;
     }
 }

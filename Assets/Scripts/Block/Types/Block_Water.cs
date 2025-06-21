@@ -8,12 +8,14 @@ public class Block_Water : MonoBehaviour
     {
         DataManager.Action_dataHasLoaded += UpdateMovementCostWithFlippers;
         Interactable_Pickup.Action_FlippersGot += UpdateMovementCostWithFlippers;
+        Movement.Action_StepTaken += UpdateMovementCostWithFlippers;
     }
 
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= UpdateMovementCostWithFlippers;
         Interactable_Pickup.Action_FlippersGot -= UpdateMovementCostWithFlippers;
+        Movement.Action_StepTaken -= UpdateMovementCostWithFlippers;
     }
 
 
@@ -22,6 +24,8 @@ public class Block_Water : MonoBehaviour
 
     void UpdateMovementCostWithFlippers()
     {
+        if (gameObject.GetComponent<BlockInfo>().movementCost == 0) { return; }
+
         if (PlayerManager.Instance.player.GetComponent<PlayerStats>())
         {
             if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats != null)
@@ -33,6 +37,7 @@ public class Block_Water : MonoBehaviour
                         if (gameObject.GetComponent<BlockInfo>())
                         {
                             gameObject.GetComponent<BlockInfo>().movementCost = 0;
+                            gameObject.GetComponent<BlockInfo>().movementCost_Temp = 0;
                             gameObject.GetComponent<BlockInfo>().movementSpeed = 4;
                         }
                     }

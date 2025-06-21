@@ -21,11 +21,11 @@ public class Block_Elevator_StepOn : MonoBehaviour
 
     void CheckIfPlayerIsOn()
     {
-        if (PlayerManager.Instance.block_StandingOn_Current.block != gameObject && isStandingOnBlock)
+        if (Movement.Instance.blockStandingOn != gameObject && isStandingOnBlock)
         {
             isStandingOnBlock = false;
         }
-        else if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject && !isStandingOnBlock)
+        else if (Movement.Instance.blockStandingOn == gameObject && !isStandingOnBlock)
         {
             isStandingOnBlock = true;
         }

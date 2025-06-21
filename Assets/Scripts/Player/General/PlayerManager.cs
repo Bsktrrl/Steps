@@ -1,16 +1,11 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : Singleton<PlayerManager>
 {
     #region Variables
-
-    [Header("Input System")]
-    PlayerControls playerControls; 
 
     [Header("Player Object")]
     public GameObject player;
@@ -23,44 +18,39 @@ public class PlayerManager : Singleton<PlayerManager>
     public DetectedBlockInfo block_MovingTowards;
 
     [Header("Player Block Looking At")]
-    public Vector3 lookingDirection;
+    //public Vector3 lookingDirection;
     public GameObject block_LookingAt_Horizontal;
     public GameObject block_LookingAt_Vertical;
 
     [Header("Player Block Standing On Info")]
-    public DetectedBlockInfo block_StandingOn_Current;
-    public GameObject block_StandingOn_Previous;
+    //public DetectedBlockInfo block_StandingOn_Current;
+    //public GameObject block_StandingOn_Previous;
 
     [Header("Player Block Horizontal")]
-    public DetectedBlockInfo block_Horizontal_InFront;
-    public DetectedBlockInfo block_Horizontal_InBack;
-    public DetectedBlockInfo block_Horizontal_ToTheLeft;
-    public DetectedBlockInfo block_Horizontal_ToTheRight;
+    //public DetectedBlockInfo block_Horizontal_InFront;
+    //public DetectedBlockInfo block_Horizontal_InBack;
+    //public DetectedBlockInfo block_Horizontal_ToTheLeft;
+    //public DetectedBlockInfo block_Horizontal_ToTheRight;
 
-    [Header("Player Block Vertical")]
-    public DetectedBlockInfo block_Vertical_InFront;
-    public DetectedBlockInfo block_Vertical_InBack;
-    public DetectedBlockInfo block_Vertical_ToTheLeft;
-    public DetectedBlockInfo block_Vertical_ToTheRight;
+    //[Header("Player Block Vertical")]
+    //public DetectedBlockInfo block_Vertical_InFront;
+    //public DetectedBlockInfo block_Vertical_InBack;
+    //public DetectedBlockInfo block_Vertical_ToTheLeft;
+    //public DetectedBlockInfo block_Vertical_ToTheRight;
 
     [Header("Player Movement Restrictions")]
-    public bool canMove_Forward;
-    public bool canMove_Back;
-    public bool canMove_Left;
-    public bool canMove_Right;
+    //public bool canMove_Forward;
+    //public bool canMove_Back;
+    //public bool canMove_Left;
+    //public bool canMove_Right;
 
     [Header("Game Paused")]
     public bool pauseGame;
-    public bool isTransportingPlayer;
+    //public bool isTransportingPlayer;
 
-    [Header("KeyPresses")]
-    public bool forward_isPressed;
-    public bool back_isPressed;
-    public bool left_isPressed;
-    public bool right_isPressed;
 
-    public bool cameraX_isPressed;
-    public bool cameraY_isPressed;
+    [Header("mainMenu_Name")]
+    [SerializeField] string mainMenu_Name;
 
     #endregion
 
@@ -68,14 +58,6 @@ public class PlayerManager : Singleton<PlayerManager>
     //--------------------
 
 
-    private void Start()
-    {
-        playerControls = new PlayerControls();
-
-        //Change Cursor State
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
-    }
     private void Update()
     {
         RespawnPlayerIfToLowInMapHeight();
@@ -84,15 +66,15 @@ public class PlayerManager : Singleton<PlayerManager>
     private void OnEnable()
     {
         DataManager.Action_dataHasLoaded += LoadPlayerStats;
-        Player_Movement.Action_StepTaken += StepsOnFallableBlock;
-        Player_Movement.Action_StepTaken += MakeStepSound;
+        Movement.Action_StepTaken += StepsOnFallableBlock;
+        Movement.Action_StepTaken += MakeStepSound;
     }
 
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= LoadPlayerStats;
-        Player_Movement.Action_StepTaken -= StepsOnFallableBlock;
-        Player_Movement.Action_StepTaken -= MakeStepSound;
+        Movement.Action_StepTaken -= StepsOnFallableBlock;
+        Movement.Action_StepTaken -= MakeStepSound;
     }
 
 
@@ -114,21 +96,21 @@ public class PlayerManager : Singleton<PlayerManager>
 
     void MakeStepSound()
     {
-        if (block_StandingOn_Current.block)
+        if (Movement.Instance.blockStandingOn)
         {
-            if (block_StandingOn_Current.block.GetComponent<BlockInfo>())
+            if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>())
             {
-                block_StandingOn_Current.block.GetComponent<BlockInfo>().MakeStepSound();
+                Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().MakeStepSound();
             }
         }
     }
     void StepsOnFallableBlock()
     {
-        if (block_StandingOn_Current.block)
+        if (Movement.Instance.blockStandingOn && !Player_CeilingGrab.Instance.isCeilingGrabbing)
         {
-            if (block_StandingOn_Current.block.GetComponent<Block_Falling>())
+            if (Movement.Instance.blockStandingOn.GetComponent<Block_Falling>())
             {
-                block_StandingOn_Current.block.GetComponent<Block_Falling>().StepsOnFallableBlock();
+                Movement.Instance.blockStandingOn.GetComponent<Block_Falling>().StepsOnFallableBlock();
             }
         }
     }
@@ -136,22 +118,18 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public bool PreventButtonsOfTrigger()
     {
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return false; }
-
-        if (Player_Movement.Instance.isSlopeGliding) { return false; }
-        if (Player_Movement.Instance.isIceGliding) { return false; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
 
         if (pauseGame) { return false; }
-        if (isTransportingPlayer) { return false; }
         if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
-        if (Player_Dash.Instance.isDashing) { return false; }
-        if (Player_Ascend.Instance.isAscending) { return false; }
-        if (Player_Descend.Instance.isDescending) { return false; }
-        if (Player_Jumping.Instance.isJumping) { return false; }
-        if (Player_SwiftSwim.Instance.isSwiftSwimming_Down) { return false; }
-        if (Player_SwiftSwim.Instance.isSwiftSwimming_Up) { return false; }
+        //if (Player_Dash.Instance.isDashing) { return false; }
+        //if (Player_Ascend.Instance.isAscending) { return false; }
+        //if (Player_Descend.Instance.isDescending) { return false; }
+        //if (Player_Jumping.Instance.isJumping) { return false; }
+        //if (Player_SwiftSwim.Instance.isSwiftSwimming_Down) { return false; }
+        //if (Player_SwiftSwim.Instance.isSwiftSwimming_Up) { return false; }
         if (!Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
 
         return true;
@@ -166,7 +144,7 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         if (transform.position.y <= -5)
         {
-            PlayerStats.Instance.RespawnPlayer();
+            Movement.Instance.RespawnPlayer();
         }
     }
 
@@ -174,78 +152,35 @@ public class PlayerManager : Singleton<PlayerManager>
     //--------------------
 
 
-    void OnForward_Down()
+    public void PauseGame()
     {
-        forward_isPressed = true;
+        pauseGame = true;
     }
-    void OnForward_Up()
+    public void UnpauseGame()
     {
-        forward_isPressed = false;
-    }
-    void OnBackward_Down()
-    {
-        back_isPressed = true;
-    }
-    void OnBackward_Up()
-    {
-        back_isPressed = false;
-    }
-    void OnLeft_Down()
-    {
-        left_isPressed = true;
-    }
-    void OnLeft_Up()
-    {
-        left_isPressed = false;
-    }
-    void OnRight_Down()
-    {
-        right_isPressed = true;
-    }
-    void OnRight_Up()
-    {
-        right_isPressed = false;
+        pauseGame = false;
     }
 
-    void OnCameraRotateX()
+
+    //--------------------
+
+
+    public void QuitLevel()
     {
-        CameraController.Instance.RotateCameraX();
+        if (!string.IsNullOrEmpty(mainMenu_Name))
+        {
+            StartCoroutine(LoadSceneCoroutine(mainMenu_Name));
+        }
     }
-    void OnCameraRotateY()
+
+    private IEnumerator LoadSceneCoroutine(string sceneName)
     {
-        CameraController.Instance.RotateCameraY();
-    }
-    void OnAbilityUp()
-    {
-        Player_Movement.Instance.Key_SwiftSwimUp();
-        Player_Ascend.Instance.RunAscend();
-    }
-    void OnAbilityDown()
-    {
-        Player_Interact.Instance.InteractWithObject();
-        Player_Movement.Instance.Action_PressMoveBlockButtonInvoke();
-        Player_Movement.Instance.Key_SwiftSwimDown();
-        Player_Descend.Instance.RunDescend();
-    }
-    void OnAbilityLeft()
-    {
-        Player_CeilingGrab.Instance.CeilingGrab();
-    }
-    void OnAbilityRight_DownPress()
-    {
-        Player_GraplingHook.Instance.StartGrappling();
-    }
-    void OnAbilityRight_RelesePress()
-    {
-        Player_GraplingHook.Instance.StopGrappling();
-    }
-    void OnRespawn()
-    {
-        Player_Movement.Instance.Key_Respawn();
-    }
-    void OnQuit()
-    {
-        Player_Movement.Instance.Key_Quit();
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
+        while (!operation.isDone)
+        {
+            Debug.Log($"Loading progress: {operation.progress * 100}%");
+            yield return null;
+        }
     }
 }
 

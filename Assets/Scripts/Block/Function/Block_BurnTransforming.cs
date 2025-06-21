@@ -14,16 +14,16 @@ public class Block_BurnTransforming : MonoBehaviour
 
     private void OnEnable()
     {
-        Player_BlockDetector.Action_isSwitchingBlocks += CheckIfSteppenOn;
-        Player_Movement.Action_StepTaken += MeltBlock;
-        PlayerStats.Action_RespawnPlayerEarly += ResetBlock;
+        Movement.Action_isSwitchingBlocks += CheckIfSteppenOn;
+        Movement.Action_StepTaken += MeltBlock;
+        Movement.Action_RespawnPlayerEarly += ResetBlock;
     }
 
     private void OnDisable()
     {
-        Player_BlockDetector.Action_isSwitchingBlocks -= CheckIfSteppenOn;
-        Player_Movement.Action_StepTaken -= MeltBlock;
-        PlayerStats.Action_RespawnPlayerEarly -= ResetBlock;
+        Movement.Action_isSwitchingBlocks -= CheckIfSteppenOn;
+        Movement.Action_StepTaken -= MeltBlock;
+        Movement.Action_RespawnPlayerEarly -= ResetBlock;
     }
 
 
@@ -32,7 +32,7 @@ public class Block_BurnTransforming : MonoBehaviour
 
     void CheckIfSteppenOn()
     {
-        if (PlayerManager.Instance.block_StandingOn_Previous == gameObject)
+        if (Movement.Instance.blockStandingOn_Previous == gameObject)
             isSteppedOn = true;
         else
         {
@@ -42,7 +42,7 @@ public class Block_BurnTransforming : MonoBehaviour
 
     void MeltBlock()
     {
-        if (!Player_Burning.Instance.isBurning) { return; }
+        if (!Player_Burning.Instance.isBurning || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
         if (!isSteppedOn) { return; }
 
@@ -57,6 +57,7 @@ public class Block_BurnTransforming : MonoBehaviour
         gameObject.SetActive(false);
 
         isSteppedOn = false;
+        Movement.Instance.UpdateAvailableMovementBlocks();
     }
 
     public void ResetBlock()

@@ -56,8 +56,15 @@ public class Block_SandFalling : MonoBehaviour
     {
         if (!canFall) { return; }
 
-        if (CheckIfReadyToFall())
+        if (CheckIfReadyToFall() /*&& !Player_CeilingGrab.Instance.isCeilingGrabbing*/)
         {
+            gameObject.GetComponent<BlockInfo>().movementState = MovementStates.Falling;
+
+            if (gameObject == Movement.Instance.blockStandingOn)
+            {
+                Movement.Instance.StartFallingWithBlock();
+            }
+
             Falling();
         }
     }
@@ -68,22 +75,18 @@ public class Block_SandFalling : MonoBehaviour
 
     private void OnEnable()
     {
-        Player_Movement.Action_StepTaken += CheckIfStandingOn;
+        Movement.Action_StepTaken += CheckIfStandingOn;
         Player_CeilingGrab.Action_releaseCeiling += CheckIfStandingOn;
-        Player_Movement.Action_LandedFromFalling += CheckIfStandingOn;
-        PlayerStats.Action_RespawnPlayerEarly += ResetBlock;
-
-        Player_Movement.Action_LandedFromFalling += CheckIfStandingOn;
+        Movement.Action_LandedFromFalling += CheckIfStandingOn;
+        Movement.Action_RespawnPlayerEarly += ResetBlock;
     }
 
     private void OnDisable()
     {
-        Player_Movement.Action_StepTaken -= CheckIfStandingOn;
+        Movement.Action_StepTaken -= CheckIfStandingOn;
         Player_CeilingGrab.Action_releaseCeiling -= CheckIfStandingOn;
-        Player_Movement.Action_LandedFromFalling -= CheckIfStandingOn;
-        PlayerStats.Action_RespawnPlayerEarly -= ResetBlock;
-
-        Player_Movement.Action_LandedFromFalling -= CheckIfStandingOn;
+        Movement.Action_LandedFromFalling -= CheckIfStandingOn;
+        Movement.Action_RespawnPlayerEarly -= ResetBlock;
     }
 
 
@@ -157,7 +160,7 @@ public class Block_SandFalling : MonoBehaviour
     {
         if (!canFall) { return; }
 
-        if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject && !isSteppedOn && !Player_CeilingGrab.Instance.isCeilingGrabbing && Player_Movement.Instance.movementStates != MovementStates.Falling)
+        if (Movement.Instance.blockStandingOn == gameObject && !isSteppedOn && !Player_CeilingGrab.Instance.isCeilingGrabbing && Movement.Instance.GetMovementState() != MovementStates.Falling)
         {
             isSteppedOn = true;
         }
@@ -188,20 +191,22 @@ public class Block_SandFalling : MonoBehaviour
         if (resettingBlock)
             isSteppedOn = false;
 
-        if (GetComponent<BoxCollider>())
-            GetComponent<BoxCollider>().enabled = false;
-        else if (GetComponent<MeshCollider>())
-            GetComponent<MeshCollider>().enabled = false;
+        //if (GetComponent<BoxCollider>())
+        //    GetComponent<BoxCollider>().enabled = false;
+        //else if (GetComponent<MeshCollider>())
+        //    GetComponent<MeshCollider>().enabled = false;
 
-        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endPos, PlayerManager.Instance.player.GetComponent<Player_Movement>().fallSpeed * Time.deltaTime);
+        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endPos, PlayerManager.Instance.player.GetComponent<Movement>().fallSpeed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, endPos) <= 0.03f)
         {
-            gameObject.SetActive(false);
+            gameObject.GetComponent<BlockInfo>().movementState = MovementStates.Still;
+
+            HideBlock();
+
             isSteppedOn = false;
             waitCounter = 0;
             transform.position = gameObject.GetComponent<BlockInfo>().startPos;
-            PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().Update_BlockStandingOn();
         }
     }
     void FallingAlertAnimation()
@@ -238,6 +243,19 @@ public class Block_SandFalling : MonoBehaviour
     //--------------------
 
 
+    void HideBlock()
+    {
+        gameObject.SetActive(false);
+    }
+    public void ShowBlock()
+    {
+        gameObject.SetActive(true);
+    }
+
+
+    //--------------------
+
+
     public void ResetBlock()
     {
         resettingBlock = true;
@@ -250,13 +268,15 @@ public class Block_SandFalling : MonoBehaviour
         else if (GetComponent<MeshCollider>())
             GetComponent<MeshCollider>().enabled = true;
 
+        gameObject.GetComponent<BlockInfo>().movementState = MovementStates.Still;
+
         waitCounter = 0;
 
         transform.position = gameObject.GetComponent<BlockInfo>().startPos;
 
         StartCoroutine(ResetBlockWaiting(0.1f));
 
-        gameObject.SetActive(true);
+        ShowBlock();
     }
     IEnumerator ResetBlockWaiting(float waitTime)
     {

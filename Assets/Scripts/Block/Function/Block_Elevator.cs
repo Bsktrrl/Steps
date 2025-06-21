@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class Block_Elevator : MonoBehaviour
 {
@@ -17,11 +16,19 @@ public class Block_Elevator : MonoBehaviour
     [Header("Movement Path")]
     [SerializeField] List<MovementPath> movementPath;
 
-    [SerializeField] bool moveToPos;
+    [SerializeField] bool isMoving = false;
     [SerializeField] bool waiting = true;
     [SerializeField] int pathSegmentCounter = 0;
 
     public bool elevatorIsActivated;
+
+    private Vector3 lastPosition;
+    private float accumulatedDistance = 0f;
+
+    [SerializeField] bool hasCheckedForPlayer;
+    bool playerIsOn;
+
+    float UpdateBlocksCounter = 0;
 
 
     //--------------------
@@ -31,13 +38,15 @@ public class Block_Elevator : MonoBehaviour
     {
         if (gameObject.GetComponent<Block_Elevator_StepOn>())
             stepOn_Elevator = true;
+        
+        lastPosition = transform.position;
 
         CalculateMovementPath();
     }
     private void Update()
     {
         //Moving towards new endPos
-        if (!waiting && moveToPos)
+        if (!waiting && isMoving)
         {
             if (stepOn_Elevator)
             {
@@ -59,16 +68,37 @@ public class Block_Elevator : MonoBehaviour
             }
         }
 
-        CheckIfDarkenBlock();
+        //Check distance before updating DarkenBlocks
+
+        //CheckIfInRangeOfPlayer();
+        //CheckIfDarkenBlock();
+        UpdateBlocks();
+
+        if (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) <= 2f)
+        {
+            UpdateBlocksCounter += Time.deltaTime;
+            if (UpdateBlocksCounter > 0.05f)
+            {
+                UpdateBlocksCounter = 0;
+                Movement.Instance.UpdateBlocks();
+                Movement.Instance.SetDarkenBlocks();
+                Player_CeilingGrab.Instance.RaycastCeiling();
+
+                //if (!Player_CeilingGrab.Instance.cannotCeilingRaycast)
+                //{
+                        //Player_CeilingGrab.Instance.RaycastCeiling();
+                //}
+            }
+        }
     }
     private void OnEnable()
     {
-        PlayerStats.Action_RespawnPlayer += ResetBlock;
+        Movement.Action_RespawnPlayer += ResetBlock;
     }
 
     private void OnDisable()
     {
-        PlayerStats.Action_RespawnPlayer -= ResetBlock;
+        Movement.Action_RespawnPlayer -= ResetBlock;
     }
 
 
@@ -120,9 +150,85 @@ public class Block_Elevator : MonoBehaviour
                     break;
             }
         }
+    }
 
-        waiting = false;
-        moveToPos = true;
+
+    //--------------------
+
+
+    void CheckIfInRangeOfPlayer()
+    {
+        //if (Movement.Instance.blockStandingOn == gameObject)
+        //{
+        //    print("1. CheckIfInRangeOfPlayer");
+        //}
+
+        float distance = (transform.position.y - PlayerManager.Instance.player.transform.position.y);
+        //print("Abs: Elevator: " + transform.position.y + " | Player: " + PlayerManager.Instance.player.transform.position.y + " | Distance: " + distance);
+
+        if (Movement.Instance.blockStandingOn != gameObject && (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) <= 1.4f) && (distance > -1f && distance < -0.9f) /*&& !hasCheckedForPlayer*/)
+        {
+            //print("2. CheckIfInRangeOfPlayer | Elevator: " + transform.position.y + " | Player: " + PlayerManager.Instance.player.transform.position.y + " | Distance: " + distance);
+            Movement.Instance.UpdateBlocks();
+            hasCheckedForPlayer = false;
+        }
+        else /*if (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) > 1.4f)*/
+        {
+            if (!hasCheckedForPlayer)
+            {
+                Movement.Instance.UpdateBlocks();
+            }
+
+            hasCheckedForPlayer = true;
+        }
+
+        //else
+        //{
+        //    print("3. CheckIfInRangeOfPlayer");
+        //    Movement.Instance.UpdateBlocks();
+        //    hasCheckedForPlayer = true;
+        //}
+    }
+    void UpdateBlocks()
+    {
+        //Make a check when the player enters this block
+        if (Movement.Instance.blockStandingOn == gameObject && !playerIsOn)
+        {
+            Movement.Instance.elevatorPos_Previous = transform.position;
+            playerIsOn = true;
+        }
+        else if (Movement.Instance.blockStandingOn != gameObject)
+        {
+            playerIsOn = false;
+        }
+
+        //Update blocks underway
+        if (Movement.Instance.blockStandingOn == gameObject && Movement.Instance.movementStates == MovementStates.Still && !Player_CeilingGrab.Instance.isCeilingRotation_OFF)
+        {
+            Vector3 rayDir = Vector3.zero;
+            if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+                rayDir = Vector3.down;
+            else
+                rayDir = Vector3.up;
+
+            if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+                PlayerManager.Instance.player.transform.position = transform.position + (rayDir * (Movement.Instance.heightOverBlock - (Player_BodyHeight.Instance.height_Normal) / 2));
+            else
+                PlayerManager.Instance.player.transform.position = transform.position + (rayDir * Movement.Instance.heightOverBlock);
+
+            float delta = Vector3.Distance(transform.position, lastPosition);
+            accumulatedDistance += delta;
+
+            if (accumulatedDistance >= 0.1f /*Vector3.Distance(Movement.Instance.elevatorPos_Previous, transform.position) >= 1f*/)
+            {
+                accumulatedDistance = 0;
+                Movement.Instance.elevatorPos_Previous = transform.position;
+                Movement.Instance.UpdateBlocks();
+                Movement.Instance.SetDarkenBlocks();
+            }
+
+            lastPosition = transform.position;
+        }
     }
 
 
@@ -141,7 +247,7 @@ public class Block_Elevator : MonoBehaviour
 
             if (movementPath[index].waitAfterMoving)
             {
-                moveToPos = false;
+                isMoving = false;
 
                 StartCoroutine(BlockWaiting(waitingTime));
             }
@@ -155,19 +261,7 @@ public class Block_Elevator : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
 
         waiting = false;
-        moveToPos = true;
-    }
-
-
-    //--------------------
-
-
-    void ResetBlock()
-    {
-        moveToPos = true;
-        pathSegmentCounter = 0;
-
-        StartCoroutine(BlockWaiting(waitingTime));
+        isMoving = true;
     }
 
 
@@ -197,29 +291,37 @@ public class Block_Elevator : MonoBehaviour
         }
         else
         {
-            if (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) >= 1.4f)
+            if (!hasCheckedForPlayer /*(Movement.Instance.blockStandingOn == gameObject && Movement.Instance.movementStates == MovementStates.Still) || Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) >= 1.4f*/)
             {
                 if (gameObject.GetComponent<BlockInfo>().blockIsDark)
                 {
-                    //print("1. CheckIfDarkenBlock | Distance: " + Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position));
-
                     gameObject.GetComponent<BlockInfo>().blockIsDark = false;
-
                     gameObject.GetComponent<BlockInfo>().ResetDarkenColor();
                 }
             }
             else
             {
-                if (!gameObject.GetComponent<BlockInfo>().blockIsDark
+                if (hasCheckedForPlayer /*&&
+                    !gameObject.GetComponent<BlockInfo>().blockIsDark && Movement.Instance.movementStates == MovementStates.Still 
                     && ((gameObject.transform.position.y < (PlayerManager.Instance.player.transform.position.y + 1) || PlayerStats.Instance.stats.abilitiesGot_Temporary.Descend || PlayerStats.Instance.stats.abilitiesGot_Permanent.Descend)
-                    || (gameObject.transform.position.y < (PlayerManager.Instance.player.transform.position.y - 1) || PlayerStats.Instance.stats.abilitiesGot_Temporary.Ascend || PlayerStats.Instance.stats.abilitiesGot_Permanent.Ascend)))
+                    || (gameObject.transform.position.y < (PlayerManager.Instance.player.transform.position.y - 1) || PlayerStats.Instance.stats.abilitiesGot_Temporary.Ascend || PlayerStats.Instance.stats.abilitiesGot_Permanent.Ascend))*/)
                 {
-                    //print("3. CheckIfDarkenBlock | Distance: " + Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position));
-
                     gameObject.GetComponent<BlockInfo>().SetDarkenColors();
                 }
             }
         }
+    }
+
+
+    //--------------------
+
+
+    void ResetBlock()
+    {
+        isMoving = true;
+        pathSegmentCounter = 0;
+
+        StartCoroutine(BlockWaiting(waitingTime));
     }
 }
 

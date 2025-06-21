@@ -24,24 +24,26 @@ public class Block_Ladder : MonoBehaviour
         FindTopLadderPart();
         FindBottomLadderPart();
 
-        if (transform.rotation.y == 0)
+        float yRot = Mathf.Round(transform.eulerAngles.y);
+
+        if (yRot == 0 || yRot == 360)
         {
-            FindExitBlock_Up(Player_Movement.Instance.DirectionCalculator(Vector3.forward));
+            FindExitBlock_Up(Vector3.forward);
             FindExitBlock_Down();
         }
-        else if (transform.rotation.y == 180)
+        else if (yRot == 180)
         {
-            FindExitBlock_Up(Player_Movement.Instance.DirectionCalculator(Vector3.back));
+            FindExitBlock_Up(Vector3.back);
             FindExitBlock_Down();
         }
-        else if (transform.rotation.y == -90)
+        else if (yRot == 270)
         {
-            FindExitBlock_Up(Player_Movement.Instance.DirectionCalculator(Vector3.left));
+            FindExitBlock_Up(Vector3.left);
             FindExitBlock_Down();
         }
-        else if (transform.rotation.y == 90)
+        else if (yRot == 90)
         {
-            FindExitBlock_Up(Player_Movement.Instance.DirectionCalculator(Vector3.right));
+            FindExitBlock_Up(Vector3.right);
             FindExitBlock_Down();
         }
 
@@ -53,111 +55,88 @@ public class Block_Ladder : MonoBehaviour
 
     void FindTopLadderPart()
     {
-        if (!lastLadderPart_Up)
+        if (lastLadderPart_Up != null) return;
+
+        GameObject current = raycastPoint;
+        GameObject result = current.transform.parent.gameObject; //default if no ladder found above
+        GameObject hitObject = null;
+
+        while (true)
         {
-            bool findLastLadder = false;
-
-            lastLadderPart_Up = raycastPoint;
-            GameObject tempObject = null;
-
-            //Find the top ladderPart in the ladder
-            while (!findLastLadder)
+            //Try raycasting upward from current
+            if (Movement.Instance.PerformMovementRaycast(current.transform.position, Vector3.up, 1, out hitObject) == RaycastHitObjects.Ladder)
             {
-                if (Physics.Raycast(lastLadderPart_Up.transform.position, Vector3.up, out hit, 1, MapManager.Instance.pickup_LayerMask))
+                Block_Ladder ladder = hitObject.GetComponent<Block_Ladder>();
+                if (ladder != null)
                 {
-                    if (hit.transform.gameObject.GetComponent<Block_Ladder>())
-                    {
-                        lastLadderPart_Up = hit.transform.gameObject.GetComponent<Block_Ladder>().raycastPoint;
-                        tempObject = hit.transform.gameObject;
-                    }
-                    else
-                    {
-                        if (tempObject)
-                            lastLadderPart_Up = tempObject;
-                        else
-                            lastLadderPart_Up = gameObject;
+                    current = ladder.raycastPoint;
 
-                        findLastLadder = true;
-                    }
-                }
-                else
-                {
-                    if (tempObject)
-                        lastLadderPart_Up = tempObject;
-                    else
-                        lastLadderPart_Up = gameObject;
-
-                    findLastLadder = true;
+                    //Update the current top candidate
+                    result = current.transform.parent.gameObject; 
+                    continue;
                 }
             }
+
+            //No more ladder above
+            break;
         }
+
+        lastLadderPart_Up = result;
     }
+
     void FindBottomLadderPart()
     {
-        if (!lastLadderPart_Down)
+        if (lastLadderPart_Down != null) return;
+
+        GameObject current = raycastPoint;
+        GameObject result = current.transform.parent.gameObject; //default if no ladder found above
+        GameObject hitObject = null;
+
+        while (true)
         {
-            bool findLastLadder = false;
-
-            lastLadderPart_Down = raycastPoint;
-            GameObject tempObject = null;
-
-            //Find the top ladderPart in the ladder
-            while (!findLastLadder)
+            //Try raycasting upward from current
+            if (Movement.Instance.PerformMovementRaycast(current.transform.position, Vector3.down, 1, out hitObject) == RaycastHitObjects.Ladder)
             {
-                if (Physics.Raycast(lastLadderPart_Down.transform.position, Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
+                Block_Ladder ladder = hitObject.GetComponent<Block_Ladder>();
+                if (ladder != null)
                 {
-                    if (hit.transform.gameObject.GetComponent<Block_Ladder>())
-                    {
-                        lastLadderPart_Down = hit.transform.gameObject.GetComponent<Block_Ladder>().raycastPoint;
-                        tempObject = hit.transform.gameObject;
-                    }
-                    else
-                    {
-                        if (tempObject)
-                            lastLadderPart_Down = tempObject;
-                        else
-                            lastLadderPart_Down = gameObject;
+                    current = ladder.raycastPoint;
 
-                        findLastLadder = true;
-                    }
-                }
-                else
-                {
-                    if (tempObject)
-                        lastLadderPart_Down = tempObject;
-                    else
-                        lastLadderPart_Down = gameObject;
-
-                    findLastLadder = true;
+                    //Update the current top candidate
+                    result = current.transform.parent.gameObject;
+                    continue;
                 }
             }
+
+            //No more ladder above
+            break;
         }
+
+        lastLadderPart_Down = result;
     }
 
     void FindExitBlock_Up(Vector3 dir)
     {
+        GameObject outObject1 = null;
+
         //Find the exitBlock to the ladder
-        if (Physics.Raycast(lastLadderPart_Up.transform.position + Vector3.up + (dir * 0.5f), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
+        if (Movement.Instance.PerformMovementRaycast(lastLadderPart_Up.transform.position + Vector3.up + (dir * 0.5f), Vector3.down, 1, out outObject1) == RaycastHitObjects.BlockInfo)
         {
-            if (hit.transform.gameObject.GetComponent<BlockInfo>())
-            {
-                exitBlock_Up = hit.transform.gameObject;
-                return;
-            }
+            exitBlock_Up = outObject1;
+            return;
         }
 
         exitBlock_Up = null;
     }
     void FindExitBlock_Down()
     {
+        GameObject outObject1 = null;
+
         //Find the exitBlock to the ladder
-        if (Physics.Raycast(lastLadderPart_Down.transform.position, Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
+        if (Movement.Instance.PerformMovementRaycast(lastLadderPart_Down.transform.position, Vector3.down, 1, out outObject1) == RaycastHitObjects.BlockInfo)
         {
-            if (hit.transform.gameObject.GetComponent<BlockInfo>())
-            {
-                exitBlock_Down = hit.transform.gameObject;
-                return;
-            }
+            exitBlock_Down = outObject1;
+            return;
         }
 
         exitBlock_Down = null;
@@ -171,12 +150,11 @@ public class Block_Ladder : MonoBehaviour
     {
         if (!lastLadderPart_Up) { return; }
 
-        //Find the exitBlock to the ladder
-        if (Physics.Raycast(lastLadderPart_Up.transform.position + Vector3.up + (dir * 0.5f), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
+        if (exitBlock_Up)
         {
-            if (hit.transform.gameObject.GetComponent<BlockInfo>())
+            if (exitBlock_Up.GetComponent<BlockInfo>())
             {
-                hit.transform.gameObject.GetComponent<BlockInfo>().SetDarkenColors();
+                exitBlock_Up.GetComponent<BlockInfo>().SetDarkenColors();
             }
         }
     }
@@ -184,12 +162,11 @@ public class Block_Ladder : MonoBehaviour
     {
         if (!lastLadderPart_Down) { return; }
 
-        //Find the exitBlock to the ladder
-        if (Physics.Raycast(lastLadderPart_Down.transform.position, Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
+        if (exitBlock_Down)
         {
-            if (hit.transform.gameObject.GetComponent<BlockInfo>())
+            if (exitBlock_Down.GetComponent<BlockInfo>())
             {
-                hit.transform.gameObject.GetComponent<BlockInfo>().SetDarkenColors();
+                exitBlock_Down.GetComponent<BlockInfo>().SetDarkenColors();
             }
         }
     }

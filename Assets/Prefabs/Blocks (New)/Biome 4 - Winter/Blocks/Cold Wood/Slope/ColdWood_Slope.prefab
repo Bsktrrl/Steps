@@ -167,7 +167,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300004, guid: e0baf42a40b5ec348be5877a32f38262, type: 3}
 --- !u!54 &627311669977348433
@@ -214,6 +214,7 @@ MonoBehaviour:
   movementCost_Temp: 0
   movementCost: 0
   movementSpeed: 5
+  movementState: 0
   stepCostText_Color: {r: 0.65882355, g: 0.6784314, b: 0.6313726, a: 1}
   stepCostText_ColorUnder: {r: 0, g: 0, b: 0, a: 0}
   stepSound_Volume: 0.4

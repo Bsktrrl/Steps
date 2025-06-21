@@ -13,6 +13,8 @@ public class BlockInfo : MonoBehaviour
     public int movementCost;
     public float movementSpeed;
 
+    public MovementStates movementState;
+
     [Header("StepCost Color")]
     public Color stepCostText_Color;
     public Color stepCostText_ColorUnder;
@@ -30,7 +32,7 @@ public class BlockInfo : MonoBehaviour
     [HideInInspector] public List<MaterialPropertyBlock> propertyBlocks = new List<MaterialPropertyBlock>();
 
     [HideInInspector] public bool colorTint_isActive;
-    bool color_isDarkened;
+    bool color_isAboutToBeDarkened;
 
     [HideInInspector] public float tintValue = 0.95f;
 
@@ -46,6 +48,10 @@ public class BlockInfo : MonoBehaviour
     //--------------------
 
 
+    private void Awake()
+    {
+        startPos = transform.position;
+    }
     private void Start()
     {
         tintValue = 0.92f;
@@ -55,13 +61,12 @@ public class BlockInfo : MonoBehaviour
 
         movementCost_Temp = movementCost;
 
-        startPos = transform.position;
         stepSound_Source = gameObject.AddComponent<AudioSource>();
         
         SetObjectRenderer();
         SetPropertyBlock();
 
-        ResetDarkenColor();
+        //ResetDarkenColor();
         TintBlock_CheckerPattern();
 
         //Show StepCost
@@ -86,18 +91,14 @@ public class BlockInfo : MonoBehaviour
 
     private void OnEnable()
     {
-        Player_Movement.Action_resetBlockColor += ResetDarkenColor;
-        PlayerStats.Action_RespawnToSavePos += ResetDarkenColor;
-        PlayerStats.Action_RespawnPlayer += ResetBlock;
-        Player_Movement.Action_LandedFromFalling += ResetDarkenColor;
+        Movement.Action_RespawnToSavePos += ResetDarkenColor;
+        Movement.Action_RespawnPlayer += ResetBlock;
     }
 
     private void OnDisable()
     {
-        Player_Movement.Action_resetBlockColor -= ResetDarkenColor;
-        PlayerStats.Action_RespawnToSavePos -= ResetDarkenColor;
-        PlayerStats.Action_RespawnPlayer -= ResetBlock;
-        Player_Movement.Action_LandedFromFalling -= ResetDarkenColor;
+        Movement.Action_RespawnToSavePos -= ResetDarkenColor;
+        Movement.Action_RespawnPlayer -= ResetBlock;
     }
 
 
@@ -137,34 +138,34 @@ public class BlockInfo : MonoBehaviour
 
     void CheckDarkeningWhenPlayerIsOnElevator()
     {
-        if (blockIsDark)
-        {
-            if (PlayerManager.Instance.block_StandingOn_Current.block)
-            {
-                if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator>()
-                || PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Elevator_StepOn>())
-                {
-                    if ((gameObject == PlayerManager.Instance.block_Vertical_InFront.block && PlayerManager.Instance.canMove_Forward)
-                        || (gameObject == PlayerManager.Instance.block_Vertical_InBack.block && PlayerManager.Instance.canMove_Back)
-                        || (gameObject == PlayerManager.Instance.block_Vertical_ToTheLeft.block && PlayerManager.Instance.canMove_Left)
-                        || (gameObject == PlayerManager.Instance.block_Vertical_ToTheRight.block && PlayerManager.Instance.canMove_Right))
-                    {
-                        //SetDarkenColors();
-                    }
-                    else if ((gameObject == Player_Jumping.Instance.jumpTarget_Forward && Player_Jumping.Instance.canJump_Forward)
-                             || (gameObject == Player_Jumping.Instance.jumpTarget_Back && Player_Jumping.Instance.canJump_Back)
-                             || (gameObject == Player_Jumping.Instance.jumpTarget_Left && Player_Jumping.Instance.canJump_Left)
-                             || (gameObject == Player_Jumping.Instance.jumpTarget_Right && Player_Jumping.Instance.canJump_Right))
-                    {
-                        //SetDarkenColors();
-                    }
-                    else
-                    {
-                        ResetDarkenColor();
-                    }
-                }
-            }
-        }
+        //if (blockIsDark)
+        //{
+        //    if (Movement.Instance.blockStandingOn)
+        //    {
+        //        if (Movement.Instance.blockStandingOn.GetComponent<Block_Elevator>()
+        //        || Movement.Instance.blockStandingOn.GetComponent<Block_Elevator_StepOn>())
+        //        {
+        //            if ((gameObject == PlayerManager.Instance.block_Vertical_InFront.block && PlayerManager.Instance.canMove_Forward)
+        //                || (gameObject == PlayerManager.Instance.block_Vertical_InBack.block && PlayerManager.Instance.canMove_Back)
+        //                || (gameObject == PlayerManager.Instance.block_Vertical_ToTheLeft.block && PlayerManager.Instance.canMove_Left)
+        //                || (gameObject == PlayerManager.Instance.block_Vertical_ToTheRight.block && PlayerManager.Instance.canMove_Right))
+        //            {
+        //                //SetDarkenColors();
+        //            }
+        //            else if ((gameObject == Player_Jumping.Instance.jumpTarget_Forward && Player_Jumping.Instance.canJump_Forward)
+        //                     || (gameObject == Player_Jumping.Instance.jumpTarget_Back && Player_Jumping.Instance.canJump_Back)
+        //                     || (gameObject == Player_Jumping.Instance.jumpTarget_Left && Player_Jumping.Instance.canJump_Left)
+        //                     || (gameObject == Player_Jumping.Instance.jumpTarget_Right && Player_Jumping.Instance.canJump_Right))
+        //            {
+        //                //SetDarkenColors();
+        //            }
+        //            else
+        //            {
+        //                ResetDarkenColor();
+        //            }
+        //        }
+        //    }
+        //}
     }
 
 
@@ -175,23 +176,23 @@ public class BlockInfo : MonoBehaviour
     {
         if (blockIsDark) { return; }
 
-        if (PlayerManager.Instance.player.GetComponent<Player_Dash>().isDashing) { return; }
-
         if (PlayerStats.Instance.stats.steps_Current <= 0 && movementCost > 0)
         {
             ResetDarkenColor();
             return;
         }
 
-        color_isDarkened = true;
+        color_isAboutToBeDarkened = true;
 
         UpdateBlock_Darken();
 
-        color_isDarkened = false;
+        color_isAboutToBeDarkened = false;
     }
 
     public void ResetDarkenColor()
     {
+        if (!blockIsDark) { return; }
+
         if (numberDisplay)
         {
             for (int i = 0; i < propertyBlocks.Count; i++)
@@ -268,7 +269,7 @@ public class BlockInfo : MonoBehaviour
 
     public Color GetBlockColorTint()
     {
-        if (color_isDarkened)
+        if (color_isAboutToBeDarkened)
         {
             if (colorTint_isActive)
             {
@@ -309,7 +310,7 @@ public class BlockInfo : MonoBehaviour
 
     public void MakeStepSound()
     {
-        if (stepSound_ClipList.Count > 0 && PlayerManager.Instance.block_StandingOn_Current.block == gameObject)
+        if (stepSound_ClipList.Count > 0 && Movement.Instance.blockStandingOn == gameObject)
         {
             int sound = UnityEngine.Random.Range(0, stepSound_ClipList.Count);
 

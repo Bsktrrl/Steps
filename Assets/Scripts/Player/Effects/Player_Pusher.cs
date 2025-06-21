@@ -17,14 +17,14 @@ public class Player_Pusher : Singleton<Player_Pusher>
     }
     private void OnEnable()
     {
-        Player_Movement.Action_StepTaken += CheckPush;
-        Player_Movement.Action_BodyRotated += CheckIfNotPushed;
+        Movement.Action_StepTaken += CheckPush;
+        Movement.Action_BodyRotated += CheckIfNotPushed;
     }
 
     private void OnDisable()
     {
-        Player_Movement.Action_StepTaken -= CheckPush;
-        Player_Movement.Action_BodyRotated -= CheckIfNotPushed;
+        Movement.Action_StepTaken -= CheckPush;
+        Movement.Action_BodyRotated -= CheckIfNotPushed;
     }
 
 
@@ -38,19 +38,19 @@ public class Player_Pusher : Singleton<Player_Pusher>
     }
     void CheckIfPushed()
     {
-        if (PlayerManager.Instance.block_StandingOn_Current.block)
+        if (Movement.Instance.blockStandingOn)
         {
-            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_Pusher>())
+            if (Movement.Instance.blockStandingOn.GetComponent<Block_Pusher>())
             {
                 playerIsPushed = true;
-                pushDirection = PlayerManager.Instance.lookingDirection;
+                pushDirection = Movement.Instance.lookingDirection;
             }
         }
     }
 
     void CheckIfNotPushed()
     {
-        if (PlayerManager.Instance.lookingDirection != pushDirection)
+        if (Movement.Instance.lookingDirection != pushDirection)
         {
             playerIsPushed = false;
             pushDirection = Vector3.zero;

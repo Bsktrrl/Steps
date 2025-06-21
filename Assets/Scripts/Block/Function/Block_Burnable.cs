@@ -6,14 +6,14 @@ public class Block_Burnable : MonoBehaviour
 {
     private void OnEnable()
     {
-        Player_Movement.Action_StepTaken += CheckForPlayer;
-        PlayerStats.Action_RespawnPlayer += ResetBlock;
+        Movement.Action_StepTaken += CheckForPlayer;
+        Movement.Action_RespawnPlayer += ResetBlock;
     }
 
     private void OnDisable()
     {
-        Player_Movement.Action_StepTaken -= CheckForPlayer;
-        PlayerStats.Action_RespawnPlayer -= ResetBlock;
+        Movement.Action_StepTaken -= CheckForPlayer;
+        Movement.Action_RespawnPlayer -= ResetBlock;
     }
 
 

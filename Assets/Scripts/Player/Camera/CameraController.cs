@@ -1,7 +1,6 @@
 using Cinemachine;
 using System;
 using System.Collections;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
 public class CameraController : Singleton<CameraController>
@@ -49,7 +48,7 @@ public class CameraController : Singleton<CameraController>
         cameraOffset_originalPos = cameraOffset.transform.localPosition;
         cameraOffset_originalRot = cameraOffset.transform.rotation;
 
-        SetBlockDetectorDirection();
+        //SetBlockDetectorDirection();
         AdjustFacingDirection();
     }
 
@@ -63,9 +62,8 @@ public class CameraController : Singleton<CameraController>
         if (isRotating) { return; }
         if (isCeilingRotating) { return; }
         if (Player_Interact.Instance.isInteracting) { return; }
-        if (Player_Movement.Instance.isIceGliding) { return; }
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
-        if (PlayerManager.Instance.isTransportingPlayer) { return; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
+        //if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
         //Rotate Camera
         switch (cameraRotationState)
@@ -94,9 +92,8 @@ public class CameraController : Singleton<CameraController>
         if (isRotating) { return; }
         if (isCeilingRotating) { return; }
         if (Player_Interact.Instance.isInteracting) { return; }
-        if (Player_Movement.Instance.isIceGliding) { return; }
-        if (Player_Movement.Instance.movementStates == MovementStates.Moving) { return; }
-        if (PlayerManager.Instance.isTransportingPlayer) { return; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
+        //if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
         //Rotate Camera
         switch (cameraRotationState)
@@ -147,12 +144,13 @@ public class CameraController : Singleton<CameraController>
         // Ensure the final rotation is set exactly
         cameraAnchor.transform.rotation = endRotation;
 
-        SetBlockDetectorDirection();
+        //SetBlockDetectorDirection();
 
         yield return new WaitForSeconds(waitDelay); // Wait for the next frame
 
         PlayerManager.Instance.pauseGame = false;
-        isRotating = false;
+
+        Movement.Instance.previousPosition = transform.position;
 
         Action_RotateCamera_End?.Invoke();
     }
@@ -203,7 +201,7 @@ public class CameraController : Singleton<CameraController>
         cameraOffset.transform.localPosition = endPosition;
         cameraOffset.transform.rotation = endRotation;
 
-        SetBlockDetectorDirection();
+        //SetBlockDetectorDirection();
         AdjustFacingDirection();
 
         yield return new WaitForSeconds(waitDelay); // Wait for the next frame
@@ -226,30 +224,30 @@ public class CameraController : Singleton<CameraController>
         cameraAnchor.transform.rotation = cameraAnchor_originalRot;
 
 
-        SetBlockDetectorDirection();
+        //SetBlockDetectorDirection();
     }
 
-    void SetBlockDetectorDirection()
-    {
-        switch (cameraRotationState)
-        {
-            case CameraRotationState.Forward:
-                PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 0, 0));
-                break;
-            case CameraRotationState.Backward:
-                PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 180, 0));
-                break;
-            case CameraRotationState.Left:
-                PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 90, 0));
-                break;
-            case CameraRotationState.Right:
-                PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, -90, 0));
-                break;
+    //void SetBlockDetectorDirection()
+    //{
+    //    switch (cameraRotationState)
+    //    {
+    //        case CameraRotationState.Forward:
+    //            PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 0, 0));
+    //            break;
+    //        case CameraRotationState.Backward:
+    //            PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 180, 0));
+    //            break;
+    //        case CameraRotationState.Left:
+    //            PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 90, 0));
+    //            break;
+    //        case CameraRotationState.Right:
+    //            PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, -90, 0));
+    //            break;
 
-            default:
-                break;
-        }
-    }
+    //        default:
+    //            break;
+    //    }
+    //}
     void AdjustFacingDirection()
     {
         switch (cameraRotationState)

@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class FireLightScript : MonoBehaviour
 {
-    private Light light;
+    private Light mainLight;
     private float lightIntensity;
 
     void Start()
     {
-        light = gameObject.GetComponent<Light>();
+        mainLight = gameObject.GetComponent<Light>();
         StartCoroutine(timer());
     }
 
     void Update()
     {
-        light.intensity = Mathf.Lerp(light.intensity, lightIntensity, 10 * Time.deltaTime);
+        mainLight.intensity = Mathf.Lerp(mainLight.intensity, lightIntensity, 10 * Time.deltaTime);
     }
 
     IEnumerator timer()

@@ -9,12 +9,12 @@ public class Block_RefillSteps : MonoBehaviour
 
     private void OnEnable()
     {
-        Player_Movement.Action_StepTaken += RefillAvailableSteps;
+        Movement.Action_StepTaken += RefillAvailableSteps;
     }
 
     private void OnDisable()
     {
-        Player_Movement.Action_StepTaken -= RefillAvailableSteps;
+        Movement.Action_StepTaken -= RefillAvailableSteps;
     }
 
 
@@ -23,7 +23,7 @@ public class Block_RefillSteps : MonoBehaviour
 
     void RefillAvailableSteps()
     {
-        if (PlayerManager.Instance.block_StandingOn_Current.block == gameObject)
+        if (Movement.Instance.blockStandingOn == gameObject)
         {
             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current = PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max;
             StartCoroutine(ResetSteps(0.01f));

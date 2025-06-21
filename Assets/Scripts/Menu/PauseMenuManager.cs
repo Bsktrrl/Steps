@@ -88,14 +88,14 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
     private void OnEnable()
     {
-        Player_Movement.Action_StepTaken += SetLevelInfo;
-        PlayerStats.Action_RespawnPlayer += SetLevelInfo;
+        Movement.Action_StepTaken += SetLevelInfo;
+        Movement.Action_RespawnPlayer += SetLevelInfo;
         Map_SaveInfo.Action_SetupMap_hasLoaded += SetLevelInfo;
     }
     private void OnDisable()
     {
-        Player_Movement.Action_StepTaken -= SetLevelInfo;
-        PlayerStats.Action_RespawnPlayer -= SetLevelInfo;
+        Movement.Action_StepTaken -= SetLevelInfo;
+        Movement.Action_RespawnPlayer -= SetLevelInfo;
         Map_SaveInfo.Action_SetupMap_hasLoaded -= SetLevelInfo;
     }
 

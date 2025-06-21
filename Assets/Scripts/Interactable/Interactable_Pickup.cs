@@ -40,7 +40,7 @@ public class Interactable_Pickup : MonoBehaviour
             MapManager.Instance.SaveMapInfo();
 
             if (goal)
-                PlayerManager.Instance.player.GetComponent<Player_Movement>().QuitLevel();
+                PlayerManager.Instance.player.GetComponent<PlayerManager>().QuitLevel();
         }
     }
 
@@ -150,8 +150,6 @@ public class Interactable_Pickup : MonoBehaviour
     }
     public void GetAbility()
     {
-        Player_BlockDetector.Instance.Update_BlockStandingOn();
-
         switch (abilityReceived)
         {
             case Abilities.None:

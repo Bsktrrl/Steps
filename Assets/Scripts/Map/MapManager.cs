@@ -38,18 +38,21 @@ public class MapManager : Singleton<MapManager>
         blockInfoList = FindObjectsOfType<BlockInfo>();
         pickupInfoList = FindObjectsOfType<Interactable_Pickup>();
 
+        Movement.Instance.RotatePlayerBody(180);
+
         PlayAudio();
     }
 
     private void OnEnable()
     {
-        PlayerStats.Action_RespawnPlayer += ShowHiddenObjects;
+        Movement.Action_RespawnPlayer += ShowHiddenObjects;
         DataManager.Action_dataHasLoaded += SaveMapInfo;
     }
 
     private void OnDisable()
     {
-        PlayerStats.Action_RespawnPlayer -= ShowHiddenObjects;
+        Movement.Action_RespawnPlayer -= ShowHiddenObjects;
+        DataManager.Action_dataHasLoaded -= SaveMapInfo;
     }
 
 
@@ -69,6 +72,8 @@ public class MapManager : Singleton<MapManager>
     void SpawnPlayerObject()
     {
         playerObjectInScene = Instantiate(playerObject);
+
+        playerStartPos = playerStartPos + new Vector3(0, -1 + Movement.Instance.heightOverBlock, 0);
         playerObjectInScene.transform.position = playerStartPos;
     }
 

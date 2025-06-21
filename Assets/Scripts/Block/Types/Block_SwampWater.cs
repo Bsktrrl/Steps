@@ -6,13 +6,13 @@ public class Block_SwampWater : MonoBehaviour
 {
     private void OnEnable()
     {
-        Player_BlockDetector.Action_isSwitchingBlocks += SteppingOnSwampWater;
-        PlayerStats.Action_RespawnPlayer += SteppingOnSwampWater;
+        Movement.Action_isSwitchingBlocks += SteppingOnSwampWater;
+        Movement.Action_RespawnPlayer += SteppingOnSwampWater;
     }
     private void OnDisable()
     {
-        Player_BlockDetector.Action_isSwitchingBlocks -= SteppingOnSwampWater;
-        PlayerStats.Action_RespawnPlayer -= SteppingOnSwampWater;
+        Movement.Action_isSwitchingBlocks -= SteppingOnSwampWater;
+        Movement.Action_RespawnPlayer -= SteppingOnSwampWater;
     }
 
 
@@ -21,9 +21,9 @@ public class Block_SwampWater : MonoBehaviour
 
     void SteppingOnSwampWater()
     {
-        if (PlayerManager.Instance.block_StandingOn_Current.block)
+        if (Movement.Instance.blockStandingOn)
         {
-            if (PlayerManager.Instance.block_StandingOn_Current.block.GetComponent<Block_SwampWater>())
+            if (Movement.Instance.blockStandingOn.GetComponent<Block_SwampWater>())
             {
                 Player_SwampWater.Instance.isInSwampWater = true;
             }

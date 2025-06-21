@@ -35,8 +35,15 @@ public class Block_Falling : MonoBehaviour
     }
     private void Update()
     {
-        if (CheckIfReadyToFall())
+        if (CheckIfReadyToFall() /*&& !Player_CeilingGrab.Instance.isCeilingGrabbing*/)
         {
+            gameObject.GetComponent<BlockInfo>().movementState = MovementStates.Falling;
+
+            if (gameObject == Movement.Instance.blockStandingOn)
+            {
+                Movement.Instance.StartFallingWithBlock();
+            }
+
             Falling();
         }
     }
@@ -47,12 +54,12 @@ public class Block_Falling : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerStats.Action_RespawnPlayer += ResetBlock;
+        Movement.Action_RespawnPlayer += ResetBlock;
     }
 
     private void OnDisable()
     {
-        PlayerStats.Action_RespawnPlayer -= ResetBlock;
+        Movement.Action_RespawnPlayer -= ResetBlock;
     }
 
 
@@ -126,12 +133,13 @@ public class Block_Falling : MonoBehaviour
 
         //gameObject.transform.position = gameObject.transform.position + (Vector3.down * MainManager.Instance.player.GetComponent<Player_Movement>().fallSpeed * Time.deltaTime);
 
-        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endPos, PlayerManager.Instance.player.GetComponent<Player_Movement>().fallSpeed * Time.deltaTime);
+        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endPos, PlayerManager.Instance.player.GetComponent<Movement>().fallSpeed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, endPos) <= 0.03f)
         {
+            gameObject.GetComponent<BlockInfo>().movementState = MovementStates.Still;
+
             HideBlock();
-            PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().Update_BlockStandingOn();
         }
     }
     void FallingAlertAnimation()
@@ -164,6 +172,7 @@ public class Block_Falling : MonoBehaviour
         }
     }
 
+
     //--------------------
 
 
@@ -193,6 +202,8 @@ public class Block_Falling : MonoBehaviour
             GetComponent<MeshCollider>().enabled = true;
 
         waitCounter = 0;
+
+        gameObject.GetComponent<BlockInfo>().movementState = MovementStates.Still;
 
         transform.position = gameObject.GetComponent<BlockInfo>().startPos;
 

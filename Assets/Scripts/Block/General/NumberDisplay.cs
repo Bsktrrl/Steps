@@ -63,10 +63,6 @@ public class NumberDisplay : MonoBehaviour
         {
             //transform.GetChild(0).transform.localPosition = new Vector3(0, 0.48f, 0);
         }
-        if (player_BlockDetector)
-        {
-            player_BlockDetector.RaycastSetup();
-        }
 
         UpdateRotation();
     }

@@ -15,16 +15,16 @@ public class Block_Weak : MonoBehaviour
 
     private void OnEnable()
     {
-        Player_BlockDetector.Action_isSwitchingBlocks += CheckIfSteppenOn;
-        Player_Movement.Action_StepTaken += DisolveBlock;
-        PlayerStats.Action_RespawnPlayerEarly += ResetBlock;
+        Movement.Action_isSwitchingBlocks += CheckIfSteppenOn;
+        Movement.Action_StepTaken_Late += DisolveBlock;
+        Movement.Action_RespawnPlayerEarly += ResetBlock;
     }
 
     private void OnDisable()
     {
-        Player_BlockDetector.Action_isSwitchingBlocks -= CheckIfSteppenOn;
-        Player_Movement.Action_StepTaken -= DisolveBlock;
-        PlayerStats.Action_RespawnPlayerEarly -= ResetBlock;
+        Movement.Action_isSwitchingBlocks -= CheckIfSteppenOn;
+        Movement.Action_StepTaken_Late -= DisolveBlock;
+        Movement.Action_RespawnPlayerEarly -= ResetBlock;
     }
 
 
@@ -33,7 +33,7 @@ public class Block_Weak : MonoBehaviour
 
     void CheckIfSteppenOn()
     {
-        if (PlayerManager.Instance.block_StandingOn_Previous == gameObject)
+        if (Movement.Instance.blockStandingOn_Previous == gameObject)
             isSteppedOn = true;
         else
         {
@@ -43,9 +43,9 @@ public class Block_Weak : MonoBehaviour
 
     void DisolveBlock()
     {
-        if (!isSteppedOn) { return; }
+        if (!isSteppedOn || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
-        StartCoroutine(WaitBeforeDisolveBlock(0.005f));
+        StartCoroutine(WaitBeforeDisolveBlock(0.05f));
     }
     IEnumerator WaitBeforeDisolveBlock(float waitTime)
     {
@@ -56,6 +56,11 @@ public class Block_Weak : MonoBehaviour
         gameObject.SetActive(false);
 
         isSteppedOn = false;
+
+        if (!Movement.Instance.isIceGliding)
+        {
+            Movement.Instance.UpdateAvailableMovementBlocks();
+        }
     }
 
     public void ResetBlock()
