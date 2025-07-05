@@ -63,11 +63,12 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         if (CameraController.Instance.isRotating) { return; }
         if (CameraController.Instance.isCeilingRotating) { return; }
         if (Player_Interact.Instance.isInteracting) { return; }
-        //if (Player_Movement.Instance.isIceGliding) { return; }
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
 
-        if (/*Input.GetKeyDown(KeyCode.C) &&*/ CameraController.Instance.cameraState == CameraState.GameplayCam)
+        if (CameraController.Instance.cameraState == CameraState.GameplayCam)
         {
+            MapManager.Instance.ceilingGrabCounter++;
+
             isCeilingGrabbing = true;
             Movement.Instance.heightOverBlock = Movement.Instance.heightOverBlock;
 
@@ -82,7 +83,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 
             StartCoroutine(RotateToOrFromCeiling(180));
         }
-        else if (/*Input.GetKeyDown(KeyCode.C) &&*/ CameraController.Instance.cameraState == CameraState.CeilingCam)
+        else if (CameraController.Instance.cameraState == CameraState.CeilingCam)
         {
             if (CameraController.Instance.cameraRotationState == CameraRotationState.Forward)
                 StartCoroutine(CameraController.Instance.CeilingCameraRotation(0));

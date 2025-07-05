@@ -10,6 +10,22 @@ public class MapManager : Singleton<MapManager>
     GameObject playerObjectInScene;
     public Vector3 playerStartPos;
 
+    [Header("Stats")]
+    public float timeUsedInLevel = 0;
+    public int stepCount = 0;
+    public int respawnCount = 0;
+    public int abilitiesPickedUp = 0;
+    public int cameraRotated = 0;
+
+    public int swimCounter = 0;
+    public int swiftSwimCounter = 0;
+    public int jumpCounter = 0;
+    public int dashCounter = 0;
+    public int ascendCounter = 0;
+    public int descendCounter = 0;
+    public int grapplingHookCounter = 0;
+    public int ceilingGrabCounter = 0;
+
     [Header("LayerMask for Raycasting")]
     public LayerMask pickup_LayerMask;
 
@@ -42,16 +58,30 @@ public class MapManager : Singleton<MapManager>
 
         PlayAudio();
     }
+    private void Update()
+    {
+        timeUsedInLevel += Time.deltaTime;
+    }
 
     private void OnEnable()
     {
         Movement.Action_RespawnPlayer += ShowHiddenObjects;
+        Movement.Action_RespawnPlayer += UpdateRespawnCount;
+
+        Movement.Action_StepTaken += UpdateStepCount;
+        Interactable_Pickup.Action_AbilityPickupGot += UpdateAbilitiesPickedUp;
+
         DataManager.Action_dataHasLoaded += SaveMapInfo;
     }
 
     private void OnDisable()
     {
         Movement.Action_RespawnPlayer -= ShowHiddenObjects;
+        Movement.Action_RespawnPlayer -= UpdateRespawnCount;
+
+        Movement.Action_StepTaken -= UpdateStepCount;
+        Interactable_Pickup.Action_AbilityPickupGot -= UpdateAbilitiesPickedUp;
+
         DataManager.Action_dataHasLoaded -= SaveMapInfo;
     }
 
@@ -91,6 +121,23 @@ public class MapManager : Singleton<MapManager>
                 block.gameObject.GetComponent<Block_Falling>().ResetBlock();
             }
         }
+    }
+
+
+    //--------------------
+
+
+    void UpdateStepCount()
+    {
+        stepCount++;
+    }
+    void UpdateRespawnCount()
+    {
+        respawnCount++;
+    }
+    void UpdateAbilitiesPickedUp()
+    {
+        abilitiesPickedUp++;
     }
 
 

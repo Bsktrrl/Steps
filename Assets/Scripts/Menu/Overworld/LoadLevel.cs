@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Analytics;
 
 public class LoadLevel : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class LoadLevel : MonoBehaviour
     public bool readyToBePlayedAndDisplayed;
 
     [Header("Levels")]
+    public regions regionToPlay;
     public string levelToPlay;
 
     [Header("Level Image")]
@@ -38,6 +40,8 @@ public class LoadLevel : MonoBehaviour
         if (!string.IsNullOrEmpty(levelToPlay))
         {
             RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(OverWorldManager.Instance.regionState, OverWorldManager.Instance.levelState);
+
+            AnalyticsCalls.SelectLevel(levelToPlay, regionToPlay.ToString());
 
             StartCoroutine(LoadSceneCoroutine(levelToPlay));
         }
@@ -104,4 +108,16 @@ public class LoadLevel : MonoBehaviour
         
         return false;
     }
+}
+
+public enum regions
+{
+    None,
+
+    Water,
+    Mountain,
+    Desert,
+    Winter,
+    Swamp,
+    Industrial
 }

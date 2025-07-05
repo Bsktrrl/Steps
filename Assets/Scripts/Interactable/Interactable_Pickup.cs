@@ -7,8 +7,14 @@ using UnityEngine.SceneManagement;
 public class Interactable_Pickup : MonoBehaviour
 {
     public static event Action Action_PickupGot;
+    public static event Action Action_CoinPickupGot;
+    public static event Action Action_StepsUpPickupGot;
+    public static event Action Action_SkinPickupGot;
+    public static event Action Action_AbilityPickupGot;
 
     public static event Action Action_FlippersGot;
+
+    MapManager mapManager;
 
     public Items itemReceived;
     public Abilities abilityReceived;
@@ -24,6 +30,8 @@ public class Interactable_Pickup : MonoBehaviour
     private void Start()
     {
         startPos = transform.position;
+
+        mapManager = FindObjectOfType<MapManager>();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -40,7 +48,15 @@ public class Interactable_Pickup : MonoBehaviour
             MapManager.Instance.SaveMapInfo();
 
             if (goal)
+            {
+                //Update analyticsData
+                AnalyticsCalls.OnLevel(mapManager.timeUsedInLevel, mapManager.stepCount, mapManager.respawnCount, mapManager.abilitiesPickedUp, mapManager.cameraRotated, mapManager.swimCounter, mapManager.swiftSwimCounter, mapManager.jumpCounter, mapManager.dashCounter, mapManager.ascendCounter, mapManager.descendCounter, mapManager.grapplingHookCounter, mapManager.ceilingGrabCounter);
+                AnalyticsCalls.OnLevelFinishing(mapManager.timeUsedInLevel, mapManager.stepCount, mapManager.respawnCount, mapManager.abilitiesPickedUp, mapManager.cameraRotated, mapManager.swimCounter, mapManager.swiftSwimCounter, mapManager.jumpCounter, mapManager.dashCounter, mapManager.ascendCounter, mapManager.descendCounter, mapManager.grapplingHookCounter, mapManager.ceilingGrabCounter);
+
+                AnalyticsCalls.CompleteLevel();
+
                 PlayerManager.Instance.player.GetComponent<PlayerManager>().QuitLevel();
+            }
         }
     }
 
@@ -68,11 +84,41 @@ public class Interactable_Pickup : MonoBehaviour
 
                         case Items.Coin:
                             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.coin += 1 /*itemReceived.amount*/;
+
+                            //Get coin number
+                            for (int i = 0; i < MapManager.Instance.mapInfo_ToSave.coinList.Count; i++)
+                            {
+                                if (Vector3.Distance(MapManager.Instance.mapInfo_ToSave.coinList[i].pos, PlayerManager.Instance.player.transform.position) <= 0.5f)
+                                {
+                                    AnalyticsCalls.GetCoins(i);
+                                    break;
+                                }
+                            }
+
+                            //Check if all coins are collected
+                            bool isTaken = true;
+                            for (int i = 0; i < MapManager.Instance.mapInfo_ToSave.coinList.Count; i++)
+                            {
+                                if (!MapManager.Instance.mapInfo_ToSave.coinList[i].isTaken)
+                                {
+                                    isTaken = false;
+                                    break;
+                                }
+                            }
+
+                            if (isTaken)
+                            {
+                                AnalyticsCalls.GetAllCoinsInALevel();
+                            }
+
+                            Action_CoinPickupGot_isActive();
                             break;
                         case Items.Collectable:
+                            Action_SkinPickupGot_isActive();
                             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.collectable += 1 /*itemReceived.amount*/;
                             break;
                         case Items.IncreaseMaxSteps:
+                            Action_StepUpPickupGot_isActive();
                             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max += 1 /*itemReceived.amount*/;
                             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current += 1 /*itemReceived.amount*/;
                             break;
@@ -157,39 +203,48 @@ public class Interactable_Pickup : MonoBehaviour
 
             case Abilities.SwimSuit:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SwimSuit = true;
+                Action_AbilityPickupGot_isActive();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwimSuit = true;
                 break;
             case Abilities.SwiftSwim:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SwiftSwim = true;
+                Action_AbilityPickupGot_isActive();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwiftSwim = true;
                 break;
             case Abilities.Flippers:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers = true;
+                Action_AbilityPickupGot_isActive();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flippers = true;
                 Action_FlippersGot?.Invoke();
                 break;
             case Abilities.Jumping:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Jumping = true;
+                Action_AbilityPickupGot_isActive();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Jumping = true;
                 break;
             case Abilities.GrapplingHook:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.GrapplingHook = true;
+                Action_AbilityPickupGot_isActive();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.GrapplingHook = true;
                 break;
             case Abilities.CeilingGrab:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.CeilingGrab = true;
+                Action_AbilityPickupGot_isActive();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.CeilingGrab = true;
                 break;
             case Abilities.Dash:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Dash = true;
+                Action_AbilityPickupGot_isActive();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Dash = true;
                 break;
             case Abilities.Ascend:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Ascend = true;
+                Action_AbilityPickupGot_isActive();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Ascend = true;
                 break;
             case Abilities.Descend:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Descend = true;
+                Action_AbilityPickupGot_isActive();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Descend = true;
                 break;
 
@@ -200,9 +255,29 @@ public class Interactable_Pickup : MonoBehaviour
         Action_PickupGot_isActive();
     }
 
+
+    //--------------------
+
+
     public void Action_PickupGot_isActive()
     {
         Action_PickupGot?.Invoke();
+    }
+    public void Action_CoinPickupGot_isActive()
+    {
+        Action_CoinPickupGot?.Invoke();
+    }
+    public void Action_StepUpPickupGot_isActive()
+    {
+        Action_StepsUpPickupGot?.Invoke();
+    }
+    public void Action_SkinPickupGot_isActive()
+    {
+        Action_SkinPickupGot?.Invoke();
+    }
+    public void Action_AbilityPickupGot_isActive()
+    {
+        Action_AbilityPickupGot?.Invoke();
     }
 }
 

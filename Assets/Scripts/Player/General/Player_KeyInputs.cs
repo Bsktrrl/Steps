@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player_KeyInputs : Singleton<Player_KeyInputs>
 {
     [Header("Input System")]
     public PlayerControls playerControls;
+    MapManager mapManager;
 
     [Header("KeyPresses")]
     public bool forward_isPressed = false;
@@ -28,6 +30,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     private void Start()
     {
         playerControls = new PlayerControls();
+        mapManager = FindObjectOfType<MapManager>();
     }
 
 
@@ -137,6 +140,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Other()) { return; }
         if (Movement.Instance.isUpdatingDarkenBlocks) { return; }
 
+        MapManager.Instance.cameraRotated++;
         CameraController.Instance.RotateCameraX();
     }
     void OnCameraRotateY()
@@ -144,6 +148,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Other()) { return; }
         if (Movement.Instance.isUpdatingDarkenBlocks) { return; }
 
+        MapManager.Instance.cameraRotated++;
         CameraController.Instance.RotateCameraY();
     }
 
