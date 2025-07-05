@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Movement : Singleton<Movement>
 {
@@ -158,6 +159,7 @@ public class Movement : Singleton<Movement>
 
         Action_isSwitchingBlocks += UpdateStepsAmonutWhenGrapplingMoving;
         Action_StepTaken_Late += RunIceGliding;
+        Action_StepTaken_Late += CheckIfSwimming;
 
         CameraController.Action_RotateCamera_End += UpdateBlocks;
     }
@@ -177,6 +179,7 @@ public class Movement : Singleton<Movement>
 
         Action_isSwitchingBlocks -= UpdateStepsAmonutWhenGrapplingMoving;
         Action_StepTaken_Late -= RunIceGliding;
+        Action_StepTaken_Late -= CheckIfSwimming;
 
         CameraController.Action_RotateCamera_End -= UpdateBlocks;
     }
@@ -1404,20 +1407,11 @@ public class Movement : Singleton<Movement>
     //--------------------
 
 
-    void RunUpButton()
-    {
-        if (!RunSwiftSwimUp())
-            RunAscend();
-    }
-    void RunDownButton()
-    {
-        if (!RunSwiftSwimDown())
-            RunDescend();
-    }
     bool RunSwiftSwimUp()
     {
         if (moveToBlock_SwiftSwimUp.canMoveTo)
         {
+            MapManager.Instance.swiftSwimCounter++;
             PerformMovement(moveToBlock_SwiftSwimUp, MovementStates.Moving, 2);
             return true;
         }
@@ -1428,27 +1422,8 @@ public class Movement : Singleton<Movement>
     {
         if (moveToBlock_SwiftSwimDown.canMoveTo)
         {
+            MapManager.Instance.swiftSwimCounter++;
             PerformMovement(moveToBlock_SwiftSwimDown, MovementStates.Moving, 2);
-            return true;
-        }
-        else
-            return false;
-    }
-    bool RunAscend()
-    {
-        if (moveToBlock_Ascend.canMoveTo)
-        {
-            PerformMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
-            return true;
-        }
-        else
-            return false;
-    }
-    bool RunDescend()
-    {
-        if (moveToBlock_Descend.canMoveTo)
-        {
-            PerformMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
             return true;
         }
         else
@@ -1474,10 +1449,44 @@ public class Movement : Singleton<Movement>
             else
                 PerformMovement(moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down, abilitySpeed + grapplingLength);
 
+            MapManager.Instance.grapplingHookCounter++;
+
             moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
             Block_IsNot_Target(moveToBlock_GrapplingHook);
             Player_GraplingHook.Instance.EndLineRenderer();
         }
+    }
+    void CheckAscend()
+    {
+        if (!RunSwiftSwimUp())
+            RunAscend();
+    }
+    void CheckDescend()
+    {
+        if (!RunSwiftSwimDown())
+            RunDescend();
+    }
+    bool RunAscend()
+    {
+        if (moveToBlock_Ascend.canMoveTo)
+        {
+            MapManager.Instance.ascendCounter++;
+            PerformMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
+            return true;
+        }
+        else
+            return false;
+    }
+    bool RunDescend()
+    {
+        if (moveToBlock_Descend.canMoveTo)
+        {
+            MapManager.Instance.descendCounter++;
+            PerformMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
+            return true;
+        }
+        else
+            return false;
     }
 
 
@@ -1550,35 +1559,59 @@ public class Movement : Singleton<Movement>
 
         //Perform Dash Movement, if possible
         else if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Dash_Forward.targetBlock && moveToBlock_Dash_Forward.canMoveTo)
+        {
+            MapManager.Instance.dashCounter++;
             PerformMovement(moveToBlock_Dash_Forward, MovementStates.Moving, abilitySpeed, ref isDashing);
+        }
         else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Dash_Back.targetBlock && moveToBlock_Dash_Back.canMoveTo)
+        {
+            MapManager.Instance.dashCounter++;
             PerformMovement(moveToBlock_Dash_Back, MovementStates.Moving, abilitySpeed, ref isDashing);
+        }
         else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Dash_Left.targetBlock && moveToBlock_Dash_Left.canMoveTo)
+        {
+            MapManager.Instance.dashCounter++;
             PerformMovement(moveToBlock_Dash_Left, MovementStates.Moving, abilitySpeed, ref isDashing);
+        }
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Dash_Right.targetBlock && moveToBlock_Dash_Right.canMoveTo)
+        {
+            MapManager.Instance.dashCounter++;
             PerformMovement(moveToBlock_Dash_Right, MovementStates.Moving, abilitySpeed, ref isDashing);
+        }
 
         //Perform Jump Movement, if possible
         else if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Jump_Forward.targetBlock && moveToBlock_Jump_Forward.canMoveTo)
+        {
+            MapManager.Instance.jumpCounter++;
             PerformMovement(moveToBlock_Jump_Forward, MovementStates.Moving, abilitySpeed, ref isJumping);
+        }
         else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Jump_Back.targetBlock && moveToBlock_Jump_Back.canMoveTo)
+        {
+            MapManager.Instance.jumpCounter++;
             PerformMovement(moveToBlock_Jump_Back, MovementStates.Moving, abilitySpeed, ref isJumping);
+        }
         else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Jump_Left.targetBlock && moveToBlock_Jump_Left.canMoveTo)
+        {
+            MapManager.Instance.jumpCounter++;
             PerformMovement(moveToBlock_Jump_Left, MovementStates.Moving, abilitySpeed, ref isJumping);
+        }
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Jump_Right.targetBlock && moveToBlock_Jump_Right.canMoveTo)
+        {
+            MapManager.Instance.jumpCounter++;
             PerformMovement(moveToBlock_Jump_Right, MovementStates.Moving, abilitySpeed, ref isJumping);
+        }
 
         //Perform SwiftSwim Movement, if possible
         else if (Player_KeyInputs.Instance.up_isPressed && moveToBlock_SwiftSwimUp.targetBlock && moveToBlock_SwiftSwimUp.canMoveTo)
-            RunUpButton();
+            CheckAscend();
         else if (Player_KeyInputs.Instance.down_isPressed && moveToBlock_SwiftSwimDown.targetBlock && moveToBlock_SwiftSwimDown.canMoveTo)
-            RunDownButton();
+            CheckDescend();
 
         //Perform Ascend/Descend Movement, if possible
         else if (Player_KeyInputs.Instance.up_isPressed && moveToBlock_Ascend.targetBlock && moveToBlock_Ascend.canMoveTo)
-            RunUpButton();
+            CheckAscend();
         else if (Player_KeyInputs.Instance.down_isPressed && moveToBlock_Descend.targetBlock && moveToBlock_Descend.canMoveTo)
-            RunDownButton();
+            CheckDescend();
     }
     public void PerformMovement(MoveOptions canMoveBlock, MovementStates moveState, float movementSpeed, ref bool isMoving)
     {
@@ -2468,6 +2501,14 @@ public class Movement : Singleton<Movement>
         RespawnPlayerLate_Action();
 
         StopAllCoroutines();
+    }
+
+    void CheckIfSwimming()
+    {
+        if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water && PlayerHasSwimAbility())
+        {
+            MapManager.Instance.swiftSwimCounter++;
+        }
     }
 
 

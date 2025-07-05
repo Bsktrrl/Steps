@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5810466023685760520}
   - component: {fileID: 1304006001389175484}
   - component: {fileID: 7404543377278903886}
+  - component: {fileID: 7791777982888954600}
   m_Layer: 0
   m_Name: MapInfo
   m_TagString: Untagged
@@ -59,39 +60,17 @@ MonoBehaviour:
     coinList: []
     collectableList: []
     maxStepList: []
-    abilityList: []
+    skintype: 0
     abilitiesInLevel:
-      FenceSneak: 0
       SwimSuit: 0
       SwiftSwim: 0
       Flippers: 0
-      Flameable: 0
-      Jumping: 0
-      HikerGear: 0
-      IceSpikes: 0
-      GrapplingHook: 0
-      Hammer: 0
-      CeilingGrab: 0
+      Ascend: 0
+      Descend: 0
       Dash: 1
-      Ascend: 0
-      Descend: 0
-      ControlStick: 0
-    abilitiesGotInLevel:
-      FenceSneak: 0
-      SwimSuit: 0
-      SwiftSwim: 0
-      Flippers: 0
-      Flameable: 0
       Jumping: 0
-      HikerGear: 0
-      IceSpikes: 0
       GrapplingHook: 0
-      Hammer: 0
       CeilingGrab: 0
-      Dash: 0
-      Ascend: 0
-      Descend: 0
-      ControlStick: 0
 --- !u!114 &1304006001389175484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,3 +101,15 @@ MonoBehaviour:
   effectBlock_Teleporter_Prefab: {fileID: 454524455770188417, guid: 9310902106e956d4a9c8a5b32b80142b, type: 3}
   effectBlock_Moveable_Prefab: {fileID: 0}
   effectBlock_MushroomCircle_Prefab: {fileID: 849991927922251925, guid: 974ac23d8c4abf94a870eed8f2cc38cc, type: 3}
+--- !u!114 &7791777982888954600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4454345480955054035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98bd8acd745b20c4c85608782d73fd25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
