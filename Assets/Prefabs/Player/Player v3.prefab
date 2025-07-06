@@ -1484,7 +1484,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 377, y: 108}
+  m_AnchoredPosition: {x: 385, y: 91}
   m_SizeDelta: {x: 300, y: 260}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &7320228079623457097
@@ -3104,6 +3104,8 @@ GameObject:
   - component: {fileID: 8364648254727740333}
   - component: {fileID: 215673665657898076}
   - component: {fileID: 8166563268374235885}
+  - component: {fileID: 5173090028262578710}
+  - component: {fileID: 265943280223236278}
   m_Layer: 0
   m_Name: Dialogue
   m_TagString: Untagged
@@ -3140,7 +3142,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueCanvas: {fileID: 821918842683489788}
   nameText: {fileID: 2116310888489966331}
-  dialogueText: {fileID: 4271076667483624845}
+  typingSound: {fileID: 265943280223236278}
+  typeClip: {fileID: 8300000, guid: cffbc042745d94242b185874808b1402, type: 3}
 --- !u!114 &215673665657898076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3197,6 +3200,116 @@ MonoBehaviour:
   stepellier_DialogueBox_Highlighted: {r: 0.9150943, g: 0.80718225, b: 0.80718225, a: 1}
   stepellier_DialogueBox_Pressed: {r: 0.7924528, g: 0.66909933, b: 0.66909933, a: 1}
   stepellier_DialogueBox_Selected: {r: 0.91372555, g: 0.8078432, b: 0.8078432, a: 1}
+--- !u!114 &5173090028262578710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2726520225642192119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08472c4448aec04458188d811d5c6abe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueText: {fileID: 4271076667483624845}
+  isTyping: 0
+--- !u!82 &265943280223236278
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2726520225642192119}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2829253721657295840
 GameObject:
   m_ObjectHideFlags: 0
@@ -6505,9 +6618,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -100, y: 176}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 90}
+  m_SizeDelta: {x: -100, y: 200}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &5495744908538220925
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6536,9 +6649,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Text Text Text Text Text Text Text Text Text Text Text Text Text Text
+  m_text: Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text
     Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text
-    Text Text Text Text Text Text Text '
+    Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text
+    Text Text Text Text Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dfbdd2096e005a447b83ba15e4de6767, type: 2}
   m_sharedMaterial: {fileID: 6701643693541814340, guid: dfbdd2096e005a447b83ba15e4de6767, type: 2}
@@ -6577,7 +6691,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: -20
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -7235,6 +7349,7 @@ MonoBehaviour:
   grapplingHook_isPressed: 0
   cameraX_isPressed: 0
   cameraY_isPressed: 0
+  dialogueSkip_isPressed: 0
 --- !u!114 &13904960364419418
 MonoBehaviour:
   m_ObjectHideFlags: 0

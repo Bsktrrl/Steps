@@ -25,11 +25,6 @@ public class OptionBoxes : Singleton<OptionBoxes>
         SetupOptionColors(ref optionButton_4, npc);
 
         SetupOptionBoxesLinked();
-
-        SetupOptionVisibility(optionButton_1, optionButton_1.GetComponentInChildren<TextMeshProUGUI>().text);
-        SetupOptionVisibility(optionButton_2, optionButton_2.GetComponentInChildren<TextMeshProUGUI>().text);
-        SetupOptionVisibility(optionButton_3, optionButton_3.GetComponentInChildren<TextMeshProUGUI>().text);
-        SetupOptionVisibility(optionButton_4, optionButton_4.GetComponentInChildren<TextMeshProUGUI>().text);
     }
     void SetupOptionColors(ref Button button, NPCs npc)
     {
@@ -101,13 +96,6 @@ public class OptionBoxes : Singleton<OptionBoxes>
     void SetupOptionTexts(Button button, string option)
     {
         button.GetComponentInChildren<TextMeshProUGUI>().text = option;
-    }
-    void SetupOptionVisibility(Button button, string option)
-    {
-        if (option == "")
-            button.gameObject.SetActive(false);
-        else
-            button.gameObject.SetActive(true);
     }
     void SetupOptionBoxesLinked()
     {
@@ -188,5 +176,27 @@ public class OptionBoxes : Singleton<OptionBoxes>
 
         //Set the first selected button for controller input
         EventSystem.current.SetSelectedGameObject(optionButton_1.gameObject);
+    }
+    
+    public void ShowHideOptions()
+    {
+        SetupOptionVisibility(optionButton_1, optionButton_1.GetComponentInChildren<TextMeshProUGUI>().text);
+        SetupOptionVisibility(optionButton_2, optionButton_2.GetComponentInChildren<TextMeshProUGUI>().text);
+        SetupOptionVisibility(optionButton_3, optionButton_3.GetComponentInChildren<TextMeshProUGUI>().text);
+        SetupOptionVisibility(optionButton_4, optionButton_4.GetComponentInChildren<TextMeshProUGUI>().text);
+    }
+    void SetupOptionVisibility(Button button, string option)
+    {
+        if (option == "")
+            button.gameObject.SetActive(false);
+        else
+            button.gameObject.SetActive(true);
+    }
+    public void HideOptions()
+    {
+        optionButton_1.gameObject.SetActive(false);
+        optionButton_2.gameObject.SetActive(false);
+        optionButton_3.gameObject.SetActive(false);
+        optionButton_4.gameObject.SetActive(false);
     }
 }

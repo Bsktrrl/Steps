@@ -7,7 +7,9 @@ public class DialogueManager : Singleton<DialogueManager>
 {
     public GameObject dialogueCanvas;
     public TextMeshProUGUI nameText;
-    public TextMeshProUGUI dialogueText;
+
+    public AudioSource typingSound;
+    public AudioClip typeClip;
 
     private void Start()
     {
@@ -19,12 +21,15 @@ public class DialogueManager : Singleton<DialogueManager>
         dialogueOptions.Add("\"I guess you have a point!!!\"");
         dialogueOptions.Add("\"This whole conversation is ridiculous!\"");
 
-        SetupDialogueSegment(NPCs.Stepellier, dialogueText, dialogueOptions);
+        SetupDialogueSegment(NPCs.Floriel, dialogueText, dialogueOptions);
+
+        typingSound.clip = typeClip;
     }
 
 
     public void SetupDialogueSegment(NPCs npc, string dialogueText, List<string> options)
     {
+        OptionBoxes.Instance.HideOptions();
         SetupNPCNameText(npc.ToString());
         SetupDialogueText(dialogueText);
 
@@ -43,6 +48,6 @@ public class DialogueManager : Singleton<DialogueManager>
     }
     void SetupDialogueText(string _text)
     {
-        dialogueText.text = _text;
+        TypewriterEffect.Instance.ShowText(_text);
     }
 }

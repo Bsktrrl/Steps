@@ -1,11 +1,11 @@
 ----- NEXT ON THE LIST -----
 
 1.
-Refacture Movements
-- Player Following ElevatorBlocks
-- CeilingGrab
-
-- Flippers give 0 cost in WaterBlocks
+Dialogue:
+- Add a class that takes inn all dialogue info (NPC and level info at the top, then a List<> with a dialogueSegment class containing all info appearing on an excel sheet (can hardcode in data as testing))
+- Add so that buttonPress open the next dialogue segment when all text is displayed (if text is still generating, pressing the button will show all text at once, ending the text generating. Pressing it again will go to next dialogue segment)
+- Add option press functionality, to be sent to other dialogue segments (options must be displayed only after the text has finished generating. None options means to be sent to the next segment in the List)
+- Add excel functionality that leads the player through a whole dialogue, made up by several dialogue segments (let Chat GPT generate 10 dialogue segments, some with 1 to 4 options to lead to other segments, and some without options
 
 
 ---

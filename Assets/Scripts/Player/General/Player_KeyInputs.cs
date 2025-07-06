@@ -23,6 +23,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     public bool cameraX_isPressed = false;
     public bool cameraY_isPressed = false;
 
+    public bool dialogueSkip_isPressed = false;
+
 
     //--------------------
 
@@ -104,6 +106,13 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         down_isPressed = false;
 
         //Player_Interact.Instance.InteractWithObject();
+    }
+
+    void OnDialogueSkip_Pressed()
+    {
+        if (!PlayerManager.Instance.pauseGame) { return; }
+
+        dialogueSkip_isPressed = true;
     }
 
 

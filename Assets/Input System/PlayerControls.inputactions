@@ -184,6 +184,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "DialogueSkip_Pressed",
+                    "type": "Button",
+                    "id": "4a239305-b40f-467c-a1c5-27c204531502",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -668,6 +677,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "AbilityDown_Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "237bd8df-ab81-4ecb-90f8-fbde7edf1135",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DialogueSkip_Pressed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "40e52bb9-7cff-4570-b0c7-4f83309533d0",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DialogueSkip_Pressed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "85b5c81c-753c-4d60-91f1-22e6ee80af71",
+                    "path": "<Keyboard>/space",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DialogueSkip_Pressed",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
