@@ -5,27 +5,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class OptionBoxes : MonoBehaviour
+public class OptionBoxes : Singleton<OptionBoxes>
 {
     [SerializeField] Button optionButton_1;
     [SerializeField] Button optionButton_2;
     [SerializeField] Button optionButton_3;
     [SerializeField] Button optionButton_4;
 
-
-    private void Start()
-    {
-        //Temp
-        SetupOptions(NPCs.Stepellier, "\"Oh, I can totaly do that, no problem!\"", "\"I would rather Settle than go with you on this one!\"", "\"I guess you have a point\"", "\"This whole conversation is ridiculous\"");
-        SetupOptionBoxesLinked();
-    }
-
-
     public void SetupOptions(NPCs npc, string option_1, string option_2, string option_3, string option_4)
     {
-        //Temp
-        PlayerManager.Instance.pauseGame = true;
-        
         SetupOptionTexts(optionButton_1, option_1);
         SetupOptionTexts(optionButton_2, option_2);
         SetupOptionTexts(optionButton_3, option_3);
