@@ -12,6 +12,10 @@ public class OptionBoxes : Singleton<OptionBoxes>
     [SerializeField] Button optionButton_3;
     [SerializeField] Button optionButton_4;
 
+
+    //--------------------
+
+
     public void SetupOptions(NPCs npc, string option_1, string option_2, string option_3, string option_4)
     {
         SetupOptionTexts(optionButton_1, option_1);
@@ -177,7 +181,11 @@ public class OptionBoxes : Singleton<OptionBoxes>
         //Set the first selected button for controller input
         EventSystem.current.SetSelectedGameObject(optionButton_1.gameObject);
     }
-    
+
+
+    //--------------------
+
+
     public void ShowHideOptions()
     {
         SetupOptionVisibility(optionButton_1, optionButton_1.GetComponentInChildren<TextMeshProUGUI>().text);

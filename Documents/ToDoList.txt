@@ -1,11 +1,44 @@
 ----- NEXT ON THE LIST -----
 
 1.
-Dialogue:
-- Add a class that takes inn all dialogue info (NPC and level info at the top, then a List<> with a dialogueSegment class containing all info appearing on an excel sheet (can hardcode in data as testing))
-- Add so that buttonPress open the next dialogue segment when all text is displayed (if text is still generating, pressing the button will show all text at once, ending the text generating. Pressing it again will go to next dialogue segment)
+Dialogue Box:
+_____________
+
+
+1.2. New dialogue segment:
+- Add so that a buttonPress open the next dialogue segment when all text is displayed (if text is still generating, pressing the button will show all text at once, ending the text generating. Pressing it again will go to next dialogue segment)
+
+1.3. Option Press functionality:
 - Add option press functionality, to be sent to other dialogue segments (options must be displayed only after the text has finished generating. None options means to be sent to the next segment in the List)
+
+1.4. Excel functionality:
 - Add excel functionality that leads the player through a whole dialogue, made up by several dialogue segments (let Chat GPT generate 10 dialogue segments, some with 1 to 4 options to lead to other segments, and some without options
+
+1.5. Stats gathering
+- Gather stats of what types of info the player have visited in the dialogue, so we can keep track over which dialogues that can be accessed in further conversations
+- Save the dialogue stats to saveData
+
+1.6. Languages:
+- Make dialogue in both English and Norwegian
+- Add language select in the Settings menu
+- Add text speed select in the Settings menu
+
+
+2.
+Dialogue Scene:
+__________________
+
+
+2.1. Interactable
+- Make it possible to interact with a NPC to start its dialogue from excel sheet
+- Finish interaction after all dialogue segments are done
+
+2.2. Camera:
+- Make it so that the camera pans correctly into the scene (both characters are visible)
+- Make it so that the camera pans correctly out from the scene (back to its previous state)
+
+2.3. Animations:
+- Make different animations work based on the excel sheet (both for the player and the NPC)
 
 
 ---
@@ -13,8 +46,7 @@ Dialogue:
 
 10.
 Levels
-- Make Levels for the prototype
-
+- Make Levels for the MVP
 
 
 
@@ -22,27 +54,9 @@ Levels
 ----- TASKS SOON TO BE IMPLEMENTED -----
 
 
-Add Stats:
-- Steps taken
-- Times Respawned
-
-Add Google Cariable Tracking:
-- Each Level Played
-- Essence Get
-- Skin Get
-- StepsMaxUp Get
-- Glueplant Get
-
-
-CeilingGrab:
-- Fix the problem that doesn't let the movement to be done in one smoot motion (it stops and updates DarkenBlock in-between each block of movement)
-	- Fix IceGlide lag
-	- Remake the CeilingGrabing movement based on the normal movement
-
-
 Movement & Camera:
 - Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
-	- Sometimes, when rotation to the left twice, the player move in the looking direction after moving
+	- Sometimes, when rotating to the left twice, the player move in the looking direction after moving
 	- Almost always when at the edge of something, where not all 4 adjacent blocks can be moved to (maybe blocks isn't updated to "null" when the camera is rotating, so it keeps old blocks when they should have been "null"?
 
 
@@ -60,27 +74,11 @@ Effect Blocks:
 
 
 
-
-
 ----- TASKS IN QUE -----
 
 
-Dialogue System:
-- Implement a dialogue system
-- Include:
-	- Description
-	- Text
-	- Player Animation
-	- NPC Animation
-	- Cutscene
-
 AbilityButton Display:
 - New ButtonDisplay on the player
-
-Character Creator:
-- Make a simple character creator to be used at the start og a new save and at the start of the Dusk Age
-
-
 
 
 
@@ -91,8 +89,6 @@ Camera:
 - FOV: 75
 - Camera Offset: 0, 3, -6.5
 
-
-
 b56f3a
 d9d488
 
@@ -100,108 +96,3 @@ Cameras:
 Old: X:0 Y:3.5 Z:8.25 	FOV:40 Min:31 Max:55
 New: X:0 Y:2.5 Z:5   	FOV:68 Min:49 Max:83
 New: X:0 Y:2.35 Z:4.8   FOV:60 Min:45 Max:75
-
-
-Cube Block Orientation:
-
------ Old (Canvas)
-
-0  |   0 | 0 |  | 0 |  0 | 0
-0  |  90 | 0 |  | 0 | 90 | 0
-0  | 180 | 0 |  | 0 |  0 | 0
-0  | -90 | 0 |  | 0 |  0 | 0
-
-0  | 0 |  90 |	| 0 | 0 | -90
-0  | 0 | 180 |	| 0 | 0 | 180
-0  | 0 | -90 |	| 0 | 0 |  90
-
- 90 | 0 | 0  |  | -90 |   0 | 0
-180 | 0 | 0  |  | 180 | 180 | 0
--90 | 0 | 0  |	| 90  |   0 | 0
-
- 90 | 0 |  90 |	| -90 | 0 |  0
-180 | 0 |  90 |	|   0 | 0 | 90
--90 | 0 |  90 |	|  90 | 0 |  0
-
- 90 | 0 | 180 |	| -90 | 0 |  0
-180 | 0 | 180 |	|   0 | 0 |  0
--90 | 0 | 180 |	|  90 | 0 |  0
-
- 90 | 0 | -90 |	| -90 | 0 |  0
-180 | 0 | -90 |	|   0 | 0 |-90
--90 | 0 | -90 |	|  90 | 0 |  0
-
------ New (3D Assets)
-
-0  |   0 | 0 |  |   0 |   0 | 0
-
-0  | 0 |  90 |	| 0 | 0 | -90
-0  | 0 | 180 |	| 0 | 0 | 180
-0  | 0 | -90 |	| 0 | 0 |  90
-
- 90 | 0 | 0  |  | -90 | 0 | 0
-180 | 0 | 0  |  | 180 | 0 | 0
--90 | 0 | 0  |	| 90  | 0 | 0
-
- 90 | 0 | 90 |	|   0 |  90 | -90
-180 | 0 | 90 |	| 180 |   0 |  90
--90 | 0 | 90 |	|   0 | -90 | -90
-
- 90 | 0 | 180 |	|  90 |  90 | -90
-180 | 0 | 180 |	|   0 | 180 |   0
--90 | 0 | 180 |	| -90 | -90 | -90
-
- 90 | 0 | -90 |	|   0 | -90 |  90
-180 | 0 | -90 |	| 180 |   0 | -90
--90 | 0 | -90 |	|   0 |  90 |  90
-
------ Ceiling Grab (3D Assets)
-
-0  |   0 | 0 |  | 180 |   0 | 0
-0  |  90 | 0 |  | 180 | -90 | 0
-0  | 180 | 0 |  | 180 | 180 | 0
-0  | -90 | 0 |  | 180 |  90 | 0
-
-0  | 0 |  90 |	| 180 |   0 |  90
-0  | 0 | 180 |	|   0 | 180 |   0
-0  | 0 | -90 |	| 180 |   0 | -90
-
- 90 | 0 | 0  |  |  90 | 0 | 0
-180 | 0 | 0  |  |   0 | 0 | 0
--90 | 0 | 0  |	| -90 | 0 | 0
-
-x  90 | 0 | 90 |	| -90 |   0 | -90
-180 | 0 | 90 |	|   0 |   0 | -90
--90 | 0 | 90 |	| 180 | -90 |  90
-
- 90 | 0 | 180 |	| -90 |  90 |  90
-180 | 0 | 180 |	| 180 | 180 |   0
--90 | 0 | 180 |	|  90 |  90 | -90
-
- 90 | 0 | -90 |	| 0 |  90 |  90
-180 | 0 | -90 |	| 0 |   0 |  90
--90 | 0 | -90 |	| 0 | -90 |  90
-
-
------ Stairs
-
-
-F - 0 | 0 | 0 |  | -45 | 180 |   0
-R - 0 | 0 | 0 |  |   0 |  90 |  45
-B - 0 | 0 | 0 |  |  45 |   0 |   0
-L - 0 | 0 | 0 |  |   0 | -90 | -45
-
-F - 0 | 90 | 0 |  |   0 |  90 |  45
-R - 0 | 90 | 0 |  |  45 |   0 |   0
-B - 0 | 90 | 0 |  |   0 | -90 | -45
-L - 0 | 90 | 0 |  | -45 | 180 |   0
-
-F - 0 | 180 | 0 |  |  45 |   0 |   0
-R - 0 | 180 | 0 |  |   0 | -90 | -45
-B - 0 | 180 | 0 |  | -45 | 180 |   0
-L - 0 | 180 | 0 |  |   0 |  90 |  45
-
-F - 0 | -90 | 0 |  |   0 | -90 | -45
-R - 0 | -90 | 0 |  | -45 | 180 |   0
-B - 0 | -90 | 0 |  |   0 |  90 |  45
-L - 0 | -90 | 0 |  |  45 |   0 |   0
