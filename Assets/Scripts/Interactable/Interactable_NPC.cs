@@ -19,56 +19,560 @@ public class Interactable_NPC : MonoBehaviour
     {
         dialogueInfo.npcName = NPCs.Floriel.ToString();
 
+        //Fill 10 segments with ChatGPT
+        #region Hardcoded dialogueSegments
+
+        #region Segment 1
+
         SetupDialogue(SetupDialogueSegment
         (
             SetupLanguageTextList
             (
-                    "Hei du der, jeg heter Floríel. Jeg er en blokk på søken etter en oransj blomst. Jeg ønsker å finne den, så jeg kan fullføre blomsterkransen min. Vet du hvor jeg kan finne en?",
-                    "Hello there, I am Floríel, a block that seeks the one and only orange flower. I seek it so that I can finish my flower wreath. Do you know where it is?",
-                    "German",
-                    "Japanese",
-                    "Chinese"
+                "Velkommen, vandrer. Det er sjelden noen går denne stien. Skogen husker fottrinn som dine.",
+                "Welcome, traveler. It's rare to see someone take this path. The forest remembers footsteps like yours.",
+                "German",
+                "Japanese",
+                "Chinese"
             ),
 
             SetupOptionLanguages
             (
                 setupOptionList
                 (
-                    SetupOption("Nei, beklager", 2),
-                    SetupOption("Nei, men jeg skal si ifra hvis jeg ser en", 2),
-                    SetupOption("Jeg har viktigere ting å tenke på", 3),
-                    SetupOption("Jeg ville ikke gitt deg den om jeg fant den engang!", 3)
+                    SetupOption("Hvem er du?", 2),
+                    SetupOption("Hva er dette stedet?", 3),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
                 ),
                 setupOptionList
                 (
-                    SetupOption("No, sorry", 2),
-                    SetupOption("No, but I will tell you if I see one", 2),
-                    SetupOption("I got more important stuff to do", 3),
-                    SetupOption("I wouldn't have given you the flower if I found it!", 3)
+                    SetupOption("Who are you?", 2),
+                    SetupOption("What is this place?", 3),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
                 ),
                 setupOptionList
                 (
                     SetupOption("German option 1", 2),
-                    SetupOption("German option 2", 2),
-                    SetupOption("German option 3", 3),
-                    SetupOption("German option 4", 3)
+                    SetupOption("German option 2", 3),
+                    SetupOption("German option 3", 0),
+                    SetupOption("German option 4", 0)
                 ),
                 setupOptionList
                 (
                     SetupOption("Japanese option 1", 2),
-                    SetupOption("Japanese option 2", 2),
-                    SetupOption("Japanese option 3", 3),
-                    SetupOption("Japanese option 4", 3)
+                    SetupOption("Japanese option 2", 3),
+                    SetupOption("Japanese option 3", 0),
+                    SetupOption("Japanese option 4", 0)
                 ),
                 setupOptionList
                 (
                     SetupOption("Chinese option 1", 2),
-                    SetupOption("Chinese option 2", 2),
-                    SetupOption("Chinese option 3", 3),
-                    SetupOption("Chinese option 4", 3)
+                    SetupOption("Chinese option 2", 3),
+                    SetupOption("Chinese option 3", 0),
+                    SetupOption("Chinese option 4", 0)
                 )
             )
         ));
+
+        #endregion
+
+        #region Segment 2
+
+        SetupDialogue(SetupDialogueSegment
+        (
+            SetupLanguageTextList
+            (
+                "Jeg er Floríel, en gang vokter av denne skogen. Min tid er forbi, men stemmen min henger igjen.",
+                "I am Floríel, once guardian of these woods. My time has long passed, yet my voice lingers.",
+                "German",
+                "Japanese",
+                "Chinese"
+            ),
+
+            SetupOptionLanguages
+            (
+                setupOptionList
+                (
+                    SetupOption("Hvorfor er du fortsatt her?", 4),
+                    SetupOption("Kan du hjelpe meg?", 5),
+                    SetupOption("Ha det.", 10),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("Why are you still here?", 4),
+                    SetupOption("Can you help me?", 5),
+                    SetupOption("Goodbye", 10),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("German option 1", 4),
+                    SetupOption("German option 2", 5),
+                    SetupOption("German option 3", 10),
+                    SetupOption("German option 4", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("Japanese option 1", 4),
+                    SetupOption("Japanese option 2", 5),
+                    SetupOption("Japanese option 3", 10),
+                    SetupOption("Japanese option 4", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("Chinese option 1", 4),
+                    SetupOption("Chinese option 2", 5),
+                    SetupOption("Chinese option 3", 10),
+                    SetupOption("Chinese option 4", 0)
+                )
+            )
+        ));
+
+        #endregion
+
+        #region Segment 3
+
+        SetupDialogue(SetupDialogueSegment
+        (
+            SetupLanguageTextList
+            (
+                "Dette stedet var en gang et fristed, før ilden kom. Nå er det bare ekko og aske igjen.",
+                "This place was once a sanctuary, before the fire. Now, only echoes and ash remain.",
+                "German",
+                "Japanese",
+                "Chinese"
+            ),
+
+            SetupOptionLanguages
+            (
+                setupOptionList
+                (
+                    SetupOption("Hvilken ild?", 6),
+                    SetupOption("Kan det gjenopprettes?", 7),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("What fire?", 6),
+                    SetupOption("Can it be restored?", 7),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("German option 1", 6),
+                    SetupOption("German option 2", 7),
+                    SetupOption("German option 3", 0),
+                    SetupOption("German option 4", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("Japanese option 1", 6),
+                    SetupOption("Japanese option 2", 7),
+                    SetupOption("Japanese option 3", 0),
+                    SetupOption("Japanese option 4", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("Chinese option 1", 6),
+                    SetupOption("Chinese option 2", 7),
+                    SetupOption("Chinese option 3", 0),
+                    SetupOption("Chinese option 4", 0)
+                )
+            )
+        ));
+
+        #endregion
+
+        #region Segment 4
+
+        SetupDialogue(SetupDialogueSegment
+        (
+            SetupLanguageTextList
+            (
+                "Eden min binder meg. Før skogen tilgir, kan jeg ikke hvile.",
+                "My oath binds me. Until the forest forgives, I cannot rest.",
+                "German",
+                "Japanese",
+                "Chinese"
+            ),
+
+            SetupOptionLanguages
+            (
+                setupOptionList
+                (
+                    SetupOption("Hvordan kan jeg hjelpe?", 5),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("How can I help?", 5),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("German option 1", 5),
+                    SetupOption("German option 2", 0),
+                    SetupOption("German option 3", 0),
+                    SetupOption("German option 4", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("Japanese option 1", 5),
+                    SetupOption("Japanese option 2", 0),
+                    SetupOption("Japanese option 3", 0),
+                    SetupOption("Japanese option 4", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("Chinese option 1", 5),
+                    SetupOption("Chinese option 2", 0),
+                    SetupOption("Chinese option 3", 0),
+                    SetupOption("Chinese option 4", 0)
+                )
+            )
+        ));
+
+        #endregion
+
+        #region Segment 5
+
+        SetupDialogue(SetupDialogueSegment
+        (
+            SetupLanguageTextList
+            (
+                "Dypere inne ligger hjertetroten, den slår fortsatt. Rens den, og kanskje skogen kan puste igjen.",
+                "Deep within lies the heartroot, still beating. Cleanse it, and the forest may breathe again.",
+                "German",
+                "Japanese",
+                "Chinese"
+            ),
+
+            SetupOptionLanguages
+            (
+                setupOptionList
+                (
+                    SetupOption("Hvor finner jeg den?", 8),
+                    SetupOption("Er det farlig?", 9),
+                    SetupOption("Jeg skal prøve.", 10),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("Where do I find it?", 8),
+                    SetupOption("Is it dangerous?", 9),
+                    SetupOption("I’ll try.", 10),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("German option 1", 8),
+                    SetupOption("German option 2", 9),
+                    SetupOption("German option 3", 10),
+                    SetupOption("German option 4", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("Japanese option 1", 8),
+                    SetupOption("Japanese option 2", 9),
+                    SetupOption("Japanese option 3", 10),
+                    SetupOption("Japanese option 4", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("Chinese option 1", 8),
+                    SetupOption("Chinese option 2", 9),
+                    SetupOption("Chinese option 3", 10),
+                    SetupOption("Chinese option 4", 0)
+                )
+            )
+        ));
+
+        #endregion
+
+        #region Segment 6
+
+        SetupDialogue(SetupDialogueSegment
+        (
+            SetupLanguageTextList
+            (
+                "Ilden kom plutselig. Ingen advarsel, ingen nåde. Noen sier den ble påkalt...",
+                "The fire came suddenly. No warning, no mercy. Some say it was summoned..",
+                "German",
+                "Japanese",
+                "Chinese"
+            ),
+
+            SetupOptionLanguages
+            (
+                setupOptionList
+                (
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                )
+            )
+        ));
+
+        #endregion
+
+        #region Segment 7
+
+        SetupDialogue(SetupDialogueSegment
+        (
+            SetupLanguageTextList
+            (
+                "Kanskje. Men skogens sår er dype. Det vil kreve mer enn håp.",
+                "Perhaps. But the forest's wounds run deep. It will take more than hope.",
+                "German",
+                "Japanese",
+                "Chinese"
+            ),
+
+            SetupOptionLanguages
+            (
+                setupOptionList
+                (
+                    SetupOption("I'll do what I can.", 10),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("Jeg skal gjøre det jeg kan.", 10),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("German option 1", 5),
+                    SetupOption("German option 2", 0),
+                    SetupOption("German option 3", 0),
+                    SetupOption("German option 4", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("Japanese option 1", 5),
+                    SetupOption("Japanese option 2", 0),
+                    SetupOption("Japanese option 3", 0),
+                    SetupOption("Japanese option 4", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("Chinese option 1", 5),
+                    SetupOption("Chinese option 2", 0),
+                    SetupOption("Chinese option 3", 0),
+                    SetupOption("Chinese option 4", 0)
+                )
+            )
+        ));
+
+        #endregion
+
+        #region Segment 8
+
+        SetupDialogue(SetupDialogueSegment
+        (
+            SetupLanguageTextList
+            (
+                "Under den gamle steinsirkelen, bortenfor tornekrattet. Få vender tilbake uforandret.",
+                "Beneath the old stone circle, beyond the briars. Few who go there return unchanged.",
+                "German",
+                "Japanese",
+                "Chinese"
+            ),
+
+            SetupOptionLanguages
+            (
+                setupOptionList
+                (
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                )
+            )
+        ));
+
+        #endregion
+
+        #region Segment 9
+
+        SetupDialogue(SetupDialogueSegment
+        (
+            SetupLanguageTextList
+            (
+                "Ja. Hjerteroten voktes av det som er igjen av skogens raseri.",
+                "Yes. The heartroot is guarded by what remains of the forest's rage.",
+                "German",
+                "Japanese",
+                "Chinese"
+            ),
+
+            SetupOptionLanguages
+            (
+                setupOptionList
+                (
+                    SetupOption("Jeg vil møte det.", 10),
+                    SetupOption("Kanskje jeg ikke er klar.", 10),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("I’ll face it.", 10),
+                    SetupOption("Maybe I’m not ready.", 10),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("German option 1", 10),
+                    SetupOption("German option 2", 10),
+                    SetupOption("German option 3", 0),
+                    SetupOption("German option 4", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("Japanese option 1", 10),
+                    SetupOption("Japanese option 2", 10),
+                    SetupOption("Japanese option 3", 0),
+                    SetupOption("Japanese option 4", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("Chinese option 1", 10),
+                    SetupOption("Chinese option 2", 10),
+                    SetupOption("Chinese option 3", 0),
+                    SetupOption("Chinese option 4", 0)
+                )
+            )
+        ));
+
+        #endregion
+
+        #region Segment 10
+
+        SetupDialogue(SetupDialogueSegment
+        (
+            SetupLanguageTextList
+            (
+                "Da gå, og må røttene huske ditt mot. Jeg vil våke.",
+                "Then go, and may the roots remember your courage. I will be watching.",
+                "German",
+                "Japanese",
+                "Chinese"
+            ),
+
+            SetupOptionLanguages
+            (
+                setupOptionList
+                (
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                ),
+                setupOptionList
+                (
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0),
+                    SetupOption("", 0)
+                )
+            )
+        ));
+
+        #endregion
+
+        #endregion
 
         SetupDialogueDisplay(segmentIndex, NPCs.Floriel);
     }
