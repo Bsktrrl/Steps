@@ -18,9 +18,6 @@ public class Interactable_NPC : MonoBehaviour
 
     private void Start()
     {
-        dialogueInfo.npcName = NPCs.Floriel;
-
-        //Fill 10 segments with ChatGPT
         #region Hardcoded dialogueSegments
 
         #region Segment 1
@@ -29,8 +26,8 @@ public class Interactable_NPC : MonoBehaviour
         (
             SetupLanguageTextList
             (
-                "Velkommen, vandrer. Det er sjelden noen går denne stien. Skogen husker fottrinn som dine.",
-                "Welcome, traveler. It's rare to see someone take this path. The forest remembers footsteps like yours.",
+                "Velkommen, vandrer! Det er sjelden noen går denne stien. Skogen husker fottrinn som dine...",
+                "Welcome, traveler! It's rare to see someone take this path. The forest remembers footsteps like yours...",
                 "German",
                 "Japanese",
                 "Chinese"
@@ -575,17 +572,24 @@ public class Interactable_NPC : MonoBehaviour
 
         #endregion
 
+        dialogueInfo.npcName = NPCs.Floriel;
+        DialogueManager.Instance.activeNPC = dialogueInfo.npcName;
+        DialogueManager.Instance.segmentTotal = dialogueInfo.dialogueSegments.Count - 1;
+        DialogueManager.Instance.currentSegement = segmentIndex;
+
         SetupDialogueDisplay(segmentIndex, dialogueInfo.npcName);
     }
 
     private void OnEnable()
     {
         Player_KeyInputs.Action_dialogueButton_isPressed += StartNewDialogueSegment;
+        Player_KeyInputs.Action_dialogueNextButton_isPressed += StartNewDialogueSegment;
         OptionButton.Action_OptionButtonIsPressed += StartNewDialogueSegment_OptionButton;
     }
     private void OnDisable()
     {
         Player_KeyInputs.Action_dialogueButton_isPressed -= StartNewDialogueSegment;
+        Player_KeyInputs.Action_dialogueNextButton_isPressed -= StartNewDialogueSegment;
         OptionButton.Action_OptionButtonIsPressed -= StartNewDialogueSegment_OptionButton;
     }
 
@@ -617,6 +621,8 @@ public class Interactable_NPC : MonoBehaviour
             int segment = options[DialogueManager.Instance.selectedButton - 1].linkedDialogueSegment - 1;
 
             segmentIndex = segment;
+            DialogueManager.Instance.currentSegement = segmentIndex;
+
             print("DialogueSegment: Button: " + (DialogueManager.Instance.selectedButton - 1) + " | Index: " + segmentIndex + " | Segment: " + segment);
 
             SetupDialogueDisplay(segment, dialogueInfo.npcName); 

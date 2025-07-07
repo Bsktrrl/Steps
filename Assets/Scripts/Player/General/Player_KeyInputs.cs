@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class Player_KeyInputs : Singleton<Player_KeyInputs>
 {
     public static event Action Action_dialogueButton_isPressed;
+    public static event Action Action_dialogueNextButton_isPressed;
 
     [Header("Input System")]
     public PlayerControls playerControls;
@@ -117,6 +118,13 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         dialogueButton_isPressed = true;
         Action_dialogueButton_isPressed?.Invoke();
+    }
+    void OnDialogueNext_Pressed()
+    {
+        if (!PlayerManager.Instance.pauseGame) { return; }
+
+        dialogueButton_isPressed = true;
+        Action_dialogueNextButton_isPressed?.Invoke();
     }
 
 

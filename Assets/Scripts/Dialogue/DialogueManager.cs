@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogueManager : Singleton<DialogueManager>
 {
@@ -20,6 +21,14 @@ public class DialogueManager : Singleton<DialogueManager>
     [Header("Button")]
     public int selectedButton = -1;
 
+    [Header("Arrow")]
+    public Image arrowImage;
+
+    [Header("ActiveNPC")]
+    public NPCs activeNPC;
+    public int segmentTotal;
+    public int currentSegement;
+
 
     //--------------------
 
@@ -29,6 +38,15 @@ public class DialogueManager : Singleton<DialogueManager>
         typingSound.clip = typeClip;
     }
 
+    private void OnEnable()
+    {
+        TypewriterEffect.Action_Typewriting_Finished += SetupArrow;
+    }
+    private void OnDisable()
+    {
+        TypewriterEffect.Action_Typewriting_Finished -= SetupArrow;
+    }
+
 
     //--------------------
 
@@ -36,6 +54,8 @@ public class DialogueManager : Singleton<DialogueManager>
     public void SetupDialogueSegment_toDisplay(NPCs npc, string dialogueText, List<Options> options)
     {
         OptionBoxes.Instance.HideOptions();
+        HideArrow();
+
         SetupNPCNameText_toDisplay(npc.ToString());
         SetupDialogueText_toDisplay(dialogueText);
 
@@ -65,6 +85,53 @@ public class DialogueManager : Singleton<DialogueManager>
     {
         dialogueCanvas.SetActive(false);
         PlayerManager.Instance.pauseGame = false;
+    }
+
+    void SetupArrow()
+    {
+        if (OptionBoxes.Instance.optionButton_1.gameObject.activeInHierarchy || (currentSegement >= segmentTotal))
+            HideArrow();
+        else
+            ShowArrow();
+    }
+    void ShowArrow()
+    {
+        switch (activeNPC)
+        {
+            case NPCs.None:
+                break;
+
+            case NPCs.Floriel:
+                arrowImage.color = DialogueColors.Instance.floriel_DialogueBox_Pressed;
+                break;
+            case NPCs.Granith:
+                arrowImage.color = DialogueColors.Instance.granith_DialogueBox_Pressed;
+                break;
+            case NPCs.Archie:
+                arrowImage.color = DialogueColors.Instance.archie_DialogueBox_Pressed;
+                break;
+            case NPCs.Aisa:
+                arrowImage.color = DialogueColors.Instance.aisa_DialogueBox_Pressed;
+                break;
+            case NPCs.Mossy:
+                arrowImage.color = DialogueColors.Instance.mossy_DialogueBox_Pressed;
+                break;
+            case NPCs.Larry:
+                arrowImage.color = DialogueColors.Instance.larry_DialogueBox_Pressed;
+                break;
+            case NPCs.Stepellier:
+                arrowImage.color = DialogueColors.Instance.stepellier_DialogueBox_Pressed;
+                break;
+
+            default:
+                break;
+        }
+
+        arrowImage.gameObject.SetActive(true);
+    }
+    void HideArrow()
+    {
+        arrowImage.gameObject.SetActive(false);
     }
 }
 
