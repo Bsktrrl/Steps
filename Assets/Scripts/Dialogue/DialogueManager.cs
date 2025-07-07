@@ -17,6 +17,9 @@ public class DialogueManager : Singleton<DialogueManager>
     public AudioSource typingSound;
     public AudioClip typeClip;
 
+    [Header("Button")]
+    public int selectedButton = -1;
+
 
     //--------------------
 
@@ -30,7 +33,7 @@ public class DialogueManager : Singleton<DialogueManager>
     //--------------------
 
 
-    public void SetupDialogueSegment_toDisplay(int segmentIndex, NPCs npc, string dialogueText, List<Options> options)
+    public void SetupDialogueSegment_toDisplay(NPCs npc, string dialogueText, List<Options> options)
     {
         OptionBoxes.Instance.HideOptions();
         SetupNPCNameText_toDisplay(npc.ToString());
@@ -68,7 +71,7 @@ public class DialogueManager : Singleton<DialogueManager>
 [Serializable]
 public class DialogueInfo
 {
-    public string npcName;
+    public NPCs npcName;
     public List<DialogueSegment> dialogueSegments = new List<DialogueSegment>();
 
 }

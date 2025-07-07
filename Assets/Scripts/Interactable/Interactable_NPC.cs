@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +18,7 @@ public class Interactable_NPC : MonoBehaviour
 
     private void Start()
     {
-        dialogueInfo.npcName = NPCs.Floriel.ToString();
+        dialogueInfo.npcName = NPCs.Floriel;
 
         //Fill 10 segments with ChatGPT
         #region Hardcoded dialogueSegments
@@ -369,14 +370,14 @@ public class Interactable_NPC : MonoBehaviour
             (
                 setupOptionList
                 (
-                    SetupOption("I'll do what I can.", 10),
+                    SetupOption("Jeg skal gjøre det jeg kan.", 10),
                     SetupOption("", 0),
                     SetupOption("", 0),
                     SetupOption("", 0)
                 ),
                 setupOptionList
                 (
-                    SetupOption("Jeg skal gjøre det jeg kan.", 10),
+                    SetupOption("I'll do what I can.", 10),
                     SetupOption("", 0),
                     SetupOption("", 0),
                     SetupOption("", 0)
@@ -574,16 +575,18 @@ public class Interactable_NPC : MonoBehaviour
 
         #endregion
 
-        SetupDialogueDisplay(segmentIndex, NPCs.Floriel);
+        SetupDialogueDisplay(segmentIndex, dialogueInfo.npcName);
     }
 
     private void OnEnable()
     {
         Player_KeyInputs.Action_dialogueButton_isPressed += StartNewDialogueSegment;
+        OptionButton.Action_OptionButtonIsPressed += StartNewDialogueSegment_OptionButton;
     }
     private void OnDisable()
     {
         Player_KeyInputs.Action_dialogueButton_isPressed -= StartNewDialogueSegment;
+        OptionButton.Action_OptionButtonIsPressed -= StartNewDialogueSegment_OptionButton;
     }
 
 
@@ -592,12 +595,37 @@ public class Interactable_NPC : MonoBehaviour
 
     void StartNewDialogueSegment()
     {
+        if (dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0][0].optionText == "")
+        {
+            if (!TypewriterEffect.Instance.isTyping)
+            {
+                segmentIndex++;
+
+                Player_KeyInputs.Instance.dialogueButton_isPressed = false;
+                SetupDialogueDisplay(segmentIndex, dialogueInfo.npcName);
+            }
+        }
+    }
+    public void StartNewDialogueSegment_OptionButton()
+    {
         if (!TypewriterEffect.Instance.isTyping)
         {
             Player_KeyInputs.Instance.dialogueButton_isPressed = false;
-            SetupDialogueDisplay(segmentIndex, NPCs.Floriel);
+
+            List<Options> options = new List<Options>();
+            options = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0];
+            int segment = options[DialogueManager.Instance.selectedButton - 1].linkedDialogueSegment - 1;
+
+            segmentIndex = segment;
+            print("DialogueSegment: Button: " + (DialogueManager.Instance.selectedButton - 1) + " | Index: " + segmentIndex + " | Segment: " + segment);
+
+            SetupDialogueDisplay(segment, dialogueInfo.npcName); 
         }
-    }
+    } 
+
+
+    //--------------------
+
 
     void SetupDialogueDisplay(int index, NPCs npc)
     {
@@ -606,26 +634,24 @@ public class Interactable_NPC : MonoBehaviour
             switch (DialogueManager.Instance.currentLanguage)
             {
                 case Languages.Norwegian:
-                    DialogueManager.Instance.SetupDialogueSegment_toDisplay(index, npc, dialogueInfo.dialogueSegments[index].languageDialogueList[0], dialogueInfo.dialogueSegments[index].languageOptionList[0]);
+                    DialogueManager.Instance.SetupDialogueSegment_toDisplay(npc, dialogueInfo.dialogueSegments[index].languageDialogueList[0], dialogueInfo.dialogueSegments[index].languageOptionList[0]);
                     break;
                 case Languages.English:
-                    DialogueManager.Instance.SetupDialogueSegment_toDisplay(index, npc, dialogueInfo.dialogueSegments[index].languageDialogueList[1], dialogueInfo.dialogueSegments[index].languageOptionList[1]);
+                    DialogueManager.Instance.SetupDialogueSegment_toDisplay(npc, dialogueInfo.dialogueSegments[index].languageDialogueList[1], dialogueInfo.dialogueSegments[index].languageOptionList[1]);
                     break;
                 case Languages.German:
-                    DialogueManager.Instance.SetupDialogueSegment_toDisplay(index, npc, dialogueInfo.dialogueSegments[index].languageDialogueList[2], dialogueInfo.dialogueSegments[index].languageOptionList[2]);
+                    DialogueManager.Instance.SetupDialogueSegment_toDisplay(npc, dialogueInfo.dialogueSegments[index].languageDialogueList[2], dialogueInfo.dialogueSegments[index].languageOptionList[2]);
                     break;
                 case Languages.Japanese:
-                    DialogueManager.Instance.SetupDialogueSegment_toDisplay(index, npc, dialogueInfo.dialogueSegments[index].languageDialogueList[3], dialogueInfo.dialogueSegments[index].languageOptionList[3]);
+                    DialogueManager.Instance.SetupDialogueSegment_toDisplay(npc, dialogueInfo.dialogueSegments[index].languageDialogueList[3], dialogueInfo.dialogueSegments[index].languageOptionList[3]);
                     break;
                 case Languages.Chinese:
-                    DialogueManager.Instance.SetupDialogueSegment_toDisplay(index, npc, dialogueInfo.dialogueSegments[index].languageDialogueList[4], dialogueInfo.dialogueSegments[index].languageOptionList[4]);
+                    DialogueManager.Instance.SetupDialogueSegment_toDisplay(npc, dialogueInfo.dialogueSegments[index].languageDialogueList[4], dialogueInfo.dialogueSegments[index].languageOptionList[4]);
                     break;
 
                 default:
                     break;
             }
-
-            segmentIndex++;
         }
         else
         {

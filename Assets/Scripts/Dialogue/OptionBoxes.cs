@@ -7,10 +7,10 @@ using UnityEngine.UI;
 
 public class OptionBoxes : Singleton<OptionBoxes>
 {
-    [SerializeField] Button optionButton_1;
-    [SerializeField] Button optionButton_2;
-    [SerializeField] Button optionButton_3;
-    [SerializeField] Button optionButton_4;
+    public Button optionButton_1;
+    public Button optionButton_2;
+    public Button optionButton_3;
+    public Button optionButton_4;
 
 
     //--------------------
@@ -198,7 +198,10 @@ public class OptionBoxes : Singleton<OptionBoxes>
         if (option == "")
             button.gameObject.SetActive(false);
         else
+        {
             button.gameObject.SetActive(true);
+            DialogueManager.Instance.selectedButton = 1;
+        }
     }
     public void HideOptions()
     {
