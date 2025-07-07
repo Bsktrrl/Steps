@@ -12,6 +12,7 @@ public class DialogueManager : Singleton<DialogueManager>
     public TextMeshProUGUI nameText;
 
     [Header("Language")]
+    [HideInInspector] public int languageAmount = 5;
     public Languages currentLanguage;
 
     [Header("Sound")]
@@ -145,14 +146,16 @@ public class DialogueInfo
 [Serializable]
 public class DialogueSegment
 {
-    public List<string> languageDialogueList;
-    public List<LanguageOptions> languageOptionList = new List<LanguageOptions>();
+    public string segmentName;
 
     public int animation_Player;
     public int animation_NPC;
     public int cutscene;
 
     public int dialogueStats;
+
+    public List<string> languageDialogueList = new List<string>();
+    public List<LanguageOptions> languageOptionList = new List<LanguageOptions>();
 }
 
 [Serializable]
