@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class Player_KeyInputs : Singleton<Player_KeyInputs>
 {
+    public static event Action Action_dialogueButton_isPressed;
+
     [Header("Input System")]
     public PlayerControls playerControls;
     MapManager mapManager;
@@ -23,7 +26,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     public bool cameraX_isPressed = false;
     public bool cameraY_isPressed = false;
 
-    public bool dialogueSkip_isPressed = false;
+    public bool dialogueButton_isPressed = false;
 
 
     //--------------------
@@ -112,7 +115,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     {
         if (!PlayerManager.Instance.pauseGame) { return; }
 
-        dialogueSkip_isPressed = true;
+        dialogueButton_isPressed = true;
+        Action_dialogueButton_isPressed?.Invoke();
     }
 
 

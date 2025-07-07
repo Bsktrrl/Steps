@@ -41,8 +41,7 @@ public class DialogueManager : Singleton<DialogueManager>
         //Set dialogueBox active, if not
         if (!dialogueCanvas.activeInHierarchy)
         {
-            PlayerManager.Instance.pauseGame = true;
-            dialogueCanvas.SetActive(true);
+            StartDialogue();
         }
     }
     void SetupNPCNameText_toDisplay(string _name)
@@ -52,6 +51,17 @@ public class DialogueManager : Singleton<DialogueManager>
     void SetupDialogueText_toDisplay(string _text)
     {
         TypewriterEffect.Instance.ShowText(_text);
+    }
+
+    void StartDialogue()
+    {
+        PlayerManager.Instance.pauseGame = true;
+        dialogueCanvas.SetActive(true);
+    }
+    public void EndDialogue()
+    {
+        dialogueCanvas.SetActive(false);
+        PlayerManager.Instance.pauseGame = false;
     }
 }
 

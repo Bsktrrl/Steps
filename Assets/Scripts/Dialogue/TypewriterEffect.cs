@@ -5,8 +5,8 @@ using UnityEngine;
 public class TypewriterEffect : Singleton<TypewriterEffect>
 {
     [SerializeField] TextMeshProUGUI dialogueText;
-    float letterDelay = 0.04f;
-    float sentenceDelay = 0.2f;
+    float letterDelay = 0.03f;
+    float sentenceDelay = 0.25f;
 
     string fullText;
     private Coroutine typingCoroutine;
@@ -21,9 +21,10 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
     
     void Update()
     {
-        if (Player_KeyInputs.Instance.dialogueSkip_isPressed)
+        //Skip typewriting effect
+        if (Player_KeyInputs.Instance.dialogueButton_isPressed && isTyping)
         {
-            Player_KeyInputs.Instance.dialogueSkip_isPressed = false;
+            Player_KeyInputs.Instance.dialogueButton_isPressed = false;
 
             if (typingCoroutine != null)
             {
@@ -50,6 +51,8 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
 
     IEnumerator TypeText()
     {
+        print("222. Type text");
+
         isTyping = true;
         dialogueText.text = "";
 
@@ -83,8 +86,8 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
         // Typing finished or skipped
         OptionBoxes.Instance.ShowHideOptions();
 
-        isTyping = false;
-        typingCoroutine = null;
         skipRequested = false;
+        typingCoroutine = null;
+        isTyping = false;
     }
 }

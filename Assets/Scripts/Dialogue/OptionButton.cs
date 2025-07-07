@@ -5,8 +5,7 @@ using UnityEngine.EventSystems;
 
 public class OptionButton : MonoBehaviour, ISelectHandler
 {
-
-
+    
 
     //--------------------
 

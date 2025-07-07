@@ -9,7 +9,7 @@ public class Interactable_NPC : MonoBehaviour
 
     [SerializeField] DialogueInfo dialogueInfo = new DialogueInfo();
 
-    [SerializeField] int segmentIndex = 0;
+    public int segmentIndex = 0;
 
 
     //--------------------
@@ -577,32 +577,59 @@ public class Interactable_NPC : MonoBehaviour
         SetupDialogueDisplay(segmentIndex, NPCs.Floriel);
     }
 
+    private void OnEnable()
+    {
+        Player_KeyInputs.Action_dialogueButton_isPressed += StartNewDialogueSegment;
+    }
+    private void OnDisable()
+    {
+        Player_KeyInputs.Action_dialogueButton_isPressed -= StartNewDialogueSegment;
+    }
+
 
     //--------------------
 
 
+    void StartNewDialogueSegment()
+    {
+        if (!TypewriterEffect.Instance.isTyping)
+        {
+            Player_KeyInputs.Instance.dialogueButton_isPressed = false;
+            SetupDialogueDisplay(segmentIndex, NPCs.Floriel);
+        }
+    }
+
     void SetupDialogueDisplay(int index, NPCs npc)
     {
-        switch (DialogueManager.Instance.currentLanguage)
+        if (dialogueInfo.dialogueSegments.Count > index)
         {
-            case Languages.Norwegian:
-                DialogueManager.Instance.SetupDialogueSegment_toDisplay(index, npc, dialogueInfo.dialogueSegments[index].languageDialogueList[0], dialogueInfo.dialogueSegments[index].languageOptionList[0]);
-                break;
-            case Languages.English:
-                DialogueManager.Instance.SetupDialogueSegment_toDisplay(index, npc, dialogueInfo.dialogueSegments[index].languageDialogueList[1], dialogueInfo.dialogueSegments[index].languageOptionList[1]);
-                break;
-            case Languages.German:
-                DialogueManager.Instance.SetupDialogueSegment_toDisplay(index, npc, dialogueInfo.dialogueSegments[index].languageDialogueList[2], dialogueInfo.dialogueSegments[index].languageOptionList[2]);
-                break;
-            case Languages.Japanese:
-                DialogueManager.Instance.SetupDialogueSegment_toDisplay(index, npc, dialogueInfo.dialogueSegments[index].languageDialogueList[3], dialogueInfo.dialogueSegments[index].languageOptionList[3]);
-                break;
-            case Languages.Chinese:
-                DialogueManager.Instance.SetupDialogueSegment_toDisplay(index, npc, dialogueInfo.dialogueSegments[index].languageDialogueList[4], dialogueInfo.dialogueSegments[index].languageOptionList[4]);
-                break;
+            switch (DialogueManager.Instance.currentLanguage)
+            {
+                case Languages.Norwegian:
+                    DialogueManager.Instance.SetupDialogueSegment_toDisplay(index, npc, dialogueInfo.dialogueSegments[index].languageDialogueList[0], dialogueInfo.dialogueSegments[index].languageOptionList[0]);
+                    break;
+                case Languages.English:
+                    DialogueManager.Instance.SetupDialogueSegment_toDisplay(index, npc, dialogueInfo.dialogueSegments[index].languageDialogueList[1], dialogueInfo.dialogueSegments[index].languageOptionList[1]);
+                    break;
+                case Languages.German:
+                    DialogueManager.Instance.SetupDialogueSegment_toDisplay(index, npc, dialogueInfo.dialogueSegments[index].languageDialogueList[2], dialogueInfo.dialogueSegments[index].languageOptionList[2]);
+                    break;
+                case Languages.Japanese:
+                    DialogueManager.Instance.SetupDialogueSegment_toDisplay(index, npc, dialogueInfo.dialogueSegments[index].languageDialogueList[3], dialogueInfo.dialogueSegments[index].languageOptionList[3]);
+                    break;
+                case Languages.Chinese:
+                    DialogueManager.Instance.SetupDialogueSegment_toDisplay(index, npc, dialogueInfo.dialogueSegments[index].languageDialogueList[4], dialogueInfo.dialogueSegments[index].languageOptionList[4]);
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+            }
+
+            segmentIndex++;
+        }
+        else
+        {
+            DialogueManager.Instance.EndDialogue();
         }
     }
     void SetupDialogue(DialogueSegment dialogueSegment)
