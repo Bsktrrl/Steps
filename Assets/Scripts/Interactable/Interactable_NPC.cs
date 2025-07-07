@@ -2,15 +2,24 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class Interactable_NPC : MonoBehaviour
 {
-    [SerializeField] Text dialogueDocument;
+    [Header("Character")]
+    [SerializeField] NPCs characterName;
 
+    [Header("Stats from Excel")]
+    [SerializeField] TextAsset dialogueSheet;
+    int startRow = 1;
+    int columns = 57;
+
+    [Header("Dialogue Info")]
     [SerializeField] DialogueInfo dialogueInfo = new DialogueInfo();
 
-    public int segmentIndex = 0;
+    int segmentIndex = 0;
 
 
     //--------------------
@@ -18,6 +27,8 @@ public class Interactable_NPC : MonoBehaviour
 
     private void Start()
     {
+        //BuildDialogue();
+
         #region Hardcoded dialogueSegments
 
         #region Segment 1
@@ -35,42 +46,43 @@ public class Interactable_NPC : MonoBehaviour
 
             SetupOptionLanguages
             (
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Hvem er du?", 2),
-                    SetupOption("Hva er dette stedet?", 3),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "Hvem er du?", 2,
+                    "Hva er dette stedet?", 3,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Who are you?", 2),
-                    SetupOption("What is this place?", 3),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "Who are you?", 2,
+                    "What is this place?", 3,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("German option 1", 2),
-                    SetupOption("German option 2", 3),
-                    SetupOption("German option 3", 0),
-                    SetupOption("German option 4", 0)
+                    "German option 1", 2,
+                    "German option 2", 3,
+                    "German option 3", 0,
+                    "German option 4", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Japanese option 1", 2),
-                    SetupOption("Japanese option 2", 3),
-                    SetupOption("Japanese option 3", 0),
-                    SetupOption("Japanese option 4", 0)
+                    "Japanese option 1", 2,
+                    "Japanese option 2", 3,
+                    "Japanese option 3", 0,
+                    "Japanese option 4", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Chinese option 1", 2),
-                    SetupOption("Chinese option 2", 3),
-                    SetupOption("Chinese option 3", 0),
-                    SetupOption("Chinese option 4", 0)
+                    "Chinese option 1", 2,
+                    "Chinese option 2", 3,
+                    "Chinese option 3", 0,
+                    "Chinese option 4", 0
                 )
             )
+
         ));
 
         #endregion
@@ -90,40 +102,40 @@ public class Interactable_NPC : MonoBehaviour
 
             SetupOptionLanguages
             (
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Hvorfor er du fortsatt her?", 4),
-                    SetupOption("Kan du hjelpe meg?", 5),
-                    SetupOption("Ha det.", 10),
-                    SetupOption("", 0)
+                    "Hvorfor er du fortsatt her?", 4,
+                    "Kan du hjelpe meg?", 5,
+                    "Ha det.", 10,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Why are you still here?", 4),
-                    SetupOption("Can you help me?", 5),
-                    SetupOption("Goodbye", 10),
-                    SetupOption("", 0)
+                    "Why are you still here?", 4,
+                    "Can you help me?", 5,
+                    "Goodbye", 10,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("German option 1", 4),
-                    SetupOption("German option 2", 5),
-                    SetupOption("German option 3", 10),
-                    SetupOption("German option 4", 0)
+                    "German option 1", 4,
+                    "German option 2", 5,
+                    "German option 3", 10,
+                    "German option 4", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Japanese option 1", 4),
-                    SetupOption("Japanese option 2", 5),
-                    SetupOption("Japanese option 3", 10),
-                    SetupOption("Japanese option 4", 0)
+                    "Japanese option 1", 4,
+                    "Japanese option 2", 5,
+                    "Japanese option 3", 10,
+                    "Japanese option 4", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Chinese option 1", 4),
-                    SetupOption("Chinese option 2", 5),
-                    SetupOption("Chinese option 3", 10),
-                    SetupOption("Chinese option 4", 0)
+                    "Chinese option 1", 4,
+                    "Chinese option 2", 5,
+                    "Chinese option 3", 10,
+                    "Chinese option 4", 0
                 )
             )
         ));
@@ -145,40 +157,40 @@ public class Interactable_NPC : MonoBehaviour
 
             SetupOptionLanguages
             (
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Hvilken ild?", 6),
-                    SetupOption("Kan det gjenopprettes?", 7),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "Hvilken ild?", 6,
+                    "Kan det gjenopprettes?", 7,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("What fire?", 6),
-                    SetupOption("Can it be restored?", 7),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "What fire?", 6,
+                    "Can it be restored?", 7,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("German option 1", 6),
-                    SetupOption("German option 2", 7),
-                    SetupOption("German option 3", 0),
-                    SetupOption("German option 4", 0)
+                    "German option 1", 6,
+                    "German option 2", 7,
+                    "German option 3", 0,
+                    "German option 4", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Japanese option 1", 6),
-                    SetupOption("Japanese option 2", 7),
-                    SetupOption("Japanese option 3", 0),
-                    SetupOption("Japanese option 4", 0)
+                    "Japanese option 1", 6,
+                    "Japanese option 2", 7,
+                    "Japanese option 3", 0,
+                    "Japanese option 4", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Chinese option 1", 6),
-                    SetupOption("Chinese option 2", 7),
-                    SetupOption("Chinese option 3", 0),
-                    SetupOption("Chinese option 4", 0)
+                    "Chinese option 1", 6,
+                    "Chinese option 2", 7,
+                    "Chinese option 3", 0,
+                    "Chinese option 4", 0
                 )
             )
         ));
@@ -200,40 +212,40 @@ public class Interactable_NPC : MonoBehaviour
 
             SetupOptionLanguages
             (
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Hvordan kan jeg hjelpe?", 5),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "Hvordan kan jeg hjelpe?", 5,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("How can I help?", 5),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "How can I help?", 5,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("German option 1", 5),
-                    SetupOption("German option 2", 0),
-                    SetupOption("German option 3", 0),
-                    SetupOption("German option 4", 0)
+                    "German option 1", 5,
+                    "German option 2", 0,
+                    "German option 3", 0,
+                    "German option 4", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Japanese option 1", 5),
-                    SetupOption("Japanese option 2", 0),
-                    SetupOption("Japanese option 3", 0),
-                    SetupOption("Japanese option 4", 0)
+                    "Japanese option 1", 5,
+                    "Japanese option 2", 0,
+                    "Japanese option 3", 0,
+                    "Japanese option 4", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Chinese option 1", 5),
-                    SetupOption("Chinese option 2", 0),
-                    SetupOption("Chinese option 3", 0),
-                    SetupOption("Chinese option 4", 0)
+                    "Chinese option 1", 5,
+                    "Chinese option 2", 0,
+                    "Chinese option 3", 0,
+                    "Chinese option 4", 0
                 )
             )
         ));
@@ -255,40 +267,40 @@ public class Interactable_NPC : MonoBehaviour
 
             SetupOptionLanguages
             (
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Hvor finner jeg den?", 8),
-                    SetupOption("Er det farlig?", 9),
-                    SetupOption("Jeg skal pre.", 10),
-                    SetupOption("", 0)
+                    "Hvor finner jeg den?", 8,
+                    "Er det farlig?", 9,
+                    "Jeg skal pre.", 10,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Where do I find it?", 8),
-                    SetupOption("Is it dangerous?", 9),
-                    SetupOption("I値l try.", 10),
-                    SetupOption("", 0)
+                    "Where do I find it?", 8,
+                    "Is it dangerous?", 9,
+                    "I値l try.", 10,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("German option 1", 8),
-                    SetupOption("German option 2", 9),
-                    SetupOption("German option 3", 10),
-                    SetupOption("German option 4", 0)
+                    "German option 1", 8,
+                    "German option 2", 9,
+                    "German option 3", 10,
+                    "German option 4", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Japanese option 1", 8),
-                    SetupOption("Japanese option 2", 9),
-                    SetupOption("Japanese option 3", 10),
-                    SetupOption("Japanese option 4", 0)
+                    "Japanese option 1", 8,
+                    "Japanese option 2", 9,
+                    "Japanese option 3", 10,
+                    "Japanese option 4", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Chinese option 1", 8),
-                    SetupOption("Chinese option 2", 9),
-                    SetupOption("Chinese option 3", 10),
-                    SetupOption("Chinese option 4", 0)
+                    "Chinese option 1", 8,
+                    "Chinese option 2", 9,
+                    "Chinese option 3", 10,
+                    "Chinese option 4", 0
                 )
             )
         ));
@@ -310,40 +322,40 @@ public class Interactable_NPC : MonoBehaviour
 
             SetupOptionLanguages
             (
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "", 0,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "", 0,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "", 0,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "", 0,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "", 0,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 )
             )
         ));
@@ -365,40 +377,40 @@ public class Interactable_NPC : MonoBehaviour
 
             SetupOptionLanguages
             (
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Jeg skal gje det jeg kan.", 10),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "Jeg skal gje det jeg kan.", 10,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("I'll do what I can.", 10),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "I'll do what I can.", 10,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("German option 1", 5),
-                    SetupOption("German option 2", 0),
-                    SetupOption("German option 3", 0),
-                    SetupOption("German option 4", 0)
+                    "German option 1", 5,
+                    "German option 2", 0,
+                    "German option 3", 0,
+                    "German option 4", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Japanese option 1", 5),
-                    SetupOption("Japanese option 2", 0),
-                    SetupOption("Japanese option 3", 0),
-                    SetupOption("Japanese option 4", 0)
+                    "Japanese option 1", 5,
+                    "Japanese option 2", 0,
+                    "Japanese option 3", 0,
+                    "Japanese option 4", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Chinese option 1", 5),
-                    SetupOption("Chinese option 2", 0),
-                    SetupOption("Chinese option 3", 0),
-                    SetupOption("Chinese option 4", 0)
+                    "Chinese option 1", 5,
+                    "Chinese option 2", 0,
+                    "Chinese option 3", 0,
+                    "Chinese option 4", 0
                 )
             )
         ));
@@ -420,40 +432,40 @@ public class Interactable_NPC : MonoBehaviour
 
             SetupOptionLanguages
             (
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "", 0,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "", 0,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "", 0,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "", 0,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "", 0,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 )
             )
         ));
@@ -475,40 +487,40 @@ public class Interactable_NPC : MonoBehaviour
 
             SetupOptionLanguages
             (
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Jeg vil me det.", 10),
-                    SetupOption("Kanskje jeg ikke er klar.", 10),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "Jeg vil me det.", 10,
+                    "Kanskje jeg ikke er klar.", 10,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("I値l face it.", 10),
-                    SetupOption("Maybe I知 not ready.", 10),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "I値l face it.", 10,
+                    "Maybe I知 not ready.", 10,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("German option 1", 10),
-                    SetupOption("German option 2", 10),
-                    SetupOption("German option 3", 0),
-                    SetupOption("German option 4", 0)
+                    "German option 1", 10,
+                    "German option 2", 10,
+                    "German option 3", 0,
+                    "German option 4", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Japanese option 1", 10),
-                    SetupOption("Japanese option 2", 10),
-                    SetupOption("Japanese option 3", 0),
-                    SetupOption("Japanese option 4", 0)
+                    "Japanese option 1", 10,
+                    "Japanese option 2", 10,
+                    "Japanese option 3", 0,
+                    "Japanese option 4", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("Chinese option 1", 10),
-                    SetupOption("Chinese option 2", 10),
-                    SetupOption("Chinese option 3", 0),
-                    SetupOption("Chinese option 4", 0)
+                    "Chinese option 1", 10,
+                    "Chinese option 2", 10,
+                    "Chinese option 3", 0,
+                    "Chinese option 4", 0
                 )
             )
         ));
@@ -530,40 +542,40 @@ public class Interactable_NPC : MonoBehaviour
 
             SetupOptionLanguages
             (
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "", 0,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "", 0,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "", 0,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "", 0,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 ),
-                setupOptionList
+                SetupOption
                 (
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0),
-                    SetupOption("", 0)
+                    "", 0,
+                    "", 0,
+                    "", 0,
+                    "", 0
                 )
             )
         ));
@@ -572,7 +584,7 @@ public class Interactable_NPC : MonoBehaviour
 
         #endregion
 
-        dialogueInfo.npcName = NPCs.Floriel;
+        dialogueInfo.npcName = characterName;
         DialogueManager.Instance.activeNPC = dialogueInfo.npcName;
         DialogueManager.Instance.segmentTotal = dialogueInfo.dialogueSegments.Count - 1;
         DialogueManager.Instance.currentSegement = segmentIndex;
@@ -597,9 +609,133 @@ public class Interactable_NPC : MonoBehaviour
     //--------------------
 
 
+    void BuildDialogue()
+    {
+        ReadExcelSheet();
+    }
+    public void ReadExcelSheet()
+    {
+        //Separate Excel Sheet into a string[] by its ";"
+        string[] excelData = dialogueSheet.text.Split(new string[] { ";", "\n" }, StringSplitOptions.None);
+
+        // Calculate the size of the Excel table
+        int excelTableSize = (excelData.Length / columns - 1) - 0;
+
+        // Initialize the list
+        dialogueInfo.dialogueSegments = new List<DialogueSegment>();
+
+        // Populate the list with default DataObject instances
+        for (int i = 0; i < excelTableSize; i++)
+        {
+            dialogueInfo.dialogueSegments.Add(new DialogueSegment());
+        }
+
+        //Fill the new element with data
+        for (int i = 0; i < excelTableSize; i++)
+        {
+            dialogueInfo.dialogueSegments[i] = new DialogueSegment();
+
+            #region Animations
+
+            //Player Animation number
+            if (excelData[columns * (i + startRow - 1) + 2] != "")
+                dialogueInfo.dialogueSegments[i].animation_Player = int.Parse(excelData[columns * (i + startRow - 1) + 2].Trim());
+            else
+                dialogueInfo.dialogueSegments[i].animation_Player = -1;
+
+            //NPC Animation number
+            if (excelData[columns * (i + startRow - 1) + 3] != "")
+                dialogueInfo.dialogueSegments[i].animation_NPC = int.Parse(excelData[columns * (i + startRow - 1) + 3].Trim());
+            else
+                dialogueInfo.dialogueSegments[i].animation_NPC = -1;
+
+            //Cutscene
+            if (excelData[columns * (i + startRow - 1) + 4] != "")
+                dialogueInfo.dialogueSegments[i].cutscene = int.Parse(excelData[columns * (i + startRow - 1) + 4].Trim());
+            else
+                dialogueInfo.dialogueSegments[i].cutscene = -1;
+
+            #endregion
+
+            #region Stats
+
+            //Stats
+            if (excelData[columns * (i + startRow - 1) + 6] != "")
+                dialogueInfo.dialogueSegments[i].dialogueStats = int.Parse(excelData[columns * (i + startRow - 1) + 6].Trim());
+            else
+                dialogueInfo.dialogueSegments[i].dialogueStats = -1;
+
+            #endregion
+
+
+            #region Norwegian
+
+            //Message
+            if (excelData[columns * (i + startRow - 1) + 8] != "")
+                dialogueInfo.dialogueSegments[i].languageDialogueList[0] = excelData[columns * (i + startRow - 1) + 8].Trim();
+            else
+                dialogueInfo.dialogueSegments[i].languageDialogueList[0] = "";
+
+            //Option 1
+            if (excelData[columns * (i + startRow - 1) + 9] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Text = excelData[columns * (i + startRow - 1) + 9].Trim();
+            else
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Text = "";
+            //Option 1 - Link
+            if (excelData[columns * (i + startRow - 1) + 10] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Linked = int.Parse(excelData[columns * (i + startRow - 1) + 10].Trim());
+            else
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Linked = -1;
+
+            //Option 2
+            if (excelData[columns * (i + startRow - 1) + 11] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[1].option2_Text = excelData[columns * (i + startRow - 1) + 11].Trim();
+            else
+                dialogueInfo.dialogueSegments[i].languageOptionList[1].option2_Text = "";
+            //Option 1 - Link
+            if (excelData[columns * (i + startRow - 1) + 12] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[1].option2_Linked = int.Parse(excelData[columns * (i + startRow - 1) + 12].Trim());
+            else
+                dialogueInfo.dialogueSegments[i].languageOptionList[1].option2_Linked = -1;
+
+            //Option 3
+            if (excelData[columns * (i + startRow - 1) + 13] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[2].option3_Text = excelData[columns * (i + startRow - 1) + 13].Trim();
+            else
+                dialogueInfo.dialogueSegments[i].languageOptionList[2].option3_Text = "";
+            //Option 1 - Link
+            if (excelData[columns * (i + startRow - 1) + 14] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[2].option3_Linked = int.Parse(excelData[columns * (i + startRow - 1) + 14].Trim());
+            else
+                dialogueInfo.dialogueSegments[i].languageOptionList[2].option3_Linked = -1;
+
+            //Option 4
+            if (excelData[columns * (i + startRow - 1) + 15] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option4_Text = excelData[columns * (i + startRow - 1) + 15].Trim();
+            else
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option4_Text = "";
+            //Option 1 - Link
+            if (excelData[columns * (i + startRow - 1) + 16] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option4_Linked = int.Parse(excelData[columns * (i + startRow - 1) + 16].Trim());
+            else
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option4_Linked = -1;
+
+            #endregion
+        }
+
+        //Remove elements that doesn't have a name
+        //dialogueInfo.dialogueSegments = dialogueInfo.dialogueSegments.Where(obj => obj != null && !string.IsNullOrEmpty(obj.)).ToList();
+    }
+
+
+
+    //--------------------
+
+
     void StartNewDialogueSegment()
     {
-        if (dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0][0].optionText == "")
+        //If the first element of the norwegian messageText is nothing, run it
+        if (dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option1_Text == "")
         {
             if (!TypewriterEffect.Instance.isTyping)
             {
@@ -616,9 +752,15 @@ public class Interactable_NPC : MonoBehaviour
         {
             Player_KeyInputs.Instance.dialogueButton_isPressed = false;
 
-            List<Options> options = new List<Options>();
-            options = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0];
-            int segment = options[DialogueManager.Instance.selectedButton - 1].linkedDialogueSegment - 1;
+            int segment = -1;
+            if (DialogueManager.Instance.selectedButton == 1)
+                segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option1_Linked - 1;
+            else if (DialogueManager.Instance.selectedButton == 2)
+                segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option2_Linked - 1;
+            else if (DialogueManager.Instance.selectedButton == 3)
+                segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option3_Linked - 1;
+            else if (DialogueManager.Instance.selectedButton == 4)
+                segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option4_Linked - 1;
 
             segmentIndex = segment;
             DialogueManager.Instance.currentSegement = segmentIndex;
@@ -668,7 +810,7 @@ public class Interactable_NPC : MonoBehaviour
     {
         dialogueInfo.dialogueSegments.Add(dialogueSegment);
     }
-    DialogueSegment SetupDialogueSegment(List<string> languageDialogueList, List<List<Options>> languageOptionList)
+    DialogueSegment SetupDialogueSegment(List<string> languageDialogueList, List<LanguageOptions> languageOptionList)
     {
         DialogueSegment segment = new DialogueSegment();
 
@@ -690,10 +832,9 @@ public class Interactable_NPC : MonoBehaviour
 
         return languageList;
     }
-    List<List<Options>> SetupOptionLanguages(List<Options> language1, List<Options> language2, List<Options> language3, List<Options> language4, List<Options> language5)
+    List<LanguageOptions> SetupOptionLanguages(LanguageOptions language1, LanguageOptions language2, LanguageOptions language3, LanguageOptions language4, LanguageOptions language5)
     {
-        List<List<Options>> languageOptions = new List<List<Options>>();
-        //List<List<Options>> optionsList = new List<List<Options>>();
+        List<LanguageOptions> languageOptions = new List<LanguageOptions>();
 
         languageOptions.Add(language1);
         languageOptions.Add(language2);
@@ -701,26 +842,19 @@ public class Interactable_NPC : MonoBehaviour
         languageOptions.Add(language4);
         languageOptions.Add(language5);
 
-        //languageOptions.language_options = optionsList;
-
         return languageOptions;
     }
-    List<Options> setupOptionList(Options option1, Options option2, Options option3, Options option4)
+    LanguageOptions SetupOption(string _option1_Text, int _segment1_Linked, string _option2_Text, int _segment2_Linked, string _option3_Text, int _segment3_Linked, string _option4_Text, int _segment4_Linked)
     {
-        List<Options> optionList = new List<Options>();
-
-        optionList.Add(option1);
-        optionList.Add(option2);
-        optionList.Add(option3);
-        optionList.Add(option4);
-
-        return optionList;
-    }
-    Options SetupOption(string potionText, int segmentLink)
-    {
-        Options option = new Options();
-        option.optionText = potionText;
-        option.linkedDialogueSegment = segmentLink;
+        LanguageOptions option = new LanguageOptions();
+        option.option1_Text = _option1_Text;
+        option.option1_Linked = _segment1_Linked;
+        option.option2_Text = _option2_Text;
+        option.option2_Linked = _segment2_Linked;
+        option.option3_Text = _option3_Text;
+        option.option3_Linked = _segment3_Linked;
+        option.option4_Text = _option4_Text;
+        option.option4_Linked = _segment4_Linked;
 
         return option;
     }

@@ -37,6 +37,8 @@ public class OptionButton : MonoBehaviour, ISelectHandler
 
         print("Button: " + gameObject.name + " is pressed");
 
+        DialogueManager.Instance.selectedButton = optionNumber;
+
         Action_OptionButtonIsPressed?.Invoke();
     }
 

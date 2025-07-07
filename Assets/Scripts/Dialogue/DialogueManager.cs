@@ -51,7 +51,7 @@ public class DialogueManager : Singleton<DialogueManager>
     //--------------------
 
 
-    public void SetupDialogueSegment_toDisplay(NPCs npc, string dialogueText, List<Options> options)
+    public void SetupDialogueSegment_toDisplay(NPCs npc, string dialogueText, LanguageOptions languageSection)
     {
         OptionBoxes.Instance.HideOptions();
         HideArrow();
@@ -59,7 +59,7 @@ public class DialogueManager : Singleton<DialogueManager>
         SetupNPCNameText_toDisplay(npc.ToString());
         SetupDialogueText_toDisplay(dialogueText);
 
-        OptionBoxes.Instance.SetupOptions(npc, options[0].optionText, options[1].optionText, options[2].optionText, options[3].optionText);
+        OptionBoxes.Instance.SetupOptions(npc, languageSection.option1_Text, languageSection.option2_Text, languageSection.option3_Text, languageSection.option4_Text);
 
         //Set dialogueBox active, if not
         if (!dialogueCanvas.activeInHierarchy)
@@ -146,23 +146,29 @@ public class DialogueInfo
 public class DialogueSegment
 {
     public List<string> languageDialogueList;
-    public List<List<Options>> languageOptionList = new List<List<Options>>();
+    public List<LanguageOptions> languageOptionList = new List<LanguageOptions>();
 
     public int animation_Player;
     public int animation_NPC;
+    public int cutscene;
 
-    public DialogueStats dialogueStats = new DialogueStats();
+    public int dialogueStats;
 }
+
 [Serializable]
-public class Options
+public class LanguageOptions
 {
-    public string optionText;
-    public int linkedDialogueSegment;
-}
-[Serializable]
-public class DialogueStats
-{
-    //Add stats that will result in other variables to be saved, based on the context of the dialogueSegmentText
+    public string option1_Text;
+    public int option1_Linked;
+
+    public string option2_Text;
+    public int option2_Linked;
+
+    public string option3_Text;
+    public int option3_Linked;
+
+    public string option4_Text;
+    public int option4_Linked;
 }
 
 public enum Languages
