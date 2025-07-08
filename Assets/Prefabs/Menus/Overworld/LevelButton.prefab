@@ -146,8 +146,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8b6698c5d58a16d47b418e91d8b7f8be, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 1dcae7d0300016d4a8a9572c80c7b5bc, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -155,7 +155,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 2.25
 --- !u!114 &1814084887984308522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,6 +256,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c3592981424de6468e94bb53e26aeb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onlyWhenSelected: 0
+  waitTimerRange: {x: 0, y: 0}
   waveImage: {fileID: 384179937895888748}
   waveSpriteList:
   - {fileID: 0}
@@ -278,26 +280,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd996c64c094664b93928c21e8eb00d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  readyToBePlayedAndDisplayed: 0
+  regionToPlay: 0
   levelToPlay: 
   levelSprite: {fileID: 0}
-  coinsRequirement: 0
-  collectableRequirement: 0
   levelsToBeFinished: []
   canPlay: 0
   isCompleted: 0
+  skinTypeInLevel: 0
   abilitiesInLevel:
-    FenceSneak: 0
     SwimSuit: 0
     SwiftSwim: 0
     Flippers: 0
-    Flameable: 0
-    Jumping: 0
-    HikerGear: 0
-    IceSpikes: 0
-    GrapplingHook: 0
-    Hammer: 0
-    CeilingGrab: 0
-    Dash: 0
     Ascend: 0
     Descend: 0
-    ControlStick: 0
+    Dash: 0
+    Jumping: 0
+    GrapplingHook: 0
+    CeilingGrab: 0

@@ -66,7 +66,10 @@ public class Button_SelectOnCancel : MonoBehaviour
             menuToOpen.SetActive(true);
 
         if (menuToClose)
+        {
             menuToClose.SetActive(false);
+            OverWorldManager.Instance.panelBackground.SetActive(false);
+        }
 
         //Make sure that mainMenu isn't tried accessed during gameplay
         if (menuState_ToSelect != MenuState.Pause_Menu_Main && menuState_ToSelect != MenuState.Pause_Menu_Settings && menuState_ToSelect != MenuState.Pause_Menu_Info)

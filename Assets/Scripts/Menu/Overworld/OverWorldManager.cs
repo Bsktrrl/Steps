@@ -10,6 +10,7 @@ public class OverWorldManager : Singleton<OverWorldManager>
     public LevelState levelState;
 
     [Header("Panel")]
+    public GameObject panelBackground;
     public GameObject levelPanel_Ice;
     public GameObject levelPanel_Stone;
     public GameObject levelPanel_Grass;
@@ -139,36 +140,42 @@ public class OverWorldManager : Singleton<OverWorldManager>
 
                 //1. Ice
                 case RegionState.Ice:
+                    panelBackground.SetActive(true);
                     levelPanel_Ice.SetActive(true);
                     SetSelected(levelPanel_Ice);
                     break;
                 
                 //2. Stone
                 case RegionState.Stone:
+                    panelBackground.SetActive(true);
                     levelPanel_Stone.SetActive(true);
                     SetSelected(levelPanel_Stone);
                     break;
                 
                 //3. Grass
                 case RegionState.Grass:
+                    panelBackground.SetActive(true);
                     levelPanel_Grass.SetActive(true);
                     SetSelected(levelPanel_Grass);
                     break;
                 
                 //4. Desert
                 case RegionState.Desert:
+                    panelBackground.SetActive(true);
                     levelPanel_Desert.SetActive(true);
                     SetSelected(levelPanel_Desert);
                     break;
                 
                 //5. Swamp
                 case RegionState.Swamp:
+                    panelBackground.SetActive(true);
                     levelPanel_Swamp.SetActive(true);
                     SetSelected(levelPanel_Swamp);
                     break;
                 
                 //6. Industrial
                 case RegionState.Industrial:
+                    panelBackground.SetActive(true);
                     levelPanel_Industrial.SetActive(true);
                     SetSelected(levelPanel_Industrial);
                     break;
@@ -211,6 +218,8 @@ public class OverWorldManager : Singleton<OverWorldManager>
             default:
                 break;
         }
+
+
     }
 
 
