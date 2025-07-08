@@ -100,6 +100,7 @@ public class DialogueManager : Singleton<DialogueManager>
         currentSegement = 0;
 
         PlayerManager.Instance.npcInteraction = false;
+        //PlayerManager.Instance.pauseGame = false;
     }
 
     void SetupArrow()
