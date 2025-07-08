@@ -82,7 +82,7 @@ public class DialogueManager : Singleton<DialogueManager>
     {
         npcObject.isInteracting = true;
 
-        PlayerManager.Instance.pauseGame = true;
+        PlayerManager.Instance.npcInteraction = true;
         dialogueCanvas.SetActive(true);
     }
     public void EndDialogue()
@@ -99,12 +99,12 @@ public class DialogueManager : Singleton<DialogueManager>
         segmentTotal = 0;
         currentSegement = 0;
 
-        PlayerManager.Instance.pauseGame = false;
+        PlayerManager.Instance.npcInteraction = false;
     }
 
     void SetupArrow()
     {
-        if (OptionBoxes.Instance.optionButton_1.gameObject.activeInHierarchy || (currentSegement >= segmentTotal))
+        if (OptionBoxes.Instance.optionButton_1.gameObject.activeInHierarchy || (currentSegement >= segmentTotal) || npcObject.dialogueInfo.dialogueSegments[currentSegement].lastSegment != "")
             HideArrow();
         else
             ShowArrow();
@@ -160,30 +160,40 @@ public class DialogueInfo
 [Serializable]
 public class DialogueSegment
 {
-    public string segmentName;
+    public string segmentDescription;
 
+    [Header("General")]
+    public string lastSegment;
+    public int dialogueStats;
+
+    [Header("Animations")]
     public int animation_Player;
     public int animation_NPC;
     public int cutscene;
 
-    public int dialogueStats;
-
+    [Header("Dialogue")]
     public List<string> languageDialogueList = new List<string>();
+
+    [Header("Options")]
     public List<LanguageOptions> languageOptionList = new List<LanguageOptions>();
 }
 
 [Serializable]
 public class LanguageOptions
 {
+    [Header("Option 1")]
     public string option1_Text;
     public int option1_Linked;
 
+    [Header("Option 2")]
     public string option2_Text;
     public int option2_Linked;
 
+    [Header("Option 3")]
     public string option3_Text;
     public int option3_Linked;
 
+    [Header("Option 4")]
     public string option4_Text;
     public int option4_Linked;
 }

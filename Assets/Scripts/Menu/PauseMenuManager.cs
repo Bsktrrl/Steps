@@ -106,6 +106,8 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
     public void OpenPauseMenu()
     {
+        if (PlayerManager.Instance.npcInteraction) return;
+
         SetLevelInfo();
 
         //Set the first selected button for controller input

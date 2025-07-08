@@ -5,13 +5,17 @@ Dialogue Box:
 _____________
 
 
+1.4. Movement Animations
+- Change movementAnimations to trigger upon buttonPress from the "Player_KeyInput"-script
+
 1.5. Stats gathering
 - Gather stats of what types of info the player have visited in the dialogue, so we can keep track over which dialogues that can be accessed in further conversations
-- Save the dialogue stats to saveData
+- Save the dialogue stats to saveData, for future use
 
 1.6. Languages:
 - Add language select in the Settings menu
 - Add text speed select in the Settings menu
+
 
 
 2.
@@ -19,9 +23,8 @@ Dialogue Scene:
 __________________
 
 
-2.1. Interactable
-- Make it possible to interact with a NPC to start its dialogue from the attached textFile
-- Finish interaction after all dialogue segments are done, and be able to talk again, but only the last sentence will display
+2.1. NPC Visuals:
+- Setup each NPC character in each own Prefab
 
 2.2. Camera:
 - Make it so that the camera pans correctly into the scene (both characters are visible)
@@ -30,8 +33,8 @@ __________________
 2.3. Animations:
 - Make different animations work based on the excel sheet (both for the player and the NPC)
 
-2.4. Disappearance:
-- Make the NPC's gameObject bacome hidden if dialogue has finished (save the NPC state and destroy it from the scene if dialogue has taken place) 
+2.4. NPC GameObject Disappearance:
+- Make the NPC's gameObject become hidden if dialogue has finished (save the NPC state and destroy it from the scene if dialogue has taken place)
 
 
 ---

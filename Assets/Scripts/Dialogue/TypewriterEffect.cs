@@ -22,19 +22,15 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
     //--------------------
 
 
-    
-    void Update()
+    private void OnEnable()
     {
-        //Skip typewriting effect
-        if (Player_KeyInputs.Instance.dialogueButton_isPressed && isTyping)
-        {
-            Player_KeyInputs.Instance.dialogueButton_isPressed = false;
-
-            if (typingCoroutine != null)
-            {
-                skipRequested = true;
-            }
-        }
+        Player_KeyInputs.Action_dialogueNextButton_isPressed += SkipTypewriter;
+        Player_KeyInputs.Action_dialogueButton_isPressed += SkipTypewriter;
+    }
+    private void OnDisable()
+    {
+        Player_KeyInputs.Action_dialogueNextButton_isPressed -= SkipTypewriter;
+        Player_KeyInputs.Action_dialogueButton_isPressed -= SkipTypewriter;
     }
 
 
@@ -51,6 +47,16 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
 
         skipRequested = false;
         typingCoroutine = StartCoroutine(TypeText());
+    }
+    void SkipTypewriter()
+    {
+        if (isTyping)
+        {
+            if (typingCoroutine != null)
+            {
+                skipRequested = true;
+            }
+        }
     }
 
     IEnumerator TypeText()

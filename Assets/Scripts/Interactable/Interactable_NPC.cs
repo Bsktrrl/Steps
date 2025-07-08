@@ -11,10 +11,10 @@ public class Interactable_NPC : MonoBehaviour
     [Header("Stats from Excel")]
     [SerializeField] TextAsset dialogueSheet;
     int startRow = 2;
-    int columns = 59;
+    int columns = 61;
 
     [Header("Dialogue Info")]
-    [SerializeField] DialogueInfo dialogueInfo = new DialogueInfo();
+    public DialogueInfo dialogueInfo = new DialogueInfo();
 
     int segmentIndex = 0;
 
@@ -22,7 +22,9 @@ public class Interactable_NPC : MonoBehaviour
     [HideInInspector] public bool isInteracting;
     [HideInInspector] public string interact_Talk_Message = "Talk";
 
+    [Header("To be saved in database")]
     [HideInInspector] public bool hasTalked;
+    public int lastSegment;
 
 
     //--------------------
@@ -87,7 +89,7 @@ public class Interactable_NPC : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player") && !Player_CeilingGrab.Instance.isCeilingGrabbing && !Player_CeilingGrab.Instance.isCeilingRotation && !PlayerManager.Instance.pauseGame)
+        if (other.CompareTag("Player") && !Player_CeilingGrab.Instance.isCeilingGrabbing && !Player_CeilingGrab.Instance.isCeilingRotation && !PlayerManager.Instance.npcInteraction)
         {
             Vector3 toNPC = (transform.position - other.transform.position);
             toNPC.y = 0; // Flatten to horizontal plane
@@ -135,9 +137,7 @@ public class Interactable_NPC : MonoBehaviour
     }
 
 
-
     //--------------------
-
 
 
     void CanInteract()
@@ -158,8 +158,8 @@ public class Interactable_NPC : MonoBehaviour
 
         if (hasTalked)
         {
-            DialogueManager.Instance.currentSegement = dialogueInfo.dialogueSegments.Count - 1;
-            segmentIndex = dialogueInfo.dialogueSegments.Count - 1;
+            DialogueManager.Instance.currentSegement = lastSegment;
+            segmentIndex = lastSegment;
         }
         else
         {
@@ -206,33 +206,43 @@ public class Interactable_NPC : MonoBehaviour
         //Fill the new element with data
         for (int i = 0; i < excelTableSize; i++)
         {
-            #region Segment Name
+            #region Segment Description
 
             //SegmentName
             if (excelData[columns * (i + startRow - 1) + 2] != "")
-                dialogueInfo.dialogueSegments[i].segmentName = excelData[columns * (i + startRow - 1) + 2].Trim();
+                dialogueInfo.dialogueSegments[i].segmentDescription = excelData[columns * (i + startRow - 1) + 2].Trim();
             else
-                dialogueInfo.dialogueSegments[i].segmentName = "";
+                dialogueInfo.dialogueSegments[i].segmentDescription = "";
+
+            #endregion
+
+            #region Is last segment
+
+            //SegmentName
+            if (excelData[columns * (i + startRow - 1) + 4] != "")
+                dialogueInfo.dialogueSegments[i].lastSegment = excelData[columns * (i + startRow - 1) + 4].Trim();
+            else
+                dialogueInfo.dialogueSegments[i].lastSegment = "";
 
             #endregion
 
             #region Animations
 
             //Player Animation number
-            if (excelData[columns * (i + startRow - 1) + 4] != "")
-                dialogueInfo.dialogueSegments[i].animation_Player = ParseIntSafe(excelData, columns * (i + startRow - 1) + 4);
+            if (excelData[columns * (i + startRow - 1) + 6] != "")
+                dialogueInfo.dialogueSegments[i].animation_Player = ParseIntSafe(excelData, columns * (i + startRow - 1) + 6);
             else
                 dialogueInfo.dialogueSegments[i].animation_Player = -1;
 
             //NPC Animation number
-            if (excelData[columns * (i + startRow - 1) + 5] != "")
-                dialogueInfo.dialogueSegments[i].animation_NPC = ParseIntSafe(excelData, columns * (i + startRow - 1) + 5);
+            if (excelData[columns * (i + startRow - 1) + 7] != "")
+                dialogueInfo.dialogueSegments[i].animation_NPC = ParseIntSafe(excelData, columns * (i + startRow - 1) + 7);
             else
                 dialogueInfo.dialogueSegments[i].animation_NPC = -1;
 
             //Cutscene
-            if (excelData[columns * (i + startRow - 1) + 6] != "")
-                dialogueInfo.dialogueSegments[i].cutscene = ParseIntSafe(excelData, columns * (i + startRow - 1) + 6);
+            if (excelData[columns * (i + startRow - 1) + 8] != "")
+                dialogueInfo.dialogueSegments[i].cutscene = ParseIntSafe(excelData, columns * (i + startRow - 1) + 8);
             else
                 dialogueInfo.dialogueSegments[i].cutscene = -1;
 
@@ -241,8 +251,8 @@ public class Interactable_NPC : MonoBehaviour
             #region Stats
 
             //Stats
-            if (excelData[columns * (i + startRow - 1) + 8] != "")
-                dialogueInfo.dialogueSegments[i].dialogueStats = ParseIntSafe(excelData, columns * (i + startRow - 1) + 8);
+            if (excelData[columns * (i + startRow - 1) + 10] != "")
+                dialogueInfo.dialogueSegments[i].dialogueStats = ParseIntSafe(excelData, columns * (i + startRow - 1) + 10);
             else
                 dialogueInfo.dialogueSegments[i].dialogueStats = -1;
 
@@ -254,52 +264,52 @@ public class Interactable_NPC : MonoBehaviour
             for (int j = 0; j < DialogueManager.Instance.languageAmount; j++)
             {
                 //Message
-                if (excelData[columns * (i + startRow - 1) + 10 + (10 * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageDialogueList[j] = excelData[columns * (i + startRow - 1) + 10 + (10 * j)].Trim();
+                if (excelData[columns * (i + startRow - 1) + 12 + (10 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageDialogueList[j] = excelData[columns * (i + startRow - 1) + 12 + (10 * j)].Trim();
                 else
                     dialogueInfo.dialogueSegments[i].languageDialogueList[j] = "";
 
                 //Option 1
-                if (excelData[columns * (i + startRow - 1) + 11 + (10 * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Text = excelData[columns * (i + startRow - 1) + 11 + (10 * j)].Trim();
+                if (excelData[columns * (i + startRow - 1) + 13 + (10 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Text = excelData[columns * (i + startRow - 1) + 13 + (10 * j)].Trim();
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Text = "";
                 //Option 1 - Link
-                if (excelData[columns * (i + startRow - 1) + 12 + (10 * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 12 + (10 * j));
+                if (excelData[columns * (i + startRow - 1) + 14 + (10 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 14 + (10 * j));
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Linked = -1;
 
                 //Option 2
-                if (excelData[columns * (i + startRow - 1) + 13 + (10 * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Text = excelData[columns * (i + startRow - 1) + 13 + (10 * j)].Trim();
+                if (excelData[columns * (i + startRow - 1) + 15 + (10 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Text = excelData[columns * (i + startRow - 1) + 15 + (10 * j)].Trim();
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Text = "";
                 //Option 1 - Link
-                if (excelData[columns * (i + startRow - 1) + 14 + (10 * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 14 + (10 * j));
+                if (excelData[columns * (i + startRow - 1) + 16 + (10 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 16 + (10 * j));
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Linked = -1;
 
                 //Option 3
-                if (excelData[columns * (i + startRow - 1) + 15 + (10 * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Text = excelData[columns * (i + startRow - 1) + 15 + (10 * j)].Trim();
+                if (excelData[columns * (i + startRow - 1) + 17 + (10 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Text = excelData[columns * (i + startRow - 1) + 17 + (10 * j)].Trim();
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Text = "";
                 //Option 1 - Link
-                if (excelData[columns * (i + startRow - 1) + 16 + (10 * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 16 + (10 * j));
+                if (excelData[columns * (i + startRow - 1) + 18 + (10 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 18 + (10 * j));
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Linked = -1;
 
                 //Option 4
-                if (excelData[columns * (i + startRow - 1) + 17 + (10 * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Text = excelData[columns * (i + startRow - 1) + 17 + (10 * j)].Trim();
+                if (excelData[columns * (i + startRow - 1) + 19 + (10 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Text = excelData[columns * (i + startRow - 1) + 19 + (10 * j)].Trim();
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Text = "";
                 //Option 1 - Link
-                if (excelData[columns * (i + startRow - 1) + 18 + (10 * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 18 + (10 * j));
+                if (excelData[columns * (i + startRow - 1) + 20 + (10 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 20 + (10 * j));
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Linked = -1;
             }
@@ -310,7 +320,7 @@ public class Interactable_NPC : MonoBehaviour
         }
 
         //Remove elements that doesn't have a name
-        dialogueInfo.dialogueSegments = dialogueInfo.dialogueSegments.Where(obj => obj != null && !string.IsNullOrEmpty(obj.segmentName)).ToList();
+        dialogueInfo.dialogueSegments = dialogueInfo.dialogueSegments.Where(obj => obj != null && !string.IsNullOrEmpty(obj.segmentDescription)).ToList();
     }
     int ParseIntSafe(string[] data, int index)
     {
@@ -323,7 +333,7 @@ public class Interactable_NPC : MonoBehaviour
     }
     void CleanTheTextDialogue(int i)
     {
-        dialogueInfo.dialogueSegments[i].segmentName = CleanQuotes(dialogueInfo.dialogueSegments[i].segmentName);
+        dialogueInfo.dialogueSegments[i].segmentDescription = CleanQuotes(dialogueInfo.dialogueSegments[i].segmentDescription);
 
         for (int j = 0; j < DialogueManager.Instance.languageAmount; j++)
         {
@@ -360,15 +370,22 @@ public class Interactable_NPC : MonoBehaviour
     void StartNewDialogueSegment()
     {
         if (!isInteracting) return;
+        if (TypewriterEffect.Instance.isTyping) return;
+
+        //If current segment is a "lastSegment", end the dialogue
+        if (dialogueInfo.dialogueSegments[segmentIndex].lastSegment != "")
+        {
+            lastSegment = segmentIndex;
+            DialogueManager.Instance.EndDialogue();
+        }
 
         //If the first element of the norwegian messageText is nothing, run it
-        if (dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option1_Text == "")
+        else if (dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option1_Text == "")
         {
             if (!TypewriterEffect.Instance.isTyping)
             {
                 segmentIndex++;
 
-                Player_KeyInputs.Instance.dialogueButton_isPressed = false;
                 SetupDialogueDisplay(segmentIndex, dialogueInfo.npcName);
             }
         }
@@ -379,8 +396,6 @@ public class Interactable_NPC : MonoBehaviour
 
         if (!TypewriterEffect.Instance.isTyping)
         {
-            Player_KeyInputs.Instance.dialogueButton_isPressed = false;
-
             int segment = -1;
             if (DialogueManager.Instance.selectedButton == 1)
                 segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option1_Linked - 1;

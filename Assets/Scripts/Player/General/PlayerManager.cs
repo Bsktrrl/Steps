@@ -22,31 +22,9 @@ public class PlayerManager : Singleton<PlayerManager>
     public GameObject block_LookingAt_Horizontal;
     public GameObject block_LookingAt_Vertical;
 
-    [Header("Player Block Standing On Info")]
-    //public DetectedBlockInfo block_StandingOn_Current;
-    //public GameObject block_StandingOn_Previous;
-
-    [Header("Player Block Horizontal")]
-    //public DetectedBlockInfo block_Horizontal_InFront;
-    //public DetectedBlockInfo block_Horizontal_InBack;
-    //public DetectedBlockInfo block_Horizontal_ToTheLeft;
-    //public DetectedBlockInfo block_Horizontal_ToTheRight;
-
-    //[Header("Player Block Vertical")]
-    //public DetectedBlockInfo block_Vertical_InFront;
-    //public DetectedBlockInfo block_Vertical_InBack;
-    //public DetectedBlockInfo block_Vertical_ToTheLeft;
-    //public DetectedBlockInfo block_Vertical_ToTheRight;
-
-    [Header("Player Movement Restrictions")]
-    //public bool canMove_Forward;
-    //public bool canMove_Back;
-    //public bool canMove_Left;
-    //public bool canMove_Right;
-
     [Header("Game Paused")]
     public bool pauseGame;
-    //public bool isTransportingPlayer;
+    public bool npcInteraction;
 
 
     [Header("mainMenu_Name")]

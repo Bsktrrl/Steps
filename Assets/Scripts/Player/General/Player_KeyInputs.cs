@@ -28,8 +28,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     public bool cameraX_isPressed = false;
     public bool cameraY_isPressed = false;
 
-    public bool dialogueButton_isPressed = false;
-
 
     //--------------------
 
@@ -115,16 +113,14 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnDialogueSkip_Pressed()
     {
-        if (!PlayerManager.Instance.pauseGame) { return; }
+        if (!PlayerManager.Instance.npcInteraction) { return; }
 
-        dialogueButton_isPressed = true;
         Action_dialogueButton_isPressed?.Invoke();
     }
     void OnDialogueNext_Pressed()
     {
-        if (!PlayerManager.Instance.pauseGame) { return; }
+        if (!PlayerManager.Instance.npcInteraction) { return; }
 
-        dialogueButton_isPressed = true;
         Action_dialogueNextButton_isPressed?.Invoke();
     }
     void OnInteractButton_Pressed()
@@ -203,6 +199,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
 
         if (PlayerManager.Instance.pauseGame) { return false; }
+        if (PlayerManager.Instance.npcInteraction) { return false; }
         if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
