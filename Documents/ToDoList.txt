@@ -5,15 +5,11 @@ Dialogue Box:
 _____________
 
 
-1.4. Excel functionality:
-- Add excel functionality that leads the player through a whole dialogue, made up by several dialogue segments (let Chat GPT generate 10 dialogue segments, some with 1 to 4 options to lead to other segments, and some without options
-
 1.5. Stats gathering
 - Gather stats of what types of info the player have visited in the dialogue, so we can keep track over which dialogues that can be accessed in further conversations
 - Save the dialogue stats to saveData
 
 1.6. Languages:
-- Make dialogue in both English and Norwegian
 - Add language select in the Settings menu
 - Add text speed select in the Settings menu
 
@@ -24,8 +20,8 @@ __________________
 
 
 2.1. Interactable
-- Make it possible to interact with a NPC to start its dialogue from excel sheet
-- Finish interaction after all dialogue segments are done
+- Make it possible to interact with a NPC to start its dialogue from the attached textFile
+- Finish interaction after all dialogue segments are done, and be able to talk again, but only the last sentence will display
 
 2.2. Camera:
 - Make it so that the camera pans correctly into the scene (both characters are visible)
@@ -33,6 +29,9 @@ __________________
 
 2.3. Animations:
 - Make different animations work based on the excel sheet (both for the player and the NPC)
+
+2.4. Disappearance:
+- Make the NPC's gameObject bacome hidden if dialogue has finished (save the NPC state and destroy it from the scene if dialogue has taken place) 
 
 
 ---

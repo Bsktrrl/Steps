@@ -224,6 +224,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InteractButton_Pressed"",
+                    ""type"": ""Button"",
+                    ""id"": ""c24cdf9d-b06c-4067-903a-478c21b95358"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -776,6 +785,39 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""DialogueNext_Pressed"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e4ae27a7-6247-4fda-9004-bb1d58b9d7e9"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InteractButton_Pressed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""11ad2deb-5a7d-4e6e-82d6-d82117205fcf"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InteractButton_Pressed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b2e03dc3-4418-4c83-98de-c1acd04d2d9b"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InteractButton_Pressed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -806,6 +848,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerMovement_Menu_Back = m_PlayerMovement.FindAction("Menu_Back", throwIfNotFound: true);
         m_PlayerMovement_DialogueSkip_Pressed = m_PlayerMovement.FindAction("DialogueSkip_Pressed", throwIfNotFound: true);
         m_PlayerMovement_DialogueNext_Pressed = m_PlayerMovement.FindAction("DialogueNext_Pressed", throwIfNotFound: true);
+        m_PlayerMovement_InteractButton_Pressed = m_PlayerMovement.FindAction("InteractButton_Pressed", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -889,6 +932,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_Menu_Back;
     private readonly InputAction m_PlayerMovement_DialogueSkip_Pressed;
     private readonly InputAction m_PlayerMovement_DialogueNext_Pressed;
+    private readonly InputAction m_PlayerMovement_InteractButton_Pressed;
     public struct PlayerMovementActions
     {
         private @PlayerControls m_Wrapper;
@@ -915,6 +959,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Menu_Back => m_Wrapper.m_PlayerMovement_Menu_Back;
         public InputAction @DialogueSkip_Pressed => m_Wrapper.m_PlayerMovement_DialogueSkip_Pressed;
         public InputAction @DialogueNext_Pressed => m_Wrapper.m_PlayerMovement_DialogueNext_Pressed;
+        public InputAction @InteractButton_Pressed => m_Wrapper.m_PlayerMovement_InteractButton_Pressed;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -990,6 +1035,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DialogueNext_Pressed.started += instance.OnDialogueNext_Pressed;
             @DialogueNext_Pressed.performed += instance.OnDialogueNext_Pressed;
             @DialogueNext_Pressed.canceled += instance.OnDialogueNext_Pressed;
+            @InteractButton_Pressed.started += instance.OnInteractButton_Pressed;
+            @InteractButton_Pressed.performed += instance.OnInteractButton_Pressed;
+            @InteractButton_Pressed.canceled += instance.OnInteractButton_Pressed;
         }
 
         private void UnregisterCallbacks(IPlayerMovementActions instance)
@@ -1060,6 +1108,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DialogueNext_Pressed.started -= instance.OnDialogueNext_Pressed;
             @DialogueNext_Pressed.performed -= instance.OnDialogueNext_Pressed;
             @DialogueNext_Pressed.canceled -= instance.OnDialogueNext_Pressed;
+            @InteractButton_Pressed.started -= instance.OnInteractButton_Pressed;
+            @InteractButton_Pressed.performed -= instance.OnInteractButton_Pressed;
+            @InteractButton_Pressed.canceled -= instance.OnInteractButton_Pressed;
         }
 
         public void RemoveCallbacks(IPlayerMovementActions instance)
@@ -1101,5 +1152,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnMenu_Back(InputAction.CallbackContext context);
         void OnDialogueSkip_Pressed(InputAction.CallbackContext context);
         void OnDialogueNext_Pressed(InputAction.CallbackContext context);
+        void OnInteractButton_Pressed(InputAction.CallbackContext context);
     }
 }

@@ -26,6 +26,7 @@ public class DialogueManager : Singleton<DialogueManager>
     public Image arrowImage;
 
     [Header("ActiveNPC")]
+    public Interactable_NPC npcObject;
     public NPCs activeNPC;
     public int segmentTotal;
     public int currentSegement;
@@ -79,12 +80,25 @@ public class DialogueManager : Singleton<DialogueManager>
 
     void StartDialogue()
     {
+        npcObject.isInteracting = true;
+
         PlayerManager.Instance.pauseGame = true;
         dialogueCanvas.SetActive(true);
     }
     public void EndDialogue()
     {
         dialogueCanvas.SetActive(false);
+        npcObject.isInteracting = false;
+        npcObject.hasTalked = true;
+
+        ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, npcObject.interact_Talk_Message);
+
+        //Reset Stats
+        npcObject = null;
+        activeNPC = NPCs.None;
+        segmentTotal = 0;
+        currentSegement = 0;
+
         PlayerManager.Instance.pauseGame = false;
     }
 

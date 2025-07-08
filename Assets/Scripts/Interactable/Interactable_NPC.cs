@@ -1,11 +1,7 @@
 using System;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class Interactable_NPC : MonoBehaviour
 {
@@ -22,6 +18,12 @@ public class Interactable_NPC : MonoBehaviour
 
     int segmentIndex = 0;
 
+    public bool canInteract;
+    public bool isInteracting;
+    public string interact_Talk_Message = "Talk";
+
+    public bool hasTalked;
+
 
     //--------------------
 
@@ -31,25 +33,83 @@ public class Interactable_NPC : MonoBehaviour
         BuildDialogue();
 
         dialogueInfo.npcName = characterName;
-        DialogueManager.Instance.activeNPC = characterName;
-
-        DialogueManager.Instance.segmentTotal = dialogueInfo.dialogueSegments.Count - 1;
-        DialogueManager.Instance.currentSegement = segmentIndex;
-
-        SetupDialogueDisplay(segmentIndex, dialogueInfo.npcName);
     }
+    
+
+    //--------------------
+
 
     private void OnEnable()
     {
         Player_KeyInputs.Action_dialogueButton_isPressed += StartNewDialogueSegment;
         Player_KeyInputs.Action_dialogueNextButton_isPressed += StartNewDialogueSegment;
+        Player_KeyInputs.Action_InteractButton_isPressed += CanInteract;
+
         OptionButton.Action_OptionButtonIsPressed += StartNewDialogueSegment_OptionButton;
     }
     private void OnDisable()
     {
         Player_KeyInputs.Action_dialogueButton_isPressed -= StartNewDialogueSegment;
         Player_KeyInputs.Action_dialogueNextButton_isPressed -= StartNewDialogueSegment;
+        Player_KeyInputs.Action_InteractButton_isPressed -= CanInteract;
+
         OptionButton.Action_OptionButtonIsPressed -= StartNewDialogueSegment_OptionButton;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player") && !Player_CeilingGrab.Instance.isCeilingGrabbing && !Player_CeilingGrab.Instance.isCeilingRotation)
+        {
+            ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, interact_Talk_Message);
+            canInteract = true;
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player") && !Player_CeilingGrab.Instance.isCeilingGrabbing && !Player_CeilingGrab.Instance.isCeilingRotation && !PlayerManager.Instance.pauseGame)
+        {
+            canInteract = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        ButtonMessages.Instance.HideButtonMessage();
+        canInteract = false;
+    }
+
+
+    //--------------------
+
+
+
+    void CanInteract()
+    {
+        if (canInteract && !isInteracting)
+        {
+            canInteract = false;
+            StartDialogue();
+        }
+    }
+    void StartDialogue()
+    {
+        ButtonMessages.Instance.HideButtonMessage();
+
+        DialogueManager.Instance.npcObject = this;
+        DialogueManager.Instance.activeNPC = characterName;
+        DialogueManager.Instance.segmentTotal = dialogueInfo.dialogueSegments.Count - 1;
+
+        if (hasTalked)
+        {
+            DialogueManager.Instance.currentSegement = dialogueInfo.dialogueSegments.Count - 1;
+            segmentIndex = dialogueInfo.dialogueSegments.Count - 1;
+        }
+        else
+        {
+            DialogueManager.Instance.currentSegement = 0;
+            segmentIndex = 0;
+        }
+        
+        SetupDialogueDisplay(segmentIndex, dialogueInfo.npcName);
     }
 
 
@@ -236,13 +296,13 @@ public class Interactable_NPC : MonoBehaviour
     }
 
 
-
-
     //--------------------
 
 
     void StartNewDialogueSegment()
     {
+        if (!isInteracting) return;
+
         //If the first element of the norwegian messageText is nothing, run it
         if (dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option1_Text == "")
         {
@@ -257,6 +317,8 @@ public class Interactable_NPC : MonoBehaviour
     }
     public void StartNewDialogueSegment_OptionButton()
     {
+        if (!isInteracting) return;
+
         if (!TypewriterEffect.Instance.isTyping)
         {
             Player_KeyInputs.Instance.dialogueButton_isPressed = false;

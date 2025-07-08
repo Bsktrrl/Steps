@@ -8,6 +8,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 {
     public static event Action Action_dialogueButton_isPressed;
     public static event Action Action_dialogueNextButton_isPressed;
+    public static event Action Action_InteractButton_isPressed;
 
     [Header("Input System")]
     public PlayerControls playerControls;
@@ -125,6 +126,13 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         dialogueButton_isPressed = true;
         Action_dialogueNextButton_isPressed?.Invoke();
+    }
+    void OnInteractButton_Pressed()
+    {
+        if (!ButtonChecks_Movement()) { return; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
+
+        Action_InteractButton_isPressed?.Invoke();
     }
 
 
