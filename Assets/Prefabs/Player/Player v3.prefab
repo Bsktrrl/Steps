@@ -735,7 +735,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7124725898432710905
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3450,7 +3450,7 @@ MonoBehaviour:
   dialogueCanvas: {fileID: 821918842683489788}
   nameText: {fileID: 2116310888489966331}
   languageAmount: 5
-  currentLanguage: 0
+  currentLanguage: 1
   typingSound: {fileID: 265943280223236278}
   typeClip: {fileID: 8300000, guid: cffbc042745d94242b185874808b1402, type: 3}
   selectedButton: -1
@@ -7479,6 +7479,7 @@ GameObject:
   - component: {fileID: 7911760123166948170}
   - component: {fileID: 5719477613546976637}
   - component: {fileID: 6240145603939652248}
+  - component: {fileID: 3828761150737111570}
   m_Layer: 6
   m_Name: Player v3
   m_TagString: Player
@@ -7611,6 +7612,7 @@ MonoBehaviour:
   block_LookingAt_Horizontal: {fileID: 0}
   block_LookingAt_Vertical: {fileID: 0}
   pauseGame: 0
+  npcInteraction: 0
   mainMenu_Name: MainMenu
 --- !u!114 &2542980385125829506
 MonoBehaviour:
@@ -7731,6 +7733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5f39c7c3651b2244b75a9dcc3dd801b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 3828761150737111570}
   forward_isPressed: 0
   back_isPressed: 0
   left_isPressed: 0
@@ -7740,7 +7743,6 @@ MonoBehaviour:
   grapplingHook_isPressed: 0
   cameraX_isPressed: 0
   cameraY_isPressed: 0
-  dialogueButton_isPressed: 0
 --- !u!114 &13904960364419418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7994,6 +7996,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInMud: 0
+--- !u!95 &3828761150737111570
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649856597487831825}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ec25285c37cb44547887670c53e248bb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6657494948177209263
 GameObject:
   m_ObjectHideFlags: 0
