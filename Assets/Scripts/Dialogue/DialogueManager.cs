@@ -24,6 +24,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
     [Header("Arrow")]
     public Image arrowImage;
+    public Image nameBoxImage;
 
     [Header("ActiveNPC")]
     public Interactable_NPC npcObject;
@@ -83,6 +84,9 @@ public class DialogueManager : Singleton<DialogueManager>
         npcObject.isInteracting = true;
 
         PlayerManager.Instance.npcInteraction = true;
+
+        SelectColor(nameBoxImage, ColorVariants.Normal);
+
         dialogueCanvas.SetActive(true);
     }
     public void EndDialogue()
@@ -112,42 +116,173 @@ public class DialogueManager : Singleton<DialogueManager>
     }
     void ShowArrow()
     {
-        switch (activeNPC)
-        {
-            case NPCs.None:
-                break;
-
-            case NPCs.Floriel:
-                arrowImage.color = DialogueColors.Instance.floriel_DialogueBox_Pressed;
-                break;
-            case NPCs.Granith:
-                arrowImage.color = DialogueColors.Instance.granith_DialogueBox_Pressed;
-                break;
-            case NPCs.Archie:
-                arrowImage.color = DialogueColors.Instance.archie_DialogueBox_Pressed;
-                break;
-            case NPCs.Aisa:
-                arrowImage.color = DialogueColors.Instance.aisa_DialogueBox_Pressed;
-                break;
-            case NPCs.Mossy:
-                arrowImage.color = DialogueColors.Instance.mossy_DialogueBox_Pressed;
-                break;
-            case NPCs.Larry:
-                arrowImage.color = DialogueColors.Instance.larry_DialogueBox_Pressed;
-                break;
-            case NPCs.Stepellier:
-                arrowImage.color = DialogueColors.Instance.stepellier_DialogueBox_Pressed;
-                break;
-
-            default:
-                break;
-        }
+        SelectColor(arrowImage, ColorVariants.Pressed);
 
         arrowImage.gameObject.SetActive(true);
     }
     void HideArrow()
     {
         arrowImage.gameObject.SetActive(false);
+    }
+
+    void SelectColor(Image _image, ColorVariants colorVariants)
+    {
+        switch (activeNPC)
+        {
+            case NPCs.None:
+                break;
+
+            case NPCs.Floriel:
+                switch (colorVariants)
+                {
+                    case ColorVariants.Normal:
+                        _image.color = DialogueColors.Instance.floriel_DialogueBox_Normal;
+                        break;
+                    case ColorVariants.Highlighted:
+                        _image.color = DialogueColors.Instance.floriel_DialogueBox_Highlighted;
+                        break;
+                    case ColorVariants.Selected:
+                        _image.color = DialogueColors.Instance.floriel_DialogueBox_Selected;
+                        break;
+                    case ColorVariants.Pressed:
+                        _image.color = DialogueColors.Instance.floriel_DialogueBox_Pressed;
+                        break;
+
+                    default:
+                        _image.color = DialogueColors.Instance.floriel_DialogueBox_Normal;
+                        break;
+                }
+                break;
+            case NPCs.Granith:
+                switch (colorVariants)
+                {
+                    case ColorVariants.Normal:
+                        _image.color = DialogueColors.Instance.granith_DialogueBox_Normal;
+                        break;
+                    case ColorVariants.Highlighted:
+                        _image.color = DialogueColors.Instance.granith_DialogueBox_Highlighted;
+                        break;
+                    case ColorVariants.Selected:
+                        _image.color = DialogueColors.Instance.granith_DialogueBox_Selected;
+                        break;
+                    case ColorVariants.Pressed:
+                        _image.color = DialogueColors.Instance.granith_DialogueBox_Pressed;
+                        break;
+
+                    default:
+                        _image.color = DialogueColors.Instance.granith_DialogueBox_Normal;
+                        break;
+                }
+                break;
+            case NPCs.Archie:
+                switch (colorVariants)
+                {
+                    case ColorVariants.Normal:
+                        _image.color = DialogueColors.Instance.archie_DialogueBox_Normal;
+                        break;
+                    case ColorVariants.Highlighted:
+                        _image.color = DialogueColors.Instance.archie_DialogueBox_Highlighted;
+                        break;
+                    case ColorVariants.Selected:
+                        _image.color = DialogueColors.Instance.archie_DialogueBox_Selected;
+                        break;
+                    case ColorVariants.Pressed:
+                        _image.color = DialogueColors.Instance.archie_DialogueBox_Pressed;
+                        break;
+
+                    default:
+                        _image.color = DialogueColors.Instance.archie_DialogueBox_Normal;
+                        break;
+                }
+                break;
+            case NPCs.Aisa:
+                switch (colorVariants)
+                {
+                    case ColorVariants.Normal:
+                        _image.color = DialogueColors.Instance.aisa_DialogueBox_Normal;
+                        break;
+                    case ColorVariants.Highlighted:
+                        _image.color = DialogueColors.Instance.aisa_DialogueBox_Highlighted;
+                        break;
+                    case ColorVariants.Selected:
+                        _image.color = DialogueColors.Instance.aisa_DialogueBox_Selected;
+                        break;
+                    case ColorVariants.Pressed:
+                        _image.color = DialogueColors.Instance.aisa_DialogueBox_Pressed;
+                        break;
+
+                    default:
+                        _image.color = DialogueColors.Instance.aisa_DialogueBox_Normal;
+                        break;
+                }
+                break;
+            case NPCs.Mossy:
+                switch (colorVariants)
+                {
+                    case ColorVariants.Normal:
+                        _image.color = DialogueColors.Instance.mossy_DialogueBox_Normal;
+                        break;
+                    case ColorVariants.Highlighted:
+                        _image.color = DialogueColors.Instance.mossy_DialogueBox_Highlighted;
+                        break;
+                    case ColorVariants.Selected:
+                        _image.color = DialogueColors.Instance.mossy_DialogueBox_Selected;
+                        break;
+                    case ColorVariants.Pressed:
+                        _image.color = DialogueColors.Instance.mossy_DialogueBox_Pressed;
+                        break;
+
+                    default:
+                        _image.color = DialogueColors.Instance.mossy_DialogueBox_Normal;
+                        break;
+                }
+                break;
+            case NPCs.Larry:
+                switch (colorVariants)
+                {
+                    case ColorVariants.Normal:
+                        _image.color = DialogueColors.Instance.larry_DialogueBox_Normal;
+                        break;
+                    case ColorVariants.Highlighted:
+                        _image.color = DialogueColors.Instance.larry_DialogueBox_Highlighted;
+                        break;
+                    case ColorVariants.Selected:
+                        _image.color = DialogueColors.Instance.larry_DialogueBox_Selected;
+                        break;
+                    case ColorVariants.Pressed:
+                        _image.color = DialogueColors.Instance.larry_DialogueBox_Pressed;
+                        break;
+
+                    default:
+                        _image.color = DialogueColors.Instance.larry_DialogueBox_Normal;
+                        break;
+                }
+                break;
+            case NPCs.Stepellier:
+                switch (colorVariants)
+                {
+                    case ColorVariants.Normal:
+                        _image.color = DialogueColors.Instance.stepellier_DialogueBox_Normal;
+                        break;
+                    case ColorVariants.Highlighted:
+                        _image.color = DialogueColors.Instance.stepellier_DialogueBox_Highlighted;
+                        break;
+                    case ColorVariants.Selected:
+                        _image.color = DialogueColors.Instance.stepellier_DialogueBox_Selected;
+                        break;
+                    case ColorVariants.Pressed:
+                        _image.color = DialogueColors.Instance.stepellier_DialogueBox_Pressed;
+                        break;
+
+                    default:
+                        _image.color = DialogueColors.Instance.stepellier_DialogueBox_Normal;
+                        break;
+                }
+                break;
+
+            default:
+                break;
+        }
     }
 }
 
@@ -206,4 +341,11 @@ public enum Languages
     German,
     Japanese,
     Chinese
+}
+public enum ColorVariants
+{
+    Normal,
+    Highlighted,
+    Selected,
+    Pressed
 }
