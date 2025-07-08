@@ -1,11 +1,47 @@
 ----- NEXT ON THE LIST -----
 
 1.
-Refacture Movements
-- Player Following ElevatorBlocks
-- CeilingGrab
+Dialogue Box:
+_____________
 
-- Flippers give 0 cost in WaterBlocks
+
+1.4. Movement Animations
+- Change movementAnimations to trigger upon buttonPress from the "Player_KeyInput"-script
+- Set SwimAnimation when in Water
+- Set Idle animations in another script, attached to the playerPrefab
+
+1.5. Stats gathering
+- Gather stats of what types of info the player have visited in the dialogue, so we can keep track over which dialogues that can be accessed in further conversations
+- Save the dialogue stats to saveData, for future use
+- Make the option of a dialogue to start at another segment, based on Stats from previous dialogue
+
+1.6. Languages:
+- Add language select in the Settings menu
+   - Add Excel Sheet that hold all menuText in each language, so toggeling also changes the menu text as well
+- Add text speed select in the Settings menu
+
+
+
+2.
+Dialogue Scene:
+__________________
+
+
+2.1. NPC Visuals:
+- Setup each NPC character in each own Prefab
+
+2.2. Camera:
+- Make it so that the camera pans correctly into the scene (both characters are visible)
+- Make it so that the camera pans correctly out from the scene (back to its previous state)
+- Make camera angle based on the player lookDir
+   - NPC needs to turn towards the player
+
+
+2.3. Animations:
+- Make different animations work based on the excel sheet (both for the player and the NPC)
+
+2.4. NPC GameObject Disappearance:
+- Make the NPC's gameObject become hidden if dialogue has finished (save the NPC state and destroy it from the scene if dialogue has taken place)
 
 
 ---
@@ -13,8 +49,7 @@ Refacture Movements
 
 10.
 Levels
-- Make Levels for the prototype
-
+- Make Levels for the MVP
 
 
 
@@ -22,27 +57,9 @@ Levels
 ----- TASKS SOON TO BE IMPLEMENTED -----
 
 
-Add Stats:
-- Steps taken
-- Times Respawned
-
-Add Google Cariable Tracking:
-- Each Level Played
-- Essence Get
-- Skin Get
-- StepsMaxUp Get
-- Glueplant Get
-
-
-CeilingGrab:
-- Fix the problem that doesn't let the movement to be done in one smoot motion (it stops and updates DarkenBlock in-between each block of movement)
-	- Fix IceGlide lag
-	- Remake the CeilingGrabing movement based on the normal movement
-
-
 Movement & Camera:
 - Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
-	- Sometimes, when rotation to the left twice, the player move in the looking direction after moving
+	- Sometimes, when rotating to the left twice, the player move in the looking direction after moving
 	- Almost always when at the edge of something, where not all 4 adjacent blocks can be moved to (maybe blocks isn't updated to "null" when the camera is rotating, so it keeps old blocks when they should have been "null"?
 
 
@@ -60,27 +77,11 @@ Effect Blocks:
 
 
 
-
-
 ----- TASKS IN QUE -----
 
 
-Dialogue System:
-- Implement a dialogue system
-- Include:
-	- Description
-	- Text
-	- Player Animation
-	- NPC Animation
-	- Cutscene
-
 AbilityButton Display:
 - New ButtonDisplay on the player
-
-Character Creator:
-- Make a simple character creator to be used at the start og a new save and at the start of the Dusk Age
-
-
 
 
 
@@ -91,8 +92,6 @@ Camera:
 - FOV: 75
 - Camera Offset: 0, 3, -6.5
 
-
-
 b56f3a
 d9d488
 
@@ -100,108 +99,3 @@ Cameras:
 Old: X:0 Y:3.5 Z:8.25 	FOV:40 Min:31 Max:55
 New: X:0 Y:2.5 Z:5   	FOV:68 Min:49 Max:83
 New: X:0 Y:2.35 Z:4.8   FOV:60 Min:45 Max:75
-
-
-Cube Block Orientation:
-
------ Old (Canvas)
-
-0  |   0 | 0 |  | 0 |  0 | 0
-0  |  90 | 0 |  | 0 | 90 | 0
-0  | 180 | 0 |  | 0 |  0 | 0
-0  | -90 | 0 |  | 0 |  0 | 0
-
-0  | 0 |  90 |	| 0 | 0 | -90
-0  | 0 | 180 |	| 0 | 0 | 180
-0  | 0 | -90 |	| 0 | 0 |  90
-
- 90 | 0 | 0  |  | -90 |   0 | 0
-180 | 0 | 0  |  | 180 | 180 | 0
--90 | 0 | 0  |	| 90  |   0 | 0
-
- 90 | 0 |  90 |	| -90 | 0 |  0
-180 | 0 |  90 |	|   0 | 0 | 90
--90 | 0 |  90 |	|  90 | 0 |  0
-
- 90 | 0 | 180 |	| -90 | 0 |  0
-180 | 0 | 180 |	|   0 | 0 |  0
--90 | 0 | 180 |	|  90 | 0 |  0
-
- 90 | 0 | -90 |	| -90 | 0 |  0
-180 | 0 | -90 |	|   0 | 0 |-90
--90 | 0 | -90 |	|  90 | 0 |  0
-
------ New (3D Assets)
-
-0  |   0 | 0 |  |   0 |   0 | 0
-
-0  | 0 |  90 |	| 0 | 0 | -90
-0  | 0 | 180 |	| 0 | 0 | 180
-0  | 0 | -90 |	| 0 | 0 |  90
-
- 90 | 0 | 0  |  | -90 | 0 | 0
-180 | 0 | 0  |  | 180 | 0 | 0
--90 | 0 | 0  |	| 90  | 0 | 0
-
- 90 | 0 | 90 |	|   0 |  90 | -90
-180 | 0 | 90 |	| 180 |   0 |  90
--90 | 0 | 90 |	|   0 | -90 | -90
-
- 90 | 0 | 180 |	|  90 |  90 | -90
-180 | 0 | 180 |	|   0 | 180 |   0
--90 | 0 | 180 |	| -90 | -90 | -90
-
- 90 | 0 | -90 |	|   0 | -90 |  90
-180 | 0 | -90 |	| 180 |   0 | -90
--90 | 0 | -90 |	|   0 |  90 |  90
-
------ Ceiling Grab (3D Assets)
-
-0  |   0 | 0 |  | 180 |   0 | 0
-0  |  90 | 0 |  | 180 | -90 | 0
-0  | 180 | 0 |  | 180 | 180 | 0
-0  | -90 | 0 |  | 180 |  90 | 0
-
-0  | 0 |  90 |	| 180 |   0 |  90
-0  | 0 | 180 |	|   0 | 180 |   0
-0  | 0 | -90 |	| 180 |   0 | -90
-
- 90 | 0 | 0  |  |  90 | 0 | 0
-180 | 0 | 0  |  |   0 | 0 | 0
--90 | 0 | 0  |	| -90 | 0 | 0
-
-x  90 | 0 | 90 |	| -90 |   0 | -90
-180 | 0 | 90 |	|   0 |   0 | -90
--90 | 0 | 90 |	| 180 | -90 |  90
-
- 90 | 0 | 180 |	| -90 |  90 |  90
-180 | 0 | 180 |	| 180 | 180 |   0
--90 | 0 | 180 |	|  90 |  90 | -90
-
- 90 | 0 | -90 |	| 0 |  90 |  90
-180 | 0 | -90 |	| 0 |   0 |  90
--90 | 0 | -90 |	| 0 | -90 |  90
-
-
------ Stairs
-
-
-F - 0 | 0 | 0 |  | -45 | 180 |   0
-R - 0 | 0 | 0 |  |   0 |  90 |  45
-B - 0 | 0 | 0 |  |  45 |   0 |   0
-L - 0 | 0 | 0 |  |   0 | -90 | -45
-
-F - 0 | 90 | 0 |  |   0 |  90 |  45
-R - 0 | 90 | 0 |  |  45 |   0 |   0
-B - 0 | 90 | 0 |  |   0 | -90 | -45
-L - 0 | 90 | 0 |  | -45 | 180 |   0
-
-F - 0 | 180 | 0 |  |  45 |   0 |   0
-R - 0 | 180 | 0 |  |   0 | -90 | -45
-B - 0 | 180 | 0 |  | -45 | 180 |   0
-L - 0 | 180 | 0 |  |   0 |  90 |  45
-
-F - 0 | -90 | 0 |  |   0 | -90 | -45
-R - 0 | -90 | 0 |  | -45 | 180 |   0
-B - 0 | -90 | 0 |  |   0 |  90 |  45
-L - 0 | -90 | 0 |  |  45 |   0 |   0

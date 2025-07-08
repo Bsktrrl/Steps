@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class Player_KeyInputs : Singleton<Player_KeyInputs>
 {
+    [SerializeField] Animator anim;
+
+    public static event Action Action_dialogueButton_isPressed;
+    public static event Action Action_dialogueNextButton_isPressed;
+    public static event Action Action_InteractButton_isPressed;
+
     [Header("Input System")]
     public PlayerControls playerControls;
     MapManager mapManager;
@@ -42,6 +49,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Movement()) { return; }
 
         forward_isPressed = true;
+        anim.SetTrigger("Walk");
     }
     void OnForward_Up()
     {
@@ -52,6 +60,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Movement()) { return; }
 
         back_isPressed = true;
+        anim.SetTrigger("Walk");
     }
     void OnBackward_Up()
     {
@@ -62,6 +71,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Movement()) { return; }
 
         left_isPressed = true;
+        anim.SetTrigger("Walk");
     }
     void OnLeft_Up()
     {
@@ -72,6 +82,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Movement()) { return; }
 
         right_isPressed = true;
+        anim.SetTrigger("Walk");
     }
     void OnRight_Up()
     {
@@ -104,6 +115,26 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         down_isPressed = false;
 
         //Player_Interact.Instance.InteractWithObject();
+    }
+
+    void OnDialogueSkip_Pressed()
+    {
+        if (!PlayerManager.Instance.npcInteraction) { return; }
+
+        Action_dialogueButton_isPressed?.Invoke();
+    }
+    void OnDialogueNext_Pressed()
+    {
+        if (!PlayerManager.Instance.npcInteraction) { return; }
+
+        Action_dialogueNextButton_isPressed?.Invoke();
+    }
+    void OnInteractButton_Pressed()
+    {
+        if (!ButtonChecks_Movement()) { return; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
+
+        Action_InteractButton_isPressed?.Invoke();
     }
 
 
@@ -174,6 +205,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
 
         if (PlayerManager.Instance.pauseGame) { return false; }
+        if (PlayerManager.Instance.npcInteraction) { return false; }
         if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
@@ -187,6 +219,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
         if (PlayerManager.Instance.pauseGame) { return false; }
+        if (PlayerManager.Instance.npcInteraction) { return false; }
         if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
 
@@ -200,6 +233,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     public void Key_Respawn()
     {
         if (PlayerManager.Instance.pauseGame) { return; }
+        if (PlayerManager.Instance.npcInteraction) { return; }
         if (CameraController.Instance.isRotating) { return; }
         if (Player_Interact.Instance.isInteracting) { return; }
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return; }

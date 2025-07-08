@@ -1195,7 +1195,6 @@ public class Movement : Singleton<Movement>
     {
         if (moveOption.targetBlock && moveOption.targetBlock != obj && moveOption.targetBlock.GetComponent<BlockInfo>() && moveOption.targetBlock.GetComponent<BlockInfo>().blockIsDark && !CameraController.Instance.isRotating && !CameraController.Instance.isCeilingRotating)
         {
-            print("1. Rotating: " + CameraController.Instance.isRotating);
             moveOption.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
         }
 
@@ -1206,7 +1205,6 @@ public class Movement : Singleton<Movement>
     {
         if (moveOption.targetBlock && moveOption.targetBlock.GetComponent<BlockInfo>() && moveOption.targetBlock.GetComponent<BlockInfo>().blockIsDark && !CameraController.Instance.isRotating && !CameraController.Instance.isCeilingRotating)
         {
-            print("2. Rotating: " + CameraController.Instance.isRotating);
             moveOption.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
         }
 
