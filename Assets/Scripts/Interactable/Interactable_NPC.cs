@@ -18,11 +18,11 @@ public class Interactable_NPC : MonoBehaviour
 
     int segmentIndex = 0;
 
-    public bool canInteract;
-    public bool isInteracting;
-    public string interact_Talk_Message = "Talk";
+    [HideInInspector] public bool canInteract;
+    [HideInInspector] public bool isInteracting;
+    [HideInInspector] public string interact_Talk_Message = "Talk";
 
-    public bool hasTalked;
+    [HideInInspector] public bool hasTalked;
 
 
     //--------------------
@@ -30,6 +30,8 @@ public class Interactable_NPC : MonoBehaviour
 
     private void Start()
     {
+        interact_Talk_Message = "Talk";
+
         BuildDialogue();
 
         dialogueInfo.npcName = characterName;
@@ -56,19 +58,63 @@ public class Interactable_NPC : MonoBehaviour
         OptionButton.Action_OptionButtonIsPressed -= StartNewDialogueSegment_OptionButton;
     }
 
+
+    //--------------------
+
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") && !Player_CeilingGrab.Instance.isCeilingGrabbing && !Player_CeilingGrab.Instance.isCeilingRotation)
+        if (other.CompareTag("Player") && !Player_CeilingGrab.Instance.isCeilingGrabbing && !Player_CeilingGrab.Instance.isCeilingRotation)
         {
-            ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, interact_Talk_Message);
-            canInteract = true;
+            Vector3 toNPC = (transform.position - other.transform.position);
+            toNPC.y = 0; // Flatten to horizontal plane
+            toNPC.Normalize();
+
+            Vector3 playerFacing = Movement.Instance.lookDir;
+            playerFacing.y = 0;
+            playerFacing.Normalize();
+
+            // Round direction to nearest 45° step
+            Vector3 roundedToNPC = RoundTo45Degrees(toNPC);
+
+            if (roundedToNPC == playerFacing)
+            {
+                ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, interact_Talk_Message);
+                canInteract = true;
+            }
         }
     }
+
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") && !Player_CeilingGrab.Instance.isCeilingGrabbing && !Player_CeilingGrab.Instance.isCeilingRotation && !PlayerManager.Instance.pauseGame)
+        if (other.CompareTag("Player") && !Player_CeilingGrab.Instance.isCeilingGrabbing && !Player_CeilingGrab.Instance.isCeilingRotation && !PlayerManager.Instance.pauseGame)
         {
-            canInteract = true;
+            Vector3 toNPC = (transform.position - other.transform.position);
+            toNPC.y = 0; // Flatten to horizontal plane
+            toNPC.Normalize();
+
+            Vector3 playerFacing = Movement.Instance.lookDir;
+            playerFacing.y = 0;
+            playerFacing.Normalize();
+
+            // Round direction to nearest 45° step
+            Vector3 roundedToNPC = RoundTo45Degrees(toNPC);
+
+            if (roundedToNPC == playerFacing)
+            {
+                ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, interact_Talk_Message);
+                canInteract = true;
+            }
+            else
+            {
+                ButtonMessages.Instance.HideButtonMessage();
+                canInteract = false;
+            }
+        }
+        else
+        {
+            ButtonMessages.Instance.HideButtonMessage();
+            canInteract = false;
         }
     }
     private void OnTriggerExit(Collider other)
@@ -76,6 +122,18 @@ public class Interactable_NPC : MonoBehaviour
         ButtonMessages.Instance.HideButtonMessage();
         canInteract = false;
     }
+    private Vector3 RoundTo45Degrees(Vector3 direction)
+    {
+        if (direction == Vector3.zero)
+            return Vector3.zero;
+
+        float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        float snappedAngle = Mathf.Round(angle / 45f) * 45f;
+
+        float rad = snappedAngle * Mathf.Deg2Rad;
+        return new Vector3(Mathf.Sin(rad), 0f, Mathf.Cos(rad)).normalized;
+    }
+
 
 
     //--------------------
