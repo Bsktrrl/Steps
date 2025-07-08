@@ -685,279 +685,61 @@ public class Interactable_NPC : MonoBehaviour
 
             #endregion
 
+            #region Languages
 
-            #region Norwegian
+            //Setup all languages at once
+            for (int j = 0; j < DialogueManager.Instance.languageAmount; j++)
+            {
+                //Message
+                if (excelData[columns * (i + startRow - 1) + 10 + (10 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageDialogueList[j] = excelData[columns * (i + startRow - 1) + 10 + (10 * j)].Trim();
+                else
+                    dialogueInfo.dialogueSegments[i].languageDialogueList[j] = "";
 
-            //Message
-            if (excelData[columns * (i + startRow - 1) + 10] != "")
-                dialogueInfo.dialogueSegments[i].languageDialogueList[0] = excelData[columns * (i + startRow - 1) + 10].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageDialogueList[0] = "";
+                //Option 1
+                if (excelData[columns * (i + startRow - 1) + 11 + (10 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Text = excelData[columns * (i + startRow - 1) + 11 + (10 * j)].Trim();
+                else
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Text = "";
+                //Option 1 - Link
+                if (excelData[columns * (i + startRow - 1) + 12 + (10 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 12 + (10 * j));
+                else
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Linked = -1;
 
+                //Option 2
+                if (excelData[columns * (i + startRow - 1) + 13 + (10 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Text = excelData[columns * (i + startRow - 1) + 13 + (10 * j)].Trim();
+                else
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Text = "";
+                //Option 1 - Link
+                if (excelData[columns * (i + startRow - 1) + 14 + (10 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 14 + (10 * j));
+                else
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Linked = -1;
 
-            //Option 1
-            if (excelData[columns * (i + startRow - 1) + 11] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Text = excelData[columns * (i + startRow - 1) + 11].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 12] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 12);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Linked = -1;
+                //Option 3
+                if (excelData[columns * (i + startRow - 1) + 15 + (10 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Text = excelData[columns * (i + startRow - 1) + 15 + (10 * j)].Trim();
+                else
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Text = "";
+                //Option 1 - Link
+                if (excelData[columns * (i + startRow - 1) + 16 + (10 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 16 + (10 * j));
+                else
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Linked = -1;
 
-            //Option 2
-            if (excelData[columns * (i + startRow - 1) + 13] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_Text = excelData[columns * (i + startRow - 1) + 13].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 14] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 14);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_Linked = -1;
-
-            //Option 3
-            if (excelData[columns * (i + startRow - 1) + 15] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_Text = excelData[columns * (i + startRow - 1) + 15].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 16] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 16);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_Linked = -1;
-
-            //Option 4
-            if (excelData[columns * (i + startRow - 1) + 17] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_Text = excelData[columns * (i + startRow - 1) + 17].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 18] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 18);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_Linked = -1;
-
-            #endregion
-
-            #region English
-
-            //Message
-            if (excelData[columns * (i + startRow - 1) + 20] != "")
-                dialogueInfo.dialogueSegments[i].languageDialogueList[1] = excelData[columns * (i + startRow - 1) + 20].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageDialogueList[1] = "";
-
-
-            //Option 1
-            if (excelData[columns * (i + startRow - 1) + 21] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[1].option1_Text = excelData[columns * (i + startRow - 1) + 21].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[1].option1_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 22] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[1].option1_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 22);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[1].option1_Linked = -1;
-
-            //Option 2
-            if (excelData[columns * (i + startRow - 1) + 23] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[1].option2_Text = excelData[columns * (i + startRow - 1) + 23].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[1].option2_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 24] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[1].option2_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 24);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[1].option2_Linked = -1;
-
-            //Option 3
-            if (excelData[columns * (i + startRow - 1) + 25] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[1].option3_Text = excelData[columns * (i + startRow - 1) + 25].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[1].option3_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 26] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[1].option3_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 26);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[1].option3_Linked = -1;
-
-            //Option 4
-            if (excelData[columns * (i + startRow - 1) + 27] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[1].option4_Text = excelData[columns * (i + startRow - 1) + 27].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[1].option4_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 28] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[1].option4_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 28);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[1].option4_Linked = -1;
-
-            #endregion
-
-            #region German
-
-            //Message
-            if (excelData[columns * (i + startRow - 1) + 30] != "")
-                dialogueInfo.dialogueSegments[i].languageDialogueList[2] = excelData[columns * (i + startRow - 1) + 30].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageDialogueList[2] = "";
-
-
-            //Option 1
-            if (excelData[columns * (i + startRow - 1) + 31] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[2].option1_Text = excelData[columns * (i + startRow - 1) + 31].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[2].option1_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 32] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[2].option1_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 32);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[2].option1_Linked = -1;
-
-            //Option 2
-            if (excelData[columns * (i + startRow - 1) + 33] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[2].option2_Text = excelData[columns * (i + startRow - 1) + 33].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[2].option2_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 34] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[2].option2_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 34);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[2].option2_Linked = -1;
-
-            //Option 3
-            if (excelData[columns * (i + startRow - 1) + 35] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[2].option3_Text = excelData[columns * (i + startRow - 1) + 35].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[2].option3_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 36] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[2].option3_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 36);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[2].option3_Linked = -1;
-
-            //Option 4
-            if (excelData[columns * (i + startRow - 1) + 37] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[2].option4_Text = excelData[columns * (i + startRow - 1) + 37].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[2].option4_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 38] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[2].option4_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 38);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[2].option4_Linked = -1;
-
-            #endregion
-
-            #region Language 4
-
-            //Message
-            if (excelData[columns * (i + startRow - 1) + 40] != "")
-                dialogueInfo.dialogueSegments[i].languageDialogueList[3] = excelData[columns * (i + startRow - 1) + 40].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageDialogueList[3] = "";
-
-
-            //Option 1
-            if (excelData[columns * (i + startRow - 1) + 41] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[3].option1_Text = excelData[columns * (i + startRow - 1) + 41].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[3].option1_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 42] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[3].option1_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 42);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[3].option1_Linked = -1;
-
-            //Option 2
-            if (excelData[columns * (i + startRow - 1) + 43] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[3].option2_Text = excelData[columns * (i + startRow - 1) + 43].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[3].option2_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 44] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[3].option2_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 44);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[3].option2_Linked = -1;
-
-            //Option 3
-            if (excelData[columns * (i + startRow - 1) + 45] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[3].option3_Text = excelData[columns * (i + startRow - 1) + 45].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[3].option3_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 46] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[3].option3_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 46);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[3].option3_Linked = -1;
-
-            //Option 4
-            if (excelData[columns * (i + startRow - 1) + 47] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[3].option4_Text = excelData[columns * (i + startRow - 1) + 47].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[3].option4_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 48] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[3].option4_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 48);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[3].option4_Linked = -1;
-
-            #endregion
-
-            #region Language 5
-
-            //Message
-            if (excelData[columns * (i + startRow - 1) + 50] != "")
-                dialogueInfo.dialogueSegments[i].languageDialogueList[4] = excelData[columns * (i + startRow - 1) + 50].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageDialogueList[4] = "";
-
-
-            //Option 1
-            if (excelData[columns * (i + startRow - 1) + 51] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option1_Text = excelData[columns * (i + startRow - 1) + 51].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option1_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 52] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option1_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 52);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option1_Linked = -1;
-
-            //Option 2
-            if (excelData[columns * (i + startRow - 1) + 53] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option2_Text = excelData[columns * (i + startRow - 1) + 53].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option2_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 54] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option2_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 54);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option2_Linked = -1;
-
-            //Option 3
-            if (excelData[columns * (i + startRow - 1) + 55] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option3_Text = excelData[columns * (i + startRow - 1) + 55].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option3_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 56] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option3_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 56);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option3_Linked = -1;
-
-            //Option 4
-            if (excelData[columns * (i + startRow - 1) + 57] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option4_Text = excelData[columns * (i + startRow - 1) + 57].Trim();
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option4_Text = "";
-            //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 58] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option4_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 58);
-            else
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option4_Linked = -1;
+                //Option 4
+                if (excelData[columns * (i + startRow - 1) + 17 + (10 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Text = excelData[columns * (i + startRow - 1) + 17 + (10 * j)].Trim();
+                else
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Text = "";
+                //Option 1 - Link
+                if (excelData[columns * (i + startRow - 1) + 18 + (10 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 18 + (10 * j));
+                else
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Linked = -1;
+            }
 
             #endregion
 
