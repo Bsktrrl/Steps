@@ -855,54 +855,54 @@ public class Interactable_NPC : MonoBehaviour
 
             //Message
             if (excelData[columns * (i + startRow - 1) + 40] != "")
-                dialogueInfo.dialogueSegments[i].languageDialogueList[4] = excelData[columns * (i + startRow - 1) + 40].Trim();
+                dialogueInfo.dialogueSegments[i].languageDialogueList[3] = excelData[columns * (i + startRow - 1) + 40].Trim();
             else
-                dialogueInfo.dialogueSegments[i].languageDialogueList[4] = "";
+                dialogueInfo.dialogueSegments[i].languageDialogueList[3] = "";
 
 
             //Option 1
             if (excelData[columns * (i + startRow - 1) + 41] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option1_Text = excelData[columns * (i + startRow - 1) + 41].Trim();
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option1_Text = excelData[columns * (i + startRow - 1) + 41].Trim();
             else
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option1_Text = "";
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option1_Text = "";
             //Option 1 - Link
             if (excelData[columns * (i + startRow - 1) + 42] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option1_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 42);
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option1_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 42);
             else
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option1_Linked = -1;
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option1_Linked = -1;
 
             //Option 2
             if (excelData[columns * (i + startRow - 1) + 43] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option2_Text = excelData[columns * (i + startRow - 1) + 43].Trim();
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option2_Text = excelData[columns * (i + startRow - 1) + 43].Trim();
             else
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option2_Text = "";
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option2_Text = "";
             //Option 1 - Link
             if (excelData[columns * (i + startRow - 1) + 44] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option2_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 44);
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option2_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 44);
             else
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option2_Linked = -1;
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option2_Linked = -1;
 
             //Option 3
             if (excelData[columns * (i + startRow - 1) + 45] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option3_Text = excelData[columns * (i + startRow - 1) + 45].Trim();
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option3_Text = excelData[columns * (i + startRow - 1) + 45].Trim();
             else
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option3_Text = "";
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option3_Text = "";
             //Option 1 - Link
             if (excelData[columns * (i + startRow - 1) + 46] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option3_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 46);
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option3_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 46);
             else
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option3_Linked = -1;
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option3_Linked = -1;
 
             //Option 4
             if (excelData[columns * (i + startRow - 1) + 47] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option4_Text = excelData[columns * (i + startRow - 1) + 47].Trim();
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option4_Text = excelData[columns * (i + startRow - 1) + 47].Trim();
             else
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option4_Text = "";
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option4_Text = "";
             //Option 1 - Link
             if (excelData[columns * (i + startRow - 1) + 48] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option4_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 48);
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option4_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 48);
             else
-                dialogueInfo.dialogueSegments[i].languageOptionList[4].option4_Linked = -1;
+                dialogueInfo.dialogueSegments[i].languageOptionList[3].option4_Linked = -1;
 
             #endregion
 
@@ -960,6 +960,8 @@ public class Interactable_NPC : MonoBehaviour
                 dialogueInfo.dialogueSegments[i].languageOptionList[4].option4_Linked = -1;
 
             #endregion
+
+            CleanTheTextDialogue(i);
         }
 
         //Remove elements that doesn't have a name
@@ -974,6 +976,38 @@ public class Interactable_NPC : MonoBehaviour
 
         return -1;
     }
+    void CleanTheTextDialogue(int i)
+    {
+        dialogueInfo.dialogueSegments[i].segmentName = CleanQuotes(dialogueInfo.dialogueSegments[i].segmentName);
+
+        for (int j = 0; j < DialogueManager.Instance.languageAmount; j++)
+        {
+            dialogueInfo.dialogueSegments[i].languageDialogueList[j] = CleanQuotes(dialogueInfo.dialogueSegments[i].languageDialogueList[j]);
+            dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Text = CleanQuotes(dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Text);
+            dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Text = CleanQuotes(dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Text);
+            dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Text = CleanQuotes(dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Text);
+            dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Text = CleanQuotes(dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Text);
+        }
+    }
+    string CleanQuotes(string input)
+    {
+        // Remove enclosing quotes, and replace double double-quotes with a single one
+        if (input == "")
+        {
+            return "";
+        }
+        else if (input == null)
+        {
+            return "";
+        }
+        else if (input.StartsWith("\"") && input.EndsWith("\""))
+        {
+            input = input.Substring(1, input.Length - 2);
+        }
+
+        return input.Replace("\"\"", "\"").Trim();
+    }
+
 
 
 
