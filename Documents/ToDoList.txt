@@ -7,8 +7,8 @@ _____________
 
 1.4. Movement Animations
 - Change movementAnimations to trigger upon buttonPress from the "Player_KeyInput"-script
+   - Play animation when going to a stair
 - Set SwimAnimation when in Water
-- Set Idle animations in another script, attached to the playerPrefab
 
 1.5. Stats gathering
 - Gather stats of what types of info the player have visited in the dialogue, so we can keep track over which dialogues that can be accessed in further conversations
@@ -26,18 +26,11 @@ Dialogue Scene:
 __________________
 
 
-2.1. NPC Visuals:
-- Setup each NPC character in each own Prefab
-
 2.2. Camera:
 - Make it so that the camera pans correctly into the scene (both characters are visible)
 - Make it so that the camera pans correctly out from the scene (back to its previous state)
 - Make camera angle based on the player lookDir
    - NPC needs to turn towards the player
-
-
-2.3. Animations:
-- Make different animations work based on the excel sheet (both for the player and the NPC)
 
 2.4. NPC GameObject Disappearance:
 - Make the NPC's gameObject become hidden if dialogue has finished (save the NPC state and destroy it from the scene if dialogue has taken place)

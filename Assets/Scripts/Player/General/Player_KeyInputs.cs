@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class Player_KeyInputs : Singleton<Player_KeyInputs>
 {
-    [SerializeField] Animator anim;
-
     public static event Action Action_dialogueButton_isPressed;
     public static event Action Action_dialogueNextButton_isPressed;
     public static event Action Action_InteractButton_isPressed;
@@ -38,6 +36,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     {
         playerControls = new PlayerControls();
         mapManager = FindObjectOfType<MapManager>();
+
+        if (PlayerManager.Instance.playerBody.transform.GetComponentInChildren<Animator>())
+        {
+            Player_Animstions.Instance.anim = PlayerManager.Instance.playerBody.GetComponentInChildren<Animator>();
+        }
     }
 
 
@@ -49,7 +52,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Movement()) { return; }
 
         forward_isPressed = true;
-        anim.SetTrigger("Walk");
+        Player_Animstions.Instance.anim.SetTrigger("Walk");
     }
     void OnForward_Up()
     {
@@ -60,7 +63,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Movement()) { return; }
 
         back_isPressed = true;
-        anim.SetTrigger("Walk");
+        Player_Animstions.Instance.anim.SetTrigger("Walk");
     }
     void OnBackward_Up()
     {
@@ -71,7 +74,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Movement()) { return; }
 
         left_isPressed = true;
-        anim.SetTrigger("Walk");
+        Player_Animstions.Instance.anim.SetTrigger("Walk");
     }
     void OnLeft_Up()
     {
@@ -82,7 +85,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Movement()) { return; }
 
         right_isPressed = true;
-        anim.SetTrigger("Walk");
+        Player_Animstions.Instance.anim.SetTrigger("Walk");
     }
     void OnRight_Up()
     {

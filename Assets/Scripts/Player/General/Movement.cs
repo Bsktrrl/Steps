@@ -104,20 +104,44 @@ public class Movement : Singleton<Movement>
     public bool isDashing;
     public bool isIceGliding;
 
+    [Header("Animations")]
+    public Animator anim;
+    [SerializeField] bool blink;
+    [SerializeField] bool secondaryIdle;
+
 
     //--------------------
 
 
     private void Start()
     {
+        if (PlayerManager.Instance.playerBody.transform.GetComponentInChildren<Animator>())
+        {
+            anim = PlayerManager.Instance.playerBody.GetComponentInChildren<Animator>();
+        }
+
         savePos = transform.position;
         previousPosition = transform.position;
         elevatorPos_Previous = transform.position;
 
         RespawnPlayer();
+
+        //Blink Animation
     }
     private void Update()
     {
+        ////Blink Animation
+        //if (!blink)
+        //{
+        //    StartCoroutine(RandomBlink());
+        //}
+
+        //if (!secondaryIdle)
+        //{
+        //    StartCoroutine(SecondaryIdle());
+        //}
+
+        //Movement
         if (GetMovementState() == MovementStates.Moving)
         {
             UpdateBlockStandingOn();

@@ -104,7 +104,6 @@ public class DialogueManager : Singleton<DialogueManager>
         currentSegement = 0;
 
         PlayerManager.Instance.npcInteraction = false;
-        //PlayerManager.Instance.pauseGame = false;
     }
 
     void SetupArrow()
@@ -303,8 +302,8 @@ public class DialogueSegment
     public int dialogueStats;
 
     [Header("Animations")]
-    public int animation_Player;
-    public int animation_NPC;
+    public List<int> animation_Player = new List<int>();
+    public List<int> animation_NPC = new List<int>();
     public int cutscene;
 
     [Header("Dialogue")]

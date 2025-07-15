@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class Interactable_NPC : MonoBehaviour
 {
@@ -20,11 +21,15 @@ public class Interactable_NPC : MonoBehaviour
 
     [HideInInspector] public bool canInteract;
     [HideInInspector] public bool isInteracting;
-    [HideInInspector] public string interact_Talk_Message = "Talk";
+    [HideInInspector] public string interact_Talk_Message = "Talk"; //Temp before language integration on UI elements
 
     [Header("To be saved in database")]
     [HideInInspector] public bool hasTalked;
     public int lastSegment;
+
+    [Header("Animations")]
+    [SerializeField] Animator anim;
+    bool blink;
 
 
     //--------------------
@@ -38,7 +43,16 @@ public class Interactable_NPC : MonoBehaviour
 
         dialogueInfo.npcName = characterName;
     }
-    
+    private void Update()
+    {
+        if (!blink)
+        {
+            StartCoroutine(RandomBlink());
+        }
+
+        TalkAnimation();
+    }
+
 
     //--------------------
 
@@ -154,15 +168,15 @@ public class Interactable_NPC : MonoBehaviour
 
             //Player Animation number
             if (excelData[columns * (i + startRow - 1) + 6] != "")
-                dialogueInfo.dialogueSegments[i].animation_Player = ParseIntSafe(excelData, columns * (i + startRow - 1) + 6);
+                dialogueInfo.dialogueSegments[i].animation_Player = AnimationDataSplicer(excelData[columns * (i + startRow - 1) + 6].Trim());
             else
-                dialogueInfo.dialogueSegments[i].animation_Player = -1;
+                dialogueInfo.dialogueSegments[i].animation_Player = null;
 
             //NPC Animation number
             if (excelData[columns * (i + startRow - 1) + 7] != "")
-                dialogueInfo.dialogueSegments[i].animation_NPC = ParseIntSafe(excelData, columns * (i + startRow - 1) + 7);
+                dialogueInfo.dialogueSegments[i].animation_NPC = AnimationDataSplicer(excelData[columns * (i + startRow - 1) + 7].Trim());
             else
-                dialogueInfo.dialogueSegments[i].animation_NPC = -1;
+                dialogueInfo.dialogueSegments[i].animation_NPC = null;
 
             //Cutscene
             if (excelData[columns * (i + startRow - 1) + 8] != "")
@@ -245,6 +259,29 @@ public class Interactable_NPC : MonoBehaviour
 
         //Remove elements that doesn't have a name
         dialogueInfo.dialogueSegments = dialogueInfo.dialogueSegments.Where(obj => obj != null && !string.IsNullOrEmpty(obj.segmentDescription)).ToList();
+    }
+    List<int> AnimationDataSplicer(string text)
+    {
+        List<int> animationSplizer = new List<int>();
+
+        if (string.IsNullOrWhiteSpace(text))
+            return animationSplizer;
+
+        string[] parts = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+        foreach (string part in parts)
+        {
+            if (int.TryParse(part, out int number))
+            {
+                animationSplizer.Add(number);
+            }
+            else
+            {
+                Debug.LogWarning($"Invalid number in animation data: '{part}'");
+            }
+        }
+
+        return animationSplizer;
     }
     int ParseIntSafe(string[] data, int index)
     {
@@ -345,6 +382,7 @@ public class Interactable_NPC : MonoBehaviour
 
     void SetupDialogueDisplay(int index, NPCs npc)
     {
+        //Text
         if (dialogueInfo.dialogueSegments.Count > index)
         {
             switch (DialogueManager.Instance.currentLanguage)
@@ -372,7 +410,17 @@ public class Interactable_NPC : MonoBehaviour
         else
         {
             DialogueManager.Instance.EndDialogue();
+            return;
         }
+
+        //Animation
+        if (dialogueInfo.dialogueSegments[index] != null && dialogueInfo.dialogueSegments[index].animation_NPC.Count > 0)
+        {
+            for (int i = 0; i < dialogueInfo.dialogueSegments[index].animation_NPC.Count; i++)
+            {
+                PerformAnimation(dialogueInfo.dialogueSegments[index].animation_NPC[i]);
+            }
+        } 
     }
     void SetupDialogue(DialogueSegment dialogueSegment)
     {
@@ -425,5 +473,32 @@ public class Interactable_NPC : MonoBehaviour
         option.option4_Linked = _segment4_Linked;
 
         return option;
+    }
+
+
+    //--------------------
+
+
+    void PerformAnimation(int animNumber)
+    {
+        anim.SetTrigger(AnimationManager.Instance.animationList[animNumber]);
+        anim.SetTrigger(AnimationManager.Instance.blink);
+    }
+    IEnumerator RandomBlink()
+    {
+        blink = true;
+
+        yield return new WaitForSeconds(UnityEngine.Random.Range(0f, 10f));
+
+        anim.SetTrigger(AnimationManager.Instance.blink);
+
+        blink = false;
+    }
+    void TalkAnimation()
+    {
+        if (TypewriterEffect.Instance.isTyping)
+            anim.SetBool("Talking", true);
+        else
+            anim.SetBool("Talking", false);
     }
 }
