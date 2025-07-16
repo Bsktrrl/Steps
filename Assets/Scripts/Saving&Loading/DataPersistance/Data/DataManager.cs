@@ -22,7 +22,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
     #region Variables
     //MenuState
-    [HideInInspector] public MenuState menuState_Store = new MenuState();
+    /*[HideInInspector]*/ public MenuState menuState_Store = new MenuState();
 
     //Player stored Stats info
     /*[HideInInspector]*/ public Stats playerStats_Store = new Stats();
@@ -32,6 +32,9 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
     //Overworld States
     /*[HideInInspector]*/ public OverWorldStates overWorldStates_StoreList = new OverWorldStates();
+
+    //Settings
+    /*[HideInInspector]*/ public SettingData settingData_StoreList = new SettingData();
     #endregion
 
 
@@ -47,6 +50,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.playerStats_Store = gameData.playerStats_Save;
         this.mapInfo_StoreList = gameData.mapInfo_SaveList;
         this.overWorldStates_StoreList = gameData.overWorldStates_SaveList;
+        this.settingData_StoreList = gameData.settingData_SaveList;
 
         #endregion
 
@@ -72,6 +76,13 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         {
             OverWorldManager.Instance.LoadUIElementState_IfExitsFromALevel();
             print("3. UIElementState has Loaded");
+        }
+
+        SettingsMenu tempSettingData = FindObjectOfType<SettingsMenu>();
+        if (tempOverworld)
+        {
+            SettingsMenu.Instance.LoadSettingsData();
+            print("4. SettingData has Loaded");
         }
 
         #endregion

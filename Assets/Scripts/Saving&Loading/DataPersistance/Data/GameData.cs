@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameData
 {
     //MenuState
-    [HideInInspector] public MenuState menuState_Save = new MenuState();
+    /*[HideInInspector]*/ public MenuState menuState_Save = new MenuState();
 
     //Player saved Stats info
     /*[HideInInspector]*/ public Stats playerStats_Save = new Stats();
@@ -16,6 +16,9 @@ public class GameData
 
     //Overworld States
     /*[HideInInspector]*/ public OverWorldStates overWorldStates_SaveList = new OverWorldStates();
+
+    //Settings
+    /*[HideInInspector]*/ public SettingData settingData_SaveList = new SettingData();
 
 
     //--------------------
@@ -28,5 +31,6 @@ public class GameData
         playerStats_Save = new Stats();
         mapInfo_SaveList = new Map_SaveInfoList();
         overWorldStates_SaveList = new OverWorldStates();
+        settingData_SaveList = new SettingData();
     }
 }

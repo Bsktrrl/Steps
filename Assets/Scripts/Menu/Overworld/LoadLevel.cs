@@ -14,6 +14,7 @@ public class LoadLevel : MonoBehaviour
     [Header("Levels")]
     public regions regionToPlay;
     public string levelToPlay;
+    public string levelNameToDisplay;
 
     [Header("Level Image")]
     public Sprite levelSprite;

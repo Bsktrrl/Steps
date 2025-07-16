@@ -104,8 +104,8 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
             else
                 levelImage.sprite = null;
 
-                //Level Name
-                levelName.text = activeLevelObject.GetComponent<LoadLevel>().levelToPlay;
+            //Level Name
+            levelName.text = activeLevelObject.GetComponent<LoadLevel>().levelNameToDisplay;
 
             //Find the correct mapInfo
             if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List.Count > 0)

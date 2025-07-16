@@ -385,7 +385,7 @@ public class Interactable_NPC : MonoBehaviour
         //Text
         if (dialogueInfo.dialogueSegments.Count > index)
         {
-            switch (DialogueManager.Instance.currentLanguage)
+            switch (SettingsMenu.Instance.settingsData.currentLanguage)
             {
                 case Languages.Norwegian:
                     DialogueManager.Instance.SetupDialogueSegment_toDisplay(npc, dialogueInfo.dialogueSegments[index].languageDialogueList[0], dialogueInfo.dialogueSegments[index].languageOptionList[0]);

@@ -17,8 +17,10 @@ _____________
 
 1.6. Languages:
 - Add language select in the Settings menu
-   - Add Excel Sheet that hold all menuText in each language, so toggeling also changes the menu text as well
 - Add text speed select in the Settings menu
+- Add Excel Sheet that hold all menuText in each language, so toggeling also changes the menu text as well
+- Save SettingsData to file
+- Make SettingsMenu compatible with controller
 
 
 2.
@@ -26,14 +28,31 @@ Dialogue Scene:
 __________________
 
 
-2.2. Camera:
+2.1. Saving:
+- Make a class to save all info about an NPC
+	- Completed in level
+	- Stats to use, going forward
+	- Values for or not for one of the two endings (pluss or minus numbers to set for either of the two endings)
+
+2.2. NPC GameObject Disappearance:
+- Make the NPC's gameObject become hidden if dialogue has finished (save the NPC state and destroy it from the scene if dialogue has taken place)
+
+2.3. Camera:
 - Make it so that the camera pans correctly into the scene (both characters are visible)
 - Make it so that the camera pans correctly out from the scene (back to its previous state)
 - Make camera angle based on the player lookDir
    - NPC needs to turn towards the player
 
-2.4. NPC GameObject Disappearance:
-- Make the NPC's gameObject become hidden if dialogue has finished (save the NPC state and destroy it from the scene if dialogue has taken place)
+
+3.
+Skin Menu:
+__________________
+
+
+3.1. Menu
+- Make the menu where the player skins can be unlocked and changed
+- Make a functionality of putting on hats
+- Save/Load skins unlocked and skin equipped
 
 
 ---

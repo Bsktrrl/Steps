@@ -13,7 +13,6 @@ public class DialogueManager : Singleton<DialogueManager>
 
     [Header("Language")]
     [HideInInspector] public int languageAmount = 5;
-    public Languages currentLanguage;
 
     [Header("Sound")]
     public AudioSource typingSound;
@@ -331,15 +330,6 @@ public class LanguageOptions
     [Header("Option 4")]
     public string option4_Text;
     public int option4_Linked;
-}
-
-public enum Languages
-{
-    Norwegian,
-    English,
-    German,
-    Japanese,
-    Chinese
 }
 public enum ColorVariants
 {
