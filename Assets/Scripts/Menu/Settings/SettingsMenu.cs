@@ -33,16 +33,17 @@ public class SettingsMenu : Singleton<SettingsMenu>
     //--------------------
 
 
-    public void LoadSettingsData()
+    public void LoadData()
     {
         if (DataManager.Instance.settingData_StoreList != null)
         {
             settingsData.currentLanguage = DataManager.Instance.settingData_StoreList.currentLanguage;
         }
     }
-    public void SaveSettingsData()
+    public void SaveData()
     {
         DataManager.Instance.settingData_StoreList.currentLanguage = settingsData.currentLanguage;
+        DataPersistanceManager.instance.SaveGame();
     }
 
 
@@ -51,7 +52,7 @@ public class SettingsMenu : Singleton<SettingsMenu>
 
     public void UpdateSettingsMenuDisplay()
     {
-        LoadSettingsData();
+        LoadData();
         ChangeFlagImage();
     }
 
@@ -87,7 +88,7 @@ public class SettingsMenu : Singleton<SettingsMenu>
         }
 
         ChangeFlagImage();
-        SaveSettingsData();
+        SaveData();
 
         Action_SetNewLanguage?.Invoke();
     }
@@ -120,7 +121,7 @@ public class SettingsMenu : Singleton<SettingsMenu>
         }
 
         ChangeFlagImage();
-        SaveSettingsData();
+        SaveData();
 
         Action_SetNewLanguage?.Invoke();
     }

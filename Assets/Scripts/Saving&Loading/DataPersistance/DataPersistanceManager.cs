@@ -43,10 +43,15 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
     public void NewGame()
     {
+        GameData oldData = gameData;
+
         this.gameData = new GameData(); // create fresh data
 
         // Clear the DataManager's stores explicitly
-        DataManager.Instance.Load_NewGame_Data(this.gameData);
+        DataManager.Instance.Load_NewGame_Data(oldData, this.gameData);
+
+        //Persist through newGame
+        this.gameData.settingData_SaveList = DataManager.Instance.settingData_StoreList;
 
         // Save the new clean data
         SaveGame();

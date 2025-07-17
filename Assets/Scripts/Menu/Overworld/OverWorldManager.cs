@@ -129,7 +129,7 @@ public class OverWorldManager : Singleton<OverWorldManager>
         {
             RememberCurrentlySelectedUIElement.Instance.overWorldStates = DataManager.Instance.overWorldStates_StoreList;
 
-            print("200. UIElementState - Load From Save - R: " + RememberCurrentlySelectedUIElement.Instance.overWorldStates.regionState + " | L: " + RememberCurrentlySelectedUIElement.Instance.overWorldStates.levelState);
+            //print("200. UIElementState - Load From Save - R: " + RememberCurrentlySelectedUIElement.Instance.overWorldStates.regionState + " | L: " + RememberCurrentlySelectedUIElement.Instance.overWorldStates.levelState);
 
             ChangeStates(RememberCurrentlySelectedUIElement.Instance.overWorldStates.regionState, RememberCurrentlySelectedUIElement.Instance.overWorldStates.levelState);
 

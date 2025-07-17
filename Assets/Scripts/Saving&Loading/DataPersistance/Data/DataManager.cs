@@ -81,7 +81,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         SettingsMenu tempSettingData = FindObjectOfType<SettingsMenu>();
         if (tempOverworld)
         {
-            SettingsMenu.Instance.LoadSettingsData();
+            SettingsMenu.Instance.LoadData();
             print("4. SettingData has Loaded");
         }
 
@@ -113,11 +113,16 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     //--------------------
 
 
-    public void Load_NewGame_Data(GameData newData)
+    public void Load_NewGame_Data(GameData oldData, GameData newData)
     {
+        //Files to delete upon newGame
         this.menuState_Store = newData.menuState_Save;
         this.playerStats_Store = newData.playerStats_Save;
         this.mapInfo_StoreList = newData.mapInfo_SaveList;
         this.overWorldStates_StoreList = newData.overWorldStates_SaveList;
+        this.settingData_StoreList = newData.settingData_SaveList;
+
+        //Persist through newGame
+        this.settingData_StoreList = oldData.settingData_SaveList;
     }
 }

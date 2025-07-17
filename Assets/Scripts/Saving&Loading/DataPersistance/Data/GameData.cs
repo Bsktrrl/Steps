@@ -31,6 +31,6 @@ public class GameData
         playerStats_Save = new Stats();
         mapInfo_SaveList = new Map_SaveInfoList();
         overWorldStates_SaveList = new OverWorldStates();
-        settingData_SaveList = new SettingData();
+        //settingData_SaveList = new SettingData();
     }
 }
