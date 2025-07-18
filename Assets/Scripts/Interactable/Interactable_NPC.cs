@@ -30,6 +30,7 @@ public class Interactable_NPC : MonoBehaviour
     [Header("Animations")]
     [SerializeField] Animator anim;
     bool blink;
+    int animationCount;
 
 
     //--------------------
@@ -455,10 +456,13 @@ public class Interactable_NPC : MonoBehaviour
         //Animation
         if (dialogueInfo.dialogueSegments[index] != null && dialogueInfo.dialogueSegments[index].animation_NPC.Count > 0)
         {
-            for (int i = 0; i < dialogueInfo.dialogueSegments[index].animation_NPC.Count; i++)
-            {
-                PerformAnimation(dialogueInfo.dialogueSegments[index].animation_NPC[i]);
-            }
+            animationCount = 0;
+            StartCoroutine(RunAnimations(index));
+
+            //for (int i = 0; i < dialogueInfo.dialogueSegments[index].animation_NPC.Count; i++)
+            //{
+            //    PerformAnimation(dialogueInfo.dialogueSegments[index].animation_NPC[i]);
+            //}
         } 
     }
     void SetupDialogue(DialogueSegment dialogueSegment)
@@ -518,6 +522,31 @@ public class Interactable_NPC : MonoBehaviour
     //--------------------
 
 
+    IEnumerator RunAnimations(int index)
+    {
+        int animationNumber = dialogueInfo.dialogueSegments[index].animation_NPC[animationCount];
+
+        PerformAnimation(animationNumber);
+
+        // Wait until the animator enters the state
+        while (!anim.GetCurrentAnimatorStateInfo(0).IsName(AnimationManager.Instance.animationList[animationNumber]))
+        {
+            yield return null;
+        }
+
+        // Wait until the animation finishes
+        while (anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
+        {
+            yield return null;
+        }
+
+        // Start the next coroutine
+        if (animationCount < dialogueInfo.dialogueSegments[index].animation_NPC.Count - 1)
+        {
+            animationCount++;
+            StartCoroutine(RunAnimations(index));
+        }
+    }
     void PerformAnimation(int animNumber)
     {
         anim.SetTrigger(AnimationManager.Instance.animationList[animNumber]);
