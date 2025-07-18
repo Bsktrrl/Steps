@@ -28,6 +28,14 @@ public class SettingsMenu : Singleton<SettingsMenu>
     {
         UpdateSettingsMenuDisplay();
     }
+    private void OnEnable()
+    {
+        DataManager.Action_dataHasLoaded += LoadData;
+    }
+    private void OnDisable()
+    {
+        DataManager.Action_dataHasLoaded -= LoadData;
+    }
 
 
     //--------------------

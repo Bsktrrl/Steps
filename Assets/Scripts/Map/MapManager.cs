@@ -72,6 +72,7 @@ public class MapManager : Singleton<MapManager>
         Interactable_Pickup.Action_AbilityPickupGot += UpdateAbilitiesPickedUp;
 
         DataManager.Action_dataHasLoaded += SaveMapInfo;
+        DataManager.Action_dataHasLoaded += InputLevelNameDisplay;
     }
 
     private void OnDisable()
@@ -83,6 +84,7 @@ public class MapManager : Singleton<MapManager>
         Interactable_Pickup.Action_AbilityPickupGot -= UpdateAbilitiesPickedUp;
 
         DataManager.Action_dataHasLoaded -= SaveMapInfo;
+        DataManager.Action_dataHasLoaded -= InputLevelNameDisplay;
     }
 
 
@@ -93,6 +95,17 @@ public class MapManager : Singleton<MapManager>
     public void SaveMapInfo()
     {
         SaveLoad_MapInfo.Instance.SaveGame();
+    }
+    void InputLevelNameDisplay()
+    {
+        print("2. SaveNameDisplay");
+
+        mapInfo_ToSave.mapNameDisplay.mapNameDisplay_norwegian = DataManager.Instance.mapNameDisplay_Store.mapNameDisplay_norwegian;
+        mapInfo_ToSave.mapNameDisplay.mapNameDisplay_english = DataManager.Instance.mapNameDisplay_Store.mapNameDisplay_english;
+        mapInfo_ToSave.mapNameDisplay.mapNameDisplay_german = DataManager.Instance.mapNameDisplay_Store.mapNameDisplay_german;
+        mapInfo_ToSave.mapNameDisplay.mapNameDisplay_chinese = DataManager.Instance.mapNameDisplay_Store.mapNameDisplay_chinese;
+        mapInfo_ToSave.mapNameDisplay.mapNameDisplay_japanese = DataManager.Instance.mapNameDisplay_Store.mapNameDisplay_japanese;
+        mapInfo_ToSave.mapNameDisplay.mapNameDisplay_korean = DataManager.Instance.mapNameDisplay_Store.mapNameDisplay_korean;
     }
 
 

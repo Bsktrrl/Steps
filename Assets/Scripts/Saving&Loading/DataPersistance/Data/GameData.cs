@@ -20,6 +20,8 @@ public class GameData
     //Settings
     /*[HideInInspector]*/ public SettingData settingData_SaveList = new SettingData();
 
+    /*[HideInInspector]*/ public MapNameDisplay mapNameDisplay_Save = new MapNameDisplay();
+
 
     //--------------------
 

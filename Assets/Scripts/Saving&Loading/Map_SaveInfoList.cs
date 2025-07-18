@@ -21,15 +21,22 @@ public class Map_SaveInfo
 {
     public static event Action Action_SetupMap_hasLoaded;
 
+    [Header("Map Name")]
     public string mapName;
+    public MapNameDisplay mapNameDisplay;
+    
+    [Header("Map is Completed")]
     public bool isCompleted;
 
+    [Header("Collectables")]
     public List<CoinInfo> coinList = new List<CoinInfo>();
     public List<CollectableInfo> collectableList = new List<CollectableInfo>();
     public List<MaxStepInfo> maxStepList = new List<MaxStepInfo>();
 
+    [Header("Skin available")]
     public SkinType skintype;
 
+    [Header("Abilities available")]
     public AbilitiesGot abilitiesInLevel;
     //public AbilitiesGot abilitiesGotInLevel;
 
@@ -184,4 +191,15 @@ public class MaxStepInfo
     public GameObject maxStepObj;
     public Vector3 pos;
     public bool isTaken;
+}
+
+[Serializable]
+public class MapNameDisplay
+{
+    public string mapNameDisplay_norwegian;
+    public string mapNameDisplay_english;
+    public string mapNameDisplay_german;
+    public string mapNameDisplay_chinese;
+    public string mapNameDisplay_japanese;
+    public string mapNameDisplay_korean;
 }

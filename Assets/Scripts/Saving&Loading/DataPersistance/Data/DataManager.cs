@@ -35,6 +35,8 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
     //Settings
     /*[HideInInspector]*/ public SettingData settingData_StoreList = new SettingData();
+
+    /*[HideInInspector]*/ public MapNameDisplay mapNameDisplay_Store = new MapNameDisplay();
     #endregion
 
 
@@ -51,6 +53,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.mapInfo_StoreList = gameData.mapInfo_SaveList;
         this.overWorldStates_StoreList = gameData.overWorldStates_SaveList;
         this.settingData_StoreList = gameData.settingData_SaveList;
+        this.mapNameDisplay_Store = gameData.mapNameDisplay_Save;
 
         #endregion
 
@@ -102,11 +105,12 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     {
         Action_dataIsSaving?.Invoke();
 
-        //Input what to save
+        //Input what variables to save upon saving
         gameData.menuState_Save = this.menuState_Store;
         gameData.mapInfo_SaveList = this.mapInfo_StoreList;
         gameData.playerStats_Save = this.playerStats_Store;
         gameData.overWorldStates_SaveList = this.overWorldStates_StoreList;
+        gameData.mapNameDisplay_Save = this.mapNameDisplay_Store;
     }
 
 
@@ -121,6 +125,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.mapInfo_StoreList = newData.mapInfo_SaveList;
         this.overWorldStates_StoreList = newData.overWorldStates_SaveList;
         this.settingData_StoreList = newData.settingData_SaveList;
+        this.mapNameDisplay_Store = newData.mapNameDisplay_Save;
 
         //Persist through newGame
         this.settingData_StoreList = oldData.settingData_SaveList;

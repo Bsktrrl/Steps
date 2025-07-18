@@ -92,12 +92,14 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         Movement.Action_StepTaken += SetLevelInfo;
         Movement.Action_RespawnPlayer += SetLevelInfo;
         Map_SaveInfo.Action_SetupMap_hasLoaded += SetLevelInfo;
+        SettingsMenu.Action_SetNewLanguage += SetLevelInfo;
     }
     private void OnDisable()
     {
         Movement.Action_StepTaken -= SetLevelInfo;
         Movement.Action_RespawnPlayer -= SetLevelInfo;
         Map_SaveInfo.Action_SetupMap_hasLoaded -= SetLevelInfo;
+        SettingsMenu.Action_SetNewLanguage -= SetLevelInfo;
     }
 
 
@@ -131,8 +133,39 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         if (mapInfo == null ) { return; }
 
         //Set variables
-        levelName.text = mapInfo.mapName;
+
+        //Language
+        switch (SettingsMenu.Instance.settingsData.currentLanguage)
+        {
+            case Languages.Norwegian:
+                levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_norwegian;
+                break;
+            case Languages.English:
+                levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_english;
+                break;
+            case Languages.German:
+                levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_german;
+                break;
+            case Languages.Japanese:
+                levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_japanese;
+                break;
+            case Languages.Chinese:
+                levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_chinese;
+                break;
+            case Languages.Korean:
+                levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_korean;
+                break;
+
+            default:
+                break;
+        }
+
+        //Skin
         skinImage.sprite = SelectSpriteForLevel(mapInfo.skintype);
+
+
+        //-----
+
 
         //Changeable variables
 
