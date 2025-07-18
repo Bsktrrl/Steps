@@ -43,7 +43,11 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
     public void NewGame()
     {
-        GameData oldData = gameData;
+        GameData oldData = new GameData();
+
+        if (gameData != null)
+            oldData = gameData;
+
 
         this.gameData = new GameData(); // create fresh data
 

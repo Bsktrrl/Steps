@@ -4,22 +4,16 @@
 Dialogue Box:
 _____________
 
-
-1.4. Movement Animations
-- Change movementAnimations to trigger upon buttonPress from the "Player_KeyInput"-script
-   	- Play animation when going to a stair
-	- Set SwimAnimation when in Water
-
 1.5. Stats gathering
 - Gather stats of what types of info the player have visited in the dialogue, so we can keep track over which dialogues that can be accessed in further conversations
 - Save the dialogue stats to saveData, for future use
 - Make the option of a dialogue to start at another segment, based on Stats from previous dialogue
 
 
+
 2.
 Dialogue Scene:
 __________________
-
 
 2.1. Saving:
 - Make a class to save all info about an NPC
@@ -37,23 +31,33 @@ __________________
    - NPC needs to turn towards the player
 
 
+
 3.
+Player Movement Animations:
+__________________
+
+3.1. Movement
+- Change movementAnimations to trigger upon buttonPress from the "Player_KeyInput"-script
+   	- Play animation when going to a stair
+	- Set SwimAnimation when in Water
+
+
+
+4.
 Settings Menu:
 __________________
 
-
-3.1. Menu
+4.1. Menu
 - Make the settingsMenu compatible with controller
 - Add text speed select in the Settings menu
 
 
 
-4.
+5.
 Skin Menu:
 __________________
 
-
-4.1. Menu
+5.1. Menu
 - Make the menu where the player skins can be unlocked and changed
 - Make a functionality of putting on hats
 - Save/Load skins unlocked and skin equipped

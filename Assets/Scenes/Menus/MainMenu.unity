@@ -4024,12 +4024,13 @@ MonoBehaviour:
   mapInfo_ToSave:
     map_SaveInfo_List:
     - mapName: 
-      mapNameDisplay_norwegian: 
-      mapNameDisplay_english: 
-      mapNameDisplay_german: 
-      mapNameDisplay_chinese: 
-      mapNameDisplay_japanese: 
-      mapNameDisplay_korean: 
+      mapNameDisplay:
+        mapNameDisplay_norwegian: 
+        mapNameDisplay_english: 
+        mapNameDisplay_german: 
+        mapNameDisplay_chinese: 
+        mapNameDisplay_japanese: 
+        mapNameDisplay_korean: 
       isCompleted: 0
       coinList: []
       collectableList: []
@@ -14548,6 +14549,14 @@ MonoBehaviour:
       levelState: 0
     settingData_SaveList:
       currentLanguage: 0
+      currentTextSpeed: 0
+    mapNameDisplay_Save:
+      mapNameDisplay_norwegian: 
+      mapNameDisplay_english: 
+      mapNameDisplay_german: 
+      mapNameDisplay_chinese: 
+      mapNameDisplay_japanese: 
+      mapNameDisplay_korean: 
 --- !u!1 &1239079617
 GameObject:
   m_ObjectHideFlags: 0
@@ -16615,6 +16624,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1448876005}
   m_CullTransparentMesh: 1
+--- !u!114 &1450317309 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1822556717513606963, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+  m_PrefabInstance: {fileID: 5695102623791086884}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1456788920 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 384179937895888748, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
@@ -18987,6 +19007,14 @@ MonoBehaviour:
       levelState: 0
     settingData_SaveList:
       currentLanguage: 0
+      currentTextSpeed: 0
+    mapNameDisplay_Save:
+      mapNameDisplay_norwegian: 
+      mapNameDisplay_english: 
+      mapNameDisplay_german: 
+      mapNameDisplay_chinese: 
+      mapNameDisplay_japanese: 
+      mapNameDisplay_korean: 
   menuState_Store: 0
   playerStats_Store:
     steps_Max: 0
@@ -19021,6 +19049,14 @@ MonoBehaviour:
     levelState: 0
   settingData_StoreList:
     currentLanguage: 0
+    currentTextSpeed: 0
+  mapNameDisplay_Store:
+    mapNameDisplay_norwegian: 
+    mapNameDisplay_english: 
+    mapNameDisplay_german: 
+    mapNameDisplay_chinese: 
+    mapNameDisplay_japanese: 
+    mapNameDisplay_korean: 
 --- !u!1001 &1659561593
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24564,6 +24600,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 727398070}
+    - target: {fileID: 1018389317829371038, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 727398070}
+    - target: {fileID: 1018389317829371038, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: TextSpeed_LeftButton_isPressed
+      objectReference: {fileID: 0}
     - target: {fileID: 2312996438519978855, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -24604,6 +24648,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 727398070}
+    - target: {fileID: 5780587959541106077, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 727398070}
+    - target: {fileID: 5780587959541106077, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: TextSpeed_RightButton_isPressed
+      objectReference: {fileID: 0}
     - target: {fileID: 7412909659111111853, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -25075,6 +25127,10 @@ PrefabInstance:
       propertyPath: flagImage
       value: 
       objectReference: {fileID: 1835874302}
+    - target: {fileID: 8239113140033515010, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
+      propertyPath: textSpeedImage
+      value: 
+      objectReference: {fileID: 1450317309}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
