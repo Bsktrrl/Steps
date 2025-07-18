@@ -23,20 +23,20 @@ public class Player_Animstions : Singleton<Player_Animstions>
     IEnumerator RandomBlink()
     {
         float time = UnityEngine.Random.Range(0, 10);
-        print("1.1. RandomBlink: " + time);
+        //print("1.1. RandomBlink: " + time);
 
         yield return new WaitForSeconds(time);
 
         anim.SetTrigger(AnimationManager.Instance.blink);
 
-        print("1.2. RandomBlink");
+        //print("1.2. RandomBlink");
 
         StartCoroutine(RandomBlink());
     }
     IEnumerator RandomIdle()
     {
         float time = UnityEngine.Random.Range(15, 30);
-        print("2.1. SecondaryIdle: " + time);
+        //print("2.1. SecondaryIdle: " + time);
 
         yield return new WaitForSeconds(time);
 
@@ -45,7 +45,7 @@ public class Player_Animstions : Singleton<Player_Animstions>
         else
             anim.SetTrigger("Confident");
 
-        print("2.2. SecondaryIdle");
+        //print("2.2. SecondaryIdle");
 
         Invoke(nameof(StartSecondaryIdle), 0);
     }

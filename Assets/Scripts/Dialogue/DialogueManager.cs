@@ -12,7 +12,7 @@ public class DialogueManager : Singleton<DialogueManager>
     public TextMeshProUGUI nameText;
 
     [Header("Language")]
-    [HideInInspector] public int languageAmount = 5;
+    public int languageAmount;
 
     [Header("Sound")]
     public AudioSource typingSound;
@@ -38,6 +38,8 @@ public class DialogueManager : Singleton<DialogueManager>
     private void Start()
     {
         typingSound.clip = typeClip;
+
+        languageAmount = Enum.GetValues(typeof(Languages)).Length - 1;
     }
 
     private void OnEnable()
@@ -296,9 +298,12 @@ public class DialogueSegment
 {
     public string segmentDescription;
 
-    [Header("General")]
+    [Header("If Last Segment")]
     public string lastSegment;
-    public int dialogueStats;
+
+    [Header("Stats")]
+    public DialogueStat startingStat;
+    public DialogueStat statToGet;
 
     [Header("Animations")]
     public List<int> animation_Player = new List<int>();
@@ -331,6 +336,27 @@ public class LanguageOptions
     public string option4_Text;
     public int option4_Linked;
 }
+[Serializable]
+public class DialogueStat
+{
+    public NPCs characterName;
+    public int statNumber;
+}
+
+public enum NPCs
+{
+    None,
+
+    Floriel,
+    Granith,
+    Archie,
+    Aisa,
+    Mossy,
+    Larry,
+
+    Stepellier
+}
+
 public enum ColorVariants
 {
     Normal,

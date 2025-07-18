@@ -46,17 +46,3 @@ public class DialogueColors : Singleton<DialogueColors>
     public Color stepellier_DialogueBox_Pressed;
     public Color stepellier_DialogueBox_Selected;
 }
-
-public enum NPCs
-{
-    None,
-
-    Floriel,
-    Granith,
-    Archie,
-    Aisa,
-    Mossy,
-    Larry,
-
-    Stepellier
-}
