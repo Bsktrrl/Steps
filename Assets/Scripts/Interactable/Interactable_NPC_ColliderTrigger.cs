@@ -33,7 +33,7 @@ public class Interactable_NPC_ColliderTrigger : MonoBehaviour
 
             if (roundedToNPC == playerFacing)
             {
-                ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, parentScript.interact_Talk_Message);
+                ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, MessageManager.Instance.Show_Message(MessageManager.Instance.interact_Talk_Message));
                 parentScript.canInteract = true;
             }
         }
@@ -60,7 +60,7 @@ public class Interactable_NPC_ColliderTrigger : MonoBehaviour
 
             if (roundedToNPC == playerFacing)
             {
-                ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, parentScript.interact_Talk_Message);
+                ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, MessageManager.Instance.Show_Message(MessageManager.Instance.interact_Talk_Message));
                 parentScript.canInteract = true;
             }
             else

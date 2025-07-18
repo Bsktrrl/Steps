@@ -96,7 +96,7 @@ public class DialogueManager : Singleton<DialogueManager>
         npcObject.isInteracting = false;
         npcObject.hasTalked = true;
 
-        ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, npcObject.interact_Talk_Message);
+        ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, MessageManager.Instance.Show_Message(MessageManager.Instance.interact_Talk_Message));
 
         //Reset Stats
         npcObject = null;

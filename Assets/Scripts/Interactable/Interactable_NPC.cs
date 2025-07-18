@@ -21,7 +21,6 @@ public class Interactable_NPC : MonoBehaviour
 
     [HideInInspector] public bool canInteract;
     [HideInInspector] public bool isInteracting;
-    [HideInInspector] public string interact_Talk_Message = "Talk"; //Temp before language integration on UI elements
 
     [Header("To be saved in database")]
     [HideInInspector] public bool hasTalked;
@@ -38,8 +37,6 @@ public class Interactable_NPC : MonoBehaviour
 
     private void Start()
     {
-        interact_Talk_Message = "Talk";
-
         BuildDialogue();
 
         dialogueInfo.npcName = characterName;
