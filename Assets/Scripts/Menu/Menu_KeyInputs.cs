@@ -35,7 +35,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
             print("1. MainMenuManager: OnMenuNavigation_Up");
             Action_MenuNavigationUp_isPressed?.Invoke();
         }
-        else if (GetComponent<PauseMenuManager>())
+        else if (GetComponent<PlayerManager>())
         {
             print("2. PauseMenuManager: OnMenuNavigation_Up");
             Action_MenuNavigationUp_isPressed?.Invoke();
@@ -50,7 +50,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
             print("1. MainMenuManager: OnMenuNavigation_Down");
             Action_MenuNavigationDown_isPressed?.Invoke();
         }
-        else if (GetComponent<PauseMenuManager>())
+        else if (GetComponent<PlayerManager>())
         {
             print("2. PauseMenuManager: OnMenuNavigation_Down");
             Action_MenuNavigationDown_isPressed?.Invoke();
@@ -65,7 +65,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
             print("1. MainMenuManager: OnMenuNavigation_Left");
             Action_MenuNavigationLeft_isPressed?.Invoke();
         }
-        else if (GetComponent<PauseMenuManager>())
+        else if (GetComponent<PlayerManager>())
         {
             print("2. PauseMenuManager: OnMenuNavigation_Left");
             Action_MenuNavigationLeft_isPressed?.Invoke();
@@ -80,7 +80,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
             print("1. MainMenuManager: OnMenuNavigation_Right");
             Action_MenuNavigationRight_isPressed?.Invoke();
         }
-        else if (GetComponent<PauseMenuManager>())
+        else if (GetComponent<PlayerManager>())
         {
             print("2. PauseMenuManager: OnMenuNavigation_Right");
             Action_MenuNavigationRight_isPressed?.Invoke();

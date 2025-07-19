@@ -44,12 +44,14 @@ __________________
 
 
 4.
-Settings Menu:
+Level to overworld menu:
 __________________
 
-4.1. Menu
-- Make the settingsMenu compatible with controller
-- Add text speed select in the Settings menu
+4.1. Transition error
+- When open Settings or Info from the PauseMenu, the OverworldMenu isn't opened properly then exiting the level
+	- The same happens if entering SettingsInfo, go out of PauseMenu and in again, even if the "Exit Level"-Button is the only button that is pressed
+		- It looks like something in the buttons to SettingsMenu and InfoMenu are corrupting the states in which the menus are opened, when exiting the level
+	- It exits properly if pressing "Exit Level"-button as the first button
 
 
 

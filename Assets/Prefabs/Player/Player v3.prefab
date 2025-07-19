@@ -1608,7 +1608,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7118486287847780610}
-  - component: {fileID: 7344716812523310453}
   - component: {fileID: 3505221009554307669}
   m_Layer: 0
   m_Name: PauseMenuManager
@@ -1633,18 +1632,6 @@ Transform:
   - {fileID: 1976437872511370974}
   m_Father: {fileID: 5286349041414221409}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7344716812523310453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1325594220008334895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 291d14bd61e84374392c604ef8d18834, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3505221009554307669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6691,6 +6678,7 @@ GameObject:
   - component: {fileID: 82882239988338960}
   - component: {fileID: 6442351723837406448}
   - component: {fileID: 2542980385125829506}
+  - component: {fileID: 3643509991883984095}
   - component: {fileID: 5230471732307156174}
   - component: {fileID: -3599869874710348832}
   - component: {fileID: 13904960364419418}
@@ -6954,6 +6942,18 @@ MonoBehaviour:
   anim: {fileID: 0}
   blink: 0
   secondaryIdle: 0
+--- !u!114 &3643509991883984095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649856597487831825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 291d14bd61e84374392c604ef8d18834, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5230471732307156174
 MonoBehaviour:
   m_ObjectHideFlags: 0
