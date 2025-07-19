@@ -81,10 +81,10 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
             print("3. UIElementState has Loaded");
         }
 
-        SettingsMenu tempSettingData = FindObjectOfType<SettingsMenu>();
+        SettingsManager tempSettingData = FindObjectOfType<SettingsManager>();
         if (tempOverworld)
         {
-            SettingsMenu.Instance.LoadData();
+            SettingsManager.Instance.LoadData();
             print("4. SettingData has Loaded");
         }
 

@@ -14,6 +14,6 @@ public class MessageManager : Singleton<MessageManager>
 
     public string Show_Message(List<string> stringList)
     {
-        return stringList[(int)SettingsMenu.Instance.settingsData.currentLanguage];
+        return stringList[(int)SettingsManager.Instance.settingsData.currentLanguage];
     }
 }

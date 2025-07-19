@@ -233,6 +233,42 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MenuNavigation_Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""6c3584a7-963d-4270-94d5-d72c20038d11"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MenuNavigation_Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""3d9abcb6-de64-4bc2-8ee9-9c834a82f6b1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MenuNavigation_Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""afc9eab6-dffb-405a-a16a-c5fdc7589999"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MenuNavigation_Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""36cb94a5-8d1a-4135-bdbd-5475da7f3798"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -382,7 +418,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""79ebe61b-f1ea-4a96-84c8-0c61d9745a51"",
-                    ""path"": ""<Keyboard>/upArrow"",
+                    ""path"": ""<Keyboard>/x"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -404,7 +440,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ab5172fc-069b-4759-b262-063d694fff6a"",
-                    ""path"": ""<Keyboard>/downArrow"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -690,7 +726,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""6419b243-4d8e-4c7e-ad37-fa9955afdf13"",
-                    ""path"": ""<Keyboard>/upArrow"",
+                    ""path"": ""<Keyboard>/x"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -712,7 +748,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""42e18646-9010-4d5d-b940-9b24fc4ce0c6"",
-                    ""path"": ""<Keyboard>/downArrow"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -818,6 +854,94 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""InteractButton_Pressed"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5d238093-1c25-455d-aa35-9607665ce74c"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuNavigation_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3d436823-9120-45d3-8f06-693602c2297f"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuNavigation_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3dc715f7-e3ed-4f75-a71f-499e9fc44379"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuNavigation_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""84ed2ba0-a570-4ba4-81fb-39efafa3aed1"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuNavigation_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""78cef5ca-2837-4c27-9c96-25955dc34acf"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuNavigation_Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1b55febc-c5de-4012-961f-523e0c37eb3b"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuNavigation_Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""614e56d9-c9e3-41e8-b12d-312b2cdb805c"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuNavigation_Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""35edd3d8-a8d9-44aa-bd48-a1b080ee47f2"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuNavigation_Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -849,6 +973,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerMovement_DialogueSkip_Pressed = m_PlayerMovement.FindAction("DialogueSkip_Pressed", throwIfNotFound: true);
         m_PlayerMovement_DialogueNext_Pressed = m_PlayerMovement.FindAction("DialogueNext_Pressed", throwIfNotFound: true);
         m_PlayerMovement_InteractButton_Pressed = m_PlayerMovement.FindAction("InteractButton_Pressed", throwIfNotFound: true);
+        m_PlayerMovement_MenuNavigation_Up = m_PlayerMovement.FindAction("MenuNavigation_Up", throwIfNotFound: true);
+        m_PlayerMovement_MenuNavigation_Down = m_PlayerMovement.FindAction("MenuNavigation_Down", throwIfNotFound: true);
+        m_PlayerMovement_MenuNavigation_Left = m_PlayerMovement.FindAction("MenuNavigation_Left", throwIfNotFound: true);
+        m_PlayerMovement_MenuNavigation_Right = m_PlayerMovement.FindAction("MenuNavigation_Right", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -933,6 +1061,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_DialogueSkip_Pressed;
     private readonly InputAction m_PlayerMovement_DialogueNext_Pressed;
     private readonly InputAction m_PlayerMovement_InteractButton_Pressed;
+    private readonly InputAction m_PlayerMovement_MenuNavigation_Up;
+    private readonly InputAction m_PlayerMovement_MenuNavigation_Down;
+    private readonly InputAction m_PlayerMovement_MenuNavigation_Left;
+    private readonly InputAction m_PlayerMovement_MenuNavigation_Right;
     public struct PlayerMovementActions
     {
         private @PlayerControls m_Wrapper;
@@ -960,6 +1092,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @DialogueSkip_Pressed => m_Wrapper.m_PlayerMovement_DialogueSkip_Pressed;
         public InputAction @DialogueNext_Pressed => m_Wrapper.m_PlayerMovement_DialogueNext_Pressed;
         public InputAction @InteractButton_Pressed => m_Wrapper.m_PlayerMovement_InteractButton_Pressed;
+        public InputAction @MenuNavigation_Up => m_Wrapper.m_PlayerMovement_MenuNavigation_Up;
+        public InputAction @MenuNavigation_Down => m_Wrapper.m_PlayerMovement_MenuNavigation_Down;
+        public InputAction @MenuNavigation_Left => m_Wrapper.m_PlayerMovement_MenuNavigation_Left;
+        public InputAction @MenuNavigation_Right => m_Wrapper.m_PlayerMovement_MenuNavigation_Right;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1038,6 +1174,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @InteractButton_Pressed.started += instance.OnInteractButton_Pressed;
             @InteractButton_Pressed.performed += instance.OnInteractButton_Pressed;
             @InteractButton_Pressed.canceled += instance.OnInteractButton_Pressed;
+            @MenuNavigation_Up.started += instance.OnMenuNavigation_Up;
+            @MenuNavigation_Up.performed += instance.OnMenuNavigation_Up;
+            @MenuNavigation_Up.canceled += instance.OnMenuNavigation_Up;
+            @MenuNavigation_Down.started += instance.OnMenuNavigation_Down;
+            @MenuNavigation_Down.performed += instance.OnMenuNavigation_Down;
+            @MenuNavigation_Down.canceled += instance.OnMenuNavigation_Down;
+            @MenuNavigation_Left.started += instance.OnMenuNavigation_Left;
+            @MenuNavigation_Left.performed += instance.OnMenuNavigation_Left;
+            @MenuNavigation_Left.canceled += instance.OnMenuNavigation_Left;
+            @MenuNavigation_Right.started += instance.OnMenuNavigation_Right;
+            @MenuNavigation_Right.performed += instance.OnMenuNavigation_Right;
+            @MenuNavigation_Right.canceled += instance.OnMenuNavigation_Right;
         }
 
         private void UnregisterCallbacks(IPlayerMovementActions instance)
@@ -1111,6 +1259,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @InteractButton_Pressed.started -= instance.OnInteractButton_Pressed;
             @InteractButton_Pressed.performed -= instance.OnInteractButton_Pressed;
             @InteractButton_Pressed.canceled -= instance.OnInteractButton_Pressed;
+            @MenuNavigation_Up.started -= instance.OnMenuNavigation_Up;
+            @MenuNavigation_Up.performed -= instance.OnMenuNavigation_Up;
+            @MenuNavigation_Up.canceled -= instance.OnMenuNavigation_Up;
+            @MenuNavigation_Down.started -= instance.OnMenuNavigation_Down;
+            @MenuNavigation_Down.performed -= instance.OnMenuNavigation_Down;
+            @MenuNavigation_Down.canceled -= instance.OnMenuNavigation_Down;
+            @MenuNavigation_Left.started -= instance.OnMenuNavigation_Left;
+            @MenuNavigation_Left.performed -= instance.OnMenuNavigation_Left;
+            @MenuNavigation_Left.canceled -= instance.OnMenuNavigation_Left;
+            @MenuNavigation_Right.started -= instance.OnMenuNavigation_Right;
+            @MenuNavigation_Right.performed -= instance.OnMenuNavigation_Right;
+            @MenuNavigation_Right.canceled -= instance.OnMenuNavigation_Right;
         }
 
         public void RemoveCallbacks(IPlayerMovementActions instance)
@@ -1153,5 +1313,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnDialogueSkip_Pressed(InputAction.CallbackContext context);
         void OnDialogueNext_Pressed(InputAction.CallbackContext context);
         void OnInteractButton_Pressed(InputAction.CallbackContext context);
+        void OnMenuNavigation_Up(InputAction.CallbackContext context);
+        void OnMenuNavigation_Down(InputAction.CallbackContext context);
+        void OnMenuNavigation_Left(InputAction.CallbackContext context);
+        void OnMenuNavigation_Right(InputAction.CallbackContext context);
     }
 }

@@ -4,13 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingsMenu : Singleton<SettingsMenu>
+public class SettingsManager : Singleton<SettingsManager>
 {
     public static event Action Action_SetNewLanguage;
     public static event Action Action_SetNewTextSpeed;
 
     public GameObject settingsMenuParent;
     public SettingData settingsData;
+
+    [Header("SettingState")]
+    public SettingState settingState;
+
+    [Header("Color")]
+    public Color activeSettingSegmentColor;
 
     [Header("Flag")]
     [SerializeField] Image flagImage;
@@ -31,13 +37,17 @@ public class SettingsMenu : Singleton<SettingsMenu>
     //--------------------
 
 
-    private void Start()
-    {
-        UpdateSettingsMenuDisplay();
-    }
+    //private void Start()
+    //{
+    //    UpdateSettingsMenuDisplay();
+    //}
     private void OnEnable()
     {
         DataManager.Action_dataHasLoaded += LoadData;
+
+        Menu_KeyInputs.Action_MenuNavigationLeft_isPressed += PerformButtonAction_Left;
+        Menu_KeyInputs.Action_MenuNavigationRight_isPressed += PerformButtonAction_Right
+            ;
     }
     private void OnDisable()
     {
@@ -55,6 +65,9 @@ public class SettingsMenu : Singleton<SettingsMenu>
             settingsData.currentLanguage = DataManager.Instance.settingData_StoreList.currentLanguage;
             settingsData.currentTextSpeed = DataManager.Instance.settingData_StoreList.currentTextSpeed;
         }
+
+        ChangeFlagImage();
+        ChangeTextSpeedImage();
     }
     public void SaveData()
     {
@@ -71,8 +84,28 @@ public class SettingsMenu : Singleton<SettingsMenu>
     public void UpdateSettingsMenuDisplay()
     {
         LoadData();
+
         ChangeFlagImage();
         ChangeTextSpeedImage();
+    }
+    
+    
+    //--------------------
+
+
+    void PerformButtonAction_Left()
+    {
+        if (settingState == SettingState.Settings_Language)
+            Flag_LeftButton_isPressed();
+        else if (settingState == SettingState.Settings_TextSpeed)
+            TextSpeed_LeftButton_isPressed();
+    }
+    void PerformButtonAction_Right()
+    {
+        if (settingState == SettingState.Settings_Language)
+            Flag_RightButton_isPressed();
+        else if (settingState == SettingState.Settings_TextSpeed)
+            TextSpeed_RightButton_isPressed();
     }
 
 
@@ -246,6 +279,23 @@ public class SettingData
     public TextSpeed currentTextSpeed;
 }
 
+public enum SettingState
+{
+    Settings_Language,
+    Settings_TextSpeed,
+
+    Info_Movement,
+    Info_CameraRotation,
+    Info_Respawn,
+    Info_PauseMenu,
+    Info_Ascend,
+    Info_Descend,
+    Info_CeilingGrab,
+    Info_GrapplingHook,
+
+
+    BackButton
+}
 public enum Languages
 {
     Norwegian,

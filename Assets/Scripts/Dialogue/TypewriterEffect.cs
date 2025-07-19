@@ -135,7 +135,7 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
 
     float GetTextSpeed()
     {
-        switch (SettingsMenu.Instance.settingsData.currentTextSpeed)
+        switch (SettingsManager.Instance.settingsData.currentTextSpeed)
         {
             case TextSpeed.Slow:
                 return slowText;
@@ -150,7 +150,7 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
     }
     float GetSentenceSpeed()
     {
-        switch (SettingsMenu.Instance.settingsData.currentTextSpeed)
+        switch (SettingsManager.Instance.settingsData.currentTextSpeed)
         {
             case TextSpeed.Slow:
                 return slowSentence;
@@ -165,7 +165,7 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
     }
     float GetCommaSpeed()
     {
-        switch (SettingsMenu.Instance.settingsData.currentTextSpeed)
+        switch (SettingsManager.Instance.settingsData.currentTextSpeed)
         {
             case TextSpeed.Slow:
                 return slowComma;

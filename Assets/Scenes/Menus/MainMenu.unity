@@ -389,6 +389,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 6
@@ -713,7 +721,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchorMin.x
@@ -721,15 +729,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 475
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 115
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_LocalPosition.x
@@ -761,11 +769,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 237.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -186.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1619,6 +1627,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 4
@@ -2093,17 +2109,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 356627752}
   m_CullTransparentMesh: 1
---- !u!114 &371756070 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7788859220012555579, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
-  m_PrefabInstance: {fileID: 689505154}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &373664164 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 384179937895888748, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
@@ -2422,6 +2427,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 6
@@ -3020,6 +3033,7 @@ MonoBehaviour:
   menuState_ToSelect: 1
   levelState_ToSelect: 0
   regionState_ToSelect: 0
+  gameObjectsToHideWithThis: []
 --- !u!1001 &424958129
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3080,6 +3094,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 2
@@ -3550,6 +3572,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 7
@@ -3977,6 +4007,7 @@ MonoBehaviour:
   menuState_ToSelect: 1
   levelState_ToSelect: 0
   regionState_ToSelect: 0
+  gameObjectsToHideWithThis: []
 --- !u!1 &467432731
 GameObject:
   m_ObjectHideFlags: 0
@@ -4046,6 +4077,17 @@ MonoBehaviour:
         Jumping: 0
         GrapplingHook: 0
         CeilingGrab: 0
+--- !u!114 &474079430 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 709283875241572233, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+  m_PrefabInstance: {fileID: 689505154}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &490107726
 GameObject:
   m_ObjectHideFlags: 0
@@ -4264,6 +4306,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 1
@@ -5039,6 +5089,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 5
@@ -5377,6 +5435,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 4
@@ -5841,6 +5907,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 2
@@ -6488,6 +6562,7 @@ MonoBehaviour:
   menuState_ToSelect: 1
   levelState_ToSelect: 0
   regionState_ToSelect: 0
+  gameObjectsToHideWithThis: []
 --- !u!114 &627747597 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 384179937895888748, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
@@ -6867,6 +6942,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 4
@@ -7201,6 +7284,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 3
@@ -7531,6 +7622,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -200
       objectReference: {fileID: 0}
+    - target: {fileID: 854713065844137996, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 854713065844137996, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 1288783375}
+    - target: {fileID: 854713065844137996, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 879746507994670747, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -7571,6 +7674,66 @@ PrefabInstance:
       propertyPath: uiElementToSelect
       value: 
       objectReference: {fileID: 1288783375}
+    - target: {fileID: 1559328675524584771, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 1559328675524584771, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 1288783375}
+    - target: {fileID: 1559328675524584771, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1707499269866095347, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 1707499269866095347, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 1288783375}
+    - target: {fileID: 1707499269866095347, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055568796913026502, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 2055568796913026502, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 1288783375}
+    - target: {fileID: 2055568796913026502, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3240006016773323603, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 3240006016773323603, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 1288783375}
+    - target: {fileID: 3240006016773323603, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3291269050420371728, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 3291269050420371728, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 1288783375}
+    - target: {fileID: 3291269050420371728, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3924284882722198641, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -7655,6 +7818,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -900
       objectReference: {fileID: 0}
+    - target: {fileID: 4403901293782677908, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 4403901293782677908, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 1288783375}
+    - target: {fileID: 4403901293782677908, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174687863500037755, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: newMenuState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174687863500037755, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: uiElementToSelect
+      value: 
+      objectReference: {fileID: 1288783375}
     - target: {fileID: 5506053291434711328, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
       propertyPath: menuToOpen
       value: 
@@ -7667,9 +7850,33 @@ PrefabInstance:
       propertyPath: menuState_ToSelect
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7701710787839453389, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 7701710787839453389, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 1288783375}
+    - target: {fileID: 7701710787839453389, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8186239241933091259, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
       propertyPath: m_text
       value: '-'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8255511196512809119, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 8255511196512809119, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 1288783375}
+    - target: {fileID: 8255511196512809119, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8665318112255067827, guid: a47a2f01a66dfc84e9b7394c823d66f6, type: 3}
       propertyPath: m_text
@@ -7798,6 +8005,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 2
@@ -8132,6 +8347,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 1
@@ -8470,6 +8693,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 4
@@ -8763,13 +8994,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &727398070 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8239113140033515010, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
   m_PrefabInstance: {fileID: 8879586367851771026}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e735b373f145b554e8949ef30bcac675, type: 3}
+  m_Script: {fileID: 11500000, guid: 82a37106db15d1345a59e05c42fd77af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &738154507
@@ -8972,6 +9203,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 6
@@ -9324,6 +9563,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 2
@@ -9576,12 +9823,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1723724838}
+  m_Father: {fileID: 1977871663}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1820, y: 980}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &807025092
 MonoBehaviour:
@@ -9782,6 +10029,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 3
@@ -10112,7 +10367,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchorMin.x
@@ -10120,15 +10375,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 475
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 115
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10160,11 +10415,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 237.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -573.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10597,6 +10852,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 1
@@ -10927,6 +11190,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 2
@@ -11713,6 +11984,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 7
@@ -12259,6 +12538,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 1
@@ -12589,6 +12876,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 2
@@ -12931,6 +13226,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 5
@@ -13347,6 +13650,7 @@ MonoBehaviour:
   menuState_ToSelect: 1
   levelState_ToSelect: 0
   regionState_ToSelect: 0
+  gameObjectsToHideWithThis: []
 --- !u!1 &1171046219 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7429604548242019253, guid: dbfee099e6359ac4785904751ae42563, type: 3}
@@ -13539,6 +13843,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 5
@@ -13858,7 +14170,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchorMin.x
@@ -13866,15 +14178,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 475
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 115
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13906,11 +14218,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 237.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -57.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -14172,6 +14484,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 6
@@ -14828,6 +15148,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 5
@@ -15072,7 +15400,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchorMin.x
@@ -15080,15 +15408,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 475
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 115
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_LocalPosition.x
@@ -15120,11 +15448,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 237.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -444.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -15229,7 +15557,7 @@ PrefabInstance:
     - target: {fileID: 5239250863359563056, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: uiElementToSelect
       value: 
-      objectReference: {fileID: 371756070}
+      objectReference: {fileID: 474079430}
     - target: {fileID: 7429604548242019253, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_Name
       value: Info
@@ -15367,6 +15695,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 4
@@ -15791,6 +16127,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 1
@@ -16207,6 +16551,7 @@ MonoBehaviour:
   menuState_ToSelect: 1
   levelState_ToSelect: 0
   regionState_ToSelect: 0
+  gameObjectsToHideWithThis: []
 --- !u!1 &1367090137 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7607200548363880152, guid: dbfee099e6359ac4785904751ae42563, type: 3}
@@ -16314,8 +16659,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1379088050}
+  - component: {fileID: 1379088053}
   - component: {fileID: 1379088049}
   - component: {fileID: 1379088051}
+  - component: {fileID: 1379088052}
   m_Layer: 0
   m_Name: MainMenuManager
   m_TagString: Untagged
@@ -16368,6 +16715,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9377d5632735f2148ae0948b951999f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1379088052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1379088048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 291d14bd61e84374392c604ef8d18834, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1379088053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1379088048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: f47729a96eb496149972e7058d44f3a7, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: PlayerMovement
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1393260104
 GameObject:
   m_ObjectHideFlags: 0
@@ -16846,6 +17235,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 7
@@ -17857,6 +18254,7 @@ MonoBehaviour:
   menuState_ToSelect: 1
   levelState_ToSelect: 0
   regionState_ToSelect: 0
+  gameObjectsToHideWithThis: []
 --- !u!1 &1602193651
 GameObject:
   m_ObjectHideFlags: 0
@@ -18007,6 +18405,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 3
@@ -18349,6 +18755,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 5
@@ -18706,6 +19120,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 6
@@ -19177,6 +19599,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 5
@@ -19511,6 +19941,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 3
@@ -19879,6 +20317,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 6
@@ -20127,7 +20573,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1723724838
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20140,7 +20586,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 807025091}
   - {fileID: 1974100047}
   m_Father: {fileID: 1977871663}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -20473,6 +20918,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 7
@@ -21294,6 +21747,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 3
@@ -21839,6 +22300,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 807025091}
   - {fileID: 1723724838}
   - {fileID: 811305154}
   - {fileID: 1078648179}
@@ -21852,17 +22314,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1991958052 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5835008547654854911, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
-  m_PrefabInstance: {fileID: 5695102623791086884}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1997952019 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 384179937895888748, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
@@ -22200,6 +22651,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 7
@@ -22902,6 +23361,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 7
@@ -23280,7 +23747,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchorMin.x
@@ -23288,15 +23755,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 475
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 115
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_LocalPosition.x
@@ -23328,11 +23795,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 237.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -315.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -23393,7 +23860,7 @@ PrefabInstance:
     - target: {fileID: 3801963254039540224, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 727398070}
+      objectReference: {fileID: 0}
     - target: {fileID: 3801963254039540224, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
@@ -23437,7 +23904,7 @@ PrefabInstance:
     - target: {fileID: 5239250863359563056, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: uiElementToSelect
       value: 
-      objectReference: {fileID: 1991958052}
+      objectReference: {fileID: 2096490776}
     - target: {fileID: 7429604548242019253, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_Name
       value: Settings
@@ -23631,6 +24098,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2082059236}
   m_CullTransparentMesh: 1
+--- !u!114 &2096490776 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8203627959800638090, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+  m_PrefabInstance: {fileID: 5695102623791086884}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2109299274
 GameObject:
   m_ObjectHideFlags: 0
@@ -23846,6 +24324,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 3
@@ -24188,6 +24674,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 4
@@ -24584,6 +25078,7 @@ MonoBehaviour:
   menuState_ToSelect: 1
   levelState_ToSelect: 0
   regionState_ToSelect: 0
+  gameObjectsToHideWithThis: []
 --- !u!1001 &5695102623791086884
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24599,7 +25094,19 @@ PrefabInstance:
     - target: {fileID: 306408438112241028, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 727398070}
+      objectReference: {fileID: 0}
+    - target: {fileID: 778050286325508965, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 778050286325508965, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 2074749183}
+    - target: {fileID: 778050286325508965, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1018389317829371038, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -24608,6 +25115,22 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: TextSpeed_LeftButton_isPressed
       objectReference: {fileID: 0}
+    - target: {fileID: 1018389317829371038, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1699597080312319912, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 1699597080312319912, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 2074749183}
+    - target: {fileID: 1699597080312319912, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2312996438519978855, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -24615,6 +25138,22 @@ PrefabInstance:
     - target: {fileID: 2312996438519978855, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: Flag_RightButton_isPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 2312996438519978855, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2533442282251756099, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 2533442282251756099, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 2074749183}
+    - target: {fileID: 2533442282251756099, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3115896090803315668, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
       propertyPath: m_Name
@@ -24632,6 +25171,18 @@ PrefabInstance:
       propertyPath: text
       value: 
       objectReference: {fileID: 1779299607}
+    - target: {fileID: 3593006536455693989, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 3593006536455693989, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 2074749183}
+    - target: {fileID: 3593006536455693989, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5210567195629155906, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
       propertyPath: menuToOpen
       value: 
@@ -24648,6 +25199,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 727398070}
+    - target: {fileID: 5703356251081923004, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Flag_LeftButton_isPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 5703356251081923004, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 5780587959541106077, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -24656,6 +25215,30 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: TextSpeed_RightButton_isPressed
       objectReference: {fileID: 0}
+    - target: {fileID: 5780587959541106077, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6216892137285288685, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 6216892137285288685, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 2074749183}
+    - target: {fileID: 6216892137285288685, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6464576220312046872, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: newMenuState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6464576220312046872, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
+      propertyPath: uiElementToSelect
+      value: 
+      objectReference: {fileID: 2074749183}
     - target: {fileID: 7412909659111111853, guid: 79df4b02baa42574290932d5a574ed25, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -24849,6 +25432,14 @@ PrefabInstance:
       propertyPath: regionState_ToSelect
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940069101335760876, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.data[0]
+      value: 
+      objectReference: {fileID: 2127521347}
     - target: {fileID: 4597319644786569910, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelState
       value: 1
@@ -25083,6 +25674,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: SettingsManager
       objectReference: {fileID: 0}
+    - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
+      propertyPath: flagImage
+      value: 
+      objectReference: {fileID: 1835874302}
+    - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
+      propertyPath: textSpeedImage
+      value: 
+      objectReference: {fileID: 1450317309}
     - target: {fileID: 8044555575859198446, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

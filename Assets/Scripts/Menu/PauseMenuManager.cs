@@ -16,7 +16,6 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
     public GameObject pauseMenu_StartButton;
 
-
     [Header("LevelDisplay")]
     [SerializeField] GameObject levelDisplay_Parent;
     [SerializeField] TextMeshProUGUI levelName;
@@ -92,14 +91,14 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         Movement.Action_StepTaken += SetLevelInfo;
         Movement.Action_RespawnPlayer += SetLevelInfo;
         Map_SaveInfo.Action_SetupMap_hasLoaded += SetLevelInfo;
-        SettingsMenu.Action_SetNewLanguage += SetLevelInfo;
+        SettingsManager.Action_SetNewLanguage += SetLevelInfo;
     }
     private void OnDisable()
     {
         Movement.Action_StepTaken -= SetLevelInfo;
         Movement.Action_RespawnPlayer -= SetLevelInfo;
         Map_SaveInfo.Action_SetupMap_hasLoaded -= SetLevelInfo;
-        SettingsMenu.Action_SetNewLanguage -= SetLevelInfo;
+        SettingsManager.Action_SetNewLanguage -= SetLevelInfo;
     }
 
 
@@ -135,7 +134,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         //Set variables
 
         //Language
-        switch (SettingsMenu.Instance.settingsData.currentLanguage)
+        switch (SettingsManager.Instance.settingsData.currentLanguage)
         {
             case Languages.Norwegian:
                 levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_norwegian;

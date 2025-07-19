@@ -88,5 +88,7 @@ public enum MenuState
     NewGame_Menu,
     Pause_Menu_Main,
     Pause_Menu_Settings,
-    Pause_Menu_Info
+    Pause_Menu_Info,
+
+    Skin_Menu
 }

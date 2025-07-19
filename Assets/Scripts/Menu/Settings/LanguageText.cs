@@ -28,13 +28,13 @@ public class LanguageText : MonoBehaviour
     }
     private void OnEnable()
     {
-        SettingsMenu.Action_SetNewLanguage += UpdateText;
+        SettingsManager.Action_SetNewLanguage += UpdateText;
 
         UpdateText();
     }
     private void OnDisable()
     {
-        SettingsMenu.Action_SetNewLanguage -= UpdateText;
+        SettingsManager.Action_SetNewLanguage -= UpdateText;
     }
 
 

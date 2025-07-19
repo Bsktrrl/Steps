@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -16,6 +17,9 @@ public class Button_SelectOnCancel : MonoBehaviour
     [SerializeField] public MenuState menuState_ToSelect;
     [SerializeField] public LevelState levelState_ToSelect;
     [SerializeField] public RegionState regionState_ToSelect;
+
+    [Header("Other GameObject to be hidden with This")]
+    [SerializeField] List<GameObject> gameObjectsToHideWithThis;
 
 
     //--------------------
@@ -68,6 +72,12 @@ public class Button_SelectOnCancel : MonoBehaviour
         if (menuToClose)
         {
             menuToClose.SetActive(false);
+
+            for (int i = 0; i < gameObjectsToHideWithThis.Count; i++)
+            {
+                gameObjectsToHideWithThis[i].SetActive(false);
+            }
+
             //OverWorldManager.Instance.panelBackground.SetActive(false);
         }
 
