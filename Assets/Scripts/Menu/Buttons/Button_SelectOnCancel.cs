@@ -89,6 +89,9 @@ public class Button_SelectOnCancel : MonoBehaviour
             OverWorldManager.Instance.levelState = levelState_ToSelect;
         }
 
-        RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(regionState_ToSelect, levelState_ToSelect);
+        MapManager mapManager = FindObjectOfType<MapManager>();
+
+        if (mapManager == null)
+            RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(regionState_ToSelect, levelState_ToSelect);
     }
 }

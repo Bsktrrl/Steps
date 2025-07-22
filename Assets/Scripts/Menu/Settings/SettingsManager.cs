@@ -112,7 +112,6 @@ public class SettingsManager : Singleton<SettingsManager>
 
     public void Flag_RightButton_isPressed()
     {
-        print("1. Flag_RightButton_isPressed");
         switch (settingsData.currentLanguage)
         {
             case Languages.Norwegian:
@@ -144,8 +143,6 @@ public class SettingsManager : Singleton<SettingsManager>
     }
     public void Flag_LeftButton_isPressed()
     {
-        print("2. Flag_LeftButton_isPressed");
-
         switch (settingsData.currentLanguage)
         {
             case Languages.Norwegian:
@@ -204,7 +201,6 @@ public class SettingsManager : Singleton<SettingsManager>
 
     public void TextSpeed_RightButton_isPressed()
     {
-        print("1. TextSpeed_RightButton_isPressed");
         switch (settingsData.currentTextSpeed)
         {
             case TextSpeed.Slow:
@@ -228,7 +224,6 @@ public class SettingsManager : Singleton<SettingsManager>
     }
     public void TextSpeed_LeftButton_isPressed()
     {
-        print("1. TextSpeed_RightButton_isPressed");
         switch (settingsData.currentTextSpeed)
         {
             case TextSpeed.Slow:
