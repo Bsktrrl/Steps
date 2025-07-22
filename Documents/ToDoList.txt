@@ -18,20 +18,16 @@ _____________
 Dialogue Scene:
 __________________
 
-2.1. Saving:
-- Make a class to save all info about an NPC
-	- Completed in level
-	- Stats to use, going forward
-	- Values for or not for one of the two endings (pluss or minus numbers to set for either of the two endings)
-
-2.2. NPC GameObject Disappearance:
-- Make the NPC's gameObject become hidden if dialogue has finished (save the NPC state and destroy it from the scene if dialogue has taken place)
-
 2.3. Camera:
 - Make it so that the camera pans correctly into the scene (both characters are visible)
 - Make it so that the camera pans correctly out from the scene (back to its previous state)
 - Make camera angle based on the player lookDir
    - NPC needs to turn towards the player
+
+2.2. InteractButton [SEMI FIXED]
+- The interactButton stays, even when leaving the triggerHitbox
+   - It seems like the OnTriggerExit-function isn't working
+- It's happening when the player spawns in next to a NPC
 
 
 
