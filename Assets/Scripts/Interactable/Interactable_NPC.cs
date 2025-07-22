@@ -7,12 +7,14 @@ using System.Collections;
 public class Interactable_NPC : MonoBehaviour
 {
     [Header("Character")]
-    [SerializeField] NPCs characterName;
+    public NPCs characterName;
 
     [Header("Stats from Excel")]
     [SerializeField] TextAsset dialogueSheet;
+    public int levelNumber;
+
     int startRow = 2;
-    int columns = 72;
+    int columns = 96;
 
     [Header("Dialogue Info")]
     public DialogueInfo dialogueInfo = new DialogueInfo();
@@ -62,6 +64,8 @@ public class Interactable_NPC : MonoBehaviour
         Player_KeyInputs.Action_InteractButton_isPressed += CanInteract;
 
         OptionButton.Action_OptionButtonIsPressed += StartNewDialogueSegment_OptionButton;
+
+        DataManager.Action_dataHasLoaded += SetupNPC;
     }
     private void OnDisable()
     {
@@ -70,6 +74,8 @@ public class Interactable_NPC : MonoBehaviour
         Player_KeyInputs.Action_InteractButton_isPressed -= CanInteract;
 
         OptionButton.Action_OptionButtonIsPressed -= StartNewDialogueSegment_OptionButton;
+
+        DataManager.Action_dataHasLoaded -= SetupNPC;
     }
 
 
@@ -104,6 +110,339 @@ public class Interactable_NPC : MonoBehaviour
         }
         
         SetupDialogueDisplay(segmentIndex, dialogueInfo.npcName);
+    }
+
+
+    //--------------------
+
+
+    void SetupNPC()
+    {
+        switch (characterName)
+        {
+            case NPCs.None:
+                break;
+
+            case NPCs.Floriel:
+                switch (levelNumber)
+                {
+                    case 1:
+                        if (DataManager.Instance.charatersData_Store.floriel_Data.level_1_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 2:
+                        if (DataManager.Instance.charatersData_Store.floriel_Data.level_2_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 3:
+                        if (DataManager.Instance.charatersData_Store.floriel_Data.level_3_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 4:
+                        if (DataManager.Instance.charatersData_Store.floriel_Data.level_4_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 5:
+                        if (DataManager.Instance.charatersData_Store.floriel_Data.level_5_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 6:
+                        if (DataManager.Instance.charatersData_Store.floriel_Data.level_6_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+            case NPCs.Granith:
+                switch (levelNumber)
+                {
+                    case 1:
+                        if (DataManager.Instance.charatersData_Store.granith_Data.level_1_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 2:
+                        if (DataManager.Instance.charatersData_Store.granith_Data.level_2_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 3:
+                        if (DataManager.Instance.charatersData_Store.granith_Data.level_3_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 4:
+                        if (DataManager.Instance.charatersData_Store.granith_Data.level_4_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 5:
+                        if (DataManager.Instance.charatersData_Store.granith_Data.level_5_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 6:
+                        if (DataManager.Instance.charatersData_Store.granith_Data.level_6_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+            case NPCs.Archie:
+                switch (levelNumber)
+                {
+                    case 1:
+                        if (DataManager.Instance.charatersData_Store.archie_Data.level_1_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 2:
+                        if (DataManager.Instance.charatersData_Store.archie_Data.level_2_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 3:
+                        if (DataManager.Instance.charatersData_Store.archie_Data.level_3_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 4:
+                        if (DataManager.Instance.charatersData_Store.archie_Data.level_4_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 5:
+                        if (DataManager.Instance.charatersData_Store.archie_Data.level_5_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 6:
+                        if (DataManager.Instance.charatersData_Store.archie_Data.level_6_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+            case NPCs.Aisa:
+                switch (levelNumber)
+                {
+                    case 1:
+                        if (DataManager.Instance.charatersData_Store.aisa_Data.level_1_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 2:
+                        if (DataManager.Instance.charatersData_Store.aisa_Data.level_2_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 3:
+                        if (DataManager.Instance.charatersData_Store.aisa_Data.level_3_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 4:
+                        if (DataManager.Instance.charatersData_Store.aisa_Data.level_4_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 5:
+                        if (DataManager.Instance.charatersData_Store.aisa_Data.level_5_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 6:
+                        if (DataManager.Instance.charatersData_Store.aisa_Data.level_6_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+            case NPCs.Mossy:
+                switch (levelNumber)
+                {
+                    case 1:
+                        if (DataManager.Instance.charatersData_Store.mossy_Data.level_1_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 2:
+                        if (DataManager.Instance.charatersData_Store.mossy_Data.level_2_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 3:
+                        if (DataManager.Instance.charatersData_Store.mossy_Data.level_3_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 4:
+                        if (DataManager.Instance.charatersData_Store.mossy_Data.level_4_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 5:
+                        if (DataManager.Instance.charatersData_Store.mossy_Data.level_5_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 6:
+                        if (DataManager.Instance.charatersData_Store.mossy_Data.level_6_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+            case NPCs.Larry:
+                switch (levelNumber)
+                {
+                    case 1:
+                        if (DataManager.Instance.charatersData_Store.larry_Data.level_1_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 2:
+                        if (DataManager.Instance.charatersData_Store.larry_Data.level_2_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 3:
+                        if (DataManager.Instance.charatersData_Store.larry_Data.level_3_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 4:
+                        if (DataManager.Instance.charatersData_Store.larry_Data.level_4_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 5:
+                        if (DataManager.Instance.charatersData_Store.larry_Data.level_5_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 6:
+                        if (DataManager.Instance.charatersData_Store.larry_Data.level_6_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+            case NPCs.Stepellier:
+                switch (levelNumber)
+                {
+                    case 1:
+                        if (DataManager.Instance.charatersData_Store.stepellier_Data.level_1_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 2:
+                        if (DataManager.Instance.charatersData_Store.stepellier_Data.level_2_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 3:
+                        if (DataManager.Instance.charatersData_Store.stepellier_Data.level_3_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 4:
+                        if (DataManager.Instance.charatersData_Store.stepellier_Data.level_4_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 5:
+                        if (DataManager.Instance.charatersData_Store.stepellier_Data.level_5_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+                    case 6:
+                        if (DataManager.Instance.charatersData_Store.stepellier_Data.level_6_DialogueFinished)
+                            HideNPC();
+                        else
+                            ShowNPC();
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+    void ShowNPC()
+    {
+        gameObject.SetActive(true);
+    }
+    void HideNPC()
+    {
+        gameObject.SetActive(false);
     }
 
 
@@ -205,54 +544,74 @@ public class Interactable_NPC : MonoBehaviour
             for (int j = 0; j < DialogueManager.Instance.languageAmount; j++)
             {
                 //Message
-                if (excelData[columns * (i + startRow - 1) + 13 + (10 * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageDialogueList[j] = excelData[columns * (i + startRow - 1) + 13 + (10 * j)].Trim();
+                if (excelData[columns * (i + startRow - 1) + 13 + (14 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageDialogueList[j] = excelData[columns * (i + startRow - 1) + 13 + (14 * j)].Trim();
                 else
                     dialogueInfo.dialogueSegments[i].languageDialogueList[j] = "";
 
                 //Option 1
-                if (excelData[columns * (i + startRow - 1) + 14 + (10 * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Text = excelData[columns * (i + startRow - 1) + 14 + (10 * j)].Trim();
+                if (excelData[columns * (i + startRow - 1) + 14 + (14 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Text = excelData[columns * (i + startRow - 1) + 14 + (14 * j)].Trim();
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Text = "";
                 //Option 1 - Link
-                if (excelData[columns * (i + startRow - 1) + 15 + (10 * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 15 + (10 * j));
+                if (excelData[columns * (i + startRow - 1) + 15 + (14 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 15 + (14 * j));
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Linked = -1;
+                //Option 1 - EndingValue
+                if (excelData[columns * (i + startRow - 1) + 16 + (14 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_EndingValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 16 + (14 * j));
+                else
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_EndingValue = 0;
 
                 //Option 2
-                if (excelData[columns * (i + startRow - 1) + 16 + (10 * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Text = excelData[columns * (i + startRow - 1) + 16 + (10 * j)].Trim();
+                if (excelData[columns * (i + startRow - 1) + 17 + (14 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Text = excelData[columns * (i + startRow - 1) + 17 + (14 * j)].Trim();
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Text = "";
-                //Option 1 - Link
-                if (excelData[columns * (i + startRow - 1) + 17 + (10 * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 17 + (10 * j));
+                //Option 2 - Link
+                if (excelData[columns * (i + startRow - 1) + 18 + (14 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 18 + (14 * j));
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Linked = -1;
+                //Option 2 - EndingValue
+                if (excelData[columns * (i + startRow - 1) + 19 + (14 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_EndingValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 19 + (14 * j));
+                else
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_EndingValue = 0;
 
                 //Option 3
-                if (excelData[columns * (i + startRow - 1) + 18 + (10 * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Text = excelData[columns * (i + startRow - 1) + 18 + (10 * j)].Trim();
+                if (excelData[columns * (i + startRow - 1) + 20 + (14 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Text = excelData[columns * (i + startRow - 1) + 20 + (14 * j)].Trim();
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Text = "";
-                //Option 1 - Link
-                if (excelData[columns * (i + startRow - 1) + 19 + (10 * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 19 + (10 * j));
+                //Option 3 - Link
+                if (excelData[columns * (i + startRow - 1) + 21 + (14 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 21 + (14 * j));
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Linked = -1;
+                //Option 3 - EndingValue
+                if (excelData[columns * (i + startRow - 1) + 22 + (14 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_EndingValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 22 + (14 * j));
+                else
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_EndingValue = 0;
 
                 //Option 4
-                if (excelData[columns * (i + startRow - 1) + 20 + (10 * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Text = excelData[columns * (i + startRow - 1) + 20 + (10 * j)].Trim();
+                if (excelData[columns * (i + startRow - 1) + 23 + (14 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Text = excelData[columns * (i + startRow - 1) + 23 + (14 * j)].Trim();
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Text = "";
-                //Option 1 - Link
-                if (excelData[columns * (i + startRow - 1) + 21 + (10 * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 21 + (10 * j));
+                //Option 4 - Link
+                if (excelData[columns * (i + startRow - 1) + 24 + (14 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 24 + (14 * j));
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Linked = -1;
+                //Option 4 - EndingValue
+                if (excelData[columns * (i + startRow - 1) + 25 + (14 * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_EndingValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 25 + (14 * j));
+                else
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_EndingValue = 0;
             }
 
             #endregion
@@ -299,13 +658,13 @@ public class Interactable_NPC : MonoBehaviour
         {
             if (int.TryParse(part, out int number))
             {
-                statsSplizer.statNumber = number;
+                statsSplizer.value = number;
             }
             else if (!string.IsNullOrEmpty(part))
             {
                 if (Enum.TryParse(part, out NPCs result))
                 {
-                    statsSplizer.characterName = result;
+                    statsSplizer.character = result;
                 }
                 else
                 {
@@ -329,6 +688,18 @@ public class Interactable_NPC : MonoBehaviour
 
         return -1;
     }
+    int ParseEndValue(string[] data, int index)
+    {
+        int tempValue = ParseIntSafe(data, index);
+
+        if (tempValue == 1)
+            return -1;
+        else if (tempValue == 2)
+            return 1;
+
+        return 0;
+    }
+
     void CleanTheTextDialogue(int i)
     {
         dialogueInfo.dialogueSegments[i].segmentDescription = CleanQuotes(dialogueInfo.dialogueSegments[i].segmentDescription);
@@ -396,13 +767,25 @@ public class Interactable_NPC : MonoBehaviour
         {
             int segment = -1;
             if (DialogueManager.Instance.selectedButton == 1)
+            {
                 segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option1_Linked - 1;
+                UpdateEndingValue(NPCManager.Instance.charatersData.stepellier_Data.endingValue, characterName, dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option1_EndingValue);
+            }
             else if (DialogueManager.Instance.selectedButton == 2)
+            {
                 segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option2_Linked - 1;
+                UpdateEndingValue(NPCManager.Instance.charatersData.stepellier_Data.endingValue, characterName, dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option2_EndingValue);
+            }
             else if (DialogueManager.Instance.selectedButton == 3)
+            {
                 segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option3_Linked - 1;
+                UpdateEndingValue(NPCManager.Instance.charatersData.stepellier_Data.endingValue, characterName, dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option3_EndingValue);
+            }
             else if (DialogueManager.Instance.selectedButton == 4)
+            {
                 segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option4_Linked - 1;
+                UpdateEndingValue(NPCManager.Instance.charatersData.stepellier_Data.endingValue, characterName, dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option4_EndingValue);
+            }
 
             segmentIndex = segment;
             DialogueManager.Instance.currentSegement = segmentIndex;
@@ -411,7 +794,44 @@ public class Interactable_NPC : MonoBehaviour
 
             SetupDialogueDisplay(segment, dialogueInfo.npcName); 
         }
-    } 
+    }
+
+    void UpdateEndingValue(int valueToChange, NPCs npc, int tempEndingValue)
+    {
+        switch (npc)
+        {
+            case NPCs.None:
+                break;
+
+            case NPCs.Floriel:
+                valueToChange += tempEndingValue;
+                break;
+            case NPCs.Granith:
+                valueToChange += tempEndingValue;
+                break;
+            case NPCs.Archie:
+                valueToChange += tempEndingValue;
+                break;
+            case NPCs.Aisa:
+                valueToChange += tempEndingValue;
+                break;
+            case NPCs.Mossy:
+                valueToChange += tempEndingValue;
+                break;
+            case NPCs.Larry:
+                valueToChange += tempEndingValue;
+                break;
+
+            case NPCs.Stepellier:
+                valueToChange += tempEndingValue;
+                break;
+
+            default:
+                break;
+        }
+
+        NPCManager.Instance.SaveData();
+    }
 
 
     //--------------------

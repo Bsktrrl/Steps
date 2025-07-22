@@ -20,7 +20,11 @@ public class GameData
     //Settings
     /*[HideInInspector]*/ public SettingData settingData_SaveList = new SettingData();
 
+    //Map Display
     /*[HideInInspector]*/ public MapNameDisplay mapNameDisplay_Save = new MapNameDisplay();
+
+    //NPC Data
+    /*[HideInInspector]*/ public CharatersData charatersData_Save = new CharatersData();
 
 
     //--------------------
@@ -34,5 +38,6 @@ public class GameData
         mapInfo_SaveList = new Map_SaveInfoList();
         overWorldStates_SaveList = new OverWorldStates();
         //settingData_SaveList = new SettingData();
+        charatersData_Save = new CharatersData();
     }
 }

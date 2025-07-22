@@ -3893,6 +3893,70 @@ MonoBehaviour:
       mapNameDisplay_chinese: 
       mapNameDisplay_japanese: 
       mapNameDisplay_korean: 
+    charatersData_Save:
+      floriel_Data:
+        level_1_DialogueFinished: 0
+        level_2_DialogueFinished: 0
+        level_3_DialogueFinished: 0
+        level_4_DialogueFinished: 0
+        level_5_DialogueFinished: 0
+        level_6_DialogueFinished: 0
+        endingValue: 0
+        dialogueStatList: []
+      granith_Data:
+        level_1_DialogueFinished: 0
+        level_2_DialogueFinished: 0
+        level_3_DialogueFinished: 0
+        level_4_DialogueFinished: 0
+        level_5_DialogueFinished: 0
+        level_6_DialogueFinished: 0
+        endingValue: 0
+        dialogueStatList: []
+      archie_Data:
+        level_1_DialogueFinished: 0
+        level_2_DialogueFinished: 0
+        level_3_DialogueFinished: 0
+        level_4_DialogueFinished: 0
+        level_5_DialogueFinished: 0
+        level_6_DialogueFinished: 0
+        endingValue: 0
+        dialogueStatList: []
+      aisa_Data:
+        level_1_DialogueFinished: 0
+        level_2_DialogueFinished: 0
+        level_3_DialogueFinished: 0
+        level_4_DialogueFinished: 0
+        level_5_DialogueFinished: 0
+        level_6_DialogueFinished: 0
+        endingValue: 0
+        dialogueStatList: []
+      mossy_Data:
+        level_1_DialogueFinished: 0
+        level_2_DialogueFinished: 0
+        level_3_DialogueFinished: 0
+        level_4_DialogueFinished: 0
+        level_5_DialogueFinished: 0
+        level_6_DialogueFinished: 0
+        endingValue: 0
+        dialogueStatList: []
+      larry_Data:
+        level_1_DialogueFinished: 0
+        level_2_DialogueFinished: 0
+        level_3_DialogueFinished: 0
+        level_4_DialogueFinished: 0
+        level_5_DialogueFinished: 0
+        level_6_DialogueFinished: 0
+        endingValue: 0
+        dialogueStatList: []
+      stepellier_Data:
+        level_1_DialogueFinished: 0
+        level_2_DialogueFinished: 0
+        level_3_DialogueFinished: 0
+        level_4_DialogueFinished: 0
+        level_5_DialogueFinished: 0
+        level_6_DialogueFinished: 0
+        endingValue: 0
+        dialogueStatList: []
 --- !u!1 &3873675504140058313
 GameObject:
   m_ObjectHideFlags: 0
@@ -5792,6 +5856,114 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 15
+--- !u!1 &5997705719498087359
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5218142855838997793}
+  - component: {fileID: 2813975944339203601}
+  m_Layer: 0
+  m_Name: NPC_Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5218142855838997793
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5997705719498087359}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5286349041414221409}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2813975944339203601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5997705719498087359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c995a1306b14b847b4f9310e3d924bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  charatersData:
+    floriel_Data:
+      level_1_DialogueFinished: 0
+      level_2_DialogueFinished: 0
+      level_3_DialogueFinished: 0
+      level_4_DialogueFinished: 0
+      level_5_DialogueFinished: 0
+      level_6_DialogueFinished: 0
+      endingValue: 0
+      dialogueStatList: []
+    granith_Data:
+      level_1_DialogueFinished: 0
+      level_2_DialogueFinished: 0
+      level_3_DialogueFinished: 0
+      level_4_DialogueFinished: 0
+      level_5_DialogueFinished: 0
+      level_6_DialogueFinished: 0
+      endingValue: 0
+      dialogueStatList: []
+    archie_Data:
+      level_1_DialogueFinished: 0
+      level_2_DialogueFinished: 0
+      level_3_DialogueFinished: 0
+      level_4_DialogueFinished: 0
+      level_5_DialogueFinished: 0
+      level_6_DialogueFinished: 0
+      endingValue: 0
+      dialogueStatList: []
+    aisa_Data:
+      level_1_DialogueFinished: 0
+      level_2_DialogueFinished: 0
+      level_3_DialogueFinished: 0
+      level_4_DialogueFinished: 0
+      level_5_DialogueFinished: 0
+      level_6_DialogueFinished: 0
+      endingValue: 0
+      dialogueStatList: []
+    mossy_Data:
+      level_1_DialogueFinished: 0
+      level_2_DialogueFinished: 0
+      level_3_DialogueFinished: 0
+      level_4_DialogueFinished: 0
+      level_5_DialogueFinished: 0
+      level_6_DialogueFinished: 0
+      endingValue: 0
+      dialogueStatList: []
+    larry_Data:
+      level_1_DialogueFinished: 0
+      level_2_DialogueFinished: 0
+      level_3_DialogueFinished: 0
+      level_4_DialogueFinished: 0
+      level_5_DialogueFinished: 0
+      level_6_DialogueFinished: 0
+      endingValue: 0
+      dialogueStatList: []
+    stepellier_Data:
+      level_1_DialogueFinished: 0
+      level_2_DialogueFinished: 0
+      level_3_DialogueFinished: 0
+      level_4_DialogueFinished: 0
+      level_5_DialogueFinished: 0
+      level_6_DialogueFinished: 0
+      endingValue: 0
+      dialogueStatList: []
 --- !u!1 &6004403996688527789
 GameObject:
   m_ObjectHideFlags: 0
@@ -6954,6 +7126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 291d14bd61e84374392c604ef8d18834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settingsManager: {fileID: 0}
 --- !u!114 &5230471732307156174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8286,6 +8459,7 @@ Transform:
   - {fileID: 3374932970866878138}
   - {fileID: 797473763408457913}
   - {fileID: 9198788994329936560}
+  - {fileID: 5218142855838997793}
   m_Father: {fileID: 5013509160915303274}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7959138362559981258
@@ -8633,6 +8807,70 @@ MonoBehaviour:
       mapNameDisplay_chinese: 
       mapNameDisplay_japanese: 
       mapNameDisplay_korean: 
+    charatersData_Save:
+      floriel_Data:
+        level_1_DialogueFinished: 0
+        level_2_DialogueFinished: 0
+        level_3_DialogueFinished: 0
+        level_4_DialogueFinished: 0
+        level_5_DialogueFinished: 0
+        level_6_DialogueFinished: 0
+        endingValue: 0
+        dialogueStatList: []
+      granith_Data:
+        level_1_DialogueFinished: 0
+        level_2_DialogueFinished: 0
+        level_3_DialogueFinished: 0
+        level_4_DialogueFinished: 0
+        level_5_DialogueFinished: 0
+        level_6_DialogueFinished: 0
+        endingValue: 0
+        dialogueStatList: []
+      archie_Data:
+        level_1_DialogueFinished: 0
+        level_2_DialogueFinished: 0
+        level_3_DialogueFinished: 0
+        level_4_DialogueFinished: 0
+        level_5_DialogueFinished: 0
+        level_6_DialogueFinished: 0
+        endingValue: 0
+        dialogueStatList: []
+      aisa_Data:
+        level_1_DialogueFinished: 0
+        level_2_DialogueFinished: 0
+        level_3_DialogueFinished: 0
+        level_4_DialogueFinished: 0
+        level_5_DialogueFinished: 0
+        level_6_DialogueFinished: 0
+        endingValue: 0
+        dialogueStatList: []
+      mossy_Data:
+        level_1_DialogueFinished: 0
+        level_2_DialogueFinished: 0
+        level_3_DialogueFinished: 0
+        level_4_DialogueFinished: 0
+        level_5_DialogueFinished: 0
+        level_6_DialogueFinished: 0
+        endingValue: 0
+        dialogueStatList: []
+      larry_Data:
+        level_1_DialogueFinished: 0
+        level_2_DialogueFinished: 0
+        level_3_DialogueFinished: 0
+        level_4_DialogueFinished: 0
+        level_5_DialogueFinished: 0
+        level_6_DialogueFinished: 0
+        endingValue: 0
+        dialogueStatList: []
+      stepellier_Data:
+        level_1_DialogueFinished: 0
+        level_2_DialogueFinished: 0
+        level_3_DialogueFinished: 0
+        level_4_DialogueFinished: 0
+        level_5_DialogueFinished: 0
+        level_6_DialogueFinished: 0
+        endingValue: 0
+        dialogueStatList: []
   menuState_Store: 0
   playerStats_Store:
     steps_Max: 0
@@ -8675,6 +8913,70 @@ MonoBehaviour:
     mapNameDisplay_chinese: 
     mapNameDisplay_japanese: 
     mapNameDisplay_korean: 
+  charatersData_Store:
+    floriel_Data:
+      level_1_DialogueFinished: 0
+      level_2_DialogueFinished: 0
+      level_3_DialogueFinished: 0
+      level_4_DialogueFinished: 0
+      level_5_DialogueFinished: 0
+      level_6_DialogueFinished: 0
+      endingValue: 0
+      dialogueStatList: []
+    granith_Data:
+      level_1_DialogueFinished: 0
+      level_2_DialogueFinished: 0
+      level_3_DialogueFinished: 0
+      level_4_DialogueFinished: 0
+      level_5_DialogueFinished: 0
+      level_6_DialogueFinished: 0
+      endingValue: 0
+      dialogueStatList: []
+    archie_Data:
+      level_1_DialogueFinished: 0
+      level_2_DialogueFinished: 0
+      level_3_DialogueFinished: 0
+      level_4_DialogueFinished: 0
+      level_5_DialogueFinished: 0
+      level_6_DialogueFinished: 0
+      endingValue: 0
+      dialogueStatList: []
+    aisa_Data:
+      level_1_DialogueFinished: 0
+      level_2_DialogueFinished: 0
+      level_3_DialogueFinished: 0
+      level_4_DialogueFinished: 0
+      level_5_DialogueFinished: 0
+      level_6_DialogueFinished: 0
+      endingValue: 0
+      dialogueStatList: []
+    mossy_Data:
+      level_1_DialogueFinished: 0
+      level_2_DialogueFinished: 0
+      level_3_DialogueFinished: 0
+      level_4_DialogueFinished: 0
+      level_5_DialogueFinished: 0
+      level_6_DialogueFinished: 0
+      endingValue: 0
+      dialogueStatList: []
+    larry_Data:
+      level_1_DialogueFinished: 0
+      level_2_DialogueFinished: 0
+      level_3_DialogueFinished: 0
+      level_4_DialogueFinished: 0
+      level_5_DialogueFinished: 0
+      level_6_DialogueFinished: 0
+      endingValue: 0
+      dialogueStatList: []
+    stepellier_Data:
+      level_1_DialogueFinished: 0
+      level_2_DialogueFinished: 0
+      level_3_DialogueFinished: 0
+      level_4_DialogueFinished: 0
+      level_5_DialogueFinished: 0
+      level_6_DialogueFinished: 0
+      endingValue: 0
+      dialogueStatList: []
 --- !u!1 &8656163791597484161
 GameObject:
   m_ObjectHideFlags: 0
@@ -13082,6 +13384,10 @@ PrefabInstance:
       propertyPath: textSpeedImage
       value: 
       objectReference: {fileID: 168577927798073640}
+    - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
+      propertyPath: settingsMenuParent
+      value: 
+      objectReference: {fileID: 3467789213663661519}
     - target: {fileID: 8044555575859198446, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

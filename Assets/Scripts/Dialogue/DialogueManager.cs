@@ -98,6 +98,8 @@ public class DialogueManager : Singleton<DialogueManager>
 
         ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, MessageManager.Instance.Show_Message(MessageManager.Instance.interact_Talk_Message));
 
+        NPCManager.Instance.SetDialogueFinished(npcObject.characterName, npcObject.levelNumber);
+
         //Reset Stats
         npcObject = null;
         activeNPC = NPCs.None;
@@ -323,24 +325,28 @@ public class LanguageOptions
     [Header("Option 1")]
     public string option1_Text;
     public int option1_Linked;
+    public int option1_EndingValue;
 
     [Header("Option 2")]
     public string option2_Text;
     public int option2_Linked;
+    public int option2_EndingValue;
 
     [Header("Option 3")]
     public string option3_Text;
     public int option3_Linked;
+    public int option3_EndingValue;
 
     [Header("Option 4")]
     public string option4_Text;
     public int option4_Linked;
+    public int option4_EndingValue;
 }
 [Serializable]
 public class DialogueStat
 {
-    public NPCs characterName;
-    public int statNumber;
+    public NPCs character;
+    public int value;
 }
 
 public enum NPCs

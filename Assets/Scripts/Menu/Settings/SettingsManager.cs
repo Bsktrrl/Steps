@@ -37,21 +37,19 @@ public class SettingsManager : Singleton<SettingsManager>
     //--------------------
 
 
-    //private void Start()
-    //{
-    //    UpdateSettingsMenuDisplay();
-    //}
     private void OnEnable()
     {
         DataManager.Action_dataHasLoaded += LoadData;
 
         Menu_KeyInputs.Action_MenuNavigationLeft_isPressed += PerformButtonAction_Left;
-        Menu_KeyInputs.Action_MenuNavigationRight_isPressed += PerformButtonAction_Right
-            ;
+        Menu_KeyInputs.Action_MenuNavigationRight_isPressed += PerformButtonAction_Right;
     }
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= LoadData;
+
+        Menu_KeyInputs.Action_MenuNavigationLeft_isPressed -= PerformButtonAction_Left;
+        Menu_KeyInputs.Action_MenuNavigationRight_isPressed -= PerformButtonAction_Right;
     }
 
 

@@ -36,7 +36,11 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     //Settings
     /*[HideInInspector]*/ public SettingData settingData_StoreList = new SettingData();
 
+    //Map Display
     /*[HideInInspector]*/ public MapNameDisplay mapNameDisplay_Store = new MapNameDisplay();
+
+    //NPC Data
+    /*[HideInInspector]*/ public CharatersData charatersData_Store = new CharatersData();
     #endregion
 
 
@@ -45,21 +49,37 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
     public void LoadData(GameData gameData)
     {
-        //Get saved data from file to be loaded into the project
-        #region
+        GetSavedDataFromFile(gameData);
+        LoadDataIntoProject(gameData);
 
+        StartCoroutine(LoadingDelay(0.01f));
+    }
+    IEnumerator LoadingDelay(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        print("------------------------------");
+
+        Action_dataHasLoaded?.Invoke();
+    }
+
+
+    //--------------------
+
+
+    void GetSavedDataFromFile(GameData gameData)
+    {
         this.menuState_Store = gameData.menuState_Save;
         this.playerStats_Store = gameData.playerStats_Save;
         this.mapInfo_StoreList = gameData.mapInfo_SaveList;
         this.overWorldStates_StoreList = gameData.overWorldStates_SaveList;
         this.settingData_StoreList = gameData.settingData_SaveList;
         this.mapNameDisplay_Store = gameData.mapNameDisplay_Save;
+        this.charatersData_Store = gameData.charatersData_Save;
+    }
 
-        #endregion
-
-        //Load the saved data into the project
-        #region
-
+    void LoadDataIntoProject(GameData gameData)
+    {
         SaveLoad_MapInfo tempMapInfo = FindObjectOfType<SaveLoad_MapInfo>();
         if (tempMapInfo)
         {
@@ -88,17 +108,12 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
             print("4. SettingData has Loaded");
         }
 
-        #endregion
-
-        StartCoroutine(LoadingDelay(0.01f));
-    }
-    IEnumerator LoadingDelay(float time)
-    {
-        yield return new WaitForSeconds(time);
-
-        print("------------------------------");
-
-        Action_dataHasLoaded?.Invoke();
+        NPCManager tempNPCManager = FindObjectOfType<NPCManager>();
+        if (tempNPCManager)
+        {
+            NPCManager.Instance.LoadData();
+            print("5. NPCManager has Loaded");
+        }
     }
 
     public void SaveData(ref GameData gameData)
@@ -111,11 +126,9 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         gameData.playerStats_Save = this.playerStats_Store;
         gameData.overWorldStates_SaveList = this.overWorldStates_StoreList;
         gameData.mapNameDisplay_Save = this.mapNameDisplay_Store;
+        gameData.charatersData_Save = this.charatersData_Store;
+        gameData.settingData_SaveList = this.settingData_StoreList;
     }
-
-
-    //--------------------
-
 
     public void Load_NewGame_Data(GameData oldData, GameData newData)
     {
@@ -126,6 +139,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.overWorldStates_StoreList = newData.overWorldStates_SaveList;
         this.settingData_StoreList = newData.settingData_SaveList;
         this.mapNameDisplay_Store = newData.mapNameDisplay_Save;
+        this.charatersData_Store = newData.charatersData_Save;
 
         //Persist through newGame
         this.settingData_StoreList = oldData.settingData_SaveList;

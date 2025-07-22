@@ -13,6 +13,8 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     [Header("Input System")]
     public PlayerControls playerControls;
 
+    [SerializeField] SettingsManager settingsManager;
+
 
     //--------------------
 
@@ -20,6 +22,8 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     private void Start()
     {
         playerControls = new PlayerControls();
+
+        settingsManager = FindObjectOfType<SettingsManager>();
     }
 
 
@@ -35,7 +39,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
             print("1. MainMenuManager: OnMenuNavigation_Up");
             Action_MenuNavigationUp_isPressed?.Invoke();
         }
-        else if (GetComponent<PlayerManager>())
+        else if (GetComponent<PlayerManager>() && settingsManager.settingsMenuParent.activeInHierarchy)
         {
             print("2. PauseMenuManager: OnMenuNavigation_Up");
             Action_MenuNavigationUp_isPressed?.Invoke();
@@ -50,7 +54,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
             print("1. MainMenuManager: OnMenuNavigation_Down");
             Action_MenuNavigationDown_isPressed?.Invoke();
         }
-        else if (GetComponent<PlayerManager>())
+        else if (GetComponent<PlayerManager>() && settingsManager.settingsMenuParent.activeInHierarchy)
         {
             print("2. PauseMenuManager: OnMenuNavigation_Down");
             Action_MenuNavigationDown_isPressed?.Invoke();
@@ -65,7 +69,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
             print("1. MainMenuManager: OnMenuNavigation_Left");
             Action_MenuNavigationLeft_isPressed?.Invoke();
         }
-        else if (GetComponent<PlayerManager>())
+        else if (GetComponent<PlayerManager>() && settingsManager.settingsMenuParent.activeInHierarchy)
         {
             print("2. PauseMenuManager: OnMenuNavigation_Left");
             Action_MenuNavigationLeft_isPressed?.Invoke();
@@ -80,7 +84,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
             print("1. MainMenuManager: OnMenuNavigation_Right");
             Action_MenuNavigationRight_isPressed?.Invoke();
         }
-        else if (GetComponent<PlayerManager>())
+        else if (GetComponent<PlayerManager>() && settingsManager.settingsMenuParent.activeInHierarchy)
         {
             print("2. PauseMenuManager: OnMenuNavigation_Right");
             Action_MenuNavigationRight_isPressed?.Invoke();
