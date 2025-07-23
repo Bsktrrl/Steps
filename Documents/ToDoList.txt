@@ -1,5 +1,8 @@
 ----- NEXT ON THE LIST -----
 
+--- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything is fine)
+
+
 1.
 Dialogue Box:
 _____________
@@ -8,9 +11,6 @@ _____________
 - Gather stats of what types of info the player have visited in the dialogue, so we can keep track over which dialogues that can be accessed in further conversations
 - Save the dialogue stats to saveData, for future use
 - Make the option of a dialogue to start at another segment, based on Stats from previous dialogue
-
-1.2. Dialogue text Box
-- When pressing the "Next"-button on controller on the last segment, it's displayed again. This doesn't happen when pressing the "Cancel"-button on controller
 
 
 
@@ -23,11 +23,6 @@ __________________
 - Make it so that the camera pans correctly out from the scene (back to its previous state)
 - Make camera angle based on the player lookDir
    - NPC needs to turn towards the player
-
-2.2. InteractButton [SEMI FIXED]
-- The interactButton stays, even when leaving the triggerHitbox
-   - It seems like the OnTriggerExit-function isn't working
-- It's happening when the player spawns in next to a NPC
 
 
 
@@ -43,28 +38,18 @@ __________________
 
 
 4.
-Level to overworld menu:
-__________________
-
-4.1. Transition error
-- When open Settings or Info from the PauseMenu, the OverworldMenu isn't opened properly then exiting the level
-	- The same happens if entering SettingsInfo, go out of PauseMenu and in again, even if the "Exit Level"-Button is the only button that is pressed
-		- It looks like something in the buttons to SettingsMenu and InfoMenu are corrupting the states in which the menus are opened, when exiting the level
-	- It exits properly if pressing "Exit Level"-button as the first button
-
-
-
-5.
 Skin Menu:
 __________________
 
-5.1. Menu
+4.1. Menu
 - Make the menu where the player skins can be unlocked and changed
 - Make a functionality of putting on hats
 - Save/Load skins unlocked and skin equipped
 
 
+
 ---
+
 
 
 10.

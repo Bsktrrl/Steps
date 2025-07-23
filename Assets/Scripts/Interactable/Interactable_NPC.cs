@@ -33,6 +33,10 @@ public class Interactable_NPC : MonoBehaviour
     bool blink;
     int animationCount;
 
+    [Header("DialogueSetup")]
+    [SerializeField] List<DialogueStat> this_TempDataInfo_StartingStat_List = new List<DialogueStat>();
+    [SerializeField] List<int> tempIndexList = new List<int>();
+
 
     //--------------------
 
@@ -105,11 +109,169 @@ public class Interactable_NPC : MonoBehaviour
         }
         else
         {
-            DialogueManager.Instance.currentSegement = 0;
-            segmentIndex = 0;
+            int tempIndex = SetCorrectSegmentFromTheStart(characterName);
+
+            DialogueManager.Instance.currentSegement = tempIndex;
+            segmentIndex = tempIndex;
         }
         
         SetupDialogueDisplay(segmentIndex, dialogueInfo.npcName);
+    }
+
+    int SetCorrectSegmentFromTheStart(NPCs npc)
+    {
+        //Make a list containing all StartStats aquired
+        if (dialogueInfo != null)
+        {
+            for (int i = 0; i < dialogueInfo.dialogueSegments.Count; i++)
+            {
+                DialogueStat tempDialogueStat = new DialogueStat();
+
+                if (dialogueInfo.dialogueSegments[i].startingStat != null && dialogueInfo.dialogueSegments[i].startingStat.value > 0)
+                {
+                    tempDialogueStat.character = dialogueInfo.dialogueSegments[i].startingStat.character;
+                    tempDialogueStat.value = dialogueInfo.dialogueSegments[i].startingStat.value;
+
+                    this_TempDataInfo_StartingStat_List.Add(tempDialogueStat);
+                }
+                else
+                {
+                    tempDialogueStat.character = NPCs.None;
+                    tempDialogueStat.value = 0;
+
+                    this_TempDataInfo_StartingStat_List.Add(tempDialogueStat);
+                }
+            }
+        }
+        
+        //Make a list conataining the segmentIndexes of possible startingSegments 
+        if (DataManager.Instance.charatersData_Store != null)
+        {
+            switch (npc)
+            {
+                case NPCs.None:
+                    break;
+
+                case NPCs.Floriel:
+                    for (int i = 0; i < DataManager.Instance.charatersData_Store.floriel_Data.dialogueStartStatList.Count; i++)
+                    {
+                        for (int j = 0; j < this_TempDataInfo_StartingStat_List.Count; j++)
+                        {
+                            if (DataManager.Instance.charatersData_Store.floriel_Data.dialogueStartStatList[i] != null
+                                && this_TempDataInfo_StartingStat_List[j].value > 0
+                                && DataManager.Instance.charatersData_Store.floriel_Data.dialogueStartStatList[i].character == this_TempDataInfo_StartingStat_List[j].character
+                                && DataManager.Instance.charatersData_Store.floriel_Data.dialogueStartStatList[i].value == this_TempDataInfo_StartingStat_List[j].value)
+                            {
+                                tempIndexList.Add(j);
+                            }
+                        }
+                    }
+                    break;
+                case NPCs.Granith:
+                    for (int i = 0; i < DataManager.Instance.charatersData_Store.granith_Data.dialogueStartStatList.Count; i++)
+                    {
+                        for (int j = 0; j < this_TempDataInfo_StartingStat_List.Count; j++)
+                        {
+                            if (DataManager.Instance.charatersData_Store.granith_Data.dialogueStartStatList[i] != null
+                                && this_TempDataInfo_StartingStat_List[j].value > 0
+                                && DataManager.Instance.charatersData_Store.granith_Data.dialogueStartStatList[i].character == this_TempDataInfo_StartingStat_List[j].character
+                                && DataManager.Instance.charatersData_Store.granith_Data.dialogueStartStatList[i].value == this_TempDataInfo_StartingStat_List[j].value)
+                            {
+                                tempIndexList.Add(j);
+                            }
+                        }
+                    }
+                    break;
+                case NPCs.Archie:
+                    for (int i = 0; i < DataManager.Instance.charatersData_Store.archie_Data.dialogueStartStatList.Count; i++)
+                    {
+                        for (int j = 0; j < this_TempDataInfo_StartingStat_List.Count; j++)
+                        {
+                            if (DataManager.Instance.charatersData_Store.archie_Data.dialogueStartStatList[i] != null
+                                && this_TempDataInfo_StartingStat_List[j].value > 0
+                                && DataManager.Instance.charatersData_Store.archie_Data.dialogueStartStatList[i].character == this_TempDataInfo_StartingStat_List[j].character
+                                && DataManager.Instance.charatersData_Store.archie_Data.dialogueStartStatList[i].value == this_TempDataInfo_StartingStat_List[j].value)
+                            {
+                                tempIndexList.Add(j);
+                            }
+                        }
+                    }
+                    break;
+                case NPCs.Aisa:
+                    for (int i = 0; i < DataManager.Instance.charatersData_Store.aisa_Data.dialogueStartStatList.Count; i++)
+                    {
+                        for (int j = 0; j < this_TempDataInfo_StartingStat_List.Count; j++)
+                        {
+                            if (DataManager.Instance.charatersData_Store.aisa_Data.dialogueStartStatList[i] != null
+                                && this_TempDataInfo_StartingStat_List[j].value > 0
+                                && DataManager.Instance.charatersData_Store.aisa_Data.dialogueStartStatList[i].character == this_TempDataInfo_StartingStat_List[j].character
+                                && DataManager.Instance.charatersData_Store.aisa_Data.dialogueStartStatList[i].value == this_TempDataInfo_StartingStat_List[j].value)
+                            {
+                                tempIndexList.Add(j);
+                            }
+                        }
+                    }
+                    break;
+                case NPCs.Mossy:
+                    for (int i = 0; i < DataManager.Instance.charatersData_Store.mossy_Data.dialogueStartStatList.Count; i++)
+                    {
+                        for (int j = 0; j < this_TempDataInfo_StartingStat_List.Count; j++)
+                        {
+                            if (DataManager.Instance.charatersData_Store.mossy_Data.dialogueStartStatList[i] != null
+                                && this_TempDataInfo_StartingStat_List[j].value > 0
+                                && DataManager.Instance.charatersData_Store.mossy_Data.dialogueStartStatList[i].character == this_TempDataInfo_StartingStat_List[j].character
+                                && DataManager.Instance.charatersData_Store.mossy_Data.dialogueStartStatList[i].value == this_TempDataInfo_StartingStat_List[j].value)
+                            {
+                                tempIndexList.Add(j);
+                            }
+                        }
+                    }
+                    break;
+                case NPCs.Larry:
+                    for (int i = 0; i < DataManager.Instance.charatersData_Store.larry_Data.dialogueStartStatList.Count; i++)
+                    {
+                        for (int j = 0; j < this_TempDataInfo_StartingStat_List.Count; j++)
+                        {
+                            if (DataManager.Instance.charatersData_Store.floriel_Data.dialogueStartStatList[i] != null
+                                && this_TempDataInfo_StartingStat_List[j].value > 0
+                                && DataManager.Instance.charatersData_Store.larry_Data.dialogueStartStatList[i].character == this_TempDataInfo_StartingStat_List[j].character
+                                && DataManager.Instance.charatersData_Store.larry_Data.dialogueStartStatList[i].value == this_TempDataInfo_StartingStat_List[j].value)
+                            {
+                                tempIndexList.Add(j);
+                            }
+                        }
+                    }
+                    break;
+                case NPCs.Stepellier:
+                    for (int i = 0; i < DataManager.Instance.charatersData_Store.stepellier_Data.dialogueStartStatList.Count; i++)
+                    {
+                        for (int j = 0; j < this_TempDataInfo_StartingStat_List.Count; j++)
+                        {
+                            if (DataManager.Instance.charatersData_Store.stepellier_Data.dialogueStartStatList[i] != null
+                                && this_TempDataInfo_StartingStat_List[j].value > 0
+                                && DataManager.Instance.charatersData_Store.stepellier_Data.dialogueStartStatList[i].character == this_TempDataInfo_StartingStat_List[j].character
+                                && DataManager.Instance.charatersData_Store.stepellier_Data.dialogueStartStatList[i].value == this_TempDataInfo_StartingStat_List[j].value)
+                            {
+                                tempIndexList.Add(j);
+                            }
+                        }
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        //Choose among the possible startingSegemntIndexes
+        if (tempIndexList.Count > 0)
+        {
+            return tempIndexList[UnityEngine.Random.Range(0, tempIndexList.Count)];
+        }
+        else
+        {
+            return 0;
+        }
     }
 
 
@@ -790,7 +952,7 @@ public class Interactable_NPC : MonoBehaviour
             segmentIndex = segment;
             DialogueManager.Instance.currentSegement = segmentIndex;
 
-            print("DialogueSegment: Button: " + (DialogueManager.Instance.selectedButton - 1) + " | Index: " + segmentIndex + " | Segment: " + segment);
+            //print("DialogueSegment: Button: " + (DialogueManager.Instance.selectedButton - 1) + " | Index: " + segmentIndex + " | Segment: " + segment);
 
             SetupDialogueDisplay(segment, dialogueInfo.npcName); 
         }
@@ -839,6 +1001,8 @@ public class Interactable_NPC : MonoBehaviour
 
     void SetupDialogueDisplay(int index, NPCs npc)
     {
+        NPCManager.Instance.UpdateStatsGathered(index, dialogueInfo, npc);
+
         //Text
         if (dialogueInfo.dialogueSegments.Count > index)
         {
@@ -875,11 +1039,6 @@ public class Interactable_NPC : MonoBehaviour
         {
             animationCount = 0;
             StartCoroutine(RunAnimations(index));
-
-            //for (int i = 0; i < dialogueInfo.dialogueSegments[index].animation_NPC.Count; i++)
-            //{
-            //    PerformAnimation(dialogueInfo.dialogueSegments[index].animation_NPC[i]);
-            //}
         } 
     }
     void SetupDialogue(DialogueSegment dialogueSegment)

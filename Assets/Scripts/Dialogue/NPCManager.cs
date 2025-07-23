@@ -41,19 +41,19 @@ public class NPCManager : Singleton<NPCManager>
                         charatersData.floriel_Data.level_1_DialogueFinished = true;
                         break;
                     case 2:
-                        charatersData.floriel_Data.level_1_DialogueFinished = true;
+                        charatersData.floriel_Data.level_2_DialogueFinished = true;
                         break;
                     case 3:
-                        charatersData.floriel_Data.level_1_DialogueFinished = true;
+                        charatersData.floriel_Data.level_3_DialogueFinished = true;
                         break;
                     case 4:
-                        charatersData.floriel_Data.level_1_DialogueFinished = true;
+                        charatersData.floriel_Data.level_4_DialogueFinished = true;
                         break;
                     case 5:
-                        charatersData.floriel_Data.level_1_DialogueFinished = true;
+                        charatersData.floriel_Data.level_5_DialogueFinished = true;
                         break;
                     case 6:
-                        charatersData.floriel_Data.level_1_DialogueFinished = true;
+                        charatersData.floriel_Data.level_6_DialogueFinished = true;
                         break;
 
                     default:
@@ -67,19 +67,19 @@ public class NPCManager : Singleton<NPCManager>
                         charatersData.granith_Data.level_1_DialogueFinished = true;
                         break;
                     case 2:
-                        charatersData.granith_Data.level_1_DialogueFinished = true;
+                        charatersData.granith_Data.level_2_DialogueFinished = true;
                         break;
                     case 3:
-                        charatersData.granith_Data.level_1_DialogueFinished = true;
+                        charatersData.granith_Data.level_3_DialogueFinished = true;
                         break;
                     case 4:
-                        charatersData.granith_Data.level_1_DialogueFinished = true;
+                        charatersData.granith_Data.level_4_DialogueFinished = true;
                         break;
                     case 5:
-                        charatersData.granith_Data.level_1_DialogueFinished = true;
+                        charatersData.granith_Data.level_5_DialogueFinished = true;
                         break;
                     case 6:
-                        charatersData.granith_Data.level_1_DialogueFinished = true;
+                        charatersData.granith_Data.level_6_DialogueFinished = true;
                         break;
 
                     default:
@@ -93,19 +93,19 @@ public class NPCManager : Singleton<NPCManager>
                         charatersData.archie_Data.level_1_DialogueFinished = true;
                         break;
                     case 2:
-                        charatersData.archie_Data.level_1_DialogueFinished = true;
+                        charatersData.archie_Data.level_2_DialogueFinished = true;
                         break;
                     case 3:
-                        charatersData.archie_Data.level_1_DialogueFinished = true;
+                        charatersData.archie_Data.level_3_DialogueFinished = true;
                         break;
                     case 4:
-                        charatersData.archie_Data.level_1_DialogueFinished = true;
+                        charatersData.archie_Data.level_4_DialogueFinished = true;
                         break;
                     case 5:
-                        charatersData.archie_Data.level_1_DialogueFinished = true;
+                        charatersData.archie_Data.level_5_DialogueFinished = true;
                         break;
                     case 6:
-                        charatersData.archie_Data.level_1_DialogueFinished = true;
+                        charatersData.archie_Data.level_6_DialogueFinished = true;
                         break;
 
                     default:
@@ -119,19 +119,19 @@ public class NPCManager : Singleton<NPCManager>
                         charatersData.aisa_Data.level_1_DialogueFinished = true;
                         break;
                     case 2:
-                        charatersData.aisa_Data.level_1_DialogueFinished = true;
+                        charatersData.aisa_Data.level_2_DialogueFinished = true;
                         break;
                     case 3:
-                        charatersData.aisa_Data.level_1_DialogueFinished = true;
+                        charatersData.aisa_Data.level_3_DialogueFinished = true;
                         break;
                     case 4:
-                        charatersData.aisa_Data.level_1_DialogueFinished = true;
+                        charatersData.aisa_Data.level_4_DialogueFinished = true;
                         break;
                     case 5:
-                        charatersData.aisa_Data.level_1_DialogueFinished = true;
+                        charatersData.aisa_Data.level_5_DialogueFinished = true;
                         break;
                     case 6:
-                        charatersData.aisa_Data.level_1_DialogueFinished = true;
+                        charatersData.aisa_Data.level_6_DialogueFinished = true;
                         break;
 
                     default:
@@ -145,19 +145,19 @@ public class NPCManager : Singleton<NPCManager>
                         charatersData.mossy_Data.level_1_DialogueFinished = true;
                         break;
                     case 2:
-                        charatersData.mossy_Data.level_1_DialogueFinished = true;
+                        charatersData.mossy_Data.level_2_DialogueFinished = true;
                         break;
                     case 3:
-                        charatersData.mossy_Data.level_1_DialogueFinished = true;
+                        charatersData.mossy_Data.level_3_DialogueFinished = true;
                         break;
                     case 4:
-                        charatersData.mossy_Data.level_1_DialogueFinished = true;
+                        charatersData.mossy_Data.level_4_DialogueFinished = true;
                         break;
                     case 5:
-                        charatersData.mossy_Data.level_1_DialogueFinished = true;
+                        charatersData.mossy_Data.level_5_DialogueFinished = true;
                         break;
                     case 6:
-                        charatersData.mossy_Data.level_1_DialogueFinished = true;
+                        charatersData.mossy_Data.level_6_DialogueFinished = true;
                         break;
 
                     default:
@@ -171,19 +171,19 @@ public class NPCManager : Singleton<NPCManager>
                         charatersData.larry_Data.level_1_DialogueFinished = true;
                         break;
                     case 2:
-                        charatersData.larry_Data.level_1_DialogueFinished = true;
+                        charatersData.larry_Data.level_2_DialogueFinished = true;
                         break;
                     case 3:
-                        charatersData.larry_Data.level_1_DialogueFinished = true;
+                        charatersData.larry_Data.level_3_DialogueFinished = true;
                         break;
                     case 4:
-                        charatersData.larry_Data.level_1_DialogueFinished = true;
+                        charatersData.larry_Data.level_4_DialogueFinished = true;
                         break;
                     case 5:
-                        charatersData.larry_Data.level_1_DialogueFinished = true;
+                        charatersData.larry_Data.level_5_DialogueFinished = true;
                         break;
                     case 6:
-                        charatersData.larry_Data.level_1_DialogueFinished = true;
+                        charatersData.larry_Data.level_6_DialogueFinished = true;
                         break;
 
                     default:
@@ -197,19 +197,19 @@ public class NPCManager : Singleton<NPCManager>
                         charatersData.stepellier_Data.level_1_DialogueFinished = true;
                         break;
                     case 2:
-                        charatersData.stepellier_Data.level_1_DialogueFinished = true;
+                        charatersData.stepellier_Data.level_2_DialogueFinished = true;
                         break;
                     case 3:
-                        charatersData.stepellier_Data.level_1_DialogueFinished = true;
+                        charatersData.stepellier_Data.level_3_DialogueFinished = true;
                         break;
                     case 4:
-                        charatersData.stepellier_Data.level_1_DialogueFinished = true;
+                        charatersData.stepellier_Data.level_4_DialogueFinished = true;
                         break;
                     case 5:
-                        charatersData.stepellier_Data.level_1_DialogueFinished = true;
+                        charatersData.stepellier_Data.level_5_DialogueFinished = true;
                         break;
                     case 6:
-                        charatersData.stepellier_Data.level_1_DialogueFinished = true;
+                        charatersData.stepellier_Data.level_6_DialogueFinished = true;
                         break;
 
                     default:
@@ -222,6 +222,51 @@ public class NPCManager : Singleton<NPCManager>
         }
 
         SaveData();
+    }
+
+    public void UpdateStatsGathered(int index, DialogueInfo dialogueInfo, NPCs npc)
+    {
+        DialogueStat tempDialogueStat = new DialogueStat();
+        if (dialogueInfo.dialogueSegments[index].statToGet != null)
+        {
+            print("1. UpdateStatsGathered");
+
+            if (dialogueInfo.dialogueSegments[index].statToGet.character.ToString() != "")
+                tempDialogueStat.character = dialogueInfo.dialogueSegments[index].statToGet.character;
+            if (dialogueInfo.dialogueSegments[index].statToGet.value > 0)
+                tempDialogueStat.value = dialogueInfo.dialogueSegments[index].statToGet.value;
+
+            switch (npc)
+            {
+                case NPCs.None:
+                    break;
+
+                case NPCs.Floriel:
+                    charatersData.floriel_Data.dialogueStartStatList.Add(tempDialogueStat);
+                    break;
+                case NPCs.Granith:
+                    charatersData.granith_Data.dialogueStartStatList.Add(tempDialogueStat);
+                    break;
+                case NPCs.Archie:
+                    charatersData.archie_Data.dialogueStartStatList.Add(tempDialogueStat);
+                    break;
+                case NPCs.Aisa:
+                    charatersData.aisa_Data.dialogueStartStatList.Add(tempDialogueStat);
+                    break;
+                case NPCs.Mossy:
+                    charatersData.mossy_Data.dialogueStartStatList.Add(tempDialogueStat);
+                    break;
+                case NPCs.Larry:
+                    charatersData.larry_Data.dialogueStartStatList.Add(tempDialogueStat);
+                    break;
+                case NPCs.Stepellier:
+                    charatersData.stepellier_Data.dialogueStartStatList.Add(tempDialogueStat);
+                    break;
+
+                default:
+                    break;
+            }
+        } 
     }
 }
 
@@ -253,6 +298,6 @@ public class NPCData
     [Header("Ending Value")]
     public int endingValue;
 
-    [Header("Stats Aquired")]
-    public List<DialogueStat> dialogueStatList = new List<DialogueStat>();
+    [Header("Stats Aquired To Start Dialogue")]
+    public List<DialogueStat> dialogueStartStatList = new List<DialogueStat>();
 }
