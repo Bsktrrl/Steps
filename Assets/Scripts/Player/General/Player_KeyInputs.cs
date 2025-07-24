@@ -6,6 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class Player_KeyInputs : Singleton<Player_KeyInputs>
 {
+    public static event Action Action_WalkButton_isPressed;
+    public static event Action Action_WalkButton_isReleased;
+
+    public static event Action Action_Ascend_isPressed;
+    public static event Action Action_Descend_isPressed;
+    public static event Action Action_CeilingGrab_isPressed;
+    public static event Action Action_GrapplingHook_isPressed;
+
     public static event Action Action_dialogueButton_isPressed;
     public static event Action Action_dialogueNextButton_isPressed;
     public static event Action Action_InteractButton_isPressed;
@@ -39,7 +47,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         if (PlayerManager.Instance.playerBody.transform.GetComponentInChildren<Animator>())
         {
-            Player_Animstions.Instance.anim = PlayerManager.Instance.playerBody.GetComponentInChildren<Animator>();
+            Player_Animations.Instance.anim = PlayerManager.Instance.playerBody.GetComponentInChildren<Animator>();
         }
     }
 
@@ -52,50 +60,64 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Movement()) { return; }
 
         forward_isPressed = true;
-        Player_Animstions.Instance.anim.SetTrigger("Walk");
+        Action_WalkButton_isPressed?.Invoke();
+        //Player_Animations.Instance.anim.SetTrigger("Walk");
     }
     void OnForward_Up()
     {
         forward_isPressed = false;
+
+        Action_WalkButton_isReleased?.Invoke();
     }
     void OnBackward_Down()
     {
         if (!ButtonChecks_Movement()) { return; }
 
         back_isPressed = true;
-        Player_Animstions.Instance.anim.SetTrigger("Walk");
+        Action_WalkButton_isPressed?.Invoke();
+        //Player_Animations.Instance.anim.SetTrigger("Walk");
     }
     void OnBackward_Up()
     {
         back_isPressed = false;
+
+        Action_WalkButton_isReleased?.Invoke();
     }
     void OnLeft_Down()
     {
         if (!ButtonChecks_Movement()) { return; }
 
         left_isPressed = true;
-        Player_Animstions.Instance.anim.SetTrigger("Walk");
+        Action_WalkButton_isPressed?.Invoke();
+        //Player_Animations.Instance.anim.SetTrigger("Walk");
     }
     void OnLeft_Up()
     {
         left_isPressed = false;
+
+        Action_WalkButton_isReleased?.Invoke();
     }
     void OnRight_Down()
     {
         if (!ButtonChecks_Movement()) { return; }
 
         right_isPressed = true;
-        Player_Animstions.Instance.anim.SetTrigger("Walk");
+        Action_WalkButton_isPressed?.Invoke();
+        //Player_Animations.Instance.anim.SetTrigger("Walk");
     }
     void OnRight_Up()
     {
         right_isPressed = false;
+
+        Action_WalkButton_isReleased?.Invoke();
     }
+
     void OnAbilityUp_Down()
     {
         if (!ButtonChecks_Movement() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
         up_isPressed = true;
+        Action_Ascend_isPressed?.Invoke();
     }
     void OnAbilityUp_Up()
     {
@@ -108,6 +130,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Movement() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
         
         down_isPressed = true;
+        Action_Descend_isPressed?.Invoke();
 
         //Player_Interact.Instance.InteractWithObject();
     }
@@ -150,6 +173,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Other()) { return; }
 
         Player_CeilingGrab.Instance.CeilingGrab();
+
+        Action_CeilingGrab_isPressed?.Invoke();
     }
 
     void OnAbilityRight_DownPress()
@@ -164,6 +189,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         grapplingHook_isPressed = false;
         Movement.Instance.UpdateGrapplingHookMovement_Release();
+
+        Action_GrapplingHook_isPressed?.Invoke();
     }
 
 

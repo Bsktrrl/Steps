@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class AnimationManager : Singleton<AnimationManager>
 {
+    public string walk;
+    public string swim;
+
     public string blink;
     public bool talking;
 

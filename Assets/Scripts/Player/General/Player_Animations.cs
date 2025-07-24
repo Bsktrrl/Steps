@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_Animstions : Singleton<Player_Animstions>
+public class Player_Animations : Singleton<Player_Animations>
 {
     public Animator anim;
 
@@ -20,23 +20,55 @@ public class Player_Animstions : Singleton<Player_Animstions>
     //--------------------
 
 
+    private void OnEnable()
+    {
+        //Player_KeyInputs.Action_WalkButton_isPressed += Perform_WalkingAnimation;
+    }
+    private void OnDisable()
+    {
+        //Player_KeyInputs.Action_WalkButton_isPressed -= Perform_WalkingAnimation;
+    }
+
+
+    //--------------------
+
+
+    public void Perform_WalkingAnimation()
+    {
+        if (Movement.Instance.isMoving) { return; }
+
+        anim.SetTrigger(AnimationManager.Instance.walk);
+    }
+    public void Perform_StairSlopeWalkingAnimation()
+    {
+        if (Movement.Instance.isMoving) { return; }
+
+        anim.SetTrigger(AnimationManager.Instance.walk);
+    }
+    public void Perform_SwimAnimation()
+    {
+        if (Movement.Instance.isMoving) { return; }
+
+        anim.SetTrigger(AnimationManager.Instance.swim);
+    }
+
+
+    //--------------------
+
+
     IEnumerator RandomBlink()
     {
         float time = UnityEngine.Random.Range(0, 10);
-        //print("1.1. RandomBlink: " + time);
 
         yield return new WaitForSeconds(time);
 
         anim.SetTrigger(AnimationManager.Instance.blink);
-
-        //print("1.2. RandomBlink");
 
         StartCoroutine(RandomBlink());
     }
     IEnumerator RandomIdle()
     {
         float time = UnityEngine.Random.Range(15, 30);
-        //print("2.1. SecondaryIdle: " + time);
 
         yield return new WaitForSeconds(time);
 

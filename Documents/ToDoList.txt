@@ -1,17 +1,6 @@
 ----- NEXT ON THE LIST -----
 
---- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything is fine)
-
-
-1.
-Dialogue Box:
-_____________
-
-1.5. Stats gathering
-- Gather stats of what types of info the player have visited in the dialogue, so we can keep track over which dialogues that can be accessed in further conversations
-- Save the dialogue stats to saveData, for future use
-- Make the option of a dialogue to start at another segment, based on Stats from previous dialogue
-
+--- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 
 2.
@@ -19,10 +8,12 @@ Dialogue Scene:
 __________________
 
 2.3. Camera:
-- Make it so that the camera pans correctly into the scene (both characters are visible)
-- Make it so that the camera pans correctly out from the scene (back to its previous state)
+- Make it so that the camera pans correctly into the dialogueScene (both characters are visible)
+- Make it so that the camera pans correctly out from the dialogueScene (back to its previous cameraState)
 - Make camera angle based on the player lookDir
-   - NPC needs to turn towards the player
+   - NPC needs to turn towards the player whan interacted with
+   - Use a secondary camera that starts in the same position and rotation as the active camera, and ends at the same position after the dialogue is finished
+   - Make the dialogue start after the camera has come into place
 
 
 
@@ -31,8 +22,9 @@ Player Movement Animations:
 __________________
 
 3.1. Movement
-- Change movementAnimations to trigger upon buttonPress from the "Player_KeyInput"-script
-   	- Play animation when going to a stair
+- Change movementAnimations to trigger when moving
+	- Only play WalkAnimation once if holding down moveButton
+   	- Always play animation when moving onto or off a stair and Slope
 	- Set SwimAnimation when in Water
 
 
