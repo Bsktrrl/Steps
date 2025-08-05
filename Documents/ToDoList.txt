@@ -3,11 +3,11 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 
-2.
+1.
 Dialogue Scene:
 __________________
 
-2.3. Camera:
+1.1. Camera:
 - Make it so that the camera pans correctly into the dialogueScene (both characters are visible)
 - Make it so that the camera pans correctly out from the dialogueScene (back to its previous cameraState)
 - Make camera angle based on the player lookDir
@@ -15,28 +15,68 @@ __________________
    - Use a secondary camera that starts in the same position and rotation as the active camera, and ends at the same position after the dialogue is finished
    - Make the dialogue start after the camera has come into place
 
+- Set a camera onto each NPC's, and use this as reference point when transitioning
+
+
+
+2.
+Skin Menu:
+__________________
+
+2.1. Menu
+- Make the menu where the player skins can be unlocked and changed
+- Make a functionality of putting on hats
+- Save/Load skins unlocked and skin equipped
+
 
 
 3.
-Player Movement Animations:
+3D Sound:
 __________________
 
-3.1. Movement
-- Change movementAnimations to trigger when moving
-	- Only play WalkAnimation once if holding down moveButton
-   	- Always play animation when moving onto or off a stair and Slope
-	- Set SwimAnimation when in Water
+3.1. Manual 3D sound logic
+- Add manual 3D sound effect, based on player distance to blocks
+
+3.2. Only 1 source block
+- Make it so that only the nearest block is making the distance
+- Make 1 Audio Source for each block that makes sound
+	- Water
+	- Lava
+	- Quicksand
+	- Effect Blocks
+		- Spawn Point
+		- Refill Steps
+		- Teleporter
+		- Pusher
+		- Movable
+
+3.3. Other audio objects
+- Make it so that other objects can have 3D sound (attach script onto each object to make it having 3D sound automaticly)
+	- Elevators
+	- insects
+
+3.4. Ice glide bug
+- Fix ice glide audio bug
 
 
 
 4.
-Skin Menu:
+Menu navigating errors:
 __________________
 
-4.1. Menu
-- Make the menu where the player skins can be unlocked and changed
-- Make a functionality of putting on hats
-- Save/Load skins unlocked and skin equipped
+4.1. Menu Errors
+- Moving from option to option, keyboard is laggy
+
+4.2. Overworld Errors
+- Fix so that the menu operates as intended when pressing/hovering buttons/regions
+
+
+
+5.
+Respawn direction:
+__________________
+
+5.1. Make an option to set the camera and player direction after each respawn, in each checkpoint, so we can control where the player are looking after respawning
 
 
 
@@ -53,9 +93,6 @@ Levels
 
 ----- TASKS SOON TO BE IMPLEMENTED -----
 
-
-SkinMenu:
-- Make it possible to change skins from a menu, when the player has enough essence and unlocked the skins
 
 
 Movement & Camera:

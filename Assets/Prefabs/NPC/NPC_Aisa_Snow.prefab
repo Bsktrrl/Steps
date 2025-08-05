@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 6253424194841118502}
   - component: {fileID: 1525756280946242221}
   - component: {fileID: 1292546990514564345}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: NPC_Aisa_Snow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -325,15 +325,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: 4
   dialogueSheet: {fileID: 0}
+  levelNumber: 0
   dialogueInfo:
     npcName: 0
     dialogueSegments: []
   canInteract: 0
   isInteracting: 0
-  interact_Talk_Message: Talk
   hasTalked: 0
   lastSegment: 0
   anim: {fileID: 5846140602710338860}
+  this_TempDataInfo_StartingStat_List: []
+  tempIndexList: 
 --- !u!1 &4456832504910887773
 GameObject:
   m_ObjectHideFlags: 0

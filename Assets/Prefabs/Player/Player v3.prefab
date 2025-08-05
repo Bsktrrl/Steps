@@ -2968,6 +2968,7 @@ GameObject:
   - component: {fileID: 215673665657898076}
   - component: {fileID: 8166563268374235885}
   - component: {fileID: 5173090028262578710}
+  - component: {fileID: 2450530203511196984}
   - component: {fileID: 265943280223236278}
   m_Layer: 6
   m_Name: DialogueManager
@@ -3085,6 +3086,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueText: {fileID: 4271076667483624845}
   isTyping: 0
+--- !u!114 &2450530203511196984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2726520225642192119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3da05d879d7486b41a91e2e6e6b841b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraOffset: {fileID: 3257421078337541638}
+  vCam: {fileID: 4700735642343005064}
+  npcTransform: {fileID: 0}
+  zoomFOV: 30
+  zoomDistance: 2
 --- !u!82 &265943280223236278
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7086,6 +7104,8 @@ MonoBehaviour:
   anim: {fileID: 0}
   blink: 0
   secondaryIdle: 0
+  walkAnimationCheck: 0
+  hasSlopeGlided: 0
 --- !u!114 &3643509991883984095
 MonoBehaviour:
   m_ObjectHideFlags: 0
