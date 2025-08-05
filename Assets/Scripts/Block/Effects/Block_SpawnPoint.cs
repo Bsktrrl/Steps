@@ -7,14 +7,22 @@ public class Block_SpawnPoint : MonoBehaviour
 {
     public static event Action Action_SpawnPointEntered;
 
+    public MovementDirection spawnDirection;
+
+
+    //--------------------
+
+
     private void OnEnable()
     {
         Movement.Action_StepTaken += UpdateSpawnPos;
+        DataManager.Action_dataHasLoaded += UpdateSpawnPos;
     }
 
     private void OnDisable()
     {
         Movement.Action_StepTaken -= UpdateSpawnPos;
+        DataManager.Action_dataHasLoaded -= UpdateSpawnPos;
     }
 
 
@@ -26,6 +34,7 @@ public class Block_SpawnPoint : MonoBehaviour
         if (Movement.Instance.blockStandingOn == gameObject)
         {
             MapManager.Instance.playerStartPos = Movement.Instance.blockStandingOn.transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
+            MapManager.Instance.playerStartRot = spawnDirection;
 
             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current = PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max;
             StartCoroutine(ResetSteps(0.01f));

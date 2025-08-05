@@ -114,7 +114,6 @@ public class Movement : Singleton<Movement>
 
     [Header("Temp Movement Cost for Slope Gliding")]
     [SerializeField] bool hasSlopeGlided;
-
     #endregion
 
 
@@ -2368,6 +2367,7 @@ public class Movement : Singleton<Movement>
 
         Action_BodyRotated_Invoke();
     }
+
     float GetBaseCameraRotation(CameraRotationState state)
     {
         switch (state)
@@ -2555,7 +2555,7 @@ public class Movement : Singleton<Movement>
 
         //Move player
         transform.position = MapManager.Instance.playerStartPos;
-        transform.SetPositionAndRotation(MapManager.Instance.playerStartPos, Quaternion.identity);
+        PlayerManager.Instance.playerBody.transform.SetPositionAndRotation(MapManager.Instance.playerStartPos, GetRespawnPlayerDirection(0, 180, 0));
 
         //Reset for CeilingAbility
         Player_CeilingGrab.Instance.ResetCeilingGrab();
@@ -2567,8 +2567,10 @@ public class Movement : Singleton<Movement>
         //Refill Steps to max + stepPickups gotten
         PlayerStats.Instance.RefillStepsToMax();
 
-        CameraController.Instance.ResetCameraRotation();
-        RotatePlayerBody(180);
+        //CameraController.Instance.ResetCameraRotation();
+        CameraController.Instance.SetRespawnCameraRotation();
+
+        //RotatePlayerBody(GetRespawnPlayerDirection(0, 180, 0).y /*180*/);
 
         RespawnPlayer_Action();
 
@@ -2579,6 +2581,26 @@ public class Movement : Singleton<Movement>
         RespawnPlayerLate_Action();
 
         StopAllCoroutines();
+    }
+    public Quaternion GetRespawnPlayerDirection(int corr_X, int corr_Y, int corr_Z)
+    {
+        switch (MapManager.Instance.playerStartRot)
+        {
+            case MovementDirection.None:
+                return Quaternion.Euler(0 + corr_X, 0 + corr_Y, 0 + corr_Z);
+
+            case MovementDirection.Forward:
+                return Quaternion.Euler(0 + corr_X, 0 + corr_Y, 0 + corr_Z);
+            case MovementDirection.Backward:
+                return Quaternion.Euler(0 + corr_X, 180 + corr_Y, 0 + corr_Z);
+            case MovementDirection.Left:
+                return Quaternion.Euler(0 + corr_X, -90 + corr_Y, 0 + corr_Z);
+            case MovementDirection.Right:
+                return Quaternion.Euler(0 + corr_X, 90 + corr_Y, 0 + corr_Z);
+
+            default:
+                return Quaternion.Euler(0 + corr_X, 0 + corr_Y, 0 + corr_Z);
+        }
     }
 
     void CheckIfSwimming()

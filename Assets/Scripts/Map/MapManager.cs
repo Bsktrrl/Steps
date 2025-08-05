@@ -9,6 +9,7 @@ public class MapManager : Singleton<MapManager>
     [SerializeField] GameObject playerObject;
     GameObject playerObjectInScene;
     public Vector3 playerStartPos;
+    public MovementDirection playerStartRot;
 
     [Header("Stats")]
     public float timeUsedInLevel = 0;
@@ -54,7 +55,7 @@ public class MapManager : Singleton<MapManager>
         blockInfoList = FindObjectsOfType<BlockInfo>();
         pickupInfoList = FindObjectsOfType<Interactable_Pickup>();
 
-        Movement.Instance.RotatePlayerBody(180);
+        //Movement.Instance.RotatePlayerBody(180);
 
         PlayAudio();
     }
