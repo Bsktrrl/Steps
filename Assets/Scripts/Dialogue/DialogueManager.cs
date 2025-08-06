@@ -80,10 +80,8 @@ public class DialogueManager : Singleton<DialogueManager>
         TypewriterEffect.Instance.ShowText(_text);
     }
 
-    void StartDialogue()
+    public void StartDialogue()
     {
-        CameraController.Instance.StartDialogueCamera();
-
         npcObject.isInteracting = true;
 
         PlayerManager.Instance.npcInteraction = true;
@@ -92,13 +90,13 @@ public class DialogueManager : Singleton<DialogueManager>
 
         dialogueCanvas.SetActive(true);
     }
-    public void EndDialogue()
+    public IEnumerator EndDialogue()
     {
-        CameraController.Instance.EndDialogueCamera();
-
         dialogueCanvas.SetActive(false);
         npcObject.isInteracting = false;
         npcObject.hasTalked = true;
+
+        yield return StartCoroutine(CameraController.Instance.StartVirtualCameraBlend_Out());
 
         ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, MessageManager.Instance.Show_Message(MessageManager.Instance.interact_Talk_Message));
 

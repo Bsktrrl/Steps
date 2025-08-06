@@ -62,6 +62,11 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 8472952626090420573, guid: 3841261bed5c63a4a81bf43ed2e0ff79, type: 3}
   m_PrefabInstance: {fileID: 5362167192742545363}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4899269117616566813 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 691177098806556110, guid: 3841261bed5c63a4a81bf43ed2e0ff79, type: 3}
+  m_PrefabInstance: {fileID: 5362167192742545363}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5239485041157073063 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 206142230959730548, guid: 3841261bed5c63a4a81bf43ed2e0ff79, type: 3}
@@ -120,12 +125,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4611623497821154958}
     - target: {fileID: 2866242272417912988, guid: 51873ffff4f820849a1330e13088c44f, type: 3}
+      propertyPath: NPCBody
+      value: 
+      objectReference: {fileID: 4899269117616566813}
+    - target: {fileID: 2866242272417912988, guid: 51873ffff4f820849a1330e13088c44f, type: 3}
       propertyPath: characterName
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9057968316139322227, guid: 51873ffff4f820849a1330e13088c44f, type: 3}
       propertyPath: m_Name
-      value: NPC_Archie 2 Variant
+      value: NPC_Archie
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

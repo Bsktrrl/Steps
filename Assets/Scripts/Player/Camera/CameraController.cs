@@ -13,8 +13,11 @@ public class CameraController : Singleton<CameraController>
     [Header("Camera Objects")]
     public GameObject cameraAnchor;
     [SerializeField] GameObject cameraOffset;
-    public CinemachineVirtualCamera gameplayCamera;
-    public CinemachineVirtualCamera dialogueCamera;
+
+    [Header("Cameras")]
+    public CinemachineBrain cinemachineBrain;
+    public CinemachineVirtualCamera playerVirtualCamera;
+    public CinemachineVirtualCamera focusVirtualCamera;
 
     [Header("States")]
     public CameraState cameraState;
@@ -53,8 +56,6 @@ public class CameraController : Singleton<CameraController>
         cameraOffset_originalRot = cameraOffset.transform.rotation;
 
         AdjustFacingDirection();
-
-        EndDialogueCamera();
     }
 
 
@@ -401,30 +402,33 @@ public class CameraController : Singleton<CameraController>
     //--------------------
 
 
-    public void StartDialogueCamera()
+    public IEnumerator StartVirtualCameraBlend_In()
     {
-        if (gameplayCamera)
+        if (playerVirtualCamera)
         {
-            gameplayCamera.Priority = 0;
+            playerVirtualCamera.Priority = -10;
         }
-        if (dialogueCamera)
+        if (focusVirtualCamera)
         {
-            dialogueCamera.Priority = 10; // Higher priority = takes control
-            dialogueCamera.gameObject.SetActive(true);
+            focusVirtualCamera.Priority = 10;
         }
-    }
 
-    public void EndDialogueCamera()
+        yield return new WaitForSeconds(cinemachineBrain.m_DefaultBlend.m_Time + 0.15f);
+    }
+    public IEnumerator StartVirtualCameraBlend_Out()
     {
-        if (dialogueCamera)
+        if (focusVirtualCamera)
         {
-            dialogueCamera.Priority = 0;
-            dialogueCamera.gameObject.SetActive(false);
+            focusVirtualCamera.Priority = -10;
         }
-        if (gameplayCamera)
+        if (playerVirtualCamera)
         {
-            gameplayCamera.Priority = 10;
+            playerVirtualCamera.Priority = 10;
         }
+
+        yield return null;
+
+        yield return new WaitUntil(() => cinemachineBrain.IsBlending == false);
     }
 }
 public enum CameraState

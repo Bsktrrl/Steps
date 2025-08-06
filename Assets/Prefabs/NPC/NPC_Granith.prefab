@@ -62,6 +62,11 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 1203983056404276669, guid: 361d3360130c08a47bf6447b707344ed, type: 3}
   m_PrefabInstance: {fileID: 3861251280569843003}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4644911331412121772 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8494881450815038871, guid: 361d3360130c08a47bf6447b707344ed, type: 3}
+  m_PrefabInstance: {fileID: 3861251280569843003}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5421729853880779286 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9126598552851775277, guid: 361d3360130c08a47bf6447b707344ed, type: 3}
@@ -120,12 +125,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2675282906413521030}
     - target: {fileID: 2866242272417912988, guid: 51873ffff4f820849a1330e13088c44f, type: 3}
+      propertyPath: NPCBody
+      value: 
+      objectReference: {fileID: 4644911331412121772}
+    - target: {fileID: 2866242272417912988, guid: 51873ffff4f820849a1330e13088c44f, type: 3}
       propertyPath: characterName
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9057968316139322227, guid: 51873ffff4f820849a1330e13088c44f, type: 3}
       propertyPath: m_Name
-      value: NPC_Granith 2 Variant
+      value: NPC_Granith
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

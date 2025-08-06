@@ -62,6 +62,11 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 8310241712859225629, guid: 18972d6878246ff499c221c6b40d2414, type: 3}
   m_PrefabInstance: {fileID: 7294862246902764576}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8574506429459942417 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1423782597817751601, guid: 18972d6878246ff499c221c6b40d2414, type: 3}
+  m_PrefabInstance: {fileID: 7294862246902764576}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9058168793011001003 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1768113748922270347, guid: 18972d6878246ff499c221c6b40d2414, type: 3}
@@ -120,12 +125,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1616623348326304317}
     - target: {fileID: 2866242272417912988, guid: 51873ffff4f820849a1330e13088c44f, type: 3}
+      propertyPath: NPCBody
+      value: 
+      objectReference: {fileID: 8574506429459942417}
+    - target: {fileID: 2866242272417912988, guid: 51873ffff4f820849a1330e13088c44f, type: 3}
       propertyPath: characterName
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9057968316139322227, guid: 51873ffff4f820849a1330e13088c44f, type: 3}
       propertyPath: m_Name
-      value: NPC_Larry 2 Variant
+      value: NPC_Larry
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

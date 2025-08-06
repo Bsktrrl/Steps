@@ -53,12 +53,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8747177463239918200}
     - target: {fileID: 2866242272417912988, guid: 51873ffff4f820849a1330e13088c44f, type: 3}
+      propertyPath: NPCBody
+      value: 
+      objectReference: {fileID: 9151084373186422519}
+    - target: {fileID: 2866242272417912988, guid: 51873ffff4f820849a1330e13088c44f, type: 3}
       propertyPath: characterName
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9057968316139322227, guid: 51873ffff4f820849a1330e13088c44f, type: 3}
       propertyPath: m_Name
-      value: NPC_Mossy 2 Variant
+      value: NPC_Mossy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -138,5 +142,10 @@ Transform:
 --- !u!95 &8747177463239918200 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 6241476160213525894, guid: fba17b80b667fd54abe6db12e60891cb, type: 3}
+  m_PrefabInstance: {fileID: 3457105287695001598}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &9151084373186422519 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5838129880994726153, guid: fba17b80b667fd54abe6db12e60891cb, type: 3}
   m_PrefabInstance: {fileID: 3457105287695001598}
   m_PrefabAsset: {fileID: 0}

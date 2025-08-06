@@ -33,9 +33,12 @@ public class Interactable_NPC : MonoBehaviour
     [SerializeField] Animator anim;
     bool blink;
     int animationCount;
+    Quaternion originalRotation;
+    private Quaternion npcBodyOriginalRotation;
 
     [Header("Camera")]
     public CinemachineVirtualCamera NPCVirtualCamera;
+    public GameObject NPCBody;
 
     [Header("DialogueSetup")]
     List<DialogueStat> this_TempDataInfo_StartingStat_List = new List<DialogueStat>();
@@ -50,6 +53,9 @@ public class Interactable_NPC : MonoBehaviour
         BuildDialogue();
 
         dialogueInfo.npcName = characterName;
+
+        originalRotation = transform.rotation;
+        npcBodyOriginalRotation = NPCBody.transform.rotation;
     }
     private void Update()
     {
@@ -95,12 +101,23 @@ public class Interactable_NPC : MonoBehaviour
         if (canInteract && !isInteracting)
         {
             canInteract = false;
-            StartDialogue();
+            StartNPCDialogue();
         }
     }
-    void StartDialogue()
+    void StartNPCDialogue()
     {
+        StartCoroutine(StartNPCDialogueCoroutine());
+    }
+    IEnumerator StartNPCDialogueCoroutine()
+    {
+        PlayerManager.Instance.npcInteraction = true;
         ButtonMessages.Instance.HideButtonMessage();
+
+        yield return StartCoroutine(TurnNPCTowardsPlayer());
+
+        yield return new WaitForSeconds(0.05f);
+
+        yield return StartCoroutine(CameraController.Instance.StartVirtualCameraBlend_In());
 
         DialogueManager.Instance.npcObject = this;
         DialogueManager.Instance.activeNPC = characterName;
@@ -611,6 +628,65 @@ public class Interactable_NPC : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    IEnumerator TurnNPCTowardsPlayer()
+    {
+        Transform target = PlayerManager.Instance.playerBody.transform;
+
+        float rotationSpeed = 8f;
+        float angleThreshold = 1f;
+
+        transform.rotation = originalRotation;
+        NPCBody.transform.rotation = npcBodyOriginalRotation;
+
+        while (true)
+        {
+            // Get direction to player
+            Vector3 direction = (target.position - transform.position).normalized;
+            direction.y = 0f; // Ignore vertical difference if needed
+
+            if (direction == Vector3.zero)
+                break;
+
+            // Calculate target rotation
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            // Measure angle difference
+            float angle = Quaternion.Angle(transform.rotation, targetRotation);
+
+            if (angle <= angleThreshold)
+            {
+                // Snap to final rotation and exit
+                transform.rotation = targetRotation;
+                break;
+            }
+
+            // Smoothly rotate toward player
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            yield return null;
+        }
+    }
+    IEnumerator TurnNPCAwayFromPlayer()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        float rotationSpeed = 8f;
+        float angleThreshold = 1f;
+
+        while (true)
+        {
+            float angle = Quaternion.Angle(NPCBody.transform.rotation, npcBodyOriginalRotation);
+
+            if (angle <= angleThreshold)
+            {
+                NPCBody.transform.rotation = npcBodyOriginalRotation;
+                break;
+            }
+
+            NPCBody.transform.rotation = Quaternion.Slerp(NPCBody.transform.rotation, npcBodyOriginalRotation, rotationSpeed * Time.deltaTime);
+            yield return null;
+        }
+    }
+
 
     //--------------------
 
@@ -911,7 +987,8 @@ public class Interactable_NPC : MonoBehaviour
         if (dialogueInfo.dialogueSegments[segmentIndex].lastSegment != "")
         {
             lastSegment = segmentIndex;
-            DialogueManager.Instance.EndDialogue();
+            StartCoroutine(TurnNPCAwayFromPlayer());
+            StartCoroutine(DialogueManager.Instance.EndDialogue());
         }
 
         //If the first element of the norwegian messageText is nothing, run it
@@ -1034,7 +1111,8 @@ public class Interactable_NPC : MonoBehaviour
         }
         else
         {
-            DialogueManager.Instance.EndDialogue();
+            StartCoroutine(TurnNPCAwayFromPlayer());
+            StartCoroutine(DialogueManager.Instance.EndDialogue());
             return;
         }
 
