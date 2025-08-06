@@ -13,6 +13,8 @@ public class CameraController : Singleton<CameraController>
     [Header("Camera Objects")]
     public GameObject cameraAnchor;
     [SerializeField] GameObject cameraOffset;
+    public CinemachineVirtualCamera gameplayCamera;
+    public CinemachineVirtualCamera dialogueCamera;
 
     [Header("States")]
     public CameraState cameraState;
@@ -50,8 +52,9 @@ public class CameraController : Singleton<CameraController>
         cameraOffset_originalPos = cameraOffset.transform.localPosition;
         cameraOffset_originalRot = cameraOffset.transform.rotation;
 
-        //SetBlockDetectorDirection();
         AdjustFacingDirection();
+
+        EndDialogueCamera();
     }
 
 
@@ -391,6 +394,36 @@ public class CameraController : Singleton<CameraController>
 
             default:
                 break;
+        }
+    }
+
+
+    //--------------------
+
+
+    public void StartDialogueCamera()
+    {
+        if (gameplayCamera)
+        {
+            gameplayCamera.Priority = 0;
+        }
+        if (dialogueCamera)
+        {
+            dialogueCamera.Priority = 10; // Higher priority = takes control
+            dialogueCamera.gameObject.SetActive(true);
+        }
+    }
+
+    public void EndDialogueCamera()
+    {
+        if (dialogueCamera)
+        {
+            dialogueCamera.Priority = 0;
+            dialogueCamera.gameObject.SetActive(false);
+        }
+        if (gameplayCamera)
+        {
+            gameplayCamera.Priority = 10;
         }
     }
 }

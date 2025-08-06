@@ -2572,6 +2572,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraAnchor: {fileID: 688149418265335786}
   cameraOffset: {fileID: 2170447121049632369}
+  gameplayCamera: {fileID: 4700735642343005064}
+  dialogueCamera: {fileID: 0}
   cameraState: 0
   cameraRotationState: 0
   directionFacing: {x: 0, y: 0, z: 0}
@@ -3098,11 +3100,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3da05d879d7486b41a91e2e6e6b841b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraOffset: {fileID: 3257421078337541638}
-  vCam: {fileID: 4700735642343005064}
-  npcTransform: {fileID: 0}
-  zoomFOV: 30
-  zoomDistance: 2
+  virtualCamera: {fileID: 0}
+  playerTransform: {fileID: 0}
+  npcPoint: {fileID: 0}
+  moveDuration: 2
 --- !u!82 &265943280223236278
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7227,7 +7228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c62a7cc69148c488ef1bad822ee621, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  height_Normal: -0.2
+  height_Normal: -0.3
   height_CeilingGrab: 0
 --- !u!114 &2942397174162899684
 MonoBehaviour:
@@ -9070,7 +9071,7 @@ Transform:
   m_GameObject: {fileID: 8656412652616902794}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.2, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:

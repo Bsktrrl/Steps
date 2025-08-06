@@ -5,10 +5,10 @@ using UnityEngine;
 public class Player_BodyHeight : Singleton<Player_BodyHeight>
 {
     [Header("Local PlayerBody height level")]
-    [HideInInspector] public float height_Normal = -0.2f;
+    [HideInInspector] public float height_Normal = -0.3f;
     [HideInInspector] public float height_CeilingGrab = 0f;
 
-    float height_Stair = -0.2f;
+    float height_Stair = 0.12f;
     float height_Water = -0.8f;
     float height_SwampWater = -0.6f;
     float height_Mud = -1f;

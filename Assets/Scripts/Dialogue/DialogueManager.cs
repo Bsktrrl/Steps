@@ -82,6 +82,8 @@ public class DialogueManager : Singleton<DialogueManager>
 
     void StartDialogue()
     {
+        CameraController.Instance.StartDialogueCamera();
+
         npcObject.isInteracting = true;
 
         PlayerManager.Instance.npcInteraction = true;
@@ -92,6 +94,8 @@ public class DialogueManager : Singleton<DialogueManager>
     }
     public void EndDialogue()
     {
+        CameraController.Instance.EndDialogueCamera();
+
         dialogueCanvas.SetActive(false);
         npcObject.isInteracting = false;
         npcObject.hasTalked = true;

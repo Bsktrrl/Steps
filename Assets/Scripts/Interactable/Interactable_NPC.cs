@@ -1,8 +1,9 @@
+using Cinemachine;
 using System;
-using System.Linq;
-using System.Collections.Generic;
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class Interactable_NPC : MonoBehaviour
 {
@@ -33,9 +34,12 @@ public class Interactable_NPC : MonoBehaviour
     bool blink;
     int animationCount;
 
+    [Header("Camera")]
+    public CinemachineVirtualCamera NPCVirtualCamera;
+
     [Header("DialogueSetup")]
-    [SerializeField] List<DialogueStat> this_TempDataInfo_StartingStat_List = new List<DialogueStat>();
-    [SerializeField] List<int> tempIndexList = new List<int>();
+    List<DialogueStat> this_TempDataInfo_StartingStat_List = new List<DialogueStat>();
+    List<int> tempIndexList = new List<int>();
 
 
     //--------------------
