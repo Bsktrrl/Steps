@@ -5,7 +5,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
     [Header("MenusOnMenuState")]
     public GameObject mainMenu_Parent;
     public GameObject overworldMenu_Parent;
-    [SerializeField] GameObject optionsMenu_Parent;
+    public GameObject optionsMenu_Parent;
 
     [Header("Menu State")]
     public MenuState menuState;

@@ -269,6 +269,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OptionsMenuShift_Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""cc1bc000-a721-40cc-9de4-e8f38d9ae13f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OptionsMenuShift_Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""cfa6db3d-1ce9-4cd4-9351-7d938cb1f0de"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -931,6 +949,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""MenuNavigation_Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fae90a00-0072-47a6-b5b8-bff4130c7cf2"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OptionsMenuShift_Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d9fb62b2-cb7a-4bd4-a25d-e7c045863a57"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OptionsMenuShift_Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -966,6 +1006,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerMovement_MenuNavigation_Down = m_PlayerMovement.FindAction("MenuNavigation_Down", throwIfNotFound: true);
         m_PlayerMovement_MenuNavigation_Left = m_PlayerMovement.FindAction("MenuNavigation_Left", throwIfNotFound: true);
         m_PlayerMovement_MenuNavigation_Right = m_PlayerMovement.FindAction("MenuNavigation_Right", throwIfNotFound: true);
+        m_PlayerMovement_OptionsMenuShift_Left = m_PlayerMovement.FindAction("OptionsMenuShift_Left", throwIfNotFound: true);
+        m_PlayerMovement_OptionsMenuShift_Right = m_PlayerMovement.FindAction("OptionsMenuShift_Right", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1054,6 +1096,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_MenuNavigation_Down;
     private readonly InputAction m_PlayerMovement_MenuNavigation_Left;
     private readonly InputAction m_PlayerMovement_MenuNavigation_Right;
+    private readonly InputAction m_PlayerMovement_OptionsMenuShift_Left;
+    private readonly InputAction m_PlayerMovement_OptionsMenuShift_Right;
     public struct PlayerMovementActions
     {
         private @PlayerControls m_Wrapper;
@@ -1085,6 +1129,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @MenuNavigation_Down => m_Wrapper.m_PlayerMovement_MenuNavigation_Down;
         public InputAction @MenuNavigation_Left => m_Wrapper.m_PlayerMovement_MenuNavigation_Left;
         public InputAction @MenuNavigation_Right => m_Wrapper.m_PlayerMovement_MenuNavigation_Right;
+        public InputAction @OptionsMenuShift_Left => m_Wrapper.m_PlayerMovement_OptionsMenuShift_Left;
+        public InputAction @OptionsMenuShift_Right => m_Wrapper.m_PlayerMovement_OptionsMenuShift_Right;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1175,6 +1221,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MenuNavigation_Right.started += instance.OnMenuNavigation_Right;
             @MenuNavigation_Right.performed += instance.OnMenuNavigation_Right;
             @MenuNavigation_Right.canceled += instance.OnMenuNavigation_Right;
+            @OptionsMenuShift_Left.started += instance.OnOptionsMenuShift_Left;
+            @OptionsMenuShift_Left.performed += instance.OnOptionsMenuShift_Left;
+            @OptionsMenuShift_Left.canceled += instance.OnOptionsMenuShift_Left;
+            @OptionsMenuShift_Right.started += instance.OnOptionsMenuShift_Right;
+            @OptionsMenuShift_Right.performed += instance.OnOptionsMenuShift_Right;
+            @OptionsMenuShift_Right.canceled += instance.OnOptionsMenuShift_Right;
         }
 
         private void UnregisterCallbacks(IPlayerMovementActions instance)
@@ -1260,6 +1312,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MenuNavigation_Right.started -= instance.OnMenuNavigation_Right;
             @MenuNavigation_Right.performed -= instance.OnMenuNavigation_Right;
             @MenuNavigation_Right.canceled -= instance.OnMenuNavigation_Right;
+            @OptionsMenuShift_Left.started -= instance.OnOptionsMenuShift_Left;
+            @OptionsMenuShift_Left.performed -= instance.OnOptionsMenuShift_Left;
+            @OptionsMenuShift_Left.canceled -= instance.OnOptionsMenuShift_Left;
+            @OptionsMenuShift_Right.started -= instance.OnOptionsMenuShift_Right;
+            @OptionsMenuShift_Right.performed -= instance.OnOptionsMenuShift_Right;
+            @OptionsMenuShift_Right.canceled -= instance.OnOptionsMenuShift_Right;
         }
 
         public void RemoveCallbacks(IPlayerMovementActions instance)
@@ -1306,5 +1364,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnMenuNavigation_Down(InputAction.CallbackContext context);
         void OnMenuNavigation_Left(InputAction.CallbackContext context);
         void OnMenuNavigation_Right(InputAction.CallbackContext context);
+        void OnOptionsMenuShift_Left(InputAction.CallbackContext context);
+        void OnOptionsMenuShift_Right(InputAction.CallbackContext context);
     }
 }

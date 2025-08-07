@@ -19,6 +19,11 @@ public class OptionCategoryButton : MonoBehaviour
 
     void Update()
     {
+        ChangeCurrentCategory();
+    }
+
+    void ChangeCurrentCategory()
+    {
         GameObject current = EventSystem.current.currentSelectedGameObject;
 
         if (current == gameObject && lastSelected != gameObject)

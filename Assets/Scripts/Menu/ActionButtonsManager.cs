@@ -14,6 +14,7 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
 
     [Header("Input System")]
     PlayerControls playerControls;
+    MainMenuManager mainMenuManager;
 
 
     //--------------------
@@ -27,6 +28,7 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
     private void Start()
     {
         playerControls = new PlayerControls();
+        mainMenuManager = FindObjectOfType<MainMenuManager>();
     }
 
 
@@ -36,5 +38,54 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
     void OnMenu_Back()
     {
         //print("1. Back Button is Pressed");
+    }
+
+
+    //--------------------
+
+
+    void OnOptionsMenuShift_Left()
+    {
+        if (mainMenuManager && mainMenuManager.optionsMenu_Parent.activeInHierarchy)
+        {
+            switch (OptionsMenuManager.Instance.currentOptionsMenuCategorySelected)
+            {
+                case OptionsMenuCategories.Settings:
+                    EventSystem.current.SetSelectedGameObject(OptionsMenuManager.Instance.controlsMenuButton);
+                    OptionsMenuManager.Instance.ChangeOptionCategory(OptionsMenuCategories.Controls);
+                    StartCoroutine(OptionsMenuManager.Instance.controlsMenuButton.GetComponent<SettingsCategorySelected>().WatchSelection());
+                    break;
+                case OptionsMenuCategories.Controls:
+                    EventSystem.current.SetSelectedGameObject(OptionsMenuManager.Instance.settingsMenuButton);
+                    OptionsMenuManager.Instance.ChangeOptionCategory(OptionsMenuCategories.Settings);
+                    StartCoroutine(OptionsMenuManager.Instance.settingsMenuButton.GetComponent<SettingsCategorySelected>().WatchSelection());
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+    void OnOptionsMenuShift_Right()
+    {
+        if (mainMenuManager && mainMenuManager.optionsMenu_Parent.activeInHierarchy)
+        {
+            switch (OptionsMenuManager.Instance.currentOptionsMenuCategorySelected)
+            {
+                case OptionsMenuCategories.Settings:
+                    EventSystem.current.SetSelectedGameObject(OptionsMenuManager.Instance.controlsMenuButton);
+                    OptionsMenuManager.Instance.ChangeOptionCategory(OptionsMenuCategories.Controls);
+                    StartCoroutine(OptionsMenuManager.Instance.controlsMenuButton.GetComponent<SettingsCategorySelected>().WatchSelection());
+                    break;
+                case OptionsMenuCategories.Controls:
+                    EventSystem.current.SetSelectedGameObject(OptionsMenuManager.Instance.settingsMenuButton);
+                    OptionsMenuManager.Instance.ChangeOptionCategory(OptionsMenuCategories.Settings);
+                    StartCoroutine(OptionsMenuManager.Instance.settingsMenuButton.GetComponent<SettingsCategorySelected>().WatchSelection());
+                    break;
+
+                default:
+                    break;
+            }
+        }
     }
 }

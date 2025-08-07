@@ -29,7 +29,7 @@ public class SettingsCategorySelected : MonoBehaviour
     //--------------------
 
 
-    IEnumerator WatchSelection()
+    public IEnumerator WatchSelection()
     {
         while (true)
         {

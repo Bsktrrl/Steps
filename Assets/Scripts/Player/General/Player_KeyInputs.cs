@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Player_KeyInputs : Singleton<Player_KeyInputs>
 {
@@ -255,6 +257,55 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Player_Interact.Instance.isInteracting) { return false; }
 
         return true;
+    }
+
+
+    //--------------------
+
+
+    void OnOptionsMenuShift_Left()
+    {
+        if (PlayerManager.Instance.pauseGame && PauseMenuManager.Instance.pauseMenu_Options_Parent.activeInHierarchy)
+        {
+            switch (OptionsMenuManager.Instance.currentOptionsMenuCategorySelected)
+            {
+                case OptionsMenuCategories.Settings:
+                    EventSystem.current.SetSelectedGameObject(OptionsMenuManager.Instance.controlsMenuButton);
+                    OptionsMenuManager.Instance.ChangeOptionCategory(OptionsMenuCategories.Controls);
+                    StartCoroutine(OptionsMenuManager.Instance.controlsMenuButton.GetComponent<SettingsCategorySelected>().WatchSelection());
+                    break;
+                case OptionsMenuCategories.Controls:
+                    EventSystem.current.SetSelectedGameObject(OptionsMenuManager.Instance.settingsMenuButton);
+                    OptionsMenuManager.Instance.ChangeOptionCategory(OptionsMenuCategories.Settings);
+                    StartCoroutine(OptionsMenuManager.Instance.settingsMenuButton.GetComponent<SettingsCategorySelected>().WatchSelection());
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+    void OnOptionsMenuShift_Right()
+    {
+        if (PlayerManager.Instance.pauseGame && PauseMenuManager.Instance.pauseMenu_Options_Parent.activeInHierarchy)
+        {
+            switch (OptionsMenuManager.Instance.currentOptionsMenuCategorySelected)
+            {
+                case OptionsMenuCategories.Settings:
+                    EventSystem.current.SetSelectedGameObject(OptionsMenuManager.Instance.controlsMenuButton);
+                    OptionsMenuManager.Instance.ChangeOptionCategory(OptionsMenuCategories.Controls);
+                    StartCoroutine(OptionsMenuManager.Instance.controlsMenuButton.GetComponent<SettingsCategorySelected>().WatchSelection());
+                    break;
+                case OptionsMenuCategories.Controls:
+                    EventSystem.current.SetSelectedGameObject(OptionsMenuManager.Instance.settingsMenuButton);
+                    OptionsMenuManager.Instance.ChangeOptionCategory(OptionsMenuCategories.Settings);
+                    StartCoroutine(OptionsMenuManager.Instance.settingsMenuButton.GetComponent<SettingsCategorySelected>().WatchSelection());
+                    break;
+
+                default:
+                    break;
+            }
+        }
     }
 
 

@@ -13,6 +13,12 @@ public class OptionsMenuManager : Singleton<OptionsMenuManager>
     public GameObject settingsMenuParent;
     public GameObject controlsMenuParent;
 
+    [Header("Buttons")]
+    public GameObject settingsMenuButton;
+    public GameObject controlsMenuButton;
+    public GameObject third_MenuButton;
+    public GameObject forth_MenuButton;
+
 
     //--------------------
 
