@@ -47,7 +47,7 @@ public class Interactable_NPC_ColliderTrigger : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player") && !Player_CeilingGrab.Instance.isCeilingGrabbing && !Player_CeilingGrab.Instance.isCeilingRotation && !PlayerManager.Instance.npcInteraction)
+        if (other.CompareTag("Player") && !Player_CeilingGrab.Instance.isCeilingGrabbing && !Player_CeilingGrab.Instance.isCeilingRotation && !PlayerManager.Instance.npcInteraction && !PlayerManager.Instance.pauseGame)
         {
             Vector3 toNPC = (transform.position - other.transform.position);
             toNPC.y = 0; // Flatten to horizontal plane
