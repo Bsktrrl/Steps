@@ -703,17 +703,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""7d19db38-1b61-45ad-90d0-a8155769632c"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Menu_Back"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""249a91fa-4cb0-439a-b000-b557a0bd54fa"",
                     ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",

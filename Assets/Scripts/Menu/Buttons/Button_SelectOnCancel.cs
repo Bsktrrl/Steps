@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class Button_SelectOnCancel : MonoBehaviour
+public class CancelPauseMenuByButtonPress : MonoBehaviour
 {
     [Header("Select On Cancel")]
     [SerializeField] Button selectOnCancel;
@@ -62,9 +62,11 @@ public class Button_SelectOnCancel : MonoBehaviour
 
         //-----
 
-
-        ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(selectOnCancel.gameObject);
-
+        if (selectOnCancel)
+        {
+            ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(selectOnCancel.gameObject);
+        }
+        
         //Open/Close menus
         if (menuToOpen)
             menuToOpen.SetActive(true);

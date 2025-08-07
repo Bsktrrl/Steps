@@ -58,11 +58,13 @@ public class SettingsCategorySelected : MonoBehaviour
 
     void AddImageColor()
     {
-        selectedImage.color = SettingsManager.Instance.activeSettingSegmentColor;
+        if (selectedImage)
+            selectedImage.color = SettingsManager.Instance.activeSettingSegmentColor;
     }
     void RemoveImageColor()
     {
-        selectedImage.color = Color.white;
+        if (selectedImage)
+            selectedImage.color = Color.white;
     }
 
     void ChangeSelectedSettingsButtonSegment()

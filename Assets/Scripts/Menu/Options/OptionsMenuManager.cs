@@ -51,6 +51,12 @@ public enum OptionsMenuCategories
     Controls,
 }
 
+public enum CategoryState
+{
+    Setting,
+    Controls,
+
+}
 public enum SettingState
 {
     None,

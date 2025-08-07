@@ -16,6 +16,17 @@ public class Button_ToPress : MonoBehaviour
     [SerializeField] bool showVisualization;
     [SerializeField] Color navigationColor = Color.cyan;
 
+    PauseMenuManager pauseMenuManager;
+
+
+    //--------------------
+
+
+    private void Start()
+    {
+        pauseMenuManager = FindAnyObjectByType<PauseMenuManager>();
+    }
+
 
     //--------------------
 
@@ -39,6 +50,7 @@ public class Button_ToPress : MonoBehaviour
 
     void JumpToElement()
     {
+        //PauseMenu
         if (ActionButtonsManager.Instance.eventSystem == null)
         {
             Debug.Log("This item has no EventSystem referenced yet.");
@@ -54,7 +66,6 @@ public class Button_ToPress : MonoBehaviour
             ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(uiElementToSelect.gameObject);
         }
 
-        //PauseMenu
         switch (newMenuState)
         {
             case MenuState.None:
