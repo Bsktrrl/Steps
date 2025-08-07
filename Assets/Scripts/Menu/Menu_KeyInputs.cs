@@ -13,7 +13,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     [Header("Input System")]
     public PlayerControls playerControls;
 
-    [SerializeField] SettingsManager settingsManager;
+    OptionsMenuManager optionsManager;
 
 
     //--------------------
@@ -23,7 +23,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     {
         playerControls = new PlayerControls();
 
-        settingsManager = FindObjectOfType<SettingsManager>();
+        optionsManager = FindObjectOfType<OptionsMenuManager>();
     }
 
 
@@ -32,54 +32,58 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
 
     void OnMenuNavigation_Up()
     {
-        if (GetComponent<MainMenuManager>() && (GetComponent<MainMenuManager>().menuState == MenuState.Settings_Menu || GetComponent<MainMenuManager>().menuState == MenuState.Info_Menu))
+        if (optionsManager && (optionsManager.currentOptionsMenuCategorySelected == OptionsMenuCategories.Settings || optionsManager.currentOptionsMenuCategorySelected == OptionsMenuCategories.Controls))
         {
             //print("1. MainMenuManager: OnMenuNavigation_Up");
             Action_MenuNavigationUp_isPressed?.Invoke();
         }
-        else if (GetComponent<PlayerManager>() && settingsManager.settingsMenuParent.activeInHierarchy)
-        {
-            //print("2. PauseMenuManager: OnMenuNavigation_Up");
-            Action_MenuNavigationUp_isPressed?.Invoke();
-        }
+        //else if (GetComponent<PlayerManager>() && optionsManager.settingsMenuParent.activeInHierarchy)
+        //{
+        //    //print("2. PauseMenuManager: OnMenuNavigation_Up");
+        //    Action_MenuNavigationUp_isPressed?.Invoke();
+        //}
     }
     void OnMenuNavigation_Down()
     {
-        if (GetComponent<MainMenuManager>() && (GetComponent<MainMenuManager>().menuState == MenuState.Settings_Menu || GetComponent<MainMenuManager>().menuState == MenuState.Info_Menu))
+        if (optionsManager && (optionsManager.currentOptionsMenuCategorySelected == OptionsMenuCategories.Settings || optionsManager.currentOptionsMenuCategorySelected == OptionsMenuCategories.Controls))
         {
             //print("1. MainMenuManager: OnMenuNavigation_Down");
             Action_MenuNavigationDown_isPressed?.Invoke();
         }
-        else if (GetComponent<PlayerManager>() && settingsManager.settingsMenuParent.activeInHierarchy)
-        {
-            //print("2. PauseMenuManager: OnMenuNavigation_Down");
-            Action_MenuNavigationDown_isPressed?.Invoke();
-        }
+        //else if (GetComponent<PlayerManager>() && optionsManager.settingsMenuParent.activeInHierarchy)
+        //{
+        //    //print("2. PauseMenuManager: OnMenuNavigation_Down");
+        //    Action_MenuNavigationDown_isPressed?.Invoke();
+        //}
     }
     void OnMenuNavigation_Left()
     {
-        if (GetComponent<MainMenuManager>() && (GetComponent<MainMenuManager>().menuState == MenuState.Settings_Menu || GetComponent<MainMenuManager>().menuState == MenuState.Info_Menu))
+        if (optionsManager && (optionsManager.currentOptionsMenuCategorySelected == OptionsMenuCategories.Settings || optionsManager.currentOptionsMenuCategorySelected == OptionsMenuCategories.Controls))
         {
             //print("1. MainMenuManager: OnMenuNavigation_Left");
             Action_MenuNavigationLeft_isPressed?.Invoke();
         }
-        else if (GetComponent<PlayerManager>() && settingsManager.settingsMenuParent.activeInHierarchy)
-        {
-            //print("2. PauseMenuManager: OnMenuNavigation_Left");
-            Action_MenuNavigationLeft_isPressed?.Invoke();
-        }
+        //else if (GetComponent<PlayerManager>() && optionsManager.settingsMenuParent.activeInHierarchy)
+        //{
+        //    print("12. PerformButtonAction_Left");
+
+        //    //print("2. PauseMenuManager: OnMenuNavigation_Left");
+        //    Action_MenuNavigationLeft_isPressed?.Invoke();
+        //}
     }
     void OnMenuNavigation_Right()
     {
-        if (GetComponent<MainMenuManager>() && (GetComponent<MainMenuManager>().menuState == MenuState.Settings_Menu || GetComponent<MainMenuManager>().menuState == MenuState.Info_Menu))
+        if (optionsManager && (optionsManager.currentOptionsMenuCategorySelected == OptionsMenuCategories.Settings || optionsManager.currentOptionsMenuCategorySelected == OptionsMenuCategories.Controls))
         {
             //print("1. MainMenuManager: OnMenuNavigation_Right");
             Action_MenuNavigationRight_isPressed?.Invoke();
         }
-        else if (GetComponent<PlayerManager>() && settingsManager.settingsMenuParent.activeInHierarchy)
-        {
-            //print("2. PauseMenuManager: OnMenuNavigation_Right");
-            Action_MenuNavigationRight_isPressed?.Invoke();
-        }
+        //else if (GetComponent<PlayerManager>() && optionsManager.settingsMenuParent.activeInHierarchy)
+        //{
+        //    print("22. PerformButtonAction_Right");
+
+        //    //print("2. PauseMenuManager: OnMenuNavigation_Right");
+        //    Action_MenuNavigationRight_isPressed?.Invoke();
+        //}
     }
 }

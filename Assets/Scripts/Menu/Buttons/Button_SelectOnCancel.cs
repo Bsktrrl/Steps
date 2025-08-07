@@ -82,7 +82,7 @@ public class Button_SelectOnCancel : MonoBehaviour
         }
 
         //Make sure that mainMenu isn't tried accessed during gameplay
-        if (menuState_ToSelect != MenuState.Pause_Menu_Main && menuState_ToSelect != MenuState.Pause_Menu_Settings && menuState_ToSelect != MenuState.Pause_Menu_Info)
+        if (menuState_ToSelect != MenuState.Pause_Menu_Main && menuState_ToSelect != MenuState.Pause_Menu_Options)
         {
             MainMenuManager.Instance.menuState = menuState_ToSelect;
             OverWorldManager.Instance.regionState = regionState_ToSelect;

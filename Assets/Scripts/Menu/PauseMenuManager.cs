@@ -11,8 +11,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     public GameObject pauseMenu_Parent;
 
     public GameObject pauseMenu_MainMenu_Parent;
-    public GameObject pauseMenu_Settings_Parent;
-    public GameObject pauseMenu_Info_Parent;
+    public GameObject pauseMenu_Options_Parent;
 
     public GameObject pauseMenu_StartButton;
 

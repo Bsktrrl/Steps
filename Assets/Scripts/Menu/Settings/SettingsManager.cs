@@ -271,36 +271,3 @@ public class SettingData
     public Languages currentLanguage;
     public TextSpeed currentTextSpeed;
 }
-
-public enum SettingState
-{
-    Settings_Language,
-    Settings_TextSpeed,
-
-    Info_Movement,
-    Info_CameraRotation,
-    Info_Respawn,
-    Info_PauseMenu,
-    Info_Ascend,
-    Info_Descend,
-    Info_CeilingGrab,
-    Info_GrapplingHook,
-
-
-    BackButton
-}
-public enum Languages
-{
-    Norwegian,
-    English,
-    German,
-    Japanese,
-    Chinese,
-    Korean
-}
-public enum TextSpeed
-{
-    Medium,
-    Fast,
-    Slow
-}

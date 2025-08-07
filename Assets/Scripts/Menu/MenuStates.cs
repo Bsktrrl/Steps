@@ -31,11 +31,8 @@ public class MenuStates : Singleton<MenuStates>
             case MenuState.Overworld_Menu:
                 MainMenuManager.Instance.menuState = MenuState.Overworld_Menu;
                 break;
-            case MenuState.Info_Menu:
-                MainMenuManager.Instance.menuState = MenuState.Info_Menu;
-                break;
-            case MenuState.Settings_Menu:
-                MainMenuManager.Instance.menuState = MenuState.Settings_Menu;
+            case MenuState.Options_Menu:
+                MainMenuManager.Instance.menuState = MenuState.Options_Menu;
                 break;
 
             case MenuState.Biome_Menu:
@@ -45,13 +42,8 @@ public class MenuStates : Singleton<MenuStates>
             case MenuState.Pause_Menu_Main:
                 MainMenuManager.Instance.menuState = MenuState.Pause_Menu_Main;
                 break;
-
-            case MenuState.Pause_Menu_Settings:
-                MainMenuManager.Instance.menuState = MenuState.Pause_Menu_Settings;
-                break;
-
-            case MenuState.Pause_Menu_Info:
-                MainMenuManager.Instance.menuState = MenuState.Pause_Menu_Info;
+            case MenuState.Pause_Menu_Options:
+                MainMenuManager.Instance.menuState = MenuState.Pause_Menu_Options;
                 break;
 
             default:
@@ -80,15 +72,13 @@ public enum MenuState
 
     Main_Menu,
     Overworld_Menu,
-    Info_Menu,
-    Settings_Menu,
 
     Biome_Menu,
 
     NewGame_Menu,
     Pause_Menu_Main,
-    Pause_Menu_Settings,
-    Pause_Menu_Info,
 
-    Skin_Menu
+    Skin_Menu,
+    Options_Menu,
+    Pause_Menu_Options,
 }

@@ -3,21 +3,6 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 
-1.
-Dialogue Scene:
-__________________
-
-1.1. Camera:
-- Make it so that the camera pans correctly into the dialogueScene (both characters are visible)
-- Make it so that the camera pans correctly out from the dialogueScene (back to its previous cameraState)
-- Make camera angle based on the player lookDir
-   - NPC needs to turn towards the player whan interacted with
-   - Use a secondary camera that starts in the same position and rotation as the active camera, and ends at the same position after the dialogue is finished
-   - Make the dialogue start after the camera has come into place
-
-- Set a camera onto each NPC's, and use this as reference point when transitioning
-
-
 
 2.
 Skin Menu:

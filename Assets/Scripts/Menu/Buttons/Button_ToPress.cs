@@ -62,18 +62,11 @@ public class Button_ToPress : MonoBehaviour
 
             case MenuState.Pause_Menu_Main:
                 PauseMenuManager.Instance.pauseMenu_MainMenu_Parent.SetActive(true);
-                PauseMenuManager.Instance.pauseMenu_Settings_Parent.SetActive(false);
-                PauseMenuManager.Instance.pauseMenu_Info_Parent.SetActive(false);
+                PauseMenuManager.Instance.pauseMenu_Options_Parent.SetActive(false);
                 break;
-            case MenuState.Pause_Menu_Settings:
+            case MenuState.Pause_Menu_Options:
                 PauseMenuManager.Instance.pauseMenu_MainMenu_Parent.SetActive(false);
-                PauseMenuManager.Instance.pauseMenu_Settings_Parent.SetActive(true);
-                PauseMenuManager.Instance.pauseMenu_Info_Parent.SetActive(false);
-                break;
-            case MenuState.Pause_Menu_Info:
-                PauseMenuManager.Instance.pauseMenu_MainMenu_Parent.SetActive(false);
-                PauseMenuManager.Instance.pauseMenu_Settings_Parent.SetActive(false);
-                PauseMenuManager.Instance.pauseMenu_Info_Parent.SetActive(true);
+                PauseMenuManager.Instance.pauseMenu_Options_Parent.SetActive(true);
                 break;
 
             default:
