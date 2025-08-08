@@ -9,7 +9,7 @@ public class OptionCategoryButton : MonoBehaviour
     public static event Action Action_CategoryButtonHasBeenSelected;
 
     [Header("Option Category")]
-    public OptionsMenuCategories optionCategory;
+    public MenuCategories optionCategory;
 
     GameObject lastSelected = null;
 
@@ -28,7 +28,7 @@ public class OptionCategoryButton : MonoBehaviour
 
         if (current == gameObject && lastSelected != gameObject)
         {
-            OptionsMenuManager.Instance.ChangeOptionCategory(optionCategory);
+            MenuManager.Instance.ChangeMenuCategory(optionCategory);
         }
 
         if (current == null)

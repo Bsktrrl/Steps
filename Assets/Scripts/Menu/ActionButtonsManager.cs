@@ -48,17 +48,50 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
     {
         if (mainMenuManager && mainMenuManager.optionsMenu_Parent.activeInHierarchy)
         {
-            switch (OptionsMenuManager.Instance.currentOptionsMenuCategorySelected)
+            switch (MenuManager.Instance.currentMenuCategorySelected)
             {
-                case OptionsMenuCategories.Settings:
-                    EventSystem.current.SetSelectedGameObject(OptionsMenuManager.Instance.controlsMenuButton);
-                    OptionsMenuManager.Instance.ChangeOptionCategory(OptionsMenuCategories.Controls);
-                    StartCoroutine(OptionsMenuManager.Instance.controlsMenuButton.GetComponent<SettingsCategorySelected>().WatchSelection());
+                case MenuCategories.None:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.settingsMenuButton);
+                    MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Settings;
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Settings);
+                    StartCoroutine(MenuManager.Instance.settingsMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
                     break;
-                case OptionsMenuCategories.Controls:
-                    EventSystem.current.SetSelectedGameObject(OptionsMenuManager.Instance.settingsMenuButton);
-                    OptionsMenuManager.Instance.ChangeOptionCategory(OptionsMenuCategories.Settings);
-                    StartCoroutine(OptionsMenuManager.Instance.settingsMenuButton.GetComponent<SettingsCategorySelected>().WatchSelection());
+
+                case MenuCategories.Settings:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.controlsMenuButton);
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Controls);
+                    StartCoroutine(MenuManager.Instance.controlsMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+                case MenuCategories.Controls:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.settingsMenuButton);
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Settings);
+                    StartCoroutine(MenuManager.Instance.settingsMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        else if (mainMenuManager && mainMenuManager.skinsMenu_Parent.activeInHierarchy)
+        {
+            switch (MenuManager.Instance.currentMenuCategorySelected)
+            {
+                case MenuCategories.None:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.wardrobeMenuButton);
+                    MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Wardrobe;
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Wardrobe);
+                    StartCoroutine(MenuManager.Instance.wardrobeMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+
+                case MenuCategories.Wardrobe:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.shopMenuButton);
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Shop);
+                    StartCoroutine(MenuManager.Instance.shopMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+                case MenuCategories.Shop:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.wardrobeMenuButton);
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Wardrobe);
+                    StartCoroutine(MenuManager.Instance.wardrobeMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
                     break;
 
                 default:
@@ -70,17 +103,50 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
     {
         if (mainMenuManager && mainMenuManager.optionsMenu_Parent.activeInHierarchy)
         {
-            switch (OptionsMenuManager.Instance.currentOptionsMenuCategorySelected)
+            switch (MenuManager.Instance.currentMenuCategorySelected)
             {
-                case OptionsMenuCategories.Settings:
-                    EventSystem.current.SetSelectedGameObject(OptionsMenuManager.Instance.controlsMenuButton);
-                    OptionsMenuManager.Instance.ChangeOptionCategory(OptionsMenuCategories.Controls);
-                    StartCoroutine(OptionsMenuManager.Instance.controlsMenuButton.GetComponent<SettingsCategorySelected>().WatchSelection());
+                case MenuCategories.None:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.settingsMenuButton);
+                    MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Settings;
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Settings);
+                    StartCoroutine(MenuManager.Instance.settingsMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
                     break;
-                case OptionsMenuCategories.Controls:
-                    EventSystem.current.SetSelectedGameObject(OptionsMenuManager.Instance.settingsMenuButton);
-                    OptionsMenuManager.Instance.ChangeOptionCategory(OptionsMenuCategories.Settings);
-                    StartCoroutine(OptionsMenuManager.Instance.settingsMenuButton.GetComponent<SettingsCategorySelected>().WatchSelection());
+
+                case MenuCategories.Settings:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.controlsMenuButton);
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Controls);
+                    StartCoroutine(MenuManager.Instance.controlsMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+                case MenuCategories.Controls:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.settingsMenuButton);
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Settings);
+                    StartCoroutine(MenuManager.Instance.settingsMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        else if (mainMenuManager && mainMenuManager.skinsMenu_Parent.activeInHierarchy)
+        {
+            switch (MenuManager.Instance.currentMenuCategorySelected)
+            {
+                case MenuCategories.None:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.wardrobeMenuButton);
+                    MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Wardrobe;
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Wardrobe);
+                    StartCoroutine(MenuManager.Instance.wardrobeMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+
+                case MenuCategories.Wardrobe:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.shopMenuButton);
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Shop);
+                    StartCoroutine(MenuManager.Instance.shopMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+                case MenuCategories.Shop:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.wardrobeMenuButton);
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Wardrobe);
+                    StartCoroutine(MenuManager.Instance.wardrobeMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
                     break;
 
                 default:

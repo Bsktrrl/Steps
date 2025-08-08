@@ -18,6 +18,9 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
     [SerializeField] public LevelState levelState_ToSelect;
     [SerializeField] public RegionState regionState_ToSelect;
 
+    [Header("Change Current Menu Category")]
+    public MenuCategories currentMenuCategoryToSelect;
+
     [Header("Other GameObject to be hidden with This")]
     [SerializeField] List<GameObject> gameObjectsToHideWithThis;
 
@@ -82,6 +85,8 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
 
             //OverWorldManager.Instance.panelBackground.SetActive(false);
         }
+
+        MenuManager.Instance.currentMenuCategorySelected = currentMenuCategoryToSelect;
 
         //Make sure that mainMenu isn't tried accessed during gameplay
         if (menuState_ToSelect != MenuState.Pause_Menu_Main && menuState_ToSelect != MenuState.Pause_Menu_Options)

@@ -13,7 +13,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     [Header("Input System")]
     public PlayerControls playerControls;
 
-    OptionsMenuManager optionsManager;
+    MenuManager optionsManager;
 
 
     //--------------------
@@ -23,7 +23,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     {
         playerControls = new PlayerControls();
 
-        optionsManager = FindObjectOfType<OptionsMenuManager>();
+        optionsManager = FindObjectOfType<MenuManager>();
     }
 
 
@@ -32,57 +32,53 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
 
     void OnMenuNavigation_Up()
     {
-        if (optionsManager && (optionsManager.currentOptionsMenuCategorySelected == OptionsMenuCategories.Settings || optionsManager.currentOptionsMenuCategorySelected == OptionsMenuCategories.Controls))
+        if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls))
         {
             //print("1. MainMenuManager: OnMenuNavigation_Up");
             Action_MenuNavigationUp_isPressed?.Invoke();
         }
-        //else if (GetComponent<PlayerManager>() && optionsManager.settingsMenuParent.activeInHierarchy)
+        //else if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Wardrobe || optionsManager.currentMenuCategorySelected == MenuCategories.Shop))
         //{
-        //    //print("2. PauseMenuManager: OnMenuNavigation_Up");
+        //    //print("1. MainMenuManager: OnMenuNavigation_Up");
         //    Action_MenuNavigationUp_isPressed?.Invoke();
         //}
     }
     void OnMenuNavigation_Down()
     {
-        if (optionsManager && (optionsManager.currentOptionsMenuCategorySelected == OptionsMenuCategories.Settings || optionsManager.currentOptionsMenuCategorySelected == OptionsMenuCategories.Controls))
+        if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls))
         {
             //print("1. MainMenuManager: OnMenuNavigation_Down");
             Action_MenuNavigationDown_isPressed?.Invoke();
         }
-        //else if (GetComponent<PlayerManager>() && optionsManager.settingsMenuParent.activeInHierarchy)
+        //else if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Wardrobe || optionsManager.currentMenuCategorySelected == MenuCategories.Shop))
         //{
-        //    //print("2. PauseMenuManager: OnMenuNavigation_Down");
+        //    //print("1. MainMenuManager: OnMenuNavigation_Up");
         //    Action_MenuNavigationDown_isPressed?.Invoke();
         //}
     }
     void OnMenuNavigation_Left()
     {
-        if (optionsManager && (optionsManager.currentOptionsMenuCategorySelected == OptionsMenuCategories.Settings || optionsManager.currentOptionsMenuCategorySelected == OptionsMenuCategories.Controls))
+        if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls))
         {
             //print("1. MainMenuManager: OnMenuNavigation_Left");
             Action_MenuNavigationLeft_isPressed?.Invoke();
         }
-        //else if (GetComponent<PlayerManager>() && optionsManager.settingsMenuParent.activeInHierarchy)
+        //else if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Wardrobe || optionsManager.currentMenuCategorySelected == MenuCategories.Shop))
         //{
-        //    print("12. PerformButtonAction_Left");
-
-        //    //print("2. PauseMenuManager: OnMenuNavigation_Left");
+        //    //print("1. MainMenuManager: OnMenuNavigation_Up");
         //    Action_MenuNavigationLeft_isPressed?.Invoke();
         //}
     }
     void OnMenuNavigation_Right()
     {
-        if (optionsManager && (optionsManager.currentOptionsMenuCategorySelected == OptionsMenuCategories.Settings || optionsManager.currentOptionsMenuCategorySelected == OptionsMenuCategories.Controls))
+        if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls))
         {
             //print("1. MainMenuManager: OnMenuNavigation_Right");
             Action_MenuNavigationRight_isPressed?.Invoke();
         }
-        //else if (GetComponent<PlayerManager>() && optionsManager.settingsMenuParent.activeInHierarchy)
+        //else if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Wardrobe || optionsManager.currentMenuCategorySelected == MenuCategories.Shop))
         //{
-        //    print("22. PerformButtonAction_Right");
-
-        //    //print("2. PauseMenuManager: OnMenuNavigation_Right");
+        //    //print("1. MainMenuManager: OnMenuNavigation_Up");
         //    Action_MenuNavigationRight_isPressed?.Invoke();
         //}
     }

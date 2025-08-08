@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class SettingsCategorySelected : MonoBehaviour
+public class MenuCategorySelected : MonoBehaviour
 {
     [Header("SettingState to activate")]
     public SettingState settingState;

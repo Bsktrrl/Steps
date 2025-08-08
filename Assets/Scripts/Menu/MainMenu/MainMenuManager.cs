@@ -6,6 +6,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
     public GameObject mainMenu_Parent;
     public GameObject overworldMenu_Parent;
     public GameObject optionsMenu_Parent;
+    public GameObject skinsMenu_Parent;
 
     [Header("Menu State")]
     public MenuState menuState;
@@ -23,7 +24,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
         if (DataManager.Instance.menuState_Store == MenuState.None)
         {
             menuState = MenuState.Main_Menu;
-
+            HideAllMenus();
             Menu_Main();
         }
     }
@@ -80,6 +81,9 @@ public class MainMenuManager : Singleton<MainMenuManager>
             case MenuState.Overworld_Menu:
                 Menu_Overworld();
                 break;
+            case MenuState.Skin_Menu:
+                Menu_Skins();
+                break;
             case MenuState.Options_Menu:
                 Menu_Options();
                 break;
@@ -114,6 +118,14 @@ public class MainMenuManager : Singleton<MainMenuManager>
         //Open the OverworldMenu
         overworldMenu_Parent.SetActive(true);
     }
+    void Menu_Skins()
+    {
+        //Close any other menu
+        HideAllMenus();
+
+        //Open the InfoMenu
+        skinsMenu_Parent.SetActive(true);
+    }
     void Menu_Options()
     {
         //Close any other menu
@@ -134,9 +146,14 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     void HideAllMenus()
     {
-        mainMenu_Parent.SetActive(false);
-        overworldMenu_Parent.SetActive(false);
-        optionsMenu_Parent.SetActive(false);
+        if (mainMenu_Parent)
+            mainMenu_Parent.SetActive(false);
+        if (overworldMenu_Parent)
+            overworldMenu_Parent.SetActive(false);
+        if (skinsMenu_Parent)
+            skinsMenu_Parent.SetActive(false);
+        if (optionsMenu_Parent)
+            optionsMenu_Parent.SetActive(false);
     }
 
     #endregion
@@ -150,6 +167,10 @@ public class MainMenuManager : Singleton<MainMenuManager>
     public void To_Overworld_Button_isPressed()
     {
         MenuStates.Instance.ChangeMenuState(MenuState.Overworld_Menu);
+    }
+    public void To_Skins_Button_isPressed()
+    {
+        MenuStates.Instance.ChangeMenuState(MenuState.Skin_Menu);
     }
     public void To_Options_Button_isPressed()
     {
