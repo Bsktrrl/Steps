@@ -187,9 +187,9 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
         //Skin aquired
         int skinCounter = 0;
-        for (int i = 0; i < mapInfo.collectableList.Count; i++)
+        for (int i = 0; i < mapInfo.skinsList.Count; i++)
         {
-            if (mapInfo.collectableList[i].isTaken)
+            if (mapInfo.skinsList[i].isTaken)
             {
                 skinCounter++;
             }

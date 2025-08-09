@@ -41,6 +41,9 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
     //NPC Data
     /*[HideInInspector]*/ public CharatersData charatersData_Store = new CharatersData();
+
+    //Block Skins
+    /*[HideInInspector]*/ public SkinsShopInfo skinsInfo_Store = new SkinsShopInfo();
     #endregion
 
 
@@ -76,6 +79,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.settingData_StoreList = gameData.settingData_SaveList;
         this.mapNameDisplay_Store = gameData.mapNameDisplay_Save;
         this.charatersData_Store = gameData.charatersData_Save;
+        this.skinsInfo_Store = gameData.skinsInfo_Save;
     }
 
     void LoadDataIntoProject(GameData gameData)
@@ -114,6 +118,13 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
             NPCManager.Instance.LoadData();
             print("5. NPCManager has Loaded");
         }
+
+        SkinsManager tempSkinsManager = FindObjectOfType<SkinsManager>();
+        if (tempSkinsManager)
+        {
+            SkinsManager.Instance.LoadData();
+            print("6. SkinsManager has Loaded");
+        }
     }
 
     public void SaveData(ref GameData gameData)
@@ -128,6 +139,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         gameData.mapNameDisplay_Save = this.mapNameDisplay_Store;
         gameData.charatersData_Save = this.charatersData_Store;
         gameData.settingData_SaveList = this.settingData_StoreList;
+        gameData.skinsInfo_Save = this.skinsInfo_Store;
     }
 
     public void Load_NewGame_Data(GameData oldData, GameData newData)
@@ -140,6 +152,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.settingData_StoreList = newData.settingData_SaveList;
         this.mapNameDisplay_Store = newData.mapNameDisplay_Save;
         this.charatersData_Store = newData.charatersData_Save;
+        this.skinsInfo_Store = newData.skinsInfo_Save;
 
         //Persist through newGame
         this.settingData_StoreList = oldData.settingData_SaveList;

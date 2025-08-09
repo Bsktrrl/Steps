@@ -157,12 +157,12 @@ public class Interactable_Pickup : MonoBehaviour
                         }
                         break;
                     case Items.Collectable:
-                        for (int j = 0; j < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].collectableList.Count; j++)
+                        for (int j = 0; j < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].skinsList.Count; j++)
                         {
-                            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].collectableList[j].pos.x == gameObject.transform.position.x
-                                && DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].collectableList[j].pos.z == gameObject.transform.position.z)
+                            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].skinsList[j].pos.x == gameObject.transform.position.x
+                                && DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].skinsList[j].pos.z == gameObject.transform.position.z)
                             {
-                                DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].collectableList[j].isTaken = true;
+                                DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].skinsList[j].isTaken = true;
 
                                 return;
                             }

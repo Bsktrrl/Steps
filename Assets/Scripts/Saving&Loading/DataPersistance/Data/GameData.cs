@@ -26,6 +26,9 @@ public class GameData
     //NPC Data
     /*[HideInInspector]*/ public CharatersData charatersData_Save = new CharatersData();
 
+    //Block Skins
+    /*[HideInInspector]*/ public SkinsShopInfo skinsInfo_Save = new SkinsShopInfo();
+
 
     //--------------------
 
@@ -39,5 +42,6 @@ public class GameData
         overWorldStates_SaveList = new OverWorldStates();
         //settingData_SaveList = new SettingData();
         charatersData_Save = new CharatersData();
+        skinsInfo_Save = new SkinsShopInfo();
     }
 }

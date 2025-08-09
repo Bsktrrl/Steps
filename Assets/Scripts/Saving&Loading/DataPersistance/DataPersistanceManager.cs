@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class DataPersistanceManager : Singleton<DataPersistanceManager>
 {
+    public static event Action Action_NewGame;
+
     [Header("File Storage Config")]
     public string fileName;
 
@@ -59,6 +62,8 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
         // Save the new clean data
         SaveGame();
+
+        Action_NewGame?.Invoke();
     }
     public void LoadGame()
     {

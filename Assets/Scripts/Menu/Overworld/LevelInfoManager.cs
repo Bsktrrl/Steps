@@ -133,9 +133,9 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
 
                         //Skin aquired
                         int skinCounter = 0;
-                        for (int j = 0; j < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].collectableList.Count; j++)
+                        for (int j = 0; j < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].skinsList.Count; j++)
                         {
-                            if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].collectableList[j].isTaken)
+                            if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].skinsList[j].isTaken)
                             {
                                 skinCounter++;
                             }

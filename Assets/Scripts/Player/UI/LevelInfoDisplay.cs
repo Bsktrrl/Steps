@@ -103,9 +103,9 @@ public class LevelInfoDisplay : Singleton<LevelInfoDisplay>
         if (mapInfo != null)
         {
             int collectionCounter = 0;
-            for (int i = 0; i < mapInfo.collectableList.Count; i++)
+            for (int i = 0; i < mapInfo.skinsList.Count; i++)
             {
-                if (mapInfo.collectableList[i].isTaken)
+                if (mapInfo.skinsList[i].isTaken)
                 {
                     collectionCounter++;
                 }

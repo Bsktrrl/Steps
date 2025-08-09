@@ -30,7 +30,7 @@ public class Map_SaveInfo
 
     [Header("Collectables")]
     public List<CoinInfo> coinList = new List<CoinInfo>();
-    public List<CollectableInfo> collectableList = new List<CollectableInfo>();
+    public List<CollectableInfo> skinsList = new List<CollectableInfo>();
     public List<MaxStepInfo> maxStepList = new List<MaxStepInfo>();
 
     [Header("Skin available")]
@@ -80,7 +80,7 @@ public class Map_SaveInfo
                 collectableInfo.pos = obj.gameObject.transform.position;
                 collectableInfo.isTaken = false;
 
-                collectableList.Add(collectableInfo);
+                skinsList.Add(collectableInfo);
             }
             else if (obj.itemReceived == Items.IncreaseMaxSteps /*&& obj.itemReceived.amount > 0*/)
             {
@@ -126,16 +126,16 @@ public class Map_SaveInfo
         }
 
         //Collectable Pickups
-        for (int i = 0; i < mapSaveInfo.collectableList.Count; i++)
+        for (int i = 0; i < mapSaveInfo.skinsList.Count; i++)
         {
-            if (mapSaveInfo.collectableList[i].isTaken)
+            if (mapSaveInfo.skinsList[i].isTaken)
             {
                 foreach (Interactable_Pickup pickup in pickUpList)
                 {
                     if (pickup.itemReceived == Items.Collectable)
                     {
-                        if (mapSaveInfo.collectableList[i].pos.x == pickup.gameObject.transform.position.x
-                        && mapSaveInfo.collectableList[i].pos.z == pickup.gameObject.transform.position.z)
+                        if (mapSaveInfo.skinsList[i].pos.x == pickup.gameObject.transform.position.x
+                        && mapSaveInfo.skinsList[i].pos.z == pickup.gameObject.transform.position.z)
                         {
                             pickup.gameObject.SetActive(false);
 
