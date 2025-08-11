@@ -10,7 +10,7 @@ public class AnalyticsCalls
 {
     #region General
 
-    public static void GetCoins(int pickupNumber)
+    public static void GetEssence(int pickupNumber)
     {
         if (AnalyticsService.Instance != null)
         {
@@ -32,7 +32,7 @@ public class AnalyticsCalls
         }
     }
 
-    public static void GetAllCoinsInALevel()
+    public static void GetAllEssenceInALevel()
     {
         if (AnalyticsService.Instance != null)
         {

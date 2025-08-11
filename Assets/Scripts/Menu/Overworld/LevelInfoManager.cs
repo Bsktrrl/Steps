@@ -122,9 +122,9 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
 
                         //Essence aquired
                         int essenceCounter = 0;
-                        for (int j = 0; j < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].coinList.Count; j++)
+                        for (int j = 0; j < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].essenceList.Count; j++)
                         {
-                            if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].coinList[j].isTaken)
+                            if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].essenceList[j].isTaken)
                             {
                                 essenceCounter++;
                             }
@@ -133,12 +133,9 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
 
                         //Skin aquired
                         int skinCounter = 0;
-                        for (int j = 0; j < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].skinsList.Count; j++)
+                        if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].levelSkin.isTaken)
                         {
-                            if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].skinsList[j].isTaken)
-                            {
-                                skinCounter++;
-                            }
+                            skinCounter++;
                         }
                         Skin_Aquired.text = skinCounter + " / 1";
 

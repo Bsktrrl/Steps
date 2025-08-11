@@ -29,8 +29,8 @@ public class Map_SaveInfo
     public bool isCompleted;
 
     [Header("Collectables")]
-    public List<CoinInfo> coinList = new List<CoinInfo>();
-    public List<CollectableInfo> skinsList = new List<CollectableInfo>();
+    public List<EssenceInfo> essenceList = new List<EssenceInfo>();
+    public LevelSkinsInfo levelSkin = new LevelSkinsInfo();
     public List<MaxStepInfo> maxStepList = new List<MaxStepInfo>();
 
     [Header("Skin available")]
@@ -64,23 +64,23 @@ public class Map_SaveInfo
         //Add all coins to the list
         foreach (Interactable_Pickup obj in objectsWithScript)
         {
-            if (obj.itemReceived == Items.Coin /*&& obj.itemReceived.amount > 0*/)
+            if (obj.itemReceived == Items.Essence /*&& obj.itemReceived.amount > 0*/)
             {
-                CoinInfo coinInfo = new CoinInfo();
-                coinInfo.coinObj = obj.gameObject;
-                coinInfo.pos = obj.gameObject.transform.position;
-                coinInfo.isTaken = false;
+                EssenceInfo essenceInfo = new EssenceInfo();
+                essenceInfo.essenceObj = obj.gameObject;
+                essenceInfo.pos = obj.gameObject.transform.position;
+                essenceInfo.isTaken = false;
 
-                coinList.Add(coinInfo);
+                essenceList.Add(essenceInfo);
             }
-            else if (obj.itemReceived == Items.Collectable /*&& obj.itemReceived.amount > 0*/)
+            else if (obj.itemReceived == Items.Skin /*&& obj.itemReceived.amount > 0*/)
             {
-                CollectableInfo collectableInfo = new CollectableInfo();
-                collectableInfo.collectableObj = obj.gameObject;
-                collectableInfo.pos = obj.gameObject.transform.position;
-                collectableInfo.isTaken = false;
+                LevelSkinsInfo skinInfo = new LevelSkinsInfo();
+                skinInfo.skinObj = obj.gameObject;
+                skinInfo.pos = obj.gameObject.transform.position;
+                skinInfo.isTaken = false;
 
-                skinsList.Add(collectableInfo);
+                levelSkin = skinInfo;
             }
             else if (obj.itemReceived == Items.IncreaseMaxSteps /*&& obj.itemReceived.amount > 0*/)
             {
@@ -105,16 +105,16 @@ public class Map_SaveInfo
         Interactable_Pickup[] pickUpList = UnityEngine.Object.FindObjectsOfType<Interactable_Pickup>();
 
         //Coin Pickups
-        for (int i = 0; i < mapSaveInfo.coinList.Count; i++)
+        for (int i = 0; i < mapSaveInfo.essenceList.Count; i++)
         {
-            if (mapSaveInfo.coinList[i].isTaken)
+            if (mapSaveInfo.essenceList[i].isTaken)
             {
                 foreach (Interactable_Pickup pickup in pickUpList)
                 {
-                    if (pickup.itemReceived == Items.Coin)
+                    if (pickup.itemReceived == Items.Essence)
                     {
-                        if (mapSaveInfo.coinList[i].pos.x == pickup.gameObject.transform.position.x
-                        && mapSaveInfo.coinList[i].pos.z == pickup.gameObject.transform.position.z)
+                        if (mapSaveInfo.essenceList[i].pos.x == pickup.gameObject.transform.position.x
+                        && mapSaveInfo.essenceList[i].pos.z == pickup.gameObject.transform.position.z)
                         {
                             pickup.gameObject.SetActive(false);
 
@@ -125,22 +125,19 @@ public class Map_SaveInfo
             }
         }
 
-        //Collectable Pickups
-        for (int i = 0; i < mapSaveInfo.skinsList.Count; i++)
+        //Skins Pickups
+        if (mapSaveInfo.levelSkin.isTaken)
         {
-            if (mapSaveInfo.skinsList[i].isTaken)
+            foreach (Interactable_Pickup pickup in pickUpList)
             {
-                foreach (Interactable_Pickup pickup in pickUpList)
+                if (pickup.itemReceived == Items.Skin)
                 {
-                    if (pickup.itemReceived == Items.Collectable)
+                    if (mapSaveInfo.levelSkin.pos.x == pickup.gameObject.transform.position.x
+                    && mapSaveInfo.levelSkin.pos.z == pickup.gameObject.transform.position.z)
                     {
-                        if (mapSaveInfo.skinsList[i].pos.x == pickup.gameObject.transform.position.x
-                        && mapSaveInfo.skinsList[i].pos.z == pickup.gameObject.transform.position.z)
-                        {
-                            pickup.gameObject.SetActive(false);
+                        pickup.gameObject.SetActive(false);
 
-                            break;
-                        }
+                        break;
                     }
                 }
             }
@@ -170,17 +167,17 @@ public class Map_SaveInfo
 }
 
 [Serializable]
-public class CoinInfo
+public class EssenceInfo
 {
-    public GameObject coinObj;
+    public GameObject essenceObj;
     public Vector3 pos;
     public bool isTaken;
 }
 
 [Serializable]
-public class CollectableInfo
+public class LevelSkinsInfo
 {
-    public GameObject collectableObj;
+    public GameObject skinObj;
     public Vector3 pos;
     public bool isTaken;
 }

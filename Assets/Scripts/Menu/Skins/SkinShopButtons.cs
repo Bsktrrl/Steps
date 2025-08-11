@@ -7,7 +7,7 @@ using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 public class SkinShopButtons : MonoBehaviour
 {
     [Header("General")]
-    [SerializeField] SkinType skinType;
+    public SkinType skinType;
     [SerializeField] int region;
     [SerializeField] int level;
 
@@ -21,61 +21,53 @@ public class SkinShopButtons : MonoBehaviour
     [SerializeField] Image frame;
     [SerializeField] GameObject inactiveImage;
 
-    [Header("SkinInfo")]
-    SkinInfo skinInfo = new SkinInfo();
-
 
     //--------------------
 
-
-    private void Start()
-    {
-        skinInfo = GetThisSkinInfo();
-    }
 
     private void OnEnable()
     {
-        CheckBlockState();
-
-        //SkinsManager.Action_SkinInfoFinishedSetup += CheckBlockState;
-    }
-    private void OnDisable()
-    {
-        //SkinsManager.Action_SkinInfoFinishedSetup -= CheckBlockState;
+        UpdateSkinDisplay();
     }
 
 
     //--------------------
 
 
-    void CheckBlockState()
+    public void UpdateSkinDisplay()
     {
-        CheckIfInactive();
-        CheckIfAquired();
-        CheckIfUnlocked();
+        SkinInfo tempSkinInfo = GetThisSkinInfo();
 
-        //SaveThisSkinInfo();
+        IfInactive_Display(tempSkinInfo);
+        IfAquired_Display(tempSkinInfo);
+        IfUnlocked_Display(tempSkinInfo);
     }
 
-    void CheckIfInactive()
+    void IfInactive_Display(SkinInfo skinInfo)
     {
-        if (GetThisSkinInfo().skin_isInactive)
+        if (skinInfo.skin_isInactive)
         {
             isInactive = true;
+
+            frame.color = SkinShopManager.Instance.inactive_Color;
             inactiveImage.SetActive(true);
         }
         else
         {
             isInactive = false;
+
             inactiveImage.SetActive(false);
         }
     }
-    void CheckIfAquired()
+    void IfAquired_Display(SkinInfo skinInfo)
     {
-        if (GetThisSkinInfo().skin_isAquired)
+        if (skinInfo.skin_isAquired)
         {
             isAquired = true;
             isInactive = false;
+
+            frame.color = SkinShopManager.Instance.aquired_Color;
+
             UpdateIfInactive(false);
         }
         else
@@ -87,17 +79,16 @@ public class SkinShopButtons : MonoBehaviour
             inactiveImage.SetActive(true);
         }
     }
-    void CheckIfUnlocked()
+    void IfUnlocked_Display(SkinInfo skinInfo)
     {
-        if (GetThisSkinInfo().skin_isUnlocked)
+        if (skinInfo.skin_isUnlocked)
         {
             isUnlocked = true;
-            frame.color = Color.yellow;
+            frame.color = SkinShopManager.Instance.unlocked_Color;
         }
         else
         {
             isUnlocked = false;
-            frame.color = Color.white;
         }
     }
 
@@ -105,36 +96,39 @@ public class SkinShopButtons : MonoBehaviour
     //--------------------
 
 
-    void UpdateBlockState()
-    {
-        UpdateIfInactive(isInactive);
-        UpdateIfAquired(isAquired);
-        UpdateIfUnlocked(isUnlocked);
-    }
-
     void UpdateIfInactive(bool state)
     {
         isInactive = state;
 
         if (state)
+        {
+            frame.color = SkinShopManager.Instance.inactive_Color;
             inactiveImage.SetActive(true);
+        }
         else
+        {
             inactiveImage.SetActive(false);
+        }
     }
     void UpdateIfAquired(bool state)
     {
         isAquired = state;
 
         if (state)
+        {
+            frame.color = SkinShopManager.Instance.aquired_Color;
             inactiveImage.SetActive(false);
+        }
         else
+        {
             inactiveImage.SetActive(true);
+        }
     }
     void UpdateIfUnlocked(bool state)
     {
         isUnlocked = state;
 
-        frame.color = Color.yellow;
+        frame.color = SkinShopManager.Instance.unlocked_Color;
 
         if (state)
             inactiveImage.SetActive(false);
@@ -152,17 +146,17 @@ public class SkinShopButtons : MonoBehaviour
                 switch (level)
                 {
                     case 1:
-                        return SkinsManager.Instance.skinsInfo.skin_Region1_level1;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region1_level1;
                     case 2:
-                        return SkinsManager.Instance.skinsInfo.skin_Region1_level2;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region1_level2;
                     case 3:
-                        return SkinsManager.Instance.skinsInfo.skin_Region1_level3;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region1_level3;
                     case 4:
-                        return SkinsManager.Instance.skinsInfo.skin_Region1_level4;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region1_level4;
                     case 5:
-                        return SkinsManager.Instance.skinsInfo.skin_Region1_level5;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region1_level5;
                     case 6:
-                        return SkinsManager.Instance.skinsInfo.skin_Region1_level6;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region1_level6;
 
                     default:
                         break;
@@ -172,17 +166,17 @@ public class SkinShopButtons : MonoBehaviour
                 switch (level)
                 {
                     case 1:
-                        return SkinsManager.Instance.skinsInfo.skin_Region2_level1;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region2_level1;
                     case 2:
-                        return SkinsManager.Instance.skinsInfo.skin_Region2_level2;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region2_level2;
                     case 3:
-                        return SkinsManager.Instance.skinsInfo.skin_Region2_level3;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region2_level3;
                     case 4:
-                        return SkinsManager.Instance.skinsInfo.skin_Region2_level4;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region2_level4;
                     case 5:
-                        return SkinsManager.Instance.skinsInfo.skin_Region2_level5;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region2_level5;
                     case 6:
-                        return SkinsManager.Instance.skinsInfo.skin_Region2_level6;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region2_level6;
 
                     default:
                         break;
@@ -192,17 +186,17 @@ public class SkinShopButtons : MonoBehaviour
                 switch (level)
                 {
                     case 1:
-                        return SkinsManager.Instance.skinsInfo.skin_Region3_level1;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region3_level1;
                     case 2:
-                        return SkinsManager.Instance.skinsInfo.skin_Region3_level2;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region3_level2;
                     case 3:
-                        return SkinsManager.Instance.skinsInfo.skin_Region3_level3;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region3_level3;
                     case 4:
-                        return SkinsManager.Instance.skinsInfo.skin_Region3_level4;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region3_level4;
                     case 5:
-                        return SkinsManager.Instance.skinsInfo.skin_Region3_level5;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region3_level5;
                     case 6:
-                        return SkinsManager.Instance.skinsInfo.skin_Region3_level6;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region3_level6;
 
                     default:
                         break;
@@ -212,17 +206,17 @@ public class SkinShopButtons : MonoBehaviour
                 switch (level)
                 {
                     case 1:
-                        return SkinsManager.Instance.skinsInfo.skin_Region4_level1;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region4_level1;
                     case 2:
-                        return SkinsManager.Instance.skinsInfo.skin_Region4_level2;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region4_level2;
                     case 3:
-                        return SkinsManager.Instance.skinsInfo.skin_Region4_level3;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region4_level3;
                     case 4:
-                        return SkinsManager.Instance.skinsInfo.skin_Region4_level4;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region4_level4;
                     case 5:
-                        return SkinsManager.Instance.skinsInfo.skin_Region4_level5;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region4_level5;
                     case 6:
-                        return SkinsManager.Instance.skinsInfo.skin_Region4_level6;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region4_level6;
 
                     default:
                         break;
@@ -232,17 +226,17 @@ public class SkinShopButtons : MonoBehaviour
                 switch (level)
                 {
                     case 1:
-                        return SkinsManager.Instance.skinsInfo.skin_Region5_level1;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region5_level1;
                     case 2:
-                        return SkinsManager.Instance.skinsInfo.skin_Region5_level2;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region5_level2;
                     case 3:
-                        return SkinsManager.Instance.skinsInfo.skin_Region5_level3;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region5_level3;
                     case 4:
-                        return SkinsManager.Instance.skinsInfo.skin_Region5_level4;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region5_level4;
                     case 5:
-                        return SkinsManager.Instance.skinsInfo.skin_Region5_level5;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region5_level5;
                     case 6:
-                        return SkinsManager.Instance.skinsInfo.skin_Region5_level6;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region5_level6;
 
                     default:
                         break;
@@ -252,17 +246,17 @@ public class SkinShopButtons : MonoBehaviour
                 switch (level)
                 {
                     case 1:
-                        return SkinsManager.Instance.skinsInfo.skin_Region6_level1;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region6_level1;
                     case 2:
-                        return SkinsManager.Instance.skinsInfo.skin_Region6_level2;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region6_level2;
                     case 3:
-                        return SkinsManager.Instance.skinsInfo.skin_Region6_level3;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region6_level3;
                     case 4:
-                        return SkinsManager.Instance.skinsInfo.skin_Region6_level4;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region6_level4;
                     case 5:
-                        return SkinsManager.Instance.skinsInfo.skin_Region6_level5;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region6_level5;
                     case 6:
-                        return SkinsManager.Instance.skinsInfo.skin_Region6_level6;
+                        return SkinsManager.Instance.skinShopInfo.skin_Region6_level6;
 
                     default:
                         break;
@@ -283,34 +277,34 @@ public class SkinShopButtons : MonoBehaviour
                 switch (level)
                 {
                     case 1:
-                        SkinsManager.Instance.skinsInfo.skin_Region1_level1.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region1_level1.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region1_level1.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region1_level1.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region1_level1.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region1_level1.skin_isUnlocked = isUnlocked;
                         break;
                     case 2:
-                        SkinsManager.Instance.skinsInfo.skin_Region1_level2.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region1_level2.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region1_level2.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region1_level2.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region1_level2.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region1_level2.skin_isUnlocked = isUnlocked;
                         break;
                     case 3:
-                        SkinsManager.Instance.skinsInfo.skin_Region1_level3.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region1_level3.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region1_level3.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region1_level3.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region1_level3.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region1_level3.skin_isUnlocked = isUnlocked;
                         break;
                     case 4:
-                        SkinsManager.Instance.skinsInfo.skin_Region1_level4.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region1_level4.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region1_level4.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region1_level4.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region1_level4.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region1_level4.skin_isUnlocked = isUnlocked;
                         break;
                     case 5:
-                        SkinsManager.Instance.skinsInfo.skin_Region1_level5.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region1_level5.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region1_level5.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region1_level5.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region1_level5.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region1_level5.skin_isUnlocked = isUnlocked;
                         break;
                     case 6:
-                        SkinsManager.Instance.skinsInfo.skin_Region1_level6.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region1_level6.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region1_level6.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region1_level6.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region1_level6.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region1_level6.skin_isUnlocked = isUnlocked;
                         break;
 
                     default:
@@ -321,34 +315,34 @@ public class SkinShopButtons : MonoBehaviour
                 switch (level)
                 {
                     case 1:
-                        SkinsManager.Instance.skinsInfo.skin_Region2_level1.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region2_level1.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region2_level1.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region2_level1.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region2_level1.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region2_level1.skin_isUnlocked = isUnlocked;
                         break;
                     case 2:
-                        SkinsManager.Instance.skinsInfo.skin_Region2_level2.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region2_level2.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region2_level2.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region2_level2.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region2_level2.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region2_level2.skin_isUnlocked = isUnlocked;
                         break;
                     case 3:
-                        SkinsManager.Instance.skinsInfo.skin_Region2_level3.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region2_level3.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region2_level3.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region2_level3.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region2_level3.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region2_level3.skin_isUnlocked = isUnlocked;
                         break;
                     case 4:
-                        SkinsManager.Instance.skinsInfo.skin_Region2_level4.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region2_level4.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region2_level4.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region2_level4.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region2_level4.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region2_level4.skin_isUnlocked = isUnlocked;
                         break;
                     case 5:
-                        SkinsManager.Instance.skinsInfo.skin_Region2_level5.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region2_level5.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region2_level5.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region2_level5.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region2_level5.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region2_level5.skin_isUnlocked = isUnlocked;
                         break;
                     case 6:
-                        SkinsManager.Instance.skinsInfo.skin_Region2_level6.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region2_level6.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region2_level6.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region2_level6.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region2_level6.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region2_level6.skin_isUnlocked = isUnlocked;
                         break;
 
                     default:
@@ -359,34 +353,34 @@ public class SkinShopButtons : MonoBehaviour
                 switch (level)
                 {
                     case 1:
-                        SkinsManager.Instance.skinsInfo.skin_Region3_level1.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region3_level1.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region3_level1.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region3_level1.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region3_level1.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region3_level1.skin_isUnlocked = isUnlocked;
                         break;
                     case 2:
-                        SkinsManager.Instance.skinsInfo.skin_Region3_level2.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region3_level2.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region3_level2.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region3_level2.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region3_level2.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region3_level2.skin_isUnlocked = isUnlocked;
                         break;
                     case 3:
-                        SkinsManager.Instance.skinsInfo.skin_Region3_level3.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region3_level3.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region3_level3.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region3_level3.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region3_level3.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region3_level3.skin_isUnlocked = isUnlocked;
                         break;
                     case 4:
-                        SkinsManager.Instance.skinsInfo.skin_Region3_level4.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region3_level4.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region3_level4.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region3_level4.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region3_level4.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region3_level4.skin_isUnlocked = isUnlocked;
                         break;
                     case 5:
-                        SkinsManager.Instance.skinsInfo.skin_Region3_level5.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region3_level5.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region3_level5.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region3_level5.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region3_level5.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region3_level5.skin_isUnlocked = isUnlocked;
                         break;
                     case 6:
-                        SkinsManager.Instance.skinsInfo.skin_Region3_level6.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region3_level6.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region3_level6.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region3_level6.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region3_level6.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region3_level6.skin_isUnlocked = isUnlocked;
                         break;
 
                     default:
@@ -397,34 +391,34 @@ public class SkinShopButtons : MonoBehaviour
                 switch (level)
                 {
                     case 1:
-                        SkinsManager.Instance.skinsInfo.skin_Region4_level1.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region4_level1.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region4_level1.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region4_level1.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region4_level1.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region4_level1.skin_isUnlocked = isUnlocked;
                         break;
                     case 2:
-                        SkinsManager.Instance.skinsInfo.skin_Region4_level2.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region4_level2.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region4_level2.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region4_level2.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region4_level2.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region4_level2.skin_isUnlocked = isUnlocked;
                         break;
                     case 3:
-                        SkinsManager.Instance.skinsInfo.skin_Region4_level3.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region4_level3.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region4_level3.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region4_level3.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region4_level3.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region4_level3.skin_isUnlocked = isUnlocked;
                         break;
                     case 4:
-                        SkinsManager.Instance.skinsInfo.skin_Region4_level4.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region4_level4.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region4_level4.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region4_level4.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region4_level4.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region4_level4.skin_isUnlocked = isUnlocked;
                         break;
                     case 5:
-                        SkinsManager.Instance.skinsInfo.skin_Region4_level5.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region4_level5.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region4_level5.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region4_level5.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region4_level5.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region4_level5.skin_isUnlocked = isUnlocked;
                         break;
                     case 6:
-                        SkinsManager.Instance.skinsInfo.skin_Region4_level6.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region4_level6.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region4_level6.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region4_level6.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region4_level6.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region4_level6.skin_isUnlocked = isUnlocked;
                         break;
 
                     default:
@@ -435,34 +429,34 @@ public class SkinShopButtons : MonoBehaviour
                 switch (level)
                 {
                     case 1:
-                        SkinsManager.Instance.skinsInfo.skin_Region5_level1.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region5_level1.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region5_level1.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region5_level1.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region5_level1.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region5_level1.skin_isUnlocked = isUnlocked;
                         break;
                     case 2:
-                        SkinsManager.Instance.skinsInfo.skin_Region5_level2.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region5_level2.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region5_level2.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region5_level2.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region5_level2.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region5_level2.skin_isUnlocked = isUnlocked;
                         break;
                     case 3:
-                        SkinsManager.Instance.skinsInfo.skin_Region5_level3.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region5_level3.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region5_level3.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region5_level3.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region5_level3.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region5_level3.skin_isUnlocked = isUnlocked;
                         break;
                     case 4:
-                        SkinsManager.Instance.skinsInfo.skin_Region5_level4.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region5_level4.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region5_level4.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region5_level4.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region5_level4.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region5_level4.skin_isUnlocked = isUnlocked;
                         break;
                     case 5:
-                        SkinsManager.Instance.skinsInfo.skin_Region5_level5.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region5_level5.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region5_level5.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region5_level5.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region5_level5.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region5_level5.skin_isUnlocked = isUnlocked;
                         break;
                     case 6:
-                        SkinsManager.Instance.skinsInfo.skin_Region5_level6.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region5_level6.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region5_level6.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region5_level6.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region5_level6.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region5_level6.skin_isUnlocked = isUnlocked;
                         break;
 
                     default:
@@ -473,34 +467,34 @@ public class SkinShopButtons : MonoBehaviour
                 switch (level)
                 {
                     case 1:
-                        SkinsManager.Instance.skinsInfo.skin_Region6_level1.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region6_level1.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region6_level1.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region6_level1.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region6_level1.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region6_level1.skin_isUnlocked = isUnlocked;
                         break;
                     case 2:
-                        SkinsManager.Instance.skinsInfo.skin_Region6_level2.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region6_level2.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region6_level2.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region6_level2.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region6_level2.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region6_level2.skin_isUnlocked = isUnlocked;
                         break;
                     case 3:
-                        SkinsManager.Instance.skinsInfo.skin_Region6_level3.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region6_level3.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region6_level3.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region6_level3.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region6_level3.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region6_level3.skin_isUnlocked = isUnlocked;
                         break;
                     case 4:
-                        SkinsManager.Instance.skinsInfo.skin_Region6_level4.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region6_level4.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region6_level4.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region6_level4.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region6_level4.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region6_level4.skin_isUnlocked = isUnlocked;
                         break;
                     case 5:
-                        SkinsManager.Instance.skinsInfo.skin_Region6_level5.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region6_level5.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region6_level5.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region6_level5.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region6_level5.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region6_level5.skin_isUnlocked = isUnlocked;
                         break;
                     case 6:
-                        SkinsManager.Instance.skinsInfo.skin_Region6_level6.skin_isInactive = isInactive;
-                        SkinsManager.Instance.skinsInfo.skin_Region6_level6.skin_isAquired = isAquired;
-                        SkinsManager.Instance.skinsInfo.skin_Region6_level6.skin_isUnlocked = isUnlocked;
+                        SkinsManager.Instance.skinShopInfo.skin_Region6_level6.skin_isInactive = isInactive;
+                        SkinsManager.Instance.skinShopInfo.skin_Region6_level6.skin_isAquired = isAquired;
+                        SkinsManager.Instance.skinShopInfo.skin_Region6_level6.skin_isUnlocked = isUnlocked;
                         break;
 
                     default:
@@ -514,6 +508,18 @@ public class SkinShopButtons : MonoBehaviour
 
         SkinsManager.Instance.SaveData();
     }
+    LevelSkinsInfo GetSkinData()
+    {
+        for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count; i++)
+        {
+            if (skinType == DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].skintype)
+            {
+                return DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].levelSkin;
+            }
+        }
+
+        return null;
+    }
 
 
     //--------------------
@@ -523,27 +529,50 @@ public class SkinShopButtons : MonoBehaviour
     {
         //Insert payment requirements
 
-        CheckBlockState();
+        LevelSkinsInfo skinData = GetSkinData();
 
-        if (!isAquired) //Change to "UpdateIfInactive(false)"
-        {
-            UpdateIfAquired(true);
-            UpdateIfInactive(false);
-        }
-        else if (isAquired && !isUnlocked)
+        UpdateSkinDisplay();
+
+        //If SkinData is missing
+        //if (skinData == null)
+        //{
+        //    UpdateIfInactive(true);
+        //}
+
+        ////If the skin has NOT been taken in a level
+        //else if (!skinData.isTaken)
+        //{
+        //    UpdateIfInactive(true);
+        //}
+
+        //If a skin HAS been taken in a level, but has NOT been Unlocked from the Shop yet - UNLOCK IT, if you have the required essence
+        /*else*/ if (GetSkinData().isTaken && !isUnlocked && (SkinShopManager.Instance.GetSkinCost() <= SkinShopManager.Instance.GetEssenceAquired()))
         {
             UpdateIfUnlocked(true);
             UpdateIfInactive(false);
+
+            SkinShopManager.Instance.ChangeSkinCost();
         }
-        else //Remove after testing
-        {
-            UpdateIfInactive(true);
-        }
+
+        //If a skin has been taken in a level and HAS been Unlocked in the Shop - DO NOTHING
+        //else if (GetSkinData().isTaken && isUnlocked)
+        //{
+
+        //}
+
+        //If the skin has been taken in a level - 
+        //else if (skinData.isTaken)
+        //{
+        //    UpdateIfAquired(true);
+        //    UpdateIfInactive(false);
+        //}
 
         SaveThisSkinInfo();
-
-        SkinsManager.Instance.SaveData();
     }
+
+
+    //--------------------
+
 
     public void ClearButtonInfo()
     {

@@ -7,8 +7,8 @@ public class PlayerStatsDisplay : MonoBehaviour
 {
     [Header("Amount Display")]
     [SerializeField] TextMeshProUGUI stepsAmountDisplay;
-    [SerializeField] TextMeshProUGUI coinAmountDisplay;
-    [SerializeField] TextMeshProUGUI collectableAmountDisplay;
+    [SerializeField] TextMeshProUGUI essenceAmountDisplay;
+    [SerializeField] TextMeshProUGUI skinAmountDisplay;
 
 
     //--------------------
@@ -44,14 +44,14 @@ public class PlayerStatsDisplay : MonoBehaviour
                     stepsAmountDisplay.text = 0.ToString();
 
                 if (gameObject.GetComponent<PlayerStats>().stats.itemsGot != null)
-                    coinAmountDisplay.text = gameObject.GetComponent<PlayerStats>().stats.itemsGot.coin.ToString();
+                    essenceAmountDisplay.text = gameObject.GetComponent<PlayerStats>().stats.itemsGot.essence.ToString();
                 else
-                    coinAmountDisplay.text = 0.ToString();
+                    essenceAmountDisplay.text = 0.ToString();
 
                 if (gameObject.GetComponent<PlayerStats>().stats.itemsGot != null)
-                    collectableAmountDisplay.text = gameObject.GetComponent<PlayerStats>().stats.itemsGot.collectable.ToString();
+                    skinAmountDisplay.text = gameObject.GetComponent<PlayerStats>().stats.itemsGot.skin.ToString();
                 else
-                    collectableAmountDisplay.text = 0.ToString();
+                    skinAmountDisplay.text = 0.ToString();
             } 
         }
     }

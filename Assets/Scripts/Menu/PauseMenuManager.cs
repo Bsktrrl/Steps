@@ -176,9 +176,9 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
         //Essence aquired
         int essenceCounter = 0;
-        for (int i = 0; i < mapInfo.coinList.Count; i++)
+        for (int i = 0; i < mapInfo.essenceList.Count; i++)
         {
-            if (mapInfo.coinList[i].isTaken)
+            if (mapInfo.essenceList[i].isTaken)
             {
                 essenceCounter++;
             }
@@ -187,12 +187,9 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
         //Skin aquired
         int skinCounter = 0;
-        for (int i = 0; i < mapInfo.skinsList.Count; i++)
+        if (mapInfo.levelSkin.isTaken)
         {
-            if (mapInfo.skinsList[i].isTaken)
-            {
-                skinCounter++;
-            }
+            skinCounter++;
         }
         Skin_Aquired.text = skinCounter + " / 1";
 

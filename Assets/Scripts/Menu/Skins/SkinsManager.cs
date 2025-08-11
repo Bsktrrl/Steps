@@ -1,56 +1,15 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class SkinsManager : Singleton<SkinsManager>
 {
-    public static event Action Action_SkinInfoFinishedSetup;
+    [Header("Shop")]
+    [SerializeField] SkinShopManager SkinShopCostManager;
 
-    public SkinsShopInfo skinsInfo;
-    
-    [Header("Buttons")]
-    public GameObject skinShopButton_Region1_Level1;
-    public GameObject skinShopButton_Region1_Level2;
-    public GameObject skinShopButton_Region1_Level3;
-    public GameObject skinShopButton_Region1_Level4;
-    public GameObject skinShopButton_Region1_Level5;
-    public GameObject skinShopButton_Region1_Level6;
-
-    public GameObject skinShopButton_Region2_Level1;
-    public GameObject skinShopButton_Region2_Level2;
-    public GameObject skinShopButton_Region2_Level3;
-    public GameObject skinShopButton_Region2_Level4;
-    public GameObject skinShopButton_Region2_Level5;
-    public GameObject skinShopButton_Region2_Level6;
-
-    public GameObject skinShopButton_Region3_Level1;
-    public GameObject skinShopButton_Region3_Level2;
-    public GameObject skinShopButton_Region3_Level3;
-    public GameObject skinShopButton_Region3_Level4;
-    public GameObject skinShopButton_Region3_Level5;
-    public GameObject skinShopButton_Region3_Level6;
-
-    public GameObject skinShopButton_Region4_Level1;
-    public GameObject skinShopButton_Region4_Level2;
-    public GameObject skinShopButton_Region4_Level3;
-    public GameObject skinShopButton_Region4_Level4;
-    public GameObject skinShopButton_Region4_Level5;
-    public GameObject skinShopButton_Region4_Level6;
-
-    public GameObject skinShopButton_Region5_Level1;
-    public GameObject skinShopButton_Region5_Level2;
-    public GameObject skinShopButton_Region5_Level3;
-    public GameObject skinShopButton_Region5_Level4;
-    public GameObject skinShopButton_Region5_Level5;
-    public GameObject skinShopButton_Region5_Level6;
-
-    public GameObject skinShopButton_Region6_Level1;
-    public GameObject skinShopButton_Region6_Level2;
-    public GameObject skinShopButton_Region6_Level3;
-    public GameObject skinShopButton_Region6_Level4;
-    public GameObject skinShopButton_Region6_Level5;
-    public GameObject skinShopButton_Region6_Level6;
-
+    public SkinsShopInfo skinShopInfo;
 
 
     //--------------------
@@ -58,12 +17,10 @@ public class SkinsManager : Singleton<SkinsManager>
 
     private void OnEnable()
     {
-        //DataManager.Action_dataHasLoaded += CheckIfSkinIsAquired;
         DataPersistanceManager.Action_NewGame += ClearSkinsShopInfo;
     }
     private void OnDisable()
     {
-        //DataManager.Action_dataHasLoaded -= CheckIfSkinIsAquired;
         DataPersistanceManager.Action_NewGame -= ClearSkinsShopInfo;
     }
 
@@ -73,12 +30,11 @@ public class SkinsManager : Singleton<SkinsManager>
 
     public void LoadData()
     {
-        skinsInfo = DataManager.Instance.skinsInfo_Store;
-        //CheckIfSkinIsAquired();
+        skinShopInfo = DataManager.Instance.skinsInfo_Store;
     }
     public void SaveData()
     {
-        DataManager.Instance.skinsInfo_Store = skinsInfo;
+        DataManager.Instance.skinsInfo_Store = skinShopInfo;
 
         DataPersistanceManager.instance.SaveGame();
     }
@@ -87,70 +43,113 @@ public class SkinsManager : Singleton<SkinsManager>
     //--------------------
 
 
-    void CheckIfSkinIsAquired()
+    #region Shop
+
+    public void UpdateAquiredSkins()
     {
         for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count; i++)
         {
-            if (SearchSkinInfo(i, skinsInfo.skin_Region1_level1)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region1_level2)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region1_level3)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region1_level4)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region1_level5)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region1_level6)) { continue; }
+            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count <= 0) { return; }
 
-            if (SearchSkinInfo(i, skinsInfo.skin_Region2_level1)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region2_level2)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region2_level3)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region2_level4)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region2_level5)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region2_level6)) { continue; }
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region1_level1);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region1_level2);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region1_level3);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region1_level4);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region1_level5);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region1_level6);
 
-            if (SearchSkinInfo(i, skinsInfo.skin_Region3_level1)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region3_level2)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region3_level3)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region3_level4)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region3_level5)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region3_level6)) { continue; }
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region2_level1);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region2_level2);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region2_level3);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region2_level4);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region2_level5);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region2_level6);
 
-            if (SearchSkinInfo(i, skinsInfo.skin_Region4_level1)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region4_level2)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region4_level3)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region4_level4)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region4_level5)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region4_level6)) { continue; }
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region3_level1);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region3_level2);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region3_level3);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region3_level4);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region3_level5);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region3_level6);
 
-            if (SearchSkinInfo(i, skinsInfo.skin_Region5_level1)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region5_level2)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region5_level3)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region5_level4)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region5_level5)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region5_level6)) { continue; }
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region4_level1);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region4_level2);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region4_level3);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region4_level4);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region4_level5);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region4_level6);
 
-            if (SearchSkinInfo(i, skinsInfo.skin_Region6_level1)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region6_level2)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region6_level3)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region6_level4)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region6_level5)) { continue; }
-            if (SearchSkinInfo(i, skinsInfo.skin_Region6_level6)) { continue; }
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region5_level1);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region5_level2);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region5_level3);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region5_level4);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region5_level5);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region5_level6);
+
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region6_level1);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region6_level2);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region6_level3);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region6_level4);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region6_level5);
+            //SearchSkinAquiredInfo(i, skinShopInfo.skin_Region6_level6);
+
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region1_level1)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region1_level2)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region1_level3)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region1_level4)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region1_level5)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region1_level6)) { continue; }
+
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region2_level1)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region2_level2)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region2_level3)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region2_level4)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region2_level5)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region2_level6)) { continue; }
+
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region3_level1)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region3_level2)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region3_level3)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region3_level4)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region3_level5)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region3_level6)) { continue; }
+
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region4_level1)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region4_level2)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region4_level3)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region4_level4)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region4_level5)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region4_level6)) { continue; }
+
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region5_level1)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region5_level2)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region5_level3)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region5_level4)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region5_level5)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region5_level6)) { continue; }
+
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region6_level1)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region6_level2)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region6_level3)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region6_level4)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region6_level5)) { continue; }
+            if (SearchSkinAquiredInfo(i, skinShopInfo.skin_Region6_level6)) { continue; }
         }
 
         SaveData();
-
-        Action_SkinInfoFinishedSetup?.Invoke();
     }
-    bool SearchSkinInfo(int index, SkinInfo skinInfo)
+    bool SearchSkinAquiredInfo(int index, SkinInfo skinInfo)
     {
         if (skinInfo.skin_Type == DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[index].skintype)
         {
-            for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[index].skinsList.Count; i++)
+            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[index].levelSkin.isTaken)
             {
-                if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[index].skinsList[i].isTaken)
-                {
-                    skinInfo.skin_isInactive = false;
-                    skinInfo.skin_isAquired = true;
+                print("111. UpdateAquiredSkins");
 
-                    return true;
-                }
+                skinInfo.skin_isInactive = false;
+                skinInfo.skin_isAquired = true;
+
+                return true;
             }
         }
 
@@ -166,47 +165,52 @@ public class SkinsManager : Singleton<SkinsManager>
 
     void ClearSkinsShopInfo()
     {
-        ClearSkin(skinsInfo.skin_Region1_level1);
-        ClearSkin(skinsInfo.skin_Region1_level2);
-        ClearSkin(skinsInfo.skin_Region1_level3);
-        ClearSkin(skinsInfo.skin_Region1_level4);
-        ClearSkin(skinsInfo.skin_Region1_level5);
-        ClearSkin(skinsInfo.skin_Region1_level6);
+        if (SkinShopCostManager.skinCostList.Count <= 0)
+            skinShopInfo.currentSkinCost = 0;
+        else
+            skinShopInfo.currentSkinCost = SkinShopCostManager.skinCostList[0];
 
-        ClearSkin(skinsInfo.skin_Region2_level1);
-        ClearSkin(skinsInfo.skin_Region2_level2);
-        ClearSkin(skinsInfo.skin_Region2_level3);
-        ClearSkin(skinsInfo.skin_Region2_level4);
-        ClearSkin(skinsInfo.skin_Region2_level5);
-        ClearSkin(skinsInfo.skin_Region2_level6);
+        ClearSkin(skinShopInfo.skin_Region1_level1);
+        ClearSkin(skinShopInfo.skin_Region1_level2);
+        ClearSkin(skinShopInfo.skin_Region1_level3);
+        ClearSkin(skinShopInfo.skin_Region1_level4);
+        ClearSkin(skinShopInfo.skin_Region1_level5);
+        ClearSkin(skinShopInfo.skin_Region1_level6);
 
-        ClearSkin(skinsInfo.skin_Region3_level1);
-        ClearSkin(skinsInfo.skin_Region3_level2);
-        ClearSkin(skinsInfo.skin_Region3_level3);
-        ClearSkin(skinsInfo.skin_Region3_level4);
-        ClearSkin(skinsInfo.skin_Region3_level5);
-        ClearSkin(skinsInfo.skin_Region3_level6);
+        ClearSkin(skinShopInfo.skin_Region2_level1);
+        ClearSkin(skinShopInfo.skin_Region2_level2);
+        ClearSkin(skinShopInfo.skin_Region2_level3);
+        ClearSkin(skinShopInfo.skin_Region2_level4);
+        ClearSkin(skinShopInfo.skin_Region2_level5);
+        ClearSkin(skinShopInfo.skin_Region2_level6);
 
-        ClearSkin(skinsInfo.skin_Region4_level1);
-        ClearSkin(skinsInfo.skin_Region4_level2);
-        ClearSkin(skinsInfo.skin_Region4_level3);
-        ClearSkin(skinsInfo.skin_Region4_level4);
-        ClearSkin(skinsInfo.skin_Region4_level5);
-        ClearSkin(skinsInfo.skin_Region4_level6);
+        ClearSkin(skinShopInfo.skin_Region3_level1);
+        ClearSkin(skinShopInfo.skin_Region3_level2);
+        ClearSkin(skinShopInfo.skin_Region3_level3);
+        ClearSkin(skinShopInfo.skin_Region3_level4);
+        ClearSkin(skinShopInfo.skin_Region3_level5);
+        ClearSkin(skinShopInfo.skin_Region3_level6);
 
-        ClearSkin(skinsInfo.skin_Region5_level1);
-        ClearSkin(skinsInfo.skin_Region5_level2);
-        ClearSkin(skinsInfo.skin_Region5_level3);
-        ClearSkin(skinsInfo.skin_Region5_level4);
-        ClearSkin(skinsInfo.skin_Region5_level5);
-        ClearSkin(skinsInfo.skin_Region5_level6);
+        ClearSkin(skinShopInfo.skin_Region4_level1);
+        ClearSkin(skinShopInfo.skin_Region4_level2);
+        ClearSkin(skinShopInfo.skin_Region4_level3);
+        ClearSkin(skinShopInfo.skin_Region4_level4);
+        ClearSkin(skinShopInfo.skin_Region4_level5);
+        ClearSkin(skinShopInfo.skin_Region4_level6);
 
-        ClearSkin(skinsInfo.skin_Region6_level1);
-        ClearSkin(skinsInfo.skin_Region6_level2);
-        ClearSkin(skinsInfo.skin_Region6_level3);
-        ClearSkin(skinsInfo.skin_Region6_level4);
-        ClearSkin(skinsInfo.skin_Region6_level5);
-        ClearSkin(skinsInfo.skin_Region6_level6);
+        ClearSkin(skinShopInfo.skin_Region5_level1);
+        ClearSkin(skinShopInfo.skin_Region5_level2);
+        ClearSkin(skinShopInfo.skin_Region5_level3);
+        ClearSkin(skinShopInfo.skin_Region5_level4);
+        ClearSkin(skinShopInfo.skin_Region5_level5);
+        ClearSkin(skinShopInfo.skin_Region5_level6);
+
+        ClearSkin(skinShopInfo.skin_Region6_level1);
+        ClearSkin(skinShopInfo.skin_Region6_level2);
+        ClearSkin(skinShopInfo.skin_Region6_level3);
+        ClearSkin(skinShopInfo.skin_Region6_level4);
+        ClearSkin(skinShopInfo.skin_Region6_level5);
+        ClearSkin(skinShopInfo.skin_Region6_level6);
 
         SaveData();
     }
@@ -216,110 +220,48 @@ public class SkinsManager : Singleton<SkinsManager>
         skinInfo.skin_isAquired = false;
         skinInfo.skin_isUnlocked = false;
 
-        skinShopButton_Region1_Level1.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region1_Level2.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region1_Level3.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region1_Level4.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region1_Level5.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region1_Level6.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region1_Level1.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region1_Level2.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region1_Level3.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region1_Level4.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region1_Level5.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region1_Level6.GetComponent<SkinShopButtons>().ClearButtonInfo();
 
-        skinShopButton_Region2_Level1.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region2_Level2.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region2_Level3.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region2_Level4.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region2_Level5.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region2_Level6.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region2_Level1.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region2_Level2.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region2_Level3.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region2_Level4.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region2_Level5.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region2_Level6.GetComponent<SkinShopButtons>().ClearButtonInfo();
 
-        skinShopButton_Region3_Level1.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region3_Level2.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region3_Level3.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region3_Level4.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region3_Level5.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region3_Level6.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region3_Level1.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region3_Level2.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region3_Level3.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region3_Level4.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region3_Level5.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region3_Level6.GetComponent<SkinShopButtons>().ClearButtonInfo();
 
-        skinShopButton_Region4_Level1.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region4_Level2.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region4_Level3.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region4_Level4.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region4_Level5.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region4_Level6.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region4_Level1.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region4_Level2.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region4_Level3.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region4_Level4.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region4_Level5.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region4_Level6.GetComponent<SkinShopButtons>().ClearButtonInfo();
 
-        skinShopButton_Region5_Level1.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region5_Level2.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region5_Level3.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region5_Level4.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region5_Level5.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region5_Level6.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region5_Level1.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region5_Level2.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region5_Level3.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region5_Level4.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region5_Level5.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region5_Level6.GetComponent<SkinShopButtons>().ClearButtonInfo();
 
-        skinShopButton_Region6_Level1.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region6_Level2.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region6_Level3.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region6_Level4.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region6_Level5.GetComponent<SkinShopButtons>().ClearButtonInfo();
-        skinShopButton_Region6_Level6.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region6_Level1.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region6_Level2.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region6_Level3.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region6_Level4.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region6_Level5.GetComponent<SkinShopButtons>().ClearButtonInfo();
+        SkinShopCostManager.skinShopButton_Region6_Level6.GetComponent<SkinShopButtons>().ClearButtonInfo();
     }
-}
 
-[Serializable]
-public class SkinsShopInfo
-{
-    [Header("Region 1")]
-    public SkinInfo skin_Region1_level1;
-    public SkinInfo skin_Region1_level2;
-    public SkinInfo skin_Region1_level3;
-    public SkinInfo skin_Region1_level4;
-    public SkinInfo skin_Region1_level5;
-    public SkinInfo skin_Region1_level6;
-
-    [Header("Region 2")]
-    public SkinInfo skin_Region2_level1;
-    public SkinInfo skin_Region2_level2;
-    public SkinInfo skin_Region2_level3;
-    public SkinInfo skin_Region2_level4;
-    public SkinInfo skin_Region2_level5;
-    public SkinInfo skin_Region2_level6;
-
-    [Header("Region 3")]
-    public SkinInfo skin_Region3_level1;
-    public SkinInfo skin_Region3_level2;
-    public SkinInfo skin_Region3_level3;
-    public SkinInfo skin_Region3_level4;
-    public SkinInfo skin_Region3_level5;
-    public SkinInfo skin_Region3_level6;
-
-    [Header("Region 4")]
-    public SkinInfo skin_Region4_level1;
-    public SkinInfo skin_Region4_level2;
-    public SkinInfo skin_Region4_level3;
-    public SkinInfo skin_Region4_level4;
-    public SkinInfo skin_Region4_level5;
-    public SkinInfo skin_Region4_level6;
-
-    [Header("Region 5")]
-    public SkinInfo skin_Region5_level1;
-    public SkinInfo skin_Region5_level2;
-    public SkinInfo skin_Region5_level3;
-    public SkinInfo skin_Region5_level4;
-    public SkinInfo skin_Region5_level5;
-    public SkinInfo skin_Region5_level6;
-
-    [Header("Region 6")]
-    public SkinInfo skin_Region6_level1;
-    public SkinInfo skin_Region6_level2;
-    public SkinInfo skin_Region6_level3;
-    public SkinInfo skin_Region6_level4;
-    public SkinInfo skin_Region6_level5;
-    public SkinInfo skin_Region6_level6;
-}
-
-[Serializable]
-public class SkinInfo
-{
-    [Header("Skin Type")]
-    public SkinType skin_Type;
-
-    [Header("States")]
-    public bool skin_isInactive;
-    public bool skin_isAquired;
-    public bool skin_isUnlocked;
+    #endregion
 }

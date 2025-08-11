@@ -12,8 +12,8 @@ public class LevelInfoDisplay : Singleton<LevelInfoDisplay>
     [Header("Info")]
     public GameObject levelName;
     public GameObject AbilityHeader;
-    [SerializeField] GameObject coinAmount;
-    [SerializeField] GameObject collectableAmount;
+    [SerializeField] GameObject essenceAmount;
+    [SerializeField] GameObject skinAmount;
     [SerializeField] GameObject stepAmount;
 
     [SerializeField] Image levelImage;
@@ -82,20 +82,20 @@ public class LevelInfoDisplay : Singleton<LevelInfoDisplay>
         //Display Coins got
         if (mapInfo != null)
         {
-            int coinCounter = 0;
-            for (int i = 0; i < mapInfo.coinList.Count; i++)
+            int essenceCounter = 0;
+            for (int i = 0; i < mapInfo.essenceList.Count; i++)
             {
-                if (mapInfo.coinList[i].isTaken)
+                if (mapInfo.essenceList[i].isTaken)
                 {
-                    coinCounter++;
+                    essenceCounter++;
                 }
             }
 
-            coinAmount.GetComponentInChildren<TextMeshProUGUI>().text = coinCounter + " / 10";
+            essenceAmount.GetComponentInChildren<TextMeshProUGUI>().text = essenceCounter + " / 10";
         }
         else
         {
-            coinAmount.GetComponentInChildren<TextMeshProUGUI>().text = "0 / 10";
+            essenceAmount.GetComponentInChildren<TextMeshProUGUI>().text = "0 / 10";
         }
 
 
@@ -103,19 +103,16 @@ public class LevelInfoDisplay : Singleton<LevelInfoDisplay>
         if (mapInfo != null)
         {
             int collectionCounter = 0;
-            for (int i = 0; i < mapInfo.skinsList.Count; i++)
+            if (mapInfo.levelSkin.isTaken)
             {
-                if (mapInfo.skinsList[i].isTaken)
-                {
-                    collectionCounter++;
-                }
+                collectionCounter++;
             }
 
-            collectableAmount.GetComponentInChildren<TextMeshProUGUI>().text = collectionCounter + " / 3";
+            skinAmount.GetComponentInChildren<TextMeshProUGUI>().text = collectionCounter + " / 3";
         }
         else
         {
-            collectableAmount.GetComponentInChildren<TextMeshProUGUI>().text = "0 / 3";
+            skinAmount.GetComponentInChildren<TextMeshProUGUI>().text = "0 / 3";
         }
 
 
