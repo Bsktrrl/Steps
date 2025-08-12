@@ -144,8 +144,6 @@ public class SkinsManager : Singleton<SkinsManager>
         {
             if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[index].levelSkin.isTaken)
             {
-                print("111. UpdateAquiredSkins");
-
                 skinInfo.skin_isInactive = false;
                 skinInfo.skin_isAquired = true;
 
