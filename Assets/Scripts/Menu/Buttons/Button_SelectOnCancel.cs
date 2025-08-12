@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class Button_SelectOnCancel : MonoBehaviour
+public class CancelPauseMenuByButtonPress : MonoBehaviour
 {
     [Header("Select On Cancel")]
     [SerializeField] Button selectOnCancel;
@@ -16,6 +17,12 @@ public class Button_SelectOnCancel : MonoBehaviour
     [SerializeField] public MenuState menuState_ToSelect;
     [SerializeField] public LevelState levelState_ToSelect;
     [SerializeField] public RegionState regionState_ToSelect;
+
+    [Header("Change Current Menu Category")]
+    public MenuCategories currentMenuCategoryToSelect;
+
+    [Header("Other GameObject to be hidden with This")]
+    [SerializeField] List<GameObject> gameObjectsToHideWithThis;
 
 
     //--------------------
@@ -58,9 +65,11 @@ public class Button_SelectOnCancel : MonoBehaviour
 
         //-----
 
-
-        ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(selectOnCancel.gameObject);
-
+        if (selectOnCancel)
+        {
+            ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(selectOnCancel.gameObject);
+        }
+        
         //Open/Close menus
         if (menuToOpen)
             menuToOpen.SetActive(true);
@@ -68,17 +77,28 @@ public class Button_SelectOnCancel : MonoBehaviour
         if (menuToClose)
         {
             menuToClose.SetActive(false);
-            OverWorldManager.Instance.panelBackground.SetActive(false);
+
+            for (int i = 0; i < gameObjectsToHideWithThis.Count; i++)
+            {
+                gameObjectsToHideWithThis[i].SetActive(false);
+            }
+
+            //OverWorldManager.Instance.panelBackground.SetActive(false);
         }
 
+        MenuManager.Instance.currentMenuCategorySelected = currentMenuCategoryToSelect;
+
         //Make sure that mainMenu isn't tried accessed during gameplay
-        if (menuState_ToSelect != MenuState.Pause_Menu_Main && menuState_ToSelect != MenuState.Pause_Menu_Settings && menuState_ToSelect != MenuState.Pause_Menu_Info)
+        if (menuState_ToSelect != MenuState.Pause_Menu_Main && menuState_ToSelect != MenuState.Pause_Menu_Options)
         {
             MainMenuManager.Instance.menuState = menuState_ToSelect;
             OverWorldManager.Instance.regionState = regionState_ToSelect;
             OverWorldManager.Instance.levelState = levelState_ToSelect;
         }
 
-        RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(regionState_ToSelect, levelState_ToSelect);
+        MapManager mapManager = FindObjectOfType<MapManager>();
+
+        if (mapManager == null)
+            RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(regionState_ToSelect, levelState_ToSelect);
     }
 }

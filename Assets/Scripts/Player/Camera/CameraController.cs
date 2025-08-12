@@ -1,6 +1,7 @@
 using Cinemachine;
 using System;
 using System.Collections;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,11 @@ public class CameraController : Singleton<CameraController>
     [Header("Camera Objects")]
     public GameObject cameraAnchor;
     [SerializeField] GameObject cameraOffset;
+
+    [Header("Cameras")]
+    public CinemachineBrain cinemachineBrain;
+    public CinemachineVirtualCamera playerVirtualCamera;
+    public CinemachineVirtualCamera focusVirtualCamera;
 
     [Header("States")]
     public CameraState cameraState;
@@ -49,7 +55,6 @@ public class CameraController : Singleton<CameraController>
         cameraOffset_originalPos = cameraOffset.transform.localPosition;
         cameraOffset_originalRot = cameraOffset.transform.rotation;
 
-        //SetBlockDetectorDirection();
         AdjustFacingDirection();
     }
 
@@ -223,32 +228,70 @@ public class CameraController : Singleton<CameraController>
 
         cameraAnchor.transform.localPosition = cameraAnchor_originalPos;
         cameraAnchor.transform.rotation = cameraAnchor_originalRot;
+    }
+    public void SetRespawnCameraRotation()
+    {
+        switch (MapManager.Instance.playerStartRot)
+        {
+            case MovementDirection.None:
+                cameraRotationState = CameraRotationState.Forward;
+                cameraAnchor.transform.rotation = Quaternion.Euler(0, 0, 0);
+                break;
 
+            case MovementDirection.Forward:
+                cameraRotationState = CameraRotationState.Forward;
+                cameraAnchor.transform.rotation = Quaternion.Euler(0, 0, 0);
+                break;
+            case MovementDirection.Backward:
+                cameraRotationState = CameraRotationState.Backward;
+                cameraAnchor.transform.rotation = Quaternion.Euler(0, 180, 0);
+                break;
+            case MovementDirection.Left:
+                cameraRotationState = CameraRotationState.Right;
+                cameraAnchor.transform.rotation = Quaternion.Euler(0, -90, 0);
+                break;
+            case MovementDirection.Right:
+                cameraRotationState = CameraRotationState.Left;
+                cameraAnchor.transform.rotation = Quaternion.Euler(0, 90, 0);
+                break;
 
-        //SetBlockDetectorDirection();
+            default:
+                cameraRotationState = CameraRotationState.Forward;
+                cameraAnchor.transform.rotation = Quaternion.Euler(0, 0, 0);
+                break;
+        }
+
+        //Action_RotateCamera_Start?.Invoke();
+
+        // Ensure the final rotation is set exactly
+        //cameraAnchor.transform.rotation = Quaternion.Euler(0, PlayerManager.Instance.player.transform.rotation.eulerAngles.y -180, 0);
+
+        Movement.Instance.previousPosition = transform.position;
+
+        //Action_RotateCamera_End?.Invoke();
     }
 
-    //void SetBlockDetectorDirection()
-    //{
-    //    switch (cameraRotationState)
-    //    {
-    //        case CameraRotationState.Forward:
-    //            PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 0, 0));
-    //            break;
-    //        case CameraRotationState.Backward:
-    //            PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 180, 0));
-    //            break;
-    //        case CameraRotationState.Left:
-    //            PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, 90, 0));
-    //            break;
-    //        case CameraRotationState.Right:
-    //            PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.SetPositionAndRotation(PlayerManager.Instance.player.GetComponent<Player_BlockDetector>().blockDetector_Parent.transform.position, Quaternion.Euler(0, -90, 0));
-    //            break;
+    public Quaternion GetRespawnCameraDirection()
+    {
+        switch (MapManager.Instance.playerStartRot)
+        {
+            case MovementDirection.None:
+                return Quaternion.Euler(0, 0, 0);
 
-    //        default:
-    //            break;
-    //    }
-    //}
+            case MovementDirection.Forward:
+                return Quaternion.Euler(0, 0, 0);
+            case MovementDirection.Backward:
+                return Quaternion.Euler(0, 180, 0);
+            case MovementDirection.Left:
+                return Quaternion.Euler(0, 90, 0);
+            case MovementDirection.Right:
+                return Quaternion.Euler(0, -90, 0);
+
+            default:
+                return Quaternion.Euler(0, 0, 0);
+        }
+    }
+
     void AdjustFacingDirection()
     {
         switch (cameraRotationState)
@@ -353,6 +396,39 @@ public class CameraController : Singleton<CameraController>
             default:
                 break;
         }
+    }
+
+
+    //--------------------
+
+
+    public IEnumerator StartVirtualCameraBlend_In()
+    {
+        if (playerVirtualCamera)
+        {
+            playerVirtualCamera.Priority = -10;
+        }
+        if (focusVirtualCamera)
+        {
+            focusVirtualCamera.Priority = 10;
+        }
+
+        yield return new WaitForSeconds(cinemachineBrain.m_DefaultBlend.m_Time + 0.15f);
+    }
+    public IEnumerator StartVirtualCameraBlend_Out()
+    {
+        if (focusVirtualCamera)
+        {
+            focusVirtualCamera.Priority = -10;
+        }
+        if (playerVirtualCamera)
+        {
+            playerVirtualCamera.Priority = 10;
+        }
+
+        yield return null;
+
+        yield return new WaitUntil(() => cinemachineBrain.IsBlending == false);
     }
 }
 public enum CameraState

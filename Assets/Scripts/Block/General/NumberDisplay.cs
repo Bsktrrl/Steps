@@ -494,23 +494,26 @@ public class NumberDisplay : MonoBehaviour
         //If the block is a Cube or Slab
         else
         {
-            if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+            if (cameraController)
             {
-                if (cameraController.cameraRotationState == CameraRotationState.Forward || cameraController.cameraRotationState == CameraRotationState.Backward)
+                if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+                {
+                    if (cameraController.cameraRotationState == CameraRotationState.Forward || cameraController.cameraRotationState == CameraRotationState.Backward)
+                    {
+                        numberRotation = Quaternion.Euler(transform.GetChild(0).transform.localRotation.x, transform.GetChild(0).transform.localRotation.y + 180 + cameraController.cameraAnchor.transform.localEulerAngles.y, transform.GetChild(0).transform.localRotation.z);
+                        transform.GetChild(0).transform.localRotation = numberRotation;
+                    }
+                    else
+                    {
+                        numberRotation = Quaternion.Euler(transform.GetChild(0).transform.localRotation.x, transform.GetChild(0).transform.localRotation.y + cameraController.cameraAnchor.transform.localEulerAngles.y, transform.GetChild(0).transform.localRotation.z);
+                        transform.GetChild(0).transform.localRotation = numberRotation;
+                    }
+                }
+                else
                 {
                     numberRotation = Quaternion.Euler(transform.GetChild(0).transform.localRotation.x, transform.GetChild(0).transform.localRotation.y + 180 + cameraController.cameraAnchor.transform.localEulerAngles.y, transform.GetChild(0).transform.localRotation.z);
                     transform.GetChild(0).transform.localRotation = numberRotation;
                 }
-                else
-                {
-                    numberRotation = Quaternion.Euler(transform.GetChild(0).transform.localRotation.x, transform.GetChild(0).transform.localRotation.y + cameraController.cameraAnchor.transform.localEulerAngles.y, transform.GetChild(0).transform.localRotation.z);
-                    transform.GetChild(0).transform.localRotation = numberRotation;
-                }
-            }
-            else
-            {
-                numberRotation = Quaternion.Euler(transform.GetChild(0).transform.localRotation.x, transform.GetChild(0).transform.localRotation.y + 180 + cameraController.cameraAnchor.transform.localEulerAngles.y, transform.GetChild(0).transform.localRotation.z);
-                transform.GetChild(0).transform.localRotation = numberRotation;
             }
         }
     }

@@ -14,7 +14,6 @@ public class LoadLevel : MonoBehaviour
     [Header("Levels")]
     public regions regionToPlay;
     public string levelToPlay;
-    public string levelNameToDisplay;
 
     [Header("Level Image")]
     public Sprite levelSprite;
@@ -41,6 +40,9 @@ public class LoadLevel : MonoBehaviour
         if (!string.IsNullOrEmpty(levelToPlay))
         {
             RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(OverWorldManager.Instance.regionState, OverWorldManager.Instance.levelState);
+
+            if (GetComponent<LevelInfo>())
+                GetComponent<LevelInfo>().SaveNameDisplay();
 
             AnalyticsCalls.SelectLevel(levelToPlay, regionToPlay.ToString());
 

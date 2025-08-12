@@ -2,10 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Player_KeyInputs : Singleton<Player_KeyInputs>
 {
+    public static event Action Action_WalkButton_isPressed;
+    public static event Action Action_WalkButton_isReleased;
+
+    public static event Action Action_Ascend_isPressed;
+    public static event Action Action_Descend_isPressed;
+    public static event Action Action_CeilingGrab_isPressed;
+    public static event Action Action_GrapplingHook_isPressed;
+
     public static event Action Action_dialogueButton_isPressed;
     public static event Action Action_dialogueNextButton_isPressed;
     public static event Action Action_InteractButton_isPressed;
@@ -39,7 +49,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         if (PlayerManager.Instance.playerBody.transform.GetComponentInChildren<Animator>())
         {
-            Player_Animstions.Instance.anim = PlayerManager.Instance.playerBody.GetComponentInChildren<Animator>();
+            Player_Animations.Instance.anim = PlayerManager.Instance.playerBody.GetComponentInChildren<Animator>();
         }
     }
 
@@ -52,50 +62,64 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Movement()) { return; }
 
         forward_isPressed = true;
-        Player_Animstions.Instance.anim.SetTrigger("Walk");
+        Action_WalkButton_isPressed?.Invoke();
+        //Player_Animations.Instance.anim.SetTrigger("Walk");
     }
     void OnForward_Up()
     {
         forward_isPressed = false;
+
+        Action_WalkButton_isReleased?.Invoke();
     }
     void OnBackward_Down()
     {
         if (!ButtonChecks_Movement()) { return; }
 
         back_isPressed = true;
-        Player_Animstions.Instance.anim.SetTrigger("Walk");
+        Action_WalkButton_isPressed?.Invoke();
+        //Player_Animations.Instance.anim.SetTrigger("Walk");
     }
     void OnBackward_Up()
     {
         back_isPressed = false;
+
+        Action_WalkButton_isReleased?.Invoke();
     }
     void OnLeft_Down()
     {
         if (!ButtonChecks_Movement()) { return; }
 
         left_isPressed = true;
-        Player_Animstions.Instance.anim.SetTrigger("Walk");
+        Action_WalkButton_isPressed?.Invoke();
+        //Player_Animations.Instance.anim.SetTrigger("Walk");
     }
     void OnLeft_Up()
     {
         left_isPressed = false;
+
+        Action_WalkButton_isReleased?.Invoke();
     }
     void OnRight_Down()
     {
         if (!ButtonChecks_Movement()) { return; }
 
         right_isPressed = true;
-        Player_Animstions.Instance.anim.SetTrigger("Walk");
+        Action_WalkButton_isPressed?.Invoke();
+        //Player_Animations.Instance.anim.SetTrigger("Walk");
     }
     void OnRight_Up()
     {
         right_isPressed = false;
+
+        Action_WalkButton_isReleased?.Invoke();
     }
+
     void OnAbilityUp_Down()
     {
         if (!ButtonChecks_Movement() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
         up_isPressed = true;
+        Action_Ascend_isPressed?.Invoke();
     }
     void OnAbilityUp_Up()
     {
@@ -108,6 +132,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Movement() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
         
         down_isPressed = true;
+        Action_Descend_isPressed?.Invoke();
 
         //Player_Interact.Instance.InteractWithObject();
     }
@@ -141,6 +166,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
 
 
+
     //--------------------
 
 
@@ -149,6 +175,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Other()) { return; }
 
         Player_CeilingGrab.Instance.CeilingGrab();
+
+        Action_CeilingGrab_isPressed?.Invoke();
     }
 
     void OnAbilityRight_DownPress()
@@ -163,6 +191,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         grapplingHook_isPressed = false;
         Movement.Instance.UpdateGrapplingHookMovement_Release();
+
+        Action_GrapplingHook_isPressed?.Invoke();
     }
 
 
@@ -227,6 +257,121 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Player_Interact.Instance.isInteracting) { return false; }
 
         return true;
+    }
+
+
+    //--------------------
+
+
+    void OnOptionsMenuShift_Left()
+    {
+        if (PlayerManager.Instance.pauseGame && PauseMenuManager.Instance.pauseMenu_Options_Parent.activeInHierarchy)
+        {
+            switch (MenuManager.Instance.currentMenuCategorySelected)
+            {
+                case MenuCategories.None:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.settingsMenuButton);
+                    MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Settings;
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Settings);
+                    StartCoroutine(MenuManager.Instance.settingsMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+
+                case MenuCategories.Settings:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.controlsMenuButton);
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Controls);
+                    StartCoroutine(MenuManager.Instance.controlsMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+                case MenuCategories.Controls:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.settingsMenuButton);
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Settings);
+                    StartCoroutine(MenuManager.Instance.settingsMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        else if (PlayerManager.Instance.pauseGame && PauseMenuManager.Instance.pauseMenu_Skins_Parent.activeInHierarchy)
+        {
+            switch (MenuManager.Instance.currentMenuCategorySelected)
+            {
+                case MenuCategories.None:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.wardrobeMenuButton);
+                    MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Wardrobe;
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Wardrobe);
+                    StartCoroutine(MenuManager.Instance.wardrobeMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+
+                case MenuCategories.Wardrobe:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.shopMenuButton);
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Shop);
+                    StartCoroutine(MenuManager.Instance.shopMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+                case MenuCategories.Shop:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.wardrobeMenuButton);
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Wardrobe);
+                    StartCoroutine(MenuManager.Instance.wardrobeMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+    void OnOptionsMenuShift_Right()
+    {
+        if (PlayerManager.Instance.pauseGame && PauseMenuManager.Instance.pauseMenu_Options_Parent.activeInHierarchy)
+        {
+            switch (MenuManager.Instance.currentMenuCategorySelected)
+            {
+                case MenuCategories.None:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.settingsMenuButton);
+                    MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Settings;
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Settings);
+                    StartCoroutine(MenuManager.Instance.settingsMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+
+                case MenuCategories.Settings:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.controlsMenuButton);
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Controls);
+                    StartCoroutine(MenuManager.Instance.controlsMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+                case MenuCategories.Controls:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.settingsMenuButton);
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Settings);
+                    StartCoroutine(MenuManager.Instance.settingsMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        else if (PlayerManager.Instance.pauseGame && PauseMenuManager.Instance.pauseMenu_Skins_Parent.activeInHierarchy)
+        {
+            switch (MenuManager.Instance.currentMenuCategorySelected)
+            {
+                case MenuCategories.None:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.wardrobeMenuButton);
+                    MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Wardrobe;
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Wardrobe);
+                    StartCoroutine(MenuManager.Instance.wardrobeMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+
+                case MenuCategories.Wardrobe:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.shopMenuButton);
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Shop);
+                    StartCoroutine(MenuManager.Instance.shopMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+                case MenuCategories.Shop:
+                    EventSystem.current.SetSelectedGameObject(MenuManager.Instance.wardrobeMenuButton);
+                    MenuManager.Instance.ChangeMenuCategory(MenuCategories.Wardrobe);
+                    StartCoroutine(MenuManager.Instance.wardrobeMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                    break;
+
+                default:
+                    break;
+            }
+        }
     }
 
 

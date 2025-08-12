@@ -8,9 +8,17 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
     public static event Action Action_Typewriting_Finished;
 
     [SerializeField] TextMeshProUGUI dialogueText;
-    float letterDelay = 0.035f;
-    float sentenceDelay = 0.32f;
-    float commaDelay = 0.18f;
+    float slowText = 0.055f;
+    float mediumText = 0.035f;
+    float fastText = 0.02f;
+
+    float slowSentence = 0.5f;
+    float mediumSentence = 0.32f;
+    float fastSentence = 0.2f;
+
+    float slowComma = 0.35f;
+    float mediumComma = 0.18f;
+    float fastComma = 0.08f;
 
     string fullText;
     private Coroutine typingCoroutine;
@@ -83,15 +91,15 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
                 // Delay rules
                 if (IsLongerPauseChar(currentChar))
                 {
-                    yield return new WaitForSeconds(sentenceDelay); // Delay after every .
+                    yield return new WaitForSeconds(GetSentenceSpeed()); // Delay after every .
                 }
                 else if (IsSmallerPauseChar(currentChar))
                 {
-                    yield return new WaitForSeconds(commaDelay);
+                    yield return new WaitForSeconds(GetCommaSpeed());
                 }
                 else
                 {
-                    yield return new WaitForSeconds(letterDelay);
+                    yield return new WaitForSeconds(GetTextSpeed());
                 }
             }
 
@@ -123,5 +131,51 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
     bool IsSmallerPauseChar(char c)
     {
         return c == ',' || c == ':' || c == ';' || c == '-' || c == '#' || c == '=' || c == '+' || c == '@';
+    }
+
+    float GetTextSpeed()
+    {
+        switch (SettingsManager.Instance.settingsData.currentTextSpeed)
+        {
+            case TextSpeed.Slow:
+                return slowText;
+            case TextSpeed.Medium:
+                return mediumText;
+            case TextSpeed.Fast:
+                return fastText;
+
+            default:
+                return mediumText;
+        }
+    }
+    float GetSentenceSpeed()
+    {
+        switch (SettingsManager.Instance.settingsData.currentTextSpeed)
+        {
+            case TextSpeed.Slow:
+                return slowSentence;
+            case TextSpeed.Medium:
+                return mediumSentence;
+            case TextSpeed.Fast:
+                return fastSentence;
+
+            default:
+                return mediumSentence;
+        }
+    }
+    float GetCommaSpeed()
+    {
+        switch (SettingsManager.Instance.settingsData.currentTextSpeed)
+        {
+            case TextSpeed.Slow:
+                return slowComma;
+            case TextSpeed.Medium:
+                return mediumComma;
+            case TextSpeed.Fast:
+                return fastComma;
+
+            default:
+                return mediumComma;
+        }
     }
 }

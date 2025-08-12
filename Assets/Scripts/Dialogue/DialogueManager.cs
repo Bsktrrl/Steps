@@ -12,7 +12,7 @@ public class DialogueManager : Singleton<DialogueManager>
     public TextMeshProUGUI nameText;
 
     [Header("Language")]
-    [HideInInspector] public int languageAmount = 5;
+    public int languageAmount;
 
     [Header("Sound")]
     public AudioSource typingSound;
@@ -38,6 +38,8 @@ public class DialogueManager : Singleton<DialogueManager>
     private void Start()
     {
         typingSound.clip = typeClip;
+
+        languageAmount = Enum.GetValues(typeof(Languages)).Length - 1;
     }
 
     private void OnEnable()
@@ -78,7 +80,7 @@ public class DialogueManager : Singleton<DialogueManager>
         TypewriterEffect.Instance.ShowText(_text);
     }
 
-    void StartDialogue()
+    public void StartDialogue()
     {
         npcObject.isInteracting = true;
 
@@ -88,13 +90,17 @@ public class DialogueManager : Singleton<DialogueManager>
 
         dialogueCanvas.SetActive(true);
     }
-    public void EndDialogue()
+    public IEnumerator EndDialogue()
     {
         dialogueCanvas.SetActive(false);
         npcObject.isInteracting = false;
         npcObject.hasTalked = true;
 
-        ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, npcObject.interact_Talk_Message);
+        yield return StartCoroutine(CameraController.Instance.StartVirtualCameraBlend_Out());
+
+        ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, MessageManager.Instance.Show_Message(MessageManager.Instance.interact_Talk_Message));
+
+        NPCManager.Instance.SetDialogueFinished(npcObject.characterName, npcObject.levelNumber);
 
         //Reset Stats
         npcObject = null;
@@ -296,9 +302,12 @@ public class DialogueSegment
 {
     public string segmentDescription;
 
-    [Header("General")]
+    [Header("If Last Segment")]
     public string lastSegment;
-    public int dialogueStats;
+
+    [Header("Stats")]
+    public DialogueStat startingStat;
+    public DialogueStat statToGet;
 
     [Header("Animations")]
     public List<int> animation_Player = new List<int>();
@@ -318,19 +327,44 @@ public class LanguageOptions
     [Header("Option 1")]
     public string option1_Text;
     public int option1_Linked;
+    public int option1_EndingValue;
 
     [Header("Option 2")]
     public string option2_Text;
     public int option2_Linked;
+    public int option2_EndingValue;
 
     [Header("Option 3")]
     public string option3_Text;
     public int option3_Linked;
+    public int option3_EndingValue;
 
     [Header("Option 4")]
     public string option4_Text;
     public int option4_Linked;
+    public int option4_EndingValue;
 }
+[Serializable]
+public class DialogueStat
+{
+    public NPCs character;
+    public int value;
+}
+
+public enum NPCs
+{
+    None,
+
+    Floriel,
+    Granith,
+    Archie,
+    Aisa,
+    Mossy,
+    Larry,
+
+    Stepellier
+}
+
 public enum ColorVariants
 {
     Normal,

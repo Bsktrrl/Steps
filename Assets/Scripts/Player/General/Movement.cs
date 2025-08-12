@@ -20,6 +20,8 @@ public class Movement : Singleton<Movement>
     public static event Action Action_isSwitchingBlocks;
     public static event Action Action_LandedFromFalling;
 
+    #region Variables
+
     [Header("States")]
     public bool isMoving;
     public MovementStates movementStates = MovementStates.Still;
@@ -108,6 +110,11 @@ public class Movement : Singleton<Movement>
     public Animator anim;
     [SerializeField] bool blink;
     [SerializeField] bool secondaryIdle;
+    [SerializeField] bool walkAnimationCheck;
+
+    [Header("Temp Movement Cost for Slope Gliding")]
+    [SerializeField] bool hasSlopeGlided;
+    #endregion
 
 
     //--------------------
@@ -125,22 +132,9 @@ public class Movement : Singleton<Movement>
         elevatorPos_Previous = transform.position;
 
         RespawnPlayer();
-
-        //Blink Animation
     }
     private void Update()
     {
-        ////Blink Animation
-        //if (!blink)
-        //{
-        //    StartCoroutine(RandomBlink());
-        //}
-
-        //if (!secondaryIdle)
-        //{
-        //    StartCoroutine(SecondaryIdle());
-        //}
-
         //Movement
         if (GetMovementState() == MovementStates.Moving)
         {
@@ -179,13 +173,14 @@ public class Movement : Singleton<Movement>
 
         Action_RespawnPlayerEarly += ResetDarkenBlocks;
         Action_StepTaken += TakeAStep;
-        //Action_StepTaken += UpdateAvailableMovementBlocks;
 
         Action_isSwitchingBlocks += UpdateStepsAmonutWhenGrapplingMoving;
         Action_StepTaken_Late += RunIceGliding;
         Action_StepTaken_Late += CheckIfSwimming;
 
         CameraController.Action_RotateCamera_End += UpdateBlocks;
+
+        Player_KeyInputs.Action_WalkButton_isReleased += WalkButtonIsReleased;
     }
     private void OnDisable()
     {
@@ -199,13 +194,14 @@ public class Movement : Singleton<Movement>
 
         Action_RespawnPlayerEarly -= ResetDarkenBlocks;
         Action_StepTaken -= TakeAStep;
-        //Action_StepTaken -= UpdateAvailableMovementBlocks;
 
         Action_isSwitchingBlocks -= UpdateStepsAmonutWhenGrapplingMoving;
         Action_StepTaken_Late -= RunIceGliding;
         Action_StepTaken_Late -= CheckIfSwimming;
 
         CameraController.Action_RotateCamera_End -= UpdateBlocks;
+
+        Player_KeyInputs.Action_WalkButton_isReleased -= WalkButtonIsReleased;
     }
 
 
@@ -1644,7 +1640,8 @@ public class Movement : Singleton<Movement>
 
         if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost)
         {
-            print("1. PerformMovement");
+            MovingAnimation(canMoveBlock);
+
             isMoving = true;
 
             ResetDarkenBlocks();
@@ -1665,6 +1662,10 @@ public class Movement : Singleton<Movement>
 
         if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost)
         {
+            MovingAnimation(canMoveBlock);
+
+            isMoving = true;
+
             ResetDarkenBlocks();
 
             StartCoroutine(Move(canMoveBlock.targetBlock.transform.position, moveState, movementSpeed, canMoveBlock));
@@ -1676,12 +1677,16 @@ public class Movement : Singleton<Movement>
     }
     public void PerformMovement(Vector3 targetPos)
     {
+        isMoving = true;
+
         ResetDarkenBlocks();
 
         StartCoroutine(Move(targetPos, MovementStates.Moving, blockStandingOn.GetComponent<BlockInfo>().movementSpeed, null));
     }
     public void PerformMovement(Vector3 targetPos, float movementSpeed)
     {
+        isMoving = true;
+
         ResetDarkenBlocks();
 
         StartCoroutine(Move(targetPos, MovementStates.Moving, movementSpeed, null));
@@ -1690,6 +1695,13 @@ public class Movement : Singleton<Movement>
     private IEnumerator Move(Vector3 endPos, MovementStates moveState, float movementSpeed, MoveOptions moveOptions)
     {
         Action_StepTaken_Early_Invoke();
+
+        //Safety check for slope gliding
+        if (blockStandingOn != null && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+        {
+            print("1. hasSlopeGlided");
+            hasSlopeGlided = true;
+        }
 
         if (moveOptions != null && moveOptions.targetBlock)
         {
@@ -1712,6 +1724,7 @@ public class Movement : Singleton<Movement>
             yield return NormalMovement(endPos, moveState, movementSpeed);
         }
 
+        isMoving = false;
         isJumping = false;
         isGrapplingHooking = false;
         isDashing = false;
@@ -1819,6 +1832,40 @@ public class Movement : Singleton<Movement>
         performGrapplingHooking = false;
     }
 
+    void MovingAnimation(MoveOptions canMoveBlock)
+    {
+        //Perform walking animation when entering a Stair or Slope
+        if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope
+            && canMoveBlock.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+        {
+            
+        }
+        else if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair)
+        {
+            Player_Animations.Instance.Perform_StairSlopeWalkingAnimation();
+        }
+        else if (canMoveBlock.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Stair || canMoveBlock.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+        {
+            Player_Animations.Instance.Perform_StairSlopeWalkingAnimation();
+        }
+        
+        //Perform animation only the first time when pressing down a movmentButton
+        else if (canMoveBlock.targetBlock != blockStandingOn && !walkAnimationCheck && !isIceGliding
+            && blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope)
+        {
+            //if (Player_KeyInputs.Instance.forward_isPressed || Player_KeyInputs.Instance.back_isPressed || Player_KeyInputs.Instance.left_isPressed || Player_KeyInputs.Instance.right_isPressed)
+            //{ return; }
+
+            Player_Animations.Instance.Perform_StairSlopeWalkingAnimation();
+            walkAnimationCheck = true;
+        }
+    }
+
+    void WalkButtonIsReleased()
+    {
+        walkAnimationCheck = false;
+    }
+
     #endregion
 
 
@@ -1902,7 +1949,6 @@ public class Movement : Singleton<Movement>
             Vector3 movementDir = Vector3.zero;
             if (!canIceGlide)
             {
-                print("1. PerformMovement");
                 Vector3 movementDelta = transform.position - previousPosition;
                 Vector3 horizontalDirection = new Vector3(movementDelta.x, 0, movementDelta.z);
 
@@ -1910,7 +1956,6 @@ public class Movement : Singleton<Movement>
             }
             else
             {
-                print("2. PerformMovement");
                 movementDir = teleportMovementDir;
             }
 
@@ -2322,6 +2367,7 @@ public class Movement : Singleton<Movement>
 
         Action_BodyRotated_Invoke();
     }
+
     float GetBaseCameraRotation(CameraRotationState state)
     {
         switch (state)
@@ -2461,7 +2507,17 @@ public class Movement : Singleton<Movement>
         {
             if (blockStandingOn.GetComponent<BlockInfo>() /*&& !PlayerManager.Instance.isTransportingPlayer*/ && !Player_Pusher.Instance.playerIsPushed)
             {
-                PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
+                //Don't remove steps if gliding from a slope
+                if (hasSlopeGlided && blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope)
+                {
+                    print("2. hasSlopeGlided");
+                    hasSlopeGlided = false;
+                }
+                else
+                {
+                    print("3. hasSlopeGlided");
+                    PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;     
+                }
             }
         }
 
@@ -2499,7 +2555,7 @@ public class Movement : Singleton<Movement>
 
         //Move player
         transform.position = MapManager.Instance.playerStartPos;
-        transform.SetPositionAndRotation(MapManager.Instance.playerStartPos, Quaternion.identity);
+        PlayerManager.Instance.playerBody.transform.SetPositionAndRotation(MapManager.Instance.playerStartPos, GetRespawnPlayerDirection(0, 180, 0));
 
         //Reset for CeilingAbility
         Player_CeilingGrab.Instance.ResetCeilingGrab();
@@ -2511,8 +2567,10 @@ public class Movement : Singleton<Movement>
         //Refill Steps to max + stepPickups gotten
         PlayerStats.Instance.RefillStepsToMax();
 
-        CameraController.Instance.ResetCameraRotation();
-        RotatePlayerBody(180);
+        //CameraController.Instance.ResetCameraRotation();
+        CameraController.Instance.SetRespawnCameraRotation();
+
+        //RotatePlayerBody(GetRespawnPlayerDirection(0, 180, 0).y /*180*/);
 
         RespawnPlayer_Action();
 
@@ -2523,6 +2581,26 @@ public class Movement : Singleton<Movement>
         RespawnPlayerLate_Action();
 
         StopAllCoroutines();
+    }
+    public Quaternion GetRespawnPlayerDirection(int corr_X, int corr_Y, int corr_Z)
+    {
+        switch (MapManager.Instance.playerStartRot)
+        {
+            case MovementDirection.None:
+                return Quaternion.Euler(0 + corr_X, 0 + corr_Y, 0 + corr_Z);
+
+            case MovementDirection.Forward:
+                return Quaternion.Euler(0 + corr_X, 0 + corr_Y, 0 + corr_Z);
+            case MovementDirection.Backward:
+                return Quaternion.Euler(0 + corr_X, 180 + corr_Y, 0 + corr_Z);
+            case MovementDirection.Left:
+                return Quaternion.Euler(0 + corr_X, -90 + corr_Y, 0 + corr_Z);
+            case MovementDirection.Right:
+                return Quaternion.Euler(0 + corr_X, 90 + corr_Y, 0 + corr_Z);
+
+            default:
+                return Quaternion.Euler(0 + corr_X, 0 + corr_Y, 0 + corr_Z);
+        }
     }
 
     void CheckIfSwimming()

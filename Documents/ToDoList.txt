@@ -1,61 +1,69 @@
 ----- NEXT ON THE LIST -----
 
-1.
-Dialogue Box:
-_____________
+--- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
-
-1.4. Movement Animations
-- Change movementAnimations to trigger upon buttonPress from the "Player_KeyInput"-script
-   - Play animation when going to a stair
-- Set SwimAnimation when in Water
-
-1.5. Stats gathering
-- Gather stats of what types of info the player have visited in the dialogue, so we can keep track over which dialogues that can be accessed in further conversations
-- Save the dialogue stats to saveData, for future use
-- Make the option of a dialogue to start at another segment, based on Stats from previous dialogue
-
-1.6. Languages:
-- Add language select in the Settings menu
-- Add text speed select in the Settings menu
-- Add Excel Sheet that hold all menuText in each language, so toggeling also changes the menu text as well
-- Save SettingsData to file
-- Make SettingsMenu compatible with controller
 
 
 2.
-Dialogue Scene:
-__________________
-
-
-2.1. Saving:
-- Make a class to save all info about an NPC
-	- Completed in level
-	- Stats to use, going forward
-	- Values for or not for one of the two endings (pluss or minus numbers to set for either of the two endings)
-
-2.2. NPC GameObject Disappearance:
-- Make the NPC's gameObject become hidden if dialogue has finished (save the NPC state and destroy it from the scene if dialogue has taken place)
-
-2.3. Camera:
-- Make it so that the camera pans correctly into the scene (both characters are visible)
-- Make it so that the camera pans correctly out from the scene (back to its previous state)
-- Make camera angle based on the player lookDir
-   - NPC needs to turn towards the player
-
-
-3.
 Skin Menu:
 __________________
 
-
-3.1. Menu
+2.1. Menu
 - Make the menu where the player skins can be unlocked and changed
+	- In the "Shop"-menu, make it so that "Tilbake" and "Shop"-buttons are going back to the previous button moved from (so it doesn't move to the first button each time)
+	- Make the CoinsCost-system
 - Make a functionality of putting on hats
-- Save/Load skins unlocked and skin equipped
+- Save/Load Hats unlocked
+- Save/Load Hats equipped
+- Save/Load skins unlocked
+- Save/Load skin equipped
+
+
+
+3.
+3D Sound:
+__________________
+
+3.1. Manual 3D sound logic
+- Add manual 3D sound effect, based on player distance to blocks
+
+3.2. Only 1 source block
+- Make it so that only the nearest block is making the distance
+- Make 1 Audio Source for each block that makes sound
+	- Water
+	- Lava
+	- Quicksand
+	- Effect Blocks
+		- Spawn Point
+		- Refill Steps
+		- Teleporter
+		- Pusher
+		- Movable
+
+3.3. Other audio objects
+- Make it so that other objects can have 3D sound (attach script onto each object to make it having 3D sound automaticly)
+	- Elevators
+	- insects
+
+3.4. Ice glide bug
+- Fix ice glide audio bug
+
+
+
+4.
+Menu navigating errors:
+__________________
+
+4.1. Menu Errors
+- Moving from option to option, keyboard is laggy
+
+4.2. Overworld Errors
+- Fix so that the menu operates as intended when pressing/hovering buttons/regions
+
 
 
 ---
+
 
 
 10.
@@ -67,9 +75,6 @@ Levels
 
 ----- TASKS SOON TO BE IMPLEMENTED -----
 
-
-SkinMenu:
-- Make it possible to change skins from a menu, when the player has enough essence and unlocked the skins
 
 
 Movement & Camera:

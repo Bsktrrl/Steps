@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class DataPersistanceManager : Singleton<DataPersistanceManager>
 {
+    public static event Action Action_NewGame;
+
     [Header("File Storage Config")]
     public string fileName;
 
@@ -43,13 +46,24 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
     public void NewGame()
     {
+        GameData oldData = new GameData();
+
+        if (gameData != null)
+            oldData = gameData;
+
+
         this.gameData = new GameData(); // create fresh data
 
         // Clear the DataManager's stores explicitly
-        DataManager.Instance.Load_NewGame_Data(this.gameData);
+        DataManager.Instance.Load_NewGame_Data(oldData, this.gameData);
+
+        //Persist through newGame
+        this.gameData.settingData_SaveList = DataManager.Instance.settingData_StoreList;
 
         // Save the new clean data
         SaveGame();
+
+        Action_NewGame?.Invoke();
     }
     public void LoadGame()
     {

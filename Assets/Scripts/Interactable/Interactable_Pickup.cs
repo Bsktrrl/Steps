@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class Interactable_Pickup : MonoBehaviour
 {
     public static event Action Action_PickupGot;
-    public static event Action Action_CoinPickupGot;
+    public static event Action Action_EssencePickupGot;
     public static event Action Action_StepsUpPickupGot;
     public static event Action Action_SkinPickupGot;
     public static event Action Action_AbilityPickupGot;
@@ -82,24 +82,24 @@ public class Interactable_Pickup : MonoBehaviour
                         case Items.None:
                             break;
 
-                        case Items.Coin:
-                            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.coin += 1 /*itemReceived.amount*/;
+                        case Items.Essence:
+                            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.essence += 1 /*itemReceived.amount*/;
 
                             //Get coin number
-                            for (int i = 0; i < MapManager.Instance.mapInfo_ToSave.coinList.Count; i++)
+                            for (int i = 0; i < MapManager.Instance.mapInfo_ToSave.essenceList.Count; i++)
                             {
-                                if (Vector3.Distance(MapManager.Instance.mapInfo_ToSave.coinList[i].pos, PlayerManager.Instance.player.transform.position) <= 0.5f)
+                                if (Vector3.Distance(MapManager.Instance.mapInfo_ToSave.essenceList[i].pos, PlayerManager.Instance.player.transform.position) <= 0.5f)
                                 {
-                                    AnalyticsCalls.GetCoins(i);
+                                    AnalyticsCalls.GetEssence(i);
                                     break;
                                 }
                             }
 
                             //Check if all coins are collected
                             bool isTaken = true;
-                            for (int i = 0; i < MapManager.Instance.mapInfo_ToSave.coinList.Count; i++)
+                            for (int i = 0; i < MapManager.Instance.mapInfo_ToSave.essenceList.Count; i++)
                             {
-                                if (!MapManager.Instance.mapInfo_ToSave.coinList[i].isTaken)
+                                if (!MapManager.Instance.mapInfo_ToSave.essenceList[i].isTaken)
                                 {
                                     isTaken = false;
                                     break;
@@ -108,14 +108,14 @@ public class Interactable_Pickup : MonoBehaviour
 
                             if (isTaken)
                             {
-                                AnalyticsCalls.GetAllCoinsInALevel();
+                                AnalyticsCalls.GetAllEssenceInALevel();
                             }
 
-                            Action_CoinPickupGot_isActive();
+                            Action_EssencePickupGot_isActive();
                             break;
-                        case Items.Collectable:
+                        case Items.Skin:
                             Action_SkinPickupGot_isActive();
-                            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.collectable += 1 /*itemReceived.amount*/;
+                            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.skin += 1 /*itemReceived.amount*/;
                             break;
                         case Items.IncreaseMaxSteps:
                             Action_StepUpPickupGot_isActive();
@@ -144,28 +144,25 @@ public class Interactable_Pickup : MonoBehaviour
                     case Items.None:
                         break;
 
-                    case Items.Coin:
-                        for (int j = 0; j < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].coinList.Count; j++)
+                    case Items.Essence:
+                        for (int j = 0; j < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].essenceList.Count; j++)
                         {
-                            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].coinList[j].pos.x == gameObject.transform.position.x
-                                && DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].coinList[j].pos.z == gameObject.transform.position.z)
+                            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].essenceList[j].pos.x == gameObject.transform.position.x
+                                && DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].essenceList[j].pos.z == gameObject.transform.position.z)
                             {
-                                DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].coinList[j].isTaken = true;
+                                DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].essenceList[j].isTaken = true;
 
                                 return;
                             }
                         }
                         break;
-                    case Items.Collectable:
-                        for (int j = 0; j < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].collectableList.Count; j++)
+                    case Items.Skin:
+                        if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].levelSkin.pos.x == gameObject.transform.position.x
+                                && DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].levelSkin.pos.z == gameObject.transform.position.z)
                         {
-                            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].collectableList[j].pos.x == gameObject.transform.position.x
-                                && DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].collectableList[j].pos.z == gameObject.transform.position.z)
-                            {
-                                DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].collectableList[j].isTaken = true;
+                            DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].levelSkin.isTaken = true;
 
-                                return;
-                            }
+                            return;
                         }
                         break;
 
@@ -263,9 +260,9 @@ public class Interactable_Pickup : MonoBehaviour
     {
         Action_PickupGot?.Invoke();
     }
-    public void Action_CoinPickupGot_isActive()
+    public void Action_EssencePickupGot_isActive()
     {
-        Action_CoinPickupGot?.Invoke();
+        Action_EssencePickupGot?.Invoke();
     }
     public void Action_StepUpPickupGot_isActive()
     {
@@ -292,8 +289,8 @@ public enum Items
 {
     None,
 
-    Coin,
-    Collectable,
+    Essence,
+    Skin,
     IncreaseMaxSteps
 }
 

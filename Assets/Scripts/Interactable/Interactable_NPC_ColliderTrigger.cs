@@ -33,8 +33,10 @@ public class Interactable_NPC_ColliderTrigger : MonoBehaviour
 
             if (roundedToNPC == playerFacing)
             {
-                ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, parentScript.interact_Talk_Message);
+                ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, MessageManager.Instance.Show_Message(MessageManager.Instance.interact_Talk_Message));
                 parentScript.canInteract = true;
+
+                CameraController.Instance.focusVirtualCamera = parentScript.NPCVirtualCamera;
             }
         }
         else
@@ -45,7 +47,7 @@ public class Interactable_NPC_ColliderTrigger : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player") && !Player_CeilingGrab.Instance.isCeilingGrabbing && !Player_CeilingGrab.Instance.isCeilingRotation && !PlayerManager.Instance.npcInteraction)
+        if (other.CompareTag("Player") && !Player_CeilingGrab.Instance.isCeilingGrabbing && !Player_CeilingGrab.Instance.isCeilingRotation && !PlayerManager.Instance.npcInteraction && !PlayerManager.Instance.pauseGame)
         {
             Vector3 toNPC = (transform.position - other.transform.position);
             toNPC.y = 0; // Flatten to horizontal plane
@@ -60,13 +62,17 @@ public class Interactable_NPC_ColliderTrigger : MonoBehaviour
 
             if (roundedToNPC == playerFacing)
             {
-                ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, parentScript.interact_Talk_Message);
+                ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, MessageManager.Instance.Show_Message(MessageManager.Instance.interact_Talk_Message));
                 parentScript.canInteract = true;
+
+                CameraController.Instance.focusVirtualCamera = parentScript.NPCVirtualCamera;
             }
             else
             {
                 ButtonMessages.Instance.HideButtonMessage();
                 parentScript.canInteract = false;
+
+                CameraController.Instance.focusVirtualCamera = null;
             }
         }
         else
@@ -82,6 +88,8 @@ public class Interactable_NPC_ColliderTrigger : MonoBehaviour
         {
             ButtonMessages.Instance.HideButtonMessage();
             parentScript.canInteract = false;
+
+            CameraController.Instance.focusVirtualCamera = null;
         }
         else
         {

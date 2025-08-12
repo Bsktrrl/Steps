@@ -16,6 +16,17 @@ public class Button_ToPress : MonoBehaviour
     [SerializeField] bool showVisualization;
     [SerializeField] Color navigationColor = Color.cyan;
 
+    PauseMenuManager pauseMenuManager;
+
+
+    //--------------------
+
+
+    private void Start()
+    {
+        pauseMenuManager = FindAnyObjectByType<PauseMenuManager>();
+    }
+
 
     //--------------------
 
@@ -39,6 +50,7 @@ public class Button_ToPress : MonoBehaviour
 
     void JumpToElement()
     {
+        //PauseMenu
         if (ActionButtonsManager.Instance.eventSystem == null)
         {
             Debug.Log("This item has no EventSystem referenced yet.");
@@ -54,31 +66,63 @@ public class Button_ToPress : MonoBehaviour
             ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(uiElementToSelect.gameObject);
         }
 
-        //PauseMenu
         switch (newMenuState)
         {
             case MenuState.None:
                 break;
 
+            case MenuState.Main_Menu:
+                MenuManager.Instance.HideAllMenus();
+                MainMenuManager.Instance.mainMenu_Parent.SetActive(true);
+                break;
+            case MenuState.Skin_Menu:
+                EventSystem.current.SetSelectedGameObject(MenuManager.Instance.wardrobeMenuButton);
+                MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Wardrobe;
+                MenuManager.Instance.ChangeMenuCategory(MenuCategories.Wardrobe);
+                //if (MenuManager.Instance.wardrobeMenuButton.activeInHierarchy)
+                //    StartCoroutine(MenuManager.Instance.wardrobeMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                break;
+            case MenuState.Options_Menu:
+                EventSystem.current.SetSelectedGameObject(MenuManager.Instance.settingsMenuButton);
+                MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Settings;
+                MenuManager.Instance.ChangeMenuCategory(MenuCategories.Settings);
+                //if (MenuManager.Instance.settingsMenuButton.activeInHierarchy)
+                //    StartCoroutine(MenuManager.Instance.settingsMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
+                break;
+
             case MenuState.Pause_Menu_Main:
+                HideAllPauseMenus();
                 PauseMenuManager.Instance.pauseMenu_MainMenu_Parent.SetActive(true);
-                PauseMenuManager.Instance.pauseMenu_Settings_Parent.SetActive(false);
-                PauseMenuManager.Instance.pauseMenu_Info_Parent.SetActive(false);
                 break;
-            case MenuState.Pause_Menu_Settings:
-                PauseMenuManager.Instance.pauseMenu_MainMenu_Parent.SetActive(false);
-                PauseMenuManager.Instance.pauseMenu_Settings_Parent.SetActive(true);
-                PauseMenuManager.Instance.pauseMenu_Info_Parent.SetActive(false);
+            case MenuState.Pause_Menu_Skins:
+                HideAllPauseMenus();
+                PauseMenuManager.Instance.pauseMenu_Skins_Parent.SetActive(true);
+                EventSystem.current.SetSelectedGameObject(MenuManager.Instance.wardrobeMenuButton);
+                MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Wardrobe;
+                MenuManager.Instance.ChangeMenuCategory(MenuCategories.Wardrobe);
+                //if (MenuManager.Instance.wardrobeMenuButton.activeInHierarchy)
+                //    StartCoroutine(MenuManager.Instance.wardrobeMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
                 break;
-            case MenuState.Pause_Menu_Info:
-                PauseMenuManager.Instance.pauseMenu_MainMenu_Parent.SetActive(false);
-                PauseMenuManager.Instance.pauseMenu_Settings_Parent.SetActive(false);
-                PauseMenuManager.Instance.pauseMenu_Info_Parent.SetActive(true);
+            case MenuState.Pause_Menu_Options:
+                HideAllPauseMenus();
+                PauseMenuManager.Instance.pauseMenu_Options_Parent.SetActive(true);
+                EventSystem.current.SetSelectedGameObject(MenuManager.Instance.settingsMenuButton);
+                MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Settings;
+                MenuManager.Instance.ChangeMenuCategory(MenuCategories.Settings);
+                //if (MenuManager.Instance.settingsMenuButton.activeInHierarchy)
+                //    StartCoroutine(MenuManager.Instance.settingsMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
                 break;
 
             default:
                 break;
         }
+    }
+
+    void HideAllPauseMenus()
+    {
+        PauseMenuManager.Instance.pauseMenu_MainMenu_Parent.SetActive(false);
+        PauseMenuManager.Instance.pauseMenu_Skins_Parent.SetActive(false);
+        PauseMenuManager.Instance.pauseMenu_Options_Parent.SetActive(false);
     }
 
 

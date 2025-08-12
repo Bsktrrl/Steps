@@ -35,7 +35,7 @@ public class OptionButton : MonoBehaviour, ISelectHandler
         if (DialogueManager.Instance.typingSound != null)
             DialogueManager.Instance.typingSound.Play();
 
-        print("Button: " + gameObject.name + " is pressed");
+        //print("Button: " + gameObject.name + " is pressed");
 
         DialogueManager.Instance.selectedButton = optionNumber;
 

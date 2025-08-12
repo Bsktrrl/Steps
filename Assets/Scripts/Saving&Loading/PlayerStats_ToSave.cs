@@ -20,8 +20,8 @@ public class Stats
         steps_Max = 7;
         steps_Current = 7;
 
-        itemsGot.coin = 0;
-        itemsGot.collectable = 0;
+        itemsGot.essence = 0;
+        itemsGot.skin = 0;
 
         abilitiesGot_Permanent.SwimSuit = false;
         abilitiesGot_Permanent.SwiftSwim = false;
@@ -52,8 +52,8 @@ public class Stats
 [Serializable]
 public class ItemsGot
 {
-    public int coin = 0;
-    public int collectable = 0;
+    public int essence = 0;
+    public int skin = 0;
 }
 
 [Serializable]
