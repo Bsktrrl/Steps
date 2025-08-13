@@ -224,7 +224,7 @@ public class NPCManager : Singleton<NPCManager>
         SaveData();
     }
 
-    public void UpdateStatsGathered(int index, DialogueInfo dialogueInfo, NPCs npc)
+    public void UpdateStatsGathered(int index, DialogueInfo dialogueInfo)
     {
         for (int i = 0; i < dialogueInfo.dialogueSegments[index].statToGet.Count; i++)
         {
@@ -238,7 +238,7 @@ public class NPCManager : Singleton<NPCManager>
                 tempDialogueStat.character = dialogueInfo.dialogueSegments[index].statToGet[i].character;
                 tempDialogueStat.value = dialogueInfo.dialogueSegments[index].statToGet[i].value;
 
-                switch (npc)
+                switch (dialogueInfo.dialogueSegments[index].statToGet[i].character)
                 {
                     case NPCs.None:
                         break;

@@ -1159,7 +1159,7 @@ public class Interactable_NPC : MonoBehaviour
 
     void SetupDialogueDisplay(int index, NPCs npc)
     {
-        NPCManager.Instance.UpdateStatsGathered(index, dialogueInfo, npc);
+        NPCManager.Instance.UpdateStatsGathered(index, dialogueInfo);
 
         //Text
         if (dialogueInfo.dialogueSegments.Count > index)
