@@ -226,47 +226,50 @@ public class NPCManager : Singleton<NPCManager>
 
     public void UpdateStatsGathered(int index, DialogueInfo dialogueInfo, NPCs npc)
     {
-        DialogueStat tempDialogueStat = new DialogueStat();
-        if (dialogueInfo.dialogueSegments[index].statToGet != null)
+        for (int i = 0; i < dialogueInfo.dialogueSegments[index].statToGet.Count; i++)
         {
             print("1. UpdateStatsGathered");
 
-            if (dialogueInfo.dialogueSegments[index].statToGet.character.ToString() != "")
-                tempDialogueStat.character = dialogueInfo.dialogueSegments[index].statToGet.character;
-            if (dialogueInfo.dialogueSegments[index].statToGet.value > 0)
-                tempDialogueStat.value = dialogueInfo.dialogueSegments[index].statToGet.value;
+            DialogueStat tempDialogueStat = new DialogueStat();
 
-            switch (npc)
+            if (dialogueInfo.dialogueSegments[index].statToGet[i].character.ToString() != ""
+                && dialogueInfo.dialogueSegments[index].statToGet[i].value > 0)
             {
-                case NPCs.None:
-                    break;
+                tempDialogueStat.character = dialogueInfo.dialogueSegments[index].statToGet[i].character;
+                tempDialogueStat.value = dialogueInfo.dialogueSegments[index].statToGet[i].value;
 
-                case NPCs.Floriel:
-                    charatersData.floriel_Data.dialogueStartStatList.Add(tempDialogueStat);
-                    break;
-                case NPCs.Granith:
-                    charatersData.granith_Data.dialogueStartStatList.Add(tempDialogueStat);
-                    break;
-                case NPCs.Archie:
-                    charatersData.archie_Data.dialogueStartStatList.Add(tempDialogueStat);
-                    break;
-                case NPCs.Aisa:
-                    charatersData.aisa_Data.dialogueStartStatList.Add(tempDialogueStat);
-                    break;
-                case NPCs.Mossy:
-                    charatersData.mossy_Data.dialogueStartStatList.Add(tempDialogueStat);
-                    break;
-                case NPCs.Larry:
-                    charatersData.larry_Data.dialogueStartStatList.Add(tempDialogueStat);
-                    break;
-                case NPCs.Stepellier:
-                    charatersData.stepellier_Data.dialogueStartStatList.Add(tempDialogueStat);
-                    break;
+                switch (npc)
+                {
+                    case NPCs.None:
+                        break;
 
-                default:
-                    break;
+                    case NPCs.Floriel:
+                        charatersData.floriel_Data.dialogueStartStatList.Add(tempDialogueStat);
+                        break;
+                    case NPCs.Granith:
+                        charatersData.granith_Data.dialogueStartStatList.Add(tempDialogueStat);
+                        break;
+                    case NPCs.Archie:
+                        charatersData.archie_Data.dialogueStartStatList.Add(tempDialogueStat);
+                        break;
+                    case NPCs.Aisa:
+                        charatersData.aisa_Data.dialogueStartStatList.Add(tempDialogueStat);
+                        break;
+                    case NPCs.Mossy:
+                        charatersData.mossy_Data.dialogueStartStatList.Add(tempDialogueStat);
+                        break;
+                    case NPCs.Larry:
+                        charatersData.larry_Data.dialogueStartStatList.Add(tempDialogueStat);
+                        break;
+                    case NPCs.Stepellier:
+                        charatersData.stepellier_Data.dialogueStartStatList.Add(tempDialogueStat);
+                        break;
+
+                    default:
+                        break;
+                }
             }
-        } 
+        }
     }
 }
 

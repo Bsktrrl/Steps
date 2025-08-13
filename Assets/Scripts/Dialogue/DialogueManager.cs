@@ -113,7 +113,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
     void SetupArrow()
     {
-        if (OptionBoxes.Instance.optionButton_1.gameObject.activeInHierarchy || (currentSegement >= segmentTotal) || npcObject.dialogueInfo.dialogueSegments[currentSegement].lastSegment != "")
+        if (OptionBoxes.Instance.optionButton_1.gameObject.activeInHierarchy || (currentSegement >= segmentTotal) || npcObject.dialogueInfo.dialogueSegments[currentSegement].lastSegment)
             HideArrow();
         else
             ShowArrow();
@@ -303,11 +303,12 @@ public class DialogueSegment
     public string segmentDescription;
 
     [Header("If Last Segment")]
-    public string lastSegment;
+    public bool firstSegment;
+    public bool lastSegment;
 
     [Header("Stats")]
-    public DialogueStat startingStat;
-    public DialogueStat statToGet;
+    public List<DialogueStat> statRequired;
+    public List<DialogueStat> statToGet;
 
     [Header("Animations")]
     public List<int> animation_Player = new List<int>();
