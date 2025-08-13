@@ -142,61 +142,78 @@ public class Interactable_NPC : MonoBehaviour
 
     int SetCorrectSegmentFromTheStart(NPCs npc)
     {
-        if (dialogueInfo == null)
+        if (dialogueInfo == null || dialogueInfo.dialogueSegments == null || dialogueInfo.dialogueSegments.Count == 0)
             return 0;
 
-        // Get player's acquired stats for this NPC
-        List<DialogueStat> playerStats = GetPlayerStatsForNPC(npc);
-        if (playerStats == null)
+        // Player stats (null-safe, only keep valid entries)
+        var playerStatsRaw = GetPlayerStatsForNPC(npc) ?? new List<DialogueStat>();
+        var playerSet = ToSet(playerStatsRaw); // unique (character,value) pairs with value > 0
+
+        // All first-segments (index + segment), null-safe
+        var firstSegments = dialogueInfo.dialogueSegments
+            .Select((seg, idx) => new { seg, idx })
+            .Where(x => x.seg != null && x.seg.firstSegment)
+            .ToList();
+
+        if (firstSegments.Count == 0)
             return 0;
 
-        int bestMatchCount = 0;
-        List<int> bestIndices = new List<int>();
+        // -------- Bucket 1: Exact set match (requirements == playerSet) --------
+        var exactMatches = firstSegments
+            .Where(x =>
+            {
+                var reqSet = ToSet(x.seg.statRequired);
+                return reqSet.Count > 0 && SetEquals(reqSet, playerSet);
+            })
+            .ToList();
 
-        // Loop through all first segments
-        for (int i = 0; i < dialogueInfo.dialogueSegments.Count; i++)
+        if (exactMatches.Count > 0)
+            return exactMatches[UnityEngine.Random.Range(0, exactMatches.Count)].idx;
+
+        // -------- Buckets 2..N: Descend by requirement count; require full subset match --------
+        int maxReqCount = firstSegments
+            .Select(x => ToSet(x.seg.statRequired).Count) // safe: ToSet handles null
+            .DefaultIfEmpty(0)
+            .Max();
+
+        for (int k = maxReqCount; k > 0; k--)
         {
-            var segment = dialogueInfo.dialogueSegments[i];
-            if (!segment.firstSegment)
-                continue;
-
-            int matchCount = 0;
-
-            // Count how many statRequired match player's stats
-            foreach (var requiredStat in segment.statRequired)
-            {
-                if (requiredStat == null || requiredStat.value <= 0)
-                    continue;
-
-                bool hasStat = playerStats.Any(ps =>
-                    ps.character == requiredStat.character &&
-                    ps.value == requiredStat.value);
-
-                if (hasStat)
-                    matchCount++;
-            }
-
-            if (matchCount > 0) // Only consider if at least one match
-            {
-                if (matchCount > bestMatchCount)
+            var bucket = firstSegments
+                .Where(x =>
                 {
-                    bestMatchCount = matchCount;
-                    bestIndices.Clear();
-                    bestIndices.Add(i);
-                }
-                else if (matchCount == bestMatchCount)
-                {
-                    bestIndices.Add(i);
-                }
-            }
+                    var reqSet = ToSet(x.seg.statRequired);
+                    return reqSet.Count == k && IsSubset(reqSet, playerSet);
+                })
+                .ToList();
+
+            if (bucket.Count > 0)
+                return bucket[UnityEngine.Random.Range(0, bucket.Count)].idx;
         }
 
-        // If no matches at all → return index 0
-        if (bestMatchCount == 0)
-            return 0;
+        // -------- Final bucket: No-requirement firstSegments --------
+        var noReq = firstSegments
+            .Where(x => ToSet(x.seg.statRequired).Count == 0)
+            .ToList();
 
-        // Tie-breaker: choose randomly among top matches
-        return bestIndices[UnityEngine.Random.Range(0, bestIndices.Count)];
+        if (noReq.Count > 0)
+            return noReq[UnityEngine.Random.Range(0, noReq.Count)].idx;
+
+        // Fallback: first firstSegment
+        return firstSegments[0].idx;
+
+        // ----- local helpers -----
+        // Build a set of unique keys "character:value" for valid stats (value > 0).
+        HashSet<string> ToSet(List<DialogueStat> list)
+        {
+            if (list == null) return new HashSet<string>();
+            return new HashSet<string>(
+                list.Where(s => s != null && s.value > 0)
+                    .Select(s => $"{(int)s.character}:{s.value}")
+            );
+        }
+
+        bool IsSubset(HashSet<string> a, HashSet<string> b) => a.All(b.Contains);
+        bool SetEquals(HashSet<string> a, HashSet<string> b) => a.Count == b.Count && a.All(b.Contains);
     }
 
     // Helper method to get correct player's stats list
@@ -205,13 +222,13 @@ public class Interactable_NPC : MonoBehaviour
         var store = DataManager.Instance.charatersData_Store;
         return npc switch
         {
-            NPCs.Floriel => store.floriel_Data.dialogueStartStatList,
-            NPCs.Granith => store.granith_Data.dialogueStartStatList,
-            NPCs.Archie => store.archie_Data.dialogueStartStatList,
-            NPCs.Aisa => store.aisa_Data.dialogueStartStatList,
-            NPCs.Mossy => store.mossy_Data.dialogueStartStatList,
-            NPCs.Larry => store.larry_Data.dialogueStartStatList,
-            NPCs.Stepellier => store.stepellier_Data.dialogueStartStatList,
+            NPCs.Floriel => store?.floriel_Data?.dialogueStartStatList,
+            NPCs.Granith => store?.granith_Data?.dialogueStartStatList,
+            NPCs.Archie => store?.archie_Data?.dialogueStartStatList,
+            NPCs.Aisa => store?.aisa_Data?.dialogueStartStatList,
+            NPCs.Mossy => store?.mossy_Data?.dialogueStartStatList,
+            NPCs.Larry => store?.larry_Data?.dialogueStartStatList,
+            NPCs.Stepellier => store?.stepellier_Data?.dialogueStartStatList,
             _ => null
         };
     }
@@ -715,21 +732,18 @@ public class Interactable_NPC : MonoBehaviour
             #region Option 1
 
             //Option 1 - Link
-            //print("Option 1 - Link: " + excelData[columns * (i + startRow - 1) + 16].Trim());
             if (excelData[columns * (i + startRow - 1) + 16] != "")
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 16);
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Linked = -1;
 
             //Option 1 - AlternativeLink
-            //print("Option 1 - AlternativeLink: " + excelData[columns * (i + startRow - 1) + 17].Trim());
             if (excelData[columns * (i + startRow - 1) + 17] != "")
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_AlternativeLinked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 17);
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_AlternativeLinked = -1;
 
             //Option 1 - EndingValue
-            //print("Option 1 - EndingValue: " + excelData[columns * (i + startRow - 1) + 18].Trim());
             if (excelData[columns * (i + startRow - 1) + 18] != "")
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_EndingValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 18);
             else
@@ -841,31 +855,26 @@ public class Interactable_NPC : MonoBehaviour
                 dialogueInfo.dialogueSegments[i].languageDialogueList[0] = excelData[columns * (i + startRow - 1) + 14].Trim();
             else
                 dialogueInfo.dialogueSegments[i].languageDialogueList[0] = "";
-            print("Norwegian Message: " + excelData[columns * (i + startRow - 1) + 14].Trim() + " | " + dialogueInfo.dialogueSegments[i].languageDialogueList[0]);
 
             //Option 1
-            //print("Norwegian Option 1: " + excelData[columns * (i + startRow - 1) + 15].Trim());
             if (excelData[columns * (i + startRow - 1) + 15] != "")
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Text = excelData[columns * (i + startRow - 1) + 15].Trim();
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Text = "";
 
             //Option 2
-            //print("Norwegian Option 2: " + excelData[columns * (i + startRow - 1) + 19].Trim());
             if (excelData[columns * (i + startRow - 1) + 19] != "")
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_Text = excelData[columns * (i + startRow - 1) + 19].Trim();
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_Text = "";
 
             //Option 3
-            //print("Norwegian Option 3: " + excelData[columns * (i + startRow - 1) + 23].Trim());
             if (excelData[columns * (i + startRow - 1) + 23] != "")
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_Text = excelData[columns * (i + startRow - 1) + 23].Trim();
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_Text = "";
 
             //Option 4
-            //print("Norwegian Option 4: " + excelData[columns * (i + startRow - 1) + 27].Trim());
             if (excelData[columns * (i + startRow - 1) + 27] != "")
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_Text = excelData[columns * (i + startRow - 1) + 27].Trim();
             else
@@ -1194,7 +1203,7 @@ public class Interactable_NPC : MonoBehaviour
         }
 
         //Animation
-        if (dialogueInfo.dialogueSegments[index] != null && dialogueInfo.dialogueSegments[index].animation_NPC.Count > 0)
+        if (dialogueInfo.dialogueSegments[index] != null && dialogueInfo.dialogueSegments[index].animation_NPC != null && dialogueInfo.dialogueSegments[index].animation_NPC.Count > 0)
         {
             animationCount = 0;
             StartCoroutine(RunAnimations(index));

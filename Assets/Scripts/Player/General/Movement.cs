@@ -2515,7 +2515,6 @@ public class Movement : Singleton<Movement>
                 }
                 else
                 {
-                    print("3. hasSlopeGlided");
                     PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;     
                 }
             }
