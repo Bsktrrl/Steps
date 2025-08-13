@@ -35,11 +35,11 @@ public class DialogueManager : Singleton<DialogueManager>
     //--------------------
 
 
-    private void Start()
+    private void Awake()
     {
         typingSound.clip = typeClip;
 
-        languageAmount = Enum.GetValues(typeof(Languages)).Length - 1;
+        languageAmount = Enum.GetValues(typeof(Languages)).Length;
     }
 
     private void OnEnable()
@@ -302,7 +302,7 @@ public class DialogueSegment
 {
     public string segmentDescription;
 
-    [Header("If Last Segment")]
+    [Header("Segment Info")]
     public bool firstSegment;
     public bool lastSegment;
 
@@ -328,21 +328,25 @@ public class LanguageOptions
     [Header("Option 1")]
     public string option1_Text;
     public int option1_Linked;
+    public int option1_AlternativeLinked;
     public int option1_EndingValue;
 
     [Header("Option 2")]
     public string option2_Text;
     public int option2_Linked;
+    public int option2_AlternativeLinked;
     public int option2_EndingValue;
 
     [Header("Option 3")]
     public string option3_Text;
     public int option3_Linked;
+    public int option3_AlternativeLinked;
     public int option3_EndingValue;
 
     [Header("Option 4")]
     public string option4_Text;
     public int option4_Linked;
+    public int option4_AlternativeLinked;
     public int option4_EndingValue;
 }
 [Serializable]
