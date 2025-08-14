@@ -261,6 +261,11 @@ public class CameraController : Singleton<CameraController>
                 break;
         }
 
+        cameraOffset.transform.localPosition = cameraOffset_originalPos;
+        cameraOffset.transform.rotation = cameraOffset_originalRot;
+
+        cameraState = CameraState.GameplayCam;
+
         //Action_RotateCamera_Start?.Invoke();
 
         // Ensure the final rotation is set exactly
