@@ -20,11 +20,14 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
     float mediumComma = 0.18f;
     float fastComma = 0.08f;
 
-    string fullText;
+    [SerializeField] string fullText;
     private Coroutine typingCoroutine;
     bool skipRequested;
 
     public bool isTyping;
+    [SerializeField] int charCounter = 0;
+    [SerializeField] int maxCharCounter = 0;
+    [SerializeField] int charSafetyCounter = 0;
 
 
     //--------------------
@@ -72,20 +75,27 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
     {
         isTyping = true;
         dialogueText.text = "";
+        maxCharCounter = fullText.Length;
 
-        int i = 0;
-        while (i <= fullText.Length)
+        charCounter = 0;
+        charSafetyCounter = 0;
+        while (charCounter <= fullText.Length)
         {
-            if (skipRequested)
+            if (skipRequested && charSafetyCounter <= 1)
             {
+                skipRequested = false;
+            }
+            else if (skipRequested && charSafetyCounter > 1)
+            {
+                print("111. skipRequested");
                 dialogueText.text = fullText;
                 break;
             }
 
-            if (i < fullText.Length)
+            if (charCounter < fullText.Length)
             {
-                char currentChar = fullText[i];
-                dialogueText.text = fullText.Substring(0, i + 1);
+                char currentChar = fullText[charCounter];
+                dialogueText.text = fullText.Substring(0, charCounter + 1);
 
                 PlayTypingSound(currentChar);
 
@@ -104,7 +114,8 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
                 }
             }
 
-            i++;
+            charCounter++;
+            charSafetyCounter++;
         }
 
         OptionBoxes.Instance.ShowHideOptions();
@@ -112,6 +123,9 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
         skipRequested = false;
         typingCoroutine = null;
         isTyping = false;
+
+        fullText = "";
+        //charCounter = 0;
 
         Action_Typewriting_Finished?.Invoke();
     }

@@ -7,15 +7,6 @@
 Dialogue:
 __________________
 
-1.1. Multiple Stats Required
-
-- Enables segments to be run ONLY if ALL stats are aquired by the player
-	- Make it so that multiple stats can be written in the excel document inthe same cell (with a , as separator).
-	- Make a List<> when building info from Excel
-	- Check this whole list to ensure ALL stats are taken into account, when checking which segment to select next
-- Make sure that "Stat Required" not only refers to the first segment in the dialogue, but all segments
-	- Ex. one option can lead to two segment.
-	- If so, choose the segment with the most stats required, aquired by the player
 
 1.2. Typewriter
 - Fix so that the typewriter take effect, even for segments that doesn't have any options
