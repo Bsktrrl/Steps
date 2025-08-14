@@ -329,25 +329,25 @@ public class LanguageOptions
     public string option1_Text;
     public int option1_Linked;
     public int option1_AlternativeLinked;
-    public int option1_EndingValue;
+    public int option1_StoryValue;
 
     [Header("Option 2")]
     public string option2_Text;
     public int option2_Linked;
     public int option2_AlternativeLinked;
-    public int option2_EndingValue;
+    public int option2_StoryValue;
 
     [Header("Option 3")]
     public string option3_Text;
     public int option3_Linked;
     public int option3_AlternativeLinked;
-    public int option3_EndingValue;
+    public int option3_StoryValue;
 
     [Header("Option 4")]
     public string option4_Text;
     public int option4_Linked;
     public int option4_AlternativeLinked;
-    public int option4_EndingValue;
+    public int option4_StoryValue;
 }
 [Serializable]
 public class DialogueStat

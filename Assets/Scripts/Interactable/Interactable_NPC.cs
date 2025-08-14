@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Interactable_NPC : MonoBehaviour
 {
@@ -222,13 +223,13 @@ public class Interactable_NPC : MonoBehaviour
         var store = DataManager.Instance.charatersData_Store;
         return npc switch
         {
-            NPCs.Floriel => store?.floriel_Data?.dialogueStartStatList,
-            NPCs.Granith => store?.granith_Data?.dialogueStartStatList,
-            NPCs.Archie => store?.archie_Data?.dialogueStartStatList,
-            NPCs.Aisa => store?.aisa_Data?.dialogueStartStatList,
-            NPCs.Mossy => store?.mossy_Data?.dialogueStartStatList,
-            NPCs.Larry => store?.larry_Data?.dialogueStartStatList,
-            NPCs.Stepellier => store?.stepellier_Data?.dialogueStartStatList,
+            NPCs.Floriel => store?.floriel_Data?.dialogueStatList,
+            NPCs.Granith => store?.granith_Data?.dialogueStatList,
+            NPCs.Archie => store?.archie_Data?.dialogueStatList,
+            NPCs.Aisa => store?.aisa_Data?.dialogueStatList,
+            NPCs.Mossy => store?.mossy_Data?.dialogueStatList,
+            NPCs.Larry => store?.larry_Data?.dialogueStatList,
+            NPCs.Stepellier => store?.stepellier_Data?.dialogueStatList,
             _ => null
         };
     }
@@ -745,9 +746,9 @@ public class Interactable_NPC : MonoBehaviour
 
             //Option 1 - EndingValue
             if (excelData[columns * (i + startRow - 1) + 18] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_EndingValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 18);
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_StoryValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 18);
             else
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_EndingValue = 0;
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_StoryValue = 0;
 
             #endregion
 
@@ -767,9 +768,9 @@ public class Interactable_NPC : MonoBehaviour
 
             //Option 2 - EndingValue
             if (excelData[columns * (i + startRow - 1) + 22] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_EndingValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 22);
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_StoryValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 22);
             else
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_EndingValue = 0;
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_StoryValue = 0;
 
             #endregion
 
@@ -789,9 +790,9 @@ public class Interactable_NPC : MonoBehaviour
 
             //Option 3 - EndingValue
             if (excelData[columns * (i + startRow - 1) + 26] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_EndingValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 26);
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_StoryValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 26);
             else
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_EndingValue = 0;
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_StoryValue = 0;
 
             #endregion
 
@@ -811,9 +812,9 @@ public class Interactable_NPC : MonoBehaviour
 
             //Option 4 - EndingValue
             if (excelData[columns * (i + startRow - 1) + 30] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_EndingValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 30);
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_StoryValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 30);
             else
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_EndingValue = 0;
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_StoryValue = 0;
 
             #endregion
 
@@ -825,19 +826,19 @@ public class Interactable_NPC : MonoBehaviour
             {
                 dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_Linked = dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Linked;
                 dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_AlternativeLinked = dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_AlternativeLinked;
-                dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_EndingValue = dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_EndingValue;
+                dialogueInfo.dialogueSegments[i].languageOptionList[j].option1_StoryValue = dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_StoryValue;
 
                 dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_Linked = dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_Linked;
                 dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_AlternativeLinked = dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_AlternativeLinked;
-                dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_EndingValue = dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_EndingValue;
+                dialogueInfo.dialogueSegments[i].languageOptionList[j].option2_StoryValue = dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_StoryValue;
 
                 dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_Linked = dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_Linked;
                 dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_AlternativeLinked = dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_AlternativeLinked;
-                dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_EndingValue = dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_EndingValue;
+                dialogueInfo.dialogueSegments[i].languageOptionList[j].option3_StoryValue = dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_StoryValue;
 
                 dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_Linked = dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_Linked;
                 dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_AlternativeLinked = dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_AlternativeLinked;
-                dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_EndingValue = dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_EndingValue;
+                dialogueInfo.dialogueSegments[i].languageOptionList[j].option4_StoryValue = dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_StoryValue;
             }
 
             #endregion
@@ -1077,7 +1078,7 @@ public class Interactable_NPC : MonoBehaviour
             StartCoroutine(DialogueManager.Instance.EndDialogue());
         }
 
-        //If the first element of the norwegian messageText is nothing, run it
+        //If the next segment doesn't have any options, run the next segment in the list
         else if (dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option1_Text == "")
         {
             if (!TypewriterEffect.Instance.isTyping)
@@ -1090,42 +1091,132 @@ public class Interactable_NPC : MonoBehaviour
     }
     public void StartNewDialogueSegment_OptionButton()
     {
-        if (!isInteracting) return;
+        if (!isInteracting || TypewriterEffect.Instance.isTyping) return;
 
-        if (!TypewriterEffect.Instance.isTyping)
+
+        //-----
+
+
+        LanguageOptions languageOptions = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0];
+        int segment = -1;
+
+        if (DialogueManager.Instance.selectedButton == 1)
         {
-            int segment = -1;
-            if (DialogueManager.Instance.selectedButton == 1)
-            {
-                segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option1_Linked - 1;
-                UpdateEndingValue(NPCManager.Instance.charatersData.stepellier_Data.endingValue, characterName, dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option1_EndingValue);
-            }
-            else if (DialogueManager.Instance.selectedButton == 2)
-            {
-                segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option2_Linked - 1;
-                UpdateEndingValue(NPCManager.Instance.charatersData.stepellier_Data.endingValue, characterName, dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option2_EndingValue);
-            }
-            else if (DialogueManager.Instance.selectedButton == 3)
-            {
-                segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option3_Linked - 1;
-                UpdateEndingValue(NPCManager.Instance.charatersData.stepellier_Data.endingValue, characterName, dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option3_EndingValue);
-            }
-            else if (DialogueManager.Instance.selectedButton == 4)
-            {
-                segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option4_Linked - 1;
-                UpdateEndingValue(NPCManager.Instance.charatersData.stepellier_Data.endingValue, characterName, dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option4_EndingValue);
-            }
+            //segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option1_Linked - 1;
+            segment = ChooseSegment(languageOptions.option1_Linked - 1, languageOptions.option1_AlternativeLinked - 1);
+            UpdateEndingValue(characterName, dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option1_StoryValue);
+        }
+        else if (DialogueManager.Instance.selectedButton == 2)
+        {
+            //segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option2_Linked - 1;
+            segment = ChooseSegment(languageOptions.option2_Linked - 1, languageOptions.option2_AlternativeLinked - 1);
+            UpdateEndingValue(characterName, dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option2_StoryValue);
+        }
+        else if (DialogueManager.Instance.selectedButton == 3)
+        {
+            //segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option3_Linked - 1;
+            segment = ChooseSegment(languageOptions.option3_Linked - 1, languageOptions.option3_AlternativeLinked - 1);
+            UpdateEndingValue(characterName, dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option3_StoryValue);
+        }
+        else if (DialogueManager.Instance.selectedButton == 4)
+        {
+            //segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option4_Linked - 1;
+            segment = ChooseSegment(languageOptions.option4_Linked - 1, languageOptions.option4_AlternativeLinked - 1);
+            UpdateEndingValue(characterName, dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option4_StoryValue);
+        }
 
-            segmentIndex = segment;
-            DialogueManager.Instance.currentSegement = segmentIndex;
+        segmentIndex = segment;
+        DialogueManager.Instance.currentSegement = segmentIndex;
 
-            //print("DialogueSegment: Button: " + (DialogueManager.Instance.selectedButton - 1) + " | Index: " + segmentIndex + " | Segment: " + segment);
+        //print("DialogueSegment: Button: " + (DialogueManager.Instance.selectedButton - 1) + " | Index: " + segmentIndex + " | Segment: " + segment);
 
-            SetupDialogueDisplay(segment, dialogueInfo.npcName); 
+        SetupDialogueDisplay(segment, dialogueInfo.npcName);
+    }
+    int ChooseSegment(int linked, int alternativeLinked)
+    {
+        switch (characterName)
+        {
+            case NPCs.None:
+                return -1;
+
+            case NPCs.Floriel:
+                return CharacterStats(DataManager.Instance.charatersData_Store.floriel_Data, linked, alternativeLinked);
+            case NPCs.Granith:
+                return CharacterStats(DataManager.Instance.charatersData_Store.granith_Data, linked, alternativeLinked);
+            case NPCs.Archie:
+                return CharacterStats(DataManager.Instance.charatersData_Store.archie_Data, linked, alternativeLinked);
+            case NPCs.Aisa:
+                return CharacterStats(DataManager.Instance.charatersData_Store.aisa_Data, linked, alternativeLinked);
+            case NPCs.Mossy:
+                return CharacterStats(DataManager.Instance.charatersData_Store.mossy_Data, linked, alternativeLinked);
+            case NPCs.Larry:
+                return CharacterStats(DataManager.Instance.charatersData_Store.larry_Data, linked, alternativeLinked);
+            case NPCs.Stepellier:
+                return CharacterStats(DataManager.Instance.charatersData_Store.stepellier_Data, linked, alternativeLinked);
+
+            default:
+                return -1;
         }
     }
 
-    void UpdateEndingValue(int valueToChange, NPCs npc, int tempEndingValue)
+    int CharacterStats(NPCData npcData, int linked, int alternativeLinked)
+    {
+        bool linkedValid = linked >= 0 && linked < dialogueInfo.dialogueSegments.Count;
+        bool altValid = alternativeLinked >= 0 && alternativeLinked < dialogueInfo.dialogueSegments.Count;
+
+        // --- CASE: Both are empty/invalid ---
+        if (!linkedValid && !altValid)
+        {
+            segmentIndex += 1;
+            return segmentIndex; // Move to next segment
+        }
+
+        // --- CASE: Linked has no requirements ---
+        if (linkedValid)
+        {
+            var requiredStats = dialogueInfo.dialogueSegments[linked].statRequired;
+
+            if (requiredStats == null || requiredStats.Count == 0)
+                return linked;
+
+            if (npcData.dialogueStatList != null && npcData.dialogueStatList.Count > 0)
+            {
+                bool allRequirementsMet = true;
+
+                for (int i = 0; i < requiredStats.Count; i++)
+                {
+                    bool foundMatch = false;
+                    for (int j = 0; j < npcData.dialogueStatList.Count; j++)
+                    {
+                        if (npcData.dialogueStatList[j].character == requiredStats[i].character &&
+                            npcData.dialogueStatList[j].value == requiredStats[i].value)
+                        {
+                            foundMatch = true;
+                            break;
+                        }
+                    }
+                    if (!foundMatch)
+                    {
+                        allRequirementsMet = false;
+                        break;
+                    }
+                }
+
+                if (allRequirementsMet)
+                    return linked;
+            }
+        }
+
+        // --- CASE: Linked failed ---
+        if (!altValid)
+            return linkedValid ? linked : segmentIndex + 1; // Fall back to linked even if requirements not met, or skip if linked invalid
+
+        return alternativeLinked; // Use alternative if valid
+    }
+
+
+
+    void UpdateEndingValue(NPCs npc, int tempEndingValue)
     {
         switch (npc)
         {
@@ -1133,26 +1224,26 @@ public class Interactable_NPC : MonoBehaviour
                 break;
 
             case NPCs.Floriel:
-                valueToChange += tempEndingValue;
+                NPCManager.Instance.charatersData.floriel_Data.endingValue += tempEndingValue;
                 break;
             case NPCs.Granith:
-                valueToChange += tempEndingValue;
+                NPCManager.Instance.charatersData.granith_Data.endingValue += tempEndingValue;
                 break;
             case NPCs.Archie:
-                valueToChange += tempEndingValue;
+                NPCManager.Instance.charatersData.archie_Data.endingValue += tempEndingValue;
                 break;
             case NPCs.Aisa:
-                valueToChange += tempEndingValue;
+                NPCManager.Instance.charatersData.aisa_Data.endingValue += tempEndingValue;
                 break;
             case NPCs.Mossy:
-                valueToChange += tempEndingValue;
+                NPCManager.Instance.charatersData.mossy_Data.endingValue += tempEndingValue;
                 break;
             case NPCs.Larry:
-                valueToChange += tempEndingValue;
+                NPCManager.Instance.charatersData.larry_Data.endingValue += tempEndingValue;
                 break;
 
             case NPCs.Stepellier:
-                valueToChange += tempEndingValue;
+                NPCManager.Instance.charatersData.stepellier_Data.endingValue += tempEndingValue;
                 break;
 
             default:

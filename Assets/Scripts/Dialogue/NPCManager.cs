@@ -248,95 +248,95 @@ public class NPCManager : Singleton<NPCManager>
                         break;
 
                     case NPCs.Floriel:
-                        for (int j = 0; j < charatersData.floriel_Data.dialogueStartStatList.Count; j++)
+                        for (int j = 0; j < charatersData.floriel_Data.dialogueStatList.Count; j++)
                         {
-                            if (tempDialogueStat.character == charatersData.floriel_Data.dialogueStartStatList[j].character
-                                && tempDialogueStat.value == charatersData.floriel_Data.dialogueStartStatList[j].value)
+                            if (tempDialogueStat.character == charatersData.floriel_Data.dialogueStatList[j].character
+                                && tempDialogueStat.value == charatersData.floriel_Data.dialogueStatList[j].value)
                             {
                                 statsToGetCounter++;
                             }
                         }
 
                         if (statsToGetCounter <= 0)
-                            charatersData.floriel_Data.dialogueStartStatList.Add(tempDialogueStat);
+                            charatersData.floriel_Data.dialogueStatList.Add(tempDialogueStat);
                         break;
                     case NPCs.Granith:
-                        for (int j = 0; j < charatersData.granith_Data.dialogueStartStatList.Count; j++)
+                        for (int j = 0; j < charatersData.granith_Data.dialogueStatList.Count; j++)
                         {
-                            if (tempDialogueStat.character == charatersData.granith_Data.dialogueStartStatList[j].character
-                                && tempDialogueStat.value == charatersData.granith_Data.dialogueStartStatList[j].value)
+                            if (tempDialogueStat.character == charatersData.granith_Data.dialogueStatList[j].character
+                                && tempDialogueStat.value == charatersData.granith_Data.dialogueStatList[j].value)
                             {
                                 statsToGetCounter++;
                             }
                         }
 
                         if (statsToGetCounter <= 0)
-                            charatersData.granith_Data.dialogueStartStatList.Add(tempDialogueStat);
+                            charatersData.granith_Data.dialogueStatList.Add(tempDialogueStat);
                         break;
                     case NPCs.Archie:
-                        for (int j = 0; j < charatersData.archie_Data.dialogueStartStatList.Count; j++)
+                        for (int j = 0; j < charatersData.archie_Data.dialogueStatList.Count; j++)
                         {
-                            if (tempDialogueStat.character == charatersData.archie_Data.dialogueStartStatList[j].character
-                                && tempDialogueStat.value == charatersData.archie_Data.dialogueStartStatList[j].value)
+                            if (tempDialogueStat.character == charatersData.archie_Data.dialogueStatList[j].character
+                                && tempDialogueStat.value == charatersData.archie_Data.dialogueStatList[j].value)
                             {
                                 statsToGetCounter++;
                             }
                         }
 
                         if (statsToGetCounter <= 0)
-                            charatersData.archie_Data.dialogueStartStatList.Add(tempDialogueStat);
+                            charatersData.archie_Data.dialogueStatList.Add(tempDialogueStat);
                         break;
                     case NPCs.Aisa:
-                        for (int j = 0; j < charatersData.aisa_Data.dialogueStartStatList.Count; j++)
+                        for (int j = 0; j < charatersData.aisa_Data.dialogueStatList.Count; j++)
                         {
-                            if (tempDialogueStat.character == charatersData.aisa_Data.dialogueStartStatList[j].character
-                                && tempDialogueStat.value == charatersData.aisa_Data.dialogueStartStatList[j].value)
+                            if (tempDialogueStat.character == charatersData.aisa_Data.dialogueStatList[j].character
+                                && tempDialogueStat.value == charatersData.aisa_Data.dialogueStatList[j].value)
                             {
                                 statsToGetCounter++;
                             }
                         }
 
                         if (statsToGetCounter <= 0)
-                            charatersData.aisa_Data.dialogueStartStatList.Add(tempDialogueStat);
+                            charatersData.aisa_Data.dialogueStatList.Add(tempDialogueStat);
                         break;
                     case NPCs.Mossy:
-                        for (int j = 0; j < charatersData.mossy_Data.dialogueStartStatList.Count; j++)
+                        for (int j = 0; j < charatersData.mossy_Data.dialogueStatList.Count; j++)
                         {
-                            if (tempDialogueStat.character == charatersData.mossy_Data.dialogueStartStatList[j].character
-                                && tempDialogueStat.value == charatersData.mossy_Data.dialogueStartStatList[j].value)
+                            if (tempDialogueStat.character == charatersData.mossy_Data.dialogueStatList[j].character
+                                && tempDialogueStat.value == charatersData.mossy_Data.dialogueStatList[j].value)
                             {
                                 statsToGetCounter++;
                             }
                         }
 
                         if (statsToGetCounter <= 0)
-                            charatersData.mossy_Data.dialogueStartStatList.Add(tempDialogueStat);
+                            charatersData.mossy_Data.dialogueStatList.Add(tempDialogueStat);
                         break;
                     case NPCs.Larry:
-                        for (int j = 0; j < charatersData.larry_Data.dialogueStartStatList.Count; j++)
+                        for (int j = 0; j < charatersData.larry_Data.dialogueStatList.Count; j++)
                         {
-                            if (tempDialogueStat.character == charatersData.larry_Data.dialogueStartStatList[j].character
-                                && tempDialogueStat.value == charatersData.larry_Data.dialogueStartStatList[j].value)
+                            if (tempDialogueStat.character == charatersData.larry_Data.dialogueStatList[j].character
+                                && tempDialogueStat.value == charatersData.larry_Data.dialogueStatList[j].value)
                             {
                                 statsToGetCounter++;
                             }
                         }
 
                         if (statsToGetCounter <= 0)
-                            charatersData.larry_Data.dialogueStartStatList.Add(tempDialogueStat);
+                            charatersData.larry_Data.dialogueStatList.Add(tempDialogueStat);
                         break;
                     case NPCs.Stepellier:
-                        for (int j = 0; j < charatersData.stepellier_Data.dialogueStartStatList.Count; j++)
+                        for (int j = 0; j < charatersData.stepellier_Data.dialogueStatList.Count; j++)
                         {
-                            if (tempDialogueStat.character == charatersData.stepellier_Data.dialogueStartStatList[j].character
-                                && tempDialogueStat.value == charatersData.stepellier_Data.dialogueStartStatList[j].value)
+                            if (tempDialogueStat.character == charatersData.stepellier_Data.dialogueStatList[j].character
+                                && tempDialogueStat.value == charatersData.stepellier_Data.dialogueStatList[j].value)
                             {
                                 statsToGetCounter++;
                             }
                         }
 
                         if (statsToGetCounter <= 0)
-                            charatersData.stepellier_Data.dialogueStartStatList.Add(tempDialogueStat);
+                            charatersData.stepellier_Data.dialogueStatList.Add(tempDialogueStat);
                         break;
 
                     default:
@@ -376,5 +376,5 @@ public class NPCData
     public int endingValue;
 
     [Header("Stats Aquired To Start Dialogue")]
-    public List<DialogueStat> dialogueStartStatList = new List<DialogueStat>();
+    public List<DialogueStat> dialogueStatList = new List<DialogueStat>();
 }

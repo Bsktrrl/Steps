@@ -48,6 +48,7 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
     public void ShowText(string text)
     {
         fullText = text;
+
         if (typingCoroutine != null)
         {
             StopCoroutine(typingCoroutine);
