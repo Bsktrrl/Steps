@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class SkinShopManager : Singleton<SkinShopManager>
 {
@@ -14,6 +16,12 @@ public class SkinShopManager : Singleton<SkinShopManager>
     public Color inactive_Color;
     public Color aquired_Color;
     public Color unlocked_Color;
+
+    [Header("ButtonSnap")]
+    public GameObject lastButtonSelected_Up;
+    public GameObject lastButtonSelected_Down;
+    public GameObject headerButtonSnap;
+    public GameObject backButtonSnap;
 
     #region Shop Buttons
     [Header("Shop - Buttons")]
@@ -192,6 +200,90 @@ public class SkinShopManager : Singleton<SkinShopManager>
 
         return tempEssenceAquired;
     }
+    public int GetEssenceUsed()
+    {
+        int essenceUsedCounter = 0;
+
+        if (SkinsManager.Instance.skinShopInfo.skin_Region1_level1.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region1_level2.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region1_level3.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region1_level4.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region1_level5.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region1_level6.skin_isUnlocked)
+            essenceUsedCounter++;
+
+        if (SkinsManager.Instance.skinShopInfo.skin_Region2_level1.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region2_level2.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region2_level3.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region2_level4.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region2_level5.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region2_level6.skin_isUnlocked)
+            essenceUsedCounter++;
+
+        if (SkinsManager.Instance.skinShopInfo.skin_Region3_level1.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region3_level2.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region3_level3.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region3_level4.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region3_level5.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region3_level6.skin_isUnlocked)
+            essenceUsedCounter++;
+
+        if (SkinsManager.Instance.skinShopInfo.skin_Region4_level1.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region4_level2.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region4_level3.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region4_level4.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region4_level5.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region4_level6.skin_isUnlocked)
+            essenceUsedCounter++;
+
+        if (SkinsManager.Instance.skinShopInfo.skin_Region5_level1.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region5_level2.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region5_level3.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region5_level4.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region5_level5.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region2_level6.skin_isUnlocked)
+            essenceUsedCounter++;
+
+        if (SkinsManager.Instance.skinShopInfo.skin_Region6_level1.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region6_level2.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region6_level3.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region6_level4.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region6_level5.skin_isUnlocked)
+            essenceUsedCounter++;
+        if (SkinsManager.Instance.skinShopInfo.skin_Region6_level6.skin_isUnlocked)
+            essenceUsedCounter++;
+
+        return essenceUsedCounter;
+    }
 
 
     //--------------------
@@ -224,7 +316,30 @@ public class SkinShopManager : Singleton<SkinShopManager>
     }
     void SetSkinCostDisplay()
     {
-        skinShopCostText.text = GetEssenceAquired().ToString() + " / " + GetSkinCost().ToString();
+        skinShopCostText.text = (GetEssenceAquired() - GetEssenceUsed()).ToString() + " / " + GetSkinCost().ToString();
+    }
+
+
+    //--------------------
+
+
+    public void UpdateSnapHeader(GameObject headerButtonReference)
+    {
+        Navigation nav = headerButtonSnap.GetComponent<UnityEngine.UI.Button>().navigation;
+        nav.selectOnDown = headerButtonReference.GetComponent<UnityEngine.UI.Button>();
+
+        headerButtonSnap.GetComponent<UnityEngine.UI.Button>().navigation = nav;
+
+        lastButtonSelected_Up = headerButtonReference;
+    }
+    public void UpdateSnapBack(GameObject backButtonReference)
+    {
+        Navigation nav = backButtonSnap.GetComponent<UnityEngine.UI.Button>().navigation;
+        nav.selectOnUp = backButtonReference.GetComponent<UnityEngine.UI.Button>();
+
+        backButtonSnap.GetComponent<UnityEngine.UI.Button>().navigation = nav;
+
+        lastButtonSelected_Down = backButtonReference;
     }
 }
 

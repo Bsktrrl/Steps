@@ -527,23 +527,9 @@ public class SkinShopButtons : MonoBehaviour
 
     public void BlockButton_isPressed()
     {
-        //Insert payment requirements
-
         LevelSkinsInfo skinData = GetSkinData();
 
         UpdateSkinDisplay();
-
-        //If SkinData is missing
-        //if (skinData == null)
-        //{
-        //    UpdateIfInactive(true);
-        //}
-
-        ////If the skin has NOT been taken in a level
-        //else if (!skinData.isTaken)
-        //{
-        //    UpdateIfInactive(true);
-        //}
 
         //If a skin HAS been taken in a level, but has NOT been Unlocked from the Shop yet - UNLOCK IT, if you have the required essence
         /*else*/ if (GetSkinData().isTaken && !isUnlocked && (SkinShopManager.Instance.GetSkinCost() <= SkinShopManager.Instance.GetEssenceAquired()))
@@ -553,19 +539,6 @@ public class SkinShopButtons : MonoBehaviour
 
             SkinShopManager.Instance.ChangeSkinCost();
         }
-
-        //If a skin has been taken in a level and HAS been Unlocked in the Shop - DO NOTHING
-        //else if (GetSkinData().isTaken && isUnlocked)
-        //{
-
-        //}
-
-        //If the skin has been taken in a level - 
-        //else if (skinData.isTaken)
-        //{
-        //    UpdateIfAquired(true);
-        //    UpdateIfInactive(false);
-        //}
 
         SaveThisSkinInfo();
     }
