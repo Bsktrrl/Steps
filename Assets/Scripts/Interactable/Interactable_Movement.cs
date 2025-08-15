@@ -8,12 +8,12 @@ public class Interactable_Movement : MonoBehaviour
 {
     //Floating
     [Header("Float Behavior")]
-    [SerializeField] float amplitude = 0.25f; // How high and low the object will float
-    [SerializeField] float frequency = 1f;   // How fast the object will float
+    float amplitude; // How high and low the object will float
+    float frequency;   // How fast the object will float
     
     //Rotation
     [Header("Rotation")]
-    [SerializeField] float RotationSpeed = 0.25f;
+    float RotationSpeed;
     float Rotation;
 
     Vector3 startPos;
@@ -24,6 +24,11 @@ public class Interactable_Movement : MonoBehaviour
 
     private void Start()
     {
+        amplitude = 0.05f;
+        frequency = 0.8f;
+        RotationSpeed = 0.25f;
+        Rotation = 0;
+
         startPos = transform.position;
     }
     private void Update()
