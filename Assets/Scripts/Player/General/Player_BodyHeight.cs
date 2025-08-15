@@ -5,20 +5,20 @@ using UnityEngine;
 public class Player_BodyHeight : Singleton<Player_BodyHeight>
 {
     [Header("Local PlayerBody height level")]
-    [HideInInspector] public float height_Normal = -0.15f;
-    [HideInInspector] public float height_CeilingGrab = 0f;
+    [HideInInspector] public float height_Normal = -0.15f; //Where the player is on the block under
+    [HideInInspector] public float height_CeilingGrab = 0.26f;
 
     float height_Stair = 0.08f;
-    float height_Water = -0.8f;
-    float height_SwampWater = -0.6f;
-    float height_Mud = -1f;
-    float height_Lava = -0.9f;
+    float height_Water = -0.5f; //-0.8 is where the player is right under water surface
+    float height_SwampWater = -0.5f;
+    float height_Mud = -0.7f;
+    float height_Lava = -0.7f;
 
-    float height_QuickSand_1 = -0.7f;
-    float height_QuickSand_2 = -0.9f;
-    float height_QuickSand_3 = -1.1f;
-    float height_QuickSand_4 = -1.3f;
-    float height_QuickSand_5 = -1.5f;
+    float height_QuickSand_1 = -0.4f;
+    float height_QuickSand_2 = -0.5f;
+    float height_QuickSand_3 = -0.6f;
+    float height_QuickSand_4 = -0.7f;
+    float height_QuickSand_5 = -0.8f; 
 
 
     //--------------------
@@ -39,7 +39,7 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
 
     public float SetPlayerBodyHeight()
     {
-        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return 0; }
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing) { return height_CeilingGrab; }
         if (Movement.Instance.performGrapplingHooking) { return height_Normal; }
 
         if (Movement.Instance.blockStandingOn)
@@ -128,6 +128,7 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
                         PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_CeilingGrab), ReturnRotation());
                     else
                         PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Normal), ReturnRotation());
+
                     return height_Normal;
                 }
             }

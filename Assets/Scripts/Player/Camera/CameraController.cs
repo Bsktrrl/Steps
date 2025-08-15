@@ -36,9 +36,10 @@ public class CameraController : Singleton<CameraController>
     [SerializeField] Quaternion cameraAnchor_originalRot;
     [SerializeField] Vector3 cameraOffset_originalPos /*= new Vector3(0, 4.3f, -9.2f)*/;
     [SerializeField] Quaternion cameraOffset_originalRot;
-    Vector3 cameraOffset_ceilingGrabPos = new Vector3(0, -2f, -9.2f);
-    float cameraTilt_Original = 27;
     float cameraTilt_Ceiling = -17;
+
+    Vector3 cameraOffset_ceilingGrabPos = new Vector3(0, -2f, -9.2f);
+    float cameraTilt_Original;
 
 
     //--------------------
@@ -54,6 +55,8 @@ public class CameraController : Singleton<CameraController>
 
         cameraOffset_originalPos = cameraOffset.transform.localPosition;
         cameraOffset_originalRot = cameraOffset.transform.rotation;
+
+        cameraTilt_Original = cameraOffset_originalRot.eulerAngles.x;
 
         AdjustFacingDirection();
     }
@@ -260,6 +263,11 @@ public class CameraController : Singleton<CameraController>
                 cameraAnchor.transform.rotation = Quaternion.Euler(0, 0, 0);
                 break;
         }
+
+        cameraOffset.transform.localPosition = cameraOffset_originalPos;
+        cameraOffset.transform.rotation = cameraOffset_originalRot;
+
+        cameraState = CameraState.GameplayCam;
 
         //Action_RotateCamera_Start?.Invoke();
 

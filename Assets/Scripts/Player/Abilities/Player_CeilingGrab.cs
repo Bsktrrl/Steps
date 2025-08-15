@@ -18,7 +18,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     float playerRotationDuration_Ceiling = 0.5f;
     public float playerCeilingRotationValue;
 
-    public float playerBodyHeight_Ceiling = 0.4f;
+    //public float playerBodyHeight_Ceiling = 0.4f;
 
     RaycastHit hit;
 
@@ -153,7 +153,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         }
         else if (CameraController.Instance.cameraState == CameraState.CeilingCam)
         {
-            endPosition = new Vector3(0, playerBodyHeight_Ceiling, 0);
+            endPosition = new Vector3(0, Player_BodyHeight.Instance.height_CeilingGrab, 0);
             endRotation = Quaternion.Euler(0, PlayerManager.Instance.playerBody.transform.localRotation.eulerAngles.y, angle);
         }
 

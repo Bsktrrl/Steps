@@ -35,11 +35,11 @@ public class DialogueManager : Singleton<DialogueManager>
     //--------------------
 
 
-    private void Start()
+    private void Awake()
     {
         typingSound.clip = typeClip;
 
-        languageAmount = Enum.GetValues(typeof(Languages)).Length - 1;
+        languageAmount = Enum.GetValues(typeof(Languages)).Length;
     }
 
     private void OnEnable()
@@ -113,7 +113,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
     void SetupArrow()
     {
-        if (OptionBoxes.Instance.optionButton_1.gameObject.activeInHierarchy || (currentSegement >= segmentTotal) || npcObject.dialogueInfo.dialogueSegments[currentSegement].lastSegment != "")
+        if (OptionBoxes.Instance.optionButton_1.gameObject.activeInHierarchy || (currentSegement >= segmentTotal) || npcObject.dialogueInfo.dialogueSegments[currentSegement].lastSegment)
             HideArrow();
         else
             ShowArrow();
@@ -302,12 +302,13 @@ public class DialogueSegment
 {
     public string segmentDescription;
 
-    [Header("If Last Segment")]
-    public string lastSegment;
+    [Header("Segment Info")]
+    public bool firstSegment;
+    public bool lastSegment;
 
     [Header("Stats")]
-    public DialogueStat startingStat;
-    public DialogueStat statToGet;
+    public List<DialogueStat> statRequired;
+    public List<DialogueStat> statToGet;
 
     [Header("Animations")]
     public List<int> animation_Player = new List<int>();
@@ -327,22 +328,26 @@ public class LanguageOptions
     [Header("Option 1")]
     public string option1_Text;
     public int option1_Linked;
-    public int option1_EndingValue;
+    public int option1_AlternativeLinked;
+    public int option1_StoryValue;
 
     [Header("Option 2")]
     public string option2_Text;
     public int option2_Linked;
-    public int option2_EndingValue;
+    public int option2_AlternativeLinked;
+    public int option2_StoryValue;
 
     [Header("Option 3")]
     public string option3_Text;
     public int option3_Linked;
-    public int option3_EndingValue;
+    public int option3_AlternativeLinked;
+    public int option3_StoryValue;
 
     [Header("Option 4")]
     public string option4_Text;
     public int option4_Linked;
-    public int option4_EndingValue;
+    public int option4_AlternativeLinked;
+    public int option4_StoryValue;
 }
 [Serializable]
 public class DialogueStat

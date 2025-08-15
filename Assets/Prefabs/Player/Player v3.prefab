@@ -2169,7 +2169,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1817304182065838073}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.0000000037252899, z: -9.3132246e-10, w: 1}
+  m_LocalRotation: {x: -0, y: 0.0000000037252896, z: -9.3132246e-10, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -2198,7 +2198,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 3257421078337541638}
   m_Follow: {fileID: 3257421078337541638}
   m_Lens:
-    FieldOfView: 30
+    FieldOfView: 58
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -2480,15 +2480,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2170447121049632369}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.23344536, y: 0, z: 0, w: 0.97236997}
-  m_LocalPosition: {x: 0, y: 4.6, z: -9.2}
+  m_LocalRotation: {x: 0.25038, y: 0, z: 0, w: 0.9681477}
+  m_LocalPosition: {x: 0, y: 2.5, z: -4.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2817571988293551415}
   - {fileID: 6870032741396376964}
   m_Father: {fileID: 7774417135674195314}
-  m_LocalEulerAnglesHint: {x: 27, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 29, y: 0, z: 0}
 --- !u!1 &2261744041584005818
 GameObject:
   m_ObjectHideFlags: 0
@@ -2959,7 +2959,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueText: {fileID: 4271076667483624845}
+  fullText: 
   isTyping: 0
+  charCounter: 0
+  maxCharCounter: 0
+  charSafetyCounter: 0
 --- !u!114 &2450530203511196984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3778,8 +3782,8 @@ MonoBehaviour:
       steps_Max: 7
       steps_Current: 7
       itemsGot:
-        coin: 0
-        collectable: 0
+        essence: 0
+        skin: 0
       abilitiesGot_Permanent:
         SwimSuit: 0
         SwiftSwim: 0
@@ -3824,7 +3828,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       granith_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -3833,7 +3837,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       archie_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -3842,7 +3846,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       aisa_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -3851,7 +3855,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       mossy_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -3860,7 +3864,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       larry_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -3869,7 +3873,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       stepellier_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -3878,8 +3882,9 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
     skinsInfo_Save:
+      currentSkinCost: 0
       skin_Region1_level1:
         skin_Type: 0
         skin_isInactive: 0
@@ -4060,8 +4065,6 @@ MonoBehaviour:
         skin_isInactive: 0
         skin_isAquired: 0
         skin_isUnlocked: 0
-    skinCost_Save:
-      currentSkinCost: 0
 --- !u!1 &3873675504140058313
 GameObject:
   m_ObjectHideFlags: 0
@@ -6014,7 +6017,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
     granith_Data:
       level_1_DialogueFinished: 0
       level_2_DialogueFinished: 0
@@ -6023,7 +6026,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
     archie_Data:
       level_1_DialogueFinished: 0
       level_2_DialogueFinished: 0
@@ -6032,7 +6035,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
     aisa_Data:
       level_1_DialogueFinished: 0
       level_2_DialogueFinished: 0
@@ -6041,7 +6044,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
     mossy_Data:
       level_1_DialogueFinished: 0
       level_2_DialogueFinished: 0
@@ -6050,7 +6053,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
     larry_Data:
       level_1_DialogueFinished: 0
       level_2_DialogueFinished: 0
@@ -6059,7 +6062,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
     stepellier_Data:
       level_1_DialogueFinished: 0
       level_2_DialogueFinished: 0
@@ -6068,7 +6071,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
 --- !u!1 &6004403996688527789
 GameObject:
   m_ObjectHideFlags: 0
@@ -6248,8 +6251,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6058242050083391972}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.0000000037252899, z: -9.3132246e-10, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: 0.0000000037253187, z: -9.313292e-10, w: 1}
+  m_LocalPosition: {x: 0, y: 5.2477183, z: -2.908858}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -6287,9 +6290,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 1
   far clip plane: 1000
-  field of view: 30
+  field of view: 58
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -6335,7 +6338,7 @@ MonoBehaviour:
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
-    m_Time: 1.5
+    m_Time: 0.85
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -7307,8 +7310,8 @@ MonoBehaviour:
     steps_Max: 10
     steps_Current: 10
     itemsGot:
-      coin: 0
-      collectable: 0
+      essence: 0
+      skin: 0
     abilitiesGot_Permanent:
       SwimSuit: 0
       SwiftSwim: 0
@@ -7342,7 +7345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   height_Normal: -0.3
-  height_CeilingGrab: 0
+  height_CeilingGrab: 0.25
 --- !u!114 &2942397174162899684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7425,7 +7428,6 @@ MonoBehaviour:
   isCeilingRotation: 0
   isCeilingRotation_OFF: 0
   playerCeilingRotationValue: 0
-  playerBodyHeight_Ceiling: 0.4
   ceilingGrabBlock: {fileID: 0}
 --- !u!114 &2377569446011846462
 MonoBehaviour:
@@ -8573,9 +8575,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SkinShopCostManager: {fileID: 3104766431475249480}
-  skinShopCost:
-    currentSkinCost: 0
   skinShopInfo:
+    currentSkinCost: 0
     skin_Region1_level1:
       skin_Type: 0
       skin_isInactive: 0
@@ -9105,8 +9106,8 @@ MonoBehaviour:
       steps_Max: 0
       steps_Current: 0
       itemsGot:
-        coin: 0
-        collectable: 0
+        essence: 0
+        skin: 0
       abilitiesGot_Permanent:
         SwimSuit: 0
         SwiftSwim: 0
@@ -9151,7 +9152,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       granith_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -9160,7 +9161,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       archie_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -9169,7 +9170,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       aisa_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -9178,7 +9179,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       mossy_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -9187,7 +9188,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       larry_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -9196,7 +9197,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       stepellier_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -9205,8 +9206,9 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
     skinsInfo_Save:
+      currentSkinCost: 0
       skin_Region1_level1:
         skin_Type: 0
         skin_isInactive: 0
@@ -9387,15 +9389,13 @@ MonoBehaviour:
         skin_isInactive: 0
         skin_isAquired: 0
         skin_isUnlocked: 0
-    skinCost_Save:
-      currentSkinCost: 0
   menuState_Store: 0
   playerStats_Store:
     steps_Max: 0
     steps_Current: 0
     itemsGot:
-      coin: 0
-      collectable: 0
+      essence: 0
+      skin: 0
     abilitiesGot_Permanent:
       SwimSuit: 0
       SwiftSwim: 0
@@ -9440,7 +9440,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
     granith_Data:
       level_1_DialogueFinished: 0
       level_2_DialogueFinished: 0
@@ -9449,7 +9449,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
     archie_Data:
       level_1_DialogueFinished: 0
       level_2_DialogueFinished: 0
@@ -9458,7 +9458,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
     aisa_Data:
       level_1_DialogueFinished: 0
       level_2_DialogueFinished: 0
@@ -9467,7 +9467,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
     mossy_Data:
       level_1_DialogueFinished: 0
       level_2_DialogueFinished: 0
@@ -9476,7 +9476,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
     larry_Data:
       level_1_DialogueFinished: 0
       level_2_DialogueFinished: 0
@@ -9485,7 +9485,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
     stepellier_Data:
       level_1_DialogueFinished: 0
       level_2_DialogueFinished: 0
@@ -9494,8 +9494,9 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
   skinsInfo_Store:
+    currentSkinCost: 0
     skin_Region1_level1:
       skin_Type: 0
       skin_isInactive: 0
@@ -9676,8 +9677,6 @@ MonoBehaviour:
       skin_isInactive: 0
       skin_isAquired: 0
       skin_isUnlocked: 0
-  skinCost_Store:
-    currentSkinCost: 0
 --- !u!1 &8656163791597484161
 GameObject:
   m_ObjectHideFlags: 0

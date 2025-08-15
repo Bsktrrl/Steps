@@ -2515,7 +2515,6 @@ public class Movement : Singleton<Movement>
                 }
                 else
                 {
-                    print("3. hasSlopeGlided");
                     PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;     
                 }
             }
@@ -2555,7 +2554,9 @@ public class Movement : Singleton<Movement>
 
         //Move player
         transform.position = MapManager.Instance.playerStartPos;
-        PlayerManager.Instance.playerBody.transform.SetPositionAndRotation(MapManager.Instance.playerStartPos, GetRespawnPlayerDirection(0, 180, 0));
+        PlayerManager.Instance.playerBody.transform.SetPositionAndRotation(MapManager.Instance.playerStartPos /*new Vector3(MapManager.Instance.playerStartPos.x + MapManager.Instance.playerStartPos.y + Player_BodyHeight.Instance.height_Normal, MapManager.Instance.playerStartPos.z)*/, GetRespawnPlayerDirection(0, 180, 0));
+        PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(new Vector3(PlayerManager.Instance.playerBody.transform.localPosition.x, Player_BodyHeight.Instance.height_Normal, PlayerManager.Instance.playerBody.transform.localPosition.z), PlayerManager.Instance.playerBody.transform.localRotation);
+        //PlayerManager.Instance.playerBody.transform.position = new Vector3(PlayerManager.Instance.playerBody.transform.position.x, -Player_BodyHeight.Instance.height_Normal, PlayerManager.Instance.playerBody.transform.position.z);
 
         //Reset for CeilingAbility
         Player_CeilingGrab.Instance.ResetCeilingGrab();
