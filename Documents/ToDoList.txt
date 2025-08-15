@@ -3,28 +3,26 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 
-1.
-Dialogue:
-__________________
-
-
-1.2. Typewriter
-- Fix so that the typewriter take effect, even for segments that doesn't have any options
-
-
 2.
 Skin Menu:
 __________________
 
-2.1. Menu
+2.1. Shop menu
 - Make the menu where the player skins can be unlocked and changed
 	- In the "Shop"-menu, make it so that "Tilbake" and "Shop"-buttons are going back to the previous button moved from (so it doesn't move to the first button each time)
-	- Make the CoinsCost-system
+	- Make the CoinsCost-system cost 10 Essence per buy
+
+2.2. Wardrobe menu
+- Make Equip functionality, so that the player can equip unlocked Skins
+- Display the Equip changes on a 3D character model
+	- Make functionalty for all Skins to be equipped
+	- Make default Grey if no Skin model are imported yet
 - Make a functionality of putting on hats
-- Save/Load Hats unlocked
-- Save/Load Hats equipped
-- Save/Load skins unlocked
-- Save/Load skin equipped
+	- Display the hats on the 3D model
+- Save/Load
+	- Save/Load Hats unlocked
+	- Save/Load Hats equipped
+	- Save/Load Skin equipped
 
 
 
@@ -97,6 +95,8 @@ Switches:
 
 Settings Menu:
 - Toggle "Show Numbers" of the Steps available on the HUD
+- Motion Sickness: fjerne kamera-animasjon, bare snapping til vinklene
+
 
 
 Effect Blocks:
