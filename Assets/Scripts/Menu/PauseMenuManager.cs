@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class PauseMenuManager : Singleton<PauseMenuManager>
 {
+    public bool isVisible;
+
     [Header("Parents")]
     public GameObject pauseMenu_Parent;
 
@@ -115,11 +117,18 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         EventSystem.current.SetSelectedGameObject(pauseMenu_StartButton);
 
         pauseMenu_Parent.SetActive(true);
+        StartCoroutine(CheckPauseMenu());
     }
 
     public void ClosePauseMenu()
     {
         pauseMenu_Parent.SetActive(false);
+        isVisible = false;
+    }
+    IEnumerator CheckPauseMenu()
+    {
+        yield return null /*new WaitForSeconds(0.02f)*/;
+        isVisible = true;
     }
 
 

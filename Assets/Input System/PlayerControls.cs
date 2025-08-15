@@ -971,6 +971,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""OptionsMenuShift_Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6335c1c6-618a-48bb-b067-139434bdf8c5"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu_Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
