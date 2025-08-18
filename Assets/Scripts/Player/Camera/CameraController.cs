@@ -438,7 +438,7 @@ public class CameraController : Singleton<CameraController>
         else if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Cannot)
         {
             cinemachineBrain.m_DefaultBlend.m_Time = 0;
-            yield return new WaitForSeconds(0 + 0.15f);
+            yield return new WaitForSeconds(0 + 0.35f);
         }
     }
     public IEnumerator StartVirtualCameraBlend_Out()
