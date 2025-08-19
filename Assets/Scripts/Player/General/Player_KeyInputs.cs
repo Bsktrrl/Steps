@@ -173,6 +173,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     void OnAbilityLeft()
     {
         if (!ButtonChecks_Other()) { return; }
+        if (Movement.Instance.movementStates == MovementStates.Falling) { return; }
 
         Player_CeilingGrab.Instance.CeilingGrab();
 

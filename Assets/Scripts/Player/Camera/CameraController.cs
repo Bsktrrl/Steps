@@ -34,11 +34,11 @@ public class CameraController : Singleton<CameraController>
     [Header("Positions")]
     [SerializeField] Vector3 cameraAnchor_originalPos;
     [SerializeField] Quaternion cameraAnchor_originalRot;
-    public Vector3 cameraOffset_originalPos /*= new Vector3(0, 2.5f, -4.2f)*/;
+    [HideInInspector] public Vector3 cameraOffset_originalPos /*= new Vector3(0, 2.5f, -4.2f)*/;
     [SerializeField] Quaternion cameraOffset_originalRot;
     float cameraTilt_Ceiling = -17;
 
-    Vector3 cameraOffset_ceilingGrabPos = new Vector3(0, -1f, -4.2f);
+    [HideInInspector] public Vector3 cameraOffset_ceilingGrabPos = new Vector3(0, -1f, -4.2f);
     float cameraTilt_Original;
 
     [Header("NPC Camera")]
