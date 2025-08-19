@@ -592,6 +592,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7774417135674195314}
+  - component: {fileID: 5753920500617516749}
   m_Layer: 6
   m_Name: Camera Anchor
   m_TagString: Untagged
@@ -615,6 +616,19 @@ Transform:
   - {fileID: 3257421078337541638}
   m_Father: {fileID: 4582358638357268239}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5753920500617516749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688149418265335786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b710a5dfac4c82147a16615c76bda4db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraOffset: {fileID: 2170447121049632369}
 --- !u!1 &732412661399238678
 GameObject:
   m_ObjectHideFlags: 0
@@ -2169,7 +2183,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1817304182065838073}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.0000000037252896, z: -9.3132246e-10, w: 1}
+  m_LocalRotation: {x: -0, y: 0.0000000037252692, z: -9.313175e-10, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -6251,8 +6265,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6058242050083391972}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.0000000037253187, z: -9.313292e-10, w: 1}
-  m_LocalPosition: {x: 0, y: 5.2477183, z: -2.908858}
+  m_LocalRotation: {x: -0, y: 0.0000000037252692, z: -9.313175e-10, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -6290,7 +6304,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 1
+  near clip plane: 0.3
   far clip plane: 1000
   field of view: 58
   orthographic: 0
