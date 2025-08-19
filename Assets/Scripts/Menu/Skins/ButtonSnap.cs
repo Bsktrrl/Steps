@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 
 public class ButtonSnap : MonoBehaviour
 {
+    [SerializeField] bool isWardrobe;
     [SerializeField] bool isHeaderSnap;
 
     [SerializeField] bool isSelected;
@@ -33,13 +34,19 @@ public class ButtonSnap : MonoBehaviour
             {
                 isSelected = true;
 
-                if (isHeaderSnap)
+                if (isWardrobe)
                 {
-                    SkinShopManager.Instance.UpdateSnapHeader(current);
+                    if (isHeaderSnap)
+                        SkinWardrobeManager.Instance.UpdateSnapHeader(current);
+                    else
+                        SkinWardrobeManager.Instance.UpdateSnapBack(current);
                 }
                 else
                 {
-                    SkinShopManager.Instance.UpdateSnapBack(current);
+                    if (isHeaderSnap)
+                        SkinShopManager.Instance.UpdateSnapHeader(current);
+                    else
+                        SkinShopManager.Instance.UpdateSnapBack(current);
                 }
             }
             else

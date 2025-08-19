@@ -83,8 +83,6 @@ public class SettingsManager : Singleton<SettingsManager>
         ChangeTextSpeedImage();
         ChangeStepDisplayImage();
         ChangeCameraMotionImage();
-
-        print("10. CurrentStepsDisplay: " + settingsData.currentStepDisplay);
     }
     public void SaveData()
     {

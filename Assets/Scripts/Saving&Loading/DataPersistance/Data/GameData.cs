@@ -27,7 +27,7 @@ public class GameData
     /*[HideInInspector]*/ public CharatersData charatersData_Save = new CharatersData();
 
     //Block Skins
-    /*[HideInInspector]*/ public SkinsShopInfo skinsInfo_Save = new SkinsShopInfo();
+    /*[HideInInspector]*/ public SkinInfo skinsInfo_Save = new SkinInfo();
 
 
     //--------------------
@@ -42,6 +42,6 @@ public class GameData
         mapInfo_SaveList = new Map_SaveInfoList();
         overWorldStates_SaveList = new OverWorldStates();
         charatersData_Save = new CharatersData();
-        skinsInfo_Save = new SkinsShopInfo();
+        skinsInfo_Save = new SkinInfo();
     }
 }

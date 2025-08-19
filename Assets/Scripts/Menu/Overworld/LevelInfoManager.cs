@@ -362,3 +362,15 @@ public enum SkinType
     Industria_Casingl_Brass,
     Industrial_Casing_Gold,
 }
+
+public enum HatType
+{
+    None,
+
+    Floriel_Hat,
+    Granith_Hat,
+    Archie_Hat,
+    Aisa_Hat,
+    Mossy_Hat,
+    Larry_Hat
+}

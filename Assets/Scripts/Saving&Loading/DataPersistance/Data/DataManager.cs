@@ -43,7 +43,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     /*[HideInInspector]*/ public CharatersData charatersData_Store = new CharatersData();
 
     //Block Skins
-    /*[HideInInspector]*/ public SkinsShopInfo skinsInfo_Store = new SkinsShopInfo();
+    /*[HideInInspector]*/ public SkinInfo skinsInfo_Store = new SkinInfo();
     #endregion
 
 
