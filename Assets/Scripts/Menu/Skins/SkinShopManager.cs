@@ -206,82 +206,82 @@ public class SkinShopManager : Singleton<SkinShopManager>
     {
         int essenceUsedCounter = 0;
 
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region1_level1.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region1_level1.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region1_level2.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region1_level2.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region1_level3.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region1_level3.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region1_level4.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region1_level4.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region1_level5.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region1_level5.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region1_level6.skin_isBought)
-            essenceUsedCounter += 10;
-
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region2_level1.skin_isBought)
-            essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region2_level2.skin_isBought)
-            essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region2_level3.skin_isBought)
-            essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region2_level4.skin_isBought)
-            essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region2_level5.skin_isBought)
-            essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region2_level6.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region1_level6.skin_isBought)
             essenceUsedCounter += 10;
 
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region3_level1.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region2_level1.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region3_level2.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region2_level2.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region3_level3.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region2_level3.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region3_level4.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region2_level4.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region3_level5.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region2_level5.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region3_level6.skin_isBought)
-            essenceUsedCounter += 10;
-
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region4_level1.skin_isBought)
-            essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region4_level2.skin_isBought)
-            essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region4_level3.skin_isBought)
-            essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region4_level4.skin_isBought)
-            essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region4_level5.skin_isBought)
-            essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region4_level6.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region2_level6.skin_isBought)
             essenceUsedCounter += 10;
 
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region5_level1.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region3_level1.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region5_level2.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region3_level2.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region5_level3.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region3_level3.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region5_level4.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region3_level4.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region5_level5.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region3_level5.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region2_level6.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region3_level6.skin_isBought)
             essenceUsedCounter += 10;
 
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region6_level1.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region4_level1.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region6_level2.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region4_level2.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region6_level3.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region4_level3.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region6_level4.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region4_level4.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region6_level5.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region4_level5.skin_isBought)
             essenceUsedCounter += 10;
-        if (SkinsManager.Instance.skinInfo.skinShopInfo.skin_Region6_level6.skin_isBought)
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region4_level6.skin_isBought)
+            essenceUsedCounter += 10;
+
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region5_level1.skin_isBought)
+            essenceUsedCounter += 10;
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region5_level2.skin_isBought)
+            essenceUsedCounter += 10;
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region5_level3.skin_isBought)
+            essenceUsedCounter += 10;
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region5_level4.skin_isBought)
+            essenceUsedCounter += 10;
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region5_level5.skin_isBought)
+            essenceUsedCounter += 10;
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region2_level6.skin_isBought)
+            essenceUsedCounter += 10;
+
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region6_level1.skin_isBought)
+            essenceUsedCounter += 10;
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region6_level2.skin_isBought)
+            essenceUsedCounter += 10;
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region6_level3.skin_isBought)
+            essenceUsedCounter += 10;
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region6_level4.skin_isBought)
+            essenceUsedCounter += 10;
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region6_level5.skin_isBought)
+            essenceUsedCounter += 10;
+        if (DataManager.Instance.skinsInfo_Store.skinShopInfo.skin_Region6_level6.skin_isBought)
             essenceUsedCounter += 10;
 
         return essenceUsedCounter;

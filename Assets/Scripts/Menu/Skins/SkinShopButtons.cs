@@ -526,10 +526,8 @@ public class SkinShopButtons : MonoBehaviour
             UpdateIfUnlocked(true);
             UpdateIfInactive(false);
 
-            PlayerStats.Instance.stats.itemsGot.essence -= SkinShopManager.Instance.GetSkinCost();
-            SaveLoad_PlayerStats.Instance.SaveData();
-
             SkinWardrobeManager.Instance.UpdateButtonStates();
+            SkinShopManager.Instance.SetSkinCostDisplay();
 
             //SkinShopManager.Instance.ChangeSkinCost();
 

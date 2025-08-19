@@ -29,12 +29,38 @@ public class SkinWardrobeButton : MonoBehaviour
     private void OnEnable()
     {
         UpdateButtonDisplay();
+        IfDefaultSkinButton();
 
         Action_SelectThisSkin += UpdateButton;
+        //DataManager.Action_dataHasLoaded += IfDefaultSkinButton;
+
     }
     private void OnDisable()
     {
         Action_SelectThisSkin -= UpdateButton;
+        //DataManager.Action_dataHasLoaded -= IfDefaultSkinButton;
+    }
+
+
+    //--------------------
+
+
+    public void IfDefaultSkinButton()
+    {
+        if (skinType == SkinType.Default && region <= 0 && level <= 0)
+        {
+            isInactive = false;
+            isBought = true;
+
+            if (DataManager.Instance.skinsInfo_Store.activeSkinType == SkinType.None)
+            {
+                WardrobeButton_isPressed();
+            }
+            else
+            {
+                isSelected = false;
+            }
+        }
     }
 
 
@@ -43,7 +69,7 @@ public class SkinWardrobeButton : MonoBehaviour
 
     public void WardrobeButton_isPressed()
     {
-        if (isBought)
+        if (isBought && !isSelected)
         {
             SkinsManager.Instance.skinInfo.activeSkinType = skinType;
             SkinsManager.Instance.SaveData();
@@ -231,6 +257,7 @@ public class SkinWardrobeButton : MonoBehaviour
                 break;
 
             default:
+                CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default);
                 break;
         }
 

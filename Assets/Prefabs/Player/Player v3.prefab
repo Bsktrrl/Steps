@@ -592,6 +592,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7774417135674195314}
+  - component: {fileID: 7065438075576114609}
   m_Layer: 6
   m_Name: Camera Anchor
   m_TagString: Untagged
@@ -615,6 +616,20 @@ Transform:
   - {fileID: 3257421078337541638}
   m_Father: {fileID: 4582358638357268239}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7065438075576114609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688149418265335786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb4eb32786e25914ea9720d923177443, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraController: {fileID: 7093594499568869462}
+  cameraOffset: {fileID: 2170447121049632369}
 --- !u!1 &732412661399238678
 GameObject:
   m_ObjectHideFlags: 0
@@ -2201,7 +2216,7 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 58
     OrthographicSize: 5
-    NearClipPlane: 0.3
+    NearClipPlane: 0.05
     FarClipPlane: 1000
     Dutch: 0
     ModeOverride: 0
@@ -4155,7 +4170,7 @@ MonoBehaviour:
         endingValue: 0
         dialogueStatList: []
     skinsInfo_Save:
-      selectedSkinType: 0
+      activeSkinType: 0
       skinWardrobeInfo:
         skin_Region1_level1:
           skin_Type: 0
@@ -4366,6 +4381,11 @@ MonoBehaviour:
           hat_Type: 0
           skin_isInactive: 0
           skin_isAquired: 0
+          skin_isSelected: 0
+        skin_Default:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
           skin_isSelected: 0
       skinShopInfo:
         currentSkinCost: 0
@@ -6866,7 +6886,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.05
   far clip plane: 1000
   field of view: 58
   orthographic: 0
@@ -9189,7 +9209,7 @@ MonoBehaviour:
   SkinWardrobeCostManager: {fileID: 1984782045583402969}
   SkinShopCostManager: {fileID: 3104766431475249480}
   skinInfo:
-    selectedSkinType: 0
+    activeSkinType: 0
     skinWardrobeInfo:
       skin_Region1_level1:
         skin_Type: 0
@@ -9400,6 +9420,11 @@ MonoBehaviour:
         hat_Type: 0
         skin_isInactive: 0
         skin_isAquired: 0
+        skin_isSelected: 0
+      skin_Default:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
         skin_isSelected: 0
     skinShopInfo:
       currentSkinCost: 0
@@ -10036,7 +10061,7 @@ MonoBehaviour:
         endingValue: 0
         dialogueStatList: []
     skinsInfo_Save:
-      selectedSkinType: 0
+      activeSkinType: 0
       skinWardrobeInfo:
         skin_Region1_level1:
           skin_Type: 0
@@ -10247,6 +10272,11 @@ MonoBehaviour:
           hat_Type: 0
           skin_isInactive: 0
           skin_isAquired: 0
+          skin_isSelected: 0
+        skin_Default:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
           skin_isSelected: 0
       skinShopInfo:
         currentSkinCost: 0
@@ -10539,7 +10569,7 @@ MonoBehaviour:
       endingValue: 0
       dialogueStatList: []
   skinsInfo_Store:
-    selectedSkinType: 0
+    activeSkinType: 0
     skinWardrobeInfo:
       skin_Region1_level1:
         skin_Type: 0
@@ -10750,6 +10780,11 @@ MonoBehaviour:
         hat_Type: 0
         skin_isInactive: 0
         skin_isAquired: 0
+        skin_isSelected: 0
+      skin_Default:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
         skin_isSelected: 0
     skinShopInfo:
       currentSkinCost: 0

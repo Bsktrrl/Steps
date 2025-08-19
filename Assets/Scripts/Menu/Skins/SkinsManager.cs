@@ -17,6 +17,11 @@ public class SkinsManager : Singleton<SkinsManager>
     //--------------------
 
 
+    private void Start()
+    {
+        
+    }
+
     private void OnEnable()
     {
         DataPersistanceManager.Action_NewGame += ClearSkinsWardrobeInfo;

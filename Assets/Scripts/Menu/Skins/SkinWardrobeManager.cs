@@ -17,8 +17,8 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     public GameObject headerButtonSnap_Wardrobe;
     public GameObject backButtonSnap_Wardrobe;
 
-    #region Shop Buttons
-    [Header("Shop - Buttons")]
+    #region ¨Wardrobe Buttons
+    [Header("Wardrobe - Buttons")]
     public GameObject skinWardrobeButton_Region1_Level1;
     public GameObject skinWardrobeButton_Region1_Level2;
     public GameObject skinWardrobeButton_Region1_Level3;
@@ -68,7 +68,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     private void Start()
     {
-        DataManager.Instance.playerStats_Store.itemsGot.essence = 12; //Remove this
+        DataManager.Instance.playerStats_Store.itemsGot.essence = 12; //Remove this after testing of Skin Menu
     }
     private void OnEnable()
     {
@@ -233,6 +233,9 @@ public class SkinsWardrobeInfo
     public SkinWardrobeObject skin_Region6_level6;
 
     public SkinHatObject skin_Region6_Hat;
+
+    [Header("Default")]
+    public SkinWardrobeObject skin_Default;
 }
 
 [Serializable]

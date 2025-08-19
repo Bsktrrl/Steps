@@ -3,12 +3,17 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 
+1. When the player is falling and landing on a EffectBlock, trigger the EffectBlockk effect
+ - Somethines the PlayerObject is set to "BlockStandingOn", which is strange
+
 
 2.
 Skin Menu:
 __________________
 
 2.2. Wardrobe Menu
+- Make DefaultSkin fintionality (make it so that it always are selected (and changed colors) if no other Skin is selected
+	- Can be done right after "dataShasSpawned", directly set into DataManager, if DataManager doesn't have any selectedSkins
 - Make Equip functionality, so that the player can equip unlocked Skins
 - Display the Equip changes on a 3D character model
 	- Make functionalty for all Skins to be equipped
