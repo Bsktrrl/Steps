@@ -99,8 +99,6 @@ public class MapManager : Singleton<MapManager>
     }
     void InputLevelNameDisplay()
     {
-        print("2. SaveNameDisplay");
-
         mapInfo_ToSave.mapNameDisplay.mapNameDisplay_norwegian = DataManager.Instance.mapNameDisplay_Store.mapNameDisplay_norwegian;
         mapInfo_ToSave.mapNameDisplay.mapNameDisplay_english = DataManager.Instance.mapNameDisplay_Store.mapNameDisplay_english;
         mapInfo_ToSave.mapNameDisplay.mapNameDisplay_german = DataManager.Instance.mapNameDisplay_Store.mapNameDisplay_german;

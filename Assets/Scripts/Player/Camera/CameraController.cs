@@ -34,12 +34,15 @@ public class CameraController : Singleton<CameraController>
     [Header("Positions")]
     [SerializeField] Vector3 cameraAnchor_originalPos;
     [SerializeField] Quaternion cameraAnchor_originalRot;
-    [SerializeField] Vector3 cameraOffset_originalPos /*= new Vector3(0, 2.5f, -4.2f)*/;
+    [HideInInspector] public Vector3 cameraOffset_originalPos /*= new Vector3(0, 2.5f, -4.2f)*/;
     [SerializeField] Quaternion cameraOffset_originalRot;
     float cameraTilt_Ceiling = -17;
 
-    Vector3 cameraOffset_ceilingGrabPos = new Vector3(0, -1f, -4.2f);
+    [HideInInspector] public Vector3 cameraOffset_ceilingGrabPos = new Vector3(0, -1f, -4.2f);
     float cameraTilt_Original;
+
+    [Header("NPC Camera")]
+    float npcMovementTimer = 0.85f;
 
 
     //--------------------
@@ -139,17 +142,20 @@ public class CameraController : Singleton<CameraController>
         // Calculate the target rotation
         Quaternion endRotation = startRotation * Quaternion.Euler(0, angle, 0);
 
-        float elapsed = 0f;
-
-        // Smoothly interpolate the rotation
-        while (elapsed < rotationDuration_Movement)
+        if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Can)
         {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / rotationDuration_Movement); // Normalize the time
-            cameraAnchor.transform.rotation = Quaternion.Lerp(startRotation, endRotation, t);
-            yield return null; // Wait for the next frame
-        }
+            float elapsed = 0f;
 
+            // Smoothly interpolate the rotation
+            while (elapsed < rotationDuration_Movement)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / rotationDuration_Movement); // Normalize the time
+                cameraAnchor.transform.rotation = Quaternion.Lerp(startRotation, endRotation, t);
+                yield return null; // Wait for the next frame
+            }
+        }
+        
         // Ensure the final rotation is set exactly
         cameraAnchor.transform.rotation = endRotation;
 
@@ -194,16 +200,19 @@ public class CameraController : Singleton<CameraController>
             endRotation = Quaternion.Euler(cameraTilt_Ceiling, angle, 0);
         }
 
-        float elapsed = 0f;
-
-        // Smoothly interpolate the rotation
-        while (elapsed < rotationDuration_Ceiling)
+        if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Can)
         {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / rotationDuration_Ceiling); // Normalize the time
-            cameraOffset.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
-            cameraOffset.transform.rotation = Quaternion.Lerp(startRotation, endRotation, t);
-            yield return null; // Wait for the next frame
+            float elapsed = 0f;
+
+            // Smoothly interpolate the rotation
+            while (elapsed < rotationDuration_Ceiling)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / rotationDuration_Ceiling); // Normalize the time
+                cameraOffset.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
+                cameraOffset.transform.rotation = Quaternion.Lerp(startRotation, endRotation, t);
+                yield return null; // Wait for the next frame
+            }
         }
 
         // Ensure the final rotation is set exactly
@@ -421,7 +430,16 @@ public class CameraController : Singleton<CameraController>
             focusVirtualCamera.Priority = 10;
         }
 
-        yield return new WaitForSeconds(cinemachineBrain.m_DefaultBlend.m_Time + 0.15f);
+        if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Can)
+        {
+            cinemachineBrain.m_DefaultBlend.m_Time = npcMovementTimer;
+            yield return new WaitForSeconds(cinemachineBrain.m_DefaultBlend.m_Time + 0.15f);
+        }
+        else if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Cannot)
+        {
+            cinemachineBrain.m_DefaultBlend.m_Time = 0;
+            yield return new WaitForSeconds(0 + 0.35f);
+        }
     }
     public IEnumerator StartVirtualCameraBlend_Out()
     {
@@ -435,6 +453,15 @@ public class CameraController : Singleton<CameraController>
         }
 
         yield return null;
+
+        if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Can)
+        {
+            cinemachineBrain.m_DefaultBlend.m_Time = npcMovementTimer;
+        }
+        else if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Cannot)
+        {
+            cinemachineBrain.m_DefaultBlend.m_Time = 0;
+        }
 
         yield return new WaitUntil(() => cinemachineBrain.IsBlending == false);
     }

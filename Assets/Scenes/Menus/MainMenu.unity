@@ -10731,6 +10731,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 824904376}
   m_CullTransparentMesh: 1
+--- !u!114 &825122929 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
+  m_PrefabInstance: {fileID: 8879586367851771026}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82a37106db15d1345a59e05c42fd77af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &845459892
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12299,189 +12310,408 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5daeb168fb51eb946a8cfc412acb7190, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SkinWardrobeCostManager: {fileID: 9153252302186933389}
   SkinShopCostManager: {fileID: 9153252302186933388}
-  skinShopInfo:
-    currentSkinCost: 0
-    skin_Region1_level1:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region1_level2:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region1_level3:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region1_level4:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region1_level5:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region1_level6:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region2_level1:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region2_level2:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region2_level3:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region2_level4:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region2_level5:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region2_level6:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region3_level1:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region3_level2:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region3_level3:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region3_level4:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region3_level5:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region3_level6:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region4_level1:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region4_level2:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region4_level3:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region4_level4:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region4_level5:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region4_level6:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region5_level1:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region5_level2:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region5_level3:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region5_level4:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region5_level5:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region5_level6:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region6_level1:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region6_level2:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region6_level3:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region6_level4:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region6_level5:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region6_level6:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
+  skinInfo:
+    activeSkinType: 0
+    skinWardrobeInfo:
+      skin_Region1_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region1_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region1_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region1_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region1_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region1_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region1_Hat:
+        hat_Type: 0
+        skin_isInactive: 0
+        skin_isAquired: 0
+        skin_isSelected: 0
+      skin_Region2_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region2_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region2_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region2_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region2_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region2_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region2_Hat:
+        hat_Type: 0
+        skin_isInactive: 0
+        skin_isAquired: 0
+        skin_isSelected: 0
+      skin_Region3_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region3_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region3_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region3_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region3_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region3_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region3_Hat:
+        hat_Type: 0
+        skin_isInactive: 0
+        skin_isAquired: 0
+        skin_isSelected: 0
+      skin_Region4_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region4_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region4_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region4_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region4_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region4_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region4_Hat:
+        hat_Type: 0
+        skin_isInactive: 0
+        skin_isAquired: 0
+        skin_isSelected: 0
+      skin_Region5_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region5_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region5_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region5_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region5_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region5_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region5_Hat:
+        hat_Type: 0
+        skin_isInactive: 0
+        skin_isAquired: 0
+        skin_isSelected: 0
+      skin_Region6_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region6_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region6_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region6_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region6_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region6_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region6_Hat:
+        hat_Type: 0
+        skin_isInactive: 0
+        skin_isAquired: 0
+        skin_isSelected: 0
+      skin_Default:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+    skinShopInfo:
+      currentSkinCost: 0
+      skin_Region1_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region1_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region1_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region1_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region1_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region1_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region2_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region2_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region2_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region2_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region2_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region2_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region3_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region3_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region3_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region3_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region3_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region3_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region4_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region4_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region4_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region4_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region4_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region4_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region5_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region5_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region5_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region5_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region5_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region5_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region6_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region6_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region6_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region6_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region6_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region6_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
 --- !u!1 &947387522
 GameObject:
   m_ObjectHideFlags: 0
@@ -15924,6 +16154,8 @@ MonoBehaviour:
     settingData_SaveList:
       currentLanguage: 0
       currentTextSpeed: 0
+      currentStepDisplay: 0
+      currentCameraMotion: 0
     mapNameDisplay_Save:
       mapNameDisplay_norwegian: 
       mapNameDisplay_english: 
@@ -15940,7 +16172,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       granith_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -15949,7 +16181,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       archie_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -15958,7 +16190,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       aisa_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -15967,7 +16199,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       mossy_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -15976,7 +16208,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       larry_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -15985,7 +16217,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       stepellier_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -15994,189 +16226,407 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
     skinsInfo_Save:
-      currentSkinCost: 0
-      skin_Region1_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region1_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region1_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region1_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region1_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region1_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region2_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region2_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region2_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region2_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region2_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region2_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region3_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region3_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region3_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region3_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region3_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region3_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region4_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region4_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region4_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region4_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region4_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region4_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region5_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region5_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region5_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region5_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region5_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region5_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region6_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region6_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region6_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region6_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region6_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region6_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
+      activeSkinType: 0
+      skinWardrobeInfo:
+        skin_Region1_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region1_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region1_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region1_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region1_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region1_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region1_Hat:
+          hat_Type: 0
+          skin_isInactive: 0
+          skin_isAquired: 0
+          skin_isSelected: 0
+        skin_Region2_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region2_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region2_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region2_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region2_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region2_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region2_Hat:
+          hat_Type: 0
+          skin_isInactive: 0
+          skin_isAquired: 0
+          skin_isSelected: 0
+        skin_Region3_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region3_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region3_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region3_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region3_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region3_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region3_Hat:
+          hat_Type: 0
+          skin_isInactive: 0
+          skin_isAquired: 0
+          skin_isSelected: 0
+        skin_Region4_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region4_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region4_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region4_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region4_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region4_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region4_Hat:
+          hat_Type: 0
+          skin_isInactive: 0
+          skin_isAquired: 0
+          skin_isSelected: 0
+        skin_Region5_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region5_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region5_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region5_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region5_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region5_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region5_Hat:
+          hat_Type: 0
+          skin_isInactive: 0
+          skin_isAquired: 0
+          skin_isSelected: 0
+        skin_Region6_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region6_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region6_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region6_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region6_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region6_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region6_Hat:
+          hat_Type: 0
+          skin_isInactive: 0
+          skin_isAquired: 0
+          skin_isSelected: 0
+        skin_Default:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+      skinShopInfo:
+        currentSkinCost: 0
+        skin_Region1_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region1_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region1_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region1_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region1_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region1_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region2_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region2_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region2_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region2_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region2_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region2_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region3_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region3_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region3_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region3_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region3_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region3_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region4_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region4_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region4_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region4_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region4_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region4_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region5_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region5_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region5_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region5_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region5_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region5_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region6_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region6_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region6_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region6_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region6_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region6_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
 --- !u!1 &1239079617
 GameObject:
   m_ObjectHideFlags: 0
@@ -20985,6 +21435,8 @@ MonoBehaviour:
     settingData_SaveList:
       currentLanguage: 0
       currentTextSpeed: 0
+      currentStepDisplay: 0
+      currentCameraMotion: 0
     mapNameDisplay_Save:
       mapNameDisplay_norwegian: 
       mapNameDisplay_english: 
@@ -21001,7 +21453,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       granith_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -21010,7 +21462,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       archie_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -21019,7 +21471,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       aisa_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -21028,7 +21480,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       mossy_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -21037,7 +21489,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       larry_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -21046,7 +21498,7 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
       stepellier_Data:
         level_1_DialogueFinished: 0
         level_2_DialogueFinished: 0
@@ -21055,189 +21507,407 @@ MonoBehaviour:
         level_5_DialogueFinished: 0
         level_6_DialogueFinished: 0
         endingValue: 0
-        dialogueStartStatList: []
+        dialogueStatList: []
     skinsInfo_Save:
-      currentSkinCost: 0
-      skin_Region1_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region1_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region1_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region1_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region1_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region1_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region2_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region2_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region2_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region2_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region2_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region2_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region3_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region3_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region3_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region3_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region3_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region3_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region4_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region4_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region4_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region4_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region4_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region4_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region5_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region5_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region5_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region5_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region5_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region5_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region6_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region6_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region6_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region6_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region6_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
-      skin_Region6_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isUnlocked: 0
+      activeSkinType: 0
+      skinWardrobeInfo:
+        skin_Region1_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region1_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region1_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region1_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region1_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region1_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region1_Hat:
+          hat_Type: 0
+          skin_isInactive: 0
+          skin_isAquired: 0
+          skin_isSelected: 0
+        skin_Region2_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region2_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region2_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region2_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region2_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region2_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region2_Hat:
+          hat_Type: 0
+          skin_isInactive: 0
+          skin_isAquired: 0
+          skin_isSelected: 0
+        skin_Region3_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region3_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region3_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region3_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region3_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region3_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region3_Hat:
+          hat_Type: 0
+          skin_isInactive: 0
+          skin_isAquired: 0
+          skin_isSelected: 0
+        skin_Region4_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region4_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region4_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region4_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region4_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region4_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region4_Hat:
+          hat_Type: 0
+          skin_isInactive: 0
+          skin_isAquired: 0
+          skin_isSelected: 0
+        skin_Region5_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region5_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region5_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region5_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region5_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region5_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region5_Hat:
+          hat_Type: 0
+          skin_isInactive: 0
+          skin_isAquired: 0
+          skin_isSelected: 0
+        skin_Region6_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region6_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region6_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region6_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region6_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region6_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+        skin_Region6_Hat:
+          hat_Type: 0
+          skin_isInactive: 0
+          skin_isAquired: 0
+          skin_isSelected: 0
+        skin_Default:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isBought: 0
+          skin_isSelected: 0
+      skinShopInfo:
+        currentSkinCost: 0
+        skin_Region1_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region1_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region1_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region1_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region1_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region1_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region2_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region2_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region2_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region2_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region2_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region2_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region3_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region3_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region3_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region3_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region3_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region3_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region4_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region4_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region4_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region4_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region4_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region4_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region5_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region5_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region5_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region5_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region5_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region5_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region6_level1:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region6_level2:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region6_level3:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region6_level4:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region6_level5:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
+        skin_Region6_level6:
+          skin_Type: 0
+          skin_isInactive: 0
+          skin_isAvailable: 0
+          skin_isBought: 0
   menuState_Store: 0
   playerStats_Store:
     steps_Max: 0
@@ -21273,6 +21943,8 @@ MonoBehaviour:
   settingData_StoreList:
     currentLanguage: 0
     currentTextSpeed: 0
+    currentStepDisplay: 0
+    currentCameraMotion: 0
   mapNameDisplay_Store:
     mapNameDisplay_norwegian: 
     mapNameDisplay_english: 
@@ -21289,7 +21961,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
     granith_Data:
       level_1_DialogueFinished: 0
       level_2_DialogueFinished: 0
@@ -21298,7 +21970,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
     archie_Data:
       level_1_DialogueFinished: 0
       level_2_DialogueFinished: 0
@@ -21307,7 +21979,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
     aisa_Data:
       level_1_DialogueFinished: 0
       level_2_DialogueFinished: 0
@@ -21316,7 +21988,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
     mossy_Data:
       level_1_DialogueFinished: 0
       level_2_DialogueFinished: 0
@@ -21325,7 +21997,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
     larry_Data:
       level_1_DialogueFinished: 0
       level_2_DialogueFinished: 0
@@ -21334,7 +22006,7 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
     stepellier_Data:
       level_1_DialogueFinished: 0
       level_2_DialogueFinished: 0
@@ -21343,189 +22015,407 @@ MonoBehaviour:
       level_5_DialogueFinished: 0
       level_6_DialogueFinished: 0
       endingValue: 0
-      dialogueStartStatList: []
+      dialogueStatList: []
   skinsInfo_Store:
-    currentSkinCost: 0
-    skin_Region1_level1:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region1_level2:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region1_level3:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region1_level4:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region1_level5:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region1_level6:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region2_level1:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region2_level2:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region2_level3:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region2_level4:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region2_level5:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region2_level6:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region3_level1:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region3_level2:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region3_level3:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region3_level4:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region3_level5:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region3_level6:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region4_level1:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region4_level2:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region4_level3:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region4_level4:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region4_level5:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region4_level6:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region5_level1:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region5_level2:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region5_level3:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region5_level4:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region5_level5:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region5_level6:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region6_level1:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region6_level2:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region6_level3:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region6_level4:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region6_level5:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
-    skin_Region6_level6:
-      skin_Type: 0
-      skin_isInactive: 0
-      skin_isAquired: 0
-      skin_isUnlocked: 0
+    activeSkinType: 0
+    skinWardrobeInfo:
+      skin_Region1_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region1_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region1_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region1_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region1_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region1_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region1_Hat:
+        hat_Type: 0
+        skin_isInactive: 0
+        skin_isAquired: 0
+        skin_isSelected: 0
+      skin_Region2_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region2_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region2_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region2_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region2_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region2_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region2_Hat:
+        hat_Type: 0
+        skin_isInactive: 0
+        skin_isAquired: 0
+        skin_isSelected: 0
+      skin_Region3_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region3_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region3_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region3_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region3_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region3_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region3_Hat:
+        hat_Type: 0
+        skin_isInactive: 0
+        skin_isAquired: 0
+        skin_isSelected: 0
+      skin_Region4_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region4_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region4_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region4_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region4_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region4_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region4_Hat:
+        hat_Type: 0
+        skin_isInactive: 0
+        skin_isAquired: 0
+        skin_isSelected: 0
+      skin_Region5_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region5_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region5_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region5_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region5_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region5_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region5_Hat:
+        hat_Type: 0
+        skin_isInactive: 0
+        skin_isAquired: 0
+        skin_isSelected: 0
+      skin_Region6_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region6_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region6_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region6_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region6_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region6_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+      skin_Region6_Hat:
+        hat_Type: 0
+        skin_isInactive: 0
+        skin_isAquired: 0
+        skin_isSelected: 0
+      skin_Default:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isBought: 0
+        skin_isSelected: 0
+    skinShopInfo:
+      currentSkinCost: 0
+      skin_Region1_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region1_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region1_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region1_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region1_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region1_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region2_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region2_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region2_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region2_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region2_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region2_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region3_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region3_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region3_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region3_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region3_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region3_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region4_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region4_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region4_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region4_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region4_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region4_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region5_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region5_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region5_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region5_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region5_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region5_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region6_level1:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region6_level2:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region6_level3:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region6_level4:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region6_level5:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
+      skin_Region6_level6:
+        skin_Type: 0
+        skin_isInactive: 0
+        skin_isAvailable: 0
+        skin_isBought: 0
 --- !u!1001 &1659561593
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24664,6 +25554,22 @@ PrefabInstance:
       propertyPath: menuState_ToSelect
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 770630633956899988, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 825122929}
+    - target: {fileID: 770630633956899988, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: TextSpeed_RightButton_isPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 770630633956899988, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1004174585275289184, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_Name
+      value: StepDisplayDisplay
+      objectReference: {fileID: 0}
     - target: {fileID: 1139326712491322448, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: menuToOpen
       value: 
@@ -24696,10 +25602,26 @@ PrefabInstance:
       propertyPath: menuState_ToSelect
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 1562597540936556725, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 825122929}
+    - target: {fileID: 1562597540936556725, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Flag_LeftButton_isPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 1562597540936556725, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 1928199196944453939, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: uiElementToSelect
       value: 
       objectReference: {fileID: 458182682}
+    - target: {fileID: 2023039433741570725, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2901604778495348986, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: menuToOpen
       value: 
@@ -24708,6 +25630,18 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 458182682}
+    - target: {fileID: 4417964384219337455, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 825122929}
+    - target: {fileID: 4417964384219337455, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StepDisplay_RightButton_isPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 4417964384219337455, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 4559884711643641471, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: newMenuState
       value: 1
@@ -24768,6 +25702,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5154570780470796057, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5200844468863483803, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: menuToOpen
       value: 
@@ -24779,6 +25717,18 @@ PrefabInstance:
     - target: {fileID: 5200844468863483803, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: menuState_ToSelect
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5233207516069695234, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 825122929}
+    - target: {fileID: 5233207516069695234, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CameraMotion_RightButton_isPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 5233207516069695234, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5272100099813316952, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: m_Pivot.x
@@ -24932,6 +25882,18 @@ PrefabInstance:
       propertyPath: menuState_ToSelect
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 6100998525155564951, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 825122929}
+    - target: {fileID: 6100998525155564951, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: TextSpeed_LeftButton_isPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 6100998525155564951, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 6141561954427865364, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: menuToOpen
       value: 
@@ -24975,6 +25937,18 @@ PrefabInstance:
     - target: {fileID: 7210545730888527298, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: menuState_ToSelect
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7220420651183832480, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 825122929}
+    - target: {fileID: 7220420651183832480, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StepDisplay_LeftButton_isPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 7220420651183832480, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7734367268448559020, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: menuToOpen
@@ -25028,6 +26002,22 @@ PrefabInstance:
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
       objectReference: {fileID: 282986153}
+    - target: {fileID: 8153318862208844692, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 825122929}
+    - target: {fileID: 8153318862208844692, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CameraMotion_LeftButton_isPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 8153318862208844692, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8269950783573708917, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_Name
+      value: CameraMotionDisplay
+      objectReference: {fileID: 0}
     - target: {fileID: 8307827176317077512, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: menuToOpen
       value: 
@@ -25072,6 +26062,18 @@ PrefabInstance:
       propertyPath: menuState_ToSelect
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 8831691241707790958, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 825122929}
+    - target: {fileID: 8831691241707790958, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Flag_RightButton_isPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 8831691241707790958, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 9159109744464187720, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -25113,6 +26115,28 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 708f515159424df4292f33b367a505ee, type: 3}
+--- !u!114 &1981793568 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5634985626845254525, guid: 708f515159424df4292f33b367a505ee, type: 3}
+  m_PrefabInstance: {fileID: 1981793567}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1981793569 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1290160377537328205, guid: 708f515159424df4292f33b367a505ee, type: 3}
+  m_PrefabInstance: {fileID: 1981793567}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1997952019 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 384179937895888748, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
@@ -27873,10 +28897,182 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1977871663}
     m_Modifications:
+    - target: {fileID: 37650361895554988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 37650361895554988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 37650361895554988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 52274140110630576, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 52274140110630576, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 52274140110630576, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 89332594947720009, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 89332594947720009, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 89332594947720009, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 187640058146238907, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 187640058146238907, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 187640058146238907, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 187640058146238907, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 187640058146238907, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 187640058146238907, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 213599233825979959, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: uiElementToSelect
       value: 
       objectReference: {fileID: 713555122}
+    - target: {fileID: 231442822980700583, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 231442822980700583, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 378311624922525231, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 378311624922525231, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 378311624922525231, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 409132791860220521, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 409132791860220521, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 409132791860220521, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 409132791860220521, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 409132791860220521, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 409132791860220521, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 431643962651697007, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 431643962651697007, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 431643962651697007, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 493590487636141107, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 493590487636141107, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 536917526211712568, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 536917526211712568, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 536917526211712568, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 536917526211712568, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 536917526211712568, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 536917526211712568, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 638011093214150382, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 638011093214150382, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 638011093214150382, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 638011093214150382, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 638011093214150382, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 638011093214150382, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 660636240813459758, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
@@ -27885,6 +29081,470 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 713555122}
+    - target: {fileID: 844195825055349345, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 844195825055349345, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 844195825055349345, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 844195825055349345, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 844195825055349345, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 844195825055349345, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 900546873804897838, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 900546873804897838, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 900546873804897838, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 900546873804897838, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 900546873804897838, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 900546873804897838, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 939731108457928117, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 939731108457928117, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 939731108457928117, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 939731108457928117, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 939731108457928117, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 939731108457928117, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 950068867763295612, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 950068867763295612, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1098019580302564873, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 1098019580302564873, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1098019580302564873, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1184408288731460098, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1184408288731460098, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1184408288731460098, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1184408288731460098, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1184408288731460098, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1184408288731460098, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1184408288731460098, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1184408288731460098, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1312033209389857738, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1312033209389857738, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354331176774242432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354331176774242432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354331176774242432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354331176774242432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354331176774242432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354331176774242432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1373929571762263118, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1373929571762263118, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1373929571762263118, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1373929571762263118, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1373929571762263118, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1373929571762263118, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1377379606135806707, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 1377379606135806707, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1377379606135806707, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1380662572844955811, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 1380662572844955811, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1380662572844955811, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1415596314761843608, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1415596314761843608, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1423647697259827668, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 1423647697259827668, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1423647697259827668, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467549984682675994, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 1467549984682675994, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467549984682675994, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1587572939382582328, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 1587572939382582328, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1587572939382582328, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1617697213747517601, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1617697213747517601, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1765454173825375439, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1765454173825375439, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1765454173825375439, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1765454173825375439, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1765454173825375439, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1765454173825375439, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1851060280949763784, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1851060280949763784, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1851060280949763784, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1851060280949763784, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1851060280949763784, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1851060280949763784, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1974917769748935559, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 1974917769748935559, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1974917769748935559, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1993341628913772917, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1993341628913772917, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2011056459610804710, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2011056459610804710, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2118130505178008415, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2118130505178008415, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172891648397204656, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172891648397204656, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172891648397204656, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172891648397204656, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172891648397204656, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172891648397204656, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2237806582597802651, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2237806582597802651, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2237806582597802651, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2237806582597802651, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2237806582597802651, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2237806582597802651, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2389019663535132506, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2389019663535132506, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2389019663535132506, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2389019663535132506, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2389019663535132506, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2389019663535132506, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400568909316117917, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400568909316117917, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2528443211554367825, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 2528443211554367825, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2528443211554367825, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2540499949564407492, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2540499949564407492, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2540499949564407492, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2540499949564407492, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2540499949564407492, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2574909932844616475, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 2574909932844616475, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2574909932844616475, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2615007594822803027, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
@@ -27893,21 +29553,1261 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 713555122}
+    - target: {fileID: 2697278994349990040, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2697278994349990040, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2702624893677111788, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2702624893677111788, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2702624893677111788, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2702624893677111788, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2702624893677111788, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2702624893677111788, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2776359450578864147, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2776359450578864147, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2863144612847437081, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2863144612847437081, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2913785815421508088, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2913785815421508088, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2913785815421508088, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2913785815421508088, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2913785815421508088, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2913785815421508088, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2917164403533042905, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: uiElementToSelect
       value: 
       objectReference: {fileID: 713555122}
+    - target: {fileID: 2934247050165983669, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2934247050165983669, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2934247050165983669, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2934247050165983669, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2934247050165983669, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2934247050165983669, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2960410597170322408, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 2960410597170322408, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2960410597170322408, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3114348697804012988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3114348697804012988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3114348697804012988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3114348697804012988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3114348697804012988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3114348697804012988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3120292609601077729, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3120292609601077729, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3120292609601077729, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3120292609601077729, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3120292609601077729, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3120292609601077729, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3256303371662086469, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3256303371662086469, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3256303371662086469, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3256303371662086469, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3256303371662086469, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3256303371662086469, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3397954779558537391, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3397954779558537391, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3397954779558537391, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3397954779558537391, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3397954779558537391, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3397954779558537391, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3412685451035708339, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3412685451035708339, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3522439558796497832, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3522439558796497832, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3522439558796497832, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3522439558796497832, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3522439558796497832, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3522439558796497832, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562401652485500202, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562401652485500202, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781035476393563078, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781035476393563078, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781035476393563078, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781035476393563078, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781035476393563078, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781035476393563078, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855580757833882137, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 3855580757833882137, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855580757833882137, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3877130729727710325, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 3877130729727710325, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3877130729727710325, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3987841892531613282, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3987841892531613282, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3991545426863661362, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3991545426863661362, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4107485562220780790, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 4107485562220780790, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4107485562220780790, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4141526444827060131, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 4141526444827060131, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4141526444827060131, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4170920239072117759, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4170920239072117759, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4170920239072117759, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4170920239072117759, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4170920239072117759, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4170920239072117759, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4216501475546050803, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 4216501475546050803, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4216501475546050803, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4241002402178942271, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4241002402178942271, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4241002402178942271, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4241002402178942271, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4241002402178942271, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4241002402178942271, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4341672788801158810, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4341672788801158810, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4368832826733599243, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 4368832826733599243, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4368832826733599243, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398969126871744743, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398969126871744743, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398969126871744743, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398969126871744743, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398969126871744743, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398969126871744743, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550163625548991277, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 4550163625548991277, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550163625548991277, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554894527931280288, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554894527931280288, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554894527931280288, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554894527931280288, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554894527931280288, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554894527931280288, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4555221031127355006, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4555221031127355006, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4630651226688763206, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 4630651226688763206, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4630651226688763206, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4645844724915517799, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4645844724915517799, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4699618396560437148, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4699618396560437148, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4699618396560437148, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4699618396560437148, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4699618396560437148, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4699618396560437148, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4729224685521415757, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4729224685521415757, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4729224685521415757, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4729224685521415757, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4729224685521415757, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4729224685521415757, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738719829702886084, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738719829702886084, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738719829702886084, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738719829702886084, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738719829702886084, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738719829702886084, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782627769736012688, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782627769736012688, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4839016631175273367, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4839016631175273367, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4841088925969305183, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4841088925969305183, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4850621014004971563, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4850621014004971563, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4877759764949047690, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
       objectReference: {fileID: 1723724837}
+    - target: {fileID: 4899943579616149088, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4899943579616149088, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4935262837952928062, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4935262837952928062, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4976164242525128777, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4976164242525128777, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4976164242525128777, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4976164242525128777, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4976164242525128777, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4976164242525128777, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4991495596394183896, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4991495596394183896, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015081086495596076, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015081086495596076, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015081086495596076, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015081086495596076, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015081086495596076, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015081086495596076, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5248221031262274806, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5248221031262274806, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5248221031262274806, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5248221031262274806, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5248221031262274806, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5248221031262274806, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5328264734754068711, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
       objectReference: {fileID: 1723724837}
+    - target: {fileID: 5452930374728944095, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 5452930374728944095, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5452930374728944095, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482161296159312699, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482161296159312699, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482161296159312699, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482161296159312699, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482161296159312699, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482161296159312699, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646656300554342897, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646656300554342897, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646656300554342897, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646656300554342897, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646656300554342897, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646656300554342897, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5649989835698375909, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 5649989835698375909, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5649989835698375909, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5678129744236989482, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5678129744236989482, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768696147240150910, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768696147240150910, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768696147240150910, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768696147240150910, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768696147240150910, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768696147240150910, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5877339463921546432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5877339463921546432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5877339463921546432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5877339463921546432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5877339463921546432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5877339463921546432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5990971100941109059, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5990971100941109059, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5990971100941109059, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5990971100941109059, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5990971100941109059, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5990971100941109059, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6103236427999813513, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6103236427999813513, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6103236427999813513, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6103236427999813513, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6103236427999813513, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6103236427999813513, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111942162060935440, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111942162060935440, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111942162060935440, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111942162060935440, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111942162060935440, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111942162060935440, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6216483925118439210, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 6216483925118439210, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6216483925118439210, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6231243515754879660, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6231243515754879660, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6231243515754879660, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6231243515754879660, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6231243515754879660, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6231243515754879660, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6298957806746264265, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6298957806746264265, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6315472686407455685, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6315472686407455685, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6315472686407455685, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6315472686407455685, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6315472686407455685, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6315472686407455685, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6447211705159252211, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6447211705159252211, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6447211705159252211, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6447211705159252211, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6447211705159252211, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6447211705159252211, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6447211705159252211, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6447211705159252211, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6612967683496530006, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6612967683496530006, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6612967683496530006, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6612967683496530006, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6612967683496530006, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6612967683496530006, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6739128888502573988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 6739128888502573988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6739128888502573988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6798251252914232237, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6798251252914232237, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6798251252914232237, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6798251252914232237, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6798251252914232237, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6798251252914232237, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6815480662985133208, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 6815480662985133208, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6815480662985133208, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6816069980048044581, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6816069980048044581, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6829897965326737452, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6829897965326737452, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6829897965326737452, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6829897965326737452, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6829897965326737452, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6829897965326737452, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6852248600295963893, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 6852248600295963893, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6852248600295963893, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6891780490140760133, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6891780490140760133, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6920445319040748668, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 6920445319040748668, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6920445319040748668, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6939739777296694840, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6939739777296694840, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6939739777296694840, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6939739777296694840, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6939739777296694840, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6939739777296694840, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7057391834147232649, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_Name
       value: SkinMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 7066806889451606509, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7066806889451606509, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7066806889451606509, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7066806889451606509, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7066806889451606509, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7066806889451606509, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7223274688278160973, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7223274688278160973, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7223274688278160973, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7223274688278160973, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7223274688278160973, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7223274688278160973, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425203965836897463, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425203965836897463, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7511855635754076626, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7511855635754076626, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7511855635754076626, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7511855635754076626, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7511855635754076626, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7511855635754076626, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7611440127774238067, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_Pivot.x
@@ -27987,6 +30887,398 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7611440127774238067, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709948281212326311, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709948281212326311, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709948281212326311, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709948281212326311, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709948281212326311, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709948281212326311, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909019199891434033, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909019199891434033, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909019199891434033, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909019199891434033, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909019199891434033, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909019199891434033, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7936476573192359124, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7936476573192359124, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7936476573192359124, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7936476573192359124, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7936476573192359124, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7936476573192359124, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7969252242216796073, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 7969252242216796073, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7969252242216796073, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8005190274966543718, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 8005190274966543718, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8005190274966543718, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8010543204715120866, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8010543204715120866, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8036050493054016738, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 8036050493054016738, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8036050493054016738, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8092443793756178088, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8092443793756178088, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8162623295204161117, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 8162623295204161117, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8162623295204161117, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8194813521957571873, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8194813521957571873, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8194813521957571873, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8194813521957571873, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8194813521957571873, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8194813521957571873, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8217748960452835462, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8217748960452835462, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8217748960452835462, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8217748960452835462, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8217748960452835462, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8217748960452835462, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8238402040866297432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8238402040866297432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8238402040866297432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8238402040866297432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8238402040866297432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8238402040866297432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8318995250841340334, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8318995250841340334, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8318995250841340334, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8318995250841340334, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8318995250841340334, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8318995250841340334, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368716088694283345, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368716088694283345, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368716088694283345, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368716088694283345, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368716088694283345, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368716088694283345, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8394436123358503945, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8394436123358503945, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8394436123358503945, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8394436123358503945, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8394436123358503945, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8394436123358503945, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8451096376320199568, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 8451096376320199568, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8451096376320199568, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8513381399700844882, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8513381399700844882, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777564079154029563, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777564079154029563, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777564079154029563, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777564079154029563, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777564079154029563, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777564079154029563, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8979313834427729531, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8979313834427729531, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8979313834427729531, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8979313834427729531, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8979313834427729531, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8979313834427729531, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8989899753778301522, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 2870650339701474083}
+    - target: {fileID: 8989899753778301522, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8989899753778301522, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008487918309019028, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008487918309019028, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9165616432507776711, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9165616432507776711, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9165616432507776711, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9165616432507776711, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9165616432507776711, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9165616432507776711, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -28370,6 +31662,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1751071087}
     - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
+      propertyPath: cameraMotionImage
+      value: 
+      objectReference: {fileID: 1981793568}
+    - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
+      propertyPath: stepsDisplayImage
+      value: 
+      objectReference: {fileID: 1981793569}
+    - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
       propertyPath: settingsMenuParent
       value: 
       objectReference: {fileID: 1207678797}
@@ -28440,6 +31740,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea532cd8347f49b46a20c7d40f42cafd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9153252302186933389 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4831180214876375337, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+  m_PrefabInstance: {fileID: 5912947419237050941}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4160885316144579235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8985415b2a6c4c149a69a1322478728a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807

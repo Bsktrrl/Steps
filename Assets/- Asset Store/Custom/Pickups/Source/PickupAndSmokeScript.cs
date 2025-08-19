@@ -52,7 +52,7 @@ public class PickupAndSmokeScript : MonoBehaviour
 
         if(rotationObject != null)
         {
-            rotationObject.transform.eulerAngles += new Vector3(0, 100 * Time.deltaTime, 0);
+            //rotationObject.transform.eulerAngles += new Vector3(0, 100 * Time.deltaTime, 0);
         }
 
         if(scaleObject != null)

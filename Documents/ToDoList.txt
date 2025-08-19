@@ -3,19 +3,20 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 
-1. Lukk PauseMenyen med ESC, siden man kan åpne med ESC
+1. When the player is falling and landing on a EffectBlock, trigger the EffectBlockk effect
+ - Somethines the PlayerObject is set to "BlockStandingOn", which is strange
+
+2. Change CeilingGrabCamera to fit the new camera system
+3. Also make the new "zoom in/out" be functional with CameraMotion OFF in Settings
 
 
 2.
 Skin Menu:
 __________________
 
-2.1. Shop menu
-- Make the menu where the player skins can be unlocked and changed
-	- In the "Shop"-menu, make it so that "Tilbake" and "Shop"-buttons are going back to the previous button moved from (so it doesn't move to the first button each time)
-	- Make the CoinsCost-system cost 10 Essence per buy
-
-2.2. Wardrobe menu
+2.2. Wardrobe Menu
+- Make DefaultSkin fintionality (make it so that it always are selected (and changed colors) if no other Skin is selected
+	- Can be done right after "dataShasSpawned", directly set into DataManager, if DataManager doesn't have any selectedSkins
 - Make Equip functionality, so that the player can equip unlocked Skins
 - Display the Equip changes on a 3D character model
 	- Make functionalty for all Skins to be equipped
@@ -30,7 +31,7 @@ __________________
 
 
 3.
-3D Sound:
+Sound:
 __________________
 
 3.1. Manual 3D sound logic
@@ -57,6 +58,9 @@ __________________
 3.4. Ice glide bug
 - Fix ice glide audio bug
 
+3.5. Menu Sound
+- Add funcionality for "moving in menus", "clicking" and "back"
+
 
 
 4.
@@ -64,7 +68,7 @@ Menu navigating errors:
 __________________
 
 4.1. Menu Errors
-- Moving from option to option, keyboard is laggy
+- Moving from option to option, keyboard is laggy (may be when the controller is plugged in, but not used?)
 
 4.2. Overworld Errors
 - Fix so that the menu operates as intended when pressing/hovering buttons/regions
@@ -86,7 +90,7 @@ Levels
 
 
 
-Movement & Camera:
+Movement & Camera bugtesting and fixing:
 - Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
 	- Sometimes, when rotating to the left twice, the player move in the looking direction after moving
 	- Almost always when at the edge of something, where not all 4 adjacent blocks can be moved to (maybe blocks isn't updated to "null" when the camera is rotating, so it keeps old blocks when they should have been "null"?
@@ -94,12 +98,6 @@ Movement & Camera:
 
 Switches:
 - Make interactable Wall-switch
-
-
-Settings Menu:
-- Toggle "Show Numbers" of the Steps available on the HUD
-- Motion Sickness: fjerne kamera-animasjon, bare snapping til vinklene
-
 
 
 Effect Blocks:
@@ -119,14 +117,3 @@ AbilityButton Display:
 ----- OTHER -----
 
 
-Camera:
-- FOV: 75
-- Camera Offset: 0, 3, -6.5
-
-b56f3a
-d9d488
-
-Cameras:
-Old: X:0 Y:3.5 Z:8.25 	FOV:40 Min:31 Max:55
-New: X:0 Y:2.5 Z:5   	FOV:68 Min:49 Max:83
-New: X:0 Y:2.35 Z:4.8   FOV:60 Min:45 Max:75

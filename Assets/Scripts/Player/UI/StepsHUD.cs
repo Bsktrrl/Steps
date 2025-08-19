@@ -9,6 +9,7 @@ public class StepsHUD : Singleton<StepsHUD>
 
     float iconTransparencyValue = 0.4f;
 
+
     //--------------------
 
 

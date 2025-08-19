@@ -122,7 +122,11 @@ public enum SettingState
     Wardrobe_Hats,
 
     //Shop
-    Shop_Blocks
+    Shop_Blocks,
+
+    //Settings
+    Settings_StepDisplay,
+    Settings_CameraMotion,
 }
 public enum Languages
 {
@@ -138,4 +142,15 @@ public enum TextSpeed
     Medium,
     Fast,
     Slow
+}
+public enum StepDisplay
+{
+    Icon,
+    Number,
+    NumberIcon
+}
+public enum CameraMotion
+{
+    Can,
+    Cannot
 }

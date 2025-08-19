@@ -8,6 +8,8 @@ public class SettingsManager : Singleton<SettingsManager>
 {
     public static event Action Action_SetNewLanguage;
     public static event Action Action_SetNewTextSpeed;
+    public static event Action Action_SetNewStepDisplay;
+    public static event Action Action_SetNewCameraMotion;
 
     public GameObject settingsMenuParent;
     public SettingData settingsData;
@@ -32,6 +34,17 @@ public class SettingsManager : Singleton<SettingsManager>
     [SerializeField] Sprite textSpeed_Slow_Sprite;
     [SerializeField] Sprite textSpeed_Medium_Sprite;
     [SerializeField] Sprite textSpeed_Fast_Sprite;
+
+    [Header("StepsDisplay")]
+    [SerializeField] Image stepsDisplayImage;
+    [SerializeField] Sprite stepsDisplay_Icon_Sprite;
+    [SerializeField] Sprite stepsDisplay_Number_Sprite;
+    [SerializeField] Sprite stepsDisplay_NumberIcon_Sprite;
+
+    [Header("Camera Motion")]
+    [SerializeField] Image cameraMotionImage;
+    [SerializeField] Sprite cameraMotion_Can_Sprite;
+    [SerializeField] Sprite cameraMotion_Cannot_Sprite;
 
 
     //--------------------
@@ -62,15 +75,21 @@ public class SettingsManager : Singleton<SettingsManager>
         {
             settingsData.currentLanguage = DataManager.Instance.settingData_StoreList.currentLanguage;
             settingsData.currentTextSpeed = DataManager.Instance.settingData_StoreList.currentTextSpeed;
+            settingsData.currentStepDisplay = DataManager.Instance.settingData_StoreList.currentStepDisplay;
+            settingsData.currentCameraMotion = DataManager.Instance.settingData_StoreList.currentCameraMotion;
         }
 
         ChangeFlagImage();
         ChangeTextSpeedImage();
+        ChangeStepDisplayImage();
+        ChangeCameraMotionImage();
     }
     public void SaveData()
     {
         DataManager.Instance.settingData_StoreList.currentLanguage = settingsData.currentLanguage;
         DataManager.Instance.settingData_StoreList.currentTextSpeed = settingsData.currentTextSpeed;
+        DataManager.Instance.settingData_StoreList.currentStepDisplay = settingsData.currentStepDisplay;
+        DataManager.Instance.settingData_StoreList.currentCameraMotion = settingsData.currentCameraMotion;
 
         DataPersistanceManager.instance.SaveGame();
     }
@@ -85,6 +104,8 @@ public class SettingsManager : Singleton<SettingsManager>
 
         ChangeFlagImage();
         ChangeTextSpeedImage();
+        ChangeStepDisplayImage();
+        ChangeCameraMotionImage();
     }
     
     
@@ -97,6 +118,10 @@ public class SettingsManager : Singleton<SettingsManager>
             Flag_LeftButton_isPressed();
         else if (settingState == SettingState.Settings_TextSpeed)
             TextSpeed_LeftButton_isPressed();
+        else if (settingState == SettingState.Settings_StepDisplay)
+            StepDisplay_LeftButton_isPressed();
+        else if (settingState == SettingState.Settings_CameraMotion)
+            CameraMotion_LeftButton_isPressed();
     }
     void PerformButtonAction_Right()
     {
@@ -104,6 +129,10 @@ public class SettingsManager : Singleton<SettingsManager>
             Flag_RightButton_isPressed();
         else if (settingState == SettingState.Settings_TextSpeed)
             TextSpeed_RightButton_isPressed();
+        else if (settingState == SettingState.Settings_StepDisplay)
+            StepDisplay_RightButton_isPressed();
+        else if (settingState == SettingState.Settings_CameraMotion)
+            CameraMotion_RightButton_isPressed();
     }
 
 
@@ -263,6 +292,127 @@ public class SettingsManager : Singleton<SettingsManager>
                 break;
         }
     }
+
+    public void StepDisplay_RightButton_isPressed()
+    {
+        switch (settingsData.currentStepDisplay)
+        {
+            case StepDisplay.Icon:
+                settingsData.currentStepDisplay = StepDisplay.Number;
+                break;
+            case StepDisplay.Number:
+                settingsData.currentStepDisplay = StepDisplay.NumberIcon;
+                break;
+            case StepDisplay.NumberIcon:
+                settingsData.currentStepDisplay = StepDisplay.Icon;
+                break;
+
+            default:
+                break;
+        }
+
+        ChangeStepDisplayImage();
+        SaveData();
+
+        Action_SetNewStepDisplay?.Invoke();
+    }
+    public void StepDisplay_LeftButton_isPressed()
+    {
+        switch (settingsData.currentStepDisplay)
+        {
+            case StepDisplay.Icon:
+                settingsData.currentStepDisplay = StepDisplay.NumberIcon;
+                break;
+            case StepDisplay.Number:
+                settingsData.currentStepDisplay = StepDisplay.Icon;
+                break;
+            case StepDisplay.NumberIcon:
+                settingsData.currentStepDisplay = StepDisplay.Number;
+                break;
+
+            default:
+                break;
+        }
+
+        ChangeStepDisplayImage();
+        SaveData();
+
+        Action_SetNewStepDisplay?.Invoke();
+    }
+    void ChangeStepDisplayImage()
+    {
+        switch (settingsData.currentStepDisplay)
+        {
+            case StepDisplay.Icon:
+                stepsDisplayImage.sprite = stepsDisplay_Icon_Sprite;
+                break;
+            case StepDisplay.Number:
+                stepsDisplayImage.sprite = stepsDisplay_Number_Sprite;
+                break;
+            case StepDisplay.NumberIcon:
+                stepsDisplayImage.sprite = stepsDisplay_NumberIcon_Sprite;
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    public void CameraMotion_RightButton_isPressed()
+    {
+        switch (settingsData.currentCameraMotion)
+        {
+            case CameraMotion.Can:
+                settingsData.currentCameraMotion = CameraMotion.Cannot;
+                break;
+            case CameraMotion.Cannot:
+                settingsData.currentCameraMotion = CameraMotion.Can;
+                break;
+
+            default:
+                break;
+        }
+
+        ChangeCameraMotionImage();
+        SaveData();
+
+        Action_SetNewCameraMotion?.Invoke();
+    }
+    public void CameraMotion_LeftButton_isPressed()
+    {
+        switch (settingsData.currentCameraMotion)
+        {
+            case CameraMotion.Can:
+                settingsData.currentCameraMotion = CameraMotion.Cannot;
+                break;
+            case CameraMotion.Cannot:
+                settingsData.currentCameraMotion = CameraMotion.Can;
+                break;
+
+            default:
+                break;
+        }
+
+        ChangeCameraMotionImage();
+        SaveData();
+
+        Action_SetNewCameraMotion?.Invoke();
+    }
+    void ChangeCameraMotionImage()
+    {
+        switch (settingsData.currentCameraMotion)
+        {
+            case CameraMotion.Can:
+                cameraMotionImage.sprite = cameraMotion_Can_Sprite;
+                break;
+            case CameraMotion.Cannot:
+                cameraMotionImage.sprite = cameraMotion_Cannot_Sprite;
+                break;
+
+            default:
+                break;
+        }
+    }
 }
 
 [Serializable]
@@ -270,4 +420,6 @@ public class SettingData
 {
     public Languages currentLanguage;
     public TextSpeed currentTextSpeed;
+    public StepDisplay currentStepDisplay;
+    public CameraMotion currentCameraMotion;
 }
