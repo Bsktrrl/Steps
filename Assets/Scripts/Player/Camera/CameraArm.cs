@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,80 +7,149 @@ public class CameraArm : MonoBehaviour
     [SerializeField] CameraController cameraController;
     [SerializeField] GameObject cameraOffset;
 
-    Vector3 cameraDefault_Normal;
-    Vector3 cameraDefault_CeilingGrab;
+    [Header("Camera Heights")]
+    float camera_NormalHeight = 0.2f;   // more influential
+    float camera_StairHeight = 0.7f;    // more influential
 
-    RaycastHit hit;
-
-    float camera_NormalHeight = 0.2f;
-    float camera_StairHeight = 0.7f;
+    [Header("Rotation Settings")]
     float camera_RotationX_Offset_Normal = 29;
-    float camera_RotationX_Offset_NormalOffset = 5;
+    float camera_RotationX_Offset_NormalOffset = 0;
     float camera_RotationX_Offset_CeilingGrab = -17;
+    float transitionSpeed = 10f;
 
-    float minClampValue = 0;
-    float maxClampValue = 1;
+    [Header("Camera Distance")]
+    float sphereRadius = 0.35f;
+    float desiredDistance = 3f;   // shorter ray
+    float minDistance = 0.5f;     // fixed nearest point
 
-    float smoothRotationResult = 25;
-    float transitionSpeed = 13;
-
-
-    //--------------------
-
+    [Header("Ray Tilt")]
+    float rayTiltAngle = 15f; // upward tilt to avoid stairs
 
     void Update()
     {
-        // Calculate default camera position in world space
-        cameraDefault_Normal = transform.position + transform.TransformDirection(cameraController.cameraOffset_originalPos);
-        cameraDefault_CeilingGrab = transform.position + transform.TransformDirection(cameraController.cameraOffset_ceilingGrabPos);
+        // Determine target camera position
+        Vector3 targetPos = transform.position + transform.TransformDirection(cameraController.cameraOffset_originalPos);
 
-        // Raycast from player to camera target
-        Vector3 direction;
         if (CameraController.Instance.cameraState == CameraState.CeilingCam || CameraController.Instance.isCeilingRotating)
-            direction = cameraDefault_CeilingGrab - transform.position;
-        else
-            direction = cameraDefault_Normal - transform.position;
-
-        float distance = direction.magnitude;
-        direction.Normalize();
-        Physics.Raycast(transform.position, direction, out hit, distance);
-
-        // If hitting something - calculate camera position
-        if (hit.collider != null && hit.collider.gameObject.GetComponent<BlockInfo>())
         {
-            if (CameraController.Instance.cameraState == CameraState.CeilingCam || CameraController.Instance.isCeilingRotating)
+            targetPos = transform.position + transform.TransformDirection(cameraController.cameraOffset_ceilingGrabPos);
+        }
+
+        Vector3 direction = (targetPos - transform.position).normalized;
+        float distance = Vector3.Distance(transform.position, targetPos);
+
+        // SphereCast along forward direction
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, sphereRadius, direction, distance);
+
+        RaycastHit? closestBlockHit = null;
+        float closestDistance = float.MaxValue;
+
+        foreach (var hit in hits)
+        {
+            BlockInfo blockInfo = hit.collider.GetComponent<BlockInfo>();
+            if (blockInfo != null)
             {
-                
-            }
-            else
-            {
-                if (Movement.Instance.blockStandingOn != null && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>()
-                && (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair || Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope))
+                // Only accept hits roughly in front using sphere radius instead of angle
+                Vector3 hitDir = (hit.point - transform.position);
+                float lateralDistance = Vector3.Cross(direction, hitDir).magnitude;
+                if (lateralDistance <= sphereRadius)
                 {
-                    cameraOffset.transform.position = Vector3.Lerp(cameraOffset.transform.position, hit.point - direction * 0.1f + Vector3.up * (1 - Mathf.Clamp(Vector3.Distance(transform.position, hit.point), minClampValue, maxClampValue)) * camera_StairHeight, transitionSpeed * Time.deltaTime);
-                    cameraOffset.transform.localEulerAngles = Vector3.Lerp(cameraOffset.transform.localEulerAngles, new Vector3(camera_RotationX_Offset_Normal - camera_RotationX_Offset_NormalOffset - Mathf.Pow(Vector3.Distance(cameraDefault_Normal, hit.point) / distance, 2) * smoothRotationResult, 0, 0), transitionSpeed * Time.deltaTime);
-                }
-                else
-                {
-                    cameraOffset.transform.position = Vector3.Lerp(cameraOffset.transform.position, hit.point - direction * 0.1f + Vector3.up * (1 - Mathf.Clamp(Vector3.Distance(transform.position, hit.point), minClampValue, maxClampValue)) * camera_NormalHeight, transitionSpeed * Time.deltaTime);
-                    cameraOffset.transform.localEulerAngles = Vector3.Lerp(cameraOffset.transform.localEulerAngles, new Vector3(camera_RotationX_Offset_Normal - camera_RotationX_Offset_NormalOffset - Mathf.Pow(Vector3.Distance(cameraDefault_Normal, hit.point) / distance, 2) * smoothRotationResult, 0, 0), transitionSpeed * Time.deltaTime);
+                    float d = hitDir.magnitude;
+                    if (d < closestDistance)
+                    {
+                        closestDistance = d;
+                        closestBlockHit = hit;
+                    }
                 }
             }
         }
 
-        // If not hitting anything - move to default position
-        else
+        // Determine final camera position
+        Vector3 finalPosition = targetPos;
+
+        if (closestBlockHit.HasValue)
         {
-            if (CameraController.Instance.cameraState == CameraState.CeilingCam || CameraController.Instance.isCeilingRotating)
-            {
-                //cameraOffset.transform.localPosition = Vector3.Lerp(cameraOffset.transform.localPosition, transform.InverseTransformPoint(cameraDefault_CeilingGrab), transitionSpeed * Time.deltaTime);
-                //cameraOffset.transform.localEulerAngles = Vector3.Lerp(cameraOffset.transform.localEulerAngles, new Vector3(camera_RotationX_Offset_CeilingGrab, 0, 0), transitionSpeed * Time.deltaTime);
-            }
-            else
-            {
-                cameraOffset.transform.localPosition = Vector3.Lerp(cameraOffset.transform.localPosition, transform.InverseTransformPoint(cameraDefault_Normal), transitionSpeed * Time.deltaTime);
-                cameraOffset.transform.localEulerAngles = Vector3.Lerp(cameraOffset.transform.localEulerAngles, new Vector3(camera_RotationX_Offset_Normal, 0, 0), transitionSpeed * Time.deltaTime);
-            }
+            float finalDistance = Mathf.Max(minDistance, closestDistance - sphereRadius);
+            finalPosition = transform.position + direction * finalDistance;
+
+            // Apply height offsets based on the blocking object itself
+            var blockInfo = closestBlockHit.Value.collider.GetComponent<BlockInfo>();
+            float heightOffset = camera_NormalHeight;
+            if (blockInfo.blockType == BlockType.Stair || blockInfo.blockType == BlockType.Slope)
+                heightOffset = camera_StairHeight;
+
+            finalPosition.y += heightOffset;
+        }
+
+        // Smooth camera movement
+        cameraOffset.transform.position = Vector3.Lerp(cameraOffset.transform.position, finalPosition, transitionSpeed * Time.deltaTime);
+
+        // Smooth camera rotation
+        float targetRotX = camera_RotationX_Offset_Normal - camera_RotationX_Offset_NormalOffset;
+        cameraOffset.transform.localEulerAngles = Vector3.Lerp(cameraOffset.transform.localEulerAngles, new Vector3(targetRotX, 0, 0), transitionSpeed * Time.deltaTime);
+
+        // Debug: cyan = full path, red = up to blocking object
+        Debug.DrawLine(transform.position, transform.position + direction * distance, Color.cyan);
+        if (closestBlockHit.HasValue)
+        {
+            Debug.DrawLine(transform.position, transform.position + direction * closestDistance, Color.red);
+        }
+    }
+
+
+
+
+
+    //--------------------
+
+    // Debug visualization
+    void DrawSphereCast(Vector3 origin, float radius, Vector3 direction, float maxDistance, Color color, RaycastHit? closestHit = null)
+    {
+        Debug.DrawLine(origin, origin + direction * maxDistance, color);
+        DebugDrawWireSphere(origin, radius, color);
+
+        if (closestHit.HasValue)
+        {
+            Debug.DrawLine(origin, closestHit.Value.point, Color.red);
+            DebugDrawWireSphere(closestHit.Value.point, radius * 0.5f, Color.red);
+        }
+    }
+
+    void DebugDrawWireSphere(Vector3 center, float radius, Color color)
+    {
+        int segments = 16;
+        float angle = 360f / segments;
+
+        Vector3 lastPoint = center + new Vector3(radius, 0, 0);
+        Vector3 nextPoint;
+
+        // XZ circle
+        for (int i = 1; i <= segments; i++)
+        {
+            float rad = Mathf.Deg2Rad * angle * i;
+            nextPoint = center + new Vector3(Mathf.Cos(rad) * radius, 0, Mathf.Sin(rad) * radius);
+            Debug.DrawLine(lastPoint, nextPoint, color);
+            lastPoint = nextPoint;
+        }
+
+        // XY circle
+        lastPoint = center + new Vector3(radius, 0, 0);
+        for (int i = 1; i <= segments; i++)
+        {
+            float rad = Mathf.Deg2Rad * angle * i;
+            nextPoint = center + new Vector3(Mathf.Cos(rad) * radius, Mathf.Sin(rad) * radius, 0);
+            Debug.DrawLine(lastPoint, nextPoint, color);
+            lastPoint = nextPoint;
+        }
+
+        // YZ circle
+        lastPoint = center + new Vector3(0, radius, 0);
+        for (int i = 1; i <= segments; i++)
+        {
+            float rad = Mathf.Deg2Rad * angle * i;
+            nextPoint = center + new Vector3(0, Mathf.Cos(rad) * radius, Mathf.Sin(rad) * radius);
+            Debug.DrawLine(lastPoint, nextPoint, color);
+            lastPoint = nextPoint;
         }
     }
 }
