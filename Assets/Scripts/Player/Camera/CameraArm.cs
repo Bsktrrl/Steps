@@ -19,7 +19,7 @@ public class CameraArm : MonoBehaviour
 
     [Header("Camera Distance")]
     float sphereRadius = 0.35f;
-    float desiredDistance = 3f;   // shorter ray
+    float desiredDistance = 5f;   // shorter ray
     float minDistance = 0.5f;     // fixed nearest point
 
     [Header("Ray Tilt")]
@@ -27,7 +27,7 @@ public class CameraArm : MonoBehaviour
 
     void Update()
     {
-        // Determine target camera position
+        // Base target pos (no zoom)
         Vector3 targetPos = transform.position + transform.TransformDirection(cameraController.cameraOffset_originalPos);
 
         if (CameraController.Instance.cameraState == CameraState.CeilingCam || CameraController.Instance.isCeilingRotating)
@@ -36,65 +36,71 @@ public class CameraArm : MonoBehaviour
         }
 
         Vector3 direction = (targetPos - transform.position).normalized;
-        float distance = Vector3.Distance(transform.position, targetPos);
 
-        // SphereCast along forward direction
-        RaycastHit[] hits = Physics.SphereCastAll(transform.position, sphereRadius, direction, distance);
+        // Sphere cast along direction
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, sphereRadius, direction, desiredDistance);
 
-        RaycastHit? closestBlockHit = null;
+        RaycastHit? closestRelevantHit = null;
         float closestDistance = float.MaxValue;
 
         foreach (var hit in hits)
         {
             BlockInfo blockInfo = hit.collider.GetComponent<BlockInfo>();
-            if (blockInfo != null)
+            if (blockInfo == null) continue;
+
+            // Confirm that the collider actually blocks the *line of sight* to the camera
+            if (hit.collider.Raycast(new Ray(transform.position, direction), out RaycastHit centerHit, desiredDistance))
             {
-                // Only accept hits roughly in front using sphere radius instead of angle
-                Vector3 hitDir = (hit.point - transform.position);
-                float lateralDistance = Vector3.Cross(direction, hitDir).magnitude;
-                if (lateralDistance <= sphereRadius)
+                float d = centerHit.distance;
+                if (d < closestDistance)
                 {
-                    float d = hitDir.magnitude;
-                    if (d < closestDistance)
-                    {
-                        closestDistance = d;
-                        closestBlockHit = hit;
-                    }
+                    closestDistance = d;
+                    closestRelevantHit = centerHit;
                 }
             }
         }
 
-        // Determine final camera position
-        Vector3 finalPosition = targetPos;
+        // Final camera position
+        Vector3 finalPosition;
 
-        if (closestBlockHit.HasValue)
+        if (closestRelevantHit.HasValue)
         {
-            float finalDistance = Mathf.Max(minDistance, closestDistance - sphereRadius);
+            float finalDistance = Mathf.Max(minDistance, closestRelevantHit.Value.distance - sphereRadius);
             finalPosition = transform.position + direction * finalDistance;
 
-            // Apply height offsets based on the blocking object itself
-            var blockInfo = closestBlockHit.Value.collider.GetComponent<BlockInfo>();
+            // Apply height offset based on block type under player
             float heightOffset = camera_NormalHeight;
-            if (blockInfo.blockType == BlockType.Stair || blockInfo.blockType == BlockType.Slope)
-                heightOffset = camera_StairHeight;
-
+            if (Movement.Instance.blockStandingOn != null && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>())
+            {
+                var blockType = Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType;
+                if (blockType == BlockType.Stair || blockType == BlockType.Slope)
+                    heightOffset = camera_StairHeight;
+            }
             finalPosition.y += heightOffset;
         }
+        else
+        {
+            // Nothing in the way → stay at full distance
+            finalPosition = targetPos;
+        }
 
-        // Smooth camera movement
+        // Smooth movement
         cameraOffset.transform.position = Vector3.Lerp(cameraOffset.transform.position, finalPosition, transitionSpeed * Time.deltaTime);
 
-        // Smooth camera rotation
+        // Rotation
         float targetRotX = camera_RotationX_Offset_Normal - camera_RotationX_Offset_NormalOffset;
-        cameraOffset.transform.localEulerAngles = Vector3.Lerp(cameraOffset.transform.localEulerAngles, new Vector3(targetRotX, 0, 0), transitionSpeed * Time.deltaTime);
+        cameraOffset.transform.localEulerAngles = Vector3.Lerp(
+            cameraOffset.transform.localEulerAngles,
+            new Vector3(targetRotX, 0, 0),
+            transitionSpeed * Time.deltaTime
+        );
 
-        // Debug: cyan = full path, red = up to blocking object
-        Debug.DrawLine(transform.position, transform.position + direction * distance, Color.cyan);
-        if (closestBlockHit.HasValue)
-        {
-            Debug.DrawLine(transform.position, transform.position + direction * closestDistance, Color.red);
-        }
+        // Debug
+        DrawSphereCast(transform.position, sphereRadius, direction, desiredDistance, Color.cyan, closestRelevantHit);
     }
+
+
+
 
 
 
