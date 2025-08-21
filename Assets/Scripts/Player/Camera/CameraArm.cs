@@ -8,87 +8,127 @@ public class CameraArm : MonoBehaviour
     [SerializeField] GameObject cameraOffset;
 
     [Header("Camera Heights")]
-    float camera_NormalHeight = 0.2f;   // more influential
-    float camera_StairHeight = 0.7f;    // more influential
+    [SerializeField] float camera_NormalHeight = 0.2f;
+    [SerializeField] float camera_StairHeight = 0.43f;
 
     [Header("Rotation Settings")]
-    float camera_RotationX_Offset_Normal = 29;
-    float camera_RotationX_Offset_NormalOffset = 0;
-    float camera_RotationX_Offset_CeilingGrab = -17;
-    float transitionSpeed = 10f;
+    [SerializeField] float camera_RotationX_Offset_Normal = 29f;
+    [SerializeField] float camera_RotationX_Offset_Close = 17f; // when camera is pushed very close
+    [SerializeField] float camera_RotationX_Offset_NormalOffset = 0f;
+    [SerializeField] float camera_RotationX_Offset_CeilingGrab = -17f;
+
+    [Header("Smoothing")]
+    [SerializeField] float transitionSpeed = 10f;       // smoothing for camera position & rotation
+    [SerializeField] float distanceSmoothSpeed = 6f;    // smoothing just for distance changes
+    [SerializeField] float maxDistanceChangePerFrame = 0.3f; // clamp distance changes
 
     [Header("Camera Distance")]
-    float sphereRadius = 0.35f;
-    float desiredDistance = 5f;   // shorter ray
-    float minDistance = 0.5f;     // fixed nearest point
+    [SerializeField] float sphereRadius = 0.21f;
+    [SerializeField] float desiredDistance = 5f;
+    [SerializeField] float minDistance = 0.5f;
+
+    [Header("Offsets")]
+    [SerializeField] float camera_ForwardOffset = -0.2f;
+    [SerializeField] float camera_UpOffset = 0.05f;
 
     [Header("Ray Tilt")]
-    float rayTiltAngle = 15f; // upward tilt to avoid stairs
+    [SerializeField] float rayTiltAngle_Normal = 5f;
+    [SerializeField] float rayTiltAngle_Stair = 35f;
+
+    // runtime state
+    float currentDistance;
 
     void Update()
     {
-        // Base target pos (no zoom)
-        Vector3 targetPos = transform.position + transform.TransformDirection(cameraController.cameraOffset_originalPos);
+        Vector3 playerPos = transform.position;
 
+        // Target camera position at full distance
+        Vector3 targetLocal = cameraController.cameraOffset_originalPos;
         if (CameraController.Instance.cameraState == CameraState.CeilingCam || CameraController.Instance.isCeilingRotating)
+            targetLocal = cameraController.cameraOffset_ceilingGrabPos;
+
+        Vector3 targetPos = playerPos + transform.TransformDirection(targetLocal);
+
+        // Direction (line of sight)
+        Vector3 dir = (targetPos - playerPos).normalized;
+        float fullDistance = Vector3.Distance(playerPos, targetPos);
+
+        // Pick ray tilt angle depending on ground type
+        float chosenTiltAngle = rayTiltAngle_Normal;
+        if (Movement.Instance.blockStandingOn != null)
         {
-            targetPos = transform.position + transform.TransformDirection(cameraController.cameraOffset_ceilingGrabPos);
+            var b = Movement.Instance.blockStandingOn.GetComponent<BlockInfo>();
+            if (b != null && (b.blockType == BlockType.Stair || b.blockType == BlockType.Slope))
+                chosenTiltAngle = rayTiltAngle_Stair;
         }
 
-        Vector3 direction = (targetPos - transform.position).normalized;
+        // Tilted cast direction
+        Vector3 castDir = Quaternion.AngleAxis(chosenTiltAngle, transform.right) * dir;
 
-        // Sphere cast along direction
-        RaycastHit[] hits = Physics.SphereCastAll(transform.position, sphereRadius, direction, desiredDistance);
+        // Spherecast
+        RaycastHit hit;
+        bool hasHit = Physics.SphereCast(
+            playerPos,
+            sphereRadius,
+            castDir,
+            out hit,
+            fullDistance,
+            Physics.DefaultRaycastLayers,
+            QueryTriggerInteraction.Ignore
+        );
 
-        RaycastHit? closestRelevantHit = null;
-        float closestDistance = float.MaxValue;
+        float safetyOffset = 0.15f;
+        float targetDistance = fullDistance;
 
-        foreach (var hit in hits)
+        if (hasHit)
         {
             BlockInfo blockInfo = hit.collider.GetComponent<BlockInfo>();
-            if (blockInfo == null) continue;
-
-            // Confirm that the collider actually blocks the *line of sight* to the camera
-            if (hit.collider.Raycast(new Ray(transform.position, direction), out RaycastHit centerHit, desiredDistance))
+            if (blockInfo != null)
             {
-                float d = centerHit.distance;
-                if (d < closestDistance)
-                {
-                    closestDistance = d;
-                    closestRelevantHit = centerHit;
-                }
+                float distanceAlongDir = Mathf.Max(0f, Vector3.Dot(hit.point - playerPos, dir));
+                targetDistance = Mathf.Max(minDistance, distanceAlongDir - sphereRadius - safetyOffset);
             }
         }
 
-        // Final camera position
-        Vector3 finalPosition;
+        // --- Smooth the distance separately with a clamp ---
+        if (currentDistance <= 0f) currentDistance = fullDistance; // init
 
-        if (closestRelevantHit.HasValue)
+        float rawSmoothed = Mathf.Lerp(currentDistance, targetDistance, Time.deltaTime * distanceSmoothSpeed);
+
+        // Clamp max change per frame
+        float maxStep = maxDistanceChangePerFrame;
+        currentDistance = Mathf.MoveTowards(currentDistance, rawSmoothed, maxStep);
+
+        // Compute final camera position
+        Vector3 finalPos = playerPos + dir * currentDistance;
+
+        // Apply height offset (stairs or normal)
+        float heightOffset = camera_NormalHeight;
+        if (Movement.Instance.blockStandingOn != null)
         {
-            float finalDistance = Mathf.Max(minDistance, closestRelevantHit.Value.distance - sphereRadius);
-            finalPosition = transform.position + direction * finalDistance;
-
-            // Apply height offset based on block type under player
-            float heightOffset = camera_NormalHeight;
-            if (Movement.Instance.blockStandingOn != null && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>())
-            {
-                var blockType = Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType;
-                if (blockType == BlockType.Stair || blockType == BlockType.Slope)
-                    heightOffset = camera_StairHeight;
-            }
-            finalPosition.y += heightOffset;
+            var b = Movement.Instance.blockStandingOn.GetComponent<BlockInfo>();
+            if (b != null && (b.blockType == BlockType.Stair || b.blockType == BlockType.Slope))
+                heightOffset = camera_StairHeight;
         }
-        else
-        {
-            // Nothing in the way → stay at full distance
-            finalPosition = targetPos;
-        }
+        finalPos.y += heightOffset;
 
-        // Smooth movement
-        cameraOffset.transform.position = Vector3.Lerp(cameraOffset.transform.position, finalPosition, transitionSpeed * Time.deltaTime);
+        // Apply tweakable offsets
+        finalPos += dir * camera_ForwardOffset;
+        finalPos += Vector3.up * camera_UpOffset;
 
-        // Rotation
-        float targetRotX = camera_RotationX_Offset_Normal - camera_RotationX_Offset_NormalOffset;
+        // Smooth movement of the cameraOffset
+        cameraOffset.transform.position = Vector3.Lerp(
+            cameraOffset.transform.position,
+            finalPos,
+            transitionSpeed * Time.deltaTime
+        );
+
+        // -------- Rotation with "close camera" blending --------
+        float closeBlendStart = 0.8f;
+        float t = Mathf.InverseLerp(minDistance, closeBlendStart, currentDistance);
+        float blendedRotX = Mathf.Lerp(camera_RotationX_Offset_Close, camera_RotationX_Offset_Normal, t);
+        float targetRotX = blendedRotX - camera_RotationX_Offset_NormalOffset;
+
         cameraOffset.transform.localEulerAngles = Vector3.Lerp(
             cameraOffset.transform.localEulerAngles,
             new Vector3(targetRotX, 0, 0),
@@ -96,18 +136,10 @@ public class CameraArm : MonoBehaviour
         );
 
         // Debug
-        DrawSphereCast(transform.position, sphereRadius, direction, desiredDistance, Color.cyan, closestRelevantHit);
+        DrawSphereCast(playerPos, sphereRadius, castDir, fullDistance, Color.cyan, hasHit ? hit : (RaycastHit?)null);
     }
 
-
-
-
-
-
-
-
     //--------------------
-
     // Debug visualization
     void DrawSphereCast(Vector3 origin, float radius, Vector3 direction, float maxDistance, Color color, RaycastHit? closestHit = null)
     {
