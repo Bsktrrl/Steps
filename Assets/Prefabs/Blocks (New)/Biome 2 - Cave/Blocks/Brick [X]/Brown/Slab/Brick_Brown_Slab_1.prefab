@@ -48,9 +48,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4386702243421695617, guid: 63c1ca4446c377a47ac3b3f82be3de1c, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: -1440430433238934552, guid: 63c1ca4446c377a47ac3b3f82be3de1c, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.32
+      objectReference: {fileID: 0}
+    - target: {fileID: -1092165937886027071, guid: 63c1ca4446c377a47ac3b3f82be3de1c, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 425234292164916212, guid: 63c1ca4446c377a47ac3b3f82be3de1c, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 637990126501393004, guid: 63c1ca4446c377a47ac3b3f82be3de1c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -59,6 +71,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 63c1ca4446c377a47ac3b3f82be3de1c, type: 3}
       propertyPath: m_Name
       value: Brick_Brown_Slab_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 63c1ca4446c377a47ac3b3f82be3de1c, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3845276879449760626, guid: 63c1ca4446c377a47ac3b3f82be3de1c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -154,6 +170,7 @@ MonoBehaviour:
   movementCost_Temp: 0
   movementCost: 1
   movementSpeed: 5
+  movementState: 0
   stepCostText_Color: {r: 0.5568628, g: 0.69803923, b: 0.7058824, a: 1}
   stepCostText_ColorUnder: {r: 0, g: 0, b: 0, a: 1}
   stepSound_Volume: 1
@@ -195,9 +212,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 697885528836311416}
     m_Modifications:
+    - target: {fileID: 365643882158083748, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_Name
       value: Number_Parent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7379288899374920280, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_LocalPosition.x

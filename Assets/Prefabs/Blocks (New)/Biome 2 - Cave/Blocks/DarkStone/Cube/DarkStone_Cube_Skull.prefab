@@ -8,9 +8,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7564394377100366904}
     m_Modifications:
+    - target: {fileID: 365643882158083748, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_Name
       value: Number_Parent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7379288899374920280, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -110,9 +118,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7251017365083226034, guid: 3f9a41a18eeb4414dacbb88cf7534ca0, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -4853195954645459376, guid: 3f9a41a18eeb4414dacbb88cf7534ca0, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3f9a41a18eeb4414dacbb88cf7534ca0, type: 3}
       propertyPath: m_Name
       value: DarkStone_Cube_Skull
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3f9a41a18eeb4414dacbb88cf7534ca0, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5800209794756151163, guid: 3f9a41a18eeb4414dacbb88cf7534ca0, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -204,6 +228,7 @@ MonoBehaviour:
   movementCost_Temp: 0
   movementCost: 1
   movementSpeed: 4
+  movementState: 0
   stepCostText_Color: {r: 0.46666667, g: 0.49019608, b: 0.49019608, a: 1}
   stepCostText_ColorUnder: {r: 0, g: 0, b: 0, a: 0}
   stepSound_Volume: 0

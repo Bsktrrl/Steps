@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 6839813559641171305}
     m_Modifications:
     - target: {fileID: 365643882158083748, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 365643882158083748, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -19,6 +23,10 @@ PrefabInstance:
     - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_Name
       value: Number_Parent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7379288899374920280, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -126,6 +134,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7892706810621602850, guid: 90a034402d03e034f926aab96647bfcf, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: -2757618388915023108, guid: 90a034402d03e034f926aab96647bfcf, type: 3}
       propertyPath: m_LocalScale.y
       value: 1
@@ -141,10 +153,22 @@ PrefabInstance:
     - target: {fileID: -1583511858033642305, guid: 90a034402d03e034f926aab96647bfcf, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1411996041855735377, guid: 90a034402d03e034f926aab96647bfcf, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -498875741889797893, guid: 90a034402d03e034f926aab96647bfcf, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 90a034402d03e034f926aab96647bfcf, type: 3}
       propertyPath: m_Name
       value: SwampWaterCube_Under
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 90a034402d03e034f926aab96647bfcf, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7628043701673047164, guid: 90a034402d03e034f926aab96647bfcf, type: 3}
       propertyPath: m_LocalScale.y
@@ -247,6 +271,7 @@ MonoBehaviour:
   movementCost_Temp: 0
   movementCost: 1
   movementSpeed: 4
+  movementState: 0
   stepCostText_Color: {r: 0.61958236, g: 0.4729797, b: 0.8584906, a: 1}
   stepCostText_ColorUnder: {r: 0, g: 0, b: 0, a: 0}
   stepSound_Volume: 0.5

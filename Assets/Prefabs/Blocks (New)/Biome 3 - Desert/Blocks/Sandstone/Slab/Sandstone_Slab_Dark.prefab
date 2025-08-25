@@ -8,9 +8,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7913594230077357300}
     m_Modifications:
+    - target: {fileID: 365643882158083748, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_Name
       value: Number_Parent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7379288899374920280, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -110,6 +118,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2186446098164853715, guid: bb5cd1fabbd328a49ad2e362858e269f, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 77397981040659823, guid: bb5cd1fabbd328a49ad2e362858e269f, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.32
@@ -118,9 +130,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sandstone_Slab_Dark
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bb5cd1fabbd328a49ad2e362858e269f, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440015270585301633, guid: bb5cd1fabbd328a49ad2e362858e269f, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 2794856083194695106, guid: bb5cd1fabbd328a49ad2e362858e269f, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718285740836244405, guid: bb5cd1fabbd328a49ad2e362858e269f, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6122972143652873086, guid: bb5cd1fabbd328a49ad2e362858e269f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -216,6 +240,7 @@ MonoBehaviour:
   movementCost_Temp: 0
   movementCost: 1
   movementSpeed: 4
+  movementState: 0
   stepCostText_Color: {r: 0.99607843, g: 0.85882354, b: 0.5137255, a: 1}
   stepCostText_ColorUnder: {r: 0, g: 0, b: 0, a: 1}
   stepSound_Volume: 0

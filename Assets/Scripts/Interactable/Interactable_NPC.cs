@@ -1,4 +1,4 @@
-﻿using Cinemachine;
+﻿using Unity.Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -39,7 +39,7 @@ public class Interactable_NPC : MonoBehaviour
     private Quaternion npcBodyOriginalRotation;
 
     [Header("Camera")]
-    public CinemachineVirtualCamera NPCVirtualCamera;
+    public CinemachineCamera NPCVirtualCamera;
     public GameObject NPCBody;
 
     [Header("DialogueSetup")]
