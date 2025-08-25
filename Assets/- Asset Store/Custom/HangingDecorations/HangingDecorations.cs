@@ -6,7 +6,7 @@ public class HangingDecorations : MonoBehaviour
 {
     Animator anim;
     [SerializeField] [Range(0, 3)] int SwingStrength = 1;
-    [SerializeField] [Range(1, 2)] float SwingSpeed = 1;
+    [SerializeField] [Range(1, 3)] float SwingSpeed = 1;
     float RandomSpeed;
     float RandomSpeedMinMax = 0.15f;
     void Start()
