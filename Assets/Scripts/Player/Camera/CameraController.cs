@@ -12,12 +12,11 @@ public class CameraController : Singleton<CameraController>
 
     [Header("Camera Objects")]
     public GameObject cameraAnchor;
-    [SerializeField] GameObject cameraOffset;
 
     [Header("Cameras")]
-    public CinemachineBrain cinemachineBrain;
-    public CinemachineCamera playerVirtualCamera;
-    public CinemachineCamera focusVirtualCamera;
+    public CinemachineBrain CM_Brain;
+    public CinemachineCamera CM_Player;
+    public CinemachineCamera CM_Other;
 
     [Header("States")]
     public CameraState cameraState;
@@ -34,11 +33,9 @@ public class CameraController : Singleton<CameraController>
     [Header("Positions")]
     [SerializeField] Vector3 cameraAnchor_originalPos;
     [SerializeField] Quaternion cameraAnchor_originalRot;
-    [HideInInspector] public Vector3 cameraOffset_originalPos /*= new Vector3(0, 2.5f, -4.2f)*/;
-    [SerializeField] Quaternion cameraOffset_originalRot;
     float cameraTilt_Ceiling = -17;
 
-    [HideInInspector] public Vector3 cameraOffset_ceilingGrabPos = new Vector3(0, -1f, -4.2f);
+    //[HideInInspector] public Vector3 cameraOffset_ceilingGrabPos = new Vector3(0, -1f, -4.2f);
     float cameraTilt_Original;
 
     [Header("NPC Camera")]
@@ -55,11 +52,6 @@ public class CameraController : Singleton<CameraController>
 
         cameraAnchor_originalPos = cameraAnchor.transform.localPosition;
         cameraAnchor_originalRot = cameraAnchor.transform.rotation;
-
-        cameraOffset_originalPos = cameraOffset.transform.localPosition;
-        cameraOffset_originalRot = cameraOffset.transform.rotation;
-
-        cameraTilt_Original = cameraOffset_originalRot.eulerAngles.x;
 
         AdjustFacingDirection();
     }
@@ -182,8 +174,8 @@ public class CameraController : Singleton<CameraController>
             cameraState = CameraState.GameplayCam;
 
         // Record the starting rotation
-        Vector3 startPosition = cameraOffset.transform.localPosition;
-        Quaternion startRotation = cameraOffset.transform.rotation;
+        Vector3 startPosition = cameraAnchor.transform.localPosition;
+        Quaternion startRotation = cameraAnchor.transform.rotation;
 
         // Calculate the target rotation
         Vector3 endPosition = new Vector3();
@@ -191,12 +183,11 @@ public class CameraController : Singleton<CameraController>
 
         if (cameraState == CameraState.GameplayCam)
         {
-            endPosition = cameraOffset_originalPos;
             endRotation = Quaternion.Euler(cameraTilt_Original, angle, 0);
         }
         else if (cameraState == CameraState.CeilingCam)
         {
-            endPosition = cameraOffset_ceilingGrabPos;
+            //endPosition = cameraOffset_ceilingGrabPos;
             endRotation = Quaternion.Euler(cameraTilt_Ceiling, angle, 0);
         }
 
@@ -209,15 +200,15 @@ public class CameraController : Singleton<CameraController>
             {
                 elapsed += Time.deltaTime;
                 float t = Mathf.Clamp01(elapsed / rotationDuration_Ceiling); // Normalize the time
-                cameraOffset.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
-                cameraOffset.transform.rotation = Quaternion.Lerp(startRotation, endRotation, t);
+                cameraAnchor.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
+                cameraAnchor.transform.rotation = Quaternion.Lerp(startRotation, endRotation, t);
                 yield return null; // Wait for the next frame
             }
         }
 
         // Ensure the final rotation is set exactly
-        cameraOffset.transform.localPosition = endPosition;
-        cameraOffset.transform.rotation = endRotation;
+        cameraAnchor.transform.localPosition = endPosition;
+        cameraAnchor.transform.rotation = endRotation;
 
         //SetBlockDetectorDirection();
         AdjustFacingDirection();
@@ -234,9 +225,6 @@ public class CameraController : Singleton<CameraController>
         cameraState = CameraState.GameplayCam;
 
         cameraAnchor.transform.rotation = Quaternion.Euler(cameraAnchor_originalRot.eulerAngles.x, 0, 0);
-
-        cameraOffset.transform.localPosition = cameraOffset_originalPos;
-        cameraOffset.transform.rotation = cameraOffset_originalRot;
 
         cameraAnchor.transform.localPosition = cameraAnchor_originalPos;
         cameraAnchor.transform.rotation = cameraAnchor_originalRot;
@@ -272,9 +260,6 @@ public class CameraController : Singleton<CameraController>
                 cameraAnchor.transform.rotation = Quaternion.Euler(0, 0, 0);
                 break;
         }
-
-        cameraOffset.transform.localPosition = cameraOffset_originalPos;
-        cameraOffset.transform.rotation = cameraOffset_originalRot;
 
         cameraState = CameraState.GameplayCam;
 
@@ -421,49 +406,49 @@ public class CameraController : Singleton<CameraController>
 
     public IEnumerator StartVirtualCameraBlend_In()
     {
-        if (playerVirtualCamera)
+        if (CM_Player)
         {
-            playerVirtualCamera.Priority.Value = -10;
+            CM_Player.Priority.Value = -10;
         }
-        if (focusVirtualCamera)
+        if (CM_Other)
         {
-            focusVirtualCamera.Priority.Value = 10;
+            CM_Other.Priority.Value = 10;
         }
 
         if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Can)
         {
-            cinemachineBrain.DefaultBlend.Time = npcMovementTimer;
-            yield return new WaitForSeconds(cinemachineBrain.DefaultBlend.Time + 0.15f);
+            CM_Brain.DefaultBlend.Time = npcMovementTimer;
+            yield return new WaitForSeconds(CM_Brain.DefaultBlend.Time + 0.15f);
         }
         else if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Cannot)
         {
-            cinemachineBrain.DefaultBlend.Time = 0;
+            CM_Brain.DefaultBlend.Time = 0;
             yield return new WaitForSeconds(0 + 0.35f);
         }
     }
     public IEnumerator StartVirtualCameraBlend_Out()
     {
-        if (focusVirtualCamera)
+        if (CM_Other)
         {
-            focusVirtualCamera.Priority.Value = -10;
+            CM_Other.Priority.Value = -10;
         }
-        if (playerVirtualCamera)
+        if (CM_Player)
         {
-            playerVirtualCamera.Priority.Value = 10;
+            CM_Player.Priority.Value = 10;
         }
 
         yield return null;
 
         if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Can)
         {
-            cinemachineBrain.DefaultBlend.Time = npcMovementTimer;
+            CM_Brain.DefaultBlend.Time = npcMovementTimer;
         }
         else if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Cannot)
         {
-            cinemachineBrain.DefaultBlend.Time = 0;
+            CM_Brain.DefaultBlend.Time = 0;
         }
 
-        yield return new WaitUntil(() => cinemachineBrain.IsBlending == false);
+        yield return new WaitUntil(() => CM_Brain.IsBlending == false);
     }
 }
 public enum CameraState

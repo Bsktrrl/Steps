@@ -36,7 +36,7 @@ public class Interactable_NPC_ColliderTrigger : MonoBehaviour
                 ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, MessageManager.Instance.Show_Message(MessageManager.Instance.interact_Talk_Message));
                 parentScript.canInteract = true;
 
-                CameraController.Instance.focusVirtualCamera = parentScript.NPCVirtualCamera;
+                CameraController.Instance.CM_Other = parentScript.NPCVirtualCamera;
             }
         }
         else
@@ -65,14 +65,14 @@ public class Interactable_NPC_ColliderTrigger : MonoBehaviour
                 ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, MessageManager.Instance.Show_Message(MessageManager.Instance.interact_Talk_Message));
                 parentScript.canInteract = true;
 
-                CameraController.Instance.focusVirtualCamera = parentScript.NPCVirtualCamera;
+                CameraController.Instance.CM_Other = parentScript.NPCVirtualCamera;
             }
             else
             {
                 ButtonMessages.Instance.HideButtonMessage();
                 parentScript.canInteract = false;
 
-                CameraController.Instance.focusVirtualCamera = null;
+                CameraController.Instance.CM_Other = null;
             }
         }
         else
@@ -89,7 +89,7 @@ public class Interactable_NPC_ColliderTrigger : MonoBehaviour
             ButtonMessages.Instance.HideButtonMessage();
             parentScript.canInteract = false;
 
-            CameraController.Instance.focusVirtualCamera = null;
+            CameraController.Instance.CM_Other = null;
         }
         else
         {
