@@ -2777,7 +2777,7 @@ MonoBehaviour:
     DistanceLimit: 4
     MinimumOcclusionTime: 0.25
     CameraRadius: 0.3
-    Strategy: 2
+    Strategy: 0
     MaximumEffort: 2
     SmoothingTime: 0.3
     Damping: 0.5
@@ -2804,7 +2804,8 @@ MonoBehaviour:
   collideAgainst:
     serializedVersion: 2
     m_Bits: 114688
-  castRadius: 0.1
+  smallCastRadius: 0.1
+  largeCastRadius: 0.3
   wallBuffer: 0.2
   minDistance: 0.4
   maxDistance: 4
@@ -2812,6 +2813,7 @@ MonoBehaviour:
   maxArmLength: 2.77
   distanceSmoothTime: 0.1
   armSmoothTime: 0
+  wallNormalYMax: 0.35
 --- !u!1 &2510067465157883575
 GameObject:
   m_ObjectHideFlags: 0
