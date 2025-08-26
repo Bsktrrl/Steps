@@ -96,7 +96,7 @@ public class DialogueManager : Singleton<DialogueManager>
         npcObject.isInteracting = false;
         npcObject.hasTalked = true;
 
-        yield return StartCoroutine(CameraController.Instance.StartVirtualCameraBlend_Out());
+        yield return StartCoroutine(CameraController.Instance.StartVirtualCameraBlend_Out(CameraController.Instance.CM_Other));
 
         ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, MessageManager.Instance.Show_Message(MessageManager.Instance.interact_Talk_Message));
 

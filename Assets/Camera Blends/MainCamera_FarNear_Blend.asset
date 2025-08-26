@@ -13,72 +13,6 @@ MonoBehaviour:
   m_Name: MainCamera_FarNear_Blend
   m_EditorClassIdentifier: 
   CustomBlends:
-  - From: CM_Far
-    To: CM_Mid
-    Blend:
-      Style: 1
-      Time: 0.25
-      CustomCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 0
-  - From: CM_Far
-    To: CM_Close
-    Blend:
-      Style: 1
-      Time: 0.25
-      CustomCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 0
-  - From: CM_Mid
-    To: CM_Close
-    Blend:
-      Style: 1
-      Time: 0.25
-      CustomCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 0
-  - From: CM_Mid
-    To: CM_Far
-    Blend:
-      Style: 1
-      Time: 0.25
-      CustomCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 0
-  - From: CM_Close
-    To: CM_Far
-    Blend:
-      Style: 1
-      Time: 0.25
-      CustomCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 0
-  - From: CM_Close
-    To: CM_Mid
-    Blend:
-      Style: 1
-      Time: 0.25
-      CustomCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 0
   - From: '**ANY CAMERA**'
     To: '**ANY CAMERA**'
     Blend:
@@ -89,7 +23,7 @@ MonoBehaviour:
         m_Curve: []
         m_PreInfinity: 0
         m_PostInfinity: 0
-        m_RotationOrder: 0
+        m_RotationOrder: 4
   - From: '**ANY CAMERA**'
     To: NPC Camera
     Blend:
@@ -100,7 +34,7 @@ MonoBehaviour:
         m_Curve: []
         m_PreInfinity: 0
         m_PostInfinity: 0
-        m_RotationOrder: 0
+        m_RotationOrder: 4
   - From: NPC Camera
     To: '**ANY CAMERA**'
     Blend:
@@ -111,4 +45,26 @@ MonoBehaviour:
         m_Curve: []
         m_PreInfinity: 0
         m_PostInfinity: 0
-        m_RotationOrder: 0
+        m_RotationOrder: 4
+  - From: CM_Main
+    To: CM_CeilingGrab
+    Blend:
+      Style: 1
+      Time: 0.65
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
+  - From: CM_CeilingGrab
+    To: CM_Main
+    Blend:
+      Style: 1
+      Time: 0.65
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4

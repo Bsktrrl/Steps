@@ -4,26 +4,30 @@ using Unity.Cinemachine;
 [RequireComponent(typeof(CinemachineCamera))]
 public class FollowCameraSettings : MonoBehaviour
 {
+    [Header("CailingGrabCamera")]
+    [SerializeField] bool isCeilingGrabCamera;
+
     [Header("Targets & Layers")]
     public Transform followTarget;                 // Camera Anchor
     public LayerMask collideAgainst;               // Walls / environment layers
 
     [Tooltip("Small radius = friendly on stairs")]
-    public float smallCastRadius = 0.10f;
+    public float smallCastRadius = 0.15f;
+
     [Tooltip("Large radius = prevents wall clipping at max distance")]
-    public float largeCastRadius = 0.30f;
+    public float largeCastRadius = 0.3f;
 
     [Tooltip("Extra gap between camera and any hit geometry")]
-    public float wallBuffer = 0.20f;
+    public float wallBuffer = 0.2f;
 
     [Header("Desired Ranges")]
-    public float minDistance = 0.4f;               // <- your values
-    public float maxDistance = 4.0f;
-    public float minArmLength = 0.8f;
+    public float minDistance = 0.4f;
+    public float maxDistance = 4f;
+    public float minArmLength = 0.9f;
     public float maxArmLength = 2.77f;
 
     [Header("Smoothing")]
-    public float distanceSmoothTime = 0.10f;       // <- your values
+    public float distanceSmoothTime = 0.10f;
     public float armSmoothTime = 0.00f;
 
     [Header("Wall/Step Discrimination")]
@@ -35,15 +39,35 @@ public class FollowCameraSettings : MonoBehaviour
     CinemachineCamera vcam;
     float distanceVel, armVel;
 
+
+    //--------------------
+
+
     void Awake()
     {
         vcam = GetComponent<CinemachineCamera>();
         tpf = GetComponent<CinemachineThirdPersonFollow>();
+
         if (!tpf) Debug.LogError("FollowCameraSettings: needs CinemachineThirdPersonFollow on the same object.");
         if (!followTarget) followTarget = vcam.Follow; // fallback
     }
 
+
+    //--------------------
+
+
     void LateUpdate()
+    {
+        CameraMotion();
+
+        RadiusGizmo();
+    }
+
+
+    //--------------------
+
+
+    void CameraMotion()
     {
         if (!tpf || !followTarget) return;
 
@@ -52,6 +76,24 @@ public class FollowCameraSettings : MonoBehaviour
         Vector3 dir = toCam.sqrMagnitude > 1e-6f ? toCam.normalized : -followTarget.forward;
 
         float targetDistance = maxDistance;
+
+        //Change CastRadius on Staris to prevent lagging
+        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() &&
+            (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair || Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope))
+        {
+            smallCastRadius = 0.15f;
+        }
+        else
+        {
+            if (isCeilingGrabCamera)
+            {
+                smallCastRadius = 0.2f;
+            }
+            else
+            {
+                smallCastRadius = 0.4f;
+            }
+        }
 
         // --- PASS 1: small radius (stair-friendly) ---
         if (Physics.SphereCast(origin, smallCastRadius, dir, out RaycastHit smallHit, maxDistance, collideAgainst, QueryTriggerInteraction.Ignore))
@@ -92,21 +134,24 @@ public class FollowCameraSettings : MonoBehaviour
         tpf.VerticalArmLength = newArm;
     }
 
-#if UNITY_EDITOR
-    // Optional gizmo to visualize the two radii from the anchor
-    void OnDrawGizmosSelected()
+    void RadiusGizmo()
     {
-        if (!followTarget) return;
-        Vector3 origin = followTarget.position;
-        Vector3 toCam = (transform.position - origin);
-        if (toCam.sqrMagnitude < 1e-6f) return;
-        Vector3 dir = toCam.normalized;
+        #if UNITY_EDITOR
+        // Optional gizmo to visualize the two radii from the anchor
+        void OnDrawGizmosSelected()
+        {
+            if (!followTarget) return;
+            Vector3 origin = followTarget.position;
+            Vector3 toCam = (transform.position - origin);
+            if (toCam.sqrMagnitude < 1e-6f) return;
+            Vector3 dir = toCam.normalized;
 
-        Gizmos.color = new Color(0f, 0.8f, 1f, 0.25f);
-        Gizmos.DrawWireSphere(origin + dir * Mathf.Min(maxDistance, 0.5f), smallCastRadius);
+            Gizmos.color = new Color(0f, 0.8f, 1f, 0.25f);
+            Gizmos.DrawWireSphere(origin + dir * Mathf.Min(maxDistance, 0.5f), smallCastRadius);
 
-        Gizmos.color = new Color(1f, 0.4f, 0f, 0.20f);
-        Gizmos.DrawWireSphere(origin + dir * Mathf.Min(maxDistance, 0.5f), largeCastRadius);
+            Gizmos.color = new Color(1f, 0.4f, 0f, 0.20f);
+            Gizmos.DrawWireSphere(origin + dir * Mathf.Min(maxDistance, 0.5f), largeCastRadius);
+        }
+        #endif
     }
-#endif
 }
