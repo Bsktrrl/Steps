@@ -4,6 +4,9 @@ using Unity.Cinemachine;
 [RequireComponent(typeof(CinemachineCamera))]
 public class FollowCameraSettings : MonoBehaviour
 {
+    [Header("CailingGrabCamera")]
+    [SerializeField] bool isCeilingGrabCamera;
+
     [Header("Targets & Layers")]
     public Transform followTarget;                 // Camera Anchor
     public LayerMask collideAgainst;               // Walls / environment layers
@@ -82,7 +85,14 @@ public class FollowCameraSettings : MonoBehaviour
         }
         else
         {
-            smallCastRadius = 0.4f;
+            if (isCeilingGrabCamera)
+            {
+                smallCastRadius = 0.2f;
+            }
+            else
+            {
+                smallCastRadius = 0.4f;
+            }
         }
 
         // --- PASS 1: small radius (stair-friendly) ---
