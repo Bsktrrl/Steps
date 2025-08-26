@@ -8,9 +8,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2080834564837774801}
     m_Modifications:
+    - target: {fileID: 365643882158083748, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_Name
       value: Number_Parent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7379288899374920280, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -110,6 +118,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6872575608093900491, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -6722099490818863098, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: -3020648043282393557, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.45
@@ -123,8 +139,16 @@ PrefabInstance:
       value: JungleWood_Slab
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3821824851882857797, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5584641881576573271, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_LocalPosition.y
@@ -220,6 +244,7 @@ MonoBehaviour:
   movementCost_Temp: 0
   movementCost: 1
   movementSpeed: 5
+  movementState: 0
   stepCostText_Color: {r: 0.8156863, g: 0.6117647, b: 0.4627451, a: 1}
   stepCostText_ColorUnder: {r: 0, g: 0, b: 0, a: 1}
   stepSound_Volume: 1

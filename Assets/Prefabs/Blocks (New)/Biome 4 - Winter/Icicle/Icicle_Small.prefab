@@ -8,9 +8,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 100000, guid: e0c1ffe74cfb87d439cd7c081e36f831, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: e0c1ffe74cfb87d439cd7c081e36f831, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: e0c1ffe74cfb87d439cd7c081e36f831, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 100006, guid: e0c1ffe74cfb87d439cd7c081e36f831, type: 3}
       propertyPath: m_Name
       value: Icicle_Small
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: e0c1ffe74cfb87d439cd7c081e36f831, type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: e0c1ffe74cfb87d439cd7c081e36f831, type: 3}
       propertyPath: m_LocalPosition.y
@@ -148,3 +164,4 @@ MonoBehaviour:
   endPosHeightOverBlock: 0.44
   isDetectingPlayer: 0
   hasFallen: 0
+  resettingBlock: 0

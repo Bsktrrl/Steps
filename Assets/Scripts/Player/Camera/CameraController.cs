@@ -1,4 +1,4 @@
-using Cinemachine;
+using Unity.Cinemachine;
 using System;
 using System.Collections;
 using UnityEditor.Experimental.GraphView;
@@ -16,8 +16,8 @@ public class CameraController : Singleton<CameraController>
 
     [Header("Cameras")]
     public CinemachineBrain cinemachineBrain;
-    public CinemachineVirtualCamera playerVirtualCamera;
-    public CinemachineVirtualCamera focusVirtualCamera;
+    public CinemachineCamera playerVirtualCamera;
+    public CinemachineCamera focusVirtualCamera;
 
     [Header("States")]
     public CameraState cameraState;
@@ -423,21 +423,21 @@ public class CameraController : Singleton<CameraController>
     {
         if (playerVirtualCamera)
         {
-            playerVirtualCamera.Priority = -10;
+            playerVirtualCamera.Priority.Value = -10;
         }
         if (focusVirtualCamera)
         {
-            focusVirtualCamera.Priority = 10;
+            focusVirtualCamera.Priority.Value = 10;
         }
 
         if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Can)
         {
-            cinemachineBrain.m_DefaultBlend.m_Time = npcMovementTimer;
-            yield return new WaitForSeconds(cinemachineBrain.m_DefaultBlend.m_Time + 0.15f);
+            cinemachineBrain.DefaultBlend.Time = npcMovementTimer;
+            yield return new WaitForSeconds(cinemachineBrain.DefaultBlend.Time + 0.15f);
         }
         else if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Cannot)
         {
-            cinemachineBrain.m_DefaultBlend.m_Time = 0;
+            cinemachineBrain.DefaultBlend.Time = 0;
             yield return new WaitForSeconds(0 + 0.35f);
         }
     }
@@ -445,22 +445,22 @@ public class CameraController : Singleton<CameraController>
     {
         if (focusVirtualCamera)
         {
-            focusVirtualCamera.Priority = -10;
+            focusVirtualCamera.Priority.Value = -10;
         }
         if (playerVirtualCamera)
         {
-            playerVirtualCamera.Priority = 10;
+            playerVirtualCamera.Priority.Value = 10;
         }
 
         yield return null;
 
         if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Can)
         {
-            cinemachineBrain.m_DefaultBlend.m_Time = npcMovementTimer;
+            cinemachineBrain.DefaultBlend.Time = npcMovementTimer;
         }
         else if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Cannot)
         {
-            cinemachineBrain.m_DefaultBlend.m_Time = 0;
+            cinemachineBrain.DefaultBlend.Time = 0;
         }
 
         yield return new WaitUntil(() => cinemachineBrain.IsBlending == false);

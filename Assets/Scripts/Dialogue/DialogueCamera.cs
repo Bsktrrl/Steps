@@ -1,11 +1,11 @@
 using System.Collections;
 using UnityEngine;
-using Cinemachine;
+using Unity.Cinemachine;
 
 public class CameraMover : MonoBehaviour
 {
     [Header("Camera Setup")]
-    public CinemachineVirtualCamera virtualCamera;
+    public CinemachineCamera virtualCamera;
 
     [Header("Scene Targets")]
     public Transform playerTransform; // The object the camera should look at

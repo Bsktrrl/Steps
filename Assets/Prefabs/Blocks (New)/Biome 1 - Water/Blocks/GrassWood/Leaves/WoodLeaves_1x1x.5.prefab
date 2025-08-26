@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8858808806801091786, guid: 54e92cdf9d194024f9077b829b4fc7ed, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 54e92cdf9d194024f9077b829b4fc7ed, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -48,12 +52,53 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7076596879258351287, guid: 54e92cdf9d194024f9077b829b4fc7ed, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 54e92cdf9d194024f9077b829b4fc7ed, type: 3}
       propertyPath: m_Name
       value: WoodLeaves_1x1x.5
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 54e92cdf9d194024f9077b829b4fc7ed, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4719912317066175847, guid: 54e92cdf9d194024f9077b829b4fc7ed, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 54e92cdf9d194024f9077b829b4fc7ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8936966485547224853}
   m_SourcePrefab: {fileID: 100100000, guid: 54e92cdf9d194024f9077b829b4fc7ed, type: 3}
+--- !u!1 &5236722807891650140 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 54e92cdf9d194024f9077b829b4fc7ed, type: 3}
+  m_PrefabInstance: {fileID: 4930872543626943245}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &8936966485547224853
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5236722807891650140}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 0.5}
+  m_Center: {x: 0, y: 0, z: 0}

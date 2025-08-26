@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.32
       objectReference: {fileID: 0}
+    - target: {fileID: -4644941580232583278, guid: db6d6ee2f8e6162418bd3a18b29d158e, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: -863732224847369585, guid: db6d6ee2f8e6162418bd3a18b29d158e, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.32
@@ -63,6 +67,18 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: db6d6ee2f8e6162418bd3a18b29d158e, type: 3}
       propertyPath: m_Name
       value: Clay_Slab_Tile
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: db6d6ee2f8e6162418bd3a18b29d158e, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976060379760083020, guid: db6d6ee2f8e6162418bd3a18b29d158e, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325519041579336194, guid: db6d6ee2f8e6162418bd3a18b29d158e, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -159,6 +175,7 @@ MonoBehaviour:
   movementCost_Temp: 0
   movementCost: 1
   movementSpeed: 4
+  movementState: 0
   stepCostText_Color: {r: 0.90588236, g: 0.73333335, b: 0.5411765, a: 1}
   stepCostText_ColorUnder: {r: 0, g: 0, b: 0, a: 1}
   stepSound_Volume: 0
@@ -195,9 +212,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1628688126250931041}
     m_Modifications:
+    - target: {fileID: 365643882158083748, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_Name
       value: Number_Parent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7379288899374920280, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_LocalPosition.x

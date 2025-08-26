@@ -8,9 +8,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6693624136475967824}
     m_Modifications:
+    - target: {fileID: 365643882158083748, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_Name
       value: Number_Parent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7379288899374920280, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -70,6 +78,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8845327018761007694, guid: 70a2be32fbd02c345a7bbffcb71ff35e, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 70a2be32fbd02c345a7bbffcb71ff35e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -110,9 +122,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7554407962189713643, guid: 70a2be32fbd02c345a7bbffcb71ff35e, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -407552123168672178, guid: 70a2be32fbd02c345a7bbffcb71ff35e, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 70a2be32fbd02c345a7bbffcb71ff35e, type: 3}
       propertyPath: m_Name
       value: Brick_Brown_Slab_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 70a2be32fbd02c345a7bbffcb71ff35e, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2830728379502232507, guid: 70a2be32fbd02c345a7bbffcb71ff35e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -216,6 +240,7 @@ MonoBehaviour:
   movementCost_Temp: 0
   movementCost: 1
   movementSpeed: 5
+  movementState: 0
   stepCostText_Color: {r: 0.5568628, g: 0.69803923, b: 0.7058824, a: 1}
   stepCostText_ColorUnder: {r: 0, g: 0, b: 0, a: 1}
   stepSound_Volume: 1

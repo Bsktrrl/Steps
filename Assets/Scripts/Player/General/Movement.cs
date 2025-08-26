@@ -2654,7 +2654,7 @@ public class Movement : Singleton<Movement>
 
     void CheckIfSwimming()
     {
-        if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water && PlayerHasSwimAbility())
+        if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water && PlayerHasSwimAbility())
         {
             MapManager.Instance.swiftSwimCounter++;
         }

@@ -8,9 +8,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8767048860746802684}
     m_Modifications:
+    - target: {fileID: 365643882158083748, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_Name
       value: Number_Parent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7379288899374920280, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -74,9 +82,25 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.45
       objectReference: {fileID: 0}
+    - target: {fileID: -4116088772182740212, guid: f288b2c54a7460342b8118ed6b9cf2a6, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -3877420800436199040, guid: f288b2c54a7460342b8118ed6b9cf2a6, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -1591166917659690108, guid: f288b2c54a7460342b8118ed6b9cf2a6, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 100006, guid: f288b2c54a7460342b8118ed6b9cf2a6, type: 3}
       propertyPath: m_Name
-      value: Wood_Slab_Light
+      value: GrassWood_Slab_Light
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: f288b2c54a7460342b8118ed6b9cf2a6, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: f288b2c54a7460342b8118ed6b9cf2a6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -216,6 +240,7 @@ MonoBehaviour:
   movementCost_Temp: 0
   movementCost: 1
   movementSpeed: 4
+  movementState: 0
   stepCostText_Color: {r: 0.8207547, g: 0.718194, b: 0.4909042, a: 1}
   stepCostText_ColorUnder: {r: 0, g: 0, b: 0, a: 0}
   stepSound_Volume: 0.6
