@@ -5145,6 +5145,10 @@ PrefabInstance:
       propertyPath: dialogueSheet
       value: 
       objectReference: {fileID: 4900000, guid: 4e455eb617a694544bc31dfe1f2f2735, type: 3}
+    - target: {fileID: 6881982619840242771, guid: 11286cc85c65f7c4781bdb9e54a1f0d9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.15999985
+      objectReference: {fileID: 0}
     - target: {fileID: 8709274858604179017, guid: 11286cc85c65f7c4781bdb9e54a1f0d9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1
@@ -23423,9 +23427,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3637953034321968370, guid: c37ded40128893c43a1efc478c22e084, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2089922421}
-    - targetCorrespondingSourceObject: {fileID: 3637953034321968370, guid: c37ded40128893c43a1efc478c22e084, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2089922423}
   m_SourcePrefab: {fileID: 100100000, guid: c37ded40128893c43a1efc478c22e084, type: 3}
 --- !u!4 &1766007764 stripped
 Transform:
@@ -26516,27 +26517,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 486e5554dfa7b0f44addd90135632f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!65 &2089922423
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2089922419}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2.0619977, y: 2.0430763, z: 1}
-  m_Center: {x: 0.0020475388, y: 0.00356706, z: -1.3417068e-18}
 --- !u!1001 &2091406623
 PrefabInstance:
   m_ObjectHideFlags: 0
