@@ -17,7 +17,9 @@ public class CameraController : Singleton<CameraController>
     public CinemachineBrain CM_Brain;
     public CinemachineCamera CM_Player;
     public CinemachineCamera CM_Player_CeilingGrab;
+    public CinemachineCamera CM_UnderCeiling;
     public CinemachineCamera CM_Other;
+
 
     [Header("States")]
     public CameraState cameraState;
@@ -26,7 +28,6 @@ public class CameraController : Singleton<CameraController>
 
     [Header("Parameters")]
     float rotationDuration_Movement = 0.35f;
-    float rotationDuration_Ceiling = 0.5f;
     float waitDelay = 0.05f;
     public bool isRotating;
     public bool isCeilingRotating;

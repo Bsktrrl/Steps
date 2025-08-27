@@ -40,6 +40,11 @@ public class FollowCameraSettings : MonoBehaviour
     float distanceVel, armVel;
 
 
+    [SerializeField] GameObject underCeilingNavigatingPoint;
+    RaycastHit hit;
+    [SerializeField] float sphereRadius = 0.2f;
+
+
     //--------------------
 
 
@@ -56,8 +61,17 @@ public class FollowCameraSettings : MonoBehaviour
     //--------------------
 
 
+    private void Update()
+    {
+        
+    }
     void LateUpdate()
     {
+        if (!isCeilingGrabCamera)
+        {
+            CheckCeiling();
+        }
+        
         CameraMotion();
 
         RadiusGizmo();
@@ -133,6 +147,78 @@ public class FollowCameraSettings : MonoBehaviour
             : targetArm;
         tpf.VerticalArmLength = newArm;
     }
+
+
+    //--------------------
+
+
+    void CheckCeiling()
+    {
+        //float sphereRadius = 0.3f; // adjust as needed
+
+        if (CheckSphereCast(Vector3.forward) || CheckSphereCast(Vector3.back) || CheckSphereCast(Vector3.left) || CheckSphereCast(Vector3.right))
+        {
+            Vector3 camDir = (CameraController.Instance.CM_UnderCeiling.transform.position - PlayerManager.Instance.playerBody.transform.position).normalized;
+
+            Debug.DrawLine(PlayerManager.Instance.playerBody.transform.position, underCeilingNavigatingPoint.transform.position, Color.yellow);
+
+            float dist = Vector3.Distance(PlayerManager.Instance.playerBody.transform.position, underCeilingNavigatingPoint.transform.position);
+
+            // Check if anything blocks the path to the camera
+            if (Physics.SphereCast(PlayerManager.Instance.playerBody.transform.position, sphereRadius, camDir, out hit, dist))
+            {
+                if (hit.collider.gameObject.layer != collideAgainst)
+                {
+                    Debug.DrawLine(hit.point + Vector3.up * 0.1f, hit.point - Vector3.up * 0.1f, Color.red, 1f);
+                    Debug.DrawLine(hit.point + Vector3.right * 0.1f, hit.point - Vector3.right * 0.1f, Color.red, 1f);
+                    Debug.DrawLine(hit.point + Vector3.forward * 0.1f, hit.point - Vector3.forward * 0.1f, Color.red, 1f);
+
+                    print("1. Horizontal SphereCast hits a block ");
+                }
+                else
+                {
+                    Debug.DrawLine(hit.point + Vector3.up * 0.1f, hit.point - Vector3.up * 0.1f, Color.cyan, 1f);
+                    Debug.DrawLine(hit.point + Vector3.right * 0.1f, hit.point - Vector3.right * 0.1f, Color.cyan, 1f);
+                    Debug.DrawLine(hit.point + Vector3.forward * 0.1f, hit.point - Vector3.forward * 0.1f, Color.cyan, 1f);
+
+                    print("2. Horizontal SphereCast DOES NOT hit a block ");
+                    CameraController.Instance.CM_Player.Priority.Value = -9;
+                    CameraController.Instance.CM_UnderCeiling.Priority.Value = 9;
+                    return;
+                }
+            }
+            else
+            {
+                // Clear sight line
+                print("3. Horizontal SphereCast DOES NOT hit a block ");
+                CameraController.Instance.CM_Player.Priority.Value = -9;
+                CameraController.Instance.CM_UnderCeiling.Priority.Value = 9;
+                return;
+            }
+        }
+
+
+        // Default back to player camera
+        CameraController.Instance.CM_Player.Priority.Value = 9;
+        CameraController.Instance.CM_UnderCeiling.Priority.Value = -9;
+    }
+
+    bool CheckSphereCast(Vector3 dir)
+    {
+        if (Physics.SphereCast(PlayerManager.Instance.playerBody.transform.position + (dir * 0.6f), sphereRadius * 2, Vector3.up, out hit, 1))
+        {
+            if (hit.collider.TryGetComponent<BlockInfo>(out _))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    //--------------------
+
 
     void RadiusGizmo()
     {

@@ -14,17 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CustomBlends:
   - From: '**ANY CAMERA**'
-    To: '**ANY CAMERA**'
-    Blend:
-      Style: 1
-      Time: 0.25
-      CustomCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 4
-  - From: '**ANY CAMERA**'
     To: NPC Camera
     Blend:
       Style: 1
@@ -62,6 +51,50 @@ MonoBehaviour:
     Blend:
       Style: 1
       Time: 0.65
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
+  - From: CM_UnderCeiling
+    To: CM_CeilingGrab
+    Blend:
+      Style: 1
+      Time: 0.65
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
+  - From: CM_CeilingGrab
+    To: CM_UnderCeiling
+    Blend:
+      Style: 1
+      Time: 0.65
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
+  - From: CM_Main
+    To: CM_UnderCeiling
+    Blend:
+      Style: 1
+      Time: 0.25
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
+  - From: CM_UnderCeiling
+    To: CM_Main
+    Blend:
+      Style: 1
+      Time: 0.25
       CustomCurve:
         serializedVersion: 2
         m_Curve: []
