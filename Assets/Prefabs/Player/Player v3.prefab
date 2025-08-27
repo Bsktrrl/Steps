@@ -2437,6 +2437,11 @@ MonoBehaviour:
   distanceSmoothTime: 0.1
   armSmoothTime: 0
   wallNormalYMax: 0.35
+  hasFOV: 0
+  closeFOV: 65
+  farFOV: 58
+  fovLerpThreshold: 0.2
+  fovSmoothTime: 0.08
   underCeilingNavigatingPoint: {fileID: 7907695831080925989}
   sphereRadius: 0.2
 --- !u!1 &1971463595013229337
@@ -2809,13 +2814,18 @@ MonoBehaviour:
   smallCastRadius: 0.4
   largeCastRadius: 0.3
   wallBuffer: 0.4
-  minDistance: 0.48
+  minDistance: 0.51
   maxDistance: 4
-  minArmLength: 0.9
+  minArmLength: 0.8
   maxArmLength: 2.77
   distanceSmoothTime: 0.1
   armSmoothTime: 0
   wallNormalYMax: 0.35
+  hasFOV: 1
+  closeFOV: 65
+  farFOV: 58
+  fovLerpThreshold: 0.2
+  fovSmoothTime: 0
   underCeilingNavigatingPoint: {fileID: 7907695831080925989}
   sphereRadius: 0.2
 --- !u!1 &2510067465157883575
@@ -10281,6 +10291,11 @@ MonoBehaviour:
   distanceSmoothTime: 0.1
   armSmoothTime: 0
   wallNormalYMax: 0.35
+  hasFOV: 0
+  closeFOV: 65
+  farFOV: 58
+  fovLerpThreshold: 0.2
+  fovSmoothTime: 0.08
   underCeilingNavigatingPoint: {fileID: 7907695831080925989}
   sphereRadius: 0.2
 --- !u!1 &8606395734974603623
