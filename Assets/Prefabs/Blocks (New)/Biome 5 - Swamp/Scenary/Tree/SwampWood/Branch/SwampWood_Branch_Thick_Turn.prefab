@@ -110,26 +110,50 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -408347838106708925, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 6318498742700993738, guid: 4a75effb9378be24ca2389e13a0d03e8, type: 3}
     - target: {fileID: 919132149155446097, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
       propertyPath: m_Name
-      value: ColdWood_Branch_Thick_Turn
+      value: SwampWood_Branch_Thick_Turn
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
       propertyPath: m_Layer
       value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 3201495743548560850, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
+      propertyPath: m_Name
+      value: SwampWood_Branch_L_LOD1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3201495743548560850, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
       propertyPath: m_Layer
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4674231361218785462, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
+      propertyPath: m_Name
+      value: SwampWood_Branch_L_LOD0
       objectReference: {fileID: 0}
     - target: {fileID: 4674231361218785462, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
       propertyPath: m_Layer
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 4875119096820784288, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 2655769447446143494, guid: 4a75effb9378be24ca2389e13a0d03e8, type: 3}
+    - target: {fileID: 5157657864718262668, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
+      propertyPath: m_Name
+      value: SwampWood_Branch_L_LOD2
+      objectReference: {fileID: 0}
     - target: {fileID: 5157657864718262668, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
       propertyPath: m_Layer
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 6414119670256838010, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -5454938295155496877, guid: 4a75effb9378be24ca2389e13a0d03e8, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -243,7 +267,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 1
-  blockElement: 14
+  blockElement: 18
   movementCost_Temp: 0
   movementCost: 1
   movementSpeed: 4
@@ -288,6 +312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a669fcdc07ee6648a90076409d12b3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collidersList: []
 --- !u!4 &8945167278369547532 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d8218b25ae756444c899c3faf34d727e, type: 3}

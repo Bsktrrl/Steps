@@ -434,9 +434,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -9041497242991192576, guid: 91fbb4ea4c936e34ebd98e654982b519, type: 3}
+      propertyPath: m_Name
+      value: SwampWood_Branch_Straight_LOD0
+      objectReference: {fileID: 0}
+    - target: {fileID: -9041497242991192576, guid: 91fbb4ea4c936e34ebd98e654982b519, type: 3}
       propertyPath: m_Layer
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: -9011518463833079584, guid: 91fbb4ea4c936e34ebd98e654982b519, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 7149799456824713694, guid: 0f35a2cf7289daa4193c2ac1a446f71a, type: 3}
     - target: {fileID: -8679921383154817045, guid: 91fbb4ea4c936e34ebd98e654982b519, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -477,13 +485,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6846694118114295210, guid: 91fbb4ea4c936e34ebd98e654982b519, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 2150589335195801155, guid: 0f35a2cf7289daa4193c2ac1a446f71a, type: 3}
+    - target: {fileID: -2661492473577789166, guid: 91fbb4ea4c936e34ebd98e654982b519, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 8987347600134943558, guid: 0f35a2cf7289daa4193c2ac1a446f71a, type: 3}
+    - target: {fileID: -2448031188962099274, guid: 91fbb4ea4c936e34ebd98e654982b519, type: 3}
+      propertyPath: m_Name
+      value: SwampWood_Branch_Straight_LOD2
+      objectReference: {fileID: 0}
     - target: {fileID: -2448031188962099274, guid: 91fbb4ea4c936e34ebd98e654982b519, type: 3}
       propertyPath: m_Layer
       value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 91fbb4ea4c936e34ebd98e654982b519, type: 3}
       propertyPath: m_Name
-      value: ColdWood_Branch_Thick_Vertical
+      value: SwampWood_Branch_Thick_Vertical
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 91fbb4ea4c936e34ebd98e654982b519, type: 3}
       propertyPath: m_Layer
@@ -492,6 +512,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 91fbb4ea4c936e34ebd98e654982b519, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1674856722836011803, guid: 91fbb4ea4c936e34ebd98e654982b519, type: 3}
+      propertyPath: m_Name
+      value: SwampWood_Branch_Straight_LOD1
       objectReference: {fileID: 0}
     - target: {fileID: 1674856722836011803, guid: 91fbb4ea4c936e34ebd98e654982b519, type: 3}
       propertyPath: m_Layer
@@ -594,7 +618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 1
-  blockElement: 14
+  blockElement: 18
   movementCost_Temp: 0
   movementCost: 1
   movementSpeed: 4

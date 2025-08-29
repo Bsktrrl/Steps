@@ -13,6 +13,8 @@ public class Interactable_Pickup : MonoBehaviour
     public static event Action Action_AbilityPickupGot;
 
     public static event Action Action_FlippersGot;
+    public static event Action Action_JumpingGot;
+
 
     MapManager mapManager;
 
@@ -217,6 +219,7 @@ public class Interactable_Pickup : MonoBehaviour
             case Abilities.Jumping:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Jumping = true;
                 Action_AbilityPickupGot_isActive();
+                Action_JumpingGot?.Invoke();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Jumping = true;
                 break;
             case Abilities.GrapplingHook:
