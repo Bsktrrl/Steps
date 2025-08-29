@@ -2437,11 +2437,6 @@ MonoBehaviour:
   distanceSmoothTime: 0.1
   armSmoothTime: 0
   wallNormalYMax: 0.35
-  hasFOV: 0
-  closeFOV: 65
-  farFOV: 58
-  fovLerpThreshold: 0.2
-  fovSmoothTime: 0.08
   underCeilingNavigatingPoint: {fileID: 7907695831080925989}
   sphereRadius: 0.2
 --- !u!1 &1971463595013229337
@@ -2821,11 +2816,6 @@ MonoBehaviour:
   distanceSmoothTime: 0.1
   armSmoothTime: 0
   wallNormalYMax: 0.35
-  hasFOV: 1
-  closeFOV: 65
-  farFOV: 58
-  fovLerpThreshold: 0.2
-  fovSmoothTime: 0
   underCeilingNavigatingPoint: {fileID: 7907695831080925989}
   sphereRadius: 0.2
 --- !u!1 &2510067465157883575
@@ -10291,11 +10281,6 @@ MonoBehaviour:
   distanceSmoothTime: 0.1
   armSmoothTime: 0
   wallNormalYMax: 0.35
-  hasFOV: 0
-  closeFOV: 65
-  farFOV: 58
-  fovLerpThreshold: 0.2
-  fovSmoothTime: 0.08
   underCeilingNavigatingPoint: {fileID: 7907695831080925989}
   sphereRadius: 0.2
 --- !u!1 &8606395734974603623
@@ -12614,6 +12599,30 @@ PrefabInstance:
       propertyPath: menuState_ToSelect
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 6045025753406852104, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: german
+      value: Kamera Rotation
+      objectReference: {fileID: 0}
+    - target: {fileID: 6045025753406852104, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: korean
+      value: "\uCE74\uBA54\uB77C \uD68C\uC804"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6045025753406852104, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: chinese
+      value: "\u76F8\u673A\u65CB\u8F6C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6045025753406852104, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: english
+      value: Camera Rotation
+      objectReference: {fileID: 0}
+    - target: {fileID: 6045025753406852104, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: japanese
+      value: "\u30AB\u30E1\u30E9\u306E\u56DE\u8EE2"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6045025753406852104, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: norwegian
+      value: Kamerarotasjon
+      objectReference: {fileID: 0}
     - target: {fileID: 6080151433441170263, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: menuState_ToSelect
       value: 8
@@ -12661,6 +12670,10 @@ PrefabInstance:
     - target: {fileID: 7868915439475625287, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: menuState_ToSelect
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7942541217102777832, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_Name
+      value: Camera Rotation
       objectReference: {fileID: 0}
     - target: {fileID: 8008974945670048503, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: menuState_ToSelect
