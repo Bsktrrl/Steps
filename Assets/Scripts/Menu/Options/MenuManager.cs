@@ -147,7 +147,8 @@ public enum StepDisplay
 {
     Icon,
     Number,
-    NumberIcon
+    NumberIcon,
+    None
 }
 public enum CameraMotion
 {

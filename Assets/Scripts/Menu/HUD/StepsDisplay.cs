@@ -69,6 +69,8 @@ public class StepsDisplay : MonoBehaviour
                 stepDisplay_Icons.SetActive(true);
                 StepsHUD.Instance.UpdateStepsDisplay();
                 break;
+            case StepDisplay.None:
+                break;
 
             default:
                 break;

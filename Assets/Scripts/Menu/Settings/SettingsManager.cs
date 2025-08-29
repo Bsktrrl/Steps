@@ -40,6 +40,7 @@ public class SettingsManager : Singleton<SettingsManager>
     [SerializeField] Sprite stepsDisplay_Icon_Sprite;
     [SerializeField] Sprite stepsDisplay_Number_Sprite;
     [SerializeField] Sprite stepsDisplay_NumberIcon_Sprite;
+    [SerializeField] Sprite stepsDisplay_None_Sprite;
 
     [Header("Camera Motion")]
     [SerializeField] Image cameraMotionImage;
@@ -304,6 +305,9 @@ public class SettingsManager : Singleton<SettingsManager>
                 settingsData.currentStepDisplay = StepDisplay.NumberIcon;
                 break;
             case StepDisplay.NumberIcon:
+                settingsData.currentStepDisplay = StepDisplay.None;
+                break;
+            case StepDisplay.None:
                 settingsData.currentStepDisplay = StepDisplay.Icon;
                 break;
 
@@ -321,13 +325,16 @@ public class SettingsManager : Singleton<SettingsManager>
         switch (settingsData.currentStepDisplay)
         {
             case StepDisplay.Icon:
-                settingsData.currentStepDisplay = StepDisplay.NumberIcon;
+                settingsData.currentStepDisplay = StepDisplay.None;
                 break;
             case StepDisplay.Number:
                 settingsData.currentStepDisplay = StepDisplay.Icon;
                 break;
             case StepDisplay.NumberIcon:
                 settingsData.currentStepDisplay = StepDisplay.Number;
+                break;
+            case StepDisplay.None:
+                settingsData.currentStepDisplay = StepDisplay.NumberIcon;
                 break;
 
             default:
@@ -351,6 +358,9 @@ public class SettingsManager : Singleton<SettingsManager>
                 break;
             case StepDisplay.NumberIcon:
                 stepsDisplayImage.sprite = stepsDisplay_NumberIcon_Sprite;
+                break;
+            case StepDisplay.None:
+                stepsDisplayImage.sprite = stepsDisplay_None_Sprite;
                 break;
 
             default:
