@@ -71,7 +71,12 @@ public class FollowCameraSettings : MonoBehaviour
         {
             CheckCeiling();
         }
-        
+
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing /*|| Player_CeilingGrab.Instance.isCeilingRotation*/)
+        {
+            CheckIfCeilingGrabbing();
+        }
+
         CameraMotion();
 
         RadiusGizmo();
@@ -201,6 +206,19 @@ public class FollowCameraSettings : MonoBehaviour
         // Default back to player camera
         CameraController.Instance.CM_Player.Priority.Value = 9;
         CameraController.Instance.CM_UnderCeiling.Priority.Value = -9;
+    }
+    void CheckIfCeilingGrabbing()
+    {
+        if (CameraController.Instance.CM_Player_CeilingGrab.GetComponent<CinemachineThirdPersonFollow>().CameraDistance <= 2.75f)
+        {
+            CameraController.Instance.CM_Player.Priority.Value = 9;
+            CameraController.Instance.CM_UnderCeiling.Priority.Value = -9;
+        }
+        else
+        {
+            CameraController.Instance.CM_Player.Priority.Value = -9;
+            CameraController.Instance.CM_UnderCeiling.Priority.Value = 9;
+        }
     }
 
     bool CheckSphereCast(Vector3 dir)
