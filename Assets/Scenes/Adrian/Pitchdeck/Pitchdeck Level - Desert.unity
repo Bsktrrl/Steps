@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.90185034, g: 0.83712775, b: 0.67718947, a: 1}
+  m_IndirectSpecularColor: {r: 0.9018817, g: 0.8371774, b: 0.6772448, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -16351,6 +16351,7 @@ Transform:
   - {fileID: 754689433}
   - {fileID: 1520038402}
   - {fileID: 2105083590}
+  - {fileID: 1979154706}
   - {fileID: 1307857197}
   - {fileID: 1916039676}
   - {fileID: 1213444169}
@@ -28580,13 +28581,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.33909452, y: 0.122649126, z: -0.044640698, w: -0.93165416}
+  m_LocalRotation: {x: 0.044639725, y: 0.93165445, z: -0.33909467, w: 0.12264645}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 14392041}
-  m_LocalEulerAnglesHint: {x: 40, y: -374.999, z: 0}
+  m_LocalEulerAnglesHint: {x: 40, y: -554.999, z: 0}
 --- !u!114 &705507996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76934,6 +76935,68 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
   m_PrefabInstance: {fileID: 1978233257}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1979154705
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 408107628}
+    m_Modifications:
+    - target: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4262541881228351224, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
+      propertyPath: m_Name
+      value: Sand_Cube_Plain (311)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
+--- !u!4 &1979154706 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
+  m_PrefabInstance: {fileID: 1979154705}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1981621573
 PrefabInstance:
