@@ -31,14 +31,14 @@ public class SkinWardrobeButton : MonoBehaviour
         UpdateButtonDisplay();
         IfDefaultSkinButton();
 
+        UpdateButton();
+
         Action_SelectThisSkin += UpdateButton;
-        //DataManager.Action_dataHasLoaded += IfDefaultSkinButton;
 
     }
     private void OnDisable()
     {
         Action_SelectThisSkin -= UpdateButton;
-        //DataManager.Action_dataHasLoaded -= IfDefaultSkinButton;
     }
 
 

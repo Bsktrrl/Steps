@@ -3,14 +3,6 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 
-1. When the player is falling and landing on an EffectBlock, trigger the EffectBlockk effect
-	- Somethines the PlayerObject is set to "BlockStandingOn", which is strange
-2. Make the new "zoom in/out" be functional with CameraMotion OFF in Settings
-4. Make the numbers appear when stopping AND release the movementButton
-	- Now it disappear if moving in to a deadEndBlock and holding in the movementButton
-7. The player isn't performing walking animation after Ascending or Descending (when moving away from the block landed on)
-
-
 
 2.
 Skin Menu:
@@ -75,6 +67,19 @@ __________________
 4.2. Overworld Errors
 - Fix so that the menu operates as intended when pressing/hovering buttons/regions
 
+
+
+--- OTHER STUFF
+
+
+
+1. When the player is falling and landing on an EffectBlock, trigger the EffectBlockk effect
+	- Somethines the PlayerObject is set to "BlockStandingOn", which is strange
+2. Make the numbers appear when stopping AND release the movementButton
+	- Now it disappear if moving in to a deadEndBlock and holding in the movementButton
+3. The player isn't performing walking animation after Ascending or Descending (when moving away from the block landed on)
+4. When Ascending/Descending, the camera zooms in fast, then out, if there is free space. Disable carea when ascending/Descending
+5. Then doing CeilingGrabRotation back to the noraml camera, it is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
 
 
 ---

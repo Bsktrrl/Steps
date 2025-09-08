@@ -17,11 +17,6 @@ public class SkinsManager : Singleton<SkinsManager>
     //--------------------
 
 
-    private void Start()
-    {
-        
-    }
-
     private void OnEnable()
     {
         DataPersistanceManager.Action_NewGame += ClearSkinsWardrobeInfo;
@@ -254,13 +249,6 @@ public class SkinsManager : Singleton<SkinsManager>
 
     void ClearSkinsShopInfo()
     {
-        //if (SkinShopCostManager.skinCostList.Count <= 0)
-        //    skinInfo.skinShopInfo.currentSkinCost = 0;
-        //else
-        //    skinInfo.skinShopInfo.currentSkinCost = SkinShopCostManager.skinCostList[0];
-
-        //skinInfo.skinShopInfo.currentSkinCost = 10;
-
         skinInfo.activeSkinType = SkinType.None;
 
         ClearSkinShop(skinInfo.skinShopInfo.skin_Region1_level1, SkinShopCostManager.skinShopButton_Region1_Level1.GetComponent<SkinShopButtons>());
