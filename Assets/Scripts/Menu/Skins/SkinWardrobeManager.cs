@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 {
+    [Header("Wardrobe Parent")]
+    public GameObject wardrobeParent;
+
     [Header("Colors")]
     public Color inactive_Color;
     public Color bought_Color;
@@ -116,6 +119,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     #endregion
 
+
     //--------------------
 
 
@@ -123,6 +127,11 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     {
         DataManager.Instance.playerStats_Store.itemsGot.essence = 12; //Remove this after testing of Skin Menu
     }
+
+
+    //--------------------
+
+
     private void OnEnable()
     {
         SkinWardrobeButton.Action_SelectThisSkin += UpdatePlayerSkin;

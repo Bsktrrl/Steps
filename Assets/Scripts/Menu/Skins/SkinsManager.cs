@@ -13,6 +13,26 @@ public class SkinsManager : Singleton<SkinsManager>
 
     public SkinInfo skinInfo;
 
+    [SerializeField] PauseMenuManager pauseMenuManager;
+
+    //--------------------
+
+
+    private void Update()
+    {
+        if (pauseMenuManager && SkinWardrobeCostManager)
+        {
+            if (SkinWardrobeCostManager.GetComponent<SkinWardrobeManager>().wardrobeParent.activeInHierarchy)
+            {
+                PauseMenuManager.Instance.levelDisplay_Parent.SetActive(false);
+            }
+            else
+            {
+                PauseMenuManager.Instance.levelDisplay_Parent.SetActive(true);
+            }
+        }
+    }
+
 
     //--------------------
 
