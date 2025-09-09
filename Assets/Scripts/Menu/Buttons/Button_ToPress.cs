@@ -16,17 +16,6 @@ public class Button_ToPress : MonoBehaviour
     [SerializeField] bool showVisualization;
     [SerializeField] Color navigationColor = Color.cyan;
 
-    PauseMenuManager pauseMenuManager;
-
-
-    //--------------------
-
-
-    private void Start()
-    {
-        pauseMenuManager = FindAnyObjectByType<PauseMenuManager>();
-    }
-
 
     //--------------------
 
@@ -79,15 +68,11 @@ public class Button_ToPress : MonoBehaviour
                 EventSystem.current.SetSelectedGameObject(MenuManager.Instance.wardrobeMenuButton);
                 MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Wardrobe;
                 MenuManager.Instance.ChangeMenuCategory(MenuCategories.Wardrobe);
-                //if (MenuManager.Instance.wardrobeMenuButton.activeInHierarchy)
-                //    StartCoroutine(MenuManager.Instance.wardrobeMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
                 break;
             case MenuState.Options_Menu:
                 EventSystem.current.SetSelectedGameObject(MenuManager.Instance.settingsMenuButton);
                 MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Settings;
                 MenuManager.Instance.ChangeMenuCategory(MenuCategories.Settings);
-                //if (MenuManager.Instance.settingsMenuButton.activeInHierarchy)
-                //    StartCoroutine(MenuManager.Instance.settingsMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
                 break;
 
             case MenuState.Pause_Menu_Main:
@@ -100,8 +85,6 @@ public class Button_ToPress : MonoBehaviour
                 EventSystem.current.SetSelectedGameObject(MenuManager.Instance.wardrobeMenuButton);
                 MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Wardrobe;
                 MenuManager.Instance.ChangeMenuCategory(MenuCategories.Wardrobe);
-                //if (MenuManager.Instance.wardrobeMenuButton.activeInHierarchy)
-                //    StartCoroutine(MenuManager.Instance.wardrobeMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
                 break;
             case MenuState.Pause_Menu_Options:
                 HideAllPauseMenus();
@@ -109,8 +92,6 @@ public class Button_ToPress : MonoBehaviour
                 EventSystem.current.SetSelectedGameObject(MenuManager.Instance.settingsMenuButton);
                 MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Settings;
                 MenuManager.Instance.ChangeMenuCategory(MenuCategories.Settings);
-                //if (MenuManager.Instance.settingsMenuButton.activeInHierarchy)
-                //    StartCoroutine(MenuManager.Instance.settingsMenuButton.GetComponent<MenuCategorySelected>().WatchSelection());
                 break;
 
             default:

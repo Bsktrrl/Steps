@@ -44,7 +44,7 @@ public class PlayerStatsDisplay : MonoBehaviour
                     stepsAmountDisplay.text = 0.ToString();
 
                 if (gameObject.GetComponent<PlayerStats>().stats.itemsGot != null)
-                    essenceAmountDisplay.text = gameObject.GetComponent<PlayerStats>().stats.itemsGot.essence.ToString();
+                    essenceAmountDisplay.text = gameObject.GetComponent<PlayerStats>().stats.itemsGot.essence_Max.ToString() + "[" + gameObject.GetComponent<PlayerStats>().stats.itemsGot.essence_Current.ToString() + "]";
                 else
                     essenceAmountDisplay.text = 0.ToString();
 

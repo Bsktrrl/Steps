@@ -9,18 +9,14 @@ public class SkinWardrobeButton : MonoBehaviour
     public static event Action Action_SelectThisSkin;
 
     [Header("General")]
-    public HatType hatType;
     public SkinType skinType;
+    public HatType hatType;
     [SerializeField] int region;
     [SerializeField] int level;
 
-    [Header("Status")]
-    public bool isInactive;
-    public bool isBought;
-    public bool isSelected;
-
     [Header("Components")]
     [SerializeField] Image frame;
+    [SerializeField] GameObject overlay;
 
 
     //--------------------
@@ -28,39 +24,14 @@ public class SkinWardrobeButton : MonoBehaviour
 
     private void OnEnable()
     {
+        Action_SelectThisSkin += DeselectThisButton;
+
         UpdateButtonDisplay();
-        IfDefaultSkinButton();
-
-        UpdateButton();
-
-        Action_SelectThisSkin += UpdateButton;
-
+        UpdateIfDefaultSkin();
     }
     private void OnDisable()
     {
-        Action_SelectThisSkin -= UpdateButton;
-    }
-
-
-    //--------------------
-
-
-    public void IfDefaultSkinButton()
-    {
-        if (skinType == SkinType.Default && region <= 0 && level <= 0)
-        {
-            isInactive = false;
-            isBought = true;
-
-            if (DataManager.Instance.skinsInfo_Store.activeSkinType == SkinType.None)
-            {
-                WardrobeButton_isPressed();
-            }
-            else
-            {
-                isSelected = false;
-            }
-        }
+        Action_SelectThisSkin -= DeselectThisButton;
     }
 
 
@@ -69,26 +40,43 @@ public class SkinWardrobeButton : MonoBehaviour
 
     public void WardrobeButton_isPressed()
     {
-        if (isBought && !isSelected)
-        {
-            SkinsManager.Instance.skinInfo.activeSkinType = skinType;
-            SkinsManager.Instance.SaveData();
+        WardrobeSkinState tempState = SkinWardrobeManager.Instance.GetSkinSaveData(region, level);
 
-            Action_SelectThisSkin?.Invoke(); //For updating all other buttons when one is selected
-        }
-    }
-    void UpdateButton()
-    {
-        if (SkinsManager.Instance.skinInfo.activeSkinType == skinType)
+        SkinsManager.Instance.skinInfo.activeSkinType = skinType;
+
+        switch (tempState)
         {
-            isSelected = true;
-        }
-        else
-        {
-            isSelected = false;
+            case WardrobeSkinState.Inactive:
+                //If inactive, stay inactive
+                break;
+            case WardrobeSkinState.Available:
+                //Check condition to see if button is bought
+                if (PlayerStats.Instance.stats.itemsGot.essence_Current >= SkinWardrobeManager.Instance.skinCost)
+                {
+                    PlayerStats.Instance.stats.itemsGot.essence_Current -= SkinWardrobeManager.Instance.skinCost;
+                    SkinWardrobeManager.Instance.UpdateEssenceDisplay();
+
+                    SkinWardrobeManager.Instance.SetSkinSaveData(region, level, WardrobeSkinState.Bought);
+                }
+                break;
+            case WardrobeSkinState.Bought:
+                //Check condition to see if button is selected
+                Action_SelectThisSkin?.Invoke();
+
+                SkinWardrobeManager.Instance.SetSkinSaveData(region, level, WardrobeSkinState.Selected);
+                break;
+            case WardrobeSkinState.Selected:
+                break;
+
+            default:
+                break;
         }
 
         UpdateButtonDisplay();
+
+        SkinWardrobeManager.Instance.UpdatePlayerBodyDisplay();
+
+        SkinsManager.Instance.SaveData();
     }
 
 
@@ -97,213 +85,29 @@ public class SkinWardrobeButton : MonoBehaviour
 
     public void UpdateButtonDisplay()
     {
-        switch (region)
+        WardrobeSkinState tempState = SkinWardrobeManager.Instance.GetSkinSaveData(region, level);
+
+        switch (tempState)
         {
-            case 1:
-                switch (level)
-                {
-                    case 1:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level1);
-                        break;
-                    case 2:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level2);
-                        break;
-                    case 3:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level3);
-                        break;
-                    case 4:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level4);
-                        break;
-                    case 5:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level5);
-                        break;
-                    case 6:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level6);
-                        break;
-
-                    default:
-                        break;
-                }
+            case WardrobeSkinState.Inactive:
+                overlay.SetActive(true);
+                frame.color = SkinWardrobeManager.Instance.inactive_Color;
                 break;
-            case 2:
-                switch (level)
-                {
-                    case 1:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level1);
-                        break;
-                    case 2:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level2);
-                        break;
-                    case 3:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level3);
-                        break;
-                    case 4:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level4);
-                        break;
-                    case 5:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level5);
-                        break;
-                    case 6:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level6);
-                        break;
-
-                    default:
-                        break;
-                }
+            case WardrobeSkinState.Available:
+                overlay.SetActive(false);
+                frame.color = SkinWardrobeManager.Instance.available_Color;
                 break;
-            case 3:
-                switch (level)
-                {
-                    case 1:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level1);
-                        break;
-                    case 2:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level2);
-                        break;
-                    case 3:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level3);
-                        break;
-                    case 4:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level4);
-                        break;
-                    case 5:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level5);
-                        break;
-                    case 6:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level6);
-                        break;
-
-                    default:
-                        break;
-                }
+            case WardrobeSkinState.Bought:
+                overlay.SetActive(false);
+                frame.color = SkinWardrobeManager.Instance.bought_Color;
                 break;
-            case 4:
-                switch (level)
-                {
-                    case 1:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level1);
-                        break;
-                    case 2:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level2);
-                        break;
-                    case 3:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level3);
-                        break;
-                    case 4:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level4);
-                        break;
-                    case 5:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level5);
-                        break;
-                    case 6:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level6);
-                        break;
-
-                    default:
-                        break;
-                }
-                break;
-            case 5:
-                switch (level)
-                {
-                    case 1:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level1);
-                        break;
-                    case 2:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level2);
-                        break;
-                    case 3:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level3);
-                        break;
-                    case 4:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level4);
-                        break;
-                    case 5:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level5);
-                        break;
-                    case 6:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level6);
-                        break;
-
-                    default:
-                        break;
-                }
-                break;
-            case 6:
-                switch (level)
-                {
-                    case 1:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level1);
-                        break;
-                    case 2:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level2);
-                        break;
-                    case 3:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level3);
-                        break;
-                    case 4:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level4);
-                        break;
-                    case 5:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level5);
-                        break;
-                    case 6:
-                        CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level6);
-                        break;
-
-                    default:
-                        break;
-                }
+            case WardrobeSkinState.Selected:
+                overlay.SetActive(false);
+                frame.color = SkinWardrobeManager.Instance.selected_Color;
                 break;
 
             default:
-                CheckState(DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default);
                 break;
-        }
-
-        CheckFrameColor();
-    }
-    void CheckState(SkinWardrobeObject skinWardrobeObject)
-    {
-        if (isSelected)
-            skinWardrobeObject.skin_isSelected = true;
-        else
-            skinWardrobeObject.skin_isSelected = false;
-
-        SkinsManager.Instance.SaveData();
-
-
-        //-----
-
-
-        if (skinWardrobeObject.skin_isInactive)
-            isInactive = true;
-        else
-            isInactive = false;
-
-        if (skinWardrobeObject.skin_isBought)
-            isBought = true;
-        else
-            isBought = false;
-
-        if (skinWardrobeObject.skin_isSelected)
-            isSelected = true;
-        else
-            isSelected = false;
-    }
-    void CheckFrameColor()
-    {
-        if (isSelected)
-        {
-            frame.color = SkinWardrobeManager.Instance.active_Color;
-        }
-        else if (isBought)
-        {
-            frame.color = SkinWardrobeManager.Instance.bought_Color;
-        }
-        else if (isInactive)
-        {
-            frame.color = SkinWardrobeManager.Instance.inactive_Color;
         }
     }
 
@@ -311,10 +115,24 @@ public class SkinWardrobeButton : MonoBehaviour
     //--------------------
 
 
-    public void ClearWardropbeButtonInfo()
+    public void UpdateIfDefaultSkin()
     {
-        isInactive = true;
-        isBought = false;
-        isSelected = false;
+        if (SkinWardrobeManager.Instance.GetSkinSaveData(0, 0) == WardrobeSkinState.Inactive && hatType == HatType.None)
+        {
+            SkinWardrobeManager.Instance.SetSkinSaveData(0, 0, WardrobeSkinState.Selected);
+        }
+    }
+
+
+    //--------------------
+
+
+    void DeselectThisButton()
+    {
+        if (SkinWardrobeManager.Instance.GetSkinSaveData(region, level) == WardrobeSkinState.Selected)
+        {
+            SkinWardrobeManager.Instance.SetSkinSaveData(region, level, WardrobeSkinState.Bought);
+            UpdateButtonDisplay();
+        }
     }
 }

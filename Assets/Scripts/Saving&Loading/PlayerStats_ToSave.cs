@@ -20,7 +20,8 @@ public class Stats
         steps_Max = 7;
         steps_Current = 7;
 
-        itemsGot.essence = 0;
+        itemsGot.essence_Max = 0;
+        itemsGot.essence_Current = 0;
         itemsGot.skin = 0;
 
         abilitiesGot_Permanent.SwimSuit = false;
@@ -52,7 +53,8 @@ public class Stats
 [Serializable]
 public class ItemsGot
 {
-    public int essence = 0;
+    public int essence_Max = 0;
+    public int essence_Current = 0;
     public int skin = 0;
 }
 

@@ -1104,7 +1104,8 @@ MonoBehaviour:
     steps_Max: 5
     steps_Current: 5
     itemsGot:
-      essence: 0
+      essence_Max: 0
+      essence_Current: 0
       skin: 0
     abilitiesGot_Permanent:
       SwimSuit: 0
@@ -4678,6 +4679,11 @@ MonoBehaviour:
   chinese_MapNameDisplay: "\u90C1\u90C1\u8471\u8471\u7684\u4E91\u5C9B"
   japanese_MapNameDisplay: "\u7DD1\u8C4A\u304B\u306A\u96F2\u306E\u5CF6"
   korean_MapNameDisplay: "\uD478\uB978 \uAD6C\uB984 \uC12C"
+--- !u!1 &493315731 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3325978648861190881, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+  m_PrefabInstance: {fileID: 5912947419237050941}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &515573332
 GameObject:
   m_ObjectHideFlags: 0
@@ -4773,6 +4779,16 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 515573332}
   m_CullTransparentMesh: 1
+--- !u!1 &524651727 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5900582553265436015, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+  m_PrefabInstance: {fileID: 5912947419237050941}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &532158543 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 107994421510032372, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+  m_PrefabInstance: {fileID: 5912947419237050941}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &532634219
 GameObject:
   m_ObjectHideFlags: 0
@@ -8485,6 +8501,11 @@ MonoBehaviour:
   chinese_MapNameDisplay: 
   japanese_MapNameDisplay: 
   korean_MapNameDisplay: 
+--- !u!1 &704386633 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5264214754312343919, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+  m_PrefabInstance: {fileID: 5912947419237050941}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &706314524
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9074,7 +9095,7 @@ PrefabInstance:
     - target: {fileID: 5239250863359563056, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: uiElementToSelect
       value: 
-      objectReference: {fileID: 6326434618884636782}
+      objectReference: {fileID: 5912947419237050942}
     - target: {fileID: 7429604548242019253, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_Name
       value: Skins
@@ -10605,6 +10626,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82a37106db15d1345a59e05c42fd77af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &829353003 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3727111739051238767, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+  m_PrefabInstance: {fileID: 5912947419237050941}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &845459892
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12011,11 +12037,7 @@ MonoBehaviour:
   third_MenuButton: {fileID: 598012707}
   forth_MenuButton: {fileID: 332447070}
   wardrobeMenuParent: {fileID: 2870650339701474083}
-  shopMenuParent: {fileID: 8042176215489066817}
-  wardrobeMenuButton: {fileID: 4649509606913366614}
-  shopMenuButton: {fileID: 4252251523416137537}
-  third__MenuButton: {fileID: 1941834743064131333}
-  forth__MenuButton: {fileID: 7175819472711705817}
+  wardrobeMenuButton: {fileID: 1591692726}
 --- !u!1 &935867926
 GameObject:
   m_ObjectHideFlags: 0
@@ -12174,407 +12196,55 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SkinWardrobeCostManager: {fileID: 9153252302186933389}
-  SkinShopCostManager: {fileID: 9153252302186933388}
   skinInfo:
     activeSkinType: 0
+    activeHatType: 0
     skinWardrobeInfo:
-      skin_Region1_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region1_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region1_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region1_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region1_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region1_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region1_Hat:
-        hat_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isSelected: 0
-      skin_Region2_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region2_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region2_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region2_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region2_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region2_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region2_Hat:
-        hat_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isSelected: 0
-      skin_Region3_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region3_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region3_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region3_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region3_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region3_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region3_Hat:
-        hat_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isSelected: 0
-      skin_Region4_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region4_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region4_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region4_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region4_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region4_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region4_Hat:
-        hat_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isSelected: 0
-      skin_Region5_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region5_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region5_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region5_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region5_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region5_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region5_Hat:
-        hat_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isSelected: 0
-      skin_Region6_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region6_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region6_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region6_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region6_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region6_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region6_Hat:
-        hat_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isSelected: 0
-      skin_Default:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-    skinShopInfo:
-      currentSkinCost: 0
-      skin_Region1_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region1_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region1_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region1_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region1_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region1_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region2_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region2_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region2_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region2_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region2_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region2_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region3_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region3_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region3_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region3_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region3_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region3_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region4_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region4_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region4_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region4_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region4_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region4_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region5_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region5_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region5_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region5_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region5_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region5_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region6_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region6_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region6_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region6_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region6_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region6_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
+      skin_Region1_level1: 0
+      skin_Region1_level2: 0
+      skin_Region1_level3: 0
+      skin_Region1_level4: 0
+      skin_Region1_level5: 0
+      skin_Region1_level6: 0
+      skin_Region2_level1: 0
+      skin_Region2_level2: 0
+      skin_Region2_level3: 0
+      skin_Region2_level4: 0
+      skin_Region2_level5: 0
+      skin_Region2_level6: 0
+      skin_Region3_level1: 0
+      skin_Region3_level2: 0
+      skin_Region3_level3: 0
+      skin_Region3_level4: 0
+      skin_Region3_level5: 0
+      skin_Region3_level6: 0
+      skin_Region4_level1: 0
+      skin_Region4_level2: 0
+      skin_Region4_level3: 0
+      skin_Region4_level4: 0
+      skin_Region4_level5: 0
+      skin_Region4_level6: 0
+      skin_Region5_level1: 0
+      skin_Region5_level2: 0
+      skin_Region5_level3: 0
+      skin_Region5_level4: 0
+      skin_Region5_level5: 0
+      skin_Region5_level6: 0
+      skin_Region6_level1: 0
+      skin_Region6_level2: 0
+      skin_Region6_level3: 0
+      skin_Region6_level4: 0
+      skin_Region6_level5: 0
+      skin_Region6_level6: 0
+      skin_Default: 0
+    skinHatInfo:
+      skin_Region1_Hat: 0
+      skin_Region2_Hat: 0
+      skin_Region3_Hat: 0
+      skin_Region4_Hat: 0
+      skin_Region5_Hat: 0
+      skin_Region6_Hat: 0
+  pauseMenuManager: {fileID: 0}
 --- !u!1 &947387522
 GameObject:
   m_ObjectHideFlags: 0
@@ -12828,6 +12498,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &967321553 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6058705743436664899, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+  m_PrefabInstance: {fileID: 5912947419237050941}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &987133964
 GameObject:
   m_ObjectHideFlags: 0
@@ -13555,6 +13230,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1056090970 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5058345215165574316, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+  m_PrefabInstance: {fileID: 5912947419237050941}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1094754741
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15987,7 +15667,8 @@ MonoBehaviour:
       steps_Max: 7
       steps_Current: 7
       itemsGot:
-        essence: 0
+        essence_Max: 0
+        essence_Current: 0
         skin: 0
       abilitiesGot_Permanent:
         SwimSuit: 0
@@ -16092,404 +15773,52 @@ MonoBehaviour:
         dialogueStatList: []
     skinsInfo_Save:
       activeSkinType: 0
+      activeHatType: 0
       skinWardrobeInfo:
-        skin_Region1_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region1_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region1_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region1_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region1_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region1_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region1_Hat:
-          hat_Type: 0
-          skin_isInactive: 0
-          skin_isAquired: 0
-          skin_isSelected: 0
-        skin_Region2_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region2_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region2_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region2_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region2_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region2_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region2_Hat:
-          hat_Type: 0
-          skin_isInactive: 0
-          skin_isAquired: 0
-          skin_isSelected: 0
-        skin_Region3_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region3_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region3_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region3_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region3_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region3_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region3_Hat:
-          hat_Type: 0
-          skin_isInactive: 0
-          skin_isAquired: 0
-          skin_isSelected: 0
-        skin_Region4_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region4_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region4_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region4_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region4_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region4_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region4_Hat:
-          hat_Type: 0
-          skin_isInactive: 0
-          skin_isAquired: 0
-          skin_isSelected: 0
-        skin_Region5_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region5_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region5_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region5_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region5_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region5_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region5_Hat:
-          hat_Type: 0
-          skin_isInactive: 0
-          skin_isAquired: 0
-          skin_isSelected: 0
-        skin_Region6_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region6_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region6_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region6_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region6_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region6_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region6_Hat:
-          hat_Type: 0
-          skin_isInactive: 0
-          skin_isAquired: 0
-          skin_isSelected: 0
-        skin_Default:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-      skinShopInfo:
-        currentSkinCost: 0
-        skin_Region1_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region1_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region1_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region1_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region1_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region1_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region2_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region2_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region2_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region2_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region2_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region2_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region3_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region3_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region3_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region3_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region3_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region3_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region4_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region4_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region4_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region4_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region4_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region4_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region5_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region5_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region5_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region5_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region5_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region5_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region6_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region6_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region6_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region6_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region6_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region6_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
+        skin_Region1_level1: 0
+        skin_Region1_level2: 0
+        skin_Region1_level3: 0
+        skin_Region1_level4: 0
+        skin_Region1_level5: 0
+        skin_Region1_level6: 0
+        skin_Region2_level1: 0
+        skin_Region2_level2: 0
+        skin_Region2_level3: 0
+        skin_Region2_level4: 0
+        skin_Region2_level5: 0
+        skin_Region2_level6: 0
+        skin_Region3_level1: 0
+        skin_Region3_level2: 0
+        skin_Region3_level3: 0
+        skin_Region3_level4: 0
+        skin_Region3_level5: 0
+        skin_Region3_level6: 0
+        skin_Region4_level1: 0
+        skin_Region4_level2: 0
+        skin_Region4_level3: 0
+        skin_Region4_level4: 0
+        skin_Region4_level5: 0
+        skin_Region4_level6: 0
+        skin_Region5_level1: 0
+        skin_Region5_level2: 0
+        skin_Region5_level3: 0
+        skin_Region5_level4: 0
+        skin_Region5_level5: 0
+        skin_Region5_level6: 0
+        skin_Region6_level1: 0
+        skin_Region6_level2: 0
+        skin_Region6_level3: 0
+        skin_Region6_level4: 0
+        skin_Region6_level5: 0
+        skin_Region6_level6: 0
+        skin_Default: 0
+      skinHatInfo:
+        skin_Region1_Hat: 0
+        skin_Region2_Hat: 0
+        skin_Region3_Hat: 0
+        skin_Region4_Hat: 0
+        skin_Region5_Hat: 0
+        skin_Region6_Hat: 0
 --- !u!1 &1239079617
 GameObject:
   m_ObjectHideFlags: 0
@@ -19867,6 +19196,11 @@ RectTransform:
   m_AnchoredPosition: {x: 122.5, y: -122.5}
   m_SizeDelta: {x: 290, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1576406080 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3875057307824078765, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+  m_PrefabInstance: {fileID: 5912947419237050941}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1580117012
 GameObject:
   m_ObjectHideFlags: 0
@@ -19943,6 +19277,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1580117012}
   m_CullTransparentMesh: 1
+--- !u!1 &1591692726 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4500438100039312245, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+  m_PrefabInstance: {fileID: 5912947419237050941}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1597198760
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21268,7 +20607,8 @@ MonoBehaviour:
       steps_Max: 0
       steps_Current: 0
       itemsGot:
-        essence: 0
+        essence_Max: 0
+        essence_Current: 0
         skin: 0
       abilitiesGot_Permanent:
         SwimSuit: 0
@@ -21373,410 +20713,59 @@ MonoBehaviour:
         dialogueStatList: []
     skinsInfo_Save:
       activeSkinType: 0
+      activeHatType: 0
       skinWardrobeInfo:
-        skin_Region1_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region1_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region1_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region1_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region1_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region1_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region1_Hat:
-          hat_Type: 0
-          skin_isInactive: 0
-          skin_isAquired: 0
-          skin_isSelected: 0
-        skin_Region2_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region2_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region2_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region2_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region2_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region2_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region2_Hat:
-          hat_Type: 0
-          skin_isInactive: 0
-          skin_isAquired: 0
-          skin_isSelected: 0
-        skin_Region3_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region3_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region3_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region3_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region3_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region3_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region3_Hat:
-          hat_Type: 0
-          skin_isInactive: 0
-          skin_isAquired: 0
-          skin_isSelected: 0
-        skin_Region4_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region4_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region4_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region4_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region4_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region4_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region4_Hat:
-          hat_Type: 0
-          skin_isInactive: 0
-          skin_isAquired: 0
-          skin_isSelected: 0
-        skin_Region5_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region5_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region5_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region5_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region5_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region5_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region5_Hat:
-          hat_Type: 0
-          skin_isInactive: 0
-          skin_isAquired: 0
-          skin_isSelected: 0
-        skin_Region6_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region6_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region6_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region6_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region6_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region6_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-        skin_Region6_Hat:
-          hat_Type: 0
-          skin_isInactive: 0
-          skin_isAquired: 0
-          skin_isSelected: 0
-        skin_Default:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isBought: 0
-          skin_isSelected: 0
-      skinShopInfo:
-        currentSkinCost: 0
-        skin_Region1_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region1_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region1_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region1_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region1_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region1_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region2_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region2_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region2_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region2_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region2_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region2_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region3_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region3_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region3_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region3_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region3_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region3_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region4_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region4_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region4_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region4_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region4_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region4_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region5_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region5_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region5_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region5_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region5_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region5_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region6_level1:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region6_level2:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region6_level3:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region6_level4:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region6_level5:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
-        skin_Region6_level6:
-          skin_Type: 0
-          skin_isInactive: 0
-          skin_isAvailable: 0
-          skin_isBought: 0
+        skin_Region1_level1: 0
+        skin_Region1_level2: 0
+        skin_Region1_level3: 0
+        skin_Region1_level4: 0
+        skin_Region1_level5: 0
+        skin_Region1_level6: 0
+        skin_Region2_level1: 0
+        skin_Region2_level2: 0
+        skin_Region2_level3: 0
+        skin_Region2_level4: 0
+        skin_Region2_level5: 0
+        skin_Region2_level6: 0
+        skin_Region3_level1: 0
+        skin_Region3_level2: 0
+        skin_Region3_level3: 0
+        skin_Region3_level4: 0
+        skin_Region3_level5: 0
+        skin_Region3_level6: 0
+        skin_Region4_level1: 0
+        skin_Region4_level2: 0
+        skin_Region4_level3: 0
+        skin_Region4_level4: 0
+        skin_Region4_level5: 0
+        skin_Region4_level6: 0
+        skin_Region5_level1: 0
+        skin_Region5_level2: 0
+        skin_Region5_level3: 0
+        skin_Region5_level4: 0
+        skin_Region5_level5: 0
+        skin_Region5_level6: 0
+        skin_Region6_level1: 0
+        skin_Region6_level2: 0
+        skin_Region6_level3: 0
+        skin_Region6_level4: 0
+        skin_Region6_level5: 0
+        skin_Region6_level6: 0
+        skin_Default: 0
+      skinHatInfo:
+        skin_Region1_Hat: 0
+        skin_Region2_Hat: 0
+        skin_Region3_Hat: 0
+        skin_Region4_Hat: 0
+        skin_Region5_Hat: 0
+        skin_Region6_Hat: 0
   menuState_Store: 0
   playerStats_Store:
     steps_Max: 0
     steps_Current: 0
     itemsGot:
-      essence: 0
+      essence_Max: 0
+      essence_Current: 0
       skin: 0
     abilitiesGot_Permanent:
       SwimSuit: 0
@@ -21881,404 +20870,57 @@ MonoBehaviour:
       dialogueStatList: []
   skinsInfo_Store:
     activeSkinType: 0
+    activeHatType: 0
     skinWardrobeInfo:
-      skin_Region1_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region1_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region1_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region1_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region1_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region1_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region1_Hat:
-        hat_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isSelected: 0
-      skin_Region2_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region2_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region2_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region2_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region2_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region2_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region2_Hat:
-        hat_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isSelected: 0
-      skin_Region3_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region3_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region3_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region3_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region3_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region3_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region3_Hat:
-        hat_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isSelected: 0
-      skin_Region4_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region4_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region4_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region4_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region4_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region4_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region4_Hat:
-        hat_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isSelected: 0
-      skin_Region5_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region5_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region5_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region5_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region5_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region5_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region5_Hat:
-        hat_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isSelected: 0
-      skin_Region6_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region6_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region6_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region6_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region6_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region6_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-      skin_Region6_Hat:
-        hat_Type: 0
-        skin_isInactive: 0
-        skin_isAquired: 0
-        skin_isSelected: 0
-      skin_Default:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isBought: 0
-        skin_isSelected: 0
-    skinShopInfo:
-      currentSkinCost: 0
-      skin_Region1_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region1_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region1_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region1_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region1_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region1_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region2_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region2_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region2_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region2_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region2_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region2_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region3_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region3_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region3_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region3_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region3_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region3_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region4_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region4_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region4_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region4_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region4_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region4_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region5_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region5_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region5_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region5_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region5_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region5_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region6_level1:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region6_level2:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region6_level3:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region6_level4:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region6_level5:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
-      skin_Region6_level6:
-        skin_Type: 0
-        skin_isInactive: 0
-        skin_isAvailable: 0
-        skin_isBought: 0
+      skin_Region1_level1: 0
+      skin_Region1_level2: 0
+      skin_Region1_level3: 0
+      skin_Region1_level4: 0
+      skin_Region1_level5: 0
+      skin_Region1_level6: 0
+      skin_Region2_level1: 0
+      skin_Region2_level2: 0
+      skin_Region2_level3: 0
+      skin_Region2_level4: 0
+      skin_Region2_level5: 0
+      skin_Region2_level6: 0
+      skin_Region3_level1: 0
+      skin_Region3_level2: 0
+      skin_Region3_level3: 0
+      skin_Region3_level4: 0
+      skin_Region3_level5: 0
+      skin_Region3_level6: 0
+      skin_Region4_level1: 0
+      skin_Region4_level2: 0
+      skin_Region4_level3: 0
+      skin_Region4_level4: 0
+      skin_Region4_level5: 0
+      skin_Region4_level6: 0
+      skin_Region5_level1: 0
+      skin_Region5_level2: 0
+      skin_Region5_level3: 0
+      skin_Region5_level4: 0
+      skin_Region5_level5: 0
+      skin_Region5_level6: 0
+      skin_Region6_level1: 0
+      skin_Region6_level2: 0
+      skin_Region6_level3: 0
+      skin_Region6_level4: 0
+      skin_Region6_level5: 0
+      skin_Region6_level6: 0
+      skin_Default: 0
+    skinHatInfo:
+      skin_Region1_Hat: 0
+      skin_Region2_Hat: 0
+      skin_Region3_Hat: 0
+      skin_Region4_Hat: 0
+      skin_Region5_Hat: 0
+      skin_Region6_Hat: 0
+--- !u!1 &1650360082 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3198939906974045680, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+  m_PrefabInstance: {fileID: 5912947419237050941}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1659561593
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22629,6 +21271,11 @@ MonoBehaviour:
   chinese_MapNameDisplay: 
   japanese_MapNameDisplay: 
   korean_MapNameDisplay: 
+--- !u!1 &1671640586 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1105544294696467587, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+  m_PrefabInstance: {fileID: 5912947419237050941}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1678977897
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24716,6 +23363,11 @@ MonoBehaviour:
   m_DefaultActionMap: PlayerMovement
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!1 &1894129018 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8382752631091454415, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+  m_PrefabInstance: {fileID: 5912947419237050941}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1904634455
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28864,11 +27516,6 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
---- !u!1 &1941834743064131333 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4624434411232883882, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
-  m_PrefabInstance: {fileID: 5912947419237050941}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2870650339701474083 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 745913656230613675, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
@@ -28877,16 +27524,6 @@ GameObject:
 --- !u!1 &4160885316144579235 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7057391834147232649, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
-  m_PrefabInstance: {fileID: 5912947419237050941}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4252251523416137537 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3936595001520900385, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
-  m_PrefabInstance: {fileID: 5912947419237050941}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4649509606913366614 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4337887925944889035, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
   m_PrefabInstance: {fileID: 5912947419237050941}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5912947419237050941
@@ -28900,38 +27537,62 @@ PrefabInstance:
     - target: {fileID: 37650361895554988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 37650361895554988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 37650361895554988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 37650361895554988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 37650361895554988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 52274140110630576, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 52274140110630576, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 52274140110630576, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 52274140110630576, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 52274140110630576, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 89332594947720009, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 89332594947720009, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 89332594947720009, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 89332594947720009, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 89332594947720009, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 187640058146238907, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
@@ -28972,14 +27633,22 @@ PrefabInstance:
     - target: {fileID: 378311624922525231, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 378311624922525231, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 378311624922525231, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 378311624922525231, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 378311624922525231, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 409132791860220521, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
@@ -29008,14 +27677,22 @@ PrefabInstance:
     - target: {fileID: 431643962651697007, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 431643962651697007, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 431643962651697007, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 431643962651697007, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 431643962651697007, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 493590487636141107, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
@@ -29105,6 +27782,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -142
       objectReference: {fileID: 0}
+    - target: {fileID: 876221843855367697, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 876221843855367697, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 876221843855367697, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
+    - target: {fileID: 876221843855367697, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 900546873804897838, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -29164,14 +27857,22 @@ PrefabInstance:
     - target: {fileID: 1098019580302564873, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 1098019580302564873, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 1098019580302564873, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 1098019580302564873, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1098019580302564873, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1184408288731460098, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.x
@@ -29213,6 +27914,10 @@ PrefabInstance:
       propertyPath: currentMenuCategoryToSelect
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 1325286609918864086, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: overlay
+      value: 
+      objectReference: {fileID: 704386633}
     - target: {fileID: 1354331176774242432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -29264,26 +27969,42 @@ PrefabInstance:
     - target: {fileID: 1377379606135806707, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 1377379606135806707, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 1377379606135806707, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 1377379606135806707, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1377379606135806707, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1380662572844955811, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 1380662572844955811, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 1380662572844955811, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 1380662572844955811, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1380662572844955811, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1415596314761843608, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
@@ -29296,38 +28017,78 @@ PrefabInstance:
     - target: {fileID: 1423647697259827668, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 1423647697259827668, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 1423647697259827668, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 1423647697259827668, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1423647697259827668, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1467549984682675994, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 1467549984682675994, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 1467549984682675994, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 1467549984682675994, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1467549984682675994, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1479773189125393966, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 1479773189125393966, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 1479773189125393966, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
+    - target: {fileID: 1479773189125393966, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1587572939382582328, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 1587572939382582328, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 1587572939382582328, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 1587572939382582328, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1587572939382582328, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1617697213747517601, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
@@ -29385,17 +28146,41 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -44
       objectReference: {fileID: 0}
+    - target: {fileID: 1918662321675170825, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 1918662321675170825, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 1918662321675170825, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
+    - target: {fileID: 1918662321675170825, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1974917769748935559, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 1974917769748935559, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 1974917769748935559, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 1974917769748935559, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1974917769748935559, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1993341628913772917, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
@@ -29501,17 +28286,29 @@ PrefabInstance:
       propertyPath: currentMenuCategoryToSelect
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2408836529288786062, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: overlay
+      value: 
+      objectReference: {fileID: 1576406080}
     - target: {fileID: 2528443211554367825, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 2528443211554367825, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 2528443211554367825, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 2528443211554367825, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2528443211554367825, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2540499949564407492, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
@@ -29533,17 +28330,57 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -80
       objectReference: {fileID: 0}
+    - target: {fileID: 2567183562761603324, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 2567183562761603324, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 2567183562761603324, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
+    - target: {fileID: 2567183562761603324, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2574909932844616475, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 2574909932844616475, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 2574909932844616475, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 2574909932844616475, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2574909932844616475, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2587485672920993869, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 2587485672920993869, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 2587485672920993869, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
+    - target: {fileID: 2587485672920993869, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2615007594822803027, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
@@ -29656,14 +28493,22 @@ PrefabInstance:
     - target: {fileID: 2960410597170322408, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 2960410597170322408, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 2960410597170322408, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 2960410597170322408, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2960410597170322408, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3114348697804012988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
@@ -29713,6 +28558,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -44
       objectReference: {fileID: 0}
+    - target: {fileID: 3156738646684521230, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: overlay
+      value: 
+      objectReference: {fileID: 1056090970}
     - target: {fileID: 3256303371662086469, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -29769,6 +28618,10 @@ PrefabInstance:
       propertyPath: currentMenuCategoryToSelect
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 3454269332825889037, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: overlay
+      value: 
+      objectReference: {fileID: 1894129018}
     - target: {fileID: 3522439558796497832, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -29828,26 +28681,42 @@ PrefabInstance:
     - target: {fileID: 3855580757833882137, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 3855580757833882137, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 3855580757833882137, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 3855580757833882137, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3855580757833882137, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3877130729727710325, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 3877130729727710325, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 3877130729727710325, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 3877130729727710325, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3877130729727710325, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3987841892531613282, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
@@ -29868,26 +28737,42 @@ PrefabInstance:
     - target: {fileID: 4107485562220780790, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 4107485562220780790, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 4107485562220780790, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 4107485562220780790, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4107485562220780790, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4141526444827060131, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 4141526444827060131, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 4141526444827060131, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 4141526444827060131, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4141526444827060131, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4170920239072117759, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
@@ -29916,14 +28801,22 @@ PrefabInstance:
     - target: {fileID: 4216501475546050803, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 4216501475546050803, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 4216501475546050803, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 4216501475546050803, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4216501475546050803, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4241002402178942271, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
@@ -29960,14 +28853,22 @@ PrefabInstance:
     - target: {fileID: 4368832826733599243, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 4368832826733599243, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 4368832826733599243, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 4368832826733599243, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4368832826733599243, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4398969126871744743, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
@@ -29993,17 +28894,41 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -44
       objectReference: {fileID: 0}
+    - target: {fileID: 4505622927851902864, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 4505622927851902864, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 4505622927851902864, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
+    - target: {fileID: 4505622927851902864, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4550163625548991277, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 4550163625548991277, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 4550163625548991277, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 4550163625548991277, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4550163625548991277, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4554894527931280288, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
@@ -30040,14 +28965,22 @@ PrefabInstance:
     - target: {fileID: 4630651226688763206, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 4630651226688763206, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 4630651226688763206, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 4630651226688763206, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4630651226688763206, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4645844724915517799, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
@@ -30241,6 +29174,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -44
       objectReference: {fileID: 0}
+    - target: {fileID: 5160579046959442323, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: overlay
+      value: 
+      objectReference: {fileID: 1671640586}
     - target: {fileID: 5248221031262274806, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -30272,14 +29209,22 @@ PrefabInstance:
     - target: {fileID: 5452930374728944095, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 5452930374728944095, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 5452930374728944095, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 5452930374728944095, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5452930374728944095, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482161296159312699, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
@@ -30305,6 +29250,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -44
       objectReference: {fileID: 0}
+    - target: {fileID: 5634985481277324432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: overlay
+      value: 
+      objectReference: {fileID: 532158543}
+    - target: {fileID: 5639748864791423955, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: overlay
+      value: 
+      objectReference: {fileID: 493315731}
     - target: {fileID: 5646656300554342897, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -30332,14 +29285,22 @@ PrefabInstance:
     - target: {fileID: 5649989835698375909, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 5649989835698375909, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 5649989835698375909, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 5649989835698375909, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5649989835698375909, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5678129744236989482, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
@@ -30496,14 +29457,22 @@ PrefabInstance:
     - target: {fileID: 6216483925118439210, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 6216483925118439210, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 6216483925118439210, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 6216483925118439210, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6216483925118439210, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6231243515754879660, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
@@ -30620,14 +29589,38 @@ PrefabInstance:
     - target: {fileID: 6739128888502573988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 6739128888502573988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 6739128888502573988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 6739128888502573988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6739128888502573988, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6756646358291541878, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 6756646358291541878, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 6756646358291541878, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
+    - target: {fileID: 6756646358291541878, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6798251252914232237, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
@@ -30656,14 +29649,22 @@ PrefabInstance:
     - target: {fileID: 6815480662985133208, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 6815480662985133208, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 6815480662985133208, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 6815480662985133208, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6815480662985133208, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6816069980048044581, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
@@ -30700,14 +29701,22 @@ PrefabInstance:
     - target: {fileID: 6852248600295963893, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 6852248600295963893, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 6852248600295963893, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 6852248600295963893, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6852248600295963893, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6891780490140760133, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
@@ -30720,14 +29729,22 @@ PrefabInstance:
     - target: {fileID: 6920445319040748668, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 6920445319040748668, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 6920445319040748668, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 6920445319040748668, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6920445319040748668, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6939739777296694840, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
@@ -30809,6 +29826,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -44
       objectReference: {fileID: 0}
+    - target: {fileID: 7227501072590749817, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: overlay
+      value: 
+      objectReference: {fileID: 967321553}
+    - target: {fileID: 7233986396735326641, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: overlay
+      value: 
+      objectReference: {fileID: 524651727}
     - target: {fileID: 7425203965836897463, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
       value: 6
@@ -31020,26 +30045,42 @@ PrefabInstance:
     - target: {fileID: 7969252242216796073, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 7969252242216796073, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 7969252242216796073, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 7969252242216796073, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7969252242216796073, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8005190274966543718, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 8005190274966543718, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 8005190274966543718, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 8005190274966543718, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8005190274966543718, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8010543204715120866, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
@@ -31052,14 +30093,22 @@ PrefabInstance:
     - target: {fileID: 8036050493054016738, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 8036050493054016738, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 8036050493054016738, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 8036050493054016738, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8036050493054016738, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8092443793756178088, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
@@ -31072,14 +30121,22 @@ PrefabInstance:
     - target: {fileID: 8162623295204161117, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 8162623295204161117, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 8162623295204161117, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 8162623295204161117, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8162623295204161117, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8194813521957571873, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
@@ -31129,6 +30186,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -534
       objectReference: {fileID: 0}
+    - target: {fileID: 8227392369871578446, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: overlay
+      value: 
+      objectReference: {fileID: 829353003}
     - target: {fileID: 8238402040866297432, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -31228,14 +30289,22 @@ PrefabInstance:
     - target: {fileID: 8451096376320199568, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 8451096376320199568, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 8451096376320199568, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 8451096376320199568, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8451096376320199568, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8513381399700844882, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
@@ -31269,6 +30338,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -44
       objectReference: {fileID: 0}
+    - target: {fileID: 8939846607076920317, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: overlay
+      value: 
+      objectReference: {fileID: 1650360082}
     - target: {fileID: 8979313834427729531, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -31296,14 +30369,22 @@ PrefabInstance:
     - target: {fileID: 8989899753778301522, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
-      objectReference: {fileID: 2870650339701474083}
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 8989899753778301522, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 8989899753778301522, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
     - target: {fileID: 8989899753778301522, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8989899753778301522, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9008487918309019028, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
@@ -31312,6 +30393,26 @@ PrefabInstance:
     - target: {fileID: 9008487918309019028, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: currentMenuCategoryToSelect
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9075733171100076832, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 9075733171100076832, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 9075733171100076832, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 713555122}
+    - target: {fileID: 9075733171100076832, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9075733171100076832, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: currentMenuCategoryToSelect
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9165616432507776711, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_AnchorMax.y
@@ -31337,27 +30438,34 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -44
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4257388843017220321, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+    - {fileID: 298508618982844122, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+    - {fileID: 3342774299304800964, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+    - {fileID: 8954226059573501288, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+    - {fileID: 5838606987439336439, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+    - {fileID: 3125501923665633813, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+    - {fileID: 5061632118944552065, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+    - {fileID: 6316897493693860908, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+    - {fileID: 3980349090248337091, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+    - {fileID: 9200128773853716020, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+    - {fileID: 4174676836780789368, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+    - {fileID: 2066479046294135326, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
---- !u!114 &6326434618884636782 stripped
+--- !u!114 &5912947419237050942 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3277620843440091311, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2877502382375545365, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
   m_PrefabInstance: {fileID: 5912947419237050941}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4649509606913366614}
+  m_GameObject: {fileID: 1591692726}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &7175819472711705817 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8360004792297725918, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
-  m_PrefabInstance: {fileID: 5912947419237050941}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7593983839699730510
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31692,11 +30800,6 @@ MonoBehaviour:
   chinese_MapNameDisplay: 
   japanese_MapNameDisplay: 
   korean_MapNameDisplay: 
---- !u!1 &8042176215489066817 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5961689113080130504, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
-  m_PrefabInstance: {fileID: 5912947419237050941}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8879586367851771026
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31787,17 +30890,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7611440127774238067, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
   m_PrefabInstance: {fileID: 5912947419237050941}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &9153252302186933388 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8329065083895013304, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
-  m_PrefabInstance: {fileID: 5912947419237050941}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4160885316144579235}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea532cd8347f49b46a20c7d40f42cafd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &9153252302186933389 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4831180214876375337, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}

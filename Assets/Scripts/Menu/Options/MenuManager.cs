@@ -21,13 +21,9 @@ public class MenuManager : Singleton<MenuManager>
 
     [Header("Skin Menues")]
     public GameObject wardrobeMenuParent;
-    public GameObject shopMenuParent;
 
     [Header("Skin Buttons")]
     public GameObject wardrobeMenuButton;
-    public GameObject shopMenuButton;
-    public GameObject third__MenuButton;
-    public GameObject forth__MenuButton;
 
 
     //--------------------
@@ -52,10 +48,6 @@ public class MenuManager : Singleton<MenuManager>
                 currentMenuCategorySelected = MenuCategories.Wardrobe;
                 wardrobeMenuParent.SetActive(true);
                 break;
-            case MenuCategories.Shop:
-                currentMenuCategorySelected = MenuCategories.Shop;
-                shopMenuParent.SetActive(true);
-                break;
 
             default:
                 break;
@@ -67,7 +59,6 @@ public class MenuManager : Singleton<MenuManager>
         controlsMenuParent.SetActive(false);
 
         wardrobeMenuParent.SetActive(false);
-        shopMenuParent.SetActive(false);
     }
 }
 
@@ -82,10 +73,7 @@ public enum MenuCategories
     nr04,
 
     //Skins
-    Wardrobe,
-    Shop,
-    nr13,
-    nr14,
+    Wardrobe
 }
 
 public enum CategoryState
