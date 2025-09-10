@@ -161,6 +161,8 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     public void UpdatePlayerBodyDisplay()
     {
+        print("1. UpdatePlayerBodyDisplay: " + DataManager.Instance.skinsInfo_Store.activeSkinType);
+
         HideAllSkins();
 
         GameObject tempObj = GetSkinSelectedObject();
@@ -429,113 +431,121 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     public GameObject GetSkinSelectedObject()
     {
-        if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo == null)
-            return skin_Default;
+        print("2. DataManager.Instance.skinsInfo_Store.activeSkinType: " + DataManager.Instance.skinsInfo_Store.activeSkinType);
 
-        if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default == WardrobeSkinState.Selected)
-            return skin_Default;
+        switch (DataManager.Instance.skinsInfo_Store.activeSkinType)
+        {
+            case SkinType.None:
+                return skin_Default;
 
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level1 == WardrobeSkinState.Selected)
-            return skin_Water_Grass;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level2 == WardrobeSkinState.Selected)
-            return skin_Water_Water;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level3 == WardrobeSkinState.Selected)
-            return skin_Water_Wood;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level4 == WardrobeSkinState.Selected)
-            return skin_Water_4;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level5 == WardrobeSkinState.Selected)
-            return skin_Water_5;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level6 == WardrobeSkinState.Selected)
-            return skin_Water_6;
+            case SkinType.Water_Grass:
+                return skin_Water_Grass;
+            case SkinType.Water_Water:
+                return skin_Water_Water;
+            case SkinType.Water_Wood:
+                return skin_Water_Wood;
+            case SkinType.Water_4:
+                return skin_Water_4;
+            case SkinType.Water_5:
+                return skin_Water_5;
+            case SkinType.Water_6:
+                return skin_Water_6;
 
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level1 == WardrobeSkinState.Selected)
-            return skin_Cave_Stone;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level2 == WardrobeSkinState.Selected)
-            return skin_Cave_Stone_Brick;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level3 == WardrobeSkinState.Selected)
-            return skin_Cave_Lava;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level4 == WardrobeSkinState.Selected)
-            return skin_Cave_Rock;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level5 == WardrobeSkinState.Selected)
-            return skin_Cave_Brick_Brown;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level6 == WardrobeSkinState.Selected)
-            return skin_Cave_Brick_Black;
+            case SkinType.Cave_Stone:
+                return skin_Cave_Stone;
+            case SkinType.Cave_Stone_Brick:
+                return skin_Cave_Stone_Brick;
+            case SkinType.Cave_Lava:
+                return skin_Cave_Lava;
+            case SkinType.Cave_Rock:
+                return skin_Cave_Rock;
+            case SkinType.Cave_Brick_Brown:
+                return skin_Cave_Brick_Brown;
+            case SkinType.Cave_Brick_Black:
+                return skin_Cave_Brick_Black;
 
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level1 == WardrobeSkinState.Selected)
-            return skin_Desert_Sand;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level2 == WardrobeSkinState.Selected)
-            return skin_Desert_Clay;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level3 == WardrobeSkinState.Selected)
-            return skin_Desert_Clay_Tiles;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level4 == WardrobeSkinState.Selected)
-            return skin_Desert_Sandstone;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level5 == WardrobeSkinState.Selected)
-            return skin_Desert_Sandstone_Swirl;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level6 == WardrobeSkinState.Selected)
-            return skin_Desert_Quicksand;
+            case SkinType.Desert_Sand:
+                return skin_Desert_Sand;
+            case SkinType.Desert_Clay:
+                return skin_Desert_Clay;
+            case SkinType.Desert_Clay_Tiles:
+                return skin_Desert_Clay_Tiles;
+            case SkinType.Desert_Sandstone:
+                return skin_Desert_Sandstone;
+            case SkinType.Desert_Sandstone_Swirl:
+                return skin_Desert_Sandstone_Swirl;
+            case SkinType.Desert_Quicksand:
+                return skin_Desert_Quicksand;
 
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level1 == WardrobeSkinState.Selected)
-            return skin_Winter_Snow;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level2 == WardrobeSkinState.Selected)
-            return skin_Winter_Ice;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level3 == WardrobeSkinState.Selected)
-            return skin_Winter_ColdWood;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level4 == WardrobeSkinState.Selected)
-            return skin_Winter_FrozenGrass;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level5 == WardrobeSkinState.Selected)
-            return skin_Winter_CrackedIce;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level6 == WardrobeSkinState.Selected)
-            return skin_Winter_Crocked;
+            case SkinType.Winter_Snow:
+                return skin_Winter_Snow;
+            case SkinType.Winter_Ice:
+                return skin_Winter_Ice;
+            case SkinType.Winter_ColdWood:
+                return skin_Winter_ColdWood;
+            case SkinType.Winter_FrozenGrass:
+                return skin_Winter_FrozenGrass;
+            case SkinType.Winter_CrackedIce:
+                return skin_Winter_CrackedIce;
+            case SkinType.Winter_Crocked:
+                return skin_Winter_Crocked;
 
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level1 == WardrobeSkinState.Selected)
-            return skin_Swamp_SwampWater;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level2 == WardrobeSkinState.Selected)
-            return skin_Swamp_Mud;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level3 == WardrobeSkinState.Selected)
-            return skin_Swamp_SwampGrass;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level4 == WardrobeSkinState.Selected)
-            return skin_Swamp_JungleWood;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level5 == WardrobeSkinState.Selected)
-            return skin_Swamp_SwampWood;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level6 == WardrobeSkinState.Selected)
-            return skin_Swamp_TempleBlock;
+            case SkinType.Swamp_SwampWater:
+                return skin_Swamp_SwampWater;
+            case SkinType.Swamp_Mud:
+                return skin_Swamp_Mud;
+            case SkinType.Swamp_SwampGrass:
+                return skin_Swamp_SwampGrass;
+            case SkinType.Swamp_JungleWood:
+                return skin_Swamp_JungleWood;
+            case SkinType.Swamp_SwampWood:
+                return skin_Swamp_SwampWood;
+            case SkinType.Swamp_TempleBlock:
+                return skin_Swamp_TempleBlock;
 
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level1 == WardrobeSkinState.Selected)
-            return skin_Industrial_Metal;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level2 == WardrobeSkinState.Selected)
-            return skin_Industrial_Brass;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level3 == WardrobeSkinState.Selected)
-            return skin_Industrial_Gold;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level4 == WardrobeSkinState.Selected)
-            return skin_Industrial_Casing_Metal;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level5 == WardrobeSkinState.Selected)
-            return skin_Industria_Casingl_Brass;
-        else if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level6 == WardrobeSkinState.Selected)
-            return skin_Industrial_Casing_Gold;
+            case SkinType.Industrial_Metal:
+                return skin_Industrial_Metal;
+            case SkinType.Industrial_Brass:
+                return skin_Industrial_Brass;
+            case SkinType.Industrial_Gold:
+                return skin_Industrial_Gold;
+            case SkinType.Industrial_Casing_Metal:
+                return skin_Industrial_Casing_Metal;
+            case SkinType.Industria_Casingl_Brass:
+                return skin_Industria_Casingl_Brass;
+            case SkinType.Industrial_Casing_Gold:
+                return skin_Industrial_Casing_Gold;
 
-        else
-            return skin_Default;
+            case SkinType.Default:
+                return skin_Default;
+
+            default:
+                return skin_Default;
+        }
     }
     public GameObject GetHatSelectedObject()
     {
-        if (DataManager.Instance.skinsInfo_Store.skinHatInfo == null)
-            return null;
+        switch (DataManager.Instance.skinsInfo_Store.activeHatType)
+        {
+            case HatType.None:
+                return null;
 
-        if (DataManager.Instance.skinsInfo_Store.skinHatInfo.skin_Region1_Hat == WardrobeHatState.Selected)
-            return hat_Floriel;
-        else if (DataManager.Instance.skinsInfo_Store.skinHatInfo.skin_Region2_Hat == WardrobeHatState.Selected)
-            return hat_Granith;
-        else if (DataManager.Instance.skinsInfo_Store.skinHatInfo.skin_Region3_Hat == WardrobeHatState.Selected)
-            return hat_Archie;
-        else if (DataManager.Instance.skinsInfo_Store.skinHatInfo.skin_Region4_Hat == WardrobeHatState.Selected)
-            return hat_Aisa;
-        else if (DataManager.Instance.skinsInfo_Store.skinHatInfo.skin_Region5_Hat == WardrobeHatState.Selected)
-            return hat_Mossy;
-        else if (DataManager.Instance.skinsInfo_Store.skinHatInfo.skin_Region6_Hat == WardrobeHatState.Selected)
-            return hat_Larry;
+            case HatType.Floriel_Hat:
+                return hat_Floriel;
+            case HatType.Granith_Hat:
+                return hat_Granith;
+            case HatType.Archie_Hat:
+                return hat_Archie;
+            case HatType.Aisa_Hat:
+                return hat_Aisa;
+            case HatType.Mossy_Hat:
+                return hat_Mossy;
+            case HatType.Larry_Hat:
+                return hat_Larry;
 
-        else
-            return null;
+            default:
+                return null;
+        }
     }
 
     public WardrobeSkinState GetSkinSaveData(int region, int level)
@@ -678,6 +688,9 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
         switch (region)
         {
+            case 0:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default = skinState;
+                break;
             case 1:
                 switch (level)
                 {
@@ -839,6 +852,21 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default = skinState;
                 break;
         }
+
+        SkinsManager.Instance.SaveData();
+    }
+
+    public void SetActiveSkinData(SkinType skintype)
+    {
+        DataManager.Instance.skinsInfo_Store.activeSkinType = skintype;
+        SkinsManager.Instance.skinInfo.activeSkinType = skintype;
+
+        SkinsManager.Instance.SaveData();
+    }
+    public void SetActiveHatData(HatType hatType)
+    {
+        DataManager.Instance.skinsInfo_Store.activeHatType = hatType;
+        SkinsManager.Instance.skinInfo.activeHatType = hatType;
 
         SkinsManager.Instance.SaveData();
     }

@@ -74,6 +74,10 @@ public class Player_Body : MonoBehaviour
     //--------------------
 
 
+    private void Update()
+    {
+        UpdatePlayerSkin();
+    }
     private void OnEnable()
     {
         SkinWardrobeButton.Action_SelectThisSkin += UpdatePlayerSkin;

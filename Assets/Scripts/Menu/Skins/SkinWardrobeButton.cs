@@ -22,13 +22,16 @@ public class SkinWardrobeButton : MonoBehaviour
 
     //--------------------
 
-
+    private void Update()
+    {
+        UpdateDefaultSkinButtonDisplay();
+    }
     private void OnEnable()
     {
         Action_SelectThisSkin += DeselectThisSkinButton;
         Action_SelectThisHat += DeselectThisHatButton;
 
-        UpdateWardrobeButtonDisplay();
+        UpdateSkinButtonDisplay();
         UpdateHatButtonDisplay();
 
         UpdateIfDefaultSkin();
@@ -79,6 +82,8 @@ public class SkinWardrobeButton : MonoBehaviour
                 case WardrobeSkinState.Selected:
                     DeselectThisSkinButton();
 
+                    SkinWardrobeManager.Instance.SetActiveSkinData(SkinType.Default);
+
                     SkinWardrobeManager.Instance.SetSkinSaveData(0, 0, WardrobeSkinState.Selected);
 
                     SkinWardrobeManager.Instance.selectedSkin = SkinWardrobeManager.Instance.GetSkinSelectedObject();
@@ -89,7 +94,7 @@ public class SkinWardrobeButton : MonoBehaviour
                     break;
             }
 
-            UpdateWardrobeButtonDisplay();
+            UpdateSkinButtonDisplay();
 
             SkinWardrobeManager.Instance.UpdatePlayerBodyDisplay();
         }
@@ -136,54 +141,76 @@ public class SkinWardrobeButton : MonoBehaviour
     //--------------------
 
 
-    public void UpdateWardrobeButtonDisplay()
+    public void UpdateSkinButtonDisplay()
     {
-        WardrobeSkinState tempState = SkinWardrobeManager.Instance.GetSkinSaveData(region, level);
-
-        switch (tempState)
+        if (hatType == HatType.None)
         {
-            case WardrobeSkinState.Inactive:
-                overlay.SetActive(true);
-                frame.color = SkinWardrobeManager.Instance.inactive_Color;
-                break;
-            case WardrobeSkinState.Available:
-                overlay.SetActive(false);
-                frame.color = SkinWardrobeManager.Instance.available_Color;
-                break;
-            case WardrobeSkinState.Bought:
-                overlay.SetActive(false);
-                frame.color = SkinWardrobeManager.Instance.bought_Color;
-                break;
-            case WardrobeSkinState.Selected:
-                overlay.SetActive(false);
-                frame.color = SkinWardrobeManager.Instance.selected_Color;
-                break;
+            WardrobeSkinState tempState = SkinWardrobeManager.Instance.GetSkinSaveData(region, level);
+            switch (tempState)
+            {
+                case WardrobeSkinState.Inactive:
+                    overlay.SetActive(true);
+                    frame.color = SkinWardrobeManager.Instance.inactive_Color;
+                    break;
+                case WardrobeSkinState.Available:
+                    overlay.SetActive(false);
+                    frame.color = SkinWardrobeManager.Instance.available_Color;
+                    break;
+                case WardrobeSkinState.Bought:
+                    overlay.SetActive(false);
+                    frame.color = SkinWardrobeManager.Instance.bought_Color;
+                    break;
+                case WardrobeSkinState.Selected:
+                    overlay.SetActive(false);
+                    frame.color = SkinWardrobeManager.Instance.selected_Color;
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+            }
         }
     }
-    public void UpdateHatButtonDisplay()
+    public void UpdateDefaultSkinButtonDisplay()
     {
-        WardrobeHatState tempState = SkinWardrobeManager.Instance.GetHatSaveData(hatType);
-
-        switch (tempState)
+        if (skinType == SkinType.Default)
         {
-            case WardrobeHatState.Inactive:
-                overlay.SetActive(true);
-                frame.color = SkinWardrobeManager.Instance.inactive_Color;
-                break;
-            case WardrobeHatState.Available:
-                overlay.SetActive(false);
-                frame.color = SkinWardrobeManager.Instance.bought_Color;
-                break;
-            case WardrobeHatState.Selected:
+            if (DataManager.Instance.skinsInfo_Store.activeSkinType == SkinType.Default)
+            {
                 overlay.SetActive(false);
                 frame.color = SkinWardrobeManager.Instance.selected_Color;
-                break;
+            }
+            else
+            {
+                overlay.SetActive(false);
+                frame.color = SkinWardrobeManager.Instance.bought_Color;
+            }
+        }
+    }
 
-            default:
-                break;
+    public void UpdateHatButtonDisplay()
+    {
+        if (hatType != HatType.None)
+        {
+            WardrobeHatState tempState = SkinWardrobeManager.Instance.GetHatSaveData(hatType);
+
+            switch (tempState)
+            {
+                case WardrobeHatState.Inactive:
+                    overlay.SetActive(true);
+                    frame.color = SkinWardrobeManager.Instance.inactive_Color;
+                    break;
+                case WardrobeHatState.Available:
+                    overlay.SetActive(false);
+                    frame.color = SkinWardrobeManager.Instance.bought_Color;
+                    break;
+                case WardrobeHatState.Selected:
+                    overlay.SetActive(false);
+                    frame.color = SkinWardrobeManager.Instance.selected_Color;
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 
@@ -199,7 +226,7 @@ public class SkinWardrobeButton : MonoBehaviour
         {
             WardrobeButton_isPressed();
 
-            UpdateWardrobeButtonDisplay();
+            UpdateSkinButtonDisplay();
         }
     }
 
@@ -212,7 +239,7 @@ public class SkinWardrobeButton : MonoBehaviour
         if (SkinWardrobeManager.Instance.GetSkinSaveData(region, level) == WardrobeSkinState.Selected)
         {
             SkinWardrobeManager.Instance.SetSkinSaveData(region, level, WardrobeSkinState.Bought);
-            UpdateWardrobeButtonDisplay();
+            UpdateSkinButtonDisplay();
         }
     }
     void DeselectThisHatButton()
