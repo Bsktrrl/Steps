@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class SkinWardrobeButton : MonoBehaviour
@@ -72,7 +73,7 @@ public class SkinWardrobeButton : MonoBehaviour
                     //Check condition to see if button is selected
                     Action_SelectThisSkin?.Invoke();
 
-                    SkinsManager.Instance.skinInfo.activeSkinType = skinType;
+                    SkinWardrobeManager.Instance.SetActiveSkinData(skinType);
 
                     SkinWardrobeManager.Instance.SetSkinSaveData(region, level, WardrobeSkinState.Selected);
 
@@ -113,7 +114,7 @@ public class SkinWardrobeButton : MonoBehaviour
                     //Check condition to see if button is selected
                     Action_SelectThisHat?.Invoke();
 
-                    SkinsManager.Instance.skinInfo.activeHatType = hatType;
+                    SkinWardrobeManager.Instance.SetActiveHatData(hatType);
 
                     SkinWardrobeManager.Instance.SetHatSaveData(hatType, WardrobeHatState.Selected);
 

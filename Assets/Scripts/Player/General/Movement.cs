@@ -122,9 +122,9 @@ public class Movement : Singleton<Movement>
 
     private void Start()
     {
-        if (PlayerManager.Instance.playerBody.transform.GetComponentInChildren<Animator>())
+        if (PlayerManager.Instance.playerBody.transform.GetComponent<Animator>())
         {
-            anim = PlayerManager.Instance.playerBody.GetComponentInChildren<Animator>();
+            anim = PlayerManager.Instance.playerBody.GetComponent<Animator>();
         }
 
         savePos = transform.position;

@@ -136,19 +136,24 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     #endregion
 
+    Movement movement;
+
+
     //--------------------
 
 
     private void Start()
     {
+        movement = FindObjectOfType<Movement>();
+
         DataManager.Instance.playerStats_Store.itemsGot.essence_Max = 12; //Remove this after testing of Skin Menu
         DataManager.Instance.playerStats_Store.itemsGot.essence_Current = 12; //Remove this after testing of Skin Menu
     }
 
     private void OnEnable()
     {
-        DataManager.Instance.playerStats_Store.itemsGot.essence_Max = 12; //Remove this after testing of Skin Menu
-        DataManager.Instance.playerStats_Store.itemsGot.essence_Current = 12; //Remove this after testing of Skin Menu
+        //DataManager.Instance.playerStats_Store.itemsGot.essence_Max = 12; //Remove this after testing of Skin Menu
+        //DataManager.Instance.playerStats_Store.itemsGot.essence_Current = 12; //Remove this after testing of Skin Menu
         
         UpdateEssenceDisplay();
 
@@ -942,6 +947,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
         if (selectedSkin)
         {
             hat_Parent.transform.SetParent(selectedSkin.transform.Find("Armature_Player/Root"), true);
+            hat_Parent.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
         }
     }
 

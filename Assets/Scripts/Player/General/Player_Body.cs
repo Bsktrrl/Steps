@@ -76,7 +76,7 @@ public class Player_Body : MonoBehaviour
 
     private void Update()
     {
-        UpdatePlayerSkin();
+        //UpdatePlayerSkin();
     }
 
     private void OnEnable()
@@ -391,6 +391,8 @@ public class Player_Body : MonoBehaviour
                 }
                 break;
         }
+
+        Movement.Instance.activeSkinBlockObject = selectedSkinBlock;
 
         UpdatePlayerHats();
     }
