@@ -25,7 +25,7 @@ public class MotionSicknessToggle : Singleton<MotionSicknessToggle>
 
             // Replace with instant cut
             brain.DefaultBlend = new CinemachineBlendDefinition(
-                CinemachineBlendDefinition.Styles.EaseInOut,
+                CinemachineBlendDefinition.Styles.Cut,
                 0f
             );
 

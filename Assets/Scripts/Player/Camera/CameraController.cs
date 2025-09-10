@@ -183,43 +183,6 @@ public class CameraController : Singleton<CameraController>
             cameraState = CameraState.GameplayCam;
         }
 
-        //// Record the starting rotation
-        //Vector3 startPosition = cameraAnchor.transform.localPosition;
-        //Quaternion startRotation = cameraAnchor.transform.rotation;
-
-        //// Calculate the target rotation
-        //Vector3 endPosition = new Vector3();
-        //Quaternion endRotation = new Quaternion();
-
-        //if (cameraState == CameraState.GameplayCam)
-        //{
-        //    endRotation = Quaternion.Euler(cameraTilt_Original, angle, 0);
-        //}
-        //else if (cameraState == CameraState.CeilingCam)
-        //{
-        //    //endPosition = cameraOffset_ceilingGrabPos;
-        //    endRotation = Quaternion.Euler(cameraTilt_Ceiling, angle, 0);
-        //}
-
-        //if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Can)
-        //{
-        //    float elapsed = 0f;
-
-        //    // Smoothly interpolate the rotation
-        //    while (elapsed < rotationDuration_Ceiling)
-        //    {
-        //        elapsed += Time.deltaTime;
-        //        float t = Mathf.Clamp01(elapsed / rotationDuration_Ceiling); // Normalize the time
-        //        cameraAnchor.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
-        //        cameraAnchor.transform.rotation = Quaternion.Lerp(startRotation, endRotation, t);
-        //        yield return null; // Wait for the next frame
-        //    }
-        //}
-
-        //// Ensure the final rotation is set exactly
-        //cameraAnchor.transform.localPosition = endPosition;
-        //cameraAnchor.transform.rotation = endRotation;
-
         //SetBlockDetectorDirection();
         AdjustFacingDirection();
 
@@ -437,20 +400,23 @@ public class CameraController : Singleton<CameraController>
             blendCamera.Priority.Value = 10;
         }
 
-        if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Can)
-        {
-            CM_Brain.DefaultBlend.Time = npcMovementTimer;
-            yield return new WaitForSeconds(CM_Brain.DefaultBlend.Time + 0.15f);
-        }
-        else if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Cannot)
-        {
-            MotionSicknessToggle.Instance.SetReduceMotion(true);
+        CM_Brain.DefaultBlend.Time = npcMovementTimer;
+        yield return new WaitForSeconds(CM_Brain.DefaultBlend.Time + 0.15f);
 
-            CM_Brain.DefaultBlend.Time = 0;
-            yield return new WaitForSeconds(0 + 0.35f);
+        //if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Cannot)
+        //{
+        //    MotionSicknessToggle.Instance.SetReduceMotion(true);
 
-            MotionSicknessToggle.Instance.SetReduceMotion(false);
-        }
+        //    CM_Brain.DefaultBlend.Time = 0;
+        //    yield return new WaitForSeconds(0 + 0.35f);
+
+        //    MotionSicknessToggle.Instance.SetReduceMotion(false);
+        //}
+        //else
+        //{
+        //    CM_Brain.DefaultBlend.Time = npcMovementTimer;
+        //    yield return new WaitForSeconds(CM_Brain.DefaultBlend.Time + 0.15f);
+        //}
     }
     public IEnumerator StartVirtualCameraBlend_Out(CinemachineCamera blendCamera)
     {
@@ -465,26 +431,28 @@ public class CameraController : Singleton<CameraController>
 
         yield return null;
 
-        if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Can)
-        {
-            CM_Brain.DefaultBlend.Time = npcMovementTimer;
+        CM_Brain.DefaultBlend.Time = npcMovementTimer;
+        yield return new WaitForSeconds(CM_Brain.DefaultBlend.Time + 0.15f);
 
-            yield return new WaitForSeconds(CM_Brain.DefaultBlend.Time + 0.15f);
-            //yield return new WaitUntil(() => CM_Brain.IsBlending == false);
-        }
-        else if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Cannot)
-        {
-            MotionSicknessToggle.Instance.SetReduceMotion(true);
+        //if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Cannot)
+        //{
+        //    MotionSicknessToggle.Instance.SetReduceMotion(true);
 
-            CM_Brain.DefaultBlend.Time = 0;
+        //    CM_Brain.DefaultBlend.Time = 0;
 
-            yield return new WaitForSeconds(0 + 0.35f);
-            //yield return new WaitUntil(() => CM_Brain.IsBlending == false);
+        //    yield return new WaitForSeconds(0 + 0.35f);
+        //    //yield return new WaitUntil(() => CM_Brain.IsBlending == false);
 
-            MotionSicknessToggle.Instance.SetReduceMotion(false);
-        }
+        //    MotionSicknessToggle.Instance.SetReduceMotion(false);
+        //}
+        //else
+        //{
+        //    CM_Brain.DefaultBlend.Time = npcMovementTimer;
+
+        //    yield return new WaitForSeconds(CM_Brain.DefaultBlend.Time + 0.15f);
+        //    //yield return new WaitUntil(() => CM_Brain.IsBlending == false);
+        //}
     }
-
 }
 public enum CameraState
 {

@@ -19,7 +19,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     public GameObject pauseMenu_StartButton;
 
     [Header("LevelDisplay")]
-    [SerializeField] GameObject levelDisplay_Parent;
+    public GameObject levelDisplay_Parent;
     [SerializeField] TextMeshProUGUI levelName;
     [SerializeField] Image skinImage;
 

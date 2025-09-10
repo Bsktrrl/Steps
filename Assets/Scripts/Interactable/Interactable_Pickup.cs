@@ -13,9 +13,12 @@ public class Interactable_Pickup : MonoBehaviour
     public static event Action Action_AbilityPickupGot;
 
     public static event Action Action_FlippersGot;
+    public static event Action Action_JumpingGot;
+
 
     MapManager mapManager;
 
+    public SkinType skinReceived;
     public Items itemReceived;
     public Abilities abilityReceived;
     public bool goal;
@@ -83,7 +86,8 @@ public class Interactable_Pickup : MonoBehaviour
                             break;
 
                         case Items.Essence:
-                            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.essence += 1 /*itemReceived.amount*/;
+                            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.essence_Max += 1;
+                            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.essence_Current += 1;
 
                             //Get coin number
                             for (int i = 0; i < MapManager.Instance.mapInfo_ToSave.essenceList.Count; i++)
@@ -116,6 +120,7 @@ public class Interactable_Pickup : MonoBehaviour
                         case Items.Skin:
                             Action_SkinPickupGot_isActive();
                             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.skin += 1 /*itemReceived.amount*/;
+                            UpdateSkinTaken();
                             break;
                         case Items.IncreaseMaxSteps:
                             Action_StepUpPickupGot_isActive();
@@ -191,6 +196,150 @@ public class Interactable_Pickup : MonoBehaviour
             }
         }
     }
+    void UpdateSkinTaken()
+    {
+        SkinType tempType = SkinType.None;
+
+        for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count; i++)
+        {
+            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName == mapManager.mapInfo_ToSave.mapName)
+            {
+                tempType = mapManager.mapInfo_ToSave.skintype;
+                break;
+            }
+        }
+
+        switch (tempType)
+        {
+            case SkinType.None:
+                break;
+
+            case SkinType.Water_Grass:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level1 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Water_Water:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level2 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Water_Wood:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level3 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Water_4:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level4 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Water_5:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level5 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Water_6:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level6 = WardrobeSkinState.Available;
+                break;
+
+            case SkinType.Cave_Stone:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level1 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Cave_Stone_Brick:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level2 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Cave_Lava:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level3 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Cave_Rock:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level4 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Cave_Brick_Brown:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level5 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Cave_Brick_Black:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level6 = WardrobeSkinState.Available;
+                break;
+
+            case SkinType.Desert_Sand:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level1 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Desert_Clay:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level2 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Desert_Clay_Tiles:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level3 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Desert_Sandstone:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level4 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Desert_Sandstone_Swirl:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level5 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Desert_Quicksand:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level6 = WardrobeSkinState.Available;
+                break;
+
+            case SkinType.Winter_Snow:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level1 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Winter_Ice:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level2 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Winter_ColdWood:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level3 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Winter_FrozenGrass:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level4 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Winter_CrackedIce:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level5 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Winter_Crocked:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level6 = WardrobeSkinState.Available;
+                break;
+
+            case SkinType.Swamp_SwampWater:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level1 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Swamp_Mud:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level2 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Swamp_SwampGrass:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level3 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Swamp_JungleWood:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level4 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Swamp_SwampWood:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level5 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Swamp_TempleBlock:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level6 = WardrobeSkinState.Available;
+                break;
+
+            case SkinType.Industrial_Metal:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level1 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Industrial_Brass:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level2 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Industrial_Gold:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level3 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Industrial_Casing_Metal:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level4 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Industria_Casingl_Brass:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level5 = WardrobeSkinState.Available;
+                break;
+            case SkinType.Industrial_Casing_Gold:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level6 = WardrobeSkinState.Available;
+                break;
+
+            case SkinType.Default:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default = WardrobeSkinState.Available;
+                break;
+
+            default:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default = WardrobeSkinState.Available;
+                break;
+        }
+
+        SkinsManager.Instance.SaveData();
+    }
+    
     public void GetAbility()
     {
         switch (abilityReceived)
@@ -217,6 +366,7 @@ public class Interactable_Pickup : MonoBehaviour
             case Abilities.Jumping:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Jumping = true;
                 Action_AbilityPickupGot_isActive();
+                Action_JumpingGot?.Invoke();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Jumping = true;
                 break;
             case Abilities.GrapplingHook:

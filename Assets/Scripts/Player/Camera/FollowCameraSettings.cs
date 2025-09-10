@@ -71,7 +71,12 @@ public class FollowCameraSettings : MonoBehaviour
         {
             CheckCeiling();
         }
-        
+
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing /*|| Player_CeilingGrab.Instance.isCeilingRotation*/)
+        {
+            CheckIfCeilingGrabbing();
+        }
+
         CameraMotion();
 
         RadiusGizmo();
@@ -173,7 +178,7 @@ public class FollowCameraSettings : MonoBehaviour
                     Debug.DrawLine(hit.point + Vector3.right * 0.1f, hit.point - Vector3.right * 0.1f, Color.red, 1f);
                     Debug.DrawLine(hit.point + Vector3.forward * 0.1f, hit.point - Vector3.forward * 0.1f, Color.red, 1f);
 
-                    print("1. Horizontal SphereCast hits a block ");
+                    //print("1. Horizontal SphereCast hits a block ");
                 }
                 else
                 {
@@ -181,7 +186,7 @@ public class FollowCameraSettings : MonoBehaviour
                     Debug.DrawLine(hit.point + Vector3.right * 0.1f, hit.point - Vector3.right * 0.1f, Color.cyan, 1f);
                     Debug.DrawLine(hit.point + Vector3.forward * 0.1f, hit.point - Vector3.forward * 0.1f, Color.cyan, 1f);
 
-                    print("2. Horizontal SphereCast DOES NOT hit a block ");
+                    //print("2. Horizontal SphereCast DOES NOT hit a block ");
                     CameraController.Instance.CM_Player.Priority.Value = -9;
                     CameraController.Instance.CM_UnderCeiling.Priority.Value = 9;
                     return;
@@ -190,7 +195,7 @@ public class FollowCameraSettings : MonoBehaviour
             else
             {
                 // Clear sight line
-                print("3. Horizontal SphereCast DOES NOT hit a block ");
+                //print("3. Horizontal SphereCast DOES NOT hit a block ");
                 CameraController.Instance.CM_Player.Priority.Value = -9;
                 CameraController.Instance.CM_UnderCeiling.Priority.Value = 9;
                 return;
@@ -201,6 +206,19 @@ public class FollowCameraSettings : MonoBehaviour
         // Default back to player camera
         CameraController.Instance.CM_Player.Priority.Value = 9;
         CameraController.Instance.CM_UnderCeiling.Priority.Value = -9;
+    }
+    void CheckIfCeilingGrabbing()
+    {
+        if (CameraController.Instance.CM_Player_CeilingGrab.GetComponent<CinemachineThirdPersonFollow>().CameraDistance <= 2.75f)
+        {
+            CameraController.Instance.CM_Player.Priority.Value = 9;
+            CameraController.Instance.CM_UnderCeiling.Priority.Value = -9;
+        }
+        else
+        {
+            CameraController.Instance.CM_Player.Priority.Value = -9;
+            CameraController.Instance.CM_UnderCeiling.Priority.Value = 9;
+        }
     }
 
     bool CheckSphereCast(Vector3 dir)

@@ -22,7 +22,8 @@ public class Interactable_GetItem : MonoBehaviour
                     break;
 
                 case Items.Essence:
-                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.essence += itemReceivedList[i].amount;
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.essence_Max += itemReceivedList[i].amount;
+                    PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.essence_Current += itemReceivedList[i].amount;
                     break;
                 case Items.IncreaseMaxSteps:
                     PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max += itemReceivedList[i].amount;
