@@ -33,6 +33,15 @@ public class Player_Animations : Singleton<Player_Animations>
     //--------------------
 
 
+    public void UpdateAnimator()
+    {
+        anim = Player_Body.Instance.selectedSkinBlock.GetComponent<Animator>();
+    }
+
+
+    //--------------------
+
+
     public void Perform_WalkingAnimation()
     {
         if (Movement.Instance.isMoving) { return; }

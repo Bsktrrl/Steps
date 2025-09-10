@@ -20,9 +20,16 @@ public class SkinWardrobeButton : MonoBehaviour
     [SerializeField] Image frame;
     [SerializeField] GameObject overlay;
 
+    Player_Animations Player_Animations;
+
 
     //--------------------
 
+
+    private void Start()
+    {
+        Player_Animations = FindAnyObjectByType<Player_Animations>();
+    }
     private void Update()
     {
         UpdateDefaultSkinButtonDisplay();
@@ -97,6 +104,14 @@ public class SkinWardrobeButton : MonoBehaviour
 
             UpdateSkinButtonDisplay();
 
+            Player_Body.Instance.UpdatePlayerSkin();
+
+            if (Player_Animations)
+            {
+                Player_Animations.Instance.UpdateAnimator();
+            }
+            
+
             SkinWardrobeManager.Instance.UpdatePlayerBodyDisplay();
         }
 
@@ -137,6 +152,7 @@ public class SkinWardrobeButton : MonoBehaviour
             }
 
             UpdateHatButtonDisplay();
+            Player_Body.Instance.UpdatePlayerHats();
 
             SkinWardrobeManager.Instance.UpdatePlayerHatDisplay();
         }
