@@ -22,6 +22,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     [Header("Skin")]
     public GameObject selectedSkin;
+    public GameObject selectedHat;
     [SerializeField] TextMeshProUGUI esseceCost;
     public int skinCost = 1;
 

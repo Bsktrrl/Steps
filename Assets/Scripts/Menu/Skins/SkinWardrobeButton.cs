@@ -53,8 +53,6 @@ public class SkinWardrobeButton : MonoBehaviour
         {
             WardrobeSkinState tempState = SkinWardrobeManager.Instance.GetSkinSaveData(region, level);
 
-            SkinsManager.Instance.skinInfo.activeSkinType = skinType;
-
             switch (tempState)
             {
                 case WardrobeSkinState.Inactive:
@@ -73,6 +71,8 @@ public class SkinWardrobeButton : MonoBehaviour
                 case WardrobeSkinState.Bought:
                     //Check condition to see if button is selected
                     Action_SelectThisSkin?.Invoke();
+
+                    SkinsManager.Instance.skinInfo.activeSkinType = skinType;
 
                     SkinWardrobeManager.Instance.SetSkinSaveData(region, level, WardrobeSkinState.Selected);
 
@@ -104,8 +104,6 @@ public class SkinWardrobeButton : MonoBehaviour
         {
             WardrobeHatState tempHat = SkinWardrobeManager.Instance.GetHatSaveData(hatType);
 
-            SkinsManager.Instance.skinInfo.activeHatType = hatType;
-
             switch (tempHat)
             {
                 case WardrobeHatState.Inactive:
@@ -115,14 +113,22 @@ public class SkinWardrobeButton : MonoBehaviour
                     //Check condition to see if button is selected
                     Action_SelectThisHat?.Invoke();
 
+                    SkinsManager.Instance.skinInfo.activeHatType = hatType;
+
                     SkinWardrobeManager.Instance.SetHatSaveData(hatType, WardrobeHatState.Selected);
 
-                    SkinWardrobeManager.Instance.MoveHatObjectsToSelectedSkin();
+                    SkinWardrobeManager.Instance.selectedHat = SkinWardrobeManager.Instance.GetHatSelectedObject();
+                    //SkinWardrobeManager.Instance.MoveHatObjectsToSelectedSkin();
                     break;
                 case WardrobeHatState.Selected:
                     DeselectThisHatButton();
 
-                    SkinWardrobeManager.Instance.SetHatSaveData(hatType, WardrobeHatState.Selected);
+                    SkinWardrobeManager.Instance.SetActiveHatData(HatType.None);
+
+                    SkinWardrobeManager.Instance.SetHatSaveData(hatType, WardrobeHatState.Available);
+
+                    SkinWardrobeManager.Instance.selectedHat = SkinWardrobeManager.Instance.GetHatSelectedObject();
+                    //SkinWardrobeManager.Instance.MoveHatObjectsToSelectedSkin();
                     break;
 
                 default:
