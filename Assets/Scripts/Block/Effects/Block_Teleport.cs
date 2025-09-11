@@ -49,6 +49,7 @@ public class Block_Teleport : MonoBehaviour
         Movement.Action_StepTaken += TeleportPlayer;
         Action_StartTeleport += StartTeleport_Action;
         Action_EndTeleport += EndTeleport_Action;
+        Movement.Action_LandedFromFalling += TeleportPlayer;
     }
 
     private void OnDisable()
@@ -56,6 +57,7 @@ public class Block_Teleport : MonoBehaviour
         Movement.Action_StepTaken -= TeleportPlayer;
         Action_StartTeleport -= StartTeleport_Action;
         Action_EndTeleport -= EndTeleport_Action;
+        Movement.Action_LandedFromFalling -= TeleportPlayer;
     }
 
 

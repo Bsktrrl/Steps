@@ -4,26 +4,6 @@
 
 
 
-2.
-Skin Menu:
-__________________
-
-2.2. Wardrobe Menu
-- Make DefaultSkin fintionality (make it so that it always are selected (and changed colors) if no other Skin is selected
-	- Can be done right after "dataShasSpawned", directly set into DataManager, if DataManager doesn't have any selectedSkins
-- Make Equip functionality, so that the player can equip unlocked Skins
-- Display the Equip changes on a 3D character model
-	- Make functionalty for all Skins to be equipped
-	- Make default Grey if no Skin model are imported yet
-- Make a functionality of putting on hats
-	- Display the hats on the 3D model
-- Save/Load
-	- Save/Load Hats unlocked
-	- Save/Load Hats equipped
-	- Save/Load Skin equipped
-
-
-
 3.
 Sound:
 __________________
@@ -73,13 +53,12 @@ __________________
 
 
 
-1. When the player is falling and landing on an EffectBlock, trigger the EffectBlockk effect
-	- Somethines the PlayerObject is set to "BlockStandingOn", which is strange
 2. Make the numbers appear when stopping AND release the movementButton
 	- Now it disappear if moving in to a deadEndBlock and holding in the movementButton
 3. The player isn't performing walking animation after Ascending or Descending (when moving away from the block landed on)
 4. When Ascending/Descending, the camera zooms in fast, then out, if there is free space. Disable carea when ascending/Descending
 5. Then doing CeilingGrabRotation back to the noraml camera, it is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
+6. Add MovingBlock EffectBlock
 
 
 ---

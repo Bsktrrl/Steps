@@ -1,9 +1,7 @@
 using Unity.Cinemachine;
 using System;
 using System.Collections;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class CameraController : Singleton<CameraController>
 {

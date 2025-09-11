@@ -17,12 +17,14 @@ public class Block_SpawnPoint : MonoBehaviour
     {
         Movement.Action_StepTaken += UpdateSpawnPos;
         DataManager.Action_dataHasLoaded += UpdateSpawnPos;
+        Movement.Action_LandedFromFalling += UpdateSpawnPos;
     }
 
     private void OnDisable()
     {
         Movement.Action_StepTaken -= UpdateSpawnPos;
         DataManager.Action_dataHasLoaded -= UpdateSpawnPos;
+        Movement.Action_LandedFromFalling -= UpdateSpawnPos;
     }
 
 
@@ -39,13 +41,14 @@ public class Block_SpawnPoint : MonoBehaviour
             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current = PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max;
             StartCoroutine(ResetSteps(0.01f));
         }
-        IEnumerator ResetSteps(float waitTime)
-        {
-            yield return new WaitForSeconds(waitTime);
+    }
 
-            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current = PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max;
+    IEnumerator ResetSteps(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
 
-            Action_SpawnPointEntered?.Invoke();
-        }
+        PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current = PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max;
+
+        Action_SpawnPointEntered?.Invoke();
     }
 }

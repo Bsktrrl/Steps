@@ -366,6 +366,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1944044435}
     m_Modifications:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: canPlay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelToPlay
       value: Desert - Level 6
       objectReference: {fileID: 0}
@@ -374,8 +378,16 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: readyToBePlayedAndDisplayed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.data[0]
@@ -400,7 +412,7 @@ PrefabInstance:
     - target: {fileID: 384179937895888748, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: e037874832aa85543b7fece6c1776b2e, type: 3}
+      objectReference: {fileID: 21300000, guid: 7c86c2baf5c03ae4291b19090032b470, type: 3}
     - target: {fileID: 1814084887984308522, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: m_TargetGraphic
       value: 
@@ -594,21 +606,25 @@ PrefabInstance:
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: waveSpriteList.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: waveSpriteList.Array.data[0]
       value: 
       objectReference: {fileID: 21300000, guid: 7c86c2baf5c03ae4291b19090032b470, type: 3}
     - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: waveSpriteList.Array.data[1]
       value: 
-      objectReference: {fileID: 21300000, guid: 6add1a8bcf5f1704c9a76d854bf6383a, type: 3}
+      objectReference: {fileID: 21300000, guid: eb8bfa7f6bae5534e93965bba8223741, type: 3}
     - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: waveSpriteList.Array.data[2]
       value: 
-      objectReference: {fileID: 21300000, guid: eb8bfa7f6bae5534e93965bba8223741, type: 3}
+      objectReference: {fileID: 21300000, guid: 6add1a8bcf5f1704c9a76d854bf6383a, type: 3}
     - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: waveSpriteList.Array.data[3]
       value: 
-      objectReference: {fileID: 21300000, guid: 6add1a8bcf5f1704c9a76d854bf6383a, type: 3}
+      objectReference: {fileID: 21300000, guid: eb8bfa7f6bae5534e93965bba8223741, type: 3}
     - target: {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: waveSpriteList.Array.data[4]
       value: 
@@ -625,14 +641,10 @@ PrefabInstance:
       propertyPath: waveSpriteList.Array.data[7]
       value: 
       objectReference: {fileID: 21300000, guid: e4e0853e2ae0edc4983e5ba351b6aa8c, type: 3}
-    m_RemovedComponents:
-    - {fileID: 5924539168468555278, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5666577594912976797, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
-      insertIndex: 6
-      addedObject: {fileID: 102509361}
     - targetCorrespondingSourceObject: {fileID: 5666577594912976797, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 102509362}
@@ -669,30 +681,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5722126636705133576, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
   m_PrefabInstance: {fileID: 102509351}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &102509361
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 102509352}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c3592981424de6468e94bb53e26aeb0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onlyWhenSelected: 1
-  waitTimerRange: {x: 0.1, y: 0.1}
-  waveImage: {fileID: 1941635684}
-  waveSpriteList:
-  - {fileID: 21300000, guid: e037874832aa85543b7fece6c1776b2e, type: 3}
-  - {fileID: 21300000, guid: 761d80779067035478bf17f7d3799369, type: 3}
-  - {fileID: 21300000, guid: 334f512e8ff145a4cb276658725ff12c, type: 3}
-  - {fileID: 21300000, guid: 761d80779067035478bf17f7d3799369, type: 3}
-  - {fileID: 21300000, guid: e037874832aa85543b7fece6c1776b2e, type: 3}
-  - {fileID: 21300000, guid: a42c402c3fdefc546aaed9bde5b3f285, type: 3}
-  - {fileID: 21300000, guid: 2763fa7684bd18a4a9c00f3b95ffdc2b, type: 3}
-  - {fileID: 21300000, guid: a42c402c3fdefc546aaed9bde5b3f285, type: 3}
 --- !u!114 &102509362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -705,12 +693,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11bc6d5f0490dab41b78896bde301482, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  norwegian_MapNameDisplay: 
-  english_MapNameDisplay: 
-  german_MapNameDisplay: 
-  chinese_MapNameDisplay: 
-  japanese_MapNameDisplay: 
-  korean_MapNameDisplay: 
+  norwegian_MapNameDisplay: Pyramiden
+  english_MapNameDisplay: The Pyramid
+  german_MapNameDisplay: Die Pyramide
+  chinese_MapNameDisplay: "\u91D1\u5B57\u5854"
+  japanese_MapNameDisplay: "\u30D4\u30E9\u30DF\u30C3\u30C9"
+  korean_MapNameDisplay: "\uD53C\uB77C\uBBF8\uB4DC"
 --- !u!1 &111222020
 GameObject:
   m_ObjectHideFlags: 0
@@ -23714,17 +23702,6 @@ MonoBehaviour:
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 384179937895888748, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
   m_PrefabInstance: {fileID: 739040642}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1941635684 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 384179937895888748, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
-  m_PrefabInstance: {fileID: 102509351}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
