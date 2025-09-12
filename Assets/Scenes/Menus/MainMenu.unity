@@ -371,7 +371,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelToPlay
-      value: Desert - Level 6
+      value: Desert_Level_6
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
@@ -16528,7 +16528,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelToPlay
-      value: Water - Level 4
+      value: Water_Level_4
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
@@ -26981,7 +26981,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelToPlay
-      value: Winter - Level 4
+      value: Winter_Level_4
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
@@ -27291,12 +27291,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11bc6d5f0490dab41b78896bde301482, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  norwegian_MapNameDisplay: 
-  english_MapNameDisplay: 
-  german_MapNameDisplay: 
-  chinese_MapNameDisplay: 
-  japanese_MapNameDisplay: 
-  korean_MapNameDisplay: 
+  norwegian_MapNameDisplay: "Den Frosne innsj\xF8en"
+  english_MapNameDisplay: The Icy Lake
+  german_MapNameDisplay: Der eisige See
+  chinese_MapNameDisplay: "\u51B0\u6E56"
+  japanese_MapNameDisplay: "\u6C37\u306E\u6E56"
+  korean_MapNameDisplay: "\uC5BC\uC74C \uD638\uC218"
 --- !u!1 &2144892443
 GameObject:
   m_ObjectHideFlags: 0
@@ -29138,6 +29138,10 @@ PrefabInstance:
     - target: {fileID: 4799594292383829256, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_Layer
       value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 4831180214876375337, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: skinCost
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4831180214876375337, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: playerObject

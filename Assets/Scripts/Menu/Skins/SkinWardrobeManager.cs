@@ -24,7 +24,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     public GameObject selectedSkin;
     public GameObject selectedHat;
     [SerializeField] TextMeshProUGUI esseceCost;
-    public int skinCost = 1;
+    public int skinCost = 10;
 
     #region Wardrobe Buttons
     [Header("Wardrobe - Buttons")]
@@ -146,8 +146,8 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     {
         movement = FindObjectOfType<Movement>();
 
-        DataManager.Instance.playerStats_Store.itemsGot.essence_Max = 12; //Remove this after testing of Skin Menu
-        DataManager.Instance.playerStats_Store.itemsGot.essence_Current = 12; //Remove this after testing of Skin Menu
+        //DataManager.Instance.playerStats_Store.itemsGot.essence_Max = 12; //Remove this after testing of Skin Menu
+        //DataManager.Instance.playerStats_Store.itemsGot.essence_Current = 12; //Remove this after testing of Skin Menu
     }
 
     private void OnEnable()
