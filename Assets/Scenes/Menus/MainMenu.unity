@@ -370,6 +370,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: levelSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 51381880e98abce4eb40742ce2555fc7, type: 3}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelToPlay
       value: Desert_Level_6
       objectReference: {fileID: 0}
@@ -890,7 +894,7 @@ PrefabInstance:
     - target: {fileID: 3801963254039540224, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 713555122}
+      objectReference: {fileID: 458182682}
     - target: {fileID: 3801963254039540224, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_Colors.m_HighlightedColor.b
       value: 1
@@ -9090,7 +9094,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7429604548242019253, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8089793194813468193, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -17900,7 +17904,7 @@ PrefabInstance:
     - target: {fileID: 3801963254039540224, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 713555122}
+      objectReference: {fileID: 132657684}
     - target: {fileID: 3801963254039540224, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_Colors.m_SelectedColor.b
       value: 0.9150943
@@ -26980,12 +26984,24 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: levelSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ffb260d409c34044ba74eaf36ba1cef2, type: 3}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelToPlay
       value: Winter_Level_4
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: readyToBePlayedAndDisplayed
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
@@ -27292,7 +27308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   norwegian_MapNameDisplay: "Den Frosne innsj\xF8en"
-  english_MapNameDisplay: The Icy Lake
+  english_MapNameDisplay: The Frosty Lake
   german_MapNameDisplay: Der eisige See
   chinese_MapNameDisplay: "\u51B0\u6E56"
   japanese_MapNameDisplay: "\u6C37\u306E\u6E56"

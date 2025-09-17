@@ -52,13 +52,30 @@ __________________
 --- OTHER STUFF
 
 
-
 2. Make the numbers appear when stopping AND release the movementButton
 	- Now it disappear if moving in to a deadEndBlock and holding in the movementButton
 3. The player isn't performing walking animation after Ascending or Descending (when moving away from the block landed on)
 4. When Ascending/Descending, the camera zooms in fast, then out, if there is free space. Disable carea when ascending/Descending
-5. Then doing CeilingGrabRotation back to the noraml camera, it is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
-6. Add MovingBlock EffectBlock
+5. When doing CeilingGrabRotation back to the noraml camera, it is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
+6. Add "MovingBlock"-EffectBlock
+7. Falling onto a fallingblock prevents movement
+8. When having Jumping-ability, auto-jump when iceGliding
+9. IceGlide doesn't work with pusher
+
+
+--- FROM TESTBONANZA
+
+1. You can talk through fences
+2. Swiftswim doesn't always work upwards
+3. Press and hold right backbutton to restart (0.5f?)
+4. Ice and water is too similar
+5. The 0-font is too similar to 1 (maybe make it rounder)
+6. Fences on fallingBlocks immobilizes movement
+7. Camera collision on NPC's
+8. "Freemove" camera with right joystick
+10. Move with left joystick
+11. Camera must not collide with water blocks
+12. 
 
 
 ---
