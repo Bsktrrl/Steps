@@ -181,12 +181,21 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Respawn"",
+                    ""name"": ""Respawn_In"",
                     ""type"": ""Button"",
                     ""id"": ""82cb90a0-e3d1-4a2a-910e-310560a18efa"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Respawn_Out"",
+                    ""type"": ""Button"",
+                    ""id"": ""bf873d34-b8f9-44ab-b3b0-4c7aca63c0a7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -561,18 +570,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Respawn"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""91de1d82-882b-4ae4-8e7e-901898bab023"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Respawn"",
+                    ""action"": ""Respawn_In"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -583,7 +581,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Respawn"",
+                    ""action"": ""Respawn_In"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1114,6 +1112,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""MenuNavigation_Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""422ed6d1-3980-4554-880a-b8896db84e67"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Respawn_Out"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aeeba670-82a1-4e78-83f2-fcf5a27a7e40"",
+                    ""path"": ""<Keyboard>/#(R)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Respawn_Out"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1139,7 +1159,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerMovement_AbilityLeft = m_PlayerMovement.FindAction("AbilityLeft", throwIfNotFound: true);
         m_PlayerMovement_AbilityRight_DownPress = m_PlayerMovement.FindAction("AbilityRight_DownPress", throwIfNotFound: true);
         m_PlayerMovement_AbilityRight_RelesePress = m_PlayerMovement.FindAction("AbilityRight_RelesePress", throwIfNotFound: true);
-        m_PlayerMovement_Respawn = m_PlayerMovement.FindAction("Respawn", throwIfNotFound: true);
+        m_PlayerMovement_Respawn_In = m_PlayerMovement.FindAction("Respawn_In", throwIfNotFound: true);
+        m_PlayerMovement_Respawn_Out = m_PlayerMovement.FindAction("Respawn_Out", throwIfNotFound: true);
         m_PlayerMovement_Quit = m_PlayerMovement.FindAction("Quit", throwIfNotFound: true);
         m_PlayerMovement_Menu_Back = m_PlayerMovement.FindAction("Menu_Back", throwIfNotFound: true);
         m_PlayerMovement_DialogueSkip_Pressed = m_PlayerMovement.FindAction("DialogueSkip_Pressed", throwIfNotFound: true);
@@ -1229,7 +1250,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_AbilityLeft;
     private readonly InputAction m_PlayerMovement_AbilityRight_DownPress;
     private readonly InputAction m_PlayerMovement_AbilityRight_RelesePress;
-    private readonly InputAction m_PlayerMovement_Respawn;
+    private readonly InputAction m_PlayerMovement_Respawn_In;
+    private readonly InputAction m_PlayerMovement_Respawn_Out;
     private readonly InputAction m_PlayerMovement_Quit;
     private readonly InputAction m_PlayerMovement_Menu_Back;
     private readonly InputAction m_PlayerMovement_DialogueSkip_Pressed;
@@ -1262,7 +1284,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @AbilityLeft => m_Wrapper.m_PlayerMovement_AbilityLeft;
         public InputAction @AbilityRight_DownPress => m_Wrapper.m_PlayerMovement_AbilityRight_DownPress;
         public InputAction @AbilityRight_RelesePress => m_Wrapper.m_PlayerMovement_AbilityRight_RelesePress;
-        public InputAction @Respawn => m_Wrapper.m_PlayerMovement_Respawn;
+        public InputAction @Respawn_In => m_Wrapper.m_PlayerMovement_Respawn_In;
+        public InputAction @Respawn_Out => m_Wrapper.m_PlayerMovement_Respawn_Out;
         public InputAction @Quit => m_Wrapper.m_PlayerMovement_Quit;
         public InputAction @Menu_Back => m_Wrapper.m_PlayerMovement_Menu_Back;
         public InputAction @DialogueSkip_Pressed => m_Wrapper.m_PlayerMovement_DialogueSkip_Pressed;
@@ -1334,9 +1357,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @AbilityRight_RelesePress.started += instance.OnAbilityRight_RelesePress;
             @AbilityRight_RelesePress.performed += instance.OnAbilityRight_RelesePress;
             @AbilityRight_RelesePress.canceled += instance.OnAbilityRight_RelesePress;
-            @Respawn.started += instance.OnRespawn;
-            @Respawn.performed += instance.OnRespawn;
-            @Respawn.canceled += instance.OnRespawn;
+            @Respawn_In.started += instance.OnRespawn_In;
+            @Respawn_In.performed += instance.OnRespawn_In;
+            @Respawn_In.canceled += instance.OnRespawn_In;
+            @Respawn_Out.started += instance.OnRespawn_Out;
+            @Respawn_Out.performed += instance.OnRespawn_Out;
+            @Respawn_Out.canceled += instance.OnRespawn_Out;
             @Quit.started += instance.OnQuit;
             @Quit.performed += instance.OnQuit;
             @Quit.canceled += instance.OnQuit;
@@ -1425,9 +1451,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @AbilityRight_RelesePress.started -= instance.OnAbilityRight_RelesePress;
             @AbilityRight_RelesePress.performed -= instance.OnAbilityRight_RelesePress;
             @AbilityRight_RelesePress.canceled -= instance.OnAbilityRight_RelesePress;
-            @Respawn.started -= instance.OnRespawn;
-            @Respawn.performed -= instance.OnRespawn;
-            @Respawn.canceled -= instance.OnRespawn;
+            @Respawn_In.started -= instance.OnRespawn_In;
+            @Respawn_In.performed -= instance.OnRespawn_In;
+            @Respawn_In.canceled -= instance.OnRespawn_In;
+            @Respawn_Out.started -= instance.OnRespawn_Out;
+            @Respawn_Out.performed -= instance.OnRespawn_Out;
+            @Respawn_Out.canceled -= instance.OnRespawn_Out;
             @Quit.started -= instance.OnQuit;
             @Quit.performed -= instance.OnQuit;
             @Quit.canceled -= instance.OnQuit;
@@ -1497,7 +1526,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnAbilityLeft(InputAction.CallbackContext context);
         void OnAbilityRight_DownPress(InputAction.CallbackContext context);
         void OnAbilityRight_RelesePress(InputAction.CallbackContext context);
-        void OnRespawn(InputAction.CallbackContext context);
+        void OnRespawn_In(InputAction.CallbackContext context);
+        void OnRespawn_Out(InputAction.CallbackContext context);
         void OnQuit(InputAction.CallbackContext context);
         void OnMenu_Back(InputAction.CallbackContext context);
         void OnDialogueSkip_Pressed(InputAction.CallbackContext context);

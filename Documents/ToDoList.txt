@@ -59,7 +59,6 @@ __________________
 5. When doing CeilingGrabRotation back to the noraml camera, it is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
 6. Add "MovingBlock"-EffectBlock
 7. Falling onto a fallingblock prevents movement
-8. When having Jumping-ability, auto-jump when iceGliding
 9. IceGlide doesn't work with pusher
 
 
@@ -73,9 +72,18 @@ __________________
 6. Fences on fallingBlocks immobilizes movement
 7. Camera collision on NPC's
 8. "Freemove" camera with right joystick
-10. Move with left joystick
+
 11. Camera must not collide with water blocks
-12. 
+12. Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
+	- Sometimes, when rotating to the left twice, the player move in the looking direction after moving
+	- Almost always when at the edge of something, where not all 4 adjacent blocks can be moved to (maybe blocks isn't updated to "null" when the camera is rotating, so it keeps old blocks when they should have been "null"?
+13. Ladders can be climed on from behind
+14. Always show all +3 Steps, but make them "empty"
+15. Falling block let the player move down when respawned
+16. Stairs isn't counted for when ascending/Descending
+17. Move EffectBlocks on top of SnowBlocks
+18. Numbers on Liquid Blocks is not alligned properly
+19. BackButton in Overworld goes back to mainMenu, not the start of Overworld menu
 
 
 ---
@@ -94,9 +102,7 @@ Levels
 
 
 Movement & Camera bugtesting and fixing:
-- Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
-	- Sometimes, when rotating to the left twice, the player move in the looking direction after moving
-	- Almost always when at the edge of something, where not all 4 adjacent blocks can be moved to (maybe blocks isn't updated to "null" when the camera is rotating, so it keeps old blocks when they should have been "null"?
+
 
 
 Switches:

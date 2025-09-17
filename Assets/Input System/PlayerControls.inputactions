@@ -159,12 +159,21 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Respawn",
+                    "name": "Respawn_In",
                     "type": "Button",
                     "id": "82cb90a0-e3d1-4a2a-910e-310560a18efa",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Respawn_Out",
+                    "type": "Button",
+                    "id": "bf873d34-b8f9-44ab-b3b0-4c7aca63c0a7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)",
                     "initialStateCheck": false
                 },
                 {
@@ -539,18 +548,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Respawn",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "91de1d82-882b-4ae4-8e7e-901898bab023",
-                    "path": "<Gamepad>/rightTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Respawn",
+                    "action": "Respawn_In",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -561,7 +559,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Respawn",
+                    "action": "Respawn_In",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -1090,6 +1088,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "MenuNavigation_Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "422ed6d1-3980-4554-880a-b8896db84e67",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Respawn_Out",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aeeba670-82a1-4e78-83f2-fcf5a27a7e40",
+                    "path": "<Keyboard>/#(R)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Respawn_Out",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

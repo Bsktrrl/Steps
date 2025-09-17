@@ -24,7 +24,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     public GameObject selectedSkin;
     public GameObject selectedHat;
     [SerializeField] TextMeshProUGUI esseceCost;
-    public int skinCost = 10;
+    public int skinCost = 5;
 
     #region Wardrobe Buttons
     [Header("Wardrobe - Buttons")]
