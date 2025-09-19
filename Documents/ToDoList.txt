@@ -67,23 +67,25 @@ __________________
 1. You can talk through fences
 2. Swiftswim doesn't always work upwards
 
-4. Ice and water is too similar
-5. The 0-font is too similar to 1 (maybe make it rounder)
+
+
 6. Fences on fallingBlocks immobilizes movement
-7. Camera collision on NPC's
+
 8. "Freemove" camera with right joystick
 
-11. Camera must not collide with water blocks
+
 12. Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
 	- Sometimes, when rotating to the left twice, the player move in the looking direction after moving
 	- Almost always when at the edge of something, where not all 4 adjacent blocks can be moved to (maybe blocks isn't updated to "null" when the camera is rotating, so it keeps old blocks when they should have been "null"?
-13. Ladders can be climbed on from behind (set a collider that block the player from entering it)
+
 14. Always show all +3 Steps, but make them "empty"
 15. Falling block let the player move down when respawned
 16. Stairs isn't counted for when ascending/Descending
 17. Move EffectBlocks on top of SnowBlocks
 18. Numbers on Liquid Blocks is not alligned properly
 19. BackButton in Overworld goes back to mainMenu, not the start of Overworld menu
+20. The left movement sometimes run on auto
+21. DialogueSegments need to have another option for link when there are no options, but the link cannot be the next line (Change in Excel Sheet)
 
 
 ---
