@@ -155,11 +155,6 @@ public class Movement : Singleton<Movement>
             UpdateGrapplingHookMovement(moveToBlock_GrapplingHook, lookDir);
             grapplingTargetHasBeenSet = true;
         }
-
-        //if (blockStandingOn == PlayerManager.Instance.player)
-        //{
-        //    UpdateBlockStandingOn();
-        //}
     }
 
 
@@ -1614,7 +1609,7 @@ public class Movement : Singleton<Movement>
 
     public RaycastHitObjects PerformMovementRaycast(Vector3 objPos, Vector3 dir, float distance, out GameObject obj)
     {
-        int combinedMask = MapManager.Instance.pickup_LayerMask/* | MapManager.Instance.player_LayerMask*/;
+        int combinedMask = MapManager.Instance.pickup_LayerMask;
 
         if (Physics.Raycast(objPos, dir, out hit, distance, combinedMask))
         {
@@ -1624,9 +1619,22 @@ public class Movement : Singleton<Movement>
 
                 return RaycastHitObjects.BlockInfo;
             }
-            else if (hit.transform.GetComponent<Block_Ladder>())
+            else if (hit.transform.GetComponentInParent<Fence>())
             {
-                obj = hit.transform.gameObject;
+                print("1. Fence");
+                obj = null;
+                return RaycastHitObjects.Fence;
+            }
+            else if (hit.transform.GetComponentInParent<Block_Ladder>() && hit.transform.GetComponent<LadderColliderBlocker>())
+            {
+                print("2. LadderColliderBlocker");
+                obj = null;
+                return RaycastHitObjects.LadderBlocker;
+            }
+            else if (hit.transform.GetComponentInParent<Block_Ladder>() && hit.transform.GetComponent<LadderCollider>())
+            {
+                print("3. LadderCollider");
+                obj = hit.transform.parent.gameObject;
 
                 return RaycastHitObjects.Ladder;
             }
@@ -2121,6 +2129,13 @@ public class Movement : Singleton<Movement>
     void CheckAvailableLadderExitBlocks(Vector3 dir, MoveOptions moveOptions)
     {
         GameObject outObj1 = null;
+
+        if (PerformMovementRaycast(transform.position, dir, 1, out outObj1) == RaycastHitObjects.LadderBlocker
+            || PerformMovementRaycast(transform.position, dir, 1, out outObj1) == RaycastHitObjects.Fence)
+        {
+            Block_IsNot_Target(moveOptions);
+            return;
+        }
 
         //Check from the bottom and up
         if (PerformMovementRaycast(transform.position, dir, 1, out outObj1) == RaycastHitObjects.Ladder)
@@ -2803,6 +2818,9 @@ public enum RaycastHitObjects
     Other,
 
     Ladder,
+    LadderBlocker,
+
+    Fence,
 }
 public enum MovementStates
 {

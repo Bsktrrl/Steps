@@ -64,7 +64,7 @@ public class Block_Ladder : MonoBehaviour
         while (true)
         {
             //Try raycasting upward from current
-            if (Movement.Instance.PerformMovementRaycast(current.transform.position, Vector3.up, 1, out hitObject) == RaycastHitObjects.Ladder)
+            if (PerformMovementRaycast(current.transform.position, Vector3.up, 1, out hitObject) == RaycastHitObjects.Ladder)
             {
                 Block_Ladder ladder = hitObject.GetComponent<Block_Ladder>();
                 if (ladder != null)
@@ -95,7 +95,7 @@ public class Block_Ladder : MonoBehaviour
         while (true)
         {
             //Try raycasting upward from current
-            if (Movement.Instance.PerformMovementRaycast(current.transform.position, Vector3.down, 1, out hitObject) == RaycastHitObjects.Ladder)
+            if (PerformMovementRaycast(current.transform.position, Vector3.down, 1, out hitObject) == RaycastHitObjects.Ladder)
             {
                 Block_Ladder ladder = hitObject.GetComponent<Block_Ladder>();
                 if (ladder != null)
@@ -120,7 +120,7 @@ public class Block_Ladder : MonoBehaviour
         GameObject outObject1 = null;
 
         //Find the exitBlock to the ladder
-        if (Movement.Instance.PerformMovementRaycast(lastLadderPart_Up.transform.position + Vector3.up + (dir * 0.5f), Vector3.down, 1, out outObject1) == RaycastHitObjects.BlockInfo)
+        if (PerformMovementRaycast(lastLadderPart_Up.transform.position + Vector3.up + (dir * 0.5f), Vector3.down, 1, out outObject1) == RaycastHitObjects.BlockInfo)
         {
             exitBlock_Up = outObject1;
             return;
@@ -133,7 +133,7 @@ public class Block_Ladder : MonoBehaviour
         GameObject outObject1 = null;
 
         //Find the exitBlock to the ladder
-        if (Movement.Instance.PerformMovementRaycast(lastLadderPart_Down.transform.position, Vector3.down, 1, out outObject1) == RaycastHitObjects.BlockInfo)
+        if (PerformMovementRaycast(lastLadderPart_Down.transform.position, Vector3.down, 1, out outObject1) == RaycastHitObjects.BlockInfo)
         {
             exitBlock_Down = outObject1;
             return;
@@ -169,5 +169,36 @@ public class Block_Ladder : MonoBehaviour
                 exitBlock_Down.GetComponent<BlockInfo>().SetDarkenColors();
             }
         }
+    }
+
+
+    public RaycastHitObjects PerformMovementRaycast(Vector3 objPos, Vector3 dir, float distance, out GameObject obj)
+    {
+        int combinedMask = MapManager.Instance.pickup_LayerMask/* | MapManager.Instance.player_LayerMask*/;
+
+        if (Physics.Raycast(objPos, dir, out hit, distance, combinedMask))
+        {
+            if (hit.transform.GetComponent<BlockInfo>())
+            {
+                obj = hit.transform.gameObject;
+
+                return RaycastHitObjects.BlockInfo;
+            }
+            else if (hit.transform.GetComponentInParent<Block_Ladder>())
+            {
+                obj = hit.transform.parent.gameObject;
+
+                return RaycastHitObjects.Ladder;
+            }
+            else
+            {
+                obj = hit.transform.gameObject;
+
+                return RaycastHitObjects.Other;
+            }
+        }
+
+        obj = null;
+        return RaycastHitObjects.None;
     }
 }

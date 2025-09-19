@@ -117,7 +117,7 @@ public class FollowCameraSettings : MonoBehaviour
         }
 
         // --- PASS 1: small radius (stair-friendly) ---
-        if (CameraCollisionHelper.SphereCastIgnoringWater(origin, smallCastRadius, dir, maxDistance, collideAgainst, QueryTriggerInteraction.Ignore, out RaycastHit smallHit))
+        if (CameraCollisionHelper.SphereCastIgnore(origin, smallCastRadius, dir, maxDistance, collideAgainst, QueryTriggerInteraction.Ignore, out RaycastHit smallHit))
         {
             float d = Mathf.Max(smallHit.distance - wallBuffer, minDistance);
             targetDistance = Mathf.Clamp(d, minDistance, maxDistance);
@@ -128,7 +128,7 @@ public class FollowCameraSettings : MonoBehaviour
         float previewDistance = targetDistance;
         if (previewDistance > maxDistance * 0.9f)
         {
-            if (CameraCollisionHelper.SphereCastIgnoringWater(origin, largeCastRadius, dir, maxDistance, collideAgainst, QueryTriggerInteraction.Ignore, out RaycastHit bigHit))
+            if (CameraCollisionHelper.SphereCastIgnore(origin, largeCastRadius, dir, maxDistance, collideAgainst, QueryTriggerInteraction.Ignore, out RaycastHit bigHit))
             {
                 if (bigHit.normal.y <= wallNormalYMax)
                 {
@@ -163,7 +163,7 @@ public class FollowCameraSettings : MonoBehaviour
         /// Performs a SphereCast but ignores any hits on water blocks.
         /// Returns the closest non-water hit, if any.
         /// </summary>
-        public static bool SphereCastIgnoringWater(
+        public static bool SphereCastIgnore(
             Vector3 origin,
             float radius,
             Vector3 dir,
