@@ -172,8 +172,8 @@ public class Interactable_NPC_ColliderTrigger : MonoBehaviour
         Transform npcTf = parentScript.transform;
 
         // Aim from chest height to chest height
-        Vector3 origin = playerTf.position /*+ Vector3.up * 0.9f*/;
-        Vector3 target = npcTf.position /*+ Vector3.up * 0.9f*/;
+        Vector3 origin = playerTf.position;
+        Vector3 target = npcTf.position;
 
         Vector3 dir = target - origin;
         float dist = dir.magnitude;

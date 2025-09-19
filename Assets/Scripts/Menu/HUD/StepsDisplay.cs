@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class StepsDisplay : MonoBehaviour
+public class StepsDisplay : Singleton<StepsDisplay>
 {
     [Header("Parents")]
     [SerializeField] GameObject stepDisplay_Icons;
@@ -13,6 +13,14 @@ public class StepsDisplay : MonoBehaviour
     [Header("TextObjects")]
     [SerializeField] TextMeshProUGUI stepDisplay_Number_Text;
     [SerializeField] TextMeshProUGUI stepDisplay_NumberIcons_Text;
+
+    [Header("Colors")]
+    public Color normalColor_Active;
+    public Color normalColor_Used;
+    public Color bonusColor_Passive;
+    public Color bonusColor_Active;
+    public Color bonusColor_Used;
+
 
 
     //--------------------
@@ -70,6 +78,7 @@ public class StepsDisplay : MonoBehaviour
                 StepsHUD.Instance.UpdateStepsDisplay();
                 break;
             case StepDisplay.None:
+                HideAllMenus();
                 break;
 
             default:

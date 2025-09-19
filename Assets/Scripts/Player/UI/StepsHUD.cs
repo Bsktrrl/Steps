@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,63 +41,40 @@ public class StepsHUD : Singleton<StepsHUD>
 
     public void UpdateStepsDisplay()
     {
-        if (PlayerStats.Instance.stats.steps_Current < 0) { return; }
-
-        //Make non-tranparency based on amount of steps left
-        for (int i = 0; i < PlayerStats.Instance.stats.steps_Current; i++)
+        for (int i = 0; i < 10; i++)
         {
-            ChangeTransparency(i, false);
-        }
-
-        //Make tranparency based on amount of steps used
-        for (int i = PlayerStats.Instance.stats.steps_Current; i < stepsIconList.Count; i++)
-        {
-            ChangeTransparency(i, true);
-        }
-
-        //Check which icons to be visible
-        SetVisibility();
-    }
-
-    void SetVisibility()
-    {
-        for (int i = 0; i < 7; i++)
-        {
-            stepsIconList[i].SetActive(true);
-        }
-
-        for (int i = 7; i < stepsIconList.Count; i++)
-        {
-            stepsIconList[i].SetActive(false);
-        }
-
-        if (PlayerStats.Instance.stats.steps_Max == 8)
-        {
-            stepsIconList[7].SetActive(true);
-        }
-        else if (PlayerStats.Instance.stats.steps_Max == 9)
-        {
-            stepsIconList[7].SetActive(true);
-            stepsIconList[8].SetActive(true);
-        }
-        else if (PlayerStats.Instance.stats.steps_Max == 10)
-        {
-            stepsIconList[7].SetActive(true);
-            stepsIconList[8].SetActive(true);
-            stepsIconList[9].SetActive(true);
+            UpdateColors(i);
         }
     }
 
-    void ChangeTransparency(int index, bool isUsed)
+    void UpdateColors(int index)
     {
-        if (index < stepsIconList.Count)
+        if (index <= 6)
         {
-            Color originalColor = stepsIconList[index].GetComponent<Image>().color;
-
-            if (isUsed)
-                stepsIconList[index].GetComponent<Image>().color = new Color(originalColor.r, originalColor.g, originalColor.b, iconTransparencyValue);
+            if (PlayerStats.Instance.stats.steps_Current >= index + 1)
+                stepsIconList[index].GetComponent<Image>().color = StepsDisplay.Instance.normalColor_Active;
             else
-                stepsIconList[index].GetComponent<Image>().color = new Color(originalColor.r, originalColor.g, originalColor.b, 1);
+                stepsIconList[index].GetComponent<Image>().color = StepsDisplay.Instance.normalColor_Used;
+        }
+        else
+        {
+            UpdateBonusStepsColors(7);
+            UpdateBonusStepsColors(8);
+            UpdateBonusStepsColors(9);
+        }
+    }
+    void UpdateBonusStepsColors(int index)
+    {
+        if (PlayerStats.Instance.stats.steps_Max >= index + 1)
+        {
+            if (PlayerStats.Instance.stats.steps_Current >= index + 1)
+                stepsIconList[index].GetComponent<Image>().color = StepsDisplay.Instance.bonusColor_Active;
+            else
+                stepsIconList[index].GetComponent<Image>().color = StepsDisplay.Instance.bonusColor_Used;
+        }
+        else
+        {
+            stepsIconList[index].GetComponent<Image>().color = StepsDisplay.Instance.bonusColor_Passive;
         }
     }
 }
