@@ -181,6 +181,8 @@ public class Movement : Singleton<Movement>
         CameraController.Action_RotateCamera_End += UpdateBlocks;
 
         Player_KeyInputs.Action_WalkButton_isReleased += WalkButtonIsReleased;
+
+        SFX_Respawn.Action_RespawnPlayer += RespawnPlayer;
     }
     private void OnDisable()
     {
@@ -202,6 +204,8 @@ public class Movement : Singleton<Movement>
         CameraController.Action_RotateCamera_End -= UpdateBlocks;
 
         Player_KeyInputs.Action_WalkButton_isReleased -= WalkButtonIsReleased;
+
+        SFX_Respawn.Action_RespawnPlayer -= RespawnPlayer;
     }
 
 
@@ -1621,19 +1625,19 @@ public class Movement : Singleton<Movement>
             }
             else if (hit.transform.GetComponentInParent<Fence>())
             {
-                print("1. Fence");
+                //print("1. Fence");
                 obj = null;
                 return RaycastHitObjects.Fence;
             }
             else if (hit.transform.GetComponentInParent<Block_Ladder>() && hit.transform.GetComponent<LadderColliderBlocker>())
             {
-                print("2. LadderColliderBlocker");
+                //print("2. LadderColliderBlocker");
                 obj = null;
                 return RaycastHitObjects.LadderBlocker;
             }
             else if (hit.transform.GetComponentInParent<Block_Ladder>() && hit.transform.GetComponent<LadderCollider>())
             {
-                print("3. LadderCollider");
+                //print("3. LadderCollider");
                 obj = hit.transform.parent.gameObject;
 
                 return RaycastHitObjects.Ladder;

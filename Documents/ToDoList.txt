@@ -46,6 +46,7 @@ __________________
 
 4.2. Overworld Errors
 - Fix so that the menu operates as intended when pressing/hovering buttons/regions
+- Lock the cursor, so it cannot be used in-game
 
 
 
@@ -70,23 +71,26 @@ __________________
 
 
 6. Fences on fallingBlocks immobilizes movement
-
+7. Falling block let the player move down when respawned
 8. "Freemove" camera with right joystick
+
 
 
 12. Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
 	- Sometimes, when rotating to the left twice, the player move in the looking direction after moving
 	- Almost always when at the edge of something, where not all 4 adjacent blocks can be moved to (maybe blocks isn't updated to "null" when the camera is rotating, so it keeps old blocks when they should have been "null"?
 
-14. Always show all +3 Steps, but make them "empty"
-15. Falling block let the player move down when respawned
+
+
+
 16. Stairs isn't counted for when ascending/Descending
 17. Move EffectBlocks on top of SnowBlocks
 18. Numbers on Liquid Blocks is not alligned properly
 19. BackButton in Overworld goes back to mainMenu, not the start of Overworld menu
 20. The left movement sometimes run on auto
 21. DialogueSegments need to have another option for link when there are no options, but the link cannot be the next line (Change in Excel Sheet)
-22. Camera Zoomes in to the player on stair, even if it's clear sight
+22. Camera Zoomes far in to the player on stairs, even if it's clear sight
+23. Disable camera zoom when rotating the camera
 
 
 ---

@@ -22,6 +22,9 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     public static event Action Action_dialogueNextButton_isPressed;
     public static event Action Action_InteractButton_isPressed;
 
+    public static event Action Action_RespawnHold;
+    public static event Action Action_RespawnCanceled;
+
     [Header("Input System")]
     public PlayerControls playerControls;
     MapManager mapManager;
@@ -40,19 +43,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     public bool cameraX_isPressed = false;
     public bool cameraY_isPressed = false;
 
-    [Header("KeyPresses Respawn")]
-    float holdDuration = 0.5f;
-    [SerializeField] float holdtimer = 0;
-    [SerializeField] bool useUnscaledTime = true; // ignore timescale (pause)
-    Coroutine holdRoutine;
-
-    [SerializeField] AudioSource playerAudioSource;
-    [SerializeField] AudioClip respawnHoldSound;
-    [SerializeField] AudioClip respawnCancelSound;
-    [SerializeField] AudioClip respawnCompleteSound;
-    [SerializeField] UnityEvent onHoldStarted;
-    [SerializeField] UnityEvent onHoldCanceled;
-    [SerializeField] UnityEvent onHoldCompleted;
 
 
     //--------------------
@@ -237,11 +227,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     {
         if (!ButtonChecks_Other()) { return; }
 
-        StartRespawnHold();
+        Action_RespawnHold?.Invoke();
     }
     void OnRespawn_Out()
     {
-        CancelRespawnHold();
+        Action_RespawnCanceled?.Invoke();
     }
 
 
@@ -282,82 +272,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         return true;
     }
-
-
-    //--------------------
-
-
-    void StartRespawnHold()
-    {
-        if (holdRoutine != null) StopCoroutine(holdRoutine);
-        holdRoutine = StartCoroutine(HoldTimer());
-
-        onHoldStarted?.Invoke();
-
-        if (playerAudioSource != null)
-        {
-            playerAudioSource.loop = true;
-            playerAudioSource.time = 0f;
-            playerAudioSource.Play();
-        }
-    }
-
-    void CancelRespawnHold()
-    {
-        if (holdRoutine != null)
-        {
-            StopCoroutine(holdRoutine);
-            holdRoutine = null;
-        }
-
-        if (holdtimer < holdDuration)
-        {
-            if (playerAudioSource != null && playerAudioSource.isPlaying)
-                playerAudioSource.Stop();
-
-            onHoldCanceled?.Invoke();
-        }
-
-        holdtimer = 0;
-    }
-    private IEnumerator HoldTimer()
-    {
-        float t = 0f;
-        while (t < holdDuration)
-        {
-            t += useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
-            holdtimer += useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
-            //onHoldProgress?.Invoke(Mathf.Clamp01(t / holdDuration));
-            yield return null;
-        }
-
-        // finished
-        holdRoutine = null;
-        if (playerAudioSource != null && playerAudioSource.isPlaying) playerAudioSource.Stop();
-
-        onHoldCompleted?.Invoke();
-    }
-    public void OnHoldStarted_Event()
-    {
-        playerAudioSource.clip = respawnHoldSound;
-        playerAudioSource.loop = false;
-        playerAudioSource.Play();
-    }
-    public void OnHoldCanceled_Event()
-    {
-        playerAudioSource.clip = respawnCancelSound;
-        playerAudioSource.loop = false;
-        playerAudioSource.Play();
-    }
-    public void OnHoldFinished_Event()
-    {
-        playerAudioSource.clip = respawnCompleteSound;
-        playerAudioSource.loop = false;
-        playerAudioSource.Play();
-
-        Movement.Instance.RespawnPlayer();
-    }
-
 
     //--------------------
 
