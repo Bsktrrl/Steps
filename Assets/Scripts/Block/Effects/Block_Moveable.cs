@@ -40,12 +40,14 @@ public class Block_Moveable : MonoBehaviour
         Movement.Action_StepTaken += RaycastForThePlayer;
         Movement.Action_BodyRotated += RaycastForThePlayer;
         Movement.Action_RespawnPlayer += ResetBlockPos;
+        Movement.Action_LandedFromFalling += RaycastForThePlayer;
     }
     private void OnDisable()
     {
         Movement.Action_StepTaken -= RaycastForThePlayer;
         Movement.Action_BodyRotated -= RaycastForThePlayer;
         Movement.Action_RespawnPlayer -= ResetBlockPos;
+        Movement.Action_LandedFromFalling -= RaycastForThePlayer;
     }
 
 

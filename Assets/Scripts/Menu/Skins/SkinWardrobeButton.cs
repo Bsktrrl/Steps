@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class SkinWardrobeButton : MonoBehaviour
@@ -19,9 +20,16 @@ public class SkinWardrobeButton : MonoBehaviour
     [SerializeField] Image frame;
     [SerializeField] GameObject overlay;
 
+    Player_Animations Player_Animations;
+
 
     //--------------------
 
+
+    private void Start()
+    {
+        Player_Animations = FindAnyObjectByType<Player_Animations>();
+    }
     private void Update()
     {
         UpdateDefaultSkinButtonDisplay();
@@ -72,7 +80,7 @@ public class SkinWardrobeButton : MonoBehaviour
                     //Check condition to see if button is selected
                     Action_SelectThisSkin?.Invoke();
 
-                    SkinsManager.Instance.skinInfo.activeSkinType = skinType;
+                    SkinWardrobeManager.Instance.SetActiveSkinData(skinType);
 
                     SkinWardrobeManager.Instance.SetSkinSaveData(region, level, WardrobeSkinState.Selected);
 
@@ -96,6 +104,14 @@ public class SkinWardrobeButton : MonoBehaviour
 
             UpdateSkinButtonDisplay();
 
+            Player_Body.Instance.UpdatePlayerSkin();
+
+            if (Player_Animations)
+            {
+                Player_Animations.Instance.UpdateAnimator();
+            }
+            
+
             SkinWardrobeManager.Instance.UpdatePlayerBodyDisplay();
         }
 
@@ -113,7 +129,7 @@ public class SkinWardrobeButton : MonoBehaviour
                     //Check condition to see if button is selected
                     Action_SelectThisHat?.Invoke();
 
-                    SkinsManager.Instance.skinInfo.activeHatType = hatType;
+                    SkinWardrobeManager.Instance.SetActiveHatData(hatType);
 
                     SkinWardrobeManager.Instance.SetHatSaveData(hatType, WardrobeHatState.Selected);
 
@@ -136,6 +152,7 @@ public class SkinWardrobeButton : MonoBehaviour
             }
 
             UpdateHatButtonDisplay();
+            Player_Body.Instance.UpdatePlayerHats();
 
             SkinWardrobeManager.Instance.UpdatePlayerHatDisplay();
         }

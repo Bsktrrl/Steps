@@ -151,17 +151,17 @@ public class SettingsManager : Singleton<SettingsManager>
                 settingsData.currentLanguage = Languages.German;
                 break;
             case Languages.German:
-                settingsData.currentLanguage = Languages.Japanese;
-                break;
-            case Languages.Japanese:
-                settingsData.currentLanguage = Languages.Chinese;
-                break;
-            case Languages.Chinese:
-                settingsData.currentLanguage = Languages.Korean;
-                break;
-            case Languages.Korean:
                 settingsData.currentLanguage = Languages.Norwegian;
                 break;
+            //case Languages.Japanese:
+            //    settingsData.currentLanguage = Languages.Chinese;
+            //    break;
+            //case Languages.Chinese:
+            //    settingsData.currentLanguage = Languages.Korean;
+            //    break;
+            //case Languages.Korean:
+            //    settingsData.currentLanguage = Languages.Norwegian;
+            //    break;
             default:
                 break;
         }
@@ -176,7 +176,7 @@ public class SettingsManager : Singleton<SettingsManager>
         switch (settingsData.currentLanguage)
         {
             case Languages.Norwegian:
-                settingsData.currentLanguage = Languages.Korean;
+                settingsData.currentLanguage = Languages.German;
                 break;
             case Languages.English:
                 settingsData.currentLanguage = Languages.Norwegian;
@@ -184,15 +184,15 @@ public class SettingsManager : Singleton<SettingsManager>
             case Languages.German:
                 settingsData.currentLanguage = Languages.English;
                 break;
-            case Languages.Japanese:
-                settingsData.currentLanguage = Languages.German;
-                break;
-            case Languages.Chinese:
-                settingsData.currentLanguage = Languages.Japanese;
-                break;
-            case Languages.Korean:
-                settingsData.currentLanguage = Languages.Chinese;
-                break;
+            //case Languages.Japanese:
+            //    settingsData.currentLanguage = Languages.German;
+            //    break;
+            //case Languages.Chinese:
+            //    settingsData.currentLanguage = Languages.Japanese;
+            //    break;
+            //case Languages.Korean:
+            //    settingsData.currentLanguage = Languages.Chinese;
+            //    break;
             default:
                 break;
         }

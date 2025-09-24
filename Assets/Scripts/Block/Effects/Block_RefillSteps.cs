@@ -10,11 +10,13 @@ public class Block_RefillSteps : MonoBehaviour
     private void OnEnable()
     {
         Movement.Action_StepTaken += RefillAvailableSteps;
+        Movement.Action_LandedFromFalling += RefillAvailableSteps;
     }
 
     private void OnDisable()
     {
         Movement.Action_StepTaken -= RefillAvailableSteps;
+        Movement.Action_LandedFromFalling -= RefillAvailableSteps;
     }
 
 

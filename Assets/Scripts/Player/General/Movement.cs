@@ -122,9 +122,9 @@ public class Movement : Singleton<Movement>
 
     private void Start()
     {
-        if (PlayerManager.Instance.playerBody.transform.GetComponentInChildren<Animator>())
+        if (PlayerManager.Instance.playerBody.transform.GetComponent<Animator>())
         {
-            anim = PlayerManager.Instance.playerBody.GetComponentInChildren<Animator>();
+            anim = PlayerManager.Instance.playerBody.GetComponent<Animator>();
         }
 
         savePos = transform.position;
@@ -181,6 +181,8 @@ public class Movement : Singleton<Movement>
         CameraController.Action_RotateCamera_End += UpdateBlocks;
 
         Player_KeyInputs.Action_WalkButton_isReleased += WalkButtonIsReleased;
+
+        SFX_Respawn.Action_RespawnPlayer += RespawnPlayer;
     }
     private void OnDisable()
     {
@@ -202,6 +204,8 @@ public class Movement : Singleton<Movement>
         CameraController.Action_RotateCamera_End -= UpdateBlocks;
 
         Player_KeyInputs.Action_WalkButton_isReleased -= WalkButtonIsReleased;
+
+        SFX_Respawn.Action_RespawnPlayer -= RespawnPlayer;
     }
 
 
@@ -251,42 +255,84 @@ public class Movement : Singleton<Movement>
 
         CameraController.Instance.isRotating = false;
     }
-    
+
+    //public void UpdateBlockStandingOn()
+    //{
+    //    GameObject obj = null;
+    //    GameObject objTemp = blockStandingOn;
+    //    Vector3 playerPos = PlayerManager.Instance.player.transform.position;
+
+    //    if (blockStandingOn_Previous != blockStandingOn && !Player_CeilingGrab.Instance.isCeilingGrabbing)
+    //    {
+    //        blockStandingOn_Previous = blockStandingOn;
+    //    }
+
+    //    Vector3 rayDir = Vector3.zero;
+    //    if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+    //    {
+    //        rayDir = Vector3.up;
+    //    }
+    //    else
+    //    {
+    //        rayDir = Vector3.down;
+    //    }
+
+    //    PerformMovementRaycast(playerPos, rayDir, 1, out obj);
+
+    //    if (blockStandingOn != obj)
+    //    {
+    //        blockStandingOn = null;
+    //    }
+
+    //    blockStandingOn = obj;
+
+    //    //Check if the player has moved over to a new block
+    //    if (objTemp != blockStandingOn)
+    //    {
+    //        Action_isSwitchingBlocks_Invoke();
+    //    }
+    //}
+
     public void UpdateBlockStandingOn()
     {
         GameObject obj = null;
-        GameObject objTemp = blockStandingOn;
+        GameObject prev = blockStandingOn;
+
         Vector3 playerPos = PlayerManager.Instance.player.transform.position;
+        Vector3 rayDir = Player_CeilingGrab.Instance.isCeilingGrabbing ? Vector3.up : Vector3.down;
 
-        if (blockStandingOn_Previous != blockStandingOn && !Player_CeilingGrab.Instance.isCeilingGrabbing)
+        // Use a blocks-only mask here (see Step 2)
+        if (TryGetBlockUnder(playerPos, rayDir, 1.25f, out obj))
         {
-            blockStandingOn_Previous = blockStandingOn;
-        }
-
-        Vector3 rayDir = Vector3.zero;
-        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
-        {
-            rayDir = Vector3.up;
+            blockStandingOn = obj;
         }
         else
-        {
-            rayDir = Vector3.down;
-        }
-
-        PerformMovementRaycast(playerPos, rayDir, 1, out obj);
-
-        if (blockStandingOn != obj)
         {
             blockStandingOn = null;
         }
 
-        blockStandingOn = obj;
+        if (blockStandingOn_Previous != blockStandingOn && !Player_CeilingGrab.Instance.isCeilingGrabbing)
+            blockStandingOn_Previous = prev;
 
-        //Check if the player has moved over to a new block
-        if (objTemp != blockStandingOn)
-        {
+        if (prev != blockStandingOn)
             Action_isSwitchingBlocks_Invoke();
+    }
+    bool TryGetBlockUnder(Vector3 origin, Vector3 dir, float distance, out GameObject block)
+    {
+        // Start a hair above the feet to avoid self-hit/overlap issues
+        origin += dir * -0.05f; // if dir is down, this nudges up a bit
+
+        if (Physics.Raycast(origin, dir, out var hit, distance, MapManager.Instance.player_LayerMask, QueryTriggerInteraction.Ignore))
+        {
+            if (hit.transform.TryGetComponent<BlockInfo>(out _))
+            {
+                block = hit.transform.gameObject;
+                return true;
+            }
         }
+
+        block = null;
+        return false;
     }
 
     void UpdateNormalMovement()
@@ -1473,6 +1519,8 @@ public class Movement : Singleton<Movement>
     //--------------------
 
 
+    #region Run Abilities
+
     bool RunSwiftSwimUp()
     {
         if (moveToBlock_SwiftSwimUp.canMoveTo)
@@ -1555,6 +1603,8 @@ public class Movement : Singleton<Movement>
             return false;
     }
 
+    #endregion
+
 
     //--------------------
 
@@ -1563,7 +1613,9 @@ public class Movement : Singleton<Movement>
 
     public RaycastHitObjects PerformMovementRaycast(Vector3 objPos, Vector3 dir, float distance, out GameObject obj)
     {
-        if (Physics.Raycast(objPos, dir, out hit, distance, MapManager.Instance.pickup_LayerMask))
+        int combinedMask = MapManager.Instance.pickup_LayerMask;
+
+        if (Physics.Raycast(objPos, dir, out hit, distance, combinedMask))
         {
             if (hit.transform.GetComponent<BlockInfo>())
             {
@@ -1571,9 +1623,22 @@ public class Movement : Singleton<Movement>
 
                 return RaycastHitObjects.BlockInfo;
             }
-            else if (hit.transform.GetComponent<Block_Ladder>())
+            else if (hit.transform.GetComponentInParent<Fence>())
             {
-                obj = hit.transform.gameObject;
+                //print("1. Fence");
+                obj = null;
+                return RaycastHitObjects.Fence;
+            }
+            else if (hit.transform.GetComponentInParent<Block_Ladder>() && hit.transform.GetComponent<LadderColliderBlocker>())
+            {
+                //print("2. LadderColliderBlocker");
+                obj = null;
+                return RaycastHitObjects.LadderBlocker;
+            }
+            else if (hit.transform.GetComponentInParent<Block_Ladder>() && hit.transform.GetComponent<LadderCollider>())
+            {
+                //print("3. LadderCollider");
+                obj = hit.transform.parent.gameObject;
 
                 return RaycastHitObjects.Ladder;
             }
@@ -1970,8 +2035,18 @@ public class Movement : Singleton<Movement>
             {
                 SetMovementState(MovementStates.Still);
                 Action_LandedFromFalling_Invoke();
+
+                //StartCoroutine(LateBlockDetection());
             }
         }
+    }
+    IEnumerator LateBlockDetection()
+    {
+        yield return new WaitForSeconds(0.02f);
+
+        UpdateAvailableMovementBlocks();
+
+        print("1. LateBlockDetection");
     }
 
     #endregion
@@ -2058,6 +2133,13 @@ public class Movement : Singleton<Movement>
     void CheckAvailableLadderExitBlocks(Vector3 dir, MoveOptions moveOptions)
     {
         GameObject outObj1 = null;
+
+        if (PerformMovementRaycast(transform.position, dir, 1, out outObj1) == RaycastHitObjects.LadderBlocker
+            || PerformMovementRaycast(transform.position, dir, 1, out outObj1) == RaycastHitObjects.Fence)
+        {
+            Block_IsNot_Target(moveOptions);
+            return;
+        }
 
         //Check from the bottom and up
         if (PerformMovementRaycast(transform.position, dir, 1, out outObj1) == RaycastHitObjects.Ladder)
@@ -2740,6 +2822,9 @@ public enum RaycastHitObjects
     Other,
 
     Ladder,
+    LadderBlocker,
+
+    Fence,
 }
 public enum MovementStates
 {

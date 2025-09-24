@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
 using Unity.Cinemachine;
+using UnityEngine;
 
 [RequireComponent(typeof(CinemachineCamera))]
 public class FollowCameraSettings : MonoBehaviour
@@ -115,7 +117,7 @@ public class FollowCameraSettings : MonoBehaviour
         }
 
         // --- PASS 1: small radius (stair-friendly) ---
-        if (Physics.SphereCast(origin, smallCastRadius, dir, out RaycastHit smallHit, maxDistance, collideAgainst, QueryTriggerInteraction.Ignore))
+        if (CameraCollisionHelper.SphereCastIgnore(origin, smallCastRadius, dir, maxDistance, collideAgainst, QueryTriggerInteraction.Ignore, out RaycastHit smallHit))
         {
             float d = Mathf.Max(smallHit.distance - wallBuffer, minDistance);
             targetDistance = Mathf.Clamp(d, minDistance, maxDistance);
@@ -124,11 +126,10 @@ public class FollowCameraSettings : MonoBehaviour
         // --- PASS 2: wall-guard with large radius on near-vertical surfaces only ---
         // Only bother if we were going to sit quite far (where small radius can slip into walls)
         float previewDistance = targetDistance;
-        if (previewDistance > maxDistance * 0.9f) // only when close to 4.0
+        if (previewDistance > maxDistance * 0.9f)
         {
-            if (Physics.SphereCast(origin, largeCastRadius, dir, out RaycastHit bigHit, maxDistance, collideAgainst, QueryTriggerInteraction.Ignore))
+            if (CameraCollisionHelper.SphereCastIgnore(origin, largeCastRadius, dir, maxDistance, collideAgainst, QueryTriggerInteraction.Ignore, out RaycastHit bigHit))
             {
-                // Treat as WALL only if surface is near-vertical (ignore stairs/floors)
                 if (bigHit.normal.y <= wallNormalYMax)
                 {
                     float d = Mathf.Max(bigHit.distance - wallBuffer, minDistance);
@@ -151,6 +152,52 @@ public class FollowCameraSettings : MonoBehaviour
             ? Mathf.SmoothDamp(tpf.VerticalArmLength, targetArm, ref armVel, armSmoothTime)
             : targetArm;
         tpf.VerticalArmLength = newArm;
+    }
+
+    public class CameraCollisionHelper
+    {
+        // Reusable buffer to avoid allocations each frame
+        private static readonly RaycastHit[] _hits = new RaycastHit[32];
+
+        /// <summary>
+        /// Performs a SphereCast but ignores any hits on water blocks.
+        /// Returns the closest non-water hit, if any.
+        /// </summary>
+        public static bool SphereCastIgnore(
+            Vector3 origin,
+            float radius,
+            Vector3 dir,
+            float maxDist,
+            LayerMask mask,
+            QueryTriggerInteraction query,
+            out RaycastHit solidHit)
+        {
+            solidHit = default;
+
+            int count = Physics.SphereCastNonAlloc(origin, radius, dir, _hits, maxDist, mask, query);
+            if (count == 0)
+                return false;
+
+            // Sort results by distance (closest first)
+            Array.Sort(_hits, 0, count, Comparer<RaycastHit>.Create((a, b) => a.distance.CompareTo(b.distance)));
+
+            for (int i = 0; i < count; i++)
+            {
+                Collider c = _hits[i].collider;
+                if (!c) continue;
+
+                // Check if it's water
+                BlockInfo bi = c.GetComponent<BlockInfo>();
+                if (bi && bi.blockElement == BlockElement.Water)
+                    continue; // skip water and keep checking
+
+                // Found a solid hit
+                solidHit = _hits[i];
+                return true;
+            }
+
+            return false; // nothing solid, only water or empty space
+        }
     }
 
 

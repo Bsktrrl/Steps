@@ -99,7 +99,7 @@ public class Interactable_Pickup : MonoBehaviour
                                 }
                             }
 
-                            //Check if all coins are collected
+                            //Check if all essence are collected
                             bool isTaken = true;
                             for (int i = 0; i < MapManager.Instance.mapInfo_ToSave.essenceList.Count; i++)
                             {
@@ -114,16 +114,12 @@ public class Interactable_Pickup : MonoBehaviour
                             {
                                 AnalyticsCalls.GetAllEssenceInALevel();
                             }
-
-                            Action_EssencePickupGot_isActive();
                             break;
                         case Items.Skin:
-                            Action_SkinPickupGot_isActive();
                             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.skin += 1 /*itemReceived.amount*/;
                             UpdateSkinTaken();
                             break;
                         case Items.IncreaseMaxSteps:
-                            Action_StepUpPickupGot_isActive();
                             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max += 1 /*itemReceived.amount*/;
                             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current += 1 /*itemReceived.amount*/;
                             break;
@@ -156,16 +152,19 @@ public class Interactable_Pickup : MonoBehaviour
                                 && DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].essenceList[j].pos.z == gameObject.transform.position.z)
                             {
                                 DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].essenceList[j].isTaken = true;
+                                Action_EssencePickupGot_isActive();
 
                                 return;
                             }
                         }
                         break;
+
                     case Items.Skin:
                         if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].levelSkin.pos.x == gameObject.transform.position.x
                                 && DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].levelSkin.pos.z == gameObject.transform.position.z)
                         {
                             DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].levelSkin.isTaken = true;
+                            Action_SkinPickupGot_isActive();
 
                             return;
                         }
@@ -178,6 +177,7 @@ public class Interactable_Pickup : MonoBehaviour
                                 && DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].maxStepList[j].pos.z == gameObject.transform.position.z)
                             {
                                 DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].maxStepList[j].isTaken = true;
+                                Action_StepUpPickupGot_isActive();
 
                                 return;
                             }

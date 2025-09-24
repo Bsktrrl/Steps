@@ -10,11 +10,13 @@ public class Block_MushroomCircle : MonoBehaviour
     private void OnEnable()
     {
         Movement.Action_StepTaken += Refill_1_Step;
+        Movement.Action_LandedFromFalling += Refill_1_StepAfterFalling;
     }
 
     private void OnDisable()
     {
         Movement.Action_StepTaken -= Refill_1_Step;
+        Movement.Action_LandedFromFalling -= Refill_1_StepAfterFalling;
     }
 
 
@@ -25,6 +27,14 @@ public class Block_MushroomCircle : MonoBehaviour
     {
         if (Movement.Instance.blockStandingOn == gameObject)
         {
+            Action_MushroomCircleEntered?.Invoke();
+        }
+    }
+    void Refill_1_StepAfterFalling()
+    {
+        if (Movement.Instance.blockStandingOn == gameObject)
+        {
+            PlayerStats.Instance.stats.steps_Current += 1;
             Action_MushroomCircleEntered?.Invoke();
         }
     }

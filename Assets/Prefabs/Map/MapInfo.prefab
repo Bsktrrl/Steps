@@ -49,16 +49,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 6649856597487831825, guid: c3b8f5cc0d6decf4180d542299975521, type: 3}
   playerStartPos: {x: 0, y: 0, z: 0}
+  playerStartRot: 0
+  timeUsedInLevel: 0
+  stepCount: 0
+  respawnCount: 0
+  abilitiesPickedUp: 0
+  cameraRotated: 0
+  swimCounter: 0
+  swiftSwimCounter: 0
+  jumpCounter: 0
+  dashCounter: 0
+  ascendCounter: 0
+  descendCounter: 0
+  grapplingHookCounter: 0
+  ceilingGrabCounter: 0
   pickup_LayerMask:
     serializedVersion: 2
     m_Bits: 8192
+  player_LayerMask:
+    serializedVersion: 2
+    m_Bits: 32768
   mapAudioList: []
   mapAudioSourceList: []
   mapInfo_ToSave:
     mapName: 
+    mapNameDisplay:
+      mapNameDisplay_norwegian: 
+      mapNameDisplay_english: 
+      mapNameDisplay_german: 
+      mapNameDisplay_chinese: 
+      mapNameDisplay_japanese: 
+      mapNameDisplay_korean: 
     isCompleted: 0
-    coinList: []
-    collectableList: []
+    essenceList: []
+    levelSkin:
+      skinObj: {fileID: 0}
+      pos: {x: 0, y: 0, z: 0}
+      isTaken: 0
     maxStepList: []
     skintype: 0
     abilitiesInLevel:

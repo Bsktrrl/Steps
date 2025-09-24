@@ -22,11 +22,22 @@ public class Player_Animations : Singleton<Player_Animations>
 
     private void OnEnable()
     {
-        //Player_KeyInputs.Action_WalkButton_isPressed += Perform_WalkingAnimation;
+        Player_KeyInputs.Action_WalkButton_isPressed += UpdateAnimator;
+        DataManager.Action_dataHasLoaded += UpdateAnimator;
     }
     private void OnDisable()
     {
-        //Player_KeyInputs.Action_WalkButton_isPressed -= Perform_WalkingAnimation;
+        Player_KeyInputs.Action_WalkButton_isPressed -= UpdateAnimator;
+        DataManager.Action_dataHasLoaded -= UpdateAnimator;
+    }
+
+
+    //--------------------
+
+
+    public void UpdateAnimator()
+    {
+        anim = Player_Body.Instance.selectedSkinBlock.GetComponent<Animator>();
     }
 
 

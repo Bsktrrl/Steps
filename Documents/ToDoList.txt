@@ -4,50 +4,17 @@
 
 
 
-2.
-Skin Menu:
-__________________
-
-2.2. Wardrobe Menu
-- Make DefaultSkin fintionality (make it so that it always are selected (and changed colors) if no other Skin is selected
-	- Can be done right after "dataShasSpawned", directly set into DataManager, if DataManager doesn't have any selectedSkins
-- Make Equip functionality, so that the player can equip unlocked Skins
-- Display the Equip changes on a 3D character model
-	- Make functionalty for all Skins to be equipped
-	- Make default Grey if no Skin model are imported yet
-- Make a functionality of putting on hats
-	- Display the hats on the 3D model
-- Save/Load
-	- Save/Load Hats unlocked
-	- Save/Load Hats equipped
-	- Save/Load Skin equipped
-
-
-
 3.
 Sound:
 __________________
 
-3.1. Manual 3D sound logic
-- Add manual 3D sound effect, based on player distance to blocks
-
-3.2. Only 1 source block
-- Make it so that only the nearest block is making the distance
-- Make 1 Audio Source for each block that makes sound
-	- Water
-	- Lava
-	- Quicksand
-	- Effect Blocks
+3.1. Add Sound functionality for blocks
+- Effect Blocks (set soundPrefab on the different "icon"-gameObjects so it's instantiated automaticly)
 		- Spawn Point
 		- Refill Steps
 		- Teleporter
 		- Pusher
-		- Movable
-
-3.3. Other audio objects
-- Make it so that other objects can have 3D sound (attach script onto each object to make it having 3D sound automaticly)
-	- Elevators
-	- insects
+- Elevators
 
 3.4. Ice glide bug
 - Fix ice glide audio bug
@@ -66,20 +33,51 @@ __________________
 
 4.2. Overworld Errors
 - Fix so that the menu operates as intended when pressing/hovering buttons/regions
+- Lock the cursor, so it cannot be used in-game
 
 
 
 --- OTHER STUFF
 
 
-
-1. When the player is falling and landing on an EffectBlock, trigger the EffectBlockk effect
-	- Somethines the PlayerObject is set to "BlockStandingOn", which is strange
 2. Make the numbers appear when stopping AND release the movementButton
 	- Now it disappear if moving in to a deadEndBlock and holding in the movementButton
 3. The player isn't performing walking animation after Ascending or Descending (when moving away from the block landed on)
 4. When Ascending/Descending, the camera zooms in fast, then out, if there is free space. Disable carea when ascending/Descending
-5. Then doing CeilingGrabRotation back to the noraml camera, it is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
+5. When doing CeilingGrabRotation back to the noraml camera, it is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
+6. Add "MovingBlock"-EffectBlock
+7. Falling onto a fallingblock prevents movement
+9. IceGlide doesn't work with pusher
+
+
+--- FROM TESTBONANZA
+
+
+2. Swiftswim doesn't always work upwards
+
+
+
+6. Fences on fallingBlocks immobilizes movement
+7. Falling block let the player move down when respawned
+8. "Freemove" camera with right joystick
+
+
+
+12. Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
+	- Sometimes, when rotating to the left twice, the player move in the looking direction after moving
+	- Almost always when at the edge of something, where not all 4 adjacent blocks can be moved to (maybe blocks isn't updated to "null" when the camera is rotating, so it keeps old blocks when they should have been "null"?
+
+
+
+
+16. Stairs isn't counted for when ascending/Descending
+17. Move EffectBlocks on top of SnowBlocks
+18. Numbers on Liquid Blocks is not alligned properly
+19. BackButton in Overworld goes back to mainMenu, not the start of Overworld menu
+20. The left movement sometimes run on auto
+21. DialogueSegments need to have another option for link when there are no options, but the link cannot be the next line (Change in Excel Sheet)
+22. Camera Zoomes far in to the player on stairs, even if it's clear sight
+23. Disable camera zoom when rotating the camera
 
 
 ---
@@ -98,9 +96,7 @@ Levels
 
 
 Movement & Camera bugtesting and fixing:
-- Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
-	- Sometimes, when rotating to the left twice, the player move in the looking direction after moving
-	- Almost always when at the edge of something, where not all 4 adjacent blocks can be moved to (maybe blocks isn't updated to "null" when the camera is rotating, so it keeps old blocks when they should have been "null"?
+
 
 
 Switches:

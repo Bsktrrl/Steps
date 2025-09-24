@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_Body : MonoBehaviour
+public class Player_Body : Singleton<Player_Body>
 {
     [Header("selectedSkinBlock")]
     public GameObject selectedSkinBlock;
@@ -73,11 +73,6 @@ public class Player_Body : MonoBehaviour
 
     //--------------------
 
-
-    private void Update()
-    {
-        UpdatePlayerSkin();
-    }
 
     private void OnEnable()
     {

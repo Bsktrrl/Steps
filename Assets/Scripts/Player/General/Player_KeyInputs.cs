@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -19,6 +21,9 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     public static event Action Action_dialogueButton_isPressed;
     public static event Action Action_dialogueNextButton_isPressed;
     public static event Action Action_InteractButton_isPressed;
+
+    public static event Action Action_RespawnHold;
+    public static event Action Action_RespawnCanceled;
 
     [Header("Input System")]
     public PlayerControls playerControls;
@@ -37,6 +42,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     public bool cameraX_isPressed = false;
     public bool cameraY_isPressed = false;
+
 
 
     //--------------------
@@ -63,7 +69,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         forward_isPressed = true;
         Action_WalkButton_isPressed?.Invoke();
-        //Player_Animations.Instance.anim.SetTrigger("Walk");
     }
     void OnForward_Up()
     {
@@ -77,7 +82,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         back_isPressed = true;
         Action_WalkButton_isPressed?.Invoke();
-        //Player_Animations.Instance.anim.SetTrigger("Walk");
     }
     void OnBackward_Up()
     {
@@ -91,7 +95,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         left_isPressed = true;
         Action_WalkButton_isPressed?.Invoke();
-        //Player_Animations.Instance.anim.SetTrigger("Walk");
     }
     void OnLeft_Up()
     {
@@ -105,7 +108,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         right_isPressed = true;
         Action_WalkButton_isPressed?.Invoke();
-        //Player_Animations.Instance.anim.SetTrigger("Walk");
     }
     void OnRight_Up()
     {
@@ -221,12 +223,21 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     //--------------------
 
 
-    void OnRespawn()
+    void OnRespawn_In()
     {
         if (!ButtonChecks_Other()) { return; }
 
-        Key_Respawn();
+        Action_RespawnHold?.Invoke();
     }
+    void OnRespawn_Out()
+    {
+        Action_RespawnCanceled?.Invoke();
+    }
+
+
+    //--------------------
+
+
     void OnQuit()
     {
         if (!ButtonChecks_Other()) { return; }
@@ -257,23 +268,14 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
 
+        if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
+
         return true;
     }
-
 
     //--------------------
 
 
-    public void Key_Respawn()
-    {
-        if (PlayerManager.Instance.pauseGame) { return; }
-        if (PlayerManager.Instance.npcInteraction) { return; }
-        if (CameraController.Instance.isRotating) { return; }
-        if (Player_Interact.Instance.isInteracting) { return; }
-        if (Player_GraplingHook.Instance.isGrapplingHooking) { return; }
-
-        Movement.Instance.RespawnPlayer();
-    }
     public void Key_Quit()
     {
         if (!ButtonChecks_Other()) { return; }
