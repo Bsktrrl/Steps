@@ -8,26 +8,13 @@
 Sound:
 __________________
 
-3.1. Manual 3D sound logic
-- Add manual 3D sound effect, based on player distance to blocks
-
-3.2. Only 1 source block
-- Make it so that only the nearest block is making the distance
-- Make 1 Audio Source for each block that makes sound
-	- Water
-	- Lava
-	- Quicksand
-	- Effect Blocks
+3.1. Add Sound functionality for blocks
+- Effect Blocks (set soundPrefab on the different "icon"-gameObjects so it's instantiated automaticly)
 		- Spawn Point
 		- Refill Steps
 		- Teleporter
 		- Pusher
-		- Movable
-
-3.3. Other audio objects
-- Make it so that other objects can have 3D sound (attach script onto each object to make it having 3D sound automaticly)
-	- Elevators
-	- insects
+- Elevators
 
 3.4. Ice glide bug
 - Fix ice glide audio bug
@@ -91,7 +78,6 @@ __________________
 21. DialogueSegments need to have another option for link when there are no options, but the link cannot be the next line (Change in Excel Sheet)
 22. Camera Zoomes far in to the player on stairs, even if it's clear sight
 23. Disable camera zoom when rotating the camera
-24. The player moves straight through a quicksandBlock
 
 
 ---

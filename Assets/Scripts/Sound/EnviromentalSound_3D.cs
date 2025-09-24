@@ -192,3 +192,24 @@ public class EnviromentalSound_3D : Singleton<EnviromentalSound_3D>
         return Mathf.Clamp(sum / weightSum, -1f, 1f);
     }
 }
+public enum SoundObjectType
+{
+    None,
+
+    Water,
+    Waterfall,
+
+    Swampwater,
+    Swampwaterfall,
+
+    Mud,
+    Mudfall,
+
+    Lava,
+    Lavafall,
+
+    Quicksand,
+    Quicksandfall,
+
+    IceCrack,
+}
