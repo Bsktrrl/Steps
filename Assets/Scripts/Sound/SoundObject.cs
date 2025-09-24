@@ -14,8 +14,8 @@ public enum SoundObjectType
     Water,
     Waterfall,
 
-    SwampWater,
-    SwampWaterfall,
+    Swampwater,
+    Swampwaterfall,
 
     Mud,
     Mudfall,
@@ -25,4 +25,6 @@ public enum SoundObjectType
 
     Quicksand,
     Quicksandfall,
+
+    IceCrack,
 }

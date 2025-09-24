@@ -38,7 +38,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7379288899374920280, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 7379288899374920280, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -85,6 +85,72 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7379288899374920280, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
   m_PrefabInstance: {fileID: 527117604950941949}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3133452667318579706
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3507490235857606840}
+    m_Modifications:
+    - target: {fileID: 329978523120599912, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_Name
+      value: EnviromentalSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8837184016162984374, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: soundObjectType
+      value: 9
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+--- !u!4 &2104982499911077660 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+  m_PrefabInstance: {fileID: 3133452667318579706}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3974324091360182099
 PrefabInstance:
@@ -184,6 +250,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: caee05ef1c7d0e24c87ce89f872c0ca3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7005404759063335589}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: caee05ef1c7d0e24c87ce89f872c0ca3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2104982499911077660}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: caee05ef1c7d0e24c87ce89f872c0ca3, type: 3}
       insertIndex: -1

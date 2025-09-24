@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EnviromentalSound_3D : Singleton<EnviromentalSound_3D>
@@ -9,30 +10,136 @@ public class EnviromentalSound_3D : Singleton<EnviromentalSound_3D>
     [Header("Sound Layer")]
     [SerializeField] LayerMask layer_EnviromentalSound;
 
+
+    //-----
+
+
     [Header("Water Parameters")]
     [SerializeField] AudioSource audioSource_Water;
-    [SerializeField] GameObject blockSelected_Water; // closest, for debugging/inspector
+    GameObject blockSelected_Water;
 
     [Header("Waterfall Parameters")]
     [SerializeField] AudioSource audioSource_Waterfall;
-    [SerializeField] GameObject blockSelected_Waterfall;
+    GameObject blockSelected_Waterfall;
+
+    [Header("Swampwater Parameters")]
+    [SerializeField] AudioSource audioSource_Swampwater;
+    GameObject blockSelected_Swampwater;
+
+    [Header("Swampwaterfall Parameters")]
+    [SerializeField] AudioSource audioSource_Swampwaterfall;
+    GameObject blockSelected_Swampwaterfall;
+
+    [Header("Mud Parameters")]
+    [SerializeField] AudioSource audioSource_Mud;
+    GameObject blockSelected_Mud;
+
+    [Header("Mudfall Parameters")]
+    [SerializeField] AudioSource audioSource_Mudfall;
+    GameObject blockSelected_Mudfall;
+
+    [Header("Lava Parameters")]
+    [SerializeField] AudioSource audioSource_Lava;
+    GameObject blockSelected_Lava;
+
+    [Header("Lavafall Parameters")]
+    [SerializeField] AudioSource audioSource_Lavafall;
+    GameObject blockSelected_Lavafall;
+
+    [Header("Quicksand Parameters")]
+    [SerializeField] AudioSource audioSource_Quicksand;
+    GameObject blockSelected_Quicksand;
+
+    [Header("Quicksandfall Parameters")]
+    [SerializeField] AudioSource audioSource_Quicksandfall;
+    GameObject blockSelected_Quicksandfall;
+
+    [Header("IceCrack Parameters")]
+    [SerializeField] AudioSource audioSource_IceCrack;
+    GameObject blockSelected_IceCrack;
+
+
+    //-----
+
+
+    List<Collider> hits = new List<Collider>();
+
+    Dictionary<SoundObjectType, List<GameObject>> blocksByType = new Dictionary<SoundObjectType, List<GameObject>>();
+    Dictionary<SoundObjectType, GameObject> closestByType = new Dictionary<SoundObjectType, GameObject>();
+
+
+    //--------------------
+
 
     void Update()
     {
-        SoundSetup(audioSource_Water, SoundObjectType.Water, ref blockSelected_Water);
-        SoundSetup(audioSource_Waterfall, SoundObjectType.Waterfall, ref blockSelected_Waterfall);
+        SoundSetup();
+        SoundGroup();
     }
 
-    void SoundSetup(AudioSource audioSource, SoundObjectType soundObjectType, ref GameObject closestObjectOut)
+
+    //--------------------
+
+
+    void SoundSetup()
     {
-        var blocks = FindBlocks(soundObjectType, out GameObject closest);
+        hits.Clear();
+        hits.AddRange(Physics.OverlapSphere(transform.position, sphereCastRadius, layer_EnviromentalSound));
 
-        if (blocks.Count > 0)
+        blocksByType.Clear();
+        closestByType.Clear();
+
+        foreach (var col in hits)
         {
-            closestObjectOut = closest;
+            var so = col.GetComponent<SoundObject>();
+            if (so == null) continue;
 
-            float volume = CalculateVolumeFromClosest(closest);
-            float pan = CalculateAggregatePan(blocks);  // <- NEW: pan from all blocks
+            var type = so.soundObjectType;
+            if (!blocksByType.TryGetValue(type, out var list))
+            {
+                list = new List<GameObject>();
+                blocksByType[type] = list;
+            }
+            list.Add(col.gameObject);
+
+            // track closest for this type
+            float d = Vector3.Distance(transform.position, col.transform.position);
+            if (!closestByType.ContainsKey(type) || d < Vector3.Distance(transform.position, closestByType[type].transform.position))
+            {
+                closestByType[type] = col.gameObject;
+            }
+        }
+    }
+    void SoundGroup()
+    {
+        PlaySound(audioSource_Water, SoundObjectType.Water, ref blockSelected_Water);
+        PlaySound(audioSource_Waterfall, SoundObjectType.Waterfall, ref blockSelected_Waterfall);
+
+        PlaySound(audioSource_Swampwater, SoundObjectType.Swampwater, ref blockSelected_Swampwater);
+        PlaySound(audioSource_Swampwaterfall, SoundObjectType.Swampwaterfall, ref blockSelected_Swampwaterfall);
+
+        PlaySound(audioSource_Mud, SoundObjectType.Mud, ref blockSelected_Mud);
+        PlaySound(audioSource_Mudfall, SoundObjectType.Mudfall, ref blockSelected_Mudfall);
+
+        PlaySound(audioSource_Lava, SoundObjectType.Lava, ref blockSelected_Lava);
+        PlaySound(audioSource_Lavafall, SoundObjectType.Lavafall, ref blockSelected_Lavafall);
+
+        PlaySound(audioSource_Quicksand, SoundObjectType.Quicksand, ref blockSelected_Quicksand);
+        PlaySound(audioSource_Quicksandfall, SoundObjectType.Quicksandfall, ref blockSelected_Quicksandfall);
+
+        PlaySound(audioSource_IceCrack, SoundObjectType.IceCrack, ref blockSelected_IceCrack);
+    }
+   
+    void PlaySound(AudioSource audioSource, SoundObjectType type, ref GameObject closestObjectOut)
+    {
+        if (!audioSource || type == SoundObjectType.None) return;
+
+        if (blocksByType.TryGetValue(type, out var blocks) && blocks.Count > 0)
+        {
+            closestObjectOut = closestByType[type];
+
+            float volume = CalculateVolumeValueFromClosestBlock(closestObjectOut);
+            float pan = CalculateSterioPanValue(blocks);
 
             audioSource.volume = volume;
             audioSource.panStereo = pan;
@@ -45,45 +152,14 @@ public class EnviromentalSound_3D : Singleton<EnviromentalSound_3D>
             if (audioSource.isPlaying) audioSource.Stop();
         }
     }
-
-    // Collect all matching blocks inside the sphere; also return the closest one.
-    List<GameObject> FindBlocks(SoundObjectType type, out GameObject closest)
-    {
-        Collider[] hits = Physics.OverlapSphere(transform.position, sphereCastRadius, layer_EnviromentalSound);
-
-        float closestDist = Mathf.Infinity;
-        closest = null;
-
-        var list = new List<GameObject>(hits.Length);
-        foreach (var col in hits)
-        {
-            var so = col.GetComponent<SoundObject>();
-            if (so != null && so.soundObjectType == type)
-            {
-                list.Add(col.gameObject);
-
-                float d = Vector3.Distance(transform.position, col.transform.position);
-                if (d < closestDist)
-                {
-                    closestDist = d;
-                    closest = col.gameObject;
-                }
-            }
-        }
-
-        return list;
-    }
-
-    // Volume from the single closest object
-    float CalculateVolumeFromClosest(GameObject closest)
+   
+    float CalculateVolumeValueFromClosestBlock(GameObject closest)
     {
         if (!closest) return 0f;
         float d = Vector3.Distance(transform.position, closest.transform.position);
         return 1f - Mathf.Clamp01(d / sphereCastRadius);
     }
-
-    // Pan from ALL blocks: weighted average of each block's pan using the same distance→volume weight.
-    float CalculateAggregatePan(List<GameObject> blocks)
+    float CalculateSterioPanValue(List<GameObject> blocks)
     {
         if (blocks == null || blocks.Count == 0) return 0f;
 
