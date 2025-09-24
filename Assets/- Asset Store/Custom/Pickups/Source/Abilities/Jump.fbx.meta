@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d5d344ce492b5aa429b4524c40ef5c85
+guid: fddad723d346c644184524890b96c1fd
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,13 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Mat_Base
+      name: Mat
     second: {fileID: 2100000, guid: 6d33dedcf93266a42b719ccebb837517, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Mat_Character
-    second: {fileID: 2100000, guid: 31bbc5d3ecae8734b911a52ae1729989, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -44,7 +39,10 @@ ModelImporter:
     clipAnimations: []
     isReadable: 0
   meshes:
-    lODScreenPercentages: []
+    lODScreenPercentages:
+    - 0.25
+    - 0.125
+    - 0.01
     globalScale: 1
     meshCompression: 0
     addColliders: 0

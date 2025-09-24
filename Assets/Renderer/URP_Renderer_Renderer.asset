@@ -10,33 +10,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
-  m_Name: NumberStencil
+  m_Name: StencilMask
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
-    passTag: NumberStencil
-    Event: 300
+    passTag: StencilMask
+    Event: 450
     filterSettings:
-      RenderQueueType: 1
+      RenderQueueType: 0
       LayerMask:
         serializedVersion: 2
-        m_Bits: 32768
+        m_Bits: 64
       PassNames: []
-    overrideMaterial: {fileID: 2100000, guid: 295cf91b3bff1c54fadd315fde5e9afd, type: 2}
+    overrideMaterial: {fileID: 2100000, guid: aa6795a52c2594d459dd5136e56a5c4c, type: 2}
     overrideMaterialPassIndex: 0
     overrideShader: {fileID: 0}
     overrideShaderPassIndex: 0
-    overrideMode: 1
+    overrideMode: 0
     overrideDepthState: 0
     depthCompareFunction: 2
     enableWrite: 0
     stencilSettings:
       overrideStencilState: 1
       stencilReference: 1
-      stencilCompareFunction: 3
-      passOperation: 0
-      failOperation: 2
-      zFailOperation: 2
+      stencilCompareFunction: 8
+      passOperation: 2
+      failOperation: 0
+      zFailOperation: 0
     cameraSettings:
       overrideCamera: 0
       restoreCamera: 1
@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
   m_Name: NotOccluded
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_Active: 1
   settings:
     passTag: NotOccluded
     Event: 300
@@ -68,15 +68,15 @@ MonoBehaviour:
     overrideMaterialPassIndex: 0
     overrideShader: {fileID: 0}
     overrideShaderPassIndex: 0
-    overrideMode: 1
+    overrideMode: 0
     overrideDepthState: 0
     depthCompareFunction: 4
     enableWrite: 1
     stencilSettings:
       overrideStencilState: 0
-      stencilReference: 0
+      stencilReference: 1
       stencilCompareFunction: 8
-      passOperation: 0
+      passOperation: 2
       failOperation: 0
       zFailOperation: 0
     cameraSettings:
@@ -103,7 +103,8 @@ MonoBehaviour:
   - {fileID: 5661939991016303742}
   - {fileID: -3530318920292232728}
   - {fileID: -3787999873581520126}
-  m_RendererFeatureMap: 7eec1a706c40934ee811247ca5c901cf02ebf2452f526ecb
+  - {fileID: 7055608202796656455}
+  m_RendererFeatureMap: 7eec1a706c40934ee811247ca5c901cf02ebf2452f526ecb47e7063a478eea61
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -154,7 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
   m_Name: Occluded
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_Active: 1
   settings:
     passTag: Occluded
     Event: 300
@@ -176,6 +177,48 @@ MonoBehaviour:
       overrideStencilState: 0
       stencilReference: 0
       stencilCompareFunction: 8
+      passOperation: 0
+      failOperation: 0
+      zFailOperation: 0
+    cameraSettings:
+      overrideCamera: 0
+      restoreCamera: 1
+      offset: {x: 0, y: 0, z: 0, w: 0}
+      cameraFieldOfView: 60
+--- !u!114 &7055608202796656455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
+  m_Name: NumberStencil
+  m_EditorClassIdentifier: 
+  m_Active: 0
+  settings:
+    passTag: NumberStencil
+    Event: 500
+    filterSettings:
+      RenderQueueType: 1
+      LayerMask:
+        serializedVersion: 2
+        m_Bits: 32768
+      PassNames: []
+    overrideMaterial: {fileID: 2100000, guid: 295cf91b3bff1c54fadd315fde5e9afd, type: 2}
+    overrideMaterialPassIndex: 0
+    overrideShader: {fileID: 0}
+    overrideShaderPassIndex: 0
+    overrideMode: 0
+    overrideDepthState: 0
+    depthCompareFunction: 4
+    enableWrite: 1
+    stencilSettings:
+      overrideStencilState: 1
+      stencilReference: 1
+      stencilCompareFunction: 6
       passOperation: 0
       failOperation: 0
       zFailOperation: 0
