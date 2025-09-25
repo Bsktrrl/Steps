@@ -249,7 +249,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1001 &4440442803897495609
+--- !u!1001 &1708836395061078092
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -258,12 +258,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 6282470506205190579}
     m_Modifications:
     - target: {fileID: 365643882158083748, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: m_Layer
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_Name
       value: Number_Parent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_Layer
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 7379288899374920280, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -310,10 +314,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
---- !u!4 &6626799581911204449 stripped
+--- !u!4 &8205419492523006484 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7379288899374920280, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
-  m_PrefabInstance: {fileID: 4440442803897495609}
+  m_PrefabInstance: {fileID: 1708836395061078092}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5811166200314986072
 PrefabInstance:
@@ -481,7 +485,7 @@ PrefabInstance:
       addedObject: {fileID: 2775552265479590416}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 91fbb4ea4c936e34ebd98e654982b519, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6626799581911204449}
+      addedObject: {fileID: 8205419492523006484}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 91fbb4ea4c936e34ebd98e654982b519, type: 3}
       insertIndex: -1
