@@ -6961,6 +6961,11 @@ MonoBehaviour:
   audioSource_Quicksand: {fileID: 0}
   audioSource_Quicksandfall: {fileID: 0}
   audioSource_IceCrack: {fileID: 0}
+  audioSource_EffectBlock_Checkpoint: {fileID: 0}
+  audioSource_EffectBlock_RefillSteps: {fileID: 0}
+  audioSource_EffectBlock_Teleporter: {fileID: 0}
+  audioSource_EffectBlock_Pusher: {fileID: 0}
+  audioSource_EffectBlock_MushroomCircle: {fileID: 0}
 --- !u!1 &5721060923735874929
 GameObject:
   m_ObjectHideFlags: 0
@@ -8874,6 +8879,8 @@ MonoBehaviour:
   isGrapplingHooking: 0
   isDashing: 0
   isIceGliding: 0
+  isAscending: 0
+  isDecending: 0
   anim: {fileID: 0}
   blink: 0
   secondaryIdle: 0

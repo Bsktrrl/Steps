@@ -105,6 +105,8 @@ public class Movement : Singleton<Movement>
     public bool isGrapplingHooking;
     public bool isDashing;
     public bool isIceGliding;
+    public bool isAscending;
+    public bool isDecending;
 
     [Header("Animations")]
     public Animator anim;
@@ -1584,6 +1586,7 @@ public class Movement : Singleton<Movement>
     {
         if (moveToBlock_Ascend.canMoveTo)
         {
+            isAscending = true;
             MapManager.Instance.ascendCounter++;
             PerformMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
             return true;
@@ -1595,6 +1598,7 @@ public class Movement : Singleton<Movement>
     {
         if (moveToBlock_Descend.canMoveTo)
         {
+            isDecending = true;
             MapManager.Instance.descendCounter++;
             PerformMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
             return true;
@@ -1843,6 +1847,11 @@ public class Movement : Singleton<Movement>
         isDashing = false;
         isIceGliding = false;
 
+        isAscending = false;
+        isDecending = false;
+
+        //StartCoroutine(DelayAscendDescendCamera(0.2f));
+
         Action_StepTaken_Invoke();
     }
 
@@ -1943,6 +1952,14 @@ public class Movement : Singleton<Movement>
 
         movementStates = MovementStates.Still;
         performGrapplingHooking = false;
+    }
+
+    IEnumerator DelayAscendDescendCamera(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        isAscending = false;
+        isDecending = false;
     }
 
     void MovingAnimation(MoveOptions canMoveBlock)
@@ -2675,6 +2692,9 @@ public class Movement : Singleton<Movement>
 
         Player_KeyInputs.Instance.cameraX_isPressed = false;
         Player_KeyInputs.Instance.cameraY_isPressed = false;
+
+        isAscending = false;
+        isDecending = false;
 
         SetMovementState(MovementStates.Moving);
 

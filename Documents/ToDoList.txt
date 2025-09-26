@@ -8,14 +8,6 @@
 Sound:
 __________________
 
-3.1. Add Sound functionality for blocks
-- Effect Blocks (set soundPrefab on the different "icon"-gameObjects so it's instantiated automaticly)
-		- Spawn Point
-		- Refill Steps
-		- Teleporter
-		- Pusher
-- Elevators
-
 3.4. Ice glide bug
 - Fix ice glide audio bug
 
@@ -72,12 +64,16 @@ __________________
 
 16. Stairs isn't counted for when ascending/Descending
 17. Move EffectBlocks on top of SnowBlocks
-18. Numbers on Liquid Blocks is not alligned properly
+
 19. BackButton in Overworld goes back to mainMenu, not the start of Overworld menu
 20. The left movement sometimes run on auto
 21. DialogueSegments need to have another option for link when there are no options, but the link cannot be the next line (Change in Excel Sheet)
 22. Camera Zoomes far in to the player on stairs, even if it's clear sight
-23. Disable camera zoom when rotating the camera
+23. Disable camera zoom when rotating the camera (The result isn't that great, try slower zoomtime during rotation)
+24. Skins make cameras zoom
+
+
+
 
 
 ---
