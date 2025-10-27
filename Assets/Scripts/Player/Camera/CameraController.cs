@@ -160,6 +160,7 @@ public class CameraController : Singleton<CameraController>
         Movement.Instance.previousPosition = transform.position;
 
         Action_RotateCamera_End?.Invoke();
+        Action_RotateCamera_End?.Invoke();
     }
 
     public IEnumerator CeilingCameraRotation(float angle)
