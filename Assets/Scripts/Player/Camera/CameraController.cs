@@ -171,13 +171,19 @@ public class CameraController : Singleton<CameraController>
         //Iterate the states
         if (cameraState == CameraState.GameplayCam)
         {
-            StartCoroutine(StartVirtualCameraBlend_In(CM_Player_CeilingGrab));
+            if (CM_Player_CeilingGrab)
+            {
+                StartCoroutine(StartVirtualCameraBlend_In(CM_Player_CeilingGrab));
+            }
 
             cameraState = CameraState.CeilingCam;
         }
         else if (cameraState == CameraState.CeilingCam)
         {
-            StartCoroutine(StartVirtualCameraBlend_Out(CM_Player_CeilingGrab));
+            if (CM_Player_CeilingGrab)
+            {
+                StartCoroutine(StartVirtualCameraBlend_Out(CM_Player_CeilingGrab));
+            }
 
             cameraState = CameraState.GameplayCam;
         }
@@ -376,7 +382,10 @@ public class CameraController : Singleton<CameraController>
     void ResetCameraPriority()
     {
         CM_Player.Priority.Value = 10;
-        CM_Player_CeilingGrab.Priority.Value = -10;
+        if (CM_Player_CeilingGrab)
+        {
+            CM_Player_CeilingGrab.Priority.Value = -10;
+        }
 
         if (CM_Other)
         {

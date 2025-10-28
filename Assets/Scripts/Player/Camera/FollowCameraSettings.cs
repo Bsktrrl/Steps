@@ -262,7 +262,7 @@ public class FollowCameraSettings : MonoBehaviour
     }
     void CheckIfCeilingGrabbing()
     {
-        if (CameraController.Instance.CM_Player_CeilingGrab.GetComponent<CinemachineThirdPersonFollow>().CameraDistance <= 2.75f)
+        if (CameraController.Instance.CM_Player_CeilingGrab && CameraController.Instance.CM_Player_CeilingGrab.GetComponent<CinemachineThirdPersonFollow>().CameraDistance <= 2.75f)
         {
             CameraController.Instance.CM_Player.Priority.Value = 9;
             CameraController.Instance.CM_UnderCeiling.Priority.Value = -9;
