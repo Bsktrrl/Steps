@@ -33,6 +33,14 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
     CinemachineThirdPersonFollow _tpf;
     float _currentDistance;
 
+    // Smooth mode blending (0 = normalRig, 1 = ceilingGrabRig)
+    [SerializeField, Range(0f, 1f)]
+    float _modeBlend = 0f;
+
+    // How fast we blend rigs when switching modes.
+    // Bigger number = faster snap. Smaller = slower / more floaty.
+    public float modeSwitchLerpSpeed = 3f;
+
     [Header("NORMAL CAMERA SETTINGS")]
     public RigSettings normalRig = new RigSettings();
 
@@ -69,16 +77,32 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
         if (followTarget == null || _tpf == null || effect_isDisabled)
             return;
 
-        // Choose which rig to use:
         bool ceilingGrabActive =
             Player_CeilingGrab.Instance != null &&
             Player_CeilingGrab.Instance.isCeilingGrabbing;
 
-        RigSettings activeRig = ceilingGrabActive ? ceilingGrabRig : normalRig;
+        // 1. Smooth the mode blend (0 normal → 1 ceilingGrab)
+        float targetBlend = ceilingGrabActive ? 1f : 0f;
 
-        // Run camera solve for that rig
-        EvaluateRigAndApply(activeRig, ceilingGrabActive);
+        _modeBlend = Mathf.Lerp(
+            _modeBlend,
+            targetBlend,
+            1f - Mathf.Exp(-modeSwitchLerpSpeed * Time.deltaTime)
+        );
+
+        // 2. Build the rig we're going to DRIVE THIS FRAME,
+        //    by blending normalRig + ceilingGrabRig using _modeBlend.
+        //    Note: this is for the "final feel" we send to Cinemachine.
+        RigSettings blendedRig = BuildBlendedRigForFrame(_modeBlend);
+
+        // 3. BUT we still need to evaluate environment probes separately,
+        //    because ceiling vs floor detection is different in normal mode vs ceiling mode.
+        //    We'll pick which environment rules to apply based on which side of 0.5 we're on.
+        bool useCeilingGrabRules = (_modeBlend >= 0.5f);
+
+        EvaluateRigAndApply(blendedRig, useCeilingGrabRules);
     }
+
 
 
     //-------------------------
@@ -295,12 +319,7 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
     //  - Neither       -> Clear Y, NoWall Z
     //
 
-    Vector3 ChooseShoulderForThisFrame(
-        RigSettings rig,
-        Vector3 baseNearShoulder,
-        bool hasCeilingLikeSurface,
-        bool hasSideWall
-    )
+    Vector3 ChooseShoulderForThisFrame(RigSettings rig, Vector3 baseNearShoulder, bool hasCeilingLikeSurface, bool hasSideWall)
     {
         float finalY;
         float finalZ;
@@ -340,12 +359,7 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
     // Geometry helpers (shared)
     // ─────────────────────────────────────────────────────────────
 
-    Vector3 GetCameraWorldPosFromRig(
-        Transform pivot,
-        Vector3 shoulderOffset,
-        float armLen,
-        float camDistance
-    )
+    Vector3 GetCameraWorldPosFromRig(Transform pivot, Vector3 shoulderOffset, float armLen, float camDistance)
     {
         Vector3 targetPos = pivot.position;
         Quaternion targetRot = pivot.rotation;
@@ -356,6 +370,42 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
 
         return camPos;
     }
+    RigSettings BuildBlendedRigForFrame(float blend01)
+    {
+        // We create a temporary RigSettings with values interpolated
+        // between normalRig (0) and ceilingGrabRig (1).
+
+        RigSettings outRig = new RigSettings();
+
+        // Far rig
+        outRig.farCameraDistance = Mathf.Lerp(normalRig.farCameraDistance, ceilingGrabRig.farCameraDistance, blend01);
+        outRig.farShoulderOffset = Vector3.Lerp(normalRig.farShoulderOffset, ceilingGrabRig.farShoulderOffset, blend01);
+        outRig.farVerticalArmLength = Mathf.Lerp(normalRig.farVerticalArmLength, ceilingGrabRig.farVerticalArmLength, blend01);
+
+        // Near rig
+        outRig.nearCameraDistance = Mathf.Lerp(normalRig.nearCameraDistance, ceilingGrabRig.nearCameraDistance, blend01);
+        outRig.nearShoulderOffset = Vector3.Lerp(normalRig.nearShoulderOffset, ceilingGrabRig.nearShoulderOffset, blend01);
+        outRig.nearVerticalArmLength = Mathf.Lerp(normalRig.nearVerticalArmLength, ceilingGrabRig.nearVerticalArmLength, blend01);
+
+        // Probe distances
+        outRig.ceilingCheckDistance = Mathf.Lerp(normalRig.ceilingCheckDistance, ceilingGrabRig.ceilingCheckDistance, blend01);
+        outRig.wallCheckDistance = Mathf.Lerp(normalRig.wallCheckDistance, ceilingGrabRig.wallCheckDistance, blend01);
+
+        // Ceiling adjustment
+        outRig.nearShoulderY_Ceiling = Mathf.Lerp(normalRig.nearShoulderY_Ceiling, ceilingGrabRig.nearShoulderY_Ceiling, blend01);
+        outRig.nearShoulderY_Clear = Mathf.Lerp(normalRig.nearShoulderY_Clear, ceilingGrabRig.nearShoulderY_Clear, blend01);
+
+        // Side wall adjustment (Y)
+        outRig.nearShoulderY_Wall = Mathf.Lerp(normalRig.nearShoulderY_Wall, ceilingGrabRig.nearShoulderY_Wall, blend01);
+        outRig.nearShoulderY_NoWall = Mathf.Lerp(normalRig.nearShoulderY_NoWall, ceilingGrabRig.nearShoulderY_NoWall, blend01);
+
+        // Side wall adjustment (Z)
+        outRig.nearShoulderZ_Wall = Mathf.Lerp(normalRig.nearShoulderZ_Wall, ceilingGrabRig.nearShoulderZ_Wall, blend01);
+        outRig.nearShoulderZ_NoWall = Mathf.Lerp(normalRig.nearShoulderZ_NoWall, ceilingGrabRig.nearShoulderZ_NoWall, blend01);
+
+        return outRig;
+    }
+
 
     float ComputeAllowedDistance(RigSettings rig)
     {
