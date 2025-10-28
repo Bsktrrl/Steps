@@ -45,6 +45,18 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
     [Tooltip("Y offset for near shoulder when no ceiling above.")]
     public float nearShoulderY_Clear = 1.65f;
 
+    [Header("Side Wall Adjustment")]
+    [Tooltip("How far to check sideways for a wall next to the camera/player.")]
+    public float wallCheckDistance = 0.55f; // e.g. half a block
+    [Tooltip("Y offset to use (near) when a wall is hugging the camera side.")]
+    public float nearShoulderY_Wall = 1.45f;
+    [Tooltip("Y offset to use (near) when no side wall is there.")]
+    public float nearShoulderY_NoWall = 1.65f;
+    [Tooltip("Z offset (depth) for near shoulder when wall beside camera.")]
+    public float nearShoulderZ_Wall = -0.03f;
+    [Tooltip("Z offset (depth) for near shoulder when no wall beside camera.")]
+    public float nearShoulderZ_NoWall = -0.2f;
+
     [Header("Debug")]
     public bool debugDraw = true;
 
@@ -83,19 +95,84 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
         if (followTarget == null || _tpf == null || effect_isDisabled)
             return;
 
+        // Cache the "design-time" near shoulder for this frame
+        // BEFORE we start mutating it
+        Vector3 baseNearShoulder = nearShoulderOffset;
 
-        bool hasCeiling = Physics.Raycast(followTarget.position, Vector3.up, ceilingCheckDistance,obstructionLayers, QueryTriggerInteraction.Ignore);
+        // Predict where the near camera would sit using the BASE values,
+        // so our wall check isn't polluted by last frame's adjustments.
+        Vector3 predictedNearCamPosWorld = GetCameraWorldPosFromRig(
+            followTarget,
+            baseNearShoulder,
+            nearVerticalArmLength,
+            nearCameraDistance
+        );
 
-        // Instead of editing the original nearShoulderOffset,
-        // we make a *local copy* for blending that uses the correct Y.
-        //Vector3 adjustedNearShoulder = nearShoulderOffset;
-        nearShoulderOffset.y = hasCeiling ? nearShoulderY_Ceiling : nearShoulderY_Clear;
+        // --- Environment awareness ---
+
+        bool hasCeiling = Physics.Raycast(
+            followTarget.position,
+            Vector3.up,
+            ceilingCheckDistance,
+            obstructionLayers,
+            QueryTriggerInteraction.Ignore
+        );
+
+        bool hasSideWall = HasSideWall(predictedNearCamPosWorld);
+
+        // --- Choose shoulder offset for this frame ---
+
+        // We'll compute the final y and z we want for nearShoulderOffset.
+        float finalY;
+        float finalZ;
+
+        if (hasCeiling && hasSideWall)
+        {
+            // Both tight: pick the lowest Y of the two,
+            // but always use wall Z because wall is what causes the sideways clip.
+            float yFromCeiling = nearShoulderY_Ceiling;
+            float yFromWall = nearShoulderY_Wall;
+
+            finalY = (yFromCeiling < yFromWall) ? yFromCeiling : yFromWall;
+            finalZ = nearShoulderZ_Wall;
+        }
+        else if (hasCeiling)
+        {
+            // Only ceiling overhead
+            finalY = nearShoulderY_Ceiling;
+            // When it's just ceiling, use the "no wall" depth,
+            // so Z doesn't suddenly pop.
+            finalZ = nearShoulderZ_NoWall;
+        }
+        else if (hasSideWall)
+        {
+            // Only wall alongside/behind camera
+            finalY = nearShoulderY_Wall;
+            finalZ = nearShoulderZ_Wall;
+        }
+        else
+        {
+            // Nothing nearby, open space
+            finalY = nearShoulderY_Clear;
+            finalZ = nearShoulderZ_NoWall;
+        }
+
+        // Apply those results to a working copy that we'll blend with far rig
+        Vector3 adjustedNearShoulder = baseNearShoulder;
+        adjustedNearShoulder.y = finalY;
+        adjustedNearShoulder.z = finalZ;
 
         if (debugDraw)
         {
-            Color rayColor = hasCeiling ? Color.red : Color.green;
-            Debug.DrawRay(followTarget.position, Vector3.up * ceilingCheckDistance, rayColor);
+            // Red = ceiling detected, Green = clear above
+            Debug.DrawRay(
+                followTarget.position,
+                Vector3.up * ceilingCheckDistance,
+                hasCeiling ? Color.red : Color.green
+            );
         }
+
+        // --- Push through distance / blend pipeline ---
 
         // 1. How far back are we allowed (blocked from target to camera)?
         float allowedDistanceLOS = ComputeAllowedDistance();
@@ -114,21 +191,17 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
         t = Mathf.Clamp01(t);
 
         float blendedDistance = Mathf.Lerp(nearCameraDistance, farCameraDistance, t);
-        Vector3 blendedShoulder = Vector3.Lerp(nearShoulderOffset, farShoulderOffset, t);
+        Vector3 blendedShoulder = Vector3.Lerp(adjustedNearShoulder, farShoulderOffset, t);
         float blendedArm = Mathf.Lerp(nearVerticalArmLength, farVerticalArmLength, t);
 
-        // --- NEW STEP ---
-        // Before we apply these values to Cinemachine, figure out
-        // where the camera would actually end up in world space,
-        // then resolve side-collisions and adjust blendedDistance if needed.
+        // 4. Resolve collision against actual world (keeps camera from being halfway inside walls)
         blendedDistance = ResolveSideCollision(
             blendedDistance,
             blendedShoulder,
             blendedArm
         );
-        // --- END NEW ---
 
-        // 4. Push final (collision-safe) values into ThirdPersonFollow with smoothing
+        // 5. Push final values to Cinemachine, with smoothing
         _tpf.CameraDistance = Mathf.Lerp(
             _tpf.CameraDistance,
             blendedDistance,
@@ -149,8 +222,55 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
     }
 
 
+
     //--------------------
 
+    bool HasSideWall(Vector3 desiredCamPos)
+    {
+        // Cast from player toward the camera direction, horizontal only,
+        // to detect a wall hugging the camera side.
+        Vector3 origin = followTarget.position /*+ Vector3.up * 1.0f*/;
+
+        Vector3 dir = desiredCamPos - origin;
+
+        // We only care about horizontal blocking walls here,
+        // not floor/ceiling, so zero out Y.
+        dir.y = 0f;
+
+        float dist = dir.magnitude;
+        if (dist < 0.0001f)
+            return false;
+
+        dir /= dist;
+
+        float checkDist = Mathf.Min(dist, wallCheckDistance);
+
+        bool hit = Physics.Raycast(origin, dir, checkDist, obstructionLayers, QueryTriggerInteraction.Ignore);
+
+        if (debugDraw)
+        {
+            Debug.DrawRay(origin, dir * checkDist, hit ? Color.magenta : Color.cyan);
+        }
+
+        return hit;
+    }
+
+    Vector3 GetCameraWorldPosFromRig(Transform pivot, Vector3 shoulderOffset, float armLen, float camDistance)
+    {
+        Vector3 targetPos = pivot.position;
+        Quaternion targetRot = pivot.rotation;
+
+        // Shoulder point relative to player
+        Vector3 worldShoulderPos = targetPos + targetRot * shoulderOffset;
+
+        // Hand point above shoulder
+        Vector3 worldHandPos = worldShoulderPos + Vector3.up * armLen;
+
+        // Camera sits "behind" the player along -pivot.forward
+        Vector3 camPos = worldHandPos - (pivot.forward * camDistance);
+
+        return camPos;
+    }
 
     float ComputeAllowedDistance()
     {
