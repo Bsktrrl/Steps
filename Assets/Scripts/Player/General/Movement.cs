@@ -1587,6 +1587,8 @@ public class Movement : Singleton<Movement>
         if (moveToBlock_Ascend.canMoveTo)
         {
             isAscending = true;
+            PlayerCameraOcclusionController.Instance.CameraZoom(true);
+
             MapManager.Instance.ascendCounter++;
             PerformMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
             return true;
@@ -1599,6 +1601,8 @@ public class Movement : Singleton<Movement>
         if (moveToBlock_Descend.canMoveTo)
         {
             isDecending = true;
+            PlayerCameraOcclusionController.Instance.CameraZoom(true);
+
             MapManager.Instance.descendCounter++;
             PerformMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
             return true;
@@ -1849,6 +1853,7 @@ public class Movement : Singleton<Movement>
 
         isAscending = false;
         isDecending = false;
+        PlayerCameraOcclusionController.Instance.CameraZoom(false);
 
         //StartCoroutine(DelayAscendDescendCamera(0.2f));
 
@@ -1903,6 +1908,10 @@ public class Movement : Singleton<Movement>
 
         movementStates = MovementStates.Still;
         performGrapplingHooking = false;
+
+        isAscending = false;
+        isDecending = false;
+        PlayerCameraOcclusionController.Instance.CameraZoom(false);
     }
     IEnumerator ElevatorMovement(MovementStates moveState, float movementSpeed, MoveOptions moveOptions)
     {
@@ -1952,6 +1961,10 @@ public class Movement : Singleton<Movement>
 
         movementStates = MovementStates.Still;
         performGrapplingHooking = false;
+
+        isAscending = false;
+        isDecending = false;
+        PlayerCameraOcclusionController.Instance.CameraZoom(false);
     }
 
     IEnumerator DelayAscendDescendCamera(float waitTime)
@@ -1960,6 +1973,7 @@ public class Movement : Singleton<Movement>
 
         isAscending = false;
         isDecending = false;
+        PlayerCameraOcclusionController.Instance.CameraZoom(false);
     }
 
     void MovingAnimation(MoveOptions canMoveBlock)
@@ -2695,6 +2709,7 @@ public class Movement : Singleton<Movement>
 
         isAscending = false;
         isDecending = false;
+        PlayerCameraOcclusionController.Instance.CameraZoom(false);
 
         SetMovementState(MovementStates.Moving);
 

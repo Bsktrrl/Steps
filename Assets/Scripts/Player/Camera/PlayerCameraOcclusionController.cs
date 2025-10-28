@@ -3,7 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(CinemachineCamera))]
 [RequireComponent(typeof(CinemachineThirdPersonFollow))]
-public class PlayerCameraOcclusionController : MonoBehaviour
+public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionController>
 {
     [Header("Targets")]
     public Transform followTarget;
@@ -11,7 +11,8 @@ public class PlayerCameraOcclusionController : MonoBehaviour
 
     [Header("Obstruction Check")]
     public LayerMask obstructionLayers = ~0;
-    public float wallBuffer = 0.1f;
+
+    public float wallBuffer = 0.25f;
     public float lerpSpeed = 10f;
 
     [Header("Far Rig (unobstructed)")]
@@ -21,20 +22,28 @@ public class PlayerCameraOcclusionController : MonoBehaviour
 
     [Header("Near Rig (pushed in by walls)")]
     public float nearCameraDistance = 1.5f;
-    public Vector3 nearShoulderOffset = new Vector3(0f, 1.5f, -0.3f);
+    public Vector3 nearShoulderOffset = new Vector3(0f, 1.65f, -0.2f);
     public float nearVerticalArmLength = -1.2f;
 
     [Header("Distance Limits")]
-    public float minDistance = 0.5f;
+    public float minDistance = 0.01f;
     public float maxDistance = 4f;
 
     [Header("Camera Collision Resolve")]
     [Tooltip("Radius used when checking if the camera would clip into walls on the SIDES.\n" +
              "Think of this as how 'fat' the camera is.")]
-    public float cameraCollisionRadius = 0.2f; // NEW
+    public float cameraCollisionRadius = 0.01f;
 
     [Tooltip("How much to push camera forward from the hit point so it doesn't sit exactly on the wall.")]
-    public float cameraSurfaceOffset = 0.05f; // NEW
+    public float cameraSurfaceOffset = 0.05f;
+
+    [Header("Ceiling Adjustment")]
+    [Tooltip("Distance above player to check for ceiling collisions.")]
+    public float ceilingCheckDistance = 0.5f;
+    [Tooltip("Y offset for near shoulder when ceiling detected.")]
+    public float nearShoulderY_Ceiling = 1.5f;
+    [Tooltip("Y offset for near shoulder when no ceiling above.")]
+    public float nearShoulderY_Clear = 1.65f;
 
     [Header("Debug")]
     public bool debugDraw = true;
@@ -43,6 +52,12 @@ public class PlayerCameraOcclusionController : MonoBehaviour
     CinemachineThirdPersonFollow _tpf;
 
     float _currentDistance;
+
+    [SerializeField] bool effect_isDisabled;
+
+
+    //--------------------
+
 
     void Awake()
     {
@@ -65,8 +80,22 @@ public class PlayerCameraOcclusionController : MonoBehaviour
 
     void LateUpdate()
     {
-        if (followTarget == null || _tpf == null)
+        if (followTarget == null || _tpf == null || effect_isDisabled)
             return;
+
+
+        bool hasCeiling = Physics.Raycast(followTarget.position, Vector3.up, ceilingCheckDistance,obstructionLayers, QueryTriggerInteraction.Ignore);
+
+        // Instead of editing the original nearShoulderOffset,
+        // we make a *local copy* for blending that uses the correct Y.
+        //Vector3 adjustedNearShoulder = nearShoulderOffset;
+        nearShoulderOffset.y = hasCeiling ? nearShoulderY_Ceiling : nearShoulderY_Clear;
+
+        if (debugDraw)
+        {
+            Color rayColor = hasCeiling ? Color.red : Color.green;
+            Debug.DrawRay(followTarget.position, Vector3.up * ceilingCheckDistance, rayColor);
+        }
 
         // 1. How far back are we allowed (blocked from target to camera)?
         float allowedDistanceLOS = ComputeAllowedDistance();
@@ -119,9 +148,10 @@ public class PlayerCameraOcclusionController : MonoBehaviour
         );
     }
 
-    /// <summary>
-    /// Line-of-sight: how far back can we go before something sits BETWEEN player and camera?
-    /// </summary>
+
+    //--------------------
+
+
     float ComputeAllowedDistance()
     {
         Transform pivot = followTarget;
@@ -169,12 +199,6 @@ public class PlayerCameraOcclusionController : MonoBehaviour
         return farCameraDistance;
     }
 
-    /// <summary>
-    /// Side collision resolve:
-    /// We simulate where the camera would sit with the blended rig values,
-    /// then spherecast from the follow target toward that spot.
-    /// If we hit a wall EARLY, we reduce the camera distance so it doesn't end up half inside a side wall.
-    /// </summary>
     float ResolveSideCollision(float desiredDistance, Vector3 shoulderOffset, float armLen)
     {
         Transform pivot = followTarget;
@@ -255,5 +279,15 @@ public class PlayerCameraOcclusionController : MonoBehaviour
             Gizmos.color = new Color(1f, 1f, 0f, 0.25f);
             Gizmos.DrawWireSphere(curCamPos, cameraCollisionRadius);
         }
+    }
+
+
+
+    //--------------------
+
+
+    public void CameraZoom(bool value)
+    {
+        effect_isDisabled = value;
     }
 }
