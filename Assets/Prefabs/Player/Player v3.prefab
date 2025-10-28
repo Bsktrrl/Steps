@@ -2882,26 +2882,42 @@ MonoBehaviour:
     m_Bits: 98304
   wallBuffer: 0.25
   lerpSpeed: 10
-  farCameraDistance: 4
-  farShoulderOffset: {x: 0, y: 0, z: -0.5}
-  farVerticalArmLength: 2.77
-  nearCameraDistance: 1.5
-  nearShoulderOffset: {x: 0, y: 1.65, z: -0.2}
-  nearVerticalArmLength: -1.2
   minDistance: 0.1
   maxDistance: 4
   cameraCollisionRadius: 0.01
   cameraSurfaceOffset: 0.05
-  ceilingCheckDistance: 1
-  nearShoulderY_Ceiling: 1.5
-  nearShoulderY_Clear: 1.65
-  wallCheckDistance: 0.55
-  nearShoulderY_Wall: 1.45
-  nearShoulderY_NoWall: 1.65
-  nearShoulderZ_Wall: -0.03
-  nearShoulderZ_NoWall: -0.2
   debugDraw: 1
   effect_isDisabled: 0
+  normalRig:
+    farCameraDistance: 4
+    farShoulderOffset: {x: 0, y: 0, z: -0.5}
+    farVerticalArmLength: 2.77
+    nearCameraDistance: 1.5
+    nearShoulderOffset: {x: 0, y: 1.65, z: -0.2}
+    nearVerticalArmLength: -1.2
+    ceilingCheckDistance: 0.5
+    wallCheckDistance: 0.55
+    nearShoulderY_Ceiling: 1.5
+    nearShoulderY_Clear: 1.65
+    nearShoulderY_Wall: 1.45
+    nearShoulderY_NoWall: 1.65
+    nearShoulderZ_Wall: -0.03
+    nearShoulderZ_NoWall: -0.2
+  ceilingGrabRig:
+    farCameraDistance: 4
+    farShoulderOffset: {x: 0, y: 0, z: -0.5}
+    farVerticalArmLength: -1.35
+    nearCameraDistance: 1.5
+    nearShoulderOffset: {x: 0, y: 1.65, z: -0.2}
+    nearVerticalArmLength: -1.2
+    ceilingCheckDistance: 0.5
+    wallCheckDistance: 0.55
+    nearShoulderY_Ceiling: 1.5
+    nearShoulderY_Clear: 0.85
+    nearShoulderY_Wall: 1
+    nearShoulderY_NoWall: 1.65
+    nearShoulderZ_Wall: -0.05
+    nearShoulderZ_NoWall: -0.2
 --- !u!1 &2510067465157883575
 GameObject:
   m_ObjectHideFlags: 0

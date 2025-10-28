@@ -85,6 +85,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         }
         else if (CameraController.Instance.cameraState == CameraState.CeilingCam)
         {
+            isCeilingGrabbing = false;
             print("2. CeilingGrab");
             if (CameraController.Instance.cameraRotationState == CameraRotationState.Forward)
                 StartCoroutine(CameraController.Instance.CeilingCameraRotation(0));
