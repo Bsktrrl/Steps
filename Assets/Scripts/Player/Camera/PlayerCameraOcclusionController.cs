@@ -121,13 +121,13 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
         normalRig.ceilingCheckDistance = 0.5f;
         normalRig.wallCheckDistance = 0.55f;
 
-        normalRig.nearShoulderY_Ceiling = 1.5f;
-        normalRig.nearShoulderY_Clear = 1.65f;
+        normalRig.nearShoulderY_Ceiling = 1.5f; //1.5
+        normalRig.nearShoulderY_Clear = 1.45f; //1.65f
 
-        normalRig.nearShoulderY_Wall = 1.65f;
+        normalRig.nearShoulderY_Wall = 1.45f; //1.65f //1.7f
         normalRig.nearShoulderY_NoWall = 1.65f;
 
-        normalRig.nearShoulderZ_Wall = -0.35f;
+        normalRig.nearShoulderZ_Wall = -0.24f; //-0.35f //-0.27f
         normalRig.nearShoulderZ_NoWall = -0.2f;
 }
     void SetupCeilingGrabCameraValues()
@@ -144,12 +144,12 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
         ceilingGrabRig.wallCheckDistance = 0.55f;
 
         ceilingGrabRig.nearShoulderY_Ceiling = 1.5f;
-        ceilingGrabRig.nearShoulderY_Clear = 0.85f;
+        ceilingGrabRig.nearShoulderY_Clear = 1.05f; //0.85f
 
-        ceilingGrabRig.nearShoulderY_Wall = 1f;
+        ceilingGrabRig.nearShoulderY_Wall = 1.17f; //1f
         ceilingGrabRig.nearShoulderY_NoWall = 1.65f;
 
-        ceilingGrabRig.nearShoulderZ_Wall = -0.05f;
+        ceilingGrabRig.nearShoulderZ_Wall = -0.22f; //-0.05f //-0.35 //-0.45
         ceilingGrabRig.nearShoulderZ_NoWall = -0.2f;
     }
 

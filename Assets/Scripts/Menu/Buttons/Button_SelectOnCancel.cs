@@ -80,7 +80,7 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
 
             for (int i = 0; i < gameObjectsToHideWithThis.Count; i++)
             {
-                gameObjectsToHideWithThis[i].SetActive(false);
+                if(gameObjectsToHideWithThis[i]) gameObjectsToHideWithThis[i].SetActive(false);
             }
 
             //OverWorldManager.Instance.panelBackground.SetActive(false);

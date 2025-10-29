@@ -21,6 +21,10 @@ public class MainMenuManager : Singleton<MainMenuManager>
     }
     private void Start()
     {
+        // Lock the cursor to the center of the screen, and hide it
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         if (DataManager.Instance.menuState_Store == MenuState.None)
         {
             menuState = MenuState.Main_Menu;
