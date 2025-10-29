@@ -124,10 +124,10 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
         normalRig.nearShoulderY_Ceiling = 1.5f;
         normalRig.nearShoulderY_Clear = 1.65f;
 
-        normalRig.nearShoulderY_Wall = 1.45f;
+        normalRig.nearShoulderY_Wall = 1.65f;
         normalRig.nearShoulderY_NoWall = 1.65f;
 
-        normalRig.nearShoulderZ_Wall = -0.03f;
+        normalRig.nearShoulderZ_Wall = -0.35f;
         normalRig.nearShoulderZ_NoWall = -0.2f;
 }
     void SetupCeilingGrabCameraValues()

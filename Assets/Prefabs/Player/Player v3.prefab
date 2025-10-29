@@ -2682,6 +2682,7 @@ GameObject:
   - component: {fileID: 7572100935368860622}
   - component: {fileID: 7252548849445438057}
   - component: {fileID: 5673504814719026780}
+  - component: {fileID: 8721534757869064128}
   m_Layer: 6
   m_Name: CM_Main
   m_TagString: Untagged
@@ -2901,9 +2902,9 @@ MonoBehaviour:
     wallCheckDistance: 0.55
     nearShoulderY_Ceiling: 1.5
     nearShoulderY_Clear: 1.65
-    nearShoulderY_Wall: 1.45
+    nearShoulderY_Wall: 1.65
     nearShoulderY_NoWall: 1.65
-    nearShoulderZ_Wall: -0.03
+    nearShoulderZ_Wall: -0.35
     nearShoulderZ_NoWall: -0.2
   ceilingGrabRig:
     farCameraDistance: 4
@@ -2918,8 +2919,29 @@ MonoBehaviour:
     nearShoulderY_Clear: 0.85
     nearShoulderY_Wall: 1
     nearShoulderY_NoWall: 1.65
-    nearShoulderZ_Wall: -0.05
+    nearShoulderZ_Wall: -0.35
     nearShoulderZ_NoWall: -0.2
+--- !u!114 &8721534757869064128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2459496152789468630}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44ad641e988e5484b923df8a7aed1d33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hideRadius: 0.48
+  debugSphere: 1
+  debugColor: {r: 1, g: 0, b: 0, a: 0.25}
+  hideableLayers:
+    serializedVersion: 2
+    m_Bits: 1048503
+  ignoreLayers:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &2510067465157883575
 GameObject:
   m_ObjectHideFlags: 0
