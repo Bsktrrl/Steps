@@ -55,15 +55,15 @@ public class SettingsManager : Singleton<SettingsManager>
     {
         DataManager.Action_dataHasLoaded += LoadData;
 
-        Menu_KeyInputs.Action_MenuNavigationLeft_isPressed += PerformButtonAction_Left;
-        Menu_KeyInputs.Action_MenuNavigationRight_isPressed += PerformButtonAction_Right;
+        Menu_KeyInputs.Action_MenuSettingsNavigationLeft_isPressed += PerformButtonAction_Left;
+        Menu_KeyInputs.Action_MenuSettingsNavigationRight_isPressed += PerformButtonAction_Right;
     }
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= LoadData;
 
-        Menu_KeyInputs.Action_MenuNavigationLeft_isPressed -= PerformButtonAction_Left;
-        Menu_KeyInputs.Action_MenuNavigationRight_isPressed -= PerformButtonAction_Right;
+        Menu_KeyInputs.Action_MenuSettingsNavigationLeft_isPressed -= PerformButtonAction_Left;
+        Menu_KeyInputs.Action_MenuSettingsNavigationRight_isPressed -= PerformButtonAction_Right;
     }
 
 

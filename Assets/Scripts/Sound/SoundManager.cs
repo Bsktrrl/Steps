@@ -5,7 +5,9 @@ using UnityEngine;
 public class SoundManager : Singleton<SoundManager>
 {
     [Header("Audio Sources")]
-    public AudioSource audioSource_ButtonSounds;
+    public AudioSource audioSource_HighlightedButton;
+    public AudioSource audioSource_ButtonSelect;
+    public AudioSource audioSource_ButtonCancel;
 
     [Header("Menu Sounds")]
     public AudioClip sound_highlightedButton;
@@ -13,20 +15,48 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip sound_buttonCancel;
 
 
+    [Header("Menus")]
+    public GameObject pauseMenu;
+
+
     //--------------------
 
 
     private void OnEnable()
     {
-        RememberCurrentlySelectedUIElement.Action_ChangedSelectedUIElement += PlayHighlightedButton_Sound;
         Button_ToPress.Action_ButtonIsPressed += PlayButtonSelect_Sound;
         CancelPauseMenuByButtonPress.Action_ButtonIsCanceled += PlayButtonCancel_Sound;
+
+        Menu_KeyInputs.Action_MenuNavigationUp_isPressed += PlayHighlightedButton_Sound;
+        Menu_KeyInputs.Action_MenuNavigationDown_isPressed += PlayHighlightedButton_Sound;
+        Menu_KeyInputs.Action_MenuNavigationLeft_isPressed += PlayHighlightedButton_Sound;
+        Menu_KeyInputs.Action_MenuNavigationRight_isPressed += PlayHighlightedButton_Sound;
     }
     private void OnDisable()
     {
-        RememberCurrentlySelectedUIElement.Action_ChangedSelectedUIElement -= PlayHighlightedButton_Sound;
         Button_ToPress.Action_ButtonIsPressed -= PlayButtonSelect_Sound;
         CancelPauseMenuByButtonPress.Action_ButtonIsCanceled -= PlayButtonCancel_Sound;
+
+        Menu_KeyInputs.Action_MenuNavigationUp_isPressed -= PlayHighlightedButton_Sound;
+        Menu_KeyInputs.Action_MenuNavigationDown_isPressed -= PlayHighlightedButton_Sound;
+        Menu_KeyInputs.Action_MenuNavigationLeft_isPressed -= PlayHighlightedButton_Sound;
+        Menu_KeyInputs.Action_MenuNavigationRight_isPressed -= PlayHighlightedButton_Sound;
+    }
+
+
+    //--------------------
+
+
+    void PlaySound(AudioSource audioSource, AudioClip clip, float pitch, float volume)
+    {
+        if (audioSource && ((pauseMenu && pauseMenu.activeInHierarchy) || !pauseMenu))
+        {
+            audioSource.clip = clip;
+            audioSource.pitch = pitch;
+            audioSource.volume = volume;
+
+            audioSource.Play();
+        }
     }
 
 
@@ -35,32 +65,14 @@ public class SoundManager : Singleton<SoundManager>
 
     void PlayHighlightedButton_Sound()
     {
-        if (audioSource_ButtonSounds)
-        {
-            audioSource_ButtonSounds.clip = sound_highlightedButton;
-            audioSource_ButtonSounds.pitch = 1.75f;
-            audioSource_ButtonSounds.volume = 0.75f;
-            audioSource_ButtonSounds.Play();
-        }
+        PlaySound(audioSource_HighlightedButton, sound_highlightedButton, 1.75f, 0.75f);
     }
     void PlayButtonSelect_Sound()
     {
-        if (audioSource_ButtonSounds)
-        {
-            audioSource_ButtonSounds.clip = sound_buttonSelect;
-            audioSource_ButtonSounds.pitch = 1;
-            audioSource_ButtonSounds.volume = 1f;
-            audioSource_ButtonSounds.Play();
-        }
+        PlaySound(audioSource_ButtonSelect, sound_buttonSelect, 1, 1);
     }
     void PlayButtonCancel_Sound()
     {
-        if (audioSource_ButtonSounds)
-        {
-            audioSource_ButtonSounds.clip = sound_buttonCancel;
-            audioSource_ButtonSounds.pitch = 1;
-            audioSource_ButtonSounds.volume = 1f;
-            audioSource_ButtonSounds.Play();
-        }
+        PlaySound(audioSource_ButtonCancel, sound_buttonCancel, 1, 1);
     }
 }

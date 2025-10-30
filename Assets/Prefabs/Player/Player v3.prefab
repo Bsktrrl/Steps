@@ -14971,6 +14971,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7429604548242019253, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6248178962627962884}
+    - targetCorrespondingSourceObject: {fileID: 7429604548242019253, guid: dbfee099e6359ac4785904751ae42563, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4940890101273074682}
     - targetCorrespondingSourceObject: {fileID: 7607200548363880152, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9017824589797900994}
@@ -15020,6 +15023,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb207597d992d4b45a0191ee2a297640, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4940890101273074682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6173848072269137541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3daf9d1bba00f541ae3c61b5a04c183, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectOnCancel: {fileID: 0}
+  menuToOpen: {fileID: 0}
+  menuToClose: {fileID: 6893491277120614276}
+  menuState_ToSelect: 0
+  levelState_ToSelect: 0
+  regionState_ToSelect: 0
+  currentMenuCategoryToSelect: 0
+  gameObjectsToHideWithThis: []
 --- !u!1 &6567549517562926056 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7607200548363880152, guid: dbfee099e6359ac4785904751ae42563, type: 3}
@@ -18725,6 +18748,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SoundManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5642251090045924343, guid: 864ae4bc123191640a08ebb5445002cf, type: 3}
+      propertyPath: pauseMenu
+      value: 
+      objectReference: {fileID: 6893491277120614276}
     - target: {fileID: 6298775160167397257, guid: 864ae4bc123191640a08ebb5445002cf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
