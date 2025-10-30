@@ -28,6 +28,7 @@ public class CameraController : Singleton<CameraController>
     float rotationDuration_Movement = 0.35f;
     float waitDelay = 0.05f;
     public bool isRotating;
+    public bool isIgnoringObstaclesWhenRotating;
     public bool isCeilingRotating;
 
     [Header("Positions")]
@@ -141,6 +142,19 @@ public class CameraController : Singleton<CameraController>
             // Smoothly interpolate the rotation
             while (elapsed < rotationDuration_Movement)
             {
+                if (elapsed <= (rotationDuration_Movement / 4 ) * 0.5) //First 25% of movement
+                {
+                    isIgnoringObstaclesWhenRotating = false;
+                }
+                else if (elapsed >= (rotationDuration_Movement / 4) * 3.5) //Last 25% of movement
+                {
+                    isIgnoringObstaclesWhenRotating = false;
+                }
+                else //The middle 50% of movement
+                {
+                    isIgnoringObstaclesWhenRotating = true;
+                }
+
                 elapsed += Time.deltaTime;
                 float t = Mathf.Clamp01(elapsed / rotationDuration_Movement); // Normalize the time
                 cameraAnchor.transform.rotation = Quaternion.Lerp(startRotation, endRotation, t);

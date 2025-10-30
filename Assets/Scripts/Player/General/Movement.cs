@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class Movement : Singleton<Movement>
 {
@@ -236,8 +238,8 @@ public class Movement : Singleton<Movement>
         {
             UpdateNormalMovement();
 
-            UpdateSwiftSwimUpMovement(); //Must come before Ascend
-            UpdateSwiftSwimDownMovement();//Must come before Descend
+            UpdateSwiftSwimMovement(moveToBlock_SwiftSwimUp, Vector3.up); //Must come before Ascend
+            UpdateSwiftSwimMovement(moveToBlock_SwiftSwimDown, Vector3.down); //Must come before Descend
 
             UpdateAscendMovement();
             UpdateDescendMovement();
@@ -596,51 +598,30 @@ public class Movement : Singleton<Movement>
         Block_IsNot_Target(moveOption);
     }
 
-    void UpdateSwiftSwimUpMovement()
+    void UpdateSwiftSwimMovement(MoveOptions swiftSwimOption, Vector3 dir)
     {
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.SwiftSwim && !PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim)
         {
-            Block_IsNot_Target(moveToBlock_SwiftSwimUp);
+            Block_IsNot_Target(swiftSwimOption);
             return;
         }
 
         GameObject outObj1 = null;
         Vector3 playerPos = PlayerManager.Instance.player.transform.position;
 
-        if (PerformMovementRaycast(blockStandingOn.transform.position, Vector3.up, 1, out outObj1) == RaycastHitObjects.BlockInfo)
-        {
-            BlockInfo hitBlock= outObj1.GetComponent<BlockInfo>();
-
-            if (hitBlock.blockElement == BlockElement.Water)
-                Block_Is_Target(moveToBlock_SwiftSwimUp, outObj1);
-            else
-                Block_IsNot_Target(moveToBlock_SwiftSwimUp);
-        }
-        else
-            Block_IsNot_Target(moveToBlock_SwiftSwimUp);
-    }
-    void UpdateSwiftSwimDownMovement()
-    {
-        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.SwiftSwim && !PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim)
-        {
-            Block_IsNot_Target(moveToBlock_SwiftSwimDown);
-            return;
-        }
-
-        GameObject outObj1 = null;
-        Vector3 playerPos = PlayerManager.Instance.player.transform.position;
-
-        if (PerformMovementRaycast(blockStandingOn.transform.position, Vector3.down, 1, out outObj1) == RaycastHitObjects.BlockInfo)
+        if (PerformMovementRaycast(blockStandingOn.transform.position, dir, 1, out outObj1) == RaycastHitObjects.BlockInfo)
         {
             BlockInfo hitBlock = outObj1.GetComponent<BlockInfo>();
 
             if (hitBlock.blockElement == BlockElement.Water)
-                Block_Is_Target(moveToBlock_SwiftSwimDown, outObj1);
+                Block_Is_Target(swiftSwimOption, outObj1);
             else
-                Block_IsNot_Target(moveToBlock_SwiftSwimDown);
+                Block_IsNot_Target(swiftSwimOption);
         }
         else
-            Block_IsNot_Target(moveToBlock_SwiftSwimDown);
+        {
+            Block_IsNot_Target(swiftSwimOption);
+        }
     }
     void UpdateAscendMovement()
     {
@@ -1628,7 +1609,6 @@ public class Movement : Singleton<Movement>
             if (hit.transform.GetComponent<BlockInfo>())
             {
                 obj = hit.transform.gameObject;
-
                 return RaycastHitObjects.BlockInfo;
             }
             else if (hit.transform.GetComponentInParent<Fence>())
@@ -1653,13 +1633,15 @@ public class Movement : Singleton<Movement>
             else
             {
                 obj = hit.transform.gameObject;
-
                 return RaycastHitObjects.Other;
             }
         }
+        else
+        {
+            obj = null;
 
-        obj = null;
-        return RaycastHitObjects.None;
+            return RaycastHitObjects.None;
+        }
     }
 
     void MovementSetup()

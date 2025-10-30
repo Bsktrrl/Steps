@@ -28,12 +28,12 @@ __________________
 
 
 --- PRIORITY
-1. Menu Sounds
-2. New Overworld Menu (for 3 levels)
-3. Back-button-error from Overworld selecting menu to general state
-5. Fix SwiftSwim Upwards movement
-6. Rotating camera rotation Edge-movement bug
+1. Menu Sounds (Ongoing)
+6. Rotating camera rotation Edge-movement bug (fixed?)
+7. Fix so that the "Block Selection"-menu can be clicked on in a build
 
+- Make Rivergreen Level 2: Water/Root - Swimming (add fog)
+- Make Rivergreen Level 3: SwiftSwim (add fog)
 
 
 
@@ -41,10 +41,9 @@ __________________
 
 
 
-
 2. Make the numbers appear when stopping AND release the movementButton
 	- Now it disappear if moving into a deadEndBlock and holding in the movementButton
-3. The player isn't performing walking animation after Ascending or Descending (when moving away from the block landed on)
+3. The player isn't performing walking animation after Ascending/Descending/SwiftSwim (when moving away from the block landed on)
 4. When Ascending/Descending, the camera zooms in fast, then out, if there is free space. Disable carea when ascending/Descending
 5. When doing CeilingGrabRotation back to the noraml camera, it is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
 6. Add "MovingBlock"-EffectBlock
@@ -53,10 +52,7 @@ __________________
 
 
 
-
 --- FROM TESTBONANZA
-
-
 
 
 
@@ -91,4 +87,3 @@ Switches:
 
 AbilityButton Display:
 - New ButtonDisplay on the player
-

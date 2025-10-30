@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -6,6 +7,8 @@ using UnityEngine.UI;
 
 public class CancelPauseMenuByButtonPress : MonoBehaviour
 {
+    public static event Action Action_ButtonIsCanceled;
+
     [Header("Select On Cancel")]
     [SerializeField] Button selectOnCancel;
 
@@ -64,6 +67,9 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
 
 
         //-----
+
+
+        Action_ButtonIsCanceled?.Invoke();
 
         if (selectOnCancel)
         {
