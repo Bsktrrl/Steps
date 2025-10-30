@@ -148,11 +148,11 @@ public class SettingsManager : Singleton<SettingsManager>
                 settingsData.currentLanguage = Languages.English;
                 break;
             case Languages.English:
-                settingsData.currentLanguage = Languages.German;
-                break;
-            case Languages.German:
                 settingsData.currentLanguage = Languages.Norwegian;
                 break;
+            //case Languages.German:
+            //    settingsData.currentLanguage = Languages.Norwegian;
+            //    break;
             //case Languages.Japanese:
             //    settingsData.currentLanguage = Languages.Chinese;
             //    break;
@@ -176,14 +176,14 @@ public class SettingsManager : Singleton<SettingsManager>
         switch (settingsData.currentLanguage)
         {
             case Languages.Norwegian:
-                settingsData.currentLanguage = Languages.German;
+                settingsData.currentLanguage = Languages.English;
                 break;
             case Languages.English:
                 settingsData.currentLanguage = Languages.Norwegian;
                 break;
-            case Languages.German:
-                settingsData.currentLanguage = Languages.English;
-                break;
+            //case Languages.German:
+            //    settingsData.currentLanguage = Languages.English;
+            //    break;
             //case Languages.Japanese:
             //    settingsData.currentLanguage = Languages.German;
             //    break;
