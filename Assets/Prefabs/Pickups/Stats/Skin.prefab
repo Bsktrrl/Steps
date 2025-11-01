@@ -77,6 +77,10 @@ PrefabInstance:
       value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 7097252951428262090, guid: fdf35a8f2ee99264193321bf3b7070ac, type: 3}
+      propertyPath: m_Name
+      value: Changeable Block (Change Layer to PickUp)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7097252951428262090, guid: fdf35a8f2ee99264193321bf3b7070ac, type: 3}
       propertyPath: m_Layer
       value: 13
       objectReference: {fileID: 0}
@@ -136,6 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fac0ef60dda82544094d73cda26657a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skinReceived: 0
   itemReceived: 2
   abilityReceived: 0
   goal: 0
@@ -151,6 +156,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1aa04ad6ed24d84b91b81cfe82abe7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amplitude: 0
-  frequency: 0
-  RotationSpeed: 1
