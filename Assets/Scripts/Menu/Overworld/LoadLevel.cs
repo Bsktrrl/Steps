@@ -30,6 +30,17 @@ public class LoadLevel : MonoBehaviour
     public AbilitiesGot abilitiesInLevel;
 
 
+    MainMenuManager mainMenuManager;
+
+    //--------------------
+
+
+    private void Start()
+    {
+        mainMenuManager = FindObjectOfType<MainMenuManager>();
+    }
+
+
     //--------------------
 
 
@@ -51,6 +62,11 @@ public class LoadLevel : MonoBehaviour
     }
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {
+        if (mainMenuManager)
+        {
+            yield return mainMenuManager.FadeInBlackScreenCoroutine();
+        }
+
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
         while (!operation.isDone)
         {

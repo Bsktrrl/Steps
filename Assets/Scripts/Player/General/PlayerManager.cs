@@ -26,7 +26,6 @@ public class PlayerManager : Singleton<PlayerManager>
     public bool pauseGame;
     public bool npcInteraction;
 
-
     [Header("mainMenu_Name")]
     [SerializeField] string mainMenu_Name;
 
