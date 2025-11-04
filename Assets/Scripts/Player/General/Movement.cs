@@ -186,6 +186,8 @@ public class Movement : Singleton<Movement>
         Player_KeyInputs.Action_WalkButton_isReleased += WalkButtonIsReleased;
 
         SFX_Respawn.Action_RespawnPlayer += RespawnPlayer;
+
+        Interactable_Pickup.Action_AbilityPickupGot += UpdateLookDir;
     }
     private void OnDisable()
     {
@@ -209,6 +211,8 @@ public class Movement : Singleton<Movement>
         Player_KeyInputs.Action_WalkButton_isReleased -= WalkButtonIsReleased;
 
         SFX_Respawn.Action_RespawnPlayer -= RespawnPlayer;
+
+        Interactable_Pickup.Action_AbilityPickupGot -= UpdateLookDir;
     }
 
 

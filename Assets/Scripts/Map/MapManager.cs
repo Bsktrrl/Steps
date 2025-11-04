@@ -43,6 +43,7 @@ public class MapManager : Singleton<MapManager>
     [SerializeField] GameObject playerObject_Parent;
 
     [Header("Black Screen")]
+    [SerializeField] GameObject canvas;
     [SerializeField] GameObject blackScreen;
     float fadeDuration_In = 0.75f;
     float fadeDuration_Out = 0.25f;
@@ -57,6 +58,7 @@ public class MapManager : Singleton<MapManager>
     private void Awake()
     {
         blackScreen.SetActive(true);
+        canvas.SetActive(true);
 
         SpawnPlayerObject();
 
