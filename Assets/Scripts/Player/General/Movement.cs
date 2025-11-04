@@ -152,6 +152,7 @@ public class Movement : Singleton<Movement>
         }
         else
         {
+            if (PlayerManager.Instance.pauseGame) return;
             MovementSetup();
         }
 
@@ -2793,18 +2794,22 @@ public class Movement : Singleton<Movement>
 
     void Temp_EssencePickupGot_Animation()
     {
+        PlayerManager.Instance.PauseGame();
         StartCoroutine(JumpSpin(PlayerManager.Instance.playerBody.transform, 0.3f, 0.5f, 1, -Vector3.right));
     }
     void Temp_StepsUpPickupGot_Animation()
     {
+        PlayerManager.Instance.PauseGame();
         StartCoroutine(JumpSpin(PlayerManager.Instance.playerBody.transform, 0.45f, 0.5f, 1, Vector3.up));
     }
     void Temp_SkinPickupGot_Animation()
     {
+        PlayerManager.Instance.PauseGame();
         StartCoroutine(JumpSpin(PlayerManager.Instance.playerBody.transform, 0.45f, 0.5f, 2, Vector3.up));
     }
     void Temp_AbilityPickupGot_Animation()
     {
+        PlayerManager.Instance.PauseGame();
         StartCoroutine(JumpSpin(PlayerManager.Instance.playerBody.transform, 0.6f, 0.5f, 1, -Vector3.right));
     }
 
@@ -2815,9 +2820,8 @@ public class Movement : Singleton<Movement>
         if (totalTime <= 0f) totalTime = 0.0001f; // avoid division by zero
 
         Movement.Instance.movementStates = MovementStates.Moving;
-        PlayerManager.Instance.PauseGame();
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.4f);
 
         Vector3 startPos = target.position;
         Quaternion startRot = target.rotation;
@@ -2845,10 +2849,12 @@ public class Movement : Singleton<Movement>
         target.position = startPos;
         target.rotation = startRot;
 
-        Movement.Instance.movementStates = MovementStates.Still;
         PlayerManager.Instance.UnpauseGame();
+        Movement.Instance.movementStates = MovementStates.Still;
 
         Action_PickupAnimation_Complete?.Invoke();
+
+        Movement.Instance.UpdateLookDir();
     }
 
 

@@ -40,6 +40,7 @@ public class Interactable_Pickup : MonoBehaviour
     {
         if (other.transform.CompareTag("Player"))
         {
+            //PlayerManager.Instance.PauseGame();
             print("Pickup entered");
 
             GetItems();
@@ -400,6 +401,8 @@ public class Interactable_Pickup : MonoBehaviour
         }
 
         Action_PickupGot_isActive();
+
+        Movement.Instance.UpdateLookDir();
     }
 
 
