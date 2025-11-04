@@ -623,14 +623,19 @@ public class Movement : Singleton<Movement>
         }
 
         GameObject outObj1 = null;
+        GameObject outObj2 = null;
         Vector3 playerPos = PlayerManager.Instance.player.transform.position;
 
         if (PerformMovementRaycast(blockStandingOn.transform.position, dir, 1, out outObj1) == RaycastHitObjects.BlockInfo)
         {
             BlockInfo hitBlock = outObj1.GetComponent<BlockInfo>();
 
+            print("100. SwiftSwimBlock Detected Above: " + outObj1.name);
+
             if (hitBlock.blockElement == BlockElement.Water)
+            {
                 Block_Is_Target(swiftSwimOption, outObj1);
+            }
             else
                 Block_IsNot_Target(swiftSwimOption);
         }
@@ -2814,14 +2819,25 @@ public class Movement : Singleton<Movement>
     }
 
 
-    public static IEnumerator JumpSpin(Transform target, float totalTime, float jumpHeight, int spinCount, Vector3 rotationAxis)
+    public IEnumerator JumpSpin(Transform target, float totalTime, float jumpHeight, int spinCount, Vector3 rotationAxis)
     {
         if (target == null) yield break;
         if (totalTime <= 0f) totalTime = 0.0001f; // avoid division by zero
 
-        Movement.Instance.movementStates = MovementStates.Moving;
+        movementStates = MovementStates.Moving;
 
-        yield return new WaitForSeconds(0.4f);
+        if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>().movementSpeed >= 5)
+        {
+            print("1000. Animation Speed >= 5");
+
+            yield return new WaitForSeconds(0.2f);
+        }
+        else
+        {
+            print("2000. Animation Speed < 5");
+
+            yield return new WaitForSeconds(0.2f);
+        }
 
         Vector3 startPos = target.position;
         Quaternion startRot = target.rotation;

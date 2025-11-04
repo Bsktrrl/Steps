@@ -46,22 +46,35 @@ public class Interactable_Pickup : MonoBehaviour
             GetItems();
             GetAbility();
 
-            gameObject.SetActive(false);
-
             PlayerManager.Instance.SavePlayerStats();
             MapManager.Instance.SaveMapInfo();
 
             if (goal)
             {
-                //Update analyticsData
-                AnalyticsCalls.OnLevel(mapManager.timeUsedInLevel, mapManager.stepCount, mapManager.respawnCount, mapManager.abilitiesPickedUp, mapManager.cameraRotated, mapManager.swimCounter, mapManager.swiftSwimCounter, mapManager.jumpCounter, mapManager.dashCounter, mapManager.ascendCounter, mapManager.descendCounter, mapManager.grapplingHookCounter, mapManager.ceilingGrabCounter);
-                AnalyticsCalls.OnLevelFinishing(mapManager.timeUsedInLevel, mapManager.stepCount, mapManager.respawnCount, mapManager.abilitiesPickedUp, mapManager.cameraRotated, mapManager.swimCounter, mapManager.swiftSwimCounter, mapManager.jumpCounter, mapManager.dashCounter, mapManager.ascendCounter, mapManager.descendCounter, mapManager.grapplingHookCounter, mapManager.ceilingGrabCounter);
+                PlayerManager.Instance.PauseGame();
 
-                AnalyticsCalls.CompleteLevel();
-
-                PlayerManager.Instance.player.GetComponent<PlayerManager>().QuitLevel();
+                StartCoroutine(ExitLevel(0.5f));
+            }
+            else
+            {
+                gameObject.SetActive(false);
             }
         }
+    }
+
+    IEnumerator ExitLevel(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        //Update analyticsData
+        AnalyticsCalls.OnLevel(mapManager.timeUsedInLevel, mapManager.stepCount, mapManager.respawnCount, mapManager.abilitiesPickedUp, mapManager.cameraRotated, mapManager.swimCounter, mapManager.swiftSwimCounter, mapManager.jumpCounter, mapManager.dashCounter, mapManager.ascendCounter, mapManager.descendCounter, mapManager.grapplingHookCounter, mapManager.ceilingGrabCounter);
+        AnalyticsCalls.OnLevelFinishing(mapManager.timeUsedInLevel, mapManager.stepCount, mapManager.respawnCount, mapManager.abilitiesPickedUp, mapManager.cameraRotated, mapManager.swimCounter, mapManager.swiftSwimCounter, mapManager.jumpCounter, mapManager.dashCounter, mapManager.ascendCounter, mapManager.descendCounter, mapManager.grapplingHookCounter, mapManager.ceilingGrabCounter);
+
+        AnalyticsCalls.CompleteLevel();
+
+        PlayerManager.Instance.player.GetComponent<PlayerManager>().QuitLevel();
+
+        gameObject.SetActive(false);
     }
 
 
