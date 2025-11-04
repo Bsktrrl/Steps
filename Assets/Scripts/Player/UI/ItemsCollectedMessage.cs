@@ -26,26 +26,62 @@ public class ItemsCollectedMessage : MonoBehaviour
 
     readonly Dictionary<GameObject, Coroutine> _runningEffects = new();
 
+    bool readyEssanceMessage;
+    bool readyStepUpMessage;
+    bool readySkinMessage;
+
+
 
     //-------------------------
-    
+
 
     private void OnEnable()
     {
-        Interactable_Pickup.Action_EssencePickupGot += ShowEssenceMessage;
-        Interactable_Pickup.Action_StepsUpPickupGot += ShowStepUpMessage;
-        Interactable_Pickup.Action_SkinPickupGot += ShowSkinMessage;
+        Interactable_Pickup.Action_EssencePickupGot += ReadyEssanceMessage;
+        Interactable_Pickup.Action_StepsUpPickupGot += ReadyStepUpMessage;
+        Interactable_Pickup.Action_SkinPickupGot += ReadySkinMessage;
+
+        Movement.Action_PickupAnimation_Complete += ShowMessage;
     }
     private void OnDisable()
     {
-        Interactable_Pickup.Action_EssencePickupGot -= ShowEssenceMessage;
-        Interactable_Pickup.Action_StepsUpPickupGot -= ShowStepUpMessage;
-        Interactable_Pickup.Action_SkinPickupGot -= ShowSkinMessage;
+        Interactable_Pickup.Action_EssencePickupGot -= ReadyEssanceMessage;
+        Interactable_Pickup.Action_StepsUpPickupGot -= ReadyStepUpMessage;
+        Interactable_Pickup.Action_SkinPickupGot -= ReadySkinMessage;
+
+        Movement.Action_PickupAnimation_Complete -= ShowMessage;
     }
 
 
     //-------------------------
 
+
+    void ReadyEssanceMessage()
+    {
+        readyEssanceMessage = true;
+    }
+    void ReadyStepUpMessage()
+    {
+        readyStepUpMessage = true;
+    }
+    void ReadySkinMessage()
+    {
+        readySkinMessage = true;
+    }
+
+    void ShowMessage()
+    {
+        if (readyEssanceMessage)
+            ShowEssenceMessage();
+        else if (readyStepUpMessage)
+            ShowStepUpMessage();
+        else if (readySkinMessage)
+            ShowSkinMessage();
+
+        readyEssanceMessage = false;
+        readyStepUpMessage = false;
+        readySkinMessage = false;
+    }
 
     void ShowEssenceMessage()
     {
