@@ -13,6 +13,8 @@ public class RegionButton : MonoBehaviour
 
     public void Button_isPressed()
     {
+        if (!GetComponent<LevelButtonEffects>().canBePlayed) return;
+
         OverWorldManager.Instance.ChangeStates(regionState, LevelState.First);
 
         MenuStates.Instance.SaveMenuState(MenuState.Overworld_Menu);

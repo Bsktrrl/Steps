@@ -21,7 +21,7 @@ public class LoadLevel : MonoBehaviour
     [Header("Unlock Requirement")]
     public List<GameObject> levelsToBeFinished;
 
-    [SerializeField] bool canPlay;
+    public bool canPlay;
     public bool isCompleted;
 
     [Header("In the Level")]
