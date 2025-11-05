@@ -172,9 +172,12 @@ public class SFX_Respawn : Singleton<SFX_Respawn>
 
     void SetEffectsOff()
     {
-        sfx_OnHoldStarted.SetActive(false);
-        sfx_OnHoldCanceled.SetActive(false);
-        sfx_OnHoldCompleted.SetActive(false);
+        if (sfx_OnHoldStarted)
+            sfx_OnHoldStarted.SetActive(false);
+        if (sfx_OnHoldCanceled)
+            sfx_OnHoldCanceled.SetActive(false);
+        if (sfx_OnHoldCompleted)
+            sfx_OnHoldCompleted.SetActive(false);
     }
 
     IEnumerator StopEffect(float waitTime, GameObject effectPrefab)

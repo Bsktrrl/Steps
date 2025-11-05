@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -535,7 +536,7 @@ public class Movement : Singleton<Movement>
                 //If there is a Water Block where the player want to move
                 if (outObj2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
                 {
-                    if (PlayerHasSwimAbility())
+                    if (PlayerHasSwimAbility()) 
                         Block_Is_Target(moveOption, outObj2);
                     else
                         Block_IsNot_Target(moveOption);
@@ -594,7 +595,7 @@ public class Movement : Singleton<Movement>
                         {
                             if (outObj1.GetComponent<BlockInfo>().blockElement == BlockElement.Water && outObj2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
                             {
-                                if (PlayerHasSwimAbility())
+                                if (PlayerHasSwiftSwimAbility() /*PlayerHasSwimAbility() PlayerStats.Instance.stats.abilitiesGot_Temporary.SwiftSwim && PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim*/)
                                     Block_Is_Target(moveOption, outObj2);
                                 else
                                     Block_IsNot_Target(moveOption);
@@ -1343,6 +1344,12 @@ public class Movement : Singleton<Movement>
                stats.abilitiesGot_Permanent.SwiftSwim ||
                stats.abilitiesGot_Temporary.SwimSuit ||
                stats.abilitiesGot_Temporary.Flippers ||
+               stats.abilitiesGot_Temporary.SwiftSwim;
+    }
+    public bool PlayerHasSwiftSwimAbility()
+    {
+        var stats = PlayerStats.Instance.stats;
+        return stats.abilitiesGot_Permanent.SwiftSwim ||
                stats.abilitiesGot_Temporary.SwiftSwim;
     }
     bool PlayerHasDashAbility()
