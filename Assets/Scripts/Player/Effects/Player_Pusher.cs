@@ -26,6 +26,7 @@ public class Player_Pusher : Singleton<Player_Pusher>
         Movement.Action_StepTaken += CheckPush;
         Movement.Action_BodyRotated += CheckIfNotPushed;
         Movement.Action_LandedFromFalling += CheckPush;
+        Movement.Action_StepTaken_Late += NullifyBlockToPushInto;
     }
 
     private void OnDisable()
@@ -34,6 +35,7 @@ public class Player_Pusher : Singleton<Player_Pusher>
         Movement.Action_StepTaken -= CheckPush;
         Movement.Action_BodyRotated -= CheckIfNotPushed;
         Movement.Action_LandedFromFalling -= CheckPush;
+        Movement.Action_StepTaken_Late -= NullifyBlockToPushInto;
     }
 
 
@@ -49,6 +51,11 @@ public class Player_Pusher : Singleton<Player_Pusher>
     {
         if (Movement.Instance.blockStandingOn)
         {
+            if (Movement.Instance.blockStandingOn == BlockToPushInto && playerIsPushed)
+            {
+                CheckIfNotPushed();
+            }
+            else
             if (Movement.Instance.blockStandingOn.GetComponent<Block_Pusher>() || playerIsPushed)
             {
                 playerIsPushed = true;
@@ -64,7 +71,7 @@ public class Player_Pusher : Singleton<Player_Pusher>
 
     void CheckIfNotPushed()
     {
-        if (!Movement.Instance.blockStandingOn.GetComponent<Block_Pusher>() && pushDirection_Old != pushDirection_New)
+        if (Movement.Instance.blockStandingOn && !Movement.Instance.blockStandingOn.GetComponent<Block_Pusher>() && pushDirection_Old != pushDirection_New)
         {
             playerIsPushed = false;
             pushDirection_New = Vector3.zero;
@@ -98,5 +105,9 @@ public class Player_Pusher : Singleton<Player_Pusher>
                 BlockToPushInto = hit.transform.gameObject;
             }
         }
+    }
+    void NullifyBlockToPushInto()
+    {
+        BlockToPushInto = null;
     }
 }

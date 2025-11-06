@@ -243,7 +243,15 @@ public class Block_Elevator : MonoBehaviour
         {
             pathSegmentCounter++;
             if (pathSegmentCounter > movementPath.Count - 1)
+            {
                 pathSegmentCounter = 0;
+
+                if (gameObject.GetComponentInChildren<Block_Ladder>())
+                {
+                    print("100. Get Ladder Child");
+                    gameObject.GetComponentInChildren<Block_Ladder>().SetupLadder();
+                }
+            }
 
             if (movementPath[index].waitAfterMoving)
             {

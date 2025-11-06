@@ -117,39 +117,15 @@ public class NumberDisplay : MonoBehaviour
 
     public void ShowNumber()
     {
-        StartCoroutine(DelayShowNumer());
+        StartCoroutine(DelayShowNumber());
     }
-    void DisplayNumber(int value)
-    {
-        blockInfo.movementCost = value;
-        SetNumberColors(SetNumberColor_MoreOrLess(value));
-
-        if (value == -1)
-        {
-            value = 10;
-        }
-        else if (value == -2)
-        {
-            value = 11;
-        }
-        else if (value <= -3)
-        {
-            return;
-        }
-
-        numberMeshRenderer.sharedMesh = numberMeshList[value];
-        StartCoroutine(NumberAnimation(numberMeshRenderer, duration));
-    }
-    
-    IEnumerator DelayShowNumer()
+    IEnumerator DelayShowNumber()
     {
         yield return null;
 
         //If Pushed
         if (PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed && PlayerManager.Instance.player.GetComponent<Player_Pusher>().BlockToPushInto == gameObject.transform.parent.gameObject)
         {
-            print("2. Player is Pushed - Forward");
-
             DisplayNumber(0);
         }
 
@@ -209,6 +185,28 @@ public class NumberDisplay : MonoBehaviour
 
         UpdateRotation();
         numberMeshRenderer.gameObject.SetActive(true);
+    }
+    
+    void DisplayNumber(int value)
+    {
+        blockInfo.movementCost = value;
+        SetNumberColors(SetNumberColor_MoreOrLess(value));
+
+        if (value == -1)
+        {
+            value = 10;
+        }
+        else if (value == -2)
+        {
+            value = 11;
+        }
+        else if (value <= -3)
+        {
+            return;
+        }
+
+        numberMeshRenderer.sharedMesh = numberMeshList[value];
+        StartCoroutine(NumberAnimation(numberMeshRenderer, duration));
     }
     public void HideNumber()
     {

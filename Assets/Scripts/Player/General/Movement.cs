@@ -2678,17 +2678,22 @@ public class Movement : Singleton<Movement>
         //Reduce available steps
         if (blockStandingOn)
         {
-            if (blockStandingOn.GetComponent<BlockInfo>() /*&& !PlayerManager.Instance.isTransportingPlayer*/ && !Player_Pusher.Instance.playerIsPushed)
+            if (blockStandingOn.GetComponent<BlockInfo>() /*&& !PlayerManager.Instance.isTransportingPlayer*/)
             {
                 //Don't remove steps if gliding from a slope
-                if (hasSlopeGlided && blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope)
+                if (hasSlopeGlided && blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope && !Player_Pusher.Instance.playerIsPushed)
                 {
-                    print("2. hasSlopeGlided");
+                    hasSlopeGlided = false;
+
+                    PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
+                }
+                else if (Player_Pusher.Instance.playerIsPushed)
+                {
                     hasSlopeGlided = false;
                 }
                 else
                 {
-                    PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;     
+                    PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
                 }
             }
         }
@@ -2833,8 +2838,11 @@ public class Movement : Singleton<Movement>
         if (target == null) yield break;
         if (totalTime <= 0f) totalTime = 0.0001f; // avoid division by zero
 
-        movementStates = MovementStates.Moving;
-
+        if (movementStates != MovementStates.Falling)
+        {
+            movementStates = MovementStates.Moving;
+        }
+        
         if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>().movementSpeed >= 5)
         {
             print("1000. Animation Speed >= 5");
@@ -2845,7 +2853,7 @@ public class Movement : Singleton<Movement>
         {
             print("2000. Animation Speed < 5");
 
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.45f);
         }
 
         Vector3 startPos = target.position;
@@ -2875,7 +2883,11 @@ public class Movement : Singleton<Movement>
         target.rotation = startRot;
 
         PlayerManager.Instance.UnpauseGame();
-        Movement.Instance.movementStates = MovementStates.Still;
+
+        if (movementStates != MovementStates.Falling)
+        {
+            movementStates = MovementStates.Still;
+        }
 
         Action_PickupAnimation_Complete?.Invoke();
 

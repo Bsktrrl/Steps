@@ -21,6 +21,16 @@ public class Block_Ladder : MonoBehaviour
 
     private void Start()
     {
+        SetupLadder();
+    }
+
+
+    //--------------------
+
+
+    public void SetupLadder()
+    {
+        print("SetupLadder");
         FindTopLadderPart();
         FindBottomLadderPart();
 
@@ -46,7 +56,6 @@ public class Block_Ladder : MonoBehaviour
             FindExitBlock_Up(Vector3.right);
             FindExitBlock_Down();
         }
-
     }
 
 
