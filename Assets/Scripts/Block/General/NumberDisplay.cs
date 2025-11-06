@@ -115,6 +115,10 @@ public class NumberDisplay : MonoBehaviour
     //--------------------
 
 
+    public void ShowNumber()
+    {
+        StartCoroutine(DelayShowNumer());
+    }
     void DisplayNumber(int value)
     {
         blockInfo.movementCost = value;
@@ -136,12 +140,15 @@ public class NumberDisplay : MonoBehaviour
         numberMeshRenderer.sharedMesh = numberMeshList[value];
         StartCoroutine(NumberAnimation(numberMeshRenderer, duration));
     }
-    public void ShowNumber()
+    
+    IEnumerator DelayShowNumer()
     {
+        yield return null;
+
         //If Pushed
-        if (PlayerManager.Instance.block_LookingAt_Vertical == transform.parent.gameObject && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
+        if (PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed && PlayerManager.Instance.player.GetComponent<Player_Pusher>().BlockToPushInto == gameObject.transform.parent.gameObject)
         {
-            print("1. PLayer is Pushed");
+            print("2. Player is Pushed - Forward");
 
             DisplayNumber(0);
         }
@@ -157,7 +164,7 @@ public class NumberDisplay : MonoBehaviour
         {
             if (blockInfo.movementCost_Temp == -1)
                 DisplayNumber(-2);
-            else if(blockInfo.movementCost_Temp == 0)
+            else if (blockInfo.movementCost_Temp == 0)
                 DisplayNumber(-1);
             else if (blockInfo.movementCost_Temp == 1)
                 DisplayNumber(0);

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2699762568121899056}
   - component: {fileID: 6696375030233492727}
   - component: {fileID: 8208711610810759522}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: LadderColliderBlocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 8545268823921588556}
   - component: {fileID: 8878986352893575346}
   - component: {fileID: 5238185642480143573}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: LadderCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,7 +197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4515483538117520901}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: RaycastPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -230,6 +230,22 @@ PrefabInstance:
     - target: {fileID: 100000, guid: fea600541bcdcf740ab4ac69f216b0de, type: 3}
       propertyPath: m_Name
       value: Ladder_GrassWood_Light
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: fea600541bcdcf740ab4ac69f216b0de, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: fea600541bcdcf740ab4ac69f216b0de, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: fea600541bcdcf740ab4ac69f216b0de, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: fea600541bcdcf740ab4ac69f216b0de, type: 3}
+      propertyPath: m_Layer
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: fea600541bcdcf740ab4ac69f216b0de, type: 3}
       propertyPath: m_LocalPosition.x

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4127647642479445091}
   - component: {fileID: 4404327223887558371}
   - component: {fileID: 2132716760039253275}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: LadderColliderBlocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 8397595729392299961}
   - component: {fileID: 3868837680885757633}
   - component: {fileID: 5223374133396354952}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: LadderCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,7 +197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2562383104487071088}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: RaycastPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -279,9 +279,25 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.35
       objectReference: {fileID: 0}
+    - target: {fileID: 296396303686204407, guid: 256df23680240d3428751e51ec500343, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 449941298108705829, guid: 256df23680240d3428751e51ec500343, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 256df23680240d3428751e51ec500343, type: 3}
       propertyPath: m_Name
       value: Stone_Ladder_Light
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 256df23680240d3428751e51ec500343, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3264296333121883215, guid: 256df23680240d3428751e51ec500343, type: 3}
+      propertyPath: m_Layer
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

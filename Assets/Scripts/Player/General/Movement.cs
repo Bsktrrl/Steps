@@ -40,6 +40,7 @@ public class Movement : Singleton<Movement>
 
     [Header("BlockIsStandingOn")]
     public Vector3 lookingDirection;
+    [SerializeField] string lookingDirectionDescription;
     public GameObject blockStandingOn;
     public GameObject blockStandingOn_Previous;
 
@@ -1769,7 +1770,7 @@ public class Movement : Singleton<Movement>
         if (!canMoveBlock.targetBlock.GetComponent<BlockInfo>()) { return; }
         if (PlayerStats.Instance.stats == null) { return; }
 
-        if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost)
+        if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost || Player_Pusher.Instance.playerIsPushed)
         {
             MovingAnimation(canMoveBlock);
 
@@ -1791,7 +1792,7 @@ public class Movement : Singleton<Movement>
         if (!canMoveBlock.targetBlock.GetComponent<BlockInfo>()) { return; }
         if (PlayerStats.Instance.stats == null) { return; }
 
-        if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost)
+        if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost || Player_Pusher.Instance.playerIsPushed)
         {
             MovingAnimation(canMoveBlock);
 
@@ -2608,6 +2609,7 @@ public class Movement : Singleton<Movement>
         }
 
         lookingDirection = lookDir;
+        Player_Pusher.Instance.DisplayPushDirection(lookingDirection, lookingDirectionDescription);
     }
 
 
@@ -2692,7 +2694,7 @@ public class Movement : Singleton<Movement>
         }
 
         //If steps is < 0
-        if (PlayerStats.Instance.stats.steps_Current < 0)
+        if (PlayerStats.Instance.stats.steps_Current < 0 && !Player_Pusher.Instance.playerIsPushed)
         {
             PlayerStats.Instance.stats.steps_Current = 0;
             RespawnPlayer();
@@ -2822,7 +2824,7 @@ public class Movement : Singleton<Movement>
     void Temp_AbilityPickupGot_Animation()
     {
         PlayerManager.Instance.PauseGame();
-        StartCoroutine(JumpSpin(PlayerManager.Instance.playerBody.transform, 0.6f, 0.5f, 1, -Vector3.right));
+        StartCoroutine(JumpSpin(PlayerManager.Instance.playerBody.transform, 0.45f, 0.5f, 1, -Vector3.right));
     }
 
 

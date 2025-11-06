@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3159908110734628153}
   - component: {fileID: 7157769432076621266}
   - component: {fileID: 382501233923602453}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: LadderColliderBlocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1919577629414327897}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: RaycastPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 4666795516868612146}
   - component: {fileID: 3625111135382179737}
   - component: {fileID: 2997019363208863611}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: LadderCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -271,6 +271,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6349418363413095153, guid: b011d86cbec1a5948b5cd3f15265838c, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: -2123949717527557179, guid: b011d86cbec1a5948b5cd3f15265838c, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.35
@@ -280,12 +284,24 @@ PrefabInstance:
       value: JungleWood_Ladder
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b011d86cbec1a5948b5cd3f15265838c, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b011d86cbec1a5948b5cd3f15265838c, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862787301199564066, guid: b011d86cbec1a5948b5cd3f15265838c, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 5466555898912286303, guid: b011d86cbec1a5948b5cd3f15265838c, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789800840037545806, guid: b011d86cbec1a5948b5cd3f15265838c, type: 3}
+      propertyPath: m_Layer
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
