@@ -24,6 +24,15 @@ public class Block_Ladder : MonoBehaviour
         SetupLadder();
     }
 
+    private void OnEnable()
+    {
+        Interactable_Pickup.Action_AbilityPickupGot += SetupLadder;
+    }
+    private void OnDisable()
+    {
+        Interactable_Pickup.Action_AbilityPickupGot -= SetupLadder;
+    }
+
 
     //--------------------
 
@@ -191,7 +200,18 @@ public class Block_Ladder : MonoBehaviour
             {
                 obj = hit.transform.gameObject;
 
-                return RaycastHitObjects.BlockInfo;
+                if (obj.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !Movement.Instance.PlayerHasSwimAbility())
+                {
+                    return RaycastHitObjects.Other;
+                }
+                else if (obj.GetComponent<BlockInfo>().blockElement == BlockElement.Water && Movement.Instance.PlayerHasSwimAbility())
+                {
+                    return RaycastHitObjects.BlockInfo;
+                }
+                else
+                {
+                    return RaycastHitObjects.BlockInfo;
+                }   
             }
             else if (hit.transform.GetComponentInParent<Block_Ladder>())
             {
