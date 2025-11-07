@@ -1216,32 +1216,44 @@ public class Interactable_NPC : MonoBehaviour
 
     void UpdateEndingValue(NPCs npc, int tempEndingValue)
     {
+        if (tempEndingValue == null)
+        {
+            return;
+        }
+
         switch (npc)
         {
             case NPCs.None:
                 break;
 
             case NPCs.Floriel:
-                NPCManager.Instance.charatersData.floriel_Data.endingValue += tempEndingValue;
+                if (NPCManager.Instance.charatersData != null && NPCManager.Instance.charatersData.floriel_Data != null)
+                    NPCManager.Instance.charatersData.floriel_Data.endingValue += tempEndingValue;
                 break;
             case NPCs.Granith:
-                NPCManager.Instance.charatersData.granith_Data.endingValue += tempEndingValue;
+                if (NPCManager.Instance.charatersData != null && NPCManager.Instance.charatersData.granith_Data != null)
+                    NPCManager.Instance.charatersData.granith_Data.endingValue += tempEndingValue;
                 break;
             case NPCs.Archie:
-                NPCManager.Instance.charatersData.archie_Data.endingValue += tempEndingValue;
+                if (NPCManager.Instance.charatersData != null && NPCManager.Instance.charatersData.archie_Data != null)
+                    NPCManager.Instance.charatersData.archie_Data.endingValue += tempEndingValue;
                 break;
             case NPCs.Aisa:
-                NPCManager.Instance.charatersData.aisa_Data.endingValue += tempEndingValue;
+                if (NPCManager.Instance.charatersData != null && NPCManager.Instance.charatersData.aisa_Data != null)
+                    NPCManager.Instance.charatersData.aisa_Data.endingValue += tempEndingValue;
                 break;
             case NPCs.Mossy:
-                NPCManager.Instance.charatersData.mossy_Data.endingValue += tempEndingValue;
+                if (NPCManager.Instance.charatersData != null && NPCManager.Instance.charatersData.mossy_Data != null)
+                    NPCManager.Instance.charatersData.mossy_Data.endingValue += tempEndingValue;
                 break;
             case NPCs.Larry:
-                NPCManager.Instance.charatersData.larry_Data.endingValue += tempEndingValue;
+                if (NPCManager.Instance.charatersData != null && NPCManager.Instance.charatersData.larry_Data != null)
+                    NPCManager.Instance.charatersData.larry_Data.endingValue += tempEndingValue;
                 break;
 
             case NPCs.Stepellier:
-                NPCManager.Instance.charatersData.stepellier_Data.endingValue += tempEndingValue;
+                if (NPCManager.Instance.charatersData != null && NPCManager.Instance.charatersData.stepellier_Data != null)
+                    NPCManager.Instance.charatersData.stepellier_Data.endingValue += tempEndingValue;
                 break;
 
             default:

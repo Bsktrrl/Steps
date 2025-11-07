@@ -24,6 +24,7 @@ public class Player_Pusher : Singleton<Player_Pusher>
     {
         Movement.Action_StepTaken_Early += CheckPush;
         Movement.Action_StepTaken += CheckPush;
+        Movement.Action_StepTaken_Late += CheckPush;
         Movement.Action_BodyRotated += CheckIfNotPushed;
         Movement.Action_LandedFromFalling += CheckPush;
         Movement.Action_StepTaken_Late += NullifyBlockToPushInto;
@@ -33,6 +34,7 @@ public class Player_Pusher : Singleton<Player_Pusher>
     {
         Movement.Action_StepTaken_Early -= CheckPush;
         Movement.Action_StepTaken -= CheckPush;
+        Movement.Action_StepTaken_Late -= CheckPush;
         Movement.Action_BodyRotated -= CheckIfNotPushed;
         Movement.Action_LandedFromFalling -= CheckPush;
         Movement.Action_StepTaken_Late -= NullifyBlockToPushInto;
@@ -42,7 +44,7 @@ public class Player_Pusher : Singleton<Player_Pusher>
     //--------------------
 
 
-    void CheckPush()
+    public void CheckPush()
     {
         CheckIfPushed();
         CheckIfNotPushed();
@@ -55,8 +57,7 @@ public class Player_Pusher : Singleton<Player_Pusher>
             {
                 CheckIfNotPushed();
             }
-            else
-            if (Movement.Instance.blockStandingOn.GetComponent<Block_Pusher>() || playerIsPushed)
+            else if (Movement.Instance.blockStandingOn.GetComponent<Block_Pusher>() || playerIsPushed)
             {
                 playerIsPushed = true;
 
@@ -93,7 +94,7 @@ public class Player_Pusher : Singleton<Player_Pusher>
         else if (dir == Vector3.right)
             describer = "right";
     }
-    void RaycastPushDirectionBlock()
+    public void RaycastPushDirectionBlock()
     {
         if (Physics.Raycast(gameObject.transform.position + pushDirection_New, Vector3.down, out hit, 1))
         {

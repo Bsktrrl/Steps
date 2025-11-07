@@ -167,7 +167,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     public void UpdatePlayerBodyDisplay()
     {
-        print("1. UpdatePlayerBodyDisplay: " + DataManager.Instance.skinsInfo_Store.activeSkinType);
+        //print("1. UpdatePlayerBodyDisplay: " + DataManager.Instance.skinsInfo_Store.activeSkinType);
 
         HideAllSkins();
 
@@ -437,7 +437,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     public GameObject GetSkinSelectedObject()
     {
-        print("2. DataManager.Instance.skinsInfo_Store.activeSkinType: " + DataManager.Instance.skinsInfo_Store.activeSkinType);
+        //print("2. DataManager.Instance.skinsInfo_Store.activeSkinType: " + DataManager.Instance.skinsInfo_Store.activeSkinType);
 
         switch (DataManager.Instance.skinsInfo_Store.activeSkinType)
         {
