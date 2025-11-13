@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 4597319644786569910}
   - component: {fileID: 5924539168468555278}
   - component: {fileID: -1173558634531830735}
+  - component: {fileID: 7237988853774284932}
   m_Layer: 5
   m_Name: LevelButton
   m_TagString: Untagged
@@ -230,6 +231,8 @@ MonoBehaviour:
   menuState_ToSelect: 0
   levelState_ToSelect: 0
   regionState_ToSelect: 0
+  currentMenuCategoryToSelect: 0
+  gameObjectsToHideWithThis: []
 --- !u!114 &4597319644786569910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,3 +301,18 @@ MonoBehaviour:
     Jumping: 0
     GrapplingHook: 0
     CeilingGrab: 0
+--- !u!114 &7237988853774284932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5666577594912976797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1908dcc308ba7b64687e249ad764ac74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1878484463773412661}
+  color_CAN: {r: 1, g: 1, b: 1, a: 1}
+  color_CANNOT: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}

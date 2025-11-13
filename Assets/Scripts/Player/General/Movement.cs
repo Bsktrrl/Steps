@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,6 +22,8 @@ public class Movement : Singleton<Movement>
     public static event Action Action_isSwitchingBlocks;
     public static event Action Action_LandedFromFalling;
 
+    public static event Action Action_PickupAnimation_Complete;
+
     #region Variables
 
     [Header("States")]
@@ -36,6 +40,7 @@ public class Movement : Singleton<Movement>
 
     [Header("BlockIsStandingOn")]
     public Vector3 lookingDirection;
+    [SerializeField] string lookingDirectionDescription;
     public GameObject blockStandingOn;
     public GameObject blockStandingOn_Previous;
 
@@ -105,6 +110,8 @@ public class Movement : Singleton<Movement>
     public bool isGrapplingHooking;
     public bool isDashing;
     public bool isIceGliding;
+    public bool isAscending;
+    public bool isDecending;
 
     [Header("Animations")]
     public Animator anim;
@@ -114,6 +121,7 @@ public class Movement : Singleton<Movement>
 
     [Header("Temp Movement Cost for Slope Gliding")]
     [SerializeField] bool hasSlopeGlided;
+    [SerializeField] bool isSlopeGliding;
     #endregion
 
 
@@ -147,6 +155,7 @@ public class Movement : Singleton<Movement>
         }
         else
         {
+            if (PlayerManager.Instance.pauseGame) return;
             MovementSetup();
         }
 
@@ -155,6 +164,8 @@ public class Movement : Singleton<Movement>
             UpdateGrapplingHookMovement(moveToBlock_GrapplingHook, lookDir);
             grapplingTargetHasBeenSet = true;
         }
+
+        CancelSlopeIfFalling();
     }
 
 
@@ -183,6 +194,13 @@ public class Movement : Singleton<Movement>
         Player_KeyInputs.Action_WalkButton_isReleased += WalkButtonIsReleased;
 
         SFX_Respawn.Action_RespawnPlayer += RespawnPlayer;
+
+        Interactable_Pickup.Action_AbilityPickupGot += UpdateLookDir;
+
+        Interactable_Pickup.Action_EssencePickupGot += Temp_EssencePickupGot_Animation;
+        Interactable_Pickup.Action_StepsUpPickupGot += Temp_StepsUpPickupGot_Animation;
+        Interactable_Pickup.Action_SkinPickupGot += Temp_SkinPickupGot_Animation;
+        Interactable_Pickup.Action_AbilityPickupGot += Temp_AbilityPickupGot_Animation;
     }
     private void OnDisable()
     {
@@ -206,6 +224,13 @@ public class Movement : Singleton<Movement>
         Player_KeyInputs.Action_WalkButton_isReleased -= WalkButtonIsReleased;
 
         SFX_Respawn.Action_RespawnPlayer -= RespawnPlayer;
+
+        Interactable_Pickup.Action_AbilityPickupGot -= UpdateLookDir;
+
+        Interactable_Pickup.Action_EssencePickupGot -= Temp_EssencePickupGot_Animation;
+        Interactable_Pickup.Action_StepsUpPickupGot -= Temp_StepsUpPickupGot_Animation;
+        Interactable_Pickup.Action_SkinPickupGot -= Temp_SkinPickupGot_Animation;
+        Interactable_Pickup.Action_AbilityPickupGot -= Temp_AbilityPickupGot_Animation;
     }
 
 
@@ -234,8 +259,8 @@ public class Movement : Singleton<Movement>
         {
             UpdateNormalMovement();
 
-            UpdateSwiftSwimUpMovement(); //Must come before Ascend
-            UpdateSwiftSwimDownMovement();//Must come before Descend
+            UpdateSwiftSwimMovement(moveToBlock_SwiftSwimUp, Vector3.up); //Must come before Ascend
+            UpdateSwiftSwimMovement(moveToBlock_SwiftSwimDown, Vector3.down); //Must come before Descend
 
             UpdateAscendMovement();
             UpdateDescendMovement();
@@ -515,7 +540,7 @@ public class Movement : Singleton<Movement>
                 //If there is a Water Block where the player want to move
                 if (outObj2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
                 {
-                    if (PlayerHasSwimAbility())
+                    if (PlayerHasSwimAbility()) 
                         Block_Is_Target(moveOption, outObj2);
                     else
                         Block_IsNot_Target(moveOption);
@@ -574,7 +599,7 @@ public class Movement : Singleton<Movement>
                         {
                             if (outObj1.GetComponent<BlockInfo>().blockElement == BlockElement.Water && outObj2.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
                             {
-                                if (PlayerHasSwimAbility())
+                                if (PlayerHasSwiftSwimAbility() /*PlayerHasSwimAbility() PlayerStats.Instance.stats.abilitiesGot_Temporary.SwiftSwim && PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim*/)
                                     Block_Is_Target(moveOption, outObj2);
                                 else
                                     Block_IsNot_Target(moveOption);
@@ -594,51 +619,35 @@ public class Movement : Singleton<Movement>
         Block_IsNot_Target(moveOption);
     }
 
-    void UpdateSwiftSwimUpMovement()
+    void UpdateSwiftSwimMovement(MoveOptions swiftSwimOption, Vector3 dir)
     {
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.SwiftSwim && !PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim)
         {
-            Block_IsNot_Target(moveToBlock_SwiftSwimUp);
+            Block_IsNot_Target(swiftSwimOption);
             return;
         }
 
         GameObject outObj1 = null;
+        GameObject outObj2 = null;
         Vector3 playerPos = PlayerManager.Instance.player.transform.position;
 
-        if (PerformMovementRaycast(blockStandingOn.transform.position, Vector3.up, 1, out outObj1) == RaycastHitObjects.BlockInfo)
-        {
-            BlockInfo hitBlock= outObj1.GetComponent<BlockInfo>();
-
-            if (hitBlock.blockElement == BlockElement.Water)
-                Block_Is_Target(moveToBlock_SwiftSwimUp, outObj1);
-            else
-                Block_IsNot_Target(moveToBlock_SwiftSwimUp);
-        }
-        else
-            Block_IsNot_Target(moveToBlock_SwiftSwimUp);
-    }
-    void UpdateSwiftSwimDownMovement()
-    {
-        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.SwiftSwim && !PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim)
-        {
-            Block_IsNot_Target(moveToBlock_SwiftSwimDown);
-            return;
-        }
-
-        GameObject outObj1 = null;
-        Vector3 playerPos = PlayerManager.Instance.player.transform.position;
-
-        if (PerformMovementRaycast(blockStandingOn.transform.position, Vector3.down, 1, out outObj1) == RaycastHitObjects.BlockInfo)
+        if (PerformMovementRaycast(blockStandingOn.transform.position, dir, 1, out outObj1) == RaycastHitObjects.BlockInfo)
         {
             BlockInfo hitBlock = outObj1.GetComponent<BlockInfo>();
 
+            print("100. SwiftSwimBlock Detected Above: " + outObj1.name);
+
             if (hitBlock.blockElement == BlockElement.Water)
-                Block_Is_Target(moveToBlock_SwiftSwimDown, outObj1);
+            {
+                Block_Is_Target(swiftSwimOption, outObj1);
+            }
             else
-                Block_IsNot_Target(moveToBlock_SwiftSwimDown);
+                Block_IsNot_Target(swiftSwimOption);
         }
         else
-            Block_IsNot_Target(moveToBlock_SwiftSwimDown);
+        {
+            Block_IsNot_Target(swiftSwimOption);
+        }
     }
     void UpdateAscendMovement()
     {
@@ -1341,6 +1350,12 @@ public class Movement : Singleton<Movement>
                stats.abilitiesGot_Temporary.Flippers ||
                stats.abilitiesGot_Temporary.SwiftSwim;
     }
+    public bool PlayerHasSwiftSwimAbility()
+    {
+        var stats = PlayerStats.Instance.stats;
+        return stats.abilitiesGot_Permanent.SwiftSwim ||
+               stats.abilitiesGot_Temporary.SwiftSwim;
+    }
     bool PlayerHasDashAbility()
     {
         var stats = PlayerStats.Instance.stats;
@@ -1584,6 +1599,9 @@ public class Movement : Singleton<Movement>
     {
         if (moveToBlock_Ascend.canMoveTo)
         {
+            isAscending = true;
+            PlayerCameraOcclusionController.Instance.CameraZoom(true);
+
             MapManager.Instance.ascendCounter++;
             PerformMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
             return true;
@@ -1595,6 +1613,9 @@ public class Movement : Singleton<Movement>
     {
         if (moveToBlock_Descend.canMoveTo)
         {
+            isDecending = true;
+            PlayerCameraOcclusionController.Instance.CameraZoom(true);
+
             MapManager.Instance.descendCounter++;
             PerformMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
             return true;
@@ -1620,7 +1641,6 @@ public class Movement : Singleton<Movement>
             if (hit.transform.GetComponent<BlockInfo>())
             {
                 obj = hit.transform.gameObject;
-
                 return RaycastHitObjects.BlockInfo;
             }
             else if (hit.transform.GetComponentInParent<Fence>())
@@ -1645,13 +1665,15 @@ public class Movement : Singleton<Movement>
             else
             {
                 obj = hit.transform.gameObject;
-
                 return RaycastHitObjects.Other;
             }
         }
+        else
+        {
+            obj = null;
 
-        obj = null;
-        return RaycastHitObjects.None;
+            return RaycastHitObjects.None;
+        }
     }
 
     void MovementSetup()
@@ -1751,7 +1773,7 @@ public class Movement : Singleton<Movement>
         if (!canMoveBlock.targetBlock.GetComponent<BlockInfo>()) { return; }
         if (PlayerStats.Instance.stats == null) { return; }
 
-        if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost)
+        if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost || Player_Pusher.Instance.playerIsPushed)
         {
             MovingAnimation(canMoveBlock);
 
@@ -1773,7 +1795,7 @@ public class Movement : Singleton<Movement>
         if (!canMoveBlock.targetBlock.GetComponent<BlockInfo>()) { return; }
         if (PlayerStats.Instance.stats == null) { return; }
 
-        if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost)
+        if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost || Player_Pusher.Instance.playerIsPushed)
         {
             MovingAnimation(canMoveBlock);
 
@@ -1843,6 +1865,12 @@ public class Movement : Singleton<Movement>
         isDashing = false;
         isIceGliding = false;
 
+        isAscending = false;
+        isDecending = false;
+        PlayerCameraOcclusionController.Instance.CameraZoom(false);
+
+        //StartCoroutine(DelayAscendDescendCamera(0.2f));
+
         Action_StepTaken_Invoke();
     }
 
@@ -1894,6 +1922,10 @@ public class Movement : Singleton<Movement>
 
         movementStates = MovementStates.Still;
         performGrapplingHooking = false;
+
+        isAscending = false;
+        isDecending = false;
+        PlayerCameraOcclusionController.Instance.CameraZoom(false);
     }
     IEnumerator ElevatorMovement(MovementStates moveState, float movementSpeed, MoveOptions moveOptions)
     {
@@ -1943,6 +1975,19 @@ public class Movement : Singleton<Movement>
 
         movementStates = MovementStates.Still;
         performGrapplingHooking = false;
+
+        isAscending = false;
+        isDecending = false;
+        PlayerCameraOcclusionController.Instance.CameraZoom(false);
+    }
+
+    IEnumerator DelayAscendDescendCamera(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        isAscending = false;
+        isDecending = false;
+        PlayerCameraOcclusionController.Instance.CameraZoom(false);
     }
 
     void MovingAnimation(MoveOptions canMoveBlock)
@@ -2567,6 +2612,7 @@ public class Movement : Singleton<Movement>
         }
 
         lookingDirection = lookDir;
+        Player_Pusher.Instance.DisplayPushDirection(lookingDirection, lookingDirectionDescription);
     }
 
 
@@ -2635,23 +2681,56 @@ public class Movement : Singleton<Movement>
         //Reduce available steps
         if (blockStandingOn)
         {
-            if (blockStandingOn.GetComponent<BlockInfo>() /*&& !PlayerManager.Instance.isTransportingPlayer*/ && !Player_Pusher.Instance.playerIsPushed)
+            if (blockStandingOn.GetComponent<BlockInfo>() /*&& !PlayerManager.Instance.isTransportingPlayer*/)
             {
                 //Don't remove steps if gliding from a slope
-                if (hasSlopeGlided && blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope)
+                if (hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                 {
-                    print("2. hasSlopeGlided");
+                    print("1. Slope");
+                    isSlopeGliding = true;
+                }
+                if (hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope)
+                {
+                    print("2. Slope");
                     hasSlopeGlided = false;
+                }
+                //else if (hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope && !Player_Pusher.Instance.playerIsPushed)
+                //{
+                //    print("3. Slope");
+                //    hasSlopeGlided = false;
+
+                //    //PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
+                //}
+                else if (Player_Pusher.Instance.playerIsPushed)
+                {
+                    print("4. Slope");
+                    hasSlopeGlided = false;
+                }
+                else if (!hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope)
+                {
+                    if (isSlopeGliding)
+                    {
+                        print("5. Slope");
+                    }
+                    else
+                    {
+                        print("6. Slope");
+                        PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
+                    }
+
+                    isSlopeGliding = false;
                 }
                 else
                 {
-                    PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;     
+                    print("7. Slope");
+                    //PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
+                    hasSlopeGlided = false;
                 }
             }
         }
 
         //If steps is < 0
-        if (PlayerStats.Instance.stats.steps_Current < 0)
+        if (PlayerStats.Instance.stats.steps_Current < 0 && !Player_Pusher.Instance.playerIsPushed)
         {
             PlayerStats.Instance.stats.steps_Current = 0;
             RespawnPlayer();
@@ -2659,6 +2738,17 @@ public class Movement : Singleton<Movement>
 
         Action_StepTaken_Late_Invoke();
     }
+    void CancelSlopeIfFalling()
+    {
+        if (movementStates == MovementStates.Falling && (isSlopeGliding || hasSlopeGlided))
+        {
+            print("0. Slope");
+            isSlopeGliding = false;
+            hasSlopeGlided = false;
+        }
+    }
+
+
     public void RespawnPlayer()
     {
         StartCoroutine(Resetplayer(0.01f));
@@ -2675,6 +2765,10 @@ public class Movement : Singleton<Movement>
 
         Player_KeyInputs.Instance.cameraX_isPressed = false;
         Player_KeyInputs.Instance.cameraY_isPressed = false;
+
+        isAscending = false;
+        isDecending = false;
+        PlayerCameraOcclusionController.Instance.CameraZoom(false);
 
         SetMovementState(MovementStates.Moving);
 
@@ -2757,6 +2851,90 @@ public class Movement : Singleton<Movement>
 
 
     //--------------------
+
+
+    void Temp_EssencePickupGot_Animation()
+    {
+        PlayerManager.Instance.PauseGame();
+        StartCoroutine(JumpSpin(PlayerManager.Instance.playerBody.transform, 0.3f, 0.5f, 1, -Vector3.right));
+    }
+    void Temp_StepsUpPickupGot_Animation()
+    {
+        PlayerManager.Instance.PauseGame();
+        StartCoroutine(JumpSpin(PlayerManager.Instance.playerBody.transform, 0.45f, 0.5f, 1, Vector3.up));
+    }
+    void Temp_SkinPickupGot_Animation()
+    {
+        PlayerManager.Instance.PauseGame();
+        StartCoroutine(JumpSpin(PlayerManager.Instance.playerBody.transform, 0.45f, 0.5f, 2, Vector3.up));
+    }
+    void Temp_AbilityPickupGot_Animation()
+    {
+        PlayerManager.Instance.PauseGame();
+        StartCoroutine(JumpSpin(PlayerManager.Instance.playerBody.transform, 0.45f, 0.5f, 1, -Vector3.right));
+    }
+
+
+    public IEnumerator JumpSpin(Transform target, float totalTime, float jumpHeight, int spinCount, Vector3 rotationAxis)
+    {
+        if (target == null) yield break;
+        if (totalTime <= 0f) totalTime = 0.0001f; // avoid division by zero
+
+        if (movementStates != MovementStates.Falling)
+        {
+            movementStates = MovementStates.Moving;
+        }
+        
+        if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>().movementSpeed >= 5)
+        {
+            print("1000. Animation Speed >= 5");
+
+            yield return new WaitForSeconds(0.2f);
+        }
+        else
+        {
+            print("2000. Animation Speed < 5");
+
+            yield return new WaitForSeconds(0.45f);
+        }
+
+        Vector3 startPos = target.position;
+        Quaternion startRot = target.rotation;
+
+        float elapsed = 0f;
+        float totalRotation = 360f * spinCount; // positive = clockwise around local X
+
+        while (elapsed < totalTime)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / totalTime);
+
+            // Parabolic jump: 0 -> jumpHeight -> 0 over [0,1]
+            float yOffset = 4f * jumpHeight * t * (1f - t);
+            target.position = new Vector3(startPos.x, startPos.y + yOffset, startPos.z);
+
+            // Spin ONLY around local X-axis (no Y rotation introduced)
+            float angle = Mathf.Lerp(0f, totalRotation, t);
+            target.rotation = startRot * Quaternion.AngleAxis(angle, rotationAxis);
+
+            yield return null;
+        }
+
+        // Snap to exact end state
+        target.position = startPos;
+        target.rotation = startRot;
+
+        PlayerManager.Instance.UnpauseGame();
+
+        if (movementStates != MovementStates.Falling)
+        {
+            movementStates = MovementStates.Still;
+        }
+
+        Action_PickupAnimation_Complete?.Invoke();
+
+        Movement.Instance.UpdateLookDir();
+    }
 
 
     #region Actions

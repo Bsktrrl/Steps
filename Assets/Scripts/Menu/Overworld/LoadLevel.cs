@@ -21,13 +21,24 @@ public class LoadLevel : MonoBehaviour
     [Header("Unlock Requirement")]
     public List<GameObject> levelsToBeFinished;
 
-    [SerializeField] bool canPlay;
+    public bool canPlay;
     public bool isCompleted;
 
     [Header("In the Level")]
     public SkinType skinTypeInLevel;
 
     public AbilitiesGot abilitiesInLevel;
+
+
+    MainMenuManager mainMenuManager;
+
+    //--------------------
+
+
+    private void Start()
+    {
+        mainMenuManager = FindObjectOfType<MainMenuManager>();
+    }
 
 
     //--------------------
@@ -51,6 +62,11 @@ public class LoadLevel : MonoBehaviour
     }
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {
+        if (mainMenuManager)
+        {
+            yield return mainMenuManager.FadeInBlackScreenCoroutine();
+        }
+
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
         while (!operation.isDone)
         {

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5536300091873492492}
   - component: {fileID: 7462982075684557284}
   - component: {fileID: 2984472717710038432}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: LadderCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 5600888712323045123}
   - component: {fileID: 1644477939267064960}
   - component: {fileID: 939909571290963691}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: LadderColliderBlocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,7 +197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7044848304179778305}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: RaycastPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,13 +267,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7696605969355052170, guid: cc6fb5ba6d989cc45a8b6d698ac9a4ce, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: -1213866323153846127, guid: cc6fb5ba6d989cc45a8b6d698ac9a4ce, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.35
       objectReference: {fileID: 0}
+    - target: {fileID: -554933758047878337, guid: cc6fb5ba6d989cc45a8b6d698ac9a4ce, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cc6fb5ba6d989cc45a8b6d698ac9a4ce, type: 3}
       propertyPath: m_Name
       value: Metal_Ladder
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cc6fb5ba6d989cc45a8b6d698ac9a4ce, type: 3}
+      propertyPath: m_Layer
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4589187493460282643, guid: cc6fb5ba6d989cc45a8b6d698ac9a4ce, type: 3}
       propertyPath: m_LocalPosition.z
@@ -282,6 +294,10 @@ PrefabInstance:
     - target: {fileID: 6015270898899906402, guid: cc6fb5ba6d989cc45a8b6d698ac9a4ce, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8317002913760954339, guid: cc6fb5ba6d989cc45a8b6d698ac9a4ce, type: 3}
+      propertyPath: m_Layer
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -8,19 +8,8 @@
 Sound:
 __________________
 
-3.1. Add Sound functionality for blocks
-- Effect Blocks (set soundPrefab on the different "icon"-gameObjects so it's instantiated automaticly)
-		- Spawn Point
-		- Refill Steps
-		- Teleporter
-		- Pusher
-- Elevators
-
 3.4. Ice glide bug
 - Fix ice glide audio bug
-
-3.5. Menu Sound
-- Add funcionality for "moving in menus", "clicking" and "back"
 
 
 
@@ -37,23 +26,33 @@ __________________
 
 
 
+
+--- PRIORITY TO SPILLEXPO
+6. Rotating camera rotation Edge-movement bug (fixed?)
+
+- Make Rivergreen Level 2: Water/Root - Swimming (add fog)
+	- Ladder NumberGlitch (check "NumberDisplay"-script)
+
+
+
+
 --- OTHER STUFF
 
 
+
 2. Make the numbers appear when stopping AND release the movementButton
-	- Now it disappear if moving in to a deadEndBlock and holding in the movementButton
-3. The player isn't performing walking animation after Ascending or Descending (when moving away from the block landed on)
+	- Now it disappear if moving into a deadEndBlock and holding in the movementButton
+3. The player isn't performing walking animation after Ascending/Descending/SwiftSwim (when moving away from the block landed on)
 4. When Ascending/Descending, the camera zooms in fast, then out, if there is free space. Disable carea when ascending/Descending
 5. When doing CeilingGrabRotation back to the noraml camera, it is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
 6. Add "MovingBlock"-EffectBlock
 7. Falling onto a fallingblock prevents movement
 9. IceGlide doesn't work with pusher
+10. Pusher don't show movement numbers on blocks when the player have 0 movement, even if it is pushed. The Player can move in the correct direction, thow.
+
 
 
 --- FROM TESTBONANZA
-
-
-2. Swiftswim doesn't always work upwards
 
 
 
@@ -61,32 +60,18 @@ __________________
 7. Falling block let the player move down when respawned
 8. "Freemove" camera with right joystick
 
-
-
 12. Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
 	- Sometimes, when rotating to the left twice, the player move in the looking direction after moving
 	- Almost always when at the edge of something, where not all 4 adjacent blocks can be moved to (maybe blocks isn't updated to "null" when the camera is rotating, so it keeps old blocks when they should have been "null"?
 
-
-
-
 16. Stairs isn't counted for when ascending/Descending
 17. Move EffectBlocks on top of SnowBlocks
-18. Numbers on Liquid Blocks is not alligned properly
-19. BackButton in Overworld goes back to mainMenu, not the start of Overworld menu
+
 20. The left movement sometimes run on auto
 21. DialogueSegments need to have another option for link when there are no options, but the link cannot be the next line (Change in Excel Sheet)
 22. Camera Zoomes far in to the player on stairs, even if it's clear sight
-23. Disable camera zoom when rotating the camera
-
-
----
-
-
-
-10.
-Levels
-- Make Levels for the MVP
+23. Disable camera zoom when rotating the camera (The result isn't that great, try slower zoomtime during rotation)
+24. Skins in levels make cameras zoom (in and out, based on the rotation of the skin)
 
 
 
@@ -95,28 +80,10 @@ Levels
 
 
 
-Movement & Camera bugtesting and fixing:
-
-
 
 Switches:
 - Make interactable Wall-switch
 
 
-Effect Blocks:
-- Add all new Effect-prefabs to a Block when their "Effect Block"-script is attached
-	- Moveable
-
-
-
------ TASKS IN QUE -----
-
-
 AbilityButton Display:
 - New ButtonDisplay on the player
-
-
-
------ OTHER -----
-
-

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3420025832737639386}
   - component: {fileID: 3015139149728487415}
   - component: {fileID: 1336243955788595855}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: LadderColliderBlocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 2135329499378647208}
   - component: {fileID: 4501068375950668727}
   - component: {fileID: 6971266155390666907}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: LadderCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,7 +197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5454561321993525900}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: RaycastPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,9 +227,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 100000, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 100006, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
       propertyPath: m_Name
       value: Ladder_GrassWood_Dark
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
+      propertyPath: m_Layer
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
       propertyPath: m_LocalPosition.z

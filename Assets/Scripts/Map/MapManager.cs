@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MapManager : Singleton<MapManager>
 {
@@ -38,6 +39,15 @@ public class MapManager : Singleton<MapManager>
     [Header("MapInfo")]
     public Map_SaveInfo mapInfo_ToSave = new Map_SaveInfo();
 
+    [Header("Player Object Parent")]
+    [SerializeField] GameObject playerObject_Parent;
+
+    [Header("Black Screen")]
+    [SerializeField] GameObject canvas;
+    [SerializeField] GameObject blackScreen;
+    float fadeDuration_In = 0.75f;
+    float fadeDuration_Out = 0.25f;
+
     BlockInfo[] blockInfoList;
     Interactable_Pickup[] pickupInfoList;
 
@@ -47,6 +57,9 @@ public class MapManager : Singleton<MapManager>
 
     private void Awake()
     {
+        blackScreen.SetActive(true);
+        canvas.SetActive(true);
+
         SpawnPlayerObject();
 
         pickup_LayerMask = ~pickup_LayerMask; //Corrects the error that resulted in all raycasts to only focus on the pickups instead of the other way around
@@ -75,6 +88,7 @@ public class MapManager : Singleton<MapManager>
 
         DataManager.Action_dataHasLoaded += SaveMapInfo;
         DataManager.Action_dataHasLoaded += InputLevelNameDisplay;
+        DataManager.Action_dataHasLoaded += FadeOutBlackScreen;
     }
 
     private void OnDisable()
@@ -87,6 +101,7 @@ public class MapManager : Singleton<MapManager>
 
         DataManager.Action_dataHasLoaded -= SaveMapInfo;
         DataManager.Action_dataHasLoaded -= InputLevelNameDisplay;
+        DataManager.Action_dataHasLoaded -= FadeOutBlackScreen;
     }
 
 
@@ -118,6 +133,8 @@ public class MapManager : Singleton<MapManager>
 
         playerStartPos = playerStartPos + new Vector3(0, -1 + Movement.Instance.heightOverBlock, 0);
         playerObjectInScene.transform.position = playerStartPos;
+
+        playerObjectInScene.transform.parent = playerObject_Parent.transform;
     }
 
     public void ShowHiddenObjects()
@@ -174,6 +191,64 @@ public class MapManager : Singleton<MapManager>
 
             mapAudioSourceList[mapAudioSourceList.Count - 1].Play();
         }
+    }
+
+
+    //--------------------
+
+
+    public void FadeOutBlackScreen()
+    {
+        StartCoroutine(FadeOutCoroutine());
+    }
+    private IEnumerator FadeOutCoroutine()
+    {
+        Image blackScreenImage = blackScreen.GetComponent<Image>();
+
+        Color color = blackScreenImage.color;
+        float startAlpha = color.a;
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration_In)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(startAlpha, 0f, elapsed / fadeDuration_In);
+            color.a = alpha;
+            blackScreenImage.color = color;
+            yield return null;
+        }
+
+        // Ensure it's fully transparent at the end
+        color.a = 0f;
+        blackScreenImage.color = color;
+        blackScreen.SetActive(false);
+    }
+    public void FadeInBlackScreen()
+    {
+        StartCoroutine(FadeInBlackScreenCoroutine());
+    }
+    public IEnumerator FadeInBlackScreenCoroutine()
+    {
+        blackScreen.SetActive(true);
+
+        Image blackScreenImage = blackScreen.GetComponent<Image>();
+
+        Color color = blackScreenImage.color;
+        float startAlpha = color.a; // should be 0 if transparent
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration_Out)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(startAlpha, 1f, elapsed / fadeDuration_Out); // fade to opaque
+            color.a = alpha;
+            blackScreenImage.color = color;
+            yield return null;
+        }
+
+        // Ensure it's fully opaque at the end
+        color.a = 1f;
+        blackScreenImage.color = color;
     }
 }
 

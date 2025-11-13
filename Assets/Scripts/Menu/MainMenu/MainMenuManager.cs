@@ -1,4 +1,8 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenuManager : Singleton<MainMenuManager>
 {
@@ -11,16 +15,27 @@ public class MainMenuManager : Singleton<MainMenuManager>
     [Header("Menu State")]
     public MenuState menuState;
 
+    [Header("BlackScreen")]
+    public GameObject blackScreen;
+    float fadeDuration_In = 0.75f;
+    float fadeDuration_Out = 0.25f;
+
 
     //--------------------
 
 
     private void Awake()
     {
+        blackScreen.SetActive(true);
+
         HideAllMenus();
     }
     private void Start()
     {
+        // Lock the cursor to the center of the screen, and hide it
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         if (DataManager.Instance.menuState_Store == MenuState.None)
         {
             menuState = MenuState.Main_Menu;
@@ -38,6 +53,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
         MenuStates.menuState_isChanged += MenusOnMenuState;
         DataManager.Action_dataHasLoaded += LoadPlayerStats;
         DataManager.Action_dataHasLoaded += SetMenu;
+        DataManager.Action_dataHasLoaded += FadeOutBlackScreen;
     }
 
     private void OnDisable()
@@ -45,6 +61,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
         MenuStates.menuState_isChanged -= MenusOnMenuState;
         DataManager.Action_dataHasLoaded -= LoadPlayerStats;
         DataManager.Action_dataHasLoaded -= SetMenu;
+        DataManager.Action_dataHasLoaded -= FadeOutBlackScreen;
     }
 
 
@@ -99,6 +116,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
 
     //--------------------
+
 
     #region Open Menus
 
@@ -185,6 +203,68 @@ public class MainMenuManager : Singleton<MainMenuManager>
         menuState = MenuState.Main_Menu;
 
         Application.Quit();
+    }
+
+    #endregion
+
+
+    //--------------------
+
+
+    #region Fade BlackScreen
+
+    public void FadeOutBlackScreen()
+    {
+        StartCoroutine(FadeOutCoroutine());
+    }
+    private IEnumerator FadeOutCoroutine()
+    {
+        Image blackScreenImage = blackScreen.GetComponent<Image>();
+
+        Color color = blackScreenImage.color;
+        float startAlpha = color.a;
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration_In)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(startAlpha, 0f, elapsed / fadeDuration_In);
+            color.a = alpha;
+            blackScreenImage.color = color;
+            yield return null;
+        }
+
+        // Ensure it's fully transparent at the end
+        color.a = 0f;
+        blackScreenImage.color = color;
+        blackScreen.SetActive(false);
+    }
+
+    public void FadeInBlackScreen()
+    {
+        StartCoroutine(FadeInBlackScreenCoroutine());
+    }
+    public IEnumerator FadeInBlackScreenCoroutine()
+    {
+        blackScreen.SetActive(true);
+        Image blackScreenImage = blackScreen.GetComponent<Image>();
+
+        Color color = blackScreenImage.color;
+        float startAlpha = color.a; // should be 0 if transparent
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration_Out)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(startAlpha, 1f, elapsed / fadeDuration_Out); // fade to opaque
+            color.a = alpha;
+            blackScreenImage.color = color;
+            yield return null;
+        }
+
+        // Ensure it's fully opaque at the end
+        color.a = 1f;
+        blackScreenImage.color = color;
     }
 
     #endregion

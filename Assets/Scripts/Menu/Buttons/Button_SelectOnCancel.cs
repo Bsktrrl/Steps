@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -6,6 +7,8 @@ using UnityEngine.UI;
 
 public class CancelPauseMenuByButtonPress : MonoBehaviour
 {
+    public static event Action Action_ButtonIsCanceled;
+
     [Header("Select On Cancel")]
     [SerializeField] Button selectOnCancel;
 
@@ -65,6 +68,9 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
 
         //-----
 
+
+        Action_ButtonIsCanceled?.Invoke();
+
         if (selectOnCancel)
         {
             ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(selectOnCancel.gameObject);
@@ -80,7 +86,7 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
 
             for (int i = 0; i < gameObjectsToHideWithThis.Count; i++)
             {
-                gameObjectsToHideWithThis[i].SetActive(false);
+                if(gameObjectsToHideWithThis[i]) gameObjectsToHideWithThis[i].SetActive(false);
             }
 
             //OverWorldManager.Instance.panelBackground.SetActive(false);

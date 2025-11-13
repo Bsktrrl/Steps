@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -115,34 +116,14 @@ public class NumberDisplay : MonoBehaviour
     //--------------------
 
 
-    void DisplayNumber(int value)
-    {
-        blockInfo.movementCost = value;
-        SetNumberColors(SetNumberColor_MoreOrLess(value));
-
-        if (value == -1)
-        {
-            value = 10;
-        }
-        else if (value == -2)
-        {
-            value = 11;
-        }
-        else if (value <= -3)
-        {
-            return;
-        }
-
-        numberMeshRenderer.sharedMesh = numberMeshList[value];
-        StartCoroutine(NumberAnimation(numberMeshRenderer, duration));
-    }
     public void ShowNumber()
     {
-        //If Pushed
-        if (PlayerManager.Instance.block_LookingAt_Vertical == transform.parent.gameObject && PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed)
-        {
-            print("1. PLayer is Pushed");
+        Player_Pusher.Instance.RaycastPushDirectionBlock();
+        Player_Pusher.Instance.CheckPush();
 
+        //If Pushed
+        if ((Movement.Instance.blockStandingOn.GetComponent<Block_Pusher>() || PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed) && PlayerManager.Instance.player.GetComponent<Player_Pusher>().BlockToPushInto == gameObject.transform.parent.gameObject)
+        {
             DisplayNumber(0);
         }
 
@@ -157,7 +138,7 @@ public class NumberDisplay : MonoBehaviour
         {
             if (blockInfo.movementCost_Temp == -1)
                 DisplayNumber(-2);
-            else if(blockInfo.movementCost_Temp == 0)
+            else if (blockInfo.movementCost_Temp == 0)
                 DisplayNumber(-1);
             else if (blockInfo.movementCost_Temp == 1)
                 DisplayNumber(0);
@@ -202,6 +183,28 @@ public class NumberDisplay : MonoBehaviour
 
         UpdateRotation();
         numberMeshRenderer.gameObject.SetActive(true);
+    }
+ 
+    void DisplayNumber(int value)
+    {
+        blockInfo.movementCost = value;
+        SetNumberColors(SetNumberColor_MoreOrLess(value));
+
+        if (value == -1)
+        {
+            value = 10;
+        }
+        else if (value == -2)
+        {
+            value = 11;
+        }
+        else if (value <= -3)
+        {
+            return;
+        }
+
+        numberMeshRenderer.sharedMesh = numberMeshList[value];
+        StartCoroutine(NumberAnimation(numberMeshRenderer, duration));
     }
     public void HideNumber()
     {

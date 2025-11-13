@@ -31,31 +31,31 @@ public class PickupAndSmokeScript : MonoBehaviour
 
     void Update()
     {
-        if(shineHor != null)
+        if(shineHor != null && shineHor.activeInHierarchy)
         {
             shineHor.transform.LookAt(Camera.main.transform);
-            shineHor.transform.localEulerAngles += new Vector3(90, Mathf.Sin(Time.time * 2) * shineHorSize.x*100, 0);
-            shineHor.transform.localScale = shineHorSize + Vector3.one * Mathf.Sin(Time.time * 3) * shineHorSize.x/10;
+            shineHor.transform.localEulerAngles += new Vector3(90, Mathf.Sin(Time.time * 2) * shineHorSize.x * 100, 0);
+            shineHor.transform.localScale = shineHorSize + Vector3.one * Mathf.Sin(Time.time * 3) * shineHorSize.x / 10;
         }
 
-        if(shineDia != null)
+        if(shineDia != null && shineDia.activeInHierarchy)
         {
             shineDia.transform.LookAt(Camera.main.transform);
-            shineDia.transform.localEulerAngles += new Vector3(90, Mathf.Sin(Time.time * 2 + Mathf.PI) * shineDiaSize.x*100, 0);
+            shineDia.transform.localEulerAngles += new Vector3(90, Mathf.Sin(Time.time * 2 + Mathf.PI) * shineDiaSize.x * 100, 0);
             shineDia.transform.localScale = shineDiaSize + Vector3.one * Mathf.Sin(Time.time * 3 + Mathf.PI) * shineDiaSize.x / 10;
         }
 
-        if(pointLight != null)
+        if(pointLight != null && pointLight.gameObject.activeInHierarchy)
         {
             pointLight.intensity = 0.1f + Mathf.Sin(Time.time * 3f) * 0.02f;
         }
 
-        if(rotationObject != null)
+        if(rotationObject != null && rotationObject.activeInHierarchy)
         {
             //rotationObject.transform.eulerAngles += new Vector3(0, 100 * Time.deltaTime, 0);
         }
 
-        if(scaleObject != null)
+        if (scaleObject != null && scaleObject.activeInHierarchy)
         {
             scaleObject.transform.localScale = new Vector3(scaleObjectSize, scaleObjectSize, scaleObjectSize) + Vector3.one * Mathf.Sin(Time.time * 3) * scaleObjectSize / 7;
         }

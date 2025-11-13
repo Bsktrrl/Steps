@@ -55,15 +55,15 @@ public class SettingsManager : Singleton<SettingsManager>
     {
         DataManager.Action_dataHasLoaded += LoadData;
 
-        Menu_KeyInputs.Action_MenuNavigationLeft_isPressed += PerformButtonAction_Left;
-        Menu_KeyInputs.Action_MenuNavigationRight_isPressed += PerformButtonAction_Right;
+        Menu_KeyInputs.Action_MenuSettingsNavigationLeft_isPressed += PerformButtonAction_Left;
+        Menu_KeyInputs.Action_MenuSettingsNavigationRight_isPressed += PerformButtonAction_Right;
     }
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= LoadData;
 
-        Menu_KeyInputs.Action_MenuNavigationLeft_isPressed -= PerformButtonAction_Left;
-        Menu_KeyInputs.Action_MenuNavigationRight_isPressed -= PerformButtonAction_Right;
+        Menu_KeyInputs.Action_MenuSettingsNavigationLeft_isPressed -= PerformButtonAction_Left;
+        Menu_KeyInputs.Action_MenuSettingsNavigationRight_isPressed -= PerformButtonAction_Right;
     }
 
 
@@ -148,11 +148,11 @@ public class SettingsManager : Singleton<SettingsManager>
                 settingsData.currentLanguage = Languages.English;
                 break;
             case Languages.English:
-                settingsData.currentLanguage = Languages.German;
-                break;
-            case Languages.German:
                 settingsData.currentLanguage = Languages.Norwegian;
                 break;
+            //case Languages.German:
+            //    settingsData.currentLanguage = Languages.Norwegian;
+            //    break;
             //case Languages.Japanese:
             //    settingsData.currentLanguage = Languages.Chinese;
             //    break;
@@ -176,14 +176,14 @@ public class SettingsManager : Singleton<SettingsManager>
         switch (settingsData.currentLanguage)
         {
             case Languages.Norwegian:
-                settingsData.currentLanguage = Languages.German;
+                settingsData.currentLanguage = Languages.English;
                 break;
             case Languages.English:
                 settingsData.currentLanguage = Languages.Norwegian;
                 break;
-            case Languages.German:
-                settingsData.currentLanguage = Languages.English;
-                break;
+            //case Languages.German:
+            //    settingsData.currentLanguage = Languages.English;
+            //    break;
             //case Languages.Japanese:
             //    settingsData.currentLanguage = Languages.German;
             //    break;

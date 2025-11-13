@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7859153374415182341}
   - component: {fileID: 6704181142623883545}
   - component: {fileID: 8943027078446967370}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: LadderColliderBlocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 7105984749759916294}
   - component: {fileID: 930596535723909915}
   - component: {fileID: 7719335369832354469}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: LadderCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,7 +197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7738909096718468131}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: RaycastPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,6 +227,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8774287469598674631, guid: 7122aaa977b71674b9845b5f724c5aa5, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7122aaa977b71674b9845b5f724c5aa5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -271,6 +275,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.35
       objectReference: {fileID: 0}
+    - target: {fileID: -5358508833509728412, guid: 7122aaa977b71674b9845b5f724c5aa5, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: -1781513538753353134, guid: 7122aaa977b71674b9845b5f724c5aa5, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.35
@@ -278,6 +286,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 7122aaa977b71674b9845b5f724c5aa5, type: 3}
       propertyPath: m_Name
       value: Brass_Ladder
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7122aaa977b71674b9845b5f724c5aa5, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5023118083146116718, guid: 7122aaa977b71674b9845b5f724c5aa5, type: 3}
+      propertyPath: m_Layer
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6679479344712863907, guid: 7122aaa977b71674b9845b5f724c5aa5, type: 3}
       propertyPath: m_LocalPosition.z

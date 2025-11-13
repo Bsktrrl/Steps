@@ -58,6 +58,17 @@ public class EnviromentalSound_3D : Singleton<EnviromentalSound_3D>
     [SerializeField] AudioSource audioSource_IceCrack;
     GameObject blockSelected_IceCrack;
 
+    [Header("Effect Blocks")]
+    [SerializeField] AudioSource audioSource_EffectBlock_Checkpoint;
+    GameObject blockSelected_EffectBlock_Checkpoint;
+    [SerializeField] AudioSource audioSource_EffectBlock_RefillSteps;
+    GameObject blockSelected_EffectBlock_RefillSteps;
+    [SerializeField] AudioSource audioSource_EffectBlock_Teleporter;
+    GameObject blockSelected_EffectBlock_Teleporter;
+    [SerializeField] AudioSource audioSource_EffectBlock_Pusher;
+    GameObject blockSelected_EffectBlock_Pusher;
+    [SerializeField] AudioSource audioSource_EffectBlock_MushroomCircle;
+    GameObject blockSelected_EffectBlock_MushroomCircle;
 
     //-----
 
@@ -128,6 +139,12 @@ public class EnviromentalSound_3D : Singleton<EnviromentalSound_3D>
         PlaySound(audioSource_Quicksandfall, SoundObjectType.Quicksandfall, ref blockSelected_Quicksandfall);
 
         PlaySound(audioSource_IceCrack, SoundObjectType.IceCrack, ref blockSelected_IceCrack);
+
+        PlaySound(audioSource_EffectBlock_Checkpoint, SoundObjectType.Checkpoint, ref blockSelected_EffectBlock_Checkpoint);
+        PlaySound(audioSource_EffectBlock_RefillSteps, SoundObjectType.RefillSteps, ref blockSelected_EffectBlock_RefillSteps);
+        PlaySound(audioSource_EffectBlock_Teleporter, SoundObjectType.Teleporter, ref blockSelected_EffectBlock_Teleporter);
+        PlaySound(audioSource_EffectBlock_Pusher, SoundObjectType.Pusher, ref blockSelected_EffectBlock_Pusher);
+        PlaySound(audioSource_EffectBlock_MushroomCircle, SoundObjectType.MushroomCircle, ref blockSelected_EffectBlock_MushroomCircle);
     }
    
     void PlaySound(AudioSource audioSource, SoundObjectType type, ref GameObject closestObjectOut)
@@ -212,4 +229,10 @@ public enum SoundObjectType
     Quicksandfall,
 
     IceCrack,
+
+    Checkpoint,
+    RefillSteps,
+    Teleporter,
+    Pusher,
+    MushroomCircle
 }

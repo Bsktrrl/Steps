@@ -63,26 +63,32 @@ public class FollowCameraSettings : MonoBehaviour
     //--------------------
 
 
-    private void Update()
-    {
-        
-    }
     void LateUpdate()
     {
+        // Get CinemachineBrain
+        var brain = CameraController.Instance.CM_Brain;
+
+        // --- NEW: if blending, freeze zoom ---
+        if (brain != null && brain.IsBlending)
+        {
+            return; // skip collision/zoom logic this frame
+        }
+
+        // --- Original logic ---
         if (!isCeilingGrabCamera)
         {
             CheckCeiling();
         }
 
-        if (Player_CeilingGrab.Instance.isCeilingGrabbing /*|| Player_CeilingGrab.Instance.isCeilingRotation*/)
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
         {
             CheckIfCeilingGrabbing();
         }
 
         CameraMotion();
-
         RadiusGizmo();
     }
+
 
 
     //--------------------
@@ -256,7 +262,7 @@ public class FollowCameraSettings : MonoBehaviour
     }
     void CheckIfCeilingGrabbing()
     {
-        if (CameraController.Instance.CM_Player_CeilingGrab.GetComponent<CinemachineThirdPersonFollow>().CameraDistance <= 2.75f)
+        if (CameraController.Instance.CM_Player_CeilingGrab && CameraController.Instance.CM_Player_CeilingGrab.GetComponent<CinemachineThirdPersonFollow>().CameraDistance <= 2.75f)
         {
             CameraController.Instance.CM_Player.Priority.Value = 9;
             CameraController.Instance.CM_UnderCeiling.Priority.Value = -9;

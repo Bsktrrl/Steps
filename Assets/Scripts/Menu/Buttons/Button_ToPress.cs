@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,8 @@ using UnityEngine.UI;
 
 public class Button_ToPress : MonoBehaviour
 {
+    public static event Action Action_ButtonIsPressed;
+
     [Header("MenuState")]
     [SerializeField] MenuState newMenuState;
 
@@ -112,6 +115,8 @@ public class Button_ToPress : MonoBehaviour
 
     public void Button_isPressed()
     {
+        Action_ButtonIsPressed?.Invoke();
+
         MenuStates.Instance.ChangeMenuState(newMenuState);
 
         JumpToElement();
