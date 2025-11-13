@@ -118,7 +118,7 @@ public class NumberDisplay : MonoBehaviour
 
     public void ShowNumber()
     {
-        //Player_Pusher.Instance.RaycastPushDirectionBlock();
+        Player_Pusher.Instance.RaycastPushDirectionBlock();
         Player_Pusher.Instance.CheckPush();
 
         //If Pushed

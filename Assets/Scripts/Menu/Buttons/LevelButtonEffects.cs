@@ -10,6 +10,7 @@ public class LevelButtonEffects : MonoBehaviour
     [SerializeField] Color color_CANNOT;
 
     public bool canBePlayed;
+    public int canBePlayerCount;
 
 
     //--------------------
@@ -17,12 +18,12 @@ public class LevelButtonEffects : MonoBehaviour
 
     private void Update()
     {
-        canBePlayed = false;
+        canBePlayerCount = 0;
 
         //If there isn't any requirements to play the level
         if (GetComponent<LoadLevel>().levelsToBeFinished.Count <= 0)
         {
-            canBePlayed = true;
+            canBePlayerCount = 0;
         }
 
         //If there are requirements to play the level
@@ -34,32 +35,30 @@ public class LevelButtonEffects : MonoBehaviour
                 {
                     if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[j].isCompleted)
                     {
-                        canBePlayed = true;
+                        canBePlayerCount++;
                     }
                     else
                     {
-                        canBePlayed = false;
                         image.color = color_CANNOT;
-                        return;
                     }
                 }
                 else
                 {
-                    canBePlayed = false;
                     image.color = color_CANNOT;
-                    return;
                 }
             }
         }
 
-        if (canBePlayed)
+        if (canBePlayerCount >= GetComponent<LoadLevel>().levelsToBeFinished.Count)
         {
             print("1000. Can play level: " + gameObject.name);
+            canBePlayed = true;
             image.color = color_CAN;
         }
         else
         {
             print("2000. Cannot play level: " + gameObject.name);
+            canBePlayed = false;
             image.color = color_CANNOT;
         }
     }

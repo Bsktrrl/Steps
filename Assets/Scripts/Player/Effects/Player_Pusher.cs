@@ -96,8 +96,31 @@ public class Player_Pusher : Singleton<Player_Pusher>
     }
     public void RaycastPushDirectionBlock()
     {
-        if (Physics.Raycast(gameObject.transform.position + pushDirection_New, Vector3.down, out hit, 1))
+        float racastUpOffset = 0.5f;
+
+
+        if (Physics.Raycast(gameObject.transform.position + (Vector3.up * racastUpOffset), pushDirection_New, out hit, 1 + racastUpOffset))
         {
+            Debug.DrawRay(gameObject.transform.position + (Vector3.up * racastUpOffset), pushDirection_New * (1 + racastUpOffset), Color.green, 1f);
+
+            if (hit.transform.gameObject == Movement.Instance.moveToBlock_Forward.targetBlock
+                || hit.transform.gameObject == Movement.Instance.moveToBlock_Back.targetBlock
+                || hit.transform.gameObject == Movement.Instance.moveToBlock_Left.targetBlock
+                || hit.transform.gameObject == Movement.Instance.moveToBlock_Right.targetBlock)
+            {
+                BlockToPushInto = hit.transform.gameObject;
+                return;
+            }
+        }
+        else
+        {
+            Debug.DrawRay(gameObject.transform.position + (Vector3.up * racastUpOffset), pushDirection_New * (1 + racastUpOffset), Color.red, 1f);
+        }
+
+        if (Physics.Raycast(gameObject.transform.position + (Vector3.up * racastUpOffset) + pushDirection_New, Vector3.down, out hit, 1 + racastUpOffset))
+        {
+            Debug.DrawRay(gameObject.transform.position + (Vector3.up * racastUpOffset) + pushDirection_New, Vector3.down, Color.yellow, 1f);
+
             if (hit.transform.gameObject == Movement.Instance.moveToBlock_Forward.targetBlock
                 || hit.transform.gameObject == Movement.Instance.moveToBlock_Back.targetBlock
                 || hit.transform.gameObject == Movement.Instance.moveToBlock_Left.targetBlock
@@ -105,6 +128,10 @@ public class Player_Pusher : Singleton<Player_Pusher>
             {
                 BlockToPushInto = hit.transform.gameObject;
             }
+        }
+        else
+        {
+            Debug.DrawRay(gameObject.transform.position + (Vector3.up * racastUpOffset) + pushDirection_New, Vector3.down, Color.magenta, 1f);
         }
     }
     void NullifyBlockToPushInto()
