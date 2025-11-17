@@ -155,7 +155,8 @@ public class Block_Teleport : MonoBehaviour
         for (int i = 0; i < obj.GetComponent<Block_Teleport>().propertyBlocks.Count; i++)
         {
             // Set the original color in the MaterialPropertyBlock
-            obj.GetComponent<Block_Teleport>().propertyBlocks[i].SetColor("_BaseColor", color);
+            obj.GetComponent<Block_Teleport>().propertyBlocks[i].SetColor("_PortalColor", color);
+            obj.GetComponent<Block_Teleport>().propertyBlocks[i].SetColor("_BaseColor", GetComponent<BlockInfo>().stepCostText_Color);
 
             // Apply the MaterialPropertyBlock to the renderer
             obj.GetComponent<Block_Teleport>().objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
