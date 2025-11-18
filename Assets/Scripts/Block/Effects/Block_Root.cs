@@ -146,46 +146,24 @@ public class Block_Root : MonoBehaviour
             //If there is NOT a block adjacent?
             else
             {
-                //is there a stair/slope under empty adjacent?
-                //if (RootFreeCostBlockList.Count > 0 && (RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Stair || RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slab))
-                //{
-                    
-                //}
-                //else
-                //{
-                //    blockIsFound = false;
-                //}
-
                 GameObject tempBlock_UnderEmpty = RaycastBlock(tempOriginPos + playerLookDir, Vector3.down, 1.25f);
                 GameObject tempBlock_OverEmpty = RaycastBlock(tempOriginPos + playerLookDir, Vector3.up, 1.25f);
-
-                if (tempBlock_UnderEmpty)
-                {
-                    print("0. NOT tempBlock_Adjacent");
-                }
-                if (tempBlock_OverEmpty)
-                {
-                    print("1. NOT tempBlock_Adjacent");
-                }
 
                 if (tempBlock_UnderEmpty && (tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                     && RootFreeCostBlockList.Count > 0 && (RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Stair || RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slope))
                 {
-                    print("2. NOT tempBlock_Adjacent");
                     SetupEntryInBlockList(tempBlock_UnderEmpty, true);
 
                     blockIsFound = true;
                 }
                 else if (tempBlock_OverEmpty && (tempBlock_OverEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_OverEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope))
                 {
-                    print("3. NOT tempBlock_Adjacent");
                     SetupEntryInBlockList(tempBlock_OverEmpty, true);
 
                     blockIsFound = true;
                 }
                 else
                 {
-                    print("4. NOT tempBlock_Adjacent");
                     blockIsFound = false;
                 }
             }
@@ -232,9 +210,35 @@ public class Block_Root : MonoBehaviour
             #region Check Ladder
             if (!blockIsFound)
             {
+                print("1. Ladder: tempOriginPos: " + tempOriginPos);
+                GameObject tempBlock_Ladder_Up = new GameObject();
+                tempBlock_Ladder_Up = RaycastLadder(tempOriginPos + Vector3.up, playerLookDir, 1.5f);
+
+                GameObject tempBlock_Ladder_Down = new GameObject();
+                tempBlock_Ladder_Down = RaycastLadder(tempOriginPos, playerLookDir, 1f);
+
                 //Ladder Up
+                if (tempBlock_Ladder_Up)
+                {
+                    print("2. Ladder");
+                    SetupEntryInBlockList(tempBlock_Ladder_Up.GetComponent<Block_Ladder>().exitBlock_Up, false);
+
+                    blockIsFound = true;
+                }
 
                 //Ladder Down
+                else if (tempBlock_Ladder_Down)
+                {
+                    print("3. Ladder");
+                    SetupEntryInBlockList(tempBlock_Ladder_Down.GetComponent<Block_Ladder>().exitBlock_Down, false);
+
+                    blockIsFound = true;
+                }
+
+                else
+                {
+                    blockIsFound = false;
+                }
             }
             #endregion
 
@@ -284,6 +288,26 @@ public class Block_Root : MonoBehaviour
             if (hit.collider.transform.gameObject.GetComponent<BlockInfo>())
             {
                 return hit.collider.transform.gameObject;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
+    GameObject RaycastLadder(Vector3 origin, Vector3 dir, float distance)
+    {
+        if (Physics.Raycast(origin, dir, out hit, distance, 1 << 20)) //20 = LadderLayer
+        {
+            Debug.DrawLine(origin, origin + dir, Color.cyan, 2);
+
+            if (hit.collider.transform.parent.gameObject.GetComponent<Block_Ladder>())
+            {
+                return hit.collider.transform.parent.gameObject;
             }
             else
             {
