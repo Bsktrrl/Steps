@@ -59,5 +59,7 @@ public enum BlockElement
 
     Water,
 
-    DarkStone
+    DarkStone,
+
+    Root
 }

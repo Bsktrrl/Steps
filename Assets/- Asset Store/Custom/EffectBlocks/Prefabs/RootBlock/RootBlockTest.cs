@@ -12,13 +12,13 @@ public class RootBlockTest : MonoBehaviour
     void Update()
     {
         //Press '1' to play the activate animation of the Root Block and the Root Line
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.A))
         {
             anim.SetTrigger("Activate");
         }
 
         //Press '2' to play the deactivate animation of the Root Line
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.B))
         {
             anim.SetTrigger("Deactivate");
         }

@@ -2686,12 +2686,12 @@ public class Movement : Singleton<Movement>
                 //Don't remove steps if gliding from a slope
                 if (hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                 {
-                    print("1. Slope");
+                    //print("1. Slope");
                     isSlopeGliding = true;
                 }
                 if (hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope)
                 {
-                    print("2. Slope");
+                    //print("2. Slope");
                     hasSlopeGlided = false;
                 }
                 //else if (hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope && !Player_Pusher.Instance.playerIsPushed)
@@ -2703,18 +2703,18 @@ public class Movement : Singleton<Movement>
                 //}
                 else if (Player_Pusher.Instance.playerIsPushed)
                 {
-                    print("4. Slope");
+                    //print("4. Slope");
                     hasSlopeGlided = false;
                 }
                 else if (!hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope)
                 {
                     if (isSlopeGliding)
                     {
-                        print("5. Slope");
+                        //print("5. Slope");
                     }
                     else
                     {
-                        print("6. Slope");
+                        //print("6. Slope");
                         PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
                     }
 
@@ -2722,7 +2722,7 @@ public class Movement : Singleton<Movement>
                 }
                 else
                 {
-                    print("7. Slope");
+                    //print("7. Slope");
                     //PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
                     hasSlopeGlided = false;
                 }
@@ -2742,7 +2742,7 @@ public class Movement : Singleton<Movement>
     {
         if (movementStates == MovementStates.Falling && (isSlopeGliding || hasSlopeGlided))
         {
-            print("0. Slope");
+            //print("0. Slope");
             isSlopeGliding = false;
             hasSlopeGlided = false;
         }

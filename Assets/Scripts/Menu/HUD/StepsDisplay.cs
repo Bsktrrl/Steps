@@ -61,7 +61,7 @@ public class StepsDisplay : Singleton<StepsDisplay>
     {
         HideAllMenus();
 
-        print("20. CurrentStepsDisplay: " + DataManager.Instance.settingData_StoreList.currentStepDisplay.ToString());
+        //print("20. CurrentStepsDisplay: " + DataManager.Instance.settingData_StoreList.currentStepDisplay.ToString());
 
         switch (DataManager.Instance.settingData_StoreList.currentStepDisplay)
         {
