@@ -103,38 +103,91 @@ public class Block_Root : MonoBehaviour
             bool blockIsFound = false;
 
             #region Check in line
-            //Is there a block adjacent?
             GameObject tempBlock_Adjacent = new GameObject();
-            tempBlock_Adjacent = RaycastBlock(tempOriginPos, Movement.Instance.lookingDirection, 1f);
+            tempBlock_Adjacent = RaycastBlock(tempOriginPos, playerLookDir, 1f);
 
-            //if (RootFreeCostBlockList.Count() > 0 && (RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Stair || RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slope))
-            //{
-            //    tempBlock_Adjacent = RaycastBlock(tempOriginPos + Vector3.down, Movement.Instance.lookingDirection, 1f);
-            //}
-            //else
-            //{
-            //    tempBlock_Adjacent = RaycastBlock(tempOriginPos, Movement.Instance.lookingDirection, 1f);
-            //}
-
+            //If there IS a block adjacent
             if (tempBlock_Adjacent)
             {
                 //is there a block over adjacent?
                 GameObject tempBlock_Over = RaycastBlock(tempBlock_Adjacent.transform.position, Vector3.up, 1f);
 
+                //If there is NOT a block over adjacent
                 if (!tempBlock_Over) 
                 {
-                    SetupEntryInBlockList(tempBlock_Adjacent, false);
+                    if (tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                    {
+                        SetupEntryInBlockList(tempBlock_Adjacent, true);
+                    }
+                    else
+                    {
+                        SetupEntryInBlockList(tempBlock_Adjacent, false);
+                    }
+
+                    blockIsFound = true;
+                }
+
+                //If there IS a block over adjacent
+                else
+                {
+                    if (tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                    {
+                        SetupEntryInBlockList(tempBlock_Over, true);
+
+                        blockIsFound = true;
+                    }
+                    else
+                    {
+                        blockIsFound = false;
+                    }
+                }
+            }
+
+            //If there is NOT a block adjacent?
+            else
+            {
+                //is there a stair/slope under empty adjacent?
+                //if (RootFreeCostBlockList.Count > 0 && (RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Stair || RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slab))
+                //{
+                    
+                //}
+                //else
+                //{
+                //    blockIsFound = false;
+                //}
+
+                GameObject tempBlock_UnderEmpty = RaycastBlock(tempOriginPos + playerLookDir, Vector3.down, 1.25f);
+                GameObject tempBlock_OverEmpty = RaycastBlock(tempOriginPos + playerLookDir, Vector3.up, 1.25f);
+
+                if (tempBlock_UnderEmpty)
+                {
+                    print("0. NOT tempBlock_Adjacent");
+                }
+                if (tempBlock_OverEmpty)
+                {
+                    print("1. NOT tempBlock_Adjacent");
+                }
+
+                if (tempBlock_UnderEmpty && (tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                    && RootFreeCostBlockList.Count > 0 && (RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Stair || RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slope))
+                {
+                    print("2. NOT tempBlock_Adjacent");
+                    SetupEntryInBlockList(tempBlock_UnderEmpty, true);
+
+                    blockIsFound = true;
+                }
+                else if (tempBlock_OverEmpty && (tempBlock_OverEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_OverEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope))
+                {
+                    print("3. NOT tempBlock_Adjacent");
+                    SetupEntryInBlockList(tempBlock_OverEmpty, true);
 
                     blockIsFound = true;
                 }
                 else
                 {
+                    print("4. NOT tempBlock_Adjacent");
                     blockIsFound = false;
                 }
-            }
-            else
-            {
-                blockIsFound = false;
             }
             #endregion
 
@@ -176,6 +229,16 @@ public class Block_Root : MonoBehaviour
             #endregion
 
 
+            #region Check Ladder
+            if (!blockIsFound)
+            {
+                //Ladder Up
+
+                //Ladder Down
+            }
+            #endregion
+
+
             #region Check after slope if landing on free, after falling
 
             if (!blockIsFound)
@@ -184,12 +247,11 @@ public class Block_Root : MonoBehaviour
             }
             #endregion
 
+
             if (!blockIsFound)
                 finishedCheckingForBlocks = true;
         }
         
-
-
         //Change position of each rootLine to their new blocks, and rotate them to correct orientation
         SetRootLineObjectsOrientation();
 
@@ -241,7 +303,6 @@ public class Block_Root : MonoBehaviour
             {
                 if (RootFreeCostBlockList[i].block.transform.forward == Vector3.forward || RootFreeCostBlockList[i].block.transform.forward == Vector3.back)
                 {
-                    print("10. Stair/Slope 0, 180, -180");
                     RootObjectList[i].transform.SetPositionAndRotation(
                     new Vector3(
                         RootFreeCostBlockList[i].block.transform.position.x,
@@ -254,7 +315,6 @@ public class Block_Root : MonoBehaviour
                 }
                 else if (RootFreeCostBlockList[i].block.transform.forward == Vector3.left || RootFreeCostBlockList[i].block.transform.forward == Vector3.right)
                 {
-                    print("20. Stair/Slope 90, -90, 270, -270");
                     RootObjectList[i].transform.SetPositionAndRotation(
                     new Vector3(
                         RootFreeCostBlockList[i].block.transform.position.x + 0.3f,
@@ -264,10 +324,6 @@ public class Block_Root : MonoBehaviour
                 Quaternion.LookRotation(Movement.Instance.lookingDirection));
 
                     RootObjectList[i].transform.localRotation = Quaternion.Euler(new Vector3(RootObjectList[i].transform.localRotation.x - 45f, RootObjectList[i].transform.localRotation.y + 90, RootObjectList[i].transform.localRotation.z));
-                }
-                else
-                {
-                    print("30. Stair/Slope - Else");
                 }
             }
             else
