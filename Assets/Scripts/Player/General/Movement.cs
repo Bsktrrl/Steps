@@ -33,7 +33,7 @@ public class Movement : Singleton<Movement>
     [Header("Stats")]
     public float heightOverBlock = 0.95f;
     float baseTime = 1;
-    public float fallSpeed = 8f;
+    public float fallSpeed = 10f;
     float abilitySpeed = 8;
     float grapplingLength = 5;
     public Vector3 savePos;

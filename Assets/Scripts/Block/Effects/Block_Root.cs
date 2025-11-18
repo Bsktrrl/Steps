@@ -173,8 +173,8 @@ public class Block_Root : MonoBehaviour
             #region Check stairs/slopes
             if (!blockIsFound)
             {
-                tempBlock_Adjacent = RaycastBlock(tempOriginPos, Movement.Instance.lookingDirection, 1f);
-                GameObject tempBlock_Over = RaycastBlock(tempOriginPos + Vector3.up, Movement.Instance.lookingDirection, 1f);
+                tempBlock_Adjacent = RaycastBlock(tempOriginPos, playerLookDir, 1f);
+                GameObject tempBlock_Over = RaycastBlock(tempOriginPos + Vector3.up, playerLookDir, 1f);
 
                 //Is there a stair/slope adjacent?
                 if (tempBlock_Adjacent && (tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Slope))
@@ -247,7 +247,36 @@ public class Block_Root : MonoBehaviour
 
             if (!blockIsFound)
             {
+                GameObject tempBlock_Falling = new GameObject();
 
+                if (RootFreeCostBlockList.Count > 0 && RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slope)
+                {
+                    tempBlock_Falling = RaycastBlock(tempOriginPos + playerLookDir, Vector3.down, 50f);
+                }
+                else
+                {
+                    tempBlock_Falling = null;
+                }
+
+                //Is there a block under when falling?
+                if (tempBlock_Falling)
+                {
+                    //Check orientation of stair/slope
+                    if (tempBlock_Falling.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Falling.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                    {
+                        SetupEntryInBlockList(tempBlock_Falling, true);
+                    }
+                    else
+                    {
+                        SetupEntryInBlockList(tempBlock_Falling, false);
+                    }
+                    
+                    blockIsFound = true;
+                }
+                else
+                {
+                    blockIsFound = false;
+                }
             }
             #endregion
 
@@ -333,7 +362,7 @@ public class Block_Root : MonoBehaviour
                         RootFreeCostBlockList[i].block.transform.position.y + 0.2f,
                         RootFreeCostBlockList[i].block.transform.position.z + 0.3f
                     ),
-                Quaternion.LookRotation(Movement.Instance.lookingDirection));
+                Quaternion.LookRotation(playerLookDir));
 
                     RootObjectList[i].transform.localRotation = Quaternion.Euler(new Vector3(RootObjectList[i].transform.localRotation.x - 45f, RootObjectList[i].transform.localRotation.y, RootObjectList[i].transform.localRotation.z));
                 }
@@ -345,7 +374,7 @@ public class Block_Root : MonoBehaviour
                         RootFreeCostBlockList[i].block.transform.position.y + 0.2f,
                         RootFreeCostBlockList[i].block.transform.position.z
                         ),
-                Quaternion.LookRotation(Movement.Instance.lookingDirection));
+                Quaternion.LookRotation(playerLookDir));
 
                     RootObjectList[i].transform.localRotation = Quaternion.Euler(new Vector3(RootObjectList[i].transform.localRotation.x - 45f, RootObjectList[i].transform.localRotation.y + 90, RootObjectList[i].transform.localRotation.z));
                 }
@@ -358,7 +387,7 @@ public class Block_Root : MonoBehaviour
                     RootFreeCostBlockList[i].block.transform.position.y,
                     RootFreeCostBlockList[i].block.transform.position.z
                     ),
-                Quaternion.LookRotation(Movement.Instance.lookingDirection));
+                Quaternion.LookRotation(playerLookDir));
             }
         }
     }
