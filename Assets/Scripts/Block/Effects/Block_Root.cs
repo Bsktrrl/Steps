@@ -31,6 +31,11 @@ public class Block_Root : MonoBehaviour
     }
     private void Update()
     {
+        if (Movement.Instance.isMovingOnLadder_Down || Movement.Instance.isMovingOnLadder_Up)
+        {
+            return;
+        }
+
         CheckWhenToResetRootLine();
     }
 
@@ -117,14 +122,23 @@ public class Block_Root : MonoBehaviour
                 {
                     if (tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                     {
-                        SetupEntryInBlockList(tempBlock_Adjacent, true);
+                        StairSlopeCorrection(ref tempBlock_Adjacent);
+
+                        if (tempBlock_Adjacent)
+                        {
+                            SetupEntryInBlockList(tempBlock_Adjacent, true);
+                            blockIsFound = true;
+                        }
+                        else
+                        {
+                            blockIsFound = false;
+                        }
                     }
                     else
                     {
                         SetupEntryInBlockList(tempBlock_Adjacent, false);
+                        blockIsFound = true;
                     }
-
-                    blockIsFound = true;
                 }
 
                 //If there IS a block over adjacent
@@ -132,9 +146,18 @@ public class Block_Root : MonoBehaviour
                 {
                     if (tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                     {
-                        SetupEntryInBlockList(tempBlock_Over, true);
+                        StairSlopeCorrection(ref tempBlock_Over);
 
-                        blockIsFound = true;
+                        if (tempBlock_Over)
+                        {
+                            SetupEntryInBlockList(tempBlock_Over, true);
+
+                            blockIsFound = true;
+                        }
+                        else
+                        {
+                            blockIsFound = false;
+                        }
                     }
                     else
                     {
@@ -152,15 +175,31 @@ public class Block_Root : MonoBehaviour
                 if (tempBlock_UnderEmpty && (tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                     && RootFreeCostBlockList.Count > 0 && (RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Stair || RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slope))
                 {
-                    SetupEntryInBlockList(tempBlock_UnderEmpty, true);
+                    StairSlopeCorrection(ref tempBlock_UnderEmpty);
 
-                    blockIsFound = true;
+                    if (tempBlock_UnderEmpty)
+                    {
+                        SetupEntryInBlockList(tempBlock_UnderEmpty, true);
+                        blockIsFound = true;
+                    }
+                    else
+                    {
+                        blockIsFound = false;
+                    }
                 }
                 else if (tempBlock_OverEmpty && (tempBlock_OverEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_OverEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope))
                 {
-                    SetupEntryInBlockList(tempBlock_OverEmpty, true);
+                    StairSlopeCorrection(ref tempBlock_OverEmpty);
 
-                    blockIsFound = true;
+                    if (tempBlock_OverEmpty)
+                    {
+                        SetupEntryInBlockList(tempBlock_OverEmpty, true);
+                        blockIsFound = true;
+                    }
+                    else
+                    {
+                        blockIsFound = false;
+                    }
                 }
                 else
                 {
@@ -181,9 +220,17 @@ public class Block_Root : MonoBehaviour
                 {
                     //Check orientation of stair/slope
 
-                    SetupEntryInBlockList(tempBlock_Adjacent, true);
+                    StairSlopeCorrection(ref tempBlock_Adjacent);
 
-                    blockIsFound = true;
+                    if (tempBlock_Adjacent)
+                    {
+                        SetupEntryInBlockList(tempBlock_Adjacent, true);
+                        blockIsFound = true;
+                    }
+                    else
+                    {
+                        blockIsFound = false;
+                    }
                 }
                 else
                 {
@@ -195,9 +242,17 @@ public class Block_Root : MonoBehaviour
                 {
                     //Check orientation of stair/slope
 
-                    SetupEntryInBlockList(tempBlock_Over, true);
+                    StairSlopeCorrection(ref tempBlock_Over);
 
-                    blockIsFound = true;
+                    if (tempBlock_Over)
+                    {
+                        SetupEntryInBlockList(tempBlock_Over, true);
+                        blockIsFound = true;
+                    }
+                    else
+                    {
+                        blockIsFound = false;
+                    }
                 }
                 else
                 {
@@ -243,11 +298,11 @@ public class Block_Root : MonoBehaviour
             #endregion
 
 
-            #region Check after slope if landing on free, after falling
+            #region Check after slope after falling
 
             if (!blockIsFound)
             {
-                GameObject tempBlock_Falling = new GameObject();
+                GameObject tempBlock_Falling = null;
 
                 if (RootFreeCostBlockList.Count > 0 && RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slope)
                 {
@@ -264,14 +319,23 @@ public class Block_Root : MonoBehaviour
                     //Check orientation of stair/slope
                     if (tempBlock_Falling.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Falling.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                     {
-                        SetupEntryInBlockList(tempBlock_Falling, true);
+                        //StairSlopeCorrection(ref tempBlock_Falling);
+
+                        if (tempBlock_Falling)
+                        {
+                            SetupEntryInBlockList(tempBlock_Falling, true);
+                            blockIsFound = true;
+                        }
+                        else
+                        {
+                            blockIsFound = false;
+                        }
                     }
                     else
                     {
                         SetupEntryInBlockList(tempBlock_Falling, false);
+                        blockIsFound = true;
                     }
-                    
-                    blockIsFound = true;
                 }
                 else
                 {
@@ -346,6 +410,41 @@ public class Block_Root : MonoBehaviour
         else
         {
             return null;
+        }
+    }
+    void StairSlopeCorrection(ref GameObject obj)
+    {
+        BlockInfo info = obj.GetComponent<BlockInfo>();
+
+        if (info.blockType == BlockType.Stair || info.blockType == BlockType.Slope)
+        {
+            // direction the object is facing
+            Vector3 objectDir = obj.transform.forward;
+
+            // direction the player is looking (must be a forward vector!)
+            Vector3 playerDir = Movement.Instance.lookingDirection.normalized;
+
+            // dot product
+            float dot = Vector3.Dot(objectDir, playerDir);
+
+
+            //Stair/Slope is facing opposite of player - Over
+            if (dot < 0f)
+            {
+                if (tempOriginPos.y != (obj.transform.position.y - 0.5f) && tempOriginPos.y != (obj.transform.position.y - 1f))
+                {
+                    obj = null;
+                }
+            }
+
+            //Stair/Slope is facing the same direction as player - Under
+            else
+            {
+                if (tempOriginPos.y != (obj.transform.position.y + 0.5f) && tempOriginPos.y != (obj.transform.position.y + 1f))
+                {
+                    obj = null;
+                }
+            }
         }
     }
     void SetRootLineObjectsOrientation()
