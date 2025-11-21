@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 139349636865675507, guid: 4c434d63feecedf4d94d2cc019306149, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2870597327188355720, guid: 4c434d63feecedf4d94d2cc019306149, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 3496939234456819679, guid: 4c434d63feecedf4d94d2cc019306149, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -48,9 +56,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3590525949552716574, guid: 4c434d63feecedf4d94d2cc019306149, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 4035386701650000973, guid: 4c434d63feecedf4d94d2cc019306149, type: 3}
       propertyPath: m_Name
       value: Glueplant_Metalworks Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 4035386701650000973, guid: 4c434d63feecedf4d94d2cc019306149, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 4543496842754891630, guid: 4c434d63feecedf4d94d2cc019306149, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5722272598729820496, guid: 4c434d63feecedf4d94d2cc019306149, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 7190039616570232088, guid: 4c434d63feecedf4d94d2cc019306149, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 7975101120014672463, guid: 4c434d63feecedf4d94d2cc019306149, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 8178694663520364055, guid: 4c434d63feecedf4d94d2cc019306149, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -87,8 +123,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.9, y: 0.75, z: 0.9}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
+  m_Center: {x: 0, y: -0.25, z: 0}
 --- !u!114 &6787754003288342828
 MonoBehaviour:
   m_ObjectHideFlags: 0

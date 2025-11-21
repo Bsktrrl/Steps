@@ -35,7 +35,7 @@ public class StepsDisplay : Singleton<StepsDisplay>
         Movement.Action_RespawnPlayerLate += ChangeStepText;
         Movement.Action_StepTaken += ChangeStepText;
         DataManager.Action_dataHasLoaded += ChangeStepText;
-        Block_SpawnPoint.Action_SpawnPointEntered += ChangeStepText;
+        Block_Checkpoint.Action_SpawnPointEntered += ChangeStepText;
         Block_RefillSteps.Action_RefillStepsEntered += ChangeStepText;
         Block_MushroomCircle.Action_MushroomCircleEntered += ChangeStepText;
     }
@@ -48,7 +48,7 @@ public class StepsDisplay : Singleton<StepsDisplay>
         Movement.Action_RespawnPlayerLate -= ChangeStepText;
         Movement.Action_StepTaken -= ChangeStepText;
         DataManager.Action_dataHasLoaded -= ChangeStepText;
-        Block_SpawnPoint.Action_SpawnPointEntered -= ChangeStepText;
+        Block_Checkpoint.Action_SpawnPointEntered -= ChangeStepText;
         Block_RefillSteps.Action_RefillStepsEntered -= ChangeStepText;
         Block_MushroomCircle.Action_MushroomCircleEntered -= ChangeStepText;
     }

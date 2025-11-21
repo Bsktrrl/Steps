@@ -20,7 +20,7 @@ public class StepsHUD : Singleton<StepsHUD>
         Movement.Action_RespawnPlayerLate += UpdateStepsDisplay;
         Movement.Action_StepTaken += UpdateStepsDisplay;
         DataManager.Action_dataHasLoaded += UpdateStepsDisplay;
-        Block_SpawnPoint.Action_SpawnPointEntered += UpdateStepsDisplay;
+        Block_Checkpoint.Action_SpawnPointEntered += UpdateStepsDisplay;
         Block_RefillSteps.Action_RefillStepsEntered += UpdateStepsDisplay;
         Block_MushroomCircle.Action_MushroomCircleEntered += UpdateStepsDisplay;
     }
@@ -30,7 +30,7 @@ public class StepsHUD : Singleton<StepsHUD>
         Movement.Action_RespawnPlayerLate -= UpdateStepsDisplay;
         Movement.Action_StepTaken -= UpdateStepsDisplay;
         DataManager.Action_dataHasLoaded -= UpdateStepsDisplay;
-        Block_SpawnPoint.Action_SpawnPointEntered -= UpdateStepsDisplay;
+        Block_Checkpoint.Action_SpawnPointEntered -= UpdateStepsDisplay;
         Block_RefillSteps.Action_RefillStepsEntered -= UpdateStepsDisplay;
         Block_MushroomCircle.Action_MushroomCircleEntered -= UpdateStepsDisplay;
     }

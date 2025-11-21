@@ -281,43 +281,6 @@ public class Movement : Singleton<Movement>
         CameraController.Instance.isRotating = false;
     }
 
-    //public void UpdateBlockStandingOn()
-    //{
-    //    GameObject obj = null;
-    //    GameObject objTemp = blockStandingOn;
-    //    Vector3 playerPos = PlayerManager.Instance.player.transform.position;
-
-    //    if (blockStandingOn_Previous != blockStandingOn && !Player_CeilingGrab.Instance.isCeilingGrabbing)
-    //    {
-    //        blockStandingOn_Previous = blockStandingOn;
-    //    }
-
-    //    Vector3 rayDir = Vector3.zero;
-    //    if (Player_CeilingGrab.Instance.isCeilingGrabbing)
-    //    {
-    //        rayDir = Vector3.up;
-    //    }
-    //    else
-    //    {
-    //        rayDir = Vector3.down;
-    //    }
-
-    //    PerformMovementRaycast(playerPos, rayDir, 1, out obj);
-
-    //    if (blockStandingOn != obj)
-    //    {
-    //        blockStandingOn = null;
-    //    }
-
-    //    blockStandingOn = obj;
-
-    //    //Check if the player has moved over to a new block
-    //    if (objTemp != blockStandingOn)
-    //    {
-    //        Action_isSwitchingBlocks_Invoke();
-    //    }
-    //}
-
     public void UpdateBlockStandingOn()
     {
         GameObject obj = null;
@@ -2267,239 +2230,250 @@ public class Movement : Singleton<Movement>
 
     IEnumerator PerformLadderMovement_Up(Vector3 dir, GameObject targetPosObj)
     {
-        #region Setup Movement Parameters
-
-        ResetDarkenBlocks();
-
-        GameObject outObj1 = null;
-
-        isMovingOnLadder_Up = true;
-        ladderClimbPos_Start = transform.position;
-
-        movementStates = MovementStates.Moving;
-        PlayerManager.Instance.pauseGame = true;
-        //PlayerManager.Instance.isTransportingPlayer = true;
-
-        Vector3 startPosition;
-        Vector3 endPosition;
-        float ladderClimbDuration = 0;
-        float elapsedTime = 0;
-
-        #endregion
-
-        //RotatePlayerBody(dir.y);
-
-        #region Move To Top LadderPart
-
-        startPosition = transform.position;
-        endPosition = targetPosObj.transform.position + (Vector3.up * heightOverBlock);
-
-        ladderClimbDuration = Vector3.Distance(startPosition, endPosition) * 0.4f;
-        elapsedTime = 0f;
-
-        //Move to the top ladder
-        while (elapsedTime < ladderClimbDuration)
+        if (targetPosObj.GetComponent<Block_Ladder>() && targetPosObj.GetComponent<Block_Ladder>().exitBlock_Up
+            && (PlayerStats.Instance.stats.steps_Current < targetPosObj.GetComponent<Block_Ladder>().exitBlock_Up.GetComponent<BlockInfo>().movementCost
+            || PlayerStats.Instance.stats.steps_Current < targetPosObj.GetComponent<Block_Ladder>().exitBlock_Up.GetComponent<BlockInfo>().movementCost_Temp))
         {
-            elapsedTime += Time.deltaTime;
-
-            // Calculate the progress of the ladderMovement
-            float progress = elapsedTime / ladderClimbDuration;
-
-            // Interpolate the up/down position
-            Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, progress);
-
-            // Update the player's position
-            transform.position = currentPosition;
-
-            yield return null;
+            RespawnPlayer();
         }
-
-        // Ensure the player lands exactly at the end position
-        transform.position = endPosition;
-
-        #endregion
-
-        #region Move To ExitBlock
-
-        endPosition = startPosition + dir;
-        if (PerformMovementRaycast(transform.position + dir, Vector3.down, 1, out outObj1) == RaycastHitObjects.BlockInfo)
+        else
         {
-            endPosition = outObj1.transform.position + (Vector3.up * heightOverBlock);
+            #region Setup Movement Parameters
+
+            ResetDarkenBlocks();
+
+            GameObject outObj1 = null;
+
+            isMovingOnLadder_Up = true;
+            ladderClimbPos_Start = transform.position;
+
+            movementStates = MovementStates.Moving;
+            PlayerManager.Instance.pauseGame = true;
+            //PlayerManager.Instance.isTransportingPlayer = true;
+
+            Vector3 startPosition;
+            Vector3 endPosition;
+            float ladderClimbDuration = 0;
+            float elapsedTime = 0;
+
+            #endregion
+
+            #region Move To Top LadderPart
+
+            startPosition = transform.position;
+            endPosition = targetPosObj.transform.position + (Vector3.up * heightOverBlock);
+
+            ladderClimbDuration = Vector3.Distance(startPosition, endPosition) * 0.4f;
+            elapsedTime = 0f;
+
+            //Move to the top ladder
+            while (elapsedTime < ladderClimbDuration)
+            {
+                elapsedTime += Time.deltaTime;
+
+                // Calculate the progress of the ladderMovement
+                float progress = elapsedTime / ladderClimbDuration;
+
+                // Interpolate the up/down position
+                Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, progress);
+
+                // Update the player's position
+                transform.position = currentPosition;
+
+                yield return null;
+            }
+
+            // Ensure the player lands exactly at the end position
+            transform.position = endPosition;
+
+            #endregion
+
+            #region Move To ExitBlock
+
+            endPosition = startPosition + dir;
+            if (PerformMovementRaycast(transform.position + dir, Vector3.down, 1, out outObj1) == RaycastHitObjects.BlockInfo)
+            {
+                endPosition = outObj1.transform.position + (Vector3.up * heightOverBlock);
+            }
+
+            startPosition = transform.position;
+
+            ladderClimbDuration = 0.4f;
+            elapsedTime = 0f;
+
+            //Move to the top ladder
+            while (elapsedTime < ladderClimbDuration)
+            {
+                elapsedTime += Time.deltaTime;
+
+                // Calculate the progress of the ladderMovement
+                float progress = elapsedTime / ladderClimbDuration;
+
+                // Interpolate the up/down position
+                Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, progress);
+
+                // Update the player's position
+                transform.position = currentPosition;
+
+                yield return null;
+            }
+
+            // Ensure the player lands exactly at the end position
+            transform.position = endPosition;
+
+            #endregion
+            
+            #region Setup StopMovement Parameters
+
+            if (moveToLadder_Forward.targetBlock)
+                moveToLadder_Forward.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
+            if (moveToLadder_Back.targetBlock)
+                moveToLadder_Back.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
+            if (moveToLadder_Left.targetBlock)
+                moveToLadder_Left.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
+            if (moveToLadder_Right.targetBlock)
+                moveToLadder_Right.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
+
+            Block_IsNot_Target(moveToLadder_Forward);
+            Block_IsNot_Target(moveToLadder_Back);
+            Block_IsNot_Target(moveToLadder_Left);
+            Block_IsNot_Target(moveToLadder_Right);
+
+            UpdateAvailableMovementBlocks();
+
+            isMovingOnLadder_Up = false;
+
+            movementStates = MovementStates.Still;
+            PlayerManager.Instance.pauseGame = false;
+
+            FindLadderExitBlock();
+            Action_StepTaken_Invoke();
+
+            #endregion
         }
-
-        startPosition = transform.position;
-
-        ladderClimbDuration = 0.4f;
-        elapsedTime = 0f;
-
-        //Move to the top ladder
-        while (elapsedTime < ladderClimbDuration)
-        {
-            elapsedTime += Time.deltaTime;
-
-            // Calculate the progress of the ladderMovement
-            float progress = elapsedTime / ladderClimbDuration;
-
-            // Interpolate the up/down position
-            Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, progress);
-
-            // Update the player's position
-            transform.position = currentPosition;
-
-            yield return null;
-        }
-
-        // Ensure the player lands exactly at the end position
-        transform.position = endPosition;
-
-        #endregion
-
-
-        #region Setup StopMovement Parameters
-
-        if (moveToLadder_Forward.targetBlock)
-            moveToLadder_Forward.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-        if (moveToLadder_Back.targetBlock)
-            moveToLadder_Back.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-        if (moveToLadder_Left.targetBlock)
-            moveToLadder_Left.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-        if (moveToLadder_Right.targetBlock)
-            moveToLadder_Right.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-
-        Block_IsNot_Target(moveToLadder_Forward);
-        Block_IsNot_Target(moveToLadder_Back);
-        Block_IsNot_Target(moveToLadder_Left);
-        Block_IsNot_Target(moveToLadder_Right);
-
-        UpdateAvailableMovementBlocks();
-
-        isMovingOnLadder_Up = false;
-
-        movementStates = MovementStates.Still;
-        PlayerManager.Instance.pauseGame = false;
-
-        FindLadderExitBlock();
-        Action_StepTaken_Invoke();
-
-        #endregion
     }
     IEnumerator PerformLadderMovement_Down(Vector3 dir, GameObject targetPosObj)
     {
-        #region Setup Movement Parameters
-
-        ResetDarkenBlocks();
-
-        isMovingOnLadder_Down = true;
-        ladderClimbPos_Start = transform.position;
-
-        movementStates = MovementStates.Moving;
-        PlayerManager.Instance.pauseGame = true;
-        //PlayerManager.Instance.isTransportingPlayer = true;
-
-        Vector3 startPosition;
-        Vector3 endPosition;
-        float ladderClimbDuration = 0;
-        float elapsedTime = 0;
-
-        #endregion
-        float targetY = 0;
-        targetY = targetPosObj.transform.eulerAngles.y;
-        PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(PlayerManager.Instance.playerBody.transform.localPosition, Quaternion.Euler(0, targetY, 0));
-
-        #region Move From ExitBlock
-
-        startPosition = transform.position;
-        endPosition = startPosition + dir;
-
-        ladderClimbDuration = 0.4f;
-        elapsedTime = 0f;
-
-        //Move to the top ladder
-        while (elapsedTime < ladderClimbDuration)
+        if (targetPosObj.GetComponent<Block_Ladder>() && targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down
+            && (PlayerStats.Instance.stats.steps_Current < targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down.GetComponent<BlockInfo>().movementCost
+            || PlayerStats.Instance.stats.steps_Current < targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down.GetComponent<BlockInfo>().movementCost_Temp))
         {
-            elapsedTime += Time.deltaTime;
-
-            // Calculate the progress of the ladderMovement
-            float progress = elapsedTime / ladderClimbDuration;
-
-            // Interpolate the up/down position
-            Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, progress);
-
-            // Update the player's position
-            transform.position = currentPosition;
-
-            yield return null;
+            RespawnPlayer();
         }
-
-        // Ensure the player lands exactly at the end position
-        transform.position = endPosition;
-
-        #endregion
-
-        //RotatePlayerBody(-targetPosObj.transform.eulerAngles.y);
-
-        #region Move To Bottom LadderPart
-
-        startPosition = transform.position;
-        endPosition = targetPosObj.transform.position/* + (Vector3.up * heightOverBlock)*/;
-
-        ladderClimbDuration = Vector3.Distance(startPosition, endPosition) * 0.4f;
-        elapsedTime = 0f;
-
-        //Move to the bottom ladder
-        while (elapsedTime < ladderClimbDuration)
+        else
         {
-            elapsedTime += Time.deltaTime;
+            #region Setup Movement Parameters
 
-            // Calculate the progress of the ladderMovement
-            float progress = elapsedTime / ladderClimbDuration;
+            ResetDarkenBlocks();
 
-            // Interpolate the up/down position
-            Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, progress);
+            isMovingOnLadder_Down = true;
+            ladderClimbPos_Start = transform.position;
 
-            // Update the player's position
-            transform.position = currentPosition;
+            movementStates = MovementStates.Moving;
+            PlayerManager.Instance.pauseGame = true;
+            //PlayerManager.Instance.isTransportingPlayer = true;
 
-            yield return null;
+            Vector3 startPosition;
+            Vector3 endPosition;
+            float ladderClimbDuration = 0;
+            float elapsedTime = 0;
+
+            #endregion
+            float targetY = 0;
+            targetY = targetPosObj.transform.eulerAngles.y;
+            PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(PlayerManager.Instance.playerBody.transform.localPosition, Quaternion.Euler(0, targetY, 0));
+
+            #region Move From ExitBlock
+
+            startPosition = transform.position;
+            endPosition = startPosition + dir;
+
+            ladderClimbDuration = 0.4f;
+            elapsedTime = 0f;
+
+            //Move to the top ladder
+            while (elapsedTime < ladderClimbDuration)
+            {
+                elapsedTime += Time.deltaTime;
+
+                // Calculate the progress of the ladderMovement
+                float progress = elapsedTime / ladderClimbDuration;
+
+                // Interpolate the up/down position
+                Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, progress);
+
+                // Update the player's position
+                transform.position = currentPosition;
+
+                yield return null;
+            }
+
+            // Ensure the player lands exactly at the end position
+            transform.position = endPosition;
+
+            #endregion
+
+            #region Move To Bottom LadderPart
+
+            startPosition = transform.position;
+            endPosition = targetPosObj.transform.position/* + (Vector3.up * heightOverBlock)*/;
+
+            ladderClimbDuration = Vector3.Distance(startPosition, endPosition) * 0.4f;
+            elapsedTime = 0f;
+
+            //Move to the bottom ladder
+            while (elapsedTime < ladderClimbDuration)
+            {
+                elapsedTime += Time.deltaTime;
+
+                // Calculate the progress of the ladderMovement
+                float progress = elapsedTime / ladderClimbDuration;
+
+                // Interpolate the up/down position
+                Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, progress);
+
+                // Update the player's position
+                transform.position = currentPosition;
+
+                yield return null;
+            }
+
+            // Ensure the player lands exactly at the end position
+            transform.position = endPosition;
+
+            #endregion
+
+            #region Setup StopMovement Parameters
+
+            if (moveToLadder_Forward.targetBlock)
+                moveToLadder_Forward.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
+            if (moveToLadder_Back.targetBlock)
+                moveToLadder_Back.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
+            if (moveToLadder_Left.targetBlock)
+                moveToLadder_Left.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
+            if (moveToLadder_Right.targetBlock)
+                moveToLadder_Right.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
+
+            Block_IsNot_Target(moveToLadder_Forward);
+            Block_IsNot_Target(moveToLadder_Back);
+            Block_IsNot_Target(moveToLadder_Left);
+            Block_IsNot_Target(moveToLadder_Right);
+
+            UpdateAvailableMovementBlocks();
+
+            targetY = targetPosObj.transform.eulerAngles.y + 180;
+            PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(PlayerManager.Instance.playerBody.transform.localPosition, Quaternion.Euler(0, targetY, 0));
+
+            isMovingOnLadder_Down = false;
+
+            movementStates = MovementStates.Still;
+            PlayerManager.Instance.pauseGame = false;
+
+            FindLadderExitBlock();
+            Action_StepTaken_Invoke();
+
+            #endregion
         }
-
-        // Ensure the player lands exactly at the end position
-        transform.position = endPosition;
-
-        #endregion
-
-        //RotatePlayerBody(0);
-
-        #region Setup StopMovement Parameters
-
-        if (moveToLadder_Forward.targetBlock)
-            moveToLadder_Forward.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-        if (moveToLadder_Back.targetBlock)
-            moveToLadder_Back.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-        if (moveToLadder_Left.targetBlock)
-            moveToLadder_Left.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-        if (moveToLadder_Right.targetBlock)
-            moveToLadder_Right.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-
-        Block_IsNot_Target(moveToLadder_Forward);
-        Block_IsNot_Target(moveToLadder_Back);
-        Block_IsNot_Target(moveToLadder_Left);
-        Block_IsNot_Target(moveToLadder_Right);
-
-        UpdateAvailableMovementBlocks();
-
-        targetY = targetPosObj.transform.eulerAngles.y + 180;
-        PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(PlayerManager.Instance.playerBody.transform.localPosition, Quaternion.Euler(0, targetY, 0));
-
-        isMovingOnLadder_Down = false;
-
-        movementStates = MovementStates.Still;
-        PlayerManager.Instance.pauseGame = false;
-
-        FindLadderExitBlock();
-        Action_StepTaken_Invoke();
-
-        #endregion
     }
 
     #endregion
@@ -2730,7 +2704,7 @@ public class Movement : Singleton<Movement>
         }
 
         //If steps is < 0
-        if (PlayerStats.Instance.stats.steps_Current < 0 && !Player_Pusher.Instance.playerIsPushed)
+        if (PlayerStats.Instance.stats.steps_Current < 0 && blockStandingOn && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope)
         {
             PlayerStats.Instance.stats.steps_Current = 0;
             RespawnPlayer();
