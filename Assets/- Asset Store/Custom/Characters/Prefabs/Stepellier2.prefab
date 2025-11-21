@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2881980574145592320
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 2f1475cdb1cd75444b94923ee4e02258, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2f1475cdb1cd75444b94923ee4e02258, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2f1475cdb1cd75444b94923ee4e02258, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2f1475cdb1cd75444b94923ee4e02258, type: 3}
+      propertyPath: m_Name
+      value: Stepellier2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 9175244409689252427, guid: 2f1475cdb1cd75444b94923ee4e02258, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4698752965363445300}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2f1475cdb1cd75444b94923ee4e02258, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3836139606855630025}
+  m_SourcePrefab: {fileID: 100100000, guid: 2f1475cdb1cd75444b94923ee4e02258, type: 3}
+--- !u!1 &3116407112826814801 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2f1475cdb1cd75444b94923ee4e02258, type: 3}
+  m_PrefabInstance: {fileID: 2881980574145592320}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &3836139606855630025
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3116407112826814801}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: dc7755e04dc56804db6eb729620299e3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &6389444852168040011 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9175244409689252427, guid: 2f1475cdb1cd75444b94923ee4e02258, type: 3}
+  m_PrefabInstance: {fileID: 2881980574145592320}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5098052307811060191
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6389444852168040011}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 3a12d6c82685b004a8c62b726632a170, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3a12d6c82685b004a8c62b726632a170, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.275
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3a12d6c82685b004a8c62b726632a170, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.00000002185569
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3a12d6c82685b004a8c62b726632a170, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3a12d6c82685b004a8c62b726632a170, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3a12d6c82685b004a8c62b726632a170, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3a12d6c82685b004a8c62b726632a170, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3a12d6c82685b004a8c62b726632a170, type: 3}
+      propertyPath: m_Name
+      value: Hat_Stepellier
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3a12d6c82685b004a8c62b726632a170, type: 3}
+--- !u!4 &4698752965363445300 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3a12d6c82685b004a8c62b726632a170, type: 3}
+  m_PrefabInstance: {fileID: 5098052307811060191}
+  m_PrefabAsset: {fileID: 0}
