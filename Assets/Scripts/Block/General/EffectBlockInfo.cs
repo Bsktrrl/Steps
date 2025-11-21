@@ -82,7 +82,7 @@ public class EffectBlockInfo : MonoBehaviour
 
     void CheckEffectBlockInChildRecursively(Transform parent)
     {
-        if (GetComponent<Block_SpawnPoint>())
+        if (GetComponent<Block_Checkpoint>())
         {
             effectBlock_SpawnPoint_isAdded = true;
             CheckForEffectBlockUpdate_SpawnPoint();
@@ -125,7 +125,7 @@ public class EffectBlockInfo : MonoBehaviour
 
     void CheckForEffectBlockUpdate_SpawnPoint()
     {
-        if (!GetComponent<Block_SpawnPoint>()) { return; }
+        if (!GetComponent<Block_Checkpoint>()) { return; }
 
         ChangeMovementCost(0);
 

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block_SpawnPoint : MonoBehaviour
+public class Block_Checkpoint : MonoBehaviour
 {
     public static event Action Action_SpawnPointEntered;
 
