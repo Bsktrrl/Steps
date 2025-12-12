@@ -15,7 +15,7 @@ public class Player_Animations : Singleton<Player_Animations>
 
     public float effectChargeTime_Pickup_Small = 0.75f;
     public float effectChargeTime_Pickup_Big = 0.75f;
-    public float effectChargeTime_Pickup_Teleport = 0.5f;
+    public float effectChargeTime_Pickup_Teleport = 0.23f;
 
     [SerializeField] bool isWalkGliding;
 
@@ -302,6 +302,13 @@ public class Player_Animations : Singleton<Player_Animations>
         if (Movement.Instance.isMoving) { return; }
 
         anim.SetTrigger(AnimationManager.Instance.effect_PickupBig);
+    }
+
+    public void Trigger_TeleportAnimation()
+    {
+        if (Movement.Instance.isMoving) { return; }
+
+        anim.SetTrigger(AnimationManager.Instance.effect_Teleport);
     }
 
 
