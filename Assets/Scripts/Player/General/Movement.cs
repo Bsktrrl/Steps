@@ -1527,7 +1527,7 @@ public class Movement : Singleton<Movement>
         {
             isGrapplingHooking = true;
 
-            Player_Animations.Instance.Perform_GrapplingHookAnimation();
+            Player_Animations.Instance.Trigger_GrapplingHookAnimation();
 
             if (moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Stair || moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
             {
@@ -1568,7 +1568,7 @@ public class Movement : Singleton<Movement>
             PlayerCameraOcclusionController.Instance.CameraZoom(true);
 
             MapManager.Instance.ascendCounter++;
-            Player_Animations.Instance.Perform_AscendDescendAnimation();
+            Player_Animations.Instance.Trigger_AscendDescendAnimation();
             PerformMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
             return true;
         }
@@ -1583,7 +1583,7 @@ public class Movement : Singleton<Movement>
             PlayerCameraOcclusionController.Instance.CameraZoom(true);
 
             MapManager.Instance.descendCounter++;
-            Player_Animations.Instance.Perform_AscendDescendAnimation();
+            Player_Animations.Instance.Trigger_AscendDescendAnimation();
             PerformMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
             return true;
         }
@@ -1680,25 +1680,25 @@ public class Movement : Singleton<Movement>
         else if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Dash_Forward.targetBlock && moveToBlock_Dash_Forward.canMoveTo)
         {
             MapManager.Instance.dashCounter++;
-            Player_Animations.Instance.Perform_DashAnimation();
+            Player_Animations.Instance.Trigger_DashAnimation();
             PerformMovement(moveToBlock_Dash_Forward, MovementStates.Moving, abilitySpeed, ref isDashing);
         }
         else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Dash_Back.targetBlock && moveToBlock_Dash_Back.canMoveTo)
         {
             MapManager.Instance.dashCounter++;
-            Player_Animations.Instance.Perform_DashAnimation();
+            Player_Animations.Instance.Trigger_DashAnimation();
             PerformMovement(moveToBlock_Dash_Back, MovementStates.Moving, abilitySpeed, ref isDashing);
         }
         else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Dash_Left.targetBlock && moveToBlock_Dash_Left.canMoveTo)
         {
             MapManager.Instance.dashCounter++;
-            Player_Animations.Instance.Perform_DashAnimation();
+            Player_Animations.Instance.Trigger_DashAnimation();
             PerformMovement(moveToBlock_Dash_Left, MovementStates.Moving, abilitySpeed, ref isDashing);
         }
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Dash_Right.targetBlock && moveToBlock_Dash_Right.canMoveTo)
         {
             MapManager.Instance.dashCounter++;
-            Player_Animations.Instance.Perform_DashAnimation();
+            Player_Animations.Instance.Trigger_DashAnimation();
             PerformMovement(moveToBlock_Dash_Right, MovementStates.Moving, abilitySpeed, ref isDashing);
         }
 
@@ -1706,25 +1706,25 @@ public class Movement : Singleton<Movement>
         else if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Jump_Forward.targetBlock && moveToBlock_Jump_Forward.canMoveTo)
         {
             MapManager.Instance.jumpCounter++;
-            Player_Animations.Instance.Perform_JumpAnimation();
+            Player_Animations.Instance.Trigger_JumpAnimation();
             PerformMovement(moveToBlock_Jump_Forward, MovementStates.Moving, abilitySpeed, ref isJumping);
         }
         else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Jump_Back.targetBlock && moveToBlock_Jump_Back.canMoveTo)
         {
             MapManager.Instance.jumpCounter++;
-            Player_Animations.Instance.Perform_JumpAnimation();
+            Player_Animations.Instance.Trigger_JumpAnimation();
             PerformMovement(moveToBlock_Jump_Back, MovementStates.Moving, abilitySpeed, ref isJumping);
         }
         else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Jump_Left.targetBlock && moveToBlock_Jump_Left.canMoveTo)
         {
             MapManager.Instance.jumpCounter++;
-            Player_Animations.Instance.Perform_JumpAnimation();
+            Player_Animations.Instance.Trigger_JumpAnimation();
             PerformMovement(moveToBlock_Jump_Left, MovementStates.Moving, abilitySpeed, ref isJumping);
         }
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Jump_Right.targetBlock && moveToBlock_Jump_Right.canMoveTo)
         {
             MapManager.Instance.jumpCounter++;
-            Player_Animations.Instance.Perform_JumpAnimation();
+            Player_Animations.Instance.Trigger_JumpAnimation();
             PerformMovement(moveToBlock_Jump_Right, MovementStates.Moving, abilitySpeed, ref isJumping);
         }
 
@@ -1992,15 +1992,15 @@ public class Movement : Singleton<Movement>
         if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope
             && canMoveBlock.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
         {
-            Player_Animations.Instance.Perform_SlopeDownAnimation();
+            Player_Animations.Instance.Trigger_SlopeDownAnimation();
         }
         else if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair)
         {
-            Player_Animations.Instance.Perform_StairSlopeWalkingAnimation();
+            Player_Animations.Instance.Trigger_StairSlopeWalkingAnimation();
         }
         else if (canMoveBlock.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Stair || canMoveBlock.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
         {
-            Player_Animations.Instance.Perform_StairSlopeWalkingAnimation();
+            Player_Animations.Instance.Trigger_StairSlopeWalkingAnimation();
         }
         
         //Perform animation only the first time when pressing down a movmentButton
@@ -2010,7 +2010,7 @@ public class Movement : Singleton<Movement>
             //if (Player_KeyInputs.Instance.forward_isPressed || Player_KeyInputs.Instance.back_isPressed || Player_KeyInputs.Instance.left_isPressed || Player_KeyInputs.Instance.right_isPressed)
             //{ return; }
 
-            Player_Animations.Instance.Perform_WalkingAnimation();
+            Player_Animations.Instance.Trigger_WalkingAnimation();
             walkAnimationCheck = true;
         }
     }

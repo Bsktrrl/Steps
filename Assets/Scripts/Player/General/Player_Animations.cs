@@ -6,9 +6,12 @@ public class Player_Animations : Singleton<Player_Animations>
     public Animator anim;
 
     public float abilityChargeTime_Dash = 0.5f;
-    public float abilityChargeTime_Jump = 0.38f;
+    public float abilityChargeTime_Jump = 0.48f;
     public float abilityChargeTime_Ascend = 0.48f;
     public float abilityChargeTime_Descend = 0.51f;
+
+    public float abilityChargeTime_CeilingGrab = 0.5f;
+    public float abilityChargeTime_GrapplingHook = 0.5f;
 
     [SerializeField] bool isWalkGliding;
 
@@ -143,7 +146,7 @@ public class Player_Animations : Singleton<Player_Animations>
     //--------------------
 
 
-    public void Perform_WalkingAnimation()
+    public void Trigger_WalkingAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
@@ -152,13 +155,13 @@ public class Player_Animations : Singleton<Player_Animations>
             anim.SetTrigger(AnimationManager.Instance.walk);
         }
     }
-    public void Perform_StairSlopeWalkingAnimation()
+    public void Trigger_StairSlopeWalkingAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
         anim.SetTrigger(AnimationManager.Instance.walk);
     }
-    public void Perform_SlopeDownAnimation()
+    public void Trigger_SlopeDownAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
@@ -185,32 +188,32 @@ public class Player_Animations : Singleton<Player_Animations>
     //--------------------
 
 
-    public void Perform_AscendDescendAnimation()
+    public void Trigger_AscendDescendAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
         anim.SetTrigger(AnimationManager.Instance.ability_AscendDescend);
     }
-    public void Perform_DashAnimation()
+    public void Trigger_DashAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
         anim.SetLayerWeight(1, 1);
         anim.SetTrigger(AnimationManager.Instance.ability_Dash);
     }
-    public void Perform_JumpAnimation()
+    public void Trigger_JumpAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
         anim.SetTrigger(AnimationManager.Instance.ability_Jump);
     }
-    public void Perform_CeilingGrabAnimation()
+    public void Trigger_CeilingGrabAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
         anim.SetTrigger(AnimationManager.Instance.ability_CeilingGrab);
     }
-    public void Perform_GrapplingHookAnimation()
+    public void Trigger_GrapplingHookAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
