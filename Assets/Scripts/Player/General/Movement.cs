@@ -1137,6 +1137,17 @@ public class Movement : Singleton<Movement>
             return;
         }
 
+        StartCoroutine(Delay_UpdateGrapplingHookMovement(moveOption, dir));
+    }
+    IEnumerator Delay_UpdateGrapplingHookMovement(MoveOptions moveOption, Vector3 dir)
+    {
+        yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_GrapplingHook);
+
+        if (!Player_KeyInputs.Instance.grapplingHook_isPressed)
+        {
+            yield break;
+        }
+
         Player_GraplingHook.Instance.isGrapplingHooking = true;
         Player_GraplingHook.Instance.EndLineRenderer();
 
@@ -1173,7 +1184,7 @@ public class Movement : Singleton<Movement>
 
             UpdateBlocksOnTheGrapplingWay(moveOption);
 
-            return;
+            yield return null;
         }
         else
         {
@@ -1183,8 +1194,8 @@ public class Movement : Singleton<Movement>
             Player_GraplingHook.Instance.RunLineReader();
 
             Block_IsNot_Target(moveOption);
-            return;
-        }  
+            yield return null;
+        }
     }
     public void UpdateGrapplingHookMovement_Release()
     {
@@ -1803,7 +1814,7 @@ public class Movement : Singleton<Movement>
 
     private IEnumerator Move(Vector3 endPos, MovementStates moveState, float movementSpeed, MoveOptions moveOptions)
     {
-        print("100. Movement is taken place");
+        //print("100. Movement is taken place");
 
         isMoving = true;
 
@@ -1812,7 +1823,7 @@ public class Movement : Singleton<Movement>
         //Safety check for slope gliding
         if (blockStandingOn != null && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
         {
-            print("1. hasSlopeGlided");
+            //print("1. hasSlopeGlided");
             hasSlopeGlided = true;
         }
 
@@ -2723,7 +2734,7 @@ public class Movement : Singleton<Movement>
                     {
                         //print("6. Slope");
                         PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
-                        print("200. Lose Step: " + PlayerStats.Instance.stats.steps_Current);
+                        //print("200. Lose Step: " + PlayerStats.Instance.stats.steps_Current);
                     }
 
                     isSlopeGliding = false;

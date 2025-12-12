@@ -224,12 +224,15 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Other() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
         grapplingHook_isPressed = true;
+
+        Player_Animations.Instance.Trigger_GrapplingHookAnimation();
     }
     void OnAbilityRight_RelesePress()
     {
-        if (!ButtonChecks_Other()) { return; }
-
         grapplingHook_isPressed = false;
+
+        if (!ButtonChecks_Other_MinusGrapplingHook()) { return; }
+
         Movement.Instance.UpdateGrapplingHookMovement_Release();
 
         Action_GrapplingHook_isPressed?.Invoke();
@@ -292,6 +295,18 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
 
+        if (grapplingHook_isPressed)
+        {
+            Movement.Instance.moveToBlock_GrapplingHook.canMoveTo = false;
+
+            if (Movement.Instance.moveToBlock_GrapplingHook != null && Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>())
+            {
+                Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
+            }
+
+            grapplingHook_isPressed = false;
+        }
+
         return true;
     }
     bool ButtonChecks_Other()
@@ -306,6 +321,31 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Player_Interact.Instance.isInteracting) { return false; }
 
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
+
+        if (grapplingHook_isPressed)
+        {
+            Movement.Instance.moveToBlock_GrapplingHook.canMoveTo = false;
+
+            if (Movement.Instance.moveToBlock_GrapplingHook != null && Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>())
+            {
+                Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
+            }
+
+            grapplingHook_isPressed = false;
+        }
+
+        return true;
+    }
+    bool ButtonChecks_Other_MinusGrapplingHook()
+    {
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
+
+        if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
+        if (PlayerManager.Instance.pauseGame) { return false; }
+        if (PlayerManager.Instance.npcInteraction) { return false; }
+        if (CameraController.Instance.isRotating) { return false; }
+        if (Player_Interact.Instance.isInteracting) { return false; }
 
         return true;
     }
