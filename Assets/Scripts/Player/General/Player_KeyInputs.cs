@@ -35,6 +35,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     public bool left_isPressed = false;
     public bool right_isPressed = false;
 
+    public bool forward_isHold = false;
+    public bool back_isHold = false;
+    public bool left_isHold = false;
+    public bool right_isHold = false;
+
     public bool up_isPressed = false;
     public bool down_isPressed = false;
 
@@ -70,9 +75,16 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         forward_isPressed = true;
         Action_WalkButton_isPressed?.Invoke();
     }
+    void OnForward_Hold()
+    {
+        if (!ButtonChecks_Movement()) { return; }
+
+        forward_isHold = true;
+    }
     void OnForward_Up()
     {
         forward_isPressed = false;
+        forward_isHold = false;
 
         Action_WalkButton_isReleased?.Invoke();
     }
@@ -83,9 +95,16 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         back_isPressed = true;
         Action_WalkButton_isPressed?.Invoke();
     }
+    void OnBackward_Hold()
+    {
+        if (!ButtonChecks_Movement()) { return; }
+
+        back_isHold = true;
+    }
     void OnBackward_Up()
     {
         back_isPressed = false;
+        back_isHold = false;
 
         Action_WalkButton_isReleased?.Invoke();
     }
@@ -96,9 +115,16 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         left_isPressed = true;
         Action_WalkButton_isPressed?.Invoke();
     }
+    void OnLeft_Hold()
+    {
+        if (!ButtonChecks_Movement()) { return; }
+
+        left_isHold = true;
+    }
     void OnLeft_Up()
     {
         left_isPressed = false;
+        left_isHold = false;
 
         Action_WalkButton_isReleased?.Invoke();
     }
@@ -109,9 +135,16 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         right_isPressed = true;
         Action_WalkButton_isPressed?.Invoke();
     }
+    void OnRight_Hold()
+    {
+        if (!ButtonChecks_Movement()) { return; }
+
+        right_isHold = true;
+    }
     void OnRight_Up()
     {
         right_isPressed = false;
+        right_isHold = false;
 
         Action_WalkButton_isReleased?.Invoke();
     }

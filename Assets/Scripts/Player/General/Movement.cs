@@ -1959,7 +1959,7 @@ public class Movement : Singleton<Movement>
         if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope
             && canMoveBlock.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
         {
-            
+            Player_Animations.Instance.Perform_SlopeDownAnimation();
         }
         else if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair)
         {
@@ -1977,7 +1977,7 @@ public class Movement : Singleton<Movement>
             //if (Player_KeyInputs.Instance.forward_isPressed || Player_KeyInputs.Instance.back_isPressed || Player_KeyInputs.Instance.left_isPressed || Player_KeyInputs.Instance.right_isPressed)
             //{ return; }
 
-            Player_Animations.Instance.Perform_StairSlopeWalkingAnimation();
+            Player_Animations.Instance.Perform_WalkingAnimation();
             walkAnimationCheck = true;
         }
     }

@@ -5,6 +5,8 @@ public class Player_Animations : Singleton<Player_Animations>
 {
     public Animator anim;
 
+    [SerializeField] bool isWalkGliding;
+
 
     //--------------------
 
@@ -17,14 +19,28 @@ public class Player_Animations : Singleton<Player_Animations>
 
     private void Update()
     {
+        //Swim Animation
         if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() &&
             (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water || Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.SwampWater || Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Mud))
         {
-            Perform_SwimAnimation(true);
+            Set_SwimAnimation(true);
         }
         else
         {
-            Perform_SwimAnimation(false);
+            Set_SwimAnimation(false);
+        }
+
+        //Walk Glide Animation
+        if ((Player_KeyInputs.Instance.forward_isHold && Movement.Instance.moveToBlock_Forward.canMoveTo)
+            || (Player_KeyInputs.Instance.back_isHold && Movement.Instance.moveToBlock_Back.canMoveTo)
+            || (Player_KeyInputs.Instance.left_isHold && Movement.Instance.moveToBlock_Left.canMoveTo)
+            || (Player_KeyInputs.Instance.right_isHold && Movement.Instance.moveToBlock_Right.canMoveTo))
+        {
+            Set_WalkGlideAnimation(true);
+        }
+        else
+        {
+            Set_WalkGlideAnimation(false);
         }
     }
 
@@ -60,27 +76,34 @@ public class Player_Animations : Singleton<Player_Animations>
     {
         if (Movement.Instance.isMoving) { return; }
 
-        anim.SetTrigger(AnimationManager.Instance.walk);
-
-        print("1. Set Walk Animation");
+        if (!isWalkGliding)
+        {
+            anim.SetTrigger(AnimationManager.Instance.walk);
+        }
     }
     public void Perform_StairSlopeWalkingAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
         anim.SetTrigger(AnimationManager.Instance.walk);
-
-        print("2. Set Stair/Slope Animation");
     }
-    public void Perform_SwimAnimation(bool state)
+    public void Perform_SlopeDownAnimation()
+    {
+        if (Movement.Instance.isMoving) { return; }
+
+        //anim.SetTrigger(AnimationManager.Instance.walk);
+    }
+
+    public void Set_SwimAnimation(bool state)
     {
         if (Movement.Instance.isMoving) { return; }
 
         anim.SetBool("InWater", state);
-
-        //anim.SetTrigger(AnimationManager.Instance.swim);
-
-        print("3. Set Swim Animation");
+    }
+    public void Set_WalkGlideAnimation(bool state)
+    {
+        anim.SetBool("Sliding", state);
+        isWalkGliding = state;
     }
 
 
