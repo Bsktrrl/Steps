@@ -13,6 +13,10 @@ public class Player_Animations : Singleton<Player_Animations>
     public float abilityChargeTime_CeilingGrab = 0.5f;
     public float abilityChargeTime_GrapplingHook = 0.5f;
 
+    public float effectChargeTime_Pickup_Small = 0.75f;
+    public float effectChargeTime_Pickup_Big = 0.75f;
+    public float effectChargeTime_Pickup_Teleport = 0.5f;
+
     [SerializeField] bool isWalkGliding;
 
 
@@ -74,6 +78,11 @@ public class Player_Animations : Singleton<Player_Animations>
 
         Player_KeyInputs.Action_RespawnHold += Start_RespawnAnimation;
         Player_KeyInputs.Action_RespawnCanceled += End_RespawnAnimation;
+
+        Interactable_Pickup.Action_EssencePickupGot += PickUpAnimation_Small;
+        Interactable_Pickup.Action_SkinPickupGot += PickUpAnimation_Small;
+        Interactable_Pickup.Action_StepsUpPickupGot += PickUpAnimation_Big;
+        Interactable_Pickup.Action_AbilityPickupGot += PickUpAnimation_Big;
     }
     private void OnDisable()
     {
@@ -84,6 +93,11 @@ public class Player_Animations : Singleton<Player_Animations>
 
         Player_KeyInputs.Action_RespawnHold -= Start_RespawnAnimation;
         Player_KeyInputs.Action_RespawnCanceled -= End_RespawnAnimation;
+
+        Interactable_Pickup.Action_EssencePickupGot -= PickUpAnimation_Small;
+        Interactable_Pickup.Action_SkinPickupGot -= PickUpAnimation_Small;
+        Interactable_Pickup.Action_StepsUpPickupGot -= PickUpAnimation_Big;
+        Interactable_Pickup.Action_AbilityPickupGot -= PickUpAnimation_Big;
     }
 
 
@@ -191,13 +205,10 @@ public class Player_Animations : Singleton<Player_Animations>
 
     public void Start_RespawnAnimation()
     {
-        print("1. Respawn Animation - Start");
         anim.SetBool("Respawn", true);
     }
     public void End_RespawnAnimation()
     {
-        print("2. Respawn Animation - End");
-
         anim.SetBool("Respawn", false);
     }
 
@@ -241,6 +252,56 @@ public class Player_Animations : Singleton<Player_Animations>
         if (Movement.Instance.isMoving) { return; }
 
         //anim.SetTrigger(AnimationManager.Instance.);
+    }
+
+
+    //--------------------
+
+
+    public void PickUpAnimation_Small()
+    {
+        PlayerManager.Instance.PauseGame();
+
+        StartCoroutine(RunPickupAnimation_Small());
+    }
+    IEnumerator RunPickupAnimation_Small()
+    {
+        print("1. Pickup - Small");
+
+        yield return new WaitForSeconds(0.1f);
+        Trigger_PickupSmallAnimation();
+        yield return new WaitForSeconds(effectChargeTime_Pickup_Small);
+
+        PlayerManager.Instance.UnpauseGame();
+    }
+    public void PickUpAnimation_Big()
+    {
+        PlayerManager.Instance.PauseGame();
+
+        StartCoroutine(RunPickupAnimation_Big());
+    }
+    IEnumerator RunPickupAnimation_Big()
+    {
+        print("2. Pickup - Big");
+
+        yield return new WaitForSeconds(0.1f);
+        Trigger_PickupBigAnimation();
+        yield return new WaitForSeconds(effectChargeTime_Pickup_Small);
+
+        PlayerManager.Instance.UnpauseGame();
+    }
+
+    public void Trigger_PickupSmallAnimation()
+    {
+        if (Movement.Instance.isMoving) { return; }
+
+        anim.SetTrigger(AnimationManager.Instance.effect_PickupSmall);
+    }
+    public void Trigger_PickupBigAnimation()
+    {
+        if (Movement.Instance.isMoving) { return; }
+
+        anim.SetTrigger(AnimationManager.Instance.effect_PickupBig);
     }
 
 

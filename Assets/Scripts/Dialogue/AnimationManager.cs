@@ -12,6 +12,10 @@ public class AnimationManager : Singleton<AnimationManager>
     public string ability_CeilingGrab;
     public string ability_GrapplingHook;
 
+    public string effect_Teleport;
+    public string effect_PickupSmall;
+    public string effect_PickupBig;
+
     public string blink;
     public bool talking;
 

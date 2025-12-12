@@ -196,11 +196,6 @@ public class Movement : Singleton<Movement>
         SFX_Respawn.Action_RespawnPlayer += RespawnPlayer;
 
         Interactable_Pickup.Action_AbilityPickupGot += UpdateLookDir;
-
-        Interactable_Pickup.Action_EssencePickupGot += Temp_EssencePickupGot_Animation;
-        Interactable_Pickup.Action_StepsUpPickupGot += Temp_StepsUpPickupGot_Animation;
-        Interactable_Pickup.Action_SkinPickupGot += Temp_SkinPickupGot_Animation;
-        Interactable_Pickup.Action_AbilityPickupGot += Temp_AbilityPickupGot_Animation;
     }
     private void OnDisable()
     {
@@ -226,11 +221,6 @@ public class Movement : Singleton<Movement>
         SFX_Respawn.Action_RespawnPlayer -= RespawnPlayer;
 
         Interactable_Pickup.Action_AbilityPickupGot -= UpdateLookDir;
-
-        Interactable_Pickup.Action_EssencePickupGot -= Temp_EssencePickupGot_Animation;
-        Interactable_Pickup.Action_StepsUpPickupGot -= Temp_StepsUpPickupGot_Animation;
-        Interactable_Pickup.Action_SkinPickupGot -= Temp_SkinPickupGot_Animation;
-        Interactable_Pickup.Action_AbilityPickupGot -= Temp_AbilityPickupGot_Animation;
     }
 
 
@@ -2879,90 +2869,6 @@ public class Movement : Singleton<Movement>
 
 
     //--------------------
-
-
-    void Temp_EssencePickupGot_Animation()
-    {
-        PlayerManager.Instance.PauseGame();
-        StartCoroutine(JumpSpin(PlayerManager.Instance.playerBody.transform, 0.3f, 0.5f, 1, -Vector3.right));
-    }
-    void Temp_StepsUpPickupGot_Animation()
-    {
-        PlayerManager.Instance.PauseGame();
-        StartCoroutine(JumpSpin(PlayerManager.Instance.playerBody.transform, 0.45f, 0.5f, 1, Vector3.up));
-    }
-    void Temp_SkinPickupGot_Animation()
-    {
-        PlayerManager.Instance.PauseGame();
-        StartCoroutine(JumpSpin(PlayerManager.Instance.playerBody.transform, 0.45f, 0.5f, 2, Vector3.up));
-    }
-    void Temp_AbilityPickupGot_Animation()
-    {
-        PlayerManager.Instance.PauseGame();
-        StartCoroutine(JumpSpin(PlayerManager.Instance.playerBody.transform, 0.45f, 0.5f, 1, -Vector3.right));
-    }
-
-
-    public IEnumerator JumpSpin(Transform target, float totalTime, float jumpHeight, int spinCount, Vector3 rotationAxis)
-    {
-        if (target == null) yield break;
-        if (totalTime <= 0f) totalTime = 0.0001f; // avoid division by zero
-
-        if (movementStates != MovementStates.Falling)
-        {
-            movementStates = MovementStates.Moving;
-        }
-        
-        if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>().movementSpeed >= 5)
-        {
-            //print("1000. Animation Speed >= 5");
-
-            yield return new WaitForSeconds(0.2f);
-        }
-        else
-        {
-            //print("2000. Animation Speed < 5");
-
-            yield return new WaitForSeconds(0.45f);
-        }
-
-        Vector3 startPos = target.position;
-        Quaternion startRot = target.rotation;
-
-        float elapsed = 0f;
-        float totalRotation = 360f * spinCount; // positive = clockwise around local X
-
-        while (elapsed < totalTime)
-        {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / totalTime);
-
-            // Parabolic jump: 0 -> jumpHeight -> 0 over [0,1]
-            float yOffset = 4f * jumpHeight * t * (1f - t);
-            target.position = new Vector3(startPos.x, startPos.y + yOffset, startPos.z);
-
-            // Spin ONLY around local X-axis (no Y rotation introduced)
-            float angle = Mathf.Lerp(0f, totalRotation, t);
-            target.rotation = startRot * Quaternion.AngleAxis(angle, rotationAxis);
-
-            yield return null;
-        }
-
-        // Snap to exact end state
-        target.position = startPos;
-        target.rotation = startRot;
-
-        PlayerManager.Instance.UnpauseGame();
-
-        if (movementStates != MovementStates.Falling)
-        {
-            movementStates = MovementStates.Still;
-        }
-
-        Action_PickupAnimation_Complete?.Invoke();
-
-        Movement.Instance.UpdateLookDir();
-    }
 
 
     #region Actions

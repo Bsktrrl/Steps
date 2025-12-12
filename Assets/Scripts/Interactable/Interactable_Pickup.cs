@@ -168,6 +168,8 @@ public class Interactable_Pickup : MonoBehaviour
                                 DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].essenceList[j].isTaken = true;
                                 Action_EssencePickupGot_isActive();
 
+                                print("0. Pickup got: Essence");
+
                                 return;
                             }
                         }
@@ -180,6 +182,7 @@ public class Interactable_Pickup : MonoBehaviour
                             DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].levelSkin.isTaken = true;
                             Action_SkinPickupGot_isActive();
 
+                            print("0. Pickup got: Skin");
                             return;
                         }
                         break;
@@ -193,6 +196,7 @@ public class Interactable_Pickup : MonoBehaviour
                                 DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].maxStepList[j].isTaken = true;
                                 Action_StepUpPickupGot_isActive();
 
+                                print("0. Pickup got: MaxStep");
                                 return;
                             }
                         }

@@ -8855,6 +8855,9 @@ MonoBehaviour:
   abilityChargeTime_Descend: 0.51
   abilityChargeTime_CeilingGrab: 0.5
   abilityChargeTime_GrapplingHook: 0.28
+  effectChargeTime_Pickup_Small: 0.85
+  effectChargeTime_Pickup_Big: 0.85
+  effectChargeTime_Pickup_Teleport: 0.5
   isWalkGliding: 0
 --- !u!114 &8763539080269035516
 MonoBehaviour:
@@ -11970,12 +11973,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walk: Walk
-  swim: Swim
   ability_AscendDescend: AscendDescend
   ability_Dash: Dash
   ability_Jump: Jump
   ability_CeilingGrab: CeilingGrab
   ability_GrapplingHook: Grapple
+  effect_Teleport: Teleport
+  effect_PickupSmall: Pickup1
+  effect_PickupBig: Pickup2
   blink: Blink
   talking: 0
   animationList:
