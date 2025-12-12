@@ -8827,6 +8827,10 @@ MonoBehaviour:
   back_isPressed: 0
   left_isPressed: 0
   right_isPressed: 0
+  forward_isHold: 0
+  back_isHold: 0
+  left_isHold: 0
+  right_isHold: 0
   up_isPressed: 0
   down_isPressed: 0
   grapplingHook_isPressed: 0
@@ -8845,6 +8849,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 3828761150737111570}
+  abilityChargeTime_Dash: 0.5
+  abilityChargeTime_Jump: 0.48
+  abilityChargeTime_Ascend: 0.48
+  abilityChargeTime_Descend: 0.51
+  isWalkGliding: 0
 --- !u!114 &8763539080269035516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11960,6 +11969,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walk: Walk
   swim: Swim
+  ability_AscendDescend: AscendDescend
+  ability_Dash: Dash
+  ability_Jump: Jump
+  ability_CeilingGrab: CeilingGrab
+  ability_GrapplingHook: Grapple
   blink: Blink
   talking: 0
   animationList:

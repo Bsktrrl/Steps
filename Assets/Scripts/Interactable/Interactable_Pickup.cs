@@ -41,7 +41,7 @@ public class Interactable_Pickup : MonoBehaviour
         if (other.transform.CompareTag("Player"))
         {
             //PlayerManager.Instance.PauseGame();
-            print("Pickup entered");
+            //print("Pickup entered");
 
             GetItems();
             GetAbility();

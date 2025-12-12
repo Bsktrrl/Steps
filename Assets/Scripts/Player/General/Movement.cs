@@ -1527,9 +1527,11 @@ public class Movement : Singleton<Movement>
         {
             isGrapplingHooking = true;
 
+            Player_Animations.Instance.Perform_GrapplingHookAnimation();
+
             if (moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Stair || moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
             {
-                // Check if Stari/Slope is facing the player
+                // Check if Stair/Slope is facing the player
                 Vector3 toPlayer = (transform.position - moveToBlock_GrapplingHook.targetBlock.transform.position).normalized;
                 bool isFacingPlayer = Vector3.Dot(moveToBlock_GrapplingHook.targetBlock.transform.forward, toPlayer) > 0.5f;
 
@@ -1566,6 +1568,7 @@ public class Movement : Singleton<Movement>
             PlayerCameraOcclusionController.Instance.CameraZoom(true);
 
             MapManager.Instance.ascendCounter++;
+            Player_Animations.Instance.Perform_AscendDescendAnimation();
             PerformMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
             return true;
         }
@@ -1580,6 +1583,7 @@ public class Movement : Singleton<Movement>
             PlayerCameraOcclusionController.Instance.CameraZoom(true);
 
             MapManager.Instance.descendCounter++;
+            Player_Animations.Instance.Perform_AscendDescendAnimation();
             PerformMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
             return true;
         }
@@ -1608,19 +1612,16 @@ public class Movement : Singleton<Movement>
             }
             else if (hit.transform.GetComponentInParent<Fence>())
             {
-                //print("1. Fence");
                 obj = null;
                 return RaycastHitObjects.Fence;
             }
             else if (hit.transform.GetComponentInParent<Block_Ladder>() && hit.transform.GetComponent<LadderColliderBlocker>())
             {
-                //print("2. LadderColliderBlocker");
                 obj = null;
                 return RaycastHitObjects.LadderBlocker;
             }
             else if (hit.transform.GetComponentInParent<Block_Ladder>() && hit.transform.GetComponent<LadderCollider>())
             {
-                //print("3. LadderCollider");
                 obj = hit.transform.parent.gameObject;
 
                 return RaycastHitObjects.Ladder;
@@ -1641,6 +1642,8 @@ public class Movement : Singleton<Movement>
 
     void MovementSetup()
     {
+        if (isMoving) return;
+
         //Rotate Player
         RotatePlayerBody_Setup();
 
@@ -1677,21 +1680,25 @@ public class Movement : Singleton<Movement>
         else if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Dash_Forward.targetBlock && moveToBlock_Dash_Forward.canMoveTo)
         {
             MapManager.Instance.dashCounter++;
+            Player_Animations.Instance.Perform_DashAnimation();
             PerformMovement(moveToBlock_Dash_Forward, MovementStates.Moving, abilitySpeed, ref isDashing);
         }
         else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Dash_Back.targetBlock && moveToBlock_Dash_Back.canMoveTo)
         {
             MapManager.Instance.dashCounter++;
+            Player_Animations.Instance.Perform_DashAnimation();
             PerformMovement(moveToBlock_Dash_Back, MovementStates.Moving, abilitySpeed, ref isDashing);
         }
         else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Dash_Left.targetBlock && moveToBlock_Dash_Left.canMoveTo)
         {
             MapManager.Instance.dashCounter++;
+            Player_Animations.Instance.Perform_DashAnimation();
             PerformMovement(moveToBlock_Dash_Left, MovementStates.Moving, abilitySpeed, ref isDashing);
         }
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Dash_Right.targetBlock && moveToBlock_Dash_Right.canMoveTo)
         {
             MapManager.Instance.dashCounter++;
+            Player_Animations.Instance.Perform_DashAnimation();
             PerformMovement(moveToBlock_Dash_Right, MovementStates.Moving, abilitySpeed, ref isDashing);
         }
 
@@ -1699,21 +1706,25 @@ public class Movement : Singleton<Movement>
         else if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Jump_Forward.targetBlock && moveToBlock_Jump_Forward.canMoveTo)
         {
             MapManager.Instance.jumpCounter++;
+            Player_Animations.Instance.Perform_JumpAnimation();
             PerformMovement(moveToBlock_Jump_Forward, MovementStates.Moving, abilitySpeed, ref isJumping);
         }
         else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Jump_Back.targetBlock && moveToBlock_Jump_Back.canMoveTo)
         {
             MapManager.Instance.jumpCounter++;
+            Player_Animations.Instance.Perform_JumpAnimation();
             PerformMovement(moveToBlock_Jump_Back, MovementStates.Moving, abilitySpeed, ref isJumping);
         }
         else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Jump_Left.targetBlock && moveToBlock_Jump_Left.canMoveTo)
         {
             MapManager.Instance.jumpCounter++;
+            Player_Animations.Instance.Perform_JumpAnimation();
             PerformMovement(moveToBlock_Jump_Left, MovementStates.Moving, abilitySpeed, ref isJumping);
         }
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Jump_Right.targetBlock && moveToBlock_Jump_Right.canMoveTo)
         {
             MapManager.Instance.jumpCounter++;
+            Player_Animations.Instance.Perform_JumpAnimation();
             PerformMovement(moveToBlock_Jump_Right, MovementStates.Moving, abilitySpeed, ref isJumping);
         }
 
@@ -1736,10 +1747,10 @@ public class Movement : Singleton<Movement>
         if (!canMoveBlock.targetBlock.GetComponent<BlockInfo>()) { return; }
         if (PlayerStats.Instance.stats == null) { return; }
 
+        if (isMoving) return;
+
         if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost || Player_Pusher.Instance.playerIsPushed)
         {
-            MovingAnimation(canMoveBlock);
-
             isMoving = true;
 
             ResetDarkenBlocks();
@@ -1792,6 +1803,10 @@ public class Movement : Singleton<Movement>
 
     private IEnumerator Move(Vector3 endPos, MovementStates moveState, float movementSpeed, MoveOptions moveOptions)
     {
+        print("100. Movement is taken place");
+
+        isMoving = true;
+
         Action_StepTaken_Early_Invoke();
 
         //Safety check for slope gliding
@@ -1803,6 +1818,15 @@ public class Movement : Singleton<Movement>
 
         if (moveOptions != null && moveOptions.targetBlock)
         {
+            if (isAscending)
+                yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Ascend);
+            else if (isDecending)
+                yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Descend);
+            else if (isDashing)
+                yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Dash);
+            else if (isJumping)
+                yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Jump);
+
             //Move onto a moving block
             if (moveOptions.targetBlock.GetComponent<Block_Elevator>())
             {
@@ -1819,6 +1843,15 @@ public class Movement : Singleton<Movement>
         //Move to a position, not a block
         else
         {
+            if (isAscending)
+                yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Ascend);
+            else if (isDecending)
+                yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Descend);
+            else if (isDashing)
+                yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Dash);
+            else if (isJumping)
+                yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Jump);
+
             yield return NormalMovement(endPos, moveState, movementSpeed);
         }
 
@@ -2690,6 +2723,7 @@ public class Movement : Singleton<Movement>
                     {
                         //print("6. Slope");
                         PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
+                        print("200. Lose Step: " + PlayerStats.Instance.stats.steps_Current);
                     }
 
                     isSlopeGliding = false;
@@ -2736,6 +2770,12 @@ public class Movement : Singleton<Movement>
         Player_KeyInputs.Instance.up_isPressed = false;
         Player_KeyInputs.Instance.down_isPressed = false;
         Player_KeyInputs.Instance.grapplingHook_isPressed = false;
+
+        Player_KeyInputs.Instance.forward_isHold = false;
+        Player_KeyInputs.Instance.back_isHold = false;
+        Player_KeyInputs.Instance.left_isHold = false;
+        Player_KeyInputs.Instance.right_isHold = false;
+
 
         Player_KeyInputs.Instance.cameraX_isPressed = false;
         Player_KeyInputs.Instance.cameraY_isPressed = false;
@@ -2861,13 +2901,13 @@ public class Movement : Singleton<Movement>
         
         if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>().movementSpeed >= 5)
         {
-            print("1000. Animation Speed >= 5");
+            //print("1000. Animation Speed >= 5");
 
             yield return new WaitForSeconds(0.2f);
         }
         else
         {
-            print("2000. Animation Speed < 5");
+            //print("2000. Animation Speed < 5");
 
             yield return new WaitForSeconds(0.45f);
         }

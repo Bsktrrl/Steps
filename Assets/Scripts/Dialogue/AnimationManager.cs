@@ -7,6 +7,12 @@ public class AnimationManager : Singleton<AnimationManager>
     public string walk;
     public string swim;
 
+    public string ability_AscendDescend;
+    public string ability_Dash;
+    public string ability_Jump;
+    public string ability_CeilingGrab;
+    public string ability_GrapplingHook;
+
     public string blink;
     public bool talking;
 
