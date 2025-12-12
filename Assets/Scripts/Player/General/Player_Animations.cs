@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player_Animations : Singleton<Player_Animations>
@@ -14,6 +13,19 @@ public class Player_Animations : Singleton<Player_Animations>
     {
         StartCoroutine(RandomBlink());
         StartCoroutine(RandomIdle());
+    }
+
+    private void Update()
+    {
+        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() &&
+            (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water || Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.SwampWater || Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Mud))
+        {
+            Perform_SwimAnimation(true);
+        }
+        else
+        {
+            Perform_SwimAnimation(false);
+        }
     }
 
 
@@ -49,18 +61,26 @@ public class Player_Animations : Singleton<Player_Animations>
         if (Movement.Instance.isMoving) { return; }
 
         anim.SetTrigger(AnimationManager.Instance.walk);
+
+        print("1. Set Walk Animation");
     }
     public void Perform_StairSlopeWalkingAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
         anim.SetTrigger(AnimationManager.Instance.walk);
+
+        print("2. Set Stair/Slope Animation");
     }
-    public void Perform_SwimAnimation()
+    public void Perform_SwimAnimation(bool state)
     {
         if (Movement.Instance.isMoving) { return; }
 
-        anim.SetTrigger(AnimationManager.Instance.swim);
+        anim.SetBool("InWater", state);
+
+        //anim.SetTrigger(AnimationManager.Instance.swim);
+
+        print("3. Set Swim Animation");
     }
 
 
@@ -69,7 +89,7 @@ public class Player_Animations : Singleton<Player_Animations>
 
     IEnumerator RandomBlink()
     {
-        float time = UnityEngine.Random.Range(0, 10);
+        float time = Random.Range(0, 10);
 
         yield return new WaitForSeconds(time);
 
@@ -79,16 +99,14 @@ public class Player_Animations : Singleton<Player_Animations>
     }
     IEnumerator RandomIdle()
     {
-        float time = UnityEngine.Random.Range(15, 30);
+        float time = Random.Range(15, 30);
 
         yield return new WaitForSeconds(time);
 
-        if (UnityEngine.Random.Range(0, 1) > 0.5f)
+        if (Random.Range(0, 1) > 0.5f)
             anim.SetTrigger("Confused");
         else
             anim.SetTrigger("Confident");
-
-        //print("2.2. SecondaryIdle");
 
         Invoke(nameof(StartSecondaryIdle), 0);
     }
