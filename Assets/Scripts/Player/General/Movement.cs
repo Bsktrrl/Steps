@@ -1170,7 +1170,7 @@ public class Movement : Singleton<Movement>
             else
                 grapplingTowardsStair = false;
 
-            // Check if Stari/Slope is facing the player
+            // Check if Stair/Slope is facing the player
             Vector3 toPlayer = (transform.position - moveToBlock_GrapplingHook.targetBlock.transform.position).normalized;
             bool StairIsFacingPlayer = (moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Stair || moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope) && Vector3.Dot(moveToBlock_GrapplingHook.targetBlock.transform.forward, toPlayer) > 0.5f;
 
@@ -1538,7 +1538,10 @@ public class Movement : Singleton<Movement>
         {
             isGrapplingHooking = true;
 
-            Player_Animations.Instance.Trigger_GrapplingHookAnimation();
+            if (Player_KeyInputs.Instance.grapplingHook_isPressed)
+                Player_Animations.Instance.Trigger_GrapplingHookAnimation();
+            else
+                Player_Animations.Instance.Trigger_GrapplingHookDraggingAnimation();
 
             if (moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Stair || moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
             {

@@ -71,6 +71,9 @@ public class Player_Animations : Singleton<Player_Animations>
         DataManager.Action_dataHasLoaded += UpdateAnimator;
 
         Movement.Action_RespawnPlayer += ResetAnimations;
+
+        Player_KeyInputs.Action_RespawnHold += Start_RespawnAnimation;
+        Player_KeyInputs.Action_RespawnCanceled += End_RespawnAnimation;
     }
     private void OnDisable()
     {
@@ -78,6 +81,9 @@ public class Player_Animations : Singleton<Player_Animations>
         DataManager.Action_dataHasLoaded -= UpdateAnimator;
 
         Movement.Action_RespawnPlayer -= ResetAnimations;
+
+        Player_KeyInputs.Action_RespawnHold -= Start_RespawnAnimation;
+        Player_KeyInputs.Action_RespawnCanceled -= End_RespawnAnimation;
     }
 
 
@@ -97,7 +103,6 @@ public class Player_Animations : Singleton<Player_Animations>
         Set_WalkGlideAnimation(false);
 
         ForceStopAllAnimations("", AnimationManager.Instance.walk);
-        ForceStopAllAnimations("", AnimationManager.Instance.swim);
 
         ForceStopAllAnimations(AnimationManager.Instance.ability_AscendDescend, "");
         ForceStopAllAnimations(AnimationManager.Instance.ability_Dash, "");
@@ -184,6 +189,18 @@ public class Player_Animations : Singleton<Player_Animations>
         isWalkGliding = state;
     }
 
+    public void Start_RespawnAnimation()
+    {
+        print("1. Respawn Animation - Start");
+        anim.SetBool("Respawn", true);
+    }
+    public void End_RespawnAnimation()
+    {
+        print("2. Respawn Animation - End");
+
+        anim.SetBool("Respawn", false);
+    }
+
 
     //--------------------
 
@@ -218,6 +235,12 @@ public class Player_Animations : Singleton<Player_Animations>
         if (Movement.Instance.isMoving) { return; }
 
         anim.SetTrigger(AnimationManager.Instance.ability_GrapplingHook);
+    }
+    public void Trigger_GrapplingHookDraggingAnimation()
+    {
+        if (Movement.Instance.isMoving) { return; }
+
+        //anim.SetTrigger(AnimationManager.Instance.);
     }
 
 

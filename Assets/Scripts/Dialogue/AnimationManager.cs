@@ -5,7 +5,6 @@ using UnityEngine;
 public class AnimationManager : Singleton<AnimationManager>
 {
     public string walk;
-    public string swim;
 
     public string ability_AscendDescend;
     public string ability_Dash;
