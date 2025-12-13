@@ -78,6 +78,7 @@ public class Player_Animations : Singleton<Player_Animations>
 
         Player_KeyInputs.Action_RespawnHold += Start_RespawnAnimation;
         Player_KeyInputs.Action_RespawnCanceled += End_RespawnAnimation;
+        SFX_Respawn.Action_RespawnPlayerAnimation += Trigger_RespawnAnimation;
 
         Interactable_Pickup.Action_EssencePickupGot += PickUpAnimation_Small;
         Interactable_Pickup.Action_SkinPickupGot += PickUpAnimation_Small;
@@ -93,6 +94,7 @@ public class Player_Animations : Singleton<Player_Animations>
 
         Player_KeyInputs.Action_RespawnHold -= Start_RespawnAnimation;
         Player_KeyInputs.Action_RespawnCanceled -= End_RespawnAnimation;
+        SFX_Respawn.Action_RespawnPlayerAnimation -= Trigger_RespawnAnimation;
 
         Interactable_Pickup.Action_EssencePickupGot -= PickUpAnimation_Small;
         Interactable_Pickup.Action_SkinPickupGot -= PickUpAnimation_Small;
@@ -171,6 +173,7 @@ public class Player_Animations : Singleton<Player_Animations>
 
         if (!isWalkGliding && !Movement.Instance.isDashing && !Movement.Instance.isJumping && !Movement.Instance.isAscending && !Movement.Instance.isDecending)
         {
+            anim.speed = 1.0f;
             anim.SetTrigger(AnimationManager.Instance.walk);
         }
     }
@@ -178,12 +181,14 @@ public class Player_Animations : Singleton<Player_Animations>
     {
         if (Movement.Instance.isMoving) { return; }
 
+        anim.speed = 1.0f;
         anim.SetTrigger(AnimationManager.Instance.walk);
     }
     public void Trigger_SlopeDownAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
+        anim.speed = 1.0f;
         //anim.SetTrigger(AnimationManager.Instance.walk);
     }
 
@@ -195,20 +200,24 @@ public class Player_Animations : Singleton<Player_Animations>
     {
         if (Movement.Instance.isMoving) { return; }
 
+        //anim.speed = 1.0f;
         anim.SetBool("InWater", state);
     }
     public void Set_WalkGlideAnimation(bool state)
     {
+        //anim.speed = 1.0f;
         anim.SetBool("Sliding", state);
         isWalkGliding = state;
     }
 
     public void Start_RespawnAnimation()
     {
+        anim.speed = 1.6f;
         anim.SetBool("Respawn", true);
     }
     public void End_RespawnAnimation()
     {
+        anim.speed = 1.0f;
         anim.SetBool("Respawn", false);
     }
 
@@ -220,37 +229,43 @@ public class Player_Animations : Singleton<Player_Animations>
     {
         if (Movement.Instance.isMoving) { return; }
 
+        anim.speed = 1.0f;
         anim.SetTrigger(AnimationManager.Instance.ability_AscendDescend);
     }
     public void Trigger_DashAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
-        anim.SetLayerWeight(1, 1);
+        anim.speed = 1.0f;
+        //anim.SetLayerWeight(1, 1);
         anim.SetTrigger(AnimationManager.Instance.ability_Dash);
     }
     public void Trigger_JumpAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
+        anim.speed = 1.0f;
         anim.SetTrigger(AnimationManager.Instance.ability_Jump);
     }
     public void Trigger_CeilingGrabAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
+        anim.speed = 1.0f;
         anim.SetTrigger(AnimationManager.Instance.ability_CeilingGrab);
     }
     public void Trigger_GrapplingHookAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
+        anim.speed = 1.0f;
         anim.SetTrigger(AnimationManager.Instance.ability_GrapplingHook);
     }
     public void Trigger_GrapplingHookDraggingAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
+        anim.speed = 1.0f;
         //anim.SetTrigger(AnimationManager.Instance.);
     }
 
@@ -295,12 +310,14 @@ public class Player_Animations : Singleton<Player_Animations>
     {
         if (Movement.Instance.isMoving) { return; }
 
+        anim.speed = 1.0f;
         anim.SetTrigger(AnimationManager.Instance.effect_PickupSmall);
     }
     public void Trigger_PickupBigAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
+        anim.speed = 1.0f;
         anim.SetTrigger(AnimationManager.Instance.effect_PickupBig);
     }
 
@@ -308,6 +325,14 @@ public class Player_Animations : Singleton<Player_Animations>
     {
         if (Movement.Instance.isMoving) { return; }
 
+        anim.speed = 1.0f;
+        anim.SetTrigger(AnimationManager.Instance.effect_Teleport);
+    }
+    public void Trigger_RespawnAnimation()
+    {
+        if (Movement.Instance.isMoving) { return; }
+
+        anim.speed = 1.0f;
         anim.SetTrigger(AnimationManager.Instance.effect_Teleport);
     }
 
