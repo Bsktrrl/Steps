@@ -209,7 +209,7 @@ GameObject:
   - component: {fileID: 17842243}
   - component: {fileID: 17842245}
   m_Layer: 5
-  m_Name: Industrial - LP
+  m_Name: Metalworks - LP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1169,7 +1169,7 @@ GameObject:
   - component: {fileID: 152833915}
   - component: {fileID: 152833917}
   m_Layer: 5
-  m_Name: Stone - LP
+  m_Name: Firevein Mountain - LP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1334,7 +1334,7 @@ GameObject:
   - component: {fileID: 176317899}
   - component: {fileID: 176317898}
   m_Layer: 5
-  m_Name: BoxBackground (1)
+  m_Name: BoxBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1408,7 +1408,7 @@ GameObject:
   - component: {fileID: 177036346}
   - component: {fileID: 177036348}
   m_Layer: 5
-  m_Name: Water - LP
+  m_Name: Rivergreen- LP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1637,42 +1637,36 @@ MonoBehaviour:
   ability_Jumping: {fileID: 1580117012}
   ability_GrapplingHook: {fileID: 917688120}
   ability_CeilingGrab: {fileID: 1022185401}
-  Water_Grass: {fileID: 21300000, guid: 06153d26070be214c94316a0f73b097f, type: 3}
-  Water_Water: {fileID: 21300000, guid: d1c9432dcdc194d4fbfc89039453e5b0, type: 3}
-  Water_Wood: {fileID: 21300000, guid: 999313f30d02b88418a0174863250230, type: 3}
-  Water_4: {fileID: 0}
-  Water_5: {fileID: 0}
-  Water_6: {fileID: 0}
-  Cave_Stone: {fileID: 21300000, guid: ba6d577c54af0ac478a09012ef1583d0, type: 3}
-  Cave_Stone_Brick: {fileID: 21300000, guid: d5588789a0453eb4380e19f55d58ef3a, type: 3}
-  Cave_Lava: {fileID: 21300000, guid: f475d907cd6090a47845dbe6c8334ea6, type: 3}
-  Cave_Rock: {fileID: 21300000, guid: 0ff54d9c835c02149a0954172fa34d34, type: 3}
-  Cave_Brick_Brown: {fileID: 21300000, guid: 3613d693dc0cc2848b7f1332dc60e6a4, type: 3}
-  Cave_Brick_Black: {fileID: 21300000, guid: 1b99520a22eebd640a35f16a6ab2cf5a, type: 3}
-  Desert_Sand: {fileID: 21300000, guid: 133c19edff8d7274398c574215c827b1, type: 3}
-  Desert_Clay: {fileID: 21300000, guid: 550bae3fc70da4a418fde28a4cb76e83, type: 3}
-  Desert_Clay_Tiles: {fileID: 21300000, guid: f8b12c651cd8ae34cb950faa18f93d72, type: 3}
-  Desert_Sandstone: {fileID: 21300000, guid: 61eab5af9b33dd143889820a01527957, type: 3}
-  Desert_Sandstone_Swirl: {fileID: 21300000, guid: ff8bd89ed52066240a6018ad3df418cd, type: 3}
-  Desert_Quicksand: {fileID: 21300000, guid: 975cef6f6e6ef7940b2141abf2f854f2, type: 3}
-  Winter_Snow: {fileID: 21300000, guid: b24026f84a96b9a4f90c3b40242910a9, type: 3}
-  Winter_Ice: {fileID: 21300000, guid: 6120bb55575a9ec44a466989c0ddd71a, type: 3}
-  Winter_ColdWood: {fileID: 21300000, guid: eb7c7d365ea77914ab5aa68e4aa5ad5a, type: 3}
-  Winter_FrozenGrass: {fileID: 0}
-  Winter_CrackedIce: {fileID: 21300000, guid: 4c0b2702425666740bc028597ac3cd4a, type: 3}
-  Winter_Crocked: {fileID: 21300000, guid: c3f690ae495fd8846a5aa60221c23d3b, type: 3}
-  Swamp_SwampWater: {fileID: 21300000, guid: 21f7634ae17fd3b4085de00d4ec69d0e, type: 3}
-  Swamp_Mud: {fileID: 21300000, guid: 7558c0b9c4e6af943a165622001d76f1, type: 3}
-  Swamp_SwampGrass: {fileID: 21300000, guid: 69b0281fca190ea468e46bb211c4005d, type: 3}
-  Swamp_JungleWood: {fileID: 21300000, guid: 89ffa481afd7d31438cb8bb31aceffe7, type: 3}
-  Swamp_SwampWood: {fileID: 21300000, guid: 1c262bd918dd0064c9a2d83b089e57ae, type: 3}
-  Swamp_TempleBlock: {fileID: 21300000, guid: 90a3990efaf730146a84c3c79dc02e76, type: 3}
-  Industrial_Metal: {fileID: 21300000, guid: 76a93643f9c9e104694d54497223fbb2, type: 3}
-  Industrial_Brass: {fileID: 21300000, guid: d203562cf811bd844b24d157f0c2abe7, type: 3}
-  Industrial_Gold: {fileID: 21300000, guid: 6ba033d870281484bacd0b4c49b51f33, type: 3}
-  Industrial_Casing_Metal: {fileID: 21300000, guid: 023aef0d5d85d024ebb40651364f2bae, type: 3}
-  Industria_Casingl_Brass: {fileID: 21300000, guid: 0c3e01a467f43554dad707ee8c8b477e, type: 3}
-  Industrial_Casing_Gold: {fileID: 21300000, guid: 75638e0194ed0894e952ccbb0e2d12c5, type: 3}
+  sprite_Rivergreen_Lv1: {fileID: 21300000, guid: e89bb5d898f7d8549ba5d467824552da, type: 3}
+  sprite_Rivergreen_Lv2: {fileID: 21300000, guid: 1eca1ca7bc1f7534db99462efc6e52cf, type: 3}
+  sprite_Rivergreen_Lv3: {fileID: 21300000, guid: ba9a7728601b6a74b84ca2e3fdc8efe2, type: 3}
+  sprite_Rivergreen_Lv4: {fileID: 21300000, guid: d4fb481d6730abe45b8a6f1703b86e51, type: 3}
+  sprite_Rivergreen_Lv5: {fileID: 21300000, guid: 08219d9d79cad0d49bd4e5e31a1d0b5a, type: 3}
+  sprite_Sandlands_Lv1: {fileID: 21300000, guid: aeb9e8094b69acf4d85b6f9288533656, type: 3}
+  sprite_Sandlands_Lv2: {fileID: 21300000, guid: eaabcf5be31cb044c883084a45e2335d, type: 3}
+  sprite_Sandlands_Lv3: {fileID: 21300000, guid: 77abcf64f09a44f42a7258d076b581be, type: 3}
+  sprite_Sandlands_Lv4: {fileID: 21300000, guid: 9ef5b3295536c2b4baf11e753600a2d6, type: 3}
+  sprite_Sandlands_Lv5: {fileID: 21300000, guid: 59c7842da1d512d49b23690e00ecda0e, type: 3}
+  sprite_Frostfield_Lv1: {fileID: 21300000, guid: 5c403853a681dec4aa6cf4914d8cd55a, type: 3}
+  sprite_Frostfield_Lv2: {fileID: 21300000, guid: 09d0f0044490bee40b1402b2b015e2a8, type: 3}
+  sprite_Frostfield_Lv3: {fileID: 21300000, guid: 6e6c8f1ce21517647b0cb008156e2f1a, type: 3}
+  sprite_Frostfield_Lv4: {fileID: 21300000, guid: d6e9e5496c12d9d45a00313b4ebaf622, type: 3}
+  sprite_Frostfield_Lv5: {fileID: 21300000, guid: ba7dadcc3f4de3f4f9ee2d5e40e1335b, type: 3}
+  sprite_Firevein_Lv1: {fileID: 21300000, guid: cbb883e9b46f78444b8028b8eb90f632, type: 3}
+  sprite_Firevein_Lv2: {fileID: 21300000, guid: 32420dc6fd4d85e4e97b037856ca8d89, type: 3}
+  sprite_Firevein_Lv3: {fileID: 21300000, guid: 7115a373689739f47bc0033cf294e658, type: 3}
+  sprite_Firevein_Lv4: {fileID: 21300000, guid: 45e9d9e1cd849a84e8ac65d3527511a9, type: 3}
+  sprite_Firevein_Lv5: {fileID: 21300000, guid: a49e7b6ee241bcc449c25def8af4f8fe, type: 3}
+  sprite_Witchmire_Lv1: {fileID: 21300000, guid: 94e10419d34fe1042939a174ec69f9d6, type: 3}
+  sprite_Witchmire_Lv2: {fileID: 21300000, guid: 562ad70ca7334684ea5de1ff9fdade47, type: 3}
+  sprite_Witchmire_Lv3: {fileID: 21300000, guid: 036d71f489296ec44b4e9564a798976e, type: 3}
+  sprite_Witchmire_Lv4: {fileID: 21300000, guid: a7cd31dd8a24dca4691f6ca8a0414f80, type: 3}
+  sprite_Witchmire_Lv5: {fileID: 21300000, guid: d654fc01a64671843a7c1e3351cd09cb, type: 3}
+  sprite_Metalworks_Lv1: {fileID: 21300000, guid: 84fdbb8645bb262489ec6229bd1bffad, type: 3}
+  sprite_Metalworks_Lv2: {fileID: 21300000, guid: e31006d24f38a704ba558c4d7b538fe5, type: 3}
+  sprite_Metalworks_Lv3: {fileID: 21300000, guid: ef6a9123fc53ff344b9f10ec572c7126, type: 3}
+  sprite_Metalworks_Lv4: {fileID: 21300000, guid: 158c50b98fd2ac74b94058ec92f11d49, type: 3}
+  sprite_Metalworks_Lv5: {fileID: 21300000, guid: 47c5485d81451b745a5108cf8ff9a425, type: 3}
 --- !u!114 &191919886 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 384179937895888748, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
@@ -1699,6 +1693,10 @@ PrefabInstance:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
@@ -4601,7 +4599,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: skinTypeInLevel
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelNameToDisplay
@@ -5501,6 +5499,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -5858,6 +5860,10 @@ PrefabInstance:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
@@ -6338,6 +6344,10 @@ PrefabInstance:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
@@ -7368,6 +7378,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -7712,6 +7726,10 @@ PrefabInstance:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
@@ -8132,6 +8150,10 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -8477,6 +8499,10 @@ PrefabInstance:
       propertyPath: regionToPlay
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 27
+      objectReference: {fileID: 0}
     - target: {fileID: 384179937895888748, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -8815,6 +8841,10 @@ PrefabInstance:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
@@ -9928,6 +9958,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -10404,6 +10438,10 @@ PrefabInstance:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
@@ -11236,7 +11274,7 @@ GameObject:
   - component: {fileID: 880588600}
   - component: {fileID: 880588602}
   m_Layer: 5
-  m_Name: Swamp - LP
+  m_Name: Witchmire - LP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11620,6 +11658,10 @@ PrefabInstance:
       propertyPath: regionToPlay
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 22
+      objectReference: {fileID: 0}
     - target: {fileID: 384179937895888748, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -11953,6 +11995,10 @@ PrefabInstance:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
@@ -13547,6 +13593,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelNameToDisplay
       value: 
       objectReference: {fileID: 0}
@@ -13890,6 +13940,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -14226,6 +14280,10 @@ PrefabInstance:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
@@ -14773,7 +14831,7 @@ GameObject:
   - component: {fileID: 1173689182}
   - component: {fileID: 1173689183}
   m_Layer: 5
-  m_Name: Ice - LP
+  m_Name: Frostfield - LP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14844,6 +14902,10 @@ PrefabInstance:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
@@ -16466,6 +16528,10 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -16840,6 +16906,10 @@ PrefabInstance:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
@@ -17288,6 +17358,10 @@ PrefabInstance:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 384179937895888748, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: m_Sprite
@@ -19086,10 +19160,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 176317897}
-  - {fileID: 1173689182}
-  - {fileID: 152833915}
   - {fileID: 177036346}
   - {fileID: 1944044435}
+  - {fileID: 1173689182}
+  - {fileID: 152833915}
   - {fileID: 880588600}
   - {fileID: 17842243}
   m_Father: {fileID: 2058110171}
@@ -19974,6 +20048,10 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -20314,6 +20392,10 @@ PrefabInstance:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
@@ -21383,11 +21465,6 @@ MonoBehaviour:
       skin_Region4_Hat: 0
       skin_Region5_Hat: 0
       skin_Region6_Hat: 0
---- !u!1 &1650360082 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3198939906974045680, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
-  m_PrefabInstance: {fileID: 5912947419237050941}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1659561593
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21403,6 +21480,10 @@ PrefabInstance:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
@@ -21758,6 +21839,10 @@ PrefabInstance:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
@@ -23884,6 +23969,10 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: levelsToBeFinished.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -24231,7 +24320,7 @@ GameObject:
   - component: {fileID: 1944044435}
   - component: {fileID: 1944044437}
   m_Layer: 5
-  m_Name: Desert - LP
+  m_Name: Sandlands - LP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27121,7 +27210,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: skinTypeInLevel
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: abilitiesInLevel.SwimSuit
@@ -27463,7 +27552,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: skinTypeInLevel
-      value: 2
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: readyToBePlayedAndDisplayed
@@ -31097,7 +31186,7 @@ PrefabInstance:
     - target: {fileID: 8939846607076920317, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: overlay
       value: 
-      objectReference: {fileID: 1650360082}
+      objectReference: {fileID: 0}
     - target: {fileID: 8974366608767578940, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_Layer
       value: 17
@@ -31245,6 +31334,10 @@ PrefabInstance:
     - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: regionToPlay
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -1173558634531830735, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
+      propertyPath: skinTypeInLevel
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 384179937895888748, guid: 441645519caf9a7438fc94b1ccfea4d4, type: 3}
       propertyPath: m_Sprite

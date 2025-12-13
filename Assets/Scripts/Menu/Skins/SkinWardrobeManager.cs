@@ -33,42 +33,36 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     public GameObject skinWardrobeButton_Region1_Level3;
     public GameObject skinWardrobeButton_Region1_Level4;
     public GameObject skinWardrobeButton_Region1_Level5;
-    public GameObject skinWardrobeButton_Region1_Level6;
 
     public GameObject skinWardrobeButton_Region2_Level1;
     public GameObject skinWardrobeButton_Region2_Level2;
     public GameObject skinWardrobeButton_Region2_Level3;
     public GameObject skinWardrobeButton_Region2_Level4;
     public GameObject skinWardrobeButton_Region2_Level5;
-    public GameObject skinWardrobeButton_Region2_Level6;
 
     public GameObject skinWardrobeButton_Region3_Level1;
     public GameObject skinWardrobeButton_Region3_Level2;
     public GameObject skinWardrobeButton_Region3_Level3;
     public GameObject skinWardrobeButton_Region3_Level4;
     public GameObject skinWardrobeButton_Region3_Level5;
-    public GameObject skinWardrobeButton_Region3_Level6;
 
     public GameObject skinWardrobeButton_Region4_Level1;
     public GameObject skinWardrobeButton_Region4_Level2;
     public GameObject skinWardrobeButton_Region4_Level3;
     public GameObject skinWardrobeButton_Region4_Level4;
     public GameObject skinWardrobeButton_Region4_Level5;
-    public GameObject skinWardrobeButton_Region4_Level6;
 
     public GameObject skinWardrobeButton_Region5_Level1;
     public GameObject skinWardrobeButton_Region5_Level2;
     public GameObject skinWardrobeButton_Region5_Level3;
     public GameObject skinWardrobeButton_Region5_Level4;
     public GameObject skinWardrobeButton_Region5_Level5;
-    public GameObject skinWardrobeButton_Region5_Level6;
 
     public GameObject skinWardrobeButton_Region6_Level1;
     public GameObject skinWardrobeButton_Region6_Level2;
     public GameObject skinWardrobeButton_Region6_Level3;
     public GameObject skinWardrobeButton_Region6_Level4;
     public GameObject skinWardrobeButton_Region6_Level5;
-    public GameObject skinWardrobeButton_Region6_Level6;
 
     public GameObject skinWardrobeButton_Default;
     #endregion
@@ -92,47 +86,41 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     [Header("Wardrobe - PlayerSkinObjects")]
     public GameObject skin_Default;
 
-    public GameObject skin_Water_Grass;
-    public GameObject skin_Water_Water;
-    public GameObject skin_Water_Wood;
-    public GameObject skin_Water_4;
-    public GameObject skin_Water_5;
-    public GameObject skin_Water_6;
+    public GameObject object_Rivergreen_Lv1;
+    public GameObject object_Rivergreen_Lv2;
+    public GameObject object_Rivergreen_Lv3;
+    public GameObject object_Rivergreen_Lv4;
+    public GameObject object_Rivergreen_Lv5;
 
-    public GameObject skin_Cave_Stone;
-    public GameObject skin_Cave_Stone_Brick;
-    public GameObject skin_Cave_Lava;
-    public GameObject skin_Cave_Rock;
-    public GameObject skin_Cave_Brick_Brown;
-    public GameObject skin_Cave_Brick_Black;
+    public GameObject object_Sandlands_Lv1;
+    public GameObject object_Sandlands_Lv2;
+    public GameObject object_Sandlands_Lv3;
+    public GameObject object_Sandlands_Lv4;
+    public GameObject object_Sandlands_Lv5;
 
-    public GameObject skin_Desert_Sand;
-    public GameObject skin_Desert_Clay;
-    public GameObject skin_Desert_Clay_Tiles;
-    public GameObject skin_Desert_Sandstone;
-    public GameObject skin_Desert_Sandstone_Swirl;
-    public GameObject skin_Desert_Quicksand;
+    public GameObject object_Frostfield_Lv1;
+    public GameObject object_Frostfield_Lv2;
+    public GameObject object_Frostfield_Lv3;
+    public GameObject object_Frostfield_Lv4;
+    public GameObject object_Frostfield_Lv5;
 
-    public GameObject skin_Winter_Snow;
-    public GameObject skin_Winter_Ice;
-    public GameObject skin_Winter_ColdWood;
-    public GameObject skin_Winter_FrozenGrass;
-    public GameObject skin_Winter_CrackedIce;
-    public GameObject skin_Winter_Crocked;
+    public GameObject object_Firevein_Lv1;
+    public GameObject object_Firevein_Lv2;
+    public GameObject object_Firevein_Lv3;
+    public GameObject object_Firevein_Lv4;
+    public GameObject object_Firevein_Lv5;
 
-    public GameObject skin_Swamp_SwampWater;
-    public GameObject skin_Swamp_Mud;
-    public GameObject skin_Swamp_SwampGrass;
-    public GameObject skin_Swamp_JungleWood;
-    public GameObject skin_Swamp_SwampWood;
-    public GameObject skin_Swamp_TempleBlock;
+    public GameObject object_Witchmire_Lv1;
+    public GameObject object_Witchmire_Lv2;
+    public GameObject object_Witchmire_Lv3;
+    public GameObject object_Witchmire_Lv4;
+    public GameObject object_Witchmire_Lv5;
 
-    public GameObject skin_Industrial_Metal;
-    public GameObject skin_Industrial_Brass;
-    public GameObject skin_Industrial_Gold;
-    public GameObject skin_Industrial_Casing_Metal;
-    public GameObject skin_Industria_Casingl_Brass;
-    public GameObject skin_Industrial_Casing_Gold;
+    public GameObject object_Metalworks_Lv1;
+    public GameObject object_Metalworks_Lv2;
+    public GameObject object_Metalworks_Lv3;
+    public GameObject object_Metalworks_Lv4;
+    public GameObject object_Metalworks_Lv5;
 
     #endregion
 
@@ -181,83 +169,71 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
         if (skin_Default)
             skin_Default.SetActive(false);
 
-        if (skin_Water_Grass)
-            skin_Water_Grass.SetActive(false);
-        if (skin_Water_Water)
-            skin_Water_Water.SetActive(false);
-        if (skin_Water_Wood)
-            skin_Water_Wood.SetActive(false);
-        if (skin_Water_4)
-            skin_Water_4.SetActive(false);
-        if (skin_Water_5)
-            skin_Water_5.SetActive(false);
-        if (skin_Water_6)
-            skin_Water_6.SetActive(false);
+        if (object_Rivergreen_Lv1)
+            object_Rivergreen_Lv1.SetActive(false);
+        if (object_Rivergreen_Lv2)
+            object_Rivergreen_Lv2.SetActive(false);
+        if (object_Rivergreen_Lv3)
+            object_Rivergreen_Lv3.SetActive(false);
+        if (object_Rivergreen_Lv4)
+            object_Rivergreen_Lv4.SetActive(false);
+        if (object_Rivergreen_Lv5)
+            object_Rivergreen_Lv5.SetActive(false);
 
-        if (skin_Cave_Stone)
-            skin_Cave_Stone.SetActive(false);
-        if (skin_Cave_Stone_Brick)
-            skin_Cave_Stone_Brick.SetActive(false);
-        if (skin_Cave_Lava)
-            skin_Cave_Lava.SetActive(false);
-        if (skin_Cave_Rock)
-            skin_Cave_Rock.SetActive(false);
-        if (skin_Cave_Brick_Brown)
-            skin_Cave_Brick_Brown.SetActive(false);
-        if (skin_Cave_Brick_Black)
-            skin_Cave_Brick_Black.SetActive(false);
+        if (object_Firevein_Lv1)
+            object_Firevein_Lv1.SetActive(false);
+        if (object_Firevein_Lv2)
+            object_Firevein_Lv2.SetActive(false);
+        if (object_Firevein_Lv3)
+            object_Firevein_Lv3.SetActive(false);
+        if (object_Firevein_Lv4)
+            object_Firevein_Lv4.SetActive(false);
+        if (object_Firevein_Lv5)
+            object_Firevein_Lv5.SetActive(false);
 
-        if (skin_Desert_Sand)
-            skin_Desert_Sand.SetActive(false);
-        if (skin_Desert_Clay)
-            skin_Desert_Clay.SetActive(false);
-        if (skin_Desert_Clay_Tiles)
-            skin_Desert_Clay_Tiles.SetActive(false);
-        if (skin_Desert_Sandstone)
-            skin_Desert_Sandstone.SetActive(false);
-        if (skin_Desert_Sandstone_Swirl)
-            skin_Desert_Sandstone_Swirl.SetActive(false);
-        if (skin_Desert_Quicksand)
-            skin_Desert_Quicksand.SetActive(false);
+        if (object_Sandlands_Lv1)
+            object_Sandlands_Lv1.SetActive(false);
+        if (object_Sandlands_Lv2)
+            object_Sandlands_Lv2.SetActive(false);
+        if (object_Sandlands_Lv3)
+            object_Sandlands_Lv3.SetActive(false);
+        if (object_Sandlands_Lv4)
+            object_Sandlands_Lv4.SetActive(false);
+        if (object_Sandlands_Lv5)
+            object_Sandlands_Lv5.SetActive(false);
 
-        if (skin_Winter_Snow)
-            skin_Winter_Snow.SetActive(false);
-        if (skin_Winter_Ice)
-            skin_Winter_Ice.SetActive(false);
-        if (skin_Winter_ColdWood)
-            skin_Winter_ColdWood.SetActive(false);
-        if (skin_Winter_FrozenGrass)
-            skin_Winter_FrozenGrass.SetActive(false);
-        if (skin_Winter_CrackedIce)
-            skin_Winter_CrackedIce.SetActive(false);
-        if (skin_Winter_Crocked)
-            skin_Winter_Crocked.SetActive(false);
+        if (object_Frostfield_Lv1)
+            object_Frostfield_Lv1.SetActive(false);
+        if (object_Frostfield_Lv2)
+            object_Frostfield_Lv2.SetActive(false);
+        if (object_Frostfield_Lv3)
+            object_Frostfield_Lv3.SetActive(false);
+        if (object_Frostfield_Lv4)
+            object_Frostfield_Lv4.SetActive(false);
+        if (object_Frostfield_Lv5)
+            object_Frostfield_Lv5.SetActive(false);
 
-        if (skin_Swamp_SwampWater)
-            skin_Swamp_SwampWater.SetActive(false);
-        if (skin_Swamp_Mud)
-            skin_Swamp_Mud.SetActive(false);
-        if (skin_Swamp_SwampGrass)
-            skin_Swamp_SwampGrass.SetActive(false);
-        if (skin_Swamp_JungleWood)
-            skin_Swamp_JungleWood.SetActive(false);
-        if (skin_Swamp_SwampWood)
-            skin_Swamp_SwampWood.SetActive(false);
-        if (skin_Swamp_TempleBlock)
-            skin_Swamp_TempleBlock.SetActive(false);
+        if (object_Witchmire_Lv1)
+            object_Witchmire_Lv1.SetActive(false);
+        if (object_Witchmire_Lv2)
+            object_Witchmire_Lv2.SetActive(false);
+        if (object_Witchmire_Lv3)
+            object_Witchmire_Lv3.SetActive(false);
+        if (object_Witchmire_Lv4)
+            object_Witchmire_Lv4.SetActive(false);
+        if (object_Witchmire_Lv5)
+            object_Witchmire_Lv5.SetActive(false);
 
-        if (skin_Industrial_Metal)
-            skin_Industrial_Metal.SetActive(false);
-        if (skin_Industrial_Brass)
-            skin_Industrial_Brass.SetActive(false);
-        if (skin_Industrial_Gold)
-            skin_Industrial_Gold.SetActive(false);
-        if (skin_Industrial_Casing_Metal)
-            skin_Industrial_Casing_Metal.SetActive(false);
-        if (skin_Industria_Casingl_Brass)
-            skin_Industria_Casingl_Brass.SetActive(false);
-        if (skin_Industrial_Casing_Gold)
-            skin_Industrial_Casing_Gold.SetActive(false);
+        if (object_Metalworks_Lv1)
+            object_Metalworks_Lv1.SetActive(false);
+        if (object_Metalworks_Lv2)
+            object_Metalworks_Lv2.SetActive(false);
+        if (object_Metalworks_Lv3)
+            object_Metalworks_Lv3.SetActive(false);
+        if (object_Metalworks_Lv4)
+            object_Metalworks_Lv4.SetActive(false);
+        if (object_Metalworks_Lv5)
+            object_Metalworks_Lv5.SetActive(false);
     }
     public void UpdatePlayerHatDisplay()
     {
@@ -304,8 +280,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         return skinWardrobeButton_Region1_Level4;
                     case 5:
                         return skinWardrobeButton_Region1_Level5;
-                    case 6:
-                        return skinWardrobeButton_Region1_Level6;
 
                     default:
                         return null;
@@ -323,8 +297,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         return skinWardrobeButton_Region2_Level4;
                     case 5:
                         return skinWardrobeButton_Region2_Level5;
-                    case 6:
-                        return skinWardrobeButton_Region2_Level6;
 
                     default:
                         return null;
@@ -342,8 +314,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         return skinWardrobeButton_Region3_Level4;
                     case 5:
                         return skinWardrobeButton_Region3_Level5;
-                    case 6:
-                        return skinWardrobeButton_Region3_Level6;
 
                     default:
                         return null;
@@ -361,8 +331,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         return skinWardrobeButton_Region4_Level4;
                     case 5:
                         return skinWardrobeButton_Region4_Level5;
-                    case 6:
-                        return skinWardrobeButton_Region4_Level6;
 
                     default:
                         return null;
@@ -380,8 +348,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         return skinWardrobeButton_Region5_Level4;
                     case 5:
                         return skinWardrobeButton_Region5_Level5;
-                    case 6:
-                        return skinWardrobeButton_Region5_Level6;
 
                     default:
                         return null;
@@ -399,8 +365,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         return skinWardrobeButton_Region6_Level4;
                     case 5:
                         return skinWardrobeButton_Region6_Level5;
-                    case 6:
-                        return skinWardrobeButton_Region6_Level6;
 
                     default:
                         return null;
@@ -444,83 +408,71 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
             case SkinType.None:
                 return skin_Default;
 
-            case SkinType.Water_Grass:
-                return skin_Water_Grass;
-            case SkinType.Water_Water:
-                return skin_Water_Water;
-            case SkinType.Water_Wood:
-                return skin_Water_Wood;
-            case SkinType.Water_4:
-                return skin_Water_4;
-            case SkinType.Water_5:
-                return skin_Water_5;
-            case SkinType.Water_6:
-                return skin_Water_6;
+            case SkinType.Rivergreen_Lv1:
+                return object_Rivergreen_Lv1;
+            case SkinType.Rivergreen_Lv2:
+                return object_Rivergreen_Lv2;
+            case SkinType.Rivergreen_Lv3:
+                return object_Rivergreen_Lv3;
+            case SkinType.Rivergreen_Lv4:
+                return object_Rivergreen_Lv4;
+            case SkinType.Rivergreen_Lv5:
+                return object_Rivergreen_Lv5;
 
-            case SkinType.Cave_Stone:
-                return skin_Cave_Stone;
-            case SkinType.Cave_Stone_Brick:
-                return skin_Cave_Stone_Brick;
-            case SkinType.Cave_Lava:
-                return skin_Cave_Lava;
-            case SkinType.Cave_Rock:
-                return skin_Cave_Rock;
-            case SkinType.Cave_Brick_Brown:
-                return skin_Cave_Brick_Brown;
-            case SkinType.Cave_Brick_Black:
-                return skin_Cave_Brick_Black;
+            case SkinType.Firevein_Lv1:
+                return object_Firevein_Lv1;
+            case SkinType.Firevein_Lv2:
+                return object_Firevein_Lv2;
+            case SkinType.Firevein_Lv3:
+                return object_Firevein_Lv3;
+            case SkinType.Firevein_Lv4:
+                return object_Firevein_Lv4;
+            case SkinType.Firevein_Lv5:
+                return object_Firevein_Lv5;
 
-            case SkinType.Desert_Sand:
-                return skin_Desert_Sand;
-            case SkinType.Desert_Clay:
-                return skin_Desert_Clay;
-            case SkinType.Desert_Clay_Tiles:
-                return skin_Desert_Clay_Tiles;
-            case SkinType.Desert_Sandstone:
-                return skin_Desert_Sandstone;
-            case SkinType.Desert_Sandstone_Swirl:
-                return skin_Desert_Sandstone_Swirl;
-            case SkinType.Desert_Quicksand:
-                return skin_Desert_Quicksand;
+            case SkinType.Sandlands_Lv1:
+                return object_Sandlands_Lv1;
+            case SkinType.Sandlands_Lv2:
+                return object_Sandlands_Lv2;
+            case SkinType.Sandlands_Lv3:
+                return object_Sandlands_Lv3;
+            case SkinType.Sandlands_Lv4:
+                return object_Sandlands_Lv4;
+            case SkinType.Sandlands_Lv5:
+                return object_Sandlands_Lv5;
 
-            case SkinType.Winter_Snow:
-                return skin_Winter_Snow;
-            case SkinType.Winter_Ice:
-                return skin_Winter_Ice;
-            case SkinType.Winter_ColdWood:
-                return skin_Winter_ColdWood;
-            case SkinType.Winter_FrozenGrass:
-                return skin_Winter_FrozenGrass;
-            case SkinType.Winter_CrackedIce:
-                return skin_Winter_CrackedIce;
-            case SkinType.Winter_Crocked:
-                return skin_Winter_Crocked;
+            case SkinType.Frostfield_Lv1:
+                return object_Frostfield_Lv1;
+            case SkinType.Frostfield_Lv2:
+                return object_Frostfield_Lv2;
+            case SkinType.Frostfield_Lv3:
+                return object_Frostfield_Lv3;
+            case SkinType.Frostfield_Lv4:
+                return object_Frostfield_Lv4;
+            case SkinType.Frostfield_Lv5:
+                return object_Frostfield_Lv5;
 
-            case SkinType.Swamp_SwampWater:
-                return skin_Swamp_SwampWater;
-            case SkinType.Swamp_Mud:
-                return skin_Swamp_Mud;
-            case SkinType.Swamp_SwampGrass:
-                return skin_Swamp_SwampGrass;
-            case SkinType.Swamp_JungleWood:
-                return skin_Swamp_JungleWood;
-            case SkinType.Swamp_SwampWood:
-                return skin_Swamp_SwampWood;
-            case SkinType.Swamp_TempleBlock:
-                return skin_Swamp_TempleBlock;
+            case SkinType.Witchmire_Lv1:
+                return object_Witchmire_Lv1;
+            case SkinType.Witchmire_Lv2:
+                return object_Witchmire_Lv2;
+            case SkinType.Witchmire_Lv3:
+                return object_Witchmire_Lv3;
+            case SkinType.Witchmire_Lv4:
+                return object_Witchmire_Lv4;
+            case SkinType.Witchmire_Lv5:
+                return object_Witchmire_Lv5;
 
-            case SkinType.Industrial_Metal:
-                return skin_Industrial_Metal;
-            case SkinType.Industrial_Brass:
-                return skin_Industrial_Brass;
-            case SkinType.Industrial_Gold:
-                return skin_Industrial_Gold;
-            case SkinType.Industrial_Casing_Metal:
-                return skin_Industrial_Casing_Metal;
-            case SkinType.Industria_Casingl_Brass:
-                return skin_Industria_Casingl_Brass;
-            case SkinType.Industrial_Casing_Gold:
-                return skin_Industrial_Casing_Gold;
+            case SkinType.Metalworks_Lv1:
+                return object_Metalworks_Lv1;
+            case SkinType.Metalworks_Lv2:
+                return object_Metalworks_Lv2;
+            case SkinType.Metalworks_Lv3:
+                return object_Metalworks_Lv3;
+            case SkinType.Metalworks_Lv4:
+                return object_Metalworks_Lv4;
+            case SkinType.Metalworks_Lv5:
+                return object_Metalworks_Lv5;
 
             case SkinType.Default:
                 return skin_Default;

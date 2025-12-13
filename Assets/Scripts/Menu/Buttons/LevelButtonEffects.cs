@@ -51,13 +51,13 @@ public class LevelButtonEffects : MonoBehaviour
 
         if (canBePlayerCount >= GetComponent<LoadLevel>().levelsToBeFinished.Count)
         {
-            print("1000. Can play level: " + gameObject.name);
+            //print("1000. Can play level: " + gameObject.name);
             canBePlayed = true;
             image.color = color_CAN;
         }
         else
         {
-            print("2000. Cannot play level: " + gameObject.name);
+            //print("2000. Cannot play level: " + gameObject.name);
             canBePlayed = false;
             image.color = color_CANNOT;
         }

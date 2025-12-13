@@ -232,118 +232,100 @@ public class Interactable_Pickup : MonoBehaviour
             case SkinType.None:
                 break;
 
-            case SkinType.Water_Grass:
+            case SkinType.Rivergreen_Lv1:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level1 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Water_Water:
+            case SkinType.Rivergreen_Lv2:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level2 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Water_Wood:
+            case SkinType.Rivergreen_Lv3:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level3 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Water_4:
+            case SkinType.Rivergreen_Lv4:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level4 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Water_5:
+            case SkinType.Rivergreen_Lv5:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level5 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Water_6:
-                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level6 = WardrobeSkinState.Available;
-                break;
 
-            case SkinType.Cave_Stone:
+            case SkinType.Firevein_Lv1:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level1 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Cave_Stone_Brick:
+            case SkinType.Firevein_Lv2:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level2 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Cave_Lava:
+            case SkinType.Firevein_Lv3:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level3 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Cave_Rock:
+            case SkinType.Firevein_Lv4:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level4 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Cave_Brick_Brown:
+            case SkinType.Firevein_Lv5:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level5 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Cave_Brick_Black:
-                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level6 = WardrobeSkinState.Available;
-                break;
 
-            case SkinType.Desert_Sand:
+            case SkinType.Sandlands_Lv1:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level1 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Desert_Clay:
+            case SkinType.Sandlands_Lv2:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level2 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Desert_Clay_Tiles:
+            case SkinType.Sandlands_Lv3:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level3 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Desert_Sandstone:
+            case SkinType.Sandlands_Lv4:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level4 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Desert_Sandstone_Swirl:
+            case SkinType.Sandlands_Lv5:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level5 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Desert_Quicksand:
-                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level6 = WardrobeSkinState.Available;
-                break;
 
-            case SkinType.Winter_Snow:
+            case SkinType.Frostfield_Lv1:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level1 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Winter_Ice:
+            case SkinType.Frostfield_Lv2:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level2 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Winter_ColdWood:
+            case SkinType.Frostfield_Lv3:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level3 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Winter_FrozenGrass:
+            case SkinType.Frostfield_Lv4:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level4 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Winter_CrackedIce:
+            case SkinType.Frostfield_Lv5:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level5 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Winter_Crocked:
-                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level6 = WardrobeSkinState.Available;
-                break;
 
-            case SkinType.Swamp_SwampWater:
+            case SkinType.Witchmire_Lv1:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level1 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Swamp_Mud:
+            case SkinType.Witchmire_Lv2:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level2 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Swamp_SwampGrass:
+            case SkinType.Witchmire_Lv3:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level3 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Swamp_JungleWood:
+            case SkinType.Witchmire_Lv4:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level4 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Swamp_SwampWood:
+            case SkinType.Witchmire_Lv5:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level5 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Swamp_TempleBlock:
-                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level6 = WardrobeSkinState.Available;
-                break;
 
-            case SkinType.Industrial_Metal:
+            case SkinType.Metalworks_Lv1:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level1 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Industrial_Brass:
+            case SkinType.Metalworks_Lv2:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level2 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Industrial_Gold:
+            case SkinType.Metalworks_Lv3:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level3 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Industrial_Casing_Metal:
+            case SkinType.Metalworks_Lv4:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level4 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Industria_Casingl_Brass:
+            case SkinType.Metalworks_Lv5:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level5 = WardrobeSkinState.Available;
-                break;
-            case SkinType.Industrial_Casing_Gold:
-                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level6 = WardrobeSkinState.Available;
                 break;
 
             case SkinType.Default:

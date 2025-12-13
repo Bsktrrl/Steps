@@ -8,8 +8,6 @@ public class StepsHUD : Singleton<StepsHUD>
 {
     [SerializeField] List<GameObject> stepsIconList = new List<GameObject>();
 
-    float iconTransparencyValue = 0.4f;
-
 
     //--------------------
 
