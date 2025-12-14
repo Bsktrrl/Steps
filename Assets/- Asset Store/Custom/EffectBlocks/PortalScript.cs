@@ -27,13 +27,6 @@ public class PortalScript : MonoBehaviour
 
     void Update()
     {
-        //Activate teleport when pressing '1'
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            StartCoroutine(teleport());
-            teleportParticle.Play();
-        }
-
         //Light flickers when not teleporting and lerps to teleportIntensity when teleporting
         if (!teleporting)
         {
@@ -43,6 +36,12 @@ public class PortalScript : MonoBehaviour
         {
             light.intensity = Mathf.Lerp(light.intensity, teleportIntensity, lightSpeed * Time.deltaTime);
         }
+    }
+
+    public void ActivatePortalEffect()
+    {
+        StartCoroutine(teleport());
+        teleportParticle.Play();
     }
 
     //Light flicker intensity

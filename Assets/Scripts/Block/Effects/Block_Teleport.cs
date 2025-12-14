@@ -189,6 +189,7 @@ public class Block_Teleport : MonoBehaviour
 
         Action_StartTeleport?.Invoke();
 
+        ActivatePortalsEffect();
         Player_Animations.Instance.Trigger_TeleportAnimation();
         yield return new WaitForSeconds(Player_Animations.Instance.effectChargeTime_Pickup_Teleport);
 
@@ -212,6 +213,14 @@ public class Block_Teleport : MonoBehaviour
         Action_EndTeleport?.Invoke();
 
         Movement.Instance.IceGlideMovement(true);
+    }
+    void ActivatePortalsEffect()
+    {
+        if (GetComponentInChildren<PortalScript>())
+        GetComponentInChildren<PortalScript>().ActivatePortalEffect();
+
+        if (newLandingSpot && newLandingSpot.GetComponentInChildren<PortalScript>())
+            newLandingSpot.GetComponentInChildren<PortalScript>().ActivatePortalEffect();
     }
 
     void StartTeleport_Action()
