@@ -20,8 +20,8 @@ public class GlueplantAnimScript : MonoBehaviour
     }
 
     float animWaitTime = 1.75f;
-    float minWaitTime = 5;
-    float maxWaitTime = 15;
+    float minWaitTime = 10;
+    float maxWaitTime = 25;
 
     void Start()
     {
