@@ -15,6 +15,7 @@ __________________
 
 3.4. Ice glide bug
 - Fix ice glide audio bug
+- Fix so that when icegliding an can swim, stop before the water as it was a normal ledge
 
 
 
@@ -31,16 +32,6 @@ __________________
 
 
 
-
---- PRIORITY TO SPILLEXPO
-6. Rotating camera rotation Edge-movement bug (fixed?)
-
-- Make Rivergreen Level 2: Water/Root - Swimming (add fog)
-	- Ladder NumberGlitch (check "NumberDisplay"-script)
-
-
-
-
 --- OTHER STUFF
 
 
@@ -52,8 +43,7 @@ __________________
 5. When doing CeilingGrabRotation back to the noraml camera, it is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
 6. Add "MovingBlock"-EffectBlock
 7. Falling onto a fallingblock prevents movement
-9. IceGlide doesn't work with pusher
-10. Pusher don't show movement numbers on blocks when the player have 0 movement, even if it is pushed. The Player can move in the correct direction, thow.
+
 
 
 
