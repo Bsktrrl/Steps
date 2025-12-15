@@ -340,6 +340,8 @@ public class Player_Animations : Singleton<Player_Animations>
 
         anim.speed = 1.0f;
         anim.SetTrigger(AnimationManager.Instance.effect_Teleport);
+
+        EffectManager.Instance.PerformTeleportEffect();
     }
     public void Trigger_RespawnAnimation()
     {

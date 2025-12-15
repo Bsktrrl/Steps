@@ -41,7 +41,7 @@ public class PortalScript : MonoBehaviour
     public void ActivatePortalEffect()
     {
         StartCoroutine(teleport());
-        teleportParticle.Play();
+        //teleportParticle.Play();
     }
 
     //Light flicker intensity

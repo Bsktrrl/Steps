@@ -34,6 +34,9 @@ public class EffectManager : Singleton<EffectManager>
     float AscendEffect_Delay = 0.4f;
     float DescendEffect_Delay = 0.5f;
 
+    float PickupEffect_Delay = 0.2f;
+    float TeleportEffect_Delay = 0f;
+
 
     //--------------------
 
@@ -47,6 +50,11 @@ public class EffectManager : Singleton<EffectManager>
         Movement.Action_isAscending += Set_isAscending;
         Movement.Action_isDescending += Set_isDescending;
         Movement.Action_isGrapplingHooking += Set_isGrapplingHooking;
+
+        Interactable_Pickup.Action_EssencePickupGot += PerformPickupEffect;
+        Interactable_Pickup.Action_StepsUpPickupGot += PerformPickupEffect;
+        Interactable_Pickup.Action_SkinPickupGot += PerformPickupEffect;
+        Interactable_Pickup.Action_AbilityPickupGot += PerformPickupEffect;
     }
     private void OnDisable()
     {
@@ -184,7 +192,7 @@ public class EffectManager : Singleton<EffectManager>
 
     #endregion
 
-    #region Dash/Ascend/Descend effect
+    #region Other effect
 
     public void PerformDashEffect()
     {
@@ -193,12 +201,20 @@ public class EffectManager : Singleton<EffectManager>
     public void PerformAscendEffect()
     {
         StartCoroutine(Effect_Delay(hitEffect_Dash_Object, AscendEffect_Delay));
-        print("1. Ascend");
     }
     public void PerformDescendEffect()
     {
         StartCoroutine(Effect_Delay(hitEffect_Dash_Object, DescendEffect_Delay));
-        print("2. Descend");
+    }
+
+    public void PerformPickupEffect()
+    {
+        StartCoroutine(Effect_Delay(hitEffect_Pickup_Object, PickupEffect_Delay));
+    }
+    public void PerformTeleportEffect()
+    {
+        StartCoroutine(Effect_Delay(hitEffect_Teleport_Object, TeleportEffect_Delay));
+        print("1. Teleport");
     }
 
     IEnumerator Effect_Delay(GameObject effectObject, float waitTime)
