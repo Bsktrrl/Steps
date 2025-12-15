@@ -1175,7 +1175,11 @@ public class Movement : Singleton<Movement>
             else
                 Player_GraplingHook.Instance.redDotSceneObject.transform.SetPositionAndRotation(Player_GraplingHook.Instance.endPoint - dir, Quaternion.LookRotation(dir));
 
+            Player_GraplingHook.Instance.hitEffect.transform.SetPositionAndRotation(Player_GraplingHook.Instance.redDotSceneObject.transform.position, Quaternion.Euler(-90, 0, 0));
+            Player_GraplingHook.Instance.hitEffect.GetComponentInChildren<HitParticleScript>().particle.Play();
+
             Player_GraplingHook.Instance.redDotSceneObject.SetActive(true);
+
             Player_GraplingHook.Instance.RunLineReader();
 
             UpdateBlocksOnTheGrapplingWay(moveOption);

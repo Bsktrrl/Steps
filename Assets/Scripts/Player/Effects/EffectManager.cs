@@ -5,6 +5,8 @@ using static UnityEngine.ParticleSystem;
 
 public class EffectManager : Singleton<EffectManager>
 {
+    [SerializeField] GameObject hitEffectObject;
+
     float Walk_HitGroundEffect_Delay = 0f;
     float pickupSmall_HitGroundEffect_Delay = 0.15f;
     float pickupBig_HitGroundEffect_Delay = 0.18f;
@@ -163,7 +165,7 @@ public class EffectManager : Singleton<EffectManager>
         }
         else
         {
-            HitParticleScript.Instance.particle.Play();
+            hitEffectObject.GetComponent<HitParticleScript>().particle.Play();
         }
 
         print("1. Effect_HitGround");

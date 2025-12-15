@@ -2,12 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HitParticleScript : Singleton<HitParticleScript>
+public class HitParticleScript : MonoBehaviour
 {
     public ParticleSystem particle;
-
-    void Start()
-    {
-        particle = GetComponent<ParticleSystem>();
-    }
 }

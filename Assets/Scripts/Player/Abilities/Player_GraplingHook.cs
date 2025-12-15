@@ -11,6 +11,7 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
     [Header("Red Dot Object")]
     [SerializeField] GameObject redDot_Parent;
     [SerializeField] GameObject redDot;
+    public GameObject hitEffect;
     public GameObject redDotSceneObject;
 
     //RaycastHit hit;
