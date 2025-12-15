@@ -6,7 +6,8 @@ public class AnimationManager : Singleton<AnimationManager>
 {
     public string walk;
 
-    public string ability_AscendDescend;
+    public string ability_Ascend;
+    public string ability_Descend;
     public string ability_Dash;
     public string ability_Jump;
     public string ability_CeilingGrab;

@@ -120,7 +120,8 @@ public class Player_Animations : Singleton<Player_Animations>
 
         ForceStopAllAnimations("", AnimationManager.Instance.walk);
 
-        ForceStopAllAnimations(AnimationManager.Instance.ability_AscendDescend, "");
+        ForceStopAllAnimations(AnimationManager.Instance.ability_Ascend, "");
+        ForceStopAllAnimations(AnimationManager.Instance.ability_Descend, "");
         ForceStopAllAnimations(AnimationManager.Instance.ability_Dash, "");
         ForceStopAllAnimations(AnimationManager.Instance.ability_Jump, "");
         ForceStopAllAnimations(AnimationManager.Instance.ability_CeilingGrab, "");
@@ -225,12 +226,21 @@ public class Player_Animations : Singleton<Player_Animations>
     //--------------------
 
 
-    public void Trigger_AscendDescendAnimation()
+    public void Trigger_AscendAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
         anim.speed = 1.0f;
-        anim.SetTrigger(AnimationManager.Instance.ability_AscendDescend);
+        anim.SetTrigger(AnimationManager.Instance.ability_Ascend);
+        EffectManager.Instance.PerformAscendEffect();
+    }
+    public void Trigger_DescendAnimation()
+    {
+        if (Movement.Instance.isMoving) { return; }
+
+        anim.speed = 1.0f;
+        anim.SetTrigger(AnimationManager.Instance.ability_Descend);
+        EffectManager.Instance.PerformDescendEffect();
     }
     public void Trigger_DashAnimation()
     {
@@ -239,6 +249,7 @@ public class Player_Animations : Singleton<Player_Animations>
         anim.speed = 1.0f;
         //anim.SetLayerWeight(1, 1);
         anim.SetTrigger(AnimationManager.Instance.ability_Dash);
+        EffectManager.Instance.PerformDashEffect();
     }
     public void Trigger_JumpAnimation()
     {

@@ -1583,7 +1583,7 @@ public class Movement : Singleton<Movement>
             PlayerCameraOcclusionController.Instance.CameraZoom(true);
 
             MapManager.Instance.ascendCounter++;
-            Player_Animations.Instance.Trigger_AscendDescendAnimation();
+            Player_Animations.Instance.Trigger_AscendAnimation();
             PerformMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
             Action_isAscending?.Invoke();
             return true;
@@ -1599,7 +1599,7 @@ public class Movement : Singleton<Movement>
             PlayerCameraOcclusionController.Instance.CameraZoom(true);
 
             MapManager.Instance.descendCounter++;
-            Player_Animations.Instance.Trigger_AscendDescendAnimation();
+            Player_Animations.Instance.Trigger_DescendAnimation();
             PerformMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
             Action_isDescending?.Invoke();
             return true;

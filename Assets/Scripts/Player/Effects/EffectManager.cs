@@ -5,8 +5,14 @@ using static UnityEngine.ParticleSystem;
 
 public class EffectManager : Singleton<EffectManager>
 {
-    [SerializeField] GameObject hitEffectObject;
+    [SerializeField] GameObject hitEffect_Walk_Object;
+    [SerializeField] GameObject hitEffect_Dash_Object;
+    [SerializeField] GameObject hitEffect_Respawn_Object;
+    [SerializeField] GameObject hitEffect_Fire_Object;
+    [SerializeField] GameObject hitEffect_Pickup_Object;
+    [SerializeField] GameObject hitEffect_Teleport_Object;
 
+    [Header("Walk HitGround")]
     float Walk_HitGroundEffect_Delay = 0f;
     float pickupSmall_HitGroundEffect_Delay = 0.15f;
     float pickupBig_HitGroundEffect_Delay = 0.18f;
@@ -22,6 +28,11 @@ public class EffectManager : Singleton<EffectManager>
     bool isAscending;
     bool isDescending;
     bool isGrapplingHooking;
+
+    [Header("Other effects")]
+    float DashEffect_Delay = 0.4f;
+    float AscendEffect_Delay = 0.4f;
+    float DescendEffect_Delay = 0.5f;
 
 
     //--------------------
@@ -51,6 +62,8 @@ public class EffectManager : Singleton<EffectManager>
 
     //--------------------
 
+
+    #region HitEffect
 
     void Set_isDashing()
     {
@@ -165,9 +178,38 @@ public class EffectManager : Singleton<EffectManager>
         }
         else
         {
-            hitEffectObject.GetComponent<HitParticleScript>().particle.Play();
+            hitEffect_Walk_Object.GetComponent<HitParticleScript>().particle.Play();
         }
-
-        print("1. Effect_HitGround");
     }
+
+    #endregion
+
+    #region Dash/Ascend/Descend effect
+
+    public void PerformDashEffect()
+    {
+        StartCoroutine(Effect_Delay(hitEffect_Dash_Object, DashEffect_Delay));
+    }
+    public void PerformAscendEffect()
+    {
+        StartCoroutine(Effect_Delay(hitEffect_Dash_Object, AscendEffect_Delay));
+        print("1. Ascend");
+    }
+    public void PerformDescendEffect()
+    {
+        StartCoroutine(Effect_Delay(hitEffect_Dash_Object, DescendEffect_Delay));
+        print("2. Descend");
+    }
+
+    IEnumerator Effect_Delay(GameObject effectObject, float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        if (effectObject && effectObject.GetComponent<HitParticleScript>())
+        {
+            effectObject.GetComponent<HitParticleScript>().particle.Play();
+        }
+    }
+
+    #endregion
 }
