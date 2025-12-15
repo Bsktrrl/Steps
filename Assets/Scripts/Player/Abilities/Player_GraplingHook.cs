@@ -78,7 +78,7 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
         lineRenderer.SetPosition(0, transform.position - (lookDir * 0.4f));
 
         //Beam End
-        lineRenderer.SetPosition(1, endPoint);
+        lineRenderer.SetPosition(1, redDotSceneObject.transform.position);
     }
     public void EndLineRenderer()
     {
