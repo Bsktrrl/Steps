@@ -215,7 +215,7 @@ public class EffectBlockInfo : MonoBehaviour
     }
     void CheckForEffectBlockUpdate_Moveable()
     {
-        if (!effectBlockManager.effectBlock_Moveable_Prefab) { return; }
+        if (effectBlockManager && effectBlockManager.effectBlock_Moveable_Prefab == null) { return; }
         if (!GetComponent<Block_Moveable>()) { return; }
         if (effectBlock_Moveable_isAdded) { return; }
 

@@ -281,10 +281,11 @@ public class Player_Animations : Singleton<Player_Animations>
     }
     IEnumerator RunPickupAnimation_Small()
     {
-        print("1. Pickup - Small");
+        //print("1. Pickup - Small");
 
         yield return new WaitForSeconds(0.1f);
         Trigger_PickupSmallAnimation();
+        EffectManager.Instance.PickupSmallHitGorund_Effect();
         yield return new WaitForSeconds(effectChargeTime_Pickup_Small);
 
         PlayerManager.Instance.UnpauseGame();
@@ -297,10 +298,11 @@ public class Player_Animations : Singleton<Player_Animations>
     }
     IEnumerator RunPickupAnimation_Big()
     {
-        print("2. Pickup - Big");
+        //print("2. Pickup - Big");
 
         yield return new WaitForSeconds(0.1f);
         Trigger_PickupBigAnimation();
+        EffectManager.Instance.PickupSmallHitGorund_Effect();
         yield return new WaitForSeconds(effectChargeTime_Pickup_Small);
 
         PlayerManager.Instance.UnpauseGame();

@@ -24,6 +24,12 @@ public class Movement : Singleton<Movement>
 
     public static event Action Action_PickupAnimation_Complete;
 
+    public static event Action Action_isDashing;
+    public static event Action Action_isJumping;
+    public static event Action Action_isAscending;
+    public static event Action Action_isDescending;
+    public static event Action Action_isGrapplingHooking;
+
     #region Variables
 
     [Header("States")]
@@ -1548,6 +1554,7 @@ public class Movement : Singleton<Movement>
                 PerformMovement(moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down, abilitySpeed + grapplingLength);
 
             MapManager.Instance.grapplingHookCounter++;
+            Action_isGrapplingHooking?.Invoke();
 
             moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
             Block_IsNot_Target(moveToBlock_GrapplingHook);
@@ -1574,6 +1581,7 @@ public class Movement : Singleton<Movement>
             MapManager.Instance.ascendCounter++;
             Player_Animations.Instance.Trigger_AscendDescendAnimation();
             PerformMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
+            Action_isAscending?.Invoke();
             return true;
         }
         else
@@ -1589,6 +1597,7 @@ public class Movement : Singleton<Movement>
             MapManager.Instance.descendCounter++;
             Player_Animations.Instance.Trigger_AscendDescendAnimation();
             PerformMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
+            Action_isDescending?.Invoke();
             return true;
         }
         else
@@ -1686,24 +1695,28 @@ public class Movement : Singleton<Movement>
             MapManager.Instance.dashCounter++;
             Player_Animations.Instance.Trigger_DashAnimation();
             PerformMovement(moveToBlock_Dash_Forward, MovementStates.Moving, abilitySpeed, ref isDashing);
+            Action_isDashing?.Invoke();
         }
         else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Dash_Back.targetBlock && moveToBlock_Dash_Back.canMoveTo)
         {
             MapManager.Instance.dashCounter++;
             Player_Animations.Instance.Trigger_DashAnimation();
             PerformMovement(moveToBlock_Dash_Back, MovementStates.Moving, abilitySpeed, ref isDashing);
+            Action_isDashing?.Invoke();
         }
         else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Dash_Left.targetBlock && moveToBlock_Dash_Left.canMoveTo)
         {
             MapManager.Instance.dashCounter++;
             Player_Animations.Instance.Trigger_DashAnimation();
             PerformMovement(moveToBlock_Dash_Left, MovementStates.Moving, abilitySpeed, ref isDashing);
+            Action_isDashing?.Invoke();
         }
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Dash_Right.targetBlock && moveToBlock_Dash_Right.canMoveTo)
         {
             MapManager.Instance.dashCounter++;
             Player_Animations.Instance.Trigger_DashAnimation();
             PerformMovement(moveToBlock_Dash_Right, MovementStates.Moving, abilitySpeed, ref isDashing);
+            Action_isDashing?.Invoke();
         }
 
         //Perform Jump Movement, if possible
@@ -1712,24 +1725,28 @@ public class Movement : Singleton<Movement>
             MapManager.Instance.jumpCounter++;
             Player_Animations.Instance.Trigger_JumpAnimation();
             PerformMovement(moveToBlock_Jump_Forward, MovementStates.Moving, abilitySpeed, ref isJumping);
+            Action_isJumping?.Invoke();
         }
         else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Jump_Back.targetBlock && moveToBlock_Jump_Back.canMoveTo)
         {
             MapManager.Instance.jumpCounter++;
             Player_Animations.Instance.Trigger_JumpAnimation();
             PerformMovement(moveToBlock_Jump_Back, MovementStates.Moving, abilitySpeed, ref isJumping);
+            Action_isJumping?.Invoke();
         }
         else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Jump_Left.targetBlock && moveToBlock_Jump_Left.canMoveTo)
         {
             MapManager.Instance.jumpCounter++;
             Player_Animations.Instance.Trigger_JumpAnimation();
             PerformMovement(moveToBlock_Jump_Left, MovementStates.Moving, abilitySpeed, ref isJumping);
+            Action_isJumping?.Invoke();
         }
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Jump_Right.targetBlock && moveToBlock_Jump_Right.canMoveTo)
         {
             MapManager.Instance.jumpCounter++;
             Player_Animations.Instance.Trigger_JumpAnimation();
             PerformMovement(moveToBlock_Jump_Right, MovementStates.Moving, abilitySpeed, ref isJumping);
+            Action_isJumping?.Invoke();
         }
 
         //Perform SwiftSwim Movement, if possible

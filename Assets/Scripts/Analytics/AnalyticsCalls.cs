@@ -24,7 +24,7 @@ public class AnalyticsCalls
 
             AnalyticsService.Instance.CustomData("coin_pickup", eventData);
 
-            Debug.Log($"Coin pickup event sent: Coin {pickupNumber} in {levelName}");
+            //Debug.Log($"Coin pickup event sent: Coin {pickupNumber} in {levelName}");
         }
         else
         {
