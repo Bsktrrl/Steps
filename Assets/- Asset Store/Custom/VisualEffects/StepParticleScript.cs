@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class StepParticleScript : MonoBehaviour
 {
-    ParticleSystem particle;
+    [SerializeField] ParticleSystem particle;
 
-    void Start()
-    {
-        particle = GetComponent<ParticleSystem>();
-    }
+
+    //--------------------
+
 
     void Update()
     {
         gameObject.transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
     }
+
+
+    //--------------------
+
 
     public void Perform_CheckpointEffect()
     {

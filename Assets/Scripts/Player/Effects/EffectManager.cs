@@ -5,6 +5,8 @@ using static UnityEngine.ParticleSystem;
 
 public class EffectManager : Singleton<EffectManager>
 {
+    [SerializeField] GameObject effect_Checkpoint_Object;
+
     [SerializeField] GameObject hitEffect_Walk_Object;
     [SerializeField] GameObject hitEffect_Dash_Object;
     [SerializeField] GameObject hitEffect_Respawn_Object;
@@ -316,6 +318,11 @@ public class EffectManager : Singleton<EffectManager>
     #endregion
 
     #region Other effect
+
+    public void PerformCheckpointEffect()
+    {
+        effect_Checkpoint_Object.GetComponent<StepParticleScript>().Perform_CheckpointEffect();
+    }
 
     public void PerformDashEffect()
     {
