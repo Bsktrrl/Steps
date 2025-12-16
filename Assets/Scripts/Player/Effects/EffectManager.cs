@@ -12,6 +12,15 @@ public class EffectManager : Singleton<EffectManager>
     [SerializeField] GameObject hitEffect_Pickup_Object;
     [SerializeField] GameObject hitEffect_Teleport_Object;
 
+    [SerializeField] GameObject hitEffect_Splash_Water_Object;
+    [SerializeField] GameObject hitEffect_Splash_Long_Water_Object;
+    [SerializeField] GameObject hitEffect_Splash_SwampWater_Object;
+    [SerializeField] GameObject hitEffect_Splash_Long_SwampWater_Object;
+    [SerializeField] GameObject hitEffect_Splash_Mud_Object;
+    [SerializeField] GameObject hitEffect_Splash_Long_Mud_Object;
+    [SerializeField] GameObject hitEffect_Splash_Quicksand_Object;
+    [SerializeField] GameObject hitEffect_Splash_Long_Quicksand_Object;
+
     [Header("Walk HitGround")]
     float Walk_HitGroundEffect_Delay = 0f;
     float pickupSmall_HitGroundEffect_Delay = 0.15f;
@@ -59,6 +68,8 @@ public class EffectManager : Singleton<EffectManager>
         Player_KeyInputs.Action_RespawnHold += StartRespawn;
         Player_KeyInputs.Action_RespawnCanceled += EndRespawn;
         Movement.Action_RespawnPlayerEarly += EndRespawn;
+
+        Movement.Action_isSwitchingBlocks += SplashEffect;
     }
     private void OnDisable()
     {
@@ -214,6 +225,77 @@ public class EffectManager : Singleton<EffectManager>
     public void EndRespawn()
     {
         hitEffect_Respawn_Object.GetComponent<RespawnEffectScript>().particle.Stop();
+    }
+
+    #endregion
+
+    #region Splash
+
+    public void SplashEffect()
+    {
+        //Water
+        if (Movement.Instance.blockStandingOn_Previous && Movement.Instance.blockStandingOn_Previous.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+        {
+            if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+            {
+                hitEffect_Splash_Long_Water_Object.GetComponent<HitParticleScript>().particle.Play();
+            }
+        }
+        else
+        {
+            if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+            {
+                hitEffect_Splash_Water_Object.GetComponent<HitParticleScript>().particle.Play();
+            }
+        }
+
+        //SwampWater
+        if (Movement.Instance.blockStandingOn_Previous && Movement.Instance.blockStandingOn_Previous.GetComponent<BlockInfo>().blockElement == BlockElement.SwampWater)
+        {
+            if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.SwampWater)
+            {
+                hitEffect_Splash_Long_SwampWater_Object.GetComponent<HitParticleScript>().particle.Play();
+            }
+        }
+        else
+        {
+            if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.SwampWater)
+            {
+                hitEffect_Splash_SwampWater_Object.GetComponent<HitParticleScript>().particle.Play();
+            }
+        }
+
+        //Mud
+        if (Movement.Instance.blockStandingOn_Previous && Movement.Instance.blockStandingOn_Previous.GetComponent<BlockInfo>().blockElement == BlockElement.Mud)
+        {
+            if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Mud)
+            {
+                hitEffect_Splash_Long_Mud_Object.GetComponent<HitParticleScript>().particle.Play();
+            }
+        }
+        else
+        {
+            if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Mud)
+            {
+                hitEffect_Splash_Mud_Object.GetComponent<HitParticleScript>().particle.Play();
+            }
+        }
+
+        //Quicksand
+        if (Movement.Instance.blockStandingOn_Previous && Movement.Instance.blockStandingOn_Previous.GetComponent<BlockInfo>().blockElement == BlockElement.Quicksand)
+        {
+            if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Quicksand)
+            {
+                hitEffect_Splash_Long_Quicksand_Object.GetComponent<HitParticleScript>().particle.Play();
+            }
+        }
+        else
+        {
+            if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Quicksand)
+            {
+                hitEffect_Splash_Quicksand_Object.GetComponent<HitParticleScript>().particle.Play();
+            }
+        }
     }
 
     #endregion

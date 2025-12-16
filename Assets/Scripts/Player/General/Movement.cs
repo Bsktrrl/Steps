@@ -2045,6 +2045,7 @@ public class Movement : Singleton<Movement>
         walkAnimationCheck = false;
     }
 
+
     #endregion
 
 
