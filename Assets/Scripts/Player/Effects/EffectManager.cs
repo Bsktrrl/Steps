@@ -55,6 +55,10 @@ public class EffectManager : Singleton<EffectManager>
         Interactable_Pickup.Action_StepsUpPickupGot += PerformPickupEffect;
         Interactable_Pickup.Action_SkinPickupGot += PerformPickupEffect;
         Interactable_Pickup.Action_AbilityPickupGot += PerformPickupEffect;
+
+        Player_KeyInputs.Action_RespawnHold += StartRespawn;
+        Player_KeyInputs.Action_RespawnCanceled += EndRespawn;
+        Movement.Action_RespawnPlayerEarly += EndRespawn;
     }
     private void OnDisable()
     {
@@ -65,6 +69,15 @@ public class EffectManager : Singleton<EffectManager>
         Movement.Action_isAscending -= Set_isAscending;
         Movement.Action_isDescending -= Set_isDescending;
         Movement.Action_isGrapplingHooking -= Set_isGrapplingHooking;
+
+        Interactable_Pickup.Action_EssencePickupGot -= PerformPickupEffect;
+        Interactable_Pickup.Action_StepsUpPickupGot -= PerformPickupEffect;
+        Interactable_Pickup.Action_SkinPickupGot -= PerformPickupEffect;
+        Interactable_Pickup.Action_AbilityPickupGot -= PerformPickupEffect;
+
+        Player_KeyInputs.Action_RespawnHold -= StartRespawn;
+        Player_KeyInputs.Action_RespawnCanceled -= EndRespawn;
+        Movement.Action_RespawnPlayerEarly -= EndRespawn;
     }
 
 
@@ -188,6 +201,19 @@ public class EffectManager : Singleton<EffectManager>
         {
             hitEffect_Walk_Object.GetComponent<HitParticleScript>().particle.Play();
         }
+    }
+
+    #endregion
+
+    #region Respawn
+
+    public void StartRespawn()
+    {
+        hitEffect_Respawn_Object.GetComponent<RespawnEffectScript>().particle.Play();
+    }
+    public void EndRespawn()
+    {
+        hitEffect_Respawn_Object.GetComponent<RespawnEffectScript>().particle.Stop();
     }
 
     #endregion
