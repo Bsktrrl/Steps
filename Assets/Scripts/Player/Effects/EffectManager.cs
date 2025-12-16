@@ -46,6 +46,8 @@ public class EffectManager : Singleton<EffectManager>
     float PickupEffect_Delay = 0.2f;
     float TeleportEffect_Delay = 0f;
 
+    float splash_Delay = 0.07f;
+
 
     //--------------------
 
@@ -245,7 +247,8 @@ public class EffectManager : Singleton<EffectManager>
         {
             if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
             {
-                hitEffect_Splash_Water_Object.GetComponent<HitParticleScript>().particle.Play();
+                print("0. Splash");
+                StartCoroutine(SplashEffect_Delay(hitEffect_Splash_Water_Object, splash_Delay));
             }
         }
 
@@ -261,7 +264,7 @@ public class EffectManager : Singleton<EffectManager>
         {
             if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.SwampWater)
             {
-                hitEffect_Splash_SwampWater_Object.GetComponent<HitParticleScript>().particle.Play();
+                StartCoroutine(SplashEffect_Delay(hitEffect_Splash_SwampWater_Object, splash_Delay));
             }
         }
 
@@ -277,7 +280,7 @@ public class EffectManager : Singleton<EffectManager>
         {
             if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Mud)
             {
-                hitEffect_Splash_Mud_Object.GetComponent<HitParticleScript>().particle.Play();
+                StartCoroutine(SplashEffect_Delay(hitEffect_Splash_Mud_Object, splash_Delay));
             }
         }
 
@@ -293,11 +296,23 @@ public class EffectManager : Singleton<EffectManager>
         {
             if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Quicksand)
             {
-                hitEffect_Splash_Quicksand_Object.GetComponent<HitParticleScript>().particle.Play();
+                StartCoroutine(SplashEffect_Delay(hitEffect_Splash_Quicksand_Object, splash_Delay));
             }
         }
     }
 
+    IEnumerator SplashEffect_Delay(GameObject effectObject, float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        print("1. Splash");
+
+        if (effectObject && effectObject.GetComponent<HitParticleScript>())
+        {
+            print("2. Splash");
+            effectObject.GetComponent<HitParticleScript>().particle.Play();
+        }
+    }
     #endregion
 
     #region Other effect

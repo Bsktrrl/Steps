@@ -9,7 +9,7 @@ __________________
 - Animations still triggers when respawning. End all animations when respawning!
 
 
-1. Insert into the Inspector:
+1. WardrobeMenu:
 __________________
 
 - Fix that the player with its playerDefault isn't showing in WardrobeMenu
@@ -69,7 +69,9 @@ __________________
 2. Make the numbers appear when stopping AND release the movementButton
 	- Now it disappear if moving into a deadEndBlock and holding in the movementButton
 3. The player isn't performing walking animation after Ascending/Descending/SwiftSwim (when moving away from the block landed on)
-4. When Ascending/Descending, the camera zooms in fast, then out, if there is free space. Disable carea when ascending/Descending
+	- Also, the darkenBlock isn't activated for blocks 1 block above the player when having Ascending, IF ceilingGrab also is active
+	- Cannot Ascend from respawn
+4. ColdWater isn't treatingt the camera the same way as Water. It may have something to do with the Haze particle
 5. When doing CeilingGrabRotation back to the noraml camera, it is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
 6. Add "MovingBlock"-EffectBlock
 7. Falling onto a fallingblock prevents movement
