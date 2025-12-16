@@ -189,7 +189,9 @@ public class Block_Teleport : MonoBehaviour
 
         Action_StartTeleport?.Invoke();
 
-        yield return new WaitForSeconds(waitTime);
+        ActivatePortalsEffect();
+        Player_Animations.Instance.Trigger_TeleportAnimation();
+        yield return new WaitForSeconds(Player_Animations.Instance.effectChargeTime_Pickup_Teleport);
 
         Vector3 newPos = gameObject.GetComponent<Block_Teleport>().newLandingSpot.transform.position;
         PlayerManager.Instance.player.transform.position = new Vector3(newPos.x, newPos.y + PlayerManager.Instance.player.GetComponent<Movement>().heightOverBlock, newPos.z);
@@ -202,7 +204,7 @@ public class Block_Teleport : MonoBehaviour
 
         PlayerStats.Instance.stats.steps_Current = stepTemp - gameObject.GetComponent<Block_Teleport>().newLandingSpot.GetComponent<BlockInfo>().movementCost;
 
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(0.15f);
 
         Movement.Instance.UpdateBlockStandingOn();
 
@@ -211,6 +213,14 @@ public class Block_Teleport : MonoBehaviour
         Action_EndTeleport?.Invoke();
 
         Movement.Instance.IceGlideMovement(true);
+    }
+    void ActivatePortalsEffect()
+    {
+        if (GetComponentInChildren<PortalScript>())
+        GetComponentInChildren<PortalScript>().ActivatePortalEffect();
+
+        if (newLandingSpot && newLandingSpot.GetComponentInChildren<PortalScript>())
+            newLandingSpot.GetComponentInChildren<PortalScript>().ActivatePortalEffect();
     }
 
     void StartTeleport_Action()

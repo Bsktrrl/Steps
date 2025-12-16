@@ -13,12 +13,11 @@ public class StepParticleScript : MonoBehaviour
 
     void Update()
     {
-        //Press '1' to activate the particle effect
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            particle.Play();
-        }
-
         gameObject.transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
+    }
+
+    public void Perform_CheckpointEffect()
+    {
+        particle.Play();
     }
 }

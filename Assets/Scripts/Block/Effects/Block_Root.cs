@@ -265,7 +265,7 @@ public class Block_Root : MonoBehaviour
             #region Check Ladder
             if (!blockIsFound)
             {
-                print("1. Ladder: tempOriginPos: " + tempOriginPos);
+                //print("1. Ladder: tempOriginPos: " + tempOriginPos);
                 GameObject tempBlock_Ladder_Up = new GameObject();
                 tempBlock_Ladder_Up = RaycastLadder(tempOriginPos + Vector3.up, playerLookDir, 1.5f);
 
@@ -275,7 +275,7 @@ public class Block_Root : MonoBehaviour
                 //Ladder Up
                 if (tempBlock_Ladder_Up)
                 {
-                    print("2. Ladder");
+                    //print("2. Ladder");
                     SetupEntryInBlockList(tempBlock_Ladder_Up.GetComponent<Block_Ladder>().exitBlock_Up, false);
 
                     blockIsFound = true;
@@ -284,7 +284,7 @@ public class Block_Root : MonoBehaviour
                 //Ladder Down
                 else if (tempBlock_Ladder_Down)
                 {
-                    print("3. Ladder");
+                    //print("3. Ladder");
                     SetupEntryInBlockList(tempBlock_Ladder_Down.GetComponent<Block_Ladder>().exitBlock_Down, false);
 
                     blockIsFound = true;

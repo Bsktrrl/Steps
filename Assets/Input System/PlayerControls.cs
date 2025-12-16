@@ -37,6 +37,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Forward_Hold"",
+                    ""type"": ""Button"",
+                    ""id"": ""83502c3f-fb18-42b2-9515-5d942e46ff3a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.05)"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Forward_Up"",
                     ""type"": ""Button"",
                     ""id"": ""8282b741-e069-41c2-95d9-cd28074c081c"",
@@ -52,6 +61,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Backward_Hold"",
+                    ""type"": ""Button"",
+                    ""id"": ""d8f7f790-9ceb-4653-bc6b-b9189bb37be6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.05)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -73,6 +91,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Left_Hold"",
+                    ""type"": ""Button"",
+                    ""id"": ""beb6aec8-5604-44bd-82ab-b5ba2946fd71"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.05)"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Left_Up"",
                     ""type"": ""Button"",
                     ""id"": ""9c31b299-341e-4736-a10b-b79f515a3ac1"",
@@ -88,6 +115,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Right_Hold"",
+                    ""type"": ""Button"",
+                    ""id"": ""faece9fb-dcb5-457b-88bb-972ea0133326"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.05)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -1134,6 +1170,138 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Respawn_Out"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e965fb51-ab79-400c-a4cb-fbc9641dc7fc"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Forward_Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3c3cda22-0d87-406a-916a-e68885742981"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Forward_Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f71cca01-8bf1-415f-9c92-31e49767eb28"",
+                    ""path"": ""<Keyboard>/#(W)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Forward_Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""51a7874b-0b96-49db-8662-bd3d80861781"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Backward_Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""05430d36-8e5b-4af0-9a92-659d85900987"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Backward_Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6afe5521-cc2f-4b34-81d4-39a1fd5f205b"",
+                    ""path"": ""<Keyboard>/#(S)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Backward_Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""857aae5e-5d2c-468e-a8e2-722a32a06a63"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left_Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ec9e4a77-cba9-424a-b1b1-6038f7c017f0"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left_Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5397fffe-84c0-47cb-8e24-1c5e38d0ce0a"",
+                    ""path"": ""<Keyboard>/#(A)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left_Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a79a3e0-9e95-425c-a643-e11030c65c4e"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right_Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""52e6d53d-4b65-4a5a-abd2-68014c5a9420"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right_Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e4a362a1-0777-4bb8-a5bc-4744e4969557"",
+                    ""path"": ""<Keyboard>/#(D)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right_Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1143,12 +1311,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // PlayerMovement
         m_PlayerMovement = asset.FindActionMap("PlayerMovement", throwIfNotFound: true);
         m_PlayerMovement_Forward_Down = m_PlayerMovement.FindAction("Forward_Down", throwIfNotFound: true);
+        m_PlayerMovement_Forward_Hold = m_PlayerMovement.FindAction("Forward_Hold", throwIfNotFound: true);
         m_PlayerMovement_Forward_Up = m_PlayerMovement.FindAction("Forward_Up", throwIfNotFound: true);
         m_PlayerMovement_Backward_Down = m_PlayerMovement.FindAction("Backward_Down", throwIfNotFound: true);
+        m_PlayerMovement_Backward_Hold = m_PlayerMovement.FindAction("Backward_Hold", throwIfNotFound: true);
         m_PlayerMovement_Backward_Up = m_PlayerMovement.FindAction("Backward_Up", throwIfNotFound: true);
         m_PlayerMovement_Left_Down = m_PlayerMovement.FindAction("Left_Down", throwIfNotFound: true);
+        m_PlayerMovement_Left_Hold = m_PlayerMovement.FindAction("Left_Hold", throwIfNotFound: true);
         m_PlayerMovement_Left_Up = m_PlayerMovement.FindAction("Left_Up", throwIfNotFound: true);
         m_PlayerMovement_Right_Down = m_PlayerMovement.FindAction("Right_Down", throwIfNotFound: true);
+        m_PlayerMovement_Right_Hold = m_PlayerMovement.FindAction("Right_Hold", throwIfNotFound: true);
         m_PlayerMovement_Right_Up = m_PlayerMovement.FindAction("Right_Up", throwIfNotFound: true);
         m_PlayerMovement_CameraRotateX = m_PlayerMovement.FindAction("CameraRotateX", throwIfNotFound: true);
         m_PlayerMovement_CameraRotateY = m_PlayerMovement.FindAction("CameraRotateY", throwIfNotFound: true);
@@ -1234,12 +1406,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_PlayerMovement;
     private List<IPlayerMovementActions> m_PlayerMovementActionsCallbackInterfaces = new List<IPlayerMovementActions>();
     private readonly InputAction m_PlayerMovement_Forward_Down;
+    private readonly InputAction m_PlayerMovement_Forward_Hold;
     private readonly InputAction m_PlayerMovement_Forward_Up;
     private readonly InputAction m_PlayerMovement_Backward_Down;
+    private readonly InputAction m_PlayerMovement_Backward_Hold;
     private readonly InputAction m_PlayerMovement_Backward_Up;
     private readonly InputAction m_PlayerMovement_Left_Down;
+    private readonly InputAction m_PlayerMovement_Left_Hold;
     private readonly InputAction m_PlayerMovement_Left_Up;
     private readonly InputAction m_PlayerMovement_Right_Down;
+    private readonly InputAction m_PlayerMovement_Right_Hold;
     private readonly InputAction m_PlayerMovement_Right_Up;
     private readonly InputAction m_PlayerMovement_CameraRotateX;
     private readonly InputAction m_PlayerMovement_CameraRotateY;
@@ -1268,12 +1444,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         private @PlayerControls m_Wrapper;
         public PlayerMovementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Forward_Down => m_Wrapper.m_PlayerMovement_Forward_Down;
+        public InputAction @Forward_Hold => m_Wrapper.m_PlayerMovement_Forward_Hold;
         public InputAction @Forward_Up => m_Wrapper.m_PlayerMovement_Forward_Up;
         public InputAction @Backward_Down => m_Wrapper.m_PlayerMovement_Backward_Down;
+        public InputAction @Backward_Hold => m_Wrapper.m_PlayerMovement_Backward_Hold;
         public InputAction @Backward_Up => m_Wrapper.m_PlayerMovement_Backward_Up;
         public InputAction @Left_Down => m_Wrapper.m_PlayerMovement_Left_Down;
+        public InputAction @Left_Hold => m_Wrapper.m_PlayerMovement_Left_Hold;
         public InputAction @Left_Up => m_Wrapper.m_PlayerMovement_Left_Up;
         public InputAction @Right_Down => m_Wrapper.m_PlayerMovement_Right_Down;
+        public InputAction @Right_Hold => m_Wrapper.m_PlayerMovement_Right_Hold;
         public InputAction @Right_Up => m_Wrapper.m_PlayerMovement_Right_Up;
         public InputAction @CameraRotateX => m_Wrapper.m_PlayerMovement_CameraRotateX;
         public InputAction @CameraRotateY => m_Wrapper.m_PlayerMovement_CameraRotateY;
@@ -1309,24 +1489,36 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Forward_Down.started += instance.OnForward_Down;
             @Forward_Down.performed += instance.OnForward_Down;
             @Forward_Down.canceled += instance.OnForward_Down;
+            @Forward_Hold.started += instance.OnForward_Hold;
+            @Forward_Hold.performed += instance.OnForward_Hold;
+            @Forward_Hold.canceled += instance.OnForward_Hold;
             @Forward_Up.started += instance.OnForward_Up;
             @Forward_Up.performed += instance.OnForward_Up;
             @Forward_Up.canceled += instance.OnForward_Up;
             @Backward_Down.started += instance.OnBackward_Down;
             @Backward_Down.performed += instance.OnBackward_Down;
             @Backward_Down.canceled += instance.OnBackward_Down;
+            @Backward_Hold.started += instance.OnBackward_Hold;
+            @Backward_Hold.performed += instance.OnBackward_Hold;
+            @Backward_Hold.canceled += instance.OnBackward_Hold;
             @Backward_Up.started += instance.OnBackward_Up;
             @Backward_Up.performed += instance.OnBackward_Up;
             @Backward_Up.canceled += instance.OnBackward_Up;
             @Left_Down.started += instance.OnLeft_Down;
             @Left_Down.performed += instance.OnLeft_Down;
             @Left_Down.canceled += instance.OnLeft_Down;
+            @Left_Hold.started += instance.OnLeft_Hold;
+            @Left_Hold.performed += instance.OnLeft_Hold;
+            @Left_Hold.canceled += instance.OnLeft_Hold;
             @Left_Up.started += instance.OnLeft_Up;
             @Left_Up.performed += instance.OnLeft_Up;
             @Left_Up.canceled += instance.OnLeft_Up;
             @Right_Down.started += instance.OnRight_Down;
             @Right_Down.performed += instance.OnRight_Down;
             @Right_Down.canceled += instance.OnRight_Down;
+            @Right_Hold.started += instance.OnRight_Hold;
+            @Right_Hold.performed += instance.OnRight_Hold;
+            @Right_Hold.canceled += instance.OnRight_Hold;
             @Right_Up.started += instance.OnRight_Up;
             @Right_Up.performed += instance.OnRight_Up;
             @Right_Up.canceled += instance.OnRight_Up;
@@ -1403,24 +1595,36 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Forward_Down.started -= instance.OnForward_Down;
             @Forward_Down.performed -= instance.OnForward_Down;
             @Forward_Down.canceled -= instance.OnForward_Down;
+            @Forward_Hold.started -= instance.OnForward_Hold;
+            @Forward_Hold.performed -= instance.OnForward_Hold;
+            @Forward_Hold.canceled -= instance.OnForward_Hold;
             @Forward_Up.started -= instance.OnForward_Up;
             @Forward_Up.performed -= instance.OnForward_Up;
             @Forward_Up.canceled -= instance.OnForward_Up;
             @Backward_Down.started -= instance.OnBackward_Down;
             @Backward_Down.performed -= instance.OnBackward_Down;
             @Backward_Down.canceled -= instance.OnBackward_Down;
+            @Backward_Hold.started -= instance.OnBackward_Hold;
+            @Backward_Hold.performed -= instance.OnBackward_Hold;
+            @Backward_Hold.canceled -= instance.OnBackward_Hold;
             @Backward_Up.started -= instance.OnBackward_Up;
             @Backward_Up.performed -= instance.OnBackward_Up;
             @Backward_Up.canceled -= instance.OnBackward_Up;
             @Left_Down.started -= instance.OnLeft_Down;
             @Left_Down.performed -= instance.OnLeft_Down;
             @Left_Down.canceled -= instance.OnLeft_Down;
+            @Left_Hold.started -= instance.OnLeft_Hold;
+            @Left_Hold.performed -= instance.OnLeft_Hold;
+            @Left_Hold.canceled -= instance.OnLeft_Hold;
             @Left_Up.started -= instance.OnLeft_Up;
             @Left_Up.performed -= instance.OnLeft_Up;
             @Left_Up.canceled -= instance.OnLeft_Up;
             @Right_Down.started -= instance.OnRight_Down;
             @Right_Down.performed -= instance.OnRight_Down;
             @Right_Down.canceled -= instance.OnRight_Down;
+            @Right_Hold.started -= instance.OnRight_Hold;
+            @Right_Hold.performed -= instance.OnRight_Hold;
+            @Right_Hold.canceled -= instance.OnRight_Hold;
             @Right_Up.started -= instance.OnRight_Up;
             @Right_Up.performed -= instance.OnRight_Up;
             @Right_Up.canceled -= instance.OnRight_Up;
@@ -1510,12 +1714,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     public interface IPlayerMovementActions
     {
         void OnForward_Down(InputAction.CallbackContext context);
+        void OnForward_Hold(InputAction.CallbackContext context);
         void OnForward_Up(InputAction.CallbackContext context);
         void OnBackward_Down(InputAction.CallbackContext context);
+        void OnBackward_Hold(InputAction.CallbackContext context);
         void OnBackward_Up(InputAction.CallbackContext context);
         void OnLeft_Down(InputAction.CallbackContext context);
+        void OnLeft_Hold(InputAction.CallbackContext context);
         void OnLeft_Up(InputAction.CallbackContext context);
         void OnRight_Down(InputAction.CallbackContext context);
+        void OnRight_Hold(InputAction.CallbackContext context);
         void OnRight_Up(InputAction.CallbackContext context);
         void OnCameraRotateX(InputAction.CallbackContext context);
         void OnCameraRotateY(InputAction.CallbackContext context);

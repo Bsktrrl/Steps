@@ -65,6 +65,17 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         if (Player_Interact.Instance.isInteracting) { return; }
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
 
+        StartCoroutine(RunCeilingGrab());
+    }
+    IEnumerator RunCeilingGrab()
+    {
+        print("0. Start CeilingGrab");
+
+        Player_Animations.Instance.Trigger_CeilingGrabAnimation();
+        yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_CeilingGrab);
+
+        print("1. Start CeilingGrab");
+
         if (CameraController.Instance.cameraState == CameraState.GameplayCam)
         {
             MapManager.Instance.ceilingGrabCounter++;
@@ -99,6 +110,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             StartCoroutine(RotateToOrFromCeiling(0));
         }
     }
+
     public void RaycastCeiling()
     {
         GameObject outObject1;

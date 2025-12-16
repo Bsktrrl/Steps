@@ -35,6 +35,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     public bool left_isPressed = false;
     public bool right_isPressed = false;
 
+    public bool forward_isHold = false;
+    public bool back_isHold = false;
+    public bool left_isHold = false;
+    public bool right_isHold = false;
+
     public bool up_isPressed = false;
     public bool down_isPressed = false;
 
@@ -70,9 +75,17 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         forward_isPressed = true;
         Action_WalkButton_isPressed?.Invoke();
     }
+    void OnForward_Hold()
+    {
+        if (!ButtonChecks_Movement()) { return; }
+
+        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
+            forward_isHold = true;
+    }
     void OnForward_Up()
     {
         forward_isPressed = false;
+        forward_isHold = false;
 
         Action_WalkButton_isReleased?.Invoke();
     }
@@ -83,9 +96,17 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         back_isPressed = true;
         Action_WalkButton_isPressed?.Invoke();
     }
+    void OnBackward_Hold()
+    {
+        if (!ButtonChecks_Movement()) { return; }
+
+        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
+            back_isHold = true;
+    }
     void OnBackward_Up()
     {
         back_isPressed = false;
+        back_isHold = false;
 
         Action_WalkButton_isReleased?.Invoke();
     }
@@ -96,9 +117,17 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         left_isPressed = true;
         Action_WalkButton_isPressed?.Invoke();
     }
+    void OnLeft_Hold()
+    {
+        if (!ButtonChecks_Movement()) { return; }
+
+        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
+            left_isHold = true;
+    }
     void OnLeft_Up()
     {
         left_isPressed = false;
+        left_isHold = false;
 
         Action_WalkButton_isReleased?.Invoke();
     }
@@ -109,9 +138,17 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         right_isPressed = true;
         Action_WalkButton_isPressed?.Invoke();
     }
+    void OnRight_Hold()
+    {
+        if (!ButtonChecks_Movement()) { return; }
+
+        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
+            right_isHold = true;
+    }
     void OnRight_Up()
     {
         right_isPressed = false;
+        right_isHold = false;
 
         Action_WalkButton_isReleased?.Invoke();
     }
@@ -187,12 +224,15 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Other() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
         grapplingHook_isPressed = true;
+
+        Player_Animations.Instance.Trigger_GrapplingHookAnimation();
     }
     void OnAbilityRight_RelesePress()
     {
-        if (!ButtonChecks_Other()) { return; }
-
         grapplingHook_isPressed = false;
+
+        if (!ButtonChecks_Other_MinusGrapplingHook()) { return; }
+
         Movement.Instance.UpdateGrapplingHookMovement_Release();
 
         Action_GrapplingHook_isPressed?.Invoke();
@@ -255,6 +295,18 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
 
+        if (grapplingHook_isPressed)
+        {
+            Movement.Instance.moveToBlock_GrapplingHook.canMoveTo = false;
+
+            if (Movement.Instance.moveToBlock_GrapplingHook != null && Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>())
+            {
+                Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
+            }
+
+            grapplingHook_isPressed = false;
+        }
+
         return true;
     }
     bool ButtonChecks_Other()
@@ -269,6 +321,31 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Player_Interact.Instance.isInteracting) { return false; }
 
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
+
+        if (grapplingHook_isPressed)
+        {
+            Movement.Instance.moveToBlock_GrapplingHook.canMoveTo = false;
+
+            if (Movement.Instance.moveToBlock_GrapplingHook != null && Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>())
+            {
+                Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
+            }
+
+            grapplingHook_isPressed = false;
+        }
+
+        return true;
+    }
+    bool ButtonChecks_Other_MinusGrapplingHook()
+    {
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
+
+        if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
+        if (PlayerManager.Instance.pauseGame) { return false; }
+        if (PlayerManager.Instance.npcInteraction) { return false; }
+        if (CameraController.Instance.isRotating) { return false; }
+        if (Player_Interact.Instance.isInteracting) { return false; }
 
         return true;
     }

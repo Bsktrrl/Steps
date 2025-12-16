@@ -39,49 +39,43 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     [SerializeField] GameObject ability_CeilingGrab;
 
 
-    [Header("Sprites")]
+    [Header("Skin Sprites")]
     #region Sprites
-    public Sprite Water_Grass;
-    public Sprite Water_Water;
-    public Sprite Water_Wood;
-    public Sprite Water_4;
-    public Sprite Water_5;
-    public Sprite Water_6;
+    public Sprite sprite_PauseMenu_Rivergreen_Lv1;
+    public Sprite sprite_PauseMenu_Rivergreen_Lv2;
+    public Sprite sprite_PauseMenu_Rivergreen_Lv3;
+    public Sprite sprite_PauseMenu_Rivergreen_Lv4;
+    public Sprite sprite_PauseMenu_Rivergreen_Lv5;
 
-    public Sprite Cave_Stone;
-    public Sprite Cave_Stone_Brick;
-    public Sprite Cave_Lava;
-    public Sprite Cave_Rock;
-    public Sprite Cave_Brick_Brown;
-    public Sprite Cave_Brick_Black;
+    public Sprite sprite_PauseMenu_Sandlands_Lv1;
+    public Sprite sprite_PauseMenu_Sandlands_Lv2;
+    public Sprite sprite_PauseMenu_Sandlands_Lv3;
+    public Sprite sprite_PauseMenu_Sandlands_Lv4;
+    public Sprite sprite_PauseMenu_Sandlands_Lv5;
 
-    public Sprite Desert_Sand;
-    public Sprite Desert_Clay;
-    public Sprite Desert_Clay_Tiles;
-    public Sprite Desert_Sandstone;
-    public Sprite Desert_Sandstone_Swirl;
-    public Sprite Desert_Quicksand;
+    public Sprite sprite_PauseMenu_Frostfield_Lv1;
+    public Sprite sprite_PauseMenu_Frostfield_Lv2;
+    public Sprite sprite_PauseMenu_Frostfield_Lv3;
+    public Sprite sprite_PauseMenu_Frostfield_Lv4;
+    public Sprite sprite_PauseMenu_Frostfield_Lv5;
 
-    public Sprite Winter_Snow;
-    public Sprite Winter_Ice;
-    public Sprite Winter_ColdWood;
-    public Sprite Winter_FrozenGrass;
-    public Sprite Winter_CrackedIce;
-    public Sprite Winter_Crocked;
+    public Sprite sprite_PauseMenu_Firevein_Lv1;
+    public Sprite sprite_PauseMenu_Firevein_Lv2;
+    public Sprite sprite_PauseMenu_Firevein_Lv3;
+    public Sprite sprite_PauseMenu_Firevein_Lv4;
+    public Sprite sprite_PauseMenu_Firevein_Lv5;
 
-    public Sprite Swamp_SwampWater;
-    public Sprite Swamp_Mud;
-    public Sprite Swamp_SwampGrass;
-    public Sprite Swamp_JungleWood;
-    public Sprite Swamp_SwampWood;
-    public Sprite Swamp_TempleBlock;
+    public Sprite sprite_PauseMenu_Witchmire_Lv1;
+    public Sprite sprite_PauseMenu_Witchmire_Lv2;
+    public Sprite sprite_PauseMenu_Witchmire_Lv3;
+    public Sprite sprite_PauseMenu_Witchmire_Lv4;
+    public Sprite sprite_PauseMenu_Witchmire_Lv5;
 
-    public Sprite Industrial_Metal;
-    public Sprite Industrial_Brass;
-    public Sprite Industrial_Gold;
-    public Sprite Industrial_Casing_Metal;
-    public Sprite Industria_Casingl_Brass;
-    public Sprite Industrial_Casing_Gold;
+    public Sprite sprite_PauseMenu_Metalworks_Lv1;
+    public Sprite sprite_PauseMenu_Metalworks_Lv2;
+    public Sprite sprite_PauseMenu_Metalworks_Lv3;
+    public Sprite sprite_PauseMenu_Metalworks_Lv4;
+    public Sprite sprite_PauseMenu_Metalworks_Lv5;
     #endregion
 
 
@@ -254,83 +248,71 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
             case SkinType.None:
                 return null;
 
-            case SkinType.Water_Grass:
-                return Water_Grass;
-            case SkinType.Water_Water:
-                return Water_Water;
-            case SkinType.Water_Wood:
-                return Water_Wood;
-            case SkinType.Water_4:
-                return Water_4;
-            case SkinType.Water_5:
-                return Water_5;
-            case SkinType.Water_6:
-                return Water_6;
+            case SkinType.Rivergreen_Lv1:
+                return sprite_PauseMenu_Rivergreen_Lv1;
+            case SkinType.Rivergreen_Lv2:
+                return sprite_PauseMenu_Rivergreen_Lv2;
+            case SkinType.Rivergreen_Lv3:
+                return sprite_PauseMenu_Rivergreen_Lv3;
+            case SkinType.Rivergreen_Lv4:
+                return sprite_PauseMenu_Rivergreen_Lv4;
+            case SkinType.Rivergreen_Lv5:
+                return sprite_PauseMenu_Rivergreen_Lv5;
 
-            case SkinType.Cave_Stone:
-                return Cave_Stone;
-            case SkinType.Cave_Stone_Brick:
-                return Cave_Stone_Brick;
-            case SkinType.Cave_Lava:
-                return Cave_Lava;
-            case SkinType.Cave_Rock:
-                return Cave_Rock;
-            case SkinType.Cave_Brick_Brown:
-                return Cave_Brick_Brown;
-            case SkinType.Cave_Brick_Black:
-                return Cave_Brick_Black;
+            case SkinType.Firevein_Lv1:
+                return sprite_PauseMenu_Firevein_Lv1;
+            case SkinType.Firevein_Lv2:
+                return sprite_PauseMenu_Firevein_Lv2;
+            case SkinType.Firevein_Lv3:
+                return sprite_PauseMenu_Firevein_Lv3;
+            case SkinType.Firevein_Lv4:
+                return sprite_PauseMenu_Firevein_Lv4;
+            case SkinType.Firevein_Lv5:
+                return sprite_PauseMenu_Firevein_Lv5;
 
-            case SkinType.Desert_Sand:
-                return Desert_Sand;
-            case SkinType.Desert_Clay:
-                return Desert_Clay;
-            case SkinType.Desert_Clay_Tiles:
-                return Desert_Clay_Tiles;
-            case SkinType.Desert_Sandstone:
-                return Desert_Sandstone;
-            case SkinType.Desert_Sandstone_Swirl:
-                return Desert_Sandstone_Swirl;
-            case SkinType.Desert_Quicksand:
-                return Desert_Quicksand;
+            case SkinType.Sandlands_Lv1:
+                return sprite_PauseMenu_Sandlands_Lv1;
+            case SkinType.Sandlands_Lv2:
+                return sprite_PauseMenu_Sandlands_Lv2;
+            case SkinType.Sandlands_Lv3:
+                return sprite_PauseMenu_Sandlands_Lv3;
+            case SkinType.Sandlands_Lv4:
+                return sprite_PauseMenu_Sandlands_Lv4;
+            case SkinType.Sandlands_Lv5:
+                return sprite_PauseMenu_Sandlands_Lv5;
 
-            case SkinType.Winter_Snow:
-                return Winter_Snow;
-            case SkinType.Winter_Ice:
-                return Winter_Ice;
-            case SkinType.Winter_ColdWood:
-                return Winter_ColdWood;
-            case SkinType.Winter_FrozenGrass:
-                return Winter_FrozenGrass;
-            case SkinType.Winter_CrackedIce:
-                return Winter_CrackedIce;
-            case SkinType.Winter_Crocked:
-                return Winter_Crocked;
+            case SkinType.Frostfield_Lv1:
+                return sprite_PauseMenu_Frostfield_Lv1;
+            case SkinType.Frostfield_Lv2:
+                return sprite_PauseMenu_Frostfield_Lv2;
+            case SkinType.Frostfield_Lv3:
+                return sprite_PauseMenu_Frostfield_Lv3;
+            case SkinType.Frostfield_Lv4:
+                return sprite_PauseMenu_Frostfield_Lv4;
+            case SkinType.Frostfield_Lv5:
+                return sprite_PauseMenu_Frostfield_Lv5;
 
-            case SkinType.Swamp_SwampWater:
-                return Swamp_SwampWater;
-            case SkinType.Swamp_Mud:
-                return Swamp_Mud;
-            case SkinType.Swamp_SwampGrass:
-                return Swamp_SwampGrass;
-            case SkinType.Swamp_JungleWood:
-                return Swamp_JungleWood;
-            case SkinType.Swamp_SwampWood:
-                return Swamp_SwampWood;
-            case SkinType.Swamp_TempleBlock:
-                return Swamp_TempleBlock;
+            case SkinType.Witchmire_Lv1:
+                return sprite_PauseMenu_Witchmire_Lv1;
+            case SkinType.Witchmire_Lv2:
+                return sprite_PauseMenu_Witchmire_Lv2;
+            case SkinType.Witchmire_Lv3:
+                return sprite_PauseMenu_Witchmire_Lv3;
+            case SkinType.Witchmire_Lv4:
+                return sprite_PauseMenu_Witchmire_Lv4;
+            case SkinType.Witchmire_Lv5:
+                return sprite_PauseMenu_Witchmire_Lv5;
 
-            case SkinType.Industrial_Metal:
-                return Industrial_Metal;
-            case SkinType.Industrial_Brass:
-                return Industrial_Brass;
-            case SkinType.Industrial_Gold:
-                return Industrial_Gold;
-            case SkinType.Industrial_Casing_Metal:
-                return Industrial_Casing_Metal;
-            case SkinType.Industria_Casingl_Brass:
-                return Industria_Casingl_Brass;
-            case SkinType.Industrial_Casing_Gold:
-                return Industrial_Casing_Gold;
+            case SkinType.Metalworks_Lv1:
+                return sprite_PauseMenu_Metalworks_Lv1;
+            case SkinType.Metalworks_Lv2:
+                return sprite_PauseMenu_Metalworks_Lv2;
+            case SkinType.Metalworks_Lv3:
+                return sprite_PauseMenu_Metalworks_Lv3;
+            case SkinType.Metalworks_Lv4:
+                return sprite_PauseMenu_Metalworks_Lv4;
+            case SkinType.Metalworks_Lv5:
+                return sprite_PauseMenu_Metalworks_Lv5;
 
             default:
                 return null;

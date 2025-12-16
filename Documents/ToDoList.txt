@@ -3,52 +3,62 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 
-Anmodning rate 1:
-2. Rettigheter
-	- Dokumentasjon på rettigheter
-	- Kommenter til rettigheter
-3. Stab og områder
-	- Andre nøkkelpersoner
-	- Signerte avtaler med medvirkende nøkkelpersonell
-	- Kommentarer til utviklingsarbeid
-4. Fremdriftsplan
-	- Oppdater beskrivelsen av fremdriftsplan (ny lanseringsdato)
-5. Økonomi
-	- Budsjett for alle faser, til og med denne
-	- Estimert budsjett for hele prosjektet
+0. Animations:
+__________________
+
+- Animations still triggers when respawning. End all animations when respawning!
 
 
+1. Insert into the Inspector:
+__________________
+
+- Fix that the player with its playerDefault isn't showing in WardrobeMenu
+- Fix so that the "Rivergreen Lv.1"-skin isn't selected at the start of the game, in the Wardrobe menu
 
 
-3.
+2. HUD:
+__________________
+
+- Make Footprints in HUD appear one-by-one when stepping on a Checkpoint
+   - Adjust for any number of reset footprints
+
+
+3. Intro Camera:
+__________________
+
+- Make intro, where camera is focused on Glueplant and zoomes out to the player
+- Attach a camera to the Glueplant and make it softTransition to the player
+
+
+4. FreeRoam Camera:
+__________________
+
+Make FreeRoam camera by pressing R1 to roam freely
+- Snap back to the player when pressing the button again
+   - Perform snapping by transitioning very fast, for a smooth experience
+
+
+5.
 Sound:
 __________________
 
-3.4. Ice glide bug
+5.1. Ice Gliding and Water Blocks
+- Fix so that when icegliding and the player can swim, stop before the water as it was a normal ledge
+
+5.2. Ice glide bug
 - Fix ice glide audio bug
 
 
-
-4.
+6.
 Menu navigating errors:
 __________________
 
-4.1. Menu Errors
+6.1. Menu Errors
 - Moving from option to option, keyboard is laggy (may be when the controller is plugged in, but not used?)
 
-4.2. Overworld Errors
+6.2. Overworld Errors
 - Fix so that the menu operates as intended when pressing/hovering buttons/regions
 - Lock the cursor, so it cannot be used in-game
-
-
-
-
---- PRIORITY TO SPILLEXPO
-6. Rotating camera rotation Edge-movement bug (fixed?)
-
-- Make Rivergreen Level 2: Water/Root - Swimming (add fog)
-	- Ladder NumberGlitch (check "NumberDisplay"-script)
-
 
 
 
@@ -63,8 +73,7 @@ __________________
 5. When doing CeilingGrabRotation back to the noraml camera, it is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
 6. Add "MovingBlock"-EffectBlock
 7. Falling onto a fallingblock prevents movement
-9. IceGlide doesn't work with pusher
-10. Pusher don't show movement numbers on blocks when the player have 0 movement, even if it is pushed. The Player can move in the correct direction, thow.
+
 
 
 

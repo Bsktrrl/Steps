@@ -24,6 +24,12 @@ public class Movement : Singleton<Movement>
 
     public static event Action Action_PickupAnimation_Complete;
 
+    public static event Action Action_isDashing;
+    public static event Action Action_isJumping;
+    public static event Action Action_isAscending;
+    public static event Action Action_isDescending;
+    public static event Action Action_isGrapplingHooking;
+
     #region Variables
 
     [Header("States")]
@@ -196,11 +202,6 @@ public class Movement : Singleton<Movement>
         SFX_Respawn.Action_RespawnPlayer += RespawnPlayer;
 
         Interactable_Pickup.Action_AbilityPickupGot += UpdateLookDir;
-
-        Interactable_Pickup.Action_EssencePickupGot += Temp_EssencePickupGot_Animation;
-        Interactable_Pickup.Action_StepsUpPickupGot += Temp_StepsUpPickupGot_Animation;
-        Interactable_Pickup.Action_SkinPickupGot += Temp_SkinPickupGot_Animation;
-        Interactable_Pickup.Action_AbilityPickupGot += Temp_AbilityPickupGot_Animation;
     }
     private void OnDisable()
     {
@@ -226,11 +227,6 @@ public class Movement : Singleton<Movement>
         SFX_Respawn.Action_RespawnPlayer -= RespawnPlayer;
 
         Interactable_Pickup.Action_AbilityPickupGot -= UpdateLookDir;
-
-        Interactable_Pickup.Action_EssencePickupGot -= Temp_EssencePickupGot_Animation;
-        Interactable_Pickup.Action_StepsUpPickupGot -= Temp_StepsUpPickupGot_Animation;
-        Interactable_Pickup.Action_SkinPickupGot -= Temp_SkinPickupGot_Animation;
-        Interactable_Pickup.Action_AbilityPickupGot -= Temp_AbilityPickupGot_Animation;
     }
 
 
@@ -1137,6 +1133,17 @@ public class Movement : Singleton<Movement>
             return;
         }
 
+        StartCoroutine(Delay_UpdateGrapplingHookMovement(moveOption, dir));
+    }
+    IEnumerator Delay_UpdateGrapplingHookMovement(MoveOptions moveOption, Vector3 dir)
+    {
+        yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_GrapplingHook);
+
+        if (!Player_KeyInputs.Instance.grapplingHook_isPressed)
+        {
+            yield break;
+        }
+
         Player_GraplingHook.Instance.isGrapplingHooking = true;
         Player_GraplingHook.Instance.EndLineRenderer();
 
@@ -1159,7 +1166,7 @@ public class Movement : Singleton<Movement>
             else
                 grapplingTowardsStair = false;
 
-            // Check if Stari/Slope is facing the player
+            // Check if Stair/Slope is facing the player
             Vector3 toPlayer = (transform.position - moveToBlock_GrapplingHook.targetBlock.transform.position).normalized;
             bool StairIsFacingPlayer = (moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Stair || moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope) && Vector3.Dot(moveToBlock_GrapplingHook.targetBlock.transform.forward, toPlayer) > 0.5f;
 
@@ -1168,12 +1175,16 @@ public class Movement : Singleton<Movement>
             else
                 Player_GraplingHook.Instance.redDotSceneObject.transform.SetPositionAndRotation(Player_GraplingHook.Instance.endPoint - dir, Quaternion.LookRotation(dir));
 
+            Player_GraplingHook.Instance.hitEffect.transform.SetPositionAndRotation(Player_GraplingHook.Instance.redDotSceneObject.transform.position, Quaternion.Euler(-90, 0, 0));
+            Player_GraplingHook.Instance.hitEffect.GetComponentInChildren<HitParticleScript>().particle.Play();
+
             Player_GraplingHook.Instance.redDotSceneObject.SetActive(true);
+
             Player_GraplingHook.Instance.RunLineReader();
 
             UpdateBlocksOnTheGrapplingWay(moveOption);
 
-            return;
+            yield return null;
         }
         else
         {
@@ -1183,8 +1194,8 @@ public class Movement : Singleton<Movement>
             Player_GraplingHook.Instance.RunLineReader();
 
             Block_IsNot_Target(moveOption);
-            return;
-        }  
+            yield return null;
+        }
     }
     public void UpdateGrapplingHookMovement_Release()
     {
@@ -1527,9 +1538,14 @@ public class Movement : Singleton<Movement>
         {
             isGrapplingHooking = true;
 
+            if (Player_KeyInputs.Instance.grapplingHook_isPressed)
+                Player_Animations.Instance.Trigger_GrapplingHookAnimation();
+            else
+                Player_Animations.Instance.Trigger_GrapplingHookDraggingAnimation();
+
             if (moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Stair || moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
             {
-                // Check if Stari/Slope is facing the player
+                // Check if Stair/Slope is facing the player
                 Vector3 toPlayer = (transform.position - moveToBlock_GrapplingHook.targetBlock.transform.position).normalized;
                 bool isFacingPlayer = Vector3.Dot(moveToBlock_GrapplingHook.targetBlock.transform.forward, toPlayer) > 0.5f;
 
@@ -1542,6 +1558,7 @@ public class Movement : Singleton<Movement>
                 PerformMovement(moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down, abilitySpeed + grapplingLength);
 
             MapManager.Instance.grapplingHookCounter++;
+            Action_isGrapplingHooking?.Invoke();
 
             moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
             Block_IsNot_Target(moveToBlock_GrapplingHook);
@@ -1566,7 +1583,9 @@ public class Movement : Singleton<Movement>
             PlayerCameraOcclusionController.Instance.CameraZoom(true);
 
             MapManager.Instance.ascendCounter++;
+            Player_Animations.Instance.Trigger_AscendAnimation();
             PerformMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
+            Action_isAscending?.Invoke();
             return true;
         }
         else
@@ -1580,7 +1599,9 @@ public class Movement : Singleton<Movement>
             PlayerCameraOcclusionController.Instance.CameraZoom(true);
 
             MapManager.Instance.descendCounter++;
+            Player_Animations.Instance.Trigger_DescendAnimation();
             PerformMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
+            Action_isDescending?.Invoke();
             return true;
         }
         else
@@ -1608,19 +1629,16 @@ public class Movement : Singleton<Movement>
             }
             else if (hit.transform.GetComponentInParent<Fence>())
             {
-                //print("1. Fence");
                 obj = null;
                 return RaycastHitObjects.Fence;
             }
             else if (hit.transform.GetComponentInParent<Block_Ladder>() && hit.transform.GetComponent<LadderColliderBlocker>())
             {
-                //print("2. LadderColliderBlocker");
                 obj = null;
                 return RaycastHitObjects.LadderBlocker;
             }
             else if (hit.transform.GetComponentInParent<Block_Ladder>() && hit.transform.GetComponent<LadderCollider>())
             {
-                //print("3. LadderCollider");
                 obj = hit.transform.parent.gameObject;
 
                 return RaycastHitObjects.Ladder;
@@ -1641,6 +1659,8 @@ public class Movement : Singleton<Movement>
 
     void MovementSetup()
     {
+        if (isMoving) return;
+
         //Rotate Player
         RotatePlayerBody_Setup();
 
@@ -1677,44 +1697,60 @@ public class Movement : Singleton<Movement>
         else if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Dash_Forward.targetBlock && moveToBlock_Dash_Forward.canMoveTo)
         {
             MapManager.Instance.dashCounter++;
+            Player_Animations.Instance.Trigger_DashAnimation();
             PerformMovement(moveToBlock_Dash_Forward, MovementStates.Moving, abilitySpeed, ref isDashing);
+            Action_isDashing?.Invoke();
         }
         else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Dash_Back.targetBlock && moveToBlock_Dash_Back.canMoveTo)
         {
             MapManager.Instance.dashCounter++;
+            Player_Animations.Instance.Trigger_DashAnimation();
             PerformMovement(moveToBlock_Dash_Back, MovementStates.Moving, abilitySpeed, ref isDashing);
+            Action_isDashing?.Invoke();
         }
         else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Dash_Left.targetBlock && moveToBlock_Dash_Left.canMoveTo)
         {
             MapManager.Instance.dashCounter++;
+            Player_Animations.Instance.Trigger_DashAnimation();
             PerformMovement(moveToBlock_Dash_Left, MovementStates.Moving, abilitySpeed, ref isDashing);
+            Action_isDashing?.Invoke();
         }
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Dash_Right.targetBlock && moveToBlock_Dash_Right.canMoveTo)
         {
             MapManager.Instance.dashCounter++;
+            Player_Animations.Instance.Trigger_DashAnimation();
             PerformMovement(moveToBlock_Dash_Right, MovementStates.Moving, abilitySpeed, ref isDashing);
+            Action_isDashing?.Invoke();
         }
 
         //Perform Jump Movement, if possible
         else if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Jump_Forward.targetBlock && moveToBlock_Jump_Forward.canMoveTo)
         {
             MapManager.Instance.jumpCounter++;
+            Player_Animations.Instance.Trigger_JumpAnimation();
             PerformMovement(moveToBlock_Jump_Forward, MovementStates.Moving, abilitySpeed, ref isJumping);
+            Action_isJumping?.Invoke();
         }
         else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Jump_Back.targetBlock && moveToBlock_Jump_Back.canMoveTo)
         {
             MapManager.Instance.jumpCounter++;
+            Player_Animations.Instance.Trigger_JumpAnimation();
             PerformMovement(moveToBlock_Jump_Back, MovementStates.Moving, abilitySpeed, ref isJumping);
+            Action_isJumping?.Invoke();
         }
         else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Jump_Left.targetBlock && moveToBlock_Jump_Left.canMoveTo)
         {
             MapManager.Instance.jumpCounter++;
+            Player_Animations.Instance.Trigger_JumpAnimation();
             PerformMovement(moveToBlock_Jump_Left, MovementStates.Moving, abilitySpeed, ref isJumping);
+            Action_isJumping?.Invoke();
         }
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Jump_Right.targetBlock && moveToBlock_Jump_Right.canMoveTo)
         {
             MapManager.Instance.jumpCounter++;
+            Player_Animations.Instance.Trigger_JumpAnimation();
             PerformMovement(moveToBlock_Jump_Right, MovementStates.Moving, abilitySpeed, ref isJumping);
+            Action_isJumping?.Invoke();
         }
 
         //Perform SwiftSwim Movement, if possible
@@ -1736,10 +1772,10 @@ public class Movement : Singleton<Movement>
         if (!canMoveBlock.targetBlock.GetComponent<BlockInfo>()) { return; }
         if (PlayerStats.Instance.stats == null) { return; }
 
+        if (isMoving) return;
+
         if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost || Player_Pusher.Instance.playerIsPushed)
         {
-            MovingAnimation(canMoveBlock);
-
             isMoving = true;
 
             ResetDarkenBlocks();
@@ -1792,17 +1828,30 @@ public class Movement : Singleton<Movement>
 
     private IEnumerator Move(Vector3 endPos, MovementStates moveState, float movementSpeed, MoveOptions moveOptions)
     {
+        //print("100. Movement is taken place");
+
+        isMoving = true;
+
         Action_StepTaken_Early_Invoke();
 
         //Safety check for slope gliding
         if (blockStandingOn != null && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
         {
-            print("1. hasSlopeGlided");
+            //print("1. hasSlopeGlided");
             hasSlopeGlided = true;
         }
 
         if (moveOptions != null && moveOptions.targetBlock)
         {
+            if (isAscending)
+                yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Ascend);
+            else if (isDecending)
+                yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Descend);
+            else if (isDashing)
+                yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Dash);
+            else if (isJumping)
+                yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Jump);
+
             //Move onto a moving block
             if (moveOptions.targetBlock.GetComponent<Block_Elevator>())
             {
@@ -1819,6 +1868,15 @@ public class Movement : Singleton<Movement>
         //Move to a position, not a block
         else
         {
+            if (isAscending)
+                yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Ascend);
+            else if (isDecending)
+                yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Descend);
+            else if (isDashing)
+                yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Dash);
+            else if (isJumping)
+                yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Jump);
+
             yield return NormalMovement(endPos, moveState, movementSpeed);
         }
 
@@ -1959,15 +2017,15 @@ public class Movement : Singleton<Movement>
         if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope
             && canMoveBlock.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
         {
-            
+            Player_Animations.Instance.Trigger_SlopeDownAnimation();
         }
         else if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair)
         {
-            Player_Animations.Instance.Perform_StairSlopeWalkingAnimation();
+            Player_Animations.Instance.Trigger_StairSlopeWalkingAnimation();
         }
         else if (canMoveBlock.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Stair || canMoveBlock.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
         {
-            Player_Animations.Instance.Perform_StairSlopeWalkingAnimation();
+            Player_Animations.Instance.Trigger_StairSlopeWalkingAnimation();
         }
         
         //Perform animation only the first time when pressing down a movmentButton
@@ -1977,7 +2035,7 @@ public class Movement : Singleton<Movement>
             //if (Player_KeyInputs.Instance.forward_isPressed || Player_KeyInputs.Instance.back_isPressed || Player_KeyInputs.Instance.left_isPressed || Player_KeyInputs.Instance.right_isPressed)
             //{ return; }
 
-            Player_Animations.Instance.Perform_StairSlopeWalkingAnimation();
+            Player_Animations.Instance.Trigger_WalkingAnimation();
             walkAnimationCheck = true;
         }
     }
@@ -1986,6 +2044,7 @@ public class Movement : Singleton<Movement>
     {
         walkAnimationCheck = false;
     }
+
 
     #endregion
 
@@ -2690,6 +2749,7 @@ public class Movement : Singleton<Movement>
                     {
                         //print("6. Slope");
                         PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
+                        //print("200. Lose Step: " + PlayerStats.Instance.stats.steps_Current);
                     }
 
                     isSlopeGliding = false;
@@ -2736,6 +2796,12 @@ public class Movement : Singleton<Movement>
         Player_KeyInputs.Instance.up_isPressed = false;
         Player_KeyInputs.Instance.down_isPressed = false;
         Player_KeyInputs.Instance.grapplingHook_isPressed = false;
+
+        Player_KeyInputs.Instance.forward_isHold = false;
+        Player_KeyInputs.Instance.back_isHold = false;
+        Player_KeyInputs.Instance.left_isHold = false;
+        Player_KeyInputs.Instance.right_isHold = false;
+
 
         Player_KeyInputs.Instance.cameraX_isPressed = false;
         Player_KeyInputs.Instance.cameraY_isPressed = false;
@@ -2825,90 +2891,6 @@ public class Movement : Singleton<Movement>
 
 
     //--------------------
-
-
-    void Temp_EssencePickupGot_Animation()
-    {
-        PlayerManager.Instance.PauseGame();
-        StartCoroutine(JumpSpin(PlayerManager.Instance.playerBody.transform, 0.3f, 0.5f, 1, -Vector3.right));
-    }
-    void Temp_StepsUpPickupGot_Animation()
-    {
-        PlayerManager.Instance.PauseGame();
-        StartCoroutine(JumpSpin(PlayerManager.Instance.playerBody.transform, 0.45f, 0.5f, 1, Vector3.up));
-    }
-    void Temp_SkinPickupGot_Animation()
-    {
-        PlayerManager.Instance.PauseGame();
-        StartCoroutine(JumpSpin(PlayerManager.Instance.playerBody.transform, 0.45f, 0.5f, 2, Vector3.up));
-    }
-    void Temp_AbilityPickupGot_Animation()
-    {
-        PlayerManager.Instance.PauseGame();
-        StartCoroutine(JumpSpin(PlayerManager.Instance.playerBody.transform, 0.45f, 0.5f, 1, -Vector3.right));
-    }
-
-
-    public IEnumerator JumpSpin(Transform target, float totalTime, float jumpHeight, int spinCount, Vector3 rotationAxis)
-    {
-        if (target == null) yield break;
-        if (totalTime <= 0f) totalTime = 0.0001f; // avoid division by zero
-
-        if (movementStates != MovementStates.Falling)
-        {
-            movementStates = MovementStates.Moving;
-        }
-        
-        if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>().movementSpeed >= 5)
-        {
-            print("1000. Animation Speed >= 5");
-
-            yield return new WaitForSeconds(0.2f);
-        }
-        else
-        {
-            print("2000. Animation Speed < 5");
-
-            yield return new WaitForSeconds(0.45f);
-        }
-
-        Vector3 startPos = target.position;
-        Quaternion startRot = target.rotation;
-
-        float elapsed = 0f;
-        float totalRotation = 360f * spinCount; // positive = clockwise around local X
-
-        while (elapsed < totalTime)
-        {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / totalTime);
-
-            // Parabolic jump: 0 -> jumpHeight -> 0 over [0,1]
-            float yOffset = 4f * jumpHeight * t * (1f - t);
-            target.position = new Vector3(startPos.x, startPos.y + yOffset, startPos.z);
-
-            // Spin ONLY around local X-axis (no Y rotation introduced)
-            float angle = Mathf.Lerp(0f, totalRotation, t);
-            target.rotation = startRot * Quaternion.AngleAxis(angle, rotationAxis);
-
-            yield return null;
-        }
-
-        // Snap to exact end state
-        target.position = startPos;
-        target.rotation = startRot;
-
-        PlayerManager.Instance.UnpauseGame();
-
-        if (movementStates != MovementStates.Falling)
-        {
-            movementStates = MovementStates.Still;
-        }
-
-        Action_PickupAnimation_Complete?.Invoke();
-
-        Movement.Instance.UpdateLookDir();
-    }
 
 
     #region Actions

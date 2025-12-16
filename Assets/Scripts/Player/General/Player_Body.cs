@@ -24,49 +24,43 @@ public class Player_Body : Singleton<Player_Body>
     #region PlayerSkinObjects
 
     [Header("PlayerSkinObjects")]
-    public GameObject skin_Default;
+    public GameObject skinObject_Default;
 
-    public GameObject skin_Water_Grass;
-    public GameObject skin_Water_Water;
-    public GameObject skin_Water_Wood;
-    public GameObject skin_Water_4;
-    public GameObject skin_Water_5;
-    public GameObject skin_Water_6;
+    public GameObject skinObject_Rivergreen_Lv1;
+    public GameObject skinObject_Rivergreen_Lv2;
+    public GameObject skinObject_Rivergreen_Lv3;
+    public GameObject skinObject_Rivergreen_Lv4;
+    public GameObject skinObject_Rivergreen_Lv5;
 
-    public GameObject skin_Cave_Stone;
-    public GameObject skin_Cave_Stone_Brick;
-    public GameObject skin_Cave_Lava;
-    public GameObject skin_Cave_Rock;
-    public GameObject skin_Cave_Brick_Brown;
-    public GameObject skin_Cave_Brick_Black;
+    public GameObject skinObject_Sandlands_Lv1;
+    public GameObject skinObject_Sandlands_Lv2;
+    public GameObject skinObject_Sandlands_Lv3;
+    public GameObject skinObject_Sandlands_Lv4;
+    public GameObject skinObject_Sandlands_Lv5;
 
-    public GameObject skin_Desert_Sand;
-    public GameObject skin_Desert_Clay;
-    public GameObject skin_Desert_Clay_Tiles;
-    public GameObject skin_Desert_Sandstone;
-    public GameObject skin_Desert_Sandstone_Swirl;
-    public GameObject skin_Desert_Quicksand;
+    public GameObject skinObject_Frostfield_Lv1;
+    public GameObject skinObject_Frostfield_Lv2;
+    public GameObject skinObject_Frostfield_Lv3;
+    public GameObject skinObject_Frostfield_Lv4;
+    public GameObject skinObject_Frostfield_Lv5;
 
-    public GameObject skin_Winter_Snow;
-    public GameObject skin_Winter_Ice;
-    public GameObject skin_Winter_ColdWood;
-    public GameObject skin_Winter_FrozenGrass;
-    public GameObject skin_Winter_CrackedIce;
-    public GameObject skin_Winter_Crocked;
+    public GameObject skinObject_Firevein_Lv1;
+    public GameObject skinObject_Firevein_Lv2;
+    public GameObject skinObject_Firevein_Lv3;
+    public GameObject skinObject_Firevein_Lv4;
+    public GameObject skinObject_Firevein_Lv5;
 
-    public GameObject skin_Swamp_SwampWater;
-    public GameObject skin_Swamp_Mud;
-    public GameObject skin_Swamp_SwampGrass;
-    public GameObject skin_Swamp_JungleWood;
-    public GameObject skin_Swamp_SwampWood;
-    public GameObject skin_Swamp_TempleBlock;
+    public GameObject skinObject_Witchmire_Lv1;
+    public GameObject skinObject_Witchmire_Lv2;
+    public GameObject skinObject_Witchmire_Lv3;
+    public GameObject skinObject_Witchmire_Lv4;
+    public GameObject skinObject_Witchmire_Lv5;
 
-    public GameObject skin_Industrial_Metal;
-    public GameObject skin_Industrial_Brass;
-    public GameObject skin_Industrial_Gold;
-    public GameObject skin_Industrial_Casing_Metal;
-    public GameObject skin_Industria_Casingl_Brass;
-    public GameObject skin_Industrial_Casing_Gold;
+    public GameObject skinObject_Metalworks_Lv1;
+    public GameObject skinObject_Metalworks_Lv2;
+    public GameObject skinObject_Metalworks_Lv3;
+    public GameObject skinObject_Metalworks_Lv4;
+    public GameObject skinObject_Metalworks_Lv5;
 
     #endregion
 
@@ -105,284 +99,242 @@ public class Player_Body : Singleton<Player_Body>
         switch (DataManager.Instance.skinsInfo_Store.activeSkinType)
         {
             case SkinType.None:
-                if (skin_Default)
+                if (skinObject_Default)
                 {
-                    selectedSkinBlock = skin_Default;
-                    skin_Default.SetActive(true);
+                    selectedSkinBlock = skinObject_Default;
+                    skinObject_Default.SetActive(true);
                 }
                 break;
 
-            case SkinType.Water_Grass:
-                if (skin_Water_Grass)
+            case SkinType.Rivergreen_Lv1:
+                if (skinObject_Rivergreen_Lv1)
                 {
-                    selectedSkinBlock = skin_Water_Grass;
-                    skin_Water_Grass.SetActive(true);
+                    selectedSkinBlock = skinObject_Rivergreen_Lv1;
+                    skinObject_Rivergreen_Lv1.SetActive(true);
                 }
                 break;
-            case SkinType.Water_Water:
-                if (skin_Water_Water)
+            case SkinType.Rivergreen_Lv2:
+                if (skinObject_Rivergreen_Lv2)
                 {
-                    selectedSkinBlock = skin_Water_Water;
-                    skin_Water_Water.SetActive(true);
+                    selectedSkinBlock = skinObject_Rivergreen_Lv2;
+                    skinObject_Rivergreen_Lv2.SetActive(true);
                 }
                 break;
-            case SkinType.Water_Wood:
-                if (skin_Water_Wood)
+            case SkinType.Rivergreen_Lv3:
+                if (skinObject_Rivergreen_Lv3)
                 {
-                    selectedSkinBlock = skin_Water_Wood;
-                    skin_Water_Wood.SetActive(true);
+                    selectedSkinBlock = skinObject_Rivergreen_Lv3;
+                    skinObject_Rivergreen_Lv3.SetActive(true);
                 }
                 break;
-            case SkinType.Water_4:
-                if (skin_Water_4)
+            case SkinType.Rivergreen_Lv4:
+                if (skinObject_Rivergreen_Lv4)
                 {
-                    selectedSkinBlock = skin_Water_4;
-                    skin_Water_4.SetActive(true);
+                    selectedSkinBlock = skinObject_Rivergreen_Lv4;
+                    skinObject_Rivergreen_Lv4.SetActive(true);
                 }
                 break;
-            case SkinType.Water_5:
-                if (skin_Water_5)
+            case SkinType.Rivergreen_Lv5:
+                if (skinObject_Rivergreen_Lv5)
                 {
-                    selectedSkinBlock = skin_Water_5;
-                    skin_Water_5.SetActive(true);
-                }
-                break;
-            case SkinType.Water_6:
-                if (skin_Water_6)
-                {
-                    selectedSkinBlock = skin_Water_6;
-                    skin_Water_6.SetActive(true);
+                    selectedSkinBlock = skinObject_Rivergreen_Lv5;
+                    skinObject_Rivergreen_Lv5.SetActive(true);
                 }
                 break;
 
-            case SkinType.Cave_Stone:
-                if (skin_Cave_Stone)
+            case SkinType.Firevein_Lv1:
+                if (skinObject_Firevein_Lv1)
                 {
-                    selectedSkinBlock = skin_Cave_Stone;
-                    skin_Cave_Stone.SetActive(true);
+                    selectedSkinBlock = skinObject_Firevein_Lv1;
+                    skinObject_Firevein_Lv1.SetActive(true);
                 }
                 break;
-            case SkinType.Cave_Stone_Brick:
-                if (skin_Cave_Stone_Brick)
+            case SkinType.Firevein_Lv2:
+                if (skinObject_Firevein_Lv2)
                 {
-                    selectedSkinBlock = skin_Cave_Stone_Brick;
-                    skin_Cave_Stone_Brick.SetActive(true);
+                    selectedSkinBlock = skinObject_Firevein_Lv2;
+                    skinObject_Firevein_Lv2.SetActive(true);
                 }
                 break;
-            case SkinType.Cave_Lava:
-                if (skin_Cave_Lava)
+            case SkinType.Firevein_Lv3:
+                if (skinObject_Firevein_Lv3)
                 {
-                    selectedSkinBlock = skin_Cave_Lava;
-                    skin_Cave_Lava.SetActive(true);
+                    selectedSkinBlock = skinObject_Firevein_Lv3;
+                    skinObject_Firevein_Lv3.SetActive(true);
                 }
                 break;
-            case SkinType.Cave_Rock:
-                if (skin_Cave_Rock)
+            case SkinType.Firevein_Lv4:
+                if (skinObject_Firevein_Lv4)
                 {
-                    selectedSkinBlock = skin_Cave_Rock;
-                    skin_Cave_Rock.SetActive(true);
+                    selectedSkinBlock = skinObject_Firevein_Lv4;
+                    skinObject_Firevein_Lv4.SetActive(true);
                 }
                 break;
-            case SkinType.Cave_Brick_Brown:
-                if (skin_Cave_Brick_Brown)
+            case SkinType.Firevein_Lv5:
+                if (skinObject_Firevein_Lv5)
                 {
-                    selectedSkinBlock = skin_Cave_Brick_Brown;
-                    skin_Cave_Brick_Brown.SetActive(true);
-                }
-                break;
-            case SkinType.Cave_Brick_Black:
-                if (skin_Cave_Brick_Black)
-                {
-                    selectedSkinBlock = skin_Cave_Brick_Black;
-                    skin_Cave_Brick_Black.SetActive(true);
+                    selectedSkinBlock = skinObject_Firevein_Lv5;
+                    skinObject_Firevein_Lv5.SetActive(true);
                 }
                 break;
 
-            case SkinType.Desert_Sand:
-                if (skin_Desert_Sand)
+            case SkinType.Sandlands_Lv1:
+                if (skinObject_Sandlands_Lv1)
                 {
-                    selectedSkinBlock = skin_Desert_Sand;
-                    skin_Desert_Sand.SetActive(true);
+                    selectedSkinBlock = skinObject_Sandlands_Lv1;
+                    skinObject_Sandlands_Lv1.SetActive(true);
                 }
                 break;
-            case SkinType.Desert_Clay:
-                if (skin_Desert_Clay)
+            case SkinType.Sandlands_Lv2:
+                if (skinObject_Sandlands_Lv2)
                 {
-                    selectedSkinBlock = skin_Desert_Clay;
-                    skin_Desert_Clay.SetActive(true);
+                    selectedSkinBlock = skinObject_Sandlands_Lv2;
+                    skinObject_Sandlands_Lv2.SetActive(true);
                 }
                 break;
-            case SkinType.Desert_Clay_Tiles:
-                if (skin_Desert_Clay_Tiles)
+            case SkinType.Sandlands_Lv3:
+                if (skinObject_Sandlands_Lv3)
                 {
-                    selectedSkinBlock = skin_Desert_Clay_Tiles;
-                    skin_Desert_Clay_Tiles.SetActive(true);
+                    selectedSkinBlock = skinObject_Sandlands_Lv3;
+                    skinObject_Sandlands_Lv3.SetActive(true);
                 }
                 break;
-            case SkinType.Desert_Sandstone:
-                if (skin_Desert_Sandstone)
+            case SkinType.Sandlands_Lv4:
+                if (skinObject_Sandlands_Lv4)
                 {
-                    selectedSkinBlock = skin_Desert_Sandstone;
-                    skin_Desert_Sandstone.SetActive(true);
+                    selectedSkinBlock = skinObject_Sandlands_Lv4;
+                    skinObject_Sandlands_Lv4.SetActive(true);
                 }
                 break;
-            case SkinType.Desert_Sandstone_Swirl:
-                if (skin_Desert_Sandstone_Swirl)
+            case SkinType.Sandlands_Lv5:
+                if (skinObject_Sandlands_Lv5)
                 {
-                    selectedSkinBlock = skin_Desert_Sandstone_Swirl;
-                    skin_Desert_Sandstone_Swirl.SetActive(true);
-                }
-                break;
-            case SkinType.Desert_Quicksand:
-                if (skin_Desert_Quicksand)
-                {
-                    selectedSkinBlock = skin_Desert_Quicksand;
-                    skin_Desert_Quicksand.SetActive(true);
+                    selectedSkinBlock = skinObject_Sandlands_Lv5;
+                    skinObject_Sandlands_Lv5.SetActive(true);
                 }
                 break;
 
-            case SkinType.Winter_Snow:
-                if (skin_Winter_Snow)
+            case SkinType.Frostfield_Lv1:
+                if (skinObject_Frostfield_Lv1)
                 {
-                    selectedSkinBlock = skin_Winter_Snow;
-                    skin_Winter_Snow.SetActive(true);
+                    selectedSkinBlock = skinObject_Frostfield_Lv1;
+                    skinObject_Frostfield_Lv1.SetActive(true);
                 }
                 break;
-            case SkinType.Winter_Ice:
-                if (skin_Winter_Ice)
+            case SkinType.Frostfield_Lv2:
+                if (skinObject_Frostfield_Lv2)
                 {
-                    selectedSkinBlock = skin_Winter_Ice;
-                    skin_Winter_Ice.SetActive(true);
+                    selectedSkinBlock = skinObject_Frostfield_Lv2;
+                    skinObject_Frostfield_Lv2.SetActive(true);
                 }
                 break;
-            case SkinType.Winter_ColdWood:
-                if (skin_Winter_ColdWood)
+            case SkinType.Frostfield_Lv3:
+                if (skinObject_Frostfield_Lv3)
                 {
-                    selectedSkinBlock = skin_Winter_ColdWood;
-                    skin_Winter_ColdWood.SetActive(true);
+                    selectedSkinBlock = skinObject_Frostfield_Lv3;
+                    skinObject_Frostfield_Lv3.SetActive(true);
                 }
                 break;
-            case SkinType.Winter_FrozenGrass:
-                if (skin_Winter_FrozenGrass)
+            case SkinType.Frostfield_Lv4:
+                if (skinObject_Frostfield_Lv4)
                 {
-                    selectedSkinBlock = skin_Winter_FrozenGrass;
-                    skin_Winter_FrozenGrass.SetActive(true);
+                    selectedSkinBlock = skinObject_Frostfield_Lv4;
+                    skinObject_Frostfield_Lv4.SetActive(true);
                 }
                 break;
-            case SkinType.Winter_CrackedIce:
-                if (skin_Winter_CrackedIce)
+            case SkinType.Frostfield_Lv5:
+                if (skinObject_Frostfield_Lv5)
                 {
-                    selectedSkinBlock = skin_Winter_CrackedIce;
-                    skin_Winter_CrackedIce.SetActive(true);
-                }
-                break;
-            case SkinType.Winter_Crocked:
-                if (skin_Winter_Crocked)
-                {
-                    selectedSkinBlock = skin_Winter_Crocked;
-                    skin_Winter_Crocked.SetActive(true);
+                    selectedSkinBlock = skinObject_Frostfield_Lv5;
+                    skinObject_Frostfield_Lv5.SetActive(true);
                 }
                 break;
 
-            case SkinType.Swamp_SwampWater:
-                if (skin_Swamp_SwampWater)
+            case SkinType.Witchmire_Lv1:
+                if (skinObject_Witchmire_Lv1)
                 {
-                    selectedSkinBlock = skin_Swamp_SwampWater;
-                    skin_Swamp_SwampWater.SetActive(true);
+                    selectedSkinBlock = skinObject_Witchmire_Lv1;
+                    skinObject_Witchmire_Lv1.SetActive(true);
                 }
                 break;
-            case SkinType.Swamp_Mud:
-                if (skin_Swamp_Mud)
+            case SkinType.Witchmire_Lv2:
+                if (skinObject_Witchmire_Lv2)
                 {
-                    selectedSkinBlock = skin_Swamp_Mud;
-                    skin_Swamp_Mud.SetActive(true);
+                    selectedSkinBlock = skinObject_Witchmire_Lv2;
+                    skinObject_Witchmire_Lv2.SetActive(true);
                 }
                 break;
-            case SkinType.Swamp_SwampGrass:
-                if (skin_Swamp_SwampGrass)
+            case SkinType.Witchmire_Lv3:
+                if (skinObject_Witchmire_Lv3)
                 {
-                    selectedSkinBlock = skin_Swamp_SwampGrass;
-                    skin_Swamp_SwampGrass.SetActive(true);
+                    selectedSkinBlock = skinObject_Witchmire_Lv3;
+                    skinObject_Witchmire_Lv3.SetActive(true);
                 }
                 break;
-            case SkinType.Swamp_JungleWood:
-                if (skin_Swamp_JungleWood)
+            case SkinType.Witchmire_Lv4:
+                if (skinObject_Witchmire_Lv4)
                 {
-                    selectedSkinBlock = skin_Swamp_JungleWood;
-                    skin_Swamp_JungleWood.SetActive(true);
+                    selectedSkinBlock = skinObject_Witchmire_Lv4;
+                    skinObject_Witchmire_Lv4.SetActive(true);
                 }
                 break;
-            case SkinType.Swamp_SwampWood:
-                if (skin_Swamp_SwampWood)
+            case SkinType.Witchmire_Lv5:
+                if (skinObject_Witchmire_Lv5)
                 {
-                    selectedSkinBlock = skin_Swamp_SwampWood;
-                    skin_Swamp_SwampWood.SetActive(true);
-                }
-                break;
-            case SkinType.Swamp_TempleBlock:
-                if (skin_Swamp_TempleBlock)
-                {
-                    selectedSkinBlock = skin_Swamp_TempleBlock;
-                    skin_Swamp_TempleBlock.SetActive(true);
+                    selectedSkinBlock = skinObject_Witchmire_Lv5;
+                    skinObject_Witchmire_Lv5.SetActive(true);
                 }
                 break;
 
-            case SkinType.Industrial_Metal:
-                if (skin_Industrial_Metal)
+            case SkinType.Metalworks_Lv1:
+                if (skinObject_Metalworks_Lv1)
                 {
-                    selectedSkinBlock = skin_Industrial_Metal;
-                    skin_Industrial_Metal.SetActive(true);
+                    selectedSkinBlock = skinObject_Metalworks_Lv1;
+                    skinObject_Metalworks_Lv1.SetActive(true);
                 }
                 break;
-            case SkinType.Industrial_Brass:
-                if (skin_Industrial_Brass)
+            case SkinType.Metalworks_Lv2:
+                if (skinObject_Metalworks_Lv2)
                 {
-                    selectedSkinBlock = skin_Industrial_Brass;
-                    skin_Industrial_Brass.SetActive(true);
+                    selectedSkinBlock = skinObject_Metalworks_Lv2;
+                    skinObject_Metalworks_Lv2.SetActive(true);
                 }
                 break;
-            case SkinType.Industrial_Gold:
-                if (skin_Industrial_Gold)
+            case SkinType.Metalworks_Lv3:
+                if (skinObject_Metalworks_Lv3)
                 {
-                    selectedSkinBlock = skin_Industrial_Gold;
-                    skin_Industrial_Gold.SetActive(true);
+                    selectedSkinBlock = skinObject_Metalworks_Lv3;
+                    skinObject_Metalworks_Lv3.SetActive(true);
                 }
                 break;
-            case SkinType.Industrial_Casing_Metal:
-                if (skin_Industrial_Casing_Metal)
+            case SkinType.Metalworks_Lv4:
+                if (skinObject_Metalworks_Lv4)
                 {
-                    selectedSkinBlock = skin_Industrial_Casing_Metal;
-                    skin_Industrial_Casing_Metal.SetActive(true);
+                    selectedSkinBlock = skinObject_Metalworks_Lv4;
+                    skinObject_Metalworks_Lv4.SetActive(true);
                 }
                 break;
-            case SkinType.Industria_Casingl_Brass:
-                if (skin_Industria_Casingl_Brass)
+            case SkinType.Metalworks_Lv5:
+                if (skinObject_Metalworks_Lv5)
                 {
-                    selectedSkinBlock = skin_Industria_Casingl_Brass;
-                    skin_Industria_Casingl_Brass.SetActive(true);
-                }
-                break;
-            case SkinType.Industrial_Casing_Gold:
-                if (skin_Industrial_Casing_Gold)
-                {
-                    selectedSkinBlock = skin_Industrial_Casing_Gold;
-                    skin_Industrial_Casing_Gold.SetActive(true);
+                    selectedSkinBlock = skinObject_Metalworks_Lv5;
+                    skinObject_Metalworks_Lv5.SetActive(true);
                 }
                 break;
 
             case SkinType.Default:
-                if (skin_Default)
+                if (skinObject_Default)
                 {
-                    selectedSkinBlock = skin_Default;
-                    skin_Default.SetActive(true);
+                    selectedSkinBlock = skinObject_Default;
+                    skinObject_Default.SetActive(true);
                 }
                 break;
 
             default:
-                if (skin_Default)
+                if (skinObject_Default)
                 {
-                    selectedSkinBlock = skin_Default;
-                    skin_Default.SetActive(true);
+                    selectedSkinBlock = skinObject_Default;
+                    skinObject_Default.SetActive(true);
                 }
                 break;
         }
@@ -391,86 +343,74 @@ public class Player_Body : Singleton<Player_Body>
     }
     void HideAllSkins()
     {
-        if (skin_Default)
-            skin_Default.SetActive(false);
+        if (skinObject_Default)
+            skinObject_Default.SetActive(false);
 
-        if (skin_Water_Grass)
-            skin_Water_Grass.SetActive(false);
-        if (skin_Water_Water)
-            skin_Water_Water.SetActive(false);
-        if (skin_Water_Wood)
-            skin_Water_Wood.SetActive(false);
-        if (skin_Water_4)
-            skin_Water_4.SetActive(false);
-        if (skin_Water_5)
-            skin_Water_5.SetActive(false);
-        if (skin_Water_6)
-            skin_Water_6.SetActive(false);
+        if (skinObject_Rivergreen_Lv1)
+            skinObject_Rivergreen_Lv1.SetActive(false);
+        if (skinObject_Rivergreen_Lv2)
+            skinObject_Rivergreen_Lv2.SetActive(false);
+        if (skinObject_Rivergreen_Lv3)
+            skinObject_Rivergreen_Lv3.SetActive(false);
+        if (skinObject_Rivergreen_Lv4)
+            skinObject_Rivergreen_Lv4.SetActive(false);
+        if (skinObject_Rivergreen_Lv5)
+            skinObject_Rivergreen_Lv5.SetActive(false);
 
-        if (skin_Cave_Stone)
-            skin_Cave_Stone.SetActive(false);
-        if (skin_Cave_Stone_Brick)
-            skin_Cave_Stone_Brick.SetActive(false);
-        if (skin_Cave_Lava)
-            skin_Cave_Lava.SetActive(false);
-        if (skin_Cave_Rock)
-            skin_Cave_Rock.SetActive(false);
-        if (skin_Cave_Brick_Brown)
-            skin_Cave_Brick_Brown.SetActive(false);
-        if (skin_Cave_Brick_Black)
-            skin_Cave_Brick_Black.SetActive(false);
+        if (skinObject_Firevein_Lv1)
+            skinObject_Firevein_Lv1.SetActive(false);
+        if (skinObject_Firevein_Lv2)
+            skinObject_Firevein_Lv2.SetActive(false);
+        if (skinObject_Firevein_Lv3)
+            skinObject_Firevein_Lv3.SetActive(false);
+        if (skinObject_Firevein_Lv4)
+            skinObject_Firevein_Lv4.SetActive(false);
+        if (skinObject_Firevein_Lv5)
+            skinObject_Firevein_Lv5.SetActive(false);
 
-        if (skin_Desert_Sand)
-            skin_Desert_Sand.SetActive(false);
-        if (skin_Desert_Clay)
-            skin_Desert_Clay.SetActive(false);
-        if (skin_Desert_Clay_Tiles)
-            skin_Desert_Clay_Tiles.SetActive(false);
-        if (skin_Desert_Sandstone)
-            skin_Desert_Sandstone.SetActive(false);
-        if (skin_Desert_Sandstone_Swirl)
-            skin_Desert_Sandstone_Swirl.SetActive(false);
-        if (skin_Desert_Quicksand)
-            skin_Desert_Quicksand.SetActive(false);
+        if (skinObject_Sandlands_Lv1)
+            skinObject_Sandlands_Lv1.SetActive(false);
+        if (skinObject_Sandlands_Lv2)
+            skinObject_Sandlands_Lv2.SetActive(false);
+        if (skinObject_Sandlands_Lv3)
+            skinObject_Sandlands_Lv3.SetActive(false);
+        if (skinObject_Sandlands_Lv4)
+            skinObject_Sandlands_Lv4.SetActive(false);
+        if (skinObject_Sandlands_Lv5)
+            skinObject_Sandlands_Lv5.SetActive(false);
 
-        if (skin_Winter_Snow)
-            skin_Winter_Snow.SetActive(false);
-        if (skin_Winter_Ice)
-            skin_Winter_Ice.SetActive(false);
-        if (skin_Winter_ColdWood)
-            skin_Winter_ColdWood.SetActive(false);
-        if (skin_Winter_FrozenGrass)
-            skin_Winter_FrozenGrass.SetActive(false);
-        if (skin_Winter_CrackedIce)
-            skin_Winter_CrackedIce.SetActive(false);
-        if (skin_Winter_Crocked)
-            skin_Winter_Crocked.SetActive(false);
+        if (skinObject_Frostfield_Lv1)
+            skinObject_Frostfield_Lv1.SetActive(false);
+        if (skinObject_Frostfield_Lv2)
+            skinObject_Frostfield_Lv2.SetActive(false);
+        if (skinObject_Frostfield_Lv3)
+            skinObject_Frostfield_Lv3.SetActive(false);
+        if (skinObject_Frostfield_Lv4)
+            skinObject_Frostfield_Lv4.SetActive(false);
+        if (skinObject_Frostfield_Lv5)
+            skinObject_Frostfield_Lv5.SetActive(false);
 
-        if (skin_Swamp_SwampWater)
-            skin_Swamp_SwampWater.SetActive(false);
-        if (skin_Swamp_Mud)
-            skin_Swamp_Mud.SetActive(false);
-        if (skin_Swamp_SwampGrass)
-            skin_Swamp_SwampGrass.SetActive(false);
-        if (skin_Swamp_JungleWood)
-            skin_Swamp_JungleWood.SetActive(false);
-        if (skin_Swamp_SwampWood)
-            skin_Swamp_SwampWood.SetActive(false);
-        if (skin_Swamp_TempleBlock)
-            skin_Swamp_TempleBlock.SetActive(false);
+        if (skinObject_Witchmire_Lv1)
+            skinObject_Witchmire_Lv1.SetActive(false);
+        if (skinObject_Witchmire_Lv2)
+            skinObject_Witchmire_Lv2.SetActive(false);
+        if (skinObject_Witchmire_Lv3)
+            skinObject_Witchmire_Lv3.SetActive(false);
+        if (skinObject_Witchmire_Lv4)
+            skinObject_Witchmire_Lv4.SetActive(false);
+        if (skinObject_Witchmire_Lv5)
+            skinObject_Witchmire_Lv5.SetActive(false);
 
-        if (skin_Industrial_Metal)
-            skin_Industrial_Metal.SetActive(false);
-        if (skin_Industrial_Brass)
-            skin_Industrial_Brass.SetActive(false);
-        if (skin_Industrial_Gold)
-            skin_Industrial_Gold.SetActive(false);
-        if (skin_Industrial_Casing_Metal)
-            skin_Industrial_Casing_Metal.SetActive(false);
-        if (skin_Industria_Casingl_Brass)
-            skin_Industria_Casingl_Brass.SetActive(false);
-        if (skin_Industrial_Casing_Gold)
-            skin_Industrial_Casing_Gold.SetActive(false);
+        if (skinObject_Metalworks_Lv1)
+            skinObject_Metalworks_Lv1.SetActive(false);
+        if (skinObject_Metalworks_Lv2)
+            skinObject_Metalworks_Lv2.SetActive(false);
+        if (skinObject_Metalworks_Lv3)
+            skinObject_Metalworks_Lv3.SetActive(false);
+        if (skinObject_Metalworks_Lv4)
+            skinObject_Metalworks_Lv4.SetActive(false);
+        if (skinObject_Metalworks_Lv5)
+            skinObject_Metalworks_Lv5.SetActive(false);
     }
 
     public void UpdatePlayerHats()

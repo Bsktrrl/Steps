@@ -11,20 +11,22 @@ public class Player_Burning : Singleton<Player_Burning>
 
     bool firstTimeCheck;
 
+    RaycastHit hit;
+
 
     //--------------------
 
 
     private void OnEnable()
     {
-        Movement.Action_isSwitchingBlocks += BecomeFlameable;
+        //Movement.Action_isSwitchingBlocks += BecomeFlameable;
         Movement.Action_StepTaken += BecomeFlameable;
         Movement.Action_StepTaken += CheckFlameableCounter;
         Movement.Action_RespawnPlayer += RemoveFlameable;
     }
     private void OnDisable()
     {
-        Movement.Action_isSwitchingBlocks -= BecomeFlameable;
+        //Movement.Action_isSwitchingBlocks -= BecomeFlameable;
         Movement.Action_StepTaken -= BecomeFlameable;
         Movement.Action_StepTaken -= CheckFlameableCounter;
         Movement.Action_RespawnPlayerEarly -= RemoveFlameable;
@@ -36,76 +38,25 @@ public class Player_Burning : Singleton<Player_Burning>
 
     void BecomeFlameable()
     {
-        if (Movement.Instance.blockStandingOn && !firstTimeCheck)
+        if (RaycastForLavaBlock(Vector3.forward) || RaycastForLavaBlock(Vector3.back) || RaycastForLavaBlock(Vector3.left) || RaycastForLavaBlock(Vector3.right))
         {
-            if (Movement.Instance.blockStandingOn.GetComponent<Block_BurnTransforming>())
+            AddFlameable();
+        }
+    }
+    bool RaycastForLavaBlock(Vector3 dir)
+    {
+        if (Physics.Raycast(transform.position + dir, Vector3.down, out hit, 1.4f))
+        {
+            if ((hit.collider.transform.gameObject && hit.collider.transform.gameObject.GetComponent<BlockInfo>() && hit.collider.transform.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Lava)
+                || (hit.collider.transform.gameObject && hit.collider.transform.parent && hit.collider.transform.parent.gameObject.GetComponent<BlockInfo>() && hit.collider.transform.parent.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Lava))
             {
-                Movement.Instance.blockStandingOn.GetComponent<Block_BurnTransforming>().isSteppedOn = true;
-
-                firstTimeCheck = true;
+                return true;
             }
         }
 
-        //if (PlayerManager.Instance.block_Vertical_InFront.block)
-        //{
-        //    if (PlayerManager.Instance.block_Vertical_InFront.block.GetComponent<Block_Lava>())
-        //    {
-        //        AddFlameable();
-        //    }
-        //}
-        //if (PlayerManager.Instance.block_Horizontal_InFront.block)
-        //{
-        //    if (PlayerManager.Instance.block_Horizontal_InFront.block.GetComponent<Block_Lava>())
-        //    {
-        //        AddFlameable();
-        //    }
-        //}
-
-        //if (PlayerManager.Instance.block_Vertical_InBack.block)
-        //{
-        //    if (PlayerManager.Instance.block_Vertical_InBack.block.GetComponent<Block_Lava>())
-        //    {
-        //        AddFlameable();
-        //    }
-        //}
-        //if (PlayerManager.Instance.block_Horizontal_InBack.block)
-        //{
-        //    if (PlayerManager.Instance.block_Horizontal_InBack.block.GetComponent<Block_Lava>())
-        //    {
-        //        AddFlameable();
-        //    }
-        //}
-
-        //if (PlayerManager.Instance.block_Vertical_ToTheLeft.block)
-        //{
-        //    if (PlayerManager.Instance.block_Vertical_ToTheLeft.block.GetComponent<Block_Lava>())
-        //    {
-        //        AddFlameable();
-        //    }
-        //}
-        //if (PlayerManager.Instance.block_Horizontal_ToTheLeft.block)
-        //{
-        //    if (PlayerManager.Instance.block_Horizontal_ToTheLeft.block.GetComponent<Block_Lava>())
-        //    {
-        //        AddFlameable();
-        //    }
-        //}
-
-        //if (PlayerManager.Instance.block_Vertical_ToTheRight.block)
-        //{
-        //    if (PlayerManager.Instance.block_Vertical_ToTheRight.block.GetComponent<Block_Lava>())
-        //    {
-        //        AddFlameable();
-        //    }
-        //}
-        //if (PlayerManager.Instance.block_Horizontal_ToTheRight.block)
-        //{
-        //    if (PlayerManager.Instance.block_Horizontal_ToTheRight.block.GetComponent<Block_Lava>())
-        //    {
-        //        AddFlameable();
-        //    }
-        //}
+        return false;
     }
+
 
     void CheckFlameableCounter()
     {
@@ -130,6 +81,12 @@ public class Player_Burning : Singleton<Player_Burning>
     }
     void AddFlameable()
     {
+        StartCoroutine(DelayFlammable());
+    }
+    IEnumerator DelayFlammable()
+    {
+        yield return new WaitForEndOfFrame();
+
         isBurning = true;
         flameableStepCounter = 0;
 

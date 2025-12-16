@@ -118,14 +118,11 @@ public class NumberDisplay : MonoBehaviour
 
     public void ShowNumber()
     {
-        //Player_Pusher.Instance.RaycastPushDirectionBlock();
-        //Player_Pusher.Instance.CheckPush();
-
-        ////If Pushed
-        //if ((Movement.Instance.blockStandingOn.GetComponent<Block_Pusher>() || PlayerManager.Instance.player.GetComponent<Player_Pusher>().playerIsPushed) && PlayerManager.Instance.player.GetComponent<Player_Pusher>().BlockToPushInto == gameObject.transform.parent.gameObject)
-        //{
-        //    DisplayNumber(0);
-        //}
+        //If a Teleporter, don't show the number at all
+        if (gameObject.transform.parent.GetComponent<EffectBlockInfo>() && gameObject.transform.parent.GetComponent<EffectBlockInfo>().effectBlock_Teleporter_isAdded)
+        {
+            return;
+        }
 
         //If in quicksand
         if (Player_Quicksand.Instance.isInQuicksand && GetComponentInParent<Block_Quicksand>())
