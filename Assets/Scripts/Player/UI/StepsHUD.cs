@@ -91,8 +91,6 @@ public class StepsHUD : Singleton<StepsHUD>
         else
         {
             UpdateBonusStepsColors(index);
-            //UpdateBonusStepsColors(8);
-            //UpdateBonusStepsColors(9);
         }
     }
     void UpdateBonusStepsColors(int index)

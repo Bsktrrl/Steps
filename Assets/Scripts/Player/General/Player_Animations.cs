@@ -78,10 +78,11 @@ public class Player_Animations : Singleton<Player_Animations>
         DataManager.Action_dataHasLoaded += UpdateAnimator;
 
         Movement.Action_RespawnPlayer += ResetAnimations;
+        Movement.Action_RespawnPlayerEarly += Trigger_RespawnAnimation;
 
         Player_KeyInputs.Action_RespawnHold += Start_RespawnAnimation;
         Player_KeyInputs.Action_RespawnCanceled += End_RespawnAnimation;
-        SFX_Respawn.Action_RespawnPlayerAnimation += Trigger_RespawnAnimation;
+        SFX_Respawn.Action_RespawnPlayerAnimation += Trigger_RespawnAnimation_ButtonHold;
 
         Interactable_Pickup.Action_EssencePickupGot += PickUpAnimation_Small;
         Interactable_Pickup.Action_SkinPickupGot += PickUpAnimation_Small;
@@ -94,10 +95,11 @@ public class Player_Animations : Singleton<Player_Animations>
         DataManager.Action_dataHasLoaded -= UpdateAnimator;
 
         Movement.Action_RespawnPlayer -= ResetAnimations;
+        Movement.Action_RespawnPlayerEarly -= Trigger_RespawnAnimation;
 
         Player_KeyInputs.Action_RespawnHold -= Start_RespawnAnimation;
         Player_KeyInputs.Action_RespawnCanceled -= End_RespawnAnimation;
-        SFX_Respawn.Action_RespawnPlayerAnimation -= Trigger_RespawnAnimation;
+        SFX_Respawn.Action_RespawnPlayerAnimation -= Trigger_RespawnAnimation_ButtonHold;
 
         Interactable_Pickup.Action_EssencePickupGot -= PickUpAnimation_Small;
         Interactable_Pickup.Action_SkinPickupGot -= PickUpAnimation_Small;
@@ -351,6 +353,13 @@ public class Player_Animations : Singleton<Player_Animations>
         EffectManager.Instance.PerformTeleportEffect();
     }
     public void Trigger_RespawnAnimation()
+    {
+        if (Movement.Instance.isMoving || Player_KeyInputs.Instance.respawn_isPressed) { return; }
+
+        playerAnimator.speed = 1.0f;
+        playerAnimator.SetTrigger(AnimationManager.Instance.effect_Teleport);
+    }
+    public void Trigger_RespawnAnimation_ButtonHold()
     {
         if (Movement.Instance.isMoving) { return; }
 

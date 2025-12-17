@@ -48,6 +48,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     public bool cameraX_isPressed = false;
     public bool cameraY_isPressed = false;
 
+    public bool respawn_isPressed = false;
+
 
 
     //--------------------
@@ -267,10 +269,12 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     {
         if (!ButtonChecks_Other()) { return; }
 
+        respawn_isPressed = true;
         Action_RespawnHold?.Invoke();
     }
     void OnRespawn_Out()
     {
+        respawn_isPressed = false;
         Action_RespawnCanceled?.Invoke();
     }
 
