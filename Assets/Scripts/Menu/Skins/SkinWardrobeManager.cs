@@ -163,6 +163,12 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
         if (tempObj != null)
             tempObj.SetActive(true);
+
+        if (DataManager.Instance.skinsInfo_Store.activeSkinType != SkinType.Default && DataManager.Instance.skinsInfo_Store.activeSkinType != SkinType.None)
+        {
+            if (skin_Default)
+                skin_Default.SetActive(false);
+        }
     }
     void HideAllSkins()
     {
@@ -234,6 +240,9 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
             object_Metalworks_Lv4.SetActive(false);
         if (object_Metalworks_Lv5)
             object_Metalworks_Lv5.SetActive(false);
+
+        if (skin_Default)
+            skin_Default.SetActive(false);
     }
     public void UpdatePlayerHatDisplay()
     {
