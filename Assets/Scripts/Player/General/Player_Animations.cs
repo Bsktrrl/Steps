@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Player_Animations : Singleton<Player_Animations>
 {
-    public Animator anim;
+    public Animator playerAnimator;
 
     public float abilityChargeTime_Dash = 0.5f;
     public float abilityChargeTime_Jump = 0.48f;
@@ -25,6 +25,8 @@ public class Player_Animations : Singleton<Player_Animations>
 
     private void Start()
     {
+        playerAnimator = GetComponent<Animator>();
+
         StartCoroutine(RandomBlink());
         StartCoroutine(RandomIdle());
     }
@@ -109,7 +111,7 @@ public class Player_Animations : Singleton<Player_Animations>
 
     public void UpdateAnimator()
     {
-        anim = Player_Body.Instance.selectedSkinBlock.GetComponent<Animator>();
+        playerAnimator = Player_Body.Instance.selectedSkinBlock.GetComponent<Animator>();
     }
 
     #region ResetAnimations
@@ -130,17 +132,28 @@ public class Player_Animations : Singleton<Player_Animations>
     }
     public void ForceStopAllAnimations(string triggerName, string stateName)
     {
-        if (!anim) return;
+        if (!playerAnimator) return;
 
-        // Only reset if the parameter exists
-        if (Animator_HasParameter(anim, triggerName))
-            anim.ResetTrigger(triggerName);
+        //// Only reset if the parameter exists
+        //if (Animator_HasParameter(playerAnimator, triggerName))
+        //{
+        //    playerAnimator.ResetTrigger(triggerName);
 
-        // Only crossfade if the state exists
-        if (Animator_HasState(anim, stateName))
-        {
-            anim.CrossFade(stateName, 0f);
-        }
+        //    print("1. Stop Animations");
+        //}
+
+        //// Only crossfade if the state exists
+        //if (Animator_HasState(playerAnimator, stateName))
+        //{
+        //    playerAnimator.CrossFade(stateName, 0f);
+        //    print("2. Stop Animations");
+        //}
+
+        //playerAnimator.Play("", 0, 0f);
+        //StartSecondaryIdle();
+        playerAnimator.Play("Idle", 0, 0f);
+        playerAnimator.SetTrigger("Confident");
+        print("3. Stop Animations");
     }
     bool Animator_HasParameter(Animator anim, string paramName)
     {
@@ -162,7 +175,18 @@ public class Player_Animations : Singleton<Player_Animations>
 
         return false;
     }
-    
+
+    public void StopAllAnimationsImmediately()
+    {
+        // 1. Reset all triggers so nothing queues
+        foreach (var p in playerAnimator.parameters)
+            if (p.type == AnimatorControllerParameterType.Trigger)
+                playerAnimator.ResetTrigger(p.name);
+
+        // 2. Force jump to Idle or a neutral state
+        playerAnimator.Play("Idle", 0, 0f);
+    }
+
     #endregion
 
 
@@ -175,22 +199,22 @@ public class Player_Animations : Singleton<Player_Animations>
 
         if (!isWalkGliding && !Movement.Instance.isDashing && !Movement.Instance.isJumping && !Movement.Instance.isAscending && !Movement.Instance.isDecending)
         {
-            anim.speed = 1.0f;
-            anim.SetTrigger(AnimationManager.Instance.walk);
+            playerAnimator.speed = 1.0f;
+            playerAnimator.SetTrigger(AnimationManager.Instance.walk);
         }
     }
     public void Trigger_StairSlopeWalkingAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
-        anim.speed = 1.0f;
-        anim.SetTrigger(AnimationManager.Instance.walk);
+        playerAnimator.speed = 1.0f;
+        playerAnimator.SetTrigger(AnimationManager.Instance.walk);
     }
     public void Trigger_SlopeDownAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
-        anim.speed = 1.0f;
+        playerAnimator.speed = 1.0f;
         //anim.SetTrigger(AnimationManager.Instance.walk);
     }
 
@@ -203,24 +227,24 @@ public class Player_Animations : Singleton<Player_Animations>
         if (Movement.Instance.isMoving) { return; }
 
         //anim.speed = 1.0f;
-        anim.SetBool("InWater", state);
+        playerAnimator.SetBool("InWater", state);
     }
     public void Set_WalkGlideAnimation(bool state)
     {
         //anim.speed = 1.0f;
-        anim.SetBool("Sliding", state);
+        playerAnimator.SetBool("Sliding", state);
         isWalkGliding = state;
     }
 
     public void Start_RespawnAnimation()
     {
-        anim.speed = 1.6f;
-        anim.SetBool("Respawn", true);
+        playerAnimator.speed = 1.6f;
+        playerAnimator.SetBool("Respawn", true);
     }
     public void End_RespawnAnimation()
     {
-        anim.speed = 1.0f;
-        anim.SetBool("Respawn", false);
+        playerAnimator.speed = 1.0f;
+        playerAnimator.SetBool("Respawn", false);
     }
 
 
@@ -231,53 +255,53 @@ public class Player_Animations : Singleton<Player_Animations>
     {
         if (Movement.Instance.isMoving) { return; }
 
-        anim.speed = 1.0f;
-        anim.SetTrigger(AnimationManager.Instance.ability_Ascend);
+        playerAnimator.speed = 1.0f;
+        playerAnimator.SetTrigger(AnimationManager.Instance.ability_Ascend);
         EffectManager.Instance.PerformAscendEffect();
     }
     public void Trigger_DescendAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
-        anim.speed = 1.0f;
-        anim.SetTrigger(AnimationManager.Instance.ability_Descend);
+        playerAnimator.speed = 1.0f;
+        playerAnimator.SetTrigger(AnimationManager.Instance.ability_Descend);
         EffectManager.Instance.PerformDescendEffect();
     }
     public void Trigger_DashAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
-        anim.speed = 1.0f;
+        playerAnimator.speed = 1.0f;
         //anim.SetLayerWeight(1, 1);
-        anim.SetTrigger(AnimationManager.Instance.ability_Dash);
+        playerAnimator.SetTrigger(AnimationManager.Instance.ability_Dash);
         EffectManager.Instance.PerformDashEffect();
     }
     public void Trigger_JumpAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
-        anim.speed = 1.0f;
-        anim.SetTrigger(AnimationManager.Instance.ability_Jump);
+        playerAnimator.speed = 1.0f;
+        playerAnimator.SetTrigger(AnimationManager.Instance.ability_Jump);
     }
     public void Trigger_CeilingGrabAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
-        anim.speed = 1.0f;
-        anim.SetTrigger(AnimationManager.Instance.ability_CeilingGrab);
+        playerAnimator.speed = 1.0f;
+        playerAnimator.SetTrigger(AnimationManager.Instance.ability_CeilingGrab);
     }
     public void Trigger_GrapplingHookAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
-        anim.speed = 1.0f;
-        anim.SetTrigger(AnimationManager.Instance.ability_GrapplingHook);
+        playerAnimator.speed = 1.0f;
+        playerAnimator.SetTrigger(AnimationManager.Instance.ability_GrapplingHook);
     }
     public void Trigger_GrapplingHookDraggingAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
-        anim.speed = 1.0f;
+        playerAnimator.speed = 1.0f;
         //anim.SetTrigger(AnimationManager.Instance.);
     }
 
@@ -324,23 +348,23 @@ public class Player_Animations : Singleton<Player_Animations>
     {
         if (Movement.Instance.isMoving) { return; }
 
-        anim.speed = 1.0f;
-        anim.SetTrigger(AnimationManager.Instance.effect_PickupSmall);
+        playerAnimator.speed = 1.0f;
+        playerAnimator.SetTrigger(AnimationManager.Instance.effect_PickupSmall);
     }
     public void Trigger_PickupBigAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
-        anim.speed = 1.0f;
-        anim.SetTrigger(AnimationManager.Instance.effect_PickupBig);
+        playerAnimator.speed = 1.0f;
+        playerAnimator.SetTrigger(AnimationManager.Instance.effect_PickupBig);
     }
 
     public void Trigger_TeleportAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
 
-        anim.speed = 1.0f;
-        anim.SetTrigger(AnimationManager.Instance.effect_Teleport);
+        playerAnimator.speed = 1.0f;
+        playerAnimator.SetTrigger(AnimationManager.Instance.effect_Teleport);
 
         EffectManager.Instance.PerformTeleportEffect();
     }
@@ -348,8 +372,8 @@ public class Player_Animations : Singleton<Player_Animations>
     {
         if (Movement.Instance.isMoving) { return; }
 
-        anim.speed = 1.0f;
-        anim.SetTrigger(AnimationManager.Instance.effect_Teleport);
+        playerAnimator.speed = 1.0f;
+        playerAnimator.SetTrigger(AnimationManager.Instance.effect_Teleport);
     }
 
 
@@ -362,7 +386,7 @@ public class Player_Animations : Singleton<Player_Animations>
 
         yield return new WaitForSeconds(time);
 
-        anim.SetTrigger(AnimationManager.Instance.blink);
+        playerAnimator.SetTrigger(AnimationManager.Instance.blink);
 
         StartCoroutine(RandomBlink());
     }
@@ -373,9 +397,9 @@ public class Player_Animations : Singleton<Player_Animations>
         yield return new WaitForSeconds(time);
 
         if (Random.Range(0, 1) > 0.5f)
-            anim.SetTrigger("Confused");
+            playerAnimator.SetTrigger("Confused");
         else
-            anim.SetTrigger("Confident");
+            playerAnimator.SetTrigger("Confident");
 
         Invoke(nameof(StartSecondaryIdle), 0);
     }

@@ -60,7 +60,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         if (PlayerManager.Instance.playerBody.transform.GetComponentInChildren<Animator>())
         {
-            Player_Animations.Instance.anim = PlayerManager.Instance.playerBody.GetComponentInChildren<Animator>();
+            Player_Animations.Instance.playerAnimator = PlayerManager.Instance.playerBody.GetComponentInChildren<Animator>();
         }
     }
 

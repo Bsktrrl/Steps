@@ -1534,35 +1534,42 @@ public class Movement : Singleton<Movement>
     }
     void RunGrapplingHook()
     {
-        if (moveToBlock_GrapplingHook.canMoveTo)
+        if (moveToBlock_GrapplingHook.canMoveTo && moveToBlock_GrapplingHook.targetBlock)
         {
-            isGrapplingHooking = true;
-
-            if (Player_KeyInputs.Instance.grapplingHook_isPressed)
-                Player_Animations.Instance.Trigger_GrapplingHookAnimation();
-            else
-                Player_Animations.Instance.Trigger_GrapplingHookDraggingAnimation();
-
-            if (moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Stair || moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+            if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().movementCost)
             {
-                // Check if Stair/Slope is facing the player
-                Vector3 toPlayer = (transform.position - moveToBlock_GrapplingHook.targetBlock.transform.position).normalized;
-                bool isFacingPlayer = Vector3.Dot(moveToBlock_GrapplingHook.targetBlock.transform.forward, toPlayer) > 0.5f;
+                isGrapplingHooking = true;
 
-                if (isFacingPlayer)
-                    PerformMovement(moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down + (Vector3.up * 0.95f) + lookDir, abilitySpeed + grapplingLength);
+                if (Player_KeyInputs.Instance.grapplingHook_isPressed)
+                    Player_Animations.Instance.Trigger_GrapplingHookAnimation();
                 else
-                    PerformMovement(moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down + (Vector3.up * 0.5f), abilitySpeed + grapplingLength);
+                    Player_Animations.Instance.Trigger_GrapplingHookDraggingAnimation();
+
+                if (moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Stair || moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                {
+                    // Check if Stair/Slope is facing the player
+                    Vector3 toPlayer = (transform.position - moveToBlock_GrapplingHook.targetBlock.transform.position).normalized;
+                    bool isFacingPlayer = Vector3.Dot(moveToBlock_GrapplingHook.targetBlock.transform.forward, toPlayer) > 0.5f;
+
+                    if (isFacingPlayer)
+                        PerformMovement(moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down + (Vector3.up * 0.95f) + lookDir, abilitySpeed + grapplingLength);
+                    else
+                        PerformMovement(moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down + (Vector3.up * 0.5f), abilitySpeed + grapplingLength);
+                }
+                else
+                    PerformMovement(moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down, abilitySpeed + grapplingLength);
+
+                MapManager.Instance.grapplingHookCounter++;
+                Action_isGrapplingHooking?.Invoke();
+
+                moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
+                Block_IsNot_Target(moveToBlock_GrapplingHook);
+                Player_GraplingHook.Instance.EndLineRenderer();
             }
             else
-                PerformMovement(moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down, abilitySpeed + grapplingLength);
-
-            MapManager.Instance.grapplingHookCounter++;
-            Action_isGrapplingHooking?.Invoke();
-
-            moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-            Block_IsNot_Target(moveToBlock_GrapplingHook);
-            Player_GraplingHook.Instance.EndLineRenderer();
+            {
+                RespawnPlayer();
+            }
         }
     }
     void CheckAscend()
@@ -1577,32 +1584,48 @@ public class Movement : Singleton<Movement>
     }
     bool RunAscend()
     {
-        if (moveToBlock_Ascend.canMoveTo)
+        if (moveToBlock_Ascend.canMoveTo && moveToBlock_Ascend.targetBlock)
         {
-            isAscending = true;
-            PlayerCameraOcclusionController.Instance.CameraZoom(true);
+            if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Ascend.targetBlock.GetComponent<BlockInfo>().movementCost)
+            {
+                isAscending = true;
+                PlayerCameraOcclusionController.Instance.CameraZoom(true);
 
-            MapManager.Instance.ascendCounter++;
-            Player_Animations.Instance.Trigger_AscendAnimation();
-            PerformMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
-            Action_isAscending?.Invoke();
-            return true;
+                MapManager.Instance.ascendCounter++;
+                Player_Animations.Instance.Trigger_AscendAnimation();
+                PerformMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
+                Action_isAscending?.Invoke();
+                return true;
+            }
+            else
+            {
+                RespawnPlayer();
+                return false;
+            }
         }
         else
             return false;
     }
     bool RunDescend()
     {
-        if (moveToBlock_Descend.canMoveTo)
+        if (moveToBlock_Descend.canMoveTo && moveToBlock_Descend.targetBlock)
         {
-            isDecending = true;
-            PlayerCameraOcclusionController.Instance.CameraZoom(true);
+            if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Descend.targetBlock.GetComponent<BlockInfo>().movementCost)
+            {
+                isDecending = true;
+                PlayerCameraOcclusionController.Instance.CameraZoom(true);
 
-            MapManager.Instance.descendCounter++;
-            Player_Animations.Instance.Trigger_DescendAnimation();
-            PerformMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
-            Action_isDescending?.Invoke();
-            return true;
+                MapManager.Instance.descendCounter++;
+                Player_Animations.Instance.Trigger_DescendAnimation();
+                PerformMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
+                Action_isDescending?.Invoke();
+                return true;
+            }
+            else
+            {
+                RespawnPlayer();
+                return false;
+            }
         }
         else
             return false;
@@ -1696,61 +1719,117 @@ public class Movement : Singleton<Movement>
         //Perform Dash Movement, if possible
         else if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Dash_Forward.targetBlock && moveToBlock_Dash_Forward.canMoveTo)
         {
-            MapManager.Instance.dashCounter++;
-            Player_Animations.Instance.Trigger_DashAnimation();
-            PerformMovement(moveToBlock_Dash_Forward, MovementStates.Moving, abilitySpeed, ref isDashing);
-            Action_isDashing?.Invoke();
+            if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Dash_Forward.targetBlock.GetComponent<BlockInfo>().movementCost)
+            {
+                MapManager.Instance.dashCounter++;
+                Player_Animations.Instance.Trigger_DashAnimation();
+                PerformMovement(moveToBlock_Dash_Forward, MovementStates.Moving, abilitySpeed, ref isDashing);
+                Action_isDashing?.Invoke();
+            }
+            else
+            {
+                RespawnPlayer();
+            }
         }
         else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Dash_Back.targetBlock && moveToBlock_Dash_Back.canMoveTo)
         {
-            MapManager.Instance.dashCounter++;
-            Player_Animations.Instance.Trigger_DashAnimation();
-            PerformMovement(moveToBlock_Dash_Back, MovementStates.Moving, abilitySpeed, ref isDashing);
-            Action_isDashing?.Invoke();
+            if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Dash_Back.targetBlock.GetComponent<BlockInfo>().movementCost)
+            {
+                MapManager.Instance.dashCounter++;
+                Player_Animations.Instance.Trigger_DashAnimation();
+                PerformMovement(moveToBlock_Dash_Back, MovementStates.Moving, abilitySpeed, ref isDashing);
+                Action_isDashing?.Invoke();
+            }
+            else
+            {
+                RespawnPlayer();
+            }
         }
         else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Dash_Left.targetBlock && moveToBlock_Dash_Left.canMoveTo)
         {
-            MapManager.Instance.dashCounter++;
-            Player_Animations.Instance.Trigger_DashAnimation();
-            PerformMovement(moveToBlock_Dash_Left, MovementStates.Moving, abilitySpeed, ref isDashing);
-            Action_isDashing?.Invoke();
+            if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Dash_Left.targetBlock.GetComponent<BlockInfo>().movementCost)
+            {
+                MapManager.Instance.dashCounter++;
+                Player_Animations.Instance.Trigger_DashAnimation();
+                PerformMovement(moveToBlock_Dash_Left, MovementStates.Moving, abilitySpeed, ref isDashing);
+                Action_isDashing?.Invoke();
+            }
+            else
+            {
+                RespawnPlayer();
+            }
         }
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Dash_Right.targetBlock && moveToBlock_Dash_Right.canMoveTo)
         {
-            MapManager.Instance.dashCounter++;
-            Player_Animations.Instance.Trigger_DashAnimation();
-            PerformMovement(moveToBlock_Dash_Right, MovementStates.Moving, abilitySpeed, ref isDashing);
-            Action_isDashing?.Invoke();
+            if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Dash_Right.targetBlock.GetComponent<BlockInfo>().movementCost)
+            {
+                MapManager.Instance.dashCounter++;
+                Player_Animations.Instance.Trigger_DashAnimation();
+                PerformMovement(moveToBlock_Dash_Right, MovementStates.Moving, abilitySpeed, ref isDashing);
+                Action_isDashing?.Invoke();
+            }
+            else
+            {
+                RespawnPlayer();
+            }
         }
 
         //Perform Jump Movement, if possible
         else if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Jump_Forward.targetBlock && moveToBlock_Jump_Forward.canMoveTo)
         {
-            MapManager.Instance.jumpCounter++;
-            Player_Animations.Instance.Trigger_JumpAnimation();
-            PerformMovement(moveToBlock_Jump_Forward, MovementStates.Moving, abilitySpeed, ref isJumping);
-            Action_isJumping?.Invoke();
+            if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Jump_Forward.targetBlock.GetComponent<BlockInfo>().movementCost)
+            {
+                MapManager.Instance.jumpCounter++;
+                Player_Animations.Instance.Trigger_JumpAnimation();
+                PerformMovement(moveToBlock_Jump_Forward, MovementStates.Moving, abilitySpeed, ref isJumping);
+                Action_isJumping?.Invoke();
+            }
+            else
+            {
+                RespawnPlayer();
+            }
         }
         else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Jump_Back.targetBlock && moveToBlock_Jump_Back.canMoveTo)
         {
-            MapManager.Instance.jumpCounter++;
-            Player_Animations.Instance.Trigger_JumpAnimation();
-            PerformMovement(moveToBlock_Jump_Back, MovementStates.Moving, abilitySpeed, ref isJumping);
-            Action_isJumping?.Invoke();
+            if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Jump_Back.targetBlock.GetComponent<BlockInfo>().movementCost)
+            {
+                MapManager.Instance.jumpCounter++;
+                Player_Animations.Instance.Trigger_JumpAnimation();
+                PerformMovement(moveToBlock_Jump_Back, MovementStates.Moving, abilitySpeed, ref isJumping);
+                Action_isJumping?.Invoke();
+            }
+            else
+            {
+                RespawnPlayer();
+            }
         }
         else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Jump_Left.targetBlock && moveToBlock_Jump_Left.canMoveTo)
         {
-            MapManager.Instance.jumpCounter++;
-            Player_Animations.Instance.Trigger_JumpAnimation();
-            PerformMovement(moveToBlock_Jump_Left, MovementStates.Moving, abilitySpeed, ref isJumping);
-            Action_isJumping?.Invoke();
+            if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Jump_Left.targetBlock.GetComponent<BlockInfo>().movementCost)
+            {
+                MapManager.Instance.jumpCounter++;
+                Player_Animations.Instance.Trigger_JumpAnimation();
+                PerformMovement(moveToBlock_Jump_Left, MovementStates.Moving, abilitySpeed, ref isJumping);
+                Action_isJumping?.Invoke();
+            }
+            else
+            {
+                RespawnPlayer();
+            }
         }
         else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Jump_Right.targetBlock && moveToBlock_Jump_Right.canMoveTo)
         {
-            MapManager.Instance.jumpCounter++;
-            Player_Animations.Instance.Trigger_JumpAnimation();
-            PerformMovement(moveToBlock_Jump_Right, MovementStates.Moving, abilitySpeed, ref isJumping);
-            Action_isJumping?.Invoke();
+            if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Jump_Right.targetBlock.GetComponent<BlockInfo>().movementCost)
+            {
+                MapManager.Instance.jumpCounter++;
+                Player_Animations.Instance.Trigger_JumpAnimation();
+                PerformMovement(moveToBlock_Jump_Right, MovementStates.Moving, abilitySpeed, ref isJumping);
+                Action_isJumping?.Invoke();
+            }
+            else
+            {
+                RespawnPlayer();
+            }
         }
 
         //Perform SwiftSwim Movement, if possible
