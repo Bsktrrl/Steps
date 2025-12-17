@@ -14,12 +14,13 @@ public class StepsDisplay : Singleton<StepsDisplay>
     [SerializeField] TextMeshProUGUI stepDisplay_Number_Text;
     [SerializeField] TextMeshProUGUI stepDisplay_NumberIcons_Text;
 
-    [Header("Colors")]
-    public Color normalColor_Active;
-    public Color normalColor_Used;
-    public Color bonusColor_Passive;
-    public Color bonusColor_Active;
-    public Color bonusColor_Used;
+    [Header("Sprites")]
+    public Sprite normalFootstep_Active;
+    public Sprite normalFootstep_Used;
+
+    public Sprite extraFootstep_Passive;
+    public Sprite extraFootstep_Active;
+    public Sprite extraFootstep_Used;
 
 
 

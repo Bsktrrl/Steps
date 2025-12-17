@@ -67,7 +67,7 @@ public class StepsHUD : Singleton<StepsHUD>
 
         for (int i = 0; i < 10; i++)
         {
-            if (stepsIconList[i].GetComponent<Image>().color == StepsDisplay.Instance.normalColor_Active)
+            if (stepsIconList[i].GetComponent<Image>().sprite == StepsDisplay.Instance.normalFootstep_Active)
             {
                 continue;
             }
@@ -84,15 +84,15 @@ public class StepsHUD : Singleton<StepsHUD>
         if (index <= 6)
         {
             if (PlayerStats.Instance.stats.steps_Current >= index + 1)
-                stepsIconList[index].GetComponent<Image>().color = StepsDisplay.Instance.normalColor_Active;
+                stepsIconList[index].GetComponent<Image>().sprite = StepsDisplay.Instance.normalFootstep_Active;
             else
-                stepsIconList[index].GetComponent<Image>().color = StepsDisplay.Instance.normalColor_Used;
+                stepsIconList[index].GetComponent<Image>().sprite = StepsDisplay.Instance.normalFootstep_Used;
         }
         else
         {
-            UpdateBonusStepsColors(7);
-            UpdateBonusStepsColors(8);
-            UpdateBonusStepsColors(9);
+            UpdateBonusStepsColors(index);
+            //UpdateBonusStepsColors(8);
+            //UpdateBonusStepsColors(9);
         }
     }
     void UpdateBonusStepsColors(int index)
@@ -100,13 +100,13 @@ public class StepsHUD : Singleton<StepsHUD>
         if (PlayerStats.Instance.stats.steps_Max >= index + 1)
         {
             if (PlayerStats.Instance.stats.steps_Current >= index + 1)
-                stepsIconList[index].GetComponent<Image>().color = StepsDisplay.Instance.bonusColor_Active;
+                stepsIconList[index].GetComponent<Image>().sprite = StepsDisplay.Instance.extraFootstep_Active;
             else
-                stepsIconList[index].GetComponent<Image>().color = StepsDisplay.Instance.bonusColor_Used;
+                stepsIconList[index].GetComponent<Image>().sprite = StepsDisplay.Instance.extraFootstep_Used;
         }
         else
         {
-            stepsIconList[index].GetComponent<Image>().color = StepsDisplay.Instance.bonusColor_Passive;
+            stepsIconList[index].GetComponent<Image>().sprite = StepsDisplay.Instance.extraFootstep_Passive;
         }
     }
 }
