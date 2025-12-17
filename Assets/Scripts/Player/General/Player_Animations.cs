@@ -134,26 +134,8 @@ public class Player_Animations : Singleton<Player_Animations>
     {
         if (!playerAnimator) return;
 
-        //// Only reset if the parameter exists
-        //if (Animator_HasParameter(playerAnimator, triggerName))
-        //{
-        //    playerAnimator.ResetTrigger(triggerName);
-
-        //    print("1. Stop Animations");
-        //}
-
-        //// Only crossfade if the state exists
-        //if (Animator_HasState(playerAnimator, stateName))
-        //{
-        //    playerAnimator.CrossFade(stateName, 0f);
-        //    print("2. Stop Animations");
-        //}
-
-        //playerAnimator.Play("", 0, 0f);
-        //StartSecondaryIdle();
-        playerAnimator.Play("Idle", 0, 0f);
+        //playerAnimator.Play("Idle", 0, 0f);
         playerAnimator.SetTrigger("Confident");
-        print("3. Stop Animations");
     }
     bool Animator_HasParameter(Animator anim, string paramName)
     {

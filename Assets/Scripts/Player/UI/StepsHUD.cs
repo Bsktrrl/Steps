@@ -14,38 +14,72 @@ public class StepsHUD : Singleton<StepsHUD>
 
     private void OnEnable()
     {
-        Interactable_Pickup.Action_PickupGot += UpdateStepsDisplay;
-        Movement.Action_RespawnPlayerLate += UpdateStepsDisplay;
-        Movement.Action_StepTaken += UpdateStepsDisplay;
-        DataManager.Action_dataHasLoaded += UpdateStepsDisplay;
-        Block_Checkpoint.Action_SpawnPointEntered += UpdateStepsDisplay;
-        Block_RefillSteps.Action_RefillStepsEntered += UpdateStepsDisplay;
-        Block_MushroomCircle.Action_MushroomCircleEntered += UpdateStepsDisplay;
+        //Interactable_Pickup.Action_PickupGot += UpdateStepsDisplay_Walking;
+        Movement.Action_StepTaken += UpdateStepsDisplay_Walking;
+        //Block_MushroomCircle.Action_MushroomCircleEntered += UpdateStepsDisplay_Walking;
+
+        Movement.Action_RespawnPlayerLate += UpdateStepsDisplay_Respawn;
+
+        DataManager.Action_dataHasLoaded += UpdateStepsDisplay_Checkpoint;
+        Block_Checkpoint.Action_CheckPointEntered += UpdateStepsDisplay_Checkpoint;
+        //Block_RefillSteps.Action_RefillStepsEntered += UpdateStepsDisplay_Respawn;
     }
     private void OnDisable()
     {
-        Interactable_Pickup.Action_PickupGot -= UpdateStepsDisplay;
-        Movement.Action_RespawnPlayerLate -= UpdateStepsDisplay;
-        Movement.Action_StepTaken -= UpdateStepsDisplay;
-        DataManager.Action_dataHasLoaded -= UpdateStepsDisplay;
-        Block_Checkpoint.Action_SpawnPointEntered -= UpdateStepsDisplay;
-        Block_RefillSteps.Action_RefillStepsEntered -= UpdateStepsDisplay;
-        Block_MushroomCircle.Action_MushroomCircleEntered -= UpdateStepsDisplay;
+        //Interactable_Pickup.Action_PickupGot -= UpdateStepsDisplay_Walking;
+        Movement.Action_StepTaken -= UpdateStepsDisplay_Walking;
+        //Block_MushroomCircle.Action_MushroomCircleEntered -= UpdateStepsDisplay_Walking;
+
+        Movement.Action_RespawnPlayerLate -= UpdateStepsDisplay_Respawn;
+
+        DataManager.Action_dataHasLoaded -= UpdateStepsDisplay_Checkpoint;
+        Block_Checkpoint.Action_CheckPointEntered -= UpdateStepsDisplay_Checkpoint;
+        //Block_RefillSteps.Action_RefillStepsEntered -= UpdateStepsDisplay_Respawn;
     }
 
 
     //--------------------
 
 
-    public void UpdateStepsDisplay()
+    public void UpdateStepsDisplay_Walking()
     {
+        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>() && !Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_SpawnPoint_isAdded)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                UpdateFootprints(i);
+            }
+        }
+    }
+    public void UpdateStepsDisplay_Respawn()
+    {
+        print("1. UpdateStepsDisplay_Respawn");
+        StartCoroutine(UpdateFootprintDelay(0.5f, 0.15f));
+    }
+    public void UpdateStepsDisplay_Checkpoint()
+    {
+        print("2. UpdateStepsDisplay_Checkpoint");
+        StartCoroutine(UpdateFootprintDelay(0.65f, 0.15f));
+    }
+    IEnumerator UpdateFootprintDelay(float startDelay, float waitTime)
+    {
+        yield return new WaitForSeconds(startDelay);
+
         for (int i = 0; i < 10; i++)
         {
-            UpdateColors(i);
+            if (stepsIconList[i].GetComponent<Image>().color == StepsDisplay.Instance.normalColor_Active)
+            {
+                continue;
+            }
+            else
+            {
+                yield return new WaitForSeconds(waitTime);
+                UpdateFootprints(i);
+            }
         }
     }
 
-    void UpdateColors(int index)
+    void UpdateFootprints(int index)
     {
         if (index <= 6)
         {

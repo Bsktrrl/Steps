@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Block_Checkpoint : MonoBehaviour
 {
-    public static event Action Action_SpawnPointEntered;
+    public static event Action Action_CheckPointEntered;
 
     public MovementDirection spawnDirection;
 
@@ -61,6 +61,6 @@ public class Block_Checkpoint : MonoBehaviour
 
         PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current = PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max;
 
-        Action_SpawnPointEntered?.Invoke();
+        Action_CheckPointEntered?.Invoke();
     }
 }

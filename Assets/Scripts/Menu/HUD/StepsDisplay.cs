@@ -35,7 +35,7 @@ public class StepsDisplay : Singleton<StepsDisplay>
         Movement.Action_RespawnPlayerLate += ChangeStepText;
         Movement.Action_StepTaken += ChangeStepText;
         DataManager.Action_dataHasLoaded += ChangeStepText;
-        Block_Checkpoint.Action_SpawnPointEntered += ChangeStepText;
+        Block_Checkpoint.Action_CheckPointEntered += ChangeStepText;
         Block_RefillSteps.Action_RefillStepsEntered += ChangeStepText;
         Block_MushroomCircle.Action_MushroomCircleEntered += ChangeStepText;
     }
@@ -48,7 +48,7 @@ public class StepsDisplay : Singleton<StepsDisplay>
         Movement.Action_RespawnPlayerLate -= ChangeStepText;
         Movement.Action_StepTaken -= ChangeStepText;
         DataManager.Action_dataHasLoaded -= ChangeStepText;
-        Block_Checkpoint.Action_SpawnPointEntered -= ChangeStepText;
+        Block_Checkpoint.Action_CheckPointEntered -= ChangeStepText;
         Block_RefillSteps.Action_RefillStepsEntered -= ChangeStepText;
         Block_MushroomCircle.Action_MushroomCircleEntered -= ChangeStepText;
     }
@@ -67,7 +67,7 @@ public class StepsDisplay : Singleton<StepsDisplay>
         {
             case StepDisplay.Icon:
                 stepDisplay_Icons.SetActive(true);
-                StepsHUD.Instance.UpdateStepsDisplay();
+                StepsHUD.Instance.UpdateStepsDisplay_Walking();
                 break;
             case StepDisplay.Number:
                 stepDisplay_Number.SetActive(true);
@@ -75,7 +75,7 @@ public class StepsDisplay : Singleton<StepsDisplay>
             case StepDisplay.NumberIcon:
                 stepDisplay_NumberIcons.SetActive(true);
                 stepDisplay_Icons.SetActive(true);
-                StepsHUD.Instance.UpdateStepsDisplay();
+                StepsHUD.Instance.UpdateStepsDisplay_Walking();
                 break;
             case StepDisplay.None:
                 HideAllMenus();

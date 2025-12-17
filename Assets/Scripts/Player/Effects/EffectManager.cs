@@ -71,7 +71,7 @@ public class EffectManager : Singleton<EffectManager>
 
         Player_KeyInputs.Action_RespawnHold += StartRespawn;
         Player_KeyInputs.Action_RespawnCanceled += EndRespawn;
-        Movement.Action_RespawnPlayerEarly += EndRespawn;
+        Movement.Action_RespawnPlayerEarly += PerformCheckpointEffect;
 
         Movement.Action_isSwitchingBlocks += SplashEffect;
     }
@@ -92,7 +92,9 @@ public class EffectManager : Singleton<EffectManager>
 
         Player_KeyInputs.Action_RespawnHold -= StartRespawn;
         Player_KeyInputs.Action_RespawnCanceled -= EndRespawn;
-        Movement.Action_RespawnPlayerEarly -= EndRespawn;
+        Movement.Action_RespawnPlayerEarly -= PerformCheckpointEffect;
+
+        Movement.Action_isSwitchingBlocks -= SplashEffect;
     }
 
 

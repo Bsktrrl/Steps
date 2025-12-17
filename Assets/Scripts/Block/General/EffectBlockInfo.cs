@@ -12,7 +12,7 @@ public class EffectBlockInfo : MonoBehaviour
     EffectBlockManager effectBlockManager;
 
     [Header("Is Added")]
-    [SerializeField] bool effectBlock_SpawnPoint_isAdded;
+    public bool effectBlock_SpawnPoint_isAdded;
     [SerializeField] bool effectBlock_RefillSteps_isAdded;
     [SerializeField] bool effectBlock_Pusher_isAdded;
     public bool effectBlock_Teleporter_isAdded;

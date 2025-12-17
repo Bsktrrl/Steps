@@ -1277,7 +1277,7 @@ public class Movement : Singleton<Movement>
             }
 
             PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
-            StepsHUD.Instance.UpdateStepsDisplay();
+            StepsHUD.Instance.UpdateStepsDisplay_Walking();
         }
     }
     void RespawnUnderGrappling()
