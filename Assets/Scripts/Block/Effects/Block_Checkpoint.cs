@@ -9,16 +9,6 @@ public class Block_Checkpoint : MonoBehaviour
 
     public MovementDirection spawnDirection;
 
-    StepParticleScript StepParticleScript;
-
-
-    //--------------------
-
-
-    private void Start()
-    {
-        StepParticleScript = GetComponentInChildren<StepParticleScript>();
-    }
 
     //--------------------
 
@@ -26,14 +16,14 @@ public class Block_Checkpoint : MonoBehaviour
     private void OnEnable()
     {
         Movement.Action_StepTaken += UpdateSpawnPos;
-        DataManager.Action_dataHasLoaded += UpdateSpawnPos;
+        //DataManager.Action_dataHasLoaded += UpdateSpawnPos;
         Movement.Action_LandedFromFalling += UpdateSpawnPos;
     }
 
     private void OnDisable()
     {
         Movement.Action_StepTaken -= UpdateSpawnPos;
-        DataManager.Action_dataHasLoaded -= UpdateSpawnPos;
+        //DataManager.Action_dataHasLoaded -= UpdateSpawnPos;
         Movement.Action_LandedFromFalling -= UpdateSpawnPos;
     }
 

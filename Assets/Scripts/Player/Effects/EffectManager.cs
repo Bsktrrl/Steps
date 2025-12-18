@@ -51,6 +51,9 @@ public class EffectManager : Singleton<EffectManager>
     float splash_Delay = 0.07f;
 
 
+    bool startStep;
+
+
     //--------------------
 
 
@@ -323,7 +326,12 @@ public class EffectManager : Singleton<EffectManager>
 
     public void PerformCheckpointEffect()
     {
-        effect_Checkpoint_Object.GetComponent<StepParticleScript>().Perform_CheckpointEffect();
+        if (startStep)
+        {
+            effect_Checkpoint_Object.GetComponent<StepParticleScript>().Perform_CheckpointEffect();
+        }
+
+        startStep = true;
     }
 
     public void PerformDashEffect()

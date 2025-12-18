@@ -17,7 +17,7 @@ public class EffectBlockInfo : MonoBehaviour
     [SerializeField] bool effectBlock_Pusher_isAdded;
     public bool effectBlock_Teleporter_isAdded;
     [SerializeField] bool effectBlock_Moveable_isAdded;
-    [SerializeField] bool effectBlock_MushroomCircle_isAdded;
+    public bool effectBlock_MushroomCircle_isAdded;
 
     [Header("Child List")]
     [SerializeField] List<GameObject> blockEffectHolding_List;
