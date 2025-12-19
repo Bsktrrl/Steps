@@ -3,12 +3,6 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 
-1. HUD:
-- Add animations to abilityPickup in the HUD
-- Make abilityImages become highlighted (fade between 2 images: darker and lighter) when the ability is in use
-	- Make a generic function for fade and zoom, that takes in parameters that can be tweeked to fit all usages (fade/noFade, zoom/noZoom, fade duration, fade type)
-
-
 2. New Menu UI
 - Change the UI for all menus, so it matches the new assets
 	- MainMenu
@@ -18,7 +12,7 @@
 		- Make it so that only levels that has been visited (has its stats made in saveData), shows the skin for that level (use "?" for the rest)
 	- PauseMenu
 	- Dialogue
-		- Make the option you are currently on, bigger
+		- Make the option you are currently on, bigger (increase scale size)
 		- Change the script and ExcelTemp to have links to other lines, regardless of option or not
 	
 
@@ -65,7 +59,7 @@ __________________
 --- OTHER STUFF
 
 
-
+1. PLayerGlideAnimation are set in situations it should not (deactivate it if the player movementState is Still)
 2. Make the numbers appear when stopping AND release the movementButton
 	- Now it disappear if moving into a deadEndBlock and holding in the movementButton
 3. The player isn't performing walking animation after Ascending/Descending/SwiftSwim (when moving away from the block landed on)
