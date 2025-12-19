@@ -5,185 +5,229 @@ using UnityEngine;
 
 public class Player_AbilityButtonDisplay : MonoBehaviour
 {
-    [Header("Parent")]
-    [SerializeField] GameObject buttonDisplay_Canvas;
-    [SerializeField] GameObject buttonDisplay_FieldParent;
+    [Header("Ability Displays")]
+    [SerializeField] GameObject abilitySprite_Swim;
+    [SerializeField] GameObject abilitySprite_SwiftSwim;
+    [SerializeField] GameObject abilitySprite_FreeSwim;
+    [SerializeField] GameObject abilitySprite_Ascend;
+    [SerializeField] GameObject abilitySprite_Descend;
+    [SerializeField] GameObject abilitySprite_Dash;
+    [SerializeField] GameObject abilitySprite_Jump;
+    [SerializeField] GameObject abilitySprite_CeilingGrab;
+    [SerializeField] GameObject abilitySprite_GrapplingHook;
 
-    [Header("Prefab")]
-    [SerializeField] GameObject buttonDisplay_Prefab;
-
-    [Header("Lists")]
-    [SerializeField] List<GameObject> buttonDisplayList;
-    Block_Moveable[] moveableObjectsList;
-    [SerializeField] List<GameObject> buttonDisplay_InSceneList;
-
-    [Header("Sprites")]
-    [SerializeField] Sprite button_Space;
-    [SerializeField] Sprite button_C;
-    [SerializeField] Sprite button_F;
-    [SerializeField] Sprite button_ArrowLeftSide;
-    [SerializeField] Sprite button_ArrowRightSide;
-    [SerializeField] Sprite button_ArrowUp;
-    [SerializeField] Sprite button_ArrowDown;
-
-    [Header("Abilities")]
-    [SerializeField] Sprite abilitySprite_Ascend;
-    [SerializeField] Sprite abilitySprite_ClimbingGear;
-    [SerializeField] Sprite abilitySprite_ControlStick;
-    [SerializeField] Sprite abilitySprite_Dash;
-    [SerializeField] Sprite abilitySprite_Descend;
-    [SerializeField] Sprite abilitySprite_FenceSneak;
-    [SerializeField] Sprite abilitySprite_Flippers;
-    [SerializeField] Sprite abilitySprite_GrapplingHook;
-    [SerializeField] Sprite abilitySprite_Hammer;
-    [SerializeField] Sprite abilitySprite_HikersGear;
-    [SerializeField] Sprite abilitySprite_IceSpikes;
-    [SerializeField] Sprite abilitySprite_LavaSuit;
-    [SerializeField] Sprite abilitySprite_lavaSwiftSwim;
-    [SerializeField] Sprite abilitySprite_SwiftSwim;
-    [SerializeField] Sprite abilitySprite_SwimSuit;
-
-    [SerializeField] Sprite abilitySprite_Move;
+    bool swim_FirstTime;
+    bool freeSwim_FirstTime;
 
 
     //--------------------
 
-
-    private void Start()
-    {
-        FindAllMoveableBlocks();
-    }
-    private void Update()
-    {
-        UpdateButtonDisplay();
-    }
 
     private void OnEnable()
     {
-        CameraController.Action_RotateCamera_Start += RotateAbilityDisplay;
+        DataManager.Action_dataHasLoaded += UpdateDisplay;
+        Interactable_Pickup.Action_AbilityPickupGot += UpdateDisplay;
+
+        Movement.Action_StepTaken += CheckIfStandingInWater;
+
+        Movement.Action_isDashing += Ability_Dash_Activation;
+        Movement.Action_isDashing_Finished += Ability_Dash_Deactivation;
+        Movement.Action_isJumping += Ability_Jump_Activation;
+        Movement.Action_isJumping_Finished += Ability_Jump_Deactivation;
+
+        Movement.Action_isSwiftSwim += Ability_SwiftSwim_Activation;
+        Movement.Action_isSwiftSwim_Finished += Ability_SwiftSwim_Deactivation;
+
+        Movement.Action_isAscending += Ability_Ascend_Activation;
+        Movement.Action_isAscending_Finished += Ability_Ascend_Deactivation;
+        Movement.Action_isDescending += Ability_Descend_Activation;
+        Movement.Action_isDescending_Finished += Ability_Descend_Deactivation;
+
+        Movement.Action_isGrapplingHooking += Ability_GrapplingHook_Activation;
+        Movement.Action_isGrapplingHooking_Finished += Ability_GrapplingHook_Deactivation;
+
+        Player_CeilingGrab.Action_isCeilingGrabbing += Ability_CeilingGrab_Activation;
+        Player_CeilingGrab.Action_isCeilingGrabbing_Finished += Ability_CeilingGrab_Deactivation;
     }
     private void OnDisable()
     {
-        CameraController.Action_RotateCamera_Start -= RotateAbilityDisplay;
+        DataManager.Action_dataHasLoaded -= UpdateDisplay;
+        Interactable_Pickup.Action_AbilityPickupGot -= UpdateDisplay;
+
+        Movement.Action_StepTaken -= CheckIfStandingInWater;
+
+        Movement.Action_isDashing -= Ability_Dash_Activation;
+        Movement.Action_isDashing_Finished -= Ability_Dash_Deactivation;
+        Movement.Action_isJumping -= Ability_Jump_Activation;
+        Movement.Action_isJumping_Finished -= Ability_Jump_Deactivation;
+
+        Movement.Action_isSwiftSwim -= Ability_SwiftSwim_Activation;
+        Movement.Action_isSwiftSwim_Finished -= Ability_SwiftSwim_Deactivation;
+
+        Movement.Action_isAscending -= Ability_Ascend_Activation;
+        Movement.Action_isAscending_Finished -= Ability_Ascend_Deactivation;
+        Movement.Action_isDescending -= Ability_Descend_Activation;
+        Movement.Action_isDescending_Finished -= Ability_Descend_Deactivation;
+
+        Movement.Action_isGrapplingHooking -= Ability_GrapplingHook_Activation;
+        Movement.Action_isGrapplingHooking_Finished -= Ability_GrapplingHook_Deactivation;
+
+        Player_CeilingGrab.Action_isCeilingGrabbing -= Ability_CeilingGrab_Activation;
+        Player_CeilingGrab.Action_isCeilingGrabbing_Finished -= Ability_CeilingGrab_Deactivation;
     }
 
 
     //--------------------
 
 
-    void UpdateButtonDisplay()
+    void CheckIfStandingInWater()
     {
-        //Ability("Swift Swim Up", Player_SwiftSwim.Instance.canSwiftSwim_Up, button_ArrowUp, abilitySprite_SwiftSwim);
-        //Ability("Swift Swim Down", Player_SwiftSwim.Instance.canSwiftSwim_Down, button_ArrowUp, abilitySprite_SwiftSwim);
-        //Ability("Ascend", Player_Ascend.Instance.playerCanAscend, button_ArrowUp, abilitySprite_Ascend);
-        //Ability("Descend", Player_Descend.Instance.playerCanDescend, button_ArrowDown, abilitySprite_Descend);
-        //Ability("Dash", Player_Dash.Instance.playerCanDash, button_Space, abilitySprite_Dash);
-
-        #region Moveable Block
-        bool canMoveBlock = false;
-        for (int i = 0; i < buttonDisplay_InSceneList.Count; i++)
+        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
         {
-            if (buttonDisplay_InSceneList[i].GetComponent<Block_Moveable>().canMove)
+            if (!swim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit))
             {
-                canMoveBlock = true;
-                break;
+                Ability_Swim_Activation();
+                swim_FirstTime = true;
             }
-        }
 
-        if (canMoveBlock)
-        {
-            if (!CheckIfAbilityIsAlreadyIncluded("Push Block"))
+            if (!freeSwim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers || PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers))
             {
-                AddPrefab(button_C, abilitySprite_Move, "Push Block");
+                Ability_FreeSwim_Activation();
+                freeSwim_FirstTime = true;
             }
         }
         else
         {
-            RemovePrefab("Push Block");
-        }
-        #endregion
-    }
-
-    void Ability(string _abilityName, bool canPerformAbility, Sprite _buttonSprite, Sprite _abilitySprite)
-    {
-        if (canPerformAbility)
-            AddPrefab(_buttonSprite, _abilitySprite, _abilityName);
-        else
-            RemovePrefab(_abilityName);
-    }
-    void AddPrefab(Sprite _buttonSprite, Sprite _abilitySprite, string _abilityName)
-    {
-        for (int i = 0; i < buttonDisplayList.Count; i++)
-        {
-            if (buttonDisplayList[i].GetComponent<AbilityDisplay>().abilityName.text == _abilityName)
+            if (swim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit))
             {
-                return;
+                Ability_Swim_Deactivation();
+                swim_FirstTime = false;
+            }
+
+            if (freeSwim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers || PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers))
+            {
+                Ability_FreeSwim_Deactivation();
+                freeSwim_FirstTime = false;
             }
         }
-
-        buttonDisplayList.Add(Instantiate(buttonDisplay_Prefab));
-        buttonDisplayList[buttonDisplayList.Count - 1].GetComponent<AbilityDisplay>().SetupAbilityDisplay(_buttonSprite, _abilitySprite, _abilityName);
-        buttonDisplayList[buttonDisplayList.Count - 1].transform.parent = buttonDisplay_FieldParent.transform;
-
-        buttonDisplayList[buttonDisplayList.Count - 1].transform.SetLocalPositionAndRotation(new Vector3(buttonDisplay_FieldParent.transform.position.x, buttonDisplay_FieldParent.transform.position.y, 0), Quaternion.identity);
-    }
-    void RemovePrefab(string _name)
-    {
-        for (int i = 0; i < buttonDisplayList.Count; i++)
-        {
-            if (buttonDisplayList[i].GetComponent<AbilityDisplay>().abilityName.text == _name)
-            {
-                buttonDisplayList[i].GetComponent<AbilityDisplay>().DestroyPrefab();
-                buttonDisplayList.RemoveAt(i);
-                break;
-            }
-        }
-    }
-    bool CheckIfAbilityIsAlreadyIncluded(string _name)
-    {
-        for (int i = 0; i < buttonDisplayList.Count; i++)
-        {
-            if (buttonDisplayList[i].GetComponent<AbilityDisplay>().abilityName.text == _name)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
 
     //--------------------
 
 
-    void RotateAbilityDisplay()
+    void UpdateDisplay()
     {
-        switch (CameraController.Instance.cameraRotationState)
-        {
-            case CameraRotationState.Forward:
-                buttonDisplay_Canvas.transform.SetLocalPositionAndRotation(new Vector3(1.9f, 0, 0), Quaternion.Euler(0, 0, 0));
-                break;
-            case CameraRotationState.Backward:
-                buttonDisplay_Canvas.transform.SetLocalPositionAndRotation(new Vector3(-1.9f, 0, 0), Quaternion.Euler(0, 180, 0));
-                break;
-            case CameraRotationState.Left:
-                buttonDisplay_Canvas.transform.SetLocalPositionAndRotation(new Vector3(-0.1f, 0, -2), Quaternion.Euler(0, 90, 0));
-                break;
-            case CameraRotationState.Right:
-                buttonDisplay_Canvas.transform.SetLocalPositionAndRotation(new Vector3(-0.1f, 0, 2), Quaternion.Euler(0, -90, 0));
-                break;
+        Ability_Appearance(abilitySprite_Swim, PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit, PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit);
+        Ability_Appearance(abilitySprite_SwiftSwim, PlayerStats.Instance.stats.abilitiesGot_Temporary.SwiftSwim, PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim);
+        Ability_Appearance(abilitySprite_FreeSwim, PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers, PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers);
 
-            default:
-                break;
+        Ability_Appearance(abilitySprite_Ascend, PlayerStats.Instance.stats.abilitiesGot_Temporary.Ascend, PlayerStats.Instance.stats.abilitiesGot_Permanent.Ascend);
+        Ability_Appearance(abilitySprite_Descend, PlayerStats.Instance.stats.abilitiesGot_Temporary.Descend, PlayerStats.Instance.stats.abilitiesGot_Permanent.Descend);
+
+        Ability_Appearance(abilitySprite_Dash, PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash, PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash);
+        Ability_Appearance(abilitySprite_Jump, PlayerStats.Instance.stats.abilitiesGot_Temporary.Jumping, PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping);
+        Ability_Appearance(abilitySprite_CeilingGrab, PlayerStats.Instance.stats.abilitiesGot_Temporary.CeilingGrab, PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab);
+        Ability_Appearance(abilitySprite_GrapplingHook, PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook, PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook);
+    }
+    void Ability_Appearance(GameObject abilityObject, bool tempAbility, bool permAbility)
+    {
+        if (tempAbility || permAbility)
+        {
+            if (!abilityObject.GetComponent<AbilityUIAnimator>().isActive)
+                abilityObject.GetComponent<RectTransform>().localScale = Vector3.zero;
+
+            abilityObject.SetActive(true);
+
+            if (!abilityObject.GetComponent<AbilityUIAnimator>().isActive)
+                abilityObject.GetComponent<AbilityUIAnimator>().Appearing();
+        }
+        else
+        {
+            abilityObject.SetActive(false);
         }
     }
-    void FindAllMoveableBlocks()
-    {
-        moveableObjectsList = FindObjectsOfType<Block_Moveable>();
 
-        foreach (Block_Moveable moveable in moveableObjectsList)
-        {
-            buttonDisplay_InSceneList.Add(moveable.gameObject);
-        }
+
+    //--------------------
+
+
+    void Ability_Swim_Activation()
+    {
+        abilitySprite_Swim.GetComponent<AbilityUIAnimator>().Activating();
+    }
+    void Ability_Swim_Deactivation()
+    {
+        abilitySprite_Swim.GetComponent<AbilityUIAnimator>().Deactivating();
+    }
+
+    void Ability_SwiftSwim_Activation()
+    {
+        abilitySprite_SwiftSwim.GetComponent<AbilityUIAnimator>().Activating();
+    }
+    void Ability_SwiftSwim_Deactivation()
+    {
+        abilitySprite_SwiftSwim.GetComponent<AbilityUIAnimator>().Deactivating();
+    }
+
+    void Ability_FreeSwim_Activation()
+    {
+        abilitySprite_FreeSwim.GetComponent<AbilityUIAnimator>().Activating();
+    }
+    void Ability_FreeSwim_Deactivation()
+    {
+        abilitySprite_FreeSwim.GetComponent<AbilityUIAnimator>().Deactivating();
+    }
+
+
+    void Ability_Ascend_Activation()
+    {
+        abilitySprite_Ascend.GetComponent<AbilityUIAnimator>().Activating();
+    }
+    void Ability_Ascend_Deactivation()
+    {
+        abilitySprite_Ascend.GetComponent<AbilityUIAnimator>().Deactivating();
+    }
+    void Ability_Descend_Activation()
+    {
+        abilitySprite_Descend.GetComponent<AbilityUIAnimator>().Activating();
+    }
+    void Ability_Descend_Deactivation()
+    {
+        abilitySprite_Descend.GetComponent<AbilityUIAnimator>().Deactivating();
+    }
+
+
+    void Ability_Dash_Activation()
+    {
+        abilitySprite_Dash.GetComponent<AbilityUIAnimator>().Activating();
+    }
+    void Ability_Dash_Deactivation()
+    {
+        abilitySprite_Dash.GetComponent<AbilityUIAnimator>().Deactivating();
+    }
+    void Ability_Jump_Activation()
+    {
+        abilitySprite_Jump.GetComponent<AbilityUIAnimator>().Activating();
+    }
+    void Ability_Jump_Deactivation()
+    {
+        abilitySprite_Jump.GetComponent<AbilityUIAnimator>().Deactivating();
+    }
+    void Ability_CeilingGrab_Activation()
+    {
+        abilitySprite_CeilingGrab.GetComponent<AbilityUIAnimator>().Activating();
+    }
+    void Ability_CeilingGrab_Deactivation()
+    {
+        abilitySprite_CeilingGrab.GetComponent<AbilityUIAnimator>().Deactivating();
+    }
+    void Ability_GrapplingHook_Activation()
+    {
+        abilitySprite_GrapplingHook.GetComponent<AbilityUIAnimator>().Activating();
+    }
+    void Ability_GrapplingHook_Deactivation()
+    {
+        abilitySprite_GrapplingHook.GetComponent<AbilityUIAnimator>().Deactivating();
     }
 }

@@ -14,12 +14,13 @@ public class StepsDisplay : Singleton<StepsDisplay>
     [SerializeField] TextMeshProUGUI stepDisplay_Number_Text;
     [SerializeField] TextMeshProUGUI stepDisplay_NumberIcons_Text;
 
-    [Header("Colors")]
-    public Color normalColor_Active;
-    public Color normalColor_Used;
-    public Color bonusColor_Passive;
-    public Color bonusColor_Active;
-    public Color bonusColor_Used;
+    [Header("Sprites")]
+    public Sprite normalFootstep_Active;
+    public Sprite normalFootstep_Used;
+
+    public Sprite extraFootstep_Passive;
+    public Sprite extraFootstep_Active;
+    public Sprite extraFootstep_Used;
 
 
 
@@ -35,7 +36,7 @@ public class StepsDisplay : Singleton<StepsDisplay>
         Movement.Action_RespawnPlayerLate += ChangeStepText;
         Movement.Action_StepTaken += ChangeStepText;
         DataManager.Action_dataHasLoaded += ChangeStepText;
-        Block_Checkpoint.Action_SpawnPointEntered += ChangeStepText;
+        Block_Checkpoint.Action_CheckPointEntered += ChangeStepText;
         Block_RefillSteps.Action_RefillStepsEntered += ChangeStepText;
         Block_MushroomCircle.Action_MushroomCircleEntered += ChangeStepText;
     }
@@ -48,7 +49,7 @@ public class StepsDisplay : Singleton<StepsDisplay>
         Movement.Action_RespawnPlayerLate -= ChangeStepText;
         Movement.Action_StepTaken -= ChangeStepText;
         DataManager.Action_dataHasLoaded -= ChangeStepText;
-        Block_Checkpoint.Action_SpawnPointEntered -= ChangeStepText;
+        Block_Checkpoint.Action_CheckPointEntered -= ChangeStepText;
         Block_RefillSteps.Action_RefillStepsEntered -= ChangeStepText;
         Block_MushroomCircle.Action_MushroomCircleEntered -= ChangeStepText;
     }
@@ -67,7 +68,7 @@ public class StepsDisplay : Singleton<StepsDisplay>
         {
             case StepDisplay.Icon:
                 stepDisplay_Icons.SetActive(true);
-                StepsHUD.Instance.UpdateStepsDisplay();
+                StepsHUD.Instance.UpdateStepsDisplay_Walking();
                 break;
             case StepDisplay.Number:
                 stepDisplay_Number.SetActive(true);
@@ -75,7 +76,7 @@ public class StepsDisplay : Singleton<StepsDisplay>
             case StepDisplay.NumberIcon:
                 stepDisplay_NumberIcons.SetActive(true);
                 stepDisplay_Icons.SetActive(true);
-                StepsHUD.Instance.UpdateStepsDisplay();
+                StepsHUD.Instance.UpdateStepsDisplay_Walking();
                 break;
             case StepDisplay.None:
                 HideAllMenus();

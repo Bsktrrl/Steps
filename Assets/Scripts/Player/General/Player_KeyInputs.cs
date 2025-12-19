@@ -48,6 +48,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     public bool cameraX_isPressed = false;
     public bool cameraY_isPressed = false;
 
+    public bool respawn_isPressed = false;
+
 
 
     //--------------------
@@ -60,7 +62,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         if (PlayerManager.Instance.playerBody.transform.GetComponentInChildren<Animator>())
         {
-            Player_Animations.Instance.anim = PlayerManager.Instance.playerBody.GetComponentInChildren<Animator>();
+            Player_Animations.Instance.playerAnimator = PlayerManager.Instance.playerBody.GetComponentInChildren<Animator>();
         }
     }
 
@@ -225,6 +227,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         grapplingHook_isPressed = true;
 
+        Movement.Instance.Action_isGrapplingHooking_Invoke();
+
         Player_Animations.Instance.Trigger_GrapplingHookAnimation();
     }
     void OnAbilityRight_RelesePress()
@@ -235,7 +239,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         Movement.Instance.UpdateGrapplingHookMovement_Release();
 
-        Action_GrapplingHook_isPressed?.Invoke();
+        Movement.Instance.Action_isGrapplingHooking_Finished_Invoke();
+        //Action_GrapplingHook_isPressed?.Invoke();
     }
 
 
@@ -267,10 +272,12 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     {
         if (!ButtonChecks_Other()) { return; }
 
+        respawn_isPressed = true;
         Action_RespawnHold?.Invoke();
     }
     void OnRespawn_Out()
     {
+        respawn_isPressed = false;
         Action_RespawnCanceled?.Invoke();
     }
 

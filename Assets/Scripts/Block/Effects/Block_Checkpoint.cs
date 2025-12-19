@@ -5,20 +5,10 @@ using UnityEngine;
 
 public class Block_Checkpoint : MonoBehaviour
 {
-    public static event Action Action_SpawnPointEntered;
+    public static event Action Action_CheckPointEntered;
 
     public MovementDirection spawnDirection;
 
-    StepParticleScript StepParticleScript;
-
-
-    //--------------------
-
-
-    private void Start()
-    {
-        StepParticleScript = GetComponentInChildren<StepParticleScript>();
-    }
 
     //--------------------
 
@@ -26,14 +16,14 @@ public class Block_Checkpoint : MonoBehaviour
     private void OnEnable()
     {
         Movement.Action_StepTaken += UpdateSpawnPos;
-        DataManager.Action_dataHasLoaded += UpdateSpawnPos;
+        //DataManager.Action_dataHasLoaded += UpdateSpawnPos;
         Movement.Action_LandedFromFalling += UpdateSpawnPos;
     }
 
     private void OnDisable()
     {
         Movement.Action_StepTaken -= UpdateSpawnPos;
-        DataManager.Action_dataHasLoaded -= UpdateSpawnPos;
+        //DataManager.Action_dataHasLoaded -= UpdateSpawnPos;
         Movement.Action_LandedFromFalling -= UpdateSpawnPos;
     }
 
@@ -48,7 +38,7 @@ public class Block_Checkpoint : MonoBehaviour
             MapManager.Instance.playerStartPos = Movement.Instance.blockStandingOn.transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
             MapManager.Instance.playerStartRot = spawnDirection;
 
-            StepParticleScript.Perform_CheckpointEffect();
+            EffectManager.Instance.PerformCheckpointEffect();
 
             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current = PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max;
             StartCoroutine(ResetSteps(0.01f));
@@ -61,6 +51,6 @@ public class Block_Checkpoint : MonoBehaviour
 
         PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current = PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max;
 
-        Action_SpawnPointEntered?.Invoke();
+        Action_CheckPointEntered?.Invoke();
     }
 }

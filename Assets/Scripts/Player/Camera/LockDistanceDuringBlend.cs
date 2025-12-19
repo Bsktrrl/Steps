@@ -20,7 +20,7 @@ public class LockDistanceDuringBlend : MonoBehaviour
         if (tpf == null || brain == null)
             return;
 
-        if (brain.IsBlending && (Movement.Instance.isAscending || Movement.Instance.isDecending))
+        if (brain.IsBlending && (Movement.Instance.isAscending || Movement.Instance.isDescending))
         {
             // Freeze values during blend
             tpf.CameraDistance = lastDistance;

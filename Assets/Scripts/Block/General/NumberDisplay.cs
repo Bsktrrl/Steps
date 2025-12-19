@@ -76,14 +76,14 @@ public class NumberDisplay : MonoBehaviour
     {
         CameraController.Action_RotateCamera_End += UpdateRotation;
         Player_CeilingGrab.Action_raycastCeiling += UpdateRotation;
-        Player_CeilingGrab.Action_releaseCeiling += UpdateRotation;
+        Player_CeilingGrab.Action_isCeilingGrabbing_Finished += UpdateRotation;
     }
 
     private void OnDisable()
     {
         CameraController.Action_RotateCamera_End -= UpdateRotation;
         Player_CeilingGrab.Action_raycastCeiling -= UpdateRotation;
-        Player_CeilingGrab.Action_releaseCeiling -= UpdateRotation;
+        Player_CeilingGrab.Action_isCeilingGrabbing_Finished -= UpdateRotation;
     }
 
 
