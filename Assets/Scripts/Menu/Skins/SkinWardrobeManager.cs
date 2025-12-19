@@ -543,8 +543,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level4;
                     case 5:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level5;
-                    case 6:
-                        return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level6;
 
                     default:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default;
@@ -562,8 +560,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level4;
                     case 5:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level5;
-                    case 6:
-                        return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level6;
 
                     default:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default;
@@ -581,8 +577,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level4;
                     case 5:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level5;
-                    case 6:
-                        return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level6;
 
                     default:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default;
@@ -600,8 +594,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level4;
                     case 5:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level5;
-                    case 6:
-                        return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level6;
 
                     default:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default;
@@ -619,8 +611,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level4;
                     case 5:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level5;
-                    case 6:
-                        return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level6;
 
                     default:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default;
@@ -638,8 +628,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level4;
                     case 5:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level5;
-                    case 6:
-                        return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level6;
 
                     default:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default;
@@ -676,9 +664,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                     case 5:
                         DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level5 = skinState;
                         break;
-                    case 6:
-                        DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level6 = skinState;
-                        break;
 
                     default:
                         break;
@@ -701,9 +686,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         break;
                     case 5:
                         DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level5 = skinState;
-                        break;
-                    case 6:
-                        DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level6 = skinState;
                         break;
 
                     default:
@@ -728,9 +710,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                     case 5:
                         DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level5 = skinState;
                         break;
-                    case 6:
-                        DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level6 = skinState;
-                        break;
 
                     default:
                         break;
@@ -753,9 +732,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         break;
                     case 5:
                         DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level5 = skinState;
-                        break;
-                    case 6:
-                        DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level6 = skinState;
                         break;
 
                     default:
@@ -780,9 +756,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                     case 5:
                         DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level5 = skinState;
                         break;
-                    case 6:
-                        DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level6 = skinState;
-                        break;
 
                     default:
                         break;
@@ -805,9 +778,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         break;
                     case 5:
                         DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level5 = skinState;
-                        break;
-                    case 6:
-                        DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level6 = skinState;
                         break;
 
                     default:
@@ -931,7 +901,6 @@ public class SkinsWardrobeInfo
     public WardrobeSkinState skin_Region1_level3;
     public WardrobeSkinState skin_Region1_level4;
     public WardrobeSkinState skin_Region1_level5;
-    public WardrobeSkinState skin_Region1_level6;
 
 
     [Header("Region 2")]
@@ -940,7 +909,6 @@ public class SkinsWardrobeInfo
     public WardrobeSkinState skin_Region2_level3;
     public WardrobeSkinState skin_Region2_level4;
     public WardrobeSkinState skin_Region2_level5;
-    public WardrobeSkinState skin_Region2_level6;
 
     [Header("Region 3")]
     public WardrobeSkinState skin_Region3_level1;
@@ -948,7 +916,6 @@ public class SkinsWardrobeInfo
     public WardrobeSkinState skin_Region3_level3;
     public WardrobeSkinState skin_Region3_level4;
     public WardrobeSkinState skin_Region3_level5;
-    public WardrobeSkinState skin_Region3_level6;
 
     [Header("Region 4")]
     public WardrobeSkinState skin_Region4_level1;
@@ -956,7 +923,6 @@ public class SkinsWardrobeInfo
     public WardrobeSkinState skin_Region4_level3;
     public WardrobeSkinState skin_Region4_level4;
     public WardrobeSkinState skin_Region4_level5;
-    public WardrobeSkinState skin_Region4_level6;
 
     [Header("Region 5")]
     public WardrobeSkinState skin_Region5_level1;
@@ -964,7 +930,6 @@ public class SkinsWardrobeInfo
     public WardrobeSkinState skin_Region5_level3;
     public WardrobeSkinState skin_Region5_level4;
     public WardrobeSkinState skin_Region5_level5;
-    public WardrobeSkinState skin_Region5_level6;
 
     [Header("Region 6")]
     public WardrobeSkinState skin_Region6_level1;
@@ -972,7 +937,6 @@ public class SkinsWardrobeInfo
     public WardrobeSkinState skin_Region6_level3;
     public WardrobeSkinState skin_Region6_level4;
     public WardrobeSkinState skin_Region6_level5;
-    public WardrobeSkinState skin_Region6_level6;
 
     [Header("Default")]
     public WardrobeSkinState skin_Default;
