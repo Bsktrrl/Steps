@@ -181,7 +181,7 @@ public class Player_Animations : Singleton<Player_Animations>
     {
         if (Movement.Instance.isMoving) { return; }
 
-        if (!isWalkGliding && !Movement.Instance.isDashing && !Movement.Instance.isJumping && !Movement.Instance.isAscending && !Movement.Instance.isDecending)
+        if (!isWalkGliding && !Movement.Instance.isDashing && !Movement.Instance.isJumping && !Movement.Instance.isAscending && !Movement.Instance.isDescending)
         {
             playerAnimator.speed = 1.0f;
             playerAnimator.SetTrigger(AnimationManager.Instance.walk);

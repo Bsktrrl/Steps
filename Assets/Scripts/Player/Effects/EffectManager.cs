@@ -36,6 +36,7 @@ public class EffectManager : Singleton<EffectManager>
 
     bool isDashing;
     bool isJumping;
+    bool isSwiftSwim;
     bool isAscending;
     bool isDescending;
     bool isGrapplingHooking;
@@ -63,6 +64,7 @@ public class EffectManager : Singleton<EffectManager>
 
         Movement.Action_isDashing += Set_isDashing;
         Movement.Action_isJumping += Set_isJumping;
+        Movement.Action_isSwiftSwim += Set_isSwiftSwim;
         Movement.Action_isAscending += Set_isAscending;
         Movement.Action_isDescending += Set_isDescending;
         Movement.Action_isGrapplingHooking += Set_isGrapplingHooking;
@@ -84,6 +86,7 @@ public class EffectManager : Singleton<EffectManager>
 
         Movement.Action_isDashing -= Set_isDashing;
         Movement.Action_isJumping -= Set_isJumping;
+        Movement.Action_isSwiftSwim -= Set_isSwiftSwim;
         Movement.Action_isAscending -= Set_isAscending;
         Movement.Action_isDescending -= Set_isDescending;
         Movement.Action_isGrapplingHooking -= Set_isGrapplingHooking;
@@ -113,6 +116,10 @@ public class EffectManager : Singleton<EffectManager>
     void Set_isJumping()
     {
         isJumping = true;
+    }
+    void Set_isSwiftSwim()
+    {
+        isSwiftSwim = true;
     }
     void Set_isAscending()
     {
@@ -181,26 +188,36 @@ public class EffectManager : Singleton<EffectManager>
 
         if (isDashing)
         {
+            Movement.Instance.Action_isDashing_Finished_Invoke();
+
             isDashing = false;
             Dash_HitGorund_Effect();
         }
         else if (isJumping)
         {
+            Movement.Instance.Action_isJumping_Finished_Invoke();
+
             isJumping = false;
             Jump_HitGorund_Effect();
         }
         else if (isAscending)
         {
+            Movement.Instance.Action_isAscending_Finished_Invoke();
+
             isAscending = false;
             Ascend_HitGorund_Effect();
         }
         else if (isDescending)
         {
+            Movement.Instance.Action_isDescending_Finished_Invoke();
+
             isDescending = false;
             Descend_HitGorund_Effect();
         }
         else if (isGrapplingHooking)
         {
+            Movement.Instance.Action_isGrapplingHooking_Finished_Invoke();
+
             isGrapplingHooking = false;
             GrapplingHook_HitGorund_Effect();
         }
@@ -254,7 +271,7 @@ public class EffectManager : Singleton<EffectManager>
         {
             if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
             {
-                print("0. Splash");
+                //print("0. Splash");
                 StartCoroutine(SplashEffect_Delay(hitEffect_Splash_Water_Object, splash_Delay));
             }
         }
@@ -312,11 +329,11 @@ public class EffectManager : Singleton<EffectManager>
     {
         yield return new WaitForSeconds(waitTime);
 
-        print("1. Splash");
+        //print("1. Splash");
 
         if (effectObject && effectObject.GetComponent<HitParticleScript>())
         {
-            print("2. Splash");
+            //print("2. Splash");
             effectObject.GetComponent<HitParticleScript>().particle.Play();
         }
     }

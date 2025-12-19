@@ -227,6 +227,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         grapplingHook_isPressed = true;
 
+        Movement.Instance.Action_isGrapplingHooking_Invoke();
+
         Player_Animations.Instance.Trigger_GrapplingHookAnimation();
     }
     void OnAbilityRight_RelesePress()
@@ -237,7 +239,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         Movement.Instance.UpdateGrapplingHookMovement_Release();
 
-        Action_GrapplingHook_isPressed?.Invoke();
+        Movement.Instance.Action_isGrapplingHooking_Finished_Invoke();
+        //Action_GrapplingHook_isPressed?.Invoke();
     }
 
 

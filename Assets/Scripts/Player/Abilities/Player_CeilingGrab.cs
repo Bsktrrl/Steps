@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 {
-    public static event Action Action_grabCeiling;
-    public static event Action Action_releaseCeiling;
+    public static event Action Action_isCeilingGrabbing;
+    public static event Action Action_isCeilingGrabbing_Finished;
     public static event Action Action_raycastCeiling;
 
     [SerializeField] bool canCeilingGrab;
@@ -203,14 +203,14 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             isCeilingGrabbing = false;
 
             yield return new WaitForSeconds(0.02f);
-            Action_releaseCeiling?.Invoke();
+            Action_isCeilingGrabbing_Finished?.Invoke();
         }
         //Moving to ceiling
         else if (CameraController.Instance.cameraState == CameraState.CeilingCam)
         {
             //print("2. RotateToCeiling");
             CheckBlockStandingUnder();
-            Action_grabCeiling?.Invoke();
+            Action_isCeilingGrabbing?.Invoke();
         }
 
         PlayerManager.Instance.pauseGame = false;
@@ -233,6 +233,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             PlayerManager.Instance.playerBody.transform.rotation = Quaternion.Euler(0, 0, 0);
 
             isCeilingGrabbing = false;
+            Action_isCeilingGrabbing_Finished?.Invoke();
         }
     }
 

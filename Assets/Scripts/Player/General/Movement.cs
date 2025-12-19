@@ -24,11 +24,19 @@ public class Movement : Singleton<Movement>
 
     public static event Action Action_PickupAnimation_Complete;
 
+    public static event Action Action_isSwiftSwim;
+    public static event Action Action_isSwiftSwim_Finished;
+
     public static event Action Action_isDashing;
+    public static event Action Action_isDashing_Finished;
     public static event Action Action_isJumping;
+    public static event Action Action_isJumping_Finished;
     public static event Action Action_isAscending;
+    public static event Action Action_isAscending_Finished;
     public static event Action Action_isDescending;
+    public static event Action Action_isDescending_Finished;
     public static event Action Action_isGrapplingHooking;
+    public static event Action Action_isGrapplingHooking_Finished;
 
     #region Variables
 
@@ -116,8 +124,9 @@ public class Movement : Singleton<Movement>
     public bool isGrapplingHooking;
     public bool isDashing;
     public bool isIceGliding;
+    public bool isSwiftSwim;
     public bool isAscending;
-    public bool isDecending;
+    public bool isDescending;
 
     [Header("Animations")]
     public Animator anim;
@@ -1514,8 +1523,10 @@ public class Movement : Singleton<Movement>
     {
         if (moveToBlock_SwiftSwimUp.canMoveTo)
         {
+            isSwiftSwim = true;
             MapManager.Instance.swiftSwimCounter++;
             PerformMovement(moveToBlock_SwiftSwimUp, MovementStates.Moving, 2);
+            Action_isSwiftSwim?.Invoke();
             return true;
         }
         else
@@ -1525,8 +1536,10 @@ public class Movement : Singleton<Movement>
     {
         if (moveToBlock_SwiftSwimDown.canMoveTo)
         {
+            isSwiftSwim = true;
             MapManager.Instance.swiftSwimCounter++;
             PerformMovement(moveToBlock_SwiftSwimDown, MovementStates.Moving, 2);
+            Action_isSwiftSwim?.Invoke();
             return true;
         }
         else
@@ -1560,7 +1573,6 @@ public class Movement : Singleton<Movement>
                     PerformMovement(moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down, abilitySpeed + grapplingLength);
 
                 MapManager.Instance.grapplingHookCounter++;
-                Action_isGrapplingHooking?.Invoke();
 
                 moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
                 Block_IsNot_Target(moveToBlock_GrapplingHook);
@@ -1612,7 +1624,7 @@ public class Movement : Singleton<Movement>
         {
             if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Descend.targetBlock.GetComponent<BlockInfo>().movementCost)
             {
-                isDecending = true;
+                isDescending = true;
                 PlayerCameraOcclusionController.Instance.CameraZoom(true);
 
                 MapManager.Instance.descendCounter++;
@@ -1924,7 +1936,7 @@ public class Movement : Singleton<Movement>
         {
             if (isAscending)
                 yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Ascend);
-            else if (isDecending)
+            else if (isDescending)
                 yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Descend);
             else if (isDashing)
                 yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Dash);
@@ -1949,7 +1961,7 @@ public class Movement : Singleton<Movement>
         {
             if (isAscending)
                 yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Ascend);
-            else if (isDecending)
+            else if (isDescending)
                 yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Descend);
             else if (isDashing)
                 yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_Dash);
@@ -1960,13 +1972,20 @@ public class Movement : Singleton<Movement>
         }
 
         isMoving = false;
+        isDashing = false;
         isJumping = false;
         isGrapplingHooking = false;
-        isDashing = false;
         isIceGliding = false;
 
+        if (isSwiftSwim)
+        {
+            Action_isSwiftSwim_Finished?.Invoke();
+            isSwiftSwim = false;
+        }
+
         isAscending = false;
-        isDecending = false;
+        isDescending = false;
+
         PlayerCameraOcclusionController.Instance.CameraZoom(false);
 
         //StartCoroutine(DelayAscendDescendCamera(0.2f));
@@ -2024,7 +2043,7 @@ public class Movement : Singleton<Movement>
         performGrapplingHooking = false;
 
         isAscending = false;
-        isDecending = false;
+        isDescending = false;
         PlayerCameraOcclusionController.Instance.CameraZoom(false);
     }
     IEnumerator ElevatorMovement(MovementStates moveState, float movementSpeed, MoveOptions moveOptions)
@@ -2077,7 +2096,7 @@ public class Movement : Singleton<Movement>
         performGrapplingHooking = false;
 
         isAscending = false;
-        isDecending = false;
+        isDescending = false;
         PlayerCameraOcclusionController.Instance.CameraZoom(false);
     }
 
@@ -2086,7 +2105,7 @@ public class Movement : Singleton<Movement>
         yield return new WaitForSeconds(waitTime);
 
         isAscending = false;
-        isDecending = false;
+        isDescending = false;
         PlayerCameraOcclusionController.Instance.CameraZoom(false);
     }
 
@@ -2886,7 +2905,7 @@ public class Movement : Singleton<Movement>
         Player_KeyInputs.Instance.cameraY_isPressed = false;
 
         isAscending = false;
-        isDecending = false;
+        isDescending = false;
         PlayerCameraOcclusionController.Instance.CameraZoom(false);
 
         SetMovementState(MovementStates.Moving);
@@ -3015,6 +3034,34 @@ public class Movement : Singleton<Movement>
     public void RespawnToSavePos_Action()
     {
         Action_RespawnToSavePos?.Invoke();
+    }
+
+
+
+    public void Action_isDashing_Finished_Invoke()
+    {
+        Action_isDashing_Finished?.Invoke();
+    }
+    public void Action_isJumping_Finished_Invoke()
+    {
+        Action_isJumping_Finished?.Invoke();
+    }
+
+    public void Action_isAscending_Finished_Invoke()
+    {
+        Action_isAscending_Finished?.Invoke();
+    }
+    public void Action_isDescending_Finished_Invoke()
+    {
+        Action_isDescending_Finished?.Invoke();
+    }
+    public void Action_isGrapplingHooking_Invoke()
+    {
+        Action_isGrapplingHooking?.Invoke();
+    }
+    public void Action_isGrapplingHooking_Finished_Invoke()
+    {
+        Action_isGrapplingHooking_Finished?.Invoke();
     }
 
     #endregion
