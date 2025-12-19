@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 using static UIHeartAnimator;
 
@@ -10,7 +9,7 @@ public class StepsHUD : Singleton<StepsHUD>
 {
     [Header("Footprint animation and effect")]
     //[Header("Deactivate (Active -> Used)")]
-    [Range(0.1f, 2f)] public float deactivateDuration = 0.5f;
+    [Range(0.1f, 2f)] public float deactivateDuration = 0.35f;
     public float deactivateStartScale = 1.0f;
     public float deactivateEndScale = 0.85f;
     public Ease deactivateEase = Ease.InOutQuad;
@@ -142,7 +141,7 @@ public class StepsHUD : Singleton<StepsHUD>
 
         if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_MushroomCircle_isAdded)
         {
-            StartCoroutine(FootstepsFrameShine_InOut(0.2f));
+            StartCoroutine(FootstepsFrameShine_InOut(0.25f));
         }
     }
 
