@@ -15,6 +15,11 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     [SerializeField] GameObject playerDisplayObject;
 
     [Header("Colors")]
+    public Sprite sprite_Inactive;
+    public Sprite sprite_Available;
+    public Sprite sprite_Bought;
+    public Sprite sprite_Selected;
+
     public Color inactive_Color;
     public Color available_Color;
     public Color bought_Color;
@@ -269,6 +274,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
             hat_Larry.SetActive(false);
     }
 
+
     //--------------------
 
 
@@ -517,7 +523,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     public WardrobeSkinState GetSkinSaveData(int region, int level)
     {
-        if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo == null) return WardrobeSkinState.Inactive;
+        if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo == null) return WardrobeSkinState.Hidden;
 
         switch (region)
         {
@@ -636,6 +642,25 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
             default:
                 return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default;
         }
+    }
+    public bool GetLevelSaveData(SkinType skinType)
+    {
+        if (DataManager.Instance.mapInfo_StoreList == null) return false;
+
+        bool isLevel = false;
+
+        for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count; i++)
+        {
+            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].skintype == skinType)
+            {
+                isLevel = true;
+            }
+        }
+
+        if (isLevel)
+            return true;
+        else
+            return false;
     }
     public void SetSkinSaveData(int region, int level, WardrobeSkinState skinState)
     {
@@ -810,12 +835,12 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     public WardrobeHatState GetHatSaveData(HatType hatType)
     {
-        if (DataManager.Instance.skinsInfo_Store.skinHatInfo == null) return WardrobeHatState.Inactive;
+        if (DataManager.Instance.skinsInfo_Store.skinHatInfo == null) return WardrobeHatState.Hidden;
 
         switch (hatType)
         {
             case HatType.None:
-                return WardrobeHatState.Inactive;
+                return WardrobeHatState.Hidden;
 
             case HatType.Floriel_Hat:
                 return DataManager.Instance.skinsInfo_Store.skinHatInfo.skin_Region1_Hat;
@@ -831,7 +856,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                 return DataManager.Instance.skinsInfo_Store.skinHatInfo.skin_Region6_Hat;
 
             default:
-                return WardrobeHatState.Inactive;
+                return WardrobeHatState.Hidden;
         }
     }
     public void SetHatSaveData(HatType hatType, WardrobeHatState hatState)
@@ -888,7 +913,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     public void UpdateEssenceDisplay()
     {
-        esseceCost.text = DataManager.Instance.playerStats_Store.itemsGot.essence_Current + " / " + skinCost;
+        esseceCost.text = DataManager.Instance.playerStats_Store.itemsGot.essence_Current.ToString();
     }
 }
 
@@ -956,14 +981,15 @@ public class SkinsHatInfo
 
 public enum WardrobeSkinState
 {
-    Inactive,
+    Hidden,
+    IsFound,
     Available,
     Bought,
     Selected
 }
 public enum WardrobeHatState
 {
-    Inactive,
+    Hidden,
     Available,
     Selected
 }

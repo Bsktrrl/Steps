@@ -37,41 +37,41 @@ public class MainMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         // Highlighted
         SetActive();
-        Debug.Log("Highlighted");
+        //Debug.Log("Highlighted");
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         // Normal (mouse left)
         SetPassive();
-        Debug.Log("Normal");
+        //Debug.Log("Normal");
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
         // Pressed
 
-        Debug.Log("Pressed");
+        //Debug.Log("Pressed");
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         // Released (back to Highlighted if still hovered)
         SetActive();
-        Debug.Log("Pointer Up");
+        //Debug.Log("Pointer Up");
     }
 
     public void OnSelect(BaseEventData eventData)
     {
         // Selected (keyboard/controller)
         SetActive();
-        Debug.Log("Selected");
+        //Debug.Log("Selected");
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
         SetPassive();
-        Debug.Log("Deselected");
+        //Debug.Log("Deselected");
     }
 
 

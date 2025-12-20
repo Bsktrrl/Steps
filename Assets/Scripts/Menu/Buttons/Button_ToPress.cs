@@ -68,7 +68,7 @@ public class Button_ToPress : MonoBehaviour
                 MainMenuManager.Instance.mainMenu_Parent.SetActive(true);
                 break;
             case MenuState.Skin_Menu:
-                EventSystem.current.SetSelectedGameObject(MenuManager.Instance.wardrobeMenuButton);
+                EventSystem.current.SetSelectedGameObject(MenuManager.Instance.wardrobe_StartButton);
                 MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Wardrobe;
                 MenuManager.Instance.ChangeMenuCategory(MenuCategories.Wardrobe);
                 break;
@@ -85,7 +85,7 @@ public class Button_ToPress : MonoBehaviour
             case MenuState.Pause_Menu_Skins:
                 HideAllPauseMenus();
                 PauseMenuManager.Instance.pauseMenu_Skins_Parent.SetActive(true);
-                EventSystem.current.SetSelectedGameObject(MenuManager.Instance.wardrobeMenuButton);
+                EventSystem.current.SetSelectedGameObject(MenuManager.Instance.wardrobe_StartButton);
                 MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Wardrobe;
                 MenuManager.Instance.ChangeMenuCategory(MenuCategories.Wardrobe);
                 break;

@@ -352,3 +352,15 @@ public enum HatType
     Mossy_Hat,
     Larry_Hat
 }
+
+public enum RegionName
+{
+    None,
+
+    Rivergreen,
+    Sandlands,
+    Frostfields,
+    Firevein,
+    Witchmire,
+    Metalworks
+}
