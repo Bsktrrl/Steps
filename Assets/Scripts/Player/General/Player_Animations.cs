@@ -215,9 +215,17 @@ public class Player_Animations : Singleton<Player_Animations>
     }
     public void Set_WalkGlideAnimation(bool state)
     {
-        //anim.speed = 1.0f;
-        playerAnimator.SetBool("Sliding", state);
-        isWalkGliding = state;
+        if (state == true && Movement.Instance.movementStates == MovementStates.Still)
+        {
+            //anim.speed = 1.0f;
+            playerAnimator.SetBool("Sliding", true);
+            isWalkGliding = true;
+        }
+        else
+        {
+            playerAnimator.SetBool("Sliding", false);
+            isWalkGliding = false;
+        }
     }
 
     public void Start_RespawnAnimation()

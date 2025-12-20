@@ -1,10 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, ISelectHandler, IDeselectHandler
 {
+    [Header("Sprites (Optional)")]
+    public Image backgroundImage;
+    public Sprite background_Default;
+    public Sprite background_Active;
+
     [Header("Pulsating")]
     [SerializeField] Vector3 maxScale;
     [SerializeField] Vector3 startScale = Vector3.one;
@@ -33,6 +39,19 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
         {
             SetPassive();
         }
+    }
+
+
+    //--------------------
+
+
+    private void OnEnable()
+    {
+        SetPassive();
+    }
+    private void OnDisable()
+    {
+        SetPassive();
     }
 
 
@@ -79,6 +98,8 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
         t = TightenEdges(t, edgeTightness);
 
         rt.localScale = Vector3.LerpUnclamped(startScale, startScale + maxScale, t);
+
+        SetBackgroundImageActive();
     }
     static float TightenEdges(float t, float k)
     {
@@ -90,5 +111,24 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
     public void SetPassive()
     {
         rt.localScale = Vector2.one;
+
+        SetBackgroundImageDefault();
+    }
+
+    void SetBackgroundImageActive()
+    {
+        if (backgroundImage && background_Active)
+        {
+            print("1. SetBackgroundImageActive");
+            backgroundImage.sprite = background_Active;
+        }
+    }
+    void SetBackgroundImageDefault()
+    {
+        if (backgroundImage && background_Default)
+        {
+            print("2. SetBackgroundImageDefault");
+            backgroundImage.sprite = background_Default;
+        }
     }
 }

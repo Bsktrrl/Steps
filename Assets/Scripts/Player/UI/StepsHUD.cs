@@ -107,7 +107,8 @@ public class StepsHUD : Singleton<StepsHUD>
 
     public void UpdateStepsDisplay_Walking()
     {
-        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>() && !Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_SpawnPoint_isAdded)
+        if (Movement.Instance.blockStandingOn && (Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>() && !Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_SpawnPoint_isAdded)
+            || (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair))
         {
             for (int i = 0; i < 10; i++)
             {
@@ -139,7 +140,7 @@ public class StepsHUD : Singleton<StepsHUD>
             }
         }
 
-        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_MushroomCircle_isAdded)
+        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_MushroomCircle_isAdded)
         {
             StartCoroutine(FootstepsFrameShine_InOut(0.25f));
         }

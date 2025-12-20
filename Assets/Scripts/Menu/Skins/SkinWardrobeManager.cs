@@ -982,7 +982,7 @@ public class SkinsHatInfo
 public enum WardrobeSkinState
 {
     Hidden,
-    IsFound,
+    LevelIsVisited,
     Available,
     Bought,
     Selected

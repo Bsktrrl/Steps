@@ -223,8 +223,9 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnAbilityRight_DownPress()
     {
-        if (!ButtonChecks_Other() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
-
+        if (!ButtonChecks_Other() || Player_CeilingGrab.Instance.isCeilingGrabbing) return;
+        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) return;
+        
         grapplingHook_isPressed = true;
 
         Movement.Instance.Action_isGrapplingHooking_Invoke();
@@ -233,6 +234,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnAbilityRight_RelesePress()
     {
+        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) return;
+
         grapplingHook_isPressed = false;
 
         if (!ButtonChecks_Other_MinusGrapplingHook()) { return; }
