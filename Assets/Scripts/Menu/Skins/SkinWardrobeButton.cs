@@ -13,10 +13,6 @@ public class SkinWardrobeButton : MonoBehaviour
     [SerializeField] int region;
     [SerializeField] int level;
 
-    [Header("Components")]
-    [SerializeField] Image frame;
-    [SerializeField] GameObject overlay;
-
     Player_Animations Player_Animations;
     SkinWardrobeManager skinWardrobeManager;
 
@@ -173,20 +169,16 @@ public class SkinWardrobeButton : MonoBehaviour
             switch (tempState)
             {
                 case WardrobeSkinState.Inactive:
-                    overlay.SetActive(true);
-                    frame.color = skinWardrobeManager.inactive_Color;
+
                     break;
                 case WardrobeSkinState.Available:
-                    overlay.SetActive(false);
-                    frame.color = skinWardrobeManager.available_Color;
+
                     break;
                 case WardrobeSkinState.Bought:
-                    overlay.SetActive(false);
-                    frame.color = skinWardrobeManager.bought_Color;
+
                     break;
                 case WardrobeSkinState.Selected:
-                    overlay.SetActive(false);
-                    frame.color = skinWardrobeManager.selected_Color;
+
                     break;
 
                 default:
@@ -203,16 +195,13 @@ public class SkinWardrobeButton : MonoBehaviour
             switch (tempState)
             {
                 case WardrobeHatState.Inactive:
-                    overlay.SetActive(true);
-                    frame.color = skinWardrobeManager.inactive_Color;
+
                     break;
                 case WardrobeHatState.Available:
-                    overlay.SetActive(false);
-                    frame.color = skinWardrobeManager.bought_Color;
+
                     break;
                 case WardrobeHatState.Selected:
-                    overlay.SetActive(false);
-                    frame.color = skinWardrobeManager.selected_Color;
+
                     break;
 
                 default:
@@ -227,13 +216,11 @@ public class SkinWardrobeButton : MonoBehaviour
         {
             if (DataManager.Instance.skinsInfo_Store.activeSkinType == SkinType.Default)
             {
-                overlay.SetActive(false);
-                frame.color = skinWardrobeManager.selected_Color;
+
             }
             else
             {
-                overlay.SetActive(false);
-                frame.color = skinWardrobeManager.bought_Color;
+
             }
         }
     }
