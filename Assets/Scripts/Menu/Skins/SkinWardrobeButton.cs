@@ -398,32 +398,59 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     void SetActive()
     {
-        WardrobeSkinState tempState = skinWardrobeManager.GetSkinSaveData(GetRegionNumber(region), level);
-
-        switch (tempState)
+        //If it's a Skin
+        if (hatType == HatType.None)
         {
-            case WardrobeSkinState.Hidden:
-                unlockDisplay.SetDisplay_Unavailable(region, level.ToString());
-                break;
-            case WardrobeSkinState.LevelIsVisited:
-                unlockDisplay.SetDisplay_LevelReached();
-                break;
-            case WardrobeSkinState.Available:
-                if (PlayerStats.Instance.stats.itemsGot.essence_Current >= 10)
-                    unlockDisplay.SetDisplay_CanUnlock();
-                else
-                    unlockDisplay.SetDisplay_CanNotUnlock();
-                break;
-            case WardrobeSkinState.Bought:
-                unlockDisplay.SetDisplay_CanEquip();
-                break;
-            case WardrobeSkinState.Selected:
-                unlockDisplay.SetDisplay_IsEquipped();
-                break;
+            WardrobeSkinState tempState = skinWardrobeManager.GetSkinSaveData(GetRegionNumber(region), level);
 
-            default:
-                unlockDisplay.SetDisplay_Unavailable(region, level.ToString());
-                break;
+            switch (tempState)
+            {
+                case WardrobeSkinState.Hidden:
+                    unlockDisplay.SetDisplay_Unavailable(region, level.ToString());
+                    break;
+                case WardrobeSkinState.LevelIsVisited:
+                    unlockDisplay.SetDisplay_LevelReached();
+                    break;
+                case WardrobeSkinState.Available:
+                    if (PlayerStats.Instance.stats.itemsGot.essence_Current >= 10)
+                        unlockDisplay.SetDisplay_CanUnlock();
+                    else
+                        unlockDisplay.SetDisplay_CanNotUnlock();
+                    break;
+                case WardrobeSkinState.Bought:
+                    unlockDisplay.SetDisplay_CanEquip();
+                    break;
+                case WardrobeSkinState.Selected:
+                    unlockDisplay.SetDisplay_IsEquipped();
+                    break;
+
+                default:
+                    unlockDisplay.SetDisplay_Unavailable(region, level.ToString());
+                    break;
+            }
+        }
+
+        //If it's a Hat
+        else
+        {
+            WardrobeHatState tempState = skinWardrobeManager.GetHatSaveData(hatType);
+
+            switch (tempState)
+            {
+                case WardrobeHatState.Hidden:
+                    unlockDisplay.SetDisplay_FinishQuestline(hatType);
+                    break;
+                case WardrobeHatState.Available:
+                    unlockDisplay.SetDisplay_CanEquip();
+                    break;
+                case WardrobeHatState.Selected:
+                    unlockDisplay.SetDisplay_IsEquipped();
+                    break;
+
+                default:
+                    unlockDisplay.SetDisplay_FinishQuestline(hatType);
+                    break;
+            }
         }
     }
 }

@@ -19,6 +19,9 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
 
     RectTransform rt;
 
+    [SerializeField] bool isBackButton;
+    [SerializeField] bool isStartButton;
+
     bool isActive;
 
 
@@ -47,11 +50,13 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
 
     private void OnEnable()
     {
-        SetPassive();
+        if (isStartButton)
+            isActive = true;
     }
     private void OnDisable()
     {
-        SetPassive();
+        if (isBackButton)
+            isActive = false;
     }
 
 
@@ -71,12 +76,12 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
     public void OnPointerDown(PointerEventData eventData)
     {
         // Pressed
-        isActive = false;
+        isActive = true;
     }
     public void OnPointerUp(PointerEventData eventData)
     {
         // Released (back to Highlighted if still hovered)
-        isActive = true;
+        isActive = false;
     }
     public void OnSelect(BaseEventData eventData)
     {
@@ -119,7 +124,7 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
     {
         if (backgroundImage && background_Active)
         {
-            print("1. SetBackgroundImageActive");
+            //print("1. SetBackgroundImageActive");
             backgroundImage.sprite = background_Active;
         }
     }
@@ -127,7 +132,7 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
     {
         if (backgroundImage && background_Default)
         {
-            print("2. SetBackgroundImageDefault");
+            //print("2. SetBackgroundImageDefault");
             backgroundImage.sprite = background_Default;
         }
     }

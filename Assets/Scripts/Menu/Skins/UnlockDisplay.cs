@@ -12,6 +12,8 @@ public class UnlockDisplay : MonoBehaviour
     [SerializeField] GameObject canEquip_obj;
     [SerializeField] GameObject isEquipped_obj;
 
+    [SerializeField] GameObject finishQuestline_obj;
+
 
     //--------------------
 
@@ -26,6 +28,7 @@ public class UnlockDisplay : MonoBehaviour
         canUnlock_obj.SetActive(false);
         canEquip_obj.SetActive(false);
         isEquipped_obj.SetActive(false);
+        finishQuestline_obj.SetActive(false);
     }
 
     public void SetDisplay_LevelReached()
@@ -38,6 +41,7 @@ public class UnlockDisplay : MonoBehaviour
         canUnlock_obj.SetActive(false);
         canEquip_obj.SetActive(false);
         isEquipped_obj.SetActive(false);
+        finishQuestline_obj.SetActive(false);
     }
 
     public void SetDisplay_CanNotUnlock()
@@ -48,6 +52,7 @@ public class UnlockDisplay : MonoBehaviour
         canUnlock_obj.SetActive(false);
         canEquip_obj.SetActive(false);
         isEquipped_obj.SetActive(false);
+        finishQuestline_obj.SetActive(false);
     }
 
     public void SetDisplay_CanUnlock()
@@ -58,6 +63,7 @@ public class UnlockDisplay : MonoBehaviour
         canUnlock_obj.SetActive(true);
         canEquip_obj.SetActive(false);
         isEquipped_obj.SetActive(false);
+        finishQuestline_obj.SetActive(false);
     }
 
     public void SetDisplay_CanEquip()
@@ -68,6 +74,7 @@ public class UnlockDisplay : MonoBehaviour
         canUnlock_obj.SetActive(false);
         canEquip_obj.SetActive(true);
         isEquipped_obj.SetActive(false);
+        finishQuestline_obj.SetActive(false);
     }
 
     public void SetDisplay_IsEquipped()
@@ -78,5 +85,49 @@ public class UnlockDisplay : MonoBehaviour
         canUnlock_obj.SetActive(false);
         canEquip_obj.SetActive(false);
         isEquipped_obj.SetActive(true);
+        finishQuestline_obj.SetActive(false);
+    }
+
+    public void SetDisplay_FinishQuestline(HatType hatType)
+    {
+        string npcName = "";
+
+        switch (hatType)
+        {
+            case HatType.None:
+                break;
+
+            case HatType.Floriel_Hat:
+                npcName = "Floríel";
+                break;
+            case HatType.Granith_Hat:
+                npcName = "Granith";
+                break;
+            case HatType.Archie_Hat:
+                npcName = "Archie";
+                break;
+            case HatType.Aisa_Hat:
+                npcName = "Aisa";
+                break;
+            case HatType.Mossy_Hat:
+                npcName = "Mossy";
+                break;
+            case HatType.Larry_Hat:
+                npcName = "Larry";
+                break;
+
+            default:
+                break;
+        }
+
+        finishQuestline_obj.GetComponentInChildren<TextMeshProUGUI>().text = "Finish the questline of " + npcName;
+
+        unavailable_obj.SetActive(false);
+        levelReached_obj.SetActive(false);
+        canNotUnlock_obj.SetActive(false);
+        canUnlock_obj.SetActive(false);
+        canEquip_obj.SetActive(false);
+        isEquipped_obj.SetActive(false);
+        finishQuestline_obj.SetActive(true);
     }
 }
