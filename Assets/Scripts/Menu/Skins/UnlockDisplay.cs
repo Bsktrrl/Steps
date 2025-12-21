@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UnlockDisplay : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class UnlockDisplay : MonoBehaviour
 
     [SerializeField] GameObject finishQuestline_obj;
 
+    private RectTransform _currentPulsingImageRt;
+
 
     //--------------------
 
@@ -22,6 +25,8 @@ public class UnlockDisplay : MonoBehaviour
     {
         unavailable_obj.GetComponentInChildren<TextMeshProUGUI>().text = "Find skin in " + region.ToString() + "\r\nLv." + level + " to unlock";
 
+        CopyPulseScaleTo(unavailable_obj);
+
         unavailable_obj.SetActive(true);
         levelReached_obj.SetActive(false);
         canNotUnlock_obj.SetActive(false);
@@ -29,63 +34,85 @@ public class UnlockDisplay : MonoBehaviour
         canEquip_obj.SetActive(false);
         isEquipped_obj.SetActive(false);
         finishQuestline_obj.SetActive(false);
+
+        _currentPulsingImageRt = unavailable_obj.GetComponentInChildren<Image>().rectTransform;
     }
 
     public void SetDisplay_LevelReached()
     {
         levelReached_obj.GetComponentInChildren<TextMeshProUGUI>().text = "Find the skin\r\nto unlock";
 
-        unavailable_obj.SetActive(false);
+        CopyPulseScaleTo(levelReached_obj);
+
         levelReached_obj.SetActive(true);
+        unavailable_obj.SetActive(false);
         canNotUnlock_obj.SetActive(false);
         canUnlock_obj.SetActive(false);
         canEquip_obj.SetActive(false);
         isEquipped_obj.SetActive(false);
         finishQuestline_obj.SetActive(false);
+
+        _currentPulsingImageRt = levelReached_obj.GetComponentInChildren<Image>().rectTransform;
     }
 
     public void SetDisplay_CanNotUnlock()
     {
+        CopyPulseScaleTo(canNotUnlock_obj);
+
+        canNotUnlock_obj.SetActive(true);
         unavailable_obj.SetActive(false);
         levelReached_obj.SetActive(false);
-        canNotUnlock_obj.SetActive(true);
         canUnlock_obj.SetActive(false);
         canEquip_obj.SetActive(false);
         isEquipped_obj.SetActive(false);
         finishQuestline_obj.SetActive(false);
+
+        _currentPulsingImageRt = canNotUnlock_obj.GetComponentInChildren<Image>().rectTransform;
     }
 
     public void SetDisplay_CanUnlock()
     {
+        CopyPulseScaleTo(canUnlock_obj);
+
+        canUnlock_obj.SetActive(true);
         unavailable_obj.SetActive(false);
         levelReached_obj.SetActive(false);
         canNotUnlock_obj.SetActive(false);
-        canUnlock_obj.SetActive(true);
         canEquip_obj.SetActive(false);
         isEquipped_obj.SetActive(false);
         finishQuestline_obj.SetActive(false);
+
+        _currentPulsingImageRt = canUnlock_obj.GetComponentInChildren<Image>().rectTransform;
     }
 
     public void SetDisplay_CanEquip()
     {
+        CopyPulseScaleTo(canEquip_obj);
+
+        canEquip_obj.SetActive(true);
         unavailable_obj.SetActive(false);
         levelReached_obj.SetActive(false);
         canNotUnlock_obj.SetActive(false);
         canUnlock_obj.SetActive(false);
-        canEquip_obj.SetActive(true);
         isEquipped_obj.SetActive(false);
         finishQuestline_obj.SetActive(false);
+
+        _currentPulsingImageRt = canEquip_obj.GetComponentInChildren<Image>().rectTransform;
     }
 
     public void SetDisplay_IsEquipped()
     {
+        CopyPulseScaleTo(isEquipped_obj);
+
+        isEquipped_obj.SetActive(true);
         unavailable_obj.SetActive(false);
         levelReached_obj.SetActive(false);
         canNotUnlock_obj.SetActive(false);
         canUnlock_obj.SetActive(false);
         canEquip_obj.SetActive(false);
-        isEquipped_obj.SetActive(true);
         finishQuestline_obj.SetActive(false);
+
+        _currentPulsingImageRt = isEquipped_obj.GetComponentInChildren<Image>().rectTransform;
     }
 
     public void SetDisplay_FinishQuestline(HatType hatType)
@@ -122,12 +149,26 @@ public class UnlockDisplay : MonoBehaviour
 
         finishQuestline_obj.GetComponentInChildren<TextMeshProUGUI>().text = "Finish the questline of " + npcName;
 
+        CopyPulseScaleTo(finishQuestline_obj);
+
+        finishQuestline_obj.SetActive(true);
         unavailable_obj.SetActive(false);
         levelReached_obj.SetActive(false);
         canNotUnlock_obj.SetActive(false);
         canUnlock_obj.SetActive(false);
         canEquip_obj.SetActive(false);
         isEquipped_obj.SetActive(false);
-        finishQuestline_obj.SetActive(true);
+
+        _currentPulsingImageRt = finishQuestline_obj.GetComponentInChildren<Image>().rectTransform;
+    }
+
+    void CopyPulseScaleTo(GameObject nextObj)
+    {
+        var nextRt = nextObj.GetComponentInChildren<Image>().rectTransform;
+
+        if (_currentPulsingImageRt != null)
+            nextRt.localScale = _currentPulsingImageRt.localScale;
+        else
+            nextRt.localScale = Vector3.one; // first time fallback
     }
 }

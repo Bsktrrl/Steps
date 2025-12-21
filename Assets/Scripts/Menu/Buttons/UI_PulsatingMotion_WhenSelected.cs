@@ -12,17 +12,21 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
     public Sprite background_Active;
 
     [Header("Pulsating")]
-    [SerializeField] Vector3 maxScale;
-    [SerializeField] Vector3 startScale = Vector3.one;
-    [SerializeField] float pulseSpeed = 1f;
-    [SerializeField, Range(0.2f, 3f)] float edgeTightness = 1f;
+    [SerializeField] Vector3 maxScale = new Vector3(0.15f, 0.15f, 0.15f);
+    [SerializeField] Vector3 startScale = new Vector3(1.1f, 1.1f, 1.1f);
+    [SerializeField] float pulseSpeed = 0.3f;
+    [SerializeField, Range(0.2f, 3f)] float edgeTightness = 0.9f;
 
-    RectTransform rt;
+    [Header("Exta ImageObjects")]
+    [SerializeField] List<GameObject> extraImages = new List<GameObject>();
 
+    List<RectTransform> rt = new List<RectTransform>();
+
+    [Header("Button States")]
     [SerializeField] bool isBackButton;
     [SerializeField] bool isStartButton;
 
-    bool isActive;
+    public bool isActive;
 
 
     //--------------------
@@ -30,7 +34,12 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
 
     private void Awake()
     {
-        rt = (RectTransform)transform;
+        rt.Add((RectTransform)transform);
+
+        for (int i = 0; i < extraImages.Count; i++)
+        {
+            rt.Add(extraImages[i].GetComponent<RectTransform>());
+        }
     }
     private void Update()
     {
@@ -102,8 +111,12 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
         float t = 0.5f + 0.5f * Mathf.Sin(Time.unscaledTime * pulseSpeed * Mathf.PI * 2f);
         t = TightenEdges(t, edgeTightness);
 
-        rt.localScale = Vector3.LerpUnclamped(startScale, startScale + maxScale, t);
-
+        for (int i = 0; i < rt.Count; i++)
+        {
+            rt[i].localScale = Vector3.LerpUnclamped(startScale, startScale + maxScale, t);
+            rt[i].gameObject.SetActive(true);
+        }
+        
         SetBackgroundImageActive();
     }
     static float TightenEdges(float t, float k)
@@ -115,7 +128,13 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
 
     public void SetPassive()
     {
-        rt.localScale = Vector2.one;
+        for (int i = 0; i < rt.Count; i++)
+        {
+            rt[i].localScale = Vector2.one;
+            rt[i].gameObject.SetActive(false);
+        }
+
+        rt[0].gameObject.SetActive(true);
 
         SetBackgroundImageDefault();
     }
