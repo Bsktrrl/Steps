@@ -27,6 +27,7 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
     [SerializeField] bool isStartButton;
 
     public bool isActive;
+    bool performed_SetPassive;
 
 
     //--------------------
@@ -46,10 +47,12 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
         if (isActive)
         {
             SetActive();
+            performed_SetPassive = false;
         }
-        else
+        else if (!performed_SetPassive)
         {
             SetPassive();
+            performed_SetPassive = true;
         }
     }
 
@@ -59,8 +62,11 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
 
     private void OnEnable()
     {
-        if (isStartButton)
-            isActive = true;
+        //if (isStartButton)
+        //{
+        //    isActive = true;
+        //    print("Default - Enable");
+        //}
     }
     private void OnDisable()
     {
@@ -72,34 +78,52 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
     //--------------------
 
 
+    public void EnableStartButton()
+    {
+        if (isStartButton)
+        {
+            isActive = true;
+        }
+    }
+
+
+    //--------------------
+
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         // Highlighted
         isActive = true;
+        //print("1. OnPointerEnter - true: " + gameObject.name);
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         // Normal (mouse left)
         isActive = false;
+        //print("2. OnPointerExit - false: " + gameObject.name);
     }
     public void OnPointerDown(PointerEventData eventData)
     {
         // Pressed
         isActive = true;
+        //print("3. OnPointerDown - true: " + gameObject.name);
     }
     public void OnPointerUp(PointerEventData eventData)
     {
         // Released (back to Highlighted if still hovered)
         isActive = false;
+        //print("4. OnPointerUp - false: " + gameObject.name);
     }
     public void OnSelect(BaseEventData eventData)
     {
         // Selected (keyboard/controller)
         isActive = true;
+        //print("5. OnSelect - true: " + gameObject.name);
     }
     public void OnDeselect(BaseEventData eventData)
     {
         isActive = false;
+        //print("6. OnDeselect - false: " + gameObject.name);
     }
 
 
@@ -128,13 +152,15 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
 
     public void SetPassive()
     {
-        for (int i = 0; i < rt.Count; i++)
+        for (int i = 1; i < rt.Count; i++)
         {
             rt[i].localScale = Vector2.one;
             rt[i].gameObject.SetActive(false);
         }
 
-        rt[0].gameObject.SetActive(true);
+        rt[0].localScale = Vector2.one;
+
+        //rt[0].gameObject.SetActive(true);
 
         SetBackgroundImageDefault();
     }

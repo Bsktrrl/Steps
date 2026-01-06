@@ -169,8 +169,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 1
   isStartButton: 0
+  isActive: 0
 --- !u!1 &93226368838051328
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,7 +239,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Find the skin
+  m_text: 'Find the skin in level
 
     to unlock'
   m_isRightToLeft: 0
@@ -315,7 +317,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 93226368838051328}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c79d7fc36b0a5474d82553465bb8bbca, type: 3}
   m_Name: 
@@ -1604,6 +1606,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Miner Helmet of Granith
   skinType: 0
   hatType: 2
   region: 0
@@ -1666,8 +1669,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &724452384944896560
 GameObject:
   m_ObjectHideFlags: 0
@@ -1903,6 +1908,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Lava
   skinType: 21
   hatType: 0
   region: 4
@@ -1965,8 +1971,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &876634756156626166
 GameObject:
   m_ObjectHideFlags: 0
@@ -2162,6 +2170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Temple Skull
   skinType: 26
   hatType: 0
   region: 5
@@ -2224,8 +2233,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &909319064595248868
 GameObject:
   m_ObjectHideFlags: 0
@@ -2459,7 +2470,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000086658977240188}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c79d7fc36b0a5474d82553465bb8bbca, type: 3}
   m_Name: 
@@ -3006,6 +3017,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Copper
   skinType: 28
   hatType: 0
   region: 6
@@ -3068,8 +3080,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &1257634976893979763
 GameObject:
   m_ObjectHideFlags: 0
@@ -3265,6 +3279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Glasses of Larry
   skinType: 0
   hatType: 6
   region: 0
@@ -3327,8 +3342,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &1343961341117971693
 GameObject:
   m_ObjectHideFlags: 0
@@ -3585,6 +3602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Sand
   skinType: 7
   hatType: 0
   region: 2
@@ -3647,8 +3665,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &1401226781531489182
 GameObject:
   m_ObjectHideFlags: 0
@@ -3732,7 +3752,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1401226781531489182}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c79d7fc36b0a5474d82553465bb8bbca, type: 3}
   m_Name: 
@@ -4464,7 +4484,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1684566461369295523}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c79d7fc36b0a5474d82553465bb8bbca, type: 3}
   m_Name: 
@@ -4593,6 +4613,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Leaves
   skinType: 5
   hatType: 0
   region: 1
@@ -4655,8 +4676,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &1784194860038776683
 GameObject:
   m_ObjectHideFlags: 0
@@ -5728,6 +5751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Water
   skinType: 6
   hatType: 0
   region: 1
@@ -5790,8 +5814,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &2349806434880543686
 GameObject:
   m_ObjectHideFlags: 0
@@ -5912,6 +5938,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Clay
   skinType: 8
   hatType: 0
   region: 2
@@ -5974,8 +6001,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &2399146924877359472
 GameObject:
   m_ObjectHideFlags: 0
@@ -6021,7 +6050,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2399146924877359472}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c79d7fc36b0a5474d82553465bb8bbca, type: 3}
   m_Name: 
@@ -6411,6 +6440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Clear Ice
   skinType: 16
   hatType: 0
   region: 3
@@ -6473,8 +6503,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &2598354453265099056
 GameObject:
   m_ObjectHideFlags: 0
@@ -7372,6 +7404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Iron
   skinType: 27
   hatType: 0
   region: 6
@@ -7434,8 +7467,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &3085846515022355448
 GameObject:
   m_ObjectHideFlags: 0
@@ -7859,6 +7894,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Iron Casing
   skinType: 30
   hatType: 0
   region: 6
@@ -7921,8 +7957,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &3301485600440708370
 GameObject:
   m_ObjectHideFlags: 0
@@ -8250,7 +8288,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3355411659486867857}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c79d7fc36b0a5474d82553465bb8bbca, type: 3}
   m_Name: 
@@ -8379,6 +8417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Mud
   skinType: 25
   hatType: 0
   region: 5
@@ -8441,8 +8480,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &3409984046143117779
 GameObject:
   m_ObjectHideFlags: 0
@@ -8882,6 +8923,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1568519407559519666}
   - {fileID: 2139012514087729189}
   - {fileID: 4240301903771938136}
   - {fileID: 6475556119754500353}
@@ -8915,6 +8957,7 @@ MonoBehaviour:
   canEquip_obj: {fileID: 7649206448261289888}
   isEquipped_obj: {fileID: 7016001906042125358}
   finishQuestline_obj: {fileID: 1468511488692904782}
+  selectedBlockName: {fileID: 8475172812079494776}
 --- !u!1 &3555897920303971822
 GameObject:
   m_ObjectHideFlags: 0
@@ -9798,6 +9841,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Undefined
   skinType: 1
   hatType: 0
   region: 0
@@ -9860,8 +9904,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 1
+  isActive: 0
 --- !u!1 &3918437782044901876
 GameObject:
   m_ObjectHideFlags: 0
@@ -10108,7 +10154,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4033309335712470882}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c79d7fc36b0a5474d82553465bb8bbca, type: 3}
   m_Name: 
@@ -10257,7 +10303,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e31006d24f38a704ba558c4d7b538fe5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ef6a9123fc53ff344b9f10ec572c7126, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -10387,6 +10433,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Temple
   skinType: 11
   hatType: 0
   region: 2
@@ -10449,8 +10496,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &4132342038206767329
 GameObject:
   m_ObjectHideFlags: 0
@@ -10705,6 +10754,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Wood
   skinType: 3
   hatType: 0
   region: 1
@@ -10767,8 +10817,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &4176558003156441245
 GameObject:
   m_ObjectHideFlags: 0
@@ -11001,6 +11053,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Stone
   skinType: 17
   hatType: 0
   region: 4
@@ -11063,8 +11116,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &4407468840743959145
 GameObject:
   m_ObjectHideFlags: 0
@@ -11315,7 +11370,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4438097593670835765}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c79d7fc36b0a5474d82553465bb8bbca, type: 3}
   m_Name: 
@@ -11594,6 +11649,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Grass
   skinType: 2
   hatType: 0
   region: 1
@@ -11656,8 +11712,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &4564493502536975766
 GameObject:
   m_ObjectHideFlags: 0
@@ -11987,6 +12045,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Witch hat of Mossy
   skinType: 0
   hatType: 5
   region: 0
@@ -12049,8 +12108,144 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
+--- !u!1 &4590604847780799870
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 550816276105371088}
+  - component: {fileID: 1060509146790787342}
+  - component: {fileID: 2279944590939905727}
+  m_Layer: 5
+  m_Name: Nothing-Display
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &550816276105371088
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4590604847780799870}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 70867004945345062}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 15, y: 15}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1060509146790787342
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4590604847780799870}
+  m_CullTransparentMesh: 1
+--- !u!114 &2279944590939905727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4590604847780799870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: '?'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: dfbdd2096e005a447b83ba15e4de6767, type: 2}
+  m_sharedMaterial: {fileID: 6701643693541814340, guid: dfbdd2096e005a447b83ba15e4de6767, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4280564297
+  m_fontColor: {r: 0.28627452, g: 0.22745098, b: 0.14117648, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 520
+  m_fontSizeBase: 520
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 4096
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &4599706635420950272
 GameObject:
   m_ObjectHideFlags: 0
@@ -12246,6 +12441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Grass
   skinType: 22
   hatType: 0
   region: 5
@@ -12308,8 +12504,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &4677738581218657348
 GameObject:
   m_ObjectHideFlags: 0
@@ -12773,6 +12971,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Gold
   skinType: 29
   hatType: 0
   region: 6
@@ -12835,8 +13034,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &4797514114459505891
 GameObject:
   m_ObjectHideFlags: 0
@@ -13311,7 +13512,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5089694361059787325}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c79d7fc36b0a5474d82553465bb8bbca, type: 3}
   m_Name: 
@@ -13707,8 +13908,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3739953912334292322}
   - {fileID: 8623411182528162449}
+  - {fileID: 3739953912334292322}
+  - {fileID: 550816276105371088}
   - {fileID: 6062143845771973282}
   m_Father: {fileID: 8615124991170221277}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14084,7 +14286,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5567963431333469031}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c79d7fc36b0a5474d82553465bb8bbca, type: 3}
   m_Name: 
@@ -14446,7 +14648,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5727908788315665618}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c79d7fc36b0a5474d82553465bb8bbca, type: 3}
   m_Name: 
@@ -15331,6 +15533,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Brown Brick
   skinType: 19
   hatType: 0
   region: 4
@@ -15393,8 +15596,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &6176288227979814852
 GameObject:
   m_ObjectHideFlags: 0
@@ -15461,7 +15666,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2494637f23ef6844bb6bcb133e57c233, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1cccc4abbd9797349a09a476fb24f533, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -16419,6 +16624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: "Wreath of Flor\xEDel"
   skinType: 0
   hatType: 1
   region: 0
@@ -16481,8 +16687,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &6693716677702822598
 GameObject:
   m_ObjectHideFlags: 0
@@ -17015,6 +17223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Swamp Water
   skinType: 24
   hatType: 0
   region: 5
@@ -17077,8 +17286,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &6908869045382471318
 GameObject:
   m_ObjectHideFlags: 0
@@ -17144,7 +17355,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ef6a9123fc53ff344b9f10ec572c7126, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e31006d24f38a704ba558c4d7b538fe5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -17295,7 +17506,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1cccc4abbd9797349a09a476fb24f533, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2494637f23ef6844bb6bcb133e57c233, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -17312,7 +17523,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6941248593516090949}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c79d7fc36b0a5474d82553465bb8bbca, type: 3}
   m_Name: 
@@ -17594,6 +17805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Leaves
   skinType: 14
   hatType: 0
   region: 3
@@ -17656,8 +17868,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &7032174766843639706
 GameObject:
   m_ObjectHideFlags: 0
@@ -17822,6 +18036,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2678797422259027516}
+  - {fileID: 5453875657991724124}
   - {fileID: 8615124991170221277}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -17925,6 +18140,8 @@ MonoBehaviour:
   object_Metalworks_Lv3: {fileID: 2211695109795643871}
   object_Metalworks_Lv4: {fileID: 7549271900493084561}
   object_Metalworks_Lv5: {fileID: 6438221746167009036}
+  selectedSkinType: 0
+  selectedHatType: 0
 --- !u!1 &7127290293419429137
 GameObject:
   m_ObjectHideFlags: 0
@@ -18142,7 +18359,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7136594348172964913}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c79d7fc36b0a5474d82553465bb8bbca, type: 3}
   m_Name: 
@@ -18151,6 +18368,140 @@ MonoBehaviour:
   maxScale: {x: 0.1, y: 0.1, z: 0.1}
   pulseSpeed: 0.2
   edgeTightness: 0.9
+--- !u!1 &7161866553326883963
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1568519407559519666}
+  - component: {fileID: 9060755049946818678}
+  - component: {fileID: 8475172812079494776}
+  m_Layer: 5
+  m_Name: BlockName
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1568519407559519666
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7161866553326883963}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5012893301072438266}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 1059}
+  m_SizeDelta: {x: 750, y: 220}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &9060755049946818678
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7161866553326883963}
+  m_CullTransparentMesh: 1
+--- !u!114 &8475172812079494776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7161866553326883963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: Name
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: dfbdd2096e005a447b83ba15e4de6767, type: 2}
+  m_sharedMaterial: {fileID: 6701643693541814340, guid: dfbdd2096e005a447b83ba15e4de6767, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4280564297
+  m_fontColor: {r: 0.28627452, g: 0.22745098, b: 0.14117648, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 110
+  m_fontSizeBase: 110
+  m_fontWeight: 400
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 18
+  m_fontSizeMax: 110
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 1024
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: -40
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 15, y: 0, z: 15, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &7224218803698424565
 GameObject:
   m_ObjectHideFlags: 0
@@ -18663,6 +19014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Tiara of Aisa
   skinType: 0
   hatType: 4
   region: 0
@@ -18725,8 +19077,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &7359021952767638794
 GameObject:
   m_ObjectHideFlags: 0
@@ -18847,6 +19201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Cactus
   skinType: 9
   hatType: 0
   region: 2
@@ -18909,8 +19264,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &7391000574690027923
 GameObject:
   m_ObjectHideFlags: 0
@@ -19237,6 +19594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Wood
   skinType: 23
   hatType: 0
   region: 5
@@ -19299,8 +19657,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &7540772685694785561
 GameObject:
   m_ObjectHideFlags: 0
@@ -19413,6 +19773,161 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &7790773300685446371
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5453875657991724124}
+  - component: {fileID: 4910667500019854705}
+  - component: {fileID: 558142829071714981}
+  - component: {fileID: 945168094232694554}
+  m_Layer: 5
+  m_Name: Wardrobe
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5453875657991724124
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7790773300685446371}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7611440127774238067}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -725, y: 820}
+  m_SizeDelta: {x: 1030, y: 120}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &4910667500019854705
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7790773300685446371}
+  m_CullTransparentMesh: 1
+--- !u!114 &558142829071714981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7790773300685446371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 'Wardrobe
+
+'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: dfbdd2096e005a447b83ba15e4de6767, type: 2}
+  m_sharedMaterial: {fileID: 6701643693541814340, guid: dfbdd2096e005a447b83ba15e4de6767, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4280564297
+  m_fontColor: {r: 0.28627452, g: 0.22745098, b: 0.14117648, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 120
+  m_fontSizeBase: 120
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 4
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 4096
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &945168094232694554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7790773300685446371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc02cf28cba3b954e8ed06a6e619673b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  norwegian: Garderobe
+  english: Wardrobe
+  german: Kleiderschrank
+  chinese: "\u8863\u67DC"
+  japanese: "\u30EF\u30FC\u30C9\u30ED\u30FC\u30D6"
+  korean: "\uC637\uC7A5"
 --- !u!1 &7840418397705944067
 GameObject:
   m_ObjectHideFlags: 0
@@ -19571,7 +20086,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7874267946251751055}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c79d7fc36b0a5474d82553465bb8bbca, type: 3}
   m_Name: 
@@ -19700,6 +20215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Wood
   skinType: 13
   hatType: 0
   region: 3
@@ -19762,8 +20278,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &7897265902036246671
 GameObject:
   m_ObjectHideFlags: 0
@@ -20160,6 +20678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Lava Stone
   skinType: 18
   hatType: 0
   region: 4
@@ -20222,8 +20741,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &8010190065415642058
 GameObject:
   m_ObjectHideFlags: 0
@@ -20344,6 +20865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Quicksand
   skinType: 10
   hatType: 0
   region: 2
@@ -20406,8 +20928,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &8019066690736201558
 GameObject:
   m_ObjectHideFlags: 0
@@ -20812,6 +21336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Root
   skinType: 4
   hatType: 0
   region: 1
@@ -20874,8 +21399,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &8190199449371840040
 GameObject:
   m_ObjectHideFlags: 0
@@ -20996,6 +21523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: "Archeology hat of Flor\xEDel"
   skinType: 0
   hatType: 3
   region: 0
@@ -21058,8 +21586,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &8199756122739214045
 GameObject:
   m_ObjectHideFlags: 0
@@ -21681,6 +22211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Snow
   skinType: 12
   hatType: 0
   region: 3
@@ -21743,8 +22274,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &8617827639063281280
 GameObject:
   m_ObjectHideFlags: 0
@@ -22109,6 +22642,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Black Brick
   skinType: 20
   hatType: 0
   region: 4
@@ -22171,8 +22705,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &8763183459822343625
 GameObject:
   m_ObjectHideFlags: 0
@@ -22443,6 +22979,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Gold Casing
   skinType: 31
   hatType: 0
   region: 6
@@ -22505,8 +23042,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &8909768220343707138
 GameObject:
   m_ObjectHideFlags: 0
@@ -22627,6 +23166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f236a005fe520c84b8081b687a251271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonName: Cracked Ice
   skinType: 15
   hatType: 0
   region: 3
@@ -22689,8 +23229,10 @@ MonoBehaviour:
   startScale: {x: 1.05, y: 1.05, z: 0}
   pulseSpeed: 0.3
   edgeTightness: 0.9
+  extraImages: []
   isBackButton: 0
   isStartButton: 0
+  isActive: 0
 --- !u!1 &9030795520615115395
 GameObject:
   m_ObjectHideFlags: 0

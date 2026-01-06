@@ -5,19 +5,19 @@
 
 1. Smaller fixes:
 - PlayerGlideAnimation still happens when it should not
+- Make it so that UnlockDisplay in WardrobeMenu are smoothly transitioning it's scale between its GameObjects when the GameObjects are changing
+- Make it so that the TextDisplay in the WardrobeMenu are swapping when moving away from defaultButton and when unequip buttons
 
 
 
 2. New Menu UI
 - Change the UI for all menus, so it matches the new assets
-	- MainMenu
-		- Background Image
 	- Settings
+		- Controls
 	- Wardrobe
-		- Fix so the back-button isn't active when entering the menu after exiting it by pressing the button
-		- Make a List<GameObject> on "UI_PulsatingMotion_WhenSelected", to include object that will be visible when the object is active
 		- Include pink lines to top/bottom of the "Back"-button
 	- PauseMenu
+		- Input all menus and make then size with the pauseMenu
 	- Dialogue
 		- Make the option you are currently on, bigger (increase scale size)
 		- Change the script and ExcelTemp to have links to other lines, regardless of option or not

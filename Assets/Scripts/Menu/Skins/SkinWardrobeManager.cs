@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
@@ -131,6 +132,9 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     Movement movement;
 
+    public SkinType selectedSkinType;
+    public HatType selectedHatType;
+
 
     //--------------------
 
@@ -138,6 +142,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     private void Start()
     {
         movement = FindObjectOfType<Movement>();
+        selectedSkinType = SkinType.Default;
 
         //DataManager.Instance.playerStats_Store.itemsGot.essence_Max = 12; //Remove this after testing of Skin Menu
         //DataManager.Instance.playerStats_Store.itemsGot.essence_Current = 12; //Remove this after testing of Skin Menu
@@ -152,6 +157,11 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
         UpdatePlayerBodyDisplay();
         UpdatePlayerHatDisplay();
+
+        if (skinWardrobeButton_Default && skinWardrobeButton_Default.GetComponent<UI_PulsatingMotion_WhenSelected>())
+        {
+            skinWardrobeButton_Default.GetComponent<UI_PulsatingMotion_WhenSelected>().EnableStartButton();
+        }
     }
 
 
@@ -164,12 +174,12 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
         HideAllSkins();
 
-        GameObject tempObj = GetSkinSelectedObject();
+        GameObject tempObj = GetTempSkinSelectedObject();
 
         if (tempObj != null)
             tempObj.SetActive(true);
 
-        if (DataManager.Instance.skinsInfo_Store.activeSkinType != SkinType.Default && DataManager.Instance.skinsInfo_Store.activeSkinType != SkinType.None)
+        if (selectedSkinType != SkinType.Default /*&& selectedSkinType != SkinType.None*/ /*DataManager.Instance.skinsInfo_Store.activeSkinType != SkinType.Default && DataManager.Instance.skinsInfo_Store.activeSkinType != SkinType.None*/)
         {
             if (skin_Default)
                 skin_Default.SetActive(false);
@@ -496,9 +506,114 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                 return skin_Default;
         }
     }
+
+    public GameObject GetTempSkinSelectedObject()
+    {
+        switch (selectedSkinType)
+        {
+            case SkinType.None:
+                return skin_Default;
+
+            case SkinType.Rivergreen_Lv1:
+                return object_Rivergreen_Lv1;
+            case SkinType.Rivergreen_Lv2:
+                return object_Rivergreen_Lv2;
+            case SkinType.Rivergreen_Lv3:
+                return object_Rivergreen_Lv3;
+            case SkinType.Rivergreen_Lv4:
+                return object_Rivergreen_Lv4;
+            case SkinType.Rivergreen_Lv5:
+                return object_Rivergreen_Lv5;
+
+            case SkinType.Firevein_Lv1:
+                return object_Firevein_Lv1;
+            case SkinType.Firevein_Lv2:
+                return object_Firevein_Lv2;
+            case SkinType.Firevein_Lv3:
+                return object_Firevein_Lv3;
+            case SkinType.Firevein_Lv4:
+                return object_Firevein_Lv4;
+            case SkinType.Firevein_Lv5:
+                return object_Firevein_Lv5;
+
+            case SkinType.Sandlands_Lv1:
+                return object_Sandlands_Lv1;
+            case SkinType.Sandlands_Lv2:
+                return object_Sandlands_Lv2;
+            case SkinType.Sandlands_Lv3:
+                return object_Sandlands_Lv3;
+            case SkinType.Sandlands_Lv4:
+                return object_Sandlands_Lv4;
+            case SkinType.Sandlands_Lv5:
+                return object_Sandlands_Lv5;
+
+            case SkinType.Frostfield_Lv1:
+                return object_Frostfield_Lv1;
+            case SkinType.Frostfield_Lv2:
+                return object_Frostfield_Lv2;
+            case SkinType.Frostfield_Lv3:
+                return object_Frostfield_Lv3;
+            case SkinType.Frostfield_Lv4:
+                return object_Frostfield_Lv4;
+            case SkinType.Frostfield_Lv5:
+                return object_Frostfield_Lv5;
+
+            case SkinType.Witchmire_Lv1:
+                return object_Witchmire_Lv1;
+            case SkinType.Witchmire_Lv2:
+                return object_Witchmire_Lv2;
+            case SkinType.Witchmire_Lv3:
+                return object_Witchmire_Lv3;
+            case SkinType.Witchmire_Lv4:
+                return object_Witchmire_Lv4;
+            case SkinType.Witchmire_Lv5:
+                return object_Witchmire_Lv5;
+
+            case SkinType.Metalworks_Lv1:
+                return object_Metalworks_Lv1;
+            case SkinType.Metalworks_Lv2:
+                return object_Metalworks_Lv2;
+            case SkinType.Metalworks_Lv3:
+                return object_Metalworks_Lv3;
+            case SkinType.Metalworks_Lv4:
+                return object_Metalworks_Lv4;
+            case SkinType.Metalworks_Lv5:
+                return object_Metalworks_Lv5;
+
+            case SkinType.Default:
+                return skin_Default;
+
+            default:
+                return skin_Default;
+        }
+    }
     public GameObject GetHatSelectedObject()
     {
         switch (DataManager.Instance.skinsInfo_Store.activeHatType)
+        {
+            case HatType.None:
+                return null;
+
+            case HatType.Floriel_Hat:
+                return hat_Floriel;
+            case HatType.Granith_Hat:
+                return hat_Granith;
+            case HatType.Archie_Hat:
+                return hat_Archie;
+            case HatType.Aisa_Hat:
+                return hat_Aisa;
+            case HatType.Mossy_Hat:
+                return hat_Mossy;
+            case HatType.Larry_Hat:
+                return hat_Larry;
+
+            default:
+                return null;
+        }
+    }
+    public GameObject GetTempHatSelectedObject()
+    {
+        switch (selectedHatType)
         {
             case HatType.None:
                 return null;
@@ -822,6 +937,8 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     {
         DataManager.Instance.skinsInfo_Store.activeSkinType = skintype;
         SkinsManager.Instance.skinInfo.activeSkinType = skintype;
+
+        selectedSkinType = skintype;
 
         SkinsManager.Instance.SaveData();
     }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +17,8 @@ public class UnlockDisplay : MonoBehaviour
     [SerializeField] GameObject finishQuestline_obj;
 
     private RectTransform _currentPulsingImageRt;
+
+    [SerializeField] TextMeshProUGUI selectedBlockName;
 
 
     //--------------------
@@ -40,7 +43,7 @@ public class UnlockDisplay : MonoBehaviour
 
     public void SetDisplay_LevelReached()
     {
-        levelReached_obj.GetComponentInChildren<TextMeshProUGUI>().text = "Find the skin\r\nto unlock";
+        levelReached_obj.GetComponentInChildren<TextMeshProUGUI>().text = "Find the skin in level\r\nto unlock";
 
         CopyPulseScaleTo(levelReached_obj);
 
@@ -164,11 +167,48 @@ public class UnlockDisplay : MonoBehaviour
 
     void CopyPulseScaleTo(GameObject nextObj)
     {
-        var nextRt = nextObj.GetComponentInChildren<Image>().rectTransform;
+        if (nextObj)
+        {
+            var nextRt = nextObj.GetComponentInChildren<Image>().rectTransform;
 
-        if (_currentPulsingImageRt != null)
-            nextRt.localScale = _currentPulsingImageRt.localScale;
-        else
-            nextRt.localScale = Vector3.one; // first time fallback
+            if (_currentPulsingImageRt != null)
+                nextRt.localScale = _currentPulsingImageRt.localScale;
+            else
+                nextRt.localScale = Vector3.one; // first time fallback
+        }
+    }
+
+    public void SetSelectedBlockName(string name, RegionName region)
+    {
+        switch (region)
+        {
+            case RegionName.None:
+                    selectedBlockName.text = name;
+                break;
+
+            case RegionName.Rivergreen:
+                selectedBlockName.text = name + "\n of the Rivergreen";
+                break;
+            case RegionName.Sandlands:
+                selectedBlockName.text = name + "\n of the Sandlands";
+                break;
+            case RegionName.Frostfields:
+                selectedBlockName.text = name + "\n of the Frostfields";
+                break;
+            case RegionName.Firevein:
+                selectedBlockName.text = name + "\n of the Firevein Mountain";
+                break;
+            case RegionName.Witchmire:
+                selectedBlockName.text = name + "\n of the Witchmire";
+                break;
+            case RegionName.Metalworks:
+                selectedBlockName.text = name + "\n of the Metalworks";
+                break;
+
+            default:
+                selectedBlockName.text = name;
+                break;
+        }
+        
     }
 }
