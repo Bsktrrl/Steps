@@ -67,6 +67,17 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
     public Sprite sprite_Metalworks_Lv5;
     #endregion
 
+    MenuLevelInfo menuLevelInfo;
+
+
+    //--------------------
+
+
+    private void Start()
+    {
+        menuLevelInfo = FindAnyObjectByType<MenuLevelInfo>();
+    }
+
 
     //--------------------
 
@@ -102,23 +113,23 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
             levelName.text = activeLevelObject.GetComponent<LevelInfo>().GetName();
 
             //Find the correct mapInfo
-            if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List.Count > 0)
+            if (menuLevelInfo && menuLevelInfo.mapInfo_ToSave != null && menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List.Count > 0)
             {
-                for (global::System.Int32 i = 0; i < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List.Count; i++)
+                for (int i = 0; i < menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List.Count; i++)
                 {
-                    if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].mapName == activeLevelObject.GetComponent<LoadLevel>().levelToPlay)
+                    if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].mapName == activeLevelObject.GetComponent<LoadLevel>().levelToPlay)
                     {
                         //Glueplant aquired
-                        if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].isCompleted)
+                        if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].isCompleted)
                             glueplant_Aquired.text = "1 / 1";
                         else
                             glueplant_Aquired.text = "0 / 1";
 
                         //Essence aquired
                         int essenceCounter = 0;
-                        for (int j = 0; j < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].essenceList.Count; j++)
+                        for (int j = 0; j < menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].essenceList.Count; j++)
                         {
-                            if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].essenceList[j].isTaken)
+                            if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].essenceList[j].isTaken)
                             {
                                 essenceCounter++;
                             }
@@ -127,7 +138,7 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
 
                         //Skin aquired
                         int skinCounter = 0;
-                        if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].levelSkin.isTaken)
+                        if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].levelSkin.isTaken)
                         {
                             skinCounter++;
                         }
@@ -135,9 +146,9 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
 
                         //StepMax aquired
                         int stepsCounter = 0;
-                        for (int j = 0; j < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].maxStepList.Count; j++)
+                        for (int j = 0; j < menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].maxStepList.Count; j++)
                         {
-                            if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].maxStepList[j].isTaken)
+                            if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].maxStepList[j].isTaken)
                             {
                                 stepsCounter++;
                             }

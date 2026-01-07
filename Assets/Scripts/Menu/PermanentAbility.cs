@@ -7,6 +7,21 @@ public class PermanentAbility : MonoBehaviour
     [SerializeField] List<Abilities> permanentAbilityList = new List<Abilities>();
     [SerializeField] List<GameObject> levelsToComplete = new List<GameObject>();
 
+    MenuLevelInfo menuLevelInfo;
+
+
+    //--------------------
+
+
+    private void Start()
+    {
+        menuLevelInfo = FindAnyObjectByType<MenuLevelInfo>();
+    }
+
+
+    //--------------------
+
+
     private void OnEnable()
     {
         levelsToComplete = new List<GameObject>();
@@ -22,20 +37,25 @@ public class PermanentAbility : MonoBehaviour
 
         int levelsCompletedCounter = 0;
 
-        for (int i = 0; i < levelsToComplete.Count; i++)
+        if (menuLevelInfo)
         {
-            for (int j = 0; j < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List.Count; j++)
+            for (int i = 0; i < levelsToComplete.Count; i++)
             {
-                if (levelsToComplete[i].GetComponent<LoadLevel>().levelToPlay == MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[j].mapName)
+                for (int j = 0; j < menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List.Count; j++)
                 {
-                    if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[j].isCompleted)
+                    if (levelsToComplete[i].GetComponent<LoadLevel>().levelToPlay == menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[j].mapName)
                     {
-                        levelsCompletedCounter++;
-                        break;
+                        if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[j].isCompleted)
+                        {
+                            levelsCompletedCounter++;
+                            break;
+                        }
                     }
                 }
             }
         }
+
+        
 
         if (levelsCompletedCounter >= levelsToComplete.Count && levelsToComplete.Count > 0)
         {

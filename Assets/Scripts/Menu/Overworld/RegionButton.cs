@@ -13,7 +13,7 @@ public class RegionButton : MonoBehaviour
 
     public void Button_isPressed()
     {
-        if (!GetComponent<LevelButtonEffects>().canBePlayed) return;
+        if (!GetComponent<LevelSelectButton>().CheckButtonStatus()) return;
 
         OverWorldManager.Instance.ChangeStates(regionState, LevelState.First);
 
@@ -24,35 +24,35 @@ public class RegionButton : MonoBehaviour
             case RegionState.None:
                 break;
 
-            case RegionState.Ice:
+            case RegionState.Rivergreen:
                 if (OverWorldManager.Instance.panelBackground) OverWorldManager.Instance.panelBackground.SetActive(true);
-                if(OverWorldManager.Instance.levelPanel_Ice) OverWorldManager.Instance.levelPanel_Ice.SetActive(true);
-                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Ice.transform.GetChild(0).gameObject);
+                if (OverWorldManager.Instance.levelPanel_Rivergreen) OverWorldManager.Instance.levelPanel_Rivergreen.SetActive(true);
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Rivergreen.transform.GetChild(0).gameObject);
                 break;
-            case RegionState.Stone:
+            case RegionState.Sandlands:
                 if (OverWorldManager.Instance.panelBackground) OverWorldManager.Instance.panelBackground.SetActive(true);
-                if(OverWorldManager.Instance.levelPanel_Stone) OverWorldManager.Instance.levelPanel_Stone.SetActive(true);
-                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Stone.transform.GetChild(0).gameObject);
+                if (OverWorldManager.Instance.levelPanel_Sandlands) OverWorldManager.Instance.levelPanel_Sandlands.SetActive(true);
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Sandlands.transform.GetChild(0).gameObject);
                 break;
-            case RegionState.Grass:
-                if(OverWorldManager.Instance.panelBackground) OverWorldManager.Instance.panelBackground.SetActive(true);
-                if (OverWorldManager.Instance.levelPanel_Grass) OverWorldManager.Instance.levelPanel_Grass.SetActive(true);
-                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Grass.transform.GetChild(0).gameObject);
-                break;
-            case RegionState.Desert:
+            case RegionState.Frostfields:
                 if (OverWorldManager.Instance.panelBackground) OverWorldManager.Instance.panelBackground.SetActive(true);
-                if (OverWorldManager.Instance.levelPanel_Desert) OverWorldManager.Instance.levelPanel_Desert.SetActive(true);
-                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Desert.transform.GetChild(0).gameObject);
+                if(OverWorldManager.Instance.levelPanel_Frostfield) OverWorldManager.Instance.levelPanel_Frostfield.SetActive(true);
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Frostfield.transform.GetChild(0).gameObject);
                 break;
-            case RegionState.Swamp:
+            case RegionState.Firevein:
                 if (OverWorldManager.Instance.panelBackground) OverWorldManager.Instance.panelBackground.SetActive(true);
-                if (OverWorldManager.Instance.levelPanel_Swamp) OverWorldManager.Instance.levelPanel_Swamp.SetActive(true);
-                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Swamp.transform.GetChild(0).gameObject);
+                if(OverWorldManager.Instance.levelPanel_Firevein) OverWorldManager.Instance.levelPanel_Firevein.SetActive(true);
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Firevein.transform.GetChild(0).gameObject);
                 break;
-            case RegionState.Industrial:
+            case RegionState.Witchmire:
                 if (OverWorldManager.Instance.panelBackground) OverWorldManager.Instance.panelBackground.SetActive(true);
-                if (OverWorldManager.Instance.levelPanel_Industrial) OverWorldManager.Instance.levelPanel_Industrial.SetActive(true);
-                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Industrial.transform.GetChild(0).gameObject);
+                if (OverWorldManager.Instance.levelPanel_Witchmire) OverWorldManager.Instance.levelPanel_Witchmire.SetActive(true);
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Witchmire.transform.GetChild(0).gameObject);
+                break;
+            case RegionState.Metalworks:
+                if (OverWorldManager.Instance.panelBackground) OverWorldManager.Instance.panelBackground.SetActive(true);
+                if (OverWorldManager.Instance.levelPanel_Metalworks) OverWorldManager.Instance.levelPanel_Metalworks.SetActive(true);
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Metalworks.transform.GetChild(0).gameObject);
                 break;
 
             default:

@@ -7,6 +7,17 @@ public class NewGameButton : MonoBehaviour
 {
     [SerializeField] GameObject continueButton;
 
+    MenuLevelInfo menuLevelInfo;
+
+
+    //--------------------
+
+
+    private void Start()
+    {
+        menuLevelInfo = FindAnyObjectByType<MenuLevelInfo>();
+    }
+
 
     //--------------------
 
@@ -23,8 +34,11 @@ public class NewGameButton : MonoBehaviour
 
         DataPersistanceManager.instance.NewGame();
 
-        MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List.Clear();
-
+        if (menuLevelInfo && menuLevelInfo.mapInfo_ToSave != null)
+        {
+            menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List.Clear();
+        }
+        
         GetComponent<MainMenuButton>().SetPassive();
         continueButton.GetComponent<MainMenuButton>().SetActive();
     }

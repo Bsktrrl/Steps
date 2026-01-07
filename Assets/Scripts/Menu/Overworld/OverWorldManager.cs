@@ -11,28 +11,28 @@ public class OverWorldManager : Singleton<OverWorldManager>
 
     [Header("Panel")]
     public GameObject panelBackground;
-    public GameObject levelPanel_Ice;
-    public GameObject levelPanel_Stone;
-    public GameObject levelPanel_Grass;
-    public GameObject levelPanel_Desert;
-    public GameObject levelPanel_Swamp;
-    public GameObject levelPanel_Industrial;
+    public GameObject levelPanel_Rivergreen;
+    public GameObject levelPanel_Sandlands;
+    public GameObject levelPanel_Frostfield;
+    public GameObject levelPanel_Firevein;
+    public GameObject levelPanel_Witchmire;
+    public GameObject levelPanel_Metalworks;
 
     [Header("Panel")]
-    public GameObject levelPanel_Ice_FirstLevel;
-    public GameObject levelPanel_Stone_FirstLevel;
-    public GameObject levelPanel_Grass_FirstLevel;
-    public GameObject levelPanel_Desert_FirstLevel;
-    public GameObject levelPanel_Swamp_FirstLevel;
-    public GameObject levelPanel_Industrial_FirstLevel;
+    public GameObject levelPanel_Rivergreen_FirstLevel;
+    public GameObject levelPanel_Sandlands_FirstLevel;
+    public GameObject levelPanel_Frostfield_FirstLevel;
+    public GameObject levelPanel_Firevein_FirstLevel;
+    public GameObject levelPanel_Witchmire_FirstLevel;
+    public GameObject levelPanel_Metalworks_FirstLevel;
 
     [Header("images")]
-    public Image region_Ice;
-    public Image region_Stone;
-    public Image region_Grass;
-    public Image region_Desert;
-    public Image region_Swamp;
-    public Image region_Industrial;
+    public Image region_Rivergreen;
+    public Image region_Sandlands;
+    public Image region_Frostfield;
+    public Image region_Firevein;
+    public Image region_Witchmire;
+    public Image region_Metalworks;
 
     #region RegionLevel Sprites
     [Header("RegionLevel Sprites")]
@@ -138,47 +138,43 @@ public class OverWorldManager : Singleton<OverWorldManager>
                 case RegionState.None:
                     break;
 
-                //1. Ice
-                case RegionState.Ice:
+
+                case RegionState.Rivergreen:
+                    if (panelBackground) panelBackground.SetActive(true);
+                    levelPanel_Rivergreen.SetActive(true);
+                    SetSelected(levelPanel_Rivergreen);
+                    break;
+
+                case RegionState.Sandlands:
+                    if (panelBackground) panelBackground.SetActive(true);
+                    levelPanel_Sandlands.SetActive(true);
+                    SetSelected(levelPanel_Sandlands);
+                    break;
+
+                case RegionState.Frostfields:
                     if(panelBackground) panelBackground.SetActive(true);
-                    levelPanel_Ice.SetActive(true);
-                    SetSelected(levelPanel_Ice);
+                    levelPanel_Frostfield.SetActive(true);
+                    SetSelected(levelPanel_Frostfield);
                     break;
                 
-                //2. Stone
-                case RegionState.Stone:
+                case RegionState.Firevein:
                     if (panelBackground) panelBackground.SetActive(true);
-                    levelPanel_Stone.SetActive(true);
-                    SetSelected(levelPanel_Stone);
+                    levelPanel_Firevein.SetActive(true);
+                    SetSelected(levelPanel_Firevein);
                     break;
                 
-                //3. Grass
-                case RegionState.Grass:
+                case RegionState.Witchmire:
                     if (panelBackground) panelBackground.SetActive(true);
-                    levelPanel_Grass.SetActive(true);
-                    SetSelected(levelPanel_Grass);
+                    levelPanel_Witchmire.SetActive(true);
+                    SetSelected(levelPanel_Witchmire);
                     break;
                 
-                //4. Desert
-                case RegionState.Desert:
+                case RegionState.Metalworks:
                     if (panelBackground) panelBackground.SetActive(true);
-                    levelPanel_Desert.SetActive(true);
-                    SetSelected(levelPanel_Desert);
+                    levelPanel_Metalworks.SetActive(true);
+                    SetSelected(levelPanel_Metalworks);
                     break;
-                
-                //5. Swamp
-                case RegionState.Swamp:
-                    if (panelBackground) panelBackground.SetActive(true);
-                    levelPanel_Swamp.SetActive(true);
-                    SetSelected(levelPanel_Swamp);
-                    break;
-                
-                //6. Industrial
-                case RegionState.Industrial:
-                    if (panelBackground) panelBackground.SetActive(true);
-                    levelPanel_Industrial.SetActive(true);
-                    SetSelected(levelPanel_Industrial);
-                    break;
+
 
                 default:
                     break;
@@ -208,11 +204,8 @@ public class OverWorldManager : Singleton<OverWorldManager>
             case LevelState.Fifth:
                 ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(obj.transform.GetChild(4).gameObject);
                 break;
-            case LevelState.Sixth:
-                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(obj.transform.GetChild(5).gameObject);
-                break;
             case LevelState.edge:
-                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(obj.transform.GetChild(6).gameObject);
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(obj.transform.GetChild(5).gameObject);
                 break;
 
             default:
@@ -242,192 +235,182 @@ public class OverWorldManager : Singleton<OverWorldManager>
 
         switch (regionState)
         {
-            case RegionState.Ice:
+            case RegionState.Rivergreen:
                 switch (levelState)
                 {
                     case LevelState.None:
-                        region_Ice.sprite = ice_Selected;
+                        region_Rivergreen.sprite = grass_Selected;
                         break;
                     case LevelState.First:
-                        region_Ice.sprite = ice_1;
+                        region_Rivergreen.sprite = grass_1;
                         break;
                     case LevelState.Second:
-                        region_Ice.sprite = ice_2;
+                        region_Rivergreen.sprite = grass_2;
                         break;
                     case LevelState.Third:
-                        region_Ice.sprite = ice_3;
+                        region_Rivergreen.sprite = grass_3;
                         break;
                     case LevelState.Forth:
-                        region_Ice.sprite = ice_4;
+                        region_Rivergreen.sprite = grass_4;
                         break;
                     case LevelState.Fifth:
-                        region_Ice.sprite = ice_5;
-                        break;
-                    case LevelState.Sixth:
-                        region_Ice.sprite = ice_6;
+                        region_Rivergreen.sprite = grass_5;
                         break;
                     case LevelState.edge:
-                        region_Ice.sprite = ice_Void;
+                        region_Rivergreen.sprite = grass_Void;
                         break;
                     default:
                         break;
                 }
                 break;
-            case RegionState.Stone:
+
+
+            case RegionState.Sandlands:
                 switch (levelState)
                 {
                     case LevelState.None:
-                        region_Stone.sprite = stone_Selected;
+                        region_Sandlands.sprite = desert_Selected;
                         break;
                     case LevelState.First:
-                        region_Stone.sprite = stone_1;
+                        region_Sandlands.sprite = desert_1;
                         break;
                     case LevelState.Second:
-                        region_Stone.sprite = stone_2;
+                        region_Sandlands.sprite = desert_2;
                         break;
                     case LevelState.Third:
-                        region_Stone.sprite = stone_3;
+                        region_Sandlands.sprite = desert_3;
                         break;
                     case LevelState.Forth:
-                        region_Stone.sprite = stone_4;
+                        region_Sandlands.sprite = desert_4;
                         break;
                     case LevelState.Fifth:
-                        region_Stone.sprite = stone_5;
-                        break;
-                    case LevelState.Sixth:
-                        region_Stone.sprite = stone_6;
+                        region_Sandlands.sprite = desert_5;
                         break;
                     case LevelState.edge:
-                        region_Stone.sprite = stone_Void;
+                        region_Sandlands.sprite = desert_Void;
                         break;
                     default:
                         break;
                 }
                 break;
-            case RegionState.Grass:
+
+            case RegionState.Frostfields:
                 switch (levelState)
                 {
                     case LevelState.None:
-                        region_Grass.sprite = grass_Selected;
+                        region_Frostfield.sprite = ice_Selected;
                         break;
                     case LevelState.First:
-                        region_Grass.sprite = grass_1;
+                        region_Frostfield.sprite = ice_1;
                         break;
                     case LevelState.Second:
-                        region_Grass.sprite = grass_2;
+                        region_Frostfield.sprite = ice_2;
                         break;
                     case LevelState.Third:
-                        region_Grass.sprite = grass_3;
+                        region_Frostfield.sprite = ice_3;
                         break;
                     case LevelState.Forth:
-                        region_Grass.sprite = grass_4;
+                        region_Frostfield.sprite = ice_4;
                         break;
                     case LevelState.Fifth:
-                        region_Grass.sprite = grass_5;
-                        break;
-                    case LevelState.Sixth:
-                        region_Grass.sprite = grass_6;
+                        region_Frostfield.sprite = ice_5;
                         break;
                     case LevelState.edge:
-                        region_Grass.sprite = grass_Void;
+                        region_Frostfield.sprite = ice_Void;
                         break;
                     default:
                         break;
                 }
                 break;
-            case RegionState.Desert:
+
+            case RegionState.Firevein:
                 switch (levelState)
                 {
                     case LevelState.None:
-                        region_Desert.sprite = desert_Selected;
+                        region_Firevein.sprite = stone_Selected;
                         break;
                     case LevelState.First:
-                        region_Desert.sprite = desert_1;
+                        region_Firevein.sprite = stone_1;
                         break;
                     case LevelState.Second:
-                        region_Desert.sprite = desert_2;
+                        region_Firevein.sprite = stone_2;
                         break;
                     case LevelState.Third:
-                        region_Desert.sprite = desert_3;
+                        region_Firevein.sprite = stone_3;
                         break;
                     case LevelState.Forth:
-                        region_Desert.sprite = desert_4;
+                        region_Firevein.sprite = stone_4;
                         break;
                     case LevelState.Fifth:
-                        region_Desert.sprite = desert_5;
-                        break;
-                    case LevelState.Sixth:
-                        region_Desert.sprite = desert_6;
+                        region_Firevein.sprite = stone_5;
                         break;
                     case LevelState.edge:
-                        region_Desert.sprite = desert_Void;
+                        region_Firevein.sprite = stone_Void;
                         break;
                     default:
                         break;
                 }
                 break;
-            case RegionState.Swamp:
+
+            case RegionState.Witchmire:
                 switch (levelState)
                 {
                     case LevelState.None:
-                        region_Swamp.sprite = swamp_Selected;
+                        region_Witchmire.sprite = swamp_Selected;
                         break;
                     case LevelState.First:
-                        region_Swamp.sprite = swamp_1;
+                        region_Witchmire.sprite = swamp_1;
                         break;
                     case LevelState.Second:
-                        region_Swamp.sprite = swamp_2;
+                        region_Witchmire.sprite = swamp_2;
                         break;
                     case LevelState.Third:
-                        region_Swamp.sprite = swamp_3;
+                        region_Witchmire.sprite = swamp_3;
                         break;
                     case LevelState.Forth:
-                        region_Swamp.sprite = swamp_4;
+                        region_Witchmire.sprite = swamp_4;
                         break;
                     case LevelState.Fifth:
-                        region_Swamp.sprite = swamp_5;
-                        break;
-                    case LevelState.Sixth:
-                        region_Swamp.sprite = swamp_6;
+                        region_Witchmire.sprite = swamp_5;
                         break;
                     case LevelState.edge:
-                        region_Swamp.sprite = swamp_Void;
+                        region_Witchmire.sprite = swamp_Void;
                         break;
                     default:
                         break;
                 }
                 break;
-            case RegionState.Industrial:
+
+            case RegionState.Metalworks:
                 switch (levelState)
                 {
                     case LevelState.None:
-                        region_Industrial.sprite = industrial_Selected;
+                        region_Metalworks.sprite = industrial_Selected;
                         break;
                     case LevelState.First:
-                        region_Industrial.sprite = industrial_1;
+                        region_Metalworks.sprite = industrial_1;
                         break;
                     case LevelState.Second:
-                        region_Industrial.sprite = industrial_2;
+                        region_Metalworks.sprite = industrial_2;
                         break;
                     case LevelState.Third:
-                        region_Industrial.sprite = industrial_3;
+                        region_Metalworks.sprite = industrial_3;
                         break;
                     case LevelState.Forth:
-                        region_Industrial.sprite = industrial_4;
+                        region_Metalworks.sprite = industrial_4;
                         break;
                     case LevelState.Fifth:
-                        region_Industrial.sprite = industrial_5;
-                        break;
-                    case LevelState.Sixth:
-                        region_Industrial.sprite = industrial_6;
+                        region_Metalworks.sprite = industrial_5;
                         break;
                     case LevelState.edge:
-                        region_Industrial.sprite = industrial_Void;
+                        region_Metalworks.sprite = industrial_Void;
                         break;
                     default:
                         break;
                 }
                 break;
+
+
             default:
                 break;
         }
@@ -435,12 +418,12 @@ public class OverWorldManager : Singleton<OverWorldManager>
 
     void ResetSelectedRegions()
     {
-        region_Ice.sprite = ice_Normal;
-        region_Stone.sprite = stone_Normal;
-        region_Grass.sprite = grass_Normal;
-        region_Desert.sprite = desert_Normal;
-        region_Swamp.sprite = swamp_Normal;
-        region_Industrial.sprite = industrial_Normal;
+        region_Frostfield.sprite = ice_Normal;
+        region_Firevein.sprite = stone_Normal;
+        region_Rivergreen.sprite = grass_Normal;
+        region_Sandlands.sprite = desert_Normal;
+        region_Witchmire.sprite = swamp_Normal;
+        region_Metalworks.sprite = industrial_Normal;
     }
 }
 
@@ -448,12 +431,12 @@ public enum RegionState
 {
     None,
 
-    Ice,
-    Stone,
-    Grass,
-    Desert,
-    Swamp,
-    Industrial,
+    Rivergreen,
+    Sandlands,
+    Frostfields,
+    Firevein,
+    Witchmire,
+    Metalworks,
 }
 public enum LevelState
 {
@@ -464,7 +447,6 @@ public enum LevelState
     Third,
     Forth,
     Fifth,
-    Sixth,
 
     edge,
 }

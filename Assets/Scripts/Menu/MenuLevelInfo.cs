@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuLevelInfo : Singleton<MenuLevelInfo>
+public class MenuLevelInfo : MonoBehaviour
 {
     public static event Action menuLevelInfo_hasLoaded;
 
@@ -16,11 +16,13 @@ public class MenuLevelInfo : Singleton<MenuLevelInfo>
 
     private void OnEnable()
     {
+        print("1. MenuLevelInfo - OnEnable");
         DataManager.Action_dataHasLoaded += LoadMapInfo;
     }
 
     private void OnDisable()
     {
+        print("2. MenuLevelInfo - OnDisable");
         DataManager.Action_dataHasLoaded -= LoadMapInfo;
     }
 
