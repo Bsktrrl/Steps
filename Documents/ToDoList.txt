@@ -4,30 +4,35 @@
 
 
 1. Smaller fixes:
+__________________
+
 - PlayerGlideAnimation still happens when it should not
 
 
 
 2. New Menu UI
+__________________
+
 - Change the UI for all menus, so it matches the new assets
 	- Settings
 		- Controls: Key Inputs
 	- PauseMenu
-		- Fix that buttons are not highlighted when returning to mainPauseMenu
-			- Also when entering Controls from PauseMenu
-		- Fix so that the Glueplant is showing correct version
-		- Fix so that the player cannot but skins it cannot afford, for the pauseMenu-Wardrobe
+		- Wardrobe: Fix so that the player cannot but skins it cannot afford, for the pauseMenu-Wardrobe
 	- Dialogue
 		- Make the option you are currently on, bigger (increase scale size)
 		- Change the script and ExcelTemp to have links to other lines, regardless of option or not
-- Add UI to the Start of the first level
-	- Add UI animation for popping in
-- Add UI for pickups and Abilities
-	- Add UI animation for popping in
-- When starting a level, the extra footprints are highlighted as "taken" instead of being empty
-	- The frame isn't "lighting" up when the footprints are filled in the beginning
-- Change so that temporary pickups are white permanent are purple
-	- Separate the frame and icon into two Image-layers where the frame are toggled on/off
+
+- Guides
+	- Add UI to the Start of the first level
+		- Add UI animation for popping in
+	- Add UI for pickups and Abilities
+		- Add UI animation for popping in
+
+- General UI fixes
+	- When starting a level, the extra footprints are highlighted as "taken" instead of being empty
+		- The frame isn't "lighting" up when the footprints are filled in the beginning
+	- Change so that temporary pickups are white permanent are purple
+		- Separate the frame and icon into two Image-layers where the frame are toggled on/off
 	
 
 
