@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class PauseMenuManager : Singleton<PauseMenuManager>
 {
+    public static event Action Action_closePauseMenu;
+
     public bool isVisible;
 
     [Header("Parents")]
@@ -21,6 +23,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     [Header("LevelDisplay")]
     public GameObject levelDisplay_Parent;
     [SerializeField] TextMeshProUGUI levelName;
+    [SerializeField] Image glueplantImage;
     [SerializeField] Image skinImage;
 
     [SerializeField] TextMeshProUGUI glueplant_Aquired;
@@ -38,6 +41,15 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     [SerializeField] GameObject ability_GrapplingHook;
     [SerializeField] GameObject ability_CeilingGrab;
 
+    [Header("Glueplant Sprites")]
+    #region Sprites
+    public Sprite glueplant_PauseMenu_Rivergreen;
+    public Sprite glueplant_PauseMenu_Sandlands;
+    public Sprite glueplant_PauseMenu_Frostfield;
+    public Sprite glueplant_PauseMenu_Firevein;
+    public Sprite glueplant_PauseMenu_Witchmire;
+    public Sprite glueplant_PauseMenu_Metalworks;
+    #endregion
 
     [Header("Skin Sprites")]
     #region Sprites
@@ -107,20 +119,32 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
         SetLevelInfo();
 
+        pauseMenu_Parent.SetActive(true);
+        pauseMenu_MainMenu_Parent.SetActive(true);
+
         //Set the first selected button for controller input
         EventSystem.current.SetSelectedGameObject(pauseMenu_StartButton);
 
-        pauseMenu_Parent.SetActive(true);
         StartCoroutine(CheckPauseMenu());
     }
 
     public void ClosePauseMenu()
     {
+        Action_closePauseMenu?.Invoke();
+
+        ////Set the first selected button for controller input
+        //EventSystem.current.SetSelectedGameObject(pauseMenu_StartButton);
+        //print("8. pauseMenuManager = true");
+
         pauseMenu_Parent.SetActive(false);
         isVisible = false;
     }
     IEnumerator CheckPauseMenu()
     {
+        ////Set the first selected button for controller input
+        //EventSystem.current.SetSelectedGameObject(pauseMenu_StartButton);
+        //print("9. pauseMenuManager = true");
+
         yield return null /*new WaitForSeconds(0.02f)*/;
         isVisible = true;
     }
@@ -172,6 +196,114 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         //Changeable variables
 
         //Glueplant
+        switch (mapInfo.skintype)
+        {
+            case SkinType.None:
+                break;
+
+            case SkinType.Default:
+                break;
+
+            case SkinType.Rivergreen_Lv1:
+                glueplantImage.sprite = glueplant_PauseMenu_Rivergreen;
+                break;
+            case SkinType.Rivergreen_Lv2:
+                glueplantImage.sprite = glueplant_PauseMenu_Rivergreen;
+                break;
+            case SkinType.Rivergreen_Lv3:
+                glueplantImage.sprite = glueplant_PauseMenu_Rivergreen;
+                break;
+            case SkinType.Rivergreen_Lv4:
+                glueplantImage.sprite = glueplant_PauseMenu_Rivergreen;
+                break;
+            case SkinType.Rivergreen_Lv5:
+                glueplantImage.sprite = glueplant_PauseMenu_Rivergreen;
+                break;
+
+            case SkinType.Sandlands_Lv1:
+                glueplantImage.sprite = glueplant_PauseMenu_Sandlands;
+                break;
+            case SkinType.Sandlands_Lv2:
+                glueplantImage.sprite = glueplant_PauseMenu_Sandlands;
+                break;
+            case SkinType.Sandlands_Lv3:
+                glueplantImage.sprite = glueplant_PauseMenu_Sandlands;
+                break;
+            case SkinType.Sandlands_Lv4:
+                glueplantImage.sprite = glueplant_PauseMenu_Sandlands;
+                break;
+            case SkinType.Sandlands_Lv5:
+                glueplantImage.sprite = glueplant_PauseMenu_Sandlands;
+                break;
+
+            case SkinType.Frostfield_Lv1:
+                glueplantImage.sprite = glueplant_PauseMenu_Frostfield;
+                break;
+            case SkinType.Frostfield_Lv2:
+                glueplantImage.sprite = glueplant_PauseMenu_Frostfield;
+                break;
+            case SkinType.Frostfield_Lv3:
+                glueplantImage.sprite = glueplant_PauseMenu_Frostfield;
+                break;
+            case SkinType.Frostfield_Lv4:
+                glueplantImage.sprite = glueplant_PauseMenu_Frostfield;
+                break;
+            case SkinType.Frostfield_Lv5:
+                glueplantImage.sprite = glueplant_PauseMenu_Frostfield;
+                break;
+
+            case SkinType.Firevein_Lv1:
+                glueplantImage.sprite = glueplant_PauseMenu_Firevein;
+                break;
+            case SkinType.Firevein_Lv2:
+                glueplantImage.sprite = glueplant_PauseMenu_Firevein;
+                break;
+            case SkinType.Firevein_Lv3:
+                glueplantImage.sprite = glueplant_PauseMenu_Firevein;
+                break;
+            case SkinType.Firevein_Lv4:
+                glueplantImage.sprite = glueplant_PauseMenu_Firevein;
+                break;
+            case SkinType.Firevein_Lv5:
+                glueplantImage.sprite = glueplant_PauseMenu_Firevein;
+                break;
+
+            case SkinType.Witchmire_Lv1:
+                glueplantImage.sprite = glueplant_PauseMenu_Witchmire;
+                break;
+            case SkinType.Witchmire_Lv2:
+                glueplantImage.sprite = glueplant_PauseMenu_Witchmire;
+                break;
+            case SkinType.Witchmire_Lv3:
+                glueplantImage.sprite = glueplant_PauseMenu_Witchmire;
+                break;
+            case SkinType.Witchmire_Lv4:
+                glueplantImage.sprite = glueplant_PauseMenu_Witchmire;
+                break;
+            case SkinType.Witchmire_Lv5:
+                glueplantImage.sprite = glueplant_PauseMenu_Witchmire;
+                break;
+
+            case SkinType.Metalworks_Lv1:
+                glueplantImage.sprite = glueplant_PauseMenu_Metalworks;
+                break;
+            case SkinType.Metalworks_Lv2:
+                glueplantImage.sprite = glueplant_PauseMenu_Metalworks;
+                break;
+            case SkinType.Metalworks_Lv3:
+                glueplantImage.sprite = glueplant_PauseMenu_Metalworks;
+                break;
+            case SkinType.Metalworks_Lv4:
+                glueplantImage.sprite = glueplant_PauseMenu_Metalworks;
+                break;
+            case SkinType.Metalworks_Lv5:
+                glueplantImage.sprite = glueplant_PauseMenu_Metalworks;
+                break;
+
+            default:
+                break;
+        }
+
         if (mapInfo.isCompleted)
             glueplant_Aquired.text = "1 / 1";
         else

@@ -53,11 +53,6 @@ public class Button_ToPress : MonoBehaviour
             Debug.Log("This should jump where? ", this);
         }
 
-        if (uiElementToSelect.gameObject)
-        {
-            ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(uiElementToSelect.gameObject);
-        }
-
         switch (newMenuState)
         {
             case MenuState.None:
@@ -99,6 +94,11 @@ public class Button_ToPress : MonoBehaviour
 
             default:
                 break;
+        }
+
+        if (uiElementToSelect.gameObject)
+        {
+            ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(uiElementToSelect.gameObject);
         }
     }
 

@@ -10,33 +10,40 @@
 
 2. New Menu UI
 - Change the UI for all menus, so it matches the new assets
-	- Overworld
-		- Set ActiveButton to Pink with zoom-effect, instead of green
 	- Settings
-		- Controls
-	- Wardrobe
-		- Include pink lines to top/bottom of the "Back"-button
+		- Controls: Key Inputs
 	- PauseMenu
-		- Input all menus and make then size with the pauseMenu
+		- Fix that buttons are not highlighted when returning to mainPauseMenu
+			- Also when entering Controls from PauseMenu
+		- Fix so that the Glueplant is showing correct version
+		- Fix so that the player cannot but skins it cannot afford, for the pauseMenu-Wardrobe
 	- Dialogue
 		- Make the option you are currently on, bigger (increase scale size)
 		- Change the script and ExcelTemp to have links to other lines, regardless of option or not
+- Add UI to the Start of the first level
+	- Add UI animation for popping in
+- Add UI for pickups and Abilities
+	- Add UI animation for popping in
+- When starting a level, the extra footprints are highlighted as "taken" instead of being empty
+	- The frame isn't "lighting" up when the footprints are filled in the beginning
+- Change so that temporary pickups are white permanent are purple
+	- Separate the frame and icon into two Image-layers where the frame are toggled on/off
 	
 
 
 3. Intro Camera:
 __________________
 
-- Make intro, where camera is focused on Glueplant and zoomes out to the player
-- Attach a camera to the Glueplant and make it softTransition to the player
+- Make generic intro, where camera is focused on Glueplant and zoomes out to the player
+	- Attach a camera to the Glueplant and make it softTransition to the player
 
 
 4. FreeRoam Camera:
 __________________
 
-Make FreeRoam camera by pressing R1 to roam freely
-- Snap back to the player when pressing the button again
-   - Perform snapping by transitioning very fast, for a smooth experience
+- Make FreeRoam camera by pressing R1 to roam freely
+	- Snap back to the player when pressing the button again
+  		- Perform snapping by transitioning very fast, for a smooth experience
 
 
 5.

@@ -10,6 +10,7 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
     [SerializeField] GameObject levelDisplay_Parent;
     [SerializeField] TextMeshProUGUI levelName;
     [SerializeField] Image levelImage;
+    [SerializeField] Image glueplantImage;
     [SerializeField] Image skinImage;
 
     [SerializeField] TextMeshProUGUI glueplant_Aquired;
@@ -28,8 +29,18 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
     [SerializeField] GameObject ability_CeilingGrab;
 
 
+    [Header("Glueplant Sprites")]
+    #region Glueplant Sprites
+    public Sprite glueplantSprite_Rivergreen;
+    public Sprite glueplantSprite_Sandlands;
+    public Sprite glueplantSprite_Frostfield;
+    public Sprite glueplantSprite_Firevein;
+    public Sprite glueplantSprite_Witchmire;
+    public Sprite glueplantSprite_Metalworks;
+    #endregion
+
     [Header("Skin Sprites")]
-    #region Sprites
+    #region Skin Sprites
     public Sprite sprite_Rivergreen_Lv1;
     public Sprite sprite_Rivergreen_Lv2;
     public Sprite sprite_Rivergreen_Lv3;
@@ -66,6 +77,7 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
     public Sprite sprite_Metalworks_Lv4;
     public Sprite sprite_Metalworks_Lv5;
     #endregion
+
 
     MenuLevelInfo menuLevelInfo;
 
@@ -120,6 +132,34 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
                     if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].mapName == activeLevelObject.GetComponent<LoadLevel>().levelToPlay)
                     {
                         //Glueplant aquired
+                        switch (OverWorldManager.Instance.regionState)
+                        {
+                            case RegionState.None:
+                                break;
+
+                            case RegionState.Rivergreen:
+                                glueplantImage.sprite = glueplantSprite_Rivergreen;
+                                break;
+                            case RegionState.Sandlands:
+                                glueplantImage.sprite = glueplantSprite_Sandlands;
+                                break;
+                            case RegionState.Frostfields:
+                                glueplantImage.sprite = glueplantSprite_Frostfield;
+                                break;
+                            case RegionState.Firevein:
+                                glueplantImage.sprite = glueplantSprite_Firevein;
+                                break;
+                            case RegionState.Witchmire:
+                                glueplantImage.sprite = glueplantSprite_Witchmire;
+                                break;
+                            case RegionState.Metalworks:
+                                glueplantImage.sprite = glueplantSprite_Metalworks;
+                                break;
+
+                            default:
+                                break;
+                        }
+
                         if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].isCompleted)
                             glueplant_Aquired.text = "1 / 1";
                         else

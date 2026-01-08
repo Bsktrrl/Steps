@@ -13,6 +13,8 @@ public class MainMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     [SerializeField] bool isFirstSelected;
 
+    PauseMenuManager pausedMenuManager;
+
 
     //--------------------
 
@@ -23,9 +25,36 @@ public class MainMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     }
     private void Start()
     {
+        pausedMenuManager = FindAnyObjectByType<PauseMenuManager>();
+
         if (isFirstSelected)
         {
             SetActive();
+        }
+    }
+
+
+    //--------------------
+
+
+    private void OnEnable()
+    {
+        if (pausedMenuManager)
+        {
+            PauseMenuManager.Action_closePauseMenu += SetPassive;
+            
+            if (isFirstSelected)
+                Player_KeyInputs.Action_PauseMenuIsPressed += SetActive;
+        }
+    }
+    private void OnDisable()
+    {
+        if (pausedMenuManager)
+        {
+            PauseMenuManager.Action_closePauseMenu -= SetPassive;
+
+            if (isFirstSelected)
+                Player_KeyInputs.Action_PauseMenuIsPressed -= SetActive;
         }
     }
 

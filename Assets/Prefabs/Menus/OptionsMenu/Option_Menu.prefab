@@ -197,6 +197,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!1 &402078626899656008
 GameObject:
   m_ObjectHideFlags: 0
@@ -1479,6 +1480,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!1 &1859411220770364250
 GameObject:
   m_ObjectHideFlags: 0
@@ -2355,6 +2357,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!1 &2854698366193628581
 GameObject:
   m_ObjectHideFlags: 0
@@ -2546,6 +2549,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!114 &7052086040255745674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2598,7 +2602,7 @@ MonoBehaviour:
   - {fileID: 4125743196260398794}
   - {fileID: 3551705641648181369}
   isBackButton: 0
-  isStartButton: 0
+  isStartButton: 1
   isActive: 0
 --- !u!1 &2879856695430036092
 GameObject:
@@ -3289,6 +3293,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 1
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!114 &8872107244316605672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4513,6 +4518,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!114 &7940662927584145753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4765,6 +4771,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!1 &4499139687175347735
 GameObject:
   m_ObjectHideFlags: 0
@@ -5227,6 +5234,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!1 &5102129622500482870
 GameObject:
   m_ObjectHideFlags: 0
@@ -5343,6 +5351,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!114 &7411979751438892319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6882,6 +6891,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!1 &6300617247395386673
 GameObject:
   m_ObjectHideFlags: 0
@@ -7224,6 +7234,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!114 &4547007358206908250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7411,6 +7422,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 2
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!114 &3573627680937312228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7549,6 +7561,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!1 &6971062042768950165
 GameObject:
   m_ObjectHideFlags: 0
@@ -8534,6 +8547,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!1 &8171393425033012439
 GameObject:
   m_ObjectHideFlags: 0
@@ -10246,6 +10260,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4259354577112215085}
     m_Modifications:
+    - target: {fileID: 1130200383022329103, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Name
+      value: StepDisplay
+      objectReference: {fileID: 0}
     - target: {fileID: 3344971167898997492, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -10564,6 +10582,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4259354577112215085}
     m_Modifications:
+    - target: {fileID: 1130200383022329103, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Name
+      value: TextSpeedDisplay
+      objectReference: {fileID: 0}
     - target: {fileID: 3344971167898997492, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -10737,6 +10759,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4259354577112215085}
     m_Modifications:
+    - target: {fileID: 1130200383022329103, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Name
+      value: CameraDisplay
+      objectReference: {fileID: 0}
     - target: {fileID: 3344971167898997492, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
       propertyPath: m_IsActive
       value: 1

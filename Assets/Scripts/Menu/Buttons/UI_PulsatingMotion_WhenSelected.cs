@@ -62,11 +62,14 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
 
     private void OnEnable()
     {
-        //if (isStartButton)
-        //{
-        //    isActive = true;
-        //    print("Default - Enable");
-        //}
+        if (isStartButton)
+        {
+            isActive = true;
+        }
+        else
+        {
+            isActive = false;
+        }
     }
     private void OnDisable()
     {

@@ -25,6 +25,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     public static event Action Action_RespawnHold;
     public static event Action Action_RespawnCanceled;
 
+    public static event Action Action_PauseMenuIsPressed;
+
     [Header("Input System")]
     public PlayerControls playerControls;
     MapManager mapManager;
@@ -50,6 +52,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     public bool respawn_isPressed = false;
 
+    PauseMenuManager pauseMenuManager;
+
 
 
     //--------------------
@@ -57,6 +61,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     private void Start()
     {
+        pauseMenuManager = FindAnyObjectByType<PauseMenuManager>();
+
         playerControls = new PlayerControls();
         mapManager = FindObjectOfType<MapManager>();
 
@@ -368,7 +374,9 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Other()) { return; }
 
         RememberCurrentlySelectedUIElement.Instance.currentSelectedUIElement = PauseMenuManager.Instance.pauseMenu_StartButton;
-        PauseMenuManager.Instance.OpenPauseMenu();
         PlayerManager.Instance.pauseGame = true;
+        PauseMenuManager.Instance.OpenPauseMenu();
+
+        Action_PauseMenuIsPressed?.Invoke();
     }
 }

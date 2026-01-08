@@ -22,9 +22,9 @@ public class MoveOutFromPauseMenu : MonoBehaviour
     //--------------------
 
 
-    private void SelectCancelTarget()
+    public void SelectCancelTarget()
     {
-        Debug.Log("1. SelectCancelTarget Pressed");
+        //Debug.Log("1. SelectCancelTarget Pressed");
 
         if (ActionButtonsManager.Instance.eventSystem == null)
         {

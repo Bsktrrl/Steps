@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 6272094817210629953}
   - component: {fileID: 3411835353992303865}
   - component: {fileID: 213599233825979959}
+  - component: {fileID: 2169985734637998885}
   - component: {fileID: 9075733171100076832}
   - component: {fileID: 8015949014423329662}
-  - component: {fileID: 2169985734637998885}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -114,6 +114,29 @@ MonoBehaviour:
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
+--- !u!114 &2169985734637998885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67225465258948552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41d91195fb5e34d4c8fb5b92632f847a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroundImage: {fileID: 6702988637807501802}
+  background_Default: {fileID: 21300000, guid: cb5a1b1cd48fe8c44a2c68bc1496fad4, type: 3}
+  background_Active: {fileID: 21300000, guid: 2494637f23ef6844bb6bcb133e57c233, type: 3}
+  maxScale: {x: 0.08, y: 0.08, z: 0}
+  startScale: {x: 1.05, y: 1.05, z: 0}
+  pulseSpeed: 0.3
+  edgeTightness: 0.9
+  extraImages: []
+  isBackButton: 1
+  isStartButton: 0
+  isActive: 0
 --- !u!114 &9075733171100076832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,29 +173,6 @@ MonoBehaviour:
   selectedImage: {fileID: 6702988637807501802}
   isSelected: 0
   lastSelected: {fileID: 0}
---- !u!114 &2169985734637998885
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 67225465258948552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41d91195fb5e34d4c8fb5b92632f847a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  backgroundImage: {fileID: 6702988637807501802}
-  background_Default: {fileID: 21300000, guid: cb5a1b1cd48fe8c44a2c68bc1496fad4, type: 3}
-  background_Active: {fileID: 21300000, guid: 2494637f23ef6844bb6bcb133e57c233, type: 3}
-  maxScale: {x: 0.08, y: 0.08, z: 0}
-  startScale: {x: 1.05, y: 1.05, z: 0}
-  pulseSpeed: 0.3
-  edgeTightness: 0.9
-  extraImages: []
-  isBackButton: 1
-  isStartButton: 0
-  isActive: 0
 --- !u!1 &93226368838051328
 GameObject:
   m_ObjectHideFlags: 0
@@ -2856,8 +2856,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 350.75, y: -13.5}
-  m_SizeDelta: {x: 155, y: 155}
+  m_AnchoredPosition: {x: 351.30005, y: -9.2}
+  m_SizeDelta: {x: 170, y: 170}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2174066300832947156
 CanvasRenderer:
@@ -2880,14 +2880,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 923483d5b3b53f5479c50d1c068fd9a1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b3f475841d156d548b9e39141e427589, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3380,7 +3380,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 161.75, y: -8}
+  m_AnchoredPosition: {x: 174.6, y: -8}
   m_SizeDelta: {x: 150, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2968301151834046772
@@ -5073,8 +5073,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 350.75, y: -13.5}
-  m_SizeDelta: {x: 155, y: 155}
+  m_AnchoredPosition: {x: 351.3001, y: -9.2}
+  m_SizeDelta: {x: 170, y: 170}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1879290632315995868
 CanvasRenderer:
@@ -5104,7 +5104,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 923483d5b3b53f5479c50d1c068fd9a1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b3f475841d156d548b9e39141e427589, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -14329,7 +14329,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 161.75, y: -8}
+  m_AnchoredPosition: {x: 174.6001, y: -8}
   m_SizeDelta: {x: 150, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6030369219458724267
@@ -18517,7 +18517,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8422969456319136461
 RectTransform:
   m_ObjectHideFlags: 0
