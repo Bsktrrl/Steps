@@ -16,7 +16,7 @@ public class Interactable_NPC : MonoBehaviour
     public int levelNumber;
 
     int startRow = 2;
-    int columns = 61; //Size + 1
+    int columns = 62; //Size + 1
     int totalLanguageElements = 6; //Count for an extra empty cell between languages (5 + 1)
 
     [Header("Dialogue Info")]
@@ -123,7 +123,6 @@ public class Interactable_NPC : MonoBehaviour
         if (camera)
         {
             camera.SetCameraDirection();
-            print("1. SetCameraDirection");
         }
 
         yield return StartCoroutine(CameraController.Instance.StartVirtualCameraBlend_In(CameraController.Instance.CM_Other));
@@ -733,6 +732,12 @@ public class Interactable_NPC : MonoBehaviour
 
             #endregion
 
+            //MainLink
+            if (excelData[columns * (i + startRow - 1) + 15] != "")
+                dialogueInfo.dialogueSegments[i].mainLink = ParseIntSafe(excelData, columns * (i + startRow - 1) + 15) - 1;
+            else
+                dialogueInfo.dialogueSegments[i].mainLink = -1;
+
             #region Option Parameters
 
             #region Setup the first Option language
@@ -740,20 +745,20 @@ public class Interactable_NPC : MonoBehaviour
             #region Option 1
 
             //Option 1 - Link
-            if (excelData[columns * (i + startRow - 1) + 16] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 16);
+            if (excelData[columns * (i + startRow - 1) + 17] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 17);
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Linked = -1;
 
             //Option 1 - AlternativeLink
-            if (excelData[columns * (i + startRow - 1) + 17] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_AlternativeLinked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 17);
+            if (excelData[columns * (i + startRow - 1) + 18] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_AlternativeLinked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 18);
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_AlternativeLinked = -1;
 
             //Option 1 - EndingValue
-            if (excelData[columns * (i + startRow - 1) + 18] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_StoryValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 18);
+            if (excelData[columns * (i + startRow - 1) + 19] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_StoryValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 19);
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_StoryValue = 0;
 
@@ -762,20 +767,20 @@ public class Interactable_NPC : MonoBehaviour
             #region Option 2
 
             //Option 2 - Link
-            if (excelData[columns * (i + startRow - 1) + 20] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 20);
+            if (excelData[columns * (i + startRow - 1) + 21] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 21);
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_Linked = -1;
 
             //Option 2 - AlternativeLink
-            if (excelData[columns * (i + startRow - 1) + 21] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_AlternativeLinked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 21);
+            if (excelData[columns * (i + startRow - 1) + 22] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_AlternativeLinked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 22);
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_AlternativeLinked = -1;
 
             //Option 2 - EndingValue
-            if (excelData[columns * (i + startRow - 1) + 22] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_StoryValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 22);
+            if (excelData[columns * (i + startRow - 1) + 23] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_StoryValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 23);
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_StoryValue = 0;
 
@@ -784,20 +789,20 @@ public class Interactable_NPC : MonoBehaviour
             #region Option 3
 
             //Option 3 - Link
-            if (excelData[columns * (i + startRow - 1) + 24] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 24);
+            if (excelData[columns * (i + startRow - 1) + 25] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 25);
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_Linked = -1;
 
             //Option 3 - AlternativeLink
-            if (excelData[columns * (i + startRow - 1) + 25] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_AlternativeLinked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 25);
+            if (excelData[columns * (i + startRow - 1) + 26] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_AlternativeLinked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 26);
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_AlternativeLinked = -1;
 
             //Option 3 - EndingValue
-            if (excelData[columns * (i + startRow - 1) + 26] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_StoryValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 26);
+            if (excelData[columns * (i + startRow - 1) + 27] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_StoryValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 27);
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_StoryValue = 0;
 
@@ -806,20 +811,20 @@ public class Interactable_NPC : MonoBehaviour
             #region Option 4
 
             //Option 4 - Link
-            if (excelData[columns * (i + startRow - 1) + 28] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 28);
+            if (excelData[columns * (i + startRow - 1) + 29] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_Linked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 29);
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_Linked = -1;
 
             //Option 4 - AlternativeLink
-            if (excelData[columns * (i + startRow - 1) + 29] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_AlternativeLinked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 29);
+            if (excelData[columns * (i + startRow - 1) + 30] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_AlternativeLinked = ParseIntSafe(excelData, columns * (i + startRow - 1) + 30);
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_AlternativeLinked = -1;
 
             //Option 4 - EndingValue
-            if (excelData[columns * (i + startRow - 1) + 30] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_StoryValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 30);
+            if (excelData[columns * (i + startRow - 1) + 31] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_StoryValue = ParseIntSafe(excelData, columns * (i + startRow - 1) + 31);
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_StoryValue = 0;
 
@@ -865,26 +870,26 @@ public class Interactable_NPC : MonoBehaviour
                 dialogueInfo.dialogueSegments[i].languageDialogueList[0] = "";
 
             //Option 1
-            if (excelData[columns * (i + startRow - 1) + 15] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Text = excelData[columns * (i + startRow - 1) + 15].Trim();
+            if (excelData[columns * (i + startRow - 1) + 16] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Text = excelData[columns * (i + startRow - 1) + 16].Trim();
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option1_Text = "";
 
             //Option 2
-            if (excelData[columns * (i + startRow - 1) + 19] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_Text = excelData[columns * (i + startRow - 1) + 19].Trim();
+            if (excelData[columns * (i + startRow - 1) + 20] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_Text = excelData[columns * (i + startRow - 1) + 20].Trim();
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option2_Text = "";
 
             //Option 3
-            if (excelData[columns * (i + startRow - 1) + 23] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_Text = excelData[columns * (i + startRow - 1) + 23].Trim();
+            if (excelData[columns * (i + startRow - 1) + 24] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_Text = excelData[columns * (i + startRow - 1) + 24].Trim();
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option3_Text = "";
 
             //Option 4
-            if (excelData[columns * (i + startRow - 1) + 27] != "")
-                dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_Text = excelData[columns * (i + startRow - 1) + 27].Trim();
+            if (excelData[columns * (i + startRow - 1) + 28] != "")
+                dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_Text = excelData[columns * (i + startRow - 1) + 28].Trim();
             else
                 dialogueInfo.dialogueSegments[i].languageOptionList[0].option4_Text = "";
 
@@ -896,32 +901,32 @@ public class Interactable_NPC : MonoBehaviour
             for (int j = 0; j < DialogueManager.Instance.languageAmount - 1; j++)
             {
                 //Message
-                if (excelData[columns * (i + startRow - 1) + 32 + (totalLanguageElements * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageDialogueList[j + 1] = excelData[columns * (i + startRow - 1) + 32 + (totalLanguageElements * j)].Trim();
+                if (excelData[columns * (i + startRow - 1) + 33 + (totalLanguageElements * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageDialogueList[j + 1] = excelData[columns * (i + startRow - 1) + 33 + (totalLanguageElements * j)].Trim();
                 else
                     dialogueInfo.dialogueSegments[i].languageDialogueList[j + 1] = "";
 
                 //Option 1
-                if (excelData[columns * (i + startRow - 1) + 33 + (totalLanguageElements * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j + 1].option1_Text = excelData[columns * (i + startRow - 1) + 33 + (totalLanguageElements * j)].Trim();
+                if (excelData[columns * (i + startRow - 1) + 34 + (totalLanguageElements * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j + 1].option1_Text = excelData[columns * (i + startRow - 1) + 34 + (totalLanguageElements * j)].Trim();
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j + 1].option1_Text = "";
                 
                 //Option 2
-                if (excelData[columns * (i + startRow - 1) + 34 + (totalLanguageElements * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j + 1].option2_Text = excelData[columns * (i + startRow - 1) + 34 + (totalLanguageElements * j)].Trim();
+                if (excelData[columns * (i + startRow - 1) + 35 + (totalLanguageElements * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j + 1].option2_Text = excelData[columns * (i + startRow - 1) + 35 + (totalLanguageElements * j)].Trim();
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j + 1].option2_Text = "";
 
                 //Option 3
-                if (excelData[columns * (i + startRow - 1) + 35 + (totalLanguageElements * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j + 1].option3_Text = excelData[columns * (i + startRow - 1) + 35 + (totalLanguageElements * j)].Trim();
+                if (excelData[columns * (i + startRow - 1) + 36 + (totalLanguageElements * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j + 1].option3_Text = excelData[columns * (i + startRow - 1) + 36 + (totalLanguageElements * j)].Trim();
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j + 1].option3_Text = "";
 
                 //Option 4
-                if (excelData[columns * (i + startRow - 1) + 36 + (totalLanguageElements * j)] != "")
-                    dialogueInfo.dialogueSegments[i].languageOptionList[j + 1].option4_Text = excelData[columns * (i + startRow - 1) + 36 + (totalLanguageElements * j)].Trim();
+                if (excelData[columns * (i + startRow - 1) + 37 + (totalLanguageElements * j)] != "")
+                    dialogueInfo.dialogueSegments[i].languageOptionList[j + 1].option4_Text = excelData[columns * (i + startRow - 1) + 37 + (totalLanguageElements * j)].Trim();
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j + 1].option4_Text = "";
             }
@@ -1083,14 +1088,26 @@ public class Interactable_NPC : MonoBehaviour
             lastSegment = segmentIndex;
             StartCoroutine(TurnNPCAwayFromPlayer());
             StartCoroutine(DialogueManager.Instance.EndDialogue());
+
+            print("0. Last Segment: " + segmentIndex);
         }
 
-        //If the next segment doesn't have any options, run the next segment in the list
+        //If the next segment doesn't have any options, run the next segment in the list (or mainLink)
         else if (dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option1_Text == "")
         {
             if (!TypewriterEffect.Instance.isTyping)
             {
-                segmentIndex++;
+                if (dialogueInfo.dialogueSegments[segmentIndex].mainLink >= 0)
+                {
+                    int tempSegemtnIndex = dialogueInfo.dialogueSegments[segmentIndex].mainLink;
+                    segmentIndex = tempSegemtnIndex;
+                    print("1. Use MainLink: " + segmentIndex);
+                }
+                else
+                {
+                    segmentIndex++;
+                    print("2. Increase segmentIndex: " + segmentIndex);
+                }
 
                 SetupDialogueDisplay(segmentIndex, dialogueInfo.npcName);
             }

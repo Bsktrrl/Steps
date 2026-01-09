@@ -39,7 +39,6 @@ public class Block_Ladder : MonoBehaviour
 
     public void SetupLadder()
     {
-        print("SetupLadder");
         FindTopLadderPart();
         FindBottomLadderPart();
 

@@ -87,7 +87,7 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
             }
             else if (skipRequested && charSafetyCounter > 1)
             {
-                print("111. skipRequested");
+                //print("111. skipRequested");
                 dialogueText.text = fullText;
                 break;
             }
