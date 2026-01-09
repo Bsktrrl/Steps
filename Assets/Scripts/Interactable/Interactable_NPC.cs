@@ -119,6 +119,13 @@ public class Interactable_NPC : MonoBehaviour
 
         yield return new WaitForSeconds(0.05f);
 
+        NPCCamera camera = GetComponentInChildren<NPCCamera>();
+        if (camera)
+        {
+            camera.SetCameraDirection();
+            print("1. SetCameraDirection");
+        }
+
         yield return StartCoroutine(CameraController.Instance.StartVirtualCameraBlend_In(CameraController.Instance.CM_Other));
 
         DialogueManager.Instance.npcObject = this;

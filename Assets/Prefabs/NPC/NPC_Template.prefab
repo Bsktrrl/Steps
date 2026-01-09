@@ -236,6 +236,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4434818175631054740}
   - component: {fileID: 5802183661862104376}
+  - component: {fileID: 1485178134464906775}
   m_Layer: 0
   m_Name: NPC Camera
   m_TagString: Untagged
@@ -302,6 +303,31 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
+--- !u!114 &1485178134464906775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4637094611752335658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4febbcfb69e25f344867e607cd9f0b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraDirection: 0
+  cameraState_FrontRight:
+    position: {x: 2.47, y: 0.11, z: 2.58}
+    rotation: {x: 5, y: -130, z: 0}
+  cameraState_FrontLeft:
+    position: {x: -2.47, y: 0.11, z: 2.58}
+    rotation: {x: 5, y: 130, z: 0}
+  cameraState_BackRight:
+    position: {x: 2.47, y: 0.11, z: -2.58}
+    rotation: {x: 5, y: -40, z: 0}
+  cameraState_BackLeft:
+    position: {x: -2.47, y: 0.11, z: -2.58}
+    rotation: {x: 5, y: 40, z: 0}
 --- !u!1 &5107334644228518986
 GameObject:
   m_ObjectHideFlags: 0
