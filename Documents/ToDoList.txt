@@ -13,26 +13,25 @@ __________________
 2. New Menu UI
 __________________
 
-- Change the UI for all menus, so it matches the new assets
-	- Settings
-		- Controls: Key Inputs
-	- PauseMenu
-		- Wardrobe: Fix so that the player cannot but skins it cannot afford, for the pauseMenu-Wardrobe
-	- Dialogue
-		- Make the option you are currently on, bigger (increase scale size)
-		- Change the script and ExcelTemp to have links to other lines, regardless of option or not
+2.1. Change the UI for all menus, so it matches the new assets
+- Settings
+	- Controls: Key Inputs + functionality
+- Dialogue
+	- Make the option you are currently on, bigger (increase scale size)
+	- Change the script and ExcelTemplates to have links to other lines, regardless of option or not
+	- Ass so that the camera position can be set for each individual NPC entry, so the camera doesn't go inside walls ex.
 
-- Guides
-	- Add UI to the Start of the first level
-		- Add UI animation for popping in
-	- Add UI for pickups and Abilities
-		- Add UI animation for popping in
+2.2. Guides
+- Add UI to the Start of the first level
+	- Add UI animation for popping in
+- Add UI for pickups and Abilities
+	- Add UI animation for popping in
 
-- General UI fixes
-	- When starting a level, the extra footprints are highlighted as "taken" instead of being empty
-		- The frame isn't "lighting" up when the footprints are filled in the beginning
-	- Change so that temporary pickups are white permanent are purple
-		- Separate the frame and icon into two Image-layers where the frame are toggled on/off
+2.3. General UI fixes
+- When starting a level, the extra footprints are highlighted as "taken" instead of being empty
+	- The frame isn't "lighting" up when the footprints are filled in the beginning
+- Change so that temporary pickups are white permanent are purple
+	- Separate the frame and icon into two Image-layers where the frame are toggled on/off
 	
 
 
