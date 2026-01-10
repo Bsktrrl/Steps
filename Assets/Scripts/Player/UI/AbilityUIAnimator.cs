@@ -8,8 +8,11 @@ public class AbilityUIAnimator : MonoBehaviour
     [SerializeField] private Image targetImage;
 
     [Header("Sprites")]
-    [SerializeField] private Sprite idleSprite;     // “original”
-    [SerializeField] private Sprite activeSprite;   // “during ability”
+    [SerializeField] Abilities ability;
+    [SerializeField] private Sprite idleSprite_Temporary;
+    [SerializeField] private Sprite activeSprite_Temporary;
+    [SerializeField] private Sprite idleSprite_Permanent;
+    [SerializeField] private Sprite activeSprite_Permanent;
 
     [Header("Appearing")]
     [SerializeField, Min(0.0001f)] private float appearDuration = 0.25f;
@@ -41,6 +44,9 @@ public class AbilityUIAnimator : MonoBehaviour
     public bool isActive;
 
 
+    //--------------------
+
+
     public enum Ease
     {
         Linear,
@@ -48,6 +54,10 @@ public class AbilityUIAnimator : MonoBehaviour
         InCubic, OutCubic, InOutCubic,
         OutBack
     }
+
+
+    //--------------------
+
 
     private void Reset()
     {
@@ -60,6 +70,10 @@ public class AbilityUIAnimator : MonoBehaviour
         _rt = targetImage.rectTransform;
         EnsureOverlay();
     }
+
+
+    //--------------------
+
 
     /// <summary>
     /// Appearing: scale 0 -> 1.2 -> 1 with easing (no sprite crossfade unless you set idleSprite).
@@ -95,7 +109,9 @@ public class AbilityUIAnimator : MonoBehaviour
         EnsureOverlay();
 
         // Commit base sprite (optional, but usually you want it set)
-        if (idleSprite) targetImage.sprite = idleSprite;
+        if (idleSprite_Permanent)
+            targetImage.sprite = GetCorrectIdleSprite();
+
         SetAlpha(targetImage, 1f);
         SetAlpha(_overlay, 0f);
 
@@ -116,10 +132,10 @@ public class AbilityUIAnimator : MonoBehaviour
         EnsureOverlay();
 
         // Base shows idle, overlay fades in active
-        if (idleSprite) targetImage.sprite = idleSprite;
+        if (idleSprite_Permanent) targetImage.sprite = GetCorrectIdleSprite();
         SetAlpha(targetImage, 1f);
 
-        if (activeSprite) _overlay.sprite = activeSprite;
+        if (activeSprite_Permanent) _overlay.sprite = GetCorrectActiveSprite();
         SetAlpha(_overlay, 0f);
 
         _rt.localScale = Vector3.one * activateStartScale;
@@ -134,7 +150,7 @@ public class AbilityUIAnimator : MonoBehaviour
         );
 
         // Commit final: base becomes active, overlay hidden
-        if (activeSprite) targetImage.sprite = activeSprite;
+        if (activeSprite_Permanent) targetImage.sprite = GetCorrectActiveSprite();
         SetAlpha(_overlay, 0f);
 
         _rt.localScale = Vector3.one * activateEndScale;
@@ -149,10 +165,10 @@ public class AbilityUIAnimator : MonoBehaviour
         float startScale = _rt.localScale.x;
 
         // Base shows active, overlay fades in idle
-        if (activeSprite) targetImage.sprite = activeSprite;
+        if (activeSprite_Permanent) targetImage.sprite = GetCorrectActiveSprite();
         SetAlpha(targetImage, 1f);
 
-        if (idleSprite) _overlay.sprite = idleSprite;
+        if (idleSprite_Permanent) _overlay.sprite = GetCorrectIdleSprite();
         SetAlpha(_overlay, 0f);
 
         yield return ScaleAndOverlayFade(
@@ -165,7 +181,7 @@ public class AbilityUIAnimator : MonoBehaviour
         );
 
         // Commit final: base becomes idle, overlay hidden
-        if (idleSprite) targetImage.sprite = idleSprite;
+        if (idleSprite_Permanent) targetImage.sprite = GetCorrectIdleSprite();
         SetAlpha(_overlay, 0f);
 
         _rt.localScale = Vector3.one * deactivateEndScale;
@@ -291,6 +307,122 @@ public class AbilityUIAnimator : MonoBehaviour
 
             default:
                 return t;
+        }
+    }
+
+    Sprite GetCorrectIdleSprite()
+    {
+        switch (ability)
+        {
+            case Abilities.None:
+                return null;
+
+            case Abilities.SwimSuit:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit)
+                    return idleSprite_Permanent;
+                else
+                    return idleSprite_Temporary;
+            case Abilities.SwiftSwim:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim)
+                    return idleSprite_Permanent;
+                else
+                    return idleSprite_Temporary;
+            case Abilities.Flippers:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers)
+                    return idleSprite_Permanent;
+                else
+                    return idleSprite_Temporary;
+            case Abilities.Ascend:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Ascend)
+                    return idleSprite_Permanent;
+                else
+                    return idleSprite_Temporary;
+            case Abilities.Descend:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Descend)
+                    return idleSprite_Permanent;
+                else
+                    return idleSprite_Temporary;
+            case Abilities.Dash:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash)
+                    return idleSprite_Permanent;
+                else
+                    return idleSprite_Temporary;
+            case Abilities.Jumping:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping)
+                    return idleSprite_Permanent;
+                else
+                    return idleSprite_Temporary;
+            case Abilities.CeilingGrab:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab)
+                    return idleSprite_Permanent;
+                else
+                    return idleSprite_Temporary;
+            case Abilities.GrapplingHook:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook)
+                    return idleSprite_Permanent;
+                else
+                    return idleSprite_Temporary;
+
+            default:
+                return null;
+        }
+    }
+
+    Sprite GetCorrectActiveSprite()
+    {
+        switch (ability)
+        {
+            case Abilities.None:
+                return null;
+
+            case Abilities.SwimSuit:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit)
+                    return activeSprite_Permanent;
+                else
+                    return activeSprite_Temporary;
+            case Abilities.SwiftSwim:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim)
+                    return activeSprite_Permanent;
+                else
+                    return activeSprite_Temporary;
+            case Abilities.Flippers:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers)
+                    return activeSprite_Permanent;
+                else
+                    return activeSprite_Temporary;
+            case Abilities.Ascend:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Ascend)
+                    return activeSprite_Permanent;
+                else
+                    return activeSprite_Temporary;
+            case Abilities.Descend:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Descend)
+                    return activeSprite_Permanent;
+                else
+                    return activeSprite_Temporary;
+            case Abilities.Dash:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash)
+                    return activeSprite_Permanent;
+                else
+                    return activeSprite_Temporary;
+            case Abilities.Jumping:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping)
+                    return activeSprite_Permanent;
+                else
+                    return activeSprite_Temporary;
+            case Abilities.CeilingGrab:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab)
+                    return activeSprite_Permanent;
+                else
+                    return activeSprite_Temporary;
+            case Abilities.GrapplingHook:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook)
+                    return activeSprite_Permanent;
+                else
+                    return activeSprite_Temporary;
+
+            default:
+                return null;
         }
     }
 }

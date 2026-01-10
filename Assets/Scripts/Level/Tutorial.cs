@@ -39,7 +39,7 @@ public class Tutorial : Singleton<Tutorial>
 
 
     [Header("Fade Settings")]
-    [SerializeField] float fadeDuration = 1f;
+    [SerializeField] float fadeDuration = 0.85f;
 
     // Keep track of running fades so we can stop/replace them per parent
     private readonly Dictionary<GameObject, Coroutine> _runningFades = new();

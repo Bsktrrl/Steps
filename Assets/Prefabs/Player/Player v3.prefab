@@ -559,8 +559,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetImage: {fileID: 1546323766947068899}
-  idleSprite: {fileID: 21300000, guid: 0ba8b841988773347a6f0fe5c77500df, type: 3}
-  activeSprite: {fileID: 21300000, guid: dd85c180da5f0c5408846bded3fdf665, type: 3}
+  ability: 7
+  idleSprite_Temporary: {fileID: 21300000, guid: bb8160cc399525b4e8033240f361fa5d, type: 3}
+  activeSprite_Temporary: {fileID: 21300000, guid: 94c91711b57dddc45b265dab323d19a0, type: 3}
+  idleSprite_Permanent: {fileID: 21300000, guid: 0ba8b841988773347a6f0fe5c77500df, type: 3}
+  activeSprite_Permanent: {fileID: 21300000, guid: dd85c180da5f0c5408846bded3fdf665, type: 3}
   appearDuration: 1.3
   appearStartScale: 0
   appearOvershootScale: 1.2
@@ -2311,7 +2314,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1585075891232723085}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d202ec2f594f5c541a8dc7f77170b8f4, type: 3}
   m_Name: 
@@ -3115,6 +3118,7 @@ GameObject:
   - component: {fileID: 5306633376111022258}
   - component: {fileID: 6778043607980152714}
   - component: {fileID: 1954219947134933665}
+  - component: {fileID: 527560843662435205}
   m_Layer: 5
   m_Name: Dash
   m_TagString: Untagged
@@ -3138,7 +3142,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -315}
+  m_AnchoredPosition: {x: 50, y: -433}
   m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6778043607980152714
@@ -3179,6 +3183,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 25
+--- !u!114 &527560843662435205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917287919392886513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b395e5b9b955b7844b347cc2e1fb538c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ability: 6
+  temporary_Sprite: {fileID: 21300000, guid: 325d8fd948121df4b9b4d24dd83a8998, type: 3}
+  permanent_Sprite: {fileID: 21300000, guid: 59199e73e2f00ae44b403e4eeddbd0f9, type: 3}
 --- !u!1 &1968875433578089904
 GameObject:
   m_ObjectHideFlags: 0
@@ -3268,8 +3287,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetImage: {fileID: 374239195562074023}
-  idleSprite: {fileID: 21300000, guid: 2f8c070e00a8ca841bcad2c6b82bd773, type: 3}
-  activeSprite: {fileID: 21300000, guid: eaf468299bb065843a32bc9b1c62e8d8, type: 3}
+  ability: 9
+  idleSprite_Temporary: {fileID: 21300000, guid: 4af6f03d52435ec4482b43cc9fde4e18, type: 3}
+  activeSprite_Temporary: {fileID: 21300000, guid: a28acf63517b6124d9fda3d585c7419f, type: 3}
+  idleSprite_Permanent: {fileID: 21300000, guid: 2f8c070e00a8ca841bcad2c6b82bd773, type: 3}
+  activeSprite_Permanent: {fileID: 21300000, guid: eaf468299bb065843a32bc9b1c62e8d8, type: 3}
   appearDuration: 1.3
   appearStartScale: 0
   appearOvershootScale: 1.2
@@ -3571,8 +3593,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetImage: {fileID: 6529664151770745831}
-  idleSprite: {fileID: 21300000, guid: 40c3c2ca38311744fb30aa44ad4b2793, type: 3}
-  activeSprite: {fileID: 21300000, guid: f06180efe53ddb54e85f2fc0ae3abe90, type: 3}
+  ability: 2
+  idleSprite_Temporary: {fileID: 21300000, guid: d3040e766504da342b699e3b55561f3c, type: 3}
+  activeSprite_Temporary: {fileID: 21300000, guid: f5e11afcf7bb12a4981d850a17b20c26, type: 3}
+  idleSprite_Permanent: {fileID: 21300000, guid: 40c3c2ca38311744fb30aa44ad4b2793, type: 3}
+  activeSprite_Permanent: {fileID: 21300000, guid: f06180efe53ddb54e85f2fc0ae3abe90, type: 3}
   appearDuration: 1.3
   appearStartScale: 0
   appearOvershootScale: 1.2
@@ -4043,6 +4068,7 @@ GameObject:
   - component: {fileID: 373906738187508474}
   - component: {fileID: 3432542471871619353}
   - component: {fileID: 2233417982035621309}
+  - component: {fileID: 4516428055555291792}
   m_Layer: 5
   m_Name: Swimming
   m_TagString: Untagged
@@ -4107,6 +4133,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 25
+--- !u!114 &4516428055555291792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2355802945459943219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b395e5b9b955b7844b347cc2e1fb538c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ability: 1
+  temporary_Sprite: {fileID: 21300000, guid: 2637c0e51f55f914f92594c49c4c0803, type: 3}
+  permanent_Sprite: {fileID: 21300000, guid: 5dfc7906a7f4d8340afe691201bbc048, type: 3}
 --- !u!1 &2379150230957221432
 GameObject:
   m_ObjectHideFlags: 0
@@ -4719,9 +4760,9 @@ RectTransform:
   - {fileID: 673515826489544224}
   - {fileID: 1019492054147919165}
   - {fileID: 1339749320187346636}
-  - {fileID: 5306633376111022258}
   - {fileID: 8650683906374408799}
   - {fileID: 1243352540734111981}
+  - {fileID: 5306633376111022258}
   - {fileID: 6822548228489164927}
   m_Father: {fileID: 5333400268128794787}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7674,6 +7715,7 @@ GameObject:
   - component: {fileID: 1339749320187346636}
   - component: {fileID: 5130708656205324097}
   - component: {fileID: 8965641236051556972}
+  - component: {fileID: 6482261849285753400}
   m_Layer: 5
   m_Name: Descend
   m_TagString: Untagged
@@ -7738,6 +7780,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 25
+--- !u!114 &6482261849285753400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3976590582064227266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b395e5b9b955b7844b347cc2e1fb538c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ability: 5
+  temporary_Sprite: {fileID: 21300000, guid: 24f8d526f080bad469e3582721ede92f, type: 3}
+  permanent_Sprite: {fileID: 21300000, guid: 6427b3f71af64454c9568aaab3d37fba, type: 3}
 --- !u!1 &4018385148653024065
 GameObject:
   m_ObjectHideFlags: 0
@@ -7749,6 +7806,7 @@ GameObject:
   - component: {fileID: 6822548228489164927}
   - component: {fileID: 8116538287458826495}
   - component: {fileID: 2245268737971572063}
+  - component: {fileID: 3008753131230721892}
   m_Layer: 5
   m_Name: CeilingGrab
   m_TagString: Untagged
@@ -7813,6 +7871,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 25
+--- !u!114 &3008753131230721892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4018385148653024065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b395e5b9b955b7844b347cc2e1fb538c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ability: 8
+  temporary_Sprite: {fileID: 21300000, guid: 2c77f94e347b61b4e905adb4238038d9, type: 3}
+  permanent_Sprite: {fileID: 21300000, guid: 52c51856d91acef4cb28847e52212aca, type: 3}
 --- !u!1 &4083411053589810739
 GameObject:
   m_ObjectHideFlags: 0
@@ -8021,8 +8094,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetImage: {fileID: 657188119835311155}
-  idleSprite: {fileID: 21300000, guid: 6427b3f71af64454c9568aaab3d37fba, type: 3}
-  activeSprite: {fileID: 21300000, guid: e049d55a3d866184c95af4529cc7a62c, type: 3}
+  ability: 5
+  idleSprite_Temporary: {fileID: 21300000, guid: 24f8d526f080bad469e3582721ede92f, type: 3}
+  activeSprite_Temporary: {fileID: 21300000, guid: e4fcb35d9e065c44b83fdf81bd538f3f, type: 3}
+  idleSprite_Permanent: {fileID: 21300000, guid: 6427b3f71af64454c9568aaab3d37fba, type: 3}
+  activeSprite_Permanent: {fileID: 21300000, guid: e049d55a3d866184c95af4529cc7a62c, type: 3}
   appearDuration: 1.3
   appearStartScale: 0
   appearOvershootScale: 1.2
@@ -8324,6 +8400,7 @@ GameObject:
   - component: {fileID: 1019492054147919165}
   - component: {fileID: 8188242172069575269}
   - component: {fileID: 8116876134416211194}
+  - component: {fileID: 3338101309315506090}
   m_Layer: 5
   m_Name: Ascend
   m_TagString: Untagged
@@ -8388,6 +8465,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 25
+--- !u!114 &3338101309315506090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4250318887000881286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b395e5b9b955b7844b347cc2e1fb538c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ability: 4
+  temporary_Sprite: {fileID: 21300000, guid: a747fdbe563771343ac6e2036400f45e, type: 3}
+  permanent_Sprite: {fileID: 21300000, guid: 0e83f607f67980f429a3f46b8381967f, type: 3}
 --- !u!1 &4269128790510723490
 GameObject:
   m_ObjectHideFlags: 0
@@ -8399,6 +8491,7 @@ GameObject:
   - component: {fileID: 1243352540734111981}
   - component: {fileID: 1516405853625482724}
   - component: {fileID: 7765666304045353958}
+  - component: {fileID: 7770929825742229237}
   m_Layer: 5
   m_Name: GraplingHook
   m_TagString: Untagged
@@ -8422,7 +8515,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -433}
+  m_AnchoredPosition: {x: 50, y: -374}
   m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1516405853625482724
@@ -8463,6 +8556,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 25
+--- !u!114 &7770929825742229237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4269128790510723490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b395e5b9b955b7844b347cc2e1fb538c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ability: 9
+  temporary_Sprite: {fileID: 21300000, guid: 4af6f03d52435ec4482b43cc9fde4e18, type: 3}
+  permanent_Sprite: {fileID: 21300000, guid: 2f8c070e00a8ca841bcad2c6b82bd773, type: 3}
 --- !u!1 &4373437499511461780
 GameObject:
   m_ObjectHideFlags: 0
@@ -10767,7 +10875,7 @@ MonoBehaviour:
   - {fileID: 8533180545739792939}
   - {fileID: 1178965169865400535}
   - {fileID: 9066661754511086775}
-  fadeDuration: 1
+  fadeDuration: 0.85
 --- !u!1 &5585989625230826249
 GameObject:
   m_ObjectHideFlags: 0
@@ -10857,8 +10965,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetImage: {fileID: 332660969365993227}
-  idleSprite: {fileID: 21300000, guid: 52c51856d91acef4cb28847e52212aca, type: 3}
-  activeSprite: {fileID: 21300000, guid: 74e343dc02c8364498ea4fe18ee4c37f, type: 3}
+  ability: 8
+  idleSprite_Temporary: {fileID: 21300000, guid: 2c77f94e347b61b4e905adb4238038d9, type: 3}
+  activeSprite_Temporary: {fileID: 21300000, guid: 1888c6d685573f542873c226e53507fa, type: 3}
+  idleSprite_Permanent: {fileID: 21300000, guid: 52c51856d91acef4cb28847e52212aca, type: 3}
+  activeSprite_Permanent: {fileID: 21300000, guid: 74e343dc02c8364498ea4fe18ee4c37f, type: 3}
   appearDuration: 1.3
   appearStartScale: 0
   appearOvershootScale: 1.2
@@ -11573,8 +11684,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetImage: {fileID: 4716652677295140444}
-  idleSprite: {fileID: 21300000, guid: 5dfc7906a7f4d8340afe691201bbc048, type: 3}
-  activeSprite: {fileID: 21300000, guid: de62192f4c0bea14fa74289e6d3a1e32, type: 3}
+  ability: 1
+  idleSprite_Temporary: {fileID: 21300000, guid: 2637c0e51f55f914f92594c49c4c0803, type: 3}
+  activeSprite_Temporary: {fileID: 21300000, guid: 9048e85590f213641a322bd4488620a9, type: 3}
+  idleSprite_Permanent: {fileID: 21300000, guid: 5dfc7906a7f4d8340afe691201bbc048, type: 3}
+  activeSprite_Permanent: {fileID: 21300000, guid: de62192f4c0bea14fa74289e6d3a1e32, type: 3}
   appearDuration: 1.3
   appearStartScale: 0
   appearOvershootScale: 1.2
@@ -12064,8 +12178,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetImage: {fileID: 451079442945282485}
-  idleSprite: {fileID: 21300000, guid: 6427b3f71af64454c9568aaab3d37fba, type: 3}
-  activeSprite: {fileID: 21300000, guid: e049d55a3d866184c95af4529cc7a62c, type: 3}
+  ability: 6
+  idleSprite_Temporary: {fileID: 21300000, guid: 325d8fd948121df4b9b4d24dd83a8998, type: 3}
+  activeSprite_Temporary: {fileID: 21300000, guid: 55e64f6795732444aa41d20e9bbe1538, type: 3}
+  idleSprite_Permanent: {fileID: 21300000, guid: 59199e73e2f00ae44b403e4eeddbd0f9, type: 3}
+  activeSprite_Permanent: {fileID: 21300000, guid: 8dfafb63b546f16439dbfdb44d6b60fc, type: 3}
   appearDuration: 1.3
   appearStartScale: 0
   appearOvershootScale: 1.2
@@ -12279,8 +12396,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetImage: {fileID: 2597001620831475660}
-  idleSprite: {fileID: 21300000, guid: 0e83f607f67980f429a3f46b8381967f, type: 3}
-  activeSprite: {fileID: 21300000, guid: 72fab5673b3242948a14e7409bdc0afe, type: 3}
+  ability: 4
+  idleSprite_Temporary: {fileID: 21300000, guid: a747fdbe563771343ac6e2036400f45e, type: 3}
+  activeSprite_Temporary: {fileID: 21300000, guid: 4152dfb4b276da84eb6392db0a237417, type: 3}
+  idleSprite_Permanent: {fileID: 21300000, guid: 0e83f607f67980f429a3f46b8381967f, type: 3}
+  activeSprite_Permanent: {fileID: 21300000, guid: 72fab5673b3242948a14e7409bdc0afe, type: 3}
   appearDuration: 1.3
   appearStartScale: 0
   appearOvershootScale: 1.2
@@ -16533,8 +16653,9 @@ GameObject:
   - component: {fileID: 673515826489544224}
   - component: {fileID: 1176675170075961451}
   - component: {fileID: 8577413504066497196}
+  - component: {fileID: 619238553042382358}
   m_Layer: 5
-  m_Name: Flippers
+  m_Name: FreeSwim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16597,6 +16718,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 25
+--- !u!114 &619238553042382358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8498356713878141751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b395e5b9b955b7844b347cc2e1fb538c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ability: 3
+  temporary_Sprite: {fileID: 21300000, guid: 72a52a4cac23564478a39f9e03f11ae7, type: 3}
+  permanent_Sprite: {fileID: 21300000, guid: 06ce443520fbc954d89fdfadba6684a4, type: 3}
 --- !u!1 &8505880647738527771
 GameObject:
   m_ObjectHideFlags: 0
@@ -17021,6 +17157,7 @@ GameObject:
   - component: {fileID: 5694813989302141287}
   - component: {fileID: 7236391429888788630}
   - component: {fileID: 6155762967771305662}
+  - component: {fileID: 3295612546156022936}
   m_Layer: 5
   m_Name: Swift Swim
   m_TagString: Untagged
@@ -17085,6 +17222,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 25
+--- !u!114 &3295612546156022936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8615869963075542615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b395e5b9b955b7844b347cc2e1fb538c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ability: 2
+  temporary_Sprite: {fileID: 21300000, guid: d3040e766504da342b699e3b55561f3c, type: 3}
+  permanent_Sprite: {fileID: 21300000, guid: 40c3c2ca38311744fb30aa44ad4b2793, type: 3}
 --- !u!1 &8656412652616902794
 GameObject:
   m_ObjectHideFlags: 0
@@ -17483,8 +17635,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetImage: {fileID: 1498652267490202670}
-  idleSprite: {fileID: 21300000, guid: 06ce443520fbc954d89fdfadba6684a4, type: 3}
-  activeSprite: {fileID: 21300000, guid: ace01cca033867348a36541cc8c2f3a0, type: 3}
+  ability: 3
+  idleSprite_Temporary: {fileID: 21300000, guid: 72a52a4cac23564478a39f9e03f11ae7, type: 3}
+  activeSprite_Temporary: {fileID: 21300000, guid: 65da6a715fe10db4bada94e1b09c84d6, type: 3}
+  idleSprite_Permanent: {fileID: 21300000, guid: 06ce443520fbc954d89fdfadba6684a4, type: 3}
+  activeSprite_Permanent: {fileID: 21300000, guid: ace01cca033867348a36541cc8c2f3a0, type: 3}
   appearDuration: 1.3
   appearStartScale: 0
   appearOvershootScale: 1.2
@@ -17512,6 +17667,7 @@ GameObject:
   - component: {fileID: 8650683906374408799}
   - component: {fileID: 7282502569515435830}
   - component: {fileID: 4103176658211728461}
+  - component: {fileID: 4508481295767999881}
   m_Layer: 5
   m_Name: Jumping
   m_TagString: Untagged
@@ -17535,7 +17691,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -374}
+  m_AnchoredPosition: {x: 50, y: -315}
   m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7282502569515435830
@@ -17576,6 +17732,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 25
+--- !u!114 &4508481295767999881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8948038565241775714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b395e5b9b955b7844b347cc2e1fb538c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ability: 7
+  temporary_Sprite: {fileID: 21300000, guid: bb8160cc399525b4e8033240f361fa5d, type: 3}
+  permanent_Sprite: {fileID: 21300000, guid: 0ba8b841988773347a6f0fe5c77500df, type: 3}
 --- !u!1 &8961774859436079834
 GameObject:
   m_ObjectHideFlags: 0
