@@ -178,37 +178,8 @@ public class UnlockDisplay : MonoBehaviour
         }
     }
 
-    public void SetSelectedBlockName(string name, RegionName region)
+    public void SetSelectedBlockName(string name)
     {
-        switch (region)
-        {
-            case RegionName.None:
-                    selectedBlockName.text = name;
-                break;
-
-            case RegionName.Rivergreen:
-                selectedBlockName.text = name + "\n of the Rivergreen";
-                break;
-            case RegionName.Sandlands:
-                selectedBlockName.text = name + "\n of the Sandlands";
-                break;
-            case RegionName.Frostfields:
-                selectedBlockName.text = name + "\n of the Frostfields";
-                break;
-            case RegionName.Firevein:
-                selectedBlockName.text = name + "\n of the Firevein Mountain";
-                break;
-            case RegionName.Witchmire:
-                selectedBlockName.text = name + "\n of the Witchmire";
-                break;
-            case RegionName.Metalworks:
-                selectedBlockName.text = name + "\n of the Metalworks";
-                break;
-
-            default:
-                selectedBlockName.text = name;
-                break;
-        }
-        
+        selectedBlockName.text = name;
     }
 }

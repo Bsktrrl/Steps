@@ -90,6 +90,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     #region PlayerSkinObjects
 
     [Header("Wardrobe - PlayerSkinObjects")]
+    public string sprite_PauseMenu_default_Name;
     public GameObject skin_Default;
 
     public GameObject object_Rivergreen_Lv1;

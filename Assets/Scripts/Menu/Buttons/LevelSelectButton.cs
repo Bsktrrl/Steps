@@ -121,7 +121,7 @@ public class LevelSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void SetActive()
     {
-        print("1. SetActive: " + gameObject.name);
+        //print("1. SetActive: " + gameObject.name);
 
         //Can be played, and is selected
         if (CheckButtonStatus())
@@ -145,7 +145,7 @@ public class LevelSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
     }
     public void SetPassive()
     {
-        print("2. SetPassive: " + gameObject.name);
+        //print("2. SetPassive: " + gameObject.name);
 
         //Can be played, but is NOT selected
         if (CheckButtonStatus())

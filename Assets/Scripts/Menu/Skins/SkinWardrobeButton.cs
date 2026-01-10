@@ -12,7 +12,6 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
     public static event Action Action_BuySkin;
 
     [Header("General")]
-    public string buttonName;
     public SkinType skinType;
     public HatType hatType;
     [SerializeField] RegionName region;
@@ -410,7 +409,7 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             {
                 case WardrobeSkinState.Hidden:
                     unlockDisplay.SetDisplay_Unavailable(region, level.ToString());
-                    unlockDisplay.SetSelectedBlockName("", RegionName.None);
+                    unlockDisplay.SetSelectedBlockName("");
 
                     //skinWardrobeManager.selectedSkin = skinWardrobeManager.GetSkinSelectedObject();
 
@@ -420,7 +419,7 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
                     break;
                 case WardrobeSkinState.LevelIsVisited:
                     unlockDisplay.SetDisplay_LevelReached();
-                    unlockDisplay.SetSelectedBlockName(buttonName, region);
+                    unlockDisplay.SetSelectedBlockName(SkinsOverview.Instance.GetSkinName(skinType));
 
                     skinWardrobeManager.selectedSkinType = skinType;
                     skinWardrobeManager.selectedSkin = skinWardrobeManager.GetTempSkinSelectedObject();
@@ -431,7 +430,7 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
                         unlockDisplay.SetDisplay_CanUnlock();
                         unlockDisplay.SetDisplay_CanNotUnlock();
 
-                    unlockDisplay.SetSelectedBlockName(buttonName, region);
+                    unlockDisplay.SetSelectedBlockName(SkinsOverview.Instance.GetSkinName(skinType));
 
                     skinWardrobeManager.selectedSkinType = skinType;
                     skinWardrobeManager.selectedSkin = skinWardrobeManager.GetTempSkinSelectedObject();
@@ -439,7 +438,7 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
                     break;
                 case WardrobeSkinState.Bought:
                     unlockDisplay.SetDisplay_CanEquip();
-                    unlockDisplay.SetSelectedBlockName(buttonName, region);
+                    unlockDisplay.SetSelectedBlockName(SkinsOverview.Instance.GetSkinName(skinType));
 
                     skinWardrobeManager.selectedSkinType = skinType;
                     skinWardrobeManager.selectedSkin = skinWardrobeManager.GetTempSkinSelectedObject();
@@ -447,7 +446,7 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
                     break;
                 case WardrobeSkinState.Selected:
                     unlockDisplay.SetDisplay_IsEquipped();
-                    unlockDisplay.SetSelectedBlockName(buttonName, region);
+                    unlockDisplay.SetSelectedBlockName(SkinsOverview.Instance.GetSkinName(skinType));
 
                     skinWardrobeManager.selectedSkinType = skinType;
                     skinWardrobeManager.selectedSkin = skinWardrobeManager.GetTempSkinSelectedObject();
@@ -456,7 +455,7 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
 
                 default:
                     unlockDisplay.SetDisplay_Unavailable(region, level.ToString());
-                    unlockDisplay.SetSelectedBlockName("", RegionName.None);
+                    unlockDisplay.SetSelectedBlockName("");
 
                     //skinWardrobeManager.selectedSkin = skinWardrobeManager.GetSkinSelectedObject();
 
@@ -476,20 +475,20 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             {
                 case WardrobeHatState.Hidden:
                     unlockDisplay.SetDisplay_FinishQuestline(hatType);
-                    unlockDisplay.SetSelectedBlockName("", RegionName.None);
+                    unlockDisplay.SetSelectedBlockName("");
 
                     skinWardrobeManager.selectedHat = skinWardrobeManager.GetHatSelectedObject();
                     break;
                 case WardrobeHatState.Available:
                     unlockDisplay.SetDisplay_CanEquip();
-                    unlockDisplay.SetSelectedBlockName(buttonName, region);
+                    unlockDisplay.SetSelectedBlockName(SkinsOverview.Instance.GetHatName(hatType));
 
                     skinWardrobeManager.selectedHatType = hatType;
                     skinWardrobeManager.selectedHat = skinWardrobeManager.GetTempHatSelectedObject();
                     break;
                 case WardrobeHatState.Selected:
                     unlockDisplay.SetDisplay_IsEquipped();
-                    unlockDisplay.SetSelectedBlockName(buttonName, region);
+                    unlockDisplay.SetSelectedBlockName(SkinsOverview.Instance.GetHatName(hatType));
 
                     skinWardrobeManager.selectedHatType = hatType;
                     skinWardrobeManager.selectedHat = skinWardrobeManager.GetTempHatSelectedObject();
@@ -497,7 +496,7 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
 
                 default:
                     unlockDisplay.SetDisplay_FinishQuestline(hatType);
-                    unlockDisplay.SetSelectedBlockName("", RegionName.None);
+                    unlockDisplay.SetSelectedBlockName("");
 
                     skinWardrobeManager.selectedHat = skinWardrobeManager.GetHatSelectedObject();
                     break;
