@@ -44,6 +44,9 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
     //Block Skins
     /*[HideInInspector]*/ public SkinInfo skinsInfo_Store = new SkinInfo();
+
+    //Tutorial
+    /*[HideInInspector]*/ public bool tutorial_Finished = new bool();
     #endregion
 
 
@@ -80,6 +83,8 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.mapNameDisplay_Store = gameData.mapNameDisplay_Save;
         this.charatersData_Store = gameData.charatersData_Save;
         this.skinsInfo_Store = gameData.skinsInfo_Save;
+        
+        this.tutorial_Finished = gameData.tutorial_Finished_Save;
     }
 
     void LoadDataIntoProject(GameData gameData)
@@ -140,6 +145,8 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         gameData.charatersData_Save = this.charatersData_Store;
         gameData.settingData_SaveList = this.settingData_StoreList;
         gameData.skinsInfo_Save = this.skinsInfo_Store;
+
+        gameData.tutorial_Finished_Save = this.tutorial_Finished;
     }
 
     public void Load_NewGame_Data(GameData oldData, GameData newData)
@@ -153,6 +160,8 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.mapNameDisplay_Store = newData.mapNameDisplay_Save;
         this.charatersData_Store = newData.charatersData_Save;
         this.skinsInfo_Store = newData.skinsInfo_Save;
+
+        this.tutorial_Finished = newData.tutorial_Finished_Save;
 
         //Persist through newGame
         this.settingData_StoreList = oldData.settingData_SaveList;

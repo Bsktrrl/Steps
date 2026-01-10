@@ -170,7 +170,11 @@ public class Movement : Singleton<Movement>
         }
         else
         {
-            if (PlayerManager.Instance.pauseGame) return;
+            if (!Tutorial.Instance.tutorial_isRunning)
+            {
+                if (PlayerManager.Instance.pauseGame) return;
+            }
+
             MovementSetup();
         }
 

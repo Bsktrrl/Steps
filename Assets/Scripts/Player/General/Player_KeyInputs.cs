@@ -78,6 +78,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnForward_Down()
     {
+        Run_Movement_Tutorial(ref forward_isPressed);
+
         if (!ButtonChecks_Movement()) { return; }
 
         forward_isPressed = true;
@@ -99,6 +101,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnBackward_Down()
     {
+        Run_Movement_Tutorial(ref back_isPressed);
+
         if (!ButtonChecks_Movement()) { return; }
 
         back_isPressed = true;
@@ -120,6 +124,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnLeft_Down()
     {
+        Run_Movement_Tutorial(ref left_isPressed);
+
         if (!ButtonChecks_Movement()) { return; }
 
         left_isPressed = true;
@@ -141,6 +147,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnRight_Down()
     {
+        Run_Movement_Tutorial(ref right_isPressed);
+
         if (!ButtonChecks_Movement()) { return; }
 
         right_isPressed = true;
@@ -258,6 +266,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnCameraRotateX()
     {
+        Run_CameraRotation_Tutorial(true);
+
         if (!ButtonChecks_Other()) { return; }
         if (Movement.Instance.isUpdatingDarkenBlocks) { return; }
 
@@ -266,6 +276,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnCameraRotateY()
     {
+        Run_CameraRotation_Tutorial(false);
+
         if (!ButtonChecks_Other()) { return; }
         if (Movement.Instance.isUpdatingDarkenBlocks) { return; }
 
@@ -279,6 +291,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnRespawn_In()
     {
+        Run_Respawn_Tutorial();
+
         if (!ButtonChecks_Other()) { return; }
 
         respawn_isPressed = true;
@@ -310,6 +324,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
+        if (Tutorial.Instance.tutorial_isRunning) { return false; }
 
         if (grapplingHook_isPressed)
         {
@@ -335,6 +350,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (PlayerManager.Instance.npcInteraction) { return false; }
         if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
+        if (Tutorial.Instance.tutorial_isRunning) { return false; }
 
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
 
@@ -366,6 +382,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         return true;
     }
 
+
     //--------------------
 
 
@@ -378,5 +395,42 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         PauseMenuManager.Instance.OpenPauseMenu();
 
         Action_PauseMenuIsPressed?.Invoke();
+    }
+    
+    //--------------------
+
+
+    //Tutorial
+    void Run_Movement_Tutorial(ref bool button_isPressed)
+    {
+        if (Tutorial.Instance.state_Movement)
+        {
+            button_isPressed = true;
+            Action_WalkButton_isPressed?.Invoke();
+
+            Tutorial.Instance.Tutorial_Movement(false);
+        }
+    }
+    void Run_CameraRotation_Tutorial(bool cameraX)
+    {
+        if (Tutorial.Instance.state_CameraRotation)
+        {
+            MapManager.Instance.cameraRotated++;
+            
+            if (cameraX)
+                CameraController.Instance.RotateCameraX();
+            else
+                CameraController.Instance.RotateCameraY();
+
+            Tutorial.Instance.Tutorial_CameraRotation(false);
+        }
+    }
+    void Run_Respawn_Tutorial()
+    {
+        if (Tutorial.Instance.state_Respawn)
+        {
+            respawn_isPressed = true;
+            Action_RespawnHold?.Invoke();
+        }
     }
 }

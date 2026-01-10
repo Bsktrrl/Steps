@@ -1690,6 +1690,50 @@ MonoBehaviour:
   sprite_Metalworks_Lv3: {fileID: 21300000, guid: ef6a9123fc53ff344b9f10ec572c7126, type: 3}
   sprite_Metalworks_Lv4: {fileID: 21300000, guid: 158c50b98fd2ac74b94058ec92f11d49, type: 3}
   sprite_Metalworks_Lv5: {fileID: 21300000, guid: 47c5485d81451b745a5108cf8ff9a425, type: 3}
+--- !u!1 &202452762
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 202452763}
+  - component: {fileID: 202452764}
+  m_Layer: 6
+  m_Name: ControllerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &202452763
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 202452762}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -12, y: -1.8, z: 10}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 987133965}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &202452764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 202452762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7ea70a62fba6bd438788edcc669c806, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &219398154 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8332234586163316099, guid: d849c2a482157524daf80482b6aef7e8, type: 3}
@@ -3114,6 +3158,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!1001 &426286485
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3595,6 +3640,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!1 &448119782
 GameObject:
   m_ObjectHideFlags: 0
@@ -5587,6 +5633,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!114 &637552373 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 413476331746969819, guid: 708f515159424df4292f33b367a505ee, type: 3}
@@ -7973,6 +8020,7 @@ Transform:
   - {fileID: 1892071874}
   - {fileID: 1393260105}
   - {fileID: 1783835596}
+  - {fileID: 202452763}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1009604119
@@ -9138,6 +9186,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!1 &1162143988
 GameObject:
   m_ObjectHideFlags: 0
@@ -9876,6 +9925,7 @@ MonoBehaviour:
         skin_Region4_Hat: 0
         skin_Region5_Hat: 0
         skin_Region6_Hat: 0
+    tutorial_Finished_Save: 0
 --- !u!1 &1249729863
 GameObject:
   m_ObjectHideFlags: 0
@@ -10565,6 +10615,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!1 &1376599049 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1330780132882266929, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
@@ -13064,6 +13115,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!1 &1624644463 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9197591149830024487, guid: 708f515159424df4292f33b367a505ee, type: 3}
@@ -13270,6 +13322,7 @@ MonoBehaviour:
         skin_Region4_Hat: 0
         skin_Region5_Hat: 0
         skin_Region6_Hat: 0
+    tutorial_Finished_Save: 0
   menuState_Store: 0
   playerStats_Store:
     steps_Max: 0
@@ -13421,6 +13474,7 @@ MonoBehaviour:
       skin_Region4_Hat: 0
       skin_Region5_Hat: 0
       skin_Region6_Hat: 0
+  tutorial_Finished: 0
 --- !u!1001 &1689483885
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18402,6 +18456,7 @@ MonoBehaviour:
   regionState_ToSelect: 0
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
 --- !u!1001 &1754718314539772141
 PrefabInstance:
   m_ObjectHideFlags: 0

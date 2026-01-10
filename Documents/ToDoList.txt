@@ -16,21 +16,21 @@ __________________
 2.1. Change the UI for all menus, so it matches the new assets
 - Settings
 	- Controls: Key Inputs + functionality
-- Dialogue
-	- Change the script and ExcelTemplates to have links to other lines, regardless of option or not
 
 
 2.2. Guides
 - Add UI to the Start of the first level
 	- Add UI animation for popping in
+	- Add a save bool that checks if the tutorial has been played, to prevent it from playing more times
 - Add UI for pickups and Abilities
 	- Add UI animation for popping in
 
 2.3. General UI fixes
 - When starting a level, the extra footprints are highlighted as "taken" instead of being empty
 	- The frame isn't "lighting" up when the footprints are filled in the beginning
-- Change so that temporary pickups are white permanent are purple
-	- Separate the frame and icon into two Image-layers where the frame are toggled on/off
+- Change so that temporary pickups are white and permanent pickups are purple
+	- Add an option to use 2 different types of icons, checking which to use
+	- Add a "glowing"-version of the white icons to be displayed when the player is using the temporary action
 	
 
 
@@ -107,7 +107,6 @@ __________________
 17. Move EffectBlocks on top of SnowBlocks
 
 20. The left movement sometimes run on auto
-21. DialogueSegments need to have another option for link when there are no options, but the link cannot be the next line (Change in Excel Sheet)
 22. Camera Zoomes far in to the player on stairs, even if it's clear sight
 23. Disable camera zoom when rotating the camera (The result isn't that great, try slower zoomtime during rotation)
 24. Skins in levels make cameras zoom (in and out, based on the rotation of the skin)
@@ -115,7 +114,7 @@ __________________
 
 
 
------ TASKS SOON TO BE IMPLEMENTED -----
+----- TASKS TO BE IMPLEMENTED LATER -----
 
 
 
