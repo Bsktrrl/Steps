@@ -18,19 +18,24 @@ __________________
 	- Controls: Key Inputs + functionality
 
 
-2.2. Guides
+2.2. Popup's
 - Add UI to the Start of the first level
 	- Add UI animation for popping in
-	- Add a save bool that checks if the tutorial has been played, to prevent it from playing more times
-- Add UI for pickups and Abilities
-	- Add UI animation for popping in
+- Ability_Popup's
+	- Add templates to all 9 abilities
+	- Add header and description to all 9 abilities
+	- Make all abilities fade in/out as intended, having the popup stay untill the player presses a button to fade it out
+- Canvas Group
+	- Add a canvas group to all popupElements (Tutorial, Footprint, Essence, Skin and Ability) and change the code to focus on changing the CanvasGroup's Alpha value instead of each child component
+	- Ask ChatGPT to change the functions to only use CanvasGroup alpha in "PopupManager"
+
+
+Pink color: E7CDE9
+
 
 2.3. General UI fixes
 - When starting a level, the extra footprints are highlighted as "taken" instead of being empty
 	- The frame isn't "lighting" up when the footprints are filled in the beginning
-- Change so that temporary pickups are white and permanent pickups are purple
-	- Add an option to use 2 different types of icons, checking which to use
-	- Add a "glowing"-version of the white icons to be displayed when the player is using the temporary action
 	
 
 

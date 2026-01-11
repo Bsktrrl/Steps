@@ -12,8 +12,11 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] GameObject popup_Footprint_Parent;
     [SerializeField] GameObject popup_Essence_Parent;
     [SerializeField] GameObject popup_Skin_Parent;
+    [SerializeField] GameObject popup_Ability_Parent;
 
 
+
+    //Remove these in favor of CanvasGrop on the parent GameObjects
     [Header("Texts")]
     [SerializeField] List<TextMeshProUGUI> Tutorial_Footprint_TextList;
     [SerializeField] List<TextMeshProUGUI> Tutorial_Essence_TextList;
@@ -23,6 +26,23 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] List<Image> Tutorial_Footprint_ImageList;
     [SerializeField] List<Image> Tutorial_Essence_ImageList;
     [SerializeField] List<Image> Tutorial_Skin_ImageList;
+
+
+
+
+    [Header("Abilities")]
+    [SerializeField] GameObject ability_SwimSuit;
+    [SerializeField] GameObject ability_SwiftSWim;
+    [SerializeField] GameObject ability_Freeswim;
+
+    [SerializeField] GameObject ability_Ascend;
+    [SerializeField] GameObject ability_Descend;
+
+    [SerializeField] GameObject ability_Dash;
+    [SerializeField] GameObject ability_Jump;
+
+    [SerializeField] GameObject ability_GrapplingHook;
+    [SerializeField] GameObject ability_CeilingGrab;
 
 
     //-----
@@ -66,6 +86,37 @@ public class PopUpManager : Singleton<PopUpManager>
     void ShowSkinPopup()
     {
         StartCoroutine(SkinRoutine());
+    }
+
+    public void ShowAbilityPopup(Abilities ability)
+    {
+        switch (ability)
+        {
+            case Abilities.None:
+                break;
+
+            case Abilities.SwimSuit:
+                break;
+            case Abilities.SwiftSwim:
+                break;
+            case Abilities.Flippers:
+                break;
+            case Abilities.Ascend:
+                break;
+            case Abilities.Descend:
+                break;
+            case Abilities.Dash:
+                break;
+            case Abilities.Jumping:
+                break;
+            case Abilities.CeilingGrab:
+                break;
+            case Abilities.GrapplingHook:
+                break;
+
+            default:
+                break;
+        }
     }
 
 
