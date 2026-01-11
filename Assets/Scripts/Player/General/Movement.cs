@@ -607,7 +607,7 @@ public class Movement : Singleton<Movement>
         {
             BlockInfo hitBlock = outObj1.GetComponent<BlockInfo>();
 
-            print("100. SwiftSwimBlock Detected Above: " + outObj1.name);
+            //print("100. SwiftSwimBlock Detected Above: " + outObj1.name);
 
             if (hitBlock.blockElement == BlockElement.Water)
             {

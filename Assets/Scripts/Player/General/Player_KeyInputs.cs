@@ -78,6 +78,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnForward_Down()
     {
+        if (!Run_AbilityDisplayExit()) return;
+
         Run_Movement_Tutorial(ref forward_isPressed);
 
         if (!ButtonChecks_Movement()) { return; }
@@ -101,6 +103,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnBackward_Down()
     {
+        if (!Run_AbilityDisplayExit()) return;
+
         Run_Movement_Tutorial(ref back_isPressed);
 
         if (!ButtonChecks_Movement()) { return; }
@@ -124,6 +128,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnLeft_Down()
     {
+        if (!Run_AbilityDisplayExit()) return;
+
         Run_Movement_Tutorial(ref left_isPressed);
 
         if (!ButtonChecks_Movement()) { return; }
@@ -147,6 +153,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnRight_Down()
     {
+        if (!Run_AbilityDisplayExit()) return;
+
         Run_Movement_Tutorial(ref right_isPressed);
 
         if (!ButtonChecks_Movement()) { return; }
@@ -171,6 +179,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnAbilityUp_Down()
     {
+        if (!Run_AbilityDisplayExit()) return;
+
         if (!ButtonChecks_Movement() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
         up_isPressed = true;
@@ -184,6 +194,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnAbilityDown_Down()
     {
+        if (!Run_AbilityDisplayExit()) return;
+
         if (!ButtonChecks_Movement() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
         
         down_isPressed = true;
@@ -202,18 +214,24 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnDialogueSkip_Pressed()
     {
+        if (!Run_AbilityDisplayExit()) return;
+
         if (!PlayerManager.Instance.npcInteraction) { return; }
 
         Action_dialogueButton_isPressed?.Invoke();
     }
     void OnDialogueNext_Pressed()
     {
+        if (!Run_AbilityDisplayExit()) return;
+
         if (!PlayerManager.Instance.npcInteraction) { return; }
 
         Action_dialogueNextButton_isPressed?.Invoke();
     }
     void OnInteractButton_Pressed()
     {
+        if (!Run_AbilityDisplayExit()) return;
+
         if (!ButtonChecks_Movement()) { return; }
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
 
@@ -227,6 +245,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnAbilityLeft()
     {
+        if (!Run_AbilityDisplayExit()) return;
+
         if (!ButtonChecks_Other()) { return; }
         if (Movement.Instance.movementStates == MovementStates.Falling) { return; }
 
@@ -237,6 +257,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnAbilityRight_DownPress()
     {
+        if (!Run_AbilityDisplayExit()) return;
+
         if (!ButtonChecks_Other() || Player_CeilingGrab.Instance.isCeilingGrabbing) return;
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) return;
         
@@ -248,6 +270,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnAbilityRight_RelesePress()
     {
+        if (!Run_AbilityDisplayExit()) return;
+
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) return;
 
         grapplingHook_isPressed = false;
@@ -266,6 +290,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnCameraRotateX()
     {
+        if (!Run_AbilityDisplayExit()) return;
+
         Run_CameraRotation_Tutorial(true);
 
         if (!ButtonChecks_Other()) { return; }
@@ -276,6 +302,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnCameraRotateY()
     {
+        if (!Run_AbilityDisplayExit()) return;
+
         Run_CameraRotation_Tutorial(false);
 
         if (!ButtonChecks_Other()) { return; }
@@ -291,6 +319,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnRespawn_In()
     {
+        if (!Run_AbilityDisplayExit()) return;
+
         Run_Respawn_Tutorial();
 
         if (!ButtonChecks_Other()) { return; }
@@ -310,6 +340,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnQuit()
     {
+        if (!Run_AbilityDisplayExit()) return;
+
         if (!ButtonChecks_Other()) { return; }
 
         Key_Quit();
@@ -325,6 +357,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
         if (Tutorial.Instance.tutorial_isRunning) { return false; }
+        if (PopUpManager.Instance.ability_Active) { return false; }
 
         if (grapplingHook_isPressed)
         {
@@ -351,6 +384,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Tutorial.Instance.tutorial_isRunning) { return false; }
+        if (PopUpManager.Instance.ability_Active) { return false; }
 
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
 
@@ -378,6 +412,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (PlayerManager.Instance.npcInteraction) { return false; }
         if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
+        if (Tutorial.Instance.tutorial_isRunning) { return false; }
+        if (PopUpManager.Instance.ability_Active) { return false; }
 
         return true;
     }
@@ -432,5 +468,18 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
             respawn_isPressed = true;
             Action_RespawnHold?.Invoke();
         }
+    }
+
+    //Ability
+    bool Run_AbilityDisplayExit()
+    {
+        if (PopUpManager.Instance.ability_Active)
+        {
+            PopUpManager.Instance.HideAbilityPopup();
+
+            return false;
+        }
+
+        return true;
     }
 }

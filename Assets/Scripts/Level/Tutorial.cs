@@ -52,7 +52,7 @@ public class Tutorial : Singleton<Tutorial>
 
     void Start_Tutorial()
     {
-        print("111. DataManager.Instance.tutorial_Finished: " + DataManager.Instance.tutorial_Finished);
+        //print("111. DataManager.Instance.tutorial_Finished: " + DataManager.Instance.tutorial_Finished);
         if (!DataManager.Instance.tutorial_Finished)
         {
             PlayerManager.Instance.PauseGame();
