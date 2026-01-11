@@ -297,21 +297,27 @@ public class StepsHUD : Singleton<StepsHUD>
 
     public void FootstepsFrameShine_Start()
     {
-        if (firstTimeFrameActivates)
-        {
-            if (_co != null) StopCoroutine(_co);
-            _co = StartCoroutine(CoShineStart());
-        }
+        //if (firstTimeFrameActivates)
+        //{
+        //    if (_co != null) StopCoroutine(_co);
+        //    _co = StartCoroutine(CoShineStart());
+        //}
+
+        if (_co != null) StopCoroutine(_co);
+        _co = StartCoroutine(CoShineStart());
     }
     public void FootstepsFrameShine_End()
     {
-        if (firstTimeFrameActivates)
-        {
-            if (_co != null) StopCoroutine(_co);
-            _co = StartCoroutine(CoShineEnd());
-        }
+        //if (firstTimeFrameActivates)
+        //{
+        //    if (_co != null) StopCoroutine(_co);
+        //    _co = StartCoroutine(CoShineEnd());
+        //}
 
-        firstTimeFrameActivates = true;
+        //firstTimeFrameActivates = true;
+
+        if (_co != null) StopCoroutine(_co);
+        _co = StartCoroutine(CoShineEnd());
     }
     IEnumerator FootstepsFrameShine_InOut(float WaitTime)
     {
