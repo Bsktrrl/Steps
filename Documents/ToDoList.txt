@@ -3,63 +3,49 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 
-2. New Menu UI
-- Change the UI for all menus, so it matches the new assets
-	- MainMenu
-		- Background Image
-	- Settings
-	- Wardrobe
-		- Make it so that only levels that has been visited (has its stats made in saveData), shows the skin for that level (use "?" for the rest)
-	- PauseMenu
-	- Dialogue
-		- Make the option you are currently on, bigger (increase scale size)
-		- Change the script and ExcelTemp to have links to other lines, regardless of option or not
-	
+1. New Menu UI
+__________________
+
+1.1. Change the UI for all menus, so it matches the new assets
+- Settings
+	- Controls: Key Inputs + functionality
+	- Hide the OptionMenus that are not in use
+
+
+
+2. FreeRoam Camera:
+__________________
+
+2.1. Make FreeRoam camera by pressing R1 to roam freely
+	- Snap back to the player when pressing the button again
+  		- Perform snapping by transitioning very fast, for a smooth experience
+
 
 
 3. Intro Camera:
 __________________
 
-- Make intro, where camera is focused on Glueplant and zoomes out to the player
-- Attach a camera to the Glueplant and make it softTransition to the player
+3.1. Make generic intro, where camera is focused on Glueplant and zoomes out to the player
+	- Attach a camera to the Glueplant and make it softTransition to the player
 
 
-4. FreeRoam Camera:
-__________________
 
-Make FreeRoam camera by pressing R1 to roam freely
-- Snap back to the player when pressing the button again
-   - Perform snapping by transitioning very fast, for a smooth experience
-
-
-5.
+4.
 Sound:
 __________________
 
-5.1. Ice Gliding and Water Blocks
-- Fix so that when icegliding and the player can swim, stop before the water as it was a normal ledge
+4.1. Ice Gliding and Water Blocks
+- Fix so that when icegliding and the player CAN swim, stop before any waterBlock as it was a normal ledge
 
-5.2. Ice glide bug
+4.2. Ice glide bug
 - Fix ice glide audio bug
-
-
-6.
-Menu navigating errors:
-__________________
-
-6.1. Menu Errors
-- Moving from option to option, keyboard is laggy (may be when the controller is plugged in, but not used?)
-
-6.2. Overworld Errors
-- Fix so that the menu operates as intended when pressing/hovering buttons/regions
-- Lock the cursor, so it cannot be used in-game
 
 
 
 --- OTHER STUFF
 
 
-1. PLayerGlideAnimation are set in situations it should not (deactivate it if the player movementState is Still)
+1. PlayerGlideAnimation still happens when it should not
 2. Make the numbers appear when stopping AND release the movementButton
 	- Now it disappear if moving into a deadEndBlock and holding in the movementButton
 3. The player isn't performing walking animation after Ascending/Descending/SwiftSwim (when moving away from the block landed on)
@@ -69,6 +55,9 @@ __________________
 5. When doing CeilingGrabRotation back to the noraml camera, it is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
 6. Add "MovingBlock"-EffectBlock
 7. Falling onto a fallingblock prevents movement
+8. Make so that abilities are learned permanent when all levels required are completed (fewer levels for the demo)
+	- Enable Hats when all levels are completed (for the demo only. Questline needs to be finished in the real game)
+9. Goin down a ladded to a Root-block, doesn't trigger the Root-block
 
 
 
@@ -89,7 +78,6 @@ __________________
 17. Move EffectBlocks on top of SnowBlocks
 
 20. The left movement sometimes run on auto
-21. DialogueSegments need to have another option for link when there are no options, but the link cannot be the next line (Change in Excel Sheet)
 22. Camera Zoomes far in to the player on stairs, even if it's clear sight
 23. Disable camera zoom when rotating the camera (The result isn't that great, try slower zoomtime during rotation)
 24. Skins in levels make cameras zoom (in and out, based on the rotation of the skin)
@@ -97,7 +85,7 @@ __________________
 
 
 
------ TASKS SOON TO BE IMPLEMENTED -----
+----- TASKS TO BE IMPLEMENTED LATER -----
 
 
 

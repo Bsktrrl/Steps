@@ -107,7 +107,8 @@ public class StepsHUD : Singleton<StepsHUD>
 
     public void UpdateStepsDisplay_Walking()
     {
-        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>() && !Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_SpawnPoint_isAdded)
+        if (Movement.Instance.blockStandingOn && (Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>() && !Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_SpawnPoint_isAdded)
+            || (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair))
         {
             for (int i = 0; i < 10; i++)
             {
@@ -139,7 +140,7 @@ public class StepsHUD : Singleton<StepsHUD>
             }
         }
 
-        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_MushroomCircle_isAdded)
+        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_MushroomCircle_isAdded)
         {
             StartCoroutine(FootstepsFrameShine_InOut(0.25f));
         }
@@ -296,21 +297,27 @@ public class StepsHUD : Singleton<StepsHUD>
 
     public void FootstepsFrameShine_Start()
     {
-        if (firstTimeFrameActivates)
-        {
-            if (_co != null) StopCoroutine(_co);
-            _co = StartCoroutine(CoShineStart());
-        }
+        //if (firstTimeFrameActivates)
+        //{
+        //    if (_co != null) StopCoroutine(_co);
+        //    _co = StartCoroutine(CoShineStart());
+        //}
+
+        if (_co != null) StopCoroutine(_co);
+        _co = StartCoroutine(CoShineStart());
     }
     public void FootstepsFrameShine_End()
     {
-        if (firstTimeFrameActivates)
-        {
-            if (_co != null) StopCoroutine(_co);
-            _co = StartCoroutine(CoShineEnd());
-        }
+        //if (firstTimeFrameActivates)
+        //{
+        //    if (_co != null) StopCoroutine(_co);
+        //    _co = StartCoroutine(CoShineEnd());
+        //}
 
-        firstTimeFrameActivates = true;
+        //firstTimeFrameActivates = true;
+
+        if (_co != null) StopCoroutine(_co);
+        _co = StartCoroutine(CoShineEnd());
     }
     IEnumerator FootstepsFrameShine_InOut(float WaitTime)
     {

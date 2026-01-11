@@ -105,20 +105,21 @@ public class Block_Root : MonoBehaviour
         //Make list of blocks that must cost 0 and get rootLines on them
         while (!finishedCheckingForBlocks)
         {
+
             bool blockIsFound = false;
 
             #region Check in line
             GameObject tempBlock_Adjacent = new GameObject();
-            tempBlock_Adjacent = RaycastBlock(tempOriginPos, playerLookDir, 1f);
+            tempBlock_Adjacent = RaycastBlock(tempOriginPos + (Vector3.up * 0.3f), playerLookDir, 1f);
 
             //If there IS a block adjacent
             if (tempBlock_Adjacent)
             {
                 //is there a block over adjacent?
-                GameObject tempBlock_Over = RaycastBlock(tempBlock_Adjacent.transform.position, Vector3.up, 1f);
+                GameObject tempBlock_Over = RaycastBlock(tempBlock_Adjacent.transform.position + (Vector3.up * 0.3f), Vector3.up, 1f);
 
                 //If there is NOT a block over adjacent
-                if (!tempBlock_Over) 
+                if (!tempBlock_Over)
                 {
                     if (tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                     {
@@ -169,8 +170,8 @@ public class Block_Root : MonoBehaviour
             //If there is NOT a block adjacent?
             else
             {
-                GameObject tempBlock_UnderEmpty = RaycastBlock(tempOriginPos + playerLookDir, Vector3.down, 1.25f);
-                GameObject tempBlock_OverEmpty = RaycastBlock(tempOriginPos + playerLookDir, Vector3.up, 1.25f);
+                GameObject tempBlock_UnderEmpty = RaycastBlock(tempOriginPos + (Vector3.up * 0.3f) + playerLookDir, Vector3.down, 1.25f);
+                GameObject tempBlock_OverEmpty = RaycastBlock(tempOriginPos + (Vector3.up * 0.3f) + playerLookDir, Vector3.up, 1.25f);
 
                 if (tempBlock_UnderEmpty && (tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                     && RootFreeCostBlockList.Count > 0 && (RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Stair || RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slope))
@@ -219,7 +220,6 @@ public class Block_Root : MonoBehaviour
                 if (tempBlock_Adjacent && (tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Slope))
                 {
                     //Check orientation of stair/slope
-
                     StairSlopeCorrection(ref tempBlock_Adjacent);
 
                     if (tempBlock_Adjacent)

@@ -23,7 +23,7 @@ public class MenuManager : Singleton<MenuManager>
     public GameObject wardrobeMenuParent;
 
     [Header("Skin Buttons")]
-    public GameObject wardrobeMenuButton;
+    public GameObject wardrobe_StartButton;
 
 
     //--------------------

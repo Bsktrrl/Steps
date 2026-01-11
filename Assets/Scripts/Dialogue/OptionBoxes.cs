@@ -12,21 +12,37 @@ public class OptionBoxes : Singleton<OptionBoxes>
     public Button optionButton_3;
     public Button optionButton_4;
 
+    public TextMeshProUGUI optionButtonText_1_Active;
+    public TextMeshProUGUI optionButtonText_1_Passive;
+
+    public TextMeshProUGUI optionButtonText_2_Active;
+    public TextMeshProUGUI optionButtonText_2_Passive;
+
+    public TextMeshProUGUI optionButtonText_3_Active;
+    public TextMeshProUGUI optionButtonText_3_Passive;
+
+    public TextMeshProUGUI optionButtonText_4_Active;
+    public TextMeshProUGUI optionButtonText_4_Passive;
+
 
     //--------------------
 
 
     public void SetupOptions(NPCs npc, string option_1, string option_2, string option_3, string option_4)
     {
-        SetupOptionTexts(optionButton_1, option_1);
-        SetupOptionTexts(optionButton_2, option_2);
-        SetupOptionTexts(optionButton_3, option_3);
-        SetupOptionTexts(optionButton_4, option_4);
+        SetupOptionTexts(optionButtonText_1_Active, option_1);
+        SetupOptionTexts(optionButtonText_1_Passive, option_1);
+        SetupOptionTexts(optionButtonText_2_Active, option_2);
+        SetupOptionTexts(optionButtonText_2_Passive, option_2);
+        SetupOptionTexts(optionButtonText_3_Active, option_3);
+        SetupOptionTexts(optionButtonText_3_Passive, option_3);
+        SetupOptionTexts(optionButtonText_4_Active, option_4);
+        SetupOptionTexts(optionButtonText_4_Passive, option_4);
 
-        SetupOptionColors(ref optionButton_1, npc);
-        SetupOptionColors(ref optionButton_2, npc);
-        SetupOptionColors(ref optionButton_3, npc);
-        SetupOptionColors(ref optionButton_4, npc);
+        //SetupOptionColors(ref optionButton_1, npc);
+        //SetupOptionColors(ref optionButton_2, npc);
+        //SetupOptionColors(ref optionButton_3, npc);
+        //SetupOptionColors(ref optionButton_4, npc);
 
         SetupOptionBoxesLinked();
     }
@@ -97,9 +113,9 @@ public class OptionBoxes : Singleton<OptionBoxes>
                 break;
         }
     }
-    void SetupOptionTexts(Button button, string option)
+    void SetupOptionTexts(TextMeshProUGUI button, string option)
     {
-        button.GetComponentInChildren<TextMeshProUGUI>().text = option;
+        button.text = option;
     }
     void SetupOptionBoxesLinked()
     {
@@ -188,10 +204,14 @@ public class OptionBoxes : Singleton<OptionBoxes>
 
     public void ShowHideOptions()
     {
-        SetupOptionVisibility(optionButton_1, optionButton_1.GetComponentInChildren<TextMeshProUGUI>().text);
-        SetupOptionVisibility(optionButton_2, optionButton_2.GetComponentInChildren<TextMeshProUGUI>().text);
-        SetupOptionVisibility(optionButton_3, optionButton_3.GetComponentInChildren<TextMeshProUGUI>().text);
-        SetupOptionVisibility(optionButton_4, optionButton_4.GetComponentInChildren<TextMeshProUGUI>().text);
+        SetupOptionVisibility(optionButton_1, optionButtonText_1_Active.text);
+        SetupOptionVisibility(optionButton_1, optionButtonText_1_Passive.text);
+        SetupOptionVisibility(optionButton_2, optionButtonText_2_Active.text);
+        SetupOptionVisibility(optionButton_2, optionButtonText_2_Passive.text);
+        SetupOptionVisibility(optionButton_3, optionButtonText_3_Active.text);
+        SetupOptionVisibility(optionButton_3, optionButtonText_3_Passive.text);
+        SetupOptionVisibility(optionButton_4, optionButtonText_4_Active.text);
+        SetupOptionVisibility(optionButton_4, optionButtonText_4_Passive.text);
     }
     void SetupOptionVisibility(Button button, string option)
     {

@@ -7,6 +7,21 @@ public class PermanentAbility : MonoBehaviour
     [SerializeField] List<Abilities> permanentAbilityList = new List<Abilities>();
     [SerializeField] List<GameObject> levelsToComplete = new List<GameObject>();
 
+    MenuLevelInfo menuLevelInfo;
+
+
+    //--------------------
+
+
+    private void Start()
+    {
+        menuLevelInfo = FindAnyObjectByType<MenuLevelInfo>();
+    }
+
+
+    //--------------------
+
+
     private void OnEnable()
     {
         levelsToComplete = new List<GameObject>();
@@ -22,20 +37,25 @@ public class PermanentAbility : MonoBehaviour
 
         int levelsCompletedCounter = 0;
 
-        for (int i = 0; i < levelsToComplete.Count; i++)
+        if (menuLevelInfo)
         {
-            for (int j = 0; j < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List.Count; j++)
+            for (int i = 0; i < levelsToComplete.Count; i++)
             {
-                if (levelsToComplete[i].GetComponent<LoadLevel>().levelToPlay == MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[j].mapName)
+                for (int j = 0; j < menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List.Count; j++)
                 {
-                    if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[j].isCompleted)
+                    if (levelsToComplete[i].GetComponent<LoadLevel>().levelToPlay == menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[j].mapName)
                     {
-                        levelsCompletedCounter++;
-                        break;
+                        if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[j].isCompleted)
+                        {
+                            levelsCompletedCounter++;
+                            break;
+                        }
                     }
                 }
             }
         }
+
+        
 
         if (levelsCompletedCounter >= levelsToComplete.Count && levelsToComplete.Count > 0)
         {
@@ -48,29 +68,29 @@ public class PermanentAbility : MonoBehaviour
                     case Abilities.None:
                         break;
 
-                    case Abilities.SwimSuit:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit = true;
-                        break;
-                    case Abilities.SwiftSwim:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim = true;
+                    case Abilities.Snorkel:
+                        PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel = true;
                         break;
                     case Abilities.Flippers:
                         PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers = true;
                         break;
-                    case Abilities.Jumping:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping = true;
+                    case Abilities.OxygenTank:
+                        PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank = true;
                         break;
-                    case Abilities.CeilingGrab:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab = true;
+                    case Abilities.SpringShoes:
+                        PlayerStats.Instance.stats.abilitiesGot_Permanent.SpringShoes = true;
                         break;
-                    case Abilities.Dash:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash = true;
+                    case Abilities.ClimingGloves:
+                        PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimingGloves = true;
                         break;
-                    case Abilities.Ascend:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.Ascend = true;
+                    case Abilities.HandDrill:
+                        PlayerStats.Instance.stats.abilitiesGot_Permanent.HandDrill = true;
                         break;
-                    case Abilities.Descend:
-                        PlayerStats.Instance.stats.abilitiesGot_Permanent.Descend = true;
+                    case Abilities.DrillHelmet:
+                        PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillHelmet = true;
+                        break;
+                    case Abilities.DrillBoots:
+                        PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillBoots = true;
                         break;
                     case Abilities.GrapplingHook:
                         PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook = true;

@@ -27,10 +27,16 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
     [Header("Other GameObject to be hidden with This")]
     [SerializeField] List<GameObject> gameObjectsToHideWithThis;
 
+    [SerializeField] PauseMenuManager pauseMenuManager;
+
 
     //--------------------
 
 
+    private void Start()
+    {
+        pauseMenuManager = FindObjectOfType<PauseMenuManager>();
+    }
     private void Reset()
     {
         if (ActionButtonsManager.Instance.eventSystem == null)
@@ -41,7 +47,8 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
 
     void Update()
     {
-        if (ActionButtonsManager.Instance.cancel_Button.action.WasPressedThisFrame() && /*RememberCurrentlySelectedUIElement.Instance.currentSelectedUIElement == gameObject*/ ActionButtonsManager.Instance.eventSystem.currentSelectedGameObject == gameObject)
+        if (ActionButtonsManager.Instance.cancel_Button.action.WasPressedThisFrame() && /*RememberCurrentlySelectedUIElement.Instance.currentSelectedUIElement == gameObject*/ ActionButtonsManager.Instance.eventSystem.currentSelectedGameObject == gameObject
+            /*&& !PauseMenuManager.Instance.pauseMenu_Parent*/)
         {
             SelectCancelTarget();
         }
@@ -56,12 +63,14 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
         if (ActionButtonsManager.Instance.eventSystem == null)
         {
             Debug.Log("This item has no EventSystem referenced yet.");
+
             return;
         }
 
         if (selectOnCancel == null)
         {
-            Debug.Log("This should jump where? ", this);
+            Debug.Log("No place to jump? ", this);
+
             return;
         }
 
@@ -70,11 +79,6 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
 
 
         Action_ButtonIsCanceled?.Invoke();
-
-        if (selectOnCancel)
-        {
-            ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(selectOnCancel.gameObject);
-        }
         
         //Open/Close menus
         if (menuToOpen)
@@ -106,5 +110,19 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
 
         if (mapManager == null)
             RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(regionState_ToSelect, levelState_ToSelect);
+
+
+        if (selectOnCancel)
+        {
+            ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(selectOnCancel.gameObject);
+        }
+
+        if (pauseMenuManager && pauseMenuManager.pauseMenu_Parent && pauseMenuManager.pauseMenu_Parent.activeInHierarchy)
+        {
+            ////Set the first selected button for controller input
+            //EventSystem.current.SetSelectedGameObject(pauseMenuManager.pauseMenu_StartButton);
+
+            //print("10. pauseMenuManager = true");
+        }
     }
 }

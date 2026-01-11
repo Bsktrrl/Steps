@@ -10,6 +10,7 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
     [SerializeField] GameObject levelDisplay_Parent;
     [SerializeField] TextMeshProUGUI levelName;
     [SerializeField] Image levelImage;
+    [SerializeField] Image glueplantImage;
     [SerializeField] Image skinImage;
 
     [SerializeField] TextMeshProUGUI glueplant_Aquired;
@@ -28,8 +29,18 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
     [SerializeField] GameObject ability_CeilingGrab;
 
 
+    [Header("Glueplant Sprites")]
+    #region Glueplant Sprites
+    public Sprite glueplantSprite_Rivergreen;
+    public Sprite glueplantSprite_Sandlands;
+    public Sprite glueplantSprite_Frostfield;
+    public Sprite glueplantSprite_Firevein;
+    public Sprite glueplantSprite_Witchmire;
+    public Sprite glueplantSprite_Metalworks;
+    #endregion
+
     [Header("Skin Sprites")]
-    #region Sprites
+    #region Skin Sprites
     public Sprite sprite_Rivergreen_Lv1;
     public Sprite sprite_Rivergreen_Lv2;
     public Sprite sprite_Rivergreen_Lv3;
@@ -68,6 +79,18 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
     #endregion
 
 
+    MenuLevelInfo menuLevelInfo;
+
+
+    //--------------------
+
+
+    private void Start()
+    {
+        menuLevelInfo = FindAnyObjectByType<MenuLevelInfo>();
+    }
+
+
     //--------------------
 
 
@@ -102,23 +125,51 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
             levelName.text = activeLevelObject.GetComponent<LevelInfo>().GetName();
 
             //Find the correct mapInfo
-            if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List.Count > 0)
+            if (menuLevelInfo && menuLevelInfo.mapInfo_ToSave != null && menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List.Count > 0)
             {
-                for (global::System.Int32 i = 0; i < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List.Count; i++)
+                for (int i = 0; i < menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List.Count; i++)
                 {
-                    if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].mapName == activeLevelObject.GetComponent<LoadLevel>().levelToPlay)
+                    if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].mapName == activeLevelObject.GetComponent<LoadLevel>().levelToPlay)
                     {
                         //Glueplant aquired
-                        if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].isCompleted)
+                        switch (OverWorldManager.Instance.regionState)
+                        {
+                            case RegionState.None:
+                                break;
+
+                            case RegionState.Rivergreen:
+                                glueplantImage.sprite = glueplantSprite_Rivergreen;
+                                break;
+                            case RegionState.Sandlands:
+                                glueplantImage.sprite = glueplantSprite_Sandlands;
+                                break;
+                            case RegionState.Frostfields:
+                                glueplantImage.sprite = glueplantSprite_Frostfield;
+                                break;
+                            case RegionState.Firevein:
+                                glueplantImage.sprite = glueplantSprite_Firevein;
+                                break;
+                            case RegionState.Witchmire:
+                                glueplantImage.sprite = glueplantSprite_Witchmire;
+                                break;
+                            case RegionState.Metalworks:
+                                glueplantImage.sprite = glueplantSprite_Metalworks;
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].isCompleted)
                             glueplant_Aquired.text = "1 / 1";
                         else
                             glueplant_Aquired.text = "0 / 1";
 
                         //Essence aquired
                         int essenceCounter = 0;
-                        for (int j = 0; j < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].essenceList.Count; j++)
+                        for (int j = 0; j < menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].essenceList.Count; j++)
                         {
-                            if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].essenceList[j].isTaken)
+                            if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].essenceList[j].isTaken)
                             {
                                 essenceCounter++;
                             }
@@ -127,7 +178,7 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
 
                         //Skin aquired
                         int skinCounter = 0;
-                        if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].levelSkin.isTaken)
+                        if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].levelSkin.isTaken)
                         {
                             skinCounter++;
                         }
@@ -135,9 +186,9 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
 
                         //StepMax aquired
                         int stepsCounter = 0;
-                        for (int j = 0; j < MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].maxStepList.Count; j++)
+                        for (int j = 0; j < menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].maxStepList.Count; j++)
                         {
-                            if (MenuLevelInfo.Instance.mapInfo_ToSave.map_SaveInfo_List[i].maxStepList[j].isTaken)
+                            if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].maxStepList[j].isTaken)
                             {
                                 stepsCounter++;
                             }
@@ -166,25 +217,25 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
             ability_GrapplingHook.SetActive(false);
             ability_CeilingGrab.SetActive(false);
 
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.SwimSuit)
+            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.Snorkel)
                 ability_Swimming.SetActive(true);
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.SwiftSwim)
-                ability_SwiftSwim.SetActive(true);
             if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.Flippers)
+                ability_SwiftSwim.SetActive(true);
+            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.OxygenTank)
                 ability_Flippers.SetActive(true);
 
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.Ascend)
+            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.DrillHelmet)
                 ability_Ascend.SetActive(true);
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.Descend)
+            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.DrillBoots)
                 ability_Descend.SetActive(true);
 
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.Dash)
+            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.HandDrill)
                 ability_Dash.SetActive(true);
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.Jumping)
+            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.SpringShoes)
                 ability_Jumping.SetActive(true);
             if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.GrapplingHook)
                 ability_GrapplingHook.SetActive(true);
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.CeilingGrab)
+            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.ClimingGloves)
                 ability_CeilingGrab.SetActive(true);
 
             if (!foundLevel)
@@ -351,4 +402,16 @@ public enum HatType
     Aisa_Hat,
     Mossy_Hat,
     Larry_Hat
+}
+
+public enum RegionName
+{
+    None,
+
+    Rivergreen,
+    Sandlands,
+    Frostfields,
+    Firevein,
+    Witchmire,
+    Metalworks
 }

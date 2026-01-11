@@ -26,7 +26,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     private void Awake()
     {
-        blackScreen.SetActive(true);
+        if (blackScreen)
+            blackScreen.SetActive(true);
 
         HideAllMenus();
     }

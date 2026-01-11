@@ -318,6 +318,9 @@ public class DialogueSegment
     [Header("Dialogue")]
     public List<string> languageDialogueList = new List<string>();
 
+    [Header("Main Link")]
+    public int mainLink;
+
     [Header("Options")]
     public List<LanguageOptions> languageOptionList = new List<LanguageOptions>();
 }

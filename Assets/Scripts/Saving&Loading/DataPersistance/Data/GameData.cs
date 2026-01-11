@@ -29,6 +29,9 @@ public class GameData
     //Block Skins
     /*[HideInInspector]*/ public SkinInfo skinsInfo_Save = new SkinInfo();
 
+    //Tutorial
+    /*[HideInInspector]*/ public bool tutorial_Finished_Save = new bool();
+
 
     //--------------------
 
@@ -43,5 +46,7 @@ public class GameData
         overWorldStates_SaveList = new OverWorldStates();
         charatersData_Save = new CharatersData();
         skinsInfo_Save = new SkinInfo();
+
+        tutorial_Finished_Save = false;
     }
 }

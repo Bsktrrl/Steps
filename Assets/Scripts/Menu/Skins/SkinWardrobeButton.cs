@@ -1,29 +1,39 @@
 using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SkinWardrobeButton : MonoBehaviour
+public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, ISelectHandler, IDeselectHandler
 {
     public static event Action Action_SelectThisSkin;
     public static event Action Action_SelectThisHat;
 
+    public static event Action Action_BuySkin;
+
     [Header("General")]
     public SkinType skinType;
     public HatType hatType;
-    [SerializeField] int region;
+    [SerializeField] RegionName region;
     [SerializeField] int level;
-
-    [Header("Components")]
-    [SerializeField] Image frame;
-    [SerializeField] GameObject overlay;
 
     Player_Animations Player_Animations;
     SkinWardrobeManager skinWardrobeManager;
+
+    [SerializeField] Image backgroundImage;
+    [SerializeField] Image skinImage;
+    [SerializeField] TextMeshProUGUI UnknownText;
+
+    UnlockDisplay unlockDisplay;
 
 
     //--------------------
 
 
+    private void Awake()
+    {
+        unlockDisplay = FindObjectOfType<UnlockDisplay>();
+    }
     private void Start()
     {
         Player_Animations = FindAnyObjectByType<Player_Animations>();
@@ -38,6 +48,12 @@ public class SkinWardrobeButton : MonoBehaviour
 
         Action_SelectThisSkin += DeselectThisSkinButton;
         Action_SelectThisHat += DeselectThisHatButton;
+        Action_BuySkin += UpdateIfSkinIsAvailable;
+        Action_BuySkin += SetActive;
+
+        UpdateIfSkinIsAvailable();
+
+        CheckIfSkinIsFound();
 
         UpdateSkinButtonDisplay();
         UpdateHatButtonDisplay();
@@ -48,23 +64,44 @@ public class SkinWardrobeButton : MonoBehaviour
     {
         Action_SelectThisSkin -= DeselectThisSkinButton;
         Action_SelectThisHat -= DeselectThisHatButton;
+        Action_BuySkin -= UpdateIfSkinIsAvailable;
+        Action_BuySkin -= SetActive;
     }
 
 
     //--------------------
 
+    void CheckIfSkinIsFound()
+    {
+        if (SkinWardrobeManager.Instance.GetLevelSaveData(skinType))
+        {
+            if (SkinWardrobeManager.Instance.GetSkinSaveData(GetRegionNumber(region), level) == WardrobeSkinState.LevelIsVisited
+                || SkinWardrobeManager.Instance.GetSkinSaveData(GetRegionNumber(region), level) == WardrobeSkinState.Available
+                || SkinWardrobeManager.Instance.GetSkinSaveData(GetRegionNumber(region), level) == WardrobeSkinState.Bought
+                || SkinWardrobeManager.Instance.GetSkinSaveData(GetRegionNumber(region), level) == WardrobeSkinState.Selected)
+            {
 
+            }
+            else
+            {
+                SkinWardrobeManager.Instance.SetSkinSaveData(GetRegionNumber(region), level, WardrobeSkinState.LevelIsVisited);
+            }
+        }
+    }
     public void WardrobeButton_isPressed()
     {
         //If it's a block
         if (hatType == HatType.None)
         {
-            WardrobeSkinState tempState = skinWardrobeManager.GetSkinSaveData(region, level);
+            WardrobeSkinState tempState = skinWardrobeManager.GetSkinSaveData(GetRegionNumber(region), level);
 
             switch (tempState)
             {
-                case WardrobeSkinState.Inactive:
+                case WardrobeSkinState.Hidden:
                     //If inactive, stay inactive
+                    break;
+                case WardrobeSkinState.LevelIsVisited:
+                    //Nothing is happening if only the level is visited, but player don't have enough essence
                     break;
                 case WardrobeSkinState.Available:
                     //Check condition to see if button is bought
@@ -73,7 +110,9 @@ public class SkinWardrobeButton : MonoBehaviour
                         PlayerStats.Instance.stats.itemsGot.essence_Current -= skinWardrobeManager.skinCost;
                         skinWardrobeManager.UpdateEssenceDisplay();
 
-                        skinWardrobeManager.SetSkinSaveData(region, level, WardrobeSkinState.Bought);
+                        skinWardrobeManager.SetSkinSaveData(GetRegionNumber(region), level, WardrobeSkinState.Bought);
+
+                        Action_BuySkin?.Invoke();
                     }
                     break;
                 case WardrobeSkinState.Bought:
@@ -82,7 +121,7 @@ public class SkinWardrobeButton : MonoBehaviour
 
                     skinWardrobeManager.SetActiveSkinData(skinType);
 
-                    skinWardrobeManager.SetSkinSaveData(region, level, WardrobeSkinState.Selected);
+                    skinWardrobeManager.SetSkinSaveData(GetRegionNumber(region), level, WardrobeSkinState.Selected);
 
                     skinWardrobeManager.selectedSkin = skinWardrobeManager.GetSkinSelectedObject();
                     skinWardrobeManager.MoveHatObjectsToSelectedSkin();
@@ -96,6 +135,9 @@ public class SkinWardrobeButton : MonoBehaviour
 
                     skinWardrobeManager.selectedSkin = skinWardrobeManager.GetSkinSelectedObject();
                     skinWardrobeManager.MoveHatObjectsToSelectedSkin();
+
+                    if (SkinWardrobeManager.Instance.skinWardrobeButton_Default && SkinWardrobeManager.Instance.skinWardrobeButton_Default.GetComponent<SkinWardrobeButton>())
+                        SkinWardrobeManager.Instance.skinWardrobeButton_Default.GetComponent<SkinWardrobeButton>().SetActive();
                     break;
 
                 default:
@@ -111,7 +153,6 @@ public class SkinWardrobeButton : MonoBehaviour
                 Player_Animations.Instance.UpdateAnimator();
             }
 
-
             skinWardrobeManager.UpdatePlayerBodyDisplay();
         }
 
@@ -122,7 +163,7 @@ public class SkinWardrobeButton : MonoBehaviour
 
             switch (tempHat)
             {
-                case WardrobeHatState.Inactive:
+                case WardrobeHatState.Hidden:
                     //If inactive, stay inactive
                     break;
                 case WardrobeHatState.Available:
@@ -157,6 +198,8 @@ public class SkinWardrobeButton : MonoBehaviour
             skinWardrobeManager.UpdatePlayerHatDisplay();
         }
 
+        SetActive();
+
         SkinsManager.Instance.SaveData();
     }
 
@@ -166,32 +209,43 @@ public class SkinWardrobeButton : MonoBehaviour
 
     public void UpdateSkinButtonDisplay()
     {
-        if (hatType == HatType.None && skinWardrobeManager)
+        skinImage.gameObject.SetActive(true);
+        UnknownText.gameObject.SetActive(false);
+
+        //Based on SaveData
+        if (skinWardrobeManager && hatType == HatType.None)
         {
-            WardrobeSkinState tempState = skinWardrobeManager.GetSkinSaveData(region, level);
+            WardrobeSkinState tempState = skinWardrobeManager.GetSkinSaveData(GetRegionNumber(region), level);
 
             switch (tempState)
             {
-                case WardrobeSkinState.Inactive:
-                    overlay.SetActive(true);
-                    frame.color = skinWardrobeManager.inactive_Color;
+                case WardrobeSkinState.Hidden:
+                    backgroundImage.sprite = SkinWardrobeManager.Instance.sprite_Inactive;
+                    break;
+                case WardrobeSkinState.LevelIsVisited:
+                    backgroundImage.sprite = SkinWardrobeManager.Instance.sprite_Inactive;
                     break;
                 case WardrobeSkinState.Available:
-                    overlay.SetActive(false);
-                    frame.color = skinWardrobeManager.available_Color;
+                    backgroundImage.sprite = SkinWardrobeManager.Instance.sprite_Available;
                     break;
                 case WardrobeSkinState.Bought:
-                    overlay.SetActive(false);
-                    frame.color = skinWardrobeManager.bought_Color;
+                    backgroundImage.sprite = SkinWardrobeManager.Instance.sprite_Bought;
                     break;
                 case WardrobeSkinState.Selected:
-                    overlay.SetActive(false);
-                    frame.color = skinWardrobeManager.selected_Color;
+                    backgroundImage.sprite = SkinWardrobeManager.Instance.sprite_Selected;
                     break;
 
                 default:
                     break;
             }
+        }
+
+        //Based on Level Discovered
+        if (!skinWardrobeManager.GetLevelSaveData(skinType) && skinType != SkinType.Default && hatType == HatType.None)
+        {
+            backgroundImage.sprite = SkinWardrobeManager.Instance.sprite_Inactive;
+            skinImage.gameObject.SetActive(false);
+            UnknownText.gameObject.SetActive(true);
         }
     }
     public void UpdateHatButtonDisplay()
@@ -202,17 +256,14 @@ public class SkinWardrobeButton : MonoBehaviour
 
             switch (tempState)
             {
-                case WardrobeHatState.Inactive:
-                    overlay.SetActive(true);
-                    frame.color = skinWardrobeManager.inactive_Color;
+                case WardrobeHatState.Hidden:
+                    backgroundImage.sprite = SkinWardrobeManager.Instance.sprite_Inactive;
                     break;
                 case WardrobeHatState.Available:
-                    overlay.SetActive(false);
-                    frame.color = skinWardrobeManager.bought_Color;
+                    backgroundImage.sprite = SkinWardrobeManager.Instance.sprite_Available;
                     break;
                 case WardrobeHatState.Selected:
-                    overlay.SetActive(false);
-                    frame.color = skinWardrobeManager.selected_Color;
+                    backgroundImage.sprite = SkinWardrobeManager.Instance.sprite_Selected;
                     break;
 
                 default:
@@ -227,14 +278,23 @@ public class SkinWardrobeButton : MonoBehaviour
         {
             if (DataManager.Instance.skinsInfo_Store.activeSkinType == SkinType.Default)
             {
-                overlay.SetActive(false);
-                frame.color = skinWardrobeManager.selected_Color;
+                backgroundImage.sprite = SkinWardrobeManager.Instance.sprite_Selected;
             }
             else
             {
-                overlay.SetActive(false);
-                frame.color = skinWardrobeManager.bought_Color;
+                backgroundImage.sprite = SkinWardrobeManager.Instance.sprite_Bought;
             }
+        }
+    }
+    public void UpdateIfSkinIsAvailable()
+    {
+        if (SkinWardrobeManager.Instance.GetSkinSaveData(GetRegionNumber(region), level) == WardrobeSkinState.LevelIsVisited && PlayerStats.Instance.stats.itemsGot.essence_Current >= 10)
+        {
+            //SkinWardrobeManager.Instance.SetSkinSaveData(GetRegionNumber(region), level, WardrobeSkinState.Available);
+        }
+        else if (SkinWardrobeManager.Instance.GetSkinSaveData(GetRegionNumber(region), level) == WardrobeSkinState.Available && PlayerStats.Instance.stats.itemsGot.essence_Current < 10)
+        {
+            //SkinWardrobeManager.Instance.SetSkinSaveData(GetRegionNumber(region), level, WardrobeSkinState.LevelIsVisited);
         }
     }
 
@@ -263,9 +323,9 @@ public class SkinWardrobeButton : MonoBehaviour
 
     void DeselectThisSkinButton()
     {
-        if (skinWardrobeManager.GetSkinSaveData(region, level) == WardrobeSkinState.Selected)
+        if (skinWardrobeManager.GetSkinSaveData(GetRegionNumber(region), level) == WardrobeSkinState.Selected)
         {
-            skinWardrobeManager.SetSkinSaveData(region, level, WardrobeSkinState.Bought);
+            skinWardrobeManager.SetSkinSaveData(GetRegionNumber(region), level, WardrobeSkinState.Bought);
             UpdateSkinButtonDisplay();
         }
     }
@@ -277,4 +337,171 @@ public class SkinWardrobeButton : MonoBehaviour
             UpdateHatButtonDisplay();
         }
     }
+
+
+    //--------------------
+
+
+    int GetRegionNumber(RegionName regionName)
+    {
+        switch (regionName)
+        {
+            case RegionName.None:
+                return 0;
+
+            case RegionName.Rivergreen:
+                return 1;
+            case RegionName.Sandlands:
+                return 2;
+            case RegionName.Frostfields:
+                return 3;
+            case RegionName.Firevein:
+                return 4;
+            case RegionName.Witchmire:
+                return 5;
+            case RegionName.Metalworks:
+                return 6;
+
+            default:
+                return 0;
+        }
+    }
+
+
+    //--------------------
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        // Highlighted
+        SetActive();
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        // Normal (mouse left)
+    }
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        // Pressed
+    }
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        // Released (back to Highlighted if still hovered)
+        SetActive();
+    }
+    public void OnSelect(BaseEventData eventData)
+    {
+        // Selected (keyboard/controller)
+        SetActive();
+    }
+    public void OnDeselect(BaseEventData eventData)
+    {
+
+    }
+
+    void SetActive()
+    {
+        //If it's a Skin
+        if (hatType == HatType.None)
+        {
+            WardrobeSkinState tempState = skinWardrobeManager.GetSkinSaveData(GetRegionNumber(region), level);
+
+            switch (tempState)
+            {
+                case WardrobeSkinState.Hidden:
+                    unlockDisplay.SetDisplay_Unavailable(region, level.ToString());
+                    unlockDisplay.SetSelectedBlockName("");
+
+                    //skinWardrobeManager.selectedSkin = skinWardrobeManager.GetSkinSelectedObject();
+
+                    skinWardrobeManager.selectedSkinType = SkinType.None;
+                    skinWardrobeManager.selectedSkin = skinWardrobeManager.GetTempSkinSelectedObject();
+                    skinWardrobeManager.UpdatePlayerBodyDisplay();
+                    break;
+                case WardrobeSkinState.LevelIsVisited:
+                    unlockDisplay.SetDisplay_LevelReached();
+                    unlockDisplay.SetSelectedBlockName(SkinsOverview.Instance.GetSkinName(skinType));
+
+                    skinWardrobeManager.selectedSkinType = skinType;
+                    skinWardrobeManager.selectedSkin = skinWardrobeManager.GetTempSkinSelectedObject();
+                    skinWardrobeManager.UpdatePlayerBodyDisplay();
+                    break;
+                case WardrobeSkinState.Available:
+                    if (PlayerStats.Instance.stats.itemsGot.essence_Current >= 10)
+                        unlockDisplay.SetDisplay_CanUnlock();
+                        unlockDisplay.SetDisplay_CanNotUnlock();
+
+                    unlockDisplay.SetSelectedBlockName(SkinsOverview.Instance.GetSkinName(skinType));
+
+                    skinWardrobeManager.selectedSkinType = skinType;
+                    skinWardrobeManager.selectedSkin = skinWardrobeManager.GetTempSkinSelectedObject();
+                    skinWardrobeManager.UpdatePlayerBodyDisplay();
+                    break;
+                case WardrobeSkinState.Bought:
+                    unlockDisplay.SetDisplay_CanEquip();
+                    unlockDisplay.SetSelectedBlockName(SkinsOverview.Instance.GetSkinName(skinType));
+
+                    skinWardrobeManager.selectedSkinType = skinType;
+                    skinWardrobeManager.selectedSkin = skinWardrobeManager.GetTempSkinSelectedObject();
+                    skinWardrobeManager.UpdatePlayerBodyDisplay();
+                    break;
+                case WardrobeSkinState.Selected:
+                    unlockDisplay.SetDisplay_IsEquipped();
+                    unlockDisplay.SetSelectedBlockName(SkinsOverview.Instance.GetSkinName(skinType));
+
+                    skinWardrobeManager.selectedSkinType = skinType;
+                    skinWardrobeManager.selectedSkin = skinWardrobeManager.GetTempSkinSelectedObject();
+                    skinWardrobeManager.UpdatePlayerBodyDisplay();
+                    break;
+
+                default:
+                    unlockDisplay.SetDisplay_Unavailable(region, level.ToString());
+                    unlockDisplay.SetSelectedBlockName("");
+
+                    //skinWardrobeManager.selectedSkin = skinWardrobeManager.GetSkinSelectedObject();
+
+                    skinWardrobeManager.selectedSkinType = SkinType.None;
+                    skinWardrobeManager.selectedSkin = skinWardrobeManager.GetTempSkinSelectedObject();
+                    skinWardrobeManager.UpdatePlayerBodyDisplay();
+                    break;
+            }
+        }
+
+        //If it's a Hat
+        else
+        {
+            WardrobeHatState tempState = skinWardrobeManager.GetHatSaveData(hatType);
+
+            switch (tempState)
+            {
+                case WardrobeHatState.Hidden:
+                    unlockDisplay.SetDisplay_FinishQuestline(hatType);
+                    unlockDisplay.SetSelectedBlockName("");
+
+                    skinWardrobeManager.selectedHat = skinWardrobeManager.GetHatSelectedObject();
+                    break;
+                case WardrobeHatState.Available:
+                    unlockDisplay.SetDisplay_CanEquip();
+                    unlockDisplay.SetSelectedBlockName(SkinsOverview.Instance.GetHatName(hatType));
+
+                    skinWardrobeManager.selectedHatType = hatType;
+                    skinWardrobeManager.selectedHat = skinWardrobeManager.GetTempHatSelectedObject();
+                    break;
+                case WardrobeHatState.Selected:
+                    unlockDisplay.SetDisplay_IsEquipped();
+                    unlockDisplay.SetSelectedBlockName(SkinsOverview.Instance.GetHatName(hatType));
+
+                    skinWardrobeManager.selectedHatType = hatType;
+                    skinWardrobeManager.selectedHat = skinWardrobeManager.GetTempHatSelectedObject();
+                    break;
+
+                default:
+                    unlockDisplay.SetDisplay_FinishQuestline(hatType);
+                    unlockDisplay.SetSelectedBlockName("");
+
+                    skinWardrobeManager.selectedHat = skinWardrobeManager.GetHatSelectedObject();
+                    break;
+            }
+        }
+    }
 }
+

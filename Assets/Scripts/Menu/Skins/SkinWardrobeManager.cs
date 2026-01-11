@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
@@ -15,6 +16,11 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     [SerializeField] GameObject playerDisplayObject;
 
     [Header("Colors")]
+    public Sprite sprite_Inactive;
+    public Sprite sprite_Available;
+    public Sprite sprite_Bought;
+    public Sprite sprite_Selected;
+
     public Color inactive_Color;
     public Color available_Color;
     public Color bought_Color;
@@ -84,6 +90,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     #region PlayerSkinObjects
 
     [Header("Wardrobe - PlayerSkinObjects")]
+    public string sprite_PauseMenu_default_Name;
     public GameObject skin_Default;
 
     public GameObject object_Rivergreen_Lv1;
@@ -126,6 +133,9 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     Movement movement;
 
+    public SkinType selectedSkinType;
+    public HatType selectedHatType;
+
 
     //--------------------
 
@@ -133,6 +143,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     private void Start()
     {
         movement = FindObjectOfType<Movement>();
+        selectedSkinType = SkinType.Default;
 
         //DataManager.Instance.playerStats_Store.itemsGot.essence_Max = 12; //Remove this after testing of Skin Menu
         //DataManager.Instance.playerStats_Store.itemsGot.essence_Current = 12; //Remove this after testing of Skin Menu
@@ -147,6 +158,11 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
         UpdatePlayerBodyDisplay();
         UpdatePlayerHatDisplay();
+
+        if (skinWardrobeButton_Default && skinWardrobeButton_Default.GetComponent<UI_PulsatingMotion_WhenSelected>())
+        {
+            skinWardrobeButton_Default.GetComponent<UI_PulsatingMotion_WhenSelected>().EnableStartButton();
+        }
     }
 
 
@@ -159,12 +175,12 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
         HideAllSkins();
 
-        GameObject tempObj = GetSkinSelectedObject();
+        GameObject tempObj = GetTempSkinSelectedObject();
 
         if (tempObj != null)
             tempObj.SetActive(true);
 
-        if (DataManager.Instance.skinsInfo_Store.activeSkinType != SkinType.Default && DataManager.Instance.skinsInfo_Store.activeSkinType != SkinType.None)
+        if (selectedSkinType != SkinType.Default /*&& selectedSkinType != SkinType.None*/ /*DataManager.Instance.skinsInfo_Store.activeSkinType != SkinType.Default && DataManager.Instance.skinsInfo_Store.activeSkinType != SkinType.None*/)
         {
             if (skin_Default)
                 skin_Default.SetActive(false);
@@ -268,6 +284,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
         if (hat_Larry)
             hat_Larry.SetActive(false);
     }
+
 
     //--------------------
 
@@ -490,6 +507,87 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                 return skin_Default;
         }
     }
+
+    public GameObject GetTempSkinSelectedObject()
+    {
+        switch (selectedSkinType)
+        {
+            case SkinType.None:
+                return skin_Default;
+
+            case SkinType.Rivergreen_Lv1:
+                return object_Rivergreen_Lv1;
+            case SkinType.Rivergreen_Lv2:
+                return object_Rivergreen_Lv2;
+            case SkinType.Rivergreen_Lv3:
+                return object_Rivergreen_Lv3;
+            case SkinType.Rivergreen_Lv4:
+                return object_Rivergreen_Lv4;
+            case SkinType.Rivergreen_Lv5:
+                return object_Rivergreen_Lv5;
+
+            case SkinType.Firevein_Lv1:
+                return object_Firevein_Lv1;
+            case SkinType.Firevein_Lv2:
+                return object_Firevein_Lv2;
+            case SkinType.Firevein_Lv3:
+                return object_Firevein_Lv3;
+            case SkinType.Firevein_Lv4:
+                return object_Firevein_Lv4;
+            case SkinType.Firevein_Lv5:
+                return object_Firevein_Lv5;
+
+            case SkinType.Sandlands_Lv1:
+                return object_Sandlands_Lv1;
+            case SkinType.Sandlands_Lv2:
+                return object_Sandlands_Lv2;
+            case SkinType.Sandlands_Lv3:
+                return object_Sandlands_Lv3;
+            case SkinType.Sandlands_Lv4:
+                return object_Sandlands_Lv4;
+            case SkinType.Sandlands_Lv5:
+                return object_Sandlands_Lv5;
+
+            case SkinType.Frostfield_Lv1:
+                return object_Frostfield_Lv1;
+            case SkinType.Frostfield_Lv2:
+                return object_Frostfield_Lv2;
+            case SkinType.Frostfield_Lv3:
+                return object_Frostfield_Lv3;
+            case SkinType.Frostfield_Lv4:
+                return object_Frostfield_Lv4;
+            case SkinType.Frostfield_Lv5:
+                return object_Frostfield_Lv5;
+
+            case SkinType.Witchmire_Lv1:
+                return object_Witchmire_Lv1;
+            case SkinType.Witchmire_Lv2:
+                return object_Witchmire_Lv2;
+            case SkinType.Witchmire_Lv3:
+                return object_Witchmire_Lv3;
+            case SkinType.Witchmire_Lv4:
+                return object_Witchmire_Lv4;
+            case SkinType.Witchmire_Lv5:
+                return object_Witchmire_Lv5;
+
+            case SkinType.Metalworks_Lv1:
+                return object_Metalworks_Lv1;
+            case SkinType.Metalworks_Lv2:
+                return object_Metalworks_Lv2;
+            case SkinType.Metalworks_Lv3:
+                return object_Metalworks_Lv3;
+            case SkinType.Metalworks_Lv4:
+                return object_Metalworks_Lv4;
+            case SkinType.Metalworks_Lv5:
+                return object_Metalworks_Lv5;
+
+            case SkinType.Default:
+                return skin_Default;
+
+            default:
+                return skin_Default;
+        }
+    }
     public GameObject GetHatSelectedObject()
     {
         switch (DataManager.Instance.skinsInfo_Store.activeHatType)
@@ -514,10 +612,34 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                 return null;
         }
     }
+    public GameObject GetTempHatSelectedObject()
+    {
+        switch (selectedHatType)
+        {
+            case HatType.None:
+                return null;
+
+            case HatType.Floriel_Hat:
+                return hat_Floriel;
+            case HatType.Granith_Hat:
+                return hat_Granith;
+            case HatType.Archie_Hat:
+                return hat_Archie;
+            case HatType.Aisa_Hat:
+                return hat_Aisa;
+            case HatType.Mossy_Hat:
+                return hat_Mossy;
+            case HatType.Larry_Hat:
+                return hat_Larry;
+
+            default:
+                return null;
+        }
+    }
 
     public WardrobeSkinState GetSkinSaveData(int region, int level)
     {
-        if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo == null) return WardrobeSkinState.Inactive;
+        if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo == null) return WardrobeSkinState.Hidden;
 
         switch (region)
         {
@@ -543,8 +665,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level4;
                     case 5:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level5;
-                    case 6:
-                        return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level6;
 
                     default:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default;
@@ -562,8 +682,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level4;
                     case 5:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level5;
-                    case 6:
-                        return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level6;
 
                     default:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default;
@@ -581,8 +699,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level4;
                     case 5:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level5;
-                    case 6:
-                        return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level6;
 
                     default:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default;
@@ -600,8 +716,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level4;
                     case 5:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level5;
-                    case 6:
-                        return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level6;
 
                     default:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default;
@@ -619,8 +733,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level4;
                     case 5:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level5;
-                    case 6:
-                        return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level6;
 
                     default:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default;
@@ -638,8 +750,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level4;
                     case 5:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level5;
-                    case 6:
-                        return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level6;
 
                     default:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default;
@@ -648,6 +758,25 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
             default:
                 return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default;
         }
+    }
+    public bool GetLevelSaveData(SkinType skinType)
+    {
+        if (DataManager.Instance.mapInfo_StoreList == null) return false;
+
+        bool isLevel = false;
+
+        for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count; i++)
+        {
+            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].skintype == skinType)
+            {
+                isLevel = true;
+            }
+        }
+
+        if (isLevel)
+            return true;
+        else
+            return false;
     }
     public void SetSkinSaveData(int region, int level, WardrobeSkinState skinState)
     {
@@ -676,9 +805,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                     case 5:
                         DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level5 = skinState;
                         break;
-                    case 6:
-                        DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level6 = skinState;
-                        break;
 
                     default:
                         break;
@@ -701,9 +827,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         break;
                     case 5:
                         DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level5 = skinState;
-                        break;
-                    case 6:
-                        DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level6 = skinState;
                         break;
 
                     default:
@@ -728,9 +851,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                     case 5:
                         DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level5 = skinState;
                         break;
-                    case 6:
-                        DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level6 = skinState;
-                        break;
 
                     default:
                         break;
@@ -753,9 +873,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                         break;
                     case 5:
                         DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level5 = skinState;
-                        break;
-                    case 6:
-                        DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level6 = skinState;
                         break;
 
                     default:
@@ -780,9 +897,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                     case 5:
                         DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level5 = skinState;
                         break;
-                    case 6:
-                        DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level6 = skinState;
-                        break;
 
                     default:
                         break;
@@ -806,9 +920,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                     case 5:
                         DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level5 = skinState;
                         break;
-                    case 6:
-                        DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level6 = skinState;
-                        break;
 
                     default:
                         break;
@@ -828,6 +939,8 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
         DataManager.Instance.skinsInfo_Store.activeSkinType = skintype;
         SkinsManager.Instance.skinInfo.activeSkinType = skintype;
 
+        selectedSkinType = skintype;
+
         SkinsManager.Instance.SaveData();
     }
     public void SetActiveHatData(HatType hatType)
@@ -840,12 +953,12 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     public WardrobeHatState GetHatSaveData(HatType hatType)
     {
-        if (DataManager.Instance.skinsInfo_Store.skinHatInfo == null) return WardrobeHatState.Inactive;
+        if (DataManager.Instance.skinsInfo_Store.skinHatInfo == null) return WardrobeHatState.Hidden;
 
         switch (hatType)
         {
             case HatType.None:
-                return WardrobeHatState.Inactive;
+                return WardrobeHatState.Hidden;
 
             case HatType.Floriel_Hat:
                 return DataManager.Instance.skinsInfo_Store.skinHatInfo.skin_Region1_Hat;
@@ -861,7 +974,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                 return DataManager.Instance.skinsInfo_Store.skinHatInfo.skin_Region6_Hat;
 
             default:
-                return WardrobeHatState.Inactive;
+                return WardrobeHatState.Hidden;
         }
     }
     public void SetHatSaveData(HatType hatType, WardrobeHatState hatState)
@@ -918,7 +1031,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     public void UpdateEssenceDisplay()
     {
-        esseceCost.text = DataManager.Instance.playerStats_Store.itemsGot.essence_Current + " / " + skinCost;
+        esseceCost.text = DataManager.Instance.playerStats_Store.itemsGot.essence_Current.ToString();
     }
 }
 
@@ -931,7 +1044,6 @@ public class SkinsWardrobeInfo
     public WardrobeSkinState skin_Region1_level3;
     public WardrobeSkinState skin_Region1_level4;
     public WardrobeSkinState skin_Region1_level5;
-    public WardrobeSkinState skin_Region1_level6;
 
 
     [Header("Region 2")]
@@ -940,7 +1052,6 @@ public class SkinsWardrobeInfo
     public WardrobeSkinState skin_Region2_level3;
     public WardrobeSkinState skin_Region2_level4;
     public WardrobeSkinState skin_Region2_level5;
-    public WardrobeSkinState skin_Region2_level6;
 
     [Header("Region 3")]
     public WardrobeSkinState skin_Region3_level1;
@@ -948,7 +1059,6 @@ public class SkinsWardrobeInfo
     public WardrobeSkinState skin_Region3_level3;
     public WardrobeSkinState skin_Region3_level4;
     public WardrobeSkinState skin_Region3_level5;
-    public WardrobeSkinState skin_Region3_level6;
 
     [Header("Region 4")]
     public WardrobeSkinState skin_Region4_level1;
@@ -956,7 +1066,6 @@ public class SkinsWardrobeInfo
     public WardrobeSkinState skin_Region4_level3;
     public WardrobeSkinState skin_Region4_level4;
     public WardrobeSkinState skin_Region4_level5;
-    public WardrobeSkinState skin_Region4_level6;
 
     [Header("Region 5")]
     public WardrobeSkinState skin_Region5_level1;
@@ -964,7 +1073,6 @@ public class SkinsWardrobeInfo
     public WardrobeSkinState skin_Region5_level3;
     public WardrobeSkinState skin_Region5_level4;
     public WardrobeSkinState skin_Region5_level5;
-    public WardrobeSkinState skin_Region5_level6;
 
     [Header("Region 6")]
     public WardrobeSkinState skin_Region6_level1;
@@ -972,7 +1080,6 @@ public class SkinsWardrobeInfo
     public WardrobeSkinState skin_Region6_level3;
     public WardrobeSkinState skin_Region6_level4;
     public WardrobeSkinState skin_Region6_level5;
-    public WardrobeSkinState skin_Region6_level6;
 
     [Header("Default")]
     public WardrobeSkinState skin_Default;
@@ -992,14 +1099,15 @@ public class SkinsHatInfo
 
 public enum WardrobeSkinState
 {
-    Inactive,
+    Hidden,
+    LevelIsVisited,
     Available,
     Bought,
     Selected
 }
 public enum WardrobeHatState
 {
-    Inactive,
+    Hidden,
     Available,
     Selected
 }

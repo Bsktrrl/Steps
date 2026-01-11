@@ -16,12 +16,12 @@ public class PlayerStatsDisplay : MonoBehaviour
 
     private void Update()
     {
-        SetPlayerStatsDisplay();
+        //SetPlayerStatsDisplay();
     }
 
     private void OnEnable()
     {
-        SetPlayerStatsDisplay();
+        //SetPlayerStatsDisplay();
     }
     private void OnDisable()
     {

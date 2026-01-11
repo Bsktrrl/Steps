@@ -84,13 +84,13 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
     {
         if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
         {
-            if (!swim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit))
+            if (!swim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel || PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel))
             {
                 Ability_Swim_Activation();
                 swim_FirstTime = true;
             }
 
-            if (!freeSwim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers || PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers))
+            if (!freeSwim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank || PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank))
             {
                 Ability_FreeSwim_Activation();
                 freeSwim_FirstTime = true;
@@ -98,13 +98,13 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
         }
         else
         {
-            if (swim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit || PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit))
+            if (swim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel || PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel))
             {
                 Ability_Swim_Deactivation();
                 swim_FirstTime = false;
             }
 
-            if (freeSwim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers || PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers))
+            if (freeSwim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank || PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank))
             {
                 Ability_FreeSwim_Deactivation();
                 freeSwim_FirstTime = false;
@@ -118,16 +118,16 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
 
     void UpdateDisplay()
     {
-        Ability_Appearance(abilitySprite_Swim, PlayerStats.Instance.stats.abilitiesGot_Temporary.SwimSuit, PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit);
-        Ability_Appearance(abilitySprite_SwiftSwim, PlayerStats.Instance.stats.abilitiesGot_Temporary.SwiftSwim, PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim);
-        Ability_Appearance(abilitySprite_FreeSwim, PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers, PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers);
+        Ability_Appearance(abilitySprite_Swim, PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel, PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel);
+        Ability_Appearance(abilitySprite_SwiftSwim, PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers, PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers);
+        Ability_Appearance(abilitySprite_FreeSwim, PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank, PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank);
 
-        Ability_Appearance(abilitySprite_Ascend, PlayerStats.Instance.stats.abilitiesGot_Temporary.Ascend, PlayerStats.Instance.stats.abilitiesGot_Permanent.Ascend);
-        Ability_Appearance(abilitySprite_Descend, PlayerStats.Instance.stats.abilitiesGot_Temporary.Descend, PlayerStats.Instance.stats.abilitiesGot_Permanent.Descend);
+        Ability_Appearance(abilitySprite_Ascend, PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillHelmet, PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillHelmet);
+        Ability_Appearance(abilitySprite_Descend, PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillBoots, PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillBoots);
 
-        Ability_Appearance(abilitySprite_Dash, PlayerStats.Instance.stats.abilitiesGot_Temporary.Dash, PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash);
-        Ability_Appearance(abilitySprite_Jump, PlayerStats.Instance.stats.abilitiesGot_Temporary.Jumping, PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping);
-        Ability_Appearance(abilitySprite_CeilingGrab, PlayerStats.Instance.stats.abilitiesGot_Temporary.CeilingGrab, PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab);
+        Ability_Appearance(abilitySprite_Dash, PlayerStats.Instance.stats.abilitiesGot_Temporary.HandDrill, PlayerStats.Instance.stats.abilitiesGot_Permanent.HandDrill);
+        Ability_Appearance(abilitySprite_Jump, PlayerStats.Instance.stats.abilitiesGot_Temporary.SpringShoes, PlayerStats.Instance.stats.abilitiesGot_Permanent.SpringShoes);
+        Ability_Appearance(abilitySprite_CeilingGrab, PlayerStats.Instance.stats.abilitiesGot_Temporary.ClimingGloves, PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimingGloves);
         Ability_Appearance(abilitySprite_GrapplingHook, PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook, PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook);
     }
     void Ability_Appearance(GameObject abilityObject, bool tempAbility, bool permAbility)

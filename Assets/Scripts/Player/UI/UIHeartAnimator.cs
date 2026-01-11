@@ -39,23 +39,11 @@ public class UIHeartAnimator : MonoBehaviour
         EnsureOverlay();
     }
 
-    private void Start()
-    {
-        //Deactivate();
-    }
-
-    /// <summary>
-    /// Plays Used -> Active: scale 0.8 -> 1.1 -> 1.0 with easing + sprite crossfade.
-    /// </summary>
     public void Activate()
     {
         if (_running != null) StopCoroutine(_running);
         _running = StartCoroutine(CoActivate());
     }
-
-    /// <summary>
-    /// Plays Active -> Used: scale 1.0 -> 0.8 with easing + sprite crossfade.
-    /// </summary>
     public void Deactivate()
     {
         if (_running != null) StopCoroutine(_running);

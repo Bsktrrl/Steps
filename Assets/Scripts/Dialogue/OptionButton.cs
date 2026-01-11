@@ -8,7 +8,7 @@ public class OptionButton : MonoBehaviour, ISelectHandler
 {
     public static event Action Action_OptionButtonIsPressed;
 
-    [SerializeField] int optionNumber;
+    [HideInInspector] [SerializeField] int optionNumber;
 
 
     //--------------------

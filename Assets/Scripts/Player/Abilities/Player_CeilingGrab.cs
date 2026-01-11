@@ -46,7 +46,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 
     void UpdateRaycastCeiling()
     {
-        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.CeilingGrab && !PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab) { return; }
+        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.ClimingGloves && !PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimingGloves) { return; }
 
         RaycastCeiling();
         //CeilingGrab();
@@ -69,12 +69,12 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     }
     IEnumerator RunCeilingGrab()
     {
-        print("0. Start CeilingGrab");
+        //print("0. Start CeilingGrab");
 
         Player_Animations.Instance.Trigger_CeilingGrabAnimation();
         yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_CeilingGrab);
 
-        print("1. Start CeilingGrab");
+        //print("1. Start CeilingGrab");
 
         if (CameraController.Instance.cameraState == CameraState.GameplayCam)
         {
