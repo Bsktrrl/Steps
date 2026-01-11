@@ -120,28 +120,28 @@ public class PopUpManager : Singleton<PopUpManager>
             case Abilities.None:
                 break;
 
-            case Abilities.SwimSuit:
+            case Abilities.Snorkel:
                 ShowDisplay(popupManager, ability_SwimSuit_Parent, abilities_SwimSuit_Children);
                 break;
-            case Abilities.SwiftSwim:
+            case Abilities.Flippers:
                 ShowDisplay(popupManager, ability_SwiftSwim_Parent, abilities_SwiftSwim_Children);
                 break;
-            case Abilities.Flippers:
+            case Abilities.OxygenTank:
                 ShowDisplay(popupManager, ability_Freeswim_Parent, abilities_Freeswim_Children);
                 break;
-            case Abilities.Ascend:
+            case Abilities.DrillHelmet:
                 ShowDisplay(popupManager, ability_Ascend_Parent, abilities_Ascend_Children);
                 break;
-            case Abilities.Descend:
+            case Abilities.DrillBoots:
                 ShowDisplay(popupManager, ability_Descend_Parent, abilities_Descend_Children);
                 break;
-            case Abilities.Dash:
+            case Abilities.HandDrill:
                 ShowDisplay(popupManager, ability_Dash_Parent, abilities_Dash_Children);
                 break;
-            case Abilities.Jumping:
+            case Abilities.SpringShoes:
                 ShowDisplay(popupManager, ability_Jump_Parent, abilities_Jump_Children);
                 break;
-            case Abilities.CeilingGrab:
+            case Abilities.ClimingGloves:
                 ShowDisplay(popupManager, ability_CeilingGrab_Parent, abilities_CeilingGrab_Children);
                 break;
             case Abilities.GrapplingHook:

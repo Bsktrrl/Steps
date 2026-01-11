@@ -352,25 +352,25 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         ability_GrapplingHook.SetActive(false);
         ability_CeilingGrab.SetActive(false);
 
-        if (mapInfo.abilitiesInLevel.SwimSuit)
+        if (mapInfo.abilitiesInLevel.Snorkel)
             ability_Swimming.SetActive(true);
-        if (mapInfo.abilitiesInLevel.SwiftSwim)
-            ability_SwiftSwim.SetActive(true);
         if (mapInfo.abilitiesInLevel.Flippers)
+            ability_SwiftSwim.SetActive(true);
+        if (mapInfo.abilitiesInLevel.OxygenTank)
             ability_Flippers.SetActive(true);
 
-        if (mapInfo.abilitiesInLevel.Ascend)
+        if (mapInfo.abilitiesInLevel.DrillHelmet)
             ability_Ascend.SetActive(true);
-        if (mapInfo.abilitiesInLevel.Descend)
+        if (mapInfo.abilitiesInLevel.DrillBoots)
             ability_Descend.SetActive(true);
 
-        if (mapInfo.abilitiesInLevel.Dash)
+        if (mapInfo.abilitiesInLevel.HandDrill)
             ability_Dash.SetActive(true);
-        if (mapInfo.abilitiesInLevel.Jumping)
+        if (mapInfo.abilitiesInLevel.SpringShoes)
             ability_Jumping.SetActive(true);
         if (mapInfo.abilitiesInLevel.GrapplingHook)
             ability_GrapplingHook.SetActive(true);
-        if (mapInfo.abilitiesInLevel.CeilingGrab)
+        if (mapInfo.abilitiesInLevel.ClimingGloves)
             ability_CeilingGrab.SetActive(true);
     }
     public Sprite SelectSpriteForLevel(SkinType skinType)

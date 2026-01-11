@@ -290,8 +290,8 @@ public class Block_Elevator : MonoBehaviour
             else
             {
                 if (!gameObject.GetComponent<BlockInfo>().blockIsDark
-                    && ((gameObject.transform.position.y < (PlayerManager.Instance.player.transform.position.y + 1) || PlayerStats.Instance.stats.abilitiesGot_Temporary.Descend || PlayerStats.Instance.stats.abilitiesGot_Permanent.Descend)
-                    || (gameObject.transform.position.y < (PlayerManager.Instance.player.transform.position.y - 1) || PlayerStats.Instance.stats.abilitiesGot_Temporary.Ascend || PlayerStats.Instance.stats.abilitiesGot_Permanent.Ascend)))
+                    && ((gameObject.transform.position.y < (PlayerManager.Instance.player.transform.position.y + 1) || PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillBoots || PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillBoots)
+                    || (gameObject.transform.position.y < (PlayerManager.Instance.player.transform.position.y - 1) || PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillHelmet || PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillHelmet)))
                 {
                     gameObject.GetComponent<BlockInfo>().SetDarkenColors();
                 }

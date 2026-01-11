@@ -136,23 +136,23 @@ public class LevelInfoDisplay : Singleton<LevelInfoDisplay>
         }
 
         //Display all abilities in the Level
-        if (level.abilitiesInLevel.SwimSuit)
+        if (level.abilitiesInLevel.Snorkel)
             ability_SwimSuit.gameObject.SetActive(true);
-        if (level.abilitiesInLevel.SwiftSwim)
-            ability_SwiftSwim.gameObject.SetActive(true);
         if (level.abilitiesInLevel.Flippers)
+            ability_SwiftSwim.gameObject.SetActive(true);
+        if (level.abilitiesInLevel.OxygenTank)
             ability_Flippers.gameObject.SetActive(true);
-        if (level.abilitiesInLevel.Jumping)
+        if (level.abilitiesInLevel.SpringShoes)
             ability_LavaSwiftSwim.gameObject.SetActive(true);
         if (level.abilitiesInLevel.GrapplingHook)
             ability_GrapplingHook.gameObject.SetActive(true);
-        if (level.abilitiesInLevel.CeilingGrab)
+        if (level.abilitiesInLevel.ClimingGloves)
             ability_ClimbingGear.gameObject.SetActive(true);
-        if (level.abilitiesInLevel.Dash)
+        if (level.abilitiesInLevel.HandDrill)
             ability_Dash.gameObject.SetActive(true);
-        if (level.abilitiesInLevel.Ascend)
+        if (level.abilitiesInLevel.DrillHelmet)
             ability_Ascend.gameObject.SetActive(true);
-        if (level.abilitiesInLevel.Descend)
+        if (level.abilitiesInLevel.DrillBoots)
             ability_Descend.gameObject.SetActive(true);
 
         //Show all Displays

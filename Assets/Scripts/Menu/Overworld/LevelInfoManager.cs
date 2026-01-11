@@ -217,25 +217,25 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
             ability_GrapplingHook.SetActive(false);
             ability_CeilingGrab.SetActive(false);
 
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.SwimSuit)
+            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.Snorkel)
                 ability_Swimming.SetActive(true);
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.SwiftSwim)
-                ability_SwiftSwim.SetActive(true);
             if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.Flippers)
+                ability_SwiftSwim.SetActive(true);
+            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.OxygenTank)
                 ability_Flippers.SetActive(true);
 
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.Ascend)
+            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.DrillHelmet)
                 ability_Ascend.SetActive(true);
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.Descend)
+            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.DrillBoots)
                 ability_Descend.SetActive(true);
 
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.Dash)
+            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.HandDrill)
                 ability_Dash.SetActive(true);
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.Jumping)
+            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.SpringShoes)
                 ability_Jumping.SetActive(true);
             if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.GrapplingHook)
                 ability_GrapplingHook.SetActive(true);
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.CeilingGrab)
+            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.ClimingGloves)
                 ability_CeilingGrab.SetActive(true);
 
             if (!foundLevel)

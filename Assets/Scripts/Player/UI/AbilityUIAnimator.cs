@@ -317,13 +317,8 @@ public class AbilityUIAnimator : MonoBehaviour
             case Abilities.None:
                 return null;
 
-            case Abilities.SwimSuit:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit)
-                    return idleSprite_Permanent;
-                else
-                    return idleSprite_Temporary;
-            case Abilities.SwiftSwim:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim)
+            case Abilities.Snorkel:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel)
                     return idleSprite_Permanent;
                 else
                     return idleSprite_Temporary;
@@ -332,28 +327,33 @@ public class AbilityUIAnimator : MonoBehaviour
                     return idleSprite_Permanent;
                 else
                     return idleSprite_Temporary;
-            case Abilities.Ascend:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Ascend)
+            case Abilities.OxygenTank:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank)
                     return idleSprite_Permanent;
                 else
                     return idleSprite_Temporary;
-            case Abilities.Descend:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Descend)
+            case Abilities.DrillHelmet:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillHelmet)
                     return idleSprite_Permanent;
                 else
                     return idleSprite_Temporary;
-            case Abilities.Dash:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash)
+            case Abilities.DrillBoots:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillBoots)
                     return idleSprite_Permanent;
                 else
                     return idleSprite_Temporary;
-            case Abilities.Jumping:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping)
+            case Abilities.HandDrill:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.HandDrill)
                     return idleSprite_Permanent;
                 else
                     return idleSprite_Temporary;
-            case Abilities.CeilingGrab:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab)
+            case Abilities.SpringShoes:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.SpringShoes)
+                    return idleSprite_Permanent;
+                else
+                    return idleSprite_Temporary;
+            case Abilities.ClimingGloves:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimingGloves)
                     return idleSprite_Permanent;
                 else
                     return idleSprite_Temporary;
@@ -375,13 +375,8 @@ public class AbilityUIAnimator : MonoBehaviour
             case Abilities.None:
                 return null;
 
-            case Abilities.SwimSuit:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit)
-                    return activeSprite_Permanent;
-                else
-                    return activeSprite_Temporary;
-            case Abilities.SwiftSwim:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim)
+            case Abilities.Snorkel:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel)
                     return activeSprite_Permanent;
                 else
                     return activeSprite_Temporary;
@@ -390,28 +385,33 @@ public class AbilityUIAnimator : MonoBehaviour
                     return activeSprite_Permanent;
                 else
                     return activeSprite_Temporary;
-            case Abilities.Ascend:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Ascend)
+            case Abilities.OxygenTank:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank)
                     return activeSprite_Permanent;
                 else
                     return activeSprite_Temporary;
-            case Abilities.Descend:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Descend)
+            case Abilities.DrillHelmet:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillHelmet)
                     return activeSprite_Permanent;
                 else
                     return activeSprite_Temporary;
-            case Abilities.Dash:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash)
+            case Abilities.DrillBoots:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillBoots)
                     return activeSprite_Permanent;
                 else
                     return activeSprite_Temporary;
-            case Abilities.Jumping:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping)
+            case Abilities.HandDrill:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.HandDrill)
                     return activeSprite_Permanent;
                 else
                     return activeSprite_Temporary;
-            case Abilities.CeilingGrab:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab)
+            case Abilities.SpringShoes:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.SpringShoes)
+                    return activeSprite_Permanent;
+                else
+                    return activeSprite_Temporary;
+            case Abilities.ClimingGloves:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimingGloves)
                     return activeSprite_Permanent;
                 else
                     return activeSprite_Temporary;

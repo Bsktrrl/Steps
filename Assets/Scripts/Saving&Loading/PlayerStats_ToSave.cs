@@ -24,25 +24,25 @@ public class Stats
         itemsGot.essence_Current = 0;
         itemsGot.skin = 0;
 
-        abilitiesGot_Permanent.SwimSuit = false;
-        abilitiesGot_Permanent.SwiftSwim = false;
+        abilitiesGot_Permanent.Snorkel = false;
         abilitiesGot_Permanent.Flippers = false;
-        abilitiesGot_Permanent.Jumping = false;
+        abilitiesGot_Permanent.OxygenTank = false;
+        abilitiesGot_Permanent.SpringShoes = false;
         abilitiesGot_Permanent.GrapplingHook = false;
-        abilitiesGot_Permanent.CeilingGrab = false;
-        abilitiesGot_Permanent.Dash = false;
-        abilitiesGot_Permanent.Ascend = false;
-        abilitiesGot_Permanent.Descend = false;
+        abilitiesGot_Permanent.ClimingGloves = false;
+        abilitiesGot_Permanent.HandDrill = false;
+        abilitiesGot_Permanent.DrillHelmet = false;
+        abilitiesGot_Permanent.DrillBoots = false;
 
-        abilitiesGot_Temporary.SwimSuit = false;
-        abilitiesGot_Temporary.SwiftSwim = false;
+        abilitiesGot_Temporary.Snorkel = false;
         abilitiesGot_Temporary.Flippers = false;
-        abilitiesGot_Temporary.Jumping = false;
+        abilitiesGot_Temporary.OxygenTank = false;
+        abilitiesGot_Temporary.SpringShoes = false;
         abilitiesGot_Temporary.GrapplingHook = false;
-        abilitiesGot_Temporary.CeilingGrab = false;
-        abilitiesGot_Temporary.Dash = false;
-        abilitiesGot_Temporary.Ascend = false;
-        abilitiesGot_Temporary.Descend = false;
+        abilitiesGot_Temporary.ClimingGloves = false;
+        abilitiesGot_Temporary.HandDrill = false;
+        abilitiesGot_Temporary.DrillHelmet = false;
+        abilitiesGot_Temporary.DrillBoots = false;
     }
 }
 
@@ -61,18 +61,18 @@ public class ItemsGot
 [Serializable]
 public class AbilitiesGot
 {
-    public bool SwimSuit;
-    public bool SwiftSwim;
+    public bool Snorkel;
     public bool Flippers;
+    public bool OxygenTank;
 
-    public bool Ascend;
-    public bool Descend;
+    public bool DrillHelmet;
+    public bool DrillBoots;
 
-    public bool Dash;
+    public bool HandDrill;
 
-    public bool Jumping;
+    public bool SpringShoes;
 
     public bool GrapplingHook;
 
-    public bool CeilingGrab;
+    public bool ClimingGloves;
 }

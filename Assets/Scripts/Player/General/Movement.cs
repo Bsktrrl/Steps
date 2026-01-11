@@ -593,7 +593,7 @@ public class Movement : Singleton<Movement>
 
     void UpdateSwiftSwimMovement(MoveOptions swiftSwimOption, Vector3 dir)
     {
-        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.SwiftSwim && !PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim)
+        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers)
         {
             Block_IsNot_Target(swiftSwimOption);
             return;
@@ -1330,42 +1330,42 @@ public class Movement : Singleton<Movement>
     public bool PlayerHasSwimAbility()
     {
         var stats = PlayerStats.Instance.stats;
-        return stats.abilitiesGot_Permanent.SwimSuit ||
+        return stats.abilitiesGot_Permanent.Snorkel ||
+               stats.abilitiesGot_Permanent.OxygenTank ||
                stats.abilitiesGot_Permanent.Flippers ||
-               stats.abilitiesGot_Permanent.SwiftSwim ||
-               stats.abilitiesGot_Temporary.SwimSuit ||
-               stats.abilitiesGot_Temporary.Flippers ||
-               stats.abilitiesGot_Temporary.SwiftSwim;
+               stats.abilitiesGot_Temporary.Snorkel ||
+               stats.abilitiesGot_Temporary.OxygenTank ||
+               stats.abilitiesGot_Temporary.Flippers;
     }
     public bool PlayerHasSwiftSwimAbility()
     {
         var stats = PlayerStats.Instance.stats;
-        return stats.abilitiesGot_Permanent.SwiftSwim ||
-               stats.abilitiesGot_Temporary.SwiftSwim;
+        return stats.abilitiesGot_Permanent.Flippers ||
+               stats.abilitiesGot_Temporary.Flippers;
     }
     bool PlayerHasDashAbility()
     {
         var stats = PlayerStats.Instance.stats;
-        return stats.abilitiesGot_Permanent.Dash ||
-               stats.abilitiesGot_Temporary.Dash;
+        return stats.abilitiesGot_Permanent.HandDrill ||
+               stats.abilitiesGot_Temporary.HandDrill;
     }
     bool PlayerHasJumpAbility()
     {
         var stats = PlayerStats.Instance.stats;
-        return stats.abilitiesGot_Permanent.Jumping ||
-               stats.abilitiesGot_Temporary.Jumping;
+        return stats.abilitiesGot_Permanent.SpringShoes ||
+               stats.abilitiesGot_Temporary.SpringShoes;
     }
     bool PlayerHasAscendAbility()
     {
         var stats = PlayerStats.Instance.stats;
-        return stats.abilitiesGot_Permanent.Ascend ||
-               stats.abilitiesGot_Temporary.Ascend;
+        return stats.abilitiesGot_Permanent.DrillHelmet ||
+               stats.abilitiesGot_Temporary.DrillHelmet;
     }
     bool PlayerHasDescendAbility()
     {
         var stats = PlayerStats.Instance.stats;
-        return stats.abilitiesGot_Permanent.Descend ||
-               stats.abilitiesGot_Temporary.Descend;
+        return stats.abilitiesGot_Permanent.DrillBoots ||
+               stats.abilitiesGot_Temporary.DrillBoots;
     }
     bool PlayerHasGrapplingHookAbility()
     {
@@ -1376,8 +1376,8 @@ public class Movement : Singleton<Movement>
     bool PlayerHasCeilingGrabAbility()
     {
         var stats = PlayerStats.Instance.stats;
-        return stats.abilitiesGot_Permanent.CeilingGrab ||
-               stats.abilitiesGot_Temporary.CeilingGrab;
+        return stats.abilitiesGot_Permanent.ClimingGloves ||
+               stats.abilitiesGot_Temporary.ClimingGloves;
     }
 
     #endregion
@@ -2664,7 +2664,7 @@ public class Movement : Singleton<Movement>
 
         if (Player_CeilingGrab.Instance.isCeilingGrabbing)
         {
-            print("2. Get isCeilingGrabbing");
+            //print("2. Get isCeilingGrabbing");
             rotZ = -180;
         }
        

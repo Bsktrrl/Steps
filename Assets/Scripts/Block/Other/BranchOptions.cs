@@ -29,7 +29,7 @@ public class BranchOptions : MonoBehaviour
 
     void SetColliders()
     {
-        if (DataManager.Instance.playerStats_Store.abilitiesGot_Temporary.Jumping || DataManager.Instance.playerStats_Store.abilitiesGot_Permanent.Jumping)
+        if (DataManager.Instance.playerStats_Store.abilitiesGot_Temporary.SpringShoes || DataManager.Instance.playerStats_Store.abilitiesGot_Permanent.SpringShoes)
         {
             for (int i = 0; i < collidersList.Count; i++)
             {

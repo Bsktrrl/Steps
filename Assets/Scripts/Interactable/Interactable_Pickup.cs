@@ -12,7 +12,7 @@ public class Interactable_Pickup : MonoBehaviour
     public static event Action Action_SkinPickupGot;
     public static event Action Action_AbilityPickupGot;
 
-    public static event Action Action_FlippersGot;
+    public static event Action Action_OxygenTankGot;
     public static event Action Action_JumpingGot;
 
 
@@ -347,24 +347,24 @@ public class Interactable_Pickup : MonoBehaviour
             case Abilities.None:
                 break;
 
-            case Abilities.SwimSuit:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SwimSuit = true;
+            case Abilities.Snorkel:
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Snorkel = true;
                 Action_AbilityPickupGot_isActive();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwimSuit = true;
-                break;
-            case Abilities.SwiftSwim:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SwiftSwim = true;
-                Action_AbilityPickupGot_isActive();
-                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwiftSwim = true;
                 break;
             case Abilities.Flippers:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers = true;
                 Action_AbilityPickupGot_isActive();
-                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flippers = true;
-                Action_FlippersGot?.Invoke();
+                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwiftSwim = true;
                 break;
-            case Abilities.Jumping:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Jumping = true;
+            case Abilities.OxygenTank:
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.OxygenTank = true;
+                Action_AbilityPickupGot_isActive();
+                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flippers = true;
+                Action_OxygenTankGot?.Invoke();
+                break;
+            case Abilities.SpringShoes:
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SpringShoes = true;
                 Action_AbilityPickupGot_isActive();
                 Action_JumpingGot?.Invoke();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Jumping = true;
@@ -374,23 +374,23 @@ public class Interactable_Pickup : MonoBehaviour
                 Action_AbilityPickupGot_isActive();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.GrapplingHook = true;
                 break;
-            case Abilities.CeilingGrab:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.CeilingGrab = true;
+            case Abilities.ClimingGloves:
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.ClimingGloves = true;
                 Action_AbilityPickupGot_isActive();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.CeilingGrab = true;
                 break;
-            case Abilities.Dash:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Dash = true;
+            case Abilities.HandDrill:
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.HandDrill = true;
                 Action_AbilityPickupGot_isActive();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Dash = true;
                 break;
-            case Abilities.Ascend:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Ascend = true;
+            case Abilities.DrillHelmet:
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.DrillHelmet = true;
                 Action_AbilityPickupGot_isActive();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Ascend = true;
                 break;
-            case Abilities.Descend:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Descend = true;
+            case Abilities.DrillBoots:
+                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.DrillBoots = true;
                 Action_AbilityPickupGot_isActive();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Descend = true;
                 break;
@@ -452,18 +452,18 @@ public enum Abilities
 {
     None,
 
-    SwimSuit,
-    SwiftSwim,
+    Snorkel,
     Flippers,
+    OxygenTank,
 
-    Ascend,
-    Descend,
+    DrillHelmet,
+    DrillBoots,
 
-    Dash,
+    HandDrill,
 
-    Jumping,
+    SpringShoes,
 
-    CeilingGrab,
+    ClimingGloves,
 
     GrapplingHook,
 }

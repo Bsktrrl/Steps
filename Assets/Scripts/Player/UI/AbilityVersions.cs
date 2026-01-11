@@ -33,14 +33,8 @@ public class AbilityVersions : MonoBehaviour
                 GetComponent<Image>().sprite = null;
                 break;
 
-            case Abilities.SwimSuit:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.SwimSuit)
-                    GetComponent<Image>().sprite = permanent_Sprite;
-                else
-                    GetComponent<Image>().sprite = temporary_Sprite;
-                break;
-            case Abilities.SwiftSwim:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.SwiftSwim)
+            case Abilities.Snorkel:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel)
                     GetComponent<Image>().sprite = permanent_Sprite;
                 else
                     GetComponent<Image>().sprite = temporary_Sprite;
@@ -51,32 +45,38 @@ public class AbilityVersions : MonoBehaviour
                 else
                     GetComponent<Image>().sprite = temporary_Sprite;
                 break;
-            case Abilities.Ascend:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Ascend)
+            case Abilities.OxygenTank:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank)
                     GetComponent<Image>().sprite = permanent_Sprite;
                 else
                     GetComponent<Image>().sprite = temporary_Sprite;
                 break;
-            case Abilities.Descend:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Descend)
+            case Abilities.DrillHelmet:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillHelmet)
                     GetComponent<Image>().sprite = permanent_Sprite;
                 else
                     GetComponent<Image>().sprite = temporary_Sprite;
                 break;
-            case Abilities.Dash:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Dash)
+            case Abilities.DrillBoots:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillBoots)
                     GetComponent<Image>().sprite = permanent_Sprite;
                 else
                     GetComponent<Image>().sprite = temporary_Sprite;
                 break;
-            case Abilities.Jumping:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.Jumping)
+            case Abilities.HandDrill:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.HandDrill)
                     GetComponent<Image>().sprite = permanent_Sprite;
                 else
                     GetComponent<Image>().sprite = temporary_Sprite;
                 break;
-            case Abilities.CeilingGrab:
-                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.CeilingGrab)
+            case Abilities.SpringShoes:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.SpringShoes)
+                    GetComponent<Image>().sprite = permanent_Sprite;
+                else
+                    GetComponent<Image>().sprite = temporary_Sprite;
+                break;
+            case Abilities.ClimingGloves:
+                if (PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimingGloves)
                     GetComponent<Image>().sprite = permanent_Sprite;
                 else
                     GetComponent<Image>().sprite = temporary_Sprite;
