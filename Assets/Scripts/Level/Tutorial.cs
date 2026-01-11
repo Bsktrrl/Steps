@@ -24,15 +24,10 @@ public class Tutorial : Singleton<Tutorial>
     [SerializeField] GameObject Tutorial_CameraRotation_Parent;
     [SerializeField] GameObject Tutorial_Respawn_Parent;
 
-    [Header("Texts")]
-    [SerializeField] List<TextMeshProUGUI> Tutorial_Movement_TextList;
-    [SerializeField] List<TextMeshProUGUI> Tutorial_CameraRotation_TextList;
-    [SerializeField] List<TextMeshProUGUI> Tutorial_Respawn_TextList;
-
-    [Header("Image Lists")]
-    [SerializeField] List<Image> Tutorial_Movement_ImageList;
-    [SerializeField] List<Image> Tutorial_CameraRotation_ImageList;
-    [SerializeField] List<Image> Tutorial_Respawn_ImageList;
+    [Header("Children")]
+    [SerializeField] List<GameObject> Tutorial_Movement_Child;
+    [SerializeField] List<GameObject> Tutorial_CameraRotation_Child;
+    [SerializeField] List<GameObject> Tutorial_Respawn_Child;
 
     int respawnCounter;
 
@@ -77,13 +72,13 @@ public class Tutorial : Singleton<Tutorial>
         if (active)
             StartCoroutine(Movement_Start(1f));
         else
-            StartCoroutine(Movement_End(0f));
+            StartCoroutine(Movement_End(0.5f));
     }
     IEnumerator Movement_Start(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
 
-        PopUpManager.Instance.ShowDisplay(Tutorial_Parent, Tutorial_Movement_Parent, Tutorial_Movement_TextList, Tutorial_Movement_ImageList);
+        PopUpManager.Instance.ShowDisplay(Tutorial_Parent, Tutorial_Movement_Parent, Tutorial_Movement_Child);
 
         yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration);
 
@@ -93,7 +88,7 @@ public class Tutorial : Singleton<Tutorial>
     {
         yield return new WaitForSeconds(waitTime);
 
-        PopUpManager.Instance.HideDisplay(Tutorial_Parent, Tutorial_Movement_Parent, Tutorial_Movement_TextList, Tutorial_Movement_ImageList);
+        PopUpManager.Instance.HideDisplay(Tutorial_Parent, Tutorial_Movement_Parent, Tutorial_Movement_Child);
 
         state_Movement = false;
 
@@ -107,13 +102,13 @@ public class Tutorial : Singleton<Tutorial>
         if (active)
             StartCoroutine(CameraRotation_Start(1.5f));
         else
-            StartCoroutine(CameraRotation_End(0f));
+            StartCoroutine(CameraRotation_End(0.5f));
     }
     IEnumerator CameraRotation_Start(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
 
-        PopUpManager.Instance.ShowDisplay(Tutorial_Parent,Tutorial_CameraRotation_Parent, Tutorial_CameraRotation_TextList, Tutorial_CameraRotation_ImageList);
+        PopUpManager.Instance.ShowDisplay(Tutorial_Parent,Tutorial_CameraRotation_Parent, Tutorial_CameraRotation_Child);
 
         yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration);
 
@@ -123,7 +118,7 @@ public class Tutorial : Singleton<Tutorial>
     {
         yield return new WaitForSeconds(waitTime);
 
-        PopUpManager.Instance.HideDisplay(Tutorial_Parent,Tutorial_CameraRotation_Parent, Tutorial_CameraRotation_TextList, Tutorial_CameraRotation_ImageList);
+        PopUpManager.Instance.HideDisplay(Tutorial_Parent,Tutorial_CameraRotation_Parent, Tutorial_CameraRotation_Child);
 
         state_CameraRotation = false;
 
@@ -142,7 +137,7 @@ public class Tutorial : Singleton<Tutorial>
 
         yield return new WaitForSeconds(waitTime);
 
-        PopUpManager.Instance.ShowDisplay(Tutorial_Parent,Tutorial_Respawn_Parent, Tutorial_Respawn_TextList, Tutorial_Respawn_ImageList);
+        PopUpManager.Instance.ShowDisplay(Tutorial_Parent,Tutorial_Respawn_Parent, Tutorial_Respawn_Child);
 
         yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration);
 
@@ -154,7 +149,7 @@ public class Tutorial : Singleton<Tutorial>
 
         if (respawnCounter > 1)
         {
-            StartCoroutine(Tutorial_Respawn_End(0f));
+            StartCoroutine(Tutorial_Respawn_End(0.2f));
         }
     }
     IEnumerator Tutorial_Respawn_End(float waitTime)
@@ -163,7 +158,7 @@ public class Tutorial : Singleton<Tutorial>
 
         yield return new WaitForSeconds(waitTime);
 
-        PopUpManager.Instance.HideDisplay(Tutorial_Parent, Tutorial_Respawn_Parent, Tutorial_Respawn_TextList, Tutorial_Respawn_ImageList);
+        PopUpManager.Instance.HideDisplay(Tutorial_Parent, Tutorial_Respawn_Parent, Tutorial_Respawn_Child);
 
         yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration);
 

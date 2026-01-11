@@ -15,24 +15,15 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] GameObject popup_Ability_Parent;
 
 
-
-    //Remove these in favor of CanvasGrop on the parent GameObjects
-    [Header("Texts")]
-    [SerializeField] List<TextMeshProUGUI> Tutorial_Footprint_TextList;
-    [SerializeField] List<TextMeshProUGUI> Tutorial_Essence_TextList;
-    [SerializeField] List<TextMeshProUGUI> Tutorial_Skin_TextList;
-
-    [Header("Image Lists")]
-    [SerializeField] List<Image> Tutorial_Footprint_ImageList;
-    [SerializeField] List<Image> Tutorial_Essence_ImageList;
-    [SerializeField] List<Image> Tutorial_Skin_ImageList;
+    [Header("Tutorial - Childs")]
+    [SerializeField] List<GameObject> tutorial_Footprint;
+    [SerializeField] List<GameObject> tutorial_Essence;
+    [SerializeField] List<GameObject> tutorial_Skin;
 
 
-
-
-    [Header("Abilities")]
+    [Header("Abilities - Parent")]
     [SerializeField] GameObject ability_SwimSuit;
-    [SerializeField] GameObject ability_SwiftSWim;
+    [SerializeField] GameObject ability_SwiftSwim;
     [SerializeField] GameObject ability_Freeswim;
 
     [SerializeField] GameObject ability_Ascend;
@@ -44,12 +35,24 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] GameObject ability_GrapplingHook;
     [SerializeField] GameObject ability_CeilingGrab;
 
+    [Header("Abilities - Childs")]
+    [SerializeField] List<GameObject> abilities_SwimSuit_Childs;
+    [SerializeField] List<GameObject> abilities_SwiftSwim_Childs;
+    [SerializeField] List<GameObject> abilities_Freeswim_Childs;
+    [SerializeField] List<GameObject> abilities_Ascend_Childs;
+    [SerializeField] List<GameObject> abilities_Descend_Childs;
+    [SerializeField] List<GameObject> abilities_Dash_Childs;
+    [SerializeField] List<GameObject> abilities_Jump_Childs;
+    [SerializeField] List<GameObject> abilities_GrapplingHook_Childs;
+    [SerializeField] List<GameObject> abilities_CeilingGrab_Childs;
+
 
     //-----
 
 
     [Header("Fade Settings")]
     public float fadeDuration = 0.85f;
+    [SerializeField] float pickupMessageDuration = 1.5f;
 
     // Keep track of running fades so we can stop/replace them per parent
     private readonly Dictionary<GameObject, Coroutine> _runningFades = new();
@@ -96,6 +99,7 @@ public class PopUpManager : Singleton<PopUpManager>
                 break;
 
             case Abilities.SwimSuit:
+                //ShowDisplay();
                 break;
             case Abilities.SwiftSwim:
                 break;
@@ -125,66 +129,58 @@ public class PopUpManager : Singleton<PopUpManager>
 
     IEnumerator FootprintRoutine()
     {
-        ShowDisplay(popupManager, popup_Footprint_Parent, Tutorial_Footprint_TextList, Tutorial_Footprint_ImageList);
+        ShowDisplay(popupManager, popup_Footprint_Parent, tutorial_Footprint);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(pickupMessageDuration);
 
-        HideDisplay(popupManager, popup_Footprint_Parent, Tutorial_Footprint_TextList, Tutorial_Footprint_ImageList);
+        HideDisplay(popupManager, popup_Footprint_Parent, tutorial_Footprint);
     }
     IEnumerator EssenceRoutine()
     {
-        ShowDisplay(popupManager, popup_Essence_Parent, Tutorial_Essence_TextList, Tutorial_Essence_ImageList);
+        ShowDisplay(popupManager,popup_Essence_Parent, tutorial_Essence);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(pickupMessageDuration);
 
-        HideDisplay(popupManager, popup_Essence_Parent, Tutorial_Essence_TextList, Tutorial_Essence_ImageList);
+        HideDisplay(popupManager, popup_Essence_Parent, tutorial_Essence);
     }
     IEnumerator SkinRoutine()
     {
-        ShowDisplay(popupManager, popup_Skin_Parent, Tutorial_Skin_TextList, Tutorial_Skin_ImageList);
+        ShowDisplay(popupManager, popup_Skin_Parent, tutorial_Skin);
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(pickupMessageDuration * 1.5f);
 
-        HideDisplay(popupManager, popup_Skin_Parent, Tutorial_Skin_TextList, Tutorial_Skin_ImageList);
+        HideDisplay(popupManager, popup_Skin_Parent, tutorial_Skin);
     }
 
 
     //--------------------
 
 
-    public void ShowDisplay(GameObject mainParent, GameObject parent, List<TextMeshProUGUI> textList, List<Image> imageList)
+    public void ShowDisplay(GameObject mainParent, GameObject parent, List<GameObject> textVersions_Child)
     {
-        //Fade in all images from the list from 0 to 1
         if (parent == null) return;
 
         mainParent.SetActive(true);
+        popupManager.SetActive(true);
+        if (ControllerState.Instance.activeController == InputType.Keyboard)
+            textVersions_Child[0].SetActive(true);
+        else if (ControllerState.Instance.activeController == InputType.PlayStation)
+            textVersions_Child[1].SetActive(true);
+        else if (ControllerState.Instance.activeController == InputType.Xbox)
+            textVersions_Child[2].SetActive(true);
 
-        // Stop any previous fade on this parent
         StopFadeIfRunning(parent);
 
-        // Ensure it's active before fading in
         parent.SetActive(true);
 
-        // Start fully transparent (optional but usually desired)
-        SetTextsAlpha(textList, 0f);
-        SetImagesAlpha(imageList, 0f);
+        var cg = GetOrAddCanvasGroup(parent);
+        cg.alpha = 0f;
+        cg.interactable = false;
+        cg.blocksRaycasts = false;
 
-        if (ControllerState.Instance.activeController == InputType.PlayStation)
-        {
-            textList[1].gameObject.SetActive(true);
-        }
-        else if (ControllerState.Instance.activeController == InputType.Xbox)
-        {
-            textList[2].gameObject.SetActive(true);
-        }
-        else
-        {
-            textList[0].gameObject.SetActive(true);
-        }
-
-        _runningFades[parent] = StartCoroutine(FadeUI(textList, imageList, 0f, 1f, fadeDuration, disableParentAtEnd: false, parentToDisable: null));
+        _runningFades[parent] = StartCoroutine(FadeUI(parent, 0f, 1f, fadeDuration, disableParentAtEnd: false));
     }
-    public void HideDisplay(GameObject mainParent, GameObject parent, List<TextMeshProUGUI> textList, List<Image> imageList)
+    public void HideDisplay(GameObject mainParent, GameObject parent, List<GameObject> textVersions_Child)
     {
         if (parent == null) return;
 
@@ -192,14 +188,11 @@ public class PopUpManager : Singleton<PopUpManager>
 
         if (!parent.activeInHierarchy) return;
 
-        _runningFades[parent] = StartCoroutine(FadeUI(textList, imageList, 1f, 0f, fadeDuration, disableParentAtEnd: true, parentToDisable: parent));
+        var cg = GetOrAddCanvasGroup(parent);
+        cg.interactable = false;
+        cg.blocksRaycasts = false;
 
-        //for (int i = 0; i < textList.Count; i++)
-        //{
-        //    textList[i].gameObject.SetActive(false);
-        //}
-
-        mainParent.SetActive(true);
+        _runningFades[parent] = StartCoroutine(FadeUI(parent, cg.alpha, 0f, fadeDuration, disableParentAtEnd: true));
     }
 
     void StopFadeIfRunning(GameObject parent)
@@ -209,47 +202,27 @@ public class PopUpManager : Singleton<PopUpManager>
 
         _runningFades[parent] = null;
     }
-
-    static void SetImagesAlpha(List<Image> images, float a)
+    CanvasGroup GetOrAddCanvasGroup(GameObject parent)
     {
-        if (images == null) return;
+        if (!parent.TryGetComponent(out CanvasGroup cg))
+            cg = parent.AddComponent<CanvasGroup>();
 
-        for (int i = 0; i < images.Count; i++)
-        {
-            var img = images[i];
-            if (img == null) continue;
-
-            var c = img.color;
-            c.a = a;
-            img.color = c;
-        }
+        return cg;
     }
-
-    static void SetTextsAlpha(List<TextMeshProUGUI> texts, float a)
+    IEnumerator FadeUI(GameObject parent, float from, float to, float duration, bool disableParentAtEnd)
     {
-        if (texts == null) return;
+        var cg = GetOrAddCanvasGroup(parent);
 
-        for (int i = 0; i < texts.Count; i++)
-        {
-            var tmp = texts[i];
-            if (tmp == null) continue;
-
-            var c = tmp.color;
-            c.a = a;
-            tmp.color = c;
-        }
-    }
-
-    static IEnumerator FadeUI(List<TextMeshProUGUI> texts, List<Image> images, float from, float to, float duration, bool disableParentAtEnd, GameObject parentToDisable)
-    {
-        // Snap if duration is 0
         if (duration <= 0f)
         {
-            SetTextsAlpha(texts, to);
-            SetImagesAlpha(images, to);
+            cg.alpha = to;
 
-            if (disableParentAtEnd && parentToDisable != null)
-                parentToDisable.SetActive(false);
+            bool visible = to >= 1f;
+            cg.interactable = visible;
+            cg.blocksRaycasts = visible;
+
+            if (disableParentAtEnd && !visible)
+                parent.SetActive(false);
 
             yield break;
         }
@@ -259,18 +232,17 @@ public class PopUpManager : Singleton<PopUpManager>
         {
             t += Time.deltaTime / duration;
             float eased = Mathf.SmoothStep(0f, 1f, t);
-            float a = Mathf.Lerp(from, to, eased);
-
-            SetTextsAlpha(texts, a);
-            SetImagesAlpha(images, a);
-
+            cg.alpha = Mathf.Lerp(from, to, eased);
             yield return null;
         }
 
-        SetTextsAlpha(texts, to);
-        SetImagesAlpha(images, to);
+        cg.alpha = to;
 
-        if (disableParentAtEnd && parentToDisable != null)
-            parentToDisable.SetActive(false);
+        bool nowVisible = to >= 1f;
+        cg.interactable = nowVisible;
+        cg.blocksRaycasts = nowVisible;
+
+        if (disableParentAtEnd && !nowVisible)
+            parent.SetActive(false);
     }
 }
