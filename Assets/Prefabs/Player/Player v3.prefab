@@ -8204,7 +8204,8 @@ MonoBehaviour:
   - {fileID: 6312300973075462356}
   - {fileID: 935336718715133669}
   - {fileID: 2758049564705148450}
-  fadeDuration: 0.85
+  fadeDuration_In: 0.35
+  fadeDuration_Out: 0.75
   pickupMessageDuration: 1.5
   ability_Active: 0
 --- !u!1 &2799733066176756726
@@ -17137,6 +17138,8 @@ MonoBehaviour:
   state_CameraRotation: 0
   state_Respawn: 0
   tutorial_isRunning: 0
+  fadeDuration_In: 0.35
+  fadeDuration_Out: 0.25
   Tutorial_Parent: {fileID: 382775631166572805}
   Tutorial_Movement_Parent: {fileID: 7975622541074016985}
   Tutorial_CameraRotation_Parent: {fileID: 7851545348442241836}

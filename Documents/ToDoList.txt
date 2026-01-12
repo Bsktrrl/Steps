@@ -3,42 +3,83 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 
-1. New Menu UI
+Mørke Skins i Wardrobe-menyen
+- I wardroben på main menu er skinsa mørke, ikke ordentlig lyst opp
+
+
+Knapper i Wardrobe-menyen
+- Sånn som du har satt det opp nå er skins i wardrobe-menyen synlige med grå knapp når man går inn i et level og får hvit knapp når man plukker opp skinnet. Jeg tror det burde være spørsmålstegn helt til man plukker opp skinnet og at det da blir synlig med en grå knapp, og så blir knappen hvit når man kjøper skinnet og kan equippe det. Eller så er det ingen forskjell på skins man har kjøpt og ikke. Og jeg tror ikke det trengs å vises i menyen før man faktisk har plukket det opp
+
+
+New Game
+- Vi trenger en confirmation når man trykker new game, sånn at man ikke sletter saven med et uhell
+
+
+Treg tutorial
+- Jeg opplever at tutorialen i det første levelet er altfor treg. Når du trykker en knapp tar det litt tid før teksten forsvinner, og så tar det litt tid før en ny teksten begynner å komme inn, og så bruker den litt tid på å fade inn. Det føles uresponsivt. Jeg tror den trenger å være en del raskere (kanskje nesten instant) sånn at man ikke sitter og venter på at noe skal skje eller at man tror man er ferdig før man er det. Tutorials generelt er litt trege og irriterende, så vi burde gjøre alt vi kan for å gjøre den så lite irriterende som mulig
+
+
+Fading av Ability-menyer
+- Jeg liker egentlig ikke helt de trege fadene på ability tutorial vinduene heller fordi det fører til mye venting. Når den fader inn er det greit fordi spilleren gjør en backflip, men når man er ferdig må man vente på at den skal fade ut før man kan fortsette
+
+
+Ability-menyer kan lukkes når de åpnes
+- Ability tutorial vinduene trenger et sekund på starten hvor knapper ikke lukker vinduet, sånn at man ikke lukker det med et uhell. Det burde egentlig også stå "Press any button to continue". Jeg tror det egentlig kan gjøres så enkelt som på bildet under
+
+
+Falskt trykk etter Footprint/Essence-beskjed (kanskje skin også)
+- Ved den første inputen etter at man plukker opp essence eller extra step skjer det ingenting
+
+
+Lengre oppe-tid på Essence og Footprint-menyer
+- Teksten som dukker opp når man plukker opp essence eller extra step kan godt være der litt lenger enn den er nå, sånn at man har mer enn nok tid til å lese den. Kanskje den kan fade inn ganske raskt, men fade ut tregere?
+
+
+Ability-meny i Pausemenyen
+- I pause menyen burde man kunne trykke til høyre for å highlighte abilities og se tutorial vinduene som jeg viste i tidligere sketches
+
+
+Sette opp FootprintHUD (med tall) riktig
+- HUDen med tall istedenfor eller i tillegg til steps er ikke satt opp ordentlig
+
+
+Språk ikke oppdateres fra Settings med en gang
+- Noen ganger når jeg endrer språk, endres det ikke med en gang, men jeg må gjøre en input eller gå ut av settings-menyen før det oppdateres
+
+
+Footprint-Icon-bug hvis man har alle, på starten av et level
+- Stepsa i HUDen starter tomme og fyller seg opp når man starter et level, men hvis man starter et level hvor man allerede har alle stepsa og beveger seg før de er helt fylt så oppdateres ikke det siste steppet, så det ser ut som man ikke har låst det opp selv om man har det
+
+
+
+2. Intro Camera:
 __________________
 
-1.1. Change the UI for all menus, so it matches the new assets
-- Settings
-	- Controls: Key Inputs + functionality
-	- Hide the OptionMenus that are not in use
+2.1. Make generic intro, where camera is focused on Glueplant and zoomes out to the player
+ 	- Attach a camera to the Glueplant and make it softTransition to the player
 
 
 
-2. FreeRoam Camera:
+3. Sound:
 __________________
 
-2.1. Make FreeRoam camera by pressing R1 to roam freely
-	- Snap back to the player when pressing the button again
-  		- Perform snapping by transitioning very fast, for a smooth experience
-
-
-
-3. Intro Camera:
-__________________
-
-3.1. Make generic intro, where camera is focused on Glueplant and zoomes out to the player
-	- Attach a camera to the Glueplant and make it softTransition to the player
-
-
-
-4.
-Sound:
-__________________
-
-4.1. Ice Gliding and Water Blocks
+3.1. Ice Gliding and Water Blocks
 - Fix so that when icegliding and the player CAN swim, stop before any waterBlock as it was a normal ledge
 
-4.2. Ice glide bug
+3.2. Ice glide bug
 - Fix ice glide audio bug
+
+
+
+4. New Menu UI
+__________________
+
+4.1. Change the UI for all menus, so it matches the new assets
+- Settings
+ 	- Controls: Key Inputs + functionality
+ 	- Hide the OptionMenus that are not in use
+
+
 
 
 
@@ -47,16 +88,16 @@ __________________
 
 1. PlayerGlideAnimation still happens when it should not
 2. Make the numbers appear when stopping AND release the movementButton
-	- Now it disappear if moving into a deadEndBlock and holding in the movementButton
+ 	- Now it disappear if moving into a deadEndBlock and holding in the movementButton
 3. The player isn't performing walking animation after Ascending/Descending/SwiftSwim (when moving away from the block landed on)
-	- Also, the darkenBlock isn't activated for blocks 1 block above the player when having Ascending, IF ceilingGrab also is active
-	- Cannot Ascend from respawn
+ 	- Also, the darkenBlock isn't activated for blocks 1 block above the player when having Ascending, IF ceilingGrab also is active
+ 	- Cannot Ascend from respawn
 4. ColdWater isn't treatingt the camera the same way as Water. It may have something to do with the Haze particle
 5. When doing CeilingGrabRotation back to the noraml camera, it is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
 6. Add "MovingBlock"-EffectBlock
 7. Falling onto a fallingblock prevents movement
 8. Make so that abilities are learned permanent when all levels required are completed (fewer levels for the demo)
-	- Enable Hats when all levels are completed (for the demo only. Questline needs to be finished in the real game)
+ 	- Enable Hats when all levels are completed (for the demo only. Questline needs to be finished in the real game)
 9. Goin down a ladded to a Root-block, doesn't trigger the Root-block
 
 
@@ -71,8 +112,8 @@ __________________
 8. "Freemove" camera with right joystick
 
 12. Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
-	- Sometimes, when rotating to the left twice, the player move in the looking direction after moving
-	- Almost always when at the edge of something, where not all 4 adjacent blocks can be moved to (maybe blocks isn't updated to "null" when the camera is rotating, so it keeps old blocks when they should have been "null"?
+ 	- Sometimes, when rotating to the left twice, the player move in the looking direction after moving
+ 	- Almost always when at the edge of something, where not all 4 adjacent blocks can be moved to (maybe blocks isn't updated to "null" when the camera is rotating, so it keeps old blocks when they should have been "null"?
 
 16. Stairs isn't counted for when ascending/Descending
 17. Move EffectBlocks on top of SnowBlocks

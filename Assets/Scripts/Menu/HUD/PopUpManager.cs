@@ -58,7 +58,10 @@ public class PopUpManager : Singleton<PopUpManager>
 
 
     [Header("Fade Settings")]
-    public float fadeDuration = 0.85f;
+    public float fadeDuration_In = 0.35f;
+    public float fadeDuration_Out = 0.75f;
+    //public float fadeDuration_Ability_In = 0.35f;
+    //public float fadeDuration_Ability_Out = 0.65f;
     [SerializeField] float pickupMessageDuration = 1.5f;
 
     // Keep track of running fades so we can stop/replace them per parent
@@ -181,7 +184,7 @@ public class PopUpManager : Singleton<PopUpManager>
     {
         ShowDisplay(popupManager, popup_Footprint_Parent, popup_Footprint_Children);
 
-        yield return new WaitForSeconds(pickupMessageDuration);
+        yield return new WaitForSeconds(pickupMessageDuration * 1.5f);
 
         HideDisplay(popupManager, popup_Footprint_Parent, popup_Footprint_Children);
     }
@@ -189,7 +192,7 @@ public class PopUpManager : Singleton<PopUpManager>
     {
         ShowDisplay(popupManager,popup_Essence_Parent, popup_Essence_Children);
 
-        yield return new WaitForSeconds(pickupMessageDuration);
+        yield return new WaitForSeconds(pickupMessageDuration * 1.5f);
 
         HideDisplay(popupManager, popup_Essence_Parent, popup_Essence_Children);
     }
@@ -228,7 +231,7 @@ public class PopUpManager : Singleton<PopUpManager>
         cg.interactable = false;
         cg.blocksRaycasts = false;
 
-        _runningFades[categoryParent] = StartCoroutine(FadeUI(categoryParent, 0f, 1f, fadeDuration, disableParentAtEnd: false));
+        _runningFades[categoryParent] = StartCoroutine(FadeUI(categoryParent, 0f, 1f, fadeDuration_In, disableParentAtEnd: false));
     }
     public void HideDisplay(GameObject popupParent, GameObject categoryParent, List<GameObject> controllerVersions_Child)
     {
@@ -242,7 +245,7 @@ public class PopUpManager : Singleton<PopUpManager>
         cg.interactable = false;
         cg.blocksRaycasts = false;
 
-        _runningFades[categoryParent] = StartCoroutine(FadeUI(categoryParent, cg.alpha, 0f, fadeDuration, disableParentAtEnd: true));
+        _runningFades[categoryParent] = StartCoroutine(FadeUI(categoryParent, cg.alpha, 0f, fadeDuration_Out, disableParentAtEnd: true));
     }
 
     void StopFadeIfRunning(GameObject parent)

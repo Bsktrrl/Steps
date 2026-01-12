@@ -13,6 +13,9 @@ public class Tutorial : Singleton<Tutorial>
 
     public bool tutorial_isRunning;
 
+    [SerializeField] float fadeDuration_In = 0.35f;
+    [SerializeField] float fadeDuration_Out = 0.25f;
+
 
     //-----
 
@@ -70,9 +73,9 @@ public class Tutorial : Singleton<Tutorial>
     public void Tutorial_Movement(bool active)
     {
         if (active)
-            StartCoroutine(Movement_Start(1f));
+            StartCoroutine(Movement_Start(fadeDuration_In * 2));
         else
-            StartCoroutine(Movement_End(0.5f));
+            StartCoroutine(Movement_End(fadeDuration_Out));
     }
     IEnumerator Movement_Start(float waitTime)
     {
@@ -80,15 +83,17 @@ public class Tutorial : Singleton<Tutorial>
 
         PopUpManager.Instance.ShowDisplay(Tutorial_Parent, Tutorial_Movement_Parent, Tutorial_Movement_Child);
 
-        yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration);
+        yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration_In);
 
         state_Movement = true;
     }
     IEnumerator Movement_End(float waitTime)
     {
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(waitTime / 2);
 
         PopUpManager.Instance.HideDisplay(Tutorial_Parent, Tutorial_Movement_Parent, Tutorial_Movement_Child);
+
+        yield return new WaitForSeconds(waitTime/2);
 
         state_Movement = false;
 
@@ -100,9 +105,9 @@ public class Tutorial : Singleton<Tutorial>
     public void Tutorial_CameraRotation(bool active)
     {
         if (active)
-            StartCoroutine(CameraRotation_Start(1.5f));
+            StartCoroutine(CameraRotation_Start(fadeDuration_In));
         else
-            StartCoroutine(CameraRotation_End(0.5f));
+            StartCoroutine(CameraRotation_End(fadeDuration_Out));
     }
     IEnumerator CameraRotation_Start(float waitTime)
     {
@@ -110,15 +115,17 @@ public class Tutorial : Singleton<Tutorial>
 
         PopUpManager.Instance.ShowDisplay(Tutorial_Parent,Tutorial_CameraRotation_Parent, Tutorial_CameraRotation_Child);
 
-        yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration);
+        yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration_In);
 
         state_CameraRotation = true;
     }
     IEnumerator CameraRotation_End(float waitTime)
     {
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(waitTime / 2);
 
         PopUpManager.Instance.HideDisplay(Tutorial_Parent,Tutorial_CameraRotation_Parent, Tutorial_CameraRotation_Child);
+
+        yield return new WaitForSeconds(waitTime / 2);
 
         state_CameraRotation = false;
 
@@ -129,7 +136,7 @@ public class Tutorial : Singleton<Tutorial>
     #region Tutorial_Respawn
     public void Start_Tutorial_Respawn()
     {
-        StartCoroutine(Tutorial_Respawn_Start(1.5f));
+        StartCoroutine(Tutorial_Respawn_Start(fadeDuration_In));
     }
     IEnumerator Tutorial_Respawn_Start(float waitTime)
     {
@@ -139,7 +146,7 @@ public class Tutorial : Singleton<Tutorial>
 
         PopUpManager.Instance.ShowDisplay(Tutorial_Parent,Tutorial_Respawn_Parent, Tutorial_Respawn_Child);
 
-        yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration);
+        yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration_In);
 
         state_Respawn = true;
     }
@@ -149,7 +156,7 @@ public class Tutorial : Singleton<Tutorial>
 
         if (respawnCounter > 1)
         {
-            StartCoroutine(Tutorial_Respawn_End(0.2f));
+            StartCoroutine(Tutorial_Respawn_End(0.1f));
         }
     }
     IEnumerator Tutorial_Respawn_End(float waitTime)
@@ -160,7 +167,7 @@ public class Tutorial : Singleton<Tutorial>
 
         PopUpManager.Instance.HideDisplay(Tutorial_Parent, Tutorial_Respawn_Parent, Tutorial_Respawn_Child);
 
-        yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration);
+        yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration_Out);
 
         state_Respawn = false;
 
