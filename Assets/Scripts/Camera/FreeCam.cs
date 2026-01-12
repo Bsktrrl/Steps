@@ -297,25 +297,26 @@ public class FreeCam : Singleton<FreeCam>
 
     private void TickRotation(float dt)
     {
-        if (inputType == InputType.Keyboard)
+        // 1) Mouse look (only when RMB is held)
+        if (_mouseLookActive && inputType == InputType.Keyboard)
         {
-            if (!_mouseLookActive) return;
-
             Vector2 mouseDelta = Mouse.current?.delta.ReadValue() ?? Vector2.zero;
-            if (mouseDelta == Vector2.zero) return;
+            if (mouseDelta != Vector2.zero)
+            {
+                float ySign = invertY ? 1f : -1f;
 
-            float ySign = invertY ? 1f : -1f;
+                _yaw += mouseDelta.x * mouseSensitivity;
+                _pitch += mouseDelta.y * mouseSensitivity * ySign;
 
-            _yaw += mouseDelta.x * mouseSensitivity;
-            _pitch += mouseDelta.y * mouseSensitivity * ySign;
-
-            ApplyFreeCamRotation();
+                ApplyFreeCamRotation();
+                return;
+            }
         }
-        else
-        {
-            // controller look axis is stored via SetLookAxis()
-            if (_lookAxis == Vector2.zero) return;
 
+        // 2) Controller look (whenever look axis is non-zero)
+        // (No inputType gate here — if stick is being moved, rotate.)
+        if (_lookAxis != Vector2.zero)
+        {
             float ySign = invertY ? 1f : -1f;
 
             _yaw += _lookAxis.x * stickSensitivity * dt;
@@ -324,6 +325,7 @@ public class FreeCam : Singleton<FreeCam>
             ApplyFreeCamRotation();
         }
     }
+
 
     private void ApplyFreeCamRotation()
     {
