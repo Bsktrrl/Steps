@@ -1,12 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
-using UnityEditor;
 using UnityEngine;
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
+using UnityEngine.InputSystem;
 
 public class FreeCam : Singleton<FreeCam>
 {
@@ -46,9 +42,9 @@ public class FreeCam : Singleton<FreeCam>
     [Tooltip("Ignore trigger colliders.")]
     [SerializeField] private bool ignoreTriggers = true;
 
-    [Header("Collision")]
-    [Tooltip("Prefab assets the FreeCam is allowed to pass through (any instance in the scene).")]
-    [SerializeField] private List<GameObject> passThroughPrefabs = new List<GameObject>();
+    [Header("Pass-through")]
+    [Tooltip("Add FreeCamPassThrough to prefab roots you want to allow passing through.")]
+    [SerializeField] private bool usePassThroughMarker = true;
 
     [Header("Return Pan (EndFreeCam)")]
     [Tooltip("Duration of the smooth pan back to the player camera pose.")]
@@ -62,29 +58,54 @@ public class FreeCam : Singleton<FreeCam>
     [SerializeField] private float enterFadeDuration = 0.03f;
     [SerializeField] private AnimationCurve enterFadeEase = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
+    [Header("Rotation")]
+    [SerializeField] private InputType inputType = InputType.Keyboard;
+    public InputType CurrentInputType => inputType;
 
-    //--------------------
+    [Tooltip("Degrees per pixel (mouse).")]
+    [SerializeField] private float mouseSensitivity = 0.12f;
 
+    [Tooltip("Degrees per second at full stick deflection.")]
+    [SerializeField] private float stickSensitivity = 180f;
+
+    [SerializeField] private bool invertY = false;
+
+    [Tooltip("Clamp vertical rotation (pitch).")]
+    [SerializeField] private float pitchMin = -85f;
+    [SerializeField] private float pitchMax = 85f;
+
+    [Header("Deadzones")]
+    [Tooltip("Right stick deadzone.")]
+    [SerializeField] private float lookStickDeadzone = 0.12f;
+
+    [Tooltip("Left stick deadzone.")]
+    [SerializeField] private float moveStickDeadzone = 0.18f;
+
+    // --------------------
 
     private CinemachineCamera _cmPlayer;
-
-    // Cinemachine 3.0.1: Priority is PrioritySettings, not int
     private PrioritySettings _playerPriorityBefore;
     private PrioritySettings _freePriorityBefore;
 
     private bool _isActive;
     private Coroutine _returnRoutine;
-
-    // movement input (sum of pressed directions, in camera-local axes)
-    // x = right/left, y = up/down, z = forward/back
-    private Vector3 _inputSum;
-    private Vector3 _currentVelocity; // world-space velocity (smoothed)
-
     private Coroutine _enterCueRoutine;
 
+    // Movement state
+    private Vector3 _currentVelocity;     // world-space velocity (smoothed)
+    private Vector3 _digitalInputSum;     // keyboard button movement (WASD-like)
+    private Vector2 _moveAxis;            // controller move axis (left stick) OR optional axis-driven input
 
-    //--------------------
+    // Rotation state
+    private bool _mouseLookActive;
+    private Vector2 _lookAxis;            // controller look axis (right stick)
+    private float _yaw;
+    private float _pitch;
 
+    // Cached hits
+    private static readonly RaycastHit[] _hitsCache = new RaycastHit[16];
+
+    // --------------------
 
     private void OnEnable()
     {
@@ -98,15 +119,6 @@ public class FreeCam : Singleton<FreeCam>
         Player_KeyInputs.Action_FreeCamIsPassive -= EndFreeCam;
     }
 
-
-    //--------------------
-
-
-    private void Awake()
-    {
-       
-    }
-
     private void Update()
     {
         if (!_isActive || CM_FreeCam == null) return;
@@ -115,17 +127,16 @@ public class FreeCam : Singleton<FreeCam>
         if (dt <= 0f) return;
 
         TickMovement(dt);
+        TickRotation(dt);
     }
 
-    // --------------------
-    // Public API (assign these yourself to your button logic)
-    // --------------------
+    // ====================
+    // INPUT API (called by your input system)
+    // ====================
 
     /// <summary>
-    /// Call on "button down" to add a direction, and on "button up" to remove it.
-    /// Direction should be in camera-local axes:
-    /// Forward (0,0,1), Back (0,0,-1), Right (1,0,0), Left (-1,0,0), Up (0,1,0), Down (0,-1,0).
-    /// Diagonal movement happens automatically by summing.
+    /// Digital movement (keyboard-style). Call on press/release.
+    /// Use: Forward(0,0,1) Back(0,0,-1) Right(1,0,0) Left(-1,0,0) Up(0,1,0) Down(0,-1,0)
     /// </summary>
     public void SetMoveDirection(Vector3 localAxisDirection, bool pressed)
     {
@@ -135,19 +146,56 @@ public class FreeCam : Singleton<FreeCam>
             Mathf.Clamp(localAxisDirection.z, -1f, 1f)
         );
 
-        if (pressed) _inputSum += localAxisDirection;
-        else _inputSum -= localAxisDirection;
+        if (pressed) _digitalInputSum += localAxisDirection;
+        else _digitalInputSum -= localAxisDirection;
 
-        _inputSum = new Vector3(
-            Mathf.Clamp(_inputSum.x, -1f, 1f),
-            Mathf.Clamp(_inputSum.y, -1f, 1f),
-            Mathf.Clamp(_inputSum.z, -1f, 1f)
+        _digitalInputSum = new Vector3(
+            Mathf.Clamp(_digitalInputSum.x, -1f, 1f),
+            Mathf.Clamp(_digitalInputSum.y, -1f, 1f),
+            Mathf.Clamp(_digitalInputSum.z, -1f, 1f)
         );
     }
 
-    // --------------------
-    // Your requested functions
-    // --------------------
+    /// <summary>
+    /// Analog movement axis (left stick). Provide (-1..1, -1..1).
+    /// IMPORTANT: Call on performed AND canceled so it returns to zero.
+    /// </summary>
+    public void SetMoveAxis(Vector2 axis)
+    {
+        if (!_isActive) return;
+
+        // deadzone to prevent drift
+        if (axis.magnitude < moveStickDeadzone) axis = Vector2.zero;
+        _moveAxis = Vector2.ClampMagnitude(axis, 1f);
+    }
+
+    /// <summary>
+    /// Call on "mouse look pressed" (RMB down).
+    /// </summary>
+    public void BeginMouseLook() => _mouseLookActive = true;
+
+    /// <summary>
+    /// Call on "mouse look released" (RMB up).
+    /// </summary>
+    public void EndMouseLook() => _mouseLookActive = false;
+
+    /// <summary>
+    /// Analog look axis (right stick). Provide (-1..1, -1..1).
+    /// IMPORTANT: Call on performed AND canceled so it returns to zero.
+    /// </summary>
+    public void SetLookAxis(Vector2 axis)
+    {
+        if (!_isActive) return;
+
+        if (axis.magnitude < lookStickDeadzone) axis = Vector2.zero;
+        _lookAxis = Vector2.ClampMagnitude(axis, 1f);
+
+        print("1. Right Stick is used");
+    }
+
+    // ====================
+    // MODE SWITCH
+    // ====================
 
     private void StartFreeCam()
     {
@@ -156,33 +204,44 @@ public class FreeCam : Singleton<FreeCam>
         _cmPlayer = CameraController.Instance != null ? CameraController.Instance.CM_Player : null;
         if (_cmPlayer == null) return;
 
-        if (_returnRoutine != null)
-        {
-            StopCoroutine(_returnRoutine);
-            _returnRoutine = null;
-        }
+        // stop routines
+        if (_returnRoutine != null) { StopCoroutine(_returnRoutine); _returnRoutine = null; }
+        if (_enterCueRoutine != null) { StopCoroutine(_enterCueRoutine); _enterCueRoutine = null; }
+
+        _mouseLookActive = false;
+
+        // IMPORTANT: prevent Cinemachine from overriding your rotation
+        CM_FreeCam.Follow = null;
+        CM_FreeCam.LookAt = null;
 
         // snap FreeCam to PlayerCam pose
         CM_FreeCam.transform.SetPositionAndRotation(_cmPlayer.transform.position, _cmPlayer.transform.rotation);
 
-        // store current priorities (PrioritySettings)
+        // init yaw/pitch from current rotation
+        Vector3 e = CM_FreeCam.transform.rotation.eulerAngles;
+        _yaw = e.y;
+        float ex = e.x; if (ex > 180f) ex -= 360f;
+        _pitch = Mathf.Clamp(ex, pitchMin, pitchMax);
+
+        // store priorities
         _playerPriorityBefore = _cmPlayer.Priority;
         _freePriorityBefore = CM_FreeCam.Priority;
 
         if (toggleFreeCamGameObject)
             CM_FreeCam.gameObject.SetActive(true);
 
-        // make FreeCam win (PrioritySettings.Value in CM 3.x)
+        // make FreeCam win
         int playerVal = GetPriorityValue(_cmPlayer);
         SetPriorityValue(CM_FreeCam, playerVal + freeCamPriorityBoost);
 
+        // reset inputs/state
         _isActive = true;
-        _inputSum = Vector3.zero;
+        _digitalInputSum = Vector3.zero;
+        _moveAxis = Vector2.zero;
+        _lookAxis = Vector2.zero;
         _currentVelocity = Vector3.zero;
 
-        if (_enterCueRoutine != null)
-            StopCoroutine(_enterCueRoutine);
-
+        // enter cue
         _enterCueRoutine = StartCoroutine(EnterFreeCamCue());
     }
 
@@ -201,34 +260,16 @@ public class FreeCam : Singleton<FreeCam>
         _returnRoutine = StartCoroutine(ReturnToPlayerThenSwitch());
     }
 
-    // --------------------
-    // Priority helpers (Cinemachine 3.0.1)
-    // --------------------
-
-    private static int GetPriorityValue(CinemachineCamera cam)
-    {
-        // Most CM 3.x builds:
-        return cam.Priority.Value;
-
-        // If your PrioritySettings uses a different field name, use one of these instead:
-        // return cam.Priority.m_Value;
-        // return cam.Priority.Value.Value; // (unlikely, but some APIs nest)
-    }
-
-    private static void SetPriorityValue(CinemachineCamera cam, int value)
-    {
-        var p = cam.Priority;
-        p.Value = value;      // change to p.m_Value = value; if needed
-        cam.Priority = p;     // IMPORTANT: write the struct back
-    }
-
-    // --------------------
-    // Internals
-    // --------------------
+    // ====================
+    // TICK: MOVEMENT / ROTATION
+    // ====================
 
     private void TickMovement(float dt)
     {
-        Vector3 local = _inputSum;
+        // combine digital + analog (analog uses x=strafe, y=forward)
+        Vector3 analogLocal = new Vector3(_moveAxis.x, 0f, _moveAxis.y);
+        Vector3 local = _digitalInputSum + analogLocal;
+        local = Vector3.ClampMagnitude(local, 1f);
 
         Vector3 desiredWorldVelocity = Vector3.zero;
         if (local.sqrMagnitude > 0.0001f)
@@ -254,6 +295,49 @@ public class FreeCam : Singleton<FreeCam>
         CM_FreeCam.transform.position = newPos;
     }
 
+    private void TickRotation(float dt)
+    {
+        if (inputType == InputType.Keyboard)
+        {
+            if (!_mouseLookActive) return;
+
+            Vector2 mouseDelta = Mouse.current?.delta.ReadValue() ?? Vector2.zero;
+            if (mouseDelta == Vector2.zero) return;
+
+            float ySign = invertY ? 1f : -1f;
+
+            _yaw += mouseDelta.x * mouseSensitivity;
+            _pitch += mouseDelta.y * mouseSensitivity * ySign;
+
+            ApplyFreeCamRotation();
+        }
+        else
+        {
+            // controller look axis is stored via SetLookAxis()
+            if (_lookAxis == Vector2.zero) return;
+
+            float ySign = invertY ? 1f : -1f;
+
+            _yaw += _lookAxis.x * stickSensitivity * dt;
+            _pitch += _lookAxis.y * stickSensitivity * dt * ySign;
+
+            ApplyFreeCamRotation();
+        }
+    }
+
+    private void ApplyFreeCamRotation()
+    {
+        _pitch = Mathf.Clamp(_pitch, pitchMin, pitchMax);
+
+        Quaternion yawRot = Quaternion.AngleAxis(_yaw, Vector3.up);
+        Quaternion pitchRot = Quaternion.AngleAxis(_pitch, Vector3.right);
+        CM_FreeCam.transform.rotation = yawRot * pitchRot;
+    }
+
+    // ====================
+    // COLLISION
+    // ====================
+
     private Vector3 ComputeBlockedMovement(Vector3 currentPos, Vector3 delta)
     {
         float maxProbe = Mathf.Max(0f, collisionProbeDistance);
@@ -265,12 +349,11 @@ public class FreeCam : Singleton<FreeCam>
 
         float probeDist = Mathf.Min(maxProbe, moveDist);
 
-        RaycastHit[] hits = _hitsCache;
         int hitCount = Physics.SphereCastNonAlloc(
             currentPos,
             collisionProbeRadius,
             dir,
-            hits,
+            _hitsCache,
             probeDist,
             Physics.DefaultRaycastLayers,
             ignoreTriggers ? QueryTriggerInteraction.Ignore : QueryTriggerInteraction.Collide
@@ -284,16 +367,16 @@ public class FreeCam : Singleton<FreeCam>
 
         for (int i = 0; i < hitCount; i++)
         {
-            Collider col = hits[i].collider;
+            Collider col = _hitsCache[i].collider;
             if (!col) continue;
 
-            if (col.GetComponentInParent<FreeCamPassThrough>() != null)
+            if (usePassThroughMarker && col.GetComponentInParent<FreeCamPassThrough>() != null)
                 continue;
 
             if (col.transform.IsChildOf(transform))
                 continue;
 
-            float d = hits[i].distance;
+            float d = _hitsCache[i].distance;
             if (d < closest)
             {
                 closest = d;
@@ -310,36 +393,46 @@ public class FreeCam : Singleton<FreeCam>
         return currentPos + dir * finalDist;
     }
 
-    private bool IsPassThroughCollider(Collider col)
+    // ====================
+    // COROUTINES
+    // ====================
+
+    private IEnumerator EnterFreeCamCue()
     {
-#if UNITY_EDITOR
-        if (col == null) return false;
+        Vector3 startPos = CM_FreeCam.transform.position;
+        Quaternion rot = CM_FreeCam.transform.rotation;
+        Vector3 targetPos = startPos - (rot * Vector3.forward * enterFadeDistance);
 
-        GameObject source =
-            PrefabUtility.GetCorrespondingObjectFromSource(col.gameObject);
+        float t = 0f;
+        float dur = Mathf.Max(0.0001f, enterFadeDuration);
 
-        if (source == null)
-            return false;
-
-        for (int i = 0; i < passThroughPrefabs.Count; i++)
+        while (t < dur)
         {
-            if (passThroughPrefabs[i] == source)
-                return true;
+            float dt = useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
+            t += dt;
+
+            float u = Mathf.Clamp01(t / dur);
+            float eased = enterFadeEase != null ? enterFadeEase.Evaluate(u) : u;
+
+            CM_FreeCam.transform.position = Vector3.LerpUnclamped(startPos, targetPos, eased);
+            yield return null;
         }
-#endif
-        return false;
+
+        CM_FreeCam.transform.position = targetPos;
+        _enterCueRoutine = null;
     }
-
-
-    private static readonly RaycastHit[] _hitsCache = new RaycastHit[16];
 
     private IEnumerator ReturnToPlayerThenSwitch()
     {
         _isActive = false;
-        _inputSum = Vector3.zero;
+
+        // clear input so it cannot keep moving during the pan
+        _digitalInputSum = Vector3.zero;
+        _moveAxis = Vector2.zero;
+        _lookAxis = Vector2.zero;
         _currentVelocity = Vector3.zero;
 
-        // Ensure FreeCam is winning during the pan
+        // Ensure FreeCam wins during the pan
         int playerVal = GetPriorityValue(_cmPlayer);
         SetPriorityValue(CM_FreeCam, playerVal + freeCamPriorityBoost);
 
@@ -370,7 +463,7 @@ public class FreeCam : Singleton<FreeCam>
 
         CM_FreeCam.transform.SetPositionAndRotation(targetPos, targetRot);
 
-        // Restore exact previous PrioritySettings structs (no int math here)
+        // restore priorities
         CM_FreeCam.Priority = _freePriorityBefore;
         _cmPlayer.Priority = _playerPriorityBefore;
 
@@ -380,32 +473,19 @@ public class FreeCam : Singleton<FreeCam>
         _returnRoutine = null;
     }
 
-    private IEnumerator EnterFreeCamCue()
+    // ====================
+    // PRIORITY HELPERS (CM 3.0.1)
+    // ====================
+
+    private static int GetPriorityValue(CinemachineCamera cam)
     {
-        Vector3 startPos = CM_FreeCam.transform.position;
-        Quaternion rot = CM_FreeCam.transform.rotation;
+        return cam.Priority.Value;
+    }
 
-        // move backwards along camera forward
-        Vector3 targetPos = startPos - (rot * Vector3.forward * enterFadeDistance);
-
-        float t = 0f;
-        float dur = Mathf.Max(0.0001f, enterFadeDuration);
-
-        while (t < dur)
-        {
-            float dt = useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
-            t += dt;
-
-            float u = Mathf.Clamp01(t / dur);
-            float eased = enterFadeEase != null ? enterFadeEase.Evaluate(u) : u;
-
-            CM_FreeCam.transform.position =
-                Vector3.LerpUnclamped(startPos, targetPos, eased);
-
-            yield return null;
-        }
-
-        CM_FreeCam.transform.position = targetPos;
-        _enterCueRoutine = null;
+    private static void SetPriorityValue(CinemachineCamera cam, int value)
+    {
+        var p = cam.Priority;
+        p.Value = value;
+        cam.Priority = p;
     }
 }

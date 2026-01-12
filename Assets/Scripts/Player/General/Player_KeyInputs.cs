@@ -59,6 +59,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     PauseMenuManager pauseMenuManager;
 
+    private Vector2 _lastMousePos;
+
 
 
     //--------------------
@@ -76,6 +78,22 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
             Player_Animations.Instance.playerAnimator = PlayerManager.Instance.playerBody.GetComponentInChildren<Animator>();
         }
     }
+    private void Update()
+    {
+        //if (!freeCam_isPressed) return;
+
+        //var pad = Gamepad.current;
+        //if (pad == null) return;
+
+        //// Only poll sticks if FreeCam is set to controller mode
+        //if (FreeCam.Instance.CurrentInputType == InputType.Keyboard)
+        //    return;
+
+        //FreeCam.Instance.SetMoveAxis(pad.leftStick.ReadValue());
+        //FreeCam.Instance.RotateFromStick(pad.rightStick.ReadValue());
+    }
+
+
 
 
     //--------------------
@@ -83,23 +101,15 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnForward_Down()
     {
-        //FreeCam Movement
-        if (freeCam_isPressed)
-        {
-            FreeCam.Instance.SetMoveDirection(Vector3.forward, true);
-        }
-        else
-        {
-            if (!Run_AbilityDisplayExit()) return;
-            if (freeCam_isPressed) return;
+        if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
 
-            Run_Movement_Tutorial(ref forward_isPressed);
+        Run_Movement_Tutorial(ref forward_isPressed);
 
-            if (!ButtonChecks_Movement()) { return; }
+        if (!ButtonChecks_Movement()) { return; }
 
-            forward_isPressed = true;
-            Action_WalkButton_isPressed?.Invoke();
-        }
+        forward_isPressed = true;
+        Action_WalkButton_isPressed?.Invoke();
     }
     void OnForward_Hold()
     {
@@ -110,40 +120,24 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnForward_Up()
     {
-        //FreeCam Movement
-        if (freeCam_isPressed)
-        {
-            FreeCam.Instance.SetMoveDirection(Vector3.forward, false);
-        }
-        else
-        {
-            if (freeCam_isPressed) return;
+        if (freeCam_isPressed) return;
 
-            forward_isPressed = false;
-            forward_isHold = false;
+        forward_isPressed = false;
+        forward_isHold = false;
 
-            Action_WalkButton_isReleased?.Invoke();
-        }
+        Action_WalkButton_isReleased?.Invoke();
     }
     void OnBackward_Down()
     {
-        //FreeCam Movement
-        if (freeCam_isPressed)
-        {
-            FreeCam.Instance.SetMoveDirection(Vector3.back, true);
-        }
-        else
-        {
-            if (!Run_AbilityDisplayExit()) return;
-            if (freeCam_isPressed) return;
+        if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
 
-            Run_Movement_Tutorial(ref back_isPressed);
+        Run_Movement_Tutorial(ref back_isPressed);
 
-            if (!ButtonChecks_Movement()) { return; }
+        if (!ButtonChecks_Movement()) { return; }
 
-            back_isPressed = true;
-            Action_WalkButton_isPressed?.Invoke();
-        }
+        back_isPressed = true;
+        Action_WalkButton_isPressed?.Invoke();
     }
     void OnBackward_Hold()
     {
@@ -154,40 +148,24 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnBackward_Up()
     {
-        //FreeCam Movement
-        if (freeCam_isPressed)
-        {
-            FreeCam.Instance.SetMoveDirection(Vector3.back, false);
-        }
-        else
-        {
-            if (freeCam_isPressed) return;
+        if (freeCam_isPressed) return;
 
-            back_isPressed = false;
-            back_isHold = false;
+        back_isPressed = false;
+        back_isHold = false;
 
-            Action_WalkButton_isReleased?.Invoke();
-        }
+        Action_WalkButton_isReleased?.Invoke();
     }
     void OnLeft_Down()
     {
-        //FreeCam Movement
-        if (freeCam_isPressed)
-        {
-            FreeCam.Instance.SetMoveDirection(Vector3.left, true);
-        }
-        else
-        {
-            if (!Run_AbilityDisplayExit()) return;
-            if (freeCam_isPressed) return;
+        if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
 
-            Run_Movement_Tutorial(ref left_isPressed);
+        Run_Movement_Tutorial(ref left_isPressed);
 
-            if (!ButtonChecks_Movement()) { return; }
+        if (!ButtonChecks_Movement()) { return; }
 
-            left_isPressed = true;
-            Action_WalkButton_isPressed?.Invoke();
-        }
+        left_isPressed = true;
+        Action_WalkButton_isPressed?.Invoke();
     }
     void OnLeft_Hold()
     {
@@ -198,40 +176,24 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnLeft_Up()
     {
-        //FreeCam Movement
-        if (freeCam_isPressed)
-        {
-            FreeCam.Instance.SetMoveDirection(Vector3.left, false);
-        }
-        else
-        {
-            if (freeCam_isPressed) return;
+        if (freeCam_isPressed) return;
 
-            left_isPressed = false;
-            left_isHold = false;
+        left_isPressed = false;
+        left_isHold = false;
 
-            Action_WalkButton_isReleased?.Invoke();
-        }
+        Action_WalkButton_isReleased?.Invoke();
     }
     void OnRight_Down()
     {
-        //FreeCam Movement
-        if (freeCam_isPressed)
-        {
-            FreeCam.Instance.SetMoveDirection(Vector3.right, true);
-        }
-        else
-        {
-            if (!Run_AbilityDisplayExit()) return;
-            if (freeCam_isPressed) return;
+        if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
 
-            Run_Movement_Tutorial(ref right_isPressed);
+        Run_Movement_Tutorial(ref right_isPressed);
 
-            if (!ButtonChecks_Movement()) { return; }
+        if (!ButtonChecks_Movement()) { return; }
 
-            right_isPressed = true;
-            Action_WalkButton_isPressed?.Invoke();
-        }
+        right_isPressed = true;
+        Action_WalkButton_isPressed?.Invoke();
     }
     void OnRight_Hold()
     {
@@ -242,20 +204,12 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnRight_Up()
     {
-        //FreeCam Movement
-        if (freeCam_isPressed)
-        {
-            FreeCam.Instance.SetMoveDirection(Vector3.right, false);
-        }
-        else
-        {
-            if (freeCam_isPressed) return;
+        if (freeCam_isPressed) return;
 
-            right_isPressed = false;
-            right_isHold = false;
+        right_isPressed = false;
+        right_isHold = false;
 
-            Action_WalkButton_isReleased?.Invoke();
-        }
+        Action_WalkButton_isReleased?.Invoke();
     }
 
     void OnAbilityUp_Down()
@@ -474,6 +428,69 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
             Action_FreeCamIsActive?.Invoke();
         }
+    }
+
+    void OnMouse_Down()
+    {
+        _lastMousePos = Input.mousePosition;
+        FreeCam.Instance.BeginMouseLook();
+    }
+    void OnMouse_Up()
+    {
+        FreeCam.Instance.EndMouseLook();
+    }
+
+    void OnFreeCam_Move(InputValue value)
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetMoveAxis(value.Get<Vector2>());
+    }
+
+    void OnFreeCam_Look(InputValue value)
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetLookAxis(value.Get<Vector2>());
+    }
+
+    void OnForward_FreeCam_Down()
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetMoveDirection(Vector3.forward, true);
+    }
+    void OnForward_FreeCam_Up()
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetMoveDirection(Vector3.forward, false);
+    }
+    void OnBackward_FreeCam_Down()
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetMoveDirection(Vector3.back, true);
+    }
+    void OnBackward_FreeCam_Up()
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetMoveDirection(Vector3.back, false);
+    }
+    void OnLeft_FreeCam_Down()
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetMoveDirection(Vector3.left, true);
+    }
+    void OnLeft_FreeCam_Up()
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetMoveDirection(Vector3.left, false);
+    }
+    void OnRight_FreeCam_Down()
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetMoveDirection(Vector3.right, true);
+    }
+    void OnRight_FreeCam_Up()
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetMoveDirection(Vector3.right, false);
     }
 
 
