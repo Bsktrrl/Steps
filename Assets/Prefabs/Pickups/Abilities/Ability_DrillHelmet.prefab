@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3931090765510948630, guid: 045d3b8ffa7137243a1adbce04ac83e5, type: 3}
       propertyPath: m_Name
-      value: Ability_DrillHelmet Variant
+      value: Ability_DrillHelmet
       objectReference: {fileID: 0}
     - target: {fileID: 3931090765510948630, guid: 045d3b8ffa7137243a1adbce04ac83e5, type: 3}
       propertyPath: m_Layer
@@ -113,6 +113,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3931090765510948630, guid: 045d3b8ffa7137243a1adbce04ac83e5, type: 3}
       insertIndex: -1
       addedObject: {fileID: -4463835441913991646}
+    - targetCorrespondingSourceObject: {fileID: 3931090765510948630, guid: 045d3b8ffa7137243a1adbce04ac83e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4326755528833348849}
   m_SourcePrefab: {fileID: 100100000, guid: 045d3b8ffa7137243a1adbce04ac83e5, type: 3}
 --- !u!1 &3978476045458116185 stripped
 GameObject:
@@ -174,6 +177,18 @@ MonoBehaviour:
   iconObject: {fileID: 6687791440495495798}
   rotationSpeed: 0.75
   rotation: 0
+--- !u!114 &-4326755528833348849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3978476045458116185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2a8dfece72ecda4787365e763d976d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6687791440495495798 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6735034539692159801, guid: 045d3b8ffa7137243a1adbce04ac83e5, type: 3}

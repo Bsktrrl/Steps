@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -18,7 +18,7 @@ public class FreeCam : Singleton<FreeCam>
 
     [Header("Movement")]
     [Tooltip("Units per second.")]
-    [SerializeField] private float moveSpeed = 8f;
+    [SerializeField] private float moveSpeed = 6f;
 
     [Tooltip("How quickly the camera accelerates towards target speed (bigger = snappier).")]
     [SerializeField] private float acceleration = 12f;
@@ -31,10 +31,10 @@ public class FreeCam : Singleton<FreeCam>
 
     [Header("Collision")]
     [Tooltip("How far ahead to probe for obstacles when moving.")]
-    [SerializeField] private float collisionProbeDistance = 0.5f;
+    [SerializeField] private float collisionProbeDistance = 2f;
 
     [Tooltip("Radius for the sphere cast used to stop at walls.")]
-    [SerializeField] private float collisionProbeRadius = 0.18f;
+    [SerializeField] private float collisionProbeRadius = 0.2f;
 
     [Tooltip("Small offset so we stop slightly before the hit surface.")]
     [SerializeField] private float collisionStopOffset = 0.02f;
@@ -63,10 +63,10 @@ public class FreeCam : Singleton<FreeCam>
     public InputType CurrentInputType => inputType;
 
     [Tooltip("Degrees per pixel (mouse).")]
-    [SerializeField] private float mouseSensitivity = 0.12f;
+    [SerializeField] private float mouseSensitivity = 0.15f;
 
     [Tooltip("Degrees per second at full stick deflection.")]
-    [SerializeField] private float stickSensitivity = 180f;
+    [SerializeField] private float stickSensitivity = 120f;
 
     [SerializeField] private bool invertY = false;
 
@@ -81,6 +81,25 @@ public class FreeCam : Singleton<FreeCam>
     [Tooltip("Left stick deadzone.")]
     [SerializeField] private float moveStickDeadzone = 0.18f;
 
+    [Header("Collision Sliding (Glide)")]
+    [SerializeField] private bool slideAlongSurfaces = true;
+
+    [Tooltip("How many slide attempts per frame. 2–3 is usually enough.")]
+    [SerializeField] private int slideIterations = 100;
+
+    [Tooltip("Small distance kept from surfaces to avoid sticking/jitter.")]
+    [SerializeField] private float skinWidth = 0.01f;
+
+    [Tooltip("Extra distance added to the sweep so we detect contact reliably at high speed.")]
+    [SerializeField] private float sweepPadding = 0.02f;
+
+    [Tooltip("If we are closer than this to a surface, treat as 'touching' and slide without nudging.")]
+    [SerializeField] private float touchEpsilon = 1f;
+
+    [Tooltip("Tiny step along the slide direction when touching a surface. Helps avoid 'glued' feeling.")]
+    [SerializeField] private float touchSlideStep = 1f;
+
+
     // --------------------
 
     private CinemachineCamera _cmPlayer;
@@ -94,7 +113,7 @@ public class FreeCam : Singleton<FreeCam>
     // Movement state
     private Vector3 _currentVelocity;     // world-space velocity (smoothed)
     private Vector3 _digitalInputSum;     // keyboard button movement (WASD-like)
-    private Vector2 _moveAxis;            // controller move axis (left stick) OR optional axis-driven input
+    private Vector2 _moveAxis;            // controller move axis (left stick)
 
     // Rotation state
     private bool _mouseLookActive;
@@ -164,7 +183,6 @@ public class FreeCam : Singleton<FreeCam>
     {
         if (!_isActive) return;
 
-        // deadzone to prevent drift
         if (axis.magnitude < moveStickDeadzone) axis = Vector2.zero;
         _moveAxis = Vector2.ClampMagnitude(axis, 1f);
     }
@@ -189,8 +207,6 @@ public class FreeCam : Singleton<FreeCam>
 
         if (axis.magnitude < lookStickDeadzone) axis = Vector2.zero;
         _lookAxis = Vector2.ClampMagnitude(axis, 1f);
-
-        print("1. Right Stick is used");
     }
 
     // ====================
@@ -291,7 +307,7 @@ public class FreeCam : Singleton<FreeCam>
         Vector3 delta = _currentVelocity * dt;
         if (delta.sqrMagnitude < 0.0000001f) return;
 
-        Vector3 newPos = ComputeBlockedMovement(CM_FreeCam.transform.position, delta);
+        Vector3 newPos = ComputeGlideMovement(CM_FreeCam.transform.position, delta);
         CM_FreeCam.transform.position = newPos;
     }
 
@@ -314,7 +330,6 @@ public class FreeCam : Singleton<FreeCam>
         }
 
         // 2) Controller look (whenever look axis is non-zero)
-        // (No inputType gate here � if stick is being moved, rotate.)
         if (_lookAxis != Vector2.zero)
         {
             float ySign = invertY ? 1f : -1f;
@@ -326,7 +341,6 @@ public class FreeCam : Singleton<FreeCam>
         }
     }
 
-
     private void ApplyFreeCamRotation()
     {
         _pitch = Mathf.Clamp(_pitch, pitchMin, pitchMax);
@@ -337,16 +351,151 @@ public class FreeCam : Singleton<FreeCam>
     }
 
     // ====================
-    // COLLISION
+    // COLLISION (GLIDE / SLIDE)
     // ====================
 
-    private Vector3 ComputeBlockedMovement(Vector3 currentPos, Vector3 delta)
+    private Vector3 ComputeGlideMovement(Vector3 startPos, Vector3 delta)
+    {
+        if (!slideAlongSurfaces)
+            return ComputeBlockedMovement_StopOnly(startPos, delta);
+
+        if (collisionProbeRadius <= 0f)
+            return startPos + delta;
+
+        Vector3 pos = startPos;
+
+        float remainingDist = delta.magnitude;
+        if (remainingDist < 0.00001f) return pos;
+
+        // Desired move direction (already based on camera look direction)
+        Vector3 dir = delta / remainingDist;
+
+        int iters = Mathf.Clamp(slideIterations, 1, 6);
+
+        // Stop slightly before surfaces
+        float stopOffset = Mathf.Max(skinWidth, collisionStopOffset);
+        float stepWhenTouching = Mathf.Max(0.001f, touchSlideStep);
+
+        for (int iter = 0; iter < iters; iter++)
+        {
+            if (remainingDist < 0.00001f) break;
+
+            // Sweep the FULL remaining movement (prevents lag)
+            float sweep = remainingDist + stopOffset;
+
+            int hitCount = Physics.SphereCastNonAlloc(
+                pos,
+                collisionProbeRadius,
+                dir,
+                _hitsCache,
+                sweep,
+                Physics.DefaultRaycastLayers,
+                ignoreTriggers ? QueryTriggerInteraction.Ignore : QueryTriggerInteraction.Collide
+            );
+
+            // No hit -> move all remaining
+            if (hitCount <= 0)
+            {
+                pos += dir * remainingDist;
+                break;
+            }
+
+            // Find closest blocking hit
+            int best = -1;
+            float closest = float.PositiveInfinity;
+
+            for (int i = 0; i < hitCount; i++)
+            {
+                Collider col = _hitsCache[i].collider;
+                if (!col) continue;
+
+                if (usePassThroughMarker && col.GetComponentInParent<FreeCamPassThrough>() != null)
+                    continue;
+
+                if (col.transform.IsChildOf(transform))
+                    continue;
+
+                float d = _hitsCache[i].distance;
+                if (d < closest)
+                {
+                    closest = d;
+                    best = i;
+                }
+            }
+
+            // Only pass-through hits -> move all remaining
+            if (best < 0)
+            {
+                pos += dir * remainingDist;
+                break;
+            }
+
+            RaycastHit hit = _hitsCache[best];
+
+            // How far can we go before the surface?
+            float moveTo = Mathf.Clamp(closest - stopOffset, 0f, remainingDist);
+
+            // Compute slide direction from our desired direction
+            Vector3 slideDir = Vector3.ProjectOnPlane(dir, hit.normal);
+            if (slideDir.sqrMagnitude < 0.0000001f)
+            {
+                // We're pushing straight into the surface; no meaningful glide possible.
+                break;
+            }
+            slideDir.Normalize();
+
+            // If we are basically touching, we MUST advance a tiny step along the slide direction,
+            // otherwise we keep re-hitting at 0 distance and feel "glued".
+            if (moveTo <= 0.0005f)
+            {
+                float step = Mathf.Min(remainingDist, stepWhenTouching);
+
+                // Optional: check if that tiny slide step is immediately blocked too
+                int microHits = Physics.SphereCastNonAlloc(
+                    pos,
+                    collisionProbeRadius,
+                    slideDir,
+                    _hitsCache,
+                    step + stopOffset,
+                    Physics.DefaultRaycastLayers,
+                    ignoreTriggers ? QueryTriggerInteraction.Ignore : QueryTriggerInteraction.Collide
+                );
+
+                if (microHits > 0)
+                {
+                    // If even sliding is blocked right away, stop
+                    break;
+                }
+
+                pos += slideDir * step;
+                remainingDist -= step;
+
+                // Continue sliding along surface
+                dir = slideDir;
+                continue;
+            }
+
+            // Normal case: move up to the hit
+            pos += dir * moveTo;
+            remainingDist -= moveTo;
+
+            // Continue along the surface plane (glide)
+            dir = slideDir;
+        }
+
+        return pos;
+    }
+
+
+    private Vector3 ComputeBlockedMovement_StopOnly(Vector3 currentPos, Vector3 delta)
     {
         float maxProbe = Mathf.Max(0f, collisionProbeDistance);
         if (maxProbe <= 0f || collisionProbeRadius <= 0f)
             return currentPos + delta;
 
         float moveDist = delta.magnitude;
+        if (moveDist < 0.00001f) return currentPos;
+
         Vector3 dir = delta / moveDist;
 
         float probeDist = Mathf.Min(maxProbe, moveDist);

@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3931090765510948630, guid: bf7ed8c851df8bd40b703f064d81ec4a, type: 3}
       propertyPath: m_Name
-      value: Ability_OxygenTank Variant
+      value: Ability_OxygenTank
       objectReference: {fileID: 0}
     - target: {fileID: 3931090765510948630, guid: bf7ed8c851df8bd40b703f064d81ec4a, type: 3}
       propertyPath: m_Layer
@@ -113,6 +113,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3931090765510948630, guid: bf7ed8c851df8bd40b703f064d81ec4a, type: 3}
       insertIndex: -1
       addedObject: {fileID: -1147098790809761050}
+    - targetCorrespondingSourceObject: {fileID: 3931090765510948630, guid: bf7ed8c851df8bd40b703f064d81ec4a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8131068872968421808}
   m_SourcePrefab: {fileID: 100100000, guid: bf7ed8c851df8bd40b703f064d81ec4a, type: 3}
 --- !u!1 &359566537945092353 stripped
 GameObject:
@@ -184,3 +187,15 @@ MonoBehaviour:
   iconObject: {fileID: 359566537945092353}
   rotationSpeed: 0.75
   rotation: 0
+--- !u!114 &-8131068872968421808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8403929505673581865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2a8dfece72ecda4787365e763d976d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
