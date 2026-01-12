@@ -272,6 +272,9 @@ PrefabInstance:
       addedObject: {fileID: -4310124025882026611}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 689aea342fda6dd40ab3bcf6ee538c6c, type: 3}
       insertIndex: -1
+      addedObject: {fileID: -2560708448793330563}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 689aea342fda6dd40ab3bcf6ee538c6c, type: 3}
+      insertIndex: -1
       addedObject: {fileID: -6622142399644158931}
   m_SourcePrefab: {fileID: 100100000, guid: 689aea342fda6dd40ab3bcf6ee538c6c, type: 3}
 --- !u!1 &2657007519307032653 stripped
@@ -380,6 +383,81 @@ MonoBehaviour:
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
   blockEffectHolding_List: []
+--- !u!114 &-2560708448793330563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2657007519307032653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8607e9c0ed704854eae98f58da829eec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CM_FreeCam: {fileID: 0}
+  toggleFreeCamGameObject: 0
+  freeCamPriorityBoost: 10
+  moveSpeed: 8
+  acceleration: 12
+  deceleration: 18
+  useUnscaledTime: 1
+  collisionProbeDistance: 0.5
+  collisionProbeRadius: 0.18
+  collisionStopOffset: 0.02
+  ignoreTriggers: 1
+  passThroughPrefabs: []
+  returnDuration: 0.35
+  returnEase:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  enterFadeDistance: 1
+  enterFadeDuration: 0.03
+  enterFadeEase:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &-6622142399644158931
 MonoBehaviour:
   m_ObjectHideFlags: 0
