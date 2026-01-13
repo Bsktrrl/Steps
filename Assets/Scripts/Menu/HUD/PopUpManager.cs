@@ -111,6 +111,7 @@ public class PopUpManager : Singleton<PopUpManager>
     }
     IEnumerator ShowAbilityPopup_Routine(Abilities ability, float waitTime)
     {
+        ability_Active = true;
         PlayerManager.Instance.PauseGame();
 
         yield return new WaitForSeconds(waitTime);
@@ -152,8 +153,6 @@ public class PopUpManager : Singleton<PopUpManager>
                 break;
         }
 
-        ability_Active = true;
-
         yield return new WaitForSeconds(ability_CanBeClosed_Timer);
 
         ability_CanBeClosed = true;
@@ -161,7 +160,7 @@ public class PopUpManager : Singleton<PopUpManager>
     public void HideAbilityPopup()
     {
         ability_Active = false;
-        StartCoroutine(ButtonCanBePressedDuringAbilityMenuFadeIut_Delay(ability_CanBeClosed_Timer));
+        StartCoroutine(ButtonCanBePressedDuringAbilityMenuFadeIut_Delay(0.4f));
         PlayerManager.Instance.UnpauseGame();
 
         HideDisplay(popupManager, ability_SwimSuit_Parent, abilities_SwimSuit_Children);

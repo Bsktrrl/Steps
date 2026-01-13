@@ -417,6 +417,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!Run_AbilityDisplayExit()) return;
         if (Tutorial.Instance.state_Movement || Tutorial.Instance.state_CameraRotation || Tutorial.Instance.state_Respawn) return;
         if (Tutorial.Instance.tutorial_isRunning && (!Tutorial.Instance.state_FreeCam_1 && !Tutorial.Instance.state_FreeCam_2)) return;
+        if (PopUpManager.Instance.ability_Active || PopUpManager.Instance.ability_CanBeClosed) return;
 
         if (freeCam_isPressed)
         {
@@ -525,6 +526,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
         if (Tutorial.Instance.tutorial_isRunning) { return false; }
         if (PopUpManager.Instance.ability_Active) { return false; }
+        if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
 
         if (grapplingHook_isPressed)
         {
@@ -552,6 +554,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Tutorial.Instance.tutorial_isRunning) { return false; }
         if (PopUpManager.Instance.ability_Active) { return false; }
+        if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
 
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
 
@@ -581,6 +584,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Tutorial.Instance.tutorial_isRunning) { return false; }
         if (PopUpManager.Instance.ability_Active) { return false; }
+        if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
 
         return true;
     }
