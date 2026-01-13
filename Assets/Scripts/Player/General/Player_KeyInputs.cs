@@ -414,9 +414,15 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnFreeCam()
     {
+        if (!Run_AbilityDisplayExit()) return;
+        if (Tutorial.Instance.state_Movement || Tutorial.Instance.state_CameraRotation || Tutorial.Instance.state_Respawn) return;
+        if (Tutorial.Instance.tutorial_isRunning && (!Tutorial.Instance.state_FreeCam_1 && !Tutorial.Instance.state_FreeCam_2)) return;
+
         if (freeCam_isPressed)
         {
             PlayerManager.Instance.UnpauseGame();
+            Run_FreeCam_2_Tutorial_End();
+
             freeCam_isPressed = false;
 
             Action_FreeCamIsPassive?.Invoke();
@@ -425,6 +431,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         {
             freeCam_isPressed = true;
             PlayerManager.Instance.PauseGame();
+
+            Run_FreeCam_1_Tutorial_End();
 
             Action_FreeCamIsActive?.Invoke();
         }
@@ -626,6 +634,21 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         {
             respawn_isPressed = true;
             Action_RespawnHold?.Invoke();
+        }
+    }
+
+    void Run_FreeCam_1_Tutorial_End()
+    {
+        if (Tutorial.Instance.state_FreeCam_1 && freeCam_isPressed)
+        {
+            Tutorial.Instance.Tutorial_FreeCam_1(false);
+        }
+    }
+    void Run_FreeCam_2_Tutorial_End()
+    {
+        if (Tutorial.Instance.state_FreeCam_2 && freeCam_isPressed)
+        {
+            Tutorial.Instance.Tutorial_FreeCam_2(false);
         }
     }
 

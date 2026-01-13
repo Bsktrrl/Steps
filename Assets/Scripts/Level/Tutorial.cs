@@ -10,6 +10,8 @@ public class Tutorial : Singleton<Tutorial>
     public bool state_Movement;
     public bool state_CameraRotation;
     public bool state_Respawn;
+    public bool state_FreeCam_1;
+    public bool state_FreeCam_2;
 
     public bool tutorial_isRunning;
 
@@ -26,13 +28,29 @@ public class Tutorial : Singleton<Tutorial>
     [SerializeField] GameObject Tutorial_Movement_Parent;
     [SerializeField] GameObject Tutorial_CameraRotation_Parent;
     [SerializeField] GameObject Tutorial_Respawn_Parent;
+    [SerializeField] GameObject Tutorial_FreeCam_1_Parent;
+    [SerializeField] GameObject Tutorial_FreeCam_2_Parent;
 
     [Header("Children")]
     [SerializeField] List<GameObject> Tutorial_Movement_Child;
     [SerializeField] List<GameObject> Tutorial_CameraRotation_Child;
     [SerializeField] List<GameObject> Tutorial_Respawn_Child;
+    [SerializeField] List<GameObject> Tutorial_FreeCam_1_Child;
+    [SerializeField] List<GameObject> Tutorial_FreeCam_2_Child;
 
     int respawnCounter;
+
+
+    //--------------------
+
+
+    private void Start()
+    {
+        if (!DataManager.Instance.tutorial_Finished)
+        {
+            PlayerManager.Instance.PauseGame();
+        }
+    }
 
 
     //--------------------
@@ -95,8 +113,6 @@ public class Tutorial : Singleton<Tutorial>
 
         yield return new WaitForSeconds(waitTime/2);
 
-        state_Movement = false;
-
         Tutorial_CameraRotation(true);
     }
     #endregion
@@ -118,6 +134,7 @@ public class Tutorial : Singleton<Tutorial>
         yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration_In);
 
         state_CameraRotation = true;
+        state_Movement = false;
     }
     IEnumerator CameraRotation_End(float waitTime)
     {
@@ -126,8 +143,6 @@ public class Tutorial : Singleton<Tutorial>
         PopUpManager.Instance.HideDisplay(Tutorial_Parent,Tutorial_CameraRotation_Parent, Tutorial_CameraRotation_Child);
 
         yield return new WaitForSeconds(waitTime / 2);
-
-        state_CameraRotation = false;
 
         Start_Tutorial_Respawn();
     }
@@ -149,6 +164,7 @@ public class Tutorial : Singleton<Tutorial>
         yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration_In);
 
         state_Respawn = true;
+        state_CameraRotation = false;
     }
     public void End_Tutorial_Respawn()
     {
@@ -163,19 +179,89 @@ public class Tutorial : Singleton<Tutorial>
     {
         state_CameraRotation = false;
 
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(waitTime / 2);
 
         PopUpManager.Instance.HideDisplay(Tutorial_Parent, Tutorial_Respawn_Parent, Tutorial_Respawn_Child);
 
+        yield return new WaitForSeconds(waitTime / 2);
+
+        Tutorial_FreeCam_1(true);
+
+        //yield return new WaitForSeconds(0.5f);
+    }
+    #endregion
+
+    #region Tutorial_FreeCam 1
+    public void Tutorial_FreeCam_1(bool active)
+    {
+        if (active)
+            StartCoroutine(Tutorial_FreeCam_1_Start(fadeDuration_In));
+        else
+            StartCoroutine(Tutorial_FreeCam_1_End(fadeDuration_Out));
+    }
+    IEnumerator Tutorial_FreeCam_1_Start(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        PopUpManager.Instance.ShowDisplay(Tutorial_Parent, Tutorial_FreeCam_1_Parent, Tutorial_FreeCam_1_Child);
+
+        yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration_In);
+
+        state_FreeCam_1 = true;
+        state_Respawn = false;
+    }
+    IEnumerator Tutorial_FreeCam_1_End(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime / 2);
+
+        PopUpManager.Instance.HideDisplay(Tutorial_Parent, Tutorial_FreeCam_1_Parent, Tutorial_FreeCam_1_Child);
+
+        yield return new WaitForSeconds(waitTime / 2);
+
+        Tutorial_FreeCam_2(true);
+
+        yield return new WaitForSeconds(0.5f);
+    }
+    #endregion
+
+    #region Tutorial_FreeCam 2
+    public void Tutorial_FreeCam_2(bool active)
+    {
+        if (active)
+            StartCoroutine(Tutorial_FreeCam_2_Start(fadeDuration_In));
+        else
+            StartCoroutine(Tutorial_FreeCam_2_End(fadeDuration_Out));
+    }
+    IEnumerator Tutorial_FreeCam_2_Start(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        PopUpManager.Instance.ShowDisplay(Tutorial_Parent, Tutorial_FreeCam_2_Parent, Tutorial_FreeCam_2_Child);
+
+        yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration_In);
+
+        state_FreeCam_2 = true;
+        state_FreeCam_1 = false;
+    }
+    IEnumerator Tutorial_FreeCam_2_End(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        PopUpManager.Instance.HideDisplay(Tutorial_Parent, Tutorial_FreeCam_2_Parent, Tutorial_FreeCam_2_Child);
+
         yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration_Out);
 
-        state_Respawn = false;
+        state_FreeCam_2 = false;
 
         EndTutorial();
 
         yield return new WaitForSeconds(0.5f);
     }
     #endregion
+
+
+    //-----
+
 
     public void EndTutorial()
     {
