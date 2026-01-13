@@ -168,11 +168,14 @@ public class Tutorial : Singleton<Tutorial>
     }
     public void End_Tutorial_Respawn()
     {
-        respawnCounter++;
-
-        if (respawnCounter > 1)
+        if (tutorial_isRunning)
         {
-            StartCoroutine(Tutorial_Respawn_End(0.1f));
+            respawnCounter++;
+
+            if (respawnCounter > 1)
+            {
+                StartCoroutine(Tutorial_Respawn_End(0.1f));
+            }
         }
     }
     IEnumerator Tutorial_Respawn_End(float waitTime)

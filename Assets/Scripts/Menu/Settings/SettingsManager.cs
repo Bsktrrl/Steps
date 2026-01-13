@@ -298,17 +298,17 @@ public class SettingsManager : Singleton<SettingsManager>
     {
         switch (settingsData.currentStepDisplay)
         {
-            case StepDisplay.Icon:
+            case StepDisplay.Steps:
                 settingsData.currentStepDisplay = StepDisplay.Number;
                 break;
             case StepDisplay.Number:
-                settingsData.currentStepDisplay = StepDisplay.NumberIcon;
+                settingsData.currentStepDisplay = StepDisplay.NumberSteps;
                 break;
-            case StepDisplay.NumberIcon:
+            case StepDisplay.NumberSteps:
                 settingsData.currentStepDisplay = StepDisplay.None;
                 break;
             case StepDisplay.None:
-                settingsData.currentStepDisplay = StepDisplay.Icon;
+                settingsData.currentStepDisplay = StepDisplay.Steps;
                 break;
 
             default:
@@ -324,17 +324,17 @@ public class SettingsManager : Singleton<SettingsManager>
     {
         switch (settingsData.currentStepDisplay)
         {
-            case StepDisplay.Icon:
+            case StepDisplay.Steps:
                 settingsData.currentStepDisplay = StepDisplay.None;
                 break;
             case StepDisplay.Number:
-                settingsData.currentStepDisplay = StepDisplay.Icon;
+                settingsData.currentStepDisplay = StepDisplay.Steps;
                 break;
-            case StepDisplay.NumberIcon:
+            case StepDisplay.NumberSteps:
                 settingsData.currentStepDisplay = StepDisplay.Number;
                 break;
             case StepDisplay.None:
-                settingsData.currentStepDisplay = StepDisplay.NumberIcon;
+                settingsData.currentStepDisplay = StepDisplay.NumberSteps;
                 break;
 
             default:
@@ -350,13 +350,13 @@ public class SettingsManager : Singleton<SettingsManager>
     {
         switch (settingsData.currentStepDisplay)
         {
-            case StepDisplay.Icon:
+            case StepDisplay.Steps:
                 stepsDisplayImage.sprite = stepsDisplay_Icon_Sprite;
                 break;
             case StepDisplay.Number:
                 stepsDisplayImage.sprite = stepsDisplay_Number_Sprite;
                 break;
-            case StepDisplay.NumberIcon:
+            case StepDisplay.NumberSteps:
                 stepsDisplayImage.sprite = stepsDisplay_NumberIcon_Sprite;
                 break;
             case StepDisplay.None:

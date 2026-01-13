@@ -66,14 +66,14 @@ public class StepsDisplay : Singleton<StepsDisplay>
 
         switch (DataManager.Instance.settingData_StoreList.currentStepDisplay)
         {
-            case StepDisplay.Icon:
+            case StepDisplay.Steps:
                 stepDisplay_Icons.SetActive(true);
                 StepsHUD.Instance.UpdateStepsDisplay_Walking();
                 break;
             case StepDisplay.Number:
                 stepDisplay_Number.SetActive(true);
                 break;
-            case StepDisplay.NumberIcon:
+            case StepDisplay.NumberSteps:
                 stepDisplay_NumberIcons.SetActive(true);
                 stepDisplay_Icons.SetActive(true);
                 StepsHUD.Instance.UpdateStepsDisplay_Walking();
