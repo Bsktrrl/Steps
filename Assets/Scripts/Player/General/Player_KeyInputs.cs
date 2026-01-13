@@ -655,7 +655,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     //Ability
     bool Run_AbilityDisplayExit()
     {
-        if (PopUpManager.Instance.ability_Active)
+        if (PopUpManager.Instance.ability_CanBeClosed)
         {
             PopUpManager.Instance.HideAbilityPopup();
 

@@ -27,6 +27,11 @@ public class PopUpManager : Singleton<PopUpManager>
     //-----
 
 
+    [Header("Ability Active State")]
+    public bool ability_Active;
+    public bool ability_CanBeClosed;
+    public float ability_CanBeClosed_Timer = 0.5f;
+
     [Header("Abilities - Parents")]
     [SerializeField] GameObject ability_SwimSuit_Parent;
     [SerializeField] GameObject ability_SwiftSwim_Parent;
@@ -65,13 +70,6 @@ public class PopUpManager : Singleton<PopUpManager>
 
     // Keep track of running fades so we can stop/replace them per parent
     private readonly Dictionary<GameObject, Coroutine> _runningFades = new();
-
-
-    //-----
-
-
-    [Header("Ability Active State")]
-    public bool ability_Active;
 
 
     //--------------------
@@ -155,10 +153,15 @@ public class PopUpManager : Singleton<PopUpManager>
         }
 
         ability_Active = true;
+
+        yield return new WaitForSeconds(ability_CanBeClosed_Timer);
+
+        ability_CanBeClosed = true;
     }
     public void HideAbilityPopup()
     {
         ability_Active = false;
+        StartCoroutine(ButtonCanBePressedDuringAbilityMenuFadeIut_Delay(ability_CanBeClosed_Timer));
         PlayerManager.Instance.UnpauseGame();
 
         HideDisplay(popupManager, ability_SwimSuit_Parent, abilities_SwimSuit_Children);
@@ -173,6 +176,12 @@ public class PopUpManager : Singleton<PopUpManager>
 
         HideDisplay(popupManager, ability_CeilingGrab_Parent, abilities_CeilingGrab_Children);
         HideDisplay(popupManager, ability_GrapplingHook_Parent, abilities_GrapplingHook_Children);
+    }
+    IEnumerator ButtonCanBePressedDuringAbilityMenuFadeIut_Delay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        ability_CanBeClosed = false;
     }
 
 
