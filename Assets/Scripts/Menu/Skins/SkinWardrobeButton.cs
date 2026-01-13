@@ -1,4 +1,5 @@
 using System;
+using System.Net.NetworkInformation;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -212,11 +213,11 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         skinImage.gameObject.SetActive(true);
         UnknownText.gameObject.SetActive(false);
 
+        WardrobeSkinState tempState = skinWardrobeManager.GetSkinSaveData(GetRegionNumber(region), level);
+
         //Based on SaveData
         if (skinWardrobeManager && hatType == HatType.None)
         {
-            WardrobeSkinState tempState = skinWardrobeManager.GetSkinSaveData(GetRegionNumber(region), level);
-
             switch (tempState)
             {
                 case WardrobeSkinState.Hidden:
@@ -241,7 +242,7 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         }
 
         //Based on Level Discovered
-        if (!skinWardrobeManager.GetLevelSaveData(skinType) && skinType != SkinType.Default && hatType == HatType.None)
+        if (/*!skinWardrobeManager.GetLevelSaveData(skinType) &&*/ skinType != SkinType.Default && hatType == HatType.None && (tempState == WardrobeSkinState.Hidden || tempState == WardrobeSkinState.LevelIsVisited))
         {
             backgroundImage.sprite = SkinWardrobeManager.Instance.sprite_Inactive;
             skinImage.gameObject.SetActive(false);
@@ -418,16 +419,17 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
                     skinWardrobeManager.UpdatePlayerBodyDisplay();
                     break;
                 case WardrobeSkinState.LevelIsVisited:
-                    unlockDisplay.SetDisplay_LevelReached();
-                    unlockDisplay.SetSelectedBlockName(SkinsOverview.Instance.GetSkinName(skinType));
+                    unlockDisplay.SetDisplay_LevelReached(region, level.ToString());
+                    unlockDisplay.SetSelectedBlockName("");
 
-                    skinWardrobeManager.selectedSkinType = skinType;
+                    skinWardrobeManager.selectedSkinType = SkinType.None;
                     skinWardrobeManager.selectedSkin = skinWardrobeManager.GetTempSkinSelectedObject();
                     skinWardrobeManager.UpdatePlayerBodyDisplay();
                     break;
                 case WardrobeSkinState.Available:
                     if (PlayerStats.Instance.stats.itemsGot.essence_Current >= 10)
                         unlockDisplay.SetDisplay_CanUnlock();
+                    else
                         unlockDisplay.SetDisplay_CanNotUnlock();
 
                     unlockDisplay.SetSelectedBlockName(SkinsOverview.Instance.GetSkinName(skinType));
