@@ -163,6 +163,7 @@ public class StepsHUD : Singleton<StepsHUD>
             else
             {
                 print("2. MaxStep >= " + (i + 1) + " | MaxSteps: " + PlayerStats.Instance.stats.steps_Max);
+
                 //If steps current are high as extra steps (above 7), don't do anything
                 if (stepsIconList[i].GetComponent<Image>().sprite != StepsDisplay.Instance.extraFootstep_Passive)
                 {

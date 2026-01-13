@@ -9446,6 +9446,9 @@ MonoBehaviour:
   - {fileID: 8283534762711801255}
   - {fileID: 8283534762711801255}
   - {fileID: 8283534762711801255}
+  ability_Active: 0
+  ability_CanBeClosed: 0
+  ability_CanBeClosed_Timer: 0.5
   ability_SwimSuit_Parent: {fileID: 2555623185037084663}
   ability_SwiftSwim_Parent: {fileID: 4318676263074747379}
   ability_Freeswim_Parent: {fileID: 1673613054260392070}
@@ -9494,7 +9497,6 @@ MonoBehaviour:
   fadeDuration_In: 0.35
   fadeDuration_Out: 0.75
   pickupMessageDuration: 1.5
-  ability_Active: 0
 --- !u!1 &2799733066176756726
 GameObject:
   m_ObjectHideFlags: 0
@@ -34689,6 +34691,18 @@ PrefabInstance:
       propertyPath: activeSprite
       value: 
       objectReference: {fileID: 21300000, guid: d720c1ad2156f7949892fe0e154d6b07, type: 3}
+    - target: {fileID: 7398980408540936829, guid: 06ce315a35194a64c8cf8fd2fa5f18b3, type: 3}
+      propertyPath: hiddenSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c80b6f1d2b4cba45a69dd7ead12e10c, type: 3}
+    - target: {fileID: 7398980408540936829, guid: 06ce315a35194a64c8cf8fd2fa5f18b3, type: 3}
+      propertyPath: extraStep_Number
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7398980408540936829, guid: 06ce315a35194a64c8cf8fd2fa5f18b3, type: 3}
+      propertyPath: isExtraFootprint
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7680136961814002836, guid: 06ce315a35194a64c8cf8fd2fa5f18b3, type: 3}
       propertyPath: m_Type
       value: 0
@@ -38522,6 +38536,18 @@ PrefabInstance:
       propertyPath: activeSprite
       value: 
       objectReference: {fileID: 21300000, guid: d720c1ad2156f7949892fe0e154d6b07, type: 3}
+    - target: {fileID: 7398980408540936829, guid: 06ce315a35194a64c8cf8fd2fa5f18b3, type: 3}
+      propertyPath: hiddenSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c80b6f1d2b4cba45a69dd7ead12e10c, type: 3}
+    - target: {fileID: 7398980408540936829, guid: 06ce315a35194a64c8cf8fd2fa5f18b3, type: 3}
+      propertyPath: extraStep_Number
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7398980408540936829, guid: 06ce315a35194a64c8cf8fd2fa5f18b3, type: 3}
+      propertyPath: isExtraFootprint
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7680136961814002836, guid: 06ce315a35194a64c8cf8fd2fa5f18b3, type: 3}
       propertyPath: m_Type
       value: 0
@@ -43807,7 +43833,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 6d5b16064a4778f44b06f57520efef80, type: 3}
     - target: {fileID: 2088522188507046737, guid: 06ce315a35194a64c8cf8fd2fa5f18b3, type: 3}
       propertyPath: m_Pivot.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2088522188507046737, guid: 06ce315a35194a64c8cf8fd2fa5f18b3, type: 3}
       propertyPath: m_Pivot.y
@@ -43909,6 +43935,18 @@ PrefabInstance:
       propertyPath: activeSprite
       value: 
       objectReference: {fileID: 21300000, guid: d720c1ad2156f7949892fe0e154d6b07, type: 3}
+    - target: {fileID: 7398980408540936829, guid: 06ce315a35194a64c8cf8fd2fa5f18b3, type: 3}
+      propertyPath: hiddenSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7c80b6f1d2b4cba45a69dd7ead12e10c, type: 3}
+    - target: {fileID: 7398980408540936829, guid: 06ce315a35194a64c8cf8fd2fa5f18b3, type: 3}
+      propertyPath: extraStep_Number
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7398980408540936829, guid: 06ce315a35194a64c8cf8fd2fa5f18b3, type: 3}
+      propertyPath: isExtraFootprint
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7680136961814002836, guid: 06ce315a35194a64c8cf8fd2fa5f18b3, type: 3}
       propertyPath: m_Type
       value: 0

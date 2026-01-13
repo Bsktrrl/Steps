@@ -11,21 +11,18 @@ public class UIHeartAnimator : MonoBehaviour
     [Header("Sprites")]
     public Sprite activeSprite;
     public Sprite usedSprite;
+    public Sprite hiddenSprite;
 
+    [SerializeField] int extraStep_Number;
     public bool isActive;
 
     private RectTransform _rt;
     private Image _overlay;              // child image used for crossfade
     private Coroutine _running;
 
-    // Simple ease options you can tweak in inspector.
-    public enum Ease
-    {
-        Linear,
-        InQuad, OutQuad, InOutQuad,
-        InCubic, OutCubic, InOutCubic,
-        OutBack
-    }
+
+    //--------------------
+
 
     private void Reset()
     {
@@ -38,6 +35,38 @@ public class UIHeartAnimator : MonoBehaviour
         _rt = targetImage.rectTransform;
         EnsureOverlay();
     }
+    private void OnEnable()
+    {
+        DataManager.Action_dataHasLoaded += SetStartFootprints;
+    }
+    private void OnDisable()
+    {
+        DataManager.Action_dataHasLoaded -= SetStartFootprints;
+    }
+
+
+    //--------------------
+
+
+    void SetStartFootprints()
+    {
+        if ((extraStep_Number == 1 && PlayerStats.Instance.stats.steps_Max >= 8) || (extraStep_Number == 2 && PlayerStats.Instance.stats.steps_Max >= 9) || (extraStep_Number == 3 && PlayerStats.Instance.stats.steps_Max >= 10))
+        {
+            targetImage.sprite = usedSprite;
+        }
+        else if (extraStep_Number > 0)
+        {
+            targetImage.sprite = hiddenSprite;
+        }
+        else
+        {
+            targetImage.sprite = usedSprite;
+        }
+    }
+
+
+    //--------------------
+
 
     public void Activate()
     {
@@ -129,14 +158,7 @@ public class UIHeartAnimator : MonoBehaviour
         _running = null;
     }
 
-    private IEnumerator ScaleAndFade(
-        float fromScale,
-        float toScale,
-        float duration,
-        Ease scaleEase,
-        float overlayAlphaFrom,
-        float overlayAlphaTo
-    )
+    private IEnumerator ScaleAndFade(float fromScale, float toScale, float duration, Ease scaleEase, float overlayAlphaFrom, float overlayAlphaTo)
     {
         float t = 0f;
         while (t < duration)
@@ -221,4 +243,13 @@ public class UIHeartAnimator : MonoBehaviour
                 return t;
         }
     }
+}
+
+// Simple ease options you can tweak in inspector.
+public enum Ease
+{
+    Linear,
+    InQuad, OutQuad, InOutQuad,
+    InCubic, OutCubic, InOutCubic,
+    OutBack
 }
