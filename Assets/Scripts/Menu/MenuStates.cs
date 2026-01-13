@@ -52,6 +52,10 @@ public class MenuStates : Singleton<MenuStates>
                 MainMenuManager.Instance.menuState = MenuState.Pause_Menu_Options;
                 break;
 
+            case MenuState.NewGameWarningMessage:
+                MainMenuManager.Instance.menuState = MenuState.NewGameWarningMessage;
+                break;
+
             default:
                 break;
         }
@@ -88,4 +92,6 @@ public enum MenuState
     Options_Menu,
     Pause_Menu_Options,
     Pause_Menu_Skins,
+
+    NewGameWarningMessage,
 }

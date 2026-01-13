@@ -12,6 +12,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
     public GameObject optionsMenu_Parent;
     public GameObject skinsMenu_Parent;
 
+    public GameObject newGameWarningMessage_Parent;
+
     [Header("Menu State")]
     public MenuState menuState;
 
@@ -108,6 +110,9 @@ public class MainMenuManager : Singleton<MainMenuManager>
             case MenuState.Biome_Menu:
                 Menu_Biome();
                 break;
+            case MenuState.NewGameWarningMessage:
+                Menu_NewGameWarningMessage();
+                break;
 
             default:
                 Menu_Main();
@@ -159,6 +164,15 @@ public class MainMenuManager : Singleton<MainMenuManager>
         overworldMenu_Parent.SetActive(true);
     }
 
+    void Menu_NewGameWarningMessage()
+    {
+        //HideAllMenus();
+
+        //Menu_Main();
+
+        newGameWarningMessage_Parent.SetActive(true);
+    }
+
 
     //--------------------
 
@@ -173,6 +187,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
             skinsMenu_Parent.SetActive(false);
         if (optionsMenu_Parent)
             optionsMenu_Parent.SetActive(false);
+        if (newGameWarningMessage_Parent)
+            newGameWarningMessage_Parent.SetActive(false);
     }
 
     #endregion
