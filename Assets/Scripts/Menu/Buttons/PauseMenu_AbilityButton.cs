@@ -12,44 +12,46 @@ public class PauseMenu_AbilityButton : MonoBehaviour, IPointerEnterHandler, IPoi
     [Header("Video Parent")]
     [SerializeField] GameObject videoDispalyParent;
 
+    [SerializeField] List<GameObject> abilityTextVersions;
+
 
     //--------------------
 
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        ShowVideo();
+        ShowAbilityDisplay();
         SetActiveAbilityButton();
         Action_AbilityButtonIsSelected_IsSet();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        HideVideo();
+        HideAbilityDisplay();
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        HideVideo();
+        HideAbilityDisplay();
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        ShowVideo();
+        ShowAbilityDisplay();
         SetActiveAbilityButton();
         Action_AbilityButtonIsSelected_IsSet();
     }
 
     public void OnSelect(BaseEventData eventData)
     {
-        ShowVideo();
+        ShowAbilityDisplay();
         SetActiveAbilityButton();
         Action_AbilityButtonIsSelected_IsSet();
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
-        HideVideo();
+        HideAbilityDisplay();
     }
 
 
@@ -61,13 +63,29 @@ public class PauseMenu_AbilityButton : MonoBehaviour, IPointerEnterHandler, IPoi
         PauseMenuManager.Instance.activeAbilityButton = gameObject.GetComponent<Button>();
     }
 
-    void ShowVideo()
+
+    //--------------------
+
+
+    void ShowAbilityDisplay()
     {
         videoDispalyParent.SetActive(true);
+
+        if (ControllerState.Instance.activeController == InputType.Keyboard)
+            abilityTextVersions[0].SetActive(true);
+        else if (ControllerState.Instance.activeController == InputType.PlayStation)
+            abilityTextVersions[1].SetActive(true);
+        else if (ControllerState.Instance.activeController == InputType.Xbox)
+            abilityTextVersions[2].SetActive(true);
     }
-    void HideVideo()
+    void HideAbilityDisplay()
     {
         videoDispalyParent.SetActive(false);
+
+        for (int i = 0; i < abilityTextVersions.Count; i++)
+        {
+            abilityTextVersions[i].SetActive(false);
+        }
     }
 
 

@@ -25,6 +25,21 @@ public class AbilityDisplay_PauseMenu : MonoBehaviour
     [SerializeField] GameObject ability_GrapplingHook;
     [SerializeField] GameObject ability_CeilingGrab;
 
+    [Header("Ability Boxes")]
+    [SerializeField] GameObject abilityBox_Swim;
+    [SerializeField] GameObject abilityBox_SwiftSwim;
+    [SerializeField] GameObject abilityBox_FreeSwim;
+
+    [SerializeField] GameObject abilityBox_Ascend;
+    [SerializeField] GameObject abilityBox_Descend;
+
+    [SerializeField] GameObject abilityBox_Dash;
+    [SerializeField] GameObject abilityBox_Jump;
+
+    [SerializeField] GameObject abilityBox_GrapplingHook;
+    [SerializeField] GameObject abilityBox_CeilingGrab;
+
+    [Header("Active Ability Buttons")]
     public List<GameObject> active_AbilityButtons = new List<GameObject>();
 
 
@@ -49,6 +64,8 @@ public class AbilityDisplay_PauseMenu : MonoBehaviour
 
     void UpdateAbilityLinks()
     {
+        //AllignBoxes();
+
         ResetActiveAbilityList();
         ShowAbilities();
         LinkAbilities();
@@ -209,4 +226,44 @@ public class AbilityDisplay_PauseMenu : MonoBehaviour
 
         button.navigation = nav;
     }
+
+    //void AllignBoxes()
+    //{
+    //    AllignBox(abilityBox_Swim.GetComponent<RectTransform>(), ability_Swim.GetComponent<RectTransform>());
+    //    AllignBox(abilityBox_SwiftSwim.GetComponent<RectTransform>(), ability_SwiftSwim.GetComponent<RectTransform>());
+    //    AllignBox(abilityBox_FreeSwim.GetComponent<RectTransform>(), ability_FreeSwim.GetComponent<RectTransform>());
+
+    //    AllignBox(abilityBox_Ascend.GetComponent<RectTransform>(), ability_Ascend.GetComponent<RectTransform>());
+    //    AllignBox(abilityBox_Descend.GetComponent<RectTransform>(), ability_Descend.GetComponent<RectTransform>());
+
+    //    AllignBox(abilityBox_Dash.GetComponent<RectTransform>(), ability_Dash.GetComponent<RectTransform>());
+    //    AllignBox(abilityBox_Jump.GetComponent<RectTransform>(), ability_Jump.GetComponent<RectTransform>());
+
+    //    AllignBox(abilityBox_GrapplingHook.GetComponent<RectTransform>(), ability_GrapplingHook.GetComponent<RectTransform>());
+    //    AllignBox(abilityBox_CeilingGrab.GetComponent<RectTransform>(), ability_CeilingGrab.GetComponent<RectTransform>());
+    //}
+    //void AllignBox(RectTransform box, RectTransform referenceObject)
+    //{
+    //    if (!box || !referenceObject) return;
+
+    //    // 1) Reference world position (global in canvas)
+    //    Vector3 refWorldPos = referenceObject.position;
+
+    //    // 2) Convert world -> popup parent local space
+    //    RectTransform popupParent = box.parent as RectTransform;
+    //    if (!popupParent) return;
+
+    //    Vector2 localPoint;
+    //    RectTransformUtility.ScreenPointToLocalPointInRectangle(
+    //        popupParent,
+    //        RectTransformUtility.WorldToScreenPoint(null, refWorldPos),
+    //        null,
+    //        out localPoint
+    //    );
+
+    //    // 3) Apply only Y (keep popup’s current X)
+    //    Vector2 ap = box.anchoredPosition;
+    //    ap.y = localPoint.y;
+    //    box.anchoredPosition = ap;
+    //}
 }
