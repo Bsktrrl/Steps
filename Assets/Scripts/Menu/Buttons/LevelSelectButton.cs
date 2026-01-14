@@ -42,6 +42,12 @@ public class LevelSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
         }
     }
 
+    private void OnEnable()
+    {
+        if (!isFirstSelected)
+            SetPassive();
+    }
+
 
     //--------------------
 
@@ -85,10 +91,8 @@ public class LevelSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
         coditionsCounter = 0;
 
         //If there isn't any requirements to play the level
-        if (GetComponent<LoadLevel>().levelsToBeFinished.Count <= 0 || (menuLevelInfo && menuLevelInfo.mapInfo_ToSave == null))
-        {
-            return true;
-        }
+        if (GetComponent<LoadLevel>().levelsToBeFinished.Count <= 0 || (menuLevelInfo && menuLevelInfo.mapInfo_ToSave == null)) return true;
+        if (menuLevelInfo == null || menuLevelInfo.mapInfo_ToSave == null || menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List == null) return true;
 
         //If there are requirements to play the level
         for (int i = 0; i < GetComponent<LoadLevel>().levelsToBeFinished.Count; i++)

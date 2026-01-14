@@ -41,6 +41,13 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     [SerializeField] GameObject ability_GrapplingHook;
     [SerializeField] GameObject ability_CeilingGrab;
 
+    [Header("LevelInfo Display")]
+    [SerializeField] Image levelName_FillImage;
+    [SerializeField] Image glueplant_FillImage;
+    [SerializeField] Image essence_FillImage;
+    [SerializeField] Image skin_FillImage;
+    [SerializeField] Image footprint_FillImage;
+
     [Header("Glueplant Sprites")]
     #region Sprites
     public Sprite glueplant_PauseMenu_Rivergreen;
@@ -339,6 +346,8 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         }
         StepsMax_Aquired.text = stepsCounter + " / 3";
 
+        UpdateProgressBars(mapInfo, essenceCounter, skinCounter, stepsCounter);
+
         //Get Abilities to get in the Level
         ability_Swimming.SetActive(false);
         ability_SwiftSwim.SetActive(false);
@@ -449,5 +458,26 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
             default:
                 return null;
         }
+    }
+
+    void UpdateProgressBars(Map_SaveInfo mapInfo, float essenceCounter, float skinCounter, float stepsCounter)
+    {
+        if (mapInfo.isCompleted)
+            SetProgressBar(glueplant_FillImage, 1f, 1);
+        else
+            SetProgressBar(glueplant_FillImage, 0f, 1);
+
+        SetProgressBar(essence_FillImage, essenceCounter, 10);
+        SetProgressBar(skin_FillImage, skinCounter, 1);
+        SetProgressBar(footprint_FillImage, stepsCounter, 3);
+
+        if (mapInfo.isCompleted)
+            SetProgressBar(levelName_FillImage, 1f + essenceCounter + skinCounter + stepsCounter, 15);
+        else
+            SetProgressBar(levelName_FillImage, 0f + essenceCounter + skinCounter + stepsCounter, 15);
+    }
+    void SetProgressBar(Image fillImage, float current, float max)
+    {
+        fillImage.fillAmount = (current / max);
     }
 }

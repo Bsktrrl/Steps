@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class LevelInfoManager : Singleton<LevelInfoManager>
@@ -27,6 +29,13 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
     [SerializeField] GameObject ability_Jumping;
     [SerializeField] GameObject ability_GrapplingHook;
     [SerializeField] GameObject ability_CeilingGrab;
+
+    [Header("LevelInfo Display")]
+    [SerializeField] Image levelName_FillImage;
+    [SerializeField] Image glueplant_FillImage;
+    [SerializeField] Image essence_FillImage;
+    [SerializeField] Image skin_FillImage;
+    [SerializeField] Image footprint_FillImage;
 
 
     [Header("Glueplant Sprites")]
@@ -96,6 +105,8 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
 
     private void OnEnable()
     {
+        //SetupLevelDisplay();
+
         RememberCurrentlySelectedUIElement.Action_ChangedSelectedUIElement += SetupLevelDisplay;
     }
     private void OnDisable()
@@ -109,6 +120,8 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
 
     public void SetupLevelDisplay()
     {
+        UpdateProgressBars(-1, 0, 0, 0);
+
         GameObject activeLevelObject = RememberCurrentlySelectedUIElement.Instance.currentSelectedUIElement;
 
         if (activeLevelObject.GetComponent<LoadLevel>())
@@ -166,7 +179,7 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
                             glueplant_Aquired.text = "0 / 1";
 
                         //Essence aquired
-                        int essenceCounter = 0;
+                        float essenceCounter = 0;
                         for (int j = 0; j < menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].essenceList.Count; j++)
                         {
                             if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].essenceList[j].isTaken)
@@ -177,7 +190,7 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
                         Essence_Aquired.text = essenceCounter + " / 10";
 
                         //Skin aquired
-                        int skinCounter = 0;
+                        float skinCounter = 0;
                         if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].levelSkin.isTaken)
                         {
                             skinCounter++;
@@ -185,7 +198,7 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
                         Skin_Aquired.text = skinCounter + " / 1";
 
                         //StepMax aquired
-                        int stepsCounter = 0;
+                        float stepsCounter = 0;
                         for (int j = 0; j < menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].maxStepList.Count; j++)
                         {
                             if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].maxStepList[j].isTaken)
@@ -196,11 +209,15 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
                         StepsMax_Aquired.text = stepsCounter + " / 3";
 
                         foundLevel = true;
+
+                        //Set Progress Bars
+                        UpdateProgressBars(i, essenceCounter, skinCounter, stepsCounter);
+
                         break;
                     }
                 }
             }
-            
+
             //Get Skin Type to get in the Level
             skinImage.sprite = SelectSpriteForLevel(activeLevelObject.GetComponent<LoadLevel>().skinTypeInLevel);
 
@@ -346,6 +363,42 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
             default:
                 return null;
         }
+    }
+
+
+    void UpdateProgressBars(int index, float essenceCounter, float skinCounter, float stepsCounter)
+    {
+        if (index < 0)
+        {
+            SetProgressBar(glueplant_FillImage, 0f, 1);
+        }
+        else
+        {
+            if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[index].isCompleted)
+                SetProgressBar(glueplant_FillImage, 1f, 1);
+            else
+                SetProgressBar(glueplant_FillImage, 0f, 1);
+        }
+        
+        SetProgressBar(essence_FillImage, essenceCounter, 10);
+        SetProgressBar(skin_FillImage, skinCounter, 1);
+        SetProgressBar(footprint_FillImage, stepsCounter, 3);
+
+        if (index < 0)
+        {
+            SetProgressBar(levelName_FillImage, 0f + essenceCounter + skinCounter + stepsCounter, 15);
+        }
+        else
+        {
+            if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[index].isCompleted)
+                SetProgressBar(levelName_FillImage, 1f + essenceCounter + skinCounter + stepsCounter, 15);
+            else
+                SetProgressBar(levelName_FillImage, 0f + essenceCounter + skinCounter + stepsCounter, 15);
+        }
+    }
+    void SetProgressBar(Image fillImage, float current, float max)
+    {
+        fillImage.fillAmount = (current / max);
     }
 }
 
