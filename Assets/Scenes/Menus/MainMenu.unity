@@ -1473,6 +1473,18 @@ PrefabInstance:
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 205536691120116261, guid: c9550862641363f4cbf79963a6f0b385, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 171628840}
+    - target: {fileID: 205536691120116261, guid: c9550862641363f4cbf79963a6f0b385, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: QuitGameFunction
+      objectReference: {fileID: 0}
+    - target: {fileID: 205536691120116261, guid: c9550862641363f4cbf79963a6f0b385, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: QuitGame, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 908780873807152418, guid: c9550862641363f4cbf79963a6f0b385, type: 3}
       propertyPath: m_Name
       value: Quit
@@ -21061,6 +21073,10 @@ PrefabInstance:
     - target: {fileID: 660636240813459758, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: selectOnCancel
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 745913656230613675, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 784899393272840420, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_Layer
