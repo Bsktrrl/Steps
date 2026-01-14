@@ -36,9 +36,9 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     [SerializeField] GameObject ability_Flippers;
     [SerializeField] GameObject ability_Ascend;
     [SerializeField] GameObject ability_Descend;
-    [SerializeField] GameObject ability_Dash;
     [SerializeField] GameObject ability_Jumping;
     [SerializeField] GameObject ability_GrapplingHook;
+    [SerializeField] GameObject ability_Dash;
     [SerializeField] GameObject ability_CeilingGrab;
 
     [Header("LevelInfo Display")]
@@ -96,6 +96,11 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     public Sprite sprite_PauseMenu_Metalworks_Lv4;
     public Sprite sprite_PauseMenu_Metalworks_Lv5;
     #endregion
+
+
+    [Header("Active Button")]
+    public Button activeMainButton;
+    public Button activeAbilityButton;
 
 
     //--------------------
@@ -479,5 +484,15 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     void SetProgressBar(Image fillImage, float current, float max)
     {
         fillImage.fillAmount = (current / max);
+    }
+
+
+    //--------------------
+
+
+    public void ResetActivePauseMenuInfoButtons()
+    {
+        activeMainButton = null;
+        activeAbilityButton = null;
     }
 }
