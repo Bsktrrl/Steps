@@ -35,33 +35,15 @@ public class StepsHUD : Singleton<StepsHUD>
 
     Coroutine[] _running;
 
-
-    [Header("Footprint Frame")]
-    [SerializeField] Image frameImage;
-
-    [SerializeField] Sprite framePassive;
-    [SerializeField] Sprite frameActive;
-
-    [SerializeField, Range(0.05f, 2f)] float startDuration = 0.6f;
-    [SerializeField] float startFromScale = 1.2f;
-    [SerializeField] float startToScale = 1.23f;
-
-    [SerializeField, Range(0.05f, 2f)] float endDuration = 0.6f;
-    [SerializeField] float endFromScale = 1.23f;
-    [SerializeField] float endToScale = 1.2f;
-
-    RectTransform _rt;
-    Image _overlay;
-    Coroutine _co;
-
+    [Header("Footprint Frame Glow")]
+    public Frame_GlowUp frameGlow_Steps;
+    public Frame_GlowUp frameGlow_Numbers;
+    public Frame_GlowUp frameGlow_NumbersSteps;
 
     [Header("stepsIconList")]
     [SerializeField] List<GameObject> stepsIconList = new List<GameObject>();
 
     float footprintSpawnTime = 0.1f;
-
-    bool firstTimeFrameActivates;
-
 
 
     //--------------------
@@ -71,43 +53,38 @@ public class StepsHUD : Singleton<StepsHUD>
     {
         _running = new Coroutine[stepsIconList.Count];
 
-        if (!frameImage) frameImage = GetComponent<Image>();
-        _rt = frameImage.rectTransform;
-        EnsureOverlay();
+        // Auto-find a glow component in children if not assigned.
+        if (!frameGlow_Steps) frameGlow_Steps = GetComponentInChildren<Frame_GlowUp>(true);
+        if (!frameGlow_Numbers) frameGlow_Numbers = GetComponentInChildren<Frame_GlowUp>(true);
+        if (!frameGlow_NumbersSteps) frameGlow_NumbersSteps = GetComponentInChildren<Frame_GlowUp>(true);
     }
 
     private void OnEnable()
     {
         Interactable_Pickup.Action_StepsUpPickupGot += GetExtraFootprint;
         Movement.Action_StepTaken += UpdateStepsDisplay_Walking;
-        //Block_MushroomCircle.Action_MushroomCircleEntered += UpdateStepsDisplay_Walking;
 
         Movement.Action_RespawnPlayerLate += UpdateStepsDisplay_Respawn;
 
-        //DataManager.Action_dataHasLoaded += UpdateStepsDisplay_Checkpoint;
         Block_Checkpoint.Action_CheckPointEntered += UpdateStepsDisplay_Checkpoint;
-        //Block_RefillSteps.Action_RefillStepsEntered += UpdateStepsDisplay_Respawn;
     }
+
     private void OnDisable()
     {
         Interactable_Pickup.Action_StepsUpPickupGot -= GetExtraFootprint;
         Movement.Action_StepTaken -= UpdateStepsDisplay_Walking;
-        //Block_MushroomCircle.Action_MushroomCircleEntered -= UpdateStepsDisplay_Walking;
 
         Movement.Action_RespawnPlayerLate -= UpdateStepsDisplay_Respawn;
 
-        //DataManager.Action_dataHasLoaded -= UpdateStepsDisplay_Checkpoint;
         Block_Checkpoint.Action_CheckPointEntered -= UpdateStepsDisplay_Checkpoint;
-        //Block_RefillSteps.Action_RefillStepsEntered -= UpdateStepsDisplay_Respawn;
     }
-
 
     //--------------------
 
-
     public void UpdateStepsDisplay_Walking()
     {
-        if (Movement.Instance.blockStandingOn && (Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>() && !Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_SpawnPoint_isAdded)
+        if (Movement.Instance.blockStandingOn &&
+            (Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>() && !Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_SpawnPoint_isAdded)
             || (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair))
         {
             for (int i = 0; i < 10; i++)
@@ -116,6 +93,7 @@ public class StepsHUD : Singleton<StepsHUD>
             }
         }
     }
+
     void UpdateFootprints(int index)
     {
         //Check passive extra footprints
@@ -124,7 +102,6 @@ public class StepsHUD : Singleton<StepsHUD>
             stepsIconList[index].GetComponent<Image>().sprite = StepsDisplay.Instance.extraFootstep_Passive;
             stepsIconList[index].GetComponent<RectTransform>().localScale = new Vector3(deactivateEndScale, deactivateEndScale, deactivateEndScale);
         }
-
         else if (PlayerStats.Instance.stats.steps_Current >= index + 1)
         {
             if (!stepsIconList[index].GetComponent<UIHeartAnimator>().isActive)
@@ -140,15 +117,15 @@ public class StepsHUD : Singleton<StepsHUD>
             }
         }
 
-        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_MushroomCircle_isAdded)
+        if (Movement.Instance.blockStandingOn &&
+            Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>() &&
+            Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_MushroomCircle_isAdded)
         {
             StartCoroutine(FootstepsFrameShine_InOut(0.25f));
         }
     }
 
-
     //--------------------
-
 
     void GetExtraFootprint()
     {
@@ -156,7 +133,7 @@ public class StepsHUD : Singleton<StepsHUD>
         {
             if (PlayerStats.Instance.stats.steps_Max < i + 1)
             {
-                print("1. MaxStep < " + (i + 1) + " | MaxSteps: "+ PlayerStats.Instance.stats.steps_Max);
+                print("1. MaxStep < " + (i + 1) + " | MaxSteps: " + PlayerStats.Instance.stats.steps_Max);
                 stepsIconList[i].GetComponent<Image>().sprite = StepsDisplay.Instance.extraFootstep_Passive;
                 stepsIconList[i].GetComponent<RectTransform>().localScale = new Vector3(deactivateEndScale, deactivateEndScale, deactivateEndScale);
             }
@@ -167,11 +144,11 @@ public class StepsHUD : Singleton<StepsHUD>
                 //If steps current are high as extra steps (above 7), don't do anything
                 if (stepsIconList[i].GetComponent<Image>().sprite != StepsDisplay.Instance.extraFootstep_Passive)
                 {
-                    
+                    // do nothing
                 }
                 else if (PlayerStats.Instance.stats.steps_Current >= i + 1)
                 {
-                    
+                    // do nothing
                 }
                 else
                 {
@@ -181,6 +158,7 @@ public class StepsHUD : Singleton<StepsHUD>
             }
         }
     }
+
     public void FillFootstep(int index)
     {
         // Set the base sprite (your existing behavior)
@@ -190,9 +168,15 @@ public class StepsHUD : Singleton<StepsHUD>
         if (_running[index] != null) StopCoroutine(_running[index]);
         _running[index] = StartCoroutine(CoFillBottomToTop(stepsIconList[index].GetComponent<Image>(), fillSprite, fillDuration));
     }
+
     private IEnumerator CoFillBottomToTop(Image baseImage, Sprite overlaySprite, float duration)
     {
-        FootstepsFrameShine_Start();
+        if (frameGlow_Steps.gameObject.activeInHierarchy)
+            frameGlow_Steps?.GlowUp();
+        if (frameGlow_Numbers.gameObject.activeInHierarchy)
+            frameGlow_Numbers?.GlowUp();
+        if (frameGlow_NumbersSteps.gameObject.activeInHierarchy)
+            frameGlow_NumbersSteps?.GlowUp();
 
         Image overlay = EnsureFillOverlay(baseImage);
 
@@ -224,8 +208,14 @@ public class StepsHUD : Singleton<StepsHUD>
 
         overlay.gameObject.SetActive(false);
 
-        FootstepsFrameShine_End();
+        if (frameGlow_Steps.gameObject.activeInHierarchy)
+            frameGlow_Steps?.GlowDown();
+        if (frameGlow_Numbers.gameObject.activeInHierarchy)
+            frameGlow_Numbers?.GlowDown();
+        if (frameGlow_NumbersSteps.gameObject.activeInHierarchy)
+            frameGlow_NumbersSteps?.GlowDown();
     }
+
     private Image EnsureFillOverlay(Image baseImage)
     {
         // Find existing overlay
@@ -256,25 +246,28 @@ public class StepsHUD : Singleton<StepsHUD>
         return overlay;
     }
 
-
     //--------------------
-
 
     public void UpdateStepsDisplay_Respawn()
     {
-        //print("1. UpdateStepsDisplay_Respawn");
         StartCoroutine(UpdateFootprintDelay(0.5f, footprintSpawnTime));
     }
+
     public void UpdateStepsDisplay_Checkpoint()
     {
-        //print("2. UpdateStepsDisplay_Checkpoint");
         StartCoroutine(UpdateFootprintDelay(0.65f, footprintSpawnTime));
     }
+
     IEnumerator UpdateFootprintDelay(float startDelay, float waitTime)
     {
         yield return new WaitForSeconds(startDelay);
 
-        FootstepsFrameShine_Start();
+        if (frameGlow_Steps.gameObject.activeInHierarchy)
+            frameGlow_Steps?.GlowUp();
+        if (frameGlow_Numbers.gameObject.activeInHierarchy)
+            frameGlow_Numbers?.GlowUp();
+        if (frameGlow_NumbersSteps.gameObject.activeInHierarchy)
+            frameGlow_NumbersSteps?.GlowUp();
 
         for (int i = 0; i < 10; i++)
         {
@@ -289,179 +282,32 @@ public class StepsHUD : Singleton<StepsHUD>
             }
         }
 
-        FootstepsFrameShine_End();
+        if (frameGlow_Steps.gameObject.activeInHierarchy)
+            frameGlow_Steps?.GlowDown();
+        if (frameGlow_Numbers.gameObject.activeInHierarchy)
+            frameGlow_Numbers?.GlowDown();
+        if (frameGlow_NumbersSteps.gameObject.activeInHierarchy)
+            frameGlow_NumbersSteps?.GlowDown();
     }
-
 
     //--------------------
 
-
-    public void FootstepsFrameShine_Start()
+    IEnumerator FootstepsFrameShine_InOut(float waitTime)
     {
-        //if (firstTimeFrameActivates)
-        //{
-        //    if (_co != null) StopCoroutine(_co);
-        //    _co = StartCoroutine(CoShineStart());
-        //}
+        if (frameGlow_Steps.gameObject.activeInHierarchy)
+            frameGlow_Steps?.GlowUp();
+        if (frameGlow_Numbers.gameObject.activeInHierarchy)
+            frameGlow_Numbers?.GlowUp();
+        if (frameGlow_NumbersSteps.gameObject.activeInHierarchy)
+            frameGlow_NumbersSteps?.GlowUp();
 
-        if (_co != null) StopCoroutine(_co);
-        _co = StartCoroutine(CoShineStart());
+        yield return new WaitForSeconds(waitTime);
+
+        if (frameGlow_Steps.gameObject.activeInHierarchy)
+            frameGlow_Steps?.GlowDown();
+        if (frameGlow_Numbers.gameObject.activeInHierarchy)
+            frameGlow_Numbers?.GlowDown();
+        if (frameGlow_NumbersSteps.gameObject.activeInHierarchy)
+            frameGlow_NumbersSteps?.GlowDown();
     }
-    public void FootstepsFrameShine_End()
-    {
-        //if (firstTimeFrameActivates)
-        //{
-        //    if (_co != null) StopCoroutine(_co);
-        //    _co = StartCoroutine(CoShineEnd());
-        //}
-
-        //firstTimeFrameActivates = true;
-
-        if (_co != null) StopCoroutine(_co);
-        _co = StartCoroutine(CoShineEnd());
-    }
-    IEnumerator FootstepsFrameShine_InOut(float WaitTime)
-    {
-        FootstepsFrameShine_Start();
-
-        yield return new WaitForSeconds(WaitTime);
-
-        FootstepsFrameShine_End();
-    }
-
-    private IEnumerator CoShineStart()
-    {
-        EnsureOverlay();
-
-        // Base is passive, overlay fades in active
-        frameImage.sprite = framePassive;
-        SetAlpha(frameImage, 1f);
-
-        _overlay.sprite = frameActive;
-        SetAlpha(_overlay, 0f);
-
-        _rt.localScale = Vector3.one * startFromScale;
-
-        yield return ScaleAndCrossfade(
-            fromScale: startFromScale,
-            toScale: startToScale,
-            duration: startDuration,
-            overlayAlphaFrom: 0f,
-            overlayAlphaTo: 1f,
-            ease: EaseOutCubic
-        );
-
-        // Commit final state
-        frameImage.sprite = frameActive;
-        SetAlpha(_overlay, 0f);
-        _rt.localScale = Vector3.one * startToScale;
-
-        _co = null;
-    }
-    private IEnumerator CoShineEnd()
-    {
-        EnsureOverlay();
-
-        // Base is active, overlay fades in passive
-        frameImage.sprite = frameActive;
-        SetAlpha(frameImage, 1f);
-
-        _overlay.sprite = framePassive;
-        SetAlpha(_overlay, 0f);
-
-        _rt.localScale = Vector3.one * endFromScale;
-
-        yield return ScaleAndCrossfade(
-            fromScale: endFromScale,
-            toScale: endToScale,
-            duration: endDuration,
-            overlayAlphaFrom: 0f,
-            overlayAlphaTo: 1f,
-            ease: EaseInCubic
-        );
-
-        // Commit final state
-        frameImage.sprite = framePassive;
-        SetAlpha(_overlay, 0f);
-        _rt.localScale = Vector3.one * endToScale;
-
-        _co = null;
-    }
-
-    private IEnumerator ScaleAndCrossfade(
-        float fromScale,
-        float toScale,
-        float duration,
-        float overlayAlphaFrom,
-        float overlayAlphaTo,
-        System.Func<float, float> ease
-    )
-    {
-        float t = 0f;
-        duration = Mathf.Max(0.0001f, duration);
-
-        while (t < duration)
-        {
-            t += Time.unscaledDeltaTime;
-            float u = Mathf.Clamp01(t / duration);
-            float e = ease(u);
-
-            float s = Mathf.LerpUnclamped(fromScale, toScale, e);
-            _rt.localScale = Vector3.one * s;
-
-            float a = Mathf.LerpUnclamped(overlayAlphaFrom, overlayAlphaTo, e);
-            SetAlpha(_overlay, Mathf.Clamp01(a));
-
-            yield return null;
-        }
-
-        _rt.localScale = Vector3.one * toScale;
-        SetAlpha(_overlay, Mathf.Clamp01(overlayAlphaTo));
-    }
-    private void EnsureOverlay()
-    {
-        if (_overlay) return;
-
-        // Try find existing (in case you duplicated objects)
-        var existing = frameImage.transform.Find("ShineOverlay");
-        if (existing != null)
-        {
-            _overlay = existing.GetComponent<Image>();
-            _overlay.raycastTarget = false;
-            SetAlpha(_overlay, 0f);
-            return;
-        }
-
-        // Create overlay child
-        var go = new GameObject("ShineOverlay", typeof(RectTransform), typeof(Image));
-        go.transform.SetParent(frameImage.transform, false);
-        go.transform.SetAsLastSibling(); // render on top
-
-        var rt = (RectTransform)go.transform;
-        rt.anchorMin = Vector2.zero;
-        rt.anchorMax = Vector2.one;
-        rt.offsetMin = Vector2.zero;
-        rt.offsetMax = Vector2.zero;
-        rt.localScale = Vector3.one;
-
-        _overlay = go.GetComponent<Image>();
-        _overlay.raycastTarget = false;
-
-        // Match display settings
-        _overlay.preserveAspect = frameImage.preserveAspect;
-        _overlay.material = frameImage.material;
-        _overlay.type = frameImage.type;
-
-        SetAlpha(_overlay, 0f);
-    }
-    private static void SetAlpha(Image img, float a)
-    {
-        var c = img.color;
-        c.a = a;
-        img.color = c;
-    }
-
-    // Non-linear easing
-    private static float EaseOutCubic(float t) => 1f - Mathf.Pow(1f - Mathf.Clamp01(t), 3f);
-    private static float EaseInCubic(float t) => Mathf.Pow(Mathf.Clamp01(t), 3f);
 }

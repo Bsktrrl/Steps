@@ -6,9 +6,11 @@ using UnityEngine;
 public class StepsDisplay : Singleton<StepsDisplay>
 {
     [Header("Parents")]
-    [SerializeField] GameObject stepDisplay_Icons;
+    [SerializeField] GameObject footsteps_Parent;
+
+    [SerializeField] GameObject stepDisplay_Steps;
     [SerializeField] GameObject stepDisplay_Number;
-    [SerializeField] GameObject stepDisplay_NumberIcons;
+    [SerializeField] GameObject stepDisplay_NumbersSteps;
 
     [Header("Sprites")]
     public Sprite normalFootstep_Active;
@@ -58,20 +60,19 @@ public class StepsDisplay : Singleton<StepsDisplay>
     {
         HideAllMenus();
 
-        //print("20. CurrentStepsDisplay: " + DataManager.Instance.settingData_StoreList.currentStepDisplay.ToString());
-
         switch (DataManager.Instance.settingData_StoreList.currentStepDisplay)
         {
             case StepDisplay.Steps:
-                stepDisplay_Icons.SetActive(true);
+                stepDisplay_Steps.SetActive(true);
+                footsteps_Parent.SetActive(true);
                 StepsHUD.Instance.UpdateStepsDisplay_Walking();
                 break;
             case StepDisplay.Number:
                 stepDisplay_Number.SetActive(true);
                 break;
             case StepDisplay.NumberSteps:
-                stepDisplay_NumberIcons.SetActive(true);
-                stepDisplay_Icons.SetActive(true);
+                stepDisplay_NumbersSteps.SetActive(true);
+                footsteps_Parent.SetActive(true);
                 StepsHUD.Instance.UpdateStepsDisplay_Walking();
                 break;
             case StepDisplay.None:
@@ -85,8 +86,10 @@ public class StepsDisplay : Singleton<StepsDisplay>
 
     void HideAllMenus()
     {
-        stepDisplay_Icons.SetActive(false);
+        stepDisplay_Steps.SetActive(false);
         stepDisplay_Number.SetActive(false);
-        stepDisplay_NumberIcons.SetActive(false);
+        stepDisplay_NumbersSteps.SetActive(false);
+
+        footsteps_Parent.SetActive(false);
     }
 }

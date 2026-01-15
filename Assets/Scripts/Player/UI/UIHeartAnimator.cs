@@ -70,11 +70,17 @@ public class UIHeartAnimator : MonoBehaviour
 
     public void Activate()
     {
+        if (StepsHUD.Instance.frameGlow_Numbers.gameObject.activeInHierarchy) return;
+        if (!StepsHUD.Instance.frameGlow_Steps.gameObject.activeInHierarchy && !StepsHUD.Instance.frameGlow_NumbersSteps.gameObject.activeInHierarchy && !StepsHUD.Instance.frameGlow_Numbers.gameObject.activeInHierarchy) return;
+
         if (_running != null) StopCoroutine(_running);
         _running = StartCoroutine(CoActivate());
     }
     public void Deactivate()
     {
+        if (StepsHUD.Instance.frameGlow_Numbers.gameObject.activeInHierarchy) return;
+        if (!StepsHUD.Instance.frameGlow_Steps.gameObject.activeInHierarchy && !StepsHUD.Instance.frameGlow_NumbersSteps.gameObject.activeInHierarchy && !StepsHUD.Instance.frameGlow_Numbers.gameObject.activeInHierarchy) return;
+
         if (_running != null) StopCoroutine(_running);
         _running = StartCoroutine(CoDeactivate());
     }
