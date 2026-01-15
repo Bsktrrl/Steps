@@ -416,11 +416,12 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     {
         if (!Run_AbilityDisplayExit()) return;
         if (Tutorial.Instance.state_Movement || Tutorial.Instance.state_CameraRotation || Tutorial.Instance.state_Respawn) return;
-        if (Tutorial.Instance.tutorial_isRunning && (!Tutorial.Instance.state_FreeCam_1 && !Tutorial.Instance.state_FreeCam_2)) return;
         if (PopUpManager.Instance.ability_Active || PopUpManager.Instance.ability_CanBeClosed) return;
 
         if (freeCam_isPressed)
         {
+            if (Tutorial.Instance.tutorial_isRunning && !Tutorial.Instance.state_FreeCam_2) return;
+
             PlayerManager.Instance.UnpauseGame();
             Run_FreeCam_2_Tutorial_End();
 
@@ -430,6 +431,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         }
         else
         {
+            if (Tutorial.Instance.tutorial_isRunning && !Tutorial.Instance.state_FreeCam_1) return;
+
             freeCam_isPressed = true;
             PlayerManager.Instance.PauseGame();
 
@@ -454,7 +457,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!freeCam_isPressed) return;
         FreeCam.Instance.SetMoveAxis(value.Get<Vector2>());
     }
-
     void OnFreeCam_Look(InputValue value)
     {
         if (!freeCam_isPressed) return;

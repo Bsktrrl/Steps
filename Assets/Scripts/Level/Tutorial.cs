@@ -241,7 +241,7 @@ public class Tutorial : Singleton<Tutorial>
 
         PopUpManager.Instance.ShowDisplay(Tutorial_Parent, Tutorial_FreeCam_2_Parent, Tutorial_FreeCam_2_Child);
 
-        yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration_In);
+        yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration_In /*+ 0.3f*/);
 
         state_FreeCam_2 = true;
         state_FreeCam_1 = false;
