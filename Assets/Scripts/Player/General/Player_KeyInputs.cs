@@ -94,8 +94,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
 
 
-
-
     //--------------------
 
 
@@ -127,6 +125,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         Action_WalkButton_isReleased?.Invoke();
     }
+   
     void OnBackward_Down()
     {
         if (!Run_AbilityDisplayExit()) return;
@@ -155,6 +154,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         Action_WalkButton_isReleased?.Invoke();
     }
+  
     void OnLeft_Down()
     {
         if (!Run_AbilityDisplayExit()) return;
@@ -183,6 +183,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         Action_WalkButton_isReleased?.Invoke();
     }
+  
     void OnRight_Down()
     {
         if (!Run_AbilityDisplayExit()) return;
@@ -212,12 +213,26 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         Action_WalkButton_isReleased?.Invoke();
     }
 
+
+    //--------------------
+
+
     void OnAbilityUp_Down()
     {
         if (!Run_AbilityDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         if (!ButtonChecks_Movement() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
+        if (Movement.Instance.isGrapplingHooking) return;
+        if (Movement.Instance.isJumping) return;
+        if (Movement.Instance.isDashing) return;
+        if (Movement.Instance.isSwiftSwim) return;
+        if (Movement.Instance.isAscending) return;
+        if (Movement.Instance.isDescending) return;
+        if (grapplingHook_isPressed) return;
+
+        print("1. OnAbilityUp_Down");
 
         up_isPressed = true;
         Action_Ascend_isPressed?.Invoke();
@@ -229,17 +244,26 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         up_isPressed = false;
     }
+
     void OnAbilityDown_Down()
     {
         if (!Run_AbilityDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         if (!ButtonChecks_Movement() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
-        
+
+        if (Movement.Instance.isGrapplingHooking) return;
+        if (Movement.Instance.isJumping) return;
+        if (Movement.Instance.isDashing) return;
+        if (Movement.Instance.isSwiftSwim) return;
+        if (Movement.Instance.isAscending) return;
+        if (Movement.Instance.isDescending) return;
+        if (grapplingHook_isPressed) return;
+
+        print("2. OnAbilityDown_Down");
+
         down_isPressed = true;
         Action_Descend_isPressed?.Invoke();
-
-        //Player_Interact.Instance.InteractWithObject();
     }
     void OnAbilityDown_Up()
     {
@@ -247,9 +271,72 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (freeCam_isPressed) return;
 
         down_isPressed = false;
-
-        //Player_Interact.Instance.InteractWithObject();
     }
+
+    void OnAbilityLeft()
+    {
+        if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
+
+        if (!ButtonChecks_Other()) { return; }
+        if (Movement.Instance.movementStates == MovementStates.Falling) { return; }
+
+        if (Movement.Instance.isGrapplingHooking) return;
+        if (Movement.Instance.isJumping) return;
+        if (Movement.Instance.isDashing) return;
+        if (Movement.Instance.isSwiftSwim) return;
+        if (Movement.Instance.isAscending) return;
+        if (Movement.Instance.isDescending) return;
+        if (grapplingHook_isPressed) return;
+
+        print("3. OnAbilityLeft");
+
+        Player_CeilingGrab.Instance.CeilingGrab();
+
+        Action_CeilingGrab_isPressed?.Invoke();
+    }
+
+    void OnAbilityRight_DownPress()
+    {
+        if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
+
+        if (!ButtonChecks_Other() || Player_CeilingGrab.Instance.isCeilingGrabbing) return;
+        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) return;
+
+        if (Movement.Instance.isJumping) return;
+        if (Movement.Instance.isDashing) return;
+        if (Movement.Instance.isSwiftSwim) return;
+        if (Movement.Instance.isAscending) return;
+        if (Movement.Instance.isDescending) return;
+
+        print("4. OnAbilityRight_DownPress");
+
+        grapplingHook_isPressed = true;
+
+        Movement.Instance.Action_isGrapplingHooking_Invoke();
+
+        Player_Animations.Instance.Trigger_GrapplingHookAnimation();
+    }
+    void OnAbilityRight_RelesePress()
+    {
+        if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
+
+        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) return;
+
+        grapplingHook_isPressed = false;
+
+        if (!ButtonChecks_Other_MinusGrapplingHook()) { return; }
+
+        Movement.Instance.UpdateGrapplingHookMovement_Release();
+
+        Movement.Instance.Action_isGrapplingHooking_Finished_Invoke();
+    }
+
+
+    //--------------------
+
 
     void OnDialogueSkip_Pressed()
     {
@@ -278,55 +365,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
 
         Action_InteractButton_isPressed?.Invoke();
-    }
-
-
-
-    //--------------------
-
-
-    void OnAbilityLeft()
-    {
-        if (!Run_AbilityDisplayExit()) return;
-        if (freeCam_isPressed) return;
-
-        if (!ButtonChecks_Other()) { return; }
-        if (Movement.Instance.movementStates == MovementStates.Falling) { return; }
-
-        Player_CeilingGrab.Instance.CeilingGrab();
-
-        Action_CeilingGrab_isPressed?.Invoke();
-    }
-
-    void OnAbilityRight_DownPress()
-    {
-        if (!Run_AbilityDisplayExit()) return;
-        if (freeCam_isPressed) return;
-
-        if (!ButtonChecks_Other() || Player_CeilingGrab.Instance.isCeilingGrabbing) return;
-        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) return;
-        
-        grapplingHook_isPressed = true;
-
-        Movement.Instance.Action_isGrapplingHooking_Invoke();
-
-        Player_Animations.Instance.Trigger_GrapplingHookAnimation();
-    }
-    void OnAbilityRight_RelesePress()
-    {
-        if (!Run_AbilityDisplayExit()) return;
-        if (freeCam_isPressed) return;
-
-        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) return;
-
-        grapplingHook_isPressed = false;
-
-        if (!ButtonChecks_Other_MinusGrapplingHook()) { return; }
-
-        Movement.Instance.UpdateGrapplingHookMovement_Release();
-
-        Movement.Instance.Action_isGrapplingHooking_Finished_Invoke();
-        //Action_GrapplingHook_isPressed?.Invoke();
     }
 
 
@@ -587,6 +625,20 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Tutorial.Instance.tutorial_isRunning) { return false; }
         if (PopUpManager.Instance.ability_Active) { return false; }
         if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
+
+        return true;
+    }
+    bool ButtonChecks_Abilities()
+    {
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
+
+        if (Movement.Instance.isJumping) { return false; }
+        if (Movement.Instance.isGrapplingHooking) { return false; }
+        if (Movement.Instance.isDashing) { return false; }
+        if (Movement.Instance.isSwiftSwim) { return false; }
+        if (Movement.Instance.isAscending) { return false; }
+        if (Movement.Instance.isDescending) { return false; }
 
         return true;
     }
