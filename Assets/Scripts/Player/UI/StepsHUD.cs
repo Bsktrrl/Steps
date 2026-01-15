@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using static UIHeartAnimator;
 
@@ -43,7 +44,11 @@ public class StepsHUD : Singleton<StepsHUD>
     [Header("stepsIconList")]
     [SerializeField] List<GameObject> stepsIconList = new List<GameObject>();
 
-    float footprintSpawnTime = 0.1f;
+    public float footprint_SpawnTime = 0.1f;
+    public float StepsDisplay_RespawnTime = 0.5f;
+    public float StepsDisplay_CheckpointTime = 0.65f;
+
+    public int stepCounter;
 
 
     //--------------------
@@ -250,12 +255,12 @@ public class StepsHUD : Singleton<StepsHUD>
 
     public void UpdateStepsDisplay_Respawn()
     {
-        StartCoroutine(UpdateFootprintDelay(0.5f, footprintSpawnTime));
+        StartCoroutine(UpdateFootprintDelay(StepsDisplay_RespawnTime, footprint_SpawnTime));
     }
 
     public void UpdateStepsDisplay_Checkpoint()
     {
-        StartCoroutine(UpdateFootprintDelay(0.65f, footprintSpawnTime));
+        StartCoroutine(UpdateFootprintDelay(StepsDisplay_CheckpointTime, footprint_SpawnTime));
     }
 
     IEnumerator UpdateFootprintDelay(float startDelay, float waitTime)

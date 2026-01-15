@@ -30,6 +30,9 @@ public class PlayerStats : Singleton<PlayerStats>
 
     public void RefillStepsToMax()
     {
+        StepsHUD.Instance.stepCounter = stats.steps_Current;
+        print("00. RefillStepsToMax: Current = " + stats.steps_Current);
+
         MapManager mapManagerIsActive = FindObjectOfType<MapManager>();
         if (!mapManagerIsActive) { return; }
 
@@ -52,8 +55,6 @@ public class PlayerStats : Singleton<PlayerStats>
 
         stats.steps_Max = 7 + counter;
         stats.steps_Current = stats.steps_Max;
-
-
     }
     void ResetActiveAbilities()
     {

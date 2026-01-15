@@ -21142,6 +21142,17 @@ MonoBehaviour:
   extraFootstep_Passive: {fileID: 21300000, guid: 7c80b6f1d2b4cba45a69dd7ead12e10c, type: 3}
   extraFootstep_Active: {fileID: 21300000, guid: d720c1ad2156f7949892fe0e154d6b07, type: 3}
   extraFootstep_Used: {fileID: 21300000, guid: 6d5b16064a4778f44b06f57520efef80, type: 3}
+  number_0: {fileID: 21300000, guid: bd80e98dbfdb1e24faca34bfe8baf49a, type: 3}
+  number_1: {fileID: 21300000, guid: fdabbf8817c1cc44ba95d14b03f534f7, type: 3}
+  number_2: {fileID: 21300000, guid: 09e66d7af8387a04ba0bd4dc995bc032, type: 3}
+  number_3: {fileID: 21300000, guid: f36ca2897647b52459cfbdb52ad86975, type: 3}
+  number_4: {fileID: 21300000, guid: 9b9b47a4d2d3fb24cad060ea527a7715, type: 3}
+  number_5: {fileID: 21300000, guid: 196268e602a024c43a1cdddfae56cbdc, type: 3}
+  number_6: {fileID: 21300000, guid: 99470da17758da8499f210d46681e2b7, type: 3}
+  number_7: {fileID: 21300000, guid: bcee2e58f428dcb4a9d359cf13242701, type: 3}
+  number_8: {fileID: 21300000, guid: f8e89322ae7d11b439d6fe80eded1147, type: 3}
+  number_9: {fileID: 21300000, guid: eb2a3f3edb7c5a94abfe19da570613aa, type: 3}
+  number_10: {fileID: 21300000, guid: f47f61f575ca69149b69a8711a815dd3, type: 3}
 --- !u!114 &747208288318838854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21183,6 +21194,10 @@ MonoBehaviour:
   - {fileID: 4139366028029375329}
   - {fileID: 1182454708095721847}
   - {fileID: 7721245746433961824}
+  footprint_SpawnTime: 0.1
+  StepsDisplay_RespawnTime: 0.5
+  StepsDisplay_CheckpointTime: 0.65
+  stepCounter: 0
 --- !u!1 &4528625611893950286
 GameObject:
   m_ObjectHideFlags: 0
@@ -23901,6 +23916,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4442417819864332884}
+  - component: {fileID: 8385995586381496849}
   m_Layer: 6
   m_Name: StepCounter_NumbersSteps
   m_TagString: Untagged
@@ -23931,6 +23947,21 @@ RectTransform:
   m_AnchoredPosition: {x: 738.2, y: -20}
   m_SizeDelta: {x: 255, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8385995586381496849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5135078981013066281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6aab2bcdf1ffd43bc7b9ab52110d10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  number_Current: {fileID: 2539366425327852435}
+  number_Max: {fileID: 3807914124136042284}
+  numberSpawnTime: 0.15
 --- !u!1 &5173819218268561230
 GameObject:
   m_ObjectHideFlags: 0
@@ -38820,13 +38851,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 21288148441198861}
+  - component: {fileID: 399064969869920349}
   m_Layer: 6
   m_Name: StepCounter_Numbers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &21288148441198861
 RectTransform:
   m_ObjectHideFlags: 0
@@ -38850,6 +38882,21 @@ RectTransform:
   m_AnchoredPosition: {x: 110, y: -20}
   m_SizeDelta: {x: 255, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &399064969869920349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8472072574935772125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6aab2bcdf1ffd43bc7b9ab52110d10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  number_Current: {fileID: 6436568938072611929}
+  number_Max: {fileID: 7376811744506777986}
+  numberSpawnTime: 0.15
 --- !u!1 &8505880647738527771
 GameObject:
   m_ObjectHideFlags: 0

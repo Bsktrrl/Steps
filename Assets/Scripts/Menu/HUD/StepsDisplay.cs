@@ -12,7 +12,7 @@ public class StepsDisplay : Singleton<StepsDisplay>
     [SerializeField] GameObject stepDisplay_Number;
     [SerializeField] GameObject stepDisplay_NumbersSteps;
 
-    [Header("Sprites")]
+    [Header("Footsteps Sprites")]
     public Sprite normalFootstep_Active;
     public Sprite normalFootstep_Used;
 
@@ -20,6 +20,18 @@ public class StepsDisplay : Singleton<StepsDisplay>
     public Sprite extraFootstep_Active;
     public Sprite extraFootstep_Used;
 
+    [Header("Numbers Sprites")]
+    public Sprite number_0;
+    public Sprite number_1;
+    public Sprite number_2;
+    public Sprite number_3;
+    public Sprite number_4;
+    public Sprite number_5;
+    public Sprite number_6;
+    public Sprite number_7;
+    public Sprite number_8;
+    public Sprite number_9;
+    public Sprite number_10;
 
 
     //--------------------
