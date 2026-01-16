@@ -18,6 +18,10 @@ public class LevelSelectName : MonoBehaviour
     {
         SettingsManager.Action_SetNewLanguage += UpdateLevelNameDisplay;
     }
+    private void OnDisable()
+    {
+        SettingsManager.Action_SetNewLanguage -= UpdateLevelNameDisplay;
+    }
 
 
     //--------------------
