@@ -3,6 +3,27 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 
+MousePos, not MousePress
+- Jeg ser ikke helt poenget med å måtte trykket på musa for å flytte på kameraet i free cam. Jeg tror det vil føles mye bedre om kamera bare beveger seg med musa uten å måtte trykke
+
+WorldSpace FreeCam movement
+- Jeg tror også at det å fly opp og ned i free cam vil føles bedre om det skjer i world axis, ikke local axis
+
+Double Respawn
+- Jeg har ikke klart å gjenskape det, men da jeg først prøvde tutorialen måtte jeg respawne to ganger før den gikk videre til neste steg
+
+FreeCam i PauseMenu
+- Man kan trykke på free cam i pause menyen og da styrer inputs kamera/spilleren, uten å lukke pausemenyen
+
+Duplicat AbilityIcons in PauseMenu
+- I pause-menyen, når man går over til en ability så legges en større versjon av ability-ikonet oppå, men den mindre versjonen er der fortsatt, så det ligger to ikoner oppå hverandre
+
+Language hikkup
+- Språket skifter fortsatt ikke alltid med en gang. Det virker som at det blir "ødelagt" etter at man loader inn i level 1 fra main menu (jeg har ikke testet med andre levels, bare level 1 og main menu). Hvis jeg starter i main menu, så funker det fint i main menu, men etter å gå til level 1, så skifter den ikke med en gang verken i level 1 eller i main menu. Og hvis jeg starter i level 1 så funker det fint i level 1 og funker fortsatt hvis jeg går til main menu, men hvis jeg så går tilbake til level 1, så skifter den ikke med en gang lenger. Jeg vet ikke om det kan være et editor problem eller om det også er sånn i build også, men det er kanskje verdt å sjekke ut
+
+
+
+
 2. Intro Camera:
 __________________
 

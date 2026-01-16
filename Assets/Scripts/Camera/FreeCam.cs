@@ -100,7 +100,8 @@ public class FreeCam : Singleton<FreeCam>
     [SerializeField] private float touchSlideStep = 1f;
 
 
-    // --------------------
+    //--------------------
+
 
     private CinemachineCamera _cmPlayer;
     private PrioritySettings _playerPriorityBefore;
@@ -190,12 +191,12 @@ public class FreeCam : Singleton<FreeCam>
     /// <summary>
     /// Call on "mouse look pressed" (RMB down).
     /// </summary>
-    public void BeginMouseLook() => _mouseLookActive = true;
+    //public void BeginMouseLook() => _mouseLookActive = true;
 
     /// <summary>
     /// Call on "mouse look released" (RMB up).
     /// </summary>
-    public void EndMouseLook() => _mouseLookActive = false;
+    //public void EndMouseLook() => _mouseLookActive = false;
 
     /// <summary>
     /// Analog look axis (right stick). Provide (-1..1, -1..1).
@@ -292,11 +293,10 @@ public class FreeCam : Singleton<FreeCam>
         {
             local = local.normalized;
 
-            Transform t = CM_FreeCam.transform;
             Vector3 worldDir =
-                (t.right * local.x) +
-                (t.up * local.y) +
-                (t.forward * local.z);
+                (Vector3.right * local.x) +
+                (Vector3.up * local.y) +
+                (Vector3.forward * local.z);
 
             desiredWorldVelocity = worldDir.normalized * moveSpeed;
         }
@@ -313,10 +313,11 @@ public class FreeCam : Singleton<FreeCam>
 
     private void TickRotation(float dt)
     {
-        // 1) Mouse look (only when RMB is held)
-        if (_mouseLookActive && inputType == InputType.Keyboard)
+        // 1) Mouse look (always on when using keyboard/mouse)
+        if (inputType == InputType.Keyboard)
         {
             Vector2 mouseDelta = Mouse.current?.delta.ReadValue() ?? Vector2.zero;
+
             if (mouseDelta != Vector2.zero)
             {
                 float ySign = invertY ? 1f : -1f;
@@ -325,7 +326,7 @@ public class FreeCam : Singleton<FreeCam>
                 _pitch += mouseDelta.y * mouseSensitivity * ySign;
 
                 ApplyFreeCamRotation();
-                return;
+                // Don't return; controller look is irrelevant in Keyboard mode anyway
             }
         }
 
@@ -340,6 +341,7 @@ public class FreeCam : Singleton<FreeCam>
             ApplyFreeCamRotation();
         }
     }
+
 
     private void ApplyFreeCamRotation()
     {

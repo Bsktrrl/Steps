@@ -483,11 +483,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     void OnMouse_Down()
     {
         _lastMousePos = Input.mousePosition;
-        FreeCam.Instance.BeginMouseLook();
+        //FreeCam.Instance.BeginMouseLook();
     }
     void OnMouse_Up()
     {
-        FreeCam.Instance.EndMouseLook();
+        //FreeCam.Instance.EndMouseLook();
     }
 
     void OnFreeCam_Move(InputValue value)
