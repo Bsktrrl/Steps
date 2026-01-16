@@ -145,12 +145,48 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""CameraRotateX_Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""d0a76ba1-91b3-4111-8ce5-f6f9d925cd1a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CameraRotateX_Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""937b027a-0ccc-4726-8471-91b31c9912a9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""CameraRotateY"",
                     ""type"": ""Button"",
                     ""id"": ""dccc9889-fa7a-4910-9655-508bae486047"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CameraRotateY_Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""c94065c3-c0c2-44ad-afc0-cef05af448f6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CameraRotateY_Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""1257e7d4-a2f3-4739-9570-21544125b77e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -232,6 +268,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press(behavior=1)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FreeCam"",
+                    ""type"": ""Button"",
+                    ""id"": ""8ceb58ca-6646-416d-8eec-4600cc997ee0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
@@ -332,42 +377,126 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Mouse_Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""a492a397-5a68-4b6b-950b-58aeca881c3b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Mouse_Hold"",
+                    ""type"": ""Button"",
+                    ""id"": ""2d953186-b02b-40e3-a29b-2becb0222555"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.05)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Mouse_Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""88277933-c720-4eef-be5e-00e8eb8126b9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FreeCam_Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""a4e3ac28-84d8-437e-9bb1-869f55363606"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": ""StickDeadzone"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""FreeCam_Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""8f5c8c72-f38a-4a08-acb5-73817115f646"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": ""StickDeadzone"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Forward_FreeCam_Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""caca871a-d66c-4523-a7a5-53995f932509"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Forward_FreeCam_Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""a51e0cb5-5a29-4b05-8586-1eda06656d81"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Backward_FreeCam_Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""fff5eec2-9105-4b4b-bea9-5072fc574b00"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Backward_FreeCam_Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""e8456326-aa5a-4e1e-b581-8eea90502bf6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Left_FreeCam_Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""1557e732-71ae-402c-a504-640a278a0cd3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Left_FreeCam_Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""7c987c67-5818-4094-a597-3822bc718066"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Right_FreeCam_Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""4b5946ad-1669-4170-af63-d473a8bc281a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Right_FreeCam_Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""5545f5d4-f52c-48c1-a341-2fdb672ae4cd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""9b42e02b-79a8-4059-aa8b-14e4989c0ce0"",
-                    ""path"": ""<Gamepad>/dpad/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Forward_Down"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""cae6d3ba-4ae2-41ff-8113-0830e102fdea"",
-                    ""path"": ""<Gamepad>/leftStick/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Forward_Down"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""35bc038b-7e9d-4cc7-b673-e5b32bcadf6a"",
-                    ""path"": ""<Keyboard>/#(W)"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Forward_Down"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""b9e65701-2457-4069-9bd0-8dba3d3186ba"",
@@ -1302,6 +1431,413 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Right_Hold"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""84b18b95-1b41-49d8-95fa-967b2275192c"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FreeCam"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""898c09aa-6438-40bb-b7e7-34e039e5529a"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FreeCam"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bbc93072-4707-419e-b67c-ec6b60431060"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotateX_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e64a886-fa13-415a-a4f8-2a97aeebc622"",
+                    ""path"": ""<Keyboard>/#(Q)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotateX_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9fa9ce75-5899-4e66-9df4-96a08cb336c8"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotateY_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""242604af-6e60-4754-8faf-9b28482d4d4a"",
+                    ""path"": ""<Keyboard>/#(E)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotateY_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f7e96590-38ba-4b7e-b812-196e0c85b29a"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotateX_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3d3ecdd0-2f2e-4e86-9602-946aa1f6d0f1"",
+                    ""path"": ""<Keyboard>/#(Q)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotateX_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""feb86497-b5c8-4af0-97c2-ed3cd6abea02"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotateY_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""241c815a-9dcf-4456-888e-6db263f758a6"",
+                    ""path"": ""<Keyboard>/#(E)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotateY_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5b5d6b1e-54b9-4626-9eb6-29d88a5d0d9f"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mouse_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7f6e89ca-bc02-4006-8e33-08aa6c5dbec1"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mouse_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8060b2d8-eecd-43c6-a44f-232ca844d082"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mouse_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3ceaf3a1-90ca-49ae-a836-818bd88aaffb"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mouse_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""abcea85c-e72f-4358-b4c5-ce96da9e494f"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mouse_Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6b69b311-80d4-4729-9fe8-01031739883e"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mouse_Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9b42e02b-79a8-4059-aa8b-14e4989c0ce0"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Forward_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cae6d3ba-4ae2-41ff-8113-0830e102fdea"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Forward_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""35bc038b-7e9d-4cc7-b673-e5b32bcadf6a"",
+                    ""path"": ""<Keyboard>/#(W)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Forward_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""40a492f2-823a-490e-9a63-971711a83ee4"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FreeCam_Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f27e57f8-7366-49bc-9a79-4e1dc2637fbd"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FreeCam_Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""48bca4c4-7cc5-4528-8dfe-fea8b87ce87a"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right_FreeCam_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c4d87a87-7e4b-4261-a426-e8566cd3f808"",
+                    ""path"": ""<Keyboard>/#(D)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right_FreeCam_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""85260118-f56f-420c-bc6e-e54213adfc3d"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Forward_FreeCam_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""50130c7d-4778-4873-ac2b-ef137009445b"",
+                    ""path"": ""<Keyboard>/#(W)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Forward_FreeCam_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b3ca6274-c6ef-427d-9347-291b6fb019c5"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Forward_FreeCam_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3aea218a-3e09-4bb5-a0bf-3581ca4cdfc7"",
+                    ""path"": ""<Keyboard>/#(W)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Forward_FreeCam_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5e21e2cc-e3af-44db-bfa9-bc5f39782d43"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Backward_FreeCam_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c98fc0cd-9e4b-4516-9520-0e99a128d60b"",
+                    ""path"": ""<Keyboard>/#(S)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Backward_FreeCam_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0b401736-6cd0-40aa-88c1-74f50cff92e7"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Backward_FreeCam_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3219bd1-b235-44c6-998e-9dc66e2c6f79"",
+                    ""path"": ""<Keyboard>/#(S)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Backward_FreeCam_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a80b38f6-1c8b-4797-bfe5-2e485bbf4344"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left_FreeCam_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3f86c098-e1ee-4dbc-bf59-0f6f9868e05c"",
+                    ""path"": ""<Keyboard>/#(A)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left_FreeCam_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ac7ce56d-e6cf-4ed8-b165-7926ea5ef743"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left_FreeCam_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c39d1fb0-6163-443a-a956-ab868eb98163"",
+                    ""path"": ""<Keyboard>/#(A)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left_FreeCam_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ced5c94a-68ef-418f-bace-d4d8f0fc6bb5"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right_FreeCam_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7caf1445-b26c-4fe8-8962-d9362b46750b"",
+                    ""path"": ""<Keyboard>/#(D)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right_FreeCam_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1323,7 +1859,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerMovement_Right_Hold = m_PlayerMovement.FindAction("Right_Hold", throwIfNotFound: true);
         m_PlayerMovement_Right_Up = m_PlayerMovement.FindAction("Right_Up", throwIfNotFound: true);
         m_PlayerMovement_CameraRotateX = m_PlayerMovement.FindAction("CameraRotateX", throwIfNotFound: true);
+        m_PlayerMovement_CameraRotateX_Down = m_PlayerMovement.FindAction("CameraRotateX_Down", throwIfNotFound: true);
+        m_PlayerMovement_CameraRotateX_Up = m_PlayerMovement.FindAction("CameraRotateX_Up", throwIfNotFound: true);
         m_PlayerMovement_CameraRotateY = m_PlayerMovement.FindAction("CameraRotateY", throwIfNotFound: true);
+        m_PlayerMovement_CameraRotateY_Down = m_PlayerMovement.FindAction("CameraRotateY_Down", throwIfNotFound: true);
+        m_PlayerMovement_CameraRotateY_Up = m_PlayerMovement.FindAction("CameraRotateY_Up", throwIfNotFound: true);
         m_PlayerMovement_AbilityUp_Down = m_PlayerMovement.FindAction("AbilityUp_Down", throwIfNotFound: true);
         m_PlayerMovement_AbilityUp_Up = m_PlayerMovement.FindAction("AbilityUp_Up", throwIfNotFound: true);
         m_PlayerMovement_AbilityDown_Down = m_PlayerMovement.FindAction("AbilityDown_Down", throwIfNotFound: true);
@@ -1333,6 +1873,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerMovement_AbilityRight_RelesePress = m_PlayerMovement.FindAction("AbilityRight_RelesePress", throwIfNotFound: true);
         m_PlayerMovement_Respawn_In = m_PlayerMovement.FindAction("Respawn_In", throwIfNotFound: true);
         m_PlayerMovement_Respawn_Out = m_PlayerMovement.FindAction("Respawn_Out", throwIfNotFound: true);
+        m_PlayerMovement_FreeCam = m_PlayerMovement.FindAction("FreeCam", throwIfNotFound: true);
         m_PlayerMovement_Quit = m_PlayerMovement.FindAction("Quit", throwIfNotFound: true);
         m_PlayerMovement_Menu_Back = m_PlayerMovement.FindAction("Menu_Back", throwIfNotFound: true);
         m_PlayerMovement_DialogueSkip_Pressed = m_PlayerMovement.FindAction("DialogueSkip_Pressed", throwIfNotFound: true);
@@ -1344,6 +1885,19 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerMovement_MenuNavigation_Right = m_PlayerMovement.FindAction("MenuNavigation_Right", throwIfNotFound: true);
         m_PlayerMovement_OptionsMenuShift_Left = m_PlayerMovement.FindAction("OptionsMenuShift_Left", throwIfNotFound: true);
         m_PlayerMovement_OptionsMenuShift_Right = m_PlayerMovement.FindAction("OptionsMenuShift_Right", throwIfNotFound: true);
+        m_PlayerMovement_Mouse_Down = m_PlayerMovement.FindAction("Mouse_Down", throwIfNotFound: true);
+        m_PlayerMovement_Mouse_Hold = m_PlayerMovement.FindAction("Mouse_Hold", throwIfNotFound: true);
+        m_PlayerMovement_Mouse_Up = m_PlayerMovement.FindAction("Mouse_Up", throwIfNotFound: true);
+        m_PlayerMovement_FreeCam_Move = m_PlayerMovement.FindAction("FreeCam_Move", throwIfNotFound: true);
+        m_PlayerMovement_FreeCam_Look = m_PlayerMovement.FindAction("FreeCam_Look", throwIfNotFound: true);
+        m_PlayerMovement_Forward_FreeCam_Down = m_PlayerMovement.FindAction("Forward_FreeCam_Down", throwIfNotFound: true);
+        m_PlayerMovement_Forward_FreeCam_Up = m_PlayerMovement.FindAction("Forward_FreeCam_Up", throwIfNotFound: true);
+        m_PlayerMovement_Backward_FreeCam_Down = m_PlayerMovement.FindAction("Backward_FreeCam_Down", throwIfNotFound: true);
+        m_PlayerMovement_Backward_FreeCam_Up = m_PlayerMovement.FindAction("Backward_FreeCam_Up", throwIfNotFound: true);
+        m_PlayerMovement_Left_FreeCam_Down = m_PlayerMovement.FindAction("Left_FreeCam_Down", throwIfNotFound: true);
+        m_PlayerMovement_Left_FreeCam_Up = m_PlayerMovement.FindAction("Left_FreeCam_Up", throwIfNotFound: true);
+        m_PlayerMovement_Right_FreeCam_Down = m_PlayerMovement.FindAction("Right_FreeCam_Down", throwIfNotFound: true);
+        m_PlayerMovement_Right_FreeCam_Up = m_PlayerMovement.FindAction("Right_FreeCam_Up", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1418,7 +1972,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_Right_Hold;
     private readonly InputAction m_PlayerMovement_Right_Up;
     private readonly InputAction m_PlayerMovement_CameraRotateX;
+    private readonly InputAction m_PlayerMovement_CameraRotateX_Down;
+    private readonly InputAction m_PlayerMovement_CameraRotateX_Up;
     private readonly InputAction m_PlayerMovement_CameraRotateY;
+    private readonly InputAction m_PlayerMovement_CameraRotateY_Down;
+    private readonly InputAction m_PlayerMovement_CameraRotateY_Up;
     private readonly InputAction m_PlayerMovement_AbilityUp_Down;
     private readonly InputAction m_PlayerMovement_AbilityUp_Up;
     private readonly InputAction m_PlayerMovement_AbilityDown_Down;
@@ -1428,6 +1986,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_AbilityRight_RelesePress;
     private readonly InputAction m_PlayerMovement_Respawn_In;
     private readonly InputAction m_PlayerMovement_Respawn_Out;
+    private readonly InputAction m_PlayerMovement_FreeCam;
     private readonly InputAction m_PlayerMovement_Quit;
     private readonly InputAction m_PlayerMovement_Menu_Back;
     private readonly InputAction m_PlayerMovement_DialogueSkip_Pressed;
@@ -1439,6 +1998,19 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_MenuNavigation_Right;
     private readonly InputAction m_PlayerMovement_OptionsMenuShift_Left;
     private readonly InputAction m_PlayerMovement_OptionsMenuShift_Right;
+    private readonly InputAction m_PlayerMovement_Mouse_Down;
+    private readonly InputAction m_PlayerMovement_Mouse_Hold;
+    private readonly InputAction m_PlayerMovement_Mouse_Up;
+    private readonly InputAction m_PlayerMovement_FreeCam_Move;
+    private readonly InputAction m_PlayerMovement_FreeCam_Look;
+    private readonly InputAction m_PlayerMovement_Forward_FreeCam_Down;
+    private readonly InputAction m_PlayerMovement_Forward_FreeCam_Up;
+    private readonly InputAction m_PlayerMovement_Backward_FreeCam_Down;
+    private readonly InputAction m_PlayerMovement_Backward_FreeCam_Up;
+    private readonly InputAction m_PlayerMovement_Left_FreeCam_Down;
+    private readonly InputAction m_PlayerMovement_Left_FreeCam_Up;
+    private readonly InputAction m_PlayerMovement_Right_FreeCam_Down;
+    private readonly InputAction m_PlayerMovement_Right_FreeCam_Up;
     public struct PlayerMovementActions
     {
         private @PlayerControls m_Wrapper;
@@ -1456,7 +2028,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Right_Hold => m_Wrapper.m_PlayerMovement_Right_Hold;
         public InputAction @Right_Up => m_Wrapper.m_PlayerMovement_Right_Up;
         public InputAction @CameraRotateX => m_Wrapper.m_PlayerMovement_CameraRotateX;
+        public InputAction @CameraRotateX_Down => m_Wrapper.m_PlayerMovement_CameraRotateX_Down;
+        public InputAction @CameraRotateX_Up => m_Wrapper.m_PlayerMovement_CameraRotateX_Up;
         public InputAction @CameraRotateY => m_Wrapper.m_PlayerMovement_CameraRotateY;
+        public InputAction @CameraRotateY_Down => m_Wrapper.m_PlayerMovement_CameraRotateY_Down;
+        public InputAction @CameraRotateY_Up => m_Wrapper.m_PlayerMovement_CameraRotateY_Up;
         public InputAction @AbilityUp_Down => m_Wrapper.m_PlayerMovement_AbilityUp_Down;
         public InputAction @AbilityUp_Up => m_Wrapper.m_PlayerMovement_AbilityUp_Up;
         public InputAction @AbilityDown_Down => m_Wrapper.m_PlayerMovement_AbilityDown_Down;
@@ -1466,6 +2042,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @AbilityRight_RelesePress => m_Wrapper.m_PlayerMovement_AbilityRight_RelesePress;
         public InputAction @Respawn_In => m_Wrapper.m_PlayerMovement_Respawn_In;
         public InputAction @Respawn_Out => m_Wrapper.m_PlayerMovement_Respawn_Out;
+        public InputAction @FreeCam => m_Wrapper.m_PlayerMovement_FreeCam;
         public InputAction @Quit => m_Wrapper.m_PlayerMovement_Quit;
         public InputAction @Menu_Back => m_Wrapper.m_PlayerMovement_Menu_Back;
         public InputAction @DialogueSkip_Pressed => m_Wrapper.m_PlayerMovement_DialogueSkip_Pressed;
@@ -1477,6 +2054,19 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @MenuNavigation_Right => m_Wrapper.m_PlayerMovement_MenuNavigation_Right;
         public InputAction @OptionsMenuShift_Left => m_Wrapper.m_PlayerMovement_OptionsMenuShift_Left;
         public InputAction @OptionsMenuShift_Right => m_Wrapper.m_PlayerMovement_OptionsMenuShift_Right;
+        public InputAction @Mouse_Down => m_Wrapper.m_PlayerMovement_Mouse_Down;
+        public InputAction @Mouse_Hold => m_Wrapper.m_PlayerMovement_Mouse_Hold;
+        public InputAction @Mouse_Up => m_Wrapper.m_PlayerMovement_Mouse_Up;
+        public InputAction @FreeCam_Move => m_Wrapper.m_PlayerMovement_FreeCam_Move;
+        public InputAction @FreeCam_Look => m_Wrapper.m_PlayerMovement_FreeCam_Look;
+        public InputAction @Forward_FreeCam_Down => m_Wrapper.m_PlayerMovement_Forward_FreeCam_Down;
+        public InputAction @Forward_FreeCam_Up => m_Wrapper.m_PlayerMovement_Forward_FreeCam_Up;
+        public InputAction @Backward_FreeCam_Down => m_Wrapper.m_PlayerMovement_Backward_FreeCam_Down;
+        public InputAction @Backward_FreeCam_Up => m_Wrapper.m_PlayerMovement_Backward_FreeCam_Up;
+        public InputAction @Left_FreeCam_Down => m_Wrapper.m_PlayerMovement_Left_FreeCam_Down;
+        public InputAction @Left_FreeCam_Up => m_Wrapper.m_PlayerMovement_Left_FreeCam_Up;
+        public InputAction @Right_FreeCam_Down => m_Wrapper.m_PlayerMovement_Right_FreeCam_Down;
+        public InputAction @Right_FreeCam_Up => m_Wrapper.m_PlayerMovement_Right_FreeCam_Up;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1525,9 +2115,21 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @CameraRotateX.started += instance.OnCameraRotateX;
             @CameraRotateX.performed += instance.OnCameraRotateX;
             @CameraRotateX.canceled += instance.OnCameraRotateX;
+            @CameraRotateX_Down.started += instance.OnCameraRotateX_Down;
+            @CameraRotateX_Down.performed += instance.OnCameraRotateX_Down;
+            @CameraRotateX_Down.canceled += instance.OnCameraRotateX_Down;
+            @CameraRotateX_Up.started += instance.OnCameraRotateX_Up;
+            @CameraRotateX_Up.performed += instance.OnCameraRotateX_Up;
+            @CameraRotateX_Up.canceled += instance.OnCameraRotateX_Up;
             @CameraRotateY.started += instance.OnCameraRotateY;
             @CameraRotateY.performed += instance.OnCameraRotateY;
             @CameraRotateY.canceled += instance.OnCameraRotateY;
+            @CameraRotateY_Down.started += instance.OnCameraRotateY_Down;
+            @CameraRotateY_Down.performed += instance.OnCameraRotateY_Down;
+            @CameraRotateY_Down.canceled += instance.OnCameraRotateY_Down;
+            @CameraRotateY_Up.started += instance.OnCameraRotateY_Up;
+            @CameraRotateY_Up.performed += instance.OnCameraRotateY_Up;
+            @CameraRotateY_Up.canceled += instance.OnCameraRotateY_Up;
             @AbilityUp_Down.started += instance.OnAbilityUp_Down;
             @AbilityUp_Down.performed += instance.OnAbilityUp_Down;
             @AbilityUp_Down.canceled += instance.OnAbilityUp_Down;
@@ -1555,6 +2157,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Respawn_Out.started += instance.OnRespawn_Out;
             @Respawn_Out.performed += instance.OnRespawn_Out;
             @Respawn_Out.canceled += instance.OnRespawn_Out;
+            @FreeCam.started += instance.OnFreeCam;
+            @FreeCam.performed += instance.OnFreeCam;
+            @FreeCam.canceled += instance.OnFreeCam;
             @Quit.started += instance.OnQuit;
             @Quit.performed += instance.OnQuit;
             @Quit.canceled += instance.OnQuit;
@@ -1588,6 +2193,45 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @OptionsMenuShift_Right.started += instance.OnOptionsMenuShift_Right;
             @OptionsMenuShift_Right.performed += instance.OnOptionsMenuShift_Right;
             @OptionsMenuShift_Right.canceled += instance.OnOptionsMenuShift_Right;
+            @Mouse_Down.started += instance.OnMouse_Down;
+            @Mouse_Down.performed += instance.OnMouse_Down;
+            @Mouse_Down.canceled += instance.OnMouse_Down;
+            @Mouse_Hold.started += instance.OnMouse_Hold;
+            @Mouse_Hold.performed += instance.OnMouse_Hold;
+            @Mouse_Hold.canceled += instance.OnMouse_Hold;
+            @Mouse_Up.started += instance.OnMouse_Up;
+            @Mouse_Up.performed += instance.OnMouse_Up;
+            @Mouse_Up.canceled += instance.OnMouse_Up;
+            @FreeCam_Move.started += instance.OnFreeCam_Move;
+            @FreeCam_Move.performed += instance.OnFreeCam_Move;
+            @FreeCam_Move.canceled += instance.OnFreeCam_Move;
+            @FreeCam_Look.started += instance.OnFreeCam_Look;
+            @FreeCam_Look.performed += instance.OnFreeCam_Look;
+            @FreeCam_Look.canceled += instance.OnFreeCam_Look;
+            @Forward_FreeCam_Down.started += instance.OnForward_FreeCam_Down;
+            @Forward_FreeCam_Down.performed += instance.OnForward_FreeCam_Down;
+            @Forward_FreeCam_Down.canceled += instance.OnForward_FreeCam_Down;
+            @Forward_FreeCam_Up.started += instance.OnForward_FreeCam_Up;
+            @Forward_FreeCam_Up.performed += instance.OnForward_FreeCam_Up;
+            @Forward_FreeCam_Up.canceled += instance.OnForward_FreeCam_Up;
+            @Backward_FreeCam_Down.started += instance.OnBackward_FreeCam_Down;
+            @Backward_FreeCam_Down.performed += instance.OnBackward_FreeCam_Down;
+            @Backward_FreeCam_Down.canceled += instance.OnBackward_FreeCam_Down;
+            @Backward_FreeCam_Up.started += instance.OnBackward_FreeCam_Up;
+            @Backward_FreeCam_Up.performed += instance.OnBackward_FreeCam_Up;
+            @Backward_FreeCam_Up.canceled += instance.OnBackward_FreeCam_Up;
+            @Left_FreeCam_Down.started += instance.OnLeft_FreeCam_Down;
+            @Left_FreeCam_Down.performed += instance.OnLeft_FreeCam_Down;
+            @Left_FreeCam_Down.canceled += instance.OnLeft_FreeCam_Down;
+            @Left_FreeCam_Up.started += instance.OnLeft_FreeCam_Up;
+            @Left_FreeCam_Up.performed += instance.OnLeft_FreeCam_Up;
+            @Left_FreeCam_Up.canceled += instance.OnLeft_FreeCam_Up;
+            @Right_FreeCam_Down.started += instance.OnRight_FreeCam_Down;
+            @Right_FreeCam_Down.performed += instance.OnRight_FreeCam_Down;
+            @Right_FreeCam_Down.canceled += instance.OnRight_FreeCam_Down;
+            @Right_FreeCam_Up.started += instance.OnRight_FreeCam_Up;
+            @Right_FreeCam_Up.performed += instance.OnRight_FreeCam_Up;
+            @Right_FreeCam_Up.canceled += instance.OnRight_FreeCam_Up;
         }
 
         private void UnregisterCallbacks(IPlayerMovementActions instance)
@@ -1631,9 +2275,21 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @CameraRotateX.started -= instance.OnCameraRotateX;
             @CameraRotateX.performed -= instance.OnCameraRotateX;
             @CameraRotateX.canceled -= instance.OnCameraRotateX;
+            @CameraRotateX_Down.started -= instance.OnCameraRotateX_Down;
+            @CameraRotateX_Down.performed -= instance.OnCameraRotateX_Down;
+            @CameraRotateX_Down.canceled -= instance.OnCameraRotateX_Down;
+            @CameraRotateX_Up.started -= instance.OnCameraRotateX_Up;
+            @CameraRotateX_Up.performed -= instance.OnCameraRotateX_Up;
+            @CameraRotateX_Up.canceled -= instance.OnCameraRotateX_Up;
             @CameraRotateY.started -= instance.OnCameraRotateY;
             @CameraRotateY.performed -= instance.OnCameraRotateY;
             @CameraRotateY.canceled -= instance.OnCameraRotateY;
+            @CameraRotateY_Down.started -= instance.OnCameraRotateY_Down;
+            @CameraRotateY_Down.performed -= instance.OnCameraRotateY_Down;
+            @CameraRotateY_Down.canceled -= instance.OnCameraRotateY_Down;
+            @CameraRotateY_Up.started -= instance.OnCameraRotateY_Up;
+            @CameraRotateY_Up.performed -= instance.OnCameraRotateY_Up;
+            @CameraRotateY_Up.canceled -= instance.OnCameraRotateY_Up;
             @AbilityUp_Down.started -= instance.OnAbilityUp_Down;
             @AbilityUp_Down.performed -= instance.OnAbilityUp_Down;
             @AbilityUp_Down.canceled -= instance.OnAbilityUp_Down;
@@ -1661,6 +2317,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Respawn_Out.started -= instance.OnRespawn_Out;
             @Respawn_Out.performed -= instance.OnRespawn_Out;
             @Respawn_Out.canceled -= instance.OnRespawn_Out;
+            @FreeCam.started -= instance.OnFreeCam;
+            @FreeCam.performed -= instance.OnFreeCam;
+            @FreeCam.canceled -= instance.OnFreeCam;
             @Quit.started -= instance.OnQuit;
             @Quit.performed -= instance.OnQuit;
             @Quit.canceled -= instance.OnQuit;
@@ -1694,6 +2353,45 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @OptionsMenuShift_Right.started -= instance.OnOptionsMenuShift_Right;
             @OptionsMenuShift_Right.performed -= instance.OnOptionsMenuShift_Right;
             @OptionsMenuShift_Right.canceled -= instance.OnOptionsMenuShift_Right;
+            @Mouse_Down.started -= instance.OnMouse_Down;
+            @Mouse_Down.performed -= instance.OnMouse_Down;
+            @Mouse_Down.canceled -= instance.OnMouse_Down;
+            @Mouse_Hold.started -= instance.OnMouse_Hold;
+            @Mouse_Hold.performed -= instance.OnMouse_Hold;
+            @Mouse_Hold.canceled -= instance.OnMouse_Hold;
+            @Mouse_Up.started -= instance.OnMouse_Up;
+            @Mouse_Up.performed -= instance.OnMouse_Up;
+            @Mouse_Up.canceled -= instance.OnMouse_Up;
+            @FreeCam_Move.started -= instance.OnFreeCam_Move;
+            @FreeCam_Move.performed -= instance.OnFreeCam_Move;
+            @FreeCam_Move.canceled -= instance.OnFreeCam_Move;
+            @FreeCam_Look.started -= instance.OnFreeCam_Look;
+            @FreeCam_Look.performed -= instance.OnFreeCam_Look;
+            @FreeCam_Look.canceled -= instance.OnFreeCam_Look;
+            @Forward_FreeCam_Down.started -= instance.OnForward_FreeCam_Down;
+            @Forward_FreeCam_Down.performed -= instance.OnForward_FreeCam_Down;
+            @Forward_FreeCam_Down.canceled -= instance.OnForward_FreeCam_Down;
+            @Forward_FreeCam_Up.started -= instance.OnForward_FreeCam_Up;
+            @Forward_FreeCam_Up.performed -= instance.OnForward_FreeCam_Up;
+            @Forward_FreeCam_Up.canceled -= instance.OnForward_FreeCam_Up;
+            @Backward_FreeCam_Down.started -= instance.OnBackward_FreeCam_Down;
+            @Backward_FreeCam_Down.performed -= instance.OnBackward_FreeCam_Down;
+            @Backward_FreeCam_Down.canceled -= instance.OnBackward_FreeCam_Down;
+            @Backward_FreeCam_Up.started -= instance.OnBackward_FreeCam_Up;
+            @Backward_FreeCam_Up.performed -= instance.OnBackward_FreeCam_Up;
+            @Backward_FreeCam_Up.canceled -= instance.OnBackward_FreeCam_Up;
+            @Left_FreeCam_Down.started -= instance.OnLeft_FreeCam_Down;
+            @Left_FreeCam_Down.performed -= instance.OnLeft_FreeCam_Down;
+            @Left_FreeCam_Down.canceled -= instance.OnLeft_FreeCam_Down;
+            @Left_FreeCam_Up.started -= instance.OnLeft_FreeCam_Up;
+            @Left_FreeCam_Up.performed -= instance.OnLeft_FreeCam_Up;
+            @Left_FreeCam_Up.canceled -= instance.OnLeft_FreeCam_Up;
+            @Right_FreeCam_Down.started -= instance.OnRight_FreeCam_Down;
+            @Right_FreeCam_Down.performed -= instance.OnRight_FreeCam_Down;
+            @Right_FreeCam_Down.canceled -= instance.OnRight_FreeCam_Down;
+            @Right_FreeCam_Up.started -= instance.OnRight_FreeCam_Up;
+            @Right_FreeCam_Up.performed -= instance.OnRight_FreeCam_Up;
+            @Right_FreeCam_Up.canceled -= instance.OnRight_FreeCam_Up;
         }
 
         public void RemoveCallbacks(IPlayerMovementActions instance)
@@ -1726,7 +2424,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnRight_Hold(InputAction.CallbackContext context);
         void OnRight_Up(InputAction.CallbackContext context);
         void OnCameraRotateX(InputAction.CallbackContext context);
+        void OnCameraRotateX_Down(InputAction.CallbackContext context);
+        void OnCameraRotateX_Up(InputAction.CallbackContext context);
         void OnCameraRotateY(InputAction.CallbackContext context);
+        void OnCameraRotateY_Down(InputAction.CallbackContext context);
+        void OnCameraRotateY_Up(InputAction.CallbackContext context);
         void OnAbilityUp_Down(InputAction.CallbackContext context);
         void OnAbilityUp_Up(InputAction.CallbackContext context);
         void OnAbilityDown_Down(InputAction.CallbackContext context);
@@ -1736,6 +2438,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnAbilityRight_RelesePress(InputAction.CallbackContext context);
         void OnRespawn_In(InputAction.CallbackContext context);
         void OnRespawn_Out(InputAction.CallbackContext context);
+        void OnFreeCam(InputAction.CallbackContext context);
         void OnQuit(InputAction.CallbackContext context);
         void OnMenu_Back(InputAction.CallbackContext context);
         void OnDialogueSkip_Pressed(InputAction.CallbackContext context);
@@ -1747,5 +2450,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnMenuNavigation_Right(InputAction.CallbackContext context);
         void OnOptionsMenuShift_Left(InputAction.CallbackContext context);
         void OnOptionsMenuShift_Right(InputAction.CallbackContext context);
+        void OnMouse_Down(InputAction.CallbackContext context);
+        void OnMouse_Hold(InputAction.CallbackContext context);
+        void OnMouse_Up(InputAction.CallbackContext context);
+        void OnFreeCam_Move(InputAction.CallbackContext context);
+        void OnFreeCam_Look(InputAction.CallbackContext context);
+        void OnForward_FreeCam_Down(InputAction.CallbackContext context);
+        void OnForward_FreeCam_Up(InputAction.CallbackContext context);
+        void OnBackward_FreeCam_Down(InputAction.CallbackContext context);
+        void OnBackward_FreeCam_Up(InputAction.CallbackContext context);
+        void OnLeft_FreeCam_Down(InputAction.CallbackContext context);
+        void OnLeft_FreeCam_Up(InputAction.CallbackContext context);
+        void OnRight_FreeCam_Down(InputAction.CallbackContext context);
+        void OnRight_FreeCam_Up(InputAction.CallbackContext context);
     }
 }

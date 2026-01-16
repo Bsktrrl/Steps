@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Playables;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,18 +14,28 @@ public class PopUpManager : Singleton<PopUpManager>
 
 
     [Header("Popup - Parents")]
+    [SerializeField] GameObject popup_LevelName_Parent;
     [SerializeField] GameObject popup_Footprint_Parent;
     [SerializeField] GameObject popup_Essence_Parent;
     [SerializeField] GameObject popup_Skin_Parent;
 
     [Header("Popup - Children")]
+    [SerializeField] List<GameObject> popup_LevelName_Children;
     [SerializeField] List<GameObject> popup_Footprint_Children;
     [SerializeField] List<GameObject> popup_Essence_Children;
     [SerializeField] List<GameObject> popup_Skin_Children;
 
+    [Header("Popup - Text")]
+    [SerializeField] TextMeshProUGUI popup_LevelName_Text;
+
 
     //-----
 
+
+    [Header("Ability Active State")]
+    public bool ability_Active;
+    public bool ability_CanBeClosed;
+    public float ability_CanBeClosed_Timer = 0.5f;
 
     [Header("Abilities - Parents")]
     [SerializeField] GameObject ability_SwimSuit_Parent;
@@ -58,18 +67,15 @@ public class PopUpManager : Singleton<PopUpManager>
 
 
     [Header("Fade Settings")]
-    public float fadeDuration = 0.85f;
+    public float fadeDuration_In = 0.35f;
+    public float fadeDuration_Out = 0.75f;
+    //public float fadeDuration_Ability_In = 0.35f;
+    //public float fadeDuration_Ability_Out = 0.65f;
     [SerializeField] float pickupMessageDuration = 1.5f;
+    [SerializeField] float levelNameMessageDuration = 3f;
 
     // Keep track of running fades so we can stop/replace them per parent
     private readonly Dictionary<GameObject, Coroutine> _runningFades = new();
-
-
-    //-----
-
-
-    [Header("Ability Active State")]
-    public bool ability_Active;
 
 
     //--------------------
@@ -77,12 +83,16 @@ public class PopUpManager : Singleton<PopUpManager>
 
     public void OnEnable()
     {
+        MapManager.Action_StartIntroSequence += ShowLevelNamePopup;
+
         Interactable_Pickup.Action_StepsUpPickupGot += ShowFootprintPopup;
         Interactable_Pickup.Action_EssencePickupGot += ShowEssencePopup;
         Interactable_Pickup.Action_SkinPickupGot += ShowSkinPopup;
     }
     private void OnDisable()
     {
+        MapManager.Action_StartIntroSequence -= ShowLevelNamePopup;
+
         Interactable_Pickup.Action_StepsUpPickupGot -= ShowFootprintPopup;
         Interactable_Pickup.Action_EssencePickupGot -= ShowEssencePopup;
         Interactable_Pickup.Action_SkinPickupGot -= ShowSkinPopup;
@@ -92,6 +102,10 @@ public class PopUpManager : Singleton<PopUpManager>
     //--------------------
 
 
+    void ShowLevelNamePopup()
+    {
+        StartCoroutine(LevelNameRoutine());
+    }
     void ShowFootprintPopup()
     {
         StartCoroutine(FootprintRoutine());
@@ -111,6 +125,7 @@ public class PopUpManager : Singleton<PopUpManager>
     }
     IEnumerator ShowAbilityPopup_Routine(Abilities ability, float waitTime)
     {
+        ability_Active = true;
         PlayerManager.Instance.PauseGame();
 
         yield return new WaitForSeconds(waitTime);
@@ -152,11 +167,14 @@ public class PopUpManager : Singleton<PopUpManager>
                 break;
         }
 
-        ability_Active = true;
+        yield return new WaitForSeconds(ability_CanBeClosed_Timer);
+
+        ability_CanBeClosed = true;
     }
     public void HideAbilityPopup()
     {
         ability_Active = false;
+        StartCoroutine(ButtonCanBePressedDuringAbilityMenuFadeIut_Delay(0.4f));
         PlayerManager.Instance.UnpauseGame();
 
         HideDisplay(popupManager, ability_SwimSuit_Parent, abilities_SwimSuit_Children);
@@ -172,16 +190,32 @@ public class PopUpManager : Singleton<PopUpManager>
         HideDisplay(popupManager, ability_CeilingGrab_Parent, abilities_CeilingGrab_Children);
         HideDisplay(popupManager, ability_GrapplingHook_Parent, abilities_GrapplingHook_Children);
     }
+    IEnumerator ButtonCanBePressedDuringAbilityMenuFadeIut_Delay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        ability_CanBeClosed = false;
+    }
 
 
     //--------------------
 
 
+    IEnumerator LevelNameRoutine()
+    {
+        yield return null;
+        ShowDisplay(popupManager, popup_LevelName_Parent, popup_LevelName_Children);
+        popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapName;
+
+        yield return new WaitForSeconds(levelNameMessageDuration);
+
+        HideDisplay(popupManager, popup_LevelName_Parent, popup_LevelName_Children);
+    }
     IEnumerator FootprintRoutine()
     {
         ShowDisplay(popupManager, popup_Footprint_Parent, popup_Footprint_Children);
 
-        yield return new WaitForSeconds(pickupMessageDuration);
+        yield return new WaitForSeconds(pickupMessageDuration * 1.5f);
 
         HideDisplay(popupManager, popup_Footprint_Parent, popup_Footprint_Children);
     }
@@ -189,7 +223,7 @@ public class PopUpManager : Singleton<PopUpManager>
     {
         ShowDisplay(popupManager,popup_Essence_Parent, popup_Essence_Children);
 
-        yield return new WaitForSeconds(pickupMessageDuration);
+        yield return new WaitForSeconds(pickupMessageDuration * 1.5f);
 
         HideDisplay(popupManager, popup_Essence_Parent, popup_Essence_Children);
     }
@@ -228,7 +262,7 @@ public class PopUpManager : Singleton<PopUpManager>
         cg.interactable = false;
         cg.blocksRaycasts = false;
 
-        _runningFades[categoryParent] = StartCoroutine(FadeUI(categoryParent, 0f, 1f, fadeDuration, disableParentAtEnd: false));
+        _runningFades[categoryParent] = StartCoroutine(FadeUI(categoryParent, 0f, 1f, fadeDuration_In, disableParentAtEnd: false));
     }
     public void HideDisplay(GameObject popupParent, GameObject categoryParent, List<GameObject> controllerVersions_Child)
     {
@@ -242,7 +276,7 @@ public class PopUpManager : Singleton<PopUpManager>
         cg.interactable = false;
         cg.blocksRaycasts = false;
 
-        _runningFades[categoryParent] = StartCoroutine(FadeUI(categoryParent, cg.alpha, 0f, fadeDuration, disableParentAtEnd: true));
+        _runningFades[categoryParent] = StartCoroutine(FadeUI(categoryParent, cg.alpha, 0f, fadeDuration_Out, disableParentAtEnd: true));
     }
 
     void StopFadeIfRunning(GameObject parent)

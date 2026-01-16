@@ -133,9 +133,9 @@ public enum TextSpeed
 }
 public enum StepDisplay
 {
-    Icon,
+    Steps,
     Number,
-    NumberIcon,
+    NumberSteps,
     None
 }
 public enum CameraMotion

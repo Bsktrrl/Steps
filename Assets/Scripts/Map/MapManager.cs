@@ -6,6 +6,12 @@ using UnityEngine.UI;
 
 public class MapManager : Singleton<MapManager>
 {
+    public static event Action Action_StartIntroSequence;
+    public static event Action Action_EndIntroSequence;
+
+    public static event Action<GameObject> Action_SpawnedPlayerObject;
+    public static GameObject SpawnedPlayer { get; private set; }
+
     [Header("Player")]
     [SerializeField] GameObject playerObject;
     GameObject playerObjectInScene;
@@ -51,6 +57,10 @@ public class MapManager : Singleton<MapManager>
     BlockInfo[] blockInfoList;
     Interactable_Pickup[] pickupInfoList;
 
+    public bool introSequence;
+    public bool introSequence_Finished;
+    public bool haveIntroSequence = true;
+
 
     //--------------------
 
@@ -63,6 +73,15 @@ public class MapManager : Singleton<MapManager>
         SpawnPlayerObject();
 
         pickup_LayerMask = ~pickup_LayerMask; //Corrects the error that resulted in all raycasts to only focus on the pickups instead of the other way around
+
+        if (haveIntroSequence)
+        {
+            introSequence = true;
+
+            Action_StartIntroSequence?.Invoke();
+
+            print("0. ShowLevelNamePopup");
+        }
     }
     private void Start()
     {
@@ -129,12 +148,15 @@ public class MapManager : Singleton<MapManager>
 
     void SpawnPlayerObject()
     {
-        playerObjectInScene = Instantiate(playerObject);
+        var playerObjectInScene = Instantiate(playerObject);
 
         playerStartPos = playerStartPos + new Vector3(0, -1 + Movement.Instance.heightOverBlock, 0);
         playerObjectInScene.transform.position = playerStartPos;
 
         playerObjectInScene.transform.parent = playerObject_Parent.transform;
+
+        SpawnedPlayer = playerObjectInScene;
+        Action_SpawnedPlayerObject?.Invoke(SpawnedPlayer);
     }
 
     public void ShowHiddenObjects()
@@ -249,6 +271,11 @@ public class MapManager : Singleton<MapManager>
         // Ensure it's fully opaque at the end
         color.a = 1f;
         blackScreenImage.color = color;
+    }
+
+    public void Action_EndIntroSequence_Invoke()
+    {
+        Action_EndIntroSequence?.Invoke();
     }
 }
 

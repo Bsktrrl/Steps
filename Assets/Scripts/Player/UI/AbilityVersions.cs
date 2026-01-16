@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class AbilityVersions : MonoBehaviour
 {
     [Header("Ability Type")]
-    [SerializeField] Abilities ability;
+    public Abilities ability;
 
     [Header("Sprites")]
     [SerializeField] Sprite temporary_Sprite;

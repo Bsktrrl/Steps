@@ -144,16 +144,10 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     {
         movement = FindObjectOfType<Movement>();
         selectedSkinType = SkinType.Default;
-
-        //DataManager.Instance.playerStats_Store.itemsGot.essence_Max = 12; //Remove this after testing of Skin Menu
-        //DataManager.Instance.playerStats_Store.itemsGot.essence_Current = 12; //Remove this after testing of Skin Menu
     }
 
     private void OnEnable()
     {
-        //DataManager.Instance.playerStats_Store.itemsGot.essence_Max = 12; //Remove this after testing of Skin Menu
-        //DataManager.Instance.playerStats_Store.itemsGot.essence_Current = 12; //Remove this after testing of Skin Menu
-        
         UpdateEssenceDisplay();
 
         UpdatePlayerBodyDisplay();

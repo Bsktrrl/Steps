@@ -399,11 +399,14 @@ public class Interactable_Pickup : MonoBehaviour
                 break;
         }
 
-        PopUpManager.Instance.ShowAbilityPopup(abilityReceived);
+        if (abilityReceived != Abilities.None)
+        {
+            PopUpManager.Instance.ShowAbilityPopup(abilityReceived);
 
-        Action_PickupGot_isActive();
+            Action_PickupGot_isActive();
 
-        Movement.Instance.UpdateLookDir();
+            Movement.Instance.UpdateLookDir();
+        }
     }
 
 

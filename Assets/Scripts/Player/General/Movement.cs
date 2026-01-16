@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 
 public class Movement : Singleton<Movement>
 {
+    #region Actions
+
     public static event Action Action_RespawnToSavePos;
     public static event Action Action_RespawnPlayerEarly;
     public static event Action Action_RespawnPlayer;
@@ -37,6 +39,8 @@ public class Movement : Singleton<Movement>
     public static event Action Action_isDescending_Finished;
     public static event Action Action_isGrapplingHooking;
     public static event Action Action_isGrapplingHooking_Finished;
+
+    #endregion
 
     #region Variables
 

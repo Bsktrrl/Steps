@@ -26,7 +26,7 @@ public class UnlockDisplay : MonoBehaviour
 
     public void SetDisplay_Unavailable(RegionName region, string level)
     {
-        unavailable_obj.GetComponentInChildren<TextMeshProUGUI>().text = "Find skin in " + region.ToString() + "\r\nLv." + level + " to unlock";
+        unavailable_obj.GetComponentInChildren<TextMeshProUGUI>().text = "Find the skin in " + region.ToString() + " Lv." + level + " to unlock";
 
         CopyPulseScaleTo(unavailable_obj);
 
@@ -41,9 +41,9 @@ public class UnlockDisplay : MonoBehaviour
         _currentPulsingImageRt = unavailable_obj.GetComponentInChildren<Image>().rectTransform;
     }
 
-    public void SetDisplay_LevelReached()
+    public void SetDisplay_LevelReached(RegionName region, string level)
     {
-        levelReached_obj.GetComponentInChildren<TextMeshProUGUI>().text = "Find the skin in level\r\nto unlock";
+        levelReached_obj.GetComponentInChildren<TextMeshProUGUI>().text = "Find the skin in " + region.ToString() + " Lv." + level + " to unlock";
 
         CopyPulseScaleTo(levelReached_obj);
 

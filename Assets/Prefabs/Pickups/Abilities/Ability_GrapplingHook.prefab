@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3931090765510948630, guid: 2652dbc9d92ea7a43bb73266b6bc6553, type: 3}
       propertyPath: m_Name
-      value: Ability_GrapplingHook Variant
+      value: Ability_GrapplingHook
       objectReference: {fileID: 0}
     - target: {fileID: 3931090765510948630, guid: 2652dbc9d92ea7a43bb73266b6bc6553, type: 3}
       propertyPath: m_Layer
@@ -113,6 +113,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3931090765510948630, guid: 2652dbc9d92ea7a43bb73266b6bc6553, type: 3}
       insertIndex: -1
       addedObject: {fileID: -4954920043486084410}
+    - targetCorrespondingSourceObject: {fileID: 3931090765510948630, guid: 2652dbc9d92ea7a43bb73266b6bc6553, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3467621363336878332}
   m_SourcePrefab: {fileID: 100100000, guid: 2652dbc9d92ea7a43bb73266b6bc6553, type: 3}
 --- !u!1 &3054023005192512505 stripped
 GameObject:
@@ -174,6 +177,18 @@ MonoBehaviour:
   iconObject: {fileID: 3985954458667928855}
   rotationSpeed: 0.75
   rotation: 0
+--- !u!114 &3467621363336878332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3054023005192512505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2a8dfece72ecda4787365e763d976d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3985954458667928855 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3151657657980328440, guid: 2652dbc9d92ea7a43bb73266b6bc6553, type: 3}

@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Player_AbilityButtonDisplay : MonoBehaviour
 {
+    [Header("Ability Parent")]
+    [SerializeField] GameObject abilityParent;
+
     [Header("Ability Displays")]
     [SerializeField] GameObject abilitySprite_Swim;
     [SerializeField] GameObject abilitySprite_SwiftSwim;
@@ -25,7 +28,11 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
 
     private void OnEnable()
     {
-        DataManager.Action_dataHasLoaded += UpdateDisplay;
+        if (MapManager.Instance.haveIntroSequence)
+            MapManager.Action_EndIntroSequence += UpdateDisplay;
+        else
+            DataManager.Action_dataHasLoaded += UpdateDisplay;
+
         Interactable_Pickup.Action_AbilityPickupGot += UpdateDisplay;
 
         Movement.Action_StepTaken += CheckIfStandingInWater;
@@ -51,7 +58,11 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
     }
     private void OnDisable()
     {
-        DataManager.Action_dataHasLoaded -= UpdateDisplay;
+        if (MapManager.Instance.haveIntroSequence)
+            MapManager.Action_EndIntroSequence -= UpdateDisplay;
+        else
+            DataManager.Action_dataHasLoaded -= UpdateDisplay;
+
         Interactable_Pickup.Action_AbilityPickupGot -= UpdateDisplay;
 
         Movement.Action_StepTaken -= CheckIfStandingInWater;
@@ -118,6 +129,8 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
 
     void UpdateDisplay()
     {
+        abilityParent.SetActive(true);
+
         Ability_Appearance(abilitySprite_Swim, PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel, PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel);
         Ability_Appearance(abilitySprite_SwiftSwim, PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers, PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers);
         Ability_Appearance(abilitySprite_FreeSwim, PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank, PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank);
