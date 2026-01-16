@@ -567,6 +567,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Tutorial.Instance.tutorial_isRunning) { return false; }
         if (PopUpManager.Instance.ability_Active) { return false; }
         if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
+        if (MapManager.Instance.introSequence) { return false; }
 
         if (grapplingHook_isPressed)
         {
@@ -595,6 +596,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Tutorial.Instance.tutorial_isRunning) { return false; }
         if (PopUpManager.Instance.ability_Active) { return false; }
         if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
+        if (MapManager.Instance.introSequence) { return false; }
 
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
 
@@ -625,6 +627,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Tutorial.Instance.tutorial_isRunning) { return false; }
         if (PopUpManager.Instance.ability_Active) { return false; }
         if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
+        if (MapManager.Instance.introSequence) { return false; }
 
         return true;
     }
@@ -639,6 +642,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Movement.Instance.isSwiftSwim) { return false; }
         if (Movement.Instance.isAscending) { return false; }
         if (Movement.Instance.isDescending) { return false; }
+        if (MapManager.Instance.introSequence) { return false; }
 
         return true;
     }

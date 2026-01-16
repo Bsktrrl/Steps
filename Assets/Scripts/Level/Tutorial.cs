@@ -58,13 +58,20 @@ public class Tutorial : Singleton<Tutorial>
 
     private void OnEnable()
     {
-        DataManager.Action_dataHasLoaded += Start_Tutorial;
+        if (MapManager.Instance.haveIntroSequence)
+            MapManager.Action_EndIntroSequence += Start_Tutorial;
+        else
+            DataManager.Action_dataHasLoaded += Start_Tutorial;
 
         Movement.Action_RespawnPlayerLate += End_Tutorial_Respawn;
     }
     private void OnDisable()
     {
-        DataManager.Action_dataHasLoaded -= Start_Tutorial;
+        if (MapManager.Instance.haveIntroSequence)
+            MapManager.Action_EndIntroSequence -= Start_Tutorial;
+        else
+            DataManager.Action_dataHasLoaded -= Start_Tutorial;
+
         Movement.Action_RespawnPlayerLate -= End_Tutorial_Respawn;
     }
 

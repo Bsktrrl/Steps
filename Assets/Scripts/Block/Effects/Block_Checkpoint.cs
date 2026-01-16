@@ -37,7 +37,6 @@ public class Block_Checkpoint : MonoBehaviour
         if (Movement.Instance.blockStandingOn == gameObject)
         {
             StepsHUD.Instance.stepCounter = PlayerStats.Instance.stats.steps_Current;
-            print("0. ResetSteps: Current = " + PlayerStats.Instance.stats.steps_Current);
 
             MapManager.Instance.playerStartPos = Movement.Instance.blockStandingOn.transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
             MapManager.Instance.playerStartRot = spawnDirection;

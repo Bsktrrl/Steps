@@ -14,14 +14,19 @@ public class PopUpManager : Singleton<PopUpManager>
 
 
     [Header("Popup - Parents")]
+    [SerializeField] GameObject popup_LevelName_Parent;
     [SerializeField] GameObject popup_Footprint_Parent;
     [SerializeField] GameObject popup_Essence_Parent;
     [SerializeField] GameObject popup_Skin_Parent;
 
     [Header("Popup - Children")]
+    [SerializeField] List<GameObject> popup_LevelName_Children;
     [SerializeField] List<GameObject> popup_Footprint_Children;
     [SerializeField] List<GameObject> popup_Essence_Children;
     [SerializeField] List<GameObject> popup_Skin_Children;
+
+    [Header("Popup - Text")]
+    [SerializeField] TextMeshProUGUI popup_LevelName_Text;
 
 
     //-----
@@ -67,6 +72,7 @@ public class PopUpManager : Singleton<PopUpManager>
     //public float fadeDuration_Ability_In = 0.35f;
     //public float fadeDuration_Ability_Out = 0.65f;
     [SerializeField] float pickupMessageDuration = 1.5f;
+    [SerializeField] float levelNameMessageDuration = 3f;
 
     // Keep track of running fades so we can stop/replace them per parent
     private readonly Dictionary<GameObject, Coroutine> _runningFades = new();
@@ -77,12 +83,16 @@ public class PopUpManager : Singleton<PopUpManager>
 
     public void OnEnable()
     {
+        MapManager.Action_StartIntroSequence += ShowLevelNamePopup;
+
         Interactable_Pickup.Action_StepsUpPickupGot += ShowFootprintPopup;
         Interactable_Pickup.Action_EssencePickupGot += ShowEssencePopup;
         Interactable_Pickup.Action_SkinPickupGot += ShowSkinPopup;
     }
     private void OnDisable()
     {
+        MapManager.Action_StartIntroSequence -= ShowLevelNamePopup;
+
         Interactable_Pickup.Action_StepsUpPickupGot -= ShowFootprintPopup;
         Interactable_Pickup.Action_EssencePickupGot -= ShowEssencePopup;
         Interactable_Pickup.Action_SkinPickupGot -= ShowSkinPopup;
@@ -92,6 +102,10 @@ public class PopUpManager : Singleton<PopUpManager>
     //--------------------
 
 
+    void ShowLevelNamePopup()
+    {
+        StartCoroutine(LevelNameRoutine());
+    }
     void ShowFootprintPopup()
     {
         StartCoroutine(FootprintRoutine());
@@ -187,6 +201,16 @@ public class PopUpManager : Singleton<PopUpManager>
     //--------------------
 
 
+    IEnumerator LevelNameRoutine()
+    {
+        yield return null;
+        ShowDisplay(popupManager, popup_LevelName_Parent, popup_LevelName_Children);
+        popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapName;
+
+        yield return new WaitForSeconds(levelNameMessageDuration);
+
+        HideDisplay(popupManager, popup_LevelName_Parent, popup_LevelName_Children);
+    }
     IEnumerator FootprintRoutine()
     {
         ShowDisplay(popupManager, popup_Footprint_Parent, popup_Footprint_Children);

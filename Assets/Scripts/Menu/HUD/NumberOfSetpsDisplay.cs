@@ -84,8 +84,6 @@ public class NumberOfSetpsDisplay : MonoBehaviour
 
         yield return new WaitForSeconds(startDelay + extraTimeDelay);
 
-        print("0.5. UpdateFootprintDelay | StepCounter: " + StepsHUD.Instance.stepCounter + " | PlayerStats.Instance.stats.steps_Max: " + (PlayerStats.Instance.stats.steps_Max));
-
         for (int i = 0; i < PlayerStats.Instance.stats.steps_Max; i++)
         {
             switch (GetCurrentNumberDisplay())
@@ -280,23 +278,16 @@ public class NumberOfSetpsDisplay : MonoBehaviour
 
     public void UpdateNumberDisplay_Respawn()
     {
-        print("1. UpdateNumberDisplay_Checkpoint | StepCounter: " + StepsHUD.Instance.stepCounter + " | PlayerStats.Instance.stats.steps_Max: " + (PlayerStats.Instance.stats.steps_Max));
-
         updateFootprintCoroutine = StartCoroutine(UpdateFootprintDelay(StepsHUD.Instance.StepsDisplay_RespawnTime, numberSpawnTime));
-        //StartCoroutine(UpdateFootprintDelay(StepsHUD.Instance.StepsDisplay_RespawnTime, numberSpawnTime));
     }
     public void UpdateNumberDisplay_Checkpoint()
     {
-        print("2. UpdateNumberDisplay_Checkpoint | StepCounter: " + StepsHUD.Instance.stepCounter + " | PlayerStats.Instance.stats.steps_Max: " + (PlayerStats.Instance.stats.steps_Max));
         updateFootprintCoroutine = StartCoroutine(UpdateFootprintDelay(StepsHUD.Instance.StepsDisplay_CheckpointTime, numberSpawnTime));
-        //StartCoroutine(UpdateFootprintDelay(StepsHUD.Instance.StepsDisplay_CheckpointTime, numberSpawnTime));
     }
 
     IEnumerator UpdateFootprintDelay(float startDelay, float waitTime)
     {
         yield return new WaitForSeconds(startDelay + extraTimeDelay);
-
-        print("2.5. UpdateFootprintDelay | StepCounter: " + StepsHUD.Instance.stepCounter + " | PlayerStats.Instance.stats.steps_Max: " + (PlayerStats.Instance.stats.steps_Max));
 
         for (int i = StepsHUD.Instance.stepCounter; i < PlayerStats.Instance.stats.steps_Max; i++)
         {
@@ -338,8 +329,6 @@ public class NumberOfSetpsDisplay : MonoBehaviour
             }
 
             yield return new WaitForSeconds(waitTime);
-
-            print("4. UpdateFootprintDelay | i = " + i);
         }
 
         UpdateNumbersDisplay();

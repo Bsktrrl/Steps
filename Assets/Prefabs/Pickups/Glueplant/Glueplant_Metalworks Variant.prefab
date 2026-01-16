@@ -1,5 +1,80 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1202308182267007028
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2420373342087362166}
+  - component: {fileID: 8471853017877167193}
+  m_Layer: 6
+  m_Name: CM_FreeCam
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2420373342087362166
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202308182267007028}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.08715578, y: -0, z: -0, w: 0.9961947}
+  m_LocalPosition: {x: 0, y: -0.072, z: -1.04}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5027151993624187440}
+  m_LocalEulerAnglesHint: {x: 11.104, y: 0, z: 0}
+--- !u!114 &8471853017877167193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202308182267007028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Priority:
+    Enabled: 0
+    m_Value: 100
+  OutputChannel: 1
+  StandbyUpdate: 2
+  m_StreamingVersion: 20230301
+  m_LegacyPriority: 0
+  Target:
+    TrackingTarget: {fileID: 0}
+    LookAtTarget: {fileID: 0}
+    CustomLookAtTarget: 0
+  Lens:
+    FieldOfView: 58
+    OrthographicSize: 10
+    NearClipPlane: 0.05
+    FarClipPlane: 5000
+    Dutch: 0
+    ModeOverride: 0
+    PhysicalProperties:
+      GateFit: 2
+      SensorSize: {x: 21.946, y: 16.002}
+      LensShift: {x: 0, y: 0}
+      FocusDistance: 10
+      Iso: 200
+      ShutterSpeed: 0.005
+      Aperture: 16
+      BladeCount: 5
+      Curvature: {x: 2, y: 11}
+      BarrelClipping: 0.25
+      Anamorphism: 0
+  BlendHint: 0
 --- !u!1001 &8449764102362957295
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -90,7 +165,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3496939234456819679, guid: 4c434d63feecedf4d94d2cc019306149, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 2420373342087362166}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4035386701650000973, guid: 4c434d63feecedf4d94d2cc019306149, type: 3}
       insertIndex: 1
@@ -100,8 +178,16 @@ PrefabInstance:
       addedObject: {fileID: 6787754003288342828}
     - targetCorrespondingSourceObject: {fileID: 4035386701650000973, guid: 4c434d63feecedf4d94d2cc019306149, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 2688581271243939473}
+    - targetCorrespondingSourceObject: {fileID: 4035386701650000973, guid: 4c434d63feecedf4d94d2cc019306149, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 8320141981545978488}
   m_SourcePrefab: {fileID: 100100000, guid: 4c434d63feecedf4d94d2cc019306149, type: 3}
+--- !u!4 &5027151993624187440 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3496939234456819679, guid: 4c434d63feecedf4d94d2cc019306149, type: 3}
+  m_PrefabInstance: {fileID: 8449764102362957295}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5567299601173576098 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4035386701650000973, guid: 4c434d63feecedf4d94d2cc019306149, type: 3}
@@ -144,6 +230,71 @@ MonoBehaviour:
   itemReceived: 0
   abilityReceived: 0
   goal: 1
+--- !u!114 &2688581271243939473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5567299601173576098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e256fa2c4548024a98376efabb6a794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CM_Glueplant: {fileID: 8471853017877167193}
+  CM_Player: {fileID: 0}
+  travelPosList: []
+  travelSpeed: 6
+  accelDistance: 1.5
+  decelDistance: 1.5
+  startSpeedFraction: 0.15
+  endSpeedFraction: 0.3
+  startEaseTime: 0.6
+  startEaseCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  samplesPerSegment: 20
+  splineSmoothness: 1
+  useUnscaledTime: 0
+  minTurnSpeedMultiplier: 0.5
+  turnAngleForMaxSlowdown: 70
+  turnSlowdownPower: 0.75
+  endPositionBlendDistance: 1.5
+  endRotationBlendDistance: 1.5
+  lookRotationSharpness: 12
+  verticalLookSharpness: 3
+  maxPitchFromHorizontal: 35
+  verticalInfluenceOnLook: 0.15
+  initialLookStabilizeTime: 0.6
+  minPointSeparation: 0.01
+  glueplantPriorityDuringTravel: 50
+  playerPriorityDuringTravel: 0
+  startRotationBlendDistance: 4
+  startLookAheadDistance: 2
+  lookBackwardsAlongPath: 1
+  camera_isTraveling: 0
 --- !u!114 &8320141981545978488
 MonoBehaviour:
   m_ObjectHideFlags: 0

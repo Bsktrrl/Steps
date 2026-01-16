@@ -39,29 +39,21 @@ public class StepsDisplay : Singleton<StepsDisplay>
 
     private void OnEnable()
     {
-        DataManager.Action_dataHasLoaded += SetStepsDisplay;
-        SettingsManager.Action_SetNewStepDisplay += SetStepsDisplay;
+        if (MapManager.Instance.haveIntroSequence)
+            MapManager.Action_EndIntroSequence += SetStepsDisplay;
+        else
+            DataManager.Action_dataHasLoaded += SetStepsDisplay;
 
-        //Interactable_Pickup.Action_PickupGot += ChangeStepText;
-        //Movement.Action_RespawnPlayerLate += ChangeStepText;
-        //Movement.Action_StepTaken += ChangeStepText;
-        //DataManager.Action_dataHasLoaded += ChangeStepText;
-        //Block_Checkpoint.Action_CheckPointEntered += ChangeStepText;
-        //Block_RefillSteps.Action_RefillStepsEntered += ChangeStepText;
-        //Block_MushroomCircle.Action_MushroomCircleEntered += ChangeStepText;
+            SettingsManager.Action_SetNewStepDisplay += SetStepsDisplay;
     }
     private void OnDisable()
     {
-        DataManager.Action_dataHasLoaded -= SetStepsDisplay;
-        SettingsManager.Action_SetNewStepDisplay -= SetStepsDisplay;
+        if (MapManager.Instance.haveIntroSequence)
+            MapManager.Action_EndIntroSequence -= SetStepsDisplay;
+        else
+            DataManager.Action_dataHasLoaded -= SetStepsDisplay;
 
-        //Interactable_Pickup.Action_PickupGot -= ChangeStepText;
-        //Movement.Action_RespawnPlayerLate -= ChangeStepText;
-        //Movement.Action_StepTaken -= ChangeStepText;
-        //DataManager.Action_dataHasLoaded -= ChangeStepText;
-        //Block_Checkpoint.Action_CheckPointEntered -= ChangeStepText;
-        //Block_RefillSteps.Action_RefillStepsEntered -= ChangeStepText;
-        //Block_MushroomCircle.Action_MushroomCircleEntered -= ChangeStepText;
+        SettingsManager.Action_SetNewStepDisplay -= SetStepsDisplay;
     }
 
 
@@ -93,6 +85,13 @@ public class StepsDisplay : Singleton<StepsDisplay>
 
             default:
                 break;
+        }
+
+        if (MapManager.Instance.haveIntroSequence)
+        {
+            //Movement.Instance.RespawnPlayer();
+            //PlayerStats.Instance.RefillStepsToMax();
+            StepsHUD.Instance.UpdateStepsDisplay_Respawn();
         }
     }
 
