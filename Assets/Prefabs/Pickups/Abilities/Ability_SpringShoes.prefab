@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3931090765510948630, guid: da1e29c1ca2604341a767bb7a25ff8ad, type: 3}
       propertyPath: m_Name
-      value: Ability_SpringShoes Variant
+      value: Ability_SpringShoes
       objectReference: {fileID: 0}
     - target: {fileID: 3931090765510948630, guid: da1e29c1ca2604341a767bb7a25ff8ad, type: 3}
       propertyPath: m_Layer
@@ -113,6 +113,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3931090765510948630, guid: da1e29c1ca2604341a767bb7a25ff8ad, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6536409992645750168}
+    - targetCorrespondingSourceObject: {fileID: 3931090765510948630, guid: da1e29c1ca2604341a767bb7a25ff8ad, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3331745883735131065}
   m_SourcePrefab: {fileID: 100100000, guid: da1e29c1ca2604341a767bb7a25ff8ad, type: 3}
 --- !u!1 &2622578935789074857 stripped
 GameObject:
@@ -184,3 +187,15 @@ MonoBehaviour:
   iconObject: {fileID: 2622578935789074857}
   rotationSpeed: 0.75
   rotation: 0
+--- !u!114 &3331745883735131065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5127773668683764193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2a8dfece72ecda4787365e763d976d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

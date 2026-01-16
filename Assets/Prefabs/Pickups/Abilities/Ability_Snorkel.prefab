@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3931090765510948630, guid: 645973a2ccd78c044b5f06946eacc35e, type: 3}
       propertyPath: m_Name
-      value: Ability_Snorkel Variant
+      value: Ability_Snorkel
       objectReference: {fileID: 0}
     - target: {fileID: 3931090765510948630, guid: 645973a2ccd78c044b5f06946eacc35e, type: 3}
       propertyPath: m_Layer
@@ -113,6 +113,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3931090765510948630, guid: 645973a2ccd78c044b5f06946eacc35e, type: 3}
       insertIndex: -1
       addedObject: {fileID: -6639642644792008861}
+    - targetCorrespondingSourceObject: {fileID: 3931090765510948630, guid: 645973a2ccd78c044b5f06946eacc35e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6296914336411752917}
   m_SourcePrefab: {fileID: 100100000, guid: 645973a2ccd78c044b5f06946eacc35e, type: 3}
 --- !u!1 &627883201802713407 stripped
 GameObject:
@@ -179,6 +182,18 @@ MonoBehaviour:
   iconObject: {fileID: 8401880723167151954}
   rotationSpeed: 0.75
   rotation: 0
+--- !u!114 &6296914336411752917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7094173887816457714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2a8dfece72ecda4787365e763d976d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8401880723167151954 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2334238626636590518, guid: 645973a2ccd78c044b5f06946eacc35e, type: 3}

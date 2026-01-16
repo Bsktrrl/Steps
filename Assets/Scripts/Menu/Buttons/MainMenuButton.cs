@@ -39,6 +39,9 @@ public class MainMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private void OnEnable()
     {
+        if (!isFirstSelected)
+            SetPassive();
+
         if (pausedMenuManager)
         {
             PauseMenuManager.Action_closePauseMenu += SetPassive;

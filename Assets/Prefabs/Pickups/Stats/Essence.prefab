@@ -93,6 +93,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4035386701650000973, guid: e10a59016d6fd924fb7288209b7707a6, type: 3}
       insertIndex: -1
       addedObject: {fileID: -3444976810871685929}
+    - targetCorrespondingSourceObject: {fileID: 4035386701650000973, guid: e10a59016d6fd924fb7288209b7707a6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7700687616963646326}
   m_SourcePrefab: {fileID: 100100000, guid: e10a59016d6fd924fb7288209b7707a6, type: 3}
 --- !u!1 &929025259188696139 stripped
 GameObject:
@@ -132,6 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fac0ef60dda82544094d73cda26657a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skinReceived: 0
   itemReceived: 1
   abilityReceived: 0
   goal: 0
@@ -147,6 +151,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1aa04ad6ed24d84b91b81cfe82abe7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amplitude: 0.05
-  frequency: 0.5
-  RotationSpeed: 0
+--- !u!114 &7700687616963646326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 929025259188696139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2a8dfece72ecda4787365e763d976d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -36,7 +36,7 @@ public class MoveOutFromPauseMenu : MonoBehaviour
         if (!PauseMenuManager.Instance.isVisible) { return; }
         if (!PlayerManager.Instance.pauseGame) { return; }
 
-        Debug.Log("2. SelectCancelTarget Pressed");
+        //Debug.Log("2. SelectCancelTarget Pressed");
 
         //-----
 

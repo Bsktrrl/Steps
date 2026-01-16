@@ -25,6 +25,9 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     public static event Action Action_RespawnHold;
     public static event Action Action_RespawnCanceled;
 
+    public static event Action Action_FreeCamIsActive;
+    public static event Action Action_FreeCamIsPassive;
+
     public static event Action Action_PauseMenuIsPressed;
 
     [Header("Input System")]
@@ -52,7 +55,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     public bool respawn_isPressed = false;
 
+    public bool freeCam_isPressed = false;
+
     PauseMenuManager pauseMenuManager;
+
+    private Vector2 _lastMousePos;
 
 
 
@@ -71,6 +78,20 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
             Player_Animations.Instance.playerAnimator = PlayerManager.Instance.playerBody.GetComponentInChildren<Animator>();
         }
     }
+    private void Update()
+    {
+        //if (!freeCam_isPressed) return;
+
+        //var pad = Gamepad.current;
+        //if (pad == null) return;
+
+        //// Only poll sticks if FreeCam is set to controller mode
+        //if (FreeCam.Instance.CurrentInputType == InputType.Keyboard)
+        //    return;
+
+        //FreeCam.Instance.SetMoveAxis(pad.leftStick.ReadValue());
+        //FreeCam.Instance.RotateFromStick(pad.rightStick.ReadValue());
+    }
 
 
     //--------------------
@@ -79,6 +100,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     void OnForward_Down()
     {
         if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
 
         Run_Movement_Tutorial(ref forward_isPressed);
 
@@ -96,14 +118,18 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnForward_Up()
     {
+        if (freeCam_isPressed) return;
+
         forward_isPressed = false;
         forward_isHold = false;
 
         Action_WalkButton_isReleased?.Invoke();
     }
+   
     void OnBackward_Down()
     {
         if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
 
         Run_Movement_Tutorial(ref back_isPressed);
 
@@ -121,14 +147,18 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnBackward_Up()
     {
+        if (freeCam_isPressed) return;
+
         back_isPressed = false;
         back_isHold = false;
 
         Action_WalkButton_isReleased?.Invoke();
     }
+  
     void OnLeft_Down()
     {
         if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
 
         Run_Movement_Tutorial(ref left_isPressed);
 
@@ -146,14 +176,18 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnLeft_Up()
     {
+        if (freeCam_isPressed) return;
+
         left_isPressed = false;
         left_isHold = false;
 
         Action_WalkButton_isReleased?.Invoke();
     }
+  
     void OnRight_Down()
     {
         if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
 
         Run_Movement_Tutorial(ref right_isPressed);
 
@@ -171,17 +205,34 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnRight_Up()
     {
+        if (freeCam_isPressed) return;
+
         right_isPressed = false;
         right_isHold = false;
 
         Action_WalkButton_isReleased?.Invoke();
     }
 
+
+    //--------------------
+
+
     void OnAbilityUp_Down()
     {
         if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
 
         if (!ButtonChecks_Movement() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+
+        if (Movement.Instance.isGrapplingHooking) return;
+        if (Movement.Instance.isJumping) return;
+        if (Movement.Instance.isDashing) return;
+        if (Movement.Instance.isSwiftSwim) return;
+        if (Movement.Instance.isAscending) return;
+        if (Movement.Instance.isDescending) return;
+        if (grapplingHook_isPressed) return;
+
+        print("1. OnAbilityUp_Down");
 
         up_isPressed = true;
         Action_Ascend_isPressed?.Invoke();
@@ -189,66 +240,56 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     void OnAbilityUp_Up()
     {
         if (!ButtonChecks_Movement()) { return; }
+        if (freeCam_isPressed) return;
 
         up_isPressed = false;
     }
+
     void OnAbilityDown_Down()
     {
         if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
 
         if (!ButtonChecks_Movement() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
-        
+
+        if (Movement.Instance.isGrapplingHooking) return;
+        if (Movement.Instance.isJumping) return;
+        if (Movement.Instance.isDashing) return;
+        if (Movement.Instance.isSwiftSwim) return;
+        if (Movement.Instance.isAscending) return;
+        if (Movement.Instance.isDescending) return;
+        if (grapplingHook_isPressed) return;
+
+        print("2. OnAbilityDown_Down");
+
         down_isPressed = true;
         Action_Descend_isPressed?.Invoke();
-
-        //Player_Interact.Instance.InteractWithObject();
     }
     void OnAbilityDown_Up()
     {
         if (!ButtonChecks_Movement()) { return; }
+        if (freeCam_isPressed) return;
 
         down_isPressed = false;
-
-        //Player_Interact.Instance.InteractWithObject();
     }
-
-    void OnDialogueSkip_Pressed()
-    {
-        if (!Run_AbilityDisplayExit()) return;
-
-        if (!PlayerManager.Instance.npcInteraction) { return; }
-
-        Action_dialogueButton_isPressed?.Invoke();
-    }
-    void OnDialogueNext_Pressed()
-    {
-        if (!Run_AbilityDisplayExit()) return;
-
-        if (!PlayerManager.Instance.npcInteraction) { return; }
-
-        Action_dialogueNextButton_isPressed?.Invoke();
-    }
-    void OnInteractButton_Pressed()
-    {
-        if (!Run_AbilityDisplayExit()) return;
-
-        if (!ButtonChecks_Movement()) { return; }
-        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
-
-        Action_InteractButton_isPressed?.Invoke();
-    }
-
-
-
-    //--------------------
-
 
     void OnAbilityLeft()
     {
         if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
 
         if (!ButtonChecks_Other()) { return; }
         if (Movement.Instance.movementStates == MovementStates.Falling) { return; }
+
+        if (Movement.Instance.isGrapplingHooking) return;
+        if (Movement.Instance.isJumping) return;
+        if (Movement.Instance.isDashing) return;
+        if (Movement.Instance.isSwiftSwim) return;
+        if (Movement.Instance.isAscending) return;
+        if (Movement.Instance.isDescending) return;
+        if (grapplingHook_isPressed) return;
+
+        print("3. OnAbilityLeft");
 
         Player_CeilingGrab.Instance.CeilingGrab();
 
@@ -258,10 +299,19 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     void OnAbilityRight_DownPress()
     {
         if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
 
         if (!ButtonChecks_Other() || Player_CeilingGrab.Instance.isCeilingGrabbing) return;
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) return;
-        
+
+        if (Movement.Instance.isJumping) return;
+        if (Movement.Instance.isDashing) return;
+        if (Movement.Instance.isSwiftSwim) return;
+        if (Movement.Instance.isAscending) return;
+        if (Movement.Instance.isDescending) return;
+
+        print("4. OnAbilityRight_DownPress");
+
         grapplingHook_isPressed = true;
 
         Movement.Instance.Action_isGrapplingHooking_Invoke();
@@ -271,6 +321,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     void OnAbilityRight_RelesePress()
     {
         if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
 
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) return;
 
@@ -281,7 +332,39 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         Movement.Instance.UpdateGrapplingHookMovement_Release();
 
         Movement.Instance.Action_isGrapplingHooking_Finished_Invoke();
-        //Action_GrapplingHook_isPressed?.Invoke();
+    }
+
+
+    //--------------------
+
+
+    void OnDialogueSkip_Pressed()
+    {
+        if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
+
+        if (!PlayerManager.Instance.npcInteraction) { return; }
+
+        Action_dialogueButton_isPressed?.Invoke();
+    }
+    void OnDialogueNext_Pressed()
+    {
+        if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
+
+        if (!PlayerManager.Instance.npcInteraction) { return; }
+
+        Action_dialogueNextButton_isPressed?.Invoke();
+    }
+    void OnInteractButton_Pressed()
+    {
+        if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
+
+        if (!ButtonChecks_Movement()) { return; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
+
+        Action_InteractButton_isPressed?.Invoke();
     }
 
 
@@ -291,6 +374,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     void OnCameraRotateX()
     {
         if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
 
         Run_CameraRotation_Tutorial(true);
 
@@ -300,9 +384,26 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         MapManager.Instance.cameraRotated++;
         CameraController.Instance.RotateCameraX();
     }
+    void OnCameraRotateX_Down()
+    {
+        //FreeCam Movement
+        if (freeCam_isPressed)
+        {
+            FreeCam.Instance.SetMoveDirection(Vector3.down, true);
+        }
+    }
+    void OnCameraRotateX_Up()
+    {
+        //FreeCam Movement
+        if (freeCam_isPressed)
+        {
+            FreeCam.Instance.SetMoveDirection(Vector3.down, false);
+        }
+    }
     void OnCameraRotateY()
     {
         if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
 
         Run_CameraRotation_Tutorial(false);
 
@@ -312,6 +413,14 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         MapManager.Instance.cameraRotated++;
         CameraController.Instance.RotateCameraY();
     }
+    void OnCameraRotateY_Down()
+    {
+        FreeCam.Instance.SetMoveDirection(Vector3.up, true);
+    }
+    void OnCameraRotateY_Up()
+    {
+        FreeCam.Instance.SetMoveDirection(Vector3.up, false);
+    }
 
 
     //--------------------
@@ -320,6 +429,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     void OnRespawn_In()
     {
         if (!Run_AbilityDisplayExit()) return;
+        if (freeCam_isPressed) return;
 
         Run_Respawn_Tutorial();
 
@@ -330,8 +440,106 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnRespawn_Out()
     {
+        if (freeCam_isPressed) return;
+
         respawn_isPressed = false;
         Action_RespawnCanceled?.Invoke();
+    }
+
+
+    //--------------------
+
+
+    void OnFreeCam()
+    {
+        if (!Run_AbilityDisplayExit()) return;
+        if (Tutorial.Instance.state_Movement || Tutorial.Instance.state_CameraRotation || Tutorial.Instance.state_Respawn) return;
+        if (PopUpManager.Instance.ability_Active || PopUpManager.Instance.ability_CanBeClosed) return;
+
+        if (freeCam_isPressed)
+        {
+            if (Tutorial.Instance.tutorial_isRunning && !Tutorial.Instance.state_FreeCam_2) return;
+
+            PlayerManager.Instance.UnpauseGame();
+            Run_FreeCam_2_Tutorial_End();
+
+            freeCam_isPressed = false;
+
+            Action_FreeCamIsPassive?.Invoke();
+        }
+        else
+        {
+            if (Tutorial.Instance.tutorial_isRunning && !Tutorial.Instance.state_FreeCam_1) return;
+
+            freeCam_isPressed = true;
+            PlayerManager.Instance.PauseGame();
+
+            Run_FreeCam_1_Tutorial_End();
+
+            Action_FreeCamIsActive?.Invoke();
+        }
+    }
+
+    void OnMouse_Down()
+    {
+        _lastMousePos = Input.mousePosition;
+        FreeCam.Instance.BeginMouseLook();
+    }
+    void OnMouse_Up()
+    {
+        FreeCam.Instance.EndMouseLook();
+    }
+
+    void OnFreeCam_Move(InputValue value)
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetMoveAxis(value.Get<Vector2>());
+    }
+    void OnFreeCam_Look(InputValue value)
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetLookAxis(value.Get<Vector2>());
+    }
+
+    void OnForward_FreeCam_Down()
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetMoveDirection(Vector3.forward, true);
+    }
+    void OnForward_FreeCam_Up()
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetMoveDirection(Vector3.forward, false);
+    }
+    void OnBackward_FreeCam_Down()
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetMoveDirection(Vector3.back, true);
+    }
+    void OnBackward_FreeCam_Up()
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetMoveDirection(Vector3.back, false);
+    }
+    void OnLeft_FreeCam_Down()
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetMoveDirection(Vector3.left, true);
+    }
+    void OnLeft_FreeCam_Up()
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetMoveDirection(Vector3.left, false);
+    }
+    void OnRight_FreeCam_Down()
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetMoveDirection(Vector3.right, true);
+    }
+    void OnRight_FreeCam_Up()
+    {
+        if (!freeCam_isPressed) return;
+        FreeCam.Instance.SetMoveDirection(Vector3.right, false);
     }
 
 
@@ -358,6 +566,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
         if (Tutorial.Instance.tutorial_isRunning) { return false; }
         if (PopUpManager.Instance.ability_Active) { return false; }
+        if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
+        if (MapManager.Instance.introSequence) { return false; }
 
         if (grapplingHook_isPressed)
         {
@@ -385,6 +595,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Tutorial.Instance.tutorial_isRunning) { return false; }
         if (PopUpManager.Instance.ability_Active) { return false; }
+        if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
+        if (MapManager.Instance.introSequence) { return false; }
 
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
 
@@ -414,6 +626,23 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Tutorial.Instance.tutorial_isRunning) { return false; }
         if (PopUpManager.Instance.ability_Active) { return false; }
+        if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
+        if (MapManager.Instance.introSequence) { return false; }
+
+        return true;
+    }
+    bool ButtonChecks_Abilities()
+    {
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
+
+        if (Movement.Instance.isJumping) { return false; }
+        if (Movement.Instance.isGrapplingHooking) { return false; }
+        if (Movement.Instance.isDashing) { return false; }
+        if (Movement.Instance.isSwiftSwim) { return false; }
+        if (Movement.Instance.isAscending) { return false; }
+        if (Movement.Instance.isDescending) { return false; }
+        if (MapManager.Instance.introSequence) { return false; }
 
         return true;
     }
@@ -470,10 +699,25 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         }
     }
 
+    void Run_FreeCam_1_Tutorial_End()
+    {
+        if (Tutorial.Instance.state_FreeCam_1 && freeCam_isPressed)
+        {
+            Tutorial.Instance.Tutorial_FreeCam_1(false);
+        }
+    }
+    void Run_FreeCam_2_Tutorial_End()
+    {
+        if (Tutorial.Instance.state_FreeCam_2 && freeCam_isPressed)
+        {
+            Tutorial.Instance.Tutorial_FreeCam_2(false);
+        }
+    }
+
     //Ability
     bool Run_AbilityDisplayExit()
     {
-        if (PopUpManager.Instance.ability_Active)
+        if (PopUpManager.Instance.ability_CanBeClosed)
         {
             PopUpManager.Instance.HideAbilityPopup();
 

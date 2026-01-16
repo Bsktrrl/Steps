@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3931090765510948630, guid: 9cd47dbca0474ed4ea53c1bdd5ef6560, type: 3}
       propertyPath: m_Name
-      value: Ability_DrillBoots Variant
+      value: Ability_DrillBoots
       objectReference: {fileID: 0}
     - target: {fileID: 3931090765510948630, guid: 9cd47dbca0474ed4ea53c1bdd5ef6560, type: 3}
       propertyPath: m_Layer
@@ -113,6 +113,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3931090765510948630, guid: 9cd47dbca0474ed4ea53c1bdd5ef6560, type: 3}
       insertIndex: -1
       addedObject: {fileID: -837703931191969766}
+    - targetCorrespondingSourceObject: {fileID: 3931090765510948630, guid: 9cd47dbca0474ed4ea53c1bdd5ef6560, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -3149928377528907421}
   m_SourcePrefab: {fileID: 100100000, guid: 9cd47dbca0474ed4ea53c1bdd5ef6560, type: 3}
 --- !u!1 &313925037294652958 stripped
 GameObject:
@@ -179,6 +182,18 @@ MonoBehaviour:
   iconObject: {fileID: 313925037294652958}
   rotationSpeed: 0.75
   rotation: 0
+--- !u!114 &-3149928377528907421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2550420828624047544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2a8dfece72ecda4787365e763d976d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5305745970500249973 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6650457495680406491, guid: 9cd47dbca0474ed4ea53c1bdd5ef6560, type: 3}

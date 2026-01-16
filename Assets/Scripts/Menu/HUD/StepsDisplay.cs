@@ -6,15 +6,13 @@ using UnityEngine;
 public class StepsDisplay : Singleton<StepsDisplay>
 {
     [Header("Parents")]
-    [SerializeField] GameObject stepDisplay_Icons;
+    [SerializeField] GameObject footsteps_Parent;
+
+    [SerializeField] GameObject stepDisplay_Steps;
     [SerializeField] GameObject stepDisplay_Number;
-    [SerializeField] GameObject stepDisplay_NumberIcons;
+    [SerializeField] GameObject stepDisplay_NumbersSteps;
 
-    [Header("TextObjects")]
-    [SerializeField] TextMeshProUGUI stepDisplay_Number_Text;
-    [SerializeField] TextMeshProUGUI stepDisplay_NumberIcons_Text;
-
-    [Header("Sprites")]
+    [Header("Footsteps Sprites")]
     public Sprite normalFootstep_Active;
     public Sprite normalFootstep_Used;
 
@@ -22,6 +20,18 @@ public class StepsDisplay : Singleton<StepsDisplay>
     public Sprite extraFootstep_Active;
     public Sprite extraFootstep_Used;
 
+    [Header("Numbers Sprites")]
+    public Sprite number_0;
+    public Sprite number_1;
+    public Sprite number_2;
+    public Sprite number_3;
+    public Sprite number_4;
+    public Sprite number_5;
+    public Sprite number_6;
+    public Sprite number_7;
+    public Sprite number_8;
+    public Sprite number_9;
+    public Sprite number_10;
 
 
     //--------------------
@@ -29,29 +39,21 @@ public class StepsDisplay : Singleton<StepsDisplay>
 
     private void OnEnable()
     {
-        DataManager.Action_dataHasLoaded += SetStepsDisplay;
-        SettingsManager.Action_SetNewStepDisplay += SetStepsDisplay;
+        if (MapManager.Instance.haveIntroSequence)
+            MapManager.Action_EndIntroSequence += SetStepsDisplay;
+        else
+            DataManager.Action_dataHasLoaded += SetStepsDisplay;
 
-        Interactable_Pickup.Action_PickupGot += ChangeStepText;
-        Movement.Action_RespawnPlayerLate += ChangeStepText;
-        Movement.Action_StepTaken += ChangeStepText;
-        DataManager.Action_dataHasLoaded += ChangeStepText;
-        Block_Checkpoint.Action_CheckPointEntered += ChangeStepText;
-        Block_RefillSteps.Action_RefillStepsEntered += ChangeStepText;
-        Block_MushroomCircle.Action_MushroomCircleEntered += ChangeStepText;
+            SettingsManager.Action_SetNewStepDisplay += SetStepsDisplay;
     }
     private void OnDisable()
     {
-        DataManager.Action_dataHasLoaded -= SetStepsDisplay;
-        SettingsManager.Action_SetNewStepDisplay -= SetStepsDisplay;
+        if (MapManager.Instance.haveIntroSequence)
+            MapManager.Action_EndIntroSequence -= SetStepsDisplay;
+        else
+            DataManager.Action_dataHasLoaded -= SetStepsDisplay;
 
-        Interactable_Pickup.Action_PickupGot -= ChangeStepText;
-        Movement.Action_RespawnPlayerLate -= ChangeStepText;
-        Movement.Action_StepTaken -= ChangeStepText;
-        DataManager.Action_dataHasLoaded -= ChangeStepText;
-        Block_Checkpoint.Action_CheckPointEntered -= ChangeStepText;
-        Block_RefillSteps.Action_RefillStepsEntered -= ChangeStepText;
-        Block_MushroomCircle.Action_MushroomCircleEntered -= ChangeStepText;
+        SettingsManager.Action_SetNewStepDisplay -= SetStepsDisplay;
     }
 
 
@@ -62,20 +64,19 @@ public class StepsDisplay : Singleton<StepsDisplay>
     {
         HideAllMenus();
 
-        //print("20. CurrentStepsDisplay: " + DataManager.Instance.settingData_StoreList.currentStepDisplay.ToString());
-
         switch (DataManager.Instance.settingData_StoreList.currentStepDisplay)
         {
-            case StepDisplay.Icon:
-                stepDisplay_Icons.SetActive(true);
+            case StepDisplay.Steps:
+                stepDisplay_Steps.SetActive(true);
+                footsteps_Parent.SetActive(true);
                 StepsHUD.Instance.UpdateStepsDisplay_Walking();
                 break;
             case StepDisplay.Number:
                 stepDisplay_Number.SetActive(true);
                 break;
-            case StepDisplay.NumberIcon:
-                stepDisplay_NumberIcons.SetActive(true);
-                stepDisplay_Icons.SetActive(true);
+            case StepDisplay.NumberSteps:
+                stepDisplay_NumbersSteps.SetActive(true);
+                footsteps_Parent.SetActive(true);
                 StepsHUD.Instance.UpdateStepsDisplay_Walking();
                 break;
             case StepDisplay.None:
@@ -85,22 +86,21 @@ public class StepsDisplay : Singleton<StepsDisplay>
             default:
                 break;
         }
+
+        if (MapManager.Instance.haveIntroSequence)
+        {
+            //Movement.Instance.RespawnPlayer();
+            //PlayerStats.Instance.RefillStepsToMax();
+            StepsHUD.Instance.UpdateStepsDisplay_Respawn();
+        }
     }
 
     void HideAllMenus()
     {
-        stepDisplay_Icons.SetActive(false);
+        stepDisplay_Steps.SetActive(false);
         stepDisplay_Number.SetActive(false);
-        stepDisplay_NumberIcons.SetActive(false);
-    }
+        stepDisplay_NumbersSteps.SetActive(false);
 
-
-    //--------------------
-
-
-    void ChangeStepText()
-    {
-        stepDisplay_Number_Text.text = PlayerStats.Instance.stats.steps_Current + "/" + PlayerStats.Instance.stats.steps_Max;
-        stepDisplay_NumberIcons_Text.text = PlayerStats.Instance.stats.steps_Current + "/" + PlayerStats.Instance.stats.steps_Max;
+        footsteps_Parent.SetActive(false);
     }
 }
