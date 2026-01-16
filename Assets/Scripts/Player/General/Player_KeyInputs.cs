@@ -463,7 +463,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (PlayerManager.Instance.npcInteraction) return;
         if (CameraController.Instance.isRotating) return;
         if (Player_Interact.Instance.isInteracting) return;
-        if (Tutorial.Instance.tutorial_isRunning) return;
         if (PopUpManager.Instance.ability_Active) return;
         if (PopUpManager.Instance.ability_CanBeClosed) return;
         if (MapManager.Instance.introSequence) return;
