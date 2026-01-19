@@ -293,10 +293,25 @@ public class FreeCam : Singleton<FreeCam>
         {
             local = local.normalized;
 
+            Transform t = CM_FreeCam.transform;
+
+            // Camera-relative, but flattened to world horizontal plane
+            Vector3 flatForward = Vector3.ProjectOnPlane(t.forward, Vector3.up).normalized;
+            Vector3 flatRight = Vector3.ProjectOnPlane(t.right, Vector3.up).normalized;
+
+            // If camera is looking straight up/down, flatForward can become zero.
+            // Fallback to yaw-only direction in that rare case:
+            if (flatForward.sqrMagnitude < 0.0001f)
+            {
+                Quaternion yawOnly = Quaternion.Euler(0f, _yaw, 0f);
+                flatForward = yawOnly * Vector3.forward;
+                flatRight = yawOnly * Vector3.right;
+            }
+
             Vector3 worldDir =
-                (Vector3.right * local.x) +
-                (Vector3.up * local.y) +
-                (Vector3.forward * local.z);
+                (flatRight * local.x) +
+                (Vector3.up * local.y) +   // up/down is always world-up
+                (flatForward * local.z);
 
             desiredWorldVelocity = worldDir.normalized * moveSpeed;
         }
@@ -310,6 +325,7 @@ public class FreeCam : Singleton<FreeCam>
         Vector3 newPos = ComputeGlideMovement(CM_FreeCam.transform.position, delta);
         CM_FreeCam.transform.position = newPos;
     }
+
 
     private void TickRotation(float dt)
     {
