@@ -6,8 +6,7 @@ Shader "Custom/Invisible"
 
         Pass
         {
-            ZWrite On
-            ZTest LEqual
+            ZWrite Off
             ColorMask 0
         }
     }

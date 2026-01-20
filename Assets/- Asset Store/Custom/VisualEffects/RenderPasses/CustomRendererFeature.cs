@@ -1,38 +1,39 @@
+using System.Diagnostics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 public class CustomRendererFeature : ScriptableRendererFeature
 {
+    [SerializeField] bool visualize;
+
     class CustomDepthPass : ScriptableRenderPass
     {
         RTHandle depthTexture;
         Material depthOverrideMaterial;
 
-        public void AllocateTexture(RenderTextureDescriptor desc)
+        public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
         {
-            if (depthTexture == null)
-            {
-                depthTexture = RTHandles.Alloc(desc, name: "_CustomDepthTexture");
-            }
-        }
-
-        public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)
-        {
-            var desc = cameraTextureDescriptor;
+            var desc = renderingData.cameraData.cameraTargetDescriptor;
             desc.colorFormat = RenderTextureFormat.RFloat;
-            //desc.colorFormat = RenderTextureFormat.Depth;
-            //desc.depthBufferBits = 32;
-            //desc.msaaSamples = 1;
+            desc.depthBufferBits = 32;
 
-            ConfigureTarget(depthTexture.rt);
-            ConfigureClear(ClearFlag.Color, Color.black);
-            //ConfigureClear(ClearFlag.Depth, Color.black);
+            RenderingUtils.ReAllocateIfNeeded(ref depthTexture, desc, name: "_CustomDepthTexture");
+
+            ConfigureTarget(depthTexture);
+            ConfigureClear(ClearFlag.Depth | ClearFlag.Color, Color.black);
         }
 
         public void SetMaterial(Material mat)
         {
             depthOverrideMaterial = mat;
+        }
+        
+        bool visualize;
+        public void SetVisualize(bool value)
+        {
+            visualize = value;
         }
 
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
@@ -41,15 +42,20 @@ public class CustomRendererFeature : ScriptableRendererFeature
             context.ExecuteCommandBuffer(cmd);
             cmd.Clear();
 
-            var drawingSettings = CreateDrawingSettings(new ShaderTagId("UniversalForward"), ref renderingData, SortingCriteria.CommonOpaque);
-            drawingSettings.overrideMaterial = depthOverrideMaterial;
-            var filteringSettings = new FilteringSettings(RenderQueueRange.all);
-            context.DrawRenderers(renderingData.cullResults, ref drawingSettings, ref filteringSettings);
+            var transparentFiltering = new FilteringSettings(RenderQueueRange.all);
+            var transparentDrawing = CreateDrawingSettings(new ShaderTagId("UniversalForward"), ref renderingData, SortingCriteria.CommonTransparent);
+            transparentDrawing.overrideMaterial = depthOverrideMaterial;
+            context.DrawRenderers(renderingData.cullResults, ref transparentDrawing, ref transparentFiltering);
 
-            cmd.SetGlobalTexture("_CustomDepthTexture", depthTexture);
+            cmd.SetGlobalTexture("_CustomDepthTexture", depthTexture.rt);
 
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);
+
+            if (visualize)
+            {
+                cmd.Blit(depthTexture.rt, renderingData.cameraData.renderer.cameraColorTargetHandle);
+            }
         }
     }
 
@@ -60,16 +66,12 @@ public class CustomRendererFeature : ScriptableRendererFeature
     {
         depthPass = new CustomDepthPass();
         depthPass.renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
-
-        var desc = new RenderTextureDescriptor(Screen.width, Screen.height);
-        desc.colorFormat = RenderTextureFormat.RFloat;
-        desc.depthBufferBits = 0;
-        depthPass.AllocateTexture(desc);
     }
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
         depthPass.SetMaterial(depthMaterial);
+        depthPass.SetVisualize(visualize);
         renderer.EnqueuePass(depthPass);
     }
 }
