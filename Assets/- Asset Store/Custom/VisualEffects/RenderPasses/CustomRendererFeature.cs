@@ -59,13 +59,58 @@ public class CustomRendererFeature : ScriptableRendererFeature
         }
     }
 
+    class CustomColorPass : ScriptableRenderPass
+    {
+        RTHandle customColorTexture;
+        float downscaleFactor;
+        static readonly int CameraColorID = Shader.PropertyToID("_CustomColorTexture");
+
+        public void SetDownscaleFactor(float factor)
+        {
+            downscaleFactor = factor;
+        }
+
+        public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
+        {
+            var baseDesc = renderingData.cameraData.cameraTargetDescriptor;
+
+            int width = Mathf.Max(1, (int)(baseDesc.width * downscaleFactor));
+            int height = Mathf.Max(1, (int)(baseDesc.height * downscaleFactor));
+
+            RenderTextureDescriptor desc = new RenderTextureDescriptor(width, height, RenderTextureFormat.DefaultHDR);
+            desc.depthBufferBits = 0;
+            desc.msaaSamples = 1;
+            desc.useMipMap = false;
+
+            RenderingUtils.ReAllocateIfNeeded(ref customColorTexture, desc, name: "_CustomColorTexture");
+            customColorTexture.rt.filterMode = FilterMode.Bilinear;
+        }
+    
+        public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
+        {
+            CommandBuffer cmd = CommandBufferPool.Get("Copy Camera Color");
+    
+            cmd.Blit(renderingData.cameraData.renderer.cameraColorTargetHandle, customColorTexture.rt);
+
+            cmd.SetGlobalTexture(CameraColorID, customColorTexture.rt);
+    
+            context.ExecuteCommandBuffer(cmd);
+            CommandBufferPool.Release(cmd);
+        }
+    }
+
     [SerializeField] Material depthMaterial;
+    [SerializeField] float downscaleFactor;
     CustomDepthPass depthPass;
+    CustomColorPass colorPass;
 
     public override void Create()
     {
         depthPass = new CustomDepthPass();
         depthPass.renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
+
+        colorPass = new CustomColorPass();
+        colorPass.renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
     }
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
@@ -73,5 +118,8 @@ public class CustomRendererFeature : ScriptableRendererFeature
         depthPass.SetMaterial(depthMaterial);
         depthPass.SetVisualize(visualize);
         renderer.EnqueuePass(depthPass);
+
+        colorPass.SetDownscaleFactor(downscaleFactor);
+        renderer.EnqueuePass(colorPass);
     }
 }
