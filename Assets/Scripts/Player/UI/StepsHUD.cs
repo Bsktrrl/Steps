@@ -88,7 +88,7 @@ public class StepsHUD : Singleton<StepsHUD>
 
     public void UpdateStepsDisplay_Walking()
     {
-        if (Movement.Instance.blockStandingOn &&
+        if (Movement.Instance.blockStandingOn != null &&
             (Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>() && !Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_SpawnPoint_isAdded)
             || (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair))
         {
