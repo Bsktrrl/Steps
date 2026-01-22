@@ -13,13 +13,29 @@ public class CustomRendererFeature : ScriptableRendererFeature
         RTHandle depthTexture;
         Material depthOverrideMaterial;
 
+        int cachedWidth = -1;
+        int cachedHeight = -1;
+
         public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
         {
-            var desc = renderingData.cameraData.cameraTargetDescriptor;
-            desc.colorFormat = RenderTextureFormat.RFloat;
-            desc.depthBufferBits = 32;
+            var baseDesc = renderingData.cameraData.cameraTargetDescriptor;
 
-            RenderingUtils.ReAllocateIfNeeded(ref depthTexture, desc, name: "_CustomDepthTexture");
+            int width = baseDesc.width;
+            int height = baseDesc.height;
+
+            if (depthTexture == null || width != cachedWidth || height != cachedHeight)
+            {
+                cachedWidth = width;
+                cachedHeight = height;
+
+                var desc = baseDesc;
+                desc.colorFormat = RenderTextureFormat.RFloat;
+                desc.depthBufferBits = 32;
+                desc.msaaSamples = 1;
+                desc.useMipMap = false;
+
+                RenderingUtils.ReAllocateIfNeeded(ref depthTexture, desc, name: "_CustomDepthTexture");
+            }
 
             ConfigureTarget(depthTexture);
             ConfigureClear(ClearFlag.Depth | ClearFlag.Color, Color.black);
@@ -39,8 +55,6 @@ public class CustomRendererFeature : ScriptableRendererFeature
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
             CommandBuffer cmd = CommandBufferPool.Get("Custom Depth Pass");
-            context.ExecuteCommandBuffer(cmd);
-            cmd.Clear();
 
             var transparentFiltering = new FilteringSettings(RenderQueueRange.all);
             var transparentDrawing = CreateDrawingSettings(new ShaderTagId("UniversalForward"), ref renderingData, SortingCriteria.CommonTransparent);
@@ -70,6 +84,9 @@ public class CustomRendererFeature : ScriptableRendererFeature
             downscaleFactor = factor;
         }
 
+        int cachedWidth = -1;
+        int cachedHeight = -1;
+
         public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
         {
             var baseDesc = renderingData.cameraData.cameraTargetDescriptor;
@@ -77,13 +94,21 @@ public class CustomRendererFeature : ScriptableRendererFeature
             int width = Mathf.Max(1, (int)(baseDesc.width * downscaleFactor));
             int height = Mathf.Max(1, (int)(baseDesc.height * downscaleFactor));
 
-            RenderTextureDescriptor desc = new RenderTextureDescriptor(width, height, RenderTextureFormat.DefaultHDR);
-            desc.depthBufferBits = 0;
-            desc.msaaSamples = 1;
-            desc.useMipMap = false;
+            if (customColorTexture == null || width != cachedWidth || height != cachedHeight)
+            {
+                cachedWidth = width;
+                cachedHeight = height;
 
-            RenderingUtils.ReAllocateIfNeeded(ref customColorTexture, desc, name: "_CustomColorTexture");
-            customColorTexture.rt.filterMode = FilterMode.Bilinear;
+                var desc = new RenderTextureDescriptor(width, height, RenderTextureFormat.DefaultHDR);
+                desc.depthBufferBits = 0;
+                desc.msaaSamples = 1;
+                desc.useMipMap = false;
+                desc.autoGenerateMips = false;
+
+                RenderingUtils.ReAllocateIfNeeded(ref customColorTexture, desc, name: "_CustomColorTexture");
+                customColorTexture.rt.wrapMode = TextureWrapMode.Clamp;
+                customColorTexture.rt.filterMode = FilterMode.Bilinear;
+            }
         }
     
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
