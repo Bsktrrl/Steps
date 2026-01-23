@@ -141,6 +141,7 @@ public class Movement : Singleton<Movement>
     [Header("Temp Movement Cost for Slope Gliding")]
     [SerializeField] bool hasSlopeGlided;
     [SerializeField] bool isSlopeGliding;
+    //[SerializeField] bool preventSlopeGlidingRespawn;
     #endregion
 
 
@@ -1893,8 +1894,10 @@ public class Movement : Singleton<Movement>
         if (!canMoveBlock.targetBlock.GetComponent<BlockInfo>()) { return; }
         if (PlayerStats.Instance.stats == null) { return; }
 
-        if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost || Player_Pusher.Instance.playerIsPushed)
+        if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost || (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope))
         {
+            //print("10. Respawn Player - First");
+
             MovingAnimation(canMoveBlock);
 
             isMoving = true;
@@ -1906,6 +1909,30 @@ public class Movement : Singleton<Movement>
         else
         {
             RespawnPlayer();
+
+            print("20. Respawn Player");
+
+            //if (!isSlopeGliding && !hasSlopeGlided)
+            //{
+            //    RespawnPlayer();
+
+            //    print("2. Respawn Player");
+            //}
+
+            //if (preventSlopeGlidingRespawn)
+            //{
+            //    isSlopeGliding = true;
+            //    hasSlopeGlided = true;
+            //    preventSlopeGlidingRespawn = false;
+
+            //    print("20. Respawn Player - preventSlopeGlidingRespawn = false");
+            //}
+            //else
+            //{
+            //    RespawnPlayer();
+
+            //    print("20. Respawn Player");
+            //}
         }
     }
     public void PerformMovement(Vector3 targetPos)
@@ -2121,7 +2148,7 @@ public class Movement : Singleton<Movement>
     {
         //Perform walking animation when entering a Stair or Slope
         if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope
-            && canMoveBlock.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+            && canMoveBlock != null && canMoveBlock.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
         {
             Player_Animations.Instance.Trigger_SlopeDownAnimation();
         }
@@ -2823,46 +2850,53 @@ public class Movement : Singleton<Movement>
             if (blockStandingOn.GetComponent<BlockInfo>() /*&& !PlayerManager.Instance.isTransportingPlayer*/)
             {
                 //Don't remove steps if gliding from a slope
-                if (hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                if ((hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                    || blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                 {
                     //print("1. Slope");
                     isSlopeGliding = true;
+                    //preventSlopeGlidingRespawn = true;
                 }
+
                 if (hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope)
                 {
                     //print("2. Slope");
                     hasSlopeGlided = false;
                 }
-                //else if (hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope && !Player_Pusher.Instance.playerIsPushed)
+                //else if (!hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                 //{
                 //    print("3. Slope");
-                //    hasSlopeGlided = false;
-
-                //    //PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
+                //    //hasSlopeGlided = true;
+                //    isSlopeGliding = true;
                 //}
-                else if (Player_Pusher.Instance.playerIsPushed)
-                {
-                    //print("4. Slope");
-                    hasSlopeGlided = false;
-                }
                 else if (!hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope)
                 {
                     if (isSlopeGliding)
                     {
-                        //print("5. Slope");
+                        //print("4. Slope");
                     }
                     else
                     {
-                        //print("6. Slope");
+                        //print("5. Slope");
                         PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
-                        //print("200. Lose Step: " + PlayerStats.Instance.stats.steps_Current);
+                        //print("200. Loose Step: " + PlayerStats.Instance.stats.steps_Current);
+                        //preventSlopeGlidingRespawn = false;
                     }
 
                     isSlopeGliding = false;
                 }
-                else
+                else if (isSlopeGliding && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope)
+                {
+                    //print("6. Slope");
+                    isSlopeGliding = false;
+                }
+                else if (isSlopeGliding)
                 {
                     //print("7. Slope");
+                }
+                else
+                {
+                    //print("8. Slope");
                     //PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
                     hasSlopeGlided = false;
                 }
@@ -2874,9 +2908,16 @@ public class Movement : Singleton<Movement>
         {
             PlayerStats.Instance.stats.steps_Current = 0;
             RespawnPlayer();
+
+            //print("1. Respawn Player");
         }
 
         Action_StepTaken_Late_Invoke();
+
+        if (isSlopeGliding)
+        {
+            isSlopeGliding = false;
+        }
     }
     void CancelSlopeIfFalling()
     {
@@ -2911,6 +2952,10 @@ public class Movement : Singleton<Movement>
 
         Player_KeyInputs.Instance.cameraX_isPressed = false;
         Player_KeyInputs.Instance.cameraY_isPressed = false;
+
+        isSlopeGliding = false;
+        hasSlopeGlided = false;
+        //preventSlopeGlidingRespawn = false;
 
         isAscending = false;
         isDescending = false;
