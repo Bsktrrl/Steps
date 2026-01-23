@@ -8,6 +8,7 @@ using static UnityEngine.UI.Image;
 
 public class Block_Root : MonoBehaviour
 {
+    public static event Action Action_StandingOnRootBlock_Early;
     public static event Action Action_StandingOnRootBlock;
 
     Animator anim;
@@ -55,10 +56,12 @@ public class Block_Root : MonoBehaviour
     private void OnEnable()
     {
         Movement.Action_RespawnPlayer += ResetOnRespawn;
+        Action_StandingOnRootBlock_Early += ResetOnRespawn;
     }
     private void OnDisable()
     {
         Movement.Action_RespawnPlayer -= ResetOnRespawn;
+        Action_StandingOnRootBlock_Early -= ResetOnRespawn;
     }
 
 
@@ -69,6 +72,7 @@ public class Block_Root : MonoBehaviour
     {
         if (other.transform.gameObject.layer == 6) //6 = PlayerLayer
         {
+            Action_StandingOnRootBlock_Early?.Invoke();
             DestroyRootFreeCostList();
 
             anim.SetTrigger("Activate");
