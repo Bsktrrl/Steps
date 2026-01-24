@@ -88,13 +88,15 @@ public class StepsHUD : Singleton<StepsHUD>
 
     public void UpdateStepsDisplay_Walking()
     {
-        if (Movement.Instance.blockStandingOn != null &&
-            (Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>() && !Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_SpawnPoint_isAdded)
-            || (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair))
+        if (Movement.Instance.blockStandingOn)
         {
-            for (int i = 0; i < 10; i++)
+            if ((Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>() && !Movement.Instance.blockStandingOn.GetComponent<EffectBlockInfo>().effectBlock_SpawnPoint_isAdded)
+            || (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair))
             {
-                UpdateFootprints(i);
+                for (int i = 0; i < 10; i++)
+                {
+                    UpdateFootprints(i);
+                }
             }
         }
     }
