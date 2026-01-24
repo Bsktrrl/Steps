@@ -232,7 +232,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Movement.Instance.isDescending) return;
         if (grapplingHook_isPressed) return;
 
-        print("1. OnAbilityUp_Down");
+        //print("1. OnAbilityUp_Down");
 
         up_isPressed = true;
         Action_Ascend_isPressed?.Invoke();
@@ -260,7 +260,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Movement.Instance.isDescending) return;
         if (grapplingHook_isPressed) return;
 
-        print("2. OnAbilityDown_Down");
+        //print("2. OnAbilityDown_Down");
 
         down_isPressed = true;
         Action_Descend_isPressed?.Invoke();

@@ -34,7 +34,7 @@ public class Player_Animations : Singleton<Player_Animations>
     private void Update()
     {
         //Swim Animation
-        if (Player_CeilingGrab.Instance.isCeilingGrabbing || (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() &&
+        if (/*Player_CeilingGrab.Instance.isCeilingGrabbing || */(Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() &&
             (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water || Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.SwampWater || Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Mud)))
         {
             Set_SwimAnimation(true);
@@ -45,7 +45,7 @@ public class Player_Animations : Singleton<Player_Animations>
         }
 
         //Walk Glide Animation
-        if (Movement.Instance.movementStates == MovementStates.Moving &&
+        if (/*Movement.Instance.movementStates == MovementStates.Moving &&*/
             (Player_KeyInputs.Instance.forward_isHold && Movement.Instance.moveToBlock_Forward.canMoveTo)
             || (Player_KeyInputs.Instance.back_isHold && Movement.Instance.moveToBlock_Back.canMoveTo)
             || (Player_KeyInputs.Instance.left_isHold && Movement.Instance.moveToBlock_Left.canMoveTo)
@@ -65,6 +65,12 @@ public class Player_Animations : Singleton<Player_Animations>
             Player_KeyInputs.Instance.back_isHold = false;
             Player_KeyInputs.Instance.left_isHold = false;
             Player_KeyInputs.Instance.right_isHold = false;
+        }
+
+        //Extra safety to standing still glidingBug
+        if (Movement.Instance.movementStates == MovementStates.Still)
+        {
+            Set_WalkGlideAnimation(false);
         }
     }
 

@@ -12,6 +12,7 @@ public class Interactable_Pickup : MonoBehaviour
     public static event Action Action_SkinPickupGot;
     public static event Action Action_AbilityPickupGot;
 
+    public static event Action Action_SnorkelGot;
     public static event Action Action_OxygenTankGot;
     public static event Action Action_JumpingGot;
 
@@ -351,6 +352,7 @@ public class Interactable_Pickup : MonoBehaviour
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Snorkel = true;
                 Action_AbilityPickupGot_isActive();
                 //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwimSuit = true;
+                Action_SnorkelGot?.Invoke();
                 break;
             case Abilities.Flippers:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers = true;
