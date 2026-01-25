@@ -232,7 +232,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Movement.Instance.isDescending) return;
         if (grapplingHook_isPressed) return;
 
-        print("1. OnAbilityUp_Down");
+        //print("1. OnAbilityUp_Down");
 
         up_isPressed = true;
         Action_Ascend_isPressed?.Invoke();
@@ -260,7 +260,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Movement.Instance.isDescending) return;
         if (grapplingHook_isPressed) return;
 
-        print("2. OnAbilityDown_Down");
+        //print("2. OnAbilityDown_Down");
 
         down_isPressed = true;
         Action_Descend_isPressed?.Invoke();
@@ -456,6 +456,34 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Tutorial.Instance.state_Movement || Tutorial.Instance.state_CameraRotation || Tutorial.Instance.state_Respawn) return;
         if (PopUpManager.Instance.ability_Active || PopUpManager.Instance.ability_CanBeClosed) return;
 
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) return;
+        if (Movement.Instance.GetMovementState() == MovementStates.Ability) return;
+
+        if (Player_CeilingGrab.Instance.isCeilingRotation) return;
+        if (PlayerManager.Instance.npcInteraction) return;
+        if (CameraController.Instance.isRotating) return;
+        if (Player_Interact.Instance.isInteracting) return;
+        if (PopUpManager.Instance.ability_Active) return;
+        if (PopUpManager.Instance.ability_CanBeClosed) return;
+        if (MapManager.Instance.introSequence) return;
+
+        if (Player_GraplingHook.Instance.isGrapplingHooking) return;
+
+        if (grapplingHook_isPressed)
+        {
+            Movement.Instance.moveToBlock_GrapplingHook.canMoveTo = false;
+
+            if (Movement.Instance.moveToBlock_GrapplingHook != null && Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>())
+            {
+                Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
+            }
+
+            grapplingHook_isPressed = false;
+        }
+
+        if (pauseMenuManager && pauseMenuManager.pauseMenu_MainMenu_Parent.activeInHierarchy) return;
+
+
         if (freeCam_isPressed)
         {
             if (Tutorial.Instance.tutorial_isRunning && !Tutorial.Instance.state_FreeCam_2) return;
@@ -483,11 +511,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     void OnMouse_Down()
     {
         _lastMousePos = Input.mousePosition;
-        FreeCam.Instance.BeginMouseLook();
+        //FreeCam.Instance.BeginMouseLook();
     }
     void OnMouse_Up()
     {
-        FreeCam.Instance.EndMouseLook();
+        //FreeCam.Instance.EndMouseLook();
     }
 
     void OnFreeCam_Move(InputValue value)
@@ -713,6 +741,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
             Tutorial.Instance.Tutorial_FreeCam_2(false);
         }
     }
+
 
     //Ability
     bool Run_AbilityDisplayExit()

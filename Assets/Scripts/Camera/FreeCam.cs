@@ -100,7 +100,8 @@ public class FreeCam : Singleton<FreeCam>
     [SerializeField] private float touchSlideStep = 1f;
 
 
-    // --------------------
+    //--------------------
+
 
     private CinemachineCamera _cmPlayer;
     private PrioritySettings _playerPriorityBefore;
@@ -190,12 +191,12 @@ public class FreeCam : Singleton<FreeCam>
     /// <summary>
     /// Call on "mouse look pressed" (RMB down).
     /// </summary>
-    public void BeginMouseLook() => _mouseLookActive = true;
+    //public void BeginMouseLook() => _mouseLookActive = true;
 
     /// <summary>
     /// Call on "mouse look released" (RMB up).
     /// </summary>
-    public void EndMouseLook() => _mouseLookActive = false;
+    //public void EndMouseLook() => _mouseLookActive = false;
 
     /// <summary>
     /// Analog look axis (right stick). Provide (-1..1, -1..1).
@@ -293,10 +294,24 @@ public class FreeCam : Singleton<FreeCam>
             local = local.normalized;
 
             Transform t = CM_FreeCam.transform;
+
+            // Camera-relative, but flattened to world horizontal plane
+            Vector3 flatForward = Vector3.ProjectOnPlane(t.forward, Vector3.up).normalized;
+            Vector3 flatRight = Vector3.ProjectOnPlane(t.right, Vector3.up).normalized;
+
+            // If camera is looking straight up/down, flatForward can become zero.
+            // Fallback to yaw-only direction in that rare case:
+            if (flatForward.sqrMagnitude < 0.0001f)
+            {
+                Quaternion yawOnly = Quaternion.Euler(0f, _yaw, 0f);
+                flatForward = yawOnly * Vector3.forward;
+                flatRight = yawOnly * Vector3.right;
+            }
+
             Vector3 worldDir =
-                (t.right * local.x) +
-                (t.up * local.y) +
-                (t.forward * local.z);
+                (flatRight * local.x) +
+                (Vector3.up * local.y) +   // up/down is always world-up
+                (flatForward * local.z);
 
             desiredWorldVelocity = worldDir.normalized * moveSpeed;
         }
@@ -311,12 +326,14 @@ public class FreeCam : Singleton<FreeCam>
         CM_FreeCam.transform.position = newPos;
     }
 
+
     private void TickRotation(float dt)
     {
-        // 1) Mouse look (only when RMB is held)
-        if (_mouseLookActive && inputType == InputType.Keyboard)
+        // 1) Mouse look (always on when using keyboard/mouse)
+        if (inputType == InputType.Keyboard)
         {
             Vector2 mouseDelta = Mouse.current?.delta.ReadValue() ?? Vector2.zero;
+
             if (mouseDelta != Vector2.zero)
             {
                 float ySign = invertY ? 1f : -1f;
@@ -325,7 +342,7 @@ public class FreeCam : Singleton<FreeCam>
                 _pitch += mouseDelta.y * mouseSensitivity * ySign;
 
                 ApplyFreeCamRotation();
-                return;
+                // Don't return; controller look is irrelevant in Keyboard mode anyway
             }
         }
 
@@ -340,6 +357,7 @@ public class FreeCam : Singleton<FreeCam>
             ApplyFreeCamRotation();
         }
     }
+
 
     private void ApplyFreeCamRotation()
     {

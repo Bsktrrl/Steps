@@ -205,7 +205,31 @@ public class PopUpManager : Singleton<PopUpManager>
     {
         yield return null;
         ShowDisplay(popupManager, popup_LevelName_Parent, popup_LevelName_Children);
-        popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapName;
+
+        switch (DataManager.Instance.settingData_StoreList.currentLanguage)
+        {
+            case Languages.Norwegian:
+                popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapNameDisplay.mapNameDisplay_norwegian;
+                break;
+            case Languages.English:
+                popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapNameDisplay.mapNameDisplay_english;
+                break;
+            case Languages.German:
+                popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapNameDisplay.mapNameDisplay_german;
+                break;
+            case Languages.Japanese:
+                popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapNameDisplay.mapNameDisplay_japanese;
+                break;
+            case Languages.Chinese:
+                popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapNameDisplay.mapNameDisplay_chinese;
+                break;
+            case Languages.Korean:
+                popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapNameDisplay.mapNameDisplay_korean;
+                break;
+
+            default:
+                break;
+        }
 
         yield return new WaitForSeconds(levelNameMessageDuration);
 

@@ -141,6 +141,15 @@ public class Movement : Singleton<Movement>
     [Header("Temp Movement Cost for Slope Gliding")]
     [SerializeField] bool hasSlopeGlided;
     [SerializeField] bool isSlopeGliding;
+
+    [Header("SwiftSwim")]
+    [SerializeField] GameObject swiftSwimObject_StandingOn;
+    [SerializeField] GameObject swiftSwimObject_Up;
+    [SerializeField] GameObject swiftSwimObject_Down;
+    [SerializeField] LayerMask swiftSwimLayersToIgnore;
+
+    public bool isRespawning;
+
     #endregion
 
 
@@ -593,6 +602,112 @@ public class Movement : Singleton<Movement>
         }
 
         Block_IsNot_Target(moveOption);
+    }
+
+    void UpdateWaterBlocksForSwiftSwim()
+    {
+        if ((PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank || PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank) && (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers || PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers))
+        {
+            //Reset SwiftSwimBlocks
+            if (swiftSwimObject_StandingOn)
+            {
+                swiftSwimObject_StandingOn.GetComponent<BlockInfo>().movementCost = 0;
+                swiftSwimObject_StandingOn.GetComponent<BlockInfo>().movementCost_Temp = 0;
+            }
+            if (swiftSwimObject_Up)
+            {
+                swiftSwimObject_Up.GetComponent<BlockInfo>().movementCost = 0;
+                swiftSwimObject_Up.GetComponent<BlockInfo>().movementCost_Temp = 0;
+            }
+            if (swiftSwimObject_Down)
+            {
+                swiftSwimObject_Down.GetComponent<BlockInfo>().movementCost = 0;
+                swiftSwimObject_Down.GetComponent<BlockInfo>().movementCost_Temp = 0;
+            }
+
+
+            //AddSwiftSwimBlocks
+
+            //StandingOn
+            if (isSwiftSwim && blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+            {
+                blockStandingOn.GetComponent<BlockInfo>().movementCost = 1;
+                blockStandingOn.GetComponent<BlockInfo>().movementCost_Temp = 1;
+
+                swiftSwimObject_StandingOn = blockStandingOn;
+            }
+
+            //Up
+            if (Physics.Raycast(transform.position + Vector3.down, Vector3.up, out hit, 1, ~swiftSwimLayersToIgnore))
+            {
+                //print("1.0. SwiftSwim - Up");
+                if (hit.collider.gameObject)
+                {
+                    //print("1.1. SwiftSwim - Up | Name: " + hit.collider.gameObject.name);
+                    if (hit.collider.gameObject.GetComponent<BlockInfo>())
+                    {
+                        //print("1.2. SwiftSwim - Up | Name: " + hit.collider.gameObject.name);
+                        if (hit.collider.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+                        {
+                            Debug.DrawLine(transform.position + Vector3.down + (Vector3.right * 0.25f), transform.position + Vector3.down + Vector3.up, Color.green, 10);
+
+                            hit.collider.gameObject.GetComponent<BlockInfo>().movementCost = 1;
+                            hit.collider.gameObject.GetComponent<BlockInfo>().movementCost_Temp = 1;
+
+                            hit.collider.gameObject.GetComponent<BlockInfo>().ResetDarkenColor();
+                            hit.collider.gameObject.GetComponent<BlockInfo>().SetDarkenColors();
+
+                            swiftSwimObject_Up = hit.collider.gameObject;
+
+                            //print("1.3. SwiftSwim - Up | Name: " + hit.collider.gameObject.name);
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.DrawLine(transform.position + Vector3.down + (Vector3.right * 0.25f), transform.position + Vector3.down + Vector3.up, Color.red, 10);
+                }
+            }
+
+            //Down
+            if (Physics.Raycast(transform.position + Vector3.down, Vector3.down, out hit, 1, ~swiftSwimLayersToIgnore))
+            {
+                //print("2.0. SwiftSwim - Down");
+                if (hit.collider.gameObject)
+                {
+                    //print("2.1. SwiftSwim - Down | Name: " + hit.collider.gameObject.name);
+                    if (hit.collider.gameObject.GetComponent<BlockInfo>())
+                    {
+                        //print("2.2. SwiftSwim - Down | Name: " + hit.collider.gameObject.name);
+                        if (hit.collider.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+                        {
+                            Debug.DrawLine(transform.position + Vector3.down + (Vector3.left * 0.25f), transform.position + Vector3.down + Vector3.down, Color.white, 10);
+
+                            hit.collider.gameObject.GetComponent<BlockInfo>().movementCost = 1;
+                            hit.collider.gameObject.GetComponent<BlockInfo>().movementCost_Temp = 1;
+
+                            hit.collider.gameObject.GetComponent<BlockInfo>().ResetDarkenColor();
+                            hit.collider.gameObject.GetComponent<BlockInfo>().SetDarkenColors();
+
+                            swiftSwimObject_Down = hit.collider.gameObject;
+
+                            //print("2.3. SwiftSwim - Down | Name: " + hit.collider.gameObject.name);
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.DrawLine(transform.position + Vector3.down + (Vector3.left * 0.25f), transform.position + Vector3.down + Vector3.down, Color.black, 10);
+                }
+            }
+        }
+
+
+        if (isSwiftSwim)
+        {
+            Action_isSwiftSwim_Finished?.Invoke();
+            isSwiftSwim = false;
+        }
     }
 
     void UpdateSwiftSwimMovement(MoveOptions swiftSwimOption, Vector3 dir)
@@ -1893,8 +2008,10 @@ public class Movement : Singleton<Movement>
         if (!canMoveBlock.targetBlock.GetComponent<BlockInfo>()) { return; }
         if (PlayerStats.Instance.stats == null) { return; }
 
-        if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost || Player_Pusher.Instance.playerIsPushed)
+        if (PlayerStats.Instance.stats.steps_Current >= canMoveBlock.targetBlock.GetComponent<BlockInfo>().movementCost || (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope))
         {
+            //print("10. Respawn Player - First");
+
             MovingAnimation(canMoveBlock);
 
             isMoving = true;
@@ -1906,6 +2023,30 @@ public class Movement : Singleton<Movement>
         else
         {
             RespawnPlayer();
+
+            print("20. Respawn Player");
+
+            //if (!isSlopeGliding && !hasSlopeGlided)
+            //{
+            //    RespawnPlayer();
+
+            //    print("2. Respawn Player");
+            //}
+
+            //if (preventSlopeGlidingRespawn)
+            //{
+            //    isSlopeGliding = true;
+            //    hasSlopeGlided = true;
+            //    preventSlopeGlidingRespawn = false;
+
+            //    print("20. Respawn Player - preventSlopeGlidingRespawn = false");
+            //}
+            //else
+            //{
+            //    RespawnPlayer();
+
+            //    print("20. Respawn Player");
+            //}
         }
     }
     public void PerformMovement(Vector3 targetPos)
@@ -1984,12 +2125,6 @@ public class Movement : Singleton<Movement>
         isJumping = false;
         isGrapplingHooking = false;
         isIceGliding = false;
-
-        if (isSwiftSwim)
-        {
-            Action_isSwiftSwim_Finished?.Invoke();
-            isSwiftSwim = false;
-        }
 
         isAscending = false;
         isDescending = false;
@@ -2121,7 +2256,7 @@ public class Movement : Singleton<Movement>
     {
         //Perform walking animation when entering a Stair or Slope
         if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope
-            && canMoveBlock.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+            && canMoveBlock != null && canMoveBlock.targetBlock.GetComponent<BlockInfo>().blockType == BlockType.Slope)
         {
             Player_Animations.Instance.Trigger_SlopeDownAnimation();
         }
@@ -2822,47 +2957,58 @@ public class Movement : Singleton<Movement>
         {
             if (blockStandingOn.GetComponent<BlockInfo>() /*&& !PlayerManager.Instance.isTransportingPlayer*/)
             {
+                //Check for Change in waterBlocks
+                UpdateWaterBlocksForSwiftSwim();
+
                 //Don't remove steps if gliding from a slope
-                if (hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                if ((hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                    || blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                 {
                     //print("1. Slope");
                     isSlopeGliding = true;
+                    //preventSlopeGlidingRespawn = true;
                 }
+
                 if (hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope)
                 {
                     //print("2. Slope");
                     hasSlopeGlided = false;
                 }
-                //else if (hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope && !Player_Pusher.Instance.playerIsPushed)
+                //else if (!hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                 //{
                 //    print("3. Slope");
-                //    hasSlopeGlided = false;
-
-                //    //PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
+                //    //hasSlopeGlided = true;
+                //    isSlopeGliding = true;
                 //}
-                else if (Player_Pusher.Instance.playerIsPushed)
-                {
-                    //print("4. Slope");
-                    hasSlopeGlided = false;
-                }
                 else if (!hasSlopeGlided && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope)
                 {
                     if (isSlopeGliding)
                     {
-                        //print("5. Slope");
+                        //print("4. Slope");
                     }
                     else
                     {
-                        //print("6. Slope");
+                        //print("5. Slope");
+
                         PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
-                        //print("200. Lose Step: " + PlayerStats.Instance.stats.steps_Current);
+                        //print("200. Loose Step: " + PlayerStats.Instance.stats.steps_Current);
+                        //preventSlopeGlidingRespawn = false;
                     }
 
                     isSlopeGliding = false;
                 }
-                else
+                else if (isSlopeGliding && blockStandingOn.GetComponent<BlockInfo>().blockType != BlockType.Slope)
+                {
+                    //print("6. Slope");
+                    isSlopeGliding = false;
+                }
+                else if (isSlopeGliding)
                 {
                     //print("7. Slope");
+                }
+                else
+                {
+                    //print("8. Slope");
                     //PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
                     hasSlopeGlided = false;
                 }
@@ -2874,9 +3020,16 @@ public class Movement : Singleton<Movement>
         {
             PlayerStats.Instance.stats.steps_Current = 0;
             RespawnPlayer();
+
+            //print("1. Respawn Player");
         }
 
         Action_StepTaken_Late_Invoke();
+
+        if (isSlopeGliding)
+        {
+            isSlopeGliding = false;
+        }
     }
     void CancelSlopeIfFalling()
     {
@@ -2895,6 +3048,8 @@ public class Movement : Singleton<Movement>
     }
     IEnumerator Resetplayer(float waitTime)
     {
+        isRespawning = true;
+
         Player_KeyInputs.Instance.forward_isPressed = false;
         Player_KeyInputs.Instance.back_isPressed = false;
         Player_KeyInputs.Instance.left_isPressed = false;
@@ -2911,6 +3066,10 @@ public class Movement : Singleton<Movement>
 
         Player_KeyInputs.Instance.cameraX_isPressed = false;
         Player_KeyInputs.Instance.cameraY_isPressed = false;
+
+        isSlopeGliding = false;
+        hasSlopeGlided = false;
+        //preventSlopeGlidingRespawn = false;
 
         isAscending = false;
         isDescending = false;
@@ -2952,6 +3111,8 @@ public class Movement : Singleton<Movement>
         RespawnPlayerLate_Action();
 
         StopAllCoroutines();
+
+        isRespawning = false;
     }
     public Quaternion GetRespawnPlayerDirection(int corr_X, int corr_Y, int corr_Z)
     {

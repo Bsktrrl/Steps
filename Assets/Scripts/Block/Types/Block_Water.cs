@@ -6,25 +6,27 @@ public class Block_Water : MonoBehaviour
 {
     private void OnEnable()
     {
-        DataManager.Action_dataHasLoaded += UpdateMovementCostWithOxygenTank;
-        Interactable_Pickup.Action_OxygenTankGot += UpdateMovementCostWithOxygenTank;
-        Movement.Action_StepTaken += UpdateMovementCostWithOxygenTank;
+        DataManager.Action_dataHasLoaded += UpdateMovementCostWithSwimming;
+        Interactable_Pickup.Action_SnorkelGot += UpdateMovementCostWithSwimming;
+        Interactable_Pickup.Action_OxygenTankGot += UpdateMovementCostWithSwimming;
+        Movement.Action_StepTaken += UpdateMovementCostWithSwimming;
     }
 
     private void OnDisable()
     {
-        DataManager.Action_dataHasLoaded -= UpdateMovementCostWithOxygenTank;
-        Interactable_Pickup.Action_OxygenTankGot -= UpdateMovementCostWithOxygenTank;
-        Movement.Action_StepTaken -= UpdateMovementCostWithOxygenTank;
+        DataManager.Action_dataHasLoaded -= UpdateMovementCostWithSwimming;
+        Interactable_Pickup.Action_SnorkelGot -= UpdateMovementCostWithSwimming;
+        Interactable_Pickup.Action_OxygenTankGot -= UpdateMovementCostWithSwimming;
+        Movement.Action_StepTaken -= UpdateMovementCostWithSwimming;
     }
 
 
     //--------------------
 
 
-    void UpdateMovementCostWithOxygenTank()
+    void UpdateMovementCostWithSwimming()
     {
-        if (gameObject.GetComponent<BlockInfo>().movementCost == 0) { return; }
+        //if (gameObject.GetComponent<BlockInfo>().movementCost == 0) { return; }
 
         if (PlayerManager.Instance.player.GetComponent<PlayerStats>())
         {

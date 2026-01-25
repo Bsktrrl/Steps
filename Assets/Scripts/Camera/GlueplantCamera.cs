@@ -374,8 +374,6 @@ public class GlueplantCamera : MonoBehaviour
         MapManager.Instance.introSequence_Finished = true;
         MapManager.Instance.introSequence = false;
 
-        print("1000000000000. FinishTravel()");
-
         MapManager.Instance.Action_EndIntroSequence_Invoke();
     }
 

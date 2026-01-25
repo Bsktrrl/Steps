@@ -3,15 +3,12 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 
-2. Intro Camera:
-__________________
+Double Tutorial Respawn
+- Jeg har ikke klart å gjenskape det, men da jeg først prøvde tutorialen måtte jeg respawne to ganger før den gikk videre til neste steg
 
-2.1. Make generic intro, where camera is focused on Glueplant and zoomes out to the player
- 	- Attach a camera to the Glueplant and make it softTransition to the player
-	- Make it able to have a route of Vector3, so the camera follows this route as a spline (with somewhat hard corner movements), and that the last Vector3 links to the position/rotation of the playerCamera
-	- Make an intro scene that starts at the Glueplant (for 1 second or so)
-		- Also display the levelName as a text like Tutorial (fadeIn with border)
 
+Respawn
+- When respawning, holding down button, the respawn sometimes happens twice
 
 
 3. Sound:
@@ -29,8 +26,6 @@ __________________
 __________________
 
 4.1. Change the UI for all menus, so it matches the new assets
-- Wardrobe in MainMenu
-	- Doesn't appear in the Build
 - Settings
  	- Controls: Key Inputs + functionality
  	- Hide the OptionMenus that are not in use

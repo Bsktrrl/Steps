@@ -54,7 +54,7 @@ public class MapManager : Singleton<MapManager>
     float fadeDuration_In = 0.75f;
     float fadeDuration_Out = 0.25f;
 
-    BlockInfo[] blockInfoList;
+    [SerializeField] BlockInfo[] blockInfoList;
     Interactable_Pickup[] pickupInfoList;
 
     public bool introSequence;
@@ -163,14 +163,17 @@ public class MapManager : Singleton<MapManager>
     {
         foreach (BlockInfo block in blockInfoList)
         {
-            if (!block.gameObject.activeInHierarchy)
+            if (block.gameObject)
             {
-                block.gameObject.SetActive(true);
-            }
+                if (!block.gameObject.activeInHierarchy)
+                {
+                    block.gameObject.SetActive(true);
+                }
 
-            if (block.gameObject.GetComponent<Block_Falling>())
-            {
-                block.gameObject.GetComponent<Block_Falling>().ResetBlock();
+                if (block.gameObject.GetComponent<Block_Falling>())
+                {
+                    block.gameObject.GetComponent<Block_Falling>().ResetBlock();
+                }
             }
         }
     }

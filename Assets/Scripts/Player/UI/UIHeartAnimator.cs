@@ -37,6 +37,8 @@ public class UIHeartAnimator : MonoBehaviour
     }
     private void OnEnable()
     {
+        SetStartFootprints();
+
         DataManager.Action_dataHasLoaded += SetStartFootprints;
     }
     private void OnDisable()

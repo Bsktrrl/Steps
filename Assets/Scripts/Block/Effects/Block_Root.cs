@@ -8,6 +8,7 @@ using static UnityEngine.UI.Image;
 
 public class Block_Root : MonoBehaviour
 {
+    public static event Action Action_StandingOnRootBlock_Early;
     public static event Action Action_StandingOnRootBlock;
 
     Animator anim;
@@ -21,6 +22,13 @@ public class Block_Root : MonoBehaviour
     Vector3 tempOriginPos;
     Vector3 playerLookDir;
 
+    [Header("Root Placement Tuning")]
+    [SerializeField] float stairUpForwardOffset = 0.30f;
+    [SerializeField] float stairDownForwardOffset = -0.20f; // = 0.30 - 0.50
+    [SerializeField] float stairUpHeightOffset = 0.20f;
+    [SerializeField] float stairSurfaceTilt = -45f;
+
+
 
     //--------------------
 
@@ -28,24 +36,31 @@ public class Block_Root : MonoBehaviour
     private void Start()
     {
         anim = GetComponentInParent<Animator>();
+
+        // Detect duplicates
+        var duplicates = RootObjectList
+            .GroupBy(r => r.GetInstanceID())
+            .Where(g => g.Count() > 1)
+            .ToList();
     }
     private void Update()
     {
-        if (Movement.Instance.isMovingOnLadder_Down || Movement.Instance.isMovingOnLadder_Up)
-        {
-            return;
-        }
+        if (Movement.Instance.isMovingOnLadder_Down || Movement.Instance.isMovingOnLadder_Up || Movement.Instance.isRespawning) return;
 
-        CheckWhenToResetRootLine();
+        //CheckWhenToResetRootLine();
     }
 
     private void OnEnable()
     {
+        Movement.Action_StepTaken += CheckWhenToResetRootLine;
         Movement.Action_RespawnPlayer += ResetOnRespawn;
+        Action_StandingOnRootBlock_Early += ResetOnRespawn;
     }
     private void OnDisable()
     {
+        Movement.Action_StepTaken -= CheckWhenToResetRootLine;
         Movement.Action_RespawnPlayer -= ResetOnRespawn;
+        Action_StandingOnRootBlock_Early -= ResetOnRespawn;
     }
 
 
@@ -56,13 +71,26 @@ public class Block_Root : MonoBehaviour
     {
         if (other.transform.gameObject.layer == 6) //6 = PlayerLayer
         {
-            DestroyRootFreeCostList();
+            if (Movement.Instance.isRespawning) return;
 
-            anim.SetTrigger("Activate");
+            Action_StandingOnRootBlock_Early?.Invoke();
 
-            MakeRootFreeCostList();
-            Action_StandingOnRootBlock?.Invoke();
+            ActivateRoots();
         }
+    }
+
+
+    //--------------------
+
+
+    void ActivateRoots()
+    {
+        DestroyRootFreeCostList();
+
+        anim.SetTrigger("Activate");
+
+        MakeRootFreeCostList();
+        Action_StandingOnRootBlock?.Invoke();
     }
 
 
@@ -99,13 +127,42 @@ public class Block_Root : MonoBehaviour
     #region BuildRootLine
     void MakeRootFreeCostList()
     {
-        playerLookDir = Movement.Instance.lookingDirection;
-        tempOriginPos = gameObject.transform.parent.position;
+        if (Movement.Instance.isRespawning && transform.parent.gameObject && transform.parent.gameObject.GetComponent<Block_Checkpoint>())
+        {
+            switch (transform.parent.gameObject.GetComponent<Block_Checkpoint>().spawnDirection)
+            {
+                case MovementDirection.None:
+                    playerLookDir = -Vector3.forward;
+                    break;
+
+                case MovementDirection.Forward:
+                    playerLookDir = -Vector3.forward;
+                    break;
+                case MovementDirection.Backward:
+                    playerLookDir = -Vector3.back;
+                    break;
+                case MovementDirection.Left:
+                    playerLookDir = -Vector3.left;
+                    break;
+                case MovementDirection.Right:
+                    playerLookDir = -Vector3.right;
+                    break;
+
+                default:
+                    playerLookDir = -Vector3.forward;
+                    break;
+            }
+        }
+        else
+        {
+            playerLookDir = Movement.Instance.lookingDirection;
+        }
+
+        tempOriginPos = transform.parent.position;
 
         //Make list of blocks that must cost 0 and get rootLines on them
         while (!finishedCheckingForBlocks)
         {
-
             bool blockIsFound = false;
 
             #region Check in line
@@ -209,6 +266,31 @@ public class Block_Root : MonoBehaviour
             }
             #endregion
 
+            #region Check diagonal down after stair/slope (step off down-stair)
+            if (!blockIsFound && RootFreeCostBlockList.Count > 0)
+            {
+                var lastType = RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType;
+
+                if (lastType == BlockType.Stair || lastType == BlockType.Slope)
+                {
+                    // Cast down in the *next* cell.
+                    // Start high so it works regardless of 0.5 offsets.
+                    Vector3 origin = tempOriginPos + playerLookDir + Vector3.up * 2.0f;
+
+                    GameObject diagDown = RaycastBlock(origin, Vector3.down, 5.0f);
+
+                    if (diagDown)
+                    {
+                        // Optional: only accept if it's actually lower than current block (prevents grabbing same level)
+                        if (diagDown.transform.position.y < tempOriginPos.y - 0.25f)
+                        {
+                            SetupEntryInBlockList(diagDown, false);
+                            blockIsFound = true;
+                        }
+                    }
+                }
+            }
+            #endregion
 
             #region Check stairs/slopes
             if (!blockIsFound)
@@ -238,7 +320,7 @@ public class Block_Root : MonoBehaviour
                 }
 
                 //is there a stair/slope over adjacent?
-                if (!blockIsFound && tempBlock_Adjacent && (tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slope))
+                if (!blockIsFound && tempBlock_Adjacent && tempBlock_Over && (tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slope))
                 {
                     //Check orientation of stair/slope
 
@@ -260,7 +342,6 @@ public class Block_Root : MonoBehaviour
                 }
             }
             #endregion
-
 
             #region Check Ladder
             if (!blockIsFound)
@@ -296,7 +377,6 @@ public class Block_Root : MonoBehaviour
                 }
             }
             #endregion
-
 
             #region Check after slope after falling
 
@@ -346,11 +426,20 @@ public class Block_Root : MonoBehaviour
 
 
             if (!blockIsFound)
-                finishedCheckingForBlocks = true;
+            {
+                finishedCheckingForBlocks = true; 
+            }
         }
-        
+
         //Change position of each rootLine to their new blocks, and rotate them to correct orientation
         SetRootLineObjectsOrientation();
+
+        for (int i = 0; i < RootFreeCostBlockList.Count; i++)
+        {
+            var b = RootFreeCostBlockList[i].block;
+            var r = RootObjectList[i];
+        }
+
 
         //Make RootLines visible and add animation to them, not all at once, but in order, with some delay
         MakeRootObjectsVisible();
@@ -412,84 +501,130 @@ public class Block_Root : MonoBehaviour
             return null;
         }
     }
+
     void StairSlopeCorrection(ref GameObject obj)
     {
-        BlockInfo info = obj.GetComponent<BlockInfo>();
+        var info = obj.GetComponent<BlockInfo>();
+        if (info.blockType != BlockType.Stair && info.blockType != BlockType.Slope) return;
 
-        if (info.blockType == BlockType.Stair || info.blockType == BlockType.Slope)
+        Vector3 stairDir = obj.transform.forward.normalized;
+        Vector3 travelDir = Movement.Instance.lookingDirection.normalized;
+
+        //Correction if respawning on a RootBlockCheckpoint
+        if (Movement.Instance.isRespawning && transform.parent.gameObject && transform.parent.gameObject.GetComponent<Block_Checkpoint>())
         {
-            // direction the object is facing
-            Vector3 objectDir = obj.transform.forward;
-
-            // direction the player is looking (must be a forward vector!)
-            Vector3 playerDir = Movement.Instance.lookingDirection.normalized;
-
-            // dot product
-            float dot = Vector3.Dot(objectDir, playerDir);
-
-
-            //Stair/Slope is facing opposite of player - Over
-            if (dot < 0f)
+            switch (transform.parent.gameObject.GetComponent<Block_Checkpoint>().spawnDirection)
             {
-                if (tempOriginPos.y != (obj.transform.position.y - 0.5f) && tempOriginPos.y != (obj.transform.position.y - 1f))
-                {
-                    obj = null;
-                }
-            }
+                case MovementDirection.None:
+                    travelDir = -Vector3.forward;
+                    break;
 
-            //Stair/Slope is facing the same direction as player - Under
-            else
-            {
-                if (tempOriginPos.y != (obj.transform.position.y + 0.5f) && tempOriginPos.y != (obj.transform.position.y + 1f))
-                {
-                    obj = null;
-                }
+                case MovementDirection.Forward:
+                    travelDir = -Vector3.forward;
+                    break;
+                case MovementDirection.Backward:
+                    travelDir = -Vector3.back;
+                    break;
+                case MovementDirection.Left:
+                    travelDir = -Vector3.left;
+                    break;
+                case MovementDirection.Right:
+                    travelDir = -Vector3.right;
+                    break;
+
+                default:
+                    travelDir = -Vector3.forward;
+                    break;
             }
         }
+
+        float dot = Vector3.Dot(stairDir, travelDir);
+
+        // Expected origin Y relative to this stair depends on whether we're entering from high side or low side.
+        float y = obj.transform.position.y;
+
+        bool ok;
+        const float eps = 0.05f;
+
+        bool Approx(float a, float b) => Mathf.Abs(a - b) < eps;
+
+        if (dot < 0f)
+        {
+            // entering from the "high" side (travel against stairDir)
+            ok = Approx(tempOriginPos.y, y - 0.5f) || Approx(tempOriginPos.y, y - 1.0f) || Approx(tempOriginPos.y, y - 1.5f);
+        }
+        else
+        {
+            // entering from the "low" side (travel with stairDir)
+            ok = Approx(tempOriginPos.y, y + 0.5f) || Approx(tempOriginPos.y, y + 1.0f) || Approx(tempOriginPos.y, y + 1.5f);
+        }
+
+        if (!ok)
+        {
+            Debug.LogWarning($"REJECT stair {obj.name}: originY={tempOriginPos.y} stairY={y} dot={dot}");
+            obj = null;
+        }
     }
+
     void SetRootLineObjectsOrientation()
     {
+        Vector3 dir = playerLookDir;
+
         for (int i = 0; i < RootFreeCostBlockList.Count; i++)
         {
-            if (RootFreeCostBlockList[i].blockType == BlockType.Stair || RootFreeCostBlockList[i].blockType == BlockType.Slope)
+            var block = RootFreeCostBlockList[i].block;
+            var type = RootFreeCostBlockList[i].blockType;
+
+            if (type == BlockType.Stair || type == BlockType.Slope)
             {
-                if (RootFreeCostBlockList[i].block.transform.forward == Vector3.forward || RootFreeCostBlockList[i].block.transform.forward == Vector3.back)
+                bool isDownStep = false;
+                if (i > 0)
                 {
-                    RootObjectList[i].transform.SetPositionAndRotation(
-                    new Vector3(
-                        RootFreeCostBlockList[i].block.transform.position.x,
-                        RootFreeCostBlockList[i].block.transform.position.y + 0.2f,
-                        RootFreeCostBlockList[i].block.transform.position.z + 0.3f
-                    ),
-                Quaternion.LookRotation(playerLookDir));
-
-                    RootObjectList[i].transform.localRotation = Quaternion.Euler(new Vector3(RootObjectList[i].transform.localRotation.x - 45f, RootObjectList[i].transform.localRotation.y, RootObjectList[i].transform.localRotation.z));
+                    float prevY = RootFreeCostBlockList[i - 1].block.transform.position.y;
+                    float currY = block.transform.position.y;
+                    isDownStep = currY < prevY - 0.01f;
                 }
-                else if (RootFreeCostBlockList[i].block.transform.forward == Vector3.left || RootFreeCostBlockList[i].block.transform.forward == Vector3.right)
-                {
-                    RootObjectList[i].transform.SetPositionAndRotation(
-                    new Vector3(
-                        RootFreeCostBlockList[i].block.transform.position.x + 0.3f,
-                        RootFreeCostBlockList[i].block.transform.position.y + 0.2f,
-                        RootFreeCostBlockList[i].block.transform.position.z
-                        ),
-                Quaternion.LookRotation(playerLookDir));
 
-                    RootObjectList[i].transform.localRotation = Quaternion.Euler(new Vector3(RootObjectList[i].transform.localRotation.x - 45f, RootObjectList[i].transform.localRotation.y + 90, RootObjectList[i].transform.localRotation.z));
-                }
+                PlaceAndOrientRootOnStairOrSlope(i, dir, isDownStep);
             }
             else
             {
                 RootObjectList[i].transform.SetPositionAndRotation(
-                new Vector3(
-                    RootFreeCostBlockList[i].block.transform.position.x,
-                    RootFreeCostBlockList[i].block.transform.position.y,
-                    RootFreeCostBlockList[i].block.transform.position.z
-                    ),
-                Quaternion.LookRotation(playerLookDir));
+                    block.transform.position,
+                    Quaternion.LookRotation(dir)
+                );
             }
         }
     }
+
+    void PlaceAndOrientRootOnStairOrSlope(int i, Vector3 travelDir, bool isDownStep)
+    {
+        var block = RootFreeCostBlockList[i].block;
+        var root = RootObjectList[i];
+
+        // Ensure travelDir is horizontal + normalized
+        travelDir.y = 0f;
+        if (travelDir.sqrMagnitude > 0.0001f) travelDir.Normalize();
+
+        // Flip facing for down-steps (you said orientation is correct now)
+        Vector3 rootForward = isDownStep ? -travelDir : travelDir;
+
+        // Use different forward offset for down vs up
+        float forwardOffset = isDownStep ? stairDownForwardOffset : stairUpForwardOffset;
+
+        // Position
+        Vector3 pos = block.transform.position
+                      + Vector3.up * stairUpHeightOffset
+                      + travelDir * forwardOffset;
+
+        root.transform.SetPositionAndRotation(pos, Quaternion.LookRotation(rootForward));
+
+        // Tilt onto the surface
+        root.transform.Rotate(stairSurfaceTilt, 0f, 0f, Space.Self);
+    }
+
+
+
     void MakeRootObjectsVisible()
     {
         StartCoroutine(AnimationDelay(0.04f));
@@ -523,9 +658,6 @@ public class Block_Root : MonoBehaviour
     {
         playerLookDir = Movement.Instance.lookingDirection;
 
-        //Play Destroy-Root Animation
-        DestroyRootAnimation();
-
         //Put Root Animation Object back in the pool, and set their positions to Vector.Zero
         ResetBlockLineObjects();
 
@@ -542,12 +674,9 @@ public class Block_Root : MonoBehaviour
     //-----
 
 
-    void DestroyRootAnimation()
-    {
-
-    }
     void ResetBlockLineObjects()
     {
+        print("0. ResetBlockLineObjects");
         for (int i = 0; i < RootObjectList.Count; i++)
         {
             if (RootObjectList[i].activeInHierarchy)
@@ -575,6 +704,19 @@ public class Block_Root : MonoBehaviour
     void ResetOnRespawn()
     {
         DestroyRootFreeCostList();
+
+        //Activate if stading on it after respawn
+        StartCoroutine(ActivateIfStandinOnAfterRespawn());
+
+    }
+    IEnumerator ActivateIfStandinOnAfterRespawn()
+    {
+        yield return null;
+
+        if (Movement.Instance.blockStandingOn == transform.parent.gameObject)
+        {
+            ActivateRoots();
+        }
     }
 }
 

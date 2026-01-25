@@ -8,9 +8,9 @@ public class LevelInfo : MonoBehaviour
     public string norwegian_MapNameDisplay;
     public string english_MapNameDisplay;
     public string german_MapNameDisplay;
-    public string chinese_MapNameDisplay;
-    public string japanese_MapNameDisplay;
-    public string korean_MapNameDisplay;
+    //public string chinese_MapNameDisplay;
+    //public string japanese_MapNameDisplay;
+    //public string korean_MapNameDisplay;
 
 
     //--------------------
@@ -34,9 +34,9 @@ public class LevelInfo : MonoBehaviour
                 DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapNameDisplay.mapNameDisplay_norwegian = norwegian_MapNameDisplay;
                 DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapNameDisplay.mapNameDisplay_english = english_MapNameDisplay;
                 DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapNameDisplay.mapNameDisplay_german = german_MapNameDisplay;
-                DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapNameDisplay.mapNameDisplay_chinese = chinese_MapNameDisplay;
-                DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapNameDisplay.mapNameDisplay_japanese = japanese_MapNameDisplay;
-                DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapNameDisplay.mapNameDisplay_korean = korean_MapNameDisplay;
+                //DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapNameDisplay.mapNameDisplay_chinese = chinese_MapNameDisplay;
+                //DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapNameDisplay.mapNameDisplay_japanese = japanese_MapNameDisplay;
+                //DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapNameDisplay.mapNameDisplay_korean = korean_MapNameDisplay;
 
                 break;
             }
@@ -53,10 +53,10 @@ public class LevelInfo : MonoBehaviour
         mapNameDisplay.mapNameDisplay_norwegian = norwegian_MapNameDisplay;
         mapNameDisplay.mapNameDisplay_english = english_MapNameDisplay;
         mapNameDisplay.mapNameDisplay_german = german_MapNameDisplay;
-        mapNameDisplay.mapNameDisplay_chinese = chinese_MapNameDisplay;
-        mapNameDisplay.mapNameDisplay_japanese = japanese_MapNameDisplay;
-        mapNameDisplay.mapNameDisplay_korean = korean_MapNameDisplay;
-
+        //mapNameDisplay.mapNameDisplay_chinese = chinese_MapNameDisplay;
+        //mapNameDisplay.mapNameDisplay_japanese = japanese_MapNameDisplay;
+        //mapNameDisplay.mapNameDisplay_korean = korean_MapNameDisplay;
+        
         DataManager.Instance.mapNameDisplay_Store = mapNameDisplay;
 
         DataPersistanceManager.instance.SaveGame();
@@ -76,12 +76,12 @@ public class LevelInfo : MonoBehaviour
                 return english_MapNameDisplay;
             case Languages.German:
                 return german_MapNameDisplay;
-            case Languages.Japanese:
-                return chinese_MapNameDisplay;
-            case Languages.Chinese:
-                return japanese_MapNameDisplay;
-            case Languages.Korean:
-                return korean_MapNameDisplay;
+            //case Languages.Japanese:
+            //    return chinese_MapNameDisplay;
+            //case Languages.Chinese:
+            //    return japanese_MapNameDisplay;
+            //case Languages.Korean:
+            //    return korean_MapNameDisplay;
 
             default:
                 return norwegian_MapNameDisplay;
