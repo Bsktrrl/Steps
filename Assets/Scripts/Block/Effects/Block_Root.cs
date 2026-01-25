@@ -45,21 +45,20 @@ public class Block_Root : MonoBehaviour
     }
     private void Update()
     {
-        if (Movement.Instance.isMovingOnLadder_Down || Movement.Instance.isMovingOnLadder_Up)
-        {
-            return;
-        }
+        if (Movement.Instance.isMovingOnLadder_Down || Movement.Instance.isMovingOnLadder_Up || Movement.Instance.isRespawning) return;
 
-        CheckWhenToResetRootLine();
+        //CheckWhenToResetRootLine();
     }
 
     private void OnEnable()
     {
+        Movement.Action_StepTaken += CheckWhenToResetRootLine;
         Movement.Action_RespawnPlayer += ResetOnRespawn;
         Action_StandingOnRootBlock_Early += ResetOnRespawn;
     }
     private void OnDisable()
     {
+        Movement.Action_StepTaken -= CheckWhenToResetRootLine;
         Movement.Action_RespawnPlayer -= ResetOnRespawn;
         Action_StandingOnRootBlock_Early -= ResetOnRespawn;
     }
@@ -72,14 +71,26 @@ public class Block_Root : MonoBehaviour
     {
         if (other.transform.gameObject.layer == 6) //6 = PlayerLayer
         {
+            if (Movement.Instance.isRespawning) return;
+
             Action_StandingOnRootBlock_Early?.Invoke();
-            DestroyRootFreeCostList();
 
-            anim.SetTrigger("Activate");
-
-            MakeRootFreeCostList();
-            Action_StandingOnRootBlock?.Invoke();
+            ActivateRoots();
         }
+    }
+
+
+    //--------------------
+
+
+    void ActivateRoots()
+    {
+        DestroyRootFreeCostList();
+
+        anim.SetTrigger("Activate");
+
+        MakeRootFreeCostList();
+        Action_StandingOnRootBlock?.Invoke();
     }
 
 
@@ -116,8 +127,38 @@ public class Block_Root : MonoBehaviour
     #region BuildRootLine
     void MakeRootFreeCostList()
     {
-        playerLookDir = Movement.Instance.lookingDirection;
-        tempOriginPos = gameObject.transform.parent.position;
+        if (Movement.Instance.isRespawning && transform.parent.gameObject && transform.parent.gameObject.GetComponent<Block_Checkpoint>())
+        {
+            switch (transform.parent.gameObject.GetComponent<Block_Checkpoint>().spawnDirection)
+            {
+                case MovementDirection.None:
+                    playerLookDir = -Vector3.forward;
+                    break;
+
+                case MovementDirection.Forward:
+                    playerLookDir = -Vector3.forward;
+                    break;
+                case MovementDirection.Backward:
+                    playerLookDir = -Vector3.back;
+                    break;
+                case MovementDirection.Left:
+                    playerLookDir = -Vector3.left;
+                    break;
+                case MovementDirection.Right:
+                    playerLookDir = -Vector3.right;
+                    break;
+
+                default:
+                    playerLookDir = -Vector3.forward;
+                    break;
+            }
+        }
+        else
+        {
+            playerLookDir = Movement.Instance.lookingDirection;
+        }
+
+        tempOriginPos = transform.parent.position;
 
         //Make list of blocks that must cost 0 and get rootLines on them
         while (!finishedCheckingForBlocks)
@@ -469,6 +510,34 @@ public class Block_Root : MonoBehaviour
         Vector3 stairDir = obj.transform.forward.normalized;
         Vector3 travelDir = Movement.Instance.lookingDirection.normalized;
 
+        //Correction if respawning on a RootBlockCheckpoint
+        if (Movement.Instance.isRespawning && transform.parent.gameObject && transform.parent.gameObject.GetComponent<Block_Checkpoint>())
+        {
+            switch (transform.parent.gameObject.GetComponent<Block_Checkpoint>().spawnDirection)
+            {
+                case MovementDirection.None:
+                    travelDir = -Vector3.forward;
+                    break;
+
+                case MovementDirection.Forward:
+                    travelDir = -Vector3.forward;
+                    break;
+                case MovementDirection.Backward:
+                    travelDir = -Vector3.back;
+                    break;
+                case MovementDirection.Left:
+                    travelDir = -Vector3.left;
+                    break;
+                case MovementDirection.Right:
+                    travelDir = -Vector3.right;
+                    break;
+
+                default:
+                    travelDir = -Vector3.forward;
+                    break;
+            }
+        }
+
         float dot = Vector3.Dot(stairDir, travelDir);
 
         // Expected origin Y relative to this stair depends on whether we're entering from high side or low side.
@@ -589,9 +658,6 @@ public class Block_Root : MonoBehaviour
     {
         playerLookDir = Movement.Instance.lookingDirection;
 
-        //Play Destroy-Root Animation
-        DestroyRootAnimation();
-
         //Put Root Animation Object back in the pool, and set their positions to Vector.Zero
         ResetBlockLineObjects();
 
@@ -608,12 +674,9 @@ public class Block_Root : MonoBehaviour
     //-----
 
 
-    void DestroyRootAnimation()
-    {
-
-    }
     void ResetBlockLineObjects()
     {
+        print("0. ResetBlockLineObjects");
         for (int i = 0; i < RootObjectList.Count; i++)
         {
             if (RootObjectList[i].activeInHierarchy)
@@ -641,6 +704,19 @@ public class Block_Root : MonoBehaviour
     void ResetOnRespawn()
     {
         DestroyRootFreeCostList();
+
+        //Activate if stading on it after respawn
+        StartCoroutine(ActivateIfStandinOnAfterRespawn());
+
+    }
+    IEnumerator ActivateIfStandinOnAfterRespawn()
+    {
+        yield return null;
+
+        if (Movement.Instance.blockStandingOn == transform.parent.gameObject)
+        {
+            ActivateRoots();
+        }
     }
 }
 

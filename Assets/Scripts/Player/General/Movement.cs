@@ -148,6 +148,8 @@ public class Movement : Singleton<Movement>
     [SerializeField] GameObject swiftSwimObject_Down;
     [SerializeField] LayerMask swiftSwimLayersToIgnore;
 
+    public bool isRespawning;
+
     #endregion
 
 
@@ -3046,6 +3048,8 @@ public class Movement : Singleton<Movement>
     }
     IEnumerator Resetplayer(float waitTime)
     {
+        isRespawning = true;
+
         Player_KeyInputs.Instance.forward_isPressed = false;
         Player_KeyInputs.Instance.back_isPressed = false;
         Player_KeyInputs.Instance.left_isPressed = false;
@@ -3107,6 +3111,8 @@ public class Movement : Singleton<Movement>
         RespawnPlayerLate_Action();
 
         StopAllCoroutines();
+
+        isRespawning = false;
     }
     public Quaternion GetRespawnPlayerDirection(int corr_X, int corr_Y, int corr_Z)
     {
