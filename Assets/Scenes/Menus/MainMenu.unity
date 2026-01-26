@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -367,6 +367,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -1023,6 +1031,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -2103,6 +2119,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -2351,6 +2375,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -2865,6 +2897,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -3309,6 +3349,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -3618,6 +3666,7 @@ MonoBehaviour:
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
+  closingMenuAnimatorList: []
 --- !u!114 &422883907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3639,6 +3688,7 @@ MonoBehaviour:
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
   pauseMenuManager: {fileID: 0}
+  closingMenuAnimator: {fileID: 0}
 --- !u!1001 &426286485
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3747,6 +3797,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -4100,6 +4158,7 @@ MonoBehaviour:
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
+  closingMenuAnimatorList: []
 --- !u!114 &440708214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4121,6 +4180,7 @@ MonoBehaviour:
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
   pauseMenuManager: {fileID: 0}
+  closingMenuAnimator: {fileID: 0}
 --- !u!1 &448119782
 GameObject:
   m_ObjectHideFlags: 0
@@ -4272,6 +4332,7 @@ GameObject:
   - component: {fileID: 486803329}
   - component: {fileID: 486803332}
   - component: {fileID: 486803333}
+  - component: {fileID: 486803334}
   m_Layer: 5
   m_Name: No
   m_TagString: Untagged
@@ -4422,10 +4483,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcd7dd1c22d54f245815747b35a572d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  newMenuState: 1
+  newMenuState: 11
   uiElementToSelect: {fileID: 70907711}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
+  closingMenuAnimatorList:
+  - {fileID: 1050696379}
+--- !u!114 &486803334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486803327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3daf9d1bba00f541ae3c61b5a04c183, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectOnCancel: {fileID: 70907711}
+  menuToOpen: {fileID: 0}
+  menuToClose: {fileID: 1050696377}
+  menuState_ToSelect: 11
+  levelState_ToSelect: 0
+  regionState_ToSelect: 0
+  currentMenuCategoryToSelect: 0
+  gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
+  closingMenuAnimator: {fileID: 1050696379}
 --- !u!1001 &517517463
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4566,6 +4651,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -5337,6 +5430,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -5723,6 +5824,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -6048,6 +6157,7 @@ MonoBehaviour:
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
+  closingMenuAnimatorList: []
 --- !u!114 &627073068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6069,6 +6179,7 @@ MonoBehaviour:
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
   pauseMenuManager: {fileID: 0}
+  closingMenuAnimator: {fileID: 0}
 --- !u!1 &633287052
 GameObject:
   m_ObjectHideFlags: 0
@@ -6899,6 +7010,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -7600,6 +7719,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -8337,6 +8464,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -8793,6 +8928,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -9119,6 +9262,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -9401,6 +9552,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -9744,6 +9903,7 @@ MonoBehaviour:
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
+  closingMenuAnimatorList: []
 --- !u!114 &1138810545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9765,6 +9925,7 @@ MonoBehaviour:
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
   pauseMenuManager: {fileID: 0}
+  closingMenuAnimator: {fileID: 0}
 --- !u!1 &1148144525
 GameObject:
   m_ObjectHideFlags: 0
@@ -9780,6 +9941,7 @@ GameObject:
   - component: {fileID: 1148144531}
   - component: {fileID: 1148144530}
   - component: {fileID: 1148144532}
+  - component: {fileID: 1148144533}
   m_Layer: 5
   m_Name: Yes
   m_TagString: Untagged
@@ -9959,6 +10121,30 @@ MonoBehaviour:
   uiElementToSelect: {fileID: 2910178311453041276}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
+  closingMenuAnimatorList:
+  - {fileID: 1050696379}
+--- !u!114 &1148144533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148144525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3daf9d1bba00f541ae3c61b5a04c183, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectOnCancel: {fileID: 70907711}
+  menuToOpen: {fileID: 0}
+  menuToClose: {fileID: 1050696377}
+  menuState_ToSelect: 11
+  levelState_ToSelect: 0
+  regionState_ToSelect: 0
+  currentMenuCategoryToSelect: 0
+  gameObjectsToHideWithThis: []
+  pauseMenuManager: {fileID: 0}
+  closingMenuAnimator: {fileID: 1050696379}
 --- !u!1 &1162143988
 GameObject:
   m_ObjectHideFlags: 0
@@ -10323,6 +10509,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -11014,6 +11208,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -11535,6 +11737,7 @@ MonoBehaviour:
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
+  closingMenuAnimatorList: []
 --- !u!114 &1354626253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11556,6 +11759,7 @@ MonoBehaviour:
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
   pauseMenuManager: {fileID: 0}
+  closingMenuAnimator: {fileID: 0}
 --- !u!1 &1355783185
 GameObject:
   m_ObjectHideFlags: 0
@@ -11763,6 +11967,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -12247,6 +12459,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -12569,6 +12789,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -12879,6 +13107,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -13377,6 +13613,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -14192,27 +14436,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5272100099813316952, guid: 708f515159424df4292f33b367a505ee, type: 3}
   m_PrefabInstance: {fileID: 1981793567}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &1624644465
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1624644463}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 81a0f52606fbb3a49b531b24fc3671df, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1639096643
 GameObject:
   m_ObjectHideFlags: 0
@@ -14666,6 +14889,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -15788,6 +16019,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -16490,6 +16729,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -16888,6 +17135,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -18563,10 +18818,7 @@ PrefabInstance:
     - {fileID: 8476080173214215946, guid: 708f515159424df4292f33b367a505ee, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 9197591149830024487, guid: 708f515159424df4292f33b367a505ee, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1624644465}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 708f515159424df4292f33b367a505ee, type: 3}
 --- !u!1 &1999907174
 GameObject:
@@ -18790,6 +19042,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -19674,6 +19934,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -19983,6 +20251,7 @@ MonoBehaviour:
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
+  closingMenuAnimatorList: []
 --- !u!114 &2144892450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20004,6 +20273,7 @@ MonoBehaviour:
   currentMenuCategoryToSelect: 0
   gameObjectsToHideWithThis: []
   pauseMenuManager: {fileID: 0}
+  closingMenuAnimator: {fileID: 0}
 --- !u!1001 &1754718314539772141
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20237,6 +20507,14 @@ PrefabInstance:
       propertyPath: selectOnCancel
       value: 
       objectReference: {fileID: 2078627695}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: closingMenuAnimator
+      value: 
+      objectReference: {fileID: 2058110172}
+    - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: gameObjectsToHideWithThis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4815447313197127190, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
@@ -23934,10 +24212,7 @@ PrefabInstance:
     - {fileID: 2066479046294135326, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7057391834147232649, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 9153252302186933390}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
 --- !u!1001 &8879586367851771026
 PrefabInstance:
@@ -24057,27 +24332,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8985415b2a6c4c149a69a1322478728a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!95 &9153252302186933390
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4160885316144579235}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f81fe3b16e9d1934480703d5cb6d672e, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &9217831691303275723 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1330780132882266929, guid: 3769f803802e29c499e2acd6b0088569, type: 3}

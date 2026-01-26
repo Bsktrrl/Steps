@@ -59,6 +59,8 @@ public class MenuManager : Singleton<MenuManager>
         controlsMenuParent.SetActive(false);
 
         wardrobeMenuParent.SetActive(false);
+
+        //MainMenuManager.Instance.newGameWarningMessage_Parent.SetActive(false);
     }
 }
 

@@ -3,6 +3,30 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 
+Closing Animations: Animator.SetTrigger("Close");
+- PauseMenu (0.2 sec delay)
+	- Background
+	- MainMenu
+	- Options
+	- Wardrobe
+
+- Dialogue (0.5 sec delay)
+
+
+-----
+
+
+WalkHoldGliding:
+- Isn't working
+
+Tutorial Walking:
+- Can move more than 1 step force hold stop on button
+
+Camera:
+- Can continue rotation by pressing rotate while rotation
+- Rotate camera also with right joystick
+
+
 RootBlock:
 - When moving onto a rootblock, a upwardStair/Slope into a Slab gets an error
 

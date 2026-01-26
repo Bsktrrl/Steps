@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -17,9 +18,9 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
     [SerializeField] GameObject menuToClose;
 
     [Header("MenuStates")]
-    [SerializeField] public MenuState menuState_ToSelect;
-    [SerializeField] public LevelState levelState_ToSelect;
-    [SerializeField] public RegionState regionState_ToSelect;
+    public MenuState menuState_ToSelect;
+    public LevelState levelState_ToSelect;
+    public RegionState regionState_ToSelect;
 
     [Header("Change Current Menu Category")]
     public MenuCategories currentMenuCategoryToSelect;
@@ -28,6 +29,10 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
     [SerializeField] List<GameObject> gameObjectsToHideWithThis;
 
     [SerializeField] PauseMenuManager pauseMenuManager;
+
+    [Header("Animator - Closing Animation")]
+    [SerializeField] Animator closingMenuAnimator;
+    float closingMenuDelay = 0.1f;
 
 
     //--------------------
@@ -51,6 +56,8 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
             /*&& !PauseMenuManager.Instance.pauseMenu_Parent*/)
         {
             SelectCancelTarget();
+
+            print("1. CloseWindow");
         }
     }
 
@@ -78,8 +85,32 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
         //-----
 
 
+        if (closingMenuAnimator)
+        {
+            print("2. CloseWindow");
+            closingMenuAnimator.SetTrigger("Close");
+
+            StartCoroutine(CloseMenuDelay(closingMenuDelay));
+        }
+        else
+        {
+            CloseMenu();
+        }
+    }
+
+    IEnumerator CloseMenuDelay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        CloseMenu();
+    }
+
+    void CloseMenu()
+    {
+        print("3. CloseWindow");
+
         Action_ButtonIsCanceled?.Invoke();
-        
+
         //Open/Close menus
         if (menuToOpen)
             menuToOpen.SetActive(true);
@@ -90,10 +121,8 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
 
             for (int i = 0; i < gameObjectsToHideWithThis.Count; i++)
             {
-                if(gameObjectsToHideWithThis[i]) gameObjectsToHideWithThis[i].SetActive(false);
+                if (gameObjectsToHideWithThis[i]) gameObjectsToHideWithThis[i].SetActive(false);
             }
-
-            //OverWorldManager.Instance.panelBackground.SetActive(false);
         }
 
         MenuManager.Instance.currentMenuCategorySelected = currentMenuCategoryToSelect;
@@ -115,14 +144,6 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
         if (selectOnCancel)
         {
             ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(selectOnCancel.gameObject);
-        }
-
-        if (pauseMenuManager && pauseMenuManager.pauseMenu_Parent && pauseMenuManager.pauseMenu_Parent.activeInHierarchy)
-        {
-            ////Set the first selected button for controller input
-            //EventSystem.current.SetSelectedGameObject(pauseMenuManager.pauseMenu_StartButton);
-
-            //print("10. pauseMenuManager = true");
         }
     }
 }

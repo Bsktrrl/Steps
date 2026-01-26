@@ -110,8 +110,11 @@ public class MainMenuManager : Singleton<MainMenuManager>
             case MenuState.Biome_Menu:
                 Menu_Biome();
                 break;
+
             case MenuState.NewGameWarningMessage:
                 Menu_NewGameWarningMessage();
+                break;
+            case MenuState.NewGameWarningMessage_No:
                 break;
 
             default:
@@ -166,10 +169,6 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     void Menu_NewGameWarningMessage()
     {
-        //HideAllMenus();
-
-        //Menu_Main();
-
         newGameWarningMessage_Parent.SetActive(true);
     }
 
