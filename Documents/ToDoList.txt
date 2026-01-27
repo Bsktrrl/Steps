@@ -14,6 +14,11 @@ RootBlock:
 - Fix so that the Numbers on RootBlocks isn't showing when they are not supposed to
 
 
+AbilityButton Display:
+- Use the new button icons and stepellierFont for NPC-interaction and when Abilities can be used
+	- Make it compatible with PlayStation, Xbox and Keyboard
+
+
 
 1. Sound:
 __________________
@@ -46,16 +51,21 @@ __________________
 
 1. Make the numbers appear when stopping AND release the movementButton
  	- Now it disappear if moving into a deadEndBlock and holding in the movementButton
+
 2. The player isn't performing walking animation after Ascending/Descending/SwiftSwim (when moving away from the block landed on)
  	- Also, the darkenBlock isn't activated for blocks 1 block above the player when having Ascending, IF ceilingGrab also is active
  	- Cannot Ascend from respawn
+
 3. ColdWater isn't treating the camera the same way as Water. It may have something to do with the Haze particle
+
 4. When doing CeilingGrabRotation back to the noraml camera, it is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
+
 5. Add "MovingBlock"-EffectBlock
+
 6. Falling onto a fallingblock (sand) prevents movement
+
 7. Make so that abilities are learned permanent when all levels required are completed (custom for fewer levels in demoes)
  	- Enable Hats when all levels are completed (for the demo only. Questline needs to be finished in the real game)
-
 
 
 
@@ -65,6 +75,7 @@ __________________
 
 
 1. Fences on fallingBlocks (sand) immobilizes movement
+
 2. Falling block let the player move down edges when respawned
 
 3. Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
@@ -72,7 +83,8 @@ __________________
  	- Almost always when at the edge of something, where not all 4 adjacent blocks can be moved to (maybe blocks isn't updated to "null" when the camera is rotating, so it keeps old blocks when they should have been "null"?
 
 4. Stairs isn't counted for when ascending/Descending, so you can ascend/Descend through them
-5. Move the asset from the EffectBlocks on top of the now on SnowBlocks
+
+5. Move the asset displayed on the EffectBlocks (Checkpoints) on top of the snow on SnowBlocks
 
 6. Skins in levels make cameras zoom (in and out, based on the rotation of the skin)
 
@@ -86,7 +98,3 @@ __________________
 
 Switches:
 - Make interactable Wall-switch
-
-
-AbilityButton Display:
-- New ButtonDisplay on the player
