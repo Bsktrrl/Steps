@@ -21,7 +21,7 @@ public class Button_ToPress : MonoBehaviour
 
     [Header("Animator - Closing Animation")]
     [SerializeField] List<Animator> closingMenuAnimatorList = new List<Animator>();
-    float closingMenuDelay = 0.1f;
+    float closingMenuDelay = 0.2f;
 
 
     //--------------------

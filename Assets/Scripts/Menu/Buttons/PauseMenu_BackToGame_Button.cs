@@ -6,7 +6,7 @@ public class PauseMenu_BackToGame_Button : MonoBehaviour
 {
     [Header("Animator - Closing Animation")]
     [SerializeField] List<Animator> closingPauseMenuAnimatorList = new List<Animator>();
-    float closingMenuDelay = 0.1f;
+    float closingMenuDelay = 0.2f;
 
 
     //--------------------

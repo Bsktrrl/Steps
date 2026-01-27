@@ -32,7 +32,7 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
 
     [Header("Animator - Closing Animation")]
     [SerializeField] Animator closingMenuAnimator;
-    float closingMenuDelay = 0.1f;
+    float closingMenuDelay = 0.2f;
 
 
     //--------------------

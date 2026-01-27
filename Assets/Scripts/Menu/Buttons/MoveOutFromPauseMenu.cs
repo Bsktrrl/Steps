@@ -6,7 +6,7 @@ public class MoveOutFromPauseMenu : MonoBehaviour
 {
     [Header("Animator - Closing Animation")]
     [SerializeField] List<Animator> closingPauseMenuAnimatorList = new List<Animator>();
-    float closingMenuDelay = 0.1f;
+    float closingMenuDelay = 0.2f;
 
     bool firstTimeEnter;
 
