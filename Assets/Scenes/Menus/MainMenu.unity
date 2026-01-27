@@ -1050,7 +1050,7 @@ PrefabInstance:
     - target: {fileID: 4921006152386638099, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 1201506847}
+      objectReference: {fileID: 2910178311453041276}
     - target: {fileID: 5326634095417618646, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 4.1999817
@@ -2362,6 +2362,10 @@ PrefabInstance:
     - target: {fileID: 1330780132882266929, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_Name
       value: Rivergreen Lv.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1330780132882266929, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: menuToOpen
@@ -6866,7 +6870,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: german_MapNameDisplay
-      value: '-'
+      value: Der Strom
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: korean_MapNameDisplay
@@ -6878,7 +6882,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: english_MapNameDisplay
-      value: '-'
+      value: The stream
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: japanese_MapNameDisplay
@@ -6886,7 +6890,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: norwegian_MapNameDisplay
-      value: '-'
+      value: Bekkefaret
       objectReference: {fileID: 0}
     - target: {fileID: 1055775704402836038, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelState
@@ -10339,17 +10343,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1197661233}
   m_CullTransparentMesh: 1
---- !u!114 &1201506847 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4921006152386638099, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
-  m_PrefabInstance: {fileID: 316011514}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1207678797 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8193438165068798685, guid: 708f515159424df4292f33b367a505ee, type: 3}
@@ -20508,7 +20501,7 @@ PrefabInstance:
     - target: {fileID: 4921006152386638099, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 1201506847}
+      objectReference: {fileID: 1376599056}
     - target: {fileID: 4921006152386638099, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
