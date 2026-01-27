@@ -50,6 +50,7 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
 
     public void ShowText(string text)
     {
+        print("1. ShowText");
         fullText = text;
 
         if (typingCoroutine != null)

@@ -38,22 +38,28 @@ public class NPCManager : Singleton<NPCManager>
                 switch (dialogueNumber)
                 {
                     case 1:
-                        charatersData.floriel_Data.level_1_DialogueFinished = true;
+                        if (charatersData != null && charatersData.floriel_Data != null)
+                            charatersData.floriel_Data.level_1_DialogueFinished = true;
                         break;
                     case 2:
-                        charatersData.floriel_Data.level_2_DialogueFinished = true;
+                        if (charatersData != null && charatersData.floriel_Data != null)
+                            charatersData.floriel_Data.level_2_DialogueFinished = true;
                         break;
                     case 3:
-                        charatersData.floriel_Data.level_3_DialogueFinished = true;
+                        if (charatersData != null && charatersData.floriel_Data != null)
+                            charatersData.floriel_Data.level_3_DialogueFinished = true;
                         break;
                     case 4:
-                        charatersData.floriel_Data.level_4_DialogueFinished = true;
+                        if (charatersData != null && charatersData.floriel_Data != null)
+                            charatersData.floriel_Data.level_4_DialogueFinished = true;
                         break;
                     case 5:
-                        charatersData.floriel_Data.level_5_DialogueFinished = true;
+                        if (charatersData != null && charatersData.floriel_Data != null)
+                            charatersData.floriel_Data.level_5_DialogueFinished = true;
                         break;
                     case 6:
-                        charatersData.floriel_Data.level_6_DialogueFinished = true;
+                        if (charatersData != null && charatersData.floriel_Data != null)
+                            charatersData.floriel_Data.level_6_DialogueFinished = true;
                         break;
 
                     default:
@@ -64,22 +70,28 @@ public class NPCManager : Singleton<NPCManager>
                 switch (dialogueNumber)
                 {
                     case 1:
-                        charatersData.granith_Data.level_1_DialogueFinished = true;
+                        if (charatersData != null && charatersData.granith_Data != null)
+                            charatersData.granith_Data.level_1_DialogueFinished = true;
                         break;
                     case 2:
-                        charatersData.granith_Data.level_2_DialogueFinished = true;
+                        if (charatersData != null && charatersData.granith_Data != null)
+                            charatersData.granith_Data.level_2_DialogueFinished = true;
                         break;
                     case 3:
-                        charatersData.granith_Data.level_3_DialogueFinished = true;
+                        if (charatersData != null && charatersData.granith_Data != null)
+                            charatersData.granith_Data.level_3_DialogueFinished = true;
                         break;
                     case 4:
-                        charatersData.granith_Data.level_4_DialogueFinished = true;
+                        if (charatersData != null && charatersData.granith_Data != null)
+                            charatersData.granith_Data.level_4_DialogueFinished = true;
                         break;
                     case 5:
-                        charatersData.granith_Data.level_5_DialogueFinished = true;
+                        if (charatersData != null && charatersData.granith_Data != null)
+                            charatersData.granith_Data.level_5_DialogueFinished = true;
                         break;
                     case 6:
-                        charatersData.granith_Data.level_6_DialogueFinished = true;
+                        if (charatersData != null && charatersData.granith_Data != null)
+                            charatersData.granith_Data.level_6_DialogueFinished = true;
                         break;
 
                     default:
@@ -90,22 +102,28 @@ public class NPCManager : Singleton<NPCManager>
                 switch (dialogueNumber)
                 {
                     case 1:
-                        charatersData.archie_Data.level_1_DialogueFinished = true;
+                        if (charatersData != null && charatersData.archie_Data != null)
+                            charatersData.archie_Data.level_1_DialogueFinished = true;
                         break;
                     case 2:
-                        charatersData.archie_Data.level_2_DialogueFinished = true;
+                        if (charatersData != null && charatersData.archie_Data != null)
+                            charatersData.archie_Data.level_2_DialogueFinished = true;
                         break;
                     case 3:
-                        charatersData.archie_Data.level_3_DialogueFinished = true;
+                        if (charatersData != null && charatersData.archie_Data != null)
+                            charatersData.archie_Data.level_3_DialogueFinished = true;
                         break;
                     case 4:
-                        charatersData.archie_Data.level_4_DialogueFinished = true;
+                        if (charatersData != null && charatersData.archie_Data != null)
+                            charatersData.archie_Data.level_4_DialogueFinished = true;
                         break;
                     case 5:
-                        charatersData.archie_Data.level_5_DialogueFinished = true;
+                        if (charatersData != null && charatersData.archie_Data != null)
+                            charatersData.archie_Data.level_5_DialogueFinished = true;
                         break;
                     case 6:
-                        charatersData.archie_Data.level_6_DialogueFinished = true;
+                        if (charatersData != null && charatersData.archie_Data != null)
+                            charatersData.archie_Data.level_6_DialogueFinished = true;
                         break;
 
                     default:
@@ -116,22 +134,28 @@ public class NPCManager : Singleton<NPCManager>
                 switch (dialogueNumber)
                 {
                     case 1:
-                        charatersData.aisa_Data.level_1_DialogueFinished = true;
+                        if (charatersData != null && charatersData.aisa_Data != null)
+                            charatersData.aisa_Data.level_1_DialogueFinished = true;
                         break;
                     case 2:
-                        charatersData.aisa_Data.level_2_DialogueFinished = true;
+                        if (charatersData != null && charatersData.aisa_Data != null)
+                            charatersData.aisa_Data.level_2_DialogueFinished = true;
                         break;
                     case 3:
-                        charatersData.aisa_Data.level_3_DialogueFinished = true;
+                        if (charatersData != null && charatersData.aisa_Data != null)
+                            charatersData.aisa_Data.level_3_DialogueFinished = true;
                         break;
                     case 4:
-                        charatersData.aisa_Data.level_4_DialogueFinished = true;
+                        if (charatersData != null && charatersData.aisa_Data != null)
+                            charatersData.aisa_Data.level_4_DialogueFinished = true;
                         break;
                     case 5:
-                        charatersData.aisa_Data.level_5_DialogueFinished = true;
+                        if (charatersData != null && charatersData.aisa_Data != null)
+                            charatersData.aisa_Data.level_5_DialogueFinished = true;
                         break;
                     case 6:
-                        charatersData.aisa_Data.level_6_DialogueFinished = true;
+                        if (charatersData != null && charatersData.aisa_Data != null)
+                            charatersData.aisa_Data.level_6_DialogueFinished = true;
                         break;
 
                     default:
@@ -142,22 +166,28 @@ public class NPCManager : Singleton<NPCManager>
                 switch (dialogueNumber)
                 {
                     case 1:
-                        charatersData.mossy_Data.level_1_DialogueFinished = true;
+                        if (charatersData != null && charatersData.mossy_Data != null)
+                            charatersData.mossy_Data.level_1_DialogueFinished = true;
                         break;
                     case 2:
-                        charatersData.mossy_Data.level_2_DialogueFinished = true;
+                        if (charatersData != null && charatersData.mossy_Data != null)
+                            charatersData.mossy_Data.level_2_DialogueFinished = true;
                         break;
                     case 3:
-                        charatersData.mossy_Data.level_3_DialogueFinished = true;
+                        if (charatersData != null && charatersData.mossy_Data != null)
+                            charatersData.mossy_Data.level_3_DialogueFinished = true;
                         break;
                     case 4:
-                        charatersData.mossy_Data.level_4_DialogueFinished = true;
+                        if (charatersData != null && charatersData.mossy_Data != null)
+                            charatersData.mossy_Data.level_4_DialogueFinished = true;
                         break;
                     case 5:
-                        charatersData.mossy_Data.level_5_DialogueFinished = true;
+                        if (charatersData != null && charatersData.mossy_Data != null)
+                            charatersData.mossy_Data.level_5_DialogueFinished = true;
                         break;
                     case 6:
-                        charatersData.mossy_Data.level_6_DialogueFinished = true;
+                        if (charatersData != null && charatersData.mossy_Data != null)
+                            charatersData.mossy_Data.level_6_DialogueFinished = true;
                         break;
 
                     default:
@@ -168,22 +198,28 @@ public class NPCManager : Singleton<NPCManager>
                 switch (dialogueNumber)
                 {
                     case 1:
-                        charatersData.larry_Data.level_1_DialogueFinished = true;
+                        if (charatersData != null && charatersData.larry_Data != null)
+                            charatersData.larry_Data.level_1_DialogueFinished = true;
                         break;
                     case 2:
-                        charatersData.larry_Data.level_2_DialogueFinished = true;
+                        if (charatersData != null && charatersData.larry_Data != null)
+                            charatersData.larry_Data.level_2_DialogueFinished = true;
                         break;
                     case 3:
-                        charatersData.larry_Data.level_3_DialogueFinished = true;
+                        if (charatersData != null && charatersData.larry_Data != null)
+                            charatersData.larry_Data.level_3_DialogueFinished = true;
                         break;
                     case 4:
-                        charatersData.larry_Data.level_4_DialogueFinished = true;
+                        if (charatersData != null && charatersData.larry_Data != null)
+                            charatersData.larry_Data.level_4_DialogueFinished = true;
                         break;
                     case 5:
-                        charatersData.larry_Data.level_5_DialogueFinished = true;
+                        if (charatersData != null && charatersData.larry_Data != null)
+                            charatersData.larry_Data.level_5_DialogueFinished = true;
                         break;
                     case 6:
-                        charatersData.larry_Data.level_6_DialogueFinished = true;
+                        if (charatersData != null && charatersData.larry_Data != null)
+                            charatersData.larry_Data.level_6_DialogueFinished = true;
                         break;
 
                     default:
@@ -194,22 +230,28 @@ public class NPCManager : Singleton<NPCManager>
                 switch (dialogueNumber)
                 {
                     case 1:
-                        charatersData.stepellier_Data.level_1_DialogueFinished = true;
+                        if (charatersData != null && charatersData.stepellier_Data != null)
+                            charatersData.stepellier_Data.level_1_DialogueFinished = true;
                         break;
                     case 2:
-                        charatersData.stepellier_Data.level_2_DialogueFinished = true;
+                        if (charatersData != null && charatersData.stepellier_Data != null)
+                            charatersData.stepellier_Data.level_2_DialogueFinished = true;
                         break;
                     case 3:
-                        charatersData.stepellier_Data.level_3_DialogueFinished = true;
+                        if (charatersData != null && charatersData.stepellier_Data != null)
+                            charatersData.stepellier_Data.level_3_DialogueFinished = true;
                         break;
                     case 4:
-                        charatersData.stepellier_Data.level_4_DialogueFinished = true;
+                        if (charatersData != null && charatersData.stepellier_Data != null)
+                            charatersData.stepellier_Data.level_4_DialogueFinished = true;
                         break;
                     case 5:
-                        charatersData.stepellier_Data.level_5_DialogueFinished = true;
+                        if (charatersData != null && charatersData.stepellier_Data != null)
+                            charatersData.stepellier_Data.level_5_DialogueFinished = true;
                         break;
                     case 6:
-                        charatersData.stepellier_Data.level_6_DialogueFinished = true;
+                        if (charatersData != null && charatersData.stepellier_Data != null)
+                            charatersData.stepellier_Data.level_6_DialogueFinished = true;
                         break;
 
                     default:

@@ -30,6 +30,8 @@ public class OptionBoxes : Singleton<OptionBoxes>
 
     public void SetupOptions(NPCs npc, string option_1, string option_2, string option_3, string option_4)
     {
+        //print("1. SetupOptions | Opt_1: " + option_1 + " | Opt_2: " + option_2 + " | Opt_3: " + option_3 + " | Opt_4: " + option_4);
+
         SetupOptionTexts(optionButtonText_1_Active, option_1);
         SetupOptionTexts(optionButtonText_1_Passive, option_1);
         SetupOptionTexts(optionButtonText_2_Active, option_2);
@@ -216,15 +218,21 @@ public class OptionBoxes : Singleton<OptionBoxes>
     void SetupOptionVisibility(Button button, string option)
     {
         if (option == "")
+        {
             button.gameObject.SetActive(false);
+
+            //print("1. SetupOptionVisibility | Button: " + button.gameObject.name + " | Text: " + option);
+        }
         else
         {
+            //print("2. SetupOptionVisibility | Button: " + button.gameObject.name + " | Text: " + option);
             button.gameObject.SetActive(true);
             DialogueManager.Instance.selectedButton = 1;
         }
     }
     public void HideOptions()
     {
+        //print("3. HideOptions");
         optionButton_1.gameObject.SetActive(false);
         optionButton_2.gameObject.SetActive(false);
         optionButton_3.gameObject.SetActive(false);

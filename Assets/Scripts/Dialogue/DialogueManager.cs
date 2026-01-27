@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,6 +32,14 @@ public class DialogueManager : Singleton<DialogueManager>
     public int segmentTotal;
     public int currentSegement;
 
+    [Header("Animator - Closing Animation")]
+    [SerializeField] List<Animator> closingMenuAnimatorList = new List<Animator>();
+    public float closingMenuDelay = 0.5f;
+
+    bool isFirstTimeDialogue;
+
+    NPCManager nPCManager;
+
 
     //--------------------
 
@@ -42,9 +51,16 @@ public class DialogueManager : Singleton<DialogueManager>
         languageAmount = Enum.GetValues(typeof(Languages)).Length;
     }
 
+    private void Start()
+    {
+        nPCManager = FindAnyObjectByType<NPCManager>();
+    }
+
     private void OnEnable()
     {
         TypewriterEffect.Action_Typewriting_Finished += SetupArrow;
+
+        isFirstTimeDialogue = false;
     }
     private void OnDisable()
     {
@@ -61,15 +77,34 @@ public class DialogueManager : Singleton<DialogueManager>
         HideArrow();
 
         SetupNPCNameText_toDisplay(npc.ToString());
-        SetupDialogueText_toDisplay(dialogueText);
-
-        OptionBoxes.Instance.SetupOptions(npc, languageSection.option1_Text, languageSection.option2_Text, languageSection.option3_Text, languageSection.option4_Text);
 
         //Set dialogueBox active, if not
         if (!dialogueCanvas.activeInHierarchy)
         {
             StartDialogue();
         }
+
+        if (!isFirstTimeDialogue)
+        {
+            isFirstTimeDialogue = true;
+            StartCoroutine(DialogueTextApperance_Delay(npc, dialogueText, languageSection));
+        }
+        else
+        {
+            ShowDialogueText(npc, dialogueText, languageSection);
+        }
+    }
+    IEnumerator DialogueTextApperance_Delay(NPCs npc, string dialogueText, LanguageOptions languageSection)
+    {
+        yield return new WaitForSeconds(0.45f);
+
+        ShowDialogueText(npc, dialogueText, languageSection);
+    }
+    void ShowDialogueText(NPCs npc, string dialogueText, LanguageOptions languageSection)
+    {
+        SetupDialogueText_toDisplay(dialogueText);
+
+        OptionBoxes.Instance.SetupOptions(npc, languageSection.option1_Text, languageSection.option2_Text, languageSection.option3_Text, languageSection.option4_Text);
     }
     void SetupNPCNameText_toDisplay(string _name)
     {
@@ -90,8 +125,18 @@ public class DialogueManager : Singleton<DialogueManager>
 
         dialogueCanvas.SetActive(true);
     }
-    public IEnumerator EndDialogue()
+    public IEnumerator EndDialogue(float waitTime)
     {
+        if (closingMenuAnimatorList.Count > 0)
+        {
+            for (int i = 0; i < closingMenuAnimatorList.Count; i++)
+            {
+                closingMenuAnimatorList[i].SetTrigger("Close");
+            }
+        }
+
+        yield return new WaitForSeconds(waitTime);
+
         dialogueCanvas.SetActive(false);
         npcObject.isInteracting = false;
         npcObject.hasTalked = true;
@@ -100,8 +145,11 @@ public class DialogueManager : Singleton<DialogueManager>
 
         ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, MessageManager.Instance.Show_Message(MessageManager.Instance.interact_Talk_Message));
 
-        NPCManager.Instance.SetDialogueFinished(npcObject.characterName, npcObject.levelNumber);
-
+        if (nPCManager && npcObject != null)
+        {
+            nPCManager.SetDialogueFinished(npcObject.characterName, npcObject.levelNumber);
+        }
+        
         //Reset Stats
         npcObject = null;
         activeNPC = NPCs.None;

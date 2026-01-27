@@ -19,6 +19,10 @@ public class Button_ToPress : MonoBehaviour
     [SerializeField] bool showVisualization;
     [SerializeField] Color navigationColor = Color.cyan;
 
+    [Header("Animator - Closing Animation")]
+    [SerializeField] List<Animator> closingMenuAnimatorList = new List<Animator>();
+    float closingMenuDelay = 0.2f;
+
 
     //--------------------
 
@@ -40,6 +44,15 @@ public class Button_ToPress : MonoBehaviour
         }
     }
 
+
+    //--------------------
+
+
+    public void Button_isPressed()
+    {
+        JumpToElement();
+    }
+
     void JumpToElement()
     {
         //PauseMenu
@@ -52,6 +65,37 @@ public class Button_ToPress : MonoBehaviour
         {
             Debug.Log("This should jump where? ", this);
         }
+
+
+        //-----
+
+
+        if (closingMenuAnimatorList.Count > 0)
+        {
+            for (int i = 0; i < closingMenuAnimatorList.Count; i++)
+            {
+                closingMenuAnimatorList[i].SetTrigger("Close");
+            }
+
+            StartCoroutine(CloseMenuDelay(closingMenuDelay));
+        }
+        else
+        {
+            CloseOpenMenu();
+        }
+    }
+
+    IEnumerator CloseMenuDelay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        CloseOpenMenu();
+    }
+    void CloseOpenMenu()
+    {
+        Action_ButtonIsPressed?.Invoke();
+
+        MenuStates.Instance.ChangeMenuState(newMenuState);
 
         switch (newMenuState)
         {
@@ -92,6 +136,13 @@ public class Button_ToPress : MonoBehaviour
                 MenuManager.Instance.ChangeMenuCategory(MenuCategories.Settings);
                 break;
 
+            case MenuState.NewGameWarningMessage:
+                MainMenuManager.Instance.newGameWarningMessage_Parent.SetActive(true);
+                break;
+            case MenuState.NewGameWarningMessage_No:
+                MainMenuManager.Instance.newGameWarningMessage_Parent.SetActive(false);
+                break;
+
             default:
                 break;
         }
@@ -107,18 +158,5 @@ public class Button_ToPress : MonoBehaviour
         PauseMenuManager.Instance.pauseMenu_MainMenu_Parent.SetActive(false);
         PauseMenuManager.Instance.pauseMenu_Skins_Parent.SetActive(false);
         PauseMenuManager.Instance.pauseMenu_Options_Parent.SetActive(false);
-    }
-
-
-    //--------------------
-
-
-    public void Button_isPressed()
-    {
-        Action_ButtonIsPressed?.Invoke();
-
-        MenuStates.Instance.ChangeMenuState(newMenuState);
-
-        JumpToElement();
     }
 }
