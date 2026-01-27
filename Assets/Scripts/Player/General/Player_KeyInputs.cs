@@ -772,7 +772,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     {
         yield return null;
 
-        print("1. MovementButton_Down");
         tutorialMovementBlocker = true;
     }
 

@@ -170,19 +170,24 @@ public class Tutorial : Singleton<Tutorial>
 
         yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration_In);
 
+        print("1. Tutorial - Raspawn");
         state_Respawn = true;
         state_CameraRotation = false;
     }
     public void End_Tutorial_Respawn()
     {
-        if (tutorial_isRunning)
+        if (state_Respawn /*tutorial_isRunning*/)
         {
-            respawnCounter++;
+            print("2. Tutorial - Raspawn");
+            StartCoroutine(Tutorial_Respawn_End(0.1f));
 
-            if (respawnCounter > 1)
-            {
-                StartCoroutine(Tutorial_Respawn_End(0.1f));
-            }
+            //respawnCounter++;
+
+            //if (respawnCounter > 1)
+            //{
+            //    print("2. Tutorial - Raspawn");
+            //    StartCoroutine(Tutorial_Respawn_End(0.1f));
+            //}
         }
     }
     IEnumerator Tutorial_Respawn_End(float waitTime)
@@ -219,6 +224,7 @@ public class Tutorial : Singleton<Tutorial>
 
         state_FreeCam_1 = true;
         state_Respawn = false;
+        print("3. Tutorial - Raspawn");
     }
     IEnumerator Tutorial_FreeCam_1_End(float waitTime)
     {

@@ -174,7 +174,6 @@ public class Movement : Singleton<Movement>
         //Movement
         if (Tutorial.Instance.tutorial_isRunning && Player_KeyInputs.Instance.tutorialMovementBlocker /*(Player_KeyInputs.Instance.forward_isPressed || Player_KeyInputs.Instance.back_isPressed || Player_KeyInputs.Instance.left_isPressed || Player_KeyInputs.Instance.right_isPressed)*/)
         {
-            print("1. Movement");
             return;
         }
 
