@@ -18,6 +18,7 @@ public class Player_Animations : Singleton<Player_Animations>
     public float effectChargeTime_Pickup_Teleport = 0.23f;
 
     [SerializeField] bool isWalkGliding;
+    [SerializeField] bool walkGlidingCheck;
 
 
     //--------------------
@@ -44,17 +45,40 @@ public class Player_Animations : Singleton<Player_Animations>
             Set_SwimAnimation(false);
         }
 
+        //Extra safety to standing still glidingBug
+        if (Movement.Instance.movementStates == MovementStates.Still ||
+            (!Player_KeyInputs.Instance.forward_isHold &&
+            !Player_KeyInputs.Instance.back_isHold &&
+            !Player_KeyInputs.Instance.left_isHold &&
+            !Player_KeyInputs.Instance.right_isHold))
+        {
+            Set_WalkGlideAnimation(false);
+        }
+
         //Walk Glide Animation
-        if (/*Movement.Instance.movementStates == MovementStates.Moving &&*/
+        else if (/*Movement.Instance.movementStates == MovementStates.Moving &&*/
             (Player_KeyInputs.Instance.forward_isHold && Movement.Instance.moveToBlock_Forward.canMoveTo)
             || (Player_KeyInputs.Instance.back_isHold && Movement.Instance.moveToBlock_Back.canMoveTo)
             || (Player_KeyInputs.Instance.left_isHold && Movement.Instance.moveToBlock_Left.canMoveTo)
             || (Player_KeyInputs.Instance.right_isHold && Movement.Instance.moveToBlock_Right.canMoveTo))
         {
-            Set_WalkGlideAnimation(true);
+            //print("1. isWalkGliding");
+            //Set_WalkGlideAnimation(true);
+
+            if (!walkGlidingCheck)
+            {
+                //print("1. isWalkGliding");
+                Set_WalkGlideAnimation(true);
+            }
+            //else
+            //{
+            //    print("2. isWalkGliding");
+            //    Set_WalkGlideAnimation(false);
+            //}
         }
         else
         {
+            //print("3. isWalkGliding");
             Set_WalkGlideAnimation(false);
         }
 
@@ -65,12 +89,6 @@ public class Player_Animations : Singleton<Player_Animations>
             Player_KeyInputs.Instance.back_isHold = false;
             Player_KeyInputs.Instance.left_isHold = false;
             Player_KeyInputs.Instance.right_isHold = false;
-        }
-
-        //Extra safety to standing still glidingBug
-        if (Movement.Instance.movementStates == MovementStates.Still)
-        {
-            Set_WalkGlideAnimation(false);
         }
     }
 
@@ -84,7 +102,7 @@ public class Player_Animations : Singleton<Player_Animations>
         DataManager.Action_dataHasLoaded += UpdateAnimator;
 
         Movement.Action_RespawnPlayer += ResetAnimations;
-        Movement.Action_RespawnPlayerEarly += Trigger_RespawnAnimation;
+        //Movement.Action_RespawnPlayerEarly += Trigger_RespawnAnimation;
 
         Player_KeyInputs.Action_RespawnHold += Start_RespawnAnimation;
         Player_KeyInputs.Action_RespawnCanceled += End_RespawnAnimation;
@@ -101,7 +119,7 @@ public class Player_Animations : Singleton<Player_Animations>
         DataManager.Action_dataHasLoaded -= UpdateAnimator;
 
         Movement.Action_RespawnPlayer -= ResetAnimations;
-        Movement.Action_RespawnPlayerEarly -= Trigger_RespawnAnimation;
+        //Movement.Action_RespawnPlayerEarly -= Trigger_RespawnAnimation;
 
         Player_KeyInputs.Action_RespawnHold -= Start_RespawnAnimation;
         Player_KeyInputs.Action_RespawnCanceled -= End_RespawnAnimation;
@@ -221,14 +239,18 @@ public class Player_Animations : Singleton<Player_Animations>
     }
     public void Set_WalkGlideAnimation(bool state)
     {
-        if (state == true && Movement.Instance.movementStates == MovementStates.Still)
+        if (state /*&& Movement.Instance.movementStates == MovementStates.Still*/)
         {
+            //print("4. isWalkGliding");
+            walkGlidingCheck = true;
             //anim.speed = 1.0f;
             playerAnimator.SetBool("Sliding", true);
             isWalkGliding = true;
         }
         else
         {
+            //print("5. isWalkGliding");
+            walkGlidingCheck = false;
             playerAnimator.SetBool("Sliding", false);
             isWalkGliding = false;
         }
@@ -370,12 +392,16 @@ public class Player_Animations : Singleton<Player_Animations>
     {
         if (Movement.Instance.isMoving || Player_KeyInputs.Instance.respawn_isPressed) { return; }
 
+        print("3. Respawn - Animation");
+
         playerAnimator.speed = 1.0f;
         playerAnimator.SetTrigger(AnimationManager.Instance.effect_Teleport);
     }
     public void Trigger_RespawnAnimation_ButtonHold()
     {
         if (Movement.Instance.isMoving) { return; }
+
+        print("4. Respawn - Animation");
 
         playerAnimator.speed = 1.0f;
         playerAnimator.SetTrigger(AnimationManager.Instance.effect_Teleport);

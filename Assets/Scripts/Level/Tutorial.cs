@@ -170,7 +170,6 @@ public class Tutorial : Singleton<Tutorial>
 
         yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration_In);
 
-        print("1. Tutorial - Raspawn");
         state_Respawn = true;
         state_CameraRotation = false;
     }
@@ -178,7 +177,6 @@ public class Tutorial : Singleton<Tutorial>
     {
         if (state_Respawn /*tutorial_isRunning*/)
         {
-            print("2. Tutorial - Raspawn");
             StartCoroutine(Tutorial_Respawn_End(0.1f));
 
             //respawnCounter++;

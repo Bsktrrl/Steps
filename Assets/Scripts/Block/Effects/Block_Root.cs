@@ -705,7 +705,6 @@ public class Block_Root : MonoBehaviour
 
     void ResetBlockLineObjects()
     {
-        print("0. ResetBlockLineObjects");
         for (int i = 0; i < RootObjectList.Count; i++)
         {
             if (RootObjectList[i].activeInHierarchy)
