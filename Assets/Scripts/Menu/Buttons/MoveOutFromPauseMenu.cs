@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class MoveOutFromPauseMenu : MonoBehaviour
 {
+    [Header("Animator - Closing Animation")]
+    [SerializeField] List<Animator> closingPauseMenuAnimatorList = new List<Animator>();
+    float closingMenuDelay = 0.2f;
+
+    bool firstTimeEnter;
 
 
     //--------------------
@@ -12,17 +17,41 @@ public class MoveOutFromPauseMenu : MonoBehaviour
     void Update()
     {
         if (PauseMenuManager.Instance.pauseMenu_Parent.activeInHierarchy && ActionButtonsManager.Instance.eventSystem != null 
-            && ActionButtonsManager.Instance.cancel_Button.action.WasPressedThisFrame() && ActionButtonsManager.Instance.eventSystem.currentSelectedGameObject == gameObject)
+            && ActionButtonsManager.Instance.cancel_Button.action.WasPressedThisFrame() && ActionButtonsManager.Instance.eventSystem.currentSelectedGameObject == gameObject
+            && !firstTimeEnter)
         {
-            SelectCancelTarget();
+            //SelectCancelTarget();
+
+            StartCoroutine(CloseMenuDelay(closingMenuDelay));
         }
+        else
+        {
+            firstTimeEnter = false;
+        }
+    }
+
+    private void OnEnable()
+    {
+        firstTimeEnter = true;
     }
 
 
     //--------------------
 
 
-    public void SelectCancelTarget()
+    IEnumerator CloseMenuDelay(float waitTime)
+    {
+        for (int i = 0; i < closingPauseMenuAnimatorList.Count; i++)
+        {
+            closingPauseMenuAnimatorList[i].SetTrigger("Close");
+        }
+
+        yield return new WaitForSeconds(waitTime);
+
+        SelectCancelTarget();
+    }
+
+    void SelectCancelTarget()
     {
         //Debug.Log("1. SelectCancelTarget Pressed");
 

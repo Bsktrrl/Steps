@@ -292,6 +292,32 @@ public class Block_Root : MonoBehaviour
             }
             #endregion
 
+            #region Check diagonal up after stair/slope (step off up-stair)
+            if (!blockIsFound && RootFreeCostBlockList.Count > 0)
+            {
+                var lastType = RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType;
+
+                if (lastType == BlockType.Stair || lastType == BlockType.Slope)
+                {
+                    // Probe in the next cell. Start from current level (or a bit below) and cast up.
+                    // Using a long-ish ray makes it insensitive to the 0.5 stair center offset.
+                    Vector3 origin = tempOriginPos + playerLookDir + Vector3.up * 0.1f;
+
+                    GameObject diagUp = RaycastBlock(origin, Vector3.up, 5.0f);
+
+                    if (diagUp)
+                    {
+                        // Only accept if it's actually higher than our current block (prevents grabbing same level)
+                        if (diagUp.transform.position.y > tempOriginPos.y + 0.25f)
+                        {
+                            SetupEntryInBlockList(diagUp, false);
+                            blockIsFound = true;
+                        }
+                    }
+                }
+            }
+            #endregion
+
             #region Check stairs/slopes
             if (!blockIsFound)
             {
@@ -454,6 +480,9 @@ public class Block_Root : MonoBehaviour
         rootBlockLineInfo.originalMovemetCost = tempBlock.GetComponent<BlockInfo>().movementCost;
         rootBlockLineInfo.blockType = tempBlock.GetComponent<BlockInfo>().blockType;
         rootBlockLineInfo.facingDir = tempBlock.transform.localPosition;
+
+        if (rootBlockLineInfo.block && rootBlockLineInfo.block.GetComponent<Block_Water>())
+            rootBlockLineInfo.block.GetComponent<Block_Water>().hasRoots = true;
 
         RootFreeCostBlockList.Add(rootBlockLineInfo);
         tempOriginPos = RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].block.transform.position;
@@ -691,6 +720,9 @@ public class Block_Root : MonoBehaviour
     {
         for (int i = 0; i < RootFreeCostBlockList.Count; i++)
         {
+            if (RootFreeCostBlockList[i].block && RootFreeCostBlockList[i].block.GetComponent<Block_Water>())
+                RootFreeCostBlockList[i].block.GetComponent<Block_Water>().hasRoots = false;
+
             RootFreeCostBlockList[i].block.GetComponent<BlockInfo>().movementCost_Temp = RootFreeCostBlockList[i].originalMovemetCost;
             RootFreeCostBlockList[i].block.GetComponent<BlockInfo>().movementCost = RootFreeCostBlockList[i].originalMovemetCost;
         }

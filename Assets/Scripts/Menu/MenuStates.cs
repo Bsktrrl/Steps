@@ -53,15 +53,21 @@ public class MenuStates : Singleton<MenuStates>
                 break;
 
             case MenuState.NewGameWarningMessage:
-                MainMenuManager.Instance.menuState = MenuState.NewGameWarningMessage;
+                //MainMenuManager.Instance.menuState = MenuState.Main_Menu;
+                break;
+            case MenuState.NewGameWarningMessage_No:
+                //MainMenuManager.Instance.menuState = MenuState.Main_Menu;
                 break;
 
             default:
                 break;
         }
 
-        SaveMenuState(state);
-        MenuState_isChanged_Invoke();
+        if (state != MenuState.NewGameWarningMessage && state != MenuState.NewGameWarningMessage_No)
+        {
+            SaveMenuState(state);
+            MenuState_isChanged_Invoke();
+        }
     }
 
     public void MenuState_isChanged_Invoke()
@@ -94,4 +100,5 @@ public enum MenuState
     Pause_Menu_Skins,
 
     NewGameWarningMessage,
+    NewGameWarningMessage_No,
 }
