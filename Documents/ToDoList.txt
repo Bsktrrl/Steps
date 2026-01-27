@@ -9,68 +9,72 @@ Camera:
 - Rotate camera also with right joystick
 
 
+RootBlock:
+- Going down a ladder to a Root-block, doesn't trigger the Root-block (check if the last segment on the ladder is a root block and activate it manually is it is (in the opposite ladder direction)
+- Fix so that the Numbers on RootBlocks isn't showing when they are not supposed to
 
-3. Sound:
+
+
+1. Sound:
 __________________
 
-3.1. Ice Gliding and Water Blocks
-- Fix so that when icegliding and the player CAN swim, stop before any waterBlock as it was a normal ledge
-
-3.2. Ice glide bug
+1.1. Ice glide bug
 - Fix ice glide audio bug
 
 
 
-4. New Menu UI
+2. New Menu UI
 __________________
 
-4.1. Change the UI for all menus, so it matches the new assets
+2.1. Change the UI for all menus, so it matches the new assets
 - Settings
  	- Controls: Key Inputs + functionality
 
 
 
+3. IceGliding to WaterBlocks:
+__________________
+
+3.1. Ice Gliding and Water Blocks
+- Fix so that when icegliding and the player CAN swim, stop before any waterBlock as it was a normal ledge
 
 
---- OTHER STUFF
 
 
-1. PlayerGlideAnimation still happens when it should not
-2. Make the numbers appear when stopping AND release the movementButton
+--- OTHER BUGS & FIXES
+
+
+1. Make the numbers appear when stopping AND release the movementButton
  	- Now it disappear if moving into a deadEndBlock and holding in the movementButton
-3. The player isn't performing walking animation after Ascending/Descending/SwiftSwim (when moving away from the block landed on)
+2. The player isn't performing walking animation after Ascending/Descending/SwiftSwim (when moving away from the block landed on)
  	- Also, the darkenBlock isn't activated for blocks 1 block above the player when having Ascending, IF ceilingGrab also is active
  	- Cannot Ascend from respawn
-4. ColdWater isn't treatingt the camera the same way as Water. It may have something to do with the Haze particle
-5. When doing CeilingGrabRotation back to the noraml camera, it is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
-6. Add "MovingBlock"-EffectBlock
-7. Falling onto a fallingblock prevents movement
-8. Make so that abilities are learned permanent when all levels required are completed (fewer levels for the demo)
+3. ColdWater isn't treating the camera the same way as Water. It may have something to do with the Haze particle
+4. When doing CeilingGrabRotation back to the noraml camera, it is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
+5. Add "MovingBlock"-EffectBlock
+6. Falling onto a fallingblock (sand) prevents movement
+7. Make so that abilities are learned permanent when all levels required are completed (custom for fewer levels in demoes)
  	- Enable Hats when all levels are completed (for the demo only. Questline needs to be finished in the real game)
-9. Goin down a ladded to a Root-block, doesn't trigger the Root-block
 
 
 
 
---- FROM TESTBONANZA
+
+--- BUGS FROM TESTBONANZA
 
 
 
-6. Fences on fallingBlocks immobilizes movement
-7. Falling block let the player move down when respawned
-8. "Freemove" camera with right joystick
+1. Fences on fallingBlocks (sand) immobilizes movement
+2. Falling block let the player move down edges when respawned
 
-12. Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
+3. Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
  	- Sometimes, when rotating to the left twice, the player move in the looking direction after moving
  	- Almost always when at the edge of something, where not all 4 adjacent blocks can be moved to (maybe blocks isn't updated to "null" when the camera is rotating, so it keeps old blocks when they should have been "null"?
 
-16. Stairs isn't counted for when ascending/Descending
-17. Move EffectBlocks on top of SnowBlocks
+4. Stairs isn't counted for when ascending/Descending, so you can ascend/Descend through them
+5. Move the asset from the EffectBlocks on top of the now on SnowBlocks
 
-20. The left movement sometimes run on auto
-22. Camera Zoomes far in to the player on stairs, even if it's clear sight
-23. Disable camera zoom when rotating the camera (The result isn't that great, try slower zoomtime during rotation)
-24. Skins in levels make cameras zoom (in and out, based on the rotation of the skin)
+6. Skins in levels make cameras zoom (in and out, based on the rotation of the skin)
 
 
 
