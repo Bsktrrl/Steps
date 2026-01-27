@@ -61,6 +61,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     private Vector2 _lastMousePos;
 
+    public bool tutorialMovementBlocker;
+
 
 
     //--------------------
@@ -92,6 +94,10 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         //FreeCam.Instance.SetMoveAxis(pad.leftStick.ReadValue());
         //FreeCam.Instance.RotateFromStick(pad.rightStick.ReadValue());
     }
+    private void OnEnable()
+    {
+        tutorialMovementBlocker = false;
+    }
 
 
     //--------------------
@@ -104,6 +110,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         Run_Movement_Tutorial(ref forward_isPressed);
 
+        if (Tutorial.Instance.tutorial_isRunning && !tutorialMovementBlocker)
+        {
+            StartCoroutine(TutorialMovement_Delay());
+        }
+
         if (!ButtonChecks_Movement()) { return; }
 
         forward_isPressed = true;
@@ -111,9 +122,9 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnForward_Hold()
     {
-        if (!ButtonChecks_Movement()) { return; }
+        if (!ButtonChecks_Movement()) return;
 
-        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
+        if (!Tutorial.Instance.tutorial_isRunning && Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
             forward_isHold = true;
     }
     void OnForward_Up()
@@ -133,6 +144,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         Run_Movement_Tutorial(ref back_isPressed);
 
+        if (Tutorial.Instance.tutorial_isRunning && !tutorialMovementBlocker)
+        {
+            StartCoroutine(TutorialMovement_Delay());
+        }
+
         if (!ButtonChecks_Movement()) { return; }
 
         back_isPressed = true;
@@ -142,7 +158,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     {
         if (!ButtonChecks_Movement()) { return; }
 
-        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
+        if (!Tutorial.Instance.tutorial_isRunning && Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
             back_isHold = true;
     }
     void OnBackward_Up()
@@ -162,6 +178,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         Run_Movement_Tutorial(ref left_isPressed);
 
+        if (Tutorial.Instance.tutorial_isRunning && !tutorialMovementBlocker)
+        {
+            StartCoroutine(TutorialMovement_Delay());
+        }
+
         if (!ButtonChecks_Movement()) { return; }
 
         left_isPressed = true;
@@ -171,7 +192,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     {
         if (!ButtonChecks_Movement()) { return; }
 
-        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
+        if (!Tutorial.Instance.tutorial_isRunning && Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
             left_isHold = true;
     }
     void OnLeft_Up()
@@ -191,6 +212,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         Run_Movement_Tutorial(ref right_isPressed);
 
+        if (Tutorial.Instance.tutorial_isRunning && !tutorialMovementBlocker)
+        {
+            StartCoroutine(TutorialMovement_Delay());
+        }
+
         if (!ButtonChecks_Movement()) { return; }
 
         right_isPressed = true;
@@ -200,7 +226,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     {
         if (!ButtonChecks_Movement()) { return; }
 
-        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
+        if (!Tutorial.Instance.tutorial_isRunning && Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
             right_isHold = true;
     }
     void OnRight_Up()
@@ -740,6 +766,14 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         {
             Tutorial.Instance.Tutorial_FreeCam_2(false);
         }
+    }
+
+    IEnumerator TutorialMovement_Delay()
+    {
+        yield return null;
+
+        print("1. MovementButton_Down");
+        tutorialMovementBlocker = true;
     }
 
 

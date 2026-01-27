@@ -84,8 +84,7 @@ public class Tutorial : Singleton<Tutorial>
         if (!DataManager.Instance.tutorial_Finished)
         {
             PlayerManager.Instance.PauseGame();
-            tutorial_isRunning = true;
-
+            
             state_Movement = false;
             state_CameraRotation = false;
             state_Respawn = false;
@@ -110,6 +109,7 @@ public class Tutorial : Singleton<Tutorial>
 
         yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration_In);
 
+        tutorial_isRunning = true;
         state_Movement = true;
     }
     IEnumerator Movement_End(float waitTime)
