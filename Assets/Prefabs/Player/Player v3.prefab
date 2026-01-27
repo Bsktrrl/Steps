@@ -5011,7 +5011,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Flor\xEDel"
+  m_text: ---
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dfbdd2096e005a447b83ba15e4de6767, type: 2}
   m_sharedMaterial: {fileID: 6701643693541814340, guid: dfbdd2096e005a447b83ba15e4de6767, type: 2}
@@ -12178,6 +12178,9 @@ MonoBehaviour:
   activeNPC: 0
   segmentTotal: 0
   currentSegement: 0
+  closingMenuAnimatorList:
+  - {fileID: 3774352548627987403}
+  closingMenuDelay: 0.5
 --- !u!114 &215673665657898076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29512,7 +29515,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "My name is Flor\xEDel. I am saying a line of dialog. Wee woo."
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dfbdd2096e005a447b83ba15e4de6767, type: 2}
   m_sharedMaterial: {fileID: 6701643693541814340, guid: dfbdd2096e005a447b83ba15e4de6767, type: 2}
@@ -43491,7 +43494,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2684821796071106476, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3157558116982093503, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
       propertyPath: m_Pivot.x
@@ -43610,8 +43613,16 @@ PrefabInstance:
       value: 4280826697
       objectReference: {fileID: 0}
     - target: {fileID: 8529508503217933795, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529508503217933795, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
       propertyPath: m_fontSize
       value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 9081370304836118508, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
+      propertyPath: m_text
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3636223535454831765, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
@@ -46342,6 +46353,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2684821796071106476, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3157558116982093503, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -46439,8 +46454,16 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8529508503217933795, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529508503217933795, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
       propertyPath: m_fontSize
       value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 9081370304836118508, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
+      propertyPath: m_text
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3636223535454831765, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
@@ -49252,6 +49275,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2684821796071106476, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3157558116982093503, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -49349,8 +49376,16 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8529508503217933795, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529508503217933795, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
       propertyPath: m_fontSize
       value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 9081370304836118508, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
+      propertyPath: m_text
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3636223535454831765, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
@@ -49496,6 +49531,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2684821796071106476, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3157558116982093503, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -49593,8 +49632,16 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8529508503217933795, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529508503217933795, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
       propertyPath: m_fontSize
       value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 9081370304836118508, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}
+      propertyPath: m_text
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3636223535454831765, guid: ef36e214295f0b74b9ed5a2667fa2507, type: 3}

@@ -1087,7 +1087,7 @@ public class Interactable_NPC : MonoBehaviour
         {
             lastSegment = segmentIndex;
             StartCoroutine(TurnNPCAwayFromPlayer());
-            StartCoroutine(DialogueManager.Instance.EndDialogue());
+            StartCoroutine(DialogueManager.Instance.EndDialogue(DialogueManager.Instance.closingMenuDelay));
 
             print("0. Last Segment: " + segmentIndex);
         }
@@ -1323,7 +1323,7 @@ public class Interactable_NPC : MonoBehaviour
         else
         {
             StartCoroutine(TurnNPCAwayFromPlayer());
-            StartCoroutine(DialogueManager.Instance.EndDialogue());
+            StartCoroutine(DialogueManager.Instance.EndDialogue(DialogueManager.Instance.closingMenuDelay));
             return;
         }
 
