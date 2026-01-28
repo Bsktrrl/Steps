@@ -28,7 +28,8 @@ public class Block_Root : MonoBehaviour
     [SerializeField] float stairUpHeightOffset = 0.20f;
     [SerializeField] float stairSurfaceTilt = -45f;
 
-    bool isActive;
+    [SerializeField] bool isActive;
+    [SerializeField] bool onTrigger;
 
 
 
@@ -71,16 +72,27 @@ public class Block_Root : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isActive) return;
+        if (isActive)
+        {
+            onTrigger = true;
+            return;
+        }
 
         if (other.transform.gameObject.layer == 6) //6 = PlayerLayer
         {
-            if (Movement.Instance.isRespawning) return;
-
-            Action_StandingOnRootBlock_Early?.Invoke();
-
-            ActivateRoots();
+            print("1. SetupActivateRoot");
+            SetupActivateRoot();
         }
+    }
+    void SetupActivateRoot()
+    {
+        if (Movement.Instance.isRespawning) return;
+
+        print("2. SetupActivateRoot");
+
+        Action_StandingOnRootBlock_Early?.Invoke();
+
+        ActivateRoots();
     }
 
 
@@ -705,6 +717,12 @@ public class Block_Root : MonoBehaviour
         RootFreeCostBlockList.Clear();
 
         finishedCheckingForBlocks = false;
+
+        if (onTrigger)
+        {
+            onTrigger = false;
+            SetupActivateRoot();
+        }
     }
 
 
