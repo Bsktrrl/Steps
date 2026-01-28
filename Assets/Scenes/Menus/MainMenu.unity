@@ -941,7 +941,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: german_MapNameDisplay
-      value: "Stream Spire Au\xDFenposten"
+      value: Der Strom
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: korean_MapNameDisplay
@@ -953,7 +953,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: english_MapNameDisplay
-      value: Streamspire Outpost
+      value: The stream
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: japanese_MapNameDisplay
@@ -961,7 +961,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: norwegian_MapNameDisplay
-      value: Utposten ved elvespiren
+      value: Bekkefaret
       objectReference: {fileID: 0}
     - target: {fileID: 1055775704402836038, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelState
@@ -1050,7 +1050,7 @@ PrefabInstance:
     - target: {fileID: 4921006152386638099, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 2910178311453041276}
+      objectReference: {fileID: 316011516}
     - target: {fileID: 5326634095417618646, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 4.1999817
@@ -2260,6 +2260,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7569002106724044432, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
   m_PrefabInstance: {fileID: 276213991}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &276213994 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+  m_PrefabInstance: {fileID: 276213991}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fd996c64c094664b93928c21e8eb00d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &282986153 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 220225984855704253, guid: 708f515159424df4292f33b367a505ee, type: 3}
@@ -2281,7 +2292,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: german_MapNameDisplay
-      value: '-'
+      value: Grass Creek Garten
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: korean_MapNameDisplay
@@ -2293,7 +2304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: english_MapNameDisplay
-      value: '-'
+      value: Ripplegrass Garden
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: japanese_MapNameDisplay
@@ -2301,7 +2312,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: norwegian_MapNameDisplay
-      value: '-'
+      value: Gressbekkhagen
       objectReference: {fileID: 0}
     - target: {fileID: 1055775704402836038, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelState
@@ -2365,7 +2376,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1330780132882266929, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3372689721122040330, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: menuToOpen
@@ -2505,6 +2516,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7569002106724044432, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
   m_PrefabInstance: {fileID: 316011514}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &316011516 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4921006152386638099, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+  m_PrefabInstance: {fileID: 316011514}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &316011517 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+  m_PrefabInstance: {fileID: 316011514}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fd996c64c094664b93928c21e8eb00d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &318349594
 GameObject:
   m_ObjectHideFlags: 0
@@ -3483,6 +3516,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &420988075 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+  m_PrefabInstance: {fileID: 420988072}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fd996c64c094664b93928c21e8eb00d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &422883900
 GameObject:
   m_ObjectHideFlags: 0
@@ -3642,7 +3686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e435784bad416db4c958fd7b8e2971f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionState: 1
+  regionState: 3
 --- !u!114 &422883906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3931,6 +3975,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &426286488 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+  m_PrefabInstance: {fileID: 426286485}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fd996c64c094664b93928c21e8eb00d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &432684997
 GameObject:
   m_ObjectHideFlags: 0
@@ -4134,7 +4189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e435784bad416db4c958fd7b8e2971f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionState: 3
+  regionState: 1
 --- !u!114 &440708213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4239,6 +4294,62 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 51}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!1 &450201191
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 450201192}
+  - component: {fileID: 450201193}
+  m_Layer: 0
+  m_Name: PermanentAbilities
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &450201192
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 450201191}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1504297653}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &450201193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 450201191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a301bbbb36496246964d19339517a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rivergreenStats: {fileID: 316011517}
+  abilityToGetInRivergreenList: 010000000200000003000000
+  sandlandsStats: {fileID: 276213994}
+  abilityToGetInSandlandsList: 0400000005000000
+  frostfieldStats: {fileID: 906535816}
+  abilityToGetInFrostfieldList: 06000000
+  fireveinStats: {fileID: 426286488}
+  abilityToGetInFireveinList: 09000000
+  witchmireStats: {fileID: 2144671350}
+  abilityToGetInWitchmireList: 07000000
+  metalworksStats: {fileID: 420988075}
+  abilityToGetInMetalworksList: 08000000
 --- !u!1 &467432731
 GameObject:
   m_ObjectHideFlags: 0
@@ -4514,7 +4625,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: german_MapNameDisplay
-      value: Grass Creek Garten
+      value: "Stream Spire Au\xDFenposten"
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: korean_MapNameDisplay
@@ -4526,7 +4637,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: english_MapNameDisplay
-      value: Ripplegrass Garden
+      value: Streamspire Outpost
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: japanese_MapNameDisplay
@@ -4534,7 +4645,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: norwegian_MapNameDisplay
-      value: Gressbekkhagen
+      value: Utposten ved elvespiren
       objectReference: {fileID: 0}
     - target: {fileID: 1055775704402836038, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelState
@@ -6122,7 +6233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e435784bad416db4c958fd7b8e2971f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionState: 2
+  regionState: 4
 --- !u!114 &627073067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6870,7 +6981,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: german_MapNameDisplay
-      value: Der Strom
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: korean_MapNameDisplay
@@ -6882,7 +6993,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: english_MapNameDisplay
-      value: The stream
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: japanese_MapNameDisplay
@@ -6890,7 +7001,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: norwegian_MapNameDisplay
-      value: Bekkefaret
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1055775704402836038, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelState
@@ -7840,6 +7951,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &906535816 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+  m_PrefabInstance: {fileID: 906535813}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fd996c64c094664b93928c21e8eb00d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &909139848
@@ -9868,7 +9990,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e435784bad416db4c958fd7b8e2971f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionState: 4
+  regionState: 2
 --- !u!114 &1138810544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13786,6 +13908,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 190281229}
+  - {fileID: 450201192}
   m_Father: {fileID: 987133965}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1504297654
@@ -20054,6 +20177,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2144671350 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+  m_PrefabInstance: {fileID: 2144671347}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fd996c64c094664b93928c21e8eb00d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2144892443
 GameObject:
   m_ObjectHideFlags: 0
@@ -20501,7 +20635,7 @@ PrefabInstance:
     - target: {fileID: 4921006152386638099, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 1376599056}
+      objectReference: {fileID: 316011516}
     - target: {fileID: 4921006152386638099, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 

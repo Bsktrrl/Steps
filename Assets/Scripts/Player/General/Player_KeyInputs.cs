@@ -109,6 +109,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (freeCam_isPressed) return;
 
         Run_Movement_Tutorial(ref forward_isPressed);
+        Run_DemoMessage_Tutorial_End();
 
         if (Tutorial.Instance.tutorial_isRunning && !tutorialMovementBlocker)
         {
@@ -143,6 +144,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (freeCam_isPressed) return;
 
         Run_Movement_Tutorial(ref back_isPressed);
+        Run_DemoMessage_Tutorial_End();
 
         if (Tutorial.Instance.tutorial_isRunning && !tutorialMovementBlocker)
         {
@@ -177,6 +179,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (freeCam_isPressed) return;
 
         Run_Movement_Tutorial(ref left_isPressed);
+        Run_DemoMessage_Tutorial_End();
 
         if (Tutorial.Instance.tutorial_isRunning && !tutorialMovementBlocker)
         {
@@ -211,6 +214,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (freeCam_isPressed) return;
 
         Run_Movement_Tutorial(ref right_isPressed);
+        Run_DemoMessage_Tutorial_End();
 
         if (Tutorial.Instance.tutorial_isRunning && !tutorialMovementBlocker)
         {
@@ -403,6 +407,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (freeCam_isPressed) return;
 
         Run_CameraRotation_Tutorial(true);
+        Run_DemoMessage_Tutorial_End();
 
         if (!ButtonChecks_Other()) { return; }
         if (Movement.Instance.isUpdatingDarkenBlocks) { return; }
@@ -432,6 +437,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (freeCam_isPressed) return;
 
         Run_CameraRotation_Tutorial(false);
+        Run_DemoMessage_Tutorial_End();
 
         if (!ButtonChecks_Other()) { return; }
         if (Movement.Instance.isUpdatingDarkenBlocks) { return; }
@@ -716,6 +722,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         Action_PauseMenuIsPressed?.Invoke();
     }
     
+
     //--------------------
 
 
@@ -767,6 +774,18 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
             Tutorial.Instance.Tutorial_FreeCam_2(false);
         }
     }
+    
+    void Run_DemoMessage_Tutorial_End()
+    {
+        if (Tutorial.Instance.state_DemoMessage)
+        {
+            Tutorial.Instance.Tutorial_DemoMessage(false);
+        }
+}
+
+
+    //--------------------
+
 
     IEnumerator TutorialMovement_Delay()
     {
