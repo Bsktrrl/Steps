@@ -2765,6 +2765,13 @@ public class Movement : Singleton<Movement>
             Block_IsNot_Target(moveToLadder_Left);
             Block_IsNot_Target(moveToLadder_Right);
 
+            //print("0. FindExitBlock Root: " + targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down.name);
+            if (targetPosObj && targetPosObj.GetComponent<Block_Ladder>() && targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down && targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down.GetComponent<BlockInfo>() && targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down.GetComponent<BlockInfo>().blockElement == BlockElement.Root)
+            {
+                //print("1. FindExitBlock Root: " + targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down.name);
+                targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down.GetComponentInChildren<Block_Root>().ActivateRoots();
+            }
+
             UpdateAvailableMovementBlocks();
 
             targetY = targetPosObj.transform.eulerAngles.y + 180;
