@@ -38,7 +38,14 @@ public class Block_Water : MonoBehaviour
 
         if (hasRoots)
         {
-            if (gameObject && gameObject.GetComponent<BlockInfo>())
+            if (gameObject && gameObject.GetComponent<BlockInfo>()
+                && (PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank || PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank))
+            {
+                gameObject.GetComponent<BlockInfo>().movementCost = 0;
+                gameObject.GetComponent<BlockInfo>().movementCost_Temp = 0;
+                gameObject.GetComponent<BlockInfo>().movementSpeed = 4;
+            }
+            else if (gameObject && gameObject.GetComponent<BlockInfo>())
             {
                 gameObject.GetComponent<BlockInfo>().movementCost = 0;
                 gameObject.GetComponent<BlockInfo>().movementCost_Temp = 0;

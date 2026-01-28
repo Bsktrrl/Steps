@@ -32,7 +32,6 @@ public class Block_Root : MonoBehaviour
     [SerializeField] bool onTrigger;
 
 
-
     //--------------------
 
 
@@ -41,10 +40,7 @@ public class Block_Root : MonoBehaviour
         anim = GetComponentInParent<Animator>();
 
         // Detect duplicates
-        var duplicates = RootObjectList
-            .GroupBy(r => r.GetInstanceID())
-            .Where(g => g.Count() > 1)
-            .ToList();
+        var duplicates = RootObjectList.GroupBy(r => r.GetInstanceID()).Where(g => g.Count() > 1).ToList();
     }
     private void Update()
     {
@@ -80,15 +76,12 @@ public class Block_Root : MonoBehaviour
 
         if (other.transform.gameObject.layer == 6) //6 = PlayerLayer
         {
-            print("1. SetupActivateRoot");
             SetupActivateRoot();
         }
     }
     void SetupActivateRoot()
     {
         if (Movement.Instance.isRespawning) return;
-
-        print("2. SetupActivateRoot");
 
         Action_StandingOnRootBlock_Early?.Invoke();
 
@@ -669,8 +662,6 @@ public class Block_Root : MonoBehaviour
         // Tilt onto the surface
         root.transform.Rotate(stairSurfaceTilt, 0f, 0f, Space.Self);
     }
-
-
 
     void MakeRootObjectsVisible()
     {

@@ -12,6 +12,7 @@ public class Tutorial : Singleton<Tutorial>
     public bool state_Respawn;
     public bool state_FreeCam_1;
     public bool state_FreeCam_2;
+    public bool state_DemoMessage;
 
     public bool tutorial_isRunning;
 
@@ -30,6 +31,7 @@ public class Tutorial : Singleton<Tutorial>
     [SerializeField] GameObject Tutorial_Respawn_Parent;
     [SerializeField] GameObject Tutorial_FreeCam_1_Parent;
     [SerializeField] GameObject Tutorial_FreeCam_2_Parent;
+    [SerializeField] GameObject Tutorial_DemoMessage_Parent;
 
     [Header("Children")]
     [SerializeField] List<GameObject> Tutorial_Movement_Child;
@@ -37,6 +39,7 @@ public class Tutorial : Singleton<Tutorial>
     [SerializeField] List<GameObject> Tutorial_Respawn_Child;
     [SerializeField] List<GameObject> Tutorial_FreeCam_1_Child;
     [SerializeField] List<GameObject> Tutorial_FreeCam_2_Child;
+    [SerializeField] List<GameObject> Tutorial_DemoMessage_Child;
 
     int respawnCounter;
 
@@ -265,11 +268,41 @@ public class Tutorial : Singleton<Tutorial>
 
         yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration_Out);
 
+        state_DemoMessage = true;
         state_FreeCam_2 = false;
 
-        EndTutorial();
+        //EndTutorial();
+        Tutorial_DemoMessage(true);
 
         yield return new WaitForSeconds(0.5f);
+    }
+    #endregion
+
+    #region Tutorial_DemoMessage
+    public void Tutorial_DemoMessage(bool active)
+    {
+        if (active)
+            StartCoroutine(DemoMessage_Start(fadeDuration_In));
+        else
+            StartCoroutine(DemoMessage_End(fadeDuration_Out));
+    }
+    IEnumerator DemoMessage_Start(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        PopUpManager.Instance.ShowDisplay(Tutorial_Parent, Tutorial_DemoMessage_Parent, Tutorial_DemoMessage_Child);
+
+        yield return new WaitForSeconds(PopUpManager.Instance.fadeDuration_In);
+    }
+    IEnumerator DemoMessage_End(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime / 2);
+
+        PopUpManager.Instance.HideDisplay(Tutorial_Parent, Tutorial_DemoMessage_Parent, Tutorial_DemoMessage_Child);
+
+        yield return new WaitForSeconds(waitTime / 2);
+
+        EndTutorial();
     }
     #endregion
 

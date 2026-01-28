@@ -94,8 +94,8 @@ public class GlueplantCamera : MonoBehaviour
     [Tooltip("Extra meters ahead on the path to sample the tangent/look direction (reduces jitter at very start).")]
     [SerializeField] private float startLookAheadDistance = 2f;
 
-    [Tooltip("If true, camera looks backwards along travel direction (towards where it came from).")]
-    [SerializeField] private bool lookBackwardsAlongPath = true;
+    [Tooltip("If true, the camera keeps its initial facing and does not rotate based on movement.")]
+    [SerializeField] private bool lockInitialFacing = false;
 
 
     [SerializeField] private bool camera_isTraveling;
@@ -302,23 +302,38 @@ public class GlueplantCamera : MonoBehaviour
             // Reduce vertical influence to avoid early pitch spikes
             Vector3 moveDirForLook = new Vector3(moveDir.x, moveDir.y * verticalInfluenceOnLook, moveDir.z);
 
-            Vector3 desiredLookDir = (-moveDirForLook);
-            if (desiredLookDir.sqrMagnitude < 1e-10f)
-                desiredLookDir = smoothedLookDir;
 
-            desiredLookDir.Normalize();
+            Vector3 desiredLookDir;
 
-            // Pitch clamp
-            desiredLookDir = ClampPitchFromHorizontal(desiredLookDir, maxPitchFromHorizontal, smoothedLookDir);
-
-            // Initial look stabilization: blend from initialForward -> desiredLookDir over time
-            if (initialLookStabilizeTime > 0.0001f)
+            // Lock facing = keep original forward direction
+            if (lockInitialFacing)
             {
-                float now = useUnscaledTime ? Time.unscaledTime : Time.time;
-                float tStab = Mathf.Clamp01((now - travelStartTime) / initialLookStabilizeTime);
-                float stab = Smooth01(tStab);
-                desiredLookDir = Vector3.Slerp(initialForward, desiredLookDir, stab).normalized;
+                desiredLookDir = initialForward;
             }
+            else
+            {
+                // Original behavior (camera looks opposite movement direction)
+                desiredLookDir = (-moveDirForLook);
+
+                if (desiredLookDir.sqrMagnitude < 1e-10f)
+                    desiredLookDir = smoothedLookDir;
+
+                desiredLookDir.Normalize();
+
+                // Pitch clamp
+                desiredLookDir = ClampPitchFromHorizontal(desiredLookDir, maxPitchFromHorizontal, smoothedLookDir);
+
+                // Initial look stabilization: blend from initialForward -> desiredLookDir over time
+                if (initialLookStabilizeTime > 0.0001f)
+                {
+                    float now = useUnscaledTime ? Time.unscaledTime : Time.time;
+                    float tStab = Mathf.Clamp01((now - travelStartTime) / initialLookStabilizeTime);
+                    float stab = Smooth01(tStab);
+                    desiredLookDir = Vector3.Slerp(initialForward, desiredLookDir, stab).normalized;
+                }
+            }
+
+
 
             // Two-stage smoothing: yaw faster, pitch slower
             Vector3 desiredHorizontal = new Vector3(desiredLookDir.x, 0f, desiredLookDir.z);
