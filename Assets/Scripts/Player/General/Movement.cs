@@ -14,6 +14,7 @@ public class Movement : Singleton<Movement>
     public static event Action Action_RespawnPlayerEarly;
     public static event Action Action_RespawnPlayer;
     public static event Action Action_RespawnPlayerLate;
+    public static event Action Action_RespawnPlayerByHolding;
 
     public static event Action Action_UpdatedBlocks;
 
@@ -2764,6 +2765,13 @@ public class Movement : Singleton<Movement>
             Block_IsNot_Target(moveToLadder_Left);
             Block_IsNot_Target(moveToLadder_Right);
 
+            //print("0. FindExitBlock Root: " + targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down.name);
+            if (targetPosObj && targetPosObj.GetComponent<Block_Ladder>() && targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down && targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down.GetComponent<BlockInfo>() && targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down.GetComponent<BlockInfo>().blockElement == BlockElement.Root)
+            {
+                //print("1. FindExitBlock Root: " + targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down.name);
+                targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down.GetComponentInChildren<Block_Root>().ActivateRoots();
+            }
+
             UpdateAvailableMovementBlocks();
 
             targetY = targetPosObj.transform.eulerAngles.y + 180;
@@ -3082,6 +3090,9 @@ public class Movement : Singleton<Movement>
 
         SetMovementState(MovementStates.Moving);
 
+        if (!SFX_Respawn.Instance.isRespawning)
+            RespawnPlayerByHolding_Action();
+
         RespawnPlayerEarly_Action();
 
         yield return new WaitForSeconds(waitTime);
@@ -3113,6 +3124,7 @@ public class Movement : Singleton<Movement>
         previousPosition = transform.position;
 
         SetMovementState(MovementStates.Still);
+        
         RespawnPlayerLate_Action();
 
         StopAllCoroutines();
@@ -3193,6 +3205,10 @@ public class Movement : Singleton<Movement>
     }
 
 
+    public void RespawnPlayerByHolding_Action()
+    {
+        Action_RespawnPlayerByHolding?.Invoke();
+    }
     public void RespawnPlayerEarly_Action()
     {
         Action_RespawnPlayerEarly?.Invoke();

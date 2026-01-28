@@ -16,6 +16,8 @@ public class SFX_Respawn : Singleton<SFX_Respawn>
     [SerializeField] bool useUnscaledTime = true; // ignore timescale (pause)
     Coroutine holdRoutine;
 
+    public bool isRespawning;
+
     [Header("Audio")]
     AudioSource audioSource_Player;
     [SerializeField] AudioClip sound_RespawnHold;
@@ -104,9 +106,18 @@ public class SFX_Respawn : Singleton<SFX_Respawn>
         holdRoutine = null;
         if (audioSource_Player != null && audioSource_Player.isPlaying) audioSource_Player.Stop();
 
+        isRespawning = true;
         Action_RespawnPlayerAnimation?.Invoke();
         yield return new WaitForSeconds(Player_Animations.Instance.effectChargeTime_Pickup_Teleport);
         event_OnHoldCompleted?.Invoke();
+
+        StartCoroutine(IsRespawning_Delay(0.02f));
+    }
+    IEnumerator IsRespawning_Delay(float waitTime)
+    {
+        yield return null;
+
+        isRespawning = false;
     }
 
 

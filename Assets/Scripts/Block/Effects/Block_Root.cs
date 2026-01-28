@@ -28,6 +28,8 @@ public class Block_Root : MonoBehaviour
     [SerializeField] float stairUpHeightOffset = 0.20f;
     [SerializeField] float stairSurfaceTilt = -45f;
 
+    bool isActive;
+
 
 
     //--------------------
@@ -69,6 +71,8 @@ public class Block_Root : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (isActive) return;
+
         if (other.transform.gameObject.layer == 6) //6 = PlayerLayer
         {
             if (Movement.Instance.isRespawning) return;
@@ -83,9 +87,11 @@ public class Block_Root : MonoBehaviour
     //--------------------
 
 
-    void ActivateRoots()
+    public void ActivateRoots()
     {
         DestroyRootFreeCostList();
+
+        isActive = true;
 
         anim.SetTrigger("Activate");
 
@@ -685,6 +691,8 @@ public class Block_Root : MonoBehaviour
     #region DestroyRootLine
     void DestroyRootFreeCostList()
     {
+        isActive = false;
+
         playerLookDir = Movement.Instance.lookingDirection;
 
         //Put Root Animation Object back in the pool, and set their positions to Vector.Zero
