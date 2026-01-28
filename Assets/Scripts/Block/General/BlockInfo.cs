@@ -36,7 +36,7 @@ public class BlockInfo : MonoBehaviour
 
     [HideInInspector] public float tintValue = 0.95f;
 
-    NumberDisplay numberDisplay;
+    [HideInInspector] NumberDisplay numberDisplay;
 
     bool finishedSetup;
 
