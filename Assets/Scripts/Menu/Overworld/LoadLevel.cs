@@ -8,6 +8,8 @@ using UnityEngine.Analytics;
 
 public class LoadLevel : MonoBehaviour
 {
+    public static event Action Action_LevelIsComplete;
+
     [Header("Ready to add to the Game")]
     public bool readyToBePlayedAndDisplayed;
 
@@ -113,6 +115,8 @@ public class LoadLevel : MonoBehaviour
                                         {
                                             levelsToBeFinished[i].GetComponent<LoadLevel>().isCompleted = true;
                                             counter++;
+
+                                            Action_LevelIsComplete?.Invoke();
                                         }
                                     }
                                 }
