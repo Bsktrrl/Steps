@@ -33,6 +33,114 @@ public class ActivatePermanentAbilities : Singleton<ActivatePermanentAbilities>
     //--------------------
 
 
+    private void OnEnable()
+    {
+        DataManager.Action_dataHasLoaded += CheckIfAbilityShouldUpdate;
+    }
+    private void OnDisable()
+    {
+        DataManager.Action_dataHasLoaded -= CheckIfAbilityShouldUpdate;
+    }
+
+
+    //--------------------
+
+
+    void CheckIfAbilityShouldUpdate()
+    {
+        print("0. CheckIfAbilityShouldUpdate");
+        //Rivergreen
+        for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count; i++)
+        {
+            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName == rivergreenStats.levelToPlay && DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].isCompleted && (!PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers && !PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank))
+            {
+                print("1. CheckIfAbilityShouldUpdate");
+                if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.Norwegian)
+                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("Du har fullført <color=#B593D5>Rivergreen</color> regionen og har derfor låst opp Rivergreens ferdigheter <color=#B593D5>permanent</color> for resten av spillet." +
+                        "\nFerdigheter låst opp:" +
+                        "\n<color=#B593D5>Snorkel</color>" +
+                        "\n<color=#B593D5>Svømmeføtter</color>" +
+                        "\n<color=#B593D5>Oksygenmaske</color>");
+                else if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.English)
+                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("You have completed the <color=#B593D5>Rivergreen</color> region and by that unlocked its abilities for <color=#B593D5>permanent</color> use for the rest of your playtrough." +
+                        "\nAbilities unlocked:" +
+                        "\n<color=#B593D5>Snorkel</color>" +
+                        "\n<color=#B593D5>Flippers</color>" +
+                        "\n<color=#B593D5>Oxygen Tank</color>");
+
+                ActivateAbilities(rivergreenStats, abilityToGetInRivergreenList);
+                SaveAbilityData(Abilities.Snorkel);
+                SaveAbilityData(Abilities.Flippers);
+                SaveAbilityData(Abilities.OxygenTank);
+            }
+
+            //Sandlands
+            if (sandlandsStats.isCompleted && (!PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillHelmet && !PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillBoots))
+            {
+                print("2. CheckIfAbilityShouldUpdate");
+                if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.Norwegian)
+                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
+                else if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.English)
+                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
+
+                ActivateAbilities(sandlandsStats, abilityToGetInSandlandsList);
+                SaveAbilityData(Abilities.DrillHelmet);
+                SaveAbilityData(Abilities.DrillBoots);
+            }
+
+            //Frostfield
+            if (frostfieldStats.isCompleted && !PlayerStats.Instance.stats.abilitiesGot_Permanent.SpringShoes)
+            {
+                print("3. CheckIfAbilityShouldUpdate");
+                if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.Norwegian)
+                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
+                else if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.English)
+                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
+
+                ActivateAbilities(frostfieldStats, abilityToGetInFrostfieldList);
+                SaveAbilityData(Abilities.SpringShoes);
+            }
+
+            //Firevein
+            if (fireveinStats.isCompleted && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook)
+            {
+                print("4. CheckIfAbilityShouldUpdate");
+                if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.Norwegian)
+                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
+                else if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.English)
+                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
+
+                ActivateAbilities(fireveinStats, abilityToGetInFireveinList);
+                SaveAbilityData(Abilities.GrapplingHook);
+            }
+
+            //Witchmire
+            if (witchmireStats.isCompleted && !PlayerStats.Instance.stats.abilitiesGot_Permanent.HandDrill)
+            {
+                print("5. CheckIfAbilityShouldUpdate");
+                if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.Norwegian)
+                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
+                else if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.English)
+                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
+
+                ActivateAbilities(witchmireStats, abilityToGetInWitchmireList);
+                SaveAbilityData(Abilities.HandDrill);
+            }
+
+            //Metalwork
+            if (metalworksStats.isCompleted && !PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimingGloves)
+            {
+                print("6. CheckIfAbilityShouldUpdate");
+                if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.Norwegian)
+                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
+                else if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.English)
+                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
+
+                ActivateAbilities(metalworksStats, abilityToGetInMetalworksList);
+                SaveAbilityData(Abilities.ClimingGloves);
+            }
+        }
+    }
     void SaveAbilityData(Abilities ability)
     {
         switch (ability)
@@ -87,16 +195,6 @@ public class ActivatePermanentAbilities : Singleton<ActivatePermanentAbilities>
 
     //--------------------
 
-
-    public void UpdatePermanentAbilities()
-    {
-        ActivateAbilities(rivergreenStats, abilityToGetInRivergreenList);
-        ActivateAbilities(sandlandsStats, abilityToGetInSandlandsList);
-        ActivateAbilities(frostfieldStats, abilityToGetInFrostfieldList);
-        ActivateAbilities(fireveinStats, abilityToGetInFireveinList);
-        ActivateAbilities(witchmireStats, abilityToGetInWitchmireList);
-        ActivateAbilities(metalworksStats, abilityToGetInMetalworksList);
-    }
 
     void ActivateAbilities(LoadLevel levelStats, List<Abilities> abilityList)
     {

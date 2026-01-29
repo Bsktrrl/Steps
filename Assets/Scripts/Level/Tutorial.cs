@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class Tutorial : Singleton<Tutorial>
 {
+    [Header("Turn On/Off Tutorial")]
+    public bool runTutorial;
+
     [Header("States")]
     public bool state_Movement;
     public bool state_CameraRotation;
@@ -49,6 +52,8 @@ public class Tutorial : Singleton<Tutorial>
 
     private void Start()
     {
+        if (!runTutorial) return;
+
         if (!DataManager.Instance.tutorial_Finished)
         {
             PlayerManager.Instance.PauseGame();
@@ -61,6 +66,8 @@ public class Tutorial : Singleton<Tutorial>
 
     private void OnEnable()
     {
+        if (!runTutorial) return;
+
         if (MapManager.Instance.haveIntroSequence)
             MapManager.Action_EndIntroSequence += Start_Tutorial;
         else
@@ -70,6 +77,8 @@ public class Tutorial : Singleton<Tutorial>
     }
     private void OnDisable()
     {
+        if (!runTutorial) return;
+
         if (MapManager.Instance.haveIntroSequence)
             MapManager.Action_EndIntroSequence -= Start_Tutorial;
         else
