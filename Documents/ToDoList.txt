@@ -2,9 +2,6 @@
 
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
-Grønnbuebassenget
-Greenarch Basin
-Greenarch-Becken
 
 Camera:
 - Rotate camera also with right joystick
@@ -15,9 +12,10 @@ RootBlock:
 - Fix so that the Numbers on RootBlocks isn't showing when they are not supposed to
 
 
-AbilityButton Display:
+AbilityButton Display (New System):
 - Use the new button icons and stepellierFont for NPC-interaction and when Abilities can be used
 	- Make it compatible with PlayStation, Xbox and Keyboard
+	- Make it compatible with all languages
 
 
 Analytics:
@@ -25,8 +23,9 @@ Analytics:
 - Lage ny branch i Unity Analyticssom samler info om v0.1
 
 
-LevelImages:
-- Change LevelImages in the Rivergreen so they represent their levels
+Slab SiftSwim Downward:
+- If there are a waterBlock right under a slab, with FLippers, the player can move down the slab, like Descend. Fix this.
+	- Also check for higher distances than 1 block under
 
 
 

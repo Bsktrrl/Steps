@@ -49,7 +49,7 @@ public class Block_Water : MonoBehaviour
             {
                 gameObject.GetComponent<BlockInfo>().movementCost = 0;
                 gameObject.GetComponent<BlockInfo>().movementCost_Temp = 0;
-                gameObject.GetComponent<BlockInfo>().movementSpeed = 2;
+                gameObject.GetComponent<BlockInfo>().movementSpeed = 2.75f;
             }
         }
         else
@@ -75,7 +75,7 @@ public class Block_Water : MonoBehaviour
                             {
                                 gameObject.GetComponent<BlockInfo>().movementCost = 2;
                                 gameObject.GetComponent<BlockInfo>().movementCost_Temp = 2;
-                                gameObject.GetComponent<BlockInfo>().movementSpeed = 2;
+                                gameObject.GetComponent<BlockInfo>().movementSpeed = 2.75f;
                             }
                         }
                     }
