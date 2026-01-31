@@ -11417,6 +11417,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileName: data.game
   gameData:
+    haveStartedNewGame_Save: 0
     menuState_Save: 0
     playerStats_Save:
       steps_Max: 7
@@ -15364,6 +15365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameData:
+    haveStartedNewGame_Save: 0
     menuState_Save: 0
     playerStats_Save:
       steps_Max: 0
@@ -15516,6 +15518,7 @@ MonoBehaviour:
         skin_Region5_Hat: 0
         skin_Region6_Hat: 0
     tutorial_Finished_Save: 0
+  haveStartedNewGame_Store: 0
   menuState_Store: 0
   playerStats_Store:
     steps_Max: 0
@@ -16310,7 +16313,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 205536691120116261, guid: c9550862641363f4cbf79963a6f0b385, type: 3}
   m_PrefabInstance: {fileID: 1712554313}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1959642556}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
@@ -18612,6 +18615,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1959642556 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 908780873807152418, guid: c9550862641363f4cbf79963a6f0b385, type: 3}
+  m_PrefabInstance: {fileID: 1712554313}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1962131516 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3695912814936919590, guid: 708f515159424df4292f33b367a505ee, type: 3}
@@ -23966,6 +23974,10 @@ PrefabInstance:
       propertyPath: wardrobeParent
       value: 
       objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 4831180214876375337, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: wardrobeMenuButton
+      value: 
+      objectReference: {fileID: 1959642556}
     - target: {fileID: 4831180214876375337, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: skinWardrobeButton_Region1_Level5
       value: 

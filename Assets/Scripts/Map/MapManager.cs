@@ -25,6 +25,9 @@ public class MapManager : Singleton<MapManager>
     public int abilitiesPickedUp = 0;
     public int cameraRotated = 0;
 
+    public float timeUsedInFreeCam = 0;
+    public int freeCamCount = 0;
+
     public int swimCounter = 0;
     public int swiftSwimCounter = 0;
     public int jumpCounter = 0;

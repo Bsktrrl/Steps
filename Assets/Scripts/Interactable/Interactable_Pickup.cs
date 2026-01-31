@@ -86,8 +86,8 @@ public class Interactable_Pickup : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
 
         //Update analyticsData
-        AnalyticsCalls.OnLevel(mapManager.timeUsedInLevel, mapManager.stepCount, mapManager.respawnCount, mapManager.abilitiesPickedUp, mapManager.cameraRotated, mapManager.swimCounter, mapManager.swiftSwimCounter, mapManager.jumpCounter, mapManager.dashCounter, mapManager.ascendCounter, mapManager.descendCounter, mapManager.grapplingHookCounter, mapManager.ceilingGrabCounter);
-        AnalyticsCalls.OnLevelFinishing(mapManager.timeUsedInLevel, mapManager.stepCount, mapManager.respawnCount, mapManager.abilitiesPickedUp, mapManager.cameraRotated, mapManager.swimCounter, mapManager.swiftSwimCounter, mapManager.jumpCounter, mapManager.dashCounter, mapManager.ascendCounter, mapManager.descendCounter, mapManager.grapplingHookCounter, mapManager.ceilingGrabCounter);
+        AnalyticsCalls.OnLevel(mapManager.timeUsedInLevel, mapManager.stepCount, mapManager.respawnCount, mapManager.abilitiesPickedUp, mapManager.cameraRotated, mapManager.timeUsedInFreeCam, mapManager.freeCamCount, mapManager.swimCounter, mapManager.swiftSwimCounter, mapManager.jumpCounter, mapManager.dashCounter, mapManager.ascendCounter, mapManager.descendCounter, mapManager.grapplingHookCounter, mapManager.ceilingGrabCounter);
+        AnalyticsCalls.OnLevelFinishing(mapManager.timeUsedInLevel, mapManager.stepCount, mapManager.respawnCount, mapManager.abilitiesPickedUp, mapManager.cameraRotated, mapManager.timeUsedInFreeCam, mapManager.freeCamCount, mapManager.swimCounter, mapManager.swiftSwimCounter, mapManager.jumpCounter, mapManager.dashCounter, mapManager.ascendCounter, mapManager.descendCounter, mapManager.grapplingHookCounter, mapManager.ceilingGrabCounter);
 
         AnalyticsCalls.CompleteLevel();
 
@@ -133,18 +133,18 @@ public class Interactable_Pickup : MonoBehaviour
                             }
 
                             //Check if all essence are collected
-                            bool isTaken = true;
+                            int isTaken = 0;
                             for (int i = 0; i < MapManager.Instance.mapInfo_ToSave.essenceList.Count; i++)
                             {
-                                if (!MapManager.Instance.mapInfo_ToSave.essenceList[i].isTaken)
+                                if (MapManager.Instance.mapInfo_ToSave.essenceList[i].isTaken)
                                 {
-                                    isTaken = false;
+                                    isTaken += 1;
                                     break;
                                 }
                             }
-
-                            if (isTaken)
+                            if (isTaken >= 10)
                             {
+                                print("1000000000000. All essence in this level are picked up!!");
                                 AnalyticsCalls.GetAllEssenceInALevel();
                             }
                             break;
