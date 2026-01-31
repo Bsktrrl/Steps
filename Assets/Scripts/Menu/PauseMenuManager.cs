@@ -106,6 +106,12 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     //--------------------
 
 
+    private void Update()
+    {
+        if (isVisible)
+            PlayerManager.Instance.PauseGame();
+    }
+
     private void OnEnable()
     {
         Movement.Action_StepTaken += SetLevelInfo;
@@ -150,6 +156,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
         pauseMenu_Parent.SetActive(false);
         isVisible = false;
+        PlayerManager.Instance.UnpauseGame();
     }
     IEnumerator CheckPauseMenu()
     {
