@@ -187,6 +187,8 @@ public class BlockInfo : MonoBehaviour
         UpdateBlock_Darken();
 
         color_isAboutToBeDarkened = false;
+
+        print("200. SetDarkenColors | Name: " + gameObject.name);
     }
 
     public void ResetDarkenColor()
