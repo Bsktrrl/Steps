@@ -13,7 +13,7 @@ public class Button_ToPress : MonoBehaviour
     [SerializeField] MenuState newMenuState;
 
     [Header("Setup")]
-    [SerializeField] Selectable uiElementToSelect;
+    public Selectable uiElementToSelect;
 
     [Header("Visualization")]
     [SerializeField] bool showVisualization;

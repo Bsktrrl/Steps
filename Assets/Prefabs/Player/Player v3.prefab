@@ -18266,6 +18266,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileName: data.game
   gameData:
+    haveStartedNewGame_Save: 0
     menuState_Save: 0
     playerStats_Save:
       steps_Max: 7
@@ -39791,6 +39792,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameData:
+    haveStartedNewGame_Save: 0
     menuState_Save: 0
     playerStats_Save:
       steps_Max: 0
@@ -39943,6 +39945,7 @@ MonoBehaviour:
         skin_Region5_Hat: 0
         skin_Region6_Hat: 0
     tutorial_Finished_Save: 0
+  haveStartedNewGame_Store: 0
   menuState_Store: 0
   playerStats_Store:
     steps_Max: 0
@@ -52242,6 +52245,10 @@ PrefabInstance:
       propertyPath: wardrobeParent
       value: 
       objectReference: {fileID: 4138936105110009209}
+    - target: {fileID: 4831180214876375337, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: wardrobeMenuButton
+      value: 
+      objectReference: {fileID: 76765316258848564}
     - target: {fileID: 4839016631175273367, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuState_ToSelect
       value: 9
