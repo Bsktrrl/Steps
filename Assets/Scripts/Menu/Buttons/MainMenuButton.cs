@@ -10,8 +10,7 @@ public class MainMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField] GameObject obj_Passive;
     [SerializeField] GameObject obj_Active;
 
-
-    [SerializeField] bool isFirstSelected;
+    public bool isFirstSelected;
 
     PauseMenuManager pausedMenuManager;
 

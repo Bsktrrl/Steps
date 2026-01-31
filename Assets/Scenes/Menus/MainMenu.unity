@@ -12772,6 +12772,7 @@ GameObject:
   - component: {fileID: 1379088049}
   - component: {fileID: 1379088051}
   - component: {fileID: 1379088052}
+  - component: {fileID: 1379088054}
   m_Layer: 0
   m_Name: MainMenuManager
   m_TagString: Untagged
@@ -12867,6 +12868,21 @@ MonoBehaviour:
   m_DefaultActionMap: PlayerMovement
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1379088054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1379088048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26beac94fa787854f910107d1941738e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  continueButton: {fileID: 59031855}
+  newGameButton: {fileID: 70907711}
+  exitButton: {fileID: 171628838}
 --- !u!1001 &1385253428
 PrefabInstance:
   m_ObjectHideFlags: 0

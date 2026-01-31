@@ -1,10 +1,14 @@
+using System;
 using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
 using UnityEngine.Playables;
+using UnityEditor;
 
 public class NewGameButton : MonoBehaviour
 {
+    public static event Action Action_PressNewGameButton;
+
     [SerializeField] GameObject continueButton;
 
     MenuLevelInfo menuLevelInfo;
@@ -41,5 +45,7 @@ public class NewGameButton : MonoBehaviour
         
         GetComponent<MainMenuButton>().SetPassive();
         continueButton.GetComponent<MainMenuButton>().SetActive();
+
+        Action_PressNewGameButton?.Invoke();
     }
 }
