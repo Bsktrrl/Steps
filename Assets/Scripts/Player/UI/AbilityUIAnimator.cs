@@ -75,6 +75,25 @@ public class AbilityUIAnimator : MonoBehaviour
     //--------------------
 
 
+    private void OnEnable()
+    {
+        Movement.Action_RespawnPlayer += ResetAbilityActive;
+    }
+    private void OnDisable()
+    {
+        Movement.Action_RespawnPlayer -= ResetAbilityActive;
+    }
+
+
+    //--------------------
+
+
+    void ResetAbilityActive()
+    {
+        Deactivating();
+    }
+
+
     /// <summary>
     /// Appearing: scale 0 -> 1.2 -> 1 with easing (no sprite crossfade unless you set idleSprite).
     /// </summary>
@@ -210,10 +229,7 @@ public class AbilityUIAnimator : MonoBehaviour
         _rt.localScale = Vector3.one * toScale;
     }
 
-    private IEnumerator ScaleAndOverlayFade(
-        float fromScale, float toScale,
-        float duration, Ease ease,
-        float overlayAlphaFrom, float overlayAlphaTo
+    private IEnumerator ScaleAndOverlayFade(float fromScale, float toScale, float duration, Ease ease, float overlayAlphaFrom, float overlayAlphaTo
     )
     {
         float t = 0f;

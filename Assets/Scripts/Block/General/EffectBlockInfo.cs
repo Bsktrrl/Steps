@@ -75,7 +75,7 @@ public class EffectBlockInfo : MonoBehaviour
     {
         if (!ShouldPoll()) return;
 
-        if (_pollRoutine == null)
+        if (_pollRoutine == null && gameObject.activeInHierarchy)
         {
             _pollRoutine = StartCoroutine(PollUntilSpawned());
         }

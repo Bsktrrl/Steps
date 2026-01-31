@@ -6584,68 +6584,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1153292494679110465, guid: df6b417ea8c9cc34dad3a6c97107b08a, type: 3}
   m_PrefabInstance: {fileID: 109617189}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &121643500
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 524564061}
-    m_Modifications:
-    - target: {fileID: 1983152132270731245, guid: a489a13b0ab74ec4c9a767317683b709, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1983152132270731245, guid: a489a13b0ab74ec4c9a767317683b709, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 1983152132270731245, guid: a489a13b0ab74ec4c9a767317683b709, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1983152132270731245, guid: a489a13b0ab74ec4c9a767317683b709, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 1983152132270731245, guid: a489a13b0ab74ec4c9a767317683b709, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1983152132270731245, guid: a489a13b0ab74ec4c9a767317683b709, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 1983152132270731245, guid: a489a13b0ab74ec4c9a767317683b709, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1983152132270731245, guid: a489a13b0ab74ec4c9a767317683b709, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1983152132270731245, guid: a489a13b0ab74ec4c9a767317683b709, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 1983152132270731245, guid: a489a13b0ab74ec4c9a767317683b709, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2222929737137699185, guid: a489a13b0ab74ec4c9a767317683b709, type: 3}
-      propertyPath: m_Name
-      value: GrassWood_Fence_Corner_Inner 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a489a13b0ab74ec4c9a767317683b709, type: 3}
---- !u!4 &121643501 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1983152132270731245, guid: a489a13b0ab74ec4c9a767317683b709, type: 3}
-  m_PrefabInstance: {fileID: 121643500}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &121907681
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25698,7 +25636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef759032dfb9077469dd791a1c8dbab6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnDirection: 0
+  spawnDirection: 1
 --- !u!1001 &477644728
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26156,7 +26094,6 @@ Transform:
   - {fileID: 1410525261}
   - {fileID: 1829275371}
   - {fileID: 1757628785}
-  - {fileID: 121643501}
   - {fileID: 787004896}
   - {fileID: 1694358495}
   - {fileID: 693062456}
@@ -42449,7 +42386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef759032dfb9077469dd791a1c8dbab6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnDirection: 0
+  spawnDirection: 3
 --- !u!1001 &938396326
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46422,7 +46359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef759032dfb9077469dd791a1c8dbab6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnDirection: 0
+  spawnDirection: 1
 --- !u!1001 &1161099901
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48081,7 +48018,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef759032dfb9077469dd791a1c8dbab6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnDirection: 0
+  spawnDirection: 1
 --- !u!1001 &1252706245
 PrefabInstance:
   m_ObjectHideFlags: 0

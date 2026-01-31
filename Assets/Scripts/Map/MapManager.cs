@@ -79,8 +79,6 @@ public class MapManager : Singleton<MapManager>
             introSequence = true;
 
             Action_StartIntroSequence?.Invoke();
-
-            print("0. ShowLevelNamePopup");
         }
     }
     private void Start()

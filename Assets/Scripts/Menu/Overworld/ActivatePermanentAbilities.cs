@@ -48,13 +48,13 @@ public class ActivatePermanentAbilities : Singleton<ActivatePermanentAbilities>
 
     void CheckIfAbilityShouldUpdate()
     {
-        print("0. CheckIfAbilityShouldUpdate");
+        //print("0. CheckIfAbilityShouldUpdate");
         //Rivergreen
         for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count; i++)
         {
             if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName == rivergreenStats.levelToPlay && DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].isCompleted && (!PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers && !PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank))
             {
-                print("1. CheckIfAbilityShouldUpdate");
+                //print("1. CheckIfAbilityShouldUpdate");
                 if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.Norwegian) 
                     PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("Du har fullført <color=#B593D5>Rivergreen</color> og låst opp regionens ferdigheter <color=#B593D5>permanent</color>.");
                 else if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.English)

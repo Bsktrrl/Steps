@@ -392,7 +392,7 @@ public class Player_Animations : Singleton<Player_Animations>
     {
         //if (Movement.Instance.isMoving || Player_KeyInputs.Instance.respawn_isPressed) { return; }
 
-        print("3. Respawn - Animation");
+        //print("3. Respawn - Animation");
 
         playerAnimator.speed = 1.0f;
         playerAnimator.SetTrigger(AnimationManager.Instance.effect_Teleport);
@@ -401,7 +401,7 @@ public class Player_Animations : Singleton<Player_Animations>
     {
         if (Movement.Instance.isMoving) { return; }
 
-        print("4. Respawn - Animation");
+        //print("4. Respawn - Animation");
 
         playerAnimator.speed = 1.0f;
         playerAnimator.SetTrigger(AnimationManager.Instance.effect_Teleport);

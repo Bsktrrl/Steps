@@ -9,7 +9,7 @@ public class AnalyticsInitializer : MonoBehaviour
     async void Awake()
     {
         await UnityServices.InitializeAsync();
-        Debug.Log("Unity Services Initialized");
+        Debug.Log("0. Unity Services Initialized");
 
         if (AnalyticsService.Instance != null)
         {
