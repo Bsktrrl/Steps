@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Player_AbilityButtonDisplay : MonoBehaviour
+public class Player_AbilityButtonDisplay : Singleton<Player_AbilityButtonDisplay>
 {
     [Header("Ability Parent")]
-    [SerializeField] GameObject abilityParent;
+    public GameObject abilityParent;
 
     [Header("Ability Displays")]
     [SerializeField] GameObject abilitySprite_Swim;
@@ -25,6 +25,11 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
 
     //--------------------
 
+
+    private void Start()
+    {
+        HideDisplay();
+    }
 
     private void OnEnable()
     {
@@ -127,8 +132,9 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
     //--------------------
 
 
-    void UpdateDisplay()
+    public void UpdateDisplay()
     {
+        print("100. UpdateDisplay");
         abilityParent.SetActive(true);
 
         Ability_Appearance(abilitySprite_Swim, PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel, PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel);
@@ -159,6 +165,19 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
         {
             abilityObject.SetActive(false);
         }
+    }
+
+    void HideDisplay()
+    {
+        abilitySprite_Swim.SetActive(false);
+        abilitySprite_SwiftSwim.SetActive(false);
+        abilitySprite_FreeSwim.SetActive(false);
+        abilitySprite_Ascend.SetActive(false);
+        abilitySprite_Descend.SetActive(false);
+        abilitySprite_Dash.SetActive(false);
+        abilitySprite_Jump.SetActive(false);
+        abilitySprite_CeilingGrab.SetActive(false);
+        abilitySprite_GrapplingHook.SetActive(false);
     }
 
 
