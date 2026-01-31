@@ -101,6 +101,9 @@ public class Block_Root : MonoBehaviour
         anim.SetTrigger("Activate");
 
         MakeRootFreeCostList();
+
+        Movement.Instance.SetDarkenBlocks();
+
         Action_StandingOnRootBlock?.Invoke();
     }
 

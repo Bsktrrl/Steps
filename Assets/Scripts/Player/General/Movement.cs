@@ -1621,14 +1621,16 @@ public class Movement : Singleton<Movement>
         {
             if (!obj.GetComponent<BlockInfo>().blockIsDark)
             {
-                if (PlayerStats.Instance.stats.steps_Current <= 0 && obj.GetComponent<BlockInfo>().movementCost <= 0)
-                    obj.GetComponent<BlockInfo>().SetDarkenColors();
-                else if (PlayerStats.Instance.stats.steps_Current - obj.GetComponent<BlockInfo>().movementCost < 0)
-                    ResetAvailableBlock(obj);
-                else if (PlayerStats.Instance.stats.steps_Current <= 0)
-                    ResetAvailableBlock(obj);
-                else
-                    obj.GetComponent<BlockInfo>().SetDarkenColors();
+                obj.GetComponent<BlockInfo>().SetDarkenColors();
+
+                //if (PlayerStats.Instance.stats.steps_Current <= 0 && obj.GetComponent<BlockInfo>().movementCost <= 0)
+                //    obj.GetComponent<BlockInfo>().SetDarkenColors();
+                //else if (PlayerStats.Instance.stats.steps_Current - obj.GetComponent<BlockInfo>().movementCost < 0)
+                //    ResetAvailableBlock(obj);
+                //else if (PlayerStats.Instance.stats.steps_Current <= 0)
+                //    ResetAvailableBlock(obj);
+                //else
+                //    obj.GetComponent<BlockInfo>().SetDarkenColors();
             }
         }
     }
