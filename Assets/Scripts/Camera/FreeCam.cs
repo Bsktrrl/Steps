@@ -99,6 +99,14 @@ public class FreeCam : Singleton<FreeCam>
     [Tooltip("Tiny step along the slide direction when touching a surface. Helps avoid 'glued' feeling.")]
     [SerializeField] private float touchSlideStep = 1f;
 
+    [Header("FreeCamForwardPush")]
+    [SerializeField] private float freeCamForwardPush = 0.35f;
+    private PrioritySettings _playerBasePriority;
+    private PrioritySettings _freeBasePriority;
+    private bool _basePrioritiesCached;
+
+
+
 
     //--------------------
 
@@ -124,6 +132,8 @@ public class FreeCam : Singleton<FreeCam>
 
     // Cached hits
     private static readonly RaycastHit[] _hitsCache = new RaycastHit[16];
+    private static readonly Collider[] _overlapCache = new Collider[16];
+
 
     // --------------------
 
@@ -216,9 +226,36 @@ public class FreeCam : Singleton<FreeCam>
 
     private void StartFreeCam()
     {
+        if (_isActive) return;
+
         if (CM_FreeCam == null) return;
 
         _cmPlayer = CameraController.Instance != null ? CameraController.Instance.CM_Player : null;
+
+        CacheBasePrioritiesOnce();
+
+        // stop routines (BUT restore if we cancel a return)
+        bool cancelledReturn = false;
+
+        if (_returnRoutine != null)
+        {
+            StopCoroutine(_returnRoutine);
+            _returnRoutine = null;
+            cancelledReturn = true;
+        }
+
+        if (_enterCueRoutine != null)
+        {
+            StopCoroutine(_enterCueRoutine);
+            _enterCueRoutine = null;
+        }
+
+        if (cancelledReturn)
+        {
+            // CRITICAL: if we interrupted the exit pan, put priorities back in a known-good state
+            RestoreBasePriorities();
+        }
+
         if (_cmPlayer == null) return;
 
         // stop routines
@@ -239,10 +276,6 @@ public class FreeCam : Singleton<FreeCam>
         _yaw = e.y;
         float ex = e.x; if (ex > 180f) ex -= 360f;
         _pitch = Mathf.Clamp(ex, pitchMin, pitchMax);
-
-        // store priorities
-        _playerPriorityBefore = _cmPlayer.Priority;
-        _freePriorityBefore = CM_FreeCam.Priority;
 
         if (toggleFreeCamGameObject)
             CM_FreeCam.gameObject.SetActive(true);
@@ -568,6 +601,46 @@ public class FreeCam : Singleton<FreeCam>
 
     private IEnumerator EnterFreeCamCue()
     {
+        Vector3 pos = CM_FreeCam.transform.position;
+        Vector3 fwd = CM_FreeCam.transform.forward;
+
+        // 1) Are we currently inside / overlapping something solid?
+        int overlapCount = Physics.OverlapSphereNonAlloc(
+            pos,
+            Mathf.Max(0.001f, collisionProbeRadius),
+            _overlapCache,
+            Physics.DefaultRaycastLayers,
+            ignoreTriggers ? QueryTriggerInteraction.Ignore : QueryTriggerInteraction.Collide
+        );
+
+        bool overlappingBlocking = false;
+
+        for (int i = 0; i < overlapCount; i++)
+        {
+            Collider col = _overlapCache[i];
+            if (!col) continue;
+
+            // Ignore pass-through
+            if (usePassThroughMarker && col.GetComponentInParent<FreeCamPassThrough>() != null)
+                continue;
+
+            // Ignore self
+            if (col.transform.IsChildOf(transform))
+                continue;
+
+            overlappingBlocking = true;
+            break;
+        }
+
+        // If we are overlapping: move forward a bit and SKIP the backwards cue
+        if (overlappingBlocking)
+        {
+            CM_FreeCam.transform.position += fwd * freeCamForwardPush;
+            _enterCueRoutine = null;
+            yield break;
+        }
+
+        // 2) Otherwise do your normal backwards cue (unchanged)
         Vector3 startPos = CM_FreeCam.transform.position;
         Quaternion rot = CM_FreeCam.transform.rotation;
         Vector3 targetPos = startPos - (rot * Vector3.forward * enterFadeDistance);
@@ -590,6 +663,29 @@ public class FreeCam : Singleton<FreeCam>
         CM_FreeCam.transform.position = targetPos;
         _enterCueRoutine = null;
     }
+    private void CacheBasePrioritiesOnce()
+    {
+        if (_basePrioritiesCached) return;
+        if (CM_FreeCam == null) return;
+
+        _cmPlayer = CameraController.Instance != null ? CameraController.Instance.CM_Player : _cmPlayer;
+        if (_cmPlayer == null) return;
+
+        _playerBasePriority = _cmPlayer.Priority;
+        _freeBasePriority = CM_FreeCam.Priority;
+        _basePrioritiesCached = true;
+    }
+
+    private void RestoreBasePriorities()
+    {
+        if (!_basePrioritiesCached) return;
+        if (CM_FreeCam != null) CM_FreeCam.Priority = _freeBasePriority;
+        if (_cmPlayer != null) _cmPlayer.Priority = _playerBasePriority;
+    }
+
+
+
+
 
     private IEnumerator ReturnToPlayerThenSwitch()
     {
@@ -633,8 +729,7 @@ public class FreeCam : Singleton<FreeCam>
         CM_FreeCam.transform.SetPositionAndRotation(targetPos, targetRot);
 
         // restore priorities
-        CM_FreeCam.Priority = _freePriorityBefore;
-        _cmPlayer.Priority = _playerPriorityBefore;
+        RestoreBasePriorities();
 
         if (toggleFreeCamGameObject)
             CM_FreeCam.gameObject.SetActive(false);

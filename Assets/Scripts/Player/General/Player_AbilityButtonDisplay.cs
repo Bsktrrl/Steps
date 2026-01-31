@@ -134,7 +134,6 @@ public class Player_AbilityButtonDisplay : Singleton<Player_AbilityButtonDisplay
 
     public void UpdateDisplay()
     {
-        print("100. UpdateDisplay");
         abilityParent.SetActive(true);
 
         Ability_Appearance(abilitySprite_Swim, PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel, PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel);

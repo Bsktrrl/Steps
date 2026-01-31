@@ -18128,6 +18128,7 @@ MonoBehaviour:
   sweepPadding: 0.02
   touchEpsilon: 1
   touchSlideStep: 1
+  freeCamForwardPush: 0.35
 --- !u!1 &3728129297529229334
 GameObject:
   m_ObjectHideFlags: 0
@@ -31572,6 +31573,7 @@ GameObject:
   - component: {fileID: 7911760123166948170}
   - component: {fileID: 5719477613546976637}
   - component: {fileID: 6240145603939652248}
+  - component: {fileID: 1897597376279654518}
   m_Layer: 6
   m_Name: Player v3
   m_TagString: Player
@@ -32130,6 +32132,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInMud: 0
+--- !u!114 &1897597376279654518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649856597487831825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2a8dfece72ecda4787365e763d976d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6656764133877696109
 GameObject:
   m_ObjectHideFlags: 0
