@@ -124,8 +124,15 @@ public class GlueplantCamera : MonoBehaviour
 
     private void OnPlayerSpawned(GameObject playerGO)
     {
-        if (MapManager.Instance.haveIntroSequence)
+        StartCoroutine(OnPlayerSpawned_Delay(0.05f));
+    }
+    IEnumerator OnPlayerSpawned_Delay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        if (!DataManager.Instance.oneTimeRunData_Store.forceIntroSequenceInFirstLevel)
         {
+            print("1. OnPlayerSpawned_Delay");
             CM_Player = CameraController.Instance.CM_Player;
 
             SetPriority(CM_Glueplant, glueplantPriorityDuringTravel);
@@ -133,6 +140,26 @@ public class GlueplantCamera : MonoBehaviour
             CM_Glueplant.Prioritize();
 
             RunCameraTravel();
+        }
+        else
+        {
+            if (MapManager.Instance.haveIntroSequence)
+            {
+                CM_Player = CameraController.Instance.CM_Player;
+
+                SetPriority(CM_Glueplant, glueplantPriorityDuringTravel);
+                SetPriority(CM_Player, playerPriorityDuringTravel);
+                CM_Glueplant.Prioritize();
+
+                RunCameraTravel();
+            }
+            else
+            {
+                if (CM_Player == null)
+                    CM_Player = CameraController.Instance.CM_Player;
+                FinishTravel();
+                //MapManager.Instance.Action_EndIntroSequence_Invoke();
+            }
         }
     }
 

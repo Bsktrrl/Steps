@@ -39,19 +39,23 @@ public class StepsDisplay : Singleton<StepsDisplay>
 
     private void OnEnable()
     {
-        if (MapManager.Instance.haveIntroSequence)
-            MapManager.Action_EndIntroSequence += SetStepsDisplay;
-        else
-            DataManager.Action_dataHasLoaded += SetStepsDisplay;
+        MapManager.Action_EndIntroSequence += SetStepsDisplay;
 
-            SettingsManager.Action_SetNewStepDisplay += SetStepsDisplay;
+        //if (MapManager.Instance.haveIntroSequence)
+        //    MapManager.Action_EndIntroSequence += SetStepsDisplay;
+        //else
+        //    DataManager.Action_dataHasLoaded += SetStepsDisplay;
+
+        SettingsManager.Action_SetNewStepDisplay += SetStepsDisplay;
     }
     private void OnDisable()
     {
-        if (MapManager.Instance.haveIntroSequence)
-            MapManager.Action_EndIntroSequence -= SetStepsDisplay;
-        else
-            DataManager.Action_dataHasLoaded -= SetStepsDisplay;
+        MapManager.Action_EndIntroSequence -= SetStepsDisplay;
+
+        //if (MapManager.Instance.haveIntroSequence)
+        //    MapManager.Action_EndIntroSequence -= SetStepsDisplay;
+        //else
+        //    DataManager.Action_dataHasLoaded -= SetStepsDisplay;
 
         SettingsManager.Action_SetNewStepDisplay -= SetStepsDisplay;
     }

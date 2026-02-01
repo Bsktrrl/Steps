@@ -117,6 +117,8 @@ public enum SettingState
     //Settings
     Settings_StepDisplay,
     Settings_CameraMotion,
+    Settings_RevertedCameraMotion,
+    Settings_SkipLevelIntro,
 }
 public enum Languages
 {
@@ -144,4 +146,14 @@ public enum CameraMotion
 {
     Can,
     Cannot
+}
+public enum RevertedCameraMotion
+{
+    Normal,
+    Reverted
+}
+public enum SkipIntro
+{
+    Yes,
+    No
 }

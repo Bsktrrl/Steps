@@ -256,40 +256,19 @@ public class Interactable_NPC : MonoBehaviour
                 switch (levelNumber)
                 {
                     case 1:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.floriel_Data != null && DataManager.Instance.charatersData_Store.floriel_Data.level_1_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(true, DataManager.Instance.charatersData_Store.floriel_Data.level_1_DialogueFinished);
                         break;
                     case 2:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.floriel_Data != null && DataManager.Instance.charatersData_Store.floriel_Data.level_2_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.floriel_Data.level_1_DialogueFinished, DataManager.Instance.charatersData_Store.floriel_Data.level_2_DialogueFinished);
                         break;
                     case 3:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.floriel_Data != null && DataManager.Instance.charatersData_Store.floriel_Data.level_3_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.floriel_Data.level_2_DialogueFinished, DataManager.Instance.charatersData_Store.floriel_Data.level_3_DialogueFinished);
                         break;
                     case 4:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.floriel_Data != null && DataManager.Instance.charatersData_Store.floriel_Data.level_4_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.floriel_Data.level_3_DialogueFinished, DataManager.Instance.charatersData_Store.floriel_Data.level_4_DialogueFinished);
                         break;
                     case 5:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.floriel_Data != null && DataManager.Instance.charatersData_Store.floriel_Data.level_5_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
-                        break;
-                    case 6:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.floriel_Data != null && DataManager.Instance.charatersData_Store.floriel_Data.level_6_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.floriel_Data.level_4_DialogueFinished, DataManager.Instance.charatersData_Store.floriel_Data.level_5_DialogueFinished);
                         break;
 
                     default:
@@ -300,40 +279,19 @@ public class Interactable_NPC : MonoBehaviour
                 switch (levelNumber)
                 {
                     case 1:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.granith_Data != null && DataManager.Instance.charatersData_Store.granith_Data.level_1_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(true, DataManager.Instance.charatersData_Store.granith_Data.level_1_DialogueFinished);
                         break;
                     case 2:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.granith_Data != null && DataManager.Instance.charatersData_Store.granith_Data.level_2_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.granith_Data.level_1_DialogueFinished, DataManager.Instance.charatersData_Store.granith_Data.level_2_DialogueFinished);
                         break;
                     case 3:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.granith_Data != null && DataManager.Instance.charatersData_Store.granith_Data.level_3_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.granith_Data.level_2_DialogueFinished, DataManager.Instance.charatersData_Store.granith_Data.level_3_DialogueFinished);
                         break;
                     case 4:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.granith_Data != null && DataManager.Instance.charatersData_Store.granith_Data.level_4_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.granith_Data.level_3_DialogueFinished, DataManager.Instance.charatersData_Store.granith_Data.level_4_DialogueFinished);
                         break;
                     case 5:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.granith_Data != null && DataManager.Instance.charatersData_Store.granith_Data.level_5_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
-                        break;
-                    case 6:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.granith_Data != null && DataManager.Instance.charatersData_Store.granith_Data.level_6_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.granith_Data.level_4_DialogueFinished, DataManager.Instance.charatersData_Store.granith_Data.level_5_DialogueFinished);
                         break;
 
                     default:
@@ -344,40 +302,19 @@ public class Interactable_NPC : MonoBehaviour
                 switch (levelNumber)
                 {
                     case 1:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.archie_Data != null && DataManager.Instance.charatersData_Store.archie_Data.level_1_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(true, DataManager.Instance.charatersData_Store.archie_Data.level_1_DialogueFinished);
                         break;
                     case 2:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.archie_Data != null && DataManager.Instance.charatersData_Store.archie_Data.level_2_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.archie_Data.level_1_DialogueFinished, DataManager.Instance.charatersData_Store.archie_Data.level_2_DialogueFinished);
                         break;
                     case 3:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.archie_Data != null && DataManager.Instance.charatersData_Store.archie_Data.level_3_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.archie_Data.level_2_DialogueFinished, DataManager.Instance.charatersData_Store.archie_Data.level_3_DialogueFinished);
                         break;
                     case 4:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.archie_Data != null && DataManager.Instance.charatersData_Store.archie_Data.level_4_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.archie_Data.level_3_DialogueFinished, DataManager.Instance.charatersData_Store.archie_Data.level_4_DialogueFinished);
                         break;
                     case 5:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.archie_Data != null && DataManager.Instance.charatersData_Store.archie_Data.level_5_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
-                        break;
-                    case 6:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.archie_Data != null && DataManager.Instance.charatersData_Store.archie_Data.level_6_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.archie_Data.level_4_DialogueFinished, DataManager.Instance.charatersData_Store.archie_Data.level_5_DialogueFinished);
                         break;
 
                     default:
@@ -388,40 +325,19 @@ public class Interactable_NPC : MonoBehaviour
                 switch (levelNumber)
                 {
                     case 1:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.aisa_Data != null && DataManager.Instance.charatersData_Store.aisa_Data.level_1_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(true, DataManager.Instance.charatersData_Store.aisa_Data.level_1_DialogueFinished);
                         break;
                     case 2:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.aisa_Data != null && DataManager.Instance.charatersData_Store.aisa_Data.level_2_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.aisa_Data.level_1_DialogueFinished, DataManager.Instance.charatersData_Store.aisa_Data.level_2_DialogueFinished);
                         break;
                     case 3:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.aisa_Data != null && DataManager.Instance.charatersData_Store.aisa_Data.level_3_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.aisa_Data.level_2_DialogueFinished, DataManager.Instance.charatersData_Store.aisa_Data.level_3_DialogueFinished);
                         break;
                     case 4:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.aisa_Data != null && DataManager.Instance.charatersData_Store.aisa_Data.level_4_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.aisa_Data.level_3_DialogueFinished, DataManager.Instance.charatersData_Store.aisa_Data.level_4_DialogueFinished);
                         break;
                     case 5:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.aisa_Data != null && DataManager.Instance.charatersData_Store.aisa_Data.level_5_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
-                        break;
-                    case 6:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.aisa_Data != null && DataManager.Instance.charatersData_Store.aisa_Data.level_6_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.aisa_Data.level_4_DialogueFinished, DataManager.Instance.charatersData_Store.aisa_Data.level_5_DialogueFinished);
                         break;
 
                     default:
@@ -432,40 +348,19 @@ public class Interactable_NPC : MonoBehaviour
                 switch (levelNumber)
                 {
                     case 1:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.mossy_Data != null && DataManager.Instance.charatersData_Store.mossy_Data.level_1_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(true, DataManager.Instance.charatersData_Store.mossy_Data.level_1_DialogueFinished);
                         break;
                     case 2:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.mossy_Data != null && DataManager.Instance.charatersData_Store.mossy_Data.level_2_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.mossy_Data.level_1_DialogueFinished, DataManager.Instance.charatersData_Store.mossy_Data.level_2_DialogueFinished);
                         break;
                     case 3:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.mossy_Data != null && DataManager.Instance.charatersData_Store.mossy_Data.level_3_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.mossy_Data.level_2_DialogueFinished, DataManager.Instance.charatersData_Store.mossy_Data.level_3_DialogueFinished);
                         break;
                     case 4:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.mossy_Data != null && DataManager.Instance.charatersData_Store.mossy_Data.level_4_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.mossy_Data.level_3_DialogueFinished, DataManager.Instance.charatersData_Store.mossy_Data.level_4_DialogueFinished);
                         break;
                     case 5:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.mossy_Data != null && DataManager.Instance.charatersData_Store.mossy_Data.level_5_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
-                        break;
-                    case 6:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.mossy_Data != null && DataManager.Instance.charatersData_Store.mossy_Data.level_6_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.mossy_Data.level_4_DialogueFinished, DataManager.Instance.charatersData_Store.mossy_Data.level_5_DialogueFinished);
                         break;
 
                     default:
@@ -476,40 +371,19 @@ public class Interactable_NPC : MonoBehaviour
                 switch (levelNumber)
                 {
                     case 1:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.larry_Data != null && DataManager.Instance.charatersData_Store.larry_Data.level_1_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(true, DataManager.Instance.charatersData_Store.larry_Data.level_1_DialogueFinished);
                         break;
                     case 2:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.larry_Data != null && DataManager.Instance.charatersData_Store.larry_Data.level_2_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.larry_Data.level_1_DialogueFinished, DataManager.Instance.charatersData_Store.larry_Data.level_2_DialogueFinished);
                         break;
                     case 3:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.larry_Data != null && DataManager.Instance.charatersData_Store.larry_Data.level_3_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.larry_Data.level_2_DialogueFinished, DataManager.Instance.charatersData_Store.larry_Data.level_3_DialogueFinished);
                         break;
                     case 4:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.larry_Data != null && DataManager.Instance.charatersData_Store.larry_Data.level_4_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.larry_Data.level_3_DialogueFinished, DataManager.Instance.charatersData_Store.larry_Data.level_4_DialogueFinished);
                         break;
                     case 5:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.larry_Data != null && DataManager.Instance.charatersData_Store.larry_Data.level_5_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
-                        break;
-                    case 6:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.larry_Data != null && DataManager.Instance.charatersData_Store.larry_Data.level_6_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.larry_Data.level_4_DialogueFinished, DataManager.Instance.charatersData_Store.larry_Data.level_5_DialogueFinished);
                         break;
 
                     default:
@@ -520,40 +394,19 @@ public class Interactable_NPC : MonoBehaviour
                 switch (levelNumber)
                 {
                     case 1:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.stepellier_Data != null && DataManager.Instance.charatersData_Store.stepellier_Data.level_1_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(true, DataManager.Instance.charatersData_Store.stepellier_Data.level_1_DialogueFinished);
                         break;
                     case 2:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.stepellier_Data != null && DataManager.Instance.charatersData_Store.stepellier_Data.level_2_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.stepellier_Data.level_1_DialogueFinished, DataManager.Instance.charatersData_Store.stepellier_Data.level_2_DialogueFinished);
                         break;
                     case 3:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.stepellier_Data != null && DataManager.Instance.charatersData_Store.stepellier_Data.level_3_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.stepellier_Data.level_2_DialogueFinished, DataManager.Instance.charatersData_Store.stepellier_Data.level_3_DialogueFinished);
                         break;
                     case 4:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.stepellier_Data != null && DataManager.Instance.charatersData_Store.stepellier_Data.level_4_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.stepellier_Data.level_3_DialogueFinished, DataManager.Instance.charatersData_Store.stepellier_Data.level_4_DialogueFinished);
                         break;
                     case 5:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.stepellier_Data != null && DataManager.Instance.charatersData_Store.stepellier_Data.level_5_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
-                        break;
-                    case 6:
-                        if (DataManager.Instance.charatersData_Store != null && DataManager.Instance.charatersData_Store.stepellier_Data != null && DataManager.Instance.charatersData_Store.stepellier_Data.level_6_DialogueFinished)
-                            HideNPC();
-                        else
-                            ShowNPC();
+                        SetNPCVisibility(DataManager.Instance.charatersData_Store.stepellier_Data.level_4_DialogueFinished, DataManager.Instance.charatersData_Store.stepellier_Data.level_5_DialogueFinished);
                         break;
 
                     default:
@@ -564,6 +417,17 @@ public class Interactable_NPC : MonoBehaviour
             default:
                 break;
         }
+    }
+    void SetNPCVisibility(bool needToShow, bool needToHide)
+    {
+        if (needToHide)
+            HideNPC();
+        else if (!needToShow)
+            HideNPC();
+        else if(needToShow)
+            ShowNPC();
+        else
+            HideNPC();
     }
     void ShowNPC()
     {
@@ -1088,8 +952,9 @@ public class Interactable_NPC : MonoBehaviour
             lastSegment = segmentIndex;
             StartCoroutine(TurnNPCAwayFromPlayer());
             StartCoroutine(DialogueManager.Instance.EndDialogue(DialogueManager.Instance.closingMenuDelay));
+            RunHatPopupMessage();
 
-            print("0. Last Segment: " + segmentIndex);
+            //print("0. Last Segment: " + segmentIndex);
         }
 
         //If the next segment doesn't have any options, run the next segment in the list (or mainLink)
@@ -1101,12 +966,12 @@ public class Interactable_NPC : MonoBehaviour
                 {
                     int tempSegemtnIndex = dialogueInfo.dialogueSegments[segmentIndex].mainLink;
                     segmentIndex = tempSegemtnIndex;
-                    print("1. Use MainLink: " + segmentIndex);
+                    //print("1. Use MainLink: " + segmentIndex);
                 }
                 else
                 {
                     segmentIndex++;
-                    print("2. Increase segmentIndex: " + segmentIndex);
+                    //print("2. Increase segmentIndex: " + segmentIndex);
                 }
 
                 SetupDialogueDisplay(segmentIndex, dialogueInfo.npcName);
@@ -1324,6 +1189,8 @@ public class Interactable_NPC : MonoBehaviour
         {
             StartCoroutine(TurnNPCAwayFromPlayer());
             StartCoroutine(DialogueManager.Instance.EndDialogue(DialogueManager.Instance.closingMenuDelay));
+            RunHatPopupMessage();
+
             return;
         }
 
@@ -1437,5 +1304,55 @@ public class Interactable_NPC : MonoBehaviour
             anim.SetBool("Talking", true);
         else
             anim.SetBool("Talking", false);
+    }
+
+
+    //--------------------
+
+
+    void RunHatPopupMessage()
+    {
+        StartCoroutine(RunHatPopupMessage_Dealy(1.5f));
+    }
+    IEnumerator RunHatPopupMessage_Dealy(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        switch (characterName)
+        {
+            case NPCs.None:
+                break;
+
+            case NPCs.Floriel:
+                if (DataManager.Instance.charatersData_Store.floriel_Data.level_5_DialogueFinished)
+                    PopUpManager.Instance.ShowHat_Floríel();
+                break;
+            case NPCs.Granith:
+                if (DataManager.Instance.charatersData_Store.granith_Data.level_5_DialogueFinished)
+                    PopUpManager.Instance.ShowHat_Granith();
+                break;
+            case NPCs.Archie:
+                if (DataManager.Instance.charatersData_Store.archie_Data.level_5_DialogueFinished)
+                    PopUpManager.Instance.ShowHat_Archie();
+                break;
+            case NPCs.Aisa:
+                if (DataManager.Instance.charatersData_Store.aisa_Data.level_5_DialogueFinished)
+                    PopUpManager.Instance.ShowHat_Aisa();
+                break;
+            case NPCs.Mossy:
+                if (DataManager.Instance.charatersData_Store.mossy_Data.level_5_DialogueFinished)
+                    PopUpManager.Instance.ShowHat_Mossy();
+                break;
+            case NPCs.Larry:
+                if (DataManager.Instance.charatersData_Store.larry_Data.level_5_DialogueFinished)
+                    PopUpManager.Instance.ShowHat_Larry();
+                break;
+
+            case NPCs.Stepellier:
+                break;
+
+            default:
+                break;
+        }
     }
 }

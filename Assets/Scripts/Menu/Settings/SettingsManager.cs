@@ -10,6 +10,8 @@ public class SettingsManager : Singleton<SettingsManager>
     public static event Action Action_SetNewTextSpeed;
     public static event Action Action_SetNewStepDisplay;
     public static event Action Action_SetNewCameraMotion;
+    public static event Action Action_SetNewRevertedCameraMotion;
+    public static event Action Action_SetNewSkipIntro;
 
     public GameObject settingsMenuParent;
     public SettingData settingsData;
@@ -47,6 +49,16 @@ public class SettingsManager : Singleton<SettingsManager>
     [SerializeField] Sprite cameraMotion_Can_Sprite;
     [SerializeField] Sprite cameraMotion_Cannot_Sprite;
 
+    [Header("Reverted Camera Motion")]
+    [SerializeField] Image revertedCameraMotionImage;
+    [SerializeField] Sprite revertedCameraMotion_Normal_Sprite;
+    [SerializeField] Sprite revertedCameraMotion_Reverted_Sprite;
+
+    [Header("SkipIntro")]
+    [SerializeField] Image skipIntroImage;
+    [SerializeField] Sprite skipIntro_YES_Sprite;
+    [SerializeField] Sprite skipIntro_NO_Sprite;
+
 
     //--------------------
 
@@ -78,12 +90,16 @@ public class SettingsManager : Singleton<SettingsManager>
             settingsData.currentTextSpeed = DataManager.Instance.settingData_StoreList.currentTextSpeed;
             settingsData.currentStepDisplay = DataManager.Instance.settingData_StoreList.currentStepDisplay;
             settingsData.currentCameraMotion = DataManager.Instance.settingData_StoreList.currentCameraMotion;
+            settingsData.currentRevertedCameraMotion = DataManager.Instance.settingData_StoreList.currentRevertedCameraMotion;
+            settingsData.currentSkipIntro = DataManager.Instance.settingData_StoreList.currentSkipIntro;
         }
 
         ChangeFlagImage();
         ChangeTextSpeedImage();
         ChangeStepDisplayImage();
         ChangeCameraMotionImage();
+        ChangeRevertedCameraMotionImage();
+        ChangeSkipIntroImage();
     }
     public void SaveData()
     {
@@ -91,6 +107,8 @@ public class SettingsManager : Singleton<SettingsManager>
         DataManager.Instance.settingData_StoreList.currentTextSpeed = settingsData.currentTextSpeed;
         DataManager.Instance.settingData_StoreList.currentStepDisplay = settingsData.currentStepDisplay;
         DataManager.Instance.settingData_StoreList.currentCameraMotion = settingsData.currentCameraMotion;
+        DataManager.Instance.settingData_StoreList.currentRevertedCameraMotion = settingsData.currentRevertedCameraMotion;
+        DataManager.Instance.settingData_StoreList.currentSkipIntro = settingsData.currentSkipIntro;
 
         DataPersistanceManager.instance.SaveGame();
     }
@@ -107,6 +125,8 @@ public class SettingsManager : Singleton<SettingsManager>
         ChangeTextSpeedImage();
         ChangeStepDisplayImage();
         ChangeCameraMotionImage();
+        ChangeRevertedCameraMotionImage();
+        ChangeSkipIntroImage();
     }
     
     
@@ -123,6 +143,10 @@ public class SettingsManager : Singleton<SettingsManager>
             StepDisplay_LeftButton_isPressed();
         else if (settingState == SettingState.Settings_CameraMotion)
             CameraMotion_LeftButton_isPressed();
+        else if (settingState == SettingState.Settings_RevertedCameraMotion)
+            RevertedCameraMotion_LeftButton_isPressed();
+        else if (settingState == SettingState.Settings_SkipLevelIntro)
+            SkipIntro_LeftButton_isPressed();
     }
     void PerformButtonAction_Right()
     {
@@ -134,6 +158,10 @@ public class SettingsManager : Singleton<SettingsManager>
             StepDisplay_RightButton_isPressed();
         else if (settingState == SettingState.Settings_CameraMotion)
             CameraMotion_RightButton_isPressed();
+        else if (settingState == SettingState.Settings_RevertedCameraMotion)
+            RevertedCameraMotion_RightButton_isPressed();
+        else if (settingState == SettingState.Settings_SkipLevelIntro)
+            SkipIntro_RightButton_isPressed();
     }
 
 
@@ -423,6 +451,118 @@ public class SettingsManager : Singleton<SettingsManager>
                 break;
         }
     }
+
+    public void RevertedCameraMotion_RightButton_isPressed()
+    {
+        switch (settingsData.currentRevertedCameraMotion)
+        {
+            case RevertedCameraMotion.Normal:
+                settingsData.currentRevertedCameraMotion = RevertedCameraMotion.Reverted;
+                break;
+            case RevertedCameraMotion.Reverted:
+                settingsData.currentRevertedCameraMotion = RevertedCameraMotion.Normal;
+                break;
+
+            default:
+                break;
+        }
+
+        ChangeRevertedCameraMotionImage();
+        SaveData();
+
+        Action_SetNewRevertedCameraMotion?.Invoke();
+    }
+    public void RevertedCameraMotion_LeftButton_isPressed()
+    {
+        switch (settingsData.currentRevertedCameraMotion)
+        {
+            case RevertedCameraMotion.Normal:
+                settingsData.currentRevertedCameraMotion = RevertedCameraMotion.Reverted;
+                break;
+            case RevertedCameraMotion.Reverted:
+                settingsData.currentRevertedCameraMotion = RevertedCameraMotion.Normal;
+                break;
+
+            default:
+                break;
+        }
+
+        ChangeRevertedCameraMotionImage();
+        SaveData();
+
+        Action_SetNewRevertedCameraMotion?.Invoke();
+    }
+    void ChangeRevertedCameraMotionImage()
+    {
+        switch (settingsData.currentRevertedCameraMotion)
+        {
+            case RevertedCameraMotion.Normal:
+                revertedCameraMotionImage.sprite = revertedCameraMotion_Normal_Sprite;
+                break;
+            case RevertedCameraMotion.Reverted:
+                revertedCameraMotionImage.sprite = revertedCameraMotion_Reverted_Sprite;
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    public void SkipIntro_RightButton_isPressed()
+    {
+        switch (settingsData.currentSkipIntro)
+        {
+            case SkipIntro.Yes:
+                settingsData.currentSkipIntro = SkipIntro.No;
+                break;
+            case SkipIntro.No:
+                settingsData.currentSkipIntro = SkipIntro.Yes;
+                break;
+
+            default:
+                break;
+        }
+
+        ChangeSkipIntroImage();
+        SaveData();
+
+        Action_SetNewSkipIntro?.Invoke();
+    }
+    public void SkipIntro_LeftButton_isPressed()
+    {
+        switch (settingsData.currentSkipIntro)
+        {
+            case SkipIntro.Yes:
+                settingsData.currentSkipIntro = SkipIntro.No;
+                break;
+            case SkipIntro.No:
+                settingsData.currentSkipIntro = SkipIntro.Yes;
+                break;
+
+            default:
+                break;
+        }
+
+        ChangeSkipIntroImage();
+        SaveData();
+
+        Action_SetNewSkipIntro?.Invoke();
+    }
+    void ChangeSkipIntroImage()
+    {
+        switch (settingsData.currentSkipIntro)
+        {
+            case SkipIntro.Yes:
+                skipIntroImage.sprite = skipIntro_YES_Sprite;
+                break;
+            case SkipIntro.No:
+                skipIntroImage.sprite = skipIntro_NO_Sprite;
+                break;
+
+            default:
+                break;
+        }
+    }
 }
 
 [Serializable]
@@ -432,4 +572,6 @@ public class SettingData
     public TextSpeed currentTextSpeed;
     public StepDisplay currentStepDisplay;
     public CameraMotion currentCameraMotion;
+    public RevertedCameraMotion currentRevertedCameraMotion;
+    public SkipIntro currentSkipIntro;
 }

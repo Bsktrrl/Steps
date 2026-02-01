@@ -54,7 +54,7 @@ public class Tutorial : Singleton<Tutorial>
     {
         if (!runTutorial) return;
 
-        if (!DataManager.Instance.tutorial_Finished)
+        if (!DataManager.Instance.oneTimeRunData_Store.tutorial_Finished)
         {
             PlayerManager.Instance.PauseGame();
         }
@@ -68,10 +68,19 @@ public class Tutorial : Singleton<Tutorial>
     {
         if (!runTutorial) return;
 
-        if (MapManager.Instance.haveIntroSequence)
-            MapManager.Action_EndIntroSequence += Start_Tutorial;
-        else
-            DataManager.Action_dataHasLoaded += Start_Tutorial;
+        MapManager.Action_EndIntroSequence += Start_Tutorial;
+
+        //if (!DataManager.Instance.oneTimeRunData_Store.forceIntroSequenceInFirstLevel)
+        //{
+        //    MapManager.Action_EndIntroSequence += Start_Tutorial;
+        //}
+        //else
+        //{
+        //    if (MapManager.Instance.haveIntroSequence)
+        //        MapManager.Action_EndIntroSequence += Start_Tutorial;
+        //    else
+        //        DataManager.Action_dataHasLoaded += Start_Tutorial;
+        //}
 
         Movement.Action_RespawnPlayerLate += End_Tutorial_Respawn;
     }
@@ -79,10 +88,19 @@ public class Tutorial : Singleton<Tutorial>
     {
         if (!runTutorial) return;
 
-        if (MapManager.Instance.haveIntroSequence)
-            MapManager.Action_EndIntroSequence -= Start_Tutorial;
-        else
-            DataManager.Action_dataHasLoaded -= Start_Tutorial;
+        MapManager.Action_EndIntroSequence -= Start_Tutorial;
+
+        //if (!DataManager.Instance.oneTimeRunData_Store.forceIntroSequenceInFirstLevel)
+        //{
+        //    MapManager.Action_EndIntroSequence -= Start_Tutorial;
+        //}
+        //else
+        //{
+        //    if (MapManager.Instance.haveIntroSequence)
+        //        MapManager.Action_EndIntroSequence -= Start_Tutorial;
+        //    else
+        //        DataManager.Action_dataHasLoaded -= Start_Tutorial;
+        //}
 
         Movement.Action_RespawnPlayerLate -= End_Tutorial_Respawn;
     }
@@ -93,7 +111,7 @@ public class Tutorial : Singleton<Tutorial>
     void Start_Tutorial()
     {
         //print("111. DataManager.Instance.tutorial_Finished: " + DataManager.Instance.tutorial_Finished);
-        if (!DataManager.Instance.tutorial_Finished)
+        if (!DataManager.Instance.oneTimeRunData_Store.tutorial_Finished)
         {
             PlayerManager.Instance.PauseGame();
             
@@ -321,12 +339,15 @@ public class Tutorial : Singleton<Tutorial>
 
     public void EndTutorial()
     {
-        DataManager.Instance.tutorial_Finished = true;
+        DataManager.Instance.oneTimeRunData_Store.tutorial_Finished = true;
 
         //Save DataManager state
         DataPersistanceManager.instance.SaveGame();
 
         tutorial_isRunning = false;
         PlayerManager.Instance.UnpauseGame();
+
+        DataManager.Instance.oneTimeRunData_Store.forceIntroSequenceInFirstLevel = true;
+        DataPersistanceManager.instance.SaveGame();
     }
 }

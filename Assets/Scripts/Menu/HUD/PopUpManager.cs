@@ -13,6 +13,7 @@ public class PopUpManager : Singleton<PopUpManager>
     //-----
 
 
+    //Pickups
     [Header("Popup - Parents")]
     [SerializeField] GameObject popup_LevelName_Parent;
     [SerializeField] GameObject popup_Footprint_Parent;
@@ -32,6 +33,7 @@ public class PopUpManager : Singleton<PopUpManager>
     //-----
 
 
+    //Abilities
     [Header("Ability Active State")]
     public bool ability_Active;
     public bool ability_CanBeClosed;
@@ -61,6 +63,27 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] List<GameObject> abilities_Jump_Children;
     [SerializeField] List<GameObject> abilities_GrapplingHook_Children;
     [SerializeField] List<GameObject> abilities_CeilingGrab_Children;
+
+
+    //-----
+
+
+    //Hats
+    [Header("Hats - Parents")]
+    [SerializeField] GameObject hats_Floríel_Parent;
+    [SerializeField] GameObject hats_Archie_Parent;
+    [SerializeField] GameObject hats_Aisa_Parent;
+    [SerializeField] GameObject hats_Granith_Parent;
+    [SerializeField] GameObject hats_Mossy_Parent;
+    [SerializeField] GameObject hats_Larry_Parent;
+
+    [Header("Hats - Children")]
+    [SerializeField] List<GameObject> hats_Floríel_Children;
+    [SerializeField] List<GameObject> hats_Archie_Children;
+    [SerializeField] List<GameObject> hats_Aisa_Children;
+    [SerializeField] List<GameObject> hats_Granith_Children;
+    [SerializeField] List<GameObject> hats_Mossy_Children;
+    [SerializeField] List<GameObject> hats_Larry_Children;
 
 
     //-----
@@ -118,6 +141,8 @@ public class PopUpManager : Singleton<PopUpManager>
     {
         StartCoroutine(SkinRoutine());
     }
+
+    //-----
 
     public void ShowAbilityPopup(Abilities ability)
     {
@@ -197,6 +222,33 @@ public class PopUpManager : Singleton<PopUpManager>
         ability_CanBeClosed = false;
     }
 
+    //-----
+
+    public void ShowHat_Floríel()
+    {
+        StartCoroutine(HatRoutine(hats_Floríel_Parent, hats_Floríel_Children));
+    }
+    public void ShowHat_Archie()
+    {
+        StartCoroutine(HatRoutine(hats_Archie_Parent, hats_Archie_Children));
+    }
+    public void ShowHat_Aisa()
+    {
+        StartCoroutine(HatRoutine(hats_Aisa_Parent, hats_Aisa_Children));
+    }
+    public void ShowHat_Granith()
+    {
+        StartCoroutine(HatRoutine(hats_Granith_Parent, hats_Granith_Children));
+    }
+    public void ShowHat_Mossy()
+    {
+        StartCoroutine(HatRoutine(hats_Mossy_Parent, hats_Mossy_Children));
+    }
+    public void ShowHat_Larry()
+    {
+        StartCoroutine(HatRoutine(hats_Larry_Parent, hats_Larry_Children));
+    }
+
 
     //--------------------
 
@@ -255,9 +307,22 @@ public class PopUpManager : Singleton<PopUpManager>
     {
         ShowDisplay(popupManager, popup_Skin_Parent, popup_Skin_Children);
 
-        yield return new WaitForSeconds(pickupMessageDuration * 1.5f);
+        yield return new WaitForSeconds(pickupMessageDuration * 2f);
 
         HideDisplay(popupManager, popup_Skin_Parent, popup_Skin_Children);
+    }
+
+
+    //--------------------
+
+
+    IEnumerator HatRoutine(GameObject parent, List<GameObject> childerenLIst)
+    {
+        ShowDisplay(popupManager, parent, childerenLIst);
+
+        yield return new WaitForSeconds(pickupMessageDuration * 3f);
+
+        HideDisplay(popupManager, parent, childerenLIst);
     }
 
 

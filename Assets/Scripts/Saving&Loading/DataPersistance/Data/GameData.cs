@@ -35,6 +35,9 @@ public class GameData
     //Tutorial
     /*[HideInInspector]*/ public bool tutorial_Finished_Save = new bool();
 
+    //Data to run once
+    /*[HideInInspector]*/ public OneTimeRunData oneTimeRunData_Save = new OneTimeRunData();
+
 
     //--------------------
 
@@ -50,6 +53,8 @@ public class GameData
         charatersData_Save = new CharatersData();
         skinsInfo_Save = new SkinInfo();
 
-        tutorial_Finished_Save = false;
+        oneTimeRunData_Save = new OneTimeRunData();
+
+        //tutorial_Finished_Save = false;
     }
 }

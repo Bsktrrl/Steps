@@ -57,10 +57,6 @@ public class NPCManager : Singleton<NPCManager>
                         if (charatersData != null && charatersData.floriel_Data != null)
                             charatersData.floriel_Data.level_5_DialogueFinished = true;
                         break;
-                    case 6:
-                        if (charatersData != null && charatersData.floriel_Data != null)
-                            charatersData.floriel_Data.level_6_DialogueFinished = true;
-                        break;
 
                     default:
                         break;
@@ -88,10 +84,6 @@ public class NPCManager : Singleton<NPCManager>
                     case 5:
                         if (charatersData != null && charatersData.granith_Data != null)
                             charatersData.granith_Data.level_5_DialogueFinished = true;
-                        break;
-                    case 6:
-                        if (charatersData != null && charatersData.granith_Data != null)
-                            charatersData.granith_Data.level_6_DialogueFinished = true;
                         break;
 
                     default:
@@ -121,10 +113,6 @@ public class NPCManager : Singleton<NPCManager>
                         if (charatersData != null && charatersData.archie_Data != null)
                             charatersData.archie_Data.level_5_DialogueFinished = true;
                         break;
-                    case 6:
-                        if (charatersData != null && charatersData.archie_Data != null)
-                            charatersData.archie_Data.level_6_DialogueFinished = true;
-                        break;
 
                     default:
                         break;
@@ -152,10 +140,6 @@ public class NPCManager : Singleton<NPCManager>
                     case 5:
                         if (charatersData != null && charatersData.aisa_Data != null)
                             charatersData.aisa_Data.level_5_DialogueFinished = true;
-                        break;
-                    case 6:
-                        if (charatersData != null && charatersData.aisa_Data != null)
-                            charatersData.aisa_Data.level_6_DialogueFinished = true;
                         break;
 
                     default:
@@ -185,10 +169,6 @@ public class NPCManager : Singleton<NPCManager>
                         if (charatersData != null && charatersData.mossy_Data != null)
                             charatersData.mossy_Data.level_5_DialogueFinished = true;
                         break;
-                    case 6:
-                        if (charatersData != null && charatersData.mossy_Data != null)
-                            charatersData.mossy_Data.level_6_DialogueFinished = true;
-                        break;
 
                     default:
                         break;
@@ -216,10 +196,6 @@ public class NPCManager : Singleton<NPCManager>
                     case 5:
                         if (charatersData != null && charatersData.larry_Data != null)
                             charatersData.larry_Data.level_5_DialogueFinished = true;
-                        break;
-                    case 6:
-                        if (charatersData != null && charatersData.larry_Data != null)
-                            charatersData.larry_Data.level_6_DialogueFinished = true;
                         break;
 
                     default:
@@ -249,10 +225,6 @@ public class NPCManager : Singleton<NPCManager>
                         if (charatersData != null && charatersData.stepellier_Data != null)
                             charatersData.stepellier_Data.level_5_DialogueFinished = true;
                         break;
-                    case 6:
-                        if (charatersData != null && charatersData.stepellier_Data != null)
-                            charatersData.stepellier_Data.level_6_DialogueFinished = true;
-                        break;
 
                     default:
                         break;
@@ -262,6 +234,8 @@ public class NPCManager : Singleton<NPCManager>
             default:
                 break;
         }
+
+        CheckIfGettingHat();
 
         SaveData();
     }
@@ -387,6 +361,77 @@ public class NPCManager : Singleton<NPCManager>
             }
         }
     }
+
+
+
+    //--------------------
+
+
+    public void CheckIfGettingHat()
+    {
+        //Floríel
+        GetHat(DataManager.Instance.charatersData_Store.floriel_Data.level_5_DialogueFinished,
+            DataManager.Instance.charatersData_Store.floriel_Data.endingValue,
+            DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region1_Version,
+            ref DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region1);
+
+        //Archie
+        GetHat(DataManager.Instance.charatersData_Store.archie_Data.level_5_DialogueFinished,
+            DataManager.Instance.charatersData_Store.archie_Data.endingValue,
+            DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region2_Version,
+            ref DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region2);
+
+        //Aisa
+        GetHat(DataManager.Instance.charatersData_Store.aisa_Data.level_5_DialogueFinished,
+            DataManager.Instance.charatersData_Store.aisa_Data.endingValue,
+            DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region3_Version,
+            ref DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region3);
+
+        //Granith
+        GetHat(DataManager.Instance.charatersData_Store.granith_Data.level_5_DialogueFinished,
+            DataManager.Instance.charatersData_Store.granith_Data.endingValue,
+            DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region4_Version,
+            ref DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region4);
+
+        //Mossy
+        GetHat(DataManager.Instance.charatersData_Store.mossy_Data.level_5_DialogueFinished,
+            DataManager.Instance.charatersData_Store.mossy_Data.endingValue,
+            DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region5_Version,
+            ref DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region5);
+
+        //Larry
+        GetHat(DataManager.Instance.charatersData_Store.larry_Data.level_5_DialogueFinished,
+            DataManager.Instance.charatersData_Store.larry_Data.endingValue,
+            DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region6_Version,
+            ref DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region6);
+    }
+    void GetHat(bool requirement, int endingValue, bool hatVersion, ref WardrobeHatState wardrobeState)
+    {
+        //print("1. UpdateHats | WardrobeState: " + wardrobeState + " | DataManager" + DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region1.ToString());
+        if (wardrobeState == WardrobeHatState.Available || wardrobeState == WardrobeHatState.Selected) return;
+
+        if (requirement)
+        {
+            //print("2. UpdateHats | WardrobeState: " + wardrobeState + " | DataManager" + DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region1.ToString());
+
+            if (endingValue >= 0)
+            {
+                hatVersion = true;
+                wardrobeState = WardrobeHatState.Available;
+
+                //print("3. UpdateHats | WardrobeState: " + wardrobeState + " | DataManager" + DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region1.ToString());
+            }
+            else
+            {
+                hatVersion = false;
+                wardrobeState = WardrobeHatState.Available;
+
+                //print("4. UpdateHats | WardrobeState: " + wardrobeState + " | DataManager" + DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region1.ToString());
+            }
+
+
+        }
+    }
 }
 
 [Serializable]
@@ -412,7 +457,6 @@ public class NPCData
     public bool level_3_DialogueFinished;
     public bool level_4_DialogueFinished;
     public bool level_5_DialogueFinished;
-    public bool level_6_DialogueFinished;
 
     [Header("Ending Value")]
     public int endingValue;

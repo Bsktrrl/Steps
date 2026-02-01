@@ -969,7 +969,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: english_MapNameDisplay
-      value: The stream
+      value: The Stream
       objectReference: {fileID: 0}
     - target: {fileID: 257882234535915844, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: japanese_MapNameDisplay
@@ -8703,12 +8703,18 @@ MonoBehaviour:
       skin_Region6_level5: 0
       skin_Default: 0
     skinHatInfo:
-      skin_Region1_Hat: 0
-      skin_Region2_Hat: 0
-      skin_Region3_Hat: 0
-      skin_Region4_Hat: 0
-      skin_Region5_Hat: 0
-      skin_Region6_Hat: 0
+      hat_Region1: 0
+      hat_Region2: 0
+      hat_Region3: 0
+      hat_Region4: 0
+      hat_Region5: 0
+      hat_Region6: 0
+      hat_Region1_Version: 0
+      hat_Region2_Version: 0
+      hat_Region3_Version: 0
+      hat_Region4_Version: 0
+      hat_Region5_Version: 0
+      hat_Region6_Version: 0
   pauseMenuManager: {fileID: 0}
 --- !u!1 &951275073
 GameObject:
@@ -11456,6 +11462,8 @@ MonoBehaviour:
       currentTextSpeed: 0
       currentStepDisplay: 0
       currentCameraMotion: 0
+      currentRevertedCameraMotion: 0
+      currentSkipIntro: 0
     mapNameDisplay_Save:
       mapNameDisplay_norwegian: 
       mapNameDisplay_english: 
@@ -11470,7 +11478,6 @@ MonoBehaviour:
         level_3_DialogueFinished: 0
         level_4_DialogueFinished: 0
         level_5_DialogueFinished: 0
-        level_6_DialogueFinished: 0
         endingValue: 0
         dialogueStatList: []
       granith_Data:
@@ -11479,7 +11486,6 @@ MonoBehaviour:
         level_3_DialogueFinished: 0
         level_4_DialogueFinished: 0
         level_5_DialogueFinished: 0
-        level_6_DialogueFinished: 0
         endingValue: 0
         dialogueStatList: []
       archie_Data:
@@ -11488,7 +11494,6 @@ MonoBehaviour:
         level_3_DialogueFinished: 0
         level_4_DialogueFinished: 0
         level_5_DialogueFinished: 0
-        level_6_DialogueFinished: 0
         endingValue: 0
         dialogueStatList: []
       aisa_Data:
@@ -11497,7 +11502,6 @@ MonoBehaviour:
         level_3_DialogueFinished: 0
         level_4_DialogueFinished: 0
         level_5_DialogueFinished: 0
-        level_6_DialogueFinished: 0
         endingValue: 0
         dialogueStatList: []
       mossy_Data:
@@ -11506,7 +11510,6 @@ MonoBehaviour:
         level_3_DialogueFinished: 0
         level_4_DialogueFinished: 0
         level_5_DialogueFinished: 0
-        level_6_DialogueFinished: 0
         endingValue: 0
         dialogueStatList: []
       larry_Data:
@@ -11515,7 +11518,6 @@ MonoBehaviour:
         level_3_DialogueFinished: 0
         level_4_DialogueFinished: 0
         level_5_DialogueFinished: 0
-        level_6_DialogueFinished: 0
         endingValue: 0
         dialogueStatList: []
       stepellier_Data:
@@ -11524,7 +11526,6 @@ MonoBehaviour:
         level_3_DialogueFinished: 0
         level_4_DialogueFinished: 0
         level_5_DialogueFinished: 0
-        level_6_DialogueFinished: 0
         endingValue: 0
         dialogueStatList: []
     skinsInfo_Save:
@@ -11563,13 +11564,23 @@ MonoBehaviour:
         skin_Region6_level5: 0
         skin_Default: 0
       skinHatInfo:
-        skin_Region1_Hat: 0
-        skin_Region2_Hat: 0
-        skin_Region3_Hat: 0
-        skin_Region4_Hat: 0
-        skin_Region5_Hat: 0
-        skin_Region6_Hat: 0
+        hat_Region1: 0
+        hat_Region2: 0
+        hat_Region3: 0
+        hat_Region4: 0
+        hat_Region5: 0
+        hat_Region6: 0
+        hat_Region1_Version: 0
+        hat_Region2_Version: 0
+        hat_Region3_Version: 0
+        hat_Region4_Version: 0
+        hat_Region5_Version: 0
+        hat_Region6_Version: 0
     tutorial_Finished_Save: 0
+    oneTimeRunData_Save:
+      forceIntroSequenceInFirstLevel: 0
+      tutorial_Finished: 0
+      pickup_FirstSkin: 0
 --- !u!1 &1249729863
 GameObject:
   m_ObjectHideFlags: 0
@@ -15404,6 +15415,8 @@ MonoBehaviour:
       currentTextSpeed: 0
       currentStepDisplay: 0
       currentCameraMotion: 0
+      currentRevertedCameraMotion: 0
+      currentSkipIntro: 0
     mapNameDisplay_Save:
       mapNameDisplay_norwegian: 
       mapNameDisplay_english: 
@@ -15418,7 +15431,6 @@ MonoBehaviour:
         level_3_DialogueFinished: 0
         level_4_DialogueFinished: 0
         level_5_DialogueFinished: 0
-        level_6_DialogueFinished: 0
         endingValue: 0
         dialogueStatList: []
       granith_Data:
@@ -15427,7 +15439,6 @@ MonoBehaviour:
         level_3_DialogueFinished: 0
         level_4_DialogueFinished: 0
         level_5_DialogueFinished: 0
-        level_6_DialogueFinished: 0
         endingValue: 0
         dialogueStatList: []
       archie_Data:
@@ -15436,7 +15447,6 @@ MonoBehaviour:
         level_3_DialogueFinished: 0
         level_4_DialogueFinished: 0
         level_5_DialogueFinished: 0
-        level_6_DialogueFinished: 0
         endingValue: 0
         dialogueStatList: []
       aisa_Data:
@@ -15445,7 +15455,6 @@ MonoBehaviour:
         level_3_DialogueFinished: 0
         level_4_DialogueFinished: 0
         level_5_DialogueFinished: 0
-        level_6_DialogueFinished: 0
         endingValue: 0
         dialogueStatList: []
       mossy_Data:
@@ -15454,7 +15463,6 @@ MonoBehaviour:
         level_3_DialogueFinished: 0
         level_4_DialogueFinished: 0
         level_5_DialogueFinished: 0
-        level_6_DialogueFinished: 0
         endingValue: 0
         dialogueStatList: []
       larry_Data:
@@ -15463,7 +15471,6 @@ MonoBehaviour:
         level_3_DialogueFinished: 0
         level_4_DialogueFinished: 0
         level_5_DialogueFinished: 0
-        level_6_DialogueFinished: 0
         endingValue: 0
         dialogueStatList: []
       stepellier_Data:
@@ -15472,7 +15479,6 @@ MonoBehaviour:
         level_3_DialogueFinished: 0
         level_4_DialogueFinished: 0
         level_5_DialogueFinished: 0
-        level_6_DialogueFinished: 0
         endingValue: 0
         dialogueStatList: []
     skinsInfo_Save:
@@ -15511,13 +15517,23 @@ MonoBehaviour:
         skin_Region6_level5: 0
         skin_Default: 0
       skinHatInfo:
-        skin_Region1_Hat: 0
-        skin_Region2_Hat: 0
-        skin_Region3_Hat: 0
-        skin_Region4_Hat: 0
-        skin_Region5_Hat: 0
-        skin_Region6_Hat: 0
+        hat_Region1: 0
+        hat_Region2: 0
+        hat_Region3: 0
+        hat_Region4: 0
+        hat_Region5: 0
+        hat_Region6: 0
+        hat_Region1_Version: 0
+        hat_Region2_Version: 0
+        hat_Region3_Version: 0
+        hat_Region4_Version: 0
+        hat_Region5_Version: 0
+        hat_Region6_Version: 0
     tutorial_Finished_Save: 0
+    oneTimeRunData_Save:
+      forceIntroSequenceInFirstLevel: 0
+      tutorial_Finished: 0
+      pickup_FirstSkin: 0
   haveStartedNewGame_Store: 0
   menuState_Store: 0
   playerStats_Store:
@@ -15557,6 +15573,8 @@ MonoBehaviour:
     currentTextSpeed: 0
     currentStepDisplay: 0
     currentCameraMotion: 0
+    currentRevertedCameraMotion: 0
+    currentSkipIntro: 0
   mapNameDisplay_Store:
     mapNameDisplay_norwegian: 
     mapNameDisplay_english: 
@@ -15571,7 +15589,6 @@ MonoBehaviour:
       level_3_DialogueFinished: 0
       level_4_DialogueFinished: 0
       level_5_DialogueFinished: 0
-      level_6_DialogueFinished: 0
       endingValue: 0
       dialogueStatList: []
     granith_Data:
@@ -15580,7 +15597,6 @@ MonoBehaviour:
       level_3_DialogueFinished: 0
       level_4_DialogueFinished: 0
       level_5_DialogueFinished: 0
-      level_6_DialogueFinished: 0
       endingValue: 0
       dialogueStatList: []
     archie_Data:
@@ -15589,7 +15605,6 @@ MonoBehaviour:
       level_3_DialogueFinished: 0
       level_4_DialogueFinished: 0
       level_5_DialogueFinished: 0
-      level_6_DialogueFinished: 0
       endingValue: 0
       dialogueStatList: []
     aisa_Data:
@@ -15598,7 +15613,6 @@ MonoBehaviour:
       level_3_DialogueFinished: 0
       level_4_DialogueFinished: 0
       level_5_DialogueFinished: 0
-      level_6_DialogueFinished: 0
       endingValue: 0
       dialogueStatList: []
     mossy_Data:
@@ -15607,7 +15621,6 @@ MonoBehaviour:
       level_3_DialogueFinished: 0
       level_4_DialogueFinished: 0
       level_5_DialogueFinished: 0
-      level_6_DialogueFinished: 0
       endingValue: 0
       dialogueStatList: []
     larry_Data:
@@ -15616,7 +15629,6 @@ MonoBehaviour:
       level_3_DialogueFinished: 0
       level_4_DialogueFinished: 0
       level_5_DialogueFinished: 0
-      level_6_DialogueFinished: 0
       endingValue: 0
       dialogueStatList: []
     stepellier_Data:
@@ -15625,7 +15637,6 @@ MonoBehaviour:
       level_3_DialogueFinished: 0
       level_4_DialogueFinished: 0
       level_5_DialogueFinished: 0
-      level_6_DialogueFinished: 0
       endingValue: 0
       dialogueStatList: []
   skinsInfo_Store:
@@ -15664,13 +15675,22 @@ MonoBehaviour:
       skin_Region6_level5: 0
       skin_Default: 0
     skinHatInfo:
-      skin_Region1_Hat: 0
-      skin_Region2_Hat: 0
-      skin_Region3_Hat: 0
-      skin_Region4_Hat: 0
-      skin_Region5_Hat: 0
-      skin_Region6_Hat: 0
-  tutorial_Finished: 0
+      hat_Region1: 0
+      hat_Region2: 0
+      hat_Region3: 0
+      hat_Region4: 0
+      hat_Region5: 0
+      hat_Region6: 0
+      hat_Region1_Version: 0
+      hat_Region2_Version: 0
+      hat_Region3_Version: 0
+      hat_Region4_Version: 0
+      hat_Region5_Version: 0
+      hat_Region6_Version: 0
+  oneTimeRunData_Store:
+    forceIntroSequenceInFirstLevel: 0
+    tutorial_Finished: 0
+    pickup_FirstSkin: 0
 --- !u!1001 &1689483885
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19950,6 +19970,28 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 708f515159424df4292f33b367a505ee, type: 3}
+--- !u!114 &1981793568 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7102232648251241810, guid: 708f515159424df4292f33b367a505ee, type: 3}
+  m_PrefabInstance: {fileID: 1981793567}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1981793569 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6034560752681817893, guid: 708f515159424df4292f33b367a505ee, type: 3}
+  m_PrefabInstance: {fileID: 1981793567}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1999907174
 GameObject:
   m_ObjectHideFlags: 0
@@ -25608,6 +25650,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1962131516}
     - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
+      propertyPath: skipIntroImage
+      value: 
+      objectReference: {fileID: 1981793569}
+    - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
       propertyPath: textSpeedImage
       value: 
       objectReference: {fileID: 637552373}
@@ -25623,6 +25669,10 @@ PrefabInstance:
       propertyPath: settingsMenuParent
       value: 
       objectReference: {fileID: 1207678797}
+    - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
+      propertyPath: revertedCameraMotionImage
+      value: 
+      objectReference: {fileID: 1981793568}
     - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
       propertyPath: activeSettingSegmentColor.b
       value: 1
