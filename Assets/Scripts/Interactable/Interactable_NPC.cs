@@ -952,6 +952,7 @@ public class Interactable_NPC : MonoBehaviour
             lastSegment = segmentIndex;
             StartCoroutine(TurnNPCAwayFromPlayer());
             StartCoroutine(DialogueManager.Instance.EndDialogue(DialogueManager.Instance.closingMenuDelay));
+            RunHatPopupMessage();
 
             //print("0. Last Segment: " + segmentIndex);
         }
@@ -1188,6 +1189,8 @@ public class Interactable_NPC : MonoBehaviour
         {
             StartCoroutine(TurnNPCAwayFromPlayer());
             StartCoroutine(DialogueManager.Instance.EndDialogue(DialogueManager.Instance.closingMenuDelay));
+            RunHatPopupMessage();
+
             return;
         }
 
@@ -1301,5 +1304,49 @@ public class Interactable_NPC : MonoBehaviour
             anim.SetBool("Talking", true);
         else
             anim.SetBool("Talking", false);
+    }
+
+
+    //--------------------
+
+
+    void RunHatPopupMessage()
+    {
+        StartCoroutine(RunHatPopupMessage_Dealy(1.5f));
+    }
+    IEnumerator RunHatPopupMessage_Dealy(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        switch (characterName)
+        {
+            case NPCs.None:
+                break;
+
+            case NPCs.Floriel:
+                PopUpManager.Instance.ShowHat_Floríel();
+                break;
+            case NPCs.Granith:
+                PopUpManager.Instance.ShowHat_Granith();
+                break;
+            case NPCs.Archie:
+                PopUpManager.Instance.ShowHat_Archie();
+                break;
+            case NPCs.Aisa:
+                PopUpManager.Instance.ShowHat_Aisa();
+                break;
+            case NPCs.Mossy:
+                PopUpManager.Instance.ShowHat_Mossy();
+                break;
+            case NPCs.Larry:
+                PopUpManager.Instance.ShowHat_Larry();
+                break;
+
+            case NPCs.Stepellier:
+                break;
+
+            default:
+                break;
+        }
     }
 }

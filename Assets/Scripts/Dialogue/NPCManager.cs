@@ -407,27 +407,29 @@ public class NPCManager : Singleton<NPCManager>
     }
     void GetHat(bool requirement, int endingValue, bool hatVersion, ref WardrobeHatState wardrobeState)
     {
-        print("1. UpdateHats | WardrobeState: " + wardrobeState + " | DataManager" + DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region1.ToString());
+        //print("1. UpdateHats | WardrobeState: " + wardrobeState + " | DataManager" + DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region1.ToString());
         if (wardrobeState == WardrobeHatState.Available || wardrobeState == WardrobeHatState.Selected) return;
 
         if (requirement)
         {
-            print("2. UpdateHats | WardrobeState: " + wardrobeState + " | DataManager" + DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region1.ToString());
+            //print("2. UpdateHats | WardrobeState: " + wardrobeState + " | DataManager" + DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region1.ToString());
 
             if (endingValue >= 0)
             {
                 hatVersion = true;
                 wardrobeState = WardrobeHatState.Available;
 
-                print("3. UpdateHats | WardrobeState: " + wardrobeState + " | DataManager" + DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region1.ToString());
+                //print("3. UpdateHats | WardrobeState: " + wardrobeState + " | DataManager" + DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region1.ToString());
             }
             else
             {
                 hatVersion = false;
                 wardrobeState = WardrobeHatState.Available;
 
-                print("4. UpdateHats | WardrobeState: " + wardrobeState + " | DataManager" + DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region1.ToString());
+                //print("4. UpdateHats | WardrobeState: " + wardrobeState + " | DataManager" + DataManager.Instance.skinsInfo_Store.skinHatInfo.hat_Region1.ToString());
             }
+
+
         }
     }
 }
