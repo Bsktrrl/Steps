@@ -71,25 +71,50 @@ public class CameraController : Singleton<CameraController>
         //if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
         //Rotate Camera
-        switch (cameraRotationState)
+        if (DataManager.Instance.settingData_StoreList.currentRevertedCameraMotion == RevertedCameraMotion.Normal)
         {
-            case CameraRotationState.Forward:
-                cameraRotationState = CameraRotationState.Left;
-                break;
-            case CameraRotationState.Backward:
-                cameraRotationState = CameraRotationState.Right;
-                break;
-            case CameraRotationState.Left:
-                cameraRotationState = CameraRotationState.Backward;
-                break;
-            case CameraRotationState.Right:
-                cameraRotationState = CameraRotationState.Forward;
-                break;
-            default:
-                break;
-        }
+            switch (cameraRotationState)
+            {
+                case CameraRotationState.Forward:
+                    cameraRotationState = CameraRotationState.Left;
+                    break;
+                case CameraRotationState.Backward:
+                    cameraRotationState = CameraRotationState.Right;
+                    break;
+                case CameraRotationState.Left:
+                    cameraRotationState = CameraRotationState.Backward;
+                    break;
+                case CameraRotationState.Right:
+                    cameraRotationState = CameraRotationState.Forward;
+                    break;
+                default:
+                    break;
+            }
 
-        StartCoroutine(RotateCamera(90));
+            StartCoroutine(RotateCamera(90));
+        }
+        else if (DataManager.Instance.settingData_StoreList.currentRevertedCameraMotion == RevertedCameraMotion.Reverted)
+        {
+            switch (cameraRotationState)
+            {
+                case CameraRotationState.Forward:
+                    cameraRotationState = CameraRotationState.Right;
+                    break;
+                case CameraRotationState.Backward:
+                    cameraRotationState = CameraRotationState.Left;
+                    break;
+                case CameraRotationState.Left:
+                    cameraRotationState = CameraRotationState.Forward;
+                    break;
+                case CameraRotationState.Right:
+                    cameraRotationState = CameraRotationState.Backward;
+                    break;
+                default:
+                    break;
+            }
+
+            StartCoroutine(RotateCamera(-90));
+        }
     }
     public void RotateCameraY()
     {
@@ -101,25 +126,50 @@ public class CameraController : Singleton<CameraController>
         //if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
         //Rotate Camera
-        switch (cameraRotationState)
+        if (DataManager.Instance.settingData_StoreList.currentRevertedCameraMotion == RevertedCameraMotion.Normal)
         {
-            case CameraRotationState.Forward:
-                cameraRotationState = CameraRotationState.Right;
-                break;
-            case CameraRotationState.Backward:
-                cameraRotationState = CameraRotationState.Left;
-                break;
-            case CameraRotationState.Left:
-                cameraRotationState = CameraRotationState.Forward;
-                break;
-            case CameraRotationState.Right:
-                cameraRotationState = CameraRotationState.Backward;
-                break;
-            default:
-                break;
-        }
+            switch (cameraRotationState)
+            {
+                case CameraRotationState.Forward:
+                    cameraRotationState = CameraRotationState.Right;
+                    break;
+                case CameraRotationState.Backward:
+                    cameraRotationState = CameraRotationState.Left;
+                    break;
+                case CameraRotationState.Left:
+                    cameraRotationState = CameraRotationState.Forward;
+                    break;
+                case CameraRotationState.Right:
+                    cameraRotationState = CameraRotationState.Backward;
+                    break;
+                default:
+                    break;
+            }
 
-        StartCoroutine(RotateCamera(-90));
+            StartCoroutine(RotateCamera(-90));
+        }
+        else if (DataManager.Instance.settingData_StoreList.currentRevertedCameraMotion == RevertedCameraMotion.Reverted)
+        {
+            switch (cameraRotationState)
+            {
+                case CameraRotationState.Forward:
+                    cameraRotationState = CameraRotationState.Left;
+                    break;
+                case CameraRotationState.Backward:
+                    cameraRotationState = CameraRotationState.Right;
+                    break;
+                case CameraRotationState.Left:
+                    cameraRotationState = CameraRotationState.Backward;
+                    break;
+                case CameraRotationState.Right:
+                    cameraRotationState = CameraRotationState.Forward;
+                    break;
+                default:
+                    break;
+            }
+
+            StartCoroutine(RotateCamera(90));
+        }
     }
     
     IEnumerator RotateCamera(float angle)

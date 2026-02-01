@@ -19058,6 +19058,8 @@ MonoBehaviour:
       currentTextSpeed: 0
       currentStepDisplay: 0
       currentCameraMotion: 0
+      currentRevertedCameraMotion: 0
+      currentSkipIntro: 0
     mapNameDisplay_Save:
       mapNameDisplay_norwegian: 
       mapNameDisplay_english: 
@@ -19171,6 +19173,9 @@ MonoBehaviour:
         hat_Region5_Version: 0
         hat_Region6_Version: 0
     tutorial_Finished_Save: 0
+    oneTimeRunData_Save:
+      tutorial_Finished: 0
+      pickup_FirstSkin: 0
 --- !u!1 &3781339034322552195
 GameObject:
   m_ObjectHideFlags: 0
@@ -41654,6 +41659,8 @@ MonoBehaviour:
       currentTextSpeed: 0
       currentStepDisplay: 0
       currentCameraMotion: 0
+      currentRevertedCameraMotion: 0
+      currentSkipIntro: 0
     mapNameDisplay_Save:
       mapNameDisplay_norwegian: 
       mapNameDisplay_english: 
@@ -41767,6 +41774,9 @@ MonoBehaviour:
         hat_Region5_Version: 0
         hat_Region6_Version: 0
     tutorial_Finished_Save: 0
+    oneTimeRunData_Save:
+      tutorial_Finished: 0
+      pickup_FirstSkin: 0
   haveStartedNewGame_Store: 0
   menuState_Store: 0
   playerStats_Store:
@@ -41806,6 +41816,8 @@ MonoBehaviour:
     currentTextSpeed: 0
     currentStepDisplay: 0
     currentCameraMotion: 0
+    currentRevertedCameraMotion: 0
+    currentSkipIntro: 0
   mapNameDisplay_Store:
     mapNameDisplay_norwegian: 
     mapNameDisplay_english: 
@@ -41918,7 +41930,9 @@ MonoBehaviour:
       hat_Region4_Version: 0
       hat_Region5_Version: 0
       hat_Region6_Version: 0
-  tutorial_Finished: 0
+  oneTimeRunData_Store:
+    tutorial_Finished: 0
+    pickup_FirstSkin: 0
 --- !u!1 &8613915611943033480
 GameObject:
   m_ObjectHideFlags: 0
@@ -44896,6 +44910,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5272100099813316952, guid: 708f515159424df4292f33b367a505ee, type: 3}
   m_PrefabInstance: {fileID: 268274778513093298}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5766308971852146071 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6034560752681817893, guid: 708f515159424df4292f33b367a505ee, type: 3}
+  m_PrefabInstance: {fileID: 268274778513093298}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6349174846711184603 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6603920408614309481, guid: 708f515159424df4292f33b367a505ee, type: 3}
@@ -44912,6 +44937,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6625705784258096576, guid: 708f515159424df4292f33b367a505ee, type: 3}
   m_PrefabInstance: {fileID: 268274778513093298}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7001171675409172448 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7102232648251241810, guid: 708f515159424df4292f33b367a505ee, type: 3}
+  m_PrefabInstance: {fileID: 268274778513093298}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8218483163978393711 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8193438165068798685, guid: 708f515159424df4292f33b367a505ee, type: 3}
@@ -48253,6 +48289,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3527338179845242004}
     - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
+      propertyPath: skipIntroImage
+      value: 
+      objectReference: {fileID: 5766308971852146071}
+    - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
       propertyPath: textSpeedImage
       value: 
       objectReference: {fileID: 434013476922817129}
@@ -48268,6 +48308,10 @@ PrefabInstance:
       propertyPath: settingsMenuParent
       value: 
       objectReference: {fileID: 8218483163978393711}
+    - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
+      propertyPath: revertedCameraMotionImage
+      value: 
+      objectReference: {fileID: 7001171675409172448}
     - target: {fileID: 8044555575859198446, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

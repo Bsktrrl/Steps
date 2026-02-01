@@ -11462,6 +11462,8 @@ MonoBehaviour:
       currentTextSpeed: 0
       currentStepDisplay: 0
       currentCameraMotion: 0
+      currentRevertedCameraMotion: 0
+      currentSkipIntro: 0
     mapNameDisplay_Save:
       mapNameDisplay_norwegian: 
       mapNameDisplay_english: 
@@ -11575,6 +11577,9 @@ MonoBehaviour:
         hat_Region5_Version: 0
         hat_Region6_Version: 0
     tutorial_Finished_Save: 0
+    oneTimeRunData_Save:
+      tutorial_Finished: 0
+      pickup_FirstSkin: 0
 --- !u!1 &1249729863
 GameObject:
   m_ObjectHideFlags: 0
@@ -15409,6 +15414,8 @@ MonoBehaviour:
       currentTextSpeed: 0
       currentStepDisplay: 0
       currentCameraMotion: 0
+      currentRevertedCameraMotion: 0
+      currentSkipIntro: 0
     mapNameDisplay_Save:
       mapNameDisplay_norwegian: 
       mapNameDisplay_english: 
@@ -15522,6 +15529,9 @@ MonoBehaviour:
         hat_Region5_Version: 0
         hat_Region6_Version: 0
     tutorial_Finished_Save: 0
+    oneTimeRunData_Save:
+      tutorial_Finished: 0
+      pickup_FirstSkin: 0
   haveStartedNewGame_Store: 0
   menuState_Store: 0
   playerStats_Store:
@@ -15561,6 +15571,8 @@ MonoBehaviour:
     currentTextSpeed: 0
     currentStepDisplay: 0
     currentCameraMotion: 0
+    currentRevertedCameraMotion: 0
+    currentSkipIntro: 0
   mapNameDisplay_Store:
     mapNameDisplay_norwegian: 
     mapNameDisplay_english: 
@@ -15673,7 +15685,9 @@ MonoBehaviour:
       hat_Region4_Version: 0
       hat_Region5_Version: 0
       hat_Region6_Version: 0
-  tutorial_Finished: 0
+  oneTimeRunData_Store:
+    tutorial_Finished: 0
+    pickup_FirstSkin: 0
 --- !u!1001 &1689483885
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19953,6 +19967,28 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 708f515159424df4292f33b367a505ee, type: 3}
+--- !u!114 &1981793568 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7102232648251241810, guid: 708f515159424df4292f33b367a505ee, type: 3}
+  m_PrefabInstance: {fileID: 1981793567}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1981793569 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6034560752681817893, guid: 708f515159424df4292f33b367a505ee, type: 3}
+  m_PrefabInstance: {fileID: 1981793567}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1999907174
 GameObject:
   m_ObjectHideFlags: 0
@@ -25611,6 +25647,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1962131516}
     - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
+      propertyPath: skipIntroImage
+      value: 
+      objectReference: {fileID: 1981793569}
+    - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
       propertyPath: textSpeedImage
       value: 
       objectReference: {fileID: 637552373}
@@ -25626,6 +25666,10 @@ PrefabInstance:
       propertyPath: settingsMenuParent
       value: 
       objectReference: {fileID: 1207678797}
+    - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
+      propertyPath: revertedCameraMotionImage
+      value: 
+      objectReference: {fileID: 1981793568}
     - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
       propertyPath: activeSettingSegmentColor.b
       value: 1

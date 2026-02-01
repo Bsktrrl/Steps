@@ -50,6 +50,8 @@ MonoBehaviour:
     currentTextSpeed: 0
     currentStepDisplay: 0
     currentCameraMotion: 0
+    currentRevertedCameraMotion: 0
+    currentSkipIntro: 0
   settingState: 0
   activeSettingSegmentColor: {r: 0.78946245, g: 0.9056604, b: 0.9056604, a: 1}
   flagImage: {fileID: 0}
@@ -71,3 +73,9 @@ MonoBehaviour:
   cameraMotionImage: {fileID: 0}
   cameraMotion_Can_Sprite: {fileID: 21300000, guid: 2ad766211a072a04fbfb13e372649e24, type: 3}
   cameraMotion_Cannot_Sprite: {fileID: 21300000, guid: 8b402b2f4349aaa47acf5e7e7256aed3, type: 3}
+  revertedCameraMotionImage: {fileID: 0}
+  revertedCameraMotion_Normal_Sprite: {fileID: 21300000, guid: 99f0c7c82fc958745b96d760c16713c3, type: 3}
+  revertedCameraMotion_Reverted_Sprite: {fileID: 21300000, guid: d0a8674f27d13c846ab74f8d6f8c1891, type: 3}
+  skipIntroImage: {fileID: 0}
+  skipIntro_YES_Sprite: {fileID: 21300000, guid: 9caaef16fb54ec84280b27894fb8983b, type: 3}
+  skipIntro_NO_Sprite: {fileID: 21300000, guid: a9c5aedd8b5ddd647b083e972bde4dfa, type: 3}
