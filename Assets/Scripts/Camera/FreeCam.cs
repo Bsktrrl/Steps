@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -19,6 +18,9 @@ public class FreeCam : Singleton<FreeCam>
     [Header("Movement")]
     [Tooltip("Units per second.")]
     [SerializeField] private float moveSpeed = 6f;
+
+    [Tooltip("If true, forward/back/strafe move in the camera's look direction (flycam style). If false, movement is flattened to world up.")]
+    [SerializeField] private bool moveInLookDirection = true;
 
     [Tooltip("How quickly the camera accelerates towards target speed (bigger = snappier).")]
     [SerializeField] private float acceleration = 12f;
@@ -100,21 +102,13 @@ public class FreeCam : Singleton<FreeCam>
     [SerializeField] private float touchSlideStep = 1f;
 
     [Header("FreeCamForwardPush")]
-    [SerializeField] private float freeCamForwardPush = 0.35f;
+    [SerializeField] private float freeCamForwardPush = 0.4f;
+
     private PrioritySettings _playerBasePriority;
     private PrioritySettings _freeBasePriority;
     private bool _basePrioritiesCached;
 
-
-
-
-    //--------------------
-
-
     private CinemachineCamera _cmPlayer;
-    private PrioritySettings _playerPriorityBefore;
-    private PrioritySettings _freePriorityBefore;
-
     private bool _isActive;
     private Coroutine _returnRoutine;
     private Coroutine _enterCueRoutine;
@@ -125,7 +119,6 @@ public class FreeCam : Singleton<FreeCam>
     private Vector2 _moveAxis;            // controller move axis (left stick)
 
     // Rotation state
-    private bool _mouseLookActive;
     private Vector2 _lookAxis;            // controller look axis (right stick)
     private float _yaw;
     private float _pitch;
@@ -133,9 +126,6 @@ public class FreeCam : Singleton<FreeCam>
     // Cached hits
     private static readonly RaycastHit[] _hitsCache = new RaycastHit[16];
     private static readonly Collider[] _overlapCache = new Collider[16];
-
-
-    // --------------------
 
     private void OnEnable()
     {
@@ -199,16 +189,6 @@ public class FreeCam : Singleton<FreeCam>
     }
 
     /// <summary>
-    /// Call on "mouse look pressed" (RMB down).
-    /// </summary>
-    //public void BeginMouseLook() => _mouseLookActive = true;
-
-    /// <summary>
-    /// Call on "mouse look released" (RMB up).
-    /// </summary>
-    //public void EndMouseLook() => _mouseLookActive = false;
-
-    /// <summary>
     /// Analog look axis (right stick). Provide (-1..1, -1..1).
     /// IMPORTANT: Call on performed AND canceled so it returns to zero.
     /// </summary>
@@ -227,7 +207,6 @@ public class FreeCam : Singleton<FreeCam>
     private void StartFreeCam()
     {
         if (_isActive) return;
-
         if (CM_FreeCam == null) return;
 
         _cmPlayer = CameraController.Instance != null ? CameraController.Instance.CM_Player : null;
@@ -252,17 +231,11 @@ public class FreeCam : Singleton<FreeCam>
 
         if (cancelledReturn)
         {
-            // CRITICAL: if we interrupted the exit pan, put priorities back in a known-good state
+            // If we interrupted the exit pan, put priorities back in a known-good state
             RestoreBasePriorities();
         }
 
         if (_cmPlayer == null) return;
-
-        // stop routines
-        if (_returnRoutine != null) { StopCoroutine(_returnRoutine); _returnRoutine = null; }
-        if (_enterCueRoutine != null) { StopCoroutine(_enterCueRoutine); _enterCueRoutine = null; }
-
-        _mouseLookActive = false;
 
         // IMPORTANT: prevent Cinemachine from overriding your rotation
         CM_FreeCam.Follow = null;
@@ -322,31 +295,44 @@ public class FreeCam : Singleton<FreeCam>
         local = Vector3.ClampMagnitude(local, 1f);
 
         Vector3 desiredWorldVelocity = Vector3.zero;
+
         if (local.sqrMagnitude > 0.0001f)
         {
             local = local.normalized;
 
             Transform t = CM_FreeCam.transform;
 
-            // Camera-relative, but flattened to world horizontal plane
-            Vector3 flatForward = Vector3.ProjectOnPlane(t.forward, Vector3.up).normalized;
-            Vector3 flatRight = Vector3.ProjectOnPlane(t.right, Vector3.up).normalized;
+            Vector3 forward;
+            Vector3 right;
 
-            // If camera is looking straight up/down, flatForward can become zero.
-            // Fallback to yaw-only direction in that rare case:
-            if (flatForward.sqrMagnitude < 0.0001f)
+            if (moveInLookDirection)
             {
-                Quaternion yawOnly = Quaternion.Euler(0f, _yaw, 0f);
-                flatForward = yawOnly * Vector3.forward;
-                flatRight = yawOnly * Vector3.right;
+                // Flycam: move in the actual look direction (includes pitch)
+                forward = t.forward;
+                right = t.right;
+            }
+            else
+            {
+                // Old: flatten forward/right to horizontal plane
+                forward = Vector3.ProjectOnPlane(t.forward, Vector3.up).normalized;
+                right = Vector3.ProjectOnPlane(t.right, Vector3.up).normalized;
+
+                if (forward.sqrMagnitude < 0.0001f)
+                {
+                    Quaternion yawOnly = Quaternion.Euler(0f, _yaw, 0f);
+                    forward = yawOnly * Vector3.forward;
+                    right = yawOnly * Vector3.right;
+                }
             }
 
+            // Up/down stays world-up (still useful)
             Vector3 worldDir =
-                (flatRight * local.x) +
-                (Vector3.up * local.y) +   // up/down is always world-up
-                (flatForward * local.z);
+                (right * local.x) +
+                (Vector3.up * local.y) +
+                (forward * local.z);
 
-            desiredWorldVelocity = worldDir.normalized * moveSpeed;
+            if (worldDir.sqrMagnitude > 0.0001f)
+                desiredWorldVelocity = worldDir.normalized * moveSpeed;
         }
 
         float rate = (desiredWorldVelocity.sqrMagnitude > 0.0001f) ? acceleration : deceleration;
@@ -359,10 +345,9 @@ public class FreeCam : Singleton<FreeCam>
         CM_FreeCam.transform.position = newPos;
     }
 
-
     private void TickRotation(float dt)
     {
-        // 1) Mouse look (always on when using keyboard/mouse)
+        // Mouse look (Keyboard mode)
         if (inputType == InputType.Keyboard)
         {
             Vector2 mouseDelta = Mouse.current?.delta.ReadValue() ?? Vector2.zero;
@@ -375,11 +360,10 @@ public class FreeCam : Singleton<FreeCam>
                 _pitch += mouseDelta.y * mouseSensitivity * ySign;
 
                 ApplyFreeCamRotation();
-                // Don't return; controller look is irrelevant in Keyboard mode anyway
             }
         }
 
-        // 2) Controller look (whenever look axis is non-zero)
+        // Controller look
         if (_lookAxis != Vector2.zero)
         {
             float ySign = invertY ? 1f : -1f;
@@ -390,7 +374,6 @@ public class FreeCam : Singleton<FreeCam>
             ApplyFreeCamRotation();
         }
     }
-
 
     private void ApplyFreeCamRotation()
     {
@@ -418,12 +401,10 @@ public class FreeCam : Singleton<FreeCam>
         float remainingDist = delta.magnitude;
         if (remainingDist < 0.00001f) return pos;
 
-        // Desired move direction (already based on camera look direction)
         Vector3 dir = delta / remainingDist;
 
         int iters = Mathf.Clamp(slideIterations, 1, 6);
 
-        // Stop slightly before surfaces
         float stopOffset = Mathf.Max(skinWidth, collisionStopOffset);
         float stepWhenTouching = Mathf.Max(0.001f, touchSlideStep);
 
@@ -431,8 +412,7 @@ public class FreeCam : Singleton<FreeCam>
         {
             if (remainingDist < 0.00001f) break;
 
-            // Sweep the FULL remaining movement (prevents lag)
-            float sweep = remainingDist + stopOffset;
+            float sweep = remainingDist + stopOffset + sweepPadding;
 
             int hitCount = Physics.SphereCastNonAlloc(
                 pos,
@@ -444,14 +424,12 @@ public class FreeCam : Singleton<FreeCam>
                 ignoreTriggers ? QueryTriggerInteraction.Ignore : QueryTriggerInteraction.Collide
             );
 
-            // No hit -> move all remaining
             if (hitCount <= 0)
             {
                 pos += dir * remainingDist;
                 break;
             }
 
-            // Find closest blocking hit
             int best = -1;
             float closest = float.PositiveInfinity;
 
@@ -474,7 +452,6 @@ public class FreeCam : Singleton<FreeCam>
                 }
             }
 
-            // Only pass-through hits -> move all remaining
             if (best < 0)
             {
                 pos += dir * remainingDist;
@@ -483,25 +460,18 @@ public class FreeCam : Singleton<FreeCam>
 
             RaycastHit hit = _hitsCache[best];
 
-            // How far can we go before the surface?
             float moveTo = Mathf.Clamp(closest - stopOffset, 0f, remainingDist);
 
-            // Compute slide direction from our desired direction
             Vector3 slideDir = Vector3.ProjectOnPlane(dir, hit.normal);
             if (slideDir.sqrMagnitude < 0.0000001f)
-            {
-                // We're pushing straight into the surface; no meaningful glide possible.
                 break;
-            }
+
             slideDir.Normalize();
 
-            // If we are basically touching, we MUST advance a tiny step along the slide direction,
-            // otherwise we keep re-hitting at 0 distance and feel "glued".
             if (moveTo <= 0.0005f)
             {
                 float step = Mathf.Min(remainingDist, stepWhenTouching);
 
-                // Optional: check if that tiny slide step is immediately blocked too
                 int microHits = Physics.SphereCastNonAlloc(
                     pos,
                     collisionProbeRadius,
@@ -513,30 +483,21 @@ public class FreeCam : Singleton<FreeCam>
                 );
 
                 if (microHits > 0)
-                {
-                    // If even sliding is blocked right away, stop
                     break;
-                }
 
                 pos += slideDir * step;
                 remainingDist -= step;
-
-                // Continue sliding along surface
                 dir = slideDir;
                 continue;
             }
 
-            // Normal case: move up to the hit
             pos += dir * moveTo;
             remainingDist -= moveTo;
-
-            // Continue along the surface plane (glide)
             dir = slideDir;
         }
 
         return pos;
     }
-
 
     private Vector3 ComputeBlockedMovement_StopOnly(Vector3 currentPos, Vector3 delta)
     {
@@ -604,7 +565,6 @@ public class FreeCam : Singleton<FreeCam>
         Vector3 pos = CM_FreeCam.transform.position;
         Vector3 fwd = CM_FreeCam.transform.forward;
 
-        // 1) Are we currently inside / overlapping something solid?
         int overlapCount = Physics.OverlapSphereNonAlloc(
             pos,
             Mathf.Max(0.001f, collisionProbeRadius),
@@ -620,11 +580,9 @@ public class FreeCam : Singleton<FreeCam>
             Collider col = _overlapCache[i];
             if (!col) continue;
 
-            // Ignore pass-through
             if (usePassThroughMarker && col.GetComponentInParent<FreeCamPassThrough>() != null)
                 continue;
 
-            // Ignore self
             if (col.transform.IsChildOf(transform))
                 continue;
 
@@ -632,7 +590,6 @@ public class FreeCam : Singleton<FreeCam>
             break;
         }
 
-        // If we are overlapping: move forward a bit and SKIP the backwards cue
         if (overlappingBlocking)
         {
             CM_FreeCam.transform.position += fwd * freeCamForwardPush;
@@ -640,7 +597,6 @@ public class FreeCam : Singleton<FreeCam>
             yield break;
         }
 
-        // 2) Otherwise do your normal backwards cue (unchanged)
         Vector3 startPos = CM_FreeCam.transform.position;
         Quaternion rot = CM_FreeCam.transform.rotation;
         Vector3 targetPos = startPos - (rot * Vector3.forward * enterFadeDistance);
@@ -663,6 +619,7 @@ public class FreeCam : Singleton<FreeCam>
         CM_FreeCam.transform.position = targetPos;
         _enterCueRoutine = null;
     }
+
     private void CacheBasePrioritiesOnce()
     {
         if (_basePrioritiesCached) return;
@@ -683,21 +640,15 @@ public class FreeCam : Singleton<FreeCam>
         if (_cmPlayer != null) _cmPlayer.Priority = _playerBasePriority;
     }
 
-
-
-
-
     private IEnumerator ReturnToPlayerThenSwitch()
     {
         _isActive = false;
 
-        // clear input so it cannot keep moving during the pan
         _digitalInputSum = Vector3.zero;
         _moveAxis = Vector2.zero;
         _lookAxis = Vector2.zero;
         _currentVelocity = Vector3.zero;
 
-        // Ensure FreeCam wins during the pan
         int playerVal = GetPriorityValue(_cmPlayer);
         SetPriorityValue(CM_FreeCam, playerVal + freeCamPriorityBoost);
 
@@ -728,7 +679,6 @@ public class FreeCam : Singleton<FreeCam>
 
         CM_FreeCam.transform.SetPositionAndRotation(targetPos, targetRot);
 
-        // restore priorities
         RestoreBasePriorities();
 
         if (toggleFreeCamGameObject)
@@ -741,10 +691,7 @@ public class FreeCam : Singleton<FreeCam>
     // PRIORITY HELPERS (CM 3.0.1)
     // ====================
 
-    private static int GetPriorityValue(CinemachineCamera cam)
-    {
-        return cam.Priority.Value;
-    }
+    private static int GetPriorityValue(CinemachineCamera cam) => cam.Priority.Value;
 
     private static void SetPriorityValue(CinemachineCamera cam, int value)
     {
