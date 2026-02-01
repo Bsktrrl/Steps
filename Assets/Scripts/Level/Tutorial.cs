@@ -54,7 +54,7 @@ public class Tutorial : Singleton<Tutorial>
     {
         if (!runTutorial) return;
 
-        if (!DataManager.Instance.tutorial_Finished)
+        if (!DataManager.Instance.oneTimeRunData_Store.tutorial_Finished)
         {
             PlayerManager.Instance.PauseGame();
         }
@@ -93,7 +93,7 @@ public class Tutorial : Singleton<Tutorial>
     void Start_Tutorial()
     {
         //print("111. DataManager.Instance.tutorial_Finished: " + DataManager.Instance.tutorial_Finished);
-        if (!DataManager.Instance.tutorial_Finished)
+        if (!DataManager.Instance.oneTimeRunData_Store.tutorial_Finished)
         {
             PlayerManager.Instance.PauseGame();
             
@@ -321,7 +321,7 @@ public class Tutorial : Singleton<Tutorial>
 
     public void EndTutorial()
     {
-        DataManager.Instance.tutorial_Finished = true;
+        DataManager.Instance.oneTimeRunData_Store.tutorial_Finished = true;
 
         //Save DataManager state
         DataPersistanceManager.instance.SaveGame();

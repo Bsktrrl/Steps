@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -48,8 +49,12 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     //Block Skins
     /*[HideInInspector]*/ public SkinInfo skinsInfo_Store = new SkinInfo();
 
+    //Data to run once
+    /*[HideInInspector]*/ public OneTimeRunData oneTimeRunData_Store = new OneTimeRunData();
+
     //Tutorial
-    /*[HideInInspector]*/ public bool tutorial_Finished = new bool();
+    /*[HideInInspector]*/ /*public bool tutorial_Finished = new bool();*/
+
     #endregion
 
 
@@ -89,7 +94,9 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.charatersData_Store = gameData.charatersData_Save;
         this.skinsInfo_Store = gameData.skinsInfo_Save;
         
-        this.tutorial_Finished = gameData.tutorial_Finished_Save;
+        //this.tutorial_Finished = gameData.tutorial_Finished_Save;
+
+        this.oneTimeRunData_Store = gameData.oneTimeRunData_Save;
     }
 
     void LoadDataIntoProject(GameData gameData)
@@ -151,7 +158,9 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         gameData.settingData_SaveList = this.settingData_StoreList;
         gameData.skinsInfo_Save = this.skinsInfo_Store;
 
-        gameData.tutorial_Finished_Save = this.tutorial_Finished;
+        gameData.oneTimeRunData_Save = this.oneTimeRunData_Store;
+
+        //gameData.tutorial_Finished_Save = this.tutorial_Finished;
         gameData.haveStartedNewGame_Save = this.haveStartedNewGame_Store;
     }
 
@@ -167,10 +176,22 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.charatersData_Store = newData.charatersData_Save;
         this.skinsInfo_Store = newData.skinsInfo_Save;
 
-        this.tutorial_Finished = newData.tutorial_Finished_Save;
+        this.oneTimeRunData_Store = gameData.oneTimeRunData_Save;
+
+        //this.tutorial_Finished = newData.tutorial_Finished_Save;
         this.haveStartedNewGame_Store = newData.haveStartedNewGame_Save;
 
         //Persist through newGame
         this.settingData_StoreList = oldData.settingData_SaveList;
     }
+}
+
+[Serializable]
+public class OneTimeRunData
+{
+    //Tutorial
+    /*[HideInInspector]*/public bool tutorial_Finished = new bool();
+
+    //Skin
+    /*[HideInInspector]*/public bool pickup_FirstSkin = new bool();
 }
