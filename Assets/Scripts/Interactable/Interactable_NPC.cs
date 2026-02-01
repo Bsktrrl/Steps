@@ -1324,22 +1324,28 @@ public class Interactable_NPC : MonoBehaviour
                 break;
 
             case NPCs.Floriel:
-                PopUpManager.Instance.ShowHat_Floríel();
+                if (DataManager.Instance.charatersData_Store.floriel_Data.level_5_DialogueFinished)
+                    PopUpManager.Instance.ShowHat_Floríel();
                 break;
             case NPCs.Granith:
-                PopUpManager.Instance.ShowHat_Granith();
+                if (DataManager.Instance.charatersData_Store.granith_Data.level_5_DialogueFinished)
+                    PopUpManager.Instance.ShowHat_Granith();
                 break;
             case NPCs.Archie:
-                PopUpManager.Instance.ShowHat_Archie();
+                if (DataManager.Instance.charatersData_Store.archie_Data.level_5_DialogueFinished)
+                    PopUpManager.Instance.ShowHat_Archie();
                 break;
             case NPCs.Aisa:
-                PopUpManager.Instance.ShowHat_Aisa();
+                if (DataManager.Instance.charatersData_Store.aisa_Data.level_5_DialogueFinished)
+                    PopUpManager.Instance.ShowHat_Aisa();
                 break;
             case NPCs.Mossy:
-                PopUpManager.Instance.ShowHat_Mossy();
+                if (DataManager.Instance.charatersData_Store.mossy_Data.level_5_DialogueFinished)
+                    PopUpManager.Instance.ShowHat_Mossy();
                 break;
             case NPCs.Larry:
-                PopUpManager.Instance.ShowHat_Larry();
+                if (DataManager.Instance.charatersData_Store.larry_Data.level_5_DialogueFinished)
+                    PopUpManager.Instance.ShowHat_Larry();
                 break;
 
             case NPCs.Stepellier:
