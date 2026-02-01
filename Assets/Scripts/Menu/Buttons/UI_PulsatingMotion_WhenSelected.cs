@@ -24,7 +24,7 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
 
     [Header("Button States")]
     [SerializeField] bool isBackButton;
-    [SerializeField] bool isStartButton;
+    public bool isStartButton;
 
     public bool isActive;
     bool performed_SetPassive;

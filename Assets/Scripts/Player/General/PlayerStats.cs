@@ -6,11 +6,20 @@ using UnityEngine.SceneManagement;
 
 public class PlayerStats : Singleton<PlayerStats>
 {
+    public static event Action Action_UpdateAbilityDisplay;
+
     public Stats stats = new Stats();
+
+    MainMenuManager MainMenuManager;
 
 
     //--------------------
 
+
+    private void Start()
+    {
+        MainMenuManager = FindObjectOfType<MainMenuManager>();
+    }
 
     private void OnEnable()
     {
@@ -73,9 +82,21 @@ public class PlayerStats : Singleton<PlayerStats>
             }
         }
     }
+    void CheckForTemporaryAbilitiesInLevel()
+    {
+        if (MainMenuManager) return;
+
+        MapManager.Instance.SetAbilities();
+
+        if (!MapManager.Instance.introSequence)
+            Player_AbilityButtonDisplay.Instance.UpdateDisplay();
+
+        Action_UpdateAbilityDisplay?.Invoke();
+    }
     void UpdateActiveAbilities()
     {
         ResetActiveAbilities();
+        CheckForTemporaryAbilitiesInLevel();
 
         MapManager mapManagerIsActive = FindObjectOfType<MapManager>();
         if (!mapManagerIsActive) {  return; }

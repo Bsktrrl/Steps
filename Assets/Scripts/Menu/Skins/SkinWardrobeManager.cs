@@ -11,6 +11,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 {
     [Header("Wardrobe Parent")]
     public GameObject wardrobeParent;
+    public GameObject wardrobeMenuButton;
 
     [Header("Player Model")]
     [SerializeField] GameObject playerDisplayObject;
@@ -148,6 +149,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     private void OnEnable()
     {
+        UpdateStartButton();
         UpdateEssenceDisplay();
 
         UpdatePlayerBodyDisplay();
@@ -157,6 +159,177 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
         {
             skinWardrobeButton_Default.GetComponent<UI_PulsatingMotion_WhenSelected>().EnableStartButton();
         }
+
+        DataManager.Action_dataHasLoaded += UpdateStartButton;
+    }
+    private void OnDisable()
+    {
+        DataManager.Action_dataHasLoaded -= UpdateStartButton;
+    }
+
+
+    //--------------------
+
+
+    void UpdateStartButton()
+    {
+        RemoveStartButton();
+
+        switch (SkinsManager.Instance.skinInfo.activeSkinType)
+        {
+            case SkinType.None:
+                SetStartButton(skinWardrobeButton_Default);
+                break;
+
+            case SkinType.Default:
+                SetStartButton(skinWardrobeButton_Default);
+                break;
+
+            case SkinType.Rivergreen_Lv1:
+                SetStartButton(skinWardrobeButton_Region1_Level1);
+                break;
+            case SkinType.Rivergreen_Lv2:
+                SetStartButton(skinWardrobeButton_Region1_Level2);
+                break;
+            case SkinType.Rivergreen_Lv3:
+                SetStartButton(skinWardrobeButton_Region1_Level3);
+                break;
+            case SkinType.Rivergreen_Lv4:
+                SetStartButton(skinWardrobeButton_Region1_Level4);
+                break;
+            case SkinType.Rivergreen_Lv5:
+                SetStartButton(skinWardrobeButton_Region1_Level5);
+                break;
+
+            case SkinType.Sandlands_Lv1:
+                SetStartButton(skinWardrobeButton_Region2_Level1);
+                break;
+            case SkinType.Sandlands_Lv2:
+                SetStartButton(skinWardrobeButton_Region2_Level2);
+                break;
+            case SkinType.Sandlands_Lv3:
+                SetStartButton(skinWardrobeButton_Region2_Level3);
+                break;
+            case SkinType.Sandlands_Lv4:
+                SetStartButton(skinWardrobeButton_Region2_Level4);
+                break;
+            case SkinType.Sandlands_Lv5:
+                SetStartButton(skinWardrobeButton_Region2_Level5);
+                break;
+
+            case SkinType.Frostfield_Lv1:
+                SetStartButton(skinWardrobeButton_Region3_Level1);
+                break;
+            case SkinType.Frostfield_Lv2:
+                SetStartButton(skinWardrobeButton_Region3_Level2);
+                break;
+            case SkinType.Frostfield_Lv3:
+                SetStartButton(skinWardrobeButton_Region3_Level3);
+                break;
+            case SkinType.Frostfield_Lv4:
+                SetStartButton(skinWardrobeButton_Region3_Level4);
+                break;
+            case SkinType.Frostfield_Lv5:
+                SetStartButton(skinWardrobeButton_Region3_Level5);
+                break;
+
+            case SkinType.Firevein_Lv1:
+                SetStartButton(skinWardrobeButton_Region4_Level1);
+                break;
+            case SkinType.Firevein_Lv2:
+                SetStartButton(skinWardrobeButton_Region4_Level2);
+                break;
+            case SkinType.Firevein_Lv3:
+                SetStartButton(skinWardrobeButton_Region4_Level3);
+                break;
+            case SkinType.Firevein_Lv4:
+                SetStartButton(skinWardrobeButton_Region4_Level4);
+                break;
+            case SkinType.Firevein_Lv5:
+                SetStartButton(skinWardrobeButton_Region4_Level5);
+                break;
+
+            case SkinType.Witchmire_Lv1:
+                SetStartButton(skinWardrobeButton_Region5_Level1);
+                break;
+            case SkinType.Witchmire_Lv2:
+                SetStartButton(skinWardrobeButton_Region5_Level2);
+                break;
+            case SkinType.Witchmire_Lv3:
+                SetStartButton(skinWardrobeButton_Region5_Level3);
+                break;
+            case SkinType.Witchmire_Lv4:
+                SetStartButton(skinWardrobeButton_Region5_Level4);
+                break;
+            case SkinType.Witchmire_Lv5:
+                SetStartButton(skinWardrobeButton_Region5_Level5);
+                break;
+
+            case SkinType.Metalworks_Lv1:
+                SetStartButton(skinWardrobeButton_Region6_Level1);
+                break;
+            case SkinType.Metalworks_Lv2:
+                SetStartButton(skinWardrobeButton_Region6_Level2);
+                break;
+            case SkinType.Metalworks_Lv3:
+                SetStartButton(skinWardrobeButton_Region6_Level3);
+                break;
+            case SkinType.Metalworks_Lv4:
+                SetStartButton(skinWardrobeButton_Region6_Level4);
+                break;
+            case SkinType.Metalworks_Lv5:
+                SetStartButton(skinWardrobeButton_Region6_Level5);
+                break;
+
+            default:
+                SetStartButton(skinWardrobeButton_Default);
+                break;
+        }
+    }
+    void RemoveStartButton()
+    {
+        skinWardrobeButton_Region1_Level1.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region1_Level2.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region1_Level3.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region1_Level4.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region1_Level5.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+
+        skinWardrobeButton_Region2_Level1.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region2_Level2.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region2_Level3.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region2_Level4.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region2_Level5.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+
+        skinWardrobeButton_Region3_Level1.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region3_Level2.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region3_Level3.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region3_Level4.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region3_Level5.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+
+        skinWardrobeButton_Region4_Level1.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region4_Level2.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region4_Level3.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region4_Level4.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region4_Level5.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+
+        skinWardrobeButton_Region5_Level1.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region5_Level2.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region5_Level3.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region5_Level4.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region5_Level5.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+
+        skinWardrobeButton_Region6_Level1.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region6_Level2.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region6_Level3.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region6_Level4.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Region6_Level5.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+
+    }
+    void SetStartButton(GameObject pulsatingScriptObj)
+    {
+        //ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(pulsatingScriptObj);
+        wardrobeMenuButton.GetComponent<Button_ToPress>().uiElementToSelect = pulsatingScriptObj.GetComponent<Button>();
+        pulsatingScriptObj.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = true;
     }
 
 

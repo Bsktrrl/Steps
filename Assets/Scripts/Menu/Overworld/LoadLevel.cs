@@ -55,8 +55,6 @@ public class LoadLevel : MonoBehaviour
 
         if (!string.IsNullOrEmpty(levelToPlay))
         {
-            RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(OverWorldManager.Instance.regionState, OverWorldManager.Instance.levelState);
-
             if (GetComponent<LevelInfo>())
                 GetComponent<LevelInfo>().SaveNameDisplay();
 
@@ -69,8 +67,12 @@ public class LoadLevel : MonoBehaviour
     {
         if (mainMenuManager)
         {
+            print("1. LoadSceneCoroutine");
             yield return mainMenuManager.FadeInBlackScreenCoroutine();
         }
+
+        print("2. LoadSceneCoroutine");
+        RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(OverWorldManager.Instance.regionState, OverWorldManager.Instance.levelState);
 
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
         while (!operation.isDone)

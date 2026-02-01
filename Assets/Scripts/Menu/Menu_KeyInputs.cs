@@ -37,13 +37,13 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
 
     void OnMenuNavigation_Up()
     {
-        Action_MenuNavigationUp_isPressed?.Invoke();
+        //Action_MenuNavigationUp_isPressed?.Invoke();
 
-        if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls))
-        {
-            //print("1. MainMenuManager: OnMenuNavigation_Up");
-            Action_MenuSettingsNavigationUp_isPressed?.Invoke();
-        }
+        //if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls))
+        //{
+        //    //print("1. MainMenuManager: OnMenuNavigation_Up");
+        //    Action_MenuSettingsNavigationUp_isPressed?.Invoke();
+        //}
         //else if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Wardrobe || optionsManager.currentMenuCategorySelected == MenuCategories.Shop))
         //{
         //    //print("1. MainMenuManager: OnMenuNavigation_Up");
@@ -52,13 +52,13 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     }
     void OnMenuNavigation_Down()
     {
-        Action_MenuNavigationDown_isPressed?.Invoke();
+        //Action_MenuNavigationDown_isPressed?.Invoke();
 
-        if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls))
-        {
-            //print("1. MainMenuManager: OnMenuNavigation_Down");
-            Action_MenuSettingsNavigationDown_isPressed?.Invoke();
-        }
+        //if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls))
+        //{
+        //    //print("1. MainMenuManager: OnMenuNavigation_Down");
+        //    Action_MenuSettingsNavigationDown_isPressed?.Invoke();
+        //}
         //else if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Wardrobe || optionsManager.currentMenuCategorySelected == MenuCategories.Shop))
         //{
         //    //print("1. MainMenuManager: OnMenuNavigation_Up");

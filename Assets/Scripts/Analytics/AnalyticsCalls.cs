@@ -118,7 +118,7 @@ public class AnalyticsCalls
 
     #region Levels
 
-    public static void OnLevel(float time, int stepCount, int respawnCount, int abilityCount, int cameraRotationCount, int swimCounter, int swiftSwimCounter, int jumpCounter, int dashCounter, int ascendCounter, int descendCounter, int grapplingHookCounter, int ceilingGrabCounter)
+    public static void OnLevel(float time, int stepCount, int respawnCount, int abilityCount, int cameraRotationCount, float freeCamTime, int freeCamCount, int swimCounter, int swiftSwimCounter, int jumpCounter, int dashCounter, int ascendCounter, int descendCounter, int grapplingHookCounter, int ceilingGrabCounter)
     {
         if (AnalyticsService.Instance != null)
         {
@@ -135,6 +135,9 @@ public class AnalyticsCalls
                 { "respawns", respawnCount },
                 { "abilities", abilityCount },
                 { "camera_rotations", cameraRotationCount },
+
+                { "freecam_time", freeCamTime },
+                { "freecam_count", freeCamCount },
 
                 { "swimming", swimCounter },
                 { "swift_swim", swiftSwimCounter },
@@ -157,7 +160,7 @@ public class AnalyticsCalls
         }
     }
 
-    public static void OnLevelExit(float time, int stepCount, int respawnCount, int abilityCount, int cameraRotationCount, int swimCounter, int swiftSwimCounter, int jumpCounter, int dashCounter, int ascendCounter, int descendCounter, int grapplingHookCounter, int ceilingGrabCounter)
+    public static void OnLevelExit(float time, int stepCount, int respawnCount, int abilityCount, int cameraRotationCount, float freeCamTime, int freeCamCount, int swimCounter, int swiftSwimCounter, int jumpCounter, int dashCounter, int ascendCounter, int descendCounter, int grapplingHookCounter, int ceilingGrabCounter)
     {
         if (AnalyticsService.Instance != null)
         {
@@ -174,6 +177,9 @@ public class AnalyticsCalls
                 { "respawns", respawnCount },
                 { "abilities", abilityCount },
                 { "camera_rotations", cameraRotationCount },
+
+                { "freecam_time", freeCamTime },
+                { "freecam_count", freeCamCount },
 
                 { "swimming", swimCounter },
                 { "swift_swim", swiftSwimCounter },
@@ -196,7 +202,7 @@ public class AnalyticsCalls
         }
     }
 
-    public static void OnLevelFinishing(float time, int stepCount, int respawnCount, int abilityCount, int cameraRotationCount, int swimCounter, int swiftSwimCounter, int jumpCounter, int dashCounter, int ascendCounter, int descendCounter, int grapplingHookCounter, int ceilingGrabCounter)
+    public static void OnLevelFinishing(float time, int stepCount, int respawnCount, int abilityCount, int cameraRotationCount, float freeCamTime, int freeCamCount, int swimCounter, int swiftSwimCounter, int jumpCounter, int dashCounter, int ascendCounter, int descendCounter, int grapplingHookCounter, int ceilingGrabCounter)
     {
         if (AnalyticsService.Instance != null)
         {
@@ -213,6 +219,9 @@ public class AnalyticsCalls
                 { "respawns", respawnCount },
                 { "abilities", abilityCount },
                 { "camera_rotations", cameraRotationCount },
+
+                { "freecam_time", freeCamTime },
+                { "freecam_count", freeCamCount },
 
                 { "swimming", swimCounter },
                 { "swift_swim", swiftSwimCounter },

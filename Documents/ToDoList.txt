@@ -1,54 +1,47 @@
 ----- NEXT ON THE LIST -----
-
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 
-Camera:
-- Rotate camera also with right joystick
-- Should be able to continue rotation by pressing rotate while rotation
+
+--- FROM SARAH PLAYTEST
 
 
-RootBlock:
-- Fix so that the Numbers on RootBlocks isn't showing when they are not supposed to
+5. Setting: Legg til option om reverted rotation
 
+6. Settings: Legg til option om å skippe LevelIntro
 
-AbilityButton Display:
-- Use the new button icons and stepellierFont for NPC-interaction and when Abilities can be used
-	- Make it compatible with PlayStation, Xbox and Keyboard
+9. PickupAnimasjon i vann: Pickup-animasjonen funker ikke
 
+15. Settings: FreeCam Speed & rotation sensetivity (Move Speed & MouseSensitivity/StickSensitivity)
 
-Analytics:
-- Legge til variabler som går på FreeCam (hvor mange ganger og tiden brukt i FreeCamMode, i hvilke levels)
-- Lage ny branch i Unity Analyticssom samler info om v0.1
+19. Wardrobe: Må kunne rotere spillerObjektet (med høyre joystick)
 
+20. Hodeplagg: Få tak i Florìels hodeplagg i demoen
 
-LevelImages:
-- Change LevelImages in the Rivergreen so they represent their levels
+- 21. FreeCam: Blokker som FreeCam er inni, må ikke bli usynlige (finne hvor dette gjøres og disable det mens FreeCam er activ)
 
+32. SkinPopup: Få en popup første gang en finner et Skin som sier at den kan unlockes i WardrobeMenyen
 
+- 35. NPC: Gjøre slik at NPC’er ikke dukker opp i neste level hvis de ikke har blitt snakket med i det forrige levelet
 
-1. Sound:
-__________________
+- 36. Floríels Dialoger: Legge inn alle dialogene til Floríel og se at de fungerer som de skal (riktig info er lagt inn i infoen til NPC'en) (pull til main for å få Mathias sin oppdatering)
 
-1.1. Ice glide bug
-- Fix ice glide audio bug
+37. RootBlockNumbers: Endre slik at nummeret på ROotBlocks forsvinner når de skal
 
-
-
-2. New Menu UI
-__________________
-
-2.1. Change the UI for all menus, so it matches the new assets
-- Settings
- 	- Controls: Key Inputs + functionality
+38. CameraKø: Hvis man trykke rpå roteringsknappen mens det roteres, så burde det føre til at roteringen fortsetter 90 grader til, i den retningen
 
 
 
-3. IceGliding to WaterBlocks:
-__________________
+----- LATER
 
-3.1. Ice Gliding and Water Blocks
-- Fix so that when icegliding and the player CAN swim, stop before any waterBlock as it was a normal ledge
+
+14. FreeCam: Kan toggle Numbers on/off på alle blokker i levelet
+
+25. Overworld: Vurdere å legge inn en %-bar under navnet for å vise progress med tall også
+
+30. Camera: Sjekke ut om det går an å få til en hull-shader på/rundt kameraet som fjerner noe av collission-distraksjonen
+
+33. Lage nytt analytics-system for google sheets, for å innhente data
 
 
 
@@ -79,9 +72,16 @@ __________________
 - Setup ScenaryBlocks
 - Make ScenaryBlocks collide with FreeCam
 
+10. Sound
+- Fix ice glide audio bug
 
+11. IceGliding next to to WaterBlocks
+- Fix so that when icegliding and the player CAN swim, stop before any waterBlock as it was a normal ledge
 
-
+12. AbilityButton Display (New System):
+- Use the new button icons and stepellierFont for NPC-interaction and when Abilities can be used
+	- Make it compatible with PlayStation, Xbox and Keyboard
+	- Make it compatible with all languages
 
 
 

@@ -21,8 +21,11 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
 
     #region Variables
+    //NewGame
+    /*[HideInInspector]*/public bool haveStartedNewGame_Store = new bool();
+
     //MenuState
-    /*[HideInInspector]*/ public MenuState menuState_Store = new MenuState();
+    /*[HideInInspector]*/public MenuState menuState_Store = new MenuState();
 
     //Player stored Stats info
     /*[HideInInspector]*/ public Stats playerStats_Store = new Stats();
@@ -75,6 +78,8 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
     void GetSavedDataFromFile(GameData gameData)
     {
+        this.haveStartedNewGame_Store = gameData.haveStartedNewGame_Save;
+
         this.menuState_Store = gameData.menuState_Save;
         this.playerStats_Store = gameData.playerStats_Save;
         this.mapInfo_StoreList = gameData.mapInfo_SaveList;
@@ -147,6 +152,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         gameData.skinsInfo_Save = this.skinsInfo_Store;
 
         gameData.tutorial_Finished_Save = this.tutorial_Finished;
+        gameData.haveStartedNewGame_Save = this.haveStartedNewGame_Store;
     }
 
     public void Load_NewGame_Data(GameData oldData, GameData newData)
@@ -162,6 +168,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.skinsInfo_Store = newData.skinsInfo_Save;
 
         this.tutorial_Finished = newData.tutorial_Finished_Save;
+        this.haveStartedNewGame_Store = newData.haveStartedNewGame_Save;
 
         //Persist through newGame
         this.settingData_StoreList = oldData.settingData_SaveList;

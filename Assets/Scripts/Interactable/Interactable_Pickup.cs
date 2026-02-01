@@ -37,6 +37,20 @@ public class Interactable_Pickup : MonoBehaviour
 
         mapManager = FindObjectOfType<MapManager>();
     }
+
+    private void OnEnable()
+    {
+        PlayerStats.Action_UpdateAbilityDisplay += HideAbility;
+    }
+    private void OnDisable()
+    {
+        PlayerStats.Action_UpdateAbilityDisplay -= HideAbility;
+    }
+
+
+    //--------------------
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.CompareTag("Player"))
@@ -63,13 +77,17 @@ public class Interactable_Pickup : MonoBehaviour
         }
     }
 
+
+    //--------------------
+
+
     IEnumerator ExitLevel(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
 
         //Update analyticsData
-        AnalyticsCalls.OnLevel(mapManager.timeUsedInLevel, mapManager.stepCount, mapManager.respawnCount, mapManager.abilitiesPickedUp, mapManager.cameraRotated, mapManager.swimCounter, mapManager.swiftSwimCounter, mapManager.jumpCounter, mapManager.dashCounter, mapManager.ascendCounter, mapManager.descendCounter, mapManager.grapplingHookCounter, mapManager.ceilingGrabCounter);
-        AnalyticsCalls.OnLevelFinishing(mapManager.timeUsedInLevel, mapManager.stepCount, mapManager.respawnCount, mapManager.abilitiesPickedUp, mapManager.cameraRotated, mapManager.swimCounter, mapManager.swiftSwimCounter, mapManager.jumpCounter, mapManager.dashCounter, mapManager.ascendCounter, mapManager.descendCounter, mapManager.grapplingHookCounter, mapManager.ceilingGrabCounter);
+        AnalyticsCalls.OnLevel(mapManager.timeUsedInLevel, mapManager.stepCount, mapManager.respawnCount, mapManager.abilitiesPickedUp, mapManager.cameraRotated, mapManager.timeUsedInFreeCam, mapManager.freeCamCount, mapManager.swimCounter, mapManager.swiftSwimCounter, mapManager.jumpCounter, mapManager.dashCounter, mapManager.ascendCounter, mapManager.descendCounter, mapManager.grapplingHookCounter, mapManager.ceilingGrabCounter);
+        AnalyticsCalls.OnLevelFinishing(mapManager.timeUsedInLevel, mapManager.stepCount, mapManager.respawnCount, mapManager.abilitiesPickedUp, mapManager.cameraRotated, mapManager.timeUsedInFreeCam, mapManager.freeCamCount, mapManager.swimCounter, mapManager.swiftSwimCounter, mapManager.jumpCounter, mapManager.dashCounter, mapManager.ascendCounter, mapManager.descendCounter, mapManager.grapplingHookCounter, mapManager.ceilingGrabCounter);
 
         AnalyticsCalls.CompleteLevel();
 
@@ -115,18 +133,18 @@ public class Interactable_Pickup : MonoBehaviour
                             }
 
                             //Check if all essence are collected
-                            bool isTaken = true;
+                            int isTaken = 0;
                             for (int i = 0; i < MapManager.Instance.mapInfo_ToSave.essenceList.Count; i++)
                             {
-                                if (!MapManager.Instance.mapInfo_ToSave.essenceList[i].isTaken)
+                                if (MapManager.Instance.mapInfo_ToSave.essenceList[i].isTaken)
                                 {
-                                    isTaken = false;
+                                    isTaken += 1;
                                     break;
                                 }
                             }
-
-                            if (isTaken)
+                            if (isTaken >= 10)
                             {
+                                print("1000000000000. All essence in this level are picked up!!");
                                 AnalyticsCalls.GetAllEssenceInALevel();
                             }
                             break;
@@ -351,55 +369,57 @@ public class Interactable_Pickup : MonoBehaviour
             case Abilities.Snorkel:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Snorkel = true;
                 Action_AbilityPickupGot_isActive();
-                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwimSuit = true;
+                mapManager.mapInfo_ToSave.abilitiesGotInLevel.Snorkel = true;
                 Action_SnorkelGot?.Invoke();
                 break;
             case Abilities.Flippers:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers = true;
                 Action_AbilityPickupGot_isActive();
-                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.SwiftSwim = true;
+                mapManager.mapInfo_ToSave.abilitiesGotInLevel.Flippers = true;
                 break;
             case Abilities.OxygenTank:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.OxygenTank = true;
                 Action_AbilityPickupGot_isActive();
-                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Flippers = true;
+                mapManager.mapInfo_ToSave.abilitiesGotInLevel.OxygenTank = true;
                 Action_OxygenTankGot?.Invoke();
                 break;
             case Abilities.SpringShoes:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SpringShoes = true;
                 Action_AbilityPickupGot_isActive();
                 Action_JumpingGot?.Invoke();
-                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Jumping = true;
+                mapManager.mapInfo_ToSave.abilitiesGotInLevel.SpringShoes = true;
                 break;
             case Abilities.GrapplingHook:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.GrapplingHook = true;
                 Action_AbilityPickupGot_isActive();
-                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.GrapplingHook = true;
+                mapManager.mapInfo_ToSave.abilitiesGotInLevel.GrapplingHook = true;
                 break;
             case Abilities.ClimingGloves:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.ClimingGloves = true;
                 Action_AbilityPickupGot_isActive();
-                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.CeilingGrab = true;
+                mapManager.mapInfo_ToSave.abilitiesGotInLevel.ClimingGloves = true;
                 break;
             case Abilities.HandDrill:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.HandDrill = true;
                 Action_AbilityPickupGot_isActive();
-                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Dash = true;
+                mapManager.mapInfo_ToSave.abilitiesGotInLevel.HandDrill = true;
                 break;
             case Abilities.DrillHelmet:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.DrillHelmet = true;
                 Action_AbilityPickupGot_isActive();
-                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Ascend = true;
+                mapManager.mapInfo_ToSave.abilitiesGotInLevel.DrillHelmet = true;
                 break;
             case Abilities.DrillBoots:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.DrillBoots = true;
                 Action_AbilityPickupGot_isActive();
-                //MapManager.Instance.mapInfo_ToSave.abilitiesGotInLevel.Descend = true;
+                mapManager.mapInfo_ToSave.abilitiesGotInLevel.DrillBoots = true;
                 break;
 
             default:
                 break;
         }
+
+        mapManager.SaveMapInfo();
 
         if (abilityReceived != Abilities.None)
         {
@@ -415,6 +435,29 @@ public class Interactable_Pickup : MonoBehaviour
     //--------------------
 
 
+    void HideAbility()
+    {
+        if ((PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel && abilityReceived == Abilities.Snorkel)
+            || (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers && abilityReceived == Abilities.Flippers)
+            || (PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank && abilityReceived == Abilities.OxygenTank)
+
+            || (PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillHelmet && abilityReceived == Abilities.DrillHelmet)
+            || (PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillBoots && abilityReceived == Abilities.DrillBoots)
+
+            || (PlayerStats.Instance.stats.abilitiesGot_Temporary.SpringShoes && abilityReceived == Abilities.SpringShoes)
+            || (PlayerStats.Instance.stats.abilitiesGot_Temporary.HandDrill && abilityReceived == Abilities.HandDrill)
+
+            || (PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && abilityReceived == Abilities.GrapplingHook)
+            || (PlayerStats.Instance.stats.abilitiesGot_Temporary.ClimingGloves && abilityReceived == Abilities.ClimingGloves))
+
+            gameObject.SetActive(false);
+    }
+
+
+    //--------------------
+
+
+    #region Actions
     public void Action_PickupGot_isActive()
     {
         Action_PickupGot?.Invoke();
@@ -435,6 +478,7 @@ public class Interactable_Pickup : MonoBehaviour
     {
         Action_AbilityPickupGot?.Invoke();
     }
+    #endregion
 }
 
 [Serializable]

@@ -678,28 +678,22 @@ public class Movement : Singleton<Movement>
             //Down
             if (Physics.Raycast(transform.position + Vector3.down, Vector3.down, out hit, 1, ~swiftSwimLayersToIgnore))
             {
-                //print("2.0. SwiftSwim - Down");
-                if (hit.collider.gameObject)
+                //print("2.2. SwiftSwim - Down | Name: " + hit.collider.gameObject.name);
+                if ((hit.collider.gameObject && hit.collider.gameObject.GetComponent<BlockInfo>() && hit.collider.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
+                    && (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water))
                 {
-                    //print("2.1. SwiftSwim - Down | Name: " + hit.collider.gameObject.name);
-                    if (hit.collider.gameObject.GetComponent<BlockInfo>())
-                    {
-                        //print("2.2. SwiftSwim - Down | Name: " + hit.collider.gameObject.name);
-                        if (hit.collider.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
-                        {
-                            Debug.DrawLine(transform.position + Vector3.down + (Vector3.left * 0.25f), transform.position + Vector3.down + Vector3.down, Color.white, 10);
+                    Debug.DrawLine(transform.position + Vector3.down + (Vector3.left * 0.25f), transform.position + Vector3.down + Vector3.down, Color.white, 10);
 
-                            hit.collider.gameObject.GetComponent<BlockInfo>().movementCost = 1;
-                            hit.collider.gameObject.GetComponent<BlockInfo>().movementCost_Temp = 1;
+                    hit.collider.gameObject.GetComponent<BlockInfo>().movementCost = 1;
+                    hit.collider.gameObject.GetComponent<BlockInfo>().movementCost_Temp = 1;
 
-                            hit.collider.gameObject.GetComponent<BlockInfo>().ResetDarkenColor();
-                            hit.collider.gameObject.GetComponent<BlockInfo>().SetDarkenColors();
+                    hit.collider.gameObject.GetComponent<BlockInfo>().ResetDarkenColor();
 
-                            swiftSwimObject_Down = hit.collider.gameObject;
+                    hit.collider.gameObject.GetComponent<BlockInfo>().SetDarkenColors();
 
-                            //print("2.3. SwiftSwim - Down | Name: " + hit.collider.gameObject.name);
-                        }
-                    }
+                    swiftSwimObject_Down = hit.collider.gameObject;
+
+                    //print("2.3. SwiftSwim - Down | Name: " + hit.collider.gameObject.name);
                 }
                 else
                 {
@@ -718,7 +712,7 @@ public class Movement : Singleton<Movement>
 
     void UpdateSwiftSwimMovement(MoveOptions swiftSwimOption, Vector3 dir)
     {
-        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers)
+        if ((!PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers))
         {
             Block_IsNot_Target(swiftSwimOption);
             return;
@@ -732,11 +726,15 @@ public class Movement : Singleton<Movement>
         {
             BlockInfo hitBlock = outObj1.GetComponent<BlockInfo>();
 
-            //print("100. SwiftSwimBlock Detected Above: " + outObj1.name);
-
             if (hitBlock.blockElement == BlockElement.Water)
             {
-                Block_Is_Target(swiftSwimOption, outObj1);
+                if (dir == Vector3.down && (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Water))
+                {
+                    print("100. Block_IsNot_Target");
+                    Block_IsNot_Target(swiftSwimOption);
+                }
+                else
+                    Block_Is_Target(swiftSwimOption, outObj1);
             }
             else
                 Block_IsNot_Target(swiftSwimOption);
@@ -1621,14 +1619,16 @@ public class Movement : Singleton<Movement>
         {
             if (!obj.GetComponent<BlockInfo>().blockIsDark)
             {
-                if (PlayerStats.Instance.stats.steps_Current <= 0 && obj.GetComponent<BlockInfo>().movementCost <= 0)
-                    obj.GetComponent<BlockInfo>().SetDarkenColors();
-                else if (PlayerStats.Instance.stats.steps_Current - obj.GetComponent<BlockInfo>().movementCost < 0)
-                    ResetAvailableBlock(obj);
-                else if (PlayerStats.Instance.stats.steps_Current <= 0)
-                    ResetAvailableBlock(obj);
-                else
-                    obj.GetComponent<BlockInfo>().SetDarkenColors();
+                obj.GetComponent<BlockInfo>().SetDarkenColors();
+
+                //if (PlayerStats.Instance.stats.steps_Current <= 0 && obj.GetComponent<BlockInfo>().movementCost <= 0)
+                //    obj.GetComponent<BlockInfo>().SetDarkenColors();
+                //else if (PlayerStats.Instance.stats.steps_Current - obj.GetComponent<BlockInfo>().movementCost < 0)
+                //    ResetAvailableBlock(obj);
+                //else if (PlayerStats.Instance.stats.steps_Current <= 0)
+                //    ResetAvailableBlock(obj);
+                //else
+                //    obj.GetComponent<BlockInfo>().SetDarkenColors();
             }
         }
     }

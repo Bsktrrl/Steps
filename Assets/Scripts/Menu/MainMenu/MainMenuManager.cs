@@ -19,8 +19,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     [Header("BlackScreen")]
     public GameObject blackScreen;
-    float fadeDuration_In = 0.75f;
-    float fadeDuration_Out = 0.25f;
+    float fadeDuration_In = 1f;
+    float fadeDuration_Out = 0.35f;
 
 
     //--------------------

@@ -101,6 +101,9 @@ public class Block_Root : MonoBehaviour
         anim.SetTrigger("Activate");
 
         MakeRootFreeCostList();
+
+        Movement.Instance.SetDarkenBlocks();
+
         Action_StandingOnRootBlock?.Invoke();
     }
 
@@ -187,7 +190,7 @@ public class Block_Root : MonoBehaviour
                 GameObject tempBlock_Over = RaycastBlock(tempBlock_Adjacent.transform.position + (Vector3.up * 0.3f), Vector3.up, 1f);
 
                 //If there is NOT a block over adjacent
-                if (!tempBlock_Over)
+                if (!tempBlock_Over || (tempBlock_Over && tempBlock_Over.GetComponent<BlockInfo>() && tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slab))
                 {
                     if (tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                     {

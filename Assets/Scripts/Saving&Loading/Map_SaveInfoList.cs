@@ -38,7 +38,7 @@ public class Map_SaveInfo
 
     [Header("Abilities available")]
     public AbilitiesGot abilitiesInLevel;
-    //public AbilitiesGot abilitiesGotInLevel;
+    public AbilitiesGot abilitiesGotInLevel;
 
 
     //--------------------

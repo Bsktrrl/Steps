@@ -7,6 +7,8 @@ public class RegionButton : MonoBehaviour
 {
     public RegionState regionState;
 
+    float changeStatesDuration = 0.3f;
+
 
     //--------------------
 
@@ -15,9 +17,15 @@ public class RegionButton : MonoBehaviour
     {
         if (!GetComponent<LevelSelectButton>().CheckButtonStatus()) return;
 
-        OverWorldManager.Instance.ChangeStates(regionState, LevelState.First);
+        StartCoroutine(Button_isPressed_Delay(changeStatesDuration));
+    }
+    IEnumerator Button_isPressed_Delay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
 
         MenuStates.Instance.SaveMenuState(MenuState.Overworld_Menu);
+
+        OverWorldManager.Instance.ChangeStates(regionState, LevelState.First);
 
         switch (regionState)
         {
@@ -36,12 +44,12 @@ public class RegionButton : MonoBehaviour
                 break;
             case RegionState.Frostfields:
                 if (OverWorldManager.Instance.panelBackground) OverWorldManager.Instance.panelBackground.SetActive(true);
-                if(OverWorldManager.Instance.levelPanel_Frostfield) OverWorldManager.Instance.levelPanel_Frostfield.SetActive(true);
+                if (OverWorldManager.Instance.levelPanel_Frostfield) OverWorldManager.Instance.levelPanel_Frostfield.SetActive(true);
                 ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Frostfield.transform.GetChild(0).gameObject);
                 break;
             case RegionState.Firevein:
                 if (OverWorldManager.Instance.panelBackground) OverWorldManager.Instance.panelBackground.SetActive(true);
-                if(OverWorldManager.Instance.levelPanel_Firevein) OverWorldManager.Instance.levelPanel_Firevein.SetActive(true);
+                if (OverWorldManager.Instance.levelPanel_Firevein) OverWorldManager.Instance.levelPanel_Firevein.SetActive(true);
                 ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_Firevein.transform.GetChild(0).gameObject);
                 break;
             case RegionState.Witchmire:

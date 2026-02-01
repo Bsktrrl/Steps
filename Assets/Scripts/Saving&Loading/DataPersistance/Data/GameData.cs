@@ -5,8 +5,11 @@ using UnityEngine;
 [System.Serializable]
 public class GameData
 {
+    //NewGame
+    /*[HideInInspector]*/public bool haveStartedNewGame_Save = new bool();
+
     //MenuState
-    /*[HideInInspector]*/ public MenuState menuState_Save = new MenuState();
+    /*[HideInInspector]*/public MenuState menuState_Save = new MenuState();
 
     //Player saved Stats info
     /*[HideInInspector]*/ public Stats playerStats_Save = new Stats();

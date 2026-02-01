@@ -93,6 +93,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         //FreeCam.Instance.SetMoveAxis(pad.leftStick.ReadValue());
         //FreeCam.Instance.RotateFromStick(pad.rightStick.ReadValue());
+
+        if (freeCam_isPressed)
+        {
+            mapManager.timeUsedInFreeCam += Time.deltaTime;
+        }
     }
     private void OnEnable()
     {
@@ -535,6 +540,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
             PlayerManager.Instance.PauseGame();
 
             Run_FreeCam_1_Tutorial_End();
+
+            mapManager.freeCamCount += 1;
 
             Action_FreeCamIsActive?.Invoke();
         }

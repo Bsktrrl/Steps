@@ -25,6 +25,9 @@ public class MapManager : Singleton<MapManager>
     public int abilitiesPickedUp = 0;
     public int cameraRotated = 0;
 
+    public float timeUsedInFreeCam = 0;
+    public int freeCamCount = 0;
+
     public int swimCounter = 0;
     public int swiftSwimCounter = 0;
     public int jumpCounter = 0;
@@ -67,8 +70,11 @@ public class MapManager : Singleton<MapManager>
 
     private void Awake()
     {
-        blackScreen.SetActive(true);
-        canvas.SetActive(true);
+        if (blackScreen)
+            blackScreen.SetActive(true);
+
+        if (canvas)
+            canvas.SetActive(true);
 
         SpawnPlayerObject();
 
@@ -79,8 +85,6 @@ public class MapManager : Singleton<MapManager>
             introSequence = true;
 
             Action_StartIntroSequence?.Invoke();
-
-            print("0. ShowLevelNamePopup");
         }
     }
     private void Start()
@@ -156,7 +160,34 @@ public class MapManager : Singleton<MapManager>
         playerObjectInScene.transform.parent = playerObject_Parent.transform;
 
         SpawnedPlayer = playerObjectInScene;
+
+        SetAbilities();
+
         Action_SpawnedPlayerObject?.Invoke(SpawnedPlayer);
+    }
+    public void SetAbilities()
+    {
+        if (mapInfo_ToSave.abilitiesGotInLevel.Snorkel)
+            PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel = true;
+        if (mapInfo_ToSave.abilitiesGotInLevel.Flippers)
+            PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers = true;
+        if (mapInfo_ToSave.abilitiesGotInLevel.OxygenTank)
+            PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank = true;
+
+        if (mapInfo_ToSave.abilitiesGotInLevel.DrillHelmet)
+            PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillHelmet = true;
+        if (mapInfo_ToSave.abilitiesGotInLevel.DrillBoots)
+            PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillBoots = true;
+
+        if (mapInfo_ToSave.abilitiesGotInLevel.SpringShoes)
+            PlayerStats.Instance.stats.abilitiesGot_Temporary.SpringShoes = true;
+        if (mapInfo_ToSave.abilitiesGotInLevel.HandDrill)
+            PlayerStats.Instance.stats.abilitiesGot_Temporary.HandDrill = true;
+
+        if (mapInfo_ToSave.abilitiesGotInLevel.GrapplingHook)
+            PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook = true;
+        if (mapInfo_ToSave.abilitiesGotInLevel.ClimingGloves)
+            PlayerStats.Instance.stats.abilitiesGot_Temporary.ClimingGloves = true;
     }
 
     public void ShowHiddenObjects()

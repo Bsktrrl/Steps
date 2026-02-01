@@ -57,7 +57,7 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
         {
             SelectCancelTarget();
 
-            print("1. CloseWindow");
+            //print("1. CloseWindow");
         }
     }
 
@@ -87,7 +87,7 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
 
         if (closingMenuAnimator)
         {
-            print("2. CloseWindow");
+            //print("2. CloseWindow");
             closingMenuAnimator.SetTrigger("Close");
 
             StartCoroutine(CloseMenuDelay(closingMenuDelay));
@@ -107,7 +107,7 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
 
     void CloseMenu()
     {
-        print("3. CloseWindow");
+        //print("3. CloseWindow");
 
         Action_ButtonIsCanceled?.Invoke();
 
