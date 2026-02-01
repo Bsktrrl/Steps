@@ -397,18 +397,36 @@ public class Block_Root : MonoBehaviour
                 if (tempBlock_Ladder_Up)
                 {
                     //print("2. Ladder");
-                    SetupEntryInBlockList(tempBlock_Ladder_Up.GetComponent<Block_Ladder>().exitBlock_Up, false);
+                    if (tempBlock_Ladder_Up && tempBlock_Ladder_Up.GetComponent<Block_Ladder>() && tempBlock_Ladder_Up.GetComponent<Block_Ladder>().exitBlock_Up && tempBlock_Ladder_Up.GetComponent<Block_Ladder>().exitBlock_Up.GetComponent<BlockInfo>())
+                    {
+                        SetupEntryInBlockList(tempBlock_Ladder_Up.GetComponent<Block_Ladder>().exitBlock_Up, false);
+                        blockIsFound = true;
 
-                    blockIsFound = true;
+                        print("1.2. Ladder IS Detected");
+                    }
+                    else
+                    {
+                        print("1.2. Ladder is NOT Detected");
+                        blockIsFound = false;
+                    }
                 }
 
                 //Ladder Down
                 else if (tempBlock_Ladder_Down)
                 {
                     //print("3. Ladder");
-                    SetupEntryInBlockList(tempBlock_Ladder_Down.GetComponent<Block_Ladder>().exitBlock_Down, false);
+                    if (tempBlock_Ladder_Down && tempBlock_Ladder_Down.GetComponent<Block_Ladder>() && tempBlock_Ladder_Down.GetComponent<Block_Ladder>().exitBlock_Down && tempBlock_Ladder_Down.GetComponent<Block_Ladder>().exitBlock_Down.GetComponent<BlockInfo>())
+                    {
+                        SetupEntryInBlockList(tempBlock_Ladder_Down.GetComponent<Block_Ladder>().exitBlock_Down, false);
+                        blockIsFound = true;
 
-                    blockIsFound = true;
+                        print("2.1. Ladder IS Detected");
+                    }
+                    else
+                    {
+                        print("2.2. Ladder is NOT Detected");
+                        blockIsFound = false;
+                    }
                 }
 
                 else

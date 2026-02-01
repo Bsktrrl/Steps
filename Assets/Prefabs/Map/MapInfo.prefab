@@ -88,6 +88,8 @@ MonoBehaviour:
   respawnCount: 0
   abilitiesPickedUp: 0
   cameraRotated: 0
+  timeUsedInFreeCam: 0
+  freeCamCount: 0
   swimCounter: 0
   swiftSwimCounter: 0
   jumpCounter: 0
@@ -98,7 +100,7 @@ MonoBehaviour:
   ceilingGrabCounter: 0
   pickup_LayerMask:
     serializedVersion: 2
-    m_Bits: 8256
+    m_Bits: 270400
   player_LayerMask:
     serializedVersion: 2
     m_Bits: 32768
@@ -122,18 +124,32 @@ MonoBehaviour:
     maxStepList: []
     skintype: 0
     abilitiesInLevel:
-      SwimSuit: 0
-      SwiftSwim: 0
+      Snorkel: 0
       Flippers: 0
-      Ascend: 0
-      Descend: 0
-      Dash: 1
-      Jumping: 0
+      OxygenTank: 0
+      DrillHelmet: 0
+      DrillBoots: 0
+      HandDrill: 0
+      SpringShoes: 0
       GrapplingHook: 0
-      CeilingGrab: 0
+      ClimingGloves: 0
+    abilitiesGotInLevel:
+      Snorkel: 0
+      Flippers: 0
+      OxygenTank: 0
+      DrillHelmet: 0
+      DrillBoots: 0
+      HandDrill: 0
+      SpringShoes: 0
+      GrapplingHook: 0
+      ClimingGloves: 0
   playerObject_Parent: {fileID: 2933283360169833092}
   canvas: {fileID: 7664498414304271533}
   blackScreen: {fileID: 6636087618516094172}
+  blockInfoList: []
+  introSequence: 0
+  introSequence_Finished: 0
+  haveIntroSequence: 1
 --- !u!114 &1304006001389175484
 MonoBehaviour:
   m_ObjectHideFlags: 0

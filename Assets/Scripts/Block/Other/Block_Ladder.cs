@@ -21,16 +21,18 @@ public class Block_Ladder : MonoBehaviour
 
     private void Start()
     {
-        SetupLadder();
+        //SetupLadder();
     }
 
     private void OnEnable()
     {
         Interactable_Pickup.Action_AbilityPickupGot += SetupLadder;
+        DataManager.Action_dataHasLoaded += SetupLadder;
     }
     private void OnDisable()
     {
         Interactable_Pickup.Action_AbilityPickupGot -= SetupLadder;
+        DataManager.Action_dataHasLoaded -= SetupLadder;
     }
 
 
@@ -137,7 +139,7 @@ public class Block_Ladder : MonoBehaviour
         GameObject outObject1 = null;
 
         //Find the exitBlock to the ladder
-        if (PerformMovementRaycast(lastLadderPart_Up.transform.position + Vector3.up + (dir * 0.5f), Vector3.down, 1, out outObject1) == RaycastHitObjects.BlockInfo)
+        if (PerformMovementRaycast(lastLadderPart_Up.transform.position + Vector3.up + (dir * 0.5f), Vector3.down, 1.2f, out outObject1) == RaycastHitObjects.BlockInfo)
         {
             exitBlock_Up = outObject1;
             return;
@@ -197,10 +199,13 @@ public class Block_Ladder : MonoBehaviour
         {
             if (hit.transform.GetComponent<BlockInfo>())
             {
+                print("0. RaycastHitObjects.None: " + name + " | Pos: " + objPos + " | Dir: " + dir + " | Distance: " + distance + " | Hit name: " + hit.transform.gameObject.name);
+
                 obj = hit.transform.gameObject;
 
                 if (obj.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !Movement.Instance.PlayerHasSwimAbility())
                 {
+                    print("10. RaycastHitObjects.Other: " + name);
                     return RaycastHitObjects.Other;
                 }
                 else if (obj.GetComponent<BlockInfo>().blockElement == BlockElement.Water && Movement.Instance.PlayerHasSwimAbility())
@@ -220,11 +225,15 @@ public class Block_Ladder : MonoBehaviour
             }
             else
             {
+                print("11. RaycastHitObjects.Other: " + name);
+
                 obj = hit.transform.gameObject;
 
                 return RaycastHitObjects.Other;
             }
         }
+
+        print("12. RaycastHitObjects.None: " + name + " | Pos: " + objPos + " | Dir: " + dir + " | Distance: " + distance);
 
         obj = null;
         return RaycastHitObjects.None;

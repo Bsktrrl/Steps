@@ -35,6 +35,8 @@ public class LoadLevel : MonoBehaviour
     MainMenuManager mainMenuManager;
     MenuLevelInfo menuLevelInfo;
 
+    private bool _isLoading;
+
 
     //--------------------
 
@@ -51,6 +53,8 @@ public class LoadLevel : MonoBehaviour
 
     public void LoadLevelScene()
     {
+        if (_isLoading) return;
+
         if (!CheckIfCanBePlayed()) { return; }
 
         if (!string.IsNullOrEmpty(levelToPlay))
@@ -65,19 +69,39 @@ public class LoadLevel : MonoBehaviour
     }
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {
+        if (_isLoading) yield break;
+        _isLoading = true;
+
         if (mainMenuManager)
         {
-            print("1. LoadSceneCoroutine");
             yield return mainMenuManager.FadeInBlackScreenCoroutine();
         }
 
-        print("2. LoadSceneCoroutine");
-        RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(OverWorldManager.Instance.regionState, OverWorldManager.Instance.levelState);
+        // Only do this if these singletons are guaranteed to exist here.
+        if (RememberCurrentlySelectedUIElement.Instance != null && OverWorldManager.Instance != null)
+        {
+            RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(
+                OverWorldManager.Instance.regionState,
+                OverWorldManager.Instance.levelState
+            );
+        }
 
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
+
+        // Optional: if you ever use allowSceneActivation elsewhere, set it explicitly
+        // operation.allowSceneActivation = true;
+
+        float nextLogTime = 0f;
+
         while (!operation.isDone)
         {
-            Debug.Log($"Loading progress: {operation.progress * 100}%");
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if (Time.unscaledTime >= nextLogTime)
+            {
+                nextLogTime = Time.unscaledTime + 0.25f; // 4 times/second max
+                Debug.Log($"Loading progress: {operation.progress * 100f:0.0}%");
+            }
+#endif
             yield return null;
         }
     }
