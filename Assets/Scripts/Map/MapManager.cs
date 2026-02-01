@@ -112,6 +112,7 @@ public class MapManager : Singleton<MapManager>
         DataManager.Action_dataHasLoaded += SaveMapInfo;
         DataManager.Action_dataHasLoaded += InputLevelNameDisplay;
         DataManager.Action_dataHasLoaded += FadeOutBlackScreen;
+        DataManager.Action_dataHasLoaded += TurnOnOffIntroSequence;
     }
 
     private void OnDisable()
@@ -125,6 +126,7 @@ public class MapManager : Singleton<MapManager>
         DataManager.Action_dataHasLoaded -= SaveMapInfo;
         DataManager.Action_dataHasLoaded -= InputLevelNameDisplay;
         DataManager.Action_dataHasLoaded -= FadeOutBlackScreen;
+        DataManager.Action_dataHasLoaded -= TurnOnOffIntroSequence;
     }
 
 
@@ -261,6 +263,8 @@ public class MapManager : Singleton<MapManager>
     {
         Image blackScreenImage = blackScreen.GetComponent<Image>();
 
+        yield return new WaitForSeconds(1f);
+
         Color color = blackScreenImage.color;
         float startAlpha = color.a;
         float elapsed = 0f;
@@ -310,6 +314,22 @@ public class MapManager : Singleton<MapManager>
     public void Action_EndIntroSequence_Invoke()
     {
         Action_EndIntroSequence?.Invoke();
+    }
+
+
+    //--------------------
+
+
+    void TurnOnOffIntroSequence()
+    {
+        if (DataManager.Instance.settingData_StoreList.currentSkipIntro == SkipIntro.Yes)
+        {
+            haveIntroSequence = false;
+        }
+        else if (DataManager.Instance.settingData_StoreList.currentSkipIntro == SkipIntro.No)
+        {
+            haveIntroSequence = true;
+        }
     }
 }
 

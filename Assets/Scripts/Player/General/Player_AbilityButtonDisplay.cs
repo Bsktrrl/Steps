@@ -33,10 +33,12 @@ public class Player_AbilityButtonDisplay : Singleton<Player_AbilityButtonDisplay
 
     private void OnEnable()
     {
-        if (MapManager.Instance.haveIntroSequence)
-            MapManager.Action_EndIntroSequence += UpdateDisplay;
-        else
-            DataManager.Action_dataHasLoaded += UpdateDisplay;
+        MapManager.Action_EndIntroSequence += UpdateDisplay;
+
+        //if (MapManager.Instance.haveIntroSequence)
+        //    MapManager.Action_EndIntroSequence += UpdateDisplay;
+        //else
+        //    DataManager.Action_dataHasLoaded += UpdateDisplay;
 
         Interactable_Pickup.Action_AbilityPickupGot += UpdateDisplay;
 
@@ -63,10 +65,12 @@ public class Player_AbilityButtonDisplay : Singleton<Player_AbilityButtonDisplay
     }
     private void OnDisable()
     {
-        if (MapManager.Instance.haveIntroSequence)
-            MapManager.Action_EndIntroSequence -= UpdateDisplay;
-        else
-            DataManager.Action_dataHasLoaded -= UpdateDisplay;
+        MapManager.Action_EndIntroSequence -= UpdateDisplay;
+
+        //if (MapManager.Instance.haveIntroSequence)
+        //    MapManager.Action_EndIntroSequence -= UpdateDisplay;
+        //else
+        //    DataManager.Action_dataHasLoaded -= UpdateDisplay;
 
         Interactable_Pickup.Action_AbilityPickupGot -= UpdateDisplay;
 

@@ -189,8 +189,12 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 [Serializable]
 public class OneTimeRunData
 {
+    //Force FirstIntroSequence
+    /*[HideInInspector]*/ public bool forceIntroSequenceInFirstLevel = new bool();
+
     //Tutorial
-    /*[HideInInspector]*/public bool tutorial_Finished = new bool();
+    /*[HideInInspector]*/
+    public bool tutorial_Finished = new bool();
 
     //Skin
     /*[HideInInspector]*/public bool pickup_FirstSkin = new bool();

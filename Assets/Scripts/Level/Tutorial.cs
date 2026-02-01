@@ -68,10 +68,19 @@ public class Tutorial : Singleton<Tutorial>
     {
         if (!runTutorial) return;
 
-        if (MapManager.Instance.haveIntroSequence)
-            MapManager.Action_EndIntroSequence += Start_Tutorial;
-        else
-            DataManager.Action_dataHasLoaded += Start_Tutorial;
+        MapManager.Action_EndIntroSequence += Start_Tutorial;
+
+        //if (!DataManager.Instance.oneTimeRunData_Store.forceIntroSequenceInFirstLevel)
+        //{
+        //    MapManager.Action_EndIntroSequence += Start_Tutorial;
+        //}
+        //else
+        //{
+        //    if (MapManager.Instance.haveIntroSequence)
+        //        MapManager.Action_EndIntroSequence += Start_Tutorial;
+        //    else
+        //        DataManager.Action_dataHasLoaded += Start_Tutorial;
+        //}
 
         Movement.Action_RespawnPlayerLate += End_Tutorial_Respawn;
     }
@@ -79,10 +88,19 @@ public class Tutorial : Singleton<Tutorial>
     {
         if (!runTutorial) return;
 
-        if (MapManager.Instance.haveIntroSequence)
-            MapManager.Action_EndIntroSequence -= Start_Tutorial;
-        else
-            DataManager.Action_dataHasLoaded -= Start_Tutorial;
+        MapManager.Action_EndIntroSequence -= Start_Tutorial;
+
+        //if (!DataManager.Instance.oneTimeRunData_Store.forceIntroSequenceInFirstLevel)
+        //{
+        //    MapManager.Action_EndIntroSequence -= Start_Tutorial;
+        //}
+        //else
+        //{
+        //    if (MapManager.Instance.haveIntroSequence)
+        //        MapManager.Action_EndIntroSequence -= Start_Tutorial;
+        //    else
+        //        DataManager.Action_dataHasLoaded -= Start_Tutorial;
+        //}
 
         Movement.Action_RespawnPlayerLate -= End_Tutorial_Respawn;
     }
@@ -328,5 +346,8 @@ public class Tutorial : Singleton<Tutorial>
 
         tutorial_isRunning = false;
         PlayerManager.Instance.UnpauseGame();
+
+        DataManager.Instance.oneTimeRunData_Store.forceIntroSequenceInFirstLevel = true;
+        DataPersistanceManager.instance.SaveGame();
     }
 }
