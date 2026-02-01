@@ -23,13 +23,35 @@ public class FreeCam : Singleton<FreeCam>
     [SerializeField] private bool moveInLookDirection = true;
 
     [Tooltip("How quickly the camera accelerates towards target speed (bigger = snappier).")]
-    [SerializeField] private float acceleration = 12f;
+    [SerializeField] private float acceleration = 18f;
 
     [Tooltip("How quickly the camera slows down when input stops (bigger = snappier).")]
-    [SerializeField] private float deceleration = 18f;
+    [SerializeField] private float deceleration = 26f;
 
     [Tooltip("If true, uses unscaled time (recommended if you pause with Time.timeScale = 0).")]
     [SerializeField] private bool useUnscaledTime = true;
+
+    [Header("Polish (Editor-like Feel)")]
+    [Tooltip("Extra multiplier when sprint/boost is held.")]
+    [SerializeField] private float boostMultiplier = 3.0f;
+
+    [Tooltip("How quickly boost turns on/off (bigger = snappier).")]
+    [SerializeField] private float boostResponse = 12f;
+
+    [Tooltip("Extra glide time after releasing input (seconds). 0 = none.")]
+    [SerializeField] private float glideTime = 0.12f;
+
+    [Tooltip("How strongly the glide is damped. Higher = stops sooner.")]
+    [SerializeField] private float glideDamping = 14f;
+
+    [Tooltip("Minimum input magnitude before movement is considered active.")]
+    [SerializeField] private float inputEpsilon = 0.001f;
+
+    [Header("Optional: Scroll speed adjust (like Scene View)")]
+    [SerializeField] private bool allowScrollSpeedAdjust = true;
+    [SerializeField] private float scrollSpeedStep = 0.75f;
+    [SerializeField] private float minMoveSpeed = 1f;
+    [SerializeField] private float maxMoveSpeed = 30f;
 
     [Header("Collision")]
     [Tooltip("How far ahead to probe for obstacles when moving.")]
@@ -76,6 +98,12 @@ public class FreeCam : Singleton<FreeCam>
     [SerializeField] private float pitchMin = -85f;
     [SerializeField] private float pitchMax = 85f;
 
+    [Header("Mouse smoothing (less stiff look)")]
+    [SerializeField] private bool smoothMouseLook = true;
+
+    [Tooltip("How quickly mouse delta is smoothed (bigger = less smoothing).")]
+    [SerializeField] private float mouseSmoothing = 20f;
+
     [Header("Deadzones")]
     [Tooltip("Right stick deadzone.")]
     [SerializeField] private float lookStickDeadzone = 0.12f;
@@ -95,14 +123,11 @@ public class FreeCam : Singleton<FreeCam>
     [Tooltip("Extra distance added to the sweep so we detect contact reliably at high speed.")]
     [SerializeField] private float sweepPadding = 0.02f;
 
-    [Tooltip("If we are closer than this to a surface, treat as 'touching' and slide without nudging.")]
-    [SerializeField] private float touchEpsilon = 1f;
-
     [Tooltip("Tiny step along the slide direction when touching a surface. Helps avoid 'glued' feeling.")]
     [SerializeField] private float touchSlideStep = 1f;
 
     [Header("FreeCamForwardPush")]
-    [SerializeField] private float freeCamForwardPush = 0.4f;
+    [SerializeField] private float freeCamForwardPush = 0.35f;
 
     private PrioritySettings _playerBasePriority;
     private PrioritySettings _freeBasePriority;
@@ -118,10 +143,17 @@ public class FreeCam : Singleton<FreeCam>
     private Vector3 _digitalInputSum;     // keyboard button movement (WASD-like)
     private Vector2 _moveAxis;            // controller move axis (left stick)
 
+    // Polish movement state
+    private float _boostTarget01;
+    private float _boostHeld01;
+    private float _glideTimer;
+    private Vector3 _lastNonZeroDesired;
+
     // Rotation state
     private Vector2 _lookAxis;            // controller look axis (right stick)
     private float _yaw;
     private float _pitch;
+    private Vector2 _smoothedMouseDelta;
 
     // Cached hits
     private static readonly RaycastHit[] _hitsCache = new RaycastHit[16];
@@ -200,6 +232,26 @@ public class FreeCam : Singleton<FreeCam>
         _lookAxis = Vector2.ClampMagnitude(axis, 1f);
     }
 
+    /// <summary>
+    /// Hold-to-boost (Shift / trigger). Call on press/release.
+    /// </summary>
+    public void SetBoost(bool held)
+    {
+        _boostTarget01 = held ? 1f : 0f;
+    }
+
+    /// <summary>
+    /// Optional: call with mouse scroll delta (or let FreeCam read it internally).
+    /// Positive scroll increases speed.
+    /// </summary>
+    public void AddSpeedScroll(float scrollY)
+    {
+        if (!allowScrollSpeedAdjust) return;
+        if (Mathf.Abs(scrollY) < 0.01f) return;
+
+        moveSpeed = Mathf.Clamp(moveSpeed + Mathf.Sign(scrollY) * scrollSpeedStep, minMoveSpeed, maxMoveSpeed);
+    }
+
     // ====================
     // MODE SWITCH
     // ====================
@@ -213,7 +265,6 @@ public class FreeCam : Singleton<FreeCam>
 
         CacheBasePrioritiesOnce();
 
-        // stop routines (BUT restore if we cancel a return)
         bool cancelledReturn = false;
 
         if (_returnRoutine != null)
@@ -230,21 +281,15 @@ public class FreeCam : Singleton<FreeCam>
         }
 
         if (cancelledReturn)
-        {
-            // If we interrupted the exit pan, put priorities back in a known-good state
             RestoreBasePriorities();
-        }
 
         if (_cmPlayer == null) return;
 
-        // IMPORTANT: prevent Cinemachine from overriding your rotation
         CM_FreeCam.Follow = null;
         CM_FreeCam.LookAt = null;
 
-        // snap FreeCam to PlayerCam pose
         CM_FreeCam.transform.SetPositionAndRotation(_cmPlayer.transform.position, _cmPlayer.transform.rotation);
 
-        // init yaw/pitch from current rotation
         Vector3 e = CM_FreeCam.transform.rotation.eulerAngles;
         _yaw = e.y;
         float ex = e.x; if (ex > 180f) ex -= 360f;
@@ -253,18 +298,24 @@ public class FreeCam : Singleton<FreeCam>
         if (toggleFreeCamGameObject)
             CM_FreeCam.gameObject.SetActive(true);
 
-        // make FreeCam win
         int playerVal = GetPriorityValue(_cmPlayer);
         SetPriorityValue(CM_FreeCam, playerVal + freeCamPriorityBoost);
 
-        // reset inputs/state
         _isActive = true;
+
+        // reset inputs/state
         _digitalInputSum = Vector3.zero;
         _moveAxis = Vector2.zero;
         _lookAxis = Vector2.zero;
         _currentVelocity = Vector3.zero;
 
-        // enter cue
+        // polish reset
+        _boostTarget01 = 0f;
+        _boostHeld01 = 0f;
+        _glideTimer = 0f;
+        _lastNonZeroDesired = Vector3.zero;
+        _smoothedMouseDelta = Vector2.zero;
+
         _enterCueRoutine = StartCoroutine(EnterFreeCamCue());
     }
 
@@ -289,31 +340,42 @@ public class FreeCam : Singleton<FreeCam>
 
     private void TickMovement(float dt)
     {
+        // Optional: Scene-view style scroll speed adjust
+        if (allowScrollSpeedAdjust && inputType == InputType.Keyboard)
+        {
+            float scrollY = Mouse.current?.scroll.ReadValue().y ?? 0f;
+            if (Mathf.Abs(scrollY) > 0.01f)
+                moveSpeed = Mathf.Clamp(moveSpeed + Mathf.Sign(scrollY) * scrollSpeedStep, minMoveSpeed, maxMoveSpeed);
+        }
+
+        // Smooth boost in/out
+        float boostT = 1f - Mathf.Exp(-boostResponse * dt);
+        _boostHeld01 = Mathf.Lerp(_boostHeld01, _boostTarget01, boostT);
+
+        float speed = moveSpeed * Mathf.Lerp(1f, boostMultiplier, _boostHeld01);
+
         // combine digital + analog (analog uses x=strafe, y=forward)
         Vector3 analogLocal = new Vector3(_moveAxis.x, 0f, _moveAxis.y);
         Vector3 local = _digitalInputSum + analogLocal;
         local = Vector3.ClampMagnitude(local, 1f);
 
         Vector3 desiredWorldVelocity = Vector3.zero;
+        bool hasMoveInput = local.sqrMagnitude > inputEpsilon * inputEpsilon;
 
-        if (local.sqrMagnitude > 0.0001f)
+        if (hasMoveInput)
         {
             local = local.normalized;
-
             Transform t = CM_FreeCam.transform;
 
-            Vector3 forward;
-            Vector3 right;
+            Vector3 forward, right;
 
             if (moveInLookDirection)
             {
-                // Flycam: move in the actual look direction (includes pitch)
                 forward = t.forward;
                 right = t.right;
             }
             else
             {
-                // Old: flatten forward/right to horizontal plane
                 forward = Vector3.ProjectOnPlane(t.forward, Vector3.up).normalized;
                 right = Vector3.ProjectOnPlane(t.right, Vector3.up).normalized;
 
@@ -325,14 +387,34 @@ public class FreeCam : Singleton<FreeCam>
                 }
             }
 
-            // Up/down stays world-up (still useful)
             Vector3 worldDir =
                 (right * local.x) +
                 (Vector3.up * local.y) +
                 (forward * local.z);
 
             if (worldDir.sqrMagnitude > 0.0001f)
-                desiredWorldVelocity = worldDir.normalized * moveSpeed;
+            {
+                desiredWorldVelocity = worldDir.normalized * speed;
+                _lastNonZeroDesired = desiredWorldVelocity;
+                _glideTimer = glideTime; // refresh glide while holding input
+            }
+        }
+        else
+        {
+            // glide tail after releasing input (editor-like "coast")
+            if (_glideTimer > 0f && glideTime > 0f)
+            {
+                _glideTimer -= dt;
+
+                float u = Mathf.Clamp01(_glideTimer / Mathf.Max(0.0001f, glideTime));
+                desiredWorldVelocity = _lastNonZeroDesired * u;
+
+                desiredWorldVelocity = Vector3.Lerp(desiredWorldVelocity, Vector3.zero, 1f - Mathf.Exp(-glideDamping * dt));
+            }
+            else
+            {
+                desiredWorldVelocity = Vector3.zero;
+            }
         }
 
         float rate = (desiredWorldVelocity.sqrMagnitude > 0.0001f) ? acceleration : deceleration;
@@ -350,14 +432,24 @@ public class FreeCam : Singleton<FreeCam>
         // Mouse look (Keyboard mode)
         if (inputType == InputType.Keyboard)
         {
-            Vector2 mouseDelta = Mouse.current?.delta.ReadValue() ?? Vector2.zero;
+            Vector2 raw = Mouse.current?.delta.ReadValue() ?? Vector2.zero;
 
-            if (mouseDelta != Vector2.zero)
+            if (smoothMouseLook)
+            {
+                float t = 1f - Mathf.Exp(-mouseSmoothing * dt);
+                _smoothedMouseDelta = Vector2.Lerp(_smoothedMouseDelta, raw, t);
+            }
+            else
+            {
+                _smoothedMouseDelta = raw;
+            }
+
+            if (_smoothedMouseDelta != Vector2.zero)
             {
                 float ySign = invertY ? 1f : -1f;
 
-                _yaw += mouseDelta.x * mouseSensitivity;
-                _pitch += mouseDelta.y * mouseSensitivity * ySign;
+                _yaw += _smoothedMouseDelta.x * mouseSensitivity;
+                _pitch += _smoothedMouseDelta.y * mouseSensitivity * ySign;
 
                 ApplyFreeCamRotation();
             }

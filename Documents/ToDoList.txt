@@ -1,10 +1,8 @@
 ----- NEXT ON THE LIST -----
-
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 
 Camera:
-- Rotate camera also with right joystick
 - Should be able to continue rotation by pressing rotate while rotation
 
 
@@ -18,34 +16,7 @@ AbilityButton Display (New System):
 	- Make it compatible with all languages
 
 
-Analytics:
-- Legge til variabler som går på FreeCam (hvor mange ganger og tiden brukt i FreeCamMode, i hvilke levels)
-- Lage ny branch i Unity Analyticssom samler info om v0.1
 
-
-Slab SiftSwim Downward:
-- If there are a waterBlock right under a slab, with FLippers, the player can move down the slab, like Descend. Fix this.
-	- Also check for higher distances than 1 block under
-
-
-
-
-1. Sound:
-__________________
-
-1.1. Ice glide bug
-- Fix ice glide audio bug
-
-
-
-3. IceGliding to WaterBlocks:
-__________________
-
-3.1. Ice Gliding and Water Blocks
-- Fix so that when icegliding and the player CAN swim, stop before any waterBlock as it was a normal ledge
-
-
-	
 
 --- FROM SARAH PLAYTEST
 
@@ -54,21 +25,23 @@ __________________
 
 6. Settings: Legg til option om å skippe LevelIntro
 
-9. Pickup i vann: Pickup-animasjonen funker ikke
+9. PickupAnimasjon i vann: Pickup-animasjonen funker ikke
 
-15. Settings: FreeCam Speed & rotation sensetivity
+15. Settings: FreeCam Speed & rotation sensetivity (Move Speed & MouseSensitivity/StickSensitivity)
 
-19. Wardrobe: Må kunne rotere spillerObjektet
+19. Wardrobe: Må kunne rotere spillerObjektet (med høyre joystick)
 
 20. Hodeplagg: Få tak i Florìels hodeplagg i demoen
 
-21. FreeCam: Blokker som FreeCam er inni, må ikke bli usynlige
+- 21. FreeCam: Blokker som FreeCam er inni, må ikke bli usynlige
 
 32. SkinPopup: Få en popup første gang en finner et Skin som sier at den kan unlockes i WardrobeMenyen
 
 - 35. NPC: Gjøre slik at NPC’er ikke dukker opp i neste level hvis de ikke har blitt snakket med i det forrige levelet
 
 - 36. Legge inn alle dialogene til Floríel og se at de fungerer som de skal (riktig info er lagt inn i infoen til NPC'en) (pull til main for å få Mathias sin oppdatering)
+
+
 
 
 ----- LATER
@@ -80,7 +53,8 @@ __________________
 
 30. Camera: Sjekke ut om det går an å få til en hull-shader på/rundt kameraet som fjerner noe av collission-distraksjonen
 
-33. Lage nytt analytics-system for google sheets
+33. Lage nytt analytics-system for google sheets, for å innhente data
+
 
 
 
@@ -110,8 +84,11 @@ __________________
 - Setup ScenaryBlocks
 - Make ScenaryBlocks collide with FreeCam
 
+10. Sound
+- Fix ice glide audio bug
 
-
+11. IceGliding next to to WaterBlocks
+- Fix so that when icegliding and the player CAN swim, stop before any waterBlock as it was a normal ledge
 
 
 
