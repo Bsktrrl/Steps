@@ -199,13 +199,13 @@ public class Block_Ladder : MonoBehaviour
         {
             if (hit.transform.GetComponent<BlockInfo>())
             {
-                print("0. RaycastHitObjects.None: " + name + " | Pos: " + objPos + " | Dir: " + dir + " | Distance: " + distance + " | Hit name: " + hit.transform.gameObject.name);
+                //print("0. RaycastHitObjects.None: " + name + " | Pos: " + objPos + " | Dir: " + dir + " | Distance: " + distance + " | Hit name: " + hit.transform.gameObject.name);
 
                 obj = hit.transform.gameObject;
 
                 if (obj.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !Movement.Instance.PlayerHasSwimAbility())
                 {
-                    print("10. RaycastHitObjects.Other: " + name);
+                    //print("10. RaycastHitObjects.Other: " + name);
                     return RaycastHitObjects.Other;
                 }
                 else if (obj.GetComponent<BlockInfo>().blockElement == BlockElement.Water && Movement.Instance.PlayerHasSwimAbility())
@@ -225,7 +225,7 @@ public class Block_Ladder : MonoBehaviour
             }
             else
             {
-                print("11. RaycastHitObjects.Other: " + name);
+                //print("11. RaycastHitObjects.Other: " + name);
 
                 obj = hit.transform.gameObject;
 
@@ -233,7 +233,7 @@ public class Block_Ladder : MonoBehaviour
             }
         }
 
-        print("12. RaycastHitObjects.None: " + name + " | Pos: " + objPos + " | Dir: " + dir + " | Distance: " + distance);
+        //print("12. RaycastHitObjects.None: " + name + " | Pos: " + objPos + " | Dir: " + dir + " | Distance: " + distance);
 
         obj = null;
         return RaycastHitObjects.None;

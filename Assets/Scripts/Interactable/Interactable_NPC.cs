@@ -82,6 +82,8 @@ public class Interactable_NPC : MonoBehaviour
         OptionButton.Action_OptionButtonIsPressed += StartNewDialogueSegment_OptionButton;
 
         DataManager.Action_dataHasLoaded += SetupNPC;
+
+        NPCManager.Action_DialogueIsFinished += RunHatPopupMessage;
     }
     private void OnDisable()
     {
@@ -92,6 +94,8 @@ public class Interactable_NPC : MonoBehaviour
         OptionButton.Action_OptionButtonIsPressed -= StartNewDialogueSegment_OptionButton;
 
         DataManager.Action_dataHasLoaded -= SetupNPC;
+        
+        NPCManager.Action_DialogueIsFinished -= RunHatPopupMessage;
     }
 
 
@@ -952,8 +956,7 @@ public class Interactable_NPC : MonoBehaviour
             lastSegment = segmentIndex;
             StartCoroutine(TurnNPCAwayFromPlayer());
             StartCoroutine(DialogueManager.Instance.EndDialogue(DialogueManager.Instance.closingMenuDelay));
-            RunHatPopupMessage();
-
+            print("0.1. ShowHat_Floríel");
             //print("0. Last Segment: " + segmentIndex);
         }
 
@@ -1189,7 +1192,7 @@ public class Interactable_NPC : MonoBehaviour
         {
             StartCoroutine(TurnNPCAwayFromPlayer());
             StartCoroutine(DialogueManager.Instance.EndDialogue(DialogueManager.Instance.closingMenuDelay));
-            RunHatPopupMessage();
+            print("0.2. ShowHat_Floríel");
 
             return;
         }
@@ -1312,7 +1315,7 @@ public class Interactable_NPC : MonoBehaviour
 
     void RunHatPopupMessage()
     {
-        StartCoroutine(RunHatPopupMessage_Dealy(1.5f));
+        StartCoroutine(RunHatPopupMessage_Dealy(0.35f));
     }
     IEnumerator RunHatPopupMessage_Dealy(float waitTime)
     {
@@ -1324,8 +1327,12 @@ public class Interactable_NPC : MonoBehaviour
                 break;
 
             case NPCs.Floriel:
+                print("1. ShowHat_Floríel");
                 if (DataManager.Instance.charatersData_Store.floriel_Data.level_5_DialogueFinished)
+                {
+                    print("2. ShowHat_Floríel");
                     PopUpManager.Instance.ShowHat_Floríel();
+                }
                 break;
             case NPCs.Granith:
                 if (DataManager.Instance.charatersData_Store.granith_Data.level_5_DialogueFinished)

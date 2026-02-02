@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class NPCManager : Singleton<NPCManager>
 {
+    public static event Action Action_DialogueIsFinished;
+
     public CharatersData charatersData;
 
 
@@ -234,6 +236,8 @@ public class NPCManager : Singleton<NPCManager>
             default:
                 break;
         }
+
+        Action_DialogueIsFinished?.Invoke();
 
         CheckIfGettingHat();
 

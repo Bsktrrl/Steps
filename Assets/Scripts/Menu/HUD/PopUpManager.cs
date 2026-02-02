@@ -226,6 +226,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
     public void ShowHat_Floríel()
     {
+        print("3. ShowHat_Floríel");
         StartCoroutine(HatRoutine(hats_Floríel_Parent, hats_Floríel_Children));
     }
     public void ShowHat_Archie()
