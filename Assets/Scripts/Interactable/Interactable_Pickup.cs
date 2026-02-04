@@ -152,9 +152,10 @@ public class Interactable_Pickup : MonoBehaviour
                             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.skin += 1 /*itemReceived.amount*/;
                             UpdateSkinTaken();
                             break;
-                        case Items.IncreaseMaxSteps:
+                        case Items.Footprint:
                             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max += 1 /*itemReceived.amount*/;
                             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current += 1 /*itemReceived.amount*/;
+
                             break;
 
                         default:
@@ -206,7 +207,7 @@ public class Interactable_Pickup : MonoBehaviour
                         }
                         break;
 
-                    case Items.IncreaseMaxSteps:
+                    case Items.Footprint:
                         for (int j = 0; j < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].maxStepList.Count; j++)
                         {
                             if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].maxStepList[j].pos.x == gameObject.transform.position.x
@@ -494,7 +495,7 @@ public enum Items
 
     Essence,
     Skin,
-    IncreaseMaxSteps
+    Footprint
 }
 
 public enum Abilities

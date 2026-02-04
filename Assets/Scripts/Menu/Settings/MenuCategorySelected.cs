@@ -40,13 +40,11 @@ public class MenuCategorySelected : MonoBehaviour
                 if (current == GetComponent<Button>().gameObject)
                 {
                     isSelected = true;
-                    AddImageColor();
                     ChangeSelectedSettingsButtonSegment();
                 }
                 else
                 {
                     isSelected = false;
-                    RemoveImageColor();
                 }
 
                 lastSelected = current;
@@ -54,17 +52,6 @@ public class MenuCategorySelected : MonoBehaviour
 
             yield return null; // or yield return new WaitForSeconds(0.1f) for better performance
         }
-    }
-
-    void AddImageColor()
-    {
-        //if (selectedImage)
-        //    selectedImage.color = SettingsManager.Instance.activeSettingSegmentColor;
-    }
-    void RemoveImageColor()
-    {
-        //if (selectedImage)
-        //    selectedImage.color = Color.white;
     }
 
     void ChangeSelectedSettingsButtonSegment()

@@ -309,7 +309,7 @@ public class Tutorial : Singleton<Tutorial>
     public void Tutorial_DemoMessage(bool active)
     {
         if (active)
-            StartCoroutine(DemoMessage_Start(fadeDuration_In));
+            StartCoroutine(DemoMessage_Start(fadeDuration_In / 10));
         else
             StartCoroutine(DemoMessage_End(fadeDuration_Out));
     }

@@ -110,7 +110,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnForward_Down()
     {
-        if (!Run_AbilityDisplayExit()) return;
+        if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         Run_Movement_Tutorial(ref forward_isPressed);
@@ -145,7 +145,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
    
     void OnBackward_Down()
     {
-        if (!Run_AbilityDisplayExit()) return;
+        if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         Run_Movement_Tutorial(ref back_isPressed);
@@ -180,7 +180,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
   
     void OnLeft_Down()
     {
-        if (!Run_AbilityDisplayExit()) return;
+        if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         Run_Movement_Tutorial(ref left_isPressed);
@@ -215,7 +215,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
   
     void OnRight_Down()
     {
-        if (!Run_AbilityDisplayExit()) return;
+        if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         Run_Movement_Tutorial(ref right_isPressed);
@@ -254,7 +254,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnAbilityUp_Down()
     {
-        if (!Run_AbilityDisplayExit()) return;
+        if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         if (!ButtonChecks_Movement() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
@@ -282,7 +282,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnAbilityDown_Down()
     {
-        if (!Run_AbilityDisplayExit()) return;
+        if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         if (!ButtonChecks_Movement() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
@@ -310,7 +310,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnAbilityLeft()
     {
-        if (!Run_AbilityDisplayExit()) return;
+        if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         if (!ButtonChecks_Other()) { return; }
@@ -333,7 +333,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnAbilityRight_DownPress()
     {
-        if (!Run_AbilityDisplayExit()) return;
+        if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         if (!ButtonChecks_Other() || Player_CeilingGrab.Instance.isCeilingGrabbing) return;
@@ -355,7 +355,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnAbilityRight_RelesePress()
     {
-        if (!Run_AbilityDisplayExit()) return;
+        if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) return;
@@ -375,7 +375,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnDialogueSkip_Pressed()
     {
-        if (!Run_AbilityDisplayExit()) return;
+        if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         if (!PlayerManager.Instance.npcInteraction) { return; }
@@ -384,7 +384,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnDialogueNext_Pressed()
     {
-        if (!Run_AbilityDisplayExit()) return;
+        if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         if (!PlayerManager.Instance.npcInteraction) { return; }
@@ -393,7 +393,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnInteractButton_Pressed()
     {
-        if (!Run_AbilityDisplayExit()) return;
+        if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         if (!ButtonChecks_Movement()) { return; }
@@ -408,7 +408,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnCameraRotateX()
     {
-        if (!Run_AbilityDisplayExit()) return;
+        if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         Run_CameraRotation_Tutorial(true);
@@ -438,7 +438,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnCameraRotateY()
     {
-        if (!Run_AbilityDisplayExit()) return;
+        if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         Run_CameraRotation_Tutorial(false);
@@ -465,7 +465,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnRespawn_In()
     {
-        if (!Run_AbilityDisplayExit()) return;
+        if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         Run_Respawn_Tutorial();
@@ -489,9 +489,9 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnFreeCam()
     {
-        if (!Run_AbilityDisplayExit()) return;
+        if (!Run_StayingPopupDisplayExit()) return;
         if (Tutorial.Instance.state_Movement || Tutorial.Instance.state_CameraRotation || Tutorial.Instance.state_Respawn) return;
-        if (PopUpManager.Instance.ability_Active || PopUpManager.Instance.ability_CanBeClosed) return;
+        if (PopUpManager.Instance.ability_Active || PopUpManager.Instance.oneTimer_Active || PopUpManager.Instance.ability_CanBeClosed) return;
 
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) return;
         if (Movement.Instance.GetMovementState() == MovementStates.Ability) return;
@@ -501,6 +501,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (CameraController.Instance.isRotating) return;
         if (Player_Interact.Instance.isInteracting) return;
         if (PopUpManager.Instance.ability_Active) return;
+        if (PopUpManager.Instance.oneTimer_Active) return;
         if (PopUpManager.Instance.ability_CanBeClosed) return;
         if (MapManager.Instance.introSequence) return;
 
@@ -615,7 +616,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnQuit()
     {
-        if (!Run_AbilityDisplayExit()) return;
+        if (!Run_StayingPopupDisplayExit()) return;
 
         if (!ButtonChecks_Other()) { return; }
 
@@ -633,6 +634,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
         if (Tutorial.Instance.tutorial_isRunning) { return false; }
         if (PopUpManager.Instance.ability_Active) { return false; }
+        if (PopUpManager.Instance.oneTimer_Active) { return false; }
         if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
         if (MapManager.Instance.introSequence) { return false; }
 
@@ -662,6 +664,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Tutorial.Instance.tutorial_isRunning) { return false; }
         if (PopUpManager.Instance.ability_Active) { return false; }
+        if (PopUpManager.Instance.oneTimer_Active) { return false; }
         if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
         if (MapManager.Instance.introSequence) { return false; }
 
@@ -693,6 +696,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Tutorial.Instance.tutorial_isRunning) { return false; }
         if (PopUpManager.Instance.ability_Active) { return false; }
+        if (PopUpManager.Instance.oneTimer_Active) { return false; }
         if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
         if (MapManager.Instance.introSequence) { return false; }
 
@@ -803,11 +807,18 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
 
     //Ability
-    bool Run_AbilityDisplayExit()
+    bool Run_StayingPopupDisplayExit()
     {
         if (PopUpManager.Instance.ability_CanBeClosed)
         {
             PopUpManager.Instance.HideAbilityPopup();
+
+            return false;
+        }
+
+        if (PopUpManager.Instance.oneTimer_CanBeClosed)
+        {
+            PopUpManager.Instance.HideOneTimerPopup();
 
             return false;
         }

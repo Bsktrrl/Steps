@@ -22,8 +22,13 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
 
     #region Variables
+
+    //Data to run once
+    /*[HideInInspector]*/public OneTimeRunData oneTimeRunData_Store = new OneTimeRunData();
+
     //NewGame
-    /*[HideInInspector]*/public bool haveStartedNewGame_Store = new bool();
+    /*[HideInInspector]*/
+    public bool haveStartedNewGame_Store = new bool();
 
     //MenuState
     /*[HideInInspector]*/public MenuState menuState_Store = new MenuState();
@@ -48,9 +53,6 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
     //Block Skins
     /*[HideInInspector]*/ public SkinInfo skinsInfo_Store = new SkinInfo();
-
-    //Data to run once
-    /*[HideInInspector]*/ public OneTimeRunData oneTimeRunData_Store = new OneTimeRunData();
 
     //Tutorial
     /*[HideInInspector]*/ /*public bool tutorial_Finished = new bool();*/
@@ -189,13 +191,21 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 [Serializable]
 public class OneTimeRunData
 {
+    //English Start Language
+    /*[HideInInspector]*/ public bool startLanguage_English = new bool();
+
     //Force FirstIntroSequence
-    /*[HideInInspector]*/ public bool forceIntroSequenceInFirstLevel = new bool();
+    /*[HideInInspector]*/
+    public bool forceIntroSequenceInFirstLevel = new bool();
 
     //Tutorial
     /*[HideInInspector]*/
     public bool tutorial_Finished = new bool();
 
+    //Footprint
+    /*[HideInInspector]*/public bool pickup_FirstFootprint = new bool();
+
     //Skin
-    /*[HideInInspector]*/public bool pickup_FirstSkin = new bool();
+    /*[HideInInspector]*/
+    public bool pickup_FirstSkin = new bool();
 }

@@ -57,6 +57,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
         DataManager.Action_dataHasLoaded += LoadPlayerStats;
         DataManager.Action_dataHasLoaded += SetMenu;
         DataManager.Action_dataHasLoaded += FadeOutBlackScreen;
+        DataManager.Action_dataHasLoaded += SetStartingLanguage;
     }
 
     private void OnDisable()
@@ -65,6 +66,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
         DataManager.Action_dataHasLoaded -= LoadPlayerStats;
         DataManager.Action_dataHasLoaded -= SetMenu;
         DataManager.Action_dataHasLoaded -= FadeOutBlackScreen;
+        DataManager.Action_dataHasLoaded -= SetStartingLanguage;
     }
 
 
@@ -120,6 +122,26 @@ public class MainMenuManager : Singleton<MainMenuManager>
             default:
                 Menu_Main();
                 break;
+        }
+    }
+
+
+    //--------------------
+
+
+    void SetStartingLanguage()
+    {
+        if (!DataManager.Instance.oneTimeRunData_Store.startLanguage_English)
+        {
+            DataManager.Instance.settingData_StoreList.currentLanguage = Languages.English;
+            SettingsManager.Instance.settingsData.currentLanguage = Languages.English;
+            SettingsManager.Instance.settingState = SettingState.Settings_Language;
+
+            DataManager.Instance.oneTimeRunData_Store.startLanguage_English = true;
+
+            DataPersistanceManager.instance.SaveGame();
+
+            SettingsManager.Instance.Action_SetNewLanguage_isActive();
         }
     }
 

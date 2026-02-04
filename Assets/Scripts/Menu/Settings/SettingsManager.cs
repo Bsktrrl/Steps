@@ -563,6 +563,11 @@ public class SettingsManager : Singleton<SettingsManager>
                 break;
         }
     }
+
+    public void Action_SetNewLanguage_isActive()
+    {
+        Action_SetNewLanguage?.Invoke();
+    }
 }
 
 [Serializable]

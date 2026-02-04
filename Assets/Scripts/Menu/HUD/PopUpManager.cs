@@ -89,6 +89,19 @@ public class PopUpManager : Singleton<PopUpManager>
     //-----
 
 
+    //One Timer
+    [Header("One Timer")]
+    public bool oneTimer_Active;
+    public bool oneTimer_CanBeClosed;
+    public float oneTimer_CanBeClosed_Timer = 0.5f;
+
+    [Header("Footprint")]
+    public GameObject footprint_Parent;
+    public List<GameObject> footprint_Children;
+
+
+    //-----
+
     [Header("Fade Settings")]
     public float fadeDuration_In = 0.35f;
     public float fadeDuration_Out = 0.75f;
@@ -131,7 +144,20 @@ public class PopUpManager : Singleton<PopUpManager>
     }
     void ShowFootprintPopup()
     {
-        StartCoroutine(FootprintRoutine());
+        print("1. ShowFootprintPopup");
+        if (!DataManager.Instance.oneTimeRunData_Store.pickup_FirstFootprint)
+        {
+            print("2. ShowFootprintPopup");
+            ShowOneTimerPopup(footprint_Parent, footprint_Children);
+
+            DataManager.Instance.oneTimeRunData_Store.pickup_FirstFootprint = true;
+            DataPersistanceManager.instance.SaveGame();
+        }
+        else
+        {
+            print("3. ShowFootprintPopup");
+            StartCoroutine(FootprintRoutine());
+        }
     }
     void ShowEssencePopup()
     {
@@ -324,6 +350,43 @@ public class PopUpManager : Singleton<PopUpManager>
         yield return new WaitForSeconds(pickupMessageDuration * 3f);
 
         HideDisplay(popupManager, parent, childerenLIst);
+    }
+
+
+    //--------------------
+
+
+    public void ShowOneTimerPopup(GameObject parent, List<GameObject> children)
+    {
+        StartCoroutine(ShowOneTimer_Routine(parent, children, 0.5f));
+    }
+    IEnumerator ShowOneTimer_Routine(GameObject parent, List<GameObject> children, float waitTime)
+    {
+        oneTimer_Active = true;
+        PlayerManager.Instance.PauseGame();
+
+        yield return new WaitForSeconds(waitTime);
+
+        ShowDisplay(popupManager, parent, children);
+
+        yield return new WaitForSeconds(oneTimer_CanBeClosed_Timer);
+
+        oneTimer_CanBeClosed = true;
+    }
+    public void HideOneTimerPopup()
+    {
+        StartCoroutine(ButtonCanBePressedDuringOneTimerMenuFadeIut_Delay(footprint_Parent, footprint_Children, 0.4f));
+    }
+    IEnumerator ButtonCanBePressedDuringOneTimerMenuFadeIut_Delay(GameObject parent, List<GameObject> children, float waitTime)
+    {
+        oneTimer_Active = false;
+        PlayerManager.Instance.UnpauseGame();
+
+        HideDisplay(popupManager, parent, children);
+
+        yield return new WaitForSeconds(waitTime);
+
+        oneTimer_CanBeClosed = false;
     }
 
 

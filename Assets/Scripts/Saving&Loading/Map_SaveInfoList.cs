@@ -82,7 +82,7 @@ public class Map_SaveInfo
 
                 levelSkin = skinInfo;
             }
-            else if (obj.itemReceived == Items.IncreaseMaxSteps /*&& obj.itemReceived.amount > 0*/)
+            else if (obj.itemReceived == Items.Footprint /*&& obj.itemReceived.amount > 0*/)
             {
                 MaxStepInfo maxStepInfo = new MaxStepInfo();
                 maxStepInfo.maxStepObj = obj.gameObject;
@@ -150,7 +150,7 @@ public class Map_SaveInfo
             {
                 foreach (Interactable_Pickup pickup in pickUpList)
                 {
-                    if (pickup.itemReceived == Items.IncreaseMaxSteps)
+                    if (pickup.itemReceived == Items.Footprint)
                     {
                         if (mapSaveInfo.maxStepList[i].pos.x == pickup.gameObject.transform.position.x
                         && mapSaveInfo.maxStepList[i].pos.z == pickup.gameObject.transform.position.z)

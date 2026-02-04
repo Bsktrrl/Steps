@@ -251,6 +251,16 @@ public class Interactable_NPC : MonoBehaviour
 
     void SetupNPC()
     {
+        if (DataManager.Instance.charatersData_Store == null) return;
+
+        if (DataManager.Instance.charatersData_Store.floriel_Data == null) return;
+        if (DataManager.Instance.charatersData_Store.archie_Data == null) return;
+        if (DataManager.Instance.charatersData_Store.aisa_Data == null) return;
+        if (DataManager.Instance.charatersData_Store.granith_Data == null) return;
+        if (DataManager.Instance.charatersData_Store.mossy_Data == null) return;
+        if (DataManager.Instance.charatersData_Store.larry_Data == null) return;
+        if (DataManager.Instance.charatersData_Store.stepellier_Data == null) return;
+
         switch (characterName)
         {
             case NPCs.None:
