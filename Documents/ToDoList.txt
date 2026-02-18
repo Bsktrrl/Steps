@@ -18,6 +18,14 @@
 
 38. CameraKø: Hvis man trykker på roteringsknappen mens det roteres, så burde det føre til at roteringen fortsetter 90 grader til, i den retningen
 
+39. RootBlocken vil endre retning hvis man beveger seg i en ny retning etter at den er aktivert. Sett retningen ut fra lookDirection til spilleren i en variabel, så denne ikke endrer seg selv om spilleren gjør det.
+
+40. Step-HUD'en bugger seg hvis man har brukt noen steps og bytter setting til en annen HUD-type. De stegene som ikke er brukt, fylles ikke igjen når man respawner/går på checkpoints
+
+41. Endre Soppsirkel: Spilleren kan gå 3 steg gratis, uavhengig hvilken blokk den går på
+	- Legg til symbol/tall på HUD
+	- Gratis å gå i Mud-blokk og adjecent blokker
+	- Får igjen +1 steg ved å gå på adjecent blokker til Swamp Water
 
 
 ----- LATER
