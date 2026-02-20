@@ -8,8 +8,6 @@ public class HoleShaderScript : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player");
-
-        Shader.SetGlobalFloat("_HoleShaderEnabled", 1);
     }
 
     void Update()
