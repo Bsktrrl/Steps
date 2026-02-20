@@ -37,6 +37,9 @@ public class GameData
 
     //Data to run once
     /*[HideInInspector]*/ public OneTimeRunData oneTimeRunData_Save = new OneTimeRunData();
+    
+    //Text Database
+    /*[HideInInspector]*/ /*public Game_TextDatabase game_TextDatabase_Save = new Game_TextDatabase();*/
 
 
     //--------------------
@@ -55,6 +58,6 @@ public class GameData
 
         oneTimeRunData_Save = new OneTimeRunData();
 
-        //tutorial_Finished_Save = false;
+        //game_TextDatabase_Save = new Game_TextDatabase();
     }
 }

@@ -2,6 +2,20 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 
+Februar:
+1.0. Text Integration:
+-> 1.1. Build Google Sheets with all possible text in the game (except Dialogue)
+-> 1.2. Setup Google Sheet to Unity
+-> 1.3. Setup Script to attach to TextMeshProGUI-objects (clickable bool to select text)
+1.4. Setup Font AssetGroup to get all buttonImages into Icons in the text instead of images
+1.5. Go through the whole list, one section at a time. Control that buttons are swapped out with buttons and other messages are swapped out by code
+	Remove all "LanguageText"-Scripts attached to TextMeshProGUI-objects and swap them out with the new "TMPro_TextDisplay"-script
+1.6. Remove SkinName list
+1.7. Rework Popups to work with the new system
+
+
+
+
 
 --- FROM SARAH PLAYTEST
 
@@ -26,6 +40,8 @@
 	- Legg til symbol/tall på HUD
 	- Gratis å gå i Mud-blokk og adjecent blokker
 	- Får igjen +1 steg ved å gå på adjecent blokker til Swamp Water
+
+42. Settings: Legge til en setting som lar spilleren toggle on/off InterractableMessages
 
 
 ----- LATER
