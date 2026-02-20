@@ -8,11 +8,14 @@ Februar:
 -> 1.2. Setup Google Sheet to Unity
 -> 1.3. Setup Script to attach to TextMeshProGUI-objects (clickable bool to select text)
 -> 1.4. Setup Font AssetGroup to get all buttonImages into Icons in the text instead of images
-1.5. Add options for different Controls (Keybaord, PlayStation & Xbox) in Messages
-1.5. Go through the whole list, one section at a time. Control that buttons are swapped out with buttons and other messages are swapped out by code
+1.5. Add options for different Controls (Keyboard, PlayStation & Xbox) in Messages
+	- Check all places where there is messages that includes icons, and add 3 variants to each line
+	- Expand the script so it includes all the new lines
+1.6. Go through the whole list, one section at a time. Control that buttons are swapped out with buttons and other messages are swapped out by code
 	- Remove all "LanguageText"-Scripts attached to TextMeshProGUI-objects and swap them out with the new "TMPro_TextDisplay"-script
 	- Rework Popups / Tutorial Messages to work with the new system
-1.6. Remove SkinName list
+1.7. Remove SkinName list
+1.8. Add text to all messages, and check that they work as intended, in all languages
 
 
 

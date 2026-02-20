@@ -49,7 +49,7 @@ public class TextData : MonoBehaviour
         //Fill the new element with data
         for (int j = 0; j < columns - 1; j++)
         {
-            //Region Names
+            #region Region Names
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Water, 0);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Sand, 1);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Ice, 2);
@@ -57,56 +57,63 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Swamp, 4);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Metal, 5);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_6, 6);
+            #endregion
 
-            //Names of levels in Water Region
+            #region Names of levels in Water Region
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Water_Lv1, 9);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Water_Lv2, 10);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Water_Lv3, 11);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Water_Lv4, 12);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Water_Lv5, 13);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Water_Lv6, 14);
+            #endregion
 
-            //Names of levels in Sand Region
+            #region Names of levels in Sand Region
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Sand_Lv1, 17);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Sand_Lv2, 18);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Sand_Lv3, 19);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Sand_Lv4, 20);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Sand_Lv5, 21);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Sand_Lv6, 22);
+            #endregion
 
-            //Names of levels in Ice Region
+            #region Names of levels in Ice Region
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Ice_Lv1, 25);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Ice_Lv2, 26);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Ice_Lv3, 27);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Ice_Lv4, 28);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Ice_Lv5, 29);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Ice_Lv6, 30);
+            #endregion
 
-            //Names of levels in Lava Region
+            #region Names of levels in Lava Region
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Lava_Lv1, 33);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Lava_Lv2, 34);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Lava_Lv3, 35);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Lava_Lv4, 36);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Lava_Lv5, 37);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Lava_Lv6, 38);
+            #endregion
 
-            //Names of levels in Swamp Region
+            #region Names of levels in Swamp Region
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Swamp_Lv1, 41);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Swamp_Lv2, 42);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Swamp_Lv3, 43);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Swamp_Lv4, 44);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Swamp_Lv5, 45);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Swamp_Lv6, 46);
+            #endregion
 
-            //Names of levels in Metal Region
+            #region Names of levels in Metal Region
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Metal_Lv1, 49);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Metal_Lv2, 50);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Metal_Lv3, 51);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Metal_Lv4, 52);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Metal_Lv5, 53);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Metal_Lv6, 54);
+            #endregion
 
-            //Main Menu Buttons
+            #region Main Menu Buttons
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_Continue, 57);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_NewGame, 58);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_Wardrobe, 59);
@@ -117,8 +124,9 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_8, 64);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_9, 65);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_10, 66);
+            #endregion
 
-            //Wardrobe Menu
+            #region Wardrobe Menu
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Header_Wardrobe, 69);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_SkinUnavailable_1, 70);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_SkinUnavailable_2, 71);
@@ -131,8 +139,9 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_Wardrobe_10, 78);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_Wardrobe_11, 79);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_Wardrobe_12, 80);
+            #endregion
 
-            //Settings
+            #region Settings
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Header_Settings, 83);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_Language, 84);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_TextSpeed, 85);
@@ -154,8 +163,9 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_18, 101);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_19, 102);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_20, 103);
+            #endregion
 
-            //Controls
+            #region Controls
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Header_Controls, 104);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Controls_1, 105);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Controls_2, 106);
@@ -182,8 +192,9 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Controls_23, 127);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Controls_24, 128);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Controls_25, 129);
+            #endregion
 
-            //Video
+            #region Video
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Header_Video, 130);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Video_1, 131);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Video_2, 132);
@@ -205,8 +216,9 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Video_18, 148);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Video_19, 149);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Video_20, 150);
+            #endregion
 
-            //Audio
+            #region Audio
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Header_Audio, 151);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Audio_1, 152);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Audio_2, 153);
@@ -228,8 +240,9 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Audio_18, 169);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Audio_19, 170);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Audio_20, 171);
+            #endregion
 
-            //Blank
+            #region Blank
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Header_Blank, 172);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_1, 173);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_2, 174);
@@ -251,8 +264,9 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_18, 190);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_19, 191);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_20, 192);
+            #endregion
 
-            //Overworld Menu
+            #region Overworld Menu
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].overworld_1, 195);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].overworld_2, 196);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].overworld_3, 197);
@@ -273,8 +287,9 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].overworld_18, 212);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].overworld_19, 213);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].overworld_20, 214);
+            #endregion
 
-            //Pause Menu
+            #region Pause Menu
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_BackToGame, 217);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_ExitLevel, 218);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_3, 219);
@@ -285,8 +300,9 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_8, 224);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_9, 225);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_10, 226);
+            #endregion
 
-            //Skin Names
+            #region Skin Names
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].skinName_Default, 229);
             
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].skinName_WaterRegion_Lv1, 230);
@@ -330,8 +346,9 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].skinName_MetalRegion_Lv4, 263);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].skinName_MetalRegion_Lv5, 264);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].skinName_MetalRegion_Lv6, 265);
+            #endregion
 
-            //Ability Names
+            #region Ability Names
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Name_Snorkel, 268);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Name_OxygenTank, 269);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Name_Flippers, 270);
@@ -346,83 +363,196 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Name_12, 279);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Name_13, 280);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Name_14, 281);
+            #endregion
 
-            //Ability Messages
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_Snorkel, 284);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_OxygenTank, 285);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_Flippers, 286);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_DrillHelmet, 287);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_DrillBoots, 288);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_HandDrill, 289);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_GrapplingHook, 290);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_SpringShoes, 291);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_ClimbingGloves, 292);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_10, 293);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_11, 294);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_12, 295);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_13, 296);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_14, 297);
+            #region Ability Messages
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_Snorkel_Keyboard, 284);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_Snorkel_PlayStation, 285);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_Snorkel_xBox, 286);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_OxygenTank_Keyboard, 287);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_OxygenTank_PlayStation, 288);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_OxygenTank_xBox, 289);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_Flippers_Keyboard, 290);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_Flippers_PlayStation, 291);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_Flippers_xBox, 292);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_DrillHelmet_Keyboard, 293);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_DrillHelmet_PlayStation, 294);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_DrillHelmet_xBox, 295);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_DrillBoots_Keyboard, 296);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_DrillBoots_PlayStation, 297);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_DrillBoots_xBox, 298);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_HandDrill_Keyboard, 299);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_HandDrill_PlayStation, 300);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_HandDrill_xBox, 301);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_GrapplingHook_Keyboard, 302);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_GrapplingHook_PlayStation, 303);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_GrapplingHook_xBox, 304);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_SpringShoes_Keyboard, 305);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_SpringShoes_PlayStation, 306);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_SpringShoes_xBox, 307);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_ClimbingGloves_Keyboard, 308);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_ClimbingGloves_PlayStation, 309);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_ClimbingGloves_xBox, 310);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_10_Keyboard, 311);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_10_PlayStation, 312);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_10_xBox, 313);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_11_Keyboard, 314);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_11_PlayStation, 315);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_11_xBox, 316);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_12_Keyboard, 317);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_12_PlayStation, 318);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_12_xBox, 319);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_13_Keyboard, 320);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_13_PlayStation, 321);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_13_xBox, 322);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_14_Keyboard, 323);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_14_PlayStation, 324);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].ability_Message_14_xBox, 325);
+            #endregion
 
-            //Pickup Messages
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_Eccence_1, 300);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_Eccence_2, 301);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_Eccence_3, 302);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_Footprint, 303);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_Skin_First, 304);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_Skin, 305);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_7, 306);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_8, 307);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_9, 308);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_10, 309);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_11, 310);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_12, 311);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_13, 312);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_14, 313);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_15, 314);
+            #region Pickup Messages
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_Eccence_1, 328);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_Eccence_2, 329);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_Eccence_3, 330);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_Footprint, 331);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_Skin_First, 332);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_Skin, 333);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_7, 334);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_8, 335);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_9, 336);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_10, 337);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_11, 338);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_12, 339);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_13, 340);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_14, 341);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pickup_Message_15, 342);
+            #endregion
 
-            //Tutorial Messages
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_Movement, 317);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_CameraRotation, 318);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_Respawn, 319);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_FreeCam_1, 320);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_FreeCam_2, 321);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_Demo, 322);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_7, 323);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_8, 324);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_9, 325);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_10, 326);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_11, 327);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_12, 328);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_13, 329);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_14, 330);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_15, 331);
+            #region Tutorial Messages
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_Movement_Keyboard, 345);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_Movement_PlayStation, 346);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_Movement_xBox, 347);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_CameraRotation_Keyboard, 348);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_CameraRotation_PlayStation, 349);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_CameraRotation_xBox, 350);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_Respawn_Keyboard, 351);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_Respawn_PlayStation, 352);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_Respawn_xBox, 353);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_FreeCam_1_Keyboard, 354);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_FreeCam_1_PlayStation, 355);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_FreeCam_1_xBox, 356);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_FreeCam_2_Keyboard, 357);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_FreeCam_2_PlayStation, 358);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_FreeCam_2_xBox, 359);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_Demo_Keyboard, 360);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_Demo_PlayStation, 361);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_Demo_xBox, 362);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_7_Keyboard, 363);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_7_PlayStation, 364);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_7_xBox, 365);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_8_Keyboard, 366);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_8_PlayStation, 367);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_8_xBox, 368);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_9_Keyboard, 369);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_9_PlayStation, 370);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_9_xBox, 371);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_10_Keyboard, 372);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_10_PlayStation, 373);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_10_xBox, 374);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_11_Keyboard, 375);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_11_PlayStation, 376);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_11_xBox, 377);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_12_Keyboard, 378);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_12_PlayStation, 379);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_12_xBox, 380);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_13_Keyboard, 381);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_13_PlayStation, 382);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_13_xBox, 383);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_14_Keyboard, 384);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_14_PlayStation, 385);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_14_xBox, 386);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_15_Keyboard, 387);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_15_PlayStation, 388);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].tutorial_Message_15_xBox, 389);
+            #endregion
 
-            //InterractableButton Message
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Talk, 334);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Interract, 335);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_FlippersUP, 336);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_FlippersDOWN, 337);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_DrillHelmet, 338);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_DrillShoes, 339);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_HandDrill, 340);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_GrapplingHook, 341);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_SpringShoes, 342);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_ClimbingGloves, 343);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Respawn, 344);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_12, 345);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_13, 346);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_14, 347);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_15, 348);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_16, 349);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_17, 350);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_18, 351);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_19, 352);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_20, 353);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_21, 354);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_22, 355);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_23, 356);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_24, 357);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_25, 358);
+            #region InterractableButton Message
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Talk_Keyboard, 392);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Talk_PlayStation, 393);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Talk_xBox, 394);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Interract_Keyboard, 395);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Interract_PlayStation, 396);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Interract_xBox, 397);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_FlippersUP_Keyboard, 398);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_FlippersUP_PlayStation, 399);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_FlippersUP_xBox, 400);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_FlippersDOWN_Keyboard, 401);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_FlippersDOWN_PlayStation, 402);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_FlippersDOWN_xBox, 403);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_DrillHelmet_Keyboard, 404);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_DrillHelmet_PlayStation, 405);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_DrillHelmet_xBox, 406);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_DrillShoes_Keyboard, 407);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_DrillShoes_PlayStation, 408);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_DrillShoes_xBox, 409);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_HandDrill_Keyboard, 410);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_HandDrill_PlayStation, 411);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_HandDrill_xBox, 412);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_GrapplingHook_Keyboard, 413);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_GrapplingHook_PlayStation, 414);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_GrapplingHook_xBox, 415);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_SpringShoes_Keyboard, 416);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_SpringShoes_PlayStation, 417);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_SpringShoes_xBox, 418);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_ClimbingGloves_Keyboard, 419);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_ClimbingGloves_PlayStation, 420);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_ClimbingGloves_xBox, 421);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Respawn_Keyboard, 422);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Respawn_PlayStation, 423);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Respawn_xBox, 424);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_12_Keyboard, 425);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_12_PlayStation, 426);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_12_xBox, 427);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_13_Keyboard, 428);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_13_PlayStation, 429);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_13_xBox, 430);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_14_Keyboard, 431);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_14_PlayStation, 432);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_14_xBox, 433);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_15_Keyboard, 434);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_15_PlayStation, 435);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_15_xBox, 436);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_16_Keyboard, 437);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_16_PlayStation, 438);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_16_xBox, 439);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_17_Keyboard, 440);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_17_PlayStation, 441);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_17_xBox, 442);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_18_Keyboard, 443);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_18_PlayStation, 444);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_18_xBox, 445);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_19_Keyboard, 446);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_19_PlayStation, 447);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_19_xBox, 448);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_20_Keyboard, 449);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_20_PlayStation, 450);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_20_xBox, 451);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_21_Keyboard, 452);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_21_PlayStation, 453);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_21_xBox, 454);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_22_Keyboard, 455);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_22_PlayStation, 456);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_22_xBox, 457);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_23_Keyboard, 458);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_23_PlayStation, 459);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_23_xBox, 460);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_24_Keyboard, 461);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_24_PlayStation, 462);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_24_xBox, 463);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_25_Keyboard, 464);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_25_PlayStation, 465);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_25_xBox, 466);
+            #endregion
         }
 
         //Remove elements that doesn't have a name
@@ -760,20 +890,48 @@ public class Game_TextDatabase_Language
     #endregion
 
     #region Ability Messages
-    public string ability_Message_Snorkel;
-    public string ability_Message_OxygenTank;
-    public string ability_Message_Flippers;
-    public string ability_Message_DrillHelmet;
-    public string ability_Message_DrillBoots;
-    public string ability_Message_HandDrill;
-    public string ability_Message_GrapplingHook;
-    public string ability_Message_SpringShoes;
-    public string ability_Message_ClimbingGloves;
-    public string ability_Message_10;
-    public string ability_Message_11;
-    public string ability_Message_12;
-    public string ability_Message_13;
-    public string ability_Message_14;
+    public string ability_Message_Snorkel_Keyboard;
+    public string ability_Message_Snorkel_PlayStation;
+    public string ability_Message_Snorkel_xBox;
+    public string ability_Message_OxygenTank_Keyboard;
+    public string ability_Message_OxygenTank_PlayStation;
+    public string ability_Message_OxygenTank_xBox;
+    public string ability_Message_Flippers_Keyboard;
+    public string ability_Message_Flippers_PlayStation;
+    public string ability_Message_Flippers_xBox;
+    public string ability_Message_DrillHelmet_Keyboard;
+    public string ability_Message_DrillHelmet_PlayStation;
+    public string ability_Message_DrillHelmet_xBox;
+    public string ability_Message_DrillBoots_Keyboard;
+    public string ability_Message_DrillBoots_PlayStation;
+    public string ability_Message_DrillBoots_xBox;
+    public string ability_Message_HandDrill_Keyboard;
+    public string ability_Message_HandDrill_PlayStation;
+    public string ability_Message_HandDrill_xBox;
+    public string ability_Message_GrapplingHook_Keyboard;
+    public string ability_Message_GrapplingHook_PlayStation;
+    public string ability_Message_GrapplingHook_xBox;
+    public string ability_Message_SpringShoes_Keyboard;
+    public string ability_Message_SpringShoes_PlayStation;
+    public string ability_Message_SpringShoes_xBox;
+    public string ability_Message_ClimbingGloves_Keyboard;
+    public string ability_Message_ClimbingGloves_PlayStation;
+    public string ability_Message_ClimbingGloves_xBox;
+    public string ability_Message_10_Keyboard;
+    public string ability_Message_10_PlayStation;
+    public string ability_Message_10_xBox;
+    public string ability_Message_11_Keyboard;
+    public string ability_Message_11_PlayStation;
+    public string ability_Message_11_xBox;
+    public string ability_Message_12_Keyboard;
+    public string ability_Message_12_PlayStation;
+    public string ability_Message_12_xBox;
+    public string ability_Message_13_Keyboard;
+    public string ability_Message_13_PlayStation;
+    public string ability_Message_13_xBox;
+    public string ability_Message_14_Keyboard;
+    public string ability_Message_14_PlayStation;
+    public string ability_Message_14_xBox;
     #endregion
 
     #region Pickup Messages
@@ -795,49 +953,129 @@ public class Game_TextDatabase_Language
     #endregion
 
     #region Tutorial Messages
-    public string tutorial_Message_Movement;
-    public string tutorial_Message_CameraRotation;
-    public string tutorial_Message_Respawn;
-    public string tutorial_Message_FreeCam_1;
-    public string tutorial_Message_FreeCam_2;
-    public string tutorial_Message_Demo;
-    public string tutorial_Message_7;
-    public string tutorial_Message_8;
-    public string tutorial_Message_9;
-    public string tutorial_Message_10;
-    public string tutorial_Message_11;
-    public string tutorial_Message_12;
-    public string tutorial_Message_13;
-    public string tutorial_Message_14;
-    public string tutorial_Message_15;
+    public string tutorial_Message_Movement_Keyboard;
+    public string tutorial_Message_Movement_PlayStation;
+    public string tutorial_Message_Movement_xBox;
+    public string tutorial_Message_CameraRotation_Keyboard;
+    public string tutorial_Message_CameraRotation_PlayStation;
+    public string tutorial_Message_CameraRotation_xBox;
+    public string tutorial_Message_Respawn_Keyboard;
+    public string tutorial_Message_Respawn_PlayStation;
+    public string tutorial_Message_Respawn_xBox;
+    public string tutorial_Message_FreeCam_1_Keyboard;
+    public string tutorial_Message_FreeCam_1_PlayStation;
+    public string tutorial_Message_FreeCam_1_xBox;
+    public string tutorial_Message_FreeCam_2_Keyboard;
+    public string tutorial_Message_FreeCam_2_PlayStation;
+    public string tutorial_Message_FreeCam_2_xBox;
+    public string tutorial_Message_Demo_Keyboard;
+    public string tutorial_Message_Demo_PlayStation;
+    public string tutorial_Message_Demo_xBox;
+    public string tutorial_Message_7_Keyboard;
+    public string tutorial_Message_7_PlayStation;
+    public string tutorial_Message_7_xBox;
+    public string tutorial_Message_8_Keyboard;
+    public string tutorial_Message_8_PlayStation;
+    public string tutorial_Message_8_xBox;
+    public string tutorial_Message_9_Keyboard;
+    public string tutorial_Message_9_PlayStation;
+    public string tutorial_Message_9_xBox;
+    public string tutorial_Message_10_Keyboard;
+    public string tutorial_Message_10_PlayStation;
+    public string tutorial_Message_10_xBox;
+    public string tutorial_Message_11_Keyboard;
+    public string tutorial_Message_11_PlayStation;
+    public string tutorial_Message_11_xBox;
+    public string tutorial_Message_12_Keyboard;
+    public string tutorial_Message_12_PlayStation;
+    public string tutorial_Message_12_xBox;
+    public string tutorial_Message_13_Keyboard;
+    public string tutorial_Message_13_PlayStation;
+    public string tutorial_Message_13_xBox;
+    public string tutorial_Message_14_Keyboard;
+    public string tutorial_Message_14_PlayStation;
+    public string tutorial_Message_14_xBox;
+    public string tutorial_Message_15_Keyboard;
+    public string tutorial_Message_15_PlayStation;
+    public string tutorial_Message_15_xBox;
     #endregion
 
     #region InterractableButton Message
-    public string interractableButton_Message_Talk;
-    public string interractableButton_Message_Interract;
-    public string interractableButton_Message_FlippersUP;
-    public string interractableButton_Message_FlippersDOWN;
-    public string interractableButton_Message_DrillHelmet;
-    public string interractableButton_Message_DrillShoes;
-    public string interractableButton_Message_HandDrill;
-    public string interractableButton_Message_GrapplingHook;
-    public string interractableButton_Message_SpringShoes;
-    public string interractableButton_Message_ClimbingGloves;
-    public string interractableButton_Message_Respawn;
-    public string interractableButton_Message_12;
-    public string interractableButton_Message_13;
-    public string interractableButton_Message_14;
-    public string interractableButton_Message_15;
-    public string interractableButton_Message_16;
-    public string interractableButton_Message_17;
-    public string interractableButton_Message_18;
-    public string interractableButton_Message_19;
-    public string interractableButton_Message_20;
-    public string interractableButton_Message_21;
-    public string interractableButton_Message_22;
-    public string interractableButton_Message_23;
-    public string interractableButton_Message_24;
-    public string interractableButton_Message_25;
+    public string interractableButton_Message_Talk_Keyboard;
+    public string interractableButton_Message_Talk_PlayStation;
+    public string interractableButton_Message_Talk_xBox;
+    public string interractableButton_Message_Interract_Keyboard;
+    public string interractableButton_Message_Interract_PlayStation;
+    public string interractableButton_Message_Interract_xBox;
+    public string interractableButton_Message_FlippersUP_Keyboard;
+    public string interractableButton_Message_FlippersUP_PlayStation;
+    public string interractableButton_Message_FlippersUP_xBox;
+    public string interractableButton_Message_FlippersDOWN_Keyboard;
+    public string interractableButton_Message_FlippersDOWN_PlayStation;
+    public string interractableButton_Message_FlippersDOWN_xBox;
+    public string interractableButton_Message_DrillHelmet_Keyboard;
+    public string interractableButton_Message_DrillHelmet_PlayStation;
+    public string interractableButton_Message_DrillHelmet_xBox;
+    public string interractableButton_Message_DrillShoes_Keyboard;
+    public string interractableButton_Message_DrillShoes_PlayStation;
+    public string interractableButton_Message_DrillShoes_xBox;
+    public string interractableButton_Message_HandDrill_Keyboard;
+    public string interractableButton_Message_HandDrill_PlayStation;
+    public string interractableButton_Message_HandDrill_xBox;
+    public string interractableButton_Message_GrapplingHook_Keyboard;
+    public string interractableButton_Message_GrapplingHook_PlayStation;
+    public string interractableButton_Message_GrapplingHook_xBox;
+    public string interractableButton_Message_SpringShoes_Keyboard;
+    public string interractableButton_Message_SpringShoes_PlayStation;
+    public string interractableButton_Message_SpringShoes_xBox;
+    public string interractableButton_Message_ClimbingGloves_Keyboard;
+    public string interractableButton_Message_ClimbingGloves_PlayStation;
+    public string interractableButton_Message_ClimbingGloves_xBox;
+    public string interractableButton_Message_Respawn_Keyboard;
+    public string interractableButton_Message_Respawn_PlayStation;
+    public string interractableButton_Message_Respawn_xBox;
+    public string interractableButton_Message_12_Keyboard;
+    public string interractableButton_Message_12_PlayStation;
+    public string interractableButton_Message_12_xBox;
+    public string interractableButton_Message_13_Keyboard;
+    public string interractableButton_Message_13_PlayStation;
+    public string interractableButton_Message_13_xBox;
+    public string interractableButton_Message_14_Keyboard;
+    public string interractableButton_Message_14_PlayStation;
+    public string interractableButton_Message_14_xBox;
+    public string interractableButton_Message_15_Keyboard;
+    public string interractableButton_Message_15_PlayStation;
+    public string interractableButton_Message_15_xBox;
+    public string interractableButton_Message_16_Keyboard;
+    public string interractableButton_Message_16_PlayStation;
+    public string interractableButton_Message_16_xBox;
+    public string interractableButton_Message_17_Keyboard;
+    public string interractableButton_Message_17_PlayStation;
+    public string interractableButton_Message_17_xBox;
+    public string interractableButton_Message_18_Keyboard;
+    public string interractableButton_Message_18_PlayStation;
+    public string interractableButton_Message_18_xBox;
+    public string interractableButton_Message_19_Keyboard;
+    public string interractableButton_Message_19_PlayStation;
+    public string interractableButton_Message_19_xBox;
+    public string interractableButton_Message_20_Keyboard;
+    public string interractableButton_Message_20_PlayStation;
+    public string interractableButton_Message_20_xBox;
+    public string interractableButton_Message_21_Keyboard;
+    public string interractableButton_Message_21_PlayStation;
+    public string interractableButton_Message_21_xBox;
+    public string interractableButton_Message_22_Keyboard;
+    public string interractableButton_Message_22_PlayStation;
+    public string interractableButton_Message_22_xBox;
+    public string interractableButton_Message_23_Keyboard;
+    public string interractableButton_Message_23_PlayStation;
+    public string interractableButton_Message_23_xBox;
+    public string interractableButton_Message_24_Keyboard;
+    public string interractableButton_Message_24_PlayStation;
+    public string interractableButton_Message_24_xBox;
+    public string interractableButton_Message_25_Keyboard;
+    public string interractableButton_Message_25_PlayStation;
+    public string interractableButton_Message_25_xBox;
     #endregion
 }
 
@@ -1156,20 +1394,48 @@ public enum Text_Database_Enum
     #endregion
 
     #region Ability Messages
-    [InspectorName("Ability Messages / Snorkel")] ability_Message_Snorkel,
-    [InspectorName("Ability Messages / Oxygen Tank")] ability_Message_OxygenTank,
-    [InspectorName("Ability Messages / Flippers")] ability_Message_Flippers,
-    [InspectorName("Ability Messages / Drill Helmet")] ability_Message_DrillHelmet,
-    [InspectorName("Ability Messages / Drill Boots")] ability_Message_DrillBoots,
-    [InspectorName("Ability Messages / Hand Drill")] ability_Message_HandDrill,
-    [InspectorName("Ability Messages / Grappling Hook")] ability_Message_GrapplingHook,
-    [InspectorName("Ability Messages / Spring Shoes")] ability_Message_SpringShoes,
-    [InspectorName("Ability Messages / Climbing Gloves")] ability_Message_ClimbingGloves,
-    [InspectorName("Ability Messages / 10")] ability_Message_10,
-    [InspectorName("Ability Messages / 11")] ability_Message_11,
-    [InspectorName("Ability Messages / 12")] ability_Message_12,
-    [InspectorName("Ability Messages / 13")] ability_Message_13,
-    [InspectorName("Ability Messages / 14")] ability_Message_14,
+    [InspectorName("Ability Messages / Snorkel")] ability_Message_Snorkel_Keyboard,
+    [InspectorName("Ability Messages / Snorkel")] ability_Message_Snorkel_PlayStation,
+    [InspectorName("Ability Messages / Snorkel")] ability_Message_Snorkel_xBox,
+    [InspectorName("Ability Messages / Oxygen Tank")] ability_Message_OxygenTank_Keyboard,
+    [InspectorName("Ability Messages / Oxygen Tank")] ability_Message_OxygenTank_PlayStation,
+    [InspectorName("Ability Messages / Oxygen Tank")] ability_Message_OxygenTank_xBox,
+    [InspectorName("Ability Messages / Flippers")] ability_Message_Flippers_Keyboard,
+    [InspectorName("Ability Messages / Flippers")] ability_Message_Flippers_PlayStation,
+    [InspectorName("Ability Messages / Flippers")] ability_Message_Flippers_xBox,
+    [InspectorName("Ability Messages / Drill Helmet")] ability_Message_DrillHelmet_Keyboard,
+    [InspectorName("Ability Messages / Drill Helmet")] ability_Message_DrillHelmet_PlayStation,
+    [InspectorName("Ability Messages / Drill Helmet")] ability_Message_DrillHelmet_xBox,
+    [InspectorName("Ability Messages / Drill Boots")] ability_Message_DrillBoots_Keyboard,
+    [InspectorName("Ability Messages / Drill Boots")] ability_Message_DrillBoots_PlayStation,
+    [InspectorName("Ability Messages / Drill Boots")] ability_Message_DrillBoots_xBox,
+    [InspectorName("Ability Messages / Hand Drill")] ability_Message_HandDrill_Keyboard,
+    [InspectorName("Ability Messages / Hand Drill")] ability_Message_HandDrill_PlayStation,
+    [InspectorName("Ability Messages / Hand Drill")] ability_Message_HandDrill_xBox,
+    [InspectorName("Ability Messages / Grappling Hook")] ability_Message_GrapplingHook_Keyboard,
+    [InspectorName("Ability Messages / Grappling Hook")] ability_Message_GrapplingHook_PlayStation,
+    [InspectorName("Ability Messages / Grappling Hook")] ability_Message_GrapplingHook_xBox,
+    [InspectorName("Ability Messages / Spring Shoes")] ability_Message_SpringShoes_Keyboard,
+    [InspectorName("Ability Messages / Spring Shoes")] ability_Message_SpringShoes_PlayStation,
+    [InspectorName("Ability Messages / Spring Shoes")] ability_Message_SpringShoes_xBox,
+    [InspectorName("Ability Messages / Climbing Gloves")] ability_Message_ClimbingGloves_Keyboard,
+    [InspectorName("Ability Messages / Climbing Gloves")] ability_Message_ClimbingGloves_PlayStation,
+    [InspectorName("Ability Messages / Climbing Gloves")] ability_Message_ClimbingGloves_xBox,
+    [InspectorName("Ability Messages / 10")] ability_Message_10_Keyboard,
+    [InspectorName("Ability Messages / 10")] ability_Message_10_PlayStation,
+    [InspectorName("Ability Messages / 10")] ability_Message_10_xBox,
+    [InspectorName("Ability Messages / 11")] ability_Message_11_Keyboard,
+    [InspectorName("Ability Messages / 11")] ability_Message_11_PlayStation,
+    [InspectorName("Ability Messages / 11")] ability_Message_11_xBox,
+    [InspectorName("Ability Messages / 12")] ability_Message_12_Keyboard,
+    [InspectorName("Ability Messages / 12")] ability_Message_12_PlayStation,
+    [InspectorName("Ability Messages / 12")] ability_Message_12_xBox,
+    [InspectorName("Ability Messages / 13")] ability_Message_13_Keyboard,
+    [InspectorName("Ability Messages / 13")] ability_Message_13_PlayStation,
+    [InspectorName("Ability Messages / 13")] ability_Message_13_xBox,
+    [InspectorName("Ability Messages / 14")] ability_Message_14_Keyboard,
+    [InspectorName("Ability Messages / 14")] ability_Message_14_PlayStation,
+    [InspectorName("Ability Messages / 14")] ability_Message_14_xBox,
     #endregion
 
     #region Pickup Messages
@@ -1191,50 +1457,130 @@ public enum Text_Database_Enum
     #endregion
 
     #region Tutorial Messages
-    [InspectorName("Tutorial Messages / Movement")] tutorial_Message_Movement,
-    [InspectorName("Tutorial Messages / Camera Rotation")] tutorial_Message_CameraRotation,
-    [InspectorName("Tutorial Messages / Respawn")] tutorial_Message_Respawn,
-    [InspectorName("Tutorial Messages / FreeCam 1")] tutorial_Message_FreeCam_1,
-    [InspectorName("Tutorial Messages / FreeCam 2")] tutorial_Message_FreeCam_2,
-    [InspectorName("Tutorial Messages / Demo")] tutorial_Message_Demo,
-    [InspectorName("Tutorial Messages / 7")] tutorial_Message_7,
-    [InspectorName("Tutorial Messages / 8")] tutorial_Message_8,
-    [InspectorName("Tutorial Messages / 9")] tutorial_Message_9,
-    [InspectorName("Tutorial Messages / 10")] tutorial_Message_10,
-    [InspectorName("Tutorial Messages / 11")] tutorial_Message_11,
-    [InspectorName("Tutorial Messages / 12")] tutorial_Message_12,
-    [InspectorName("Tutorial Messages / 13")] tutorial_Message_13,
-    [InspectorName("Tutorial Messages / 14")] tutorial_Message_14,
-    [InspectorName("Tutorial Messages / 15")] tutorial_Message_15,
+    [InspectorName("Tutorial Messages / Movement")] tutorial_Message_Movement_Keyboard,
+    [InspectorName("Tutorial Messages / Movement")] tutorial_Message_Movement_PlayStation,
+    [InspectorName("Tutorial Messages / Movement")] tutorial_Message_Movement_xBox,
+    [InspectorName("Tutorial Messages / Camera Rotation")] tutorial_Message_CameraRotation_Keyboard,
+    [InspectorName("Tutorial Messages / Camera Rotation")] tutorial_Message_CameraRotation_PlayStation,
+    [InspectorName("Tutorial Messages / Camera Rotation")] tutorial_Message_CameraRotation_xBox,
+    [InspectorName("Tutorial Messages / Respawn")] tutorial_Message_Respawn_Keyboard,
+    [InspectorName("Tutorial Messages / Respawn")] tutorial_Message_Respawn_PlayStation,
+    [InspectorName("Tutorial Messages / Respawn")] tutorial_Message_Respawn_xBox,
+    [InspectorName("Tutorial Messages / FreeCam 1")] tutorial_Message_FreeCam_1_Keyboard,
+    [InspectorName("Tutorial Messages / FreeCam 1")] tutorial_Message_FreeCam_1_PlayStation,
+    [InspectorName("Tutorial Messages / FreeCam 1")] tutorial_Message_FreeCam_1_xBox,
+    [InspectorName("Tutorial Messages / FreeCam 2")] tutorial_Message_FreeCam_2_Keyboard,
+    [InspectorName("Tutorial Messages / FreeCam 2")] tutorial_Message_FreeCam_2_PlayStation,
+    [InspectorName("Tutorial Messages / FreeCam 2")] tutorial_Message_FreeCam_2_xBox,
+    [InspectorName("Tutorial Messages / Demo")] tutorial_Message_Demo_Keyboard,
+    [InspectorName("Tutorial Messages / Demo")] tutorial_Message_Demo_PlayStation,
+    [InspectorName("Tutorial Messages / Demo")] tutorial_Message_Demo_xBox,
+    [InspectorName("Tutorial Messages / 7")] tutorial_Message_7_Keyboard,
+    [InspectorName("Tutorial Messages / 7")] tutorial_Message_7_PlayStation,
+    [InspectorName("Tutorial Messages / 7")] tutorial_Message_7_xBox,
+    [InspectorName("Tutorial Messages / 8")] tutorial_Message_8_Keyboard,
+    [InspectorName("Tutorial Messages / 8")] tutorial_Message_8_PlayStation,
+    [InspectorName("Tutorial Messages / 8")] tutorial_Message_8_xBox,
+    [InspectorName("Tutorial Messages / 9")] tutorial_Message_9_Keyboard,
+    [InspectorName("Tutorial Messages / 9")] tutorial_Message_9_PlayStation,
+    [InspectorName("Tutorial Messages / 9")] tutorial_Message_9_xBox,
+    [InspectorName("Tutorial Messages / 10")] tutorial_Message_10_Keyboard,
+    [InspectorName("Tutorial Messages / 10")] tutorial_Message_10_PlayStation,
+    [InspectorName("Tutorial Messages / 10")] tutorial_Message_10_xBox,
+    [InspectorName("Tutorial Messages / 11")] tutorial_Message_11_Keyboard,
+    [InspectorName("Tutorial Messages / 11")] tutorial_Message_11_PlayStation,
+    [InspectorName("Tutorial Messages / 11")] tutorial_Message_11_xBox,
+    [InspectorName("Tutorial Messages / 12")] tutorial_Message_12_Keyboard,
+    [InspectorName("Tutorial Messages / 12")] tutorial_Message_12_PlayStation,
+    [InspectorName("Tutorial Messages / 12")] tutorial_Message_12_xBox,
+    [InspectorName("Tutorial Messages / 13")] tutorial_Message_13_Keyboard,
+    [InspectorName("Tutorial Messages / 13")] tutorial_Message_13_PlayStation,
+    [InspectorName("Tutorial Messages / 13")] tutorial_Message_13_xBox,
+    [InspectorName("Tutorial Messages / 14")] tutorial_Message_14_Keyboard,
+    [InspectorName("Tutorial Messages / 14")] tutorial_Message_14_PlayStation,
+    [InspectorName("Tutorial Messages / 14")] tutorial_Message_14_xBox,
+    [InspectorName("Tutorial Messages / 15")] tutorial_Message_15_Keyboard,
+    [InspectorName("Tutorial Messages / 15")] tutorial_Message_15_PlayStation,
+    [InspectorName("Tutorial Messages / 15")] tutorial_Message_15_xBox,
     #endregion
 
     #region InterractableButton Message
-    [InspectorName("InterractableButton Message / Talk")] interractableButton_Message_Talk,
-    [InspectorName("InterractableButton Message / Interract")] interractableButton_Message_Interract,
-    [InspectorName("InterractableButton Message / Flippers UP")] interractableButton_Message_FlippersUP,
-    [InspectorName("InterractableButton Message / Flippers DOWN")] interractableButton_Message_FlippersDOWN,
-    [InspectorName("InterractableButton Message / Drill Helmet")] interractableButton_Message_DrillHelmet,
-    [InspectorName("InterractableButton Message / Drill Shoes")] interractableButton_Message_DrillShoes,
-    [InspectorName("InterractableButton Message / Hand Drill")] interractableButton_Message_HandDrill,
-    [InspectorName("InterractableButton Message / Grappling Hook")] interractableButton_Message_GrapplingHook,
-    [InspectorName("InterractableButton Message / Spring Shoes")] interractableButton_Message_SpringShoes,
-    [InspectorName("InterractableButton Message / Climbing Gloves")] interractableButton_Message_ClimbingGloves,
-    [InspectorName("InterractableButton Message / Respawn")] interractableButton_Message_Respawn,
-    [InspectorName("InterractableButton Message / 12")] interractableButton_Message_12,
-    [InspectorName("InterractableButton Message / 13")] interractableButton_Message_13,
-    [InspectorName("InterractableButton Message / 14")] interractableButton_Message_14,
-    [InspectorName("InterractableButton Message / 15")] interractableButton_Message_15,
-    [InspectorName("InterractableButton Message / 16")] interractableButton_Message_16,
-    [InspectorName("InterractableButton Message / 17")] interractableButton_Message_17,
-    [InspectorName("InterractableButton Message / 18")] interractableButton_Message_18,
-    [InspectorName("InterractableButton Message / 19")] interractableButton_Message_19,
-    [InspectorName("InterractableButton Message / 20")] interractableButton_Message_20,
-    [InspectorName("InterractableButton Message / 21")] interractableButton_Message_21,
-    [InspectorName("InterractableButton Message / 22")] interractableButton_Message_22,
-    [InspectorName("InterractableButton Message / 23")] interractableButton_Message_23,
-    [InspectorName("InterractableButton Message / 24")] interractableButton_Message_24,
-    [InspectorName("InterractableButton Message / 25")] interractableButton_Message_25,
+    [InspectorName("InterractableButton Message / Talk")] interractableButton_Message_Talk_Keyboard,
+    [InspectorName("InterractableButton Message / Talk")] interractableButton_Message_Talk_PlayStation,
+    [InspectorName("InterractableButton Message / Talk")] interractableButton_Message_Talk_xBox,
+    [InspectorName("InterractableButton Message / Interract")] interractableButton_Message_Interract_Keyboard,
+    [InspectorName("InterractableButton Message / Interract")] interractableButton_Message_Interract_PlayStation,
+    [InspectorName("InterractableButton Message / Interract")] interractableButton_Message_Interract_xBox,
+    [InspectorName("InterractableButton Message / Flippers UP")] interractableButton_Message_FlippersUP_Keyboard,
+    [InspectorName("InterractableButton Message / Flippers UP")] interractableButton_Message_FlippersUP_PlayStation,
+    [InspectorName("InterractableButton Message / Flippers UP")] interractableButton_Message_FlippersUP_xBox,
+    [InspectorName("InterractableButton Message / Flippers DOWN")] interractableButton_Message_FlippersDOWN_Keyboard,
+    [InspectorName("InterractableButton Message / Flippers DOWN")] interractableButton_Message_FlippersDOWN_PlayStation,
+    [InspectorName("InterractableButton Message / Flippers DOWN")] interractableButton_Message_FlippersDOWN_xBox,
+    [InspectorName("InterractableButton Message / Drill Helmet")] interractableButton_Message_DrillHelmet_Keyboard,
+    [InspectorName("InterractableButton Message / Drill Helmet")] interractableButton_Message_DrillHelmet_PlayStation,
+    [InspectorName("InterractableButton Message / Drill Helmet")] interractableButton_Message_DrillHelmet_xBox,
+    [InspectorName("InterractableButton Message / Drill Shoes")] interractableButton_Message_DrillShoes_Keyboard,
+    [InspectorName("InterractableButton Message / Drill Shoes")] interractableButton_Message_DrillShoes_PlayStation,
+    [InspectorName("InterractableButton Message / Drill Shoes")] interractableButton_Message_DrillShoes_xBox,
+    [InspectorName("InterractableButton Message / Hand Drill")] interractableButton_Message_HandDrill_Keyboard,
+    [InspectorName("InterractableButton Message / Hand Drill")] interractableButton_Message_HandDrill_PlayStation,
+    [InspectorName("InterractableButton Message / Hand Drill")] interractableButton_Message_HandDrill_xBox,
+    [InspectorName("InterractableButton Message / Grappling Hook")] interractableButton_Message_GrapplingHook_Keyboard,
+    [InspectorName("InterractableButton Message / Grappling Hook")] interractableButton_Message_GrapplingHook_PlayStation,
+    [InspectorName("InterractableButton Message / Grappling Hook")] interractableButton_Message_GrapplingHook_xBox,
+    [InspectorName("InterractableButton Message / Spring Shoes")] interractableButton_Message_SpringShoes_Keyboard,
+    [InspectorName("InterractableButton Message / Spring Shoes")] interractableButton_Message_SpringShoes_PlayStation,
+    [InspectorName("InterractableButton Message / Spring Shoes")] interractableButton_Message_SpringShoes_xBox,
+    [InspectorName("InterractableButton Message / Climbing Gloves")] interractableButton_Message_ClimbingGloves_Keyboard,
+    [InspectorName("InterractableButton Message / Climbing Gloves")] interractableButton_Message_ClimbingGloves_PlayStation,
+    [InspectorName("InterractableButton Message / Climbing Gloves")] interractableButton_Message_ClimbingGloves_xBox,
+    [InspectorName("InterractableButton Message / Respawn")] interractableButton_Message_Respawn_Keyboard,
+    [InspectorName("InterractableButton Message / Respawn")] interractableButton_Message_Respawn_PlayStation,
+    [InspectorName("InterractableButton Message / Respawn")] interractableButton_Message_Respawn_xBox,
+    [InspectorName("InterractableButton Message / 12")] interractableButton_Message_12_Keyboard,
+    [InspectorName("InterractableButton Message / 12")] interractableButton_Message_12_PlayStation,
+    [InspectorName("InterractableButton Message / 12")] interractableButton_Message_12_xBox,
+    [InspectorName("InterractableButton Message / 13")] interractableButton_Message_13_Keyboard,
+    [InspectorName("InterractableButton Message / 13")] interractableButton_Message_13_PlayStation,
+    [InspectorName("InterractableButton Message / 13")] interractableButton_Message_13_xBox,
+    [InspectorName("InterractableButton Message / 14")] interractableButton_Message_14_Keyboard,
+    [InspectorName("InterractableButton Message / 14")] interractableButton_Message_14_PlayStation,
+    [InspectorName("InterractableButton Message / 14")] interractableButton_Message_14_xBox,
+    [InspectorName("InterractableButton Message / 15")] interractableButton_Message_15_Keyboard,
+    [InspectorName("InterractableButton Message / 15")] interractableButton_Message_15_PlayStation,
+    [InspectorName("InterractableButton Message / 15")] interractableButton_Message_15_xBox,
+    [InspectorName("InterractableButton Message / 16")] interractableButton_Message_16_Keyboard,
+    [InspectorName("InterractableButton Message / 16")] interractableButton_Message_16_PlayStation,
+    [InspectorName("InterractableButton Message / 16")] interractableButton_Message_16_xBox,
+    [InspectorName("InterractableButton Message / 17")] interractableButton_Message_17_Keyboard,
+    [InspectorName("InterractableButton Message / 17")] interractableButton_Message_17_PlayStation,
+    [InspectorName("InterractableButton Message / 17")] interractableButton_Message_17_xBox,
+    [InspectorName("InterractableButton Message / 18")] interractableButton_Message_18_Keyboard,
+    [InspectorName("InterractableButton Message / 18")] interractableButton_Message_18_PlayStation,
+    [InspectorName("InterractableButton Message / 18")] interractableButton_Message_18_xBox,
+    [InspectorName("InterractableButton Message / 19")] interractableButton_Message_19_Keyboard,
+    [InspectorName("InterractableButton Message / 19")] interractableButton_Message_19_PlayStation,
+    [InspectorName("InterractableButton Message / 19")] interractableButton_Message_19_xBox,
+    [InspectorName("InterractableButton Message / 20")] interractableButton_Message_20_Keyboard,
+    [InspectorName("InterractableButton Message / 20")] interractableButton_Message_20_PlayStation,
+    [InspectorName("InterractableButton Message / 20")] interractableButton_Message_20_xBox,
+    [InspectorName("InterractableButton Message / 21")] interractableButton_Message_21_Keyboard,
+    [InspectorName("InterractableButton Message / 21")] interractableButton_Message_21_PlayStation,
+    [InspectorName("InterractableButton Message / 21")] interractableButton_Message_21_xBox,
+    [InspectorName("InterractableButton Message / 22")] interractableButton_Message_22_Keyboard,
+    [InspectorName("InterractableButton Message / 22")] interractableButton_Message_22_PlayStation,
+    [InspectorName("InterractableButton Message / 22")] interractableButton_Message_22_xBox,
+    [InspectorName("InterractableButton Message / 23")] interractableButton_Message_23_Keyboard,
+    [InspectorName("InterractableButton Message / 23")] interractableButton_Message_23_PlayStation,
+    [InspectorName("InterractableButton Message / 23")] interractableButton_Message_23_xBox,
+    [InspectorName("InterractableButton Message / 24")] interractableButton_Message_24_Keyboard,
+    [InspectorName("InterractableButton Message / 24")] interractableButton_Message_24_PlayStation,
+    [InspectorName("InterractableButton Message / 24")] interractableButton_Message_24_xBox,
+    [InspectorName("InterractableButton Message / 25")] interractableButton_Message_25_Keyboard,
+    [InspectorName("InterractableButton Message / 25")] interractableButton_Message_25_PlayStation,
+    [InspectorName("InterractableButton Message / 25")] interractableButton_Message_25_xBox,
     #endregion
 
-#endregion
+    #endregion
 }

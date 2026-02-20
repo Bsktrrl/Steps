@@ -37,7 +37,7 @@ public class TMPro_TextDisplay : MonoBehaviour
                 GetComponent<TextMeshProUGUI>().text = "";
                 break;
 
-            //Region Names
+            #region Region Names
             case Text_Database_Enum.name_Region_Water:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Water;
                 break;
@@ -59,8 +59,9 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.name_Region_6:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_6;
                 break;
+            #endregion
 
-            //Names of levels in Water Region
+            #region Names of levels in Water Region
             case Text_Database_Enum.name_Region_Water_Lv1:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Water_Lv1;
                 break;
@@ -79,8 +80,9 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.name_Region_Water_Lv6:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Water_Lv6;
                 break;
+            #endregion
 
-            //Names of levels in Sand Region
+            #region Names of levels in Sand Region
             case Text_Database_Enum.name_Region_Sand_Lv1:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Sand_Lv1;
                 break;
@@ -99,8 +101,9 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.name_Region_Sand_Lv6:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Sand_Lv6;
                 break;
+            #endregion
 
-            //Names of levels in Ice Region
+            #region Names of levels in Ice Region
             case Text_Database_Enum.name_Region_Ice_Lv1:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Ice_Lv1;
                 break;
@@ -119,8 +122,9 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.name_Region_Ice_Lv6:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Ice_Lv6;
                 break;
+            #endregion
 
-            //Names of levels in Lava Region
+            #region Names of levels in Lava Region
             case Text_Database_Enum.name_Region_Lava_Lv1:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Lava_Lv1;
                 break;
@@ -139,8 +143,9 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.name_Region_Lava_Lv6:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Lava_Lv6;
                 break;
+            #endregion
 
-            //Names of levels in Swamp Region
+            #region Names of levels in Swamp Region
             case Text_Database_Enum.name_Region_Swamp_Lv1:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Swamp_Lv1;
                 break;
@@ -159,8 +164,9 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.name_Region_Swamp_Lv6:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Swamp_Lv6;
                 break;
+            #endregion
 
-            //Names of levels in Metal Region
+            #region Names of levels in Metal Region
             case Text_Database_Enum.name_Region_Metal_Lv1:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Metal_Lv1;
                 break;
@@ -179,8 +185,9 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.name_Region_Metal_Lv6:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Metal_Lv6;
                 break;
+            #endregion
 
-            //Main Menu Buttons
+            #region Main Menu Buttons
             case Text_Database_Enum.mainMenu_Button_Continue:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].mainMenu_Button_Continue;
                 break;
@@ -211,8 +218,9 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.mainMenu_Button_10:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].mainMenu_Button_10;
                 break;
+            #endregion
 
-            //Wardrobe Menu
+            #region Wardrobe Menu
             case Text_Database_Enum.WardrobeMenu_Header_Wardrobe:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Header_Wardrobe;
                 break;
@@ -249,8 +257,9 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.WardrobeMenu_Message_Wardrobe_12:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_Wardrobe_12;
                 break;
+            #endregion
 
-            //Settings
+            #region Settings
             case Text_Database_Enum.options_Header_Settings:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Header_Settings;
                 break;
@@ -314,8 +323,9 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.options_Settings_20:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_20;
                 break;
+            #endregion
 
-            //Controls
+            #region Controls
             case Text_Database_Enum.options_Header_Controls:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Header_Controls;
                 break;
@@ -394,8 +404,9 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.options_Controls_25:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_25;
                 break;
+            #endregion
 
-            //Video
+            #region Video
             case Text_Database_Enum.options_Header_Video:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Header_Video;
                 break;
@@ -459,8 +470,9 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.options_Video_20:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_20;
                 break;
+            #endregion
 
-            //Audio
+            #region Audio
             case Text_Database_Enum.options_Header_Audio:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Header_Audio;
                 break;
@@ -524,8 +536,9 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.options_Audio_20:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_20;
                 break;
+            #endregion
 
-            //Blank
+            #region Blank
             case Text_Database_Enum.options_Header_Blank:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Header_Blank;
                 break;
@@ -589,8 +602,9 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.options_Blank_20:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_20;
                 break;
+            #endregion
 
-            //Overworld Menu
+            #region Overworld Menu
             case Text_Database_Enum.overworld_1:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_1;
                 break;
@@ -651,8 +665,9 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.overworld_20:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_20;
                 break;
+            #endregion
 
-            //Pause Menu
+            #region Pause Menu
             case Text_Database_Enum.pauseMenu_Button_BackToGame:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pauseMenu_Button_BackToGame;
                 break;
@@ -683,8 +698,9 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.pauseMenu_Button_10:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pauseMenu_Button_10;
                 break;
+            #endregion
 
-            //Skin Names
+            #region Skin Names
             case Text_Database_Enum.skinName_Default:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_Default;
                 break;
@@ -796,8 +812,9 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.skinName_MetalRegion_Lv6:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_MetalRegion_Lv6;
                 break;
+            #endregion
 
-            //Ability Names
+            #region Ability Names
             case Text_Database_Enum.ability_Name_Snorkel:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Name_Snorkel;
                 break;
@@ -840,52 +857,138 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.ability_Name_14:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Name_14;
                 break;
+            #endregion
 
-            //Ability Messages
-            case Text_Database_Enum.ability_Message_Snorkel:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_Snorkel;
+            #region Ability Messages
+            case Text_Database_Enum.ability_Message_Snorkel_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_Snorkel_Keyboard;
                 break;
-            case Text_Database_Enum.ability_Message_OxygenTank:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_OxygenTank;
+            case Text_Database_Enum.ability_Message_Snorkel_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_Snorkel_PlayStation;
                 break;
-            case Text_Database_Enum.ability_Message_Flippers:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_Flippers;
+            case Text_Database_Enum.ability_Message_Snorkel_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_Snorkel_xBox;
                 break;
-            case Text_Database_Enum.ability_Message_DrillHelmet:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_DrillHelmet;
+            case Text_Database_Enum.ability_Message_OxygenTank_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_OxygenTank_Keyboard;
                 break;
-            case Text_Database_Enum.ability_Message_DrillBoots:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_DrillBoots;
+            case Text_Database_Enum.ability_Message_OxygenTank_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_OxygenTank_PlayStation;
                 break;
-            case Text_Database_Enum.ability_Message_HandDrill:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_HandDrill;
+            case Text_Database_Enum.ability_Message_OxygenTank_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_OxygenTank_xBox;
                 break;
-            case Text_Database_Enum.ability_Message_GrapplingHook:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_GrapplingHook;
+            case Text_Database_Enum.ability_Message_Flippers_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_Flippers_Keyboard;
                 break;
-            case Text_Database_Enum.ability_Message_SpringShoes:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_SpringShoes;
+            case Text_Database_Enum.ability_Message_Flippers_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_Flippers_PlayStation;
                 break;
-            case Text_Database_Enum.ability_Message_ClimbingGloves:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_ClimbingGloves;
+            case Text_Database_Enum.ability_Message_Flippers_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_Flippers_xBox;
                 break;
-            case Text_Database_Enum.ability_Message_10:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_10;
+            case Text_Database_Enum.ability_Message_DrillHelmet_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_DrillHelmet_Keyboard;
                 break;
-            case Text_Database_Enum.ability_Message_11:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_11;
+            case Text_Database_Enum.ability_Message_DrillHelmet_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_DrillHelmet_PlayStation;
                 break;
-            case Text_Database_Enum.ability_Message_12:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_12;
+            case Text_Database_Enum.ability_Message_DrillHelmet_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_DrillHelmet_xBox;
                 break;
-            case Text_Database_Enum.ability_Message_13:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_13;
+            case Text_Database_Enum.ability_Message_DrillBoots_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_DrillBoots_Keyboard;
                 break;
-            case Text_Database_Enum.ability_Message_14:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_14;
+            case Text_Database_Enum.ability_Message_DrillBoots_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_DrillBoots_PlayStation;
                 break;
+            case Text_Database_Enum.ability_Message_DrillBoots_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_DrillBoots_xBox;
+                break;
+            case Text_Database_Enum.ability_Message_HandDrill_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_HandDrill_Keyboard;
+                break;
+            case Text_Database_Enum.ability_Message_HandDrill_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_HandDrill_PlayStation;
+                break;
+            case Text_Database_Enum.ability_Message_HandDrill_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_HandDrill_xBox;
+                break;
+            case Text_Database_Enum.ability_Message_GrapplingHook_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_GrapplingHook_Keyboard;
+                break;
+            case Text_Database_Enum.ability_Message_GrapplingHook_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_GrapplingHook_PlayStation;
+                break;
+            case Text_Database_Enum.ability_Message_GrapplingHook_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_GrapplingHook_xBox;
+                break;
+            case Text_Database_Enum.ability_Message_SpringShoes_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_SpringShoes_Keyboard;
+                break;
+            case Text_Database_Enum.ability_Message_SpringShoes_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_SpringShoes_PlayStation;
+                break;
+            case Text_Database_Enum.ability_Message_SpringShoes_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_SpringShoes_xBox;
+                break;
+            case Text_Database_Enum.ability_Message_ClimbingGloves_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_ClimbingGloves_Keyboard;
+                break;
+            case Text_Database_Enum.ability_Message_ClimbingGloves_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_ClimbingGloves_PlayStation;
+                break;
+            case Text_Database_Enum.ability_Message_ClimbingGloves_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_ClimbingGloves_xBox;
+                break;
+            case Text_Database_Enum.ability_Message_10_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_10_Keyboard;
+                break;
+            case Text_Database_Enum.ability_Message_10_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_10_PlayStation;
+                break;
+            case Text_Database_Enum.ability_Message_10_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_10_xBox;
+                break;
+            case Text_Database_Enum.ability_Message_11_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_11_Keyboard;
+                break;
+            case Text_Database_Enum.ability_Message_11_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_11_PlayStation;
+                break;
+            case Text_Database_Enum.ability_Message_11_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_11_xBox;
+                break;
+            case Text_Database_Enum.ability_Message_12_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_12_Keyboard;
+                break;
+            case Text_Database_Enum.ability_Message_12_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_12_PlayStation;
+                break;
+            case Text_Database_Enum.ability_Message_12_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_12_xBox;
+                break;
+            case Text_Database_Enum.ability_Message_13_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_13_Keyboard;
+                break;
+            case Text_Database_Enum.ability_Message_13_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_13_PlayStation;
+                break;
+            case Text_Database_Enum.ability_Message_13_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_13_xBox;
+                break;
+            case Text_Database_Enum.ability_Message_14_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_14_Keyboard;
+                break;
+            case Text_Database_Enum.ability_Message_14_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_14_PlayStation;
+                break;
+            case Text_Database_Enum.ability_Message_14_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_14_xBox;
+                break;
+            #endregion
 
-            //Pickup Messages
+            #region Pickup Messages
             case Text_Database_Enum.pickup_Message_Eccence_1:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_Eccence_1;
                 break;
@@ -931,130 +1034,373 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.pickup_Message_15:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_15;
                 break;
+            #endregion
 
-            //Tutorial Messages
-            case Text_Database_Enum.tutorial_Message_Movement:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Movement;
+            #region Tutorial Messages
+            case Text_Database_Enum.tutorial_Message_Movement_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Movement_Keyboard;
                 break;
-            case Text_Database_Enum.tutorial_Message_CameraRotation:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_CameraRotation;
+            case Text_Database_Enum.tutorial_Message_Movement_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Movement_PlayStation;
                 break;
-            case Text_Database_Enum.tutorial_Message_Respawn:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Respawn;
+            case Text_Database_Enum.tutorial_Message_Movement_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Movement_xBox;
                 break;
-            case Text_Database_Enum.tutorial_Message_FreeCam_1:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_FreeCam_1;
+            case Text_Database_Enum.tutorial_Message_CameraRotation_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_CameraRotation_Keyboard;
                 break;
-            case Text_Database_Enum.tutorial_Message_FreeCam_2:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_FreeCam_2;
+            case Text_Database_Enum.tutorial_Message_CameraRotation_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_CameraRotation_PlayStation;
                 break;
-            case Text_Database_Enum.tutorial_Message_Demo:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Demo;
+            case Text_Database_Enum.tutorial_Message_CameraRotation_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_CameraRotation_xBox;
                 break;
-            case Text_Database_Enum.tutorial_Message_7:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_7;
+            case Text_Database_Enum.tutorial_Message_Respawn_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Respawn_Keyboard;
                 break;
-            case Text_Database_Enum.tutorial_Message_8:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_8;
+            case Text_Database_Enum.tutorial_Message_Respawn_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Respawn_PlayStation;
                 break;
-            case Text_Database_Enum.tutorial_Message_9:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_9;
+            case Text_Database_Enum.tutorial_Message_Respawn_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Respawn_xBox;
                 break;
-            case Text_Database_Enum.tutorial_Message_10:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_10;
+            case Text_Database_Enum.tutorial_Message_FreeCam_1_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_FreeCam_1_Keyboard;
                 break;
-            case Text_Database_Enum.tutorial_Message_11:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_11;
+            case Text_Database_Enum.tutorial_Message_FreeCam_1_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_FreeCam_1_PlayStation;
                 break;
-            case Text_Database_Enum.tutorial_Message_12:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_12;
+            case Text_Database_Enum.tutorial_Message_FreeCam_1_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_FreeCam_1_xBox;
                 break;
-            case Text_Database_Enum.tutorial_Message_13:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_13;
+            case Text_Database_Enum.tutorial_Message_FreeCam_2_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_FreeCam_2_Keyboard;
                 break;
-            case Text_Database_Enum.tutorial_Message_14:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_14;
+            case Text_Database_Enum.tutorial_Message_FreeCam_2_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_FreeCam_2_PlayStation;
                 break;
-            case Text_Database_Enum.tutorial_Message_15:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_15;
+            case Text_Database_Enum.tutorial_Message_FreeCam_2_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_FreeCam_2_xBox;
                 break;
+            case Text_Database_Enum.tutorial_Message_Demo_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Demo_Keyboard;
+                break;
+            case Text_Database_Enum.tutorial_Message_Demo_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Demo_PlayStation;
+                break;
+            case Text_Database_Enum.tutorial_Message_Demo_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Demo_xBox;
+                break;
+            case Text_Database_Enum.tutorial_Message_7_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_7_Keyboard;
+                break;
+            case Text_Database_Enum.tutorial_Message_7_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_7_PlayStation;
+                break;
+            case Text_Database_Enum.tutorial_Message_7_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_7_xBox;
+                break;
+            case Text_Database_Enum.tutorial_Message_8_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_8_Keyboard;
+                break;
+            case Text_Database_Enum.tutorial_Message_8_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_8_PlayStation;
+                break;
+            case Text_Database_Enum.tutorial_Message_8_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_8_xBox;
+                break;
+            case Text_Database_Enum.tutorial_Message_9_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_9_Keyboard;
+                break;
+            case Text_Database_Enum.tutorial_Message_9_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_9_PlayStation;
+                break;
+            case Text_Database_Enum.tutorial_Message_9_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_9_xBox;
+                break;
+            case Text_Database_Enum.tutorial_Message_10_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_10_Keyboard;
+                break;
+            case Text_Database_Enum.tutorial_Message_10_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_10_PlayStation;
+                break;
+            case Text_Database_Enum.tutorial_Message_10_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_10_xBox;
+                break;
+            case Text_Database_Enum.tutorial_Message_11_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_11_Keyboard;
+                break;
+            case Text_Database_Enum.tutorial_Message_11_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_11_PlayStation;
+                break;
+            case Text_Database_Enum.tutorial_Message_11_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_11_xBox;
+                break;
+            case Text_Database_Enum.tutorial_Message_12_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_12_Keyboard;
+                break;
+            case Text_Database_Enum.tutorial_Message_12_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_12_PlayStation;
+                break;
+            case Text_Database_Enum.tutorial_Message_12_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_12_xBox;
+                break;
+            case Text_Database_Enum.tutorial_Message_13_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_13_Keyboard;
+                break;
+            case Text_Database_Enum.tutorial_Message_13_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_13_PlayStation;
+                break;
+            case Text_Database_Enum.tutorial_Message_13_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_13_xBox;
+                break;
+            case Text_Database_Enum.tutorial_Message_14_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_14_Keyboard;
+                break;
+            case Text_Database_Enum.tutorial_Message_14_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_14_PlayStation;
+                break;
+            case Text_Database_Enum.tutorial_Message_14_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_14_xBox;
+                break;
+            case Text_Database_Enum.tutorial_Message_15_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_15_Keyboard;
+                break;
+            case Text_Database_Enum.tutorial_Message_15_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_15_PlayStation;
+                break;
+            case Text_Database_Enum.tutorial_Message_15_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_15_xBox;
+                break;
+            #endregion
 
-            //InterractableButton Message
-            case Text_Database_Enum.interractableButton_Message_Talk:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Talk;
+            #region InterractableButton Message
+            case Text_Database_Enum.interractableButton_Message_Talk_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Talk_Keyboard;
                 break;
-            case Text_Database_Enum.interractableButton_Message_Interract:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Interract;
+            case Text_Database_Enum.interractableButton_Message_Talk_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Talk_PlayStation;
                 break;
-            case Text_Database_Enum.interractableButton_Message_FlippersUP:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_FlippersUP;
+            case Text_Database_Enum.interractableButton_Message_Talk_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Talk_xBox;
                 break;
-            case Text_Database_Enum.interractableButton_Message_FlippersDOWN:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_FlippersDOWN;
+            case Text_Database_Enum.interractableButton_Message_Interract_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Interract_Keyboard;
                 break;
-            case Text_Database_Enum.interractableButton_Message_DrillHelmet:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_DrillHelmet;
+            case Text_Database_Enum.interractableButton_Message_Interract_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Interract_PlayStation;
                 break;
-            case Text_Database_Enum.interractableButton_Message_DrillShoes:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_DrillShoes;
+            case Text_Database_Enum.interractableButton_Message_Interract_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Interract_xBox;
                 break;
-            case Text_Database_Enum.interractableButton_Message_HandDrill:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_HandDrill;
+            case Text_Database_Enum.interractableButton_Message_FlippersUP_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_FlippersUP_Keyboard;
                 break;
-            case Text_Database_Enum.interractableButton_Message_GrapplingHook:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_GrapplingHook;
+            case Text_Database_Enum.interractableButton_Message_FlippersUP_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_FlippersUP_PlayStation;
                 break;
-            case Text_Database_Enum.interractableButton_Message_SpringShoes:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_SpringShoes;
+            case Text_Database_Enum.interractableButton_Message_FlippersUP_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_FlippersUP_xBox;
                 break;
-            case Text_Database_Enum.interractableButton_Message_ClimbingGloves:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_ClimbingGloves;
+            case Text_Database_Enum.interractableButton_Message_FlippersDOWN_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_FlippersDOWN_Keyboard;
                 break;
-            case Text_Database_Enum.interractableButton_Message_Respawn:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Respawn;
+            case Text_Database_Enum.interractableButton_Message_FlippersDOWN_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_FlippersDOWN_PlayStation;
                 break;
-            case Text_Database_Enum.interractableButton_Message_12:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_12;
+            case Text_Database_Enum.interractableButton_Message_FlippersDOWN_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_FlippersDOWN_xBox;
                 break;
-            case Text_Database_Enum.interractableButton_Message_13:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_13;
+            case Text_Database_Enum.interractableButton_Message_DrillHelmet_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_DrillHelmet_Keyboard;
                 break;
-            case Text_Database_Enum.interractableButton_Message_14:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_14;
+            case Text_Database_Enum.interractableButton_Message_DrillHelmet_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_DrillHelmet_PlayStation;
                 break;
-            case Text_Database_Enum.interractableButton_Message_15:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_15;
+            case Text_Database_Enum.interractableButton_Message_DrillHelmet_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_DrillHelmet_xBox;
                 break;
-            case Text_Database_Enum.interractableButton_Message_16:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_16;
+            case Text_Database_Enum.interractableButton_Message_DrillShoes_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_DrillShoes_Keyboard;
                 break;
-            case Text_Database_Enum.interractableButton_Message_17:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_17;
+            case Text_Database_Enum.interractableButton_Message_DrillShoes_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_DrillShoes_PlayStation;
                 break;
-            case Text_Database_Enum.interractableButton_Message_18:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_18;
+            case Text_Database_Enum.interractableButton_Message_DrillShoes_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_DrillShoes_xBox;
                 break;
-            case Text_Database_Enum.interractableButton_Message_19:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_19;
+            case Text_Database_Enum.interractableButton_Message_HandDrill_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_HandDrill_Keyboard;
                 break;
-            case Text_Database_Enum.interractableButton_Message_20:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_20;
+            case Text_Database_Enum.interractableButton_Message_HandDrill_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_HandDrill_PlayStation;
                 break;
-            case Text_Database_Enum.interractableButton_Message_21:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_21;
+            case Text_Database_Enum.interractableButton_Message_HandDrill_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_HandDrill_xBox;
                 break;
-            case Text_Database_Enum.interractableButton_Message_22:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_22;
+            case Text_Database_Enum.interractableButton_Message_GrapplingHook_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_GrapplingHook_Keyboard;
                 break;
-            case Text_Database_Enum.interractableButton_Message_23:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_23;
+            case Text_Database_Enum.interractableButton_Message_GrapplingHook_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_GrapplingHook_PlayStation;
                 break;
-            case Text_Database_Enum.interractableButton_Message_24:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_24;
+            case Text_Database_Enum.interractableButton_Message_GrapplingHook_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_GrapplingHook_xBox;
                 break;
-            case Text_Database_Enum.interractableButton_Message_25:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_25;
+            case Text_Database_Enum.interractableButton_Message_SpringShoes_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_SpringShoes_Keyboard;
                 break;
+            case Text_Database_Enum.interractableButton_Message_SpringShoes_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_SpringShoes_PlayStation;
+                break;
+            case Text_Database_Enum.interractableButton_Message_SpringShoes_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_SpringShoes_xBox;
+                break;
+            case Text_Database_Enum.interractableButton_Message_ClimbingGloves_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_ClimbingGloves_Keyboard;
+                break;
+            case Text_Database_Enum.interractableButton_Message_ClimbingGloves_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_ClimbingGloves_PlayStation;
+                break;
+            case Text_Database_Enum.interractableButton_Message_ClimbingGloves_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_ClimbingGloves_xBox;
+                break;
+            case Text_Database_Enum.interractableButton_Message_Respawn_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Respawn_Keyboard;
+                break;
+            case Text_Database_Enum.interractableButton_Message_Respawn_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Respawn_PlayStation;
+                break;
+            case Text_Database_Enum.interractableButton_Message_Respawn_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Respawn_xBox;
+                break;
+            case Text_Database_Enum.interractableButton_Message_12_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_12_Keyboard;
+                break;
+            case Text_Database_Enum.interractableButton_Message_12_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_12_PlayStation;
+                break;
+            case Text_Database_Enum.interractableButton_Message_12_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_12_xBox;
+                break;
+            case Text_Database_Enum.interractableButton_Message_13_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_13_Keyboard;
+                break;
+            case Text_Database_Enum.interractableButton_Message_13_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_13_PlayStation;
+                break;
+            case Text_Database_Enum.interractableButton_Message_13_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_13_xBox;
+                break;
+            case Text_Database_Enum.interractableButton_Message_14_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_14_Keyboard;
+                break;
+            case Text_Database_Enum.interractableButton_Message_14_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_14_PlayStation;
+                break;
+            case Text_Database_Enum.interractableButton_Message_14_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_14_xBox;
+                break;
+            case Text_Database_Enum.interractableButton_Message_15_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_15_Keyboard;
+                break;
+            case Text_Database_Enum.interractableButton_Message_15_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_15_PlayStation;
+                break;
+            case Text_Database_Enum.interractableButton_Message_15_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_15_xBox;
+                break;
+            case Text_Database_Enum.interractableButton_Message_16_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_16_Keyboard;
+                break;
+            case Text_Database_Enum.interractableButton_Message_16_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_16_PlayStation;
+                break;
+            case Text_Database_Enum.interractableButton_Message_16_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_16_xBox;
+                break;
+            case Text_Database_Enum.interractableButton_Message_17_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_17_Keyboard;
+                break;
+            case Text_Database_Enum.interractableButton_Message_17_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_17_PlayStation;
+                break;
+            case Text_Database_Enum.interractableButton_Message_17_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_17_xBox;
+                break;
+            case Text_Database_Enum.interractableButton_Message_18_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_18_Keyboard;
+                break;
+            case Text_Database_Enum.interractableButton_Message_18_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_18_PlayStation;
+                break;
+            case Text_Database_Enum.interractableButton_Message_18_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_18_xBox;
+                break;
+            case Text_Database_Enum.interractableButton_Message_19_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_19_Keyboard;
+                break;
+            case Text_Database_Enum.interractableButton_Message_19_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_19_PlayStation;
+                break;
+            case Text_Database_Enum.interractableButton_Message_19_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_19_xBox;
+                break;
+            case Text_Database_Enum.interractableButton_Message_20_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_20_Keyboard;
+                break;
+            case Text_Database_Enum.interractableButton_Message_20_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_20_PlayStation;
+                break;
+            case Text_Database_Enum.interractableButton_Message_20_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_20_xBox;
+                break;
+            case Text_Database_Enum.interractableButton_Message_21_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_21_Keyboard;
+                break;
+            case Text_Database_Enum.interractableButton_Message_21_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_21_PlayStation;
+                break;
+            case Text_Database_Enum.interractableButton_Message_21_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_21_xBox;
+                break;
+            case Text_Database_Enum.interractableButton_Message_22_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_22_Keyboard;
+                break;
+            case Text_Database_Enum.interractableButton_Message_22_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_22_PlayStation;
+                break;
+            case Text_Database_Enum.interractableButton_Message_22_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_22_xBox;
+                break;
+            case Text_Database_Enum.interractableButton_Message_23_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_23_Keyboard;
+                break;
+            case Text_Database_Enum.interractableButton_Message_23_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_23_PlayStation;
+                break;
+            case Text_Database_Enum.interractableButton_Message_23_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_23_xBox;
+                break;
+            case Text_Database_Enum.interractableButton_Message_24_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_24_Keyboard;
+                break;
+            case Text_Database_Enum.interractableButton_Message_24_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_24_PlayStation;
+                break;
+            case Text_Database_Enum.interractableButton_Message_24_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_24_xBox;
+                break;
+            case Text_Database_Enum.interractableButton_Message_25_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_25_Keyboard;
+                break;
+            case Text_Database_Enum.interractableButton_Message_25_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_25_PlayStation;
+                break;
+            case Text_Database_Enum.interractableButton_Message_25_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_25_xBox;
+                break;
+            #endregion
 
             default:
                 GetComponent<TextMeshProUGUI>().text = "";
