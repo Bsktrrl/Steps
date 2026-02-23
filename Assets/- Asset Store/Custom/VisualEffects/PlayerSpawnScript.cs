@@ -26,7 +26,7 @@ public class PlayerSpawnScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             StartCoroutine(Spawn());
         }
