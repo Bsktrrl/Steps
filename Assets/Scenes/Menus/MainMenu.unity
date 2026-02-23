@@ -11578,8 +11578,10 @@ MonoBehaviour:
         hat_Region6_Version: 0
     tutorial_Finished_Save: 0
     oneTimeRunData_Save:
+      startLanguage_English: 0
       forceIntroSequenceInFirstLevel: 0
       tutorial_Finished: 0
+      pickup_FirstFootprint: 0
       pickup_FirstSkin: 0
 --- !u!1 &1249729863
 GameObject:
@@ -12785,6 +12787,7 @@ GameObject:
   - component: {fileID: 1379088051}
   - component: {fileID: 1379088052}
   - component: {fileID: 1379088054}
+  - component: {fileID: 1379088055}
   m_Layer: 0
   m_Name: MainMenuManager
   m_TagString: Untagged
@@ -12895,6 +12898,21 @@ MonoBehaviour:
   continueButton: {fileID: 59031855}
   newGameButton: {fileID: 70907711}
   exitButton: {fileID: 171628838}
+--- !u!114 &1379088055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1379088048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b29dee52b36c17439bd403da51bbc6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  game_TextDatabase_Sheet: {fileID: 4900000, guid: 6eef0e8d73e3af849b6f20af5499eaaa, type: 3}
+  game_TextDatabase:
+    gameText_LanguageList: []
 --- !u!1001 &1385253428
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15531,9 +15549,17 @@ MonoBehaviour:
         hat_Region6_Version: 0
     tutorial_Finished_Save: 0
     oneTimeRunData_Save:
+      startLanguage_English: 0
       forceIntroSequenceInFirstLevel: 0
       tutorial_Finished: 0
+      pickup_FirstFootprint: 0
       pickup_FirstSkin: 0
+  oneTimeRunData_Store:
+    startLanguage_English: 0
+    forceIntroSequenceInFirstLevel: 0
+    tutorial_Finished: 0
+    pickup_FirstFootprint: 0
+    pickup_FirstSkin: 0
   haveStartedNewGame_Store: 0
   menuState_Store: 0
   playerStats_Store:
@@ -15687,10 +15713,8 @@ MonoBehaviour:
       hat_Region4_Version: 0
       hat_Region5_Version: 0
       hat_Region6_Version: 0
-  oneTimeRunData_Store:
-    forceIntroSequenceInFirstLevel: 0
-    tutorial_Finished: 0
-    pickup_FirstSkin: 0
+  game_TextDatabase_Store:
+    gameText_LanguageList: []
 --- !u!1001 &1689483885
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20841,6 +20865,14 @@ PrefabInstance:
     - target: {fileID: 3356194184607537988, guid: c9550862641363f4cbf79963a6f0b385, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.2999878
+      objectReference: {fileID: 0}
+    - target: {fileID: 6084134907750605696, guid: c9550862641363f4cbf79963a6f0b385, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7166450053209283540, guid: c9550862641363f4cbf79963a6f0b385, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506686848536834346, guid: c9550862641363f4cbf79963a6f0b385, type: 3}
       propertyPath: isFirstSelected
