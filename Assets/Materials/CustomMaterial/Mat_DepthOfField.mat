@@ -80,6 +80,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_f22391ddf33547939b5e9e22b571754e_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 01712917e0f91b0449a1a7ef8d7e913f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -103,8 +107,9 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BlurDistance: 2.44
-    - _BlurFade: 1
-    - _BlurOffset: 0.001
+    - _BlurFade: 2.5
+    - _BlurLength: 0.33
+    - _BlurOffset: 0.002
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0

@@ -76,6 +76,7 @@ public class CustomRendererFeature : ScriptableRendererFeature
     class CustomColorPass : ScriptableRenderPass
     {
         RTHandle customColorTexture;
+        RTHandle prevColorTexture;
         float downscaleFactor;
         static readonly int CameraColorID = Shader.PropertyToID("_CustomColorTexture");
 
@@ -94,7 +95,7 @@ public class CustomRendererFeature : ScriptableRendererFeature
             int width = Mathf.Max(1, (int)(baseDesc.width * downscaleFactor));
             int height = Mathf.Max(1, (int)(baseDesc.height * downscaleFactor));
 
-            if (customColorTexture == null || width != cachedWidth || height != cachedHeight)
+            if (customColorTexture == null || prevColorTexture == null || width != cachedWidth || height != cachedHeight)
             {
                 cachedWidth = width;
                 cachedHeight = height;
@@ -106,18 +107,35 @@ public class CustomRendererFeature : ScriptableRendererFeature
                 desc.autoGenerateMips = false;
 
                 RenderingUtils.ReAllocateIfNeeded(ref customColorTexture, desc, name: "_CustomColorTexture");
+                RenderingUtils.ReAllocateIfNeeded(ref prevColorTexture, desc, name: "_PrevColorTexture");
+
                 customColorTexture.rt.wrapMode = TextureWrapMode.Clamp;
+                prevColorTexture.rt.wrapMode |= TextureWrapMode.Clamp;
+
                 customColorTexture.rt.filterMode = FilterMode.Bilinear;
+                prevColorTexture.rt.filterMode = FilterMode.Bilinear;
             }
         }
     
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
             CommandBuffer cmd = CommandBufferPool.Get("Copy Camera Color");
+
+            if (prevColorTexture.rt != null)
+            {
+                cmd.SetGlobalTexture("_PrevColorTexture", prevColorTexture.rt);
+            }
     
             cmd.Blit(renderingData.cameraData.renderer.cameraColorTargetHandle, customColorTexture.rt);
 
-            cmd.SetGlobalTexture(CameraColorID, customColorTexture.rt);
+            if (prevColorTexture.rt == null)
+            {
+                cmd.SetGlobalTexture("_PrevColorTexture", customColorTexture.rt);
+            }
+
+            cmd.Blit(customColorTexture.rt, prevColorTexture.rt);
+
+            cmd.SetGlobalTexture("_CustomColorTexture", customColorTexture.rt);
     
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);
