@@ -30,6 +30,8 @@ public class TMPro_TextDisplay : MonoBehaviour
 
     void ShowText()
     {
+        if (!GetComponent<TextMeshProUGUI>()) return;
+
         switch (textToDisplay)
         {
             //None
@@ -1405,6 +1407,1041 @@ public class TMPro_TextDisplay : MonoBehaviour
             default:
                 GetComponent<TextMeshProUGUI>().text = "";
                 break;
+        }
+    }
+    public string GetText()
+    {
+        switch (textToDisplay)
+        {
+            //None
+            case Text_Database_Enum.None:
+                return "";
+
+            #region Region Names
+            case Text_Database_Enum.name_Region_Water:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Water;
+            case Text_Database_Enum.name_Region_Sand:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Sand;
+            case Text_Database_Enum.name_Region_Ice:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Ice;
+            case Text_Database_Enum.name_Region_Lava:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Lava;
+            case Text_Database_Enum.name_Region_Swamp:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Swamp;
+            case Text_Database_Enum.name_Region_Metal:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Metal;
+            case Text_Database_Enum.name_Region_6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_6;
+            #endregion
+
+            #region Names of levels in Water Region
+            case Text_Database_Enum.name_Region_Water_Lv1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Water_Lv1;
+            case Text_Database_Enum.name_Region_Water_Lv2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Water_Lv2;
+            case Text_Database_Enum.name_Region_Water_Lv3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Water_Lv3;
+            case Text_Database_Enum.name_Region_Water_Lv4:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Water_Lv4;
+            case Text_Database_Enum.name_Region_Water_Lv5:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Water_Lv5;
+            case Text_Database_Enum.name_Region_Water_Lv6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Water_Lv6;
+            #endregion
+
+            #region Names of levels in Sand Region
+            case Text_Database_Enum.name_Region_Sand_Lv1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Sand_Lv1;
+            case Text_Database_Enum.name_Region_Sand_Lv2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Sand_Lv2;
+            case Text_Database_Enum.name_Region_Sand_Lv3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Sand_Lv3;
+            case Text_Database_Enum.name_Region_Sand_Lv4:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Sand_Lv4;
+            case Text_Database_Enum.name_Region_Sand_Lv5:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Sand_Lv5;
+            case Text_Database_Enum.name_Region_Sand_Lv6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Sand_Lv6;
+            #endregion
+
+            #region Names of levels in Ice Region
+            case Text_Database_Enum.name_Region_Ice_Lv1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Ice_Lv1;
+            case Text_Database_Enum.name_Region_Ice_Lv2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Ice_Lv2;
+            case Text_Database_Enum.name_Region_Ice_Lv3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Ice_Lv3;
+            case Text_Database_Enum.name_Region_Ice_Lv4:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Ice_Lv4;
+            case Text_Database_Enum.name_Region_Ice_Lv5:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Ice_Lv5;
+            case Text_Database_Enum.name_Region_Ice_Lv6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Ice_Lv6;
+            #endregion
+
+            #region Names of levels in Lava Region
+            case Text_Database_Enum.name_Region_Lava_Lv1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Lava_Lv1;
+            case Text_Database_Enum.name_Region_Lava_Lv2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Lava_Lv2;
+            case Text_Database_Enum.name_Region_Lava_Lv3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Lava_Lv3;
+            case Text_Database_Enum.name_Region_Lava_Lv4:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Lava_Lv4;
+            case Text_Database_Enum.name_Region_Lava_Lv5:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Lava_Lv5;
+            case Text_Database_Enum.name_Region_Lava_Lv6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Lava_Lv6;
+            #endregion
+
+            #region Names of levels in Swamp Region
+            case Text_Database_Enum.name_Region_Swamp_Lv1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Swamp_Lv1;
+            case Text_Database_Enum.name_Region_Swamp_Lv2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Swamp_Lv2;
+            case Text_Database_Enum.name_Region_Swamp_Lv3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Swamp_Lv3;
+            case Text_Database_Enum.name_Region_Swamp_Lv4:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Swamp_Lv4;
+            case Text_Database_Enum.name_Region_Swamp_Lv5:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Swamp_Lv5;
+            case Text_Database_Enum.name_Region_Swamp_Lv6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Swamp_Lv6;
+            #endregion
+
+            #region Names of levels in Metal Region
+            case Text_Database_Enum.name_Region_Metal_Lv1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Metal_Lv1;
+            case Text_Database_Enum.name_Region_Metal_Lv2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Metal_Lv2;
+            case Text_Database_Enum.name_Region_Metal_Lv3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Metal_Lv3;
+            case Text_Database_Enum.name_Region_Metal_Lv4:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Metal_Lv4;
+            case Text_Database_Enum.name_Region_Metal_Lv5:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Metal_Lv5;
+            case Text_Database_Enum.name_Region_Metal_Lv6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Metal_Lv6;
+            #endregion
+
+            #region Main Menu Buttons
+            case Text_Database_Enum.mainMenu_Button_Continue:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].mainMenu_Button_Continue;
+            case Text_Database_Enum.mainMenu_Button_NewGame:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].mainMenu_Button_NewGame;
+            case Text_Database_Enum.mainMenu_Button_Wardrobe:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].mainMenu_Button_Wardrobe;
+            case Text_Database_Enum.mainMenu_Button_Options:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].mainMenu_Button_Options;
+            case Text_Database_Enum.mainMenu_Button_Quit:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].mainMenu_Button_Quit;
+            case Text_Database_Enum.mainMenu_Button_6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].mainMenu_Button_6;
+            case Text_Database_Enum.mainMenu_Button_7:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].mainMenu_Button_7;
+            case Text_Database_Enum.mainMenu_Button_8:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].mainMenu_Button_8;
+            case Text_Database_Enum.mainMenu_Button_9:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].mainMenu_Button_9;
+            case Text_Database_Enum.mainMenu_Button_10:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].mainMenu_Button_10;
+            #endregion
+
+            #region Wardrobe Menu
+            case Text_Database_Enum.WardrobeMenu_Header_Wardrobe:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Header_Wardrobe;
+            case Text_Database_Enum.WardrobeMenu_Message_SkinUnavailable_1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_1;
+            case Text_Database_Enum.WardrobeMenu_Message_SkinUnavailable_2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_2;
+            case Text_Database_Enum.WardrobeMenu_Message_SkinUnlock:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnlock;
+            case Text_Database_Enum.WardrobeMenu_Message_SkinEquip:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinEquip;
+            case Text_Database_Enum.WardrobeMenu_Message_SkinEquipped:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinEquipped;
+            case Text_Database_Enum.WardrobeMenu_Message_Headgear_Unavailable:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_Headgear_Unavailable;
+            case Text_Database_Enum.WardrobeMenu_Message_Wardrobe_8:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_Wardrobe_8;
+            case Text_Database_Enum.WardrobeMenu_Message_Wardrobe_9:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_Wardrobe_9;
+            case Text_Database_Enum.WardrobeMenu_Message_Wardrobe_10:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_Wardrobe_10;
+            case Text_Database_Enum.WardrobeMenu_Message_Wardrobe_11:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_Wardrobe_11;
+            case Text_Database_Enum.WardrobeMenu_Message_Wardrobe_12:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_Wardrobe_12;
+            #endregion
+
+            #region Settings
+            case Text_Database_Enum.options_Header_Settings:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Header_Settings;
+            case Text_Database_Enum.options_Settings_Language:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_Language;
+            case Text_Database_Enum.options_Settings_TextSpeed:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_TextSpeed;
+            case Text_Database_Enum.options_Settings_StepDisplay:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_StepDisplay;
+            case Text_Database_Enum.options_Settings_SmoothCameraRotation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_SmoothCameraRotation;
+            case Text_Database_Enum.options_Settings_RevertedCameraRotation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_RevertedCameraRotation;
+            case Text_Database_Enum.options_Settings_SkipLevelIntro:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_SkipLevelIntro;
+            case Text_Database_Enum.options_Settings_7:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_7;
+            case Text_Database_Enum.options_Settings_8:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_8;
+            case Text_Database_Enum.options_Settings_9:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_9;
+            case Text_Database_Enum.options_Settings_10:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_10;
+            case Text_Database_Enum.options_Settings_11:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_11;
+            case Text_Database_Enum.options_Settings_12:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_12;
+            case Text_Database_Enum.options_Settings_13:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_13;
+            case Text_Database_Enum.options_Settings_14:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_14;
+            case Text_Database_Enum.options_Settings_15:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_15;
+            case Text_Database_Enum.options_Settings_16:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_16;
+            case Text_Database_Enum.options_Settings_17:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_17;
+            case Text_Database_Enum.options_Settings_18:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_18;
+            case Text_Database_Enum.options_Settings_19:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_19;
+            case Text_Database_Enum.options_Settings_20:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Settings_20;
+            #endregion
+
+            #region Controls
+            case Text_Database_Enum.options_Header_Controls:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Header_Controls;
+            case Text_Database_Enum.options_Controls_1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_1;
+            case Text_Database_Enum.options_Controls_2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_2;
+            case Text_Database_Enum.options_Controls_3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_3;
+            case Text_Database_Enum.options_Controls_4:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_4;
+            case Text_Database_Enum.options_Controls_5:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_5;
+            case Text_Database_Enum.options_Controls_6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_6;
+            case Text_Database_Enum.options_Controls_7:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_7;
+            case Text_Database_Enum.options_Controls_8:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_8;
+            case Text_Database_Enum.options_Controls_9:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_9;
+            case Text_Database_Enum.options_Controls_10:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_10;
+            case Text_Database_Enum.options_Controls_11:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_11;
+            case Text_Database_Enum.options_Controls_12:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_12;
+            case Text_Database_Enum.options_Controls_13:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_13;
+            case Text_Database_Enum.options_Controls_14:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_14;
+            case Text_Database_Enum.options_Controls_15:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_15;
+            case Text_Database_Enum.options_Controls_16:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_16;
+            case Text_Database_Enum.options_Controls_17:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_17;
+            case Text_Database_Enum.options_Controls_18:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_18;
+            case Text_Database_Enum.options_Controls_19:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_19;
+            case Text_Database_Enum.options_Controls_20:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_20;
+            case Text_Database_Enum.options_Controls_21:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_21;
+            case Text_Database_Enum.options_Controls_22:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_22;
+            case Text_Database_Enum.options_Controls_23:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_23;
+            case Text_Database_Enum.options_Controls_24:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_24;
+            case Text_Database_Enum.options_Controls_25:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Controls_25;
+            #endregion
+
+            #region Video
+            case Text_Database_Enum.options_Header_Video:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Header_Video;
+            case Text_Database_Enum.options_Video_1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_1;
+            case Text_Database_Enum.options_Video_2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_2;
+            case Text_Database_Enum.options_Video_3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_3;
+            case Text_Database_Enum.options_Video_4:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_4;
+            case Text_Database_Enum.options_Video_5:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_5;
+            case Text_Database_Enum.options_Video_6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_6;
+            case Text_Database_Enum.options_Video_7:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_7;
+            case Text_Database_Enum.options_Video_8:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_8;
+            case Text_Database_Enum.options_Video_9:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_9;
+            case Text_Database_Enum.options_Video_10:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_10;
+            case Text_Database_Enum.options_Video_11:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_11;
+            case Text_Database_Enum.options_Video_12:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_12;
+            case Text_Database_Enum.options_Video_13:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_13;
+            case Text_Database_Enum.options_Video_14:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_14;
+            case Text_Database_Enum.options_Video_15:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_15;
+            case Text_Database_Enum.options_Video_16:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_16;
+            case Text_Database_Enum.options_Video_17:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_17;
+            case Text_Database_Enum.options_Video_18:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_18;
+            case Text_Database_Enum.options_Video_19:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_19;
+            case Text_Database_Enum.options_Video_20:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Video_20;
+            #endregion
+
+            #region Audio
+            case Text_Database_Enum.options_Header_Audio:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Header_Audio;
+            case Text_Database_Enum.options_Audio_1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_1;
+            case Text_Database_Enum.options_Audio_2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_2;
+            case Text_Database_Enum.options_Audio_3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_3;
+            case Text_Database_Enum.options_Audio_4:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_4;
+            case Text_Database_Enum.options_Audio_5:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_5;
+            case Text_Database_Enum.options_Audio_6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_6;
+            case Text_Database_Enum.options_Audio_7:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_7;
+            case Text_Database_Enum.options_Audio_8:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_8;
+            case Text_Database_Enum.options_Audio_9:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_9;
+            case Text_Database_Enum.options_Audio_10:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_10;
+            case Text_Database_Enum.options_Audio_11:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_11;
+            case Text_Database_Enum.options_Audio_12:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_12;
+            case Text_Database_Enum.options_Audio_13:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_13;
+            case Text_Database_Enum.options_Audio_14:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_14;
+            case Text_Database_Enum.options_Audio_15:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_15;
+            case Text_Database_Enum.options_Audio_16:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_16;
+            case Text_Database_Enum.options_Audio_17:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_17;
+            case Text_Database_Enum.options_Audio_18:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_18;
+            case Text_Database_Enum.options_Audio_19:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_19;
+            case Text_Database_Enum.options_Audio_20:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Audio_20;
+            #endregion
+
+            #region Blank
+            case Text_Database_Enum.options_Header_Blank:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Header_Blank;
+            case Text_Database_Enum.options_Blank_1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_1;
+            case Text_Database_Enum.options_Blank_2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_2;
+            case Text_Database_Enum.options_Blank_3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_3;
+            case Text_Database_Enum.options_Blank_4:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_4;
+            case Text_Database_Enum.options_Blank_5:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_5;
+            case Text_Database_Enum.options_Blank_6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_6;
+            case Text_Database_Enum.options_Blank_7:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_7;
+            case Text_Database_Enum.options_Blank_8:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_8;
+            case Text_Database_Enum.options_Blank_9:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_9;
+            case Text_Database_Enum.options_Blank_10:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_10;
+            case Text_Database_Enum.options_Blank_11:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_11;
+            case Text_Database_Enum.options_Blank_12:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_12;
+            case Text_Database_Enum.options_Blank_13:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_13;
+            case Text_Database_Enum.options_Blank_14:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_14;
+            case Text_Database_Enum.options_Blank_15:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_15;
+            case Text_Database_Enum.options_Blank_16:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_16;
+            case Text_Database_Enum.options_Blank_17:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_17;
+            case Text_Database_Enum.options_Blank_18:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_18;
+            case Text_Database_Enum.options_Blank_19:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_19;
+            case Text_Database_Enum.options_Blank_20:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].options_Blank_20;
+            #endregion
+
+            #region Overworld Menu
+            case Text_Database_Enum.overworld_1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_1;
+            case Text_Database_Enum.overworld_2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_2;
+            case Text_Database_Enum.overworld_3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_3;
+            case Text_Database_Enum.overworld_4:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_4;
+            case Text_Database_Enum.overworld_5:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_5;
+            case Text_Database_Enum.overworld_6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_6;
+            case Text_Database_Enum.overworld_7:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_7;
+            case Text_Database_Enum.overworld_8:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_8;
+            case Text_Database_Enum.overworld_9:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_9;
+            case Text_Database_Enum.overworld_10:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_10;
+            case Text_Database_Enum.overworld_11:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_11;
+            case Text_Database_Enum.overworld_12:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_12;
+            case Text_Database_Enum.overworld_13:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_13;
+            case Text_Database_Enum.overworld_14:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_14;
+            case Text_Database_Enum.overworld_15:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_15;
+            case Text_Database_Enum.overworld_16:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_16;
+            case Text_Database_Enum.overworld_17:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_17;
+            case Text_Database_Enum.overworld_18:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_18;
+            case Text_Database_Enum.overworld_19:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_19;
+            case Text_Database_Enum.overworld_20:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].overworld_20;
+            #endregion
+
+            #region Pause Menu
+            case Text_Database_Enum.pauseMenu_Button_BackToGame:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pauseMenu_Button_BackToGame;
+            case Text_Database_Enum.pauseMenu_Button_ExitLevel:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pauseMenu_Button_ExitLevel;
+            case Text_Database_Enum.pauseMenu_Button_3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pauseMenu_Button_3;
+            case Text_Database_Enum.pauseMenu_Button_4:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pauseMenu_Button_4;
+            case Text_Database_Enum.pauseMenu_Button_5:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pauseMenu_Button_5;
+            case Text_Database_Enum.pauseMenu_Button_6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pauseMenu_Button_6;
+            case Text_Database_Enum.pauseMenu_Button_7:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pauseMenu_Button_7;
+            case Text_Database_Enum.pauseMenu_Button_8:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pauseMenu_Button_8;
+            case Text_Database_Enum.pauseMenu_Button_9:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pauseMenu_Button_9;
+            case Text_Database_Enum.pauseMenu_Button_10:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pauseMenu_Button_10;
+            #endregion
+
+            #region Skin Names
+            case Text_Database_Enum.skinName_Default:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_Default;
+            case Text_Database_Enum.skinName_WaterRegion_Lv1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_WaterRegion_Lv1;
+            case Text_Database_Enum.skinName_WaterRegion_Lv2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_WaterRegion_Lv2;
+            case Text_Database_Enum.skinName_WaterRegion_Lv3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_WaterRegion_Lv3;
+            case Text_Database_Enum.skinName_WaterRegion_Lv4:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_WaterRegion_Lv4;
+            case Text_Database_Enum.skinName_WaterRegion_Lv5:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_WaterRegion_Lv5;
+            case Text_Database_Enum.skinName_WaterRegion_Lv6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_WaterRegion_Lv6;
+            case Text_Database_Enum.skinName_SandRegion_Lv1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_SandRegion_Lv1;
+            case Text_Database_Enum.skinName_SandRegion_Lv2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_SandRegion_Lv2;
+            case Text_Database_Enum.skinName_SandRegion_Lv3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_SandRegion_Lv3;
+            case Text_Database_Enum.skinName_SandRegion_Lv4:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_SandRegion_Lv4;
+            case Text_Database_Enum.skinName_SandRegion_Lv5:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_SandRegion_Lv5;
+            case Text_Database_Enum.skinName_SandRegion_Lv6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_SandRegion_Lv6;
+            case Text_Database_Enum.skinName_IceRegion_Lv1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_IceRegion_Lv1;
+            case Text_Database_Enum.skinName_IceRegion_Lv2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_IceRegion_Lv2;
+            case Text_Database_Enum.skinName_IceRegion_Lv3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_IceRegion_Lv3;
+            case Text_Database_Enum.skinName_IceRegion_Lv4:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_IceRegion_Lv4;
+            case Text_Database_Enum.skinName_IceRegion_Lv5:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_IceRegion_Lv5;
+            case Text_Database_Enum.skinName_IceRegion_Lv6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_IceRegion_Lv6;
+            case Text_Database_Enum.skinName_LavaRegion_Lv1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_LavaRegion_Lv1;
+            case Text_Database_Enum.skinName_LavaRegion_Lv2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_LavaRegion_Lv2;
+            case Text_Database_Enum.skinName_LavaRegion_Lv3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_LavaRegion_Lv3;
+            case Text_Database_Enum.skinName_LavaRegion_Lv4:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_LavaRegion_Lv4;
+            case Text_Database_Enum.skinName_LavaRegion_Lv5:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_LavaRegion_Lv5;
+            case Text_Database_Enum.skinName_LavaRegion_Lv6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_LavaRegion_Lv6;
+            case Text_Database_Enum.skinName_SwampRegion_Lv1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_SwampRegion_Lv1;
+            case Text_Database_Enum.skinName_SwampRegion_Lv2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_SwampRegion_Lv2;
+            case Text_Database_Enum.skinName_SwampRegion_Lv3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_SwampRegion_Lv3;
+            case Text_Database_Enum.skinName_SwampRegion_Lv4:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_SwampRegion_Lv4;
+            case Text_Database_Enum.skinName_SwampRegion_Lv5:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_SwampRegion_Lv5;
+            case Text_Database_Enum.skinName_SwampRegion_Lv6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_SwampRegion_Lv6;
+            case Text_Database_Enum.skinName_MetalRegion_Lv1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_MetalRegion_Lv1;
+            case Text_Database_Enum.skinName_MetalRegion_Lv2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_MetalRegion_Lv2;
+            case Text_Database_Enum.skinName_MetalRegion_Lv3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_MetalRegion_Lv3;
+            case Text_Database_Enum.skinName_MetalRegion_Lv4:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_MetalRegion_Lv4;
+            case Text_Database_Enum.skinName_MetalRegion_Lv5:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_MetalRegion_Lv5;
+            case Text_Database_Enum.skinName_MetalRegion_Lv6:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_MetalRegion_Lv6;
+            #endregion
+
+            #region Ability Names
+            case Text_Database_Enum.ability_Name_Snorkel:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Name_Snorkel;
+            case Text_Database_Enum.ability_Name_OxygenTank:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Name_OxygenTank;
+            case Text_Database_Enum.ability_Name_Flippers:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Name_Flippers;
+            case Text_Database_Enum.ability_Name_DrillHelmet:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Name_DrillHelmet;
+            case Text_Database_Enum.ability_Name_DrillBoots:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Name_DrillBoots;
+            case Text_Database_Enum.ability_Name_HandDrill:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Name_HandDrill;
+            case Text_Database_Enum.ability_Name_GrapplingHook:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Name_GrapplingHook;
+            case Text_Database_Enum.ability_Name_SpringShoes:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Name_SpringShoes;
+            case Text_Database_Enum.ability_Name_ClimbingGloves:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Name_ClimbingGloves;
+            case Text_Database_Enum.ability_Name_10:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Name_10;
+            case Text_Database_Enum.ability_Name_11:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Name_11;
+            case Text_Database_Enum.ability_Name_12:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Name_12;
+            case Text_Database_Enum.ability_Name_13:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Name_13;
+            case Text_Database_Enum.ability_Name_14:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Name_14;
+            #endregion
+
+            #region Ability Messages
+            case Text_Database_Enum.ability_Message_Snorkel_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_Snorkel_Keyboard;
+            case Text_Database_Enum.ability_Message_Snorkel_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_Snorkel_PlayStation;
+            case Text_Database_Enum.ability_Message_Snorkel_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_Snorkel_xBox;
+            case Text_Database_Enum.ability_Message_OxygenTank_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_OxygenTank_Keyboard;
+            case Text_Database_Enum.ability_Message_OxygenTank_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_OxygenTank_PlayStation;
+            case Text_Database_Enum.ability_Message_OxygenTank_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_OxygenTank_xBox;
+            case Text_Database_Enum.ability_Message_Flippers_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_Flippers_Keyboard;
+            case Text_Database_Enum.ability_Message_Flippers_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_Flippers_PlayStation;
+            case Text_Database_Enum.ability_Message_Flippers_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_Flippers_xBox;
+            case Text_Database_Enum.ability_Message_DrillHelmet_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_DrillHelmet_Keyboard;
+            case Text_Database_Enum.ability_Message_DrillHelmet_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_DrillHelmet_PlayStation;
+            case Text_Database_Enum.ability_Message_DrillHelmet_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_DrillHelmet_xBox;
+            case Text_Database_Enum.ability_Message_DrillBoots_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_DrillBoots_Keyboard;
+            case Text_Database_Enum.ability_Message_DrillBoots_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_DrillBoots_PlayStation;
+            case Text_Database_Enum.ability_Message_DrillBoots_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_DrillBoots_xBox;
+            case Text_Database_Enum.ability_Message_HandDrill_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_HandDrill_Keyboard;
+            case Text_Database_Enum.ability_Message_HandDrill_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_HandDrill_PlayStation;
+            case Text_Database_Enum.ability_Message_HandDrill_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_HandDrill_xBox;
+            case Text_Database_Enum.ability_Message_GrapplingHook_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_GrapplingHook_Keyboard;
+            case Text_Database_Enum.ability_Message_GrapplingHook_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_GrapplingHook_PlayStation;
+            case Text_Database_Enum.ability_Message_GrapplingHook_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_GrapplingHook_xBox;
+            case Text_Database_Enum.ability_Message_SpringShoes_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_SpringShoes_Keyboard;
+            case Text_Database_Enum.ability_Message_SpringShoes_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_SpringShoes_PlayStation;
+            case Text_Database_Enum.ability_Message_SpringShoes_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_SpringShoes_xBox;
+            case Text_Database_Enum.ability_Message_ClimbingGloves_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_ClimbingGloves_Keyboard;
+            case Text_Database_Enum.ability_Message_ClimbingGloves_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_ClimbingGloves_PlayStation;
+            case Text_Database_Enum.ability_Message_ClimbingGloves_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_ClimbingGloves_xBox;
+            case Text_Database_Enum.ability_Message_10_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_10_Keyboard;
+            case Text_Database_Enum.ability_Message_10_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_10_PlayStation;
+            case Text_Database_Enum.ability_Message_10_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_10_xBox;
+            case Text_Database_Enum.ability_Message_11_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_11_Keyboard;
+            case Text_Database_Enum.ability_Message_11_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_11_PlayStation;
+            case Text_Database_Enum.ability_Message_11_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_11_xBox;
+            case Text_Database_Enum.ability_Message_12_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_12_Keyboard;
+            case Text_Database_Enum.ability_Message_12_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_12_PlayStation;
+            case Text_Database_Enum.ability_Message_12_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_12_xBox;
+            case Text_Database_Enum.ability_Message_13_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_13_Keyboard;
+            case Text_Database_Enum.ability_Message_13_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_13_PlayStation;
+            case Text_Database_Enum.ability_Message_13_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_13_xBox;
+            case Text_Database_Enum.ability_Message_14_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_14_Keyboard;
+            case Text_Database_Enum.ability_Message_14_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_14_PlayStation;
+            case Text_Database_Enum.ability_Message_14_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_14_xBox;
+            #endregion
+
+            #region Pickup Messages
+            case Text_Database_Enum.pickup_Message_Eccence_1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_Eccence_1;
+            case Text_Database_Enum.pickup_Message_Eccence_2:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_Eccence_2;
+            case Text_Database_Enum.pickup_Message_Eccence_3:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_Eccence_3;
+            case Text_Database_Enum.pickup_Message_Footprint:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_Footprint;
+            case Text_Database_Enum.pickup_Message_Skin_First:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_Skin_First;
+            case Text_Database_Enum.pickup_Message_Skin:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_Skin;
+            case Text_Database_Enum.pickup_Message_7:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_7;
+            case Text_Database_Enum.pickup_Message_8:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_8;
+            case Text_Database_Enum.pickup_Message_9:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_9;
+            case Text_Database_Enum.pickup_Message_10:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_10;
+            case Text_Database_Enum.pickup_Message_11:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_11;
+            case Text_Database_Enum.pickup_Message_12:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_12;
+            case Text_Database_Enum.pickup_Message_13:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_13;
+            case Text_Database_Enum.pickup_Message_14:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_14;
+            case Text_Database_Enum.pickup_Message_15:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_15;
+            #endregion
+
+            #region Tutorial Messages
+            case Text_Database_Enum.tutorial_Message_Movement_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Movement_Keyboard;
+            case Text_Database_Enum.tutorial_Message_Movement_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Movement_PlayStation;
+            case Text_Database_Enum.tutorial_Message_Movement_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Movement_xBox;
+            case Text_Database_Enum.tutorial_Message_CameraRotation_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_CameraRotation_Keyboard;
+            case Text_Database_Enum.tutorial_Message_CameraRotation_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_CameraRotation_PlayStation;
+            case Text_Database_Enum.tutorial_Message_CameraRotation_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_CameraRotation_xBox;
+            case Text_Database_Enum.tutorial_Message_Respawn_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Respawn_Keyboard;
+            case Text_Database_Enum.tutorial_Message_Respawn_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Respawn_PlayStation;
+            case Text_Database_Enum.tutorial_Message_Respawn_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Respawn_xBox;
+            case Text_Database_Enum.tutorial_Message_FreeCam_1_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_FreeCam_1_Keyboard;
+            case Text_Database_Enum.tutorial_Message_FreeCam_1_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_FreeCam_1_PlayStation;
+            case Text_Database_Enum.tutorial_Message_FreeCam_1_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_FreeCam_1_xBox;
+            case Text_Database_Enum.tutorial_Message_FreeCam_2_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_FreeCam_2_Keyboard;
+            case Text_Database_Enum.tutorial_Message_FreeCam_2_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_FreeCam_2_PlayStation;
+            case Text_Database_Enum.tutorial_Message_FreeCam_2_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_FreeCam_2_xBox;
+            case Text_Database_Enum.tutorial_Message_Demo_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Demo_Keyboard;
+            case Text_Database_Enum.tutorial_Message_Demo_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Demo_PlayStation;
+            case Text_Database_Enum.tutorial_Message_Demo_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_Demo_xBox;
+            case Text_Database_Enum.tutorial_Message_7_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_7_Keyboard;
+            case Text_Database_Enum.tutorial_Message_7_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_7_PlayStation;
+            case Text_Database_Enum.tutorial_Message_7_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_7_xBox;
+            case Text_Database_Enum.tutorial_Message_8_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_8_Keyboard;
+            case Text_Database_Enum.tutorial_Message_8_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_8_PlayStation;
+            case Text_Database_Enum.tutorial_Message_8_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_8_xBox;
+            case Text_Database_Enum.tutorial_Message_9_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_9_Keyboard;
+            case Text_Database_Enum.tutorial_Message_9_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_9_PlayStation;
+            case Text_Database_Enum.tutorial_Message_9_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_9_xBox;
+            case Text_Database_Enum.tutorial_Message_10_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_10_Keyboard;
+            case Text_Database_Enum.tutorial_Message_10_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_10_PlayStation;
+            case Text_Database_Enum.tutorial_Message_10_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_10_xBox;
+
+            case Text_Database_Enum.tutorial_Message_11_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_11_Keyboard;
+
+            case Text_Database_Enum.tutorial_Message_11_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_11_PlayStation;
+
+            case Text_Database_Enum.tutorial_Message_11_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_11_xBox;
+
+            case Text_Database_Enum.tutorial_Message_12_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_12_Keyboard;
+
+            case Text_Database_Enum.tutorial_Message_12_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_12_PlayStation;
+
+            case Text_Database_Enum.tutorial_Message_12_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_12_xBox;
+
+            case Text_Database_Enum.tutorial_Message_13_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_13_Keyboard;
+
+            case Text_Database_Enum.tutorial_Message_13_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_13_PlayStation;
+
+            case Text_Database_Enum.tutorial_Message_13_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_13_xBox;
+
+            case Text_Database_Enum.tutorial_Message_14_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_14_Keyboard;
+
+            case Text_Database_Enum.tutorial_Message_14_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_14_PlayStation;
+
+            case Text_Database_Enum.tutorial_Message_14_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_14_xBox;
+
+            case Text_Database_Enum.tutorial_Message_15_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_15_Keyboard;
+
+            case Text_Database_Enum.tutorial_Message_15_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_15_PlayStation;
+
+            case Text_Database_Enum.tutorial_Message_15_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].tutorial_Message_15_xBox;
+
+            #endregion
+
+            #region InterractableButton Message
+            case Text_Database_Enum.interractableButton_Message_Talk_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Talk_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_Talk_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Talk_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_Talk_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Talk_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_Interract_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Interract_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_Interract_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Interract_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_Interract_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Interract_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_FlippersUP_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_FlippersUP_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_FlippersUP_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_FlippersUP_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_FlippersUP_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_FlippersUP_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_FlippersDOWN_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_FlippersDOWN_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_FlippersDOWN_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_FlippersDOWN_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_FlippersDOWN_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_FlippersDOWN_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_DrillHelmet_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_DrillHelmet_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_DrillHelmet_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_DrillHelmet_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_DrillHelmet_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_DrillHelmet_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_DrillShoes_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_DrillShoes_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_DrillShoes_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_DrillShoes_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_DrillShoes_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_DrillShoes_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_HandDrill_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_HandDrill_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_HandDrill_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_HandDrill_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_HandDrill_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_HandDrill_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_GrapplingHook_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_GrapplingHook_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_GrapplingHook_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_GrapplingHook_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_GrapplingHook_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_GrapplingHook_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_SpringShoes_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_SpringShoes_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_SpringShoes_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_SpringShoes_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_SpringShoes_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_SpringShoes_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_ClimbingGloves_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_ClimbingGloves_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_ClimbingGloves_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_ClimbingGloves_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_ClimbingGloves_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_ClimbingGloves_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_Respawn_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Respawn_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_Respawn_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Respawn_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_Respawn_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_Respawn_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_12_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_12_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_12_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_12_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_12_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_12_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_13_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_13_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_13_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_13_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_13_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_13_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_14_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_14_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_14_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_14_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_14_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_14_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_15_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_15_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_15_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_15_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_15_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_15_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_16_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_16_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_16_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_16_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_16_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_16_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_17_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_17_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_17_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_17_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_17_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_17_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_18_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_18_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_18_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_18_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_18_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_18_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_19_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_19_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_19_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_19_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_19_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_19_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_20_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_20_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_20_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_20_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_20_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_20_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_21_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_21_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_21_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_21_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_21_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_21_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_22_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_22_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_22_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_22_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_22_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_22_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_23_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_23_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_23_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_23_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_23_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_23_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_24_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_24_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_24_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_24_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_24_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_24_xBox;
+
+            case Text_Database_Enum.interractableButton_Message_25_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_25_Keyboard;
+
+            case Text_Database_Enum.interractableButton_Message_25_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_25_PlayStation;
+
+            case Text_Database_Enum.interractableButton_Message_25_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_25_xBox;
+
+            #endregion
+
+            default:
+                return "";
         }
     }
 }
