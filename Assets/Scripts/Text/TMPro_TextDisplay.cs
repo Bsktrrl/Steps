@@ -8,6 +8,8 @@ public class TMPro_TextDisplay : MonoBehaviour
 {
     [SerializeField] Text_Database_Enum textToDisplay;
 
+    [SerializeField] bool textToDisplay_additional;
+
 
     //--------------------
 
@@ -1493,6 +1495,11 @@ public class TMPro_TextDisplay : MonoBehaviour
             default:
                 GetComponent<TextMeshProUGUI>().text = "";
                 break;
+        }
+
+        if (textToDisplay_additional)
+        {
+            GetComponent<TextMeshProUGUI>().text += "\n\n" + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_14_Keyboard;
         }
     }
     public string GetText()

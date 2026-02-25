@@ -586,11 +586,11 @@ public class TextData : MonoBehaviour
             #endregion
 }
 
-//Remove elements that doesn't have a name
-//game_TextDatabase.gameText_LanguageList = game_TextDatabase.gameText_LanguageList.Where(obj => obj != null && !string.IsNullOrEmpty(obj.name_Region_Water)).ToList();
+        //Remove elements that doesn't have a name
+        //game_TextDatabase.gameText_LanguageList = game_TextDatabase.gameText_LanguageList.Where(obj => obj != null && !string.IsNullOrEmpty(obj.name_Region_Water)).ToList();
 
-//Input data into DataManager for easy access thoughout the game
-DataManager.Instance.game_TextDatabase_Store = game_TextDatabase;
+        //Input data into DataManager for easy access thoughout the game
+        DataManager.Instance.game_TextDatabase_Store = game_TextDatabase;
     }
 
 
@@ -1456,48 +1456,48 @@ public enum Text_Database_Enum
     #endregion
 
     #region Ability Messages
-    [InspectorName("Ability Messages / Snorkel")] ability_Message_Snorkel_Keyboard,
-    [InspectorName("Ability Messages / Snorkel")] ability_Message_Snorkel_PlayStation,
-    [InspectorName("Ability Messages / Snorkel")] ability_Message_Snorkel_xBox,
-    [InspectorName("Ability Messages / Oxygen Tank")] ability_Message_OxygenTank_Keyboard,
-    [InspectorName("Ability Messages / Oxygen Tank")] ability_Message_OxygenTank_PlayStation,
-    [InspectorName("Ability Messages / Oxygen Tank")] ability_Message_OxygenTank_xBox,
-    [InspectorName("Ability Messages / Flippers")] ability_Message_Flippers_Keyboard,
-    [InspectorName("Ability Messages / Flippers")] ability_Message_Flippers_PlayStation,
-    [InspectorName("Ability Messages / Flippers")] ability_Message_Flippers_xBox,
-    [InspectorName("Ability Messages / Drill Helmet")] ability_Message_DrillHelmet_Keyboard,
-    [InspectorName("Ability Messages / Drill Helmet")] ability_Message_DrillHelmet_PlayStation,
-    [InspectorName("Ability Messages / Drill Helmet")] ability_Message_DrillHelmet_xBox,
-    [InspectorName("Ability Messages / Drill Boots")] ability_Message_DrillBoots_Keyboard,
-    [InspectorName("Ability Messages / Drill Boots")] ability_Message_DrillBoots_PlayStation,
-    [InspectorName("Ability Messages / Drill Boots")] ability_Message_DrillBoots_xBox,
-    [InspectorName("Ability Messages / Hand Drill")] ability_Message_HandDrill_Keyboard,
-    [InspectorName("Ability Messages / Hand Drill")] ability_Message_HandDrill_PlayStation,
-    [InspectorName("Ability Messages / Hand Drill")] ability_Message_HandDrill_xBox,
-    [InspectorName("Ability Messages / Grappling Hook")] ability_Message_GrapplingHook_Keyboard,
-    [InspectorName("Ability Messages / Grappling Hook")] ability_Message_GrapplingHook_PlayStation,
-    [InspectorName("Ability Messages / Grappling Hook")] ability_Message_GrapplingHook_xBox,
-    [InspectorName("Ability Messages / Spring Shoes")] ability_Message_SpringShoes_Keyboard,
-    [InspectorName("Ability Messages / Spring Shoes")] ability_Message_SpringShoes_PlayStation,
-    [InspectorName("Ability Messages / Spring Shoes")] ability_Message_SpringShoes_xBox,
-    [InspectorName("Ability Messages / Climbing Gloves")] ability_Message_ClimbingGloves_Keyboard,
-    [InspectorName("Ability Messages / Climbing Gloves")] ability_Message_ClimbingGloves_PlayStation,
-    [InspectorName("Ability Messages / Climbing Gloves")] ability_Message_ClimbingGloves_xBox,
-    [InspectorName("Ability Messages / 10")] ability_Message_10_Keyboard,
-    [InspectorName("Ability Messages / 10")] ability_Message_10_PlayStation,
-    [InspectorName("Ability Messages / 10")] ability_Message_10_xBox,
-    [InspectorName("Ability Messages / 11")] ability_Message_11_Keyboard,
-    [InspectorName("Ability Messages / 11")] ability_Message_11_PlayStation,
-    [InspectorName("Ability Messages / 11")] ability_Message_11_xBox,
-    [InspectorName("Ability Messages / 12")] ability_Message_12_Keyboard,
-    [InspectorName("Ability Messages / 12")] ability_Message_12_PlayStation,
-    [InspectorName("Ability Messages / 12")] ability_Message_12_xBox,
-    [InspectorName("Ability Messages / 13")] ability_Message_13_Keyboard,
-    [InspectorName("Ability Messages / 13")] ability_Message_13_PlayStation,
-    [InspectorName("Ability Messages / 13")] ability_Message_13_xBox,
-    [InspectorName("Ability Messages / 14")] ability_Message_14_Keyboard,
-    [InspectorName("Ability Messages / 14")] ability_Message_14_PlayStation,
-    [InspectorName("Ability Messages / 14")] ability_Message_14_xBox,
+    [InspectorName("Ability Messages / Snorkel / Keyboard")] ability_Message_Snorkel_Keyboard,
+    [InspectorName("Ability Messages / Snorkel / PlayStation")] ability_Message_Snorkel_PlayStation,
+    [InspectorName("Ability Messages / Snorkel / xBox")] ability_Message_Snorkel_xBox,
+    [InspectorName("Ability Messages / Oxygen Tank / Keyboard")] ability_Message_OxygenTank_Keyboard,
+    [InspectorName("Ability Messages / Oxygen Tank / PlayStation")] ability_Message_OxygenTank_PlayStation,
+    [InspectorName("Ability Messages / Oxygen Tank / xBox")] ability_Message_OxygenTank_xBox,
+    [InspectorName("Ability Messages / Flippers / Keyboard")] ability_Message_Flippers_Keyboard,
+    [InspectorName("Ability Messages / Flippers / PlayStation")] ability_Message_Flippers_PlayStation,
+    [InspectorName("Ability Messages / Flippers / xBox")] ability_Message_Flippers_xBox,
+    [InspectorName("Ability Messages / Drill Helmet / Keyboard")] ability_Message_DrillHelmet_Keyboard,
+    [InspectorName("Ability Messages / Drill Helmet / PlayStation")] ability_Message_DrillHelmet_PlayStation,
+    [InspectorName("Ability Messages / Drill Helmet / xBox")] ability_Message_DrillHelmet_xBox,
+    [InspectorName("Ability Messages / Drill Boots / Keyboard")] ability_Message_DrillBoots_Keyboard,
+    [InspectorName("Ability Messages / Drill Boots / PlayStation")] ability_Message_DrillBoots_PlayStation,
+    [InspectorName("Ability Messages / Drill Boots / xBox")] ability_Message_DrillBoots_xBox,
+    [InspectorName("Ability Messages / Hand Drill / Keyboard")] ability_Message_HandDrill_Keyboard,
+    [InspectorName("Ability Messages / Hand Drill / PlayStation")] ability_Message_HandDrill_PlayStation,
+    [InspectorName("Ability Messages / Hand Drill / xBox")] ability_Message_HandDrill_xBox,
+    [InspectorName("Ability Messages / Grappling Hook / Keyboard")] ability_Message_GrapplingHook_Keyboard,
+    [InspectorName("Ability Messages / Grappling Hook / PlayStation")] ability_Message_GrapplingHook_PlayStation,
+    [InspectorName("Ability Messages / Grappling Hook / xBox")] ability_Message_GrapplingHook_xBox,
+    [InspectorName("Ability Messages / Spring Shoes / Keyboard")] ability_Message_SpringShoes_Keyboard,
+    [InspectorName("Ability Messages / Spring Shoes / PlayStation")] ability_Message_SpringShoes_PlayStation,
+    [InspectorName("Ability Messages / Spring Shoes / xBox")] ability_Message_SpringShoes_xBox,
+    [InspectorName("Ability Messages / Climbing Gloves / Keyboard")] ability_Message_ClimbingGloves_Keyboard,
+    [InspectorName("Ability Messages / Climbing Gloves / PlayStation")] ability_Message_ClimbingGloves_PlayStation,
+    [InspectorName("Ability Messages / Climbing Gloves / xBox")] ability_Message_ClimbingGloves_xBox,
+    [InspectorName("Ability Messages / 10 / Keyboard")] ability_Message_10_Keyboard,
+    [InspectorName("Ability Messages / 10 / PlayStation")] ability_Message_10_PlayStation,
+    [InspectorName("Ability Messages / 10 / xBox")] ability_Message_10_xBox,
+    [InspectorName("Ability Messages / 11 / Keyboard")] ability_Message_11_Keyboard,
+    [InspectorName("Ability Messages / 11 / PlayStation")] ability_Message_11_PlayStation,
+    [InspectorName("Ability Messages / 11 / xBox")] ability_Message_11_xBox,
+    [InspectorName("Ability Messages / 12 / Keyboard")] ability_Message_12_Keyboard,
+    [InspectorName("Ability Messages / 12 / PlayStation")] ability_Message_12_PlayStation,
+    [InspectorName("Ability Messages / 12 / xBox")] ability_Message_12_xBox,
+    [InspectorName("Ability Messages / 13 / Keyboard")] ability_Message_13_Keyboard,
+    [InspectorName("Ability Messages / 13 / PlayStation")] ability_Message_13_PlayStation,
+    [InspectorName("Ability Messages / 13 / xBox")] ability_Message_13_xBox,
+    [InspectorName("Ability Messages / 14 / Keyboard")] ability_Message_14_Keyboard,
+    [InspectorName("Ability Messages / 14 / PlayStation")] ability_Message_14_PlayStation,
+    [InspectorName("Ability Messages / 14 / xBox")] ability_Message_14_xBox,
     #endregion
 
     #region Pickup Messages

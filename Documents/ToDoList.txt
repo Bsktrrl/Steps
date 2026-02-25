@@ -14,6 +14,7 @@ Februar:
 1.6. Go through the whole list, one section at a time. Control that buttons are swapped out with buttons and other messages are swapped out by code
 	- Remove all "LanguageText"-Scripts attached to TextMeshProGUI-objects and swap them out with the new "TMPro_TextDisplay"-script
 	- Rework Popups / Tutorial Messages to work with the new system
+	- Change so Flippers and OxygenTank is swapped
 1.7. Remove SkinName list
 1.8. Add text to all messages, and check that they work as intended, in all languages
 
@@ -50,7 +51,9 @@ Februar:
 
 43. PlayerSpawnEffect på starten av første level man spiller (legge inn saveState slik at den ikke dukker opp igjen etter første)
 
-44. Fjerne 3x2 blokker rundt kameraet, ikke bare den blokken som kameraet er inni
+44. KameraHidden: Fjerne 3x2 blokker rundt kameraet, ikke bare den blokken som kameraet er inni
+
+45. Checkpoint-røyk: Fikse slik at det kun er 1 røykObject attached til et checkpoint
 
 
 ----- LATER

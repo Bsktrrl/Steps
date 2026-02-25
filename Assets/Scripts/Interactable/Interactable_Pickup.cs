@@ -13,7 +13,7 @@ public class Interactable_Pickup : MonoBehaviour
     public static event Action Action_AbilityPickupGot;
 
     public static event Action Action_SnorkelGot;
-    public static event Action Action_OxygenTankGot;
+    public static event Action Action_FlippersGot;
     public static event Action Action_JumpingGot;
 
 
@@ -377,12 +377,12 @@ public class Interactable_Pickup : MonoBehaviour
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers = true;
                 Action_AbilityPickupGot_isActive();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.Flippers = true;
+                Action_FlippersGot?.Invoke();
                 break;
             case Abilities.OxygenTank:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.OxygenTank = true;
                 Action_AbilityPickupGot_isActive();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.OxygenTank = true;
-                Action_OxygenTankGot?.Invoke();
                 break;
             case Abilities.SpringShoes:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SpringShoes = true;
@@ -503,8 +503,8 @@ public enum Abilities
     None,
 
     Snorkel,
-    Flippers,
     OxygenTank,
+    Flippers,
 
     DrillHelmet,
     DrillBoots,

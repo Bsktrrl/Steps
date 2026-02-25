@@ -88,7 +88,7 @@ public class AbilityDisplay_PauseMenu : MonoBehaviour
         else
             ability_Swim.SetActive(false);
 
-        if (DataManager.Instance.playerStats_Store.abilitiesGot_Temporary.Flippers || DataManager.Instance.playerStats_Store.abilitiesGot_Permanent.Flippers)
+        if (DataManager.Instance.playerStats_Store.abilitiesGot_Temporary.OxygenTank || DataManager.Instance.playerStats_Store.abilitiesGot_Permanent.OxygenTank)
         {
             active_AbilityButtons.Add(ability_SwiftSwim);
             ability_SwiftSwim.SetActive(true);
@@ -96,14 +96,13 @@ public class AbilityDisplay_PauseMenu : MonoBehaviour
         else
             ability_SwiftSwim.SetActive(false);
 
-        if (DataManager.Instance.playerStats_Store.abilitiesGot_Temporary.OxygenTank || DataManager.Instance.playerStats_Store.abilitiesGot_Permanent.OxygenTank)
+        if (DataManager.Instance.playerStats_Store.abilitiesGot_Temporary.Flippers || DataManager.Instance.playerStats_Store.abilitiesGot_Permanent.Flippers)
         {
             active_AbilityButtons.Add(ability_FreeSwim);
             ability_FreeSwim.SetActive(true);
         }
         else
             ability_FreeSwim.SetActive(false);
-
 
         if (DataManager.Instance.playerStats_Store.abilitiesGot_Temporary.DrillHelmet || DataManager.Instance.playerStats_Store.abilitiesGot_Permanent.DrillHelmet)
         {

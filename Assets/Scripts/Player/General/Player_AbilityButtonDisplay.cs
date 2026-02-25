@@ -110,7 +110,7 @@ public class Player_AbilityButtonDisplay : Singleton<Player_AbilityButtonDisplay
                 swim_FirstTime = true;
             }
 
-            if (!freeSwim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank || PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank))
+            if (!freeSwim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers || PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers))
             {
                 Ability_FreeSwim_Activation();
                 freeSwim_FirstTime = true;
@@ -124,7 +124,7 @@ public class Player_AbilityButtonDisplay : Singleton<Player_AbilityButtonDisplay
                 swim_FirstTime = false;
             }
 
-            if (freeSwim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank || PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank))
+            if (freeSwim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers || PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers))
             {
                 Ability_FreeSwim_Deactivation();
                 freeSwim_FirstTime = false;
@@ -141,8 +141,8 @@ public class Player_AbilityButtonDisplay : Singleton<Player_AbilityButtonDisplay
         abilityParent.SetActive(true);
 
         Ability_Appearance(abilitySprite_Swim, PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel, PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel);
-        Ability_Appearance(abilitySprite_SwiftSwim, PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers, PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers);
-        Ability_Appearance(abilitySprite_FreeSwim, PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank, PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank);
+        Ability_Appearance(abilitySprite_SwiftSwim, PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank, PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank);
+        Ability_Appearance(abilitySprite_FreeSwim, PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers, PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers);
 
         Ability_Appearance(abilitySprite_Ascend, PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillHelmet, PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillHelmet);
         Ability_Appearance(abilitySprite_Descend, PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillBoots, PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillBoots);

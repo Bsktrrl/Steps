@@ -14,7 +14,7 @@ public class Block_Water : MonoBehaviour
     {
         DataManager.Action_dataHasLoaded += UpdateMovementCostWithSwimming;
         Interactable_Pickup.Action_SnorkelGot += UpdateMovementCostWithSwimming;
-        Interactable_Pickup.Action_OxygenTankGot += UpdateMovementCostWithSwimming;
+        Interactable_Pickup.Action_FlippersGot += UpdateMovementCostWithSwimming;
         Movement.Action_StepTaken += UpdateMovementCostWithSwimming;
     }
 
@@ -22,7 +22,7 @@ public class Block_Water : MonoBehaviour
     {
         DataManager.Action_dataHasLoaded -= UpdateMovementCostWithSwimming;
         Interactable_Pickup.Action_SnorkelGot -= UpdateMovementCostWithSwimming;
-        Interactable_Pickup.Action_OxygenTankGot -= UpdateMovementCostWithSwimming;
+        Interactable_Pickup.Action_FlippersGot -= UpdateMovementCostWithSwimming;
         Movement.Action_StepTaken -= UpdateMovementCostWithSwimming;
     }
 
@@ -39,7 +39,7 @@ public class Block_Water : MonoBehaviour
         if (hasRoots)
         {
             if (gameObject && gameObject.GetComponent<BlockInfo>()
-                && (PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank || PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank))
+                && (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers || PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers))
             {
                 gameObject.GetComponent<BlockInfo>().movementCost = 0;
                 gameObject.GetComponent<BlockInfo>().movementCost_Temp = 0;
@@ -60,7 +60,7 @@ public class Block_Water : MonoBehaviour
                 {
                     if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent != null || PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary != null)
                     {
-                        if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.OxygenTank == true || PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.OxygenTank == true)
+                        if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Permanent.Flippers == true || PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers == true)
                         {
                             if (gameObject.GetComponent<BlockInfo>())
                             {
