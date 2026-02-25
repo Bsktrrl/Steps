@@ -179,31 +179,33 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
         //Set variables
 
-        //Language
-        switch (SettingsManager.Instance.settingsData.currentLanguage)
-        {
-            case Languages.Norwegian:
-                levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_norwegian;
-                break;
-            case Languages.English:
-                levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_english;
-                break;
-            case Languages.German:
-                levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_german;
-                break;
-            case Languages.Japanese:
-                levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_japanese;
-                break;
-            case Languages.Chinese:
-                levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_chinese;
-                break;
-            case Languages.Korean:
-                levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_korean;
-                break;
+        levelName.text = MapManager.Instance.gameObject.GetComponent<TMPro_TextDisplay>().GetText();
 
-            default:
-                break;
-        }
+        ////Language
+        //switch (SettingsManager.Instance.settingsData.currentLanguage)
+        //{
+        //    case Languages.Norwegian:
+        //        levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_norwegian;
+        //        break;
+        //    case Languages.English:
+        //        levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_english;
+        //        break;
+        //    case Languages.German:
+        //        levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_german;
+        //        break;
+        //    case Languages.Japanese:
+        //        levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_japanese;
+        //        break;
+        //    case Languages.Chinese:
+        //        levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_chinese;
+        //        break;
+        //    case Languages.Korean:
+        //        levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_korean;
+        //        break;
+
+        //    default:
+        //        break;
+        //}
 
         //Skin
         skinImage.sprite = SelectSpriteForLevel(mapInfo.skintype);

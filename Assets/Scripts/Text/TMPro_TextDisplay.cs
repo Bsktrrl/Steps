@@ -19,9 +19,9 @@ public class TMPro_TextDisplay : MonoBehaviour
     {
         SettingsManager.Action_SetNewLanguage += ShowText;
     }
-    private void OnDisable()
+    private void OnDestroy()
     {
-        SettingsManager.Action_SetNewLanguage += ShowText;
+        SettingsManager.Action_SetNewLanguage -= ShowText;
     }
 
 
@@ -31,6 +31,7 @@ public class TMPro_TextDisplay : MonoBehaviour
     void ShowText()
     {
         if (!GetComponent<TextMeshProUGUI>()) return;
+        if (DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList.Count <= 0) return;
 
         switch (textToDisplay)
         {

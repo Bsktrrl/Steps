@@ -18,6 +18,11 @@ public class HoleShaderOnOffScript : MonoBehaviour
         CameraController.Action_RotateCamera_Start += HoleShader_On;
         CameraController.Action_RotateCamera_End += HoleShader_Off;
     }
+    private void OnDisable()
+    {
+        CameraController.Action_RotateCamera_Start -= HoleShader_On;
+        CameraController.Action_RotateCamera_End -= HoleShader_Off;
+    }
 
 
     //--------------------

@@ -39,7 +39,7 @@ public class GameData
     /*[HideInInspector]*/ public OneTimeRunData oneTimeRunData_Save = new OneTimeRunData();
     
     //Text Database
-    /*[HideInInspector]*/ /*public Game_TextDatabase game_TextDatabase_Save = new Game_TextDatabase();*/
+    /*[HideInInspector]*/ public Game_TextDatabase game_TextDatabase_Save = new Game_TextDatabase();
 
 
     //--------------------
