@@ -26,7 +26,7 @@ public class UnlockDisplay : MonoBehaviour
 
     public void SetDisplay_Unavailable(RegionName region, string level)
     {
-        unavailable_obj.GetComponentInChildren<TextMeshProUGUI>().text = "Find the skin in " + region.ToString() + " Lv." + level + " to unlock";
+        unavailable_obj.GetComponentInChildren<TextMeshProUGUI>().text = UnavailableMessage(region, level);
 
         CopyPulseScaleTo(unavailable_obj);
 
@@ -43,7 +43,7 @@ public class UnlockDisplay : MonoBehaviour
 
     public void SetDisplay_LevelReached(RegionName region, string level)
     {
-        levelReached_obj.GetComponentInChildren<TextMeshProUGUI>().text = "Find the skin in " + region.ToString() + " Lv." + level + " to unlock";
+        levelReached_obj.GetComponentInChildren<TextMeshProUGUI>().text = UnavailableMessage(region, level);
 
         CopyPulseScaleTo(levelReached_obj);
 
@@ -128,29 +128,29 @@ public class UnlockDisplay : MonoBehaviour
                 break;
 
             case HatType.Floriel_Hat:
-                npcName = "Floríel";
-                break;
-            case HatType.Granith_Hat:
-                npcName = "Granith";
+                npcName = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Water;
                 break;
             case HatType.Archie_Hat:
-                npcName = "Archie";
+                npcName = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Sand;
                 break;
             case HatType.Aisa_Hat:
-                npcName = "Aisa";
+                npcName = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Ice;
+                break;
+            case HatType.Granith_Hat:
+                npcName = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Lava;
                 break;
             case HatType.Mossy_Hat:
-                npcName = "Mossy";
+                npcName = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Swamp;
                 break;
             case HatType.Larry_Hat:
-                npcName = "Larry";
+                npcName = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Metal;
                 break;
 
             default:
                 break;
         }
 
-        finishQuestline_obj.GetComponentInChildren<TextMeshProUGUI>().text = "Finish the questline of " + npcName;
+        finishQuestline_obj.GetComponentInChildren<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_Headgear_Unavailable + " " + npcName;
 
         CopyPulseScaleTo(finishQuestline_obj);
 
@@ -181,5 +181,52 @@ public class UnlockDisplay : MonoBehaviour
     public void SetSelectedBlockName(string name)
     {
         selectedBlockName.text = name;
+    }
+
+
+    //--------------------
+
+
+    string UnavailableMessage(RegionName region, string level)
+    {
+        switch (region)
+        {
+            case RegionName.None:
+                return "";
+
+            case RegionName.Rivergreen:
+                return
+           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_1 + " " +
+           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Water + " Lv." + level +
+           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_2;
+            case RegionName.Sandlands:
+                return
+           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_1 + " " +
+           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Sand + " Lv." + level +
+           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_2;
+            case RegionName.Frostfields:
+                return
+           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_1 + " " +
+           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Ice + " Lv." + level +
+           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_2;
+            case RegionName.Firevein:
+                return
+           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_1 + " " +
+           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Lava + " Lv." + level +
+           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_2;
+            case RegionName.Witchmire:
+                return
+           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_1 + " " +
+           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Swamp + " Lv." + level +
+           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_2;
+            case RegionName.Metalworks:
+                return
+           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_1 + " " +
+           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Metal + " Lv." + level +
+           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_2;
+
+            default:
+                return "";
+        }
     }
 }

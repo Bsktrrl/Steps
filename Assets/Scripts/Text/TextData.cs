@@ -56,7 +56,7 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Lava, 3);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Swamp, 4);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Metal, 5);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_6, 6);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_7, 6);
             #endregion
 
             #region Names of levels in Water Region
@@ -553,13 +553,44 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_25_PlayStation, 465);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_25_xBox, 466);
             #endregion
-        }
 
-        //Remove elements that doesn't have a name
-        //game_TextDatabase.gameText_LanguageList = game_TextDatabase.gameText_LanguageList.Where(obj => obj != null && !string.IsNullOrEmpty(obj.name_Region_Water)).ToList();
+            #region Finish Regions Messages
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Water, 469);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Sand, 470);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Ice, 471);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Lava, 472);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Swamp, 473);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Metal, 474);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_7, 475);
+            #endregion
 
-        //Input data into DataManager for easy access thoughout the game
-        DataManager.Instance.game_TextDatabase_Store = game_TextDatabase;
+            #region NPC Names
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Water, 478);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Sand, 479);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Ice, 480);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Lava, 481);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Swamp, 482);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Metal, 483);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_7, 484);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Antagonist, 485);
+            #endregion
+
+            #region NPC Hat Names
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_Water, 488);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_Sand, 489);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_Ice, 490);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_Lava, 491);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_Swamp, 492);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_Metal, 493);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_7, 494);
+            #endregion
+}
+
+//Remove elements that doesn't have a name
+//game_TextDatabase.gameText_LanguageList = game_TextDatabase.gameText_LanguageList.Where(obj => obj != null && !string.IsNullOrEmpty(obj.name_Region_Water)).ToList();
+
+//Input data into DataManager for easy access thoughout the game
+DataManager.Instance.game_TextDatabase_Store = game_TextDatabase;
     }
 
 
@@ -587,7 +618,7 @@ public class Game_TextDatabase_Language
     public string name_Region_Lava;
     public string name_Region_Swamp;
     public string name_Region_Metal;
-    public string name_Region_6;
+    public string name_Region_7;
     #endregion
 
     //Level Names
@@ -1076,6 +1107,37 @@ public class Game_TextDatabase_Language
     public string interractableButton_Message_25_Keyboard;
     public string interractableButton_Message_25_PlayStation;
     public string interractableButton_Message_25_xBox;
+    #endregion
+
+    #region Finish Regions Messages
+    public string finishedRegion_Message_Water;
+    public string finishedRegion_Message_Sand;
+    public string finishedRegion_Message_Ice;
+    public string finishedRegion_Message_Lava;
+    public string finishedRegion_Message_Swamp;
+    public string finishedRegion_Message_Metal;
+    public string finishedRegion_Message_7;
+    #endregion
+
+    #region NPC Names
+    public string NPCName_Water;
+    public string NPCName_Sand;
+    public string NPCName_Ice;
+    public string NPCName_Lava;
+    public string NPCName_Swamp;
+    public string NPCName_Metal;
+    public string NPCName_7;
+    public string NPCName_Antagonist;
+    #endregion
+
+    #region NPC Hat Names
+    public string NPCHat_Name_Water;
+    public string NPCHat_Name_Sand;
+    public string NPCHat_Name_Ice;
+    public string NPCHat_Name_Lava;
+    public string NPCHat_Name_Swamp;
+    public string NPCHat_Name_Metal;
+    public string NPCHat_Name_7;
     #endregion
 }
 
@@ -1580,6 +1642,37 @@ public enum Text_Database_Enum
     [InspectorName("InterractableButton Message / 25")] interractableButton_Message_25_Keyboard,
     [InspectorName("InterractableButton Message / 25")] interractableButton_Message_25_PlayStation,
     [InspectorName("InterractableButton Message / 25")] interractableButton_Message_25_xBox,
+    #endregion
+
+    #region Finish Regions Messages
+    [InspectorName("Finish Regions Messages / Water")] finishedRegion_Message_Water,
+    [InspectorName("Finish Regions Messages / Sand")] finishedRegion_Message_Sand,
+    [InspectorName("Finish Regions Messages / Ice")] finishedRegion_Message_Ice,
+    [InspectorName("Finish Regions Messages / Lava")] finishedRegion_Message_Lava,
+    [InspectorName("Finish Regions Messages / Swamp")] finishedRegion_Message_Swamp,
+    [InspectorName("Finish Regions Messages / Metal")] finishedRegion_Message_Metal,
+    [InspectorName("Finish Regions Messages / 7")] finishedRegion_Message_7,
+    #endregion
+
+    #region NPC Names
+    [InspectorName("NPC Names / Water")] NPCName_Water,
+    [InspectorName("NPC Names / Sand")] NPCName_Sand,
+    [InspectorName("NPC Names / Ice")] NPCName_Ice,
+    [InspectorName("NPC Names / Lava")] NPCName_Lava,
+    [InspectorName("NPC Names / Swamp")] NPCName_Swamp,
+    [InspectorName("NPC Names / Metal")] NPCName_Metal,
+    [InspectorName("NPC Names / 7")] NPCName_7,
+    [InspectorName("NPC Names / Antagonist")] NPCName_Antagonist,
+    #endregion
+
+    #region NPC Hat Names
+    [InspectorName("NPC Hat Names / Water")] NPCHat_Name_Water,
+    [InspectorName("NPC Hat Names / Sand")] NPCHat_Name_Sand,
+    [InspectorName("NPC Hat Names / Ice")] NPCHat_Name_Ice,
+    [InspectorName("NPC Hat Names / Lava")] NPCHat_Name_Lava,
+    [InspectorName("NPC Hat Names / Swamp")] NPCHat_Name_Swamp,
+    [InspectorName("NPC Hat Names / Metal")] NPCHat_Name_Metal,
+    [InspectorName("NPC Hat Names / 7")] NPCHat_Name_7,
     #endregion
 
     #endregion

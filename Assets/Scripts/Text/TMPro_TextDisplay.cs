@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TMPro_TextDisplay : MonoBehaviour
 {
@@ -15,14 +16,23 @@ public class TMPro_TextDisplay : MonoBehaviour
     {
         ShowText();
     }
+
     private void OnEnable()
     {
         SettingsManager.Action_SetNewLanguage += ShowText;
+        SceneManager.activeSceneChanged += HandleSceneChanged;
     }
     private void OnDestroy()
     {
         SettingsManager.Action_SetNewLanguage -= ShowText;
+        SceneManager.activeSceneChanged -= HandleSceneChanged;
     }
+
+    private void HandleSceneChanged(Scene oldScene, Scene newScene)
+    {
+        SettingsManager.Action_SetNewLanguage -= ShowText;
+    }
+
 
 
     //--------------------
@@ -60,7 +70,7 @@ public class TMPro_TextDisplay : MonoBehaviour
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Metal;
                 break;
             case Text_Database_Enum.name_Region_6:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_6;
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_7;
                 break;
             #endregion
 
@@ -1405,6 +1415,81 @@ public class TMPro_TextDisplay : MonoBehaviour
                 break;
             #endregion
 
+            #region Finish Regions Messages
+            case Text_Database_Enum.finishedRegion_Message_Water:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Water;
+                break;
+            case Text_Database_Enum.finishedRegion_Message_Sand:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Sand;
+                break;
+            case Text_Database_Enum.finishedRegion_Message_Ice:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Ice;
+                break;
+            case Text_Database_Enum.finishedRegion_Message_Lava:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Lava;
+                break;
+            case Text_Database_Enum.finishedRegion_Message_Swamp:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Swamp;
+                break;
+            case Text_Database_Enum.finishedRegion_Message_Metal:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Metal;
+                break;
+            case Text_Database_Enum.finishedRegion_Message_7:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_7;
+                break;
+            #endregion
+
+            #region NPC Names
+            case Text_Database_Enum.NPCName_Water:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Water;
+                break;
+            case Text_Database_Enum.NPCName_Sand:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Sand;
+                break;
+            case Text_Database_Enum.NPCName_Ice:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Ice;
+                break;
+            case Text_Database_Enum.NPCName_Lava:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Lava;
+                break;
+            case Text_Database_Enum.NPCName_Swamp:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Swamp;
+                break;
+            case Text_Database_Enum.NPCName_Metal:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Metal;
+                break;
+            case Text_Database_Enum.NPCName_7:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_7;
+                break;
+            case Text_Database_Enum.NPCName_Antagonist:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Antagonist;
+                break;
+            #endregion
+
+            #region NPC Hat Names
+            case Text_Database_Enum.NPCHat_Name_Water:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCHat_Name_Water;
+                break;
+            case Text_Database_Enum.NPCHat_Name_Sand:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCHat_Name_Sand;
+                break;
+            case Text_Database_Enum.NPCHat_Name_Ice:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCHat_Name_Ice;
+                break;
+            case Text_Database_Enum.NPCHat_Name_Lava:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCHat_Name_Lava;
+                break;
+            case Text_Database_Enum.NPCHat_Name_Swamp:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCHat_Name_Swamp;
+                break;
+            case Text_Database_Enum.NPCHat_Name_Metal:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCHat_Name_Metal;
+                break;
+            case Text_Database_Enum.NPCHat_Name_7:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCHat_Name_7;
+                break;
+            #endregion
+
             default:
                 GetComponent<TextMeshProUGUI>().text = "";
                 break;
@@ -1432,7 +1517,7 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.name_Region_Metal:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Metal;
             case Text_Database_Enum.name_Region_6:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_6;
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_7;
             #endregion
 
             #region Names of levels in Water Region
@@ -2440,6 +2525,60 @@ public class TMPro_TextDisplay : MonoBehaviour
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].interractableButton_Message_25_xBox;
 
             #endregion
+
+            #region Finish Regions Messages
+            case Text_Database_Enum.finishedRegion_Message_Water:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Water;
+            case Text_Database_Enum.finishedRegion_Message_Sand:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Sand;
+            case Text_Database_Enum.finishedRegion_Message_Ice:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Ice;
+            case Text_Database_Enum.finishedRegion_Message_Lava:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Lava;
+            case Text_Database_Enum.finishedRegion_Message_Swamp:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Swamp;
+            case Text_Database_Enum.finishedRegion_Message_Metal:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Metal;
+            case Text_Database_Enum.finishedRegion_Message_7:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_7;
+            #endregion
+
+            #region NPC Names
+            case Text_Database_Enum.NPCName_Water:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Water;
+            case Text_Database_Enum.NPCName_Sand:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Sand;
+            case Text_Database_Enum.NPCName_Ice:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Ice;
+            case Text_Database_Enum.NPCName_Lava:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Lava;
+            case Text_Database_Enum.NPCName_Swamp:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Swamp;
+            case Text_Database_Enum.NPCName_Metal:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Metal;
+            case Text_Database_Enum.NPCName_7:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_7;
+            case Text_Database_Enum.NPCName_Antagonist:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Antagonist;
+            #endregion
+
+            #region NPC Hat Names
+            case Text_Database_Enum.NPCHat_Name_Water:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCHat_Name_Water;
+            case Text_Database_Enum.NPCHat_Name_Sand:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCHat_Name_Sand;
+            case Text_Database_Enum.NPCHat_Name_Ice:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCHat_Name_Ice;
+            case Text_Database_Enum.NPCHat_Name_Lava:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCHat_Name_Lava;
+            case Text_Database_Enum.NPCHat_Name_Swamp:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCHat_Name_Swamp;
+            case Text_Database_Enum.NPCHat_Name_Metal:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCHat_Name_Metal;
+            case Text_Database_Enum.NPCHat_Name_7:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCHat_Name_7;
+            #endregion
+
 
             default:
                 return "";
