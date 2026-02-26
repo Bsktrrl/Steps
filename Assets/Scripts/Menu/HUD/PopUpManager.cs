@@ -119,7 +119,8 @@ public class PopUpManager : Singleton<PopUpManager>
 
     public void OnEnable()
     {
-        MapManager.Action_StartIntroSequence += ShowLevelNamePopup;
+        DataManager.Action_dataHasLoaded += ShowLevelNamePopup;
+        //MapManager.Action_StartIntroSequence += ShowLevelNamePopup;
 
         Interactable_Pickup.Action_StepsUpPickupGot += ShowFootprintPopup;
         Interactable_Pickup.Action_EssencePickupGot += ShowEssencePopup;
@@ -127,7 +128,8 @@ public class PopUpManager : Singleton<PopUpManager>
     }
     private void OnDisable()
     {
-        MapManager.Action_StartIntroSequence -= ShowLevelNamePopup;
+        DataManager.Action_dataHasLoaded -= ShowLevelNamePopup;
+        //MapManager.Action_StartIntroSequence -= ShowLevelNamePopup;
 
         Interactable_Pickup.Action_StepsUpPickupGot -= ShowFootprintPopup;
         Interactable_Pickup.Action_EssencePickupGot -= ShowEssencePopup;
@@ -248,7 +250,9 @@ public class PopUpManager : Singleton<PopUpManager>
         ability_CanBeClosed = false;
     }
 
+
     //-----
+
 
     public void ShowHat_Floríel()
     {
@@ -285,30 +289,33 @@ public class PopUpManager : Singleton<PopUpManager>
         yield return null;
         ShowDisplay(popupManager, popup_LevelName_Parent, popup_LevelName_Children);
 
-        switch (DataManager.Instance.settingData_StoreList.currentLanguage)
-        {
-            case Languages.Norwegian:
-                popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapNameDisplay.mapNameDisplay_norwegian;
-                break;
-            case Languages.English:
-                popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapNameDisplay.mapNameDisplay_english;
-                break;
-            case Languages.German:
-                popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapNameDisplay.mapNameDisplay_german;
-                break;
-            case Languages.Japanese:
-                popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapNameDisplay.mapNameDisplay_japanese;
-                break;
-            case Languages.Chinese:
-                popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapNameDisplay.mapNameDisplay_chinese;
-                break;
-            case Languages.Korean:
-                popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapNameDisplay.mapNameDisplay_korean;
-                break;
+        if (MapManager.Instance.gameObject.GetComponent<TMPro_TextDisplay>())
+            popup_LevelName_Text.text = MapManager.Instance.gameObject.GetComponent<TMPro_TextDisplay>().GetText();
 
-            default:
-                break;
-        }
+        //switch (DataManager.Instance.settingData_StoreList.currentLanguage)
+        //{
+        //    case Languages.Norwegian:
+        //        popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapNameDisplay.mapNameDisplay_norwegian;
+        //        break;
+        //    case Languages.English:
+        //        popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapNameDisplay.mapNameDisplay_english;
+        //        break;
+        //    case Languages.German:
+        //        popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapNameDisplay.mapNameDisplay_german;
+        //        break;
+        //    case Languages.Japanese:
+        //        popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapNameDisplay.mapNameDisplay_japanese;
+        //        break;
+        //    case Languages.Chinese:
+        //        popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapNameDisplay.mapNameDisplay_chinese;
+        //        break;
+        //    case Languages.Korean:
+        //        popup_LevelName_Text.text = MapManager.Instance.mapInfo_ToSave.mapNameDisplay.mapNameDisplay_korean;
+        //        break;
+
+        //    default:
+        //        break;
+        //}
 
         yield return new WaitForSeconds(levelNameMessageDuration);
 
@@ -334,7 +341,7 @@ public class PopUpManager : Singleton<PopUpManager>
     {
         ShowDisplay(popupManager, popup_Skin_Parent, popup_Skin_Children);
 
-        yield return new WaitForSeconds(pickupMessageDuration * 2f);
+        yield return new WaitForSeconds(pickupMessageDuration * 3f);
 
         HideDisplay(popupManager, popup_Skin_Parent, popup_Skin_Children);
     }

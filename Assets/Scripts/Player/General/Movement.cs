@@ -612,7 +612,7 @@ public class Movement : Singleton<Movement>
 
     void UpdateWaterBlocksForSwiftSwim()
     {
-        if ((PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank || PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank) && (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers || PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers))
+        if ((PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank || PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank) /*&& (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers || PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers)*/)
         {
             //Reset SwiftSwimBlocks
             if (swiftSwimObject_StandingOn)
@@ -712,7 +712,7 @@ public class Movement : Singleton<Movement>
 
     void UpdateSwiftSwimMovement(MoveOptions swiftSwimOption, Vector3 dir)
     {
-        if ((!PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers))
+        if ((!PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank && !PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank))
         {
             Block_IsNot_Target(swiftSwimOption);
             return;
@@ -1463,8 +1463,8 @@ public class Movement : Singleton<Movement>
     public bool PlayerHasSwiftSwimAbility()
     {
         var stats = PlayerStats.Instance.stats;
-        return stats.abilitiesGot_Permanent.Flippers ||
-               stats.abilitiesGot_Temporary.Flippers;
+        return stats.abilitiesGot_Permanent.OxygenTank ||
+               stats.abilitiesGot_Temporary.OxygenTank;
     }
     bool PlayerHasDashAbility()
     {

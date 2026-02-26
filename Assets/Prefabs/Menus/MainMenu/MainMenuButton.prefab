@@ -244,6 +244,7 @@ MonoBehaviour:
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0.9058824, g: 0.8078432, b: 0.91372555, a: 1}
+  closingMenuAnimatorList: []
 --- !u!1 &1107029660272878309
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,7 +348,7 @@ GameObject:
   - component: {fileID: 1839985395838395152}
   - component: {fileID: 2465814227253653486}
   - component: {fileID: 5310519512542894280}
-  - component: {fileID: 7166450053209283540}
+  - component: {fileID: 2535960526744789218}
   - component: {fileID: 2185777408207192001}
   m_Layer: 5
   m_Name: Text (TMP)
@@ -472,7 +473,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &7166450053209283540
+--- !u!114 &2535960526744789218
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -481,15 +482,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1360402233380934096}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc02cf28cba3b954e8ed06a6e619673b, type: 3}
+  m_Script: {fileID: 11500000, guid: 05b6c2085c53ed74e88dde152f971388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  norwegian: Fortsett
-  english: Continue
-  german: Weitermachen
-  chinese: "\u7EE7\u7EED"
-  japanese: "\u7D9A\u304F"
-  korean: "\uACC4\uC18D\uD558\uB2E4"
+  textToDisplay: 0
 --- !u!114 &2185777408207192001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -517,7 +513,7 @@ GameObject:
   - component: {fileID: 3356194184607537988}
   - component: {fileID: 1523127987016816570}
   - component: {fileID: 9127012418377965724}
-  - component: {fileID: 6084134907750605696}
+  - component: {fileID: 2558217831751128379}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -641,7 +637,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &6084134907750605696
+--- !u!114 &2558217831751128379
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -650,15 +646,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2736630237374228868}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc02cf28cba3b954e8ed06a6e619673b, type: 3}
+  m_Script: {fileID: 11500000, guid: 05b6c2085c53ed74e88dde152f971388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  norwegian: Fortsett
-  english: Continue
-  german: Weitermachen
-  chinese: "\u7EE7\u7EED"
-  japanese: "\u7D9A\u304F"
-  korean: "\uACC4\uC18D\uD558\uB2E4"
+  textToDisplay: 0
 --- !u!1 &4332440597591964569
 GameObject:
   m_ObjectHideFlags: 0

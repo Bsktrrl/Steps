@@ -95,6 +95,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.mapNameDisplay_Store = gameData.mapNameDisplay_Save;
         this.charatersData_Store = gameData.charatersData_Save;
         this.skinsInfo_Store = gameData.skinsInfo_Save;
+        this.game_TextDatabase_Store = gameData.game_TextDatabase_Save;
 
         this.oneTimeRunData_Store = gameData.oneTimeRunData_Save;
     }
@@ -157,6 +158,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         gameData.charatersData_Save = this.charatersData_Store;
         gameData.settingData_SaveList = this.settingData_StoreList;
         gameData.skinsInfo_Save = this.skinsInfo_Store;
+        gameData.game_TextDatabase_Save = this.game_TextDatabase_Store;
 
         gameData.oneTimeRunData_Save = this.oneTimeRunData_Store;
 

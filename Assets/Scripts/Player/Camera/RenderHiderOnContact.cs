@@ -41,7 +41,19 @@ public class RenderHiderOnContact : MonoBehaviour
     private static readonly List<Renderer> _toRestoreBuffer = new List<Renderer>(32);
 
 
+    //--------------------
+
+
     void LateUpdate()
+    {
+        RunHideOnContact();
+    }
+
+
+    //--------------------
+
+
+    void RunHideOnContact()
     {
         Vector3 origin = transform.position;
 
@@ -152,6 +164,9 @@ public class RenderHiderOnContact : MonoBehaviour
     }
 
 
+    //--------------------
+
+
     void OnDisable()
     {
         RestoreAll();
@@ -161,6 +176,10 @@ public class RenderHiderOnContact : MonoBehaviour
     {
         RestoreAll();
     }
+
+
+    //--------------------
+
 
     private void RestoreAll()
     {

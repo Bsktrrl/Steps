@@ -9,17 +9,40 @@ public class HoleShaderOnOffScript : MonoBehaviour
     bool transitionBool;
     float transitionSpeed = 7;
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            transitionBool = true;
-        }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            transitionBool = false;
-        }
+    //--------------------
+
+
+    private void OnEnable()
+    {
+        CameraController.Action_RotateCamera_Start += HoleShader_On;
+        CameraController.Action_RotateCamera_End += HoleShader_Off;
+    }
+    private void OnDisable()
+    {
+        CameraController.Action_RotateCamera_Start -= HoleShader_On;
+        CameraController.Action_RotateCamera_End -= HoleShader_Off;
+    }
+
+
+    //--------------------
+
+
+    public void HoleShader_On()
+    {
+        print("1. HoleShader_On");
+
+        transitionBool = true;
+
+        transition = Mathf.Lerp(transition, (transitionBool ? 1 : 0), transitionSpeed * Time.deltaTime);
+
+        Shader.SetGlobalFloat("_HoleShaderEnabled", transition);
+    }
+    public void HoleShader_Off()
+    {
+        print("2. HoleShader_Off");
+
+        transitionBool = false;
 
         transition = Mathf.Lerp(transition, (transitionBool ? 1 : 0), transitionSpeed * Time.deltaTime);
 

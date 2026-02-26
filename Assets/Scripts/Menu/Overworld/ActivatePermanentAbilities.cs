@@ -54,11 +54,14 @@ public class ActivatePermanentAbilities : Singleton<ActivatePermanentAbilities>
         {
             if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName == rivergreenStats.levelToPlay && DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].isCompleted && (!PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers && !PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank))
             {
-                //print("1. CheckIfAbilityShouldUpdate");
-                if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.Norwegian) 
-                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("Du har fullført <color=#B593D5>Rivergreen</color> og låst opp regionens ferdigheter <color=#B593D5>permanent</color>.");
-                else if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.English)
-                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("You have completed the <color=#B593D5>Rivergreens</color> and  <color=#B593D5>permanently</color> unlocked the region’s abilities.");
+                string tempText =
+                    DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Water1
+                    + " <color=#B593D5>"
+                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Water
+                    + "</color> "
+                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Water2;
+
+                PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup(tempText);
 
                 ActivateAbilities(rivergreenStats, abilityToGetInRivergreenList);
                 SaveAbilityData(Abilities.Snorkel);
@@ -69,11 +72,14 @@ public class ActivatePermanentAbilities : Singleton<ActivatePermanentAbilities>
             //Sandlands
             if (sandlandsStats.isCompleted && (!PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillHelmet && !PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillBoots))
             {
-                print("2. CheckIfAbilityShouldUpdate");
-                if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.Norwegian)
-                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
-                else if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.English)
-                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
+                string tempText =
+                    DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Sand1
+                    + " <color=#B593D5>"
+                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Sand
+                    + "</color> "
+                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Sand2;
+
+                PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup(tempText);
 
                 ActivateAbilities(sandlandsStats, abilityToGetInSandlandsList);
                 SaveAbilityData(Abilities.DrillHelmet);
@@ -83,11 +89,14 @@ public class ActivatePermanentAbilities : Singleton<ActivatePermanentAbilities>
             //Frostfield
             if (frostfieldStats.isCompleted && !PlayerStats.Instance.stats.abilitiesGot_Permanent.SpringShoes)
             {
-                print("3. CheckIfAbilityShouldUpdate");
-                if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.Norwegian)
-                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
-                else if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.English)
-                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
+                string tempText =
+                    DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Ice1
+                    + " <color=#B593D5>"
+                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Ice
+                    + "</color> "
+                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Ice2;
+
+                PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup(tempText);
 
                 ActivateAbilities(frostfieldStats, abilityToGetInFrostfieldList);
                 SaveAbilityData(Abilities.SpringShoes);
@@ -96,11 +105,14 @@ public class ActivatePermanentAbilities : Singleton<ActivatePermanentAbilities>
             //Firevein
             if (fireveinStats.isCompleted && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook)
             {
-                print("4. CheckIfAbilityShouldUpdate");
-                if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.Norwegian)
-                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
-                else if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.English)
-                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
+                string tempText =
+                    DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Lava1
+                    + " <color=#B593D5>"
+                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Lava
+                    + "</color> "
+                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Lava2;
+
+                PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup(tempText);
 
                 ActivateAbilities(fireveinStats, abilityToGetInFireveinList);
                 SaveAbilityData(Abilities.GrapplingHook);
@@ -109,11 +121,14 @@ public class ActivatePermanentAbilities : Singleton<ActivatePermanentAbilities>
             //Witchmire
             if (witchmireStats.isCompleted && !PlayerStats.Instance.stats.abilitiesGot_Permanent.HandDrill)
             {
-                print("5. CheckIfAbilityShouldUpdate");
-                if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.Norwegian)
-                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
-                else if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.English)
-                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
+                string tempText =
+                    DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Swamp1
+                    + " <color=#B593D5>"
+                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Swamp
+                    + "</color> "
+                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Swamp2;
+
+                PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup(tempText);
 
                 ActivateAbilities(witchmireStats, abilityToGetInWitchmireList);
                 SaveAbilityData(Abilities.HandDrill);
@@ -122,11 +137,14 @@ public class ActivatePermanentAbilities : Singleton<ActivatePermanentAbilities>
             //Metalwork
             if (metalworksStats.isCompleted && !PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimingGloves)
             {
-                print("6. CheckIfAbilityShouldUpdate");
-                if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.Norwegian)
-                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
-                else if (DataManager.Instance.settingData_StoreList.currentLanguage == Languages.English)
-                    PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup("");
+                string tempText =
+                    DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Metal1
+                    + " <color=#B593D5>"
+                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Metal
+                    + "</color> "
+                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Metal2;
+
+                PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup(tempText);
 
                 ActivateAbilities(metalworksStats, abilityToGetInMetalworksList);
                 SaveAbilityData(Abilities.ClimingGloves);

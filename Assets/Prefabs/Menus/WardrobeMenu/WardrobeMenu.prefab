@@ -3948,6 +3948,7 @@ GameObject:
   - component: {fileID: 4161094231056648256}
   - component: {fileID: 2780295372781751529}
   - component: {fileID: 8549889428768618136}
+  - component: {fileID: 9163398233275008772}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -4089,6 +4090,19 @@ MonoBehaviour:
   maxScale: {x: 0.1, y: 0.1, z: 0.1}
   pulseSpeed: 0.2
   edgeTightness: 0.9
+--- !u!114 &9163398233275008772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1549313019982507243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05b6c2085c53ed74e88dde152f971388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToDisplay: 57
 --- !u!1 &1580786952117211596
 GameObject:
   m_ObjectHideFlags: 0
@@ -6181,6 +6195,7 @@ GameObject:
   - component: {fileID: 1000993980251020028}
   - component: {fileID: 1498563560396016491}
   - component: {fileID: 9115899699916482092}
+  - component: {fileID: 5031062217115275851}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -6320,6 +6335,19 @@ MonoBehaviour:
   maxScale: {x: 0.1, y: 0.1, z: 0.1}
   pulseSpeed: 0.2
   edgeTightness: 0.9
+--- !u!114 &5031062217115275851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2475894917834840361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05b6c2085c53ed74e88dde152f971388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToDisplay: 58
 --- !u!1 &2498490781289049086
 GameObject:
   m_ObjectHideFlags: 0
@@ -10044,6 +10072,7 @@ GameObject:
   - component: {fileID: 1884827688671057771}
   - component: {fileID: 3892714896673800299}
   - component: {fileID: 3200696195022964370}
+  - component: {fileID: 914099070767738672}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -10185,6 +10214,19 @@ MonoBehaviour:
   maxScale: {x: 0.1, y: 0.1, z: 0.1}
   pulseSpeed: 0.2
   edgeTightness: 0.9
+--- !u!114 &914099070767738672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4033309335712470882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05b6c2085c53ed74e88dde152f971388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToDisplay: 57
 --- !u!1 &4034478062102577551
 GameObject:
   m_ObjectHideFlags: 0
@@ -14568,6 +14610,7 @@ GameObject:
   - component: {fileID: 136650042570935479}
   - component: {fileID: 7089985720147484229}
   - component: {fileID: 2118710895910094202}
+  - component: {fileID: 7960129249579192588}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -14707,6 +14750,19 @@ MonoBehaviour:
   maxScale: {x: 0.1, y: 0.1, z: 0.1}
   pulseSpeed: 0.2
   edgeTightness: 0.9
+--- !u!114 &7960129249579192588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5727908788315665618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05b6c2085c53ed74e88dde152f971388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToDisplay: 59
 --- !u!1 &5730070221166959578
 GameObject:
   m_ObjectHideFlags: 0
@@ -19889,7 +19945,7 @@ GameObject:
   - component: {fileID: 5453875657991724124}
   - component: {fileID: 4910667500019854705}
   - component: {fileID: 558142829071714981}
-  - component: {fileID: 945168094232694554}
+  - component: {fileID: 4035232997482254428}
   m_Layer: 5
   m_Name: Wardrobe Header
   m_TagString: Untagged
@@ -20015,7 +20071,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &945168094232694554
+--- !u!114 &4035232997482254428
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20024,15 +20080,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7790773300685446371}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc02cf28cba3b954e8ed06a6e619673b, type: 3}
+  m_Script: {fileID: 11500000, guid: 05b6c2085c53ed74e88dde152f971388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  norwegian: Garderobe
-  english: Wardrobe
-  german: Kleiderschrank
-  chinese: "\u8863\u67DC"
-  japanese: "\u30EF\u30FC\u30C9\u30ED\u30FC\u30D6"
-  korean: "\uC637\uC7A5"
+  textToDisplay: 54
 --- !u!1 &7840418397705944067
 GameObject:
   m_ObjectHideFlags: 0

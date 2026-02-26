@@ -135,7 +135,7 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
                 levelImage.sprite = null;
 
             //Level Name
-            levelName.text = activeLevelObject.GetComponent<LevelInfo>().GetName();
+            levelName.text = activeLevelObject.GetComponent<TMPro_TextDisplay>().GetText();
 
             //Find the correct mapInfo
             if (menuLevelInfo && menuLevelInfo.mapInfo_ToSave != null && menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List.Count > 0)

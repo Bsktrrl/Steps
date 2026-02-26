@@ -33,6 +33,11 @@ public class EssenceMessage : MonoBehaviour
             }
         }
 
-        essenceMessage.text = "Essence <color=#B593D5>" + essencecounter + "</color> of <color=#B593D5>"+ 10 + "</color> found";
+        essenceMessage.text = 
+            DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_Eccence_1 
+            + " <color=#B593D5>" + essencecounter + "</color> "
+            + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_Eccence_2
+            + " <color=#B593D5>" + 10 + "</color> "
+            + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_Eccence_3;
     }
 }

@@ -461,14 +461,12 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
         if (tempHatObj != null)
         {
-            print("200. ShowHats");
             MoveHatObjectsToSelectedSkin();
             tempHatObj.SetActive(true);
         }
     }
     public void HideAllHats()
     {
-        print("100. HideAllHats");
         if (hat_Floriel)
             hat_Floriel.SetActive(false);
         if (hat_Granith)
