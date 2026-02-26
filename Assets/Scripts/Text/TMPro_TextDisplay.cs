@@ -992,13 +992,13 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.ability_Message_13_xBox:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_13_xBox;
                 break;
-            case Text_Database_Enum.ability_Message_14_Keyboard:
+            case Text_Database_Enum.ability_Message_AnyButton_Keyboard:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_14_Keyboard;
                 break;
-            case Text_Database_Enum.ability_Message_14_PlayStation:
+            case Text_Database_Enum.ability_Message_AnyButton_PlayStation:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_14_PlayStation;
                 break;
-            case Text_Database_Enum.ability_Message_14_xBox:
+            case Text_Database_Enum.ability_Message_AnyButton_xBox:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_14_xBox;
                 break;
             #endregion
@@ -1022,7 +1022,7 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.pickup_Message_Skin:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_Skin;
                 break;
-            case Text_Database_Enum.pickup_Message_7:
+            case Text_Database_Enum.pickup_Message_Footprint_First:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_7;
                 break;
             case Text_Database_Enum.pickup_Message_8:
@@ -1418,26 +1418,26 @@ public class TMPro_TextDisplay : MonoBehaviour
             #endregion
 
             #region Finish Regions Messages
-            case Text_Database_Enum.finishedRegion_Message_Water:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Water;
+            case Text_Database_Enum.finishedRegion_Message_Water1:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Water1;
                 break;
-            case Text_Database_Enum.finishedRegion_Message_Sand:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Sand;
+            case Text_Database_Enum.finishedRegion_Message_Sand1:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Sand1;
                 break;
-            case Text_Database_Enum.finishedRegion_Message_Ice:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Ice;
+            case Text_Database_Enum.finishedRegion_Message_Ice1:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Ice1;
                 break;
-            case Text_Database_Enum.finishedRegion_Message_Lava:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Lava;
+            case Text_Database_Enum.finishedRegion_Message_Lava1:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Lava1;
                 break;
-            case Text_Database_Enum.finishedRegion_Message_Swamp:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Swamp;
+            case Text_Database_Enum.finishedRegion_Message_Swamp1:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Swamp1;
                 break;
-            case Text_Database_Enum.finishedRegion_Message_Metal:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Metal;
+            case Text_Database_Enum.finishedRegion_Message_Metal1:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Metal1;
                 break;
-            case Text_Database_Enum.finishedRegion_Message_7:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_7;
+            case Text_Database_Enum.finishedRegion_Message_71:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_71;
                 break;
             #endregion
 
@@ -2155,11 +2155,11 @@ public class TMPro_TextDisplay : MonoBehaviour
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_13_PlayStation;
             case Text_Database_Enum.ability_Message_13_xBox:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_13_xBox;
-            case Text_Database_Enum.ability_Message_14_Keyboard:
+            case Text_Database_Enum.ability_Message_AnyButton_Keyboard:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_14_Keyboard;
-            case Text_Database_Enum.ability_Message_14_PlayStation:
+            case Text_Database_Enum.ability_Message_AnyButton_PlayStation:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_14_PlayStation;
-            case Text_Database_Enum.ability_Message_14_xBox:
+            case Text_Database_Enum.ability_Message_AnyButton_xBox:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].ability_Message_14_xBox;
             #endregion
 
@@ -2176,7 +2176,7 @@ public class TMPro_TextDisplay : MonoBehaviour
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_Skin_First;
             case Text_Database_Enum.pickup_Message_Skin:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_Skin;
-            case Text_Database_Enum.pickup_Message_7:
+            case Text_Database_Enum.pickup_Message_Footprint_First:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_7;
             case Text_Database_Enum.pickup_Message_8:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_8;
@@ -2534,20 +2534,20 @@ public class TMPro_TextDisplay : MonoBehaviour
             #endregion
 
             #region Finish Regions Messages
-            case Text_Database_Enum.finishedRegion_Message_Water:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Water;
-            case Text_Database_Enum.finishedRegion_Message_Sand:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Sand;
-            case Text_Database_Enum.finishedRegion_Message_Ice:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Ice;
-            case Text_Database_Enum.finishedRegion_Message_Lava:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Lava;
-            case Text_Database_Enum.finishedRegion_Message_Swamp:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Swamp;
-            case Text_Database_Enum.finishedRegion_Message_Metal:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Metal;
-            case Text_Database_Enum.finishedRegion_Message_7:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_7;
+            case Text_Database_Enum.finishedRegion_Message_Water1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Water1;
+            case Text_Database_Enum.finishedRegion_Message_Sand1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Sand1;
+            case Text_Database_Enum.finishedRegion_Message_Ice1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Ice1;
+            case Text_Database_Enum.finishedRegion_Message_Lava1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Lava1;
+            case Text_Database_Enum.finishedRegion_Message_Swamp1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Swamp1;
+            case Text_Database_Enum.finishedRegion_Message_Metal1:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Metal1;
+            case Text_Database_Enum.finishedRegion_Message_71:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_71;
             #endregion
 
             #region NPC Names

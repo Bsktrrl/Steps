@@ -555,34 +555,41 @@ public class TextData : MonoBehaviour
             #endregion
 
             #region Finish Regions Messages
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Water, 469);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Sand, 470);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Ice, 471);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Lava, 472);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Swamp, 473);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Metal, 474);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_7, 475);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Water1, 469);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Water2, 470);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Sand1, 471);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Sand2, 472);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Ice1, 473);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Ice2, 474);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Lava1, 475);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Lava2, 476);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Swamp1, 477);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Swamp2, 478);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Metal1, 479);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_Metal2, 480);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_71, 481);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].finishedRegion_Message_72, 482);
             #endregion
 
             #region NPC Names
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Water, 478);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Sand, 479);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Ice, 480);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Lava, 481);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Swamp, 482);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Metal, 483);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_7, 484);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Antagonist, 485);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Water, 485);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Sand, 486);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Ice, 487);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Lava, 488);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Swamp, 489);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Metal, 490);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_7, 491);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCName_Antagonist, 492);
             #endregion
 
             #region NPC Hat Names
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_Water, 488);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_Sand, 489);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_Ice, 490);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_Lava, 491);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_Swamp, 492);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_Metal, 493);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_7, 494);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_Water, 495);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_Sand, 496);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_Ice, 497);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_Lava, 498);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_Swamp, 499);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_Metal, 500);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].NPCHat_Name_7, 501);
             #endregion
 }
 
@@ -1110,13 +1117,20 @@ public class Game_TextDatabase_Language
     #endregion
 
     #region Finish Regions Messages
-    public string finishedRegion_Message_Water;
-    public string finishedRegion_Message_Sand;
-    public string finishedRegion_Message_Ice;
-    public string finishedRegion_Message_Lava;
-    public string finishedRegion_Message_Swamp;
-    public string finishedRegion_Message_Metal;
-    public string finishedRegion_Message_7;
+    public string finishedRegion_Message_Water1;
+    public string finishedRegion_Message_Water2;
+    public string finishedRegion_Message_Sand1;
+    public string finishedRegion_Message_Sand2;
+    public string finishedRegion_Message_Ice1;
+    public string finishedRegion_Message_Ice2;
+    public string finishedRegion_Message_Lava1;
+    public string finishedRegion_Message_Lava2;
+    public string finishedRegion_Message_Swamp1;
+    public string finishedRegion_Message_Swamp2;
+    public string finishedRegion_Message_Metal1;
+    public string finishedRegion_Message_Metal2;
+    public string finishedRegion_Message_71;
+    public string finishedRegion_Message_72;
     #endregion
 
     #region NPC Names
@@ -1495,9 +1509,9 @@ public enum Text_Database_Enum
     [InspectorName("Ability Messages / 13 / Keyboard")] ability_Message_13_Keyboard,
     [InspectorName("Ability Messages / 13 / PlayStation")] ability_Message_13_PlayStation,
     [InspectorName("Ability Messages / 13 / xBox")] ability_Message_13_xBox,
-    [InspectorName("Ability Messages / 14 / Keyboard")] ability_Message_14_Keyboard,
-    [InspectorName("Ability Messages / 14 / PlayStation")] ability_Message_14_PlayStation,
-    [InspectorName("Ability Messages / 14 / xBox")] ability_Message_14_xBox,
+    [InspectorName("Ability Messages / AnyButton / Keyboard")] ability_Message_AnyButton_Keyboard,
+    [InspectorName("Ability Messages / AnyButton / PlayStation")] ability_Message_AnyButton_PlayStation,
+    [InspectorName("Ability Messages / AnyButton / xBox")] ability_Message_AnyButton_xBox,
     #endregion
 
     #region Pickup Messages
@@ -1507,7 +1521,7 @@ public enum Text_Database_Enum
     [InspectorName("Pickup Messages / Footprint")] pickup_Message_Footprint,
     [InspectorName("Pickup Messages / Skin First")] pickup_Message_Skin_First,
     [InspectorName("Pickup Messages / Skin")] pickup_Message_Skin,
-    [InspectorName("Pickup Messages / 7")] pickup_Message_7,
+    [InspectorName("Pickup Messages / Footprint First")] pickup_Message_Footprint_First,
     [InspectorName("Pickup Messages / 8")] pickup_Message_8,
     [InspectorName("Pickup Messages / 9")] pickup_Message_9,
     [InspectorName("Pickup Messages / 10")] pickup_Message_10,
@@ -1519,51 +1533,51 @@ public enum Text_Database_Enum
     #endregion
 
     #region Tutorial Messages
-    [InspectorName("Tutorial Messages / Movement")] tutorial_Message_Movement_Keyboard,
-    [InspectorName("Tutorial Messages / Movement")] tutorial_Message_Movement_PlayStation,
-    [InspectorName("Tutorial Messages / Movement")] tutorial_Message_Movement_xBox,
-    [InspectorName("Tutorial Messages / Camera Rotation")] tutorial_Message_CameraRotation_Keyboard,
-    [InspectorName("Tutorial Messages / Camera Rotation")] tutorial_Message_CameraRotation_PlayStation,
-    [InspectorName("Tutorial Messages / Camera Rotation")] tutorial_Message_CameraRotation_xBox,
-    [InspectorName("Tutorial Messages / Respawn")] tutorial_Message_Respawn_Keyboard,
-    [InspectorName("Tutorial Messages / Respawn")] tutorial_Message_Respawn_PlayStation,
-    [InspectorName("Tutorial Messages / Respawn")] tutorial_Message_Respawn_xBox,
-    [InspectorName("Tutorial Messages / FreeCam 1")] tutorial_Message_FreeCam_1_Keyboard,
-    [InspectorName("Tutorial Messages / FreeCam 1")] tutorial_Message_FreeCam_1_PlayStation,
-    [InspectorName("Tutorial Messages / FreeCam 1")] tutorial_Message_FreeCam_1_xBox,
-    [InspectorName("Tutorial Messages / FreeCam 2")] tutorial_Message_FreeCam_2_Keyboard,
-    [InspectorName("Tutorial Messages / FreeCam 2")] tutorial_Message_FreeCam_2_PlayStation,
-    [InspectorName("Tutorial Messages / FreeCam 2")] tutorial_Message_FreeCam_2_xBox,
-    [InspectorName("Tutorial Messages / Demo")] tutorial_Message_Demo_Keyboard,
-    [InspectorName("Tutorial Messages / Demo")] tutorial_Message_Demo_PlayStation,
-    [InspectorName("Tutorial Messages / Demo")] tutorial_Message_Demo_xBox,
-    [InspectorName("Tutorial Messages / 7")] tutorial_Message_7_Keyboard,
-    [InspectorName("Tutorial Messages / 7")] tutorial_Message_7_PlayStation,
-    [InspectorName("Tutorial Messages / 7")] tutorial_Message_7_xBox,
-    [InspectorName("Tutorial Messages / 8")] tutorial_Message_8_Keyboard,
-    [InspectorName("Tutorial Messages / 8")] tutorial_Message_8_PlayStation,
-    [InspectorName("Tutorial Messages / 8")] tutorial_Message_8_xBox,
-    [InspectorName("Tutorial Messages / 9")] tutorial_Message_9_Keyboard,
-    [InspectorName("Tutorial Messages / 9")] tutorial_Message_9_PlayStation,
-    [InspectorName("Tutorial Messages / 9")] tutorial_Message_9_xBox,
-    [InspectorName("Tutorial Messages / 10")] tutorial_Message_10_Keyboard,
-    [InspectorName("Tutorial Messages / 10")] tutorial_Message_10_PlayStation,
-    [InspectorName("Tutorial Messages / 10")] tutorial_Message_10_xBox,
-    [InspectorName("Tutorial Messages / 11")] tutorial_Message_11_Keyboard,
-    [InspectorName("Tutorial Messages / 11")] tutorial_Message_11_PlayStation,
-    [InspectorName("Tutorial Messages / 11")] tutorial_Message_11_xBox,
-    [InspectorName("Tutorial Messages / 12")] tutorial_Message_12_Keyboard,
-    [InspectorName("Tutorial Messages / 12")] tutorial_Message_12_PlayStation,
-    [InspectorName("Tutorial Messages / 12")] tutorial_Message_12_xBox,
-    [InspectorName("Tutorial Messages / 13")] tutorial_Message_13_Keyboard,
-    [InspectorName("Tutorial Messages / 13")] tutorial_Message_13_PlayStation,
-    [InspectorName("Tutorial Messages / 13")] tutorial_Message_13_xBox,
-    [InspectorName("Tutorial Messages / 14")] tutorial_Message_14_Keyboard,
-    [InspectorName("Tutorial Messages / 14")] tutorial_Message_14_PlayStation,
-    [InspectorName("Tutorial Messages / 14")] tutorial_Message_14_xBox,
-    [InspectorName("Tutorial Messages / 15")] tutorial_Message_15_Keyboard,
-    [InspectorName("Tutorial Messages / 15")] tutorial_Message_15_PlayStation,
-    [InspectorName("Tutorial Messages / 15")] tutorial_Message_15_xBox,
+    [InspectorName("Tutorial Messages / Movement / Keyboard")] tutorial_Message_Movement_Keyboard,
+    [InspectorName("Tutorial Messages / Movement / PlayStation")] tutorial_Message_Movement_PlayStation,
+    [InspectorName("Tutorial Messages / Movement / xBox")] tutorial_Message_Movement_xBox,
+    [InspectorName("Tutorial Messages / Camera Rotation / Keyboard")] tutorial_Message_CameraRotation_Keyboard,
+    [InspectorName("Tutorial Messages / Camera Rotation / PlayStation")] tutorial_Message_CameraRotation_PlayStation,
+    [InspectorName("Tutorial Messages / Camera Rotation / xBox")] tutorial_Message_CameraRotation_xBox,
+    [InspectorName("Tutorial Messages / Respawn / Keyboard")] tutorial_Message_Respawn_Keyboard,
+    [InspectorName("Tutorial Messages / Respawn / PlayStation")] tutorial_Message_Respawn_PlayStation,
+    [InspectorName("Tutorial Messages / Respawn / xBox")] tutorial_Message_Respawn_xBox,
+    [InspectorName("Tutorial Messages / FreeCam 1 / Keyboard")] tutorial_Message_FreeCam_1_Keyboard,
+    [InspectorName("Tutorial Messages / FreeCam 1 / PlayStation")] tutorial_Message_FreeCam_1_PlayStation,
+    [InspectorName("Tutorial Messages / FreeCam 1 / xBox")] tutorial_Message_FreeCam_1_xBox,
+    [InspectorName("Tutorial Messages / FreeCam 2 / Keyboard")] tutorial_Message_FreeCam_2_Keyboard,
+    [InspectorName("Tutorial Messages / FreeCam 2 / PlayStation")] tutorial_Message_FreeCam_2_PlayStation,
+    [InspectorName("Tutorial Messages / FreeCam 2 / xBox")] tutorial_Message_FreeCam_2_xBox,
+    [InspectorName("Tutorial Messages / Demo / Keyboard")] tutorial_Message_Demo_Keyboard,
+    [InspectorName("Tutorial Messages / Demo / PlayStation")] tutorial_Message_Demo_PlayStation,
+    [InspectorName("Tutorial Messages / Demo / xBox")] tutorial_Message_Demo_xBox,
+    [InspectorName("Tutorial Messages / 7 / Keyboard")] tutorial_Message_7_Keyboard,
+    [InspectorName("Tutorial Messages / 7 / PlayStation")] tutorial_Message_7_PlayStation,
+    [InspectorName("Tutorial Messages / 7 / xBox")] tutorial_Message_7_xBox,
+    [InspectorName("Tutorial Messages / 8 / Keyboard")] tutorial_Message_8_Keyboard,
+    [InspectorName("Tutorial Messages / 8 / PlayStation")] tutorial_Message_8_PlayStation,
+    [InspectorName("Tutorial Messages / 8 / xBox")] tutorial_Message_8_xBox,
+    [InspectorName("Tutorial Messages / 9 / Keyboard")] tutorial_Message_9_Keyboard,
+    [InspectorName("Tutorial Messages / 9 / PlayStation")] tutorial_Message_9_PlayStation,
+    [InspectorName("Tutorial Messages / 9 / xBox")] tutorial_Message_9_xBox,
+    [InspectorName("Tutorial Messages / 10 / Keyboard")] tutorial_Message_10_Keyboard,
+    [InspectorName("Tutorial Messages / 10 / PlayStation")] tutorial_Message_10_PlayStation,
+    [InspectorName("Tutorial Messages / 10 / xBox")] tutorial_Message_10_xBox,
+    [InspectorName("Tutorial Messages / 11 / Keyboard")] tutorial_Message_11_Keyboard,
+    [InspectorName("Tutorial Messages / 11 / PlayStation")] tutorial_Message_11_PlayStation,
+    [InspectorName("Tutorial Messages / 11 / xBox")] tutorial_Message_11_xBox,
+    [InspectorName("Tutorial Messages / 12 / Keyboard")] tutorial_Message_12_Keyboard,
+    [InspectorName("Tutorial Messages / 12 / PlayStation")] tutorial_Message_12_PlayStation,
+    [InspectorName("Tutorial Messages / 12 / xBox")] tutorial_Message_12_xBox,
+    [InspectorName("Tutorial Messages / 13 / Keyboard")] tutorial_Message_13_Keyboard,
+    [InspectorName("Tutorial Messages / 13 / PlayStation")] tutorial_Message_13_PlayStation,
+    [InspectorName("Tutorial Messages / 13 / xBox")] tutorial_Message_13_xBox,
+    [InspectorName("Tutorial Messages / 14 / Keyboard")] tutorial_Message_14_Keyboard,
+    [InspectorName("Tutorial Messages / 14 / PlayStation")] tutorial_Message_14_PlayStation,
+    [InspectorName("Tutorial Messages / 14 / xBox")] tutorial_Message_14_xBox,
+    [InspectorName("Tutorial Messages / 15 / Keyboard")] tutorial_Message_15_Keyboard,
+    [InspectorName("Tutorial Messages / 15 / PlayStation")] tutorial_Message_15_PlayStation,
+    [InspectorName("Tutorial Messages / 15 / xBox")] tutorial_Message_15_xBox,
     #endregion
 
     #region InterractableButton Message
@@ -1645,13 +1659,20 @@ public enum Text_Database_Enum
     #endregion
 
     #region Finish Regions Messages
-    [InspectorName("Finish Regions Messages / Water")] finishedRegion_Message_Water,
-    [InspectorName("Finish Regions Messages / Sand")] finishedRegion_Message_Sand,
-    [InspectorName("Finish Regions Messages / Ice")] finishedRegion_Message_Ice,
-    [InspectorName("Finish Regions Messages / Lava")] finishedRegion_Message_Lava,
-    [InspectorName("Finish Regions Messages / Swamp")] finishedRegion_Message_Swamp,
-    [InspectorName("Finish Regions Messages / Metal")] finishedRegion_Message_Metal,
-    [InspectorName("Finish Regions Messages / 7")] finishedRegion_Message_7,
+    [InspectorName("Finish Regions Messages / Water / 1")] finishedRegion_Message_Water1,
+    [InspectorName("Finish Regions Messages / Water / 2")] finishedRegion_Message_Water2,
+    [InspectorName("Finish Regions Messages / Sand / 1")] finishedRegion_Message_Sand1,
+    [InspectorName("Finish Regions Messages / Sand / 2")] finishedRegion_Message_Sand2,
+    [InspectorName("Finish Regions Messages / Ice / 1")] finishedRegion_Message_Ice1,
+    [InspectorName("Finish Regions Messages / Ice / 2")] finishedRegion_Message_Ice2,
+    [InspectorName("Finish Regions Messages / Lava / 1")] finishedRegion_Message_Lava1,
+    [InspectorName("Finish Regions Messages / Lava / 2")] finishedRegion_Message_Lava2,
+    [InspectorName("Finish Regions Messages / Swamp / 1")] finishedRegion_Message_Swamp1,
+    [InspectorName("Finish Regions Messages / Swamp / 2")] finishedRegion_Message_Swamp2,
+    [InspectorName("Finish Regions Messages / Metal / 1")] finishedRegion_Message_Metal1,
+    [InspectorName("Finish Regions Messages / Metal / 2")] finishedRegion_Message_Metal2,
+    [InspectorName("Finish Regions Messages / 7 / 1")] finishedRegion_Message_71,
+    [InspectorName("Finish Regions Messages / 7 / 2")] finishedRegion_Message_72,
     #endregion
 
     #region NPC Names

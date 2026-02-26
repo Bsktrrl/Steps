@@ -341,7 +341,7 @@ public class PopUpManager : Singleton<PopUpManager>
     {
         ShowDisplay(popupManager, popup_Skin_Parent, popup_Skin_Children);
 
-        yield return new WaitForSeconds(pickupMessageDuration * 2f);
+        yield return new WaitForSeconds(pickupMessageDuration * 3f);
 
         HideDisplay(popupManager, popup_Skin_Parent, popup_Skin_Children);
     }

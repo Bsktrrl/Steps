@@ -27,9 +27,17 @@ public class SkinMessage : MonoBehaviour
         skinImage.sprite = PauseMenuManager.Instance.SelectSpriteForLevel(MapManager.Instance.mapInfo_ToSave.skintype);
 
         if (DataManager.Instance.oneTimeRunData_Store.pickup_FirstSkin)
-            skinMessage.text = "<color=#B593D5>" + SkinsOverview.Instance.GetSkinName(MapManager.Instance.mapInfo_ToSave.skintype) + "</color> was found";
+            skinMessage.text =
+                "<color=#B593D5>"
+                + SkinsOverview.Instance.GetSkinName(MapManager.Instance.mapInfo_ToSave.skintype)
+                + "</color> "
+                + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_Skin;
         else
-            skinMessage.text = "<color=#B593D5>" + SkinsOverview.Instance.GetSkinName(MapManager.Instance.mapInfo_ToSave.skintype) + "</color> was found. You may equip it in the Wardrobe Menu";
+            skinMessage.text =
+                "<color=#B593D5>" 
+                + SkinsOverview.Instance.GetSkinName(MapManager.Instance.mapInfo_ToSave.skintype) 
+                + "</color> "
+                + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_Skin_First;
 
         DataManager.Instance.oneTimeRunData_Store.pickup_FirstSkin = true;
         DataPersistanceManager.Instance.SaveGame();
