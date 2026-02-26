@@ -3,20 +3,14 @@
 
 
 Februar:
-1.0. Text Integration:
--> 1.1. Build Google Sheets with all possible text in the game (except Dialogue)
--> 1.2. Setup Google Sheet to Unity
--> 1.3. Setup Script to attach to TextMeshProGUI-objects (clickable bool to select text)
--> 1.4. Setup Font AssetGroup to get all buttonImages into Icons in the text instead of images
--> 1.5. Add options for different Controls (Keyboard, PlayStation & Xbox) in Messages
-	- Check all places where there is messages that includes icons, and add 3 variants to each line
-	- Expand the script so it includes all the new lines
-1.6. Go through the whole list, one section at a time. Control that buttons are swapped out with buttons and other messages are swapped out by code
-	- Remove all "LanguageText"-Scripts attached to TextMeshProGUI-objects and swap them out with the new "TMPro_TextDisplay"-script
-	- Rework Popups / Tutorial Messages to work with the new system
-	- Change so Flippers and OxygenTank is swapped
-1.7. Remove SkinName list
-1.8. Add text to all messages, and check that they work as intended, in all languages
+2.0. StatsDatabase
+- 2.1. Finn ut hvordan man oppdaterer et ExcelArk fra Unity
+- 2.2. Sette opp en struktur i Excel
+	- Lage oversikts-side
+	- Lage Struktur-side for all data som skal komme inn
+- 2.3. Lage kobling mellom Unity og Excel
+	- Få nye linjer til å legges inn der de skal
+	- Gjøre slik at info ikke legges inn fra Builds som har en gitt "bool = true"
 
 
 
@@ -32,7 +26,7 @@ Februar:
 
 19. Wardrobe: Må kunne rotere spillerObjektet (med høyre joystick)
 
-- 21. FreeCam: Blokker som FreeCam er inni, må ikke bli usynlige (finne hvor dette gjøres og disable det mens FreeCam er akiv)
+- 21. FreeCam: Blokker som FreeCam er inni, må ikke bli usynlige (finne hvor dette gjøres og disable det mens FreeCam er akiv). Gjøre "usynlige" blokkker pga. camera, synlige igjen når man er i FreeCam-mode, og usynlige igjen etterpå
 
 37. RootBlockNumbers: Endre slik at nummeret på RotBlocks forsvinner når de skal
 
@@ -49,11 +43,13 @@ Februar:
 
 42. Settings: Legge til en setting som lar spilleren toggle on/off InterractableMessages
 
-43. PlayerSpawnEffect på starten av første level man spiller (legge inn saveState slik at den ikke dukker opp igjen etter første)
+43. PlayerSpawnEffect: Legge til på starten av første level man spiller (legge inn saveState slik at den ikke dukker opp igjen etter første)
 
 44. KameraHidden: Fjerne 3x2 blokker rundt kameraet, ikke bare den blokken som kameraet er inni
 
 45. Checkpoint-røyk: Fikse slik at det kun er 1 røykObject attached til et checkpoint
+
+46: NewGame Language SettingsBug: Gjøre slik at også "language"-posten i "Settings" er satt til Engelsk bilde
 
 
 ----- LATER
@@ -62,8 +58,6 @@ Februar:
 14. FreeCam: Kan toggle Numbers on/off på alle blokker i levelet
 
 25. Overworld: Vurdere å legge inn en %-bar under navnet for å vise progress med tall også
-
-30. Camera: Sjekke ut om det går an å få til en hull-shader på/rundt kameraet som fjerner noe av collission-distraksjonen
 
 33. Lage nytt analytics-system for google sheets, for å innhente data
 

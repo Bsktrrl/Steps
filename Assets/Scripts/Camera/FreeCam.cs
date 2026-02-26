@@ -127,7 +127,7 @@ public class FreeCam : Singleton<FreeCam>
     [SerializeField] private float touchSlideStep = 1f;
 
     [Header("FreeCamForwardPush")]
-    [SerializeField] private float freeCamForwardPush = 0.35f;
+    [SerializeField] private float freeCamForwardPush = 1.4f;
 
     private PrioritySettings _playerBasePriority;
     private PrioritySettings _freeBasePriority;
