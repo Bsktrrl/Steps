@@ -657,7 +657,4 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
                 break;
         }
     }
-
-    //Update WardrobeSkin weared in-game
-    //Update DataManager when level is exited
 }

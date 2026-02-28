@@ -4,13 +4,12 @@
 
 Februar:
 2.0. StatsDatabase
-- 2.1. Finn ut hvordan man oppdaterer et ExcelArk fra Unity
-- 2.2. Sette opp en struktur i Excel
-	- Lage oversikts-side
-	- Lage Struktur-side for all data som skal komme inn
-- 2.3. Lage kobling mellom Unity og Excel
-	- Få nye linjer til å legges inn der de skal
-	- Gjøre slik at info ikke legges inn fra Builds som har en gitt "bool = true"
+- 2.1. Legge til tidtaker for WardrobeSkins som spilleren har på seg
+	- Må endres når spilleren bytter skin
+- 2.2. Sjekk alle levelStat-variabler for å se at de oppdateres riktig (i inspectoren)
+	- Sjekk at alle variabler funger som de skal i alle levels
+- 2.3. Bygg opp alle sessionStat-variabler slik at de fungerer
+- 2.4. Sjekk at alle sessionStat-variabler oppdateres riktig og oppdateres helt til spilleren avslutter spillet (det er kun da de skal legges til i GoogleSheets, som en full oversikt over gjennomspillingen)
 
 
 
