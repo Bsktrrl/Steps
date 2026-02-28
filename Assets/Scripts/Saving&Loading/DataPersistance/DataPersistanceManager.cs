@@ -103,6 +103,13 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
     {
         DataManager.Instance.menuState_Store = MenuState.Main_Menu;
         SaveGame();
+
+        //Make it so that the playerStatsData are reset on next game played
+        if (FindObjectOfType<MapStatsGathered>())
+            MapStatsGathered.Instance.ExitLevel();
+
+        FeedbackForm.Instance.SubmitFeedback_Session();
+        DataManager.Instance.oneTimeRunData_Store.playerData_StartOfGame = false;
     }
 
     List<IDataPersistance> FindAllDataPersistenceObjects()

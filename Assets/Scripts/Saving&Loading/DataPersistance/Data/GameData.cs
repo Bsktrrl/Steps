@@ -41,6 +41,9 @@ public class GameData
     //Text Database
     /*[HideInInspector]*/ public Game_TextDatabase game_TextDatabase_Save = new Game_TextDatabase();
 
+    //PlayerStatsData
+    /*[HideInInspector]*/ public PlayerStatsData PlayerStatsData_Save = new PlayerStatsData();
+
 
     //--------------------
 

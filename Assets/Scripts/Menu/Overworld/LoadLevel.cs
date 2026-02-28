@@ -62,8 +62,6 @@ public class LoadLevel : MonoBehaviour
             if (GetComponent<LevelInfo>())
                 GetComponent<LevelInfo>().SaveNameDisplay();
 
-            AnalyticsCalls.SelectLevel(levelToPlay, regionToPlay.ToString());
-
             StartCoroutine(LoadSceneCoroutine(levelToPlay));
         }
     }

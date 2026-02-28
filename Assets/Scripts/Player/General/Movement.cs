@@ -1653,7 +1653,7 @@ public class Movement : Singleton<Movement>
         if (moveToBlock_SwiftSwimUp.canMoveTo)
         {
             isSwiftSwim = true;
-            MapManager.Instance.swiftSwimCounter++;
+            MapStatsGathered.Instance.levelStats.ability_SwiftSwim++;
             PerformMovement(moveToBlock_SwiftSwimUp, MovementStates.Moving, 2);
             Action_isSwiftSwim?.Invoke();
             return true;
@@ -1666,7 +1666,7 @@ public class Movement : Singleton<Movement>
         if (moveToBlock_SwiftSwimDown.canMoveTo)
         {
             isSwiftSwim = true;
-            MapManager.Instance.swiftSwimCounter++;
+            MapStatsGathered.Instance.levelStats.ability_SwiftSwim++;
             PerformMovement(moveToBlock_SwiftSwimDown, MovementStates.Moving, 2);
             Action_isSwiftSwim?.Invoke();
             return true;
@@ -1701,7 +1701,7 @@ public class Movement : Singleton<Movement>
                 else
                     PerformMovement(moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down, abilitySpeed + grapplingLength);
 
-                MapManager.Instance.grapplingHookCounter++;
+                MapStatsGathered.Instance.levelStats.ability_GrapplingHook++;
 
                 moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
                 Block_IsNot_Target(moveToBlock_GrapplingHook);
@@ -1732,7 +1732,7 @@ public class Movement : Singleton<Movement>
                 isAscending = true;
                 PlayerCameraOcclusionController.Instance.CameraZoom(true);
 
-                MapManager.Instance.ascendCounter++;
+                MapStatsGathered.Instance.levelStats.ability_Ascend++;
                 Player_Animations.Instance.Trigger_AscendAnimation();
                 PerformMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
                 Action_isAscending?.Invoke();
@@ -1756,7 +1756,7 @@ public class Movement : Singleton<Movement>
                 isDescending = true;
                 PlayerCameraOcclusionController.Instance.CameraZoom(true);
 
-                MapManager.Instance.descendCounter++;
+                MapStatsGathered.Instance.levelStats.ability_Descend++;
                 Player_Animations.Instance.Trigger_DescendAnimation();
                 PerformMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
                 Action_isDescending?.Invoke();
@@ -1862,7 +1862,7 @@ public class Movement : Singleton<Movement>
         {
             if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Dash_Forward.targetBlock.GetComponent<BlockInfo>().movementCost)
             {
-                MapManager.Instance.dashCounter++;
+                MapStatsGathered.Instance.levelStats.ability_Dash++;
                 Player_Animations.Instance.Trigger_DashAnimation();
                 PerformMovement(moveToBlock_Dash_Forward, MovementStates.Moving, abilitySpeed, ref isDashing);
                 Action_isDashing?.Invoke();
@@ -1876,7 +1876,7 @@ public class Movement : Singleton<Movement>
         {
             if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Dash_Back.targetBlock.GetComponent<BlockInfo>().movementCost)
             {
-                MapManager.Instance.dashCounter++;
+                MapStatsGathered.Instance.levelStats.ability_Dash++;
                 Player_Animations.Instance.Trigger_DashAnimation();
                 PerformMovement(moveToBlock_Dash_Back, MovementStates.Moving, abilitySpeed, ref isDashing);
                 Action_isDashing?.Invoke();
@@ -1890,7 +1890,7 @@ public class Movement : Singleton<Movement>
         {
             if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Dash_Left.targetBlock.GetComponent<BlockInfo>().movementCost)
             {
-                MapManager.Instance.dashCounter++;
+                MapStatsGathered.Instance.levelStats.ability_Dash++;
                 Player_Animations.Instance.Trigger_DashAnimation();
                 PerformMovement(moveToBlock_Dash_Left, MovementStates.Moving, abilitySpeed, ref isDashing);
                 Action_isDashing?.Invoke();
@@ -1904,7 +1904,7 @@ public class Movement : Singleton<Movement>
         {
             if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Dash_Right.targetBlock.GetComponent<BlockInfo>().movementCost)
             {
-                MapManager.Instance.dashCounter++;
+                MapStatsGathered.Instance.levelStats.ability_Dash++;
                 Player_Animations.Instance.Trigger_DashAnimation();
                 PerformMovement(moveToBlock_Dash_Right, MovementStates.Moving, abilitySpeed, ref isDashing);
                 Action_isDashing?.Invoke();
@@ -1920,7 +1920,7 @@ public class Movement : Singleton<Movement>
         {
             if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Jump_Forward.targetBlock.GetComponent<BlockInfo>().movementCost)
             {
-                MapManager.Instance.jumpCounter++;
+                MapStatsGathered.Instance.levelStats.ability_Jump++;
                 Player_Animations.Instance.Trigger_JumpAnimation();
                 PerformMovement(moveToBlock_Jump_Forward, MovementStates.Moving, abilitySpeed, ref isJumping);
                 Action_isJumping?.Invoke();
@@ -1934,7 +1934,7 @@ public class Movement : Singleton<Movement>
         {
             if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Jump_Back.targetBlock.GetComponent<BlockInfo>().movementCost)
             {
-                MapManager.Instance.jumpCounter++;
+                MapStatsGathered.Instance.levelStats.ability_Jump++;
                 Player_Animations.Instance.Trigger_JumpAnimation();
                 PerformMovement(moveToBlock_Jump_Back, MovementStates.Moving, abilitySpeed, ref isJumping);
                 Action_isJumping?.Invoke();
@@ -1948,7 +1948,7 @@ public class Movement : Singleton<Movement>
         {
             if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Jump_Left.targetBlock.GetComponent<BlockInfo>().movementCost)
             {
-                MapManager.Instance.jumpCounter++;
+                MapStatsGathered.Instance.levelStats.ability_Jump++;
                 Player_Animations.Instance.Trigger_JumpAnimation();
                 PerformMovement(moveToBlock_Jump_Left, MovementStates.Moving, abilitySpeed, ref isJumping);
                 Action_isJumping?.Invoke();
@@ -1962,7 +1962,7 @@ public class Movement : Singleton<Movement>
         {
             if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Jump_Right.targetBlock.GetComponent<BlockInfo>().movementCost)
             {
-                MapManager.Instance.jumpCounter++;
+                MapStatsGathered.Instance.levelStats.ability_Jump++;
                 Player_Animations.Instance.Trigger_JumpAnimation();
                 PerformMovement(moveToBlock_Jump_Right, MovementStates.Moving, abilitySpeed, ref isJumping);
                 Action_isJumping?.Invoke();
@@ -3004,6 +3004,11 @@ public class Movement : Singleton<Movement>
                         //print("5. Slope");
 
                         PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
+
+
+                        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+                            MapStatsGathered.Instance.levelStats.ability_CeilingGrab++;
+
                         //print("200. Loose Step: " + PlayerStats.Instance.stats.steps_Current);
                         //preventSlopeGlidingRespawn = false;
                     }
@@ -3156,7 +3161,7 @@ public class Movement : Singleton<Movement>
     {
         if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water && PlayerHasSwimAbility())
         {
-            MapManager.Instance.swiftSwimCounter++;
+            MapStatsGathered.Instance.levelStats.ability_SwiftSwim++;
         }
     }
 
