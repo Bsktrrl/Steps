@@ -100,6 +100,8 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.skinsInfo_Store = gameData.skinsInfo_Save;
         this.game_TextDatabase_Store = gameData.game_TextDatabase_Save;
 
+        this.PlayerStatsData_Store = gameData.PlayerStatsData_Save;
+
         this.oneTimeRunData_Store = gameData.oneTimeRunData_Save;
     }
 
@@ -162,6 +164,8 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         gameData.settingData_SaveList = this.settingData_StoreList;
         gameData.skinsInfo_Save = this.skinsInfo_Store;
         gameData.game_TextDatabase_Save = this.game_TextDatabase_Store;
+
+        gameData.PlayerStatsData_Save = this.PlayerStatsData_Store;
 
         gameData.oneTimeRunData_Save = this.oneTimeRunData_Store;
 

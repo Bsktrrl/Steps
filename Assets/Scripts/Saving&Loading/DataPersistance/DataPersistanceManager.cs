@@ -108,7 +108,7 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
         if (FindObjectOfType<MapStatsGathered>())
             MapStatsGathered.Instance.ExitLevel();
 
-        FeedbackForm.Instance.SubmitFeedback_Session();
+        //FeedbackForm.Instance.SubmitFeedback_Session();
         DataManager.Instance.oneTimeRunData_Store.playerData_StartOfGame = false;
     }
 

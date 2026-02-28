@@ -59,6 +59,8 @@ public class GameData
         charatersData_Save = new CharatersData();
         skinsInfo_Save = new SkinInfo();
 
+        PlayerStatsData_Save = new PlayerStatsData();
+
         oneTimeRunData_Save = new OneTimeRunData();
 
         //game_TextDatabase_Save = new Game_TextDatabase();
