@@ -1653,7 +1653,6 @@ public class Movement : Singleton<Movement>
         if (moveToBlock_SwiftSwimUp.canMoveTo)
         {
             isSwiftSwim = true;
-            MapStatsGathered.Instance.levelStats.ability_SwiftSwim++;
             PerformMovement(moveToBlock_SwiftSwimUp, MovementStates.Moving, 2);
             Action_isSwiftSwim?.Invoke();
             return true;
@@ -1666,7 +1665,6 @@ public class Movement : Singleton<Movement>
         if (moveToBlock_SwiftSwimDown.canMoveTo)
         {
             isSwiftSwim = true;
-            MapStatsGathered.Instance.levelStats.ability_SwiftSwim++;
             PerformMovement(moveToBlock_SwiftSwimDown, MovementStates.Moving, 2);
             Action_isSwiftSwim?.Invoke();
             return true;
@@ -3161,7 +3159,7 @@ public class Movement : Singleton<Movement>
     {
         if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water && PlayerHasSwimAbility())
         {
-            MapStatsGathered.Instance.levelStats.ability_SwiftSwim++;
+            MapStatsGathered.Instance.levelStats.ability_Swim++;
         }
     }
 

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Windows;
+using static UnityEngine.Rendering.DebugUI;
 
 public class FeedbackForm : Singleton<FeedbackForm>
 {
@@ -81,6 +83,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.337345026";
         #endregion
         #region Rivergreen Lv.2
         index++;
@@ -121,6 +125,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.825571877";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.1838932635";
         #endregion
         #region Rivergreen Lv.3
         index++;
@@ -161,6 +167,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.1805290995";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "entry.1923175399";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.621244177";
         #endregion
         #region Rivergreen Lv.4
         index++;
@@ -201,6 +209,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.1273754573";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "entry.461978382";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "entry.2073140631";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.1519884505";
         #endregion
         #region Rivergreen Lv.5
         index++;
@@ -241,6 +251,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.328028451";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "entry.906472657";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "entry.153295770";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.1170156226";
         #endregion
 
         #region Sandlands Lv.1
@@ -282,6 +294,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.378435319";
         #endregion
         #region Sandlands Lv.2
         index++;
@@ -322,6 +336,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.1038168133";
         #endregion
         #region Sandlands Lv.3
         index++;
@@ -362,6 +378,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.343272426";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.667452762";
         #endregion
         #region Sandlands Lv.4
         index++;
@@ -402,6 +420,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.1789634768";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "entry.136742916";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.560698238";
         #endregion
         #region Sandlands Lv.5
         index++;
@@ -442,6 +462,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.1542557980";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "entry.930705920";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.877519561";
         #endregion
 
         #region Frostfield Lv.1
@@ -483,6 +505,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.1576379914";
         #endregion
         #region Frostfield Lv.2
         index++;
@@ -523,6 +547,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.254843182";
         #endregion
         #region Frostfield Lv.3
         index++;
@@ -563,6 +589,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.901707548";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.1649763055";
         #endregion
         #region Frostfield Lv.4
         index++;
@@ -603,6 +631,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.1642141856";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.27624598";
         #endregion
         #region Frostfield Lv.5
         index++;
@@ -643,6 +673,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.835647461";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.873475182";
         #endregion
 
         #region Firevein Lv.1
@@ -684,6 +716,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.1684142329";
         #endregion
         #region Firevein Lv.2
         index++;
@@ -724,6 +758,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.209338993";
         #endregion
         #region Firevein Lv.3
         index++;
@@ -764,6 +800,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.1247067271";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.1938700604";
         #endregion
         #region Firevein Lv.4
         index++;
@@ -804,6 +842,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.2146459159";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.767911297";
         #endregion
         #region Firevein Lv.5
         index++;
@@ -844,6 +884,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.2094575621";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.1517258814";
         #endregion
 
         #region Witchmire Lv.1
@@ -885,6 +927,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.1088044387";
         #endregion
         #region Witchmire Lv.2
         index++;
@@ -925,6 +969,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.781056888";
         #endregion
         #region Witchmire Lv.3
         index++;
@@ -965,6 +1011,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.1749899712";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.1072453214";
         #endregion
         #region Witchmire Lv.4
         index++;
@@ -1005,6 +1053,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.772995408";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.991866455";
         #endregion
         #region Witchmire Lv.5
         index++;
@@ -1045,6 +1095,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.1979287675";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.1900402143";
         #endregion
 
         #region Metalworks Lv.1
@@ -1086,6 +1138,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.2094551086";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.527646726";
         #endregion
         #region Metalwors Lv.2
         index++;
@@ -1126,6 +1180,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.175866023";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.1061563466";
         #endregion
         #region Metalworks Lv.3
         index++;
@@ -1166,6 +1222,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.974016394";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.1876073584";
         #endregion
         #region Metalworks Lv.4
         index++;
@@ -1206,6 +1264,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.141344187";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.940382015";
         #endregion
         #region Metalworks Lv.5
         index++;
@@ -1246,68 +1306,12 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelField_PathsList[index].path_Ability_1_TotalTimer = "entry.855389617";
         levelField_PathsList[index].path_Ability_2_TotalTimer = "";
         levelField_PathsList[index].path_Ability_3_TotalTimer = "";
+
+        levelField_PathsList[index].path_TalkToNPC = "entry.909187836";
         #endregion
     }
 
-    public void ResetSessionStats()
-    {
-        if (DataManager.Instance.oneTimeRunData_Store.playerData_StartOfGame) return;
-
-        playerStatsData.sessionStats.session_No = 0;
-        playerStatsData.sessionStats.totalTimeUsed = 0;
-
-        playerStatsData.sessionStats.totalTimeUsed_Menus = 0;
-        playerStatsData.sessionStats.totalTimeUsed_MainMenu = 0;
-        playerStatsData.sessionStats.totalTimeUsed_OverworldMenu = 0;
-        playerStatsData.sessionStats.totalTimeUsed_WardrobeMenu = 0;
-        playerStatsData.sessionStats.totalTimeUsed_OptionsMenu = 0;
-        playerStatsData.sessionStats.totalTimeUsed_InPauseMenu = 0;
-        playerStatsData.sessionStats.totalTimeUsed_InLevels = 0;
-        playerStatsData.sessionStats.totalTimeUsed_InFreeCam = 0;
-
-        playerStatsData.sessionStats.totalLevelsVisited = 0; ;
-        playerStatsData.sessionStats.totalLevelExited = 0;
-        playerStatsData.sessionStats.totalLevelsCleared = 0;
-        playerStatsData.sessionStats.totalStepsTaken = 0;
-        playerStatsData.sessionStats.totalRespawnTaken = 0;
-        playerStatsData.sessionStats.totalCameraRotationTaken = 0;
-
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_RivergreenLv1 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_RivergreenLv2 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_RivergreenLv3 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_RivergreenLv4 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_RivergreenLv5 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_SandlandsLv1 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_SandlandsLv2 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_SandlandsLv3 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_SandlandsLv4 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_SandlandsLv5 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_FrostfieldLv1 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_FrostfieldLv2 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_FrostfieldLv3 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_FrostfieldLv4 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_FrostfieldLv5 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_FireveinLv1 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_FireveinLv2 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_FireveinLv3 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_FireveinLv4 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_FireveinLv5 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_WitchmireLv1 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_WitchmireLv2 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_WitchmireLv3 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_WitchmireLv4 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_WitchmireLv5 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_MetalworksLv1 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_MetalworksLv2 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_MetalworksLv3 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_MetalworksLv4 = 0;
-        playerStatsData.sessionStats.totalTimeEquippedInLevels_MetalworksLv5 = 0;
-
-        //Make it so that StatsData isn't reset during the game
-        DataManager.Instance.oneTimeRunData_Store.playerData_StartOfGame = true;
-        DataPersistanceManager.instance.SaveGame();
-    }
+    
     public void ResetLevelStats(Level_Stats levelStats)
     {
         levelStats.timeUsed = 0;
@@ -1364,6 +1368,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
             levelStats.ability_2_TotalTimer = 0;
         if (levelStats.ability_3_TotalTimer_Check)
             levelStats.ability_3_TotalTimer = 0;
+
+        levelStats.talkTo_NPC = 0;
     }
 
 
@@ -1385,8 +1391,6 @@ public class FeedbackForm : Singleton<FeedbackForm>
 
         UpdatePlayerFeedbackSave_Level(DataManager.Instance.PlayerStatsData_Store.rivergreenLv1_Stats, ref playerStatsData.rivergreenLv1_Stats);
         StartCoroutine(Level_Feedback(playerStatsData.rivergreenLv1_Stats, levelField_PathsList[0]));
-
-        print("300000. SubmitFeedback_Rivergreen_Lv1");
     }
     public void SubmitFeedback_Rivergreen_Lv2()
     {
@@ -1712,6 +1716,8 @@ public class FeedbackForm : Singleton<FeedbackForm>
         levelStats.ability_1_TotalTimer_Check = levelStats_DataManager.ability_1_TotalTimer_Check;
         levelStats.ability_2_TotalTimer_Check = levelStats_DataManager.ability_2_TotalTimer_Check;
         levelStats.ability_3_TotalTimer_Check = levelStats_DataManager.ability_3_TotalTimer_Check;
+
+        levelStats.talkTo_NPC = levelStats_DataManager.talkTo_NPC;
     }
 
 
@@ -1838,7 +1844,6 @@ public class FeedbackForm : Singleton<FeedbackForm>
             {
                 //Debug.Log("Feedback submitted successfully");
 
-                //ResetSessionStats();
             }
             else
             {
@@ -1920,6 +1925,9 @@ public class FeedbackForm : Singleton<FeedbackForm>
         if (levelField_Path.path_Ability_3_TotalTimer != "" && levelStats.ability_3_TotalTimer_Check && levelStats.ability_3_TotalTimer > 0)
             form.AddField(levelField_Path.path_Ability_3_TotalTimer, levelStats.ability_3_TotalTimer.ToString("F2"));
 
+        if (levelStats.talkTo_NPC > 0)
+            form.AddField(levelField_Path.path_TalkToNPC, levelStats.talkTo_NPC.ToString());
+
         using (UnityWebRequest www = UnityWebRequest.Post(formURL, form))
         {
             yield return www.SendWebRequest();
@@ -1978,6 +1986,8 @@ public class LevelField_Path
     public string path_Ability_1_TotalTimer;
     public string path_Ability_2_TotalTimer;
     public string path_Ability_3_TotalTimer;
+
+    public string path_TalkToNPC;
 }
 
 
@@ -2152,4 +2162,7 @@ public class Level_Stats
     public bool ability_2_TotalTimer_Check;
     public float ability_3_TotalTimer;
     public bool ability_3_TotalTimer_Check;
+
+    [Header("Talk to NPC")]
+    public float talkTo_NPC;
 }

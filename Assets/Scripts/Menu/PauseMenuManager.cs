@@ -10,6 +10,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     public static event Action Action_closePauseMenu;
 
     public bool isVisible;
+    public bool isActive;
 
     [Header("Parents")]
     public GameObject pauseMenu_Parent;
@@ -140,6 +141,8 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         pauseMenu_Parent.SetActive(true);
         pauseMenu_MainMenu_Parent.SetActive(true);
 
+        isActive = true;
+
         //Set the first selected button for controller input
         EventSystem.current.SetSelectedGameObject(pauseMenu_StartButton);
 
@@ -156,6 +159,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
         pauseMenu_Parent.SetActive(false);
         isVisible = false;
+        isActive = false;
         PlayerManager.Instance.UnpauseGame();
     }
     IEnumerator CheckPauseMenu()

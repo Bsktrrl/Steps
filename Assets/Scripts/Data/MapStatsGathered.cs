@@ -5,23 +5,30 @@ using UnityEngine;
 public class MapStatsGathered : Singleton<MapStatsGathered>
 {
     public Level_Stats levelStats = new Level_Stats();
-    public Session_Stats sessionStats = new Session_Stats();
 
     float realTime = 0;
 
+    PauseMenuManager pauseMenuManager;
 
     //--------------------
 
 
+    private void Start()
+    {
+        pauseMenuManager = FindObjectOfType<PauseMenuManager>();
+    }
     private void Update()
     {
-        UpdateAllTimers();
+        UpdateAllTimers_Level();
     }
-    void UpdateAllTimers()
+    void UpdateAllTimers_Level()
     {
+        if (PauseMenuManager.Instance.isActive) return;
+
         realTime = Time.deltaTime;
 
-        levelStats.timeUsed += Time.deltaTime;
+        if (pauseMenuManager && !pauseMenuManager.isActive)
+            levelStats.timeUsed += realTime;
 
         if (!levelStats.essence_1_TotalTimer_Check)
             levelStats.essence_1_TotalTimer += realTime;
@@ -71,16 +78,22 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
         DataManager.Action_dataHasLoaded += UpdateLevelStats;
 
         Movement.Action_RespawnPlayer += UpdateRespawnCount;
+        Movement.Action_isSwiftSwim_Finished += UpdateSwiftSwim;
 
         Movement.Action_StepTaken += UpdateStepCount;
+
+        NPCManager.Action_DialogueIsFinished += UpdateTalkToNPCCount;
     }
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= UpdateLevelStats;
 
         Movement.Action_RespawnPlayer -= UpdateRespawnCount;
+        Movement.Action_isSwiftSwim_Finished -= UpdateSwiftSwim;
 
         Movement.Action_StepTaken -= UpdateStepCount;
+
+        NPCManager.Action_DialogueIsFinished -= UpdateTalkToNPCCount;
     }
 
 
@@ -298,38 +311,6 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
             levelStats.ability_3_TotalTimer = levelStats_DataManger.ability_3_TotalTimer;
             levelStats.ability_3_TotalTimer_Check = false;
         }
-
-        sessionStats.totalTimeEquippedInLevels_Default = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default;
-        sessionStats.totalTimeEquippedInLevels_RivergreenLv1 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_RivergreenLv1;
-        sessionStats.totalTimeEquippedInLevels_RivergreenLv2 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_RivergreenLv2;
-        sessionStats.totalTimeEquippedInLevels_RivergreenLv3 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_RivergreenLv3;
-        sessionStats.totalTimeEquippedInLevels_RivergreenLv4 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_RivergreenLv4;
-        sessionStats.totalTimeEquippedInLevels_RivergreenLv5 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_RivergreenLv5;
-        sessionStats.totalTimeEquippedInLevels_SandlandsLv1 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_SandlandsLv1;
-        sessionStats.totalTimeEquippedInLevels_SandlandsLv2 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_SandlandsLv2;
-        sessionStats.totalTimeEquippedInLevels_SandlandsLv3 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_SandlandsLv3;
-        sessionStats.totalTimeEquippedInLevels_SandlandsLv4 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_SandlandsLv4;
-        sessionStats.totalTimeEquippedInLevels_SandlandsLv5 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_SandlandsLv5;
-        sessionStats.totalTimeEquippedInLevels_FrostfieldLv1 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FrostfieldLv1;
-        sessionStats.totalTimeEquippedInLevels_FrostfieldLv2 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FrostfieldLv2;
-        sessionStats.totalTimeEquippedInLevels_FrostfieldLv3 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FrostfieldLv3;
-        sessionStats.totalTimeEquippedInLevels_FrostfieldLv4 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FrostfieldLv4;
-        sessionStats.totalTimeEquippedInLevels_FrostfieldLv5 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FrostfieldLv5;
-        sessionStats.totalTimeEquippedInLevels_FireveinLv1 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FireveinLv1;
-        sessionStats.totalTimeEquippedInLevels_FireveinLv2 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FireveinLv2;
-        sessionStats.totalTimeEquippedInLevels_FireveinLv3 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FireveinLv3;
-        sessionStats.totalTimeEquippedInLevels_FireveinLv4 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FireveinLv4;
-        sessionStats.totalTimeEquippedInLevels_FireveinLv5 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FireveinLv5;
-        sessionStats.totalTimeEquippedInLevels_WitchmireLv1 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_WitchmireLv1;
-        sessionStats.totalTimeEquippedInLevels_WitchmireLv2 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_WitchmireLv2;
-        sessionStats.totalTimeEquippedInLevels_WitchmireLv3 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_WitchmireLv3;
-        sessionStats.totalTimeEquippedInLevels_WitchmireLv4 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_WitchmireLv4;
-        sessionStats.totalTimeEquippedInLevels_WitchmireLv5 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_WitchmireLv5;
-        sessionStats.totalTimeEquippedInLevels_MetalworksLv1 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_MetalworksLv1;
-        sessionStats.totalTimeEquippedInLevels_MetalworksLv2 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_MetalworksLv2;
-        sessionStats.totalTimeEquippedInLevels_MetalworksLv3 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_MetalworksLv3;
-        sessionStats.totalTimeEquippedInLevels_MetalworksLv4 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_MetalworksLv4;
-        sessionStats.totalTimeEquippedInLevels_MetalworksLv5 = DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_MetalworksLv5;
     }
 
     Level_Stats GetLevelData(LevelNames levelName)
@@ -422,6 +403,15 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
     {
         levelStats.respawnTaken++;
     }
+    void UpdateTalkToNPCCount()
+    {
+        levelStats.talkTo_NPC++;
+    }
+    void UpdateSwiftSwim()
+    {
+        levelStats.ability_SwiftSwim++;
+        levelStats.ability_Swim--;
+    }
 
 
     //--------------------
@@ -482,15 +472,21 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
     {
         levelStats.quitTimer = levelStats.timeUsed;
 
-        SetupEndLevel();
+        SessionStatsGathered.Instance.sessionStats.totalLevelExited += 1;
+
+        SetupLevelEnding();
+        SetupParametersToSessionStats();
     }
     public void CompleteLevel()
     {
         levelStats.goalReachedTimer = levelStats.timeUsed;
 
-        SetupEndLevel();
+        SessionStatsGathered.Instance.sessionStats.totalLevelsCleared += 1;
+
+        SetupLevelEnding();
+        SetupParametersToSessionStats();
     }
-    void SetupEndLevel()
+    void SetupLevelEnding()
     {
         switch (MapManager.Instance.levelName)
         {
@@ -656,5 +652,17 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
             default:
                 break;
         }
+    }
+    void SetupParametersToSessionStats()
+    {
+        SessionStatsGathered.Instance.sessionStats.totalLevelsVisited += 1;
+        SessionStatsGathered.Instance.sessionStats.totalStepsTaken += levelStats.stepsTaken;
+        SessionStatsGathered.Instance.sessionStats.totalRespawnTaken += levelStats.respawnTaken;
+        SessionStatsGathered.Instance.sessionStats.totalCameraRotationTaken += levelStats.cameraRotationTaken;
+
+        SessionStatsGathered.Instance.sessionStats.totalTimeUsed_InLevels += levelStats.timeUsed;
+        SessionStatsGathered.Instance.sessionStats.totalTimeUsed_InFreeCam += levelStats.freeCamTimer;
+
+        SessionStatsGathered.Instance.SaveSessionStats();
     }
 }

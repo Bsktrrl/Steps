@@ -189,6 +189,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.haveStartedNewGame_Store = newData.haveStartedNewGame_Save;
 
         this.PlayerStatsData_Store = newData.PlayerStatsData_Save;
+        this.PlayerStatsData_Store.sessionStats.session_No = 1;
 
 
         //Persist through newGame
@@ -215,7 +216,4 @@ public class OneTimeRunData
 
     //Skin
     /*[HideInInspector]*/ public bool pickup_FirstSkin = new bool();
-
-    //StartTheGame - PlayerData
-    /*[HideInInspector]*/ public bool playerData_StartOfGame = new bool();
 }
