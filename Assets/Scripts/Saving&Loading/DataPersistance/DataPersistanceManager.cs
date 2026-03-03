@@ -1,8 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEditor;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class DataPersistanceManager : Singleton<DataPersistanceManager>
@@ -101,6 +102,19 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
     private void OnApplicationQuit()
     {
+        //Make it so that the playerStatsData are reset on next game played
+        if (FindObjectOfType<MapStatsGathered>())
+            MapStatsGathered.Instance.ExitLevel();
+
+        //PlayerStats Data
+        if (FindObjectOfType<FeedbackForm>())
+            FeedbackForm.Instance.SubmitFeedback_Session();
+        if (FindObjectOfType<SessionStatsGathered>())
+            SessionStatsGathered.Instance.ResetSessionStats();
+
+        DataManager.Instance.PlayerStatsData_Store.sessionStats.session_No += 1;
+
+        //Save the variables
         DataManager.Instance.menuState_Store = MenuState.Main_Menu;
         SaveGame();
     }

@@ -16,8 +16,8 @@ public class Interactable_Pickup : MonoBehaviour
     public static event Action Action_FlippersGot;
     public static event Action Action_JumpingGot;
 
-
     MapManager mapManager;
+    MapStatsGathered mapStatsGathered;
 
     public SkinType skinReceived;
     public Items itemReceived;
@@ -36,6 +36,7 @@ public class Interactable_Pickup : MonoBehaviour
         startPos = transform.position;
 
         mapManager = FindObjectOfType<MapManager>();
+        mapStatsGathered = FindObjectOfType<MapStatsGathered>();
     }
 
     private void OnEnable()
@@ -85,11 +86,7 @@ public class Interactable_Pickup : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
 
-        //Update analyticsData
-        AnalyticsCalls.OnLevel(mapManager.timeUsedInLevel, mapManager.stepCount, mapManager.respawnCount, mapManager.abilitiesPickedUp, mapManager.cameraRotated, mapManager.timeUsedInFreeCam, mapManager.freeCamCount, mapManager.swimCounter, mapManager.swiftSwimCounter, mapManager.jumpCounter, mapManager.dashCounter, mapManager.ascendCounter, mapManager.descendCounter, mapManager.grapplingHookCounter, mapManager.ceilingGrabCounter);
-        AnalyticsCalls.OnLevelFinishing(mapManager.timeUsedInLevel, mapManager.stepCount, mapManager.respawnCount, mapManager.abilitiesPickedUp, mapManager.cameraRotated, mapManager.timeUsedInFreeCam, mapManager.freeCamCount, mapManager.swimCounter, mapManager.swiftSwimCounter, mapManager.jumpCounter, mapManager.dashCounter, mapManager.ascendCounter, mapManager.descendCounter, mapManager.grapplingHookCounter, mapManager.ceilingGrabCounter);
-
-        AnalyticsCalls.CompleteLevel();
+        MapStatsGathered.Instance.CompleteLevel();
 
         PlayerManager.Instance.player.GetComponent<PlayerManager>().QuitLevel();
 
@@ -122,12 +119,13 @@ public class Interactable_Pickup : MonoBehaviour
                             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.essence_Max += 1;
                             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.essence_Current += 1;
 
-                            //Get coin number
+                            MapStatsGathered.Instance.UpdateEssencePickedUp_Stats(GetComponent<PickupData>().essenceNo);
+
+                            //Get essence number
                             for (int i = 0; i < MapManager.Instance.mapInfo_ToSave.essenceList.Count; i++)
                             {
                                 if (Vector3.Distance(MapManager.Instance.mapInfo_ToSave.essenceList[i].pos, PlayerManager.Instance.player.transform.position) <= 0.5f)
                                 {
-                                    AnalyticsCalls.GetEssence(i);
                                     break;
                                 }
                             }
@@ -144,17 +142,21 @@ public class Interactable_Pickup : MonoBehaviour
                             }
                             if (isTaken >= 10)
                             {
-                                //print("1000000000000. All essence in this level are picked up!!");
-                                AnalyticsCalls.GetAllEssenceInALevel();
+
                             }
                             break;
                         case Items.Skin:
                             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.skin += 1 /*itemReceived.amount*/;
+
+                            MapStatsGathered.Instance.UpdateSkinPickedUp_Stats(GetComponent<PickupData>().skinNo);
+
                             UpdateSkinTaken();
                             break;
                         case Items.Footprint:
                             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max += 1 /*itemReceived.amount*/;
                             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current += 1 /*itemReceived.amount*/;
+
+                            MapStatsGathered.Instance.UpdateFootprintPickedUp_Stats(GetComponent<PickupData>().footprintNo);
 
                             break;
 
@@ -369,49 +371,58 @@ public class Interactable_Pickup : MonoBehaviour
 
             case Abilities.Snorkel:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Snorkel = true;
+                MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
                 Action_AbilityPickupGot_isActive();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.Snorkel = true;
                 Action_SnorkelGot?.Invoke();
                 break;
             case Abilities.Flippers:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers = true;
+                MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
                 Action_AbilityPickupGot_isActive();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.Flippers = true;
                 Action_FlippersGot?.Invoke();
                 break;
             case Abilities.OxygenTank:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.OxygenTank = true;
+                MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
                 Action_AbilityPickupGot_isActive();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.OxygenTank = true;
                 break;
             case Abilities.SpringShoes:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SpringShoes = true;
+                MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
                 Action_AbilityPickupGot_isActive();
                 Action_JumpingGot?.Invoke();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.SpringShoes = true;
                 break;
             case Abilities.GrapplingHook:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.GrapplingHook = true;
+                MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
                 Action_AbilityPickupGot_isActive();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.GrapplingHook = true;
                 break;
             case Abilities.ClimingGloves:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.ClimingGloves = true;
+                MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
                 Action_AbilityPickupGot_isActive();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.ClimingGloves = true;
                 break;
             case Abilities.HandDrill:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.HandDrill = true;
+                MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
                 Action_AbilityPickupGot_isActive();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.HandDrill = true;
                 break;
             case Abilities.DrillHelmet:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.DrillHelmet = true;
+                MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
                 Action_AbilityPickupGot_isActive();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.DrillHelmet = true;
                 break;
             case Abilities.DrillBoots:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.DrillBoots = true;
+                MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
                 Action_AbilityPickupGot_isActive();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.DrillBoots = true;
                 break;

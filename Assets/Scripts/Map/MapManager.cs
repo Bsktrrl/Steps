@@ -18,25 +18,6 @@ public class MapManager : Singleton<MapManager>
     public Vector3 playerStartPos;
     public MovementDirection playerStartRot;
 
-    [Header("Stats")]
-    public float timeUsedInLevel = 0;
-    public int stepCount = 0;
-    public int respawnCount = 0;
-    public int abilitiesPickedUp = 0;
-    public int cameraRotated = 0;
-
-    public float timeUsedInFreeCam = 0;
-    public int freeCamCount = 0;
-
-    public int swimCounter = 0;
-    public int swiftSwimCounter = 0;
-    public int jumpCounter = 0;
-    public int dashCounter = 0;
-    public int ascendCounter = 0;
-    public int descendCounter = 0;
-    public int grapplingHookCounter = 0;
-    public int ceilingGrabCounter = 0;
-
     [Header("LayerMask for Raycasting")]
     public LayerMask pickup_LayerMask;
     public LayerMask player_LayerMask;
@@ -46,6 +27,7 @@ public class MapManager : Singleton<MapManager>
     [SerializeField] List<AudioSource> mapAudioSourceList;
 
     [Header("MapInfo")]
+    public LevelNames levelName;
     public Map_SaveInfo mapInfo_ToSave = new Map_SaveInfo();
 
     [Header("Player Object Parent")]
@@ -96,18 +78,10 @@ public class MapManager : Singleton<MapManager>
 
         PlayAudio();
     }
-    private void Update()
-    {
-        timeUsedInLevel += Time.deltaTime;
-    }
 
     private void OnEnable()
     {
         Movement.Action_RespawnPlayer += ShowHiddenObjects;
-        Movement.Action_RespawnPlayer += UpdateRespawnCount;
-
-        Movement.Action_StepTaken += UpdateStepCount;
-        Interactable_Pickup.Action_AbilityPickupGot += UpdateAbilitiesPickedUp;
 
         DataManager.Action_dataHasLoaded += SaveMapInfo;
         DataManager.Action_dataHasLoaded += InputLevelNameDisplay;
@@ -118,10 +92,6 @@ public class MapManager : Singleton<MapManager>
     private void OnDisable()
     {
         Movement.Action_RespawnPlayer -= ShowHiddenObjects;
-        Movement.Action_RespawnPlayer -= UpdateRespawnCount;
-
-        Movement.Action_StepTaken -= UpdateStepCount;
-        Interactable_Pickup.Action_AbilityPickupGot -= UpdateAbilitiesPickedUp;
 
         DataManager.Action_dataHasLoaded -= SaveMapInfo;
         DataManager.Action_dataHasLoaded -= InputLevelNameDisplay;
@@ -209,23 +179,6 @@ public class MapManager : Singleton<MapManager>
                 }
             }
         }
-    }
-
-
-    //--------------------
-
-
-    void UpdateStepCount()
-    {
-        stepCount++;
-    }
-    void UpdateRespawnCount()
-    {
-        respawnCount++;
-    }
-    void UpdateAbilitiesPickedUp()
-    {
-        abilitiesPickedUp++;
     }
 
 
@@ -338,4 +291,45 @@ public class AudioTrack
 {
     public AudioClip track;
     public float volume;
+}
+
+public enum LevelNames
+{
+    [InspectorName("None")] None,
+
+    [InspectorName("Rivergreen / Level 1")] Rivergreen_Lv1,
+    [InspectorName("Rivergreen / Level 2")] Rivergreen_Lv2,
+    [InspectorName("Rivergreen / Level 3")] Rivergreen_Lv3,
+    [InspectorName("Rivergreen / Level 4")] Rivergreen_Lv4,
+    [InspectorName("Rivergreen / Level 5")] Rivergreen_Lv5,
+
+    [InspectorName("Sandlands / Level 1")] Sandlands_Lv1,
+    [InspectorName("Sandlands / Level 2")] Sandlands_Lv2,
+    [InspectorName("Sandlands / Level 3")] Sandlands_Lv3,
+    [InspectorName("Sandlands / Level 4")] Sandlands_Lv4,
+    [InspectorName("Sandlands / Level 5")] Sandlands_Lv5,
+
+    [InspectorName("Frostfield / Level 1")] Frostfield_Lv1,
+    [InspectorName("Frostfield / Level 2")] Frostfield_Lv2,
+    [InspectorName("Frostfield / Level 3")] Frostfield_Lv3,
+    [InspectorName("Frostfield / Level 4")] Frostfield_Lv4,
+    [InspectorName("Frostfield / Level 5")] Frostfield_Lv5,
+
+    [InspectorName("Firevein / Level 1")] Firevein_Lv1,
+    [InspectorName("Firevein / Level 2")] Firevein_Lv2,
+    [InspectorName("Firevein / Level 3")] Firevein_Lv3,
+    [InspectorName("Firevein / Level 4")] Firevein_Lv4,
+    [InspectorName("Firevein / Level 5")] Firevein_Lv5,
+
+    [InspectorName("Witchmire / Level 1")] Witchmire_Lv1,
+    [InspectorName("Witchmire / Level 2")] Witchmire_Lv2,
+    [InspectorName("Witchmire / Level 3")] Witchmire_Lv3,
+    [InspectorName("Witchmire / Level 4")] Witchmire_Lv4,
+    [InspectorName("Witchmire / Level 5")] Witchmire_Lv5,
+
+    [InspectorName("Metalworks / Level 1")] Metalworks_Lv1,
+    [InspectorName("Metalworks / Level 2")] Metalworks_Lv2,
+    [InspectorName("Metalworks / Level 3")] Metalworks_Lv3,
+    [InspectorName("Metalworks / Level 4")] Metalworks_Lv4,
+    [InspectorName("Metalworks / Level 5")] Metalworks_Lv5,
 }

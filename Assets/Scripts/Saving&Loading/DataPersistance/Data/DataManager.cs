@@ -57,6 +57,9 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     //Text Database
     /*[HideInInspector]*/public Game_TextDatabase game_TextDatabase_Store = new Game_TextDatabase();
 
+    //PlayerStatsData
+    /*[HideInInspector]*/ public PlayerStatsData PlayerStatsData_Store = new PlayerStatsData();
+
     #endregion
 
 
@@ -96,6 +99,8 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.charatersData_Store = gameData.charatersData_Save;
         this.skinsInfo_Store = gameData.skinsInfo_Save;
         this.game_TextDatabase_Store = gameData.game_TextDatabase_Save;
+
+        this.PlayerStatsData_Store = gameData.PlayerStatsData_Save;
 
         this.oneTimeRunData_Store = gameData.oneTimeRunData_Save;
     }
@@ -160,6 +165,8 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         gameData.skinsInfo_Save = this.skinsInfo_Store;
         gameData.game_TextDatabase_Save = this.game_TextDatabase_Store;
 
+        gameData.PlayerStatsData_Save = this.PlayerStatsData_Store;
+
         gameData.oneTimeRunData_Save = this.oneTimeRunData_Store;
 
         gameData.haveStartedNewGame_Save = this.haveStartedNewGame_Store;
@@ -180,6 +187,10 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.oneTimeRunData_Store = gameData.oneTimeRunData_Save;
 
         this.haveStartedNewGame_Store = newData.haveStartedNewGame_Save;
+
+        this.PlayerStatsData_Store = newData.PlayerStatsData_Save;
+        this.PlayerStatsData_Store.sessionStats.session_No = 1;
+
 
         //Persist through newGame
         this.settingData_StoreList = oldData.settingData_SaveList;
@@ -204,6 +215,5 @@ public class OneTimeRunData
     /*[HideInInspector]*/public bool pickup_FirstFootprint = new bool();
 
     //Skin
-    /*[HideInInspector]*/
-    public bool pickup_FirstSkin = new bool();
+    /*[HideInInspector]*/ public bool pickup_FirstSkin = new bool();
 }

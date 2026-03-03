@@ -13,7 +13,6 @@ public class Map_SaveInfoList
         if (map_SaveInfo_List == null)
             map_SaveInfo_List = new List<Map_SaveInfo>();
     }
-
 }
 
 [Serializable]

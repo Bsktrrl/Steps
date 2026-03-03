@@ -33,7 +33,7 @@ public class TextData : MonoBehaviour
         {
             Game_TextDatabase_Language gameText_LanguageList_Temp = new Game_TextDatabase_Language();
             game_TextDatabase.gameText_LanguageList.Add(gameText_LanguageList_Temp);
-            print("game_TextDatabase.gameText_LanguageList.Size = " + game_TextDatabase.gameText_LanguageList.Count);
+            //print("game_TextDatabase.gameText_LanguageList.Size = " + game_TextDatabase.gameText_LanguageList.Count);
         }
 
 

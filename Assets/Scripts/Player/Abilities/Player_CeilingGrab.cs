@@ -78,8 +78,6 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 
         if (CameraController.Instance.cameraState == CameraState.GameplayCam)
         {
-            MapManager.Instance.ceilingGrabCounter++;
-
             isCeilingGrabbing = true;
             Movement.Instance.heightOverBlock = Movement.Instance.heightOverBlock;
 

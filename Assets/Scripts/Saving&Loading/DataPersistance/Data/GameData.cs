@@ -41,6 +41,9 @@ public class GameData
     //Text Database
     /*[HideInInspector]*/ public Game_TextDatabase game_TextDatabase_Save = new Game_TextDatabase();
 
+    //PlayerStatsData
+    /*[HideInInspector]*/ public PlayerStatsData PlayerStatsData_Save = new PlayerStatsData();
+
 
     //--------------------
 
@@ -55,6 +58,8 @@ public class GameData
         overWorldStates_SaveList = new OverWorldStates();
         charatersData_Save = new CharatersData();
         skinsInfo_Save = new SkinInfo();
+
+        PlayerStatsData_Save = new PlayerStatsData();
 
         oneTimeRunData_Save = new OneTimeRunData();
 

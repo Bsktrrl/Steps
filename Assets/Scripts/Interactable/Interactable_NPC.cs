@@ -8,6 +8,8 @@ using UnityEngine.UIElements;
 
 public class Interactable_NPC : MonoBehaviour
 {
+    public static event Action Action_TalkTo_NPC;
+
     [Header("Character")]
     public NPCs characterName;
 
@@ -113,6 +115,8 @@ public class Interactable_NPC : MonoBehaviour
     void StartNPCDialogue()
     {
         StartCoroutine(StartNPCDialogueCoroutine());
+
+        Action_TalkTo_NPC?.Invoke();
     }
     IEnumerator StartNPCDialogueCoroutine()
     {
@@ -1337,10 +1341,8 @@ public class Interactable_NPC : MonoBehaviour
                 break;
 
             case NPCs.Floriel:
-                print("1. ShowHat_Floríel");
                 if (DataManager.Instance.charatersData_Store.floriel_Data.level_5_DialogueFinished)
                 {
-                    print("2. ShowHat_Floríel");
                     PopUpManager.Instance.ShowHat_Floríel();
                 }
                 break;

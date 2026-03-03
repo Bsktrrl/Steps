@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class PauseMenu_ExitLevel_Button : MonoBehaviour
 {
     MapManager mapManager;
+    MapStatsGathered mapStatsGathered;
 
 
     //--------------------
@@ -15,6 +16,7 @@ public class PauseMenu_ExitLevel_Button : MonoBehaviour
     private void Start()
     {
         mapManager = FindObjectOfType<MapManager>();
+        mapStatsGathered = FindObjectOfType<MapStatsGathered>();
     }
 
     public void ExitLevelButton_isPressed()
@@ -26,9 +28,9 @@ public class PauseMenu_ExitLevel_Button : MonoBehaviour
     {
         yield return mapManager.FadeInBlackScreenCoroutine();
 
-        //Update analyticsData
-        AnalyticsCalls.OnLevel(mapManager.timeUsedInLevel, mapManager.stepCount, mapManager.respawnCount, mapManager.abilitiesPickedUp, mapManager.cameraRotated, mapManager.timeUsedInFreeCam, mapManager.freeCamCount, mapManager.swimCounter, mapManager.swiftSwimCounter, mapManager.jumpCounter, mapManager.dashCounter, mapManager.ascendCounter, mapManager.descendCounter, mapManager.grapplingHookCounter, mapManager.ceilingGrabCounter);
-        AnalyticsCalls.OnLevelExit(mapManager.timeUsedInLevel, mapManager.stepCount, mapManager.respawnCount, mapManager.abilitiesPickedUp, mapManager.cameraRotated, mapManager.timeUsedInFreeCam, mapManager.freeCamCount, mapManager.swimCounter, mapManager.swiftSwimCounter, mapManager.jumpCounter, mapManager.dashCounter, mapManager.ascendCounter, mapManager.descendCounter, mapManager.grapplingHookCounter, mapManager.ceilingGrabCounter);
+        MapStatsGathered.Instance.ExitLevel();
+
+        yield return new WaitForEndOfFrame();
 
         PlayerManager.Instance.QuitLevel();
 
