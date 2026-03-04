@@ -1,20 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+ï»¿using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.SceneManagement;
 #endif
 
 [ExecuteAlways]
 public class EffectBlockInfo : MonoBehaviour
 {
-    private Coroutine _pollRoutine;
-
     private EffectBlockManager effectBlockManager;
 
-    [Header("Is Added")]
+    [Header("Effect visual parent (optional)")]
+    [Tooltip("If empty, auto-uses child named 'Number_Parent'. If not found, uses this transform.")]
+    [SerializeField] private Transform effectVisualParent;
+
+    [Header("Editor behavior")]
+    [Tooltip("If true, removes duplicates so only 1 per type remains (Editor only).")]
+    [SerializeField] private bool removeDuplicatesInEditor = true;
+
+    [Header("Is Added (synced from children)")]
     public bool effectBlock_SpawnPoint_isAdded;
     [SerializeField] private bool effectBlock_RefillSteps_isAdded;
     [SerializeField] private bool effectBlock_Pusher_isAdded;
@@ -22,197 +26,221 @@ public class EffectBlockInfo : MonoBehaviour
     [SerializeField] private bool effectBlock_Moveable_isAdded;
     public bool effectBlock_MushroomCircle_isAdded;
 
-    [Header("Child List")]
-    [SerializeField] private List<GameObject> blockEffectHolding_List = new List<GameObject>();
-
-    // --------------------
-
     private void Awake()
     {
-        // In edit mode Awake can be called a lot; keep it safe.
-        ResolveManager();
+        ApplyMovementCostFromComponents();
+        SyncIsAddedFlagsFromChildren();
 
-        // Your original call (kept), but note: your original sets isAdded=true
-        // and then the check immediately returns. I’m keeping behavior but fixing that below.
-        CheckEffectBlockInChildRecursively(transform);
+        if (Application.isPlaying) return;
 
-        StartPollingIfNeeded();
+#if UNITY_EDITOR
+        ResolveManagerEditor();
+        EditorRefresh();
+#endif
     }
 
     private void OnEnable()
     {
-        Block_Snow.Action_SnowSetup_End += AdjustPosition_Snow;
+        ApplyMovementCostFromComponents();
+        SyncIsAddedFlagsFromChildren();
 
-        ResolveManager();
-        StartPollingIfNeeded();
+        if (Application.isPlaying) return;
+
+#if UNITY_EDITOR
+        ResolveManagerEditor();
+        EditorRefresh();
+#endif
     }
 
-    private void OnDisable()
+    private void Update()
     {
-        Block_Snow.Action_SnowSetup_End -= AdjustPosition_Snow;
-
-        StopPolling();
+        // Runtime-safe: keep bools correct. No spawning here.
+        SyncIsAddedFlagsFromChildren();
     }
 
 #if UNITY_EDITOR
     private void OnValidate()
     {
+        ApplyMovementCostFromComponents();
+        SyncIsAddedFlagsFromChildren();
+
         if (EditorApplication.isPlayingOrWillChangePlaymode) return;
 
-        ResolveManager();
+        EditorApplication.delayCall -= DelayedRefresh;
+        EditorApplication.delayCall += DelayedRefresh;
+    }
 
-        // If you add/remove effect components in inspector,
-        // we want to re-attempt without Update().
-        StartPollingIfNeeded();
+    private void DelayedRefresh()
+    {
+        if (!this) return;
+        if (EditorApplication.isPlayingOrWillChangePlaymode) return;
+
+        ResolveManagerEditor();
+        EditorRefresh();
     }
 #endif
 
     // --------------------
-    // Polling (replaces Update)
+    // Movement cost (runtime + editor)
     // --------------------
-
-    private void StartPollingIfNeeded()
+    private void ApplyMovementCostFromComponents()
     {
-        if (!ShouldPoll()) return;
+        var info = GetComponent<BlockInfo>();
+        if (!info) return;
 
-        if (_pollRoutine == null && gameObject.activeInHierarchy)
+        int? forcedCost = null;
+
+        if (GetComponent<Block_MushroomCircle>())
+            forcedCost = -1;
+        else if (GetComponent<Block_Checkpoint>()
+              || GetComponent<Block_RefillSteps>()
+              || GetComponent<Block_Pusher>()
+              || GetComponent<Block_Teleport>())
+            forcedCost = 0;
+
+        if (forcedCost.HasValue)
         {
-            _pollRoutine = StartCoroutine(PollUntilSpawned());
+            info.movementCost = forcedCost.Value;
+            info.movementCost_Temp = forcedCost.Value;
         }
     }
 
-    private void StopPolling()
+    // --------------------
+    // Where visuals live
+    // --------------------
+    private Transform GetEffectParent()
     {
-        if (_pollRoutine != null)
-        {
-            StopCoroutine(_pollRoutine);
-            _pollRoutine = null;
-        }
+        if (effectVisualParent) return effectVisualParent;
+
+        var t = transform.Find("Number_Parent");
+        if (t) return t;
+
+        return transform;
     }
 
-    private IEnumerator PollUntilSpawned()
+    // --------------------
+    // Sync isAdded flags from actual children
+    // --------------------
+    private void SyncIsAddedFlagsFromChildren()
     {
-        // Keep trying until success or until the object becomes irrelevant.
-        while (ShouldPoll())
+        effectBlock_SpawnPoint_isAdded = HasType(EffectVisualType.SpawnPoint);
+        effectBlock_RefillSteps_isAdded = HasType(EffectVisualType.RefillSteps);
+        effectBlock_Pusher_isAdded = HasType(EffectVisualType.Pusher);
+        effectBlock_Teleporter_isAdded = HasType(EffectVisualType.Teleporter);
+        effectBlock_Moveable_isAdded = HasType(EffectVisualType.Moveable);
+        effectBlock_MushroomCircle_isAdded = HasType(EffectVisualType.MushroomCircle);
+    }
+
+    private bool HasType(EffectVisualType type)
+    {
+        Transform parent = GetEffectParent();
+
+        for (int i = 0; i < parent.childCount; i++)
         {
-            // Equivalent to your SetWaitTime + counter >= waitTime behavior
-            float waitTime = Random.Range(0f, 1f);
+            var child = parent.GetChild(i);
+            var marker = child.GetComponent<EffectVisualMarker>();
+            if (marker != null && marker.type == type)
+                return true;
+        }
+
+        return false;
+    }
 
 #if UNITY_EDITOR
-            // In edit mode, WaitForSeconds is not reliable; we use editor delay.
-            if (!Application.isPlaying)
-            {
-                double start = EditorApplication.timeSinceStartup;
-                while (!Application.isPlaying && EditorApplication.timeSinceStartup - start < waitTime)
-                    yield return null;
-            }
-            else
-#endif
-            {
-                yield return new WaitForSeconds(waitTime);
-            }
-
-            ResolveManager();
-
-            // Run one pass of your checks
-            TrySpawnEffectOnce();
-
-            // If spawned now, stop forever.
-            if (HasAnyEffectBlockChild())
-                break;
-        }
-
-        _pollRoutine = null;
-    }
-
-    private bool ShouldPoll()
+    // --------------------
+    // Editor-only spawning and dedupe
+    // --------------------
+    private void EditorRefresh()
     {
-        // Only trigger on Cubes and Slabs
+        if (EditorApplication.isPlayingOrWillChangePlaymode) return;
+
         var info = GetComponent<BlockInfo>();
-        if (!info) return false;
+        if (!info) return;
+        if (info.blockType != BlockType.Cube && info.blockType != BlockType.Slab) return;
 
-        if (info.blockType != BlockType.Cube && info.blockType != BlockType.Slab) return false;
+        if (!effectBlockManager) ResolveManagerEditor();
+        if (!effectBlockManager) return;
 
-        // Already have the visual child => no need to poll
-        if (HasAnyEffectBlockChild()) return false;
+        if (removeDuplicatesInEditor)
+            EnforceOnePerType();
 
-        // If flags say something is already added, no need to poll
-        // (this matches your Update early returns)
-        if (effectBlock_SpawnPoint_isAdded) return false;
-        if (effectBlock_RefillSteps_isAdded) return false;
-        if (effectBlock_Pusher_isAdded) return false;
-        if (effectBlock_Teleporter_isAdded) return false;
-        if (effectBlock_Moveable_isAdded) return false;
-        if (effectBlock_MushroomCircle_isAdded) return false;
+        EnsureVisualsForPresentComponents();
 
-        // Otherwise: we still need to try.
-        return true;
+        // After any changes, ensure bools are correct.
+        SyncIsAddedFlagsFromChildren();
+
+        MarkSceneDirtyIfNeeded();
     }
 
-    private void TrySpawnEffectOnce()
+    private void EnsureVisualsForPresentComponents()
     {
-        // Exactly your Update "if(counter>=waitTime){...}" body,
-        // but without counter/time logic.
-        CheckForEffectBlockUpdate_SpawnPoint();
-        CheckForEffectBlockUpdate_RefillSteps();
-        CheckForEffectBlockUpdate_Pusher();
-        CheckForEffectBlockUpdate_Teleporter();
-        CheckForEffectBlockUpdate_Moveable();
-        CheckForEffectBlockUpdate_MushroomCircle();
-    }
-
-    // --------------------
-    // Your original method (IMPORTANT FIX)
-    // --------------------
-    // Your original sets effectBlock_*_isAdded = true BEFORE calling CheckForEffectBlockUpdate_*,
-    // but those methods early-return if isAdded is true, so nothing spawns.
-    //
-    // I’m adjusting this to: "if component exists, attempt spawn (without pre-setting isAdded)".
-    //
-    // If your intention was “mark as already added if component exists AND child exists”, then
-    // you should set isAdded based on HasAnyEffectBlockChild() instead.
-    void CheckEffectBlockInChildRecursively(Transform parent)
-    {
-        // If you truly want this to reflect "already has a visual child"
-        // then set flags only if child exists:
-        if (HasAnyEffectBlockChild())
-        {
-            // Optional: you could try to detect which one, but leaving it simple:
-            // (You can remove this block entirely if you don’t need it.)
-            return;
-        }
-
-        // Otherwise, do NOT set isAdded before trying to spawn.
         if (GetComponent<Block_Checkpoint>())
+            EnsureOne(effectBlockManager.effectBlock_SpawnPoint_Prefab, EffectVisualType.SpawnPoint);
+
+        if (GetComponent<Block_RefillSteps>())
+            EnsureOne(effectBlockManager.effectBlock_RefillSteps_Prefab, EffectVisualType.RefillSteps);
+
+        if (GetComponent<Block_Pusher>())
+            EnsureOne(effectBlockManager.effectBlock_Pusher_Prefab, EffectVisualType.Pusher);
+
+        if (GetComponent<Block_Teleport>())
+            EnsureOne(effectBlockManager.effectBlock_Teleporter_Prefab, EffectVisualType.Teleporter);
+
+        if (GetComponent<Block_Moveable>())
+            EnsureOne(effectBlockManager.effectBlock_Moveable_Prefab, EffectVisualType.Moveable);
+
+        if (GetComponent<Block_MushroomCircle>())
+            EnsureOne(effectBlockManager.effectBlock_MushroomCircle_Prefab, EffectVisualType.MushroomCircle);
+    }
+
+    private void EnsureOne(GameObject prefab, EffectVisualType type)
+    {
+        if (!prefab) return;
+        if (HasType(type)) return;
+
+        Transform parent = GetEffectParent();
+
+        var instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab, parent);
+        if (!instance) return;
+
+        Undo.RegisterCreatedObjectUndo(instance, $"Create {type} effect visual");
+
+        // Ensure marker exists and correct
+        var marker = instance.GetComponent<EffectVisualMarker>();
+        if (!marker) marker = Undo.AddComponent<EffectVisualMarker>(instance);
+        marker.type = type;
+
+        // âœ… Force it to be the last child in the container
+        instance.transform.SetAsLastSibling();
+    }
+
+    private void EnforceOnePerType()
+    {
+        EnforceOne(EffectVisualType.SpawnPoint);
+        EnforceOne(EffectVisualType.RefillSteps);
+        EnforceOne(EffectVisualType.Pusher);
+        EnforceOne(EffectVisualType.Teleporter);
+        EnforceOne(EffectVisualType.Moveable);
+        EnforceOne(EffectVisualType.MushroomCircle);
+    }
+
+    private void EnforceOne(EffectVisualType type)
+    {
+        Transform parent = GetEffectParent();
+        Transform keeper = null;
+
+        for (int i = parent.childCount - 1; i >= 0; i--)
         {
-            CheckForEffectBlockUpdate_SpawnPoint();
-        }
-        else if (GetComponent<Block_RefillSteps>())
-        {
-            CheckForEffectBlockUpdate_RefillSteps();
-        }
-        else if (GetComponent<Block_Pusher>())
-        {
-            CheckForEffectBlockUpdate_Pusher();
-        }
-        else if (GetComponent<Block_Teleport>())
-        {
-            CheckForEffectBlockUpdate_Teleporter();
-        }
-        else if (GetComponent<Block_Moveable>())
-        {
-            CheckForEffectBlockUpdate_Moveable();
-        }
-        else if (GetComponent<Block_MushroomCircle>())
-        {
-            CheckForEffectBlockUpdate_MushroomCircle();
+            var child = parent.GetChild(i);
+            var marker = child.GetComponent<EffectVisualMarker>();
+            if (marker == null || marker.type != type) continue;
+
+            if (keeper == null) keeper = child;
+            else Undo.DestroyObjectImmediate(child.gameObject);
         }
     }
 
-    // --------------------
-    // Manager resolution
-    // --------------------
-    private void ResolveManager()
+    private void ResolveManagerEditor()
     {
         if (effectBlockManager) return;
 
@@ -222,209 +250,22 @@ public class EffectBlockInfo : MonoBehaviour
         effectBlockManager = FindObjectOfType<EffectBlockManager>();
 #endif
 
-#if UNITY_EDITOR
-        // Editor fallback: finds inactive objects too
         if (!effectBlockManager)
         {
             var all = Resources.FindObjectsOfTypeAll<EffectBlockManager>();
             if (all != null && all.Length > 0)
                 effectBlockManager = all[0];
         }
+    }
+
+    private void MarkSceneDirtyIfNeeded()
+    {
+        if (!gameObject.scene.IsValid()) return;
+        if (!gameObject.scene.isLoaded) return;
+
+        EditorUtility.SetDirty(this);
+        EditorUtility.SetDirty(gameObject);
+        EditorSceneManager.MarkSceneDirty(gameObject.scene);
+    }
 #endif
-    }
-
-    // --------------------
-    // Your original check methods (with one safety guard added)
-    // --------------------
-
-    void CheckForEffectBlockUpdate_SpawnPoint()
-    {
-        if (!GetComponent<Block_Checkpoint>()) return;
-
-        ChangeMovementCost(0);
-
-        if (!effectBlockManager) return;
-        if (!effectBlockManager.effectBlock_SpawnPoint_Prefab) return;
-        if (effectBlock_SpawnPoint_isAdded) return;
-
-        effectBlock_SpawnPoint_isAdded = true;
-
-        InstantiateEffectBlock(effectBlockManager.effectBlock_SpawnPoint_Prefab);
-
-        AdjustPosition();
-        ChangeColor();
-
-        ChangeMovementCost(0);
-    }
-
-    void CheckForEffectBlockUpdate_RefillSteps()
-    {
-        if (!GetComponent<Block_RefillSteps>()) return;
-
-        ChangeMovementCost(0);
-
-        if (!effectBlockManager) return;
-        if (!effectBlockManager.effectBlock_RefillSteps_Prefab) return;
-        if (effectBlock_RefillSteps_isAdded) return;
-
-        effectBlock_RefillSteps_isAdded = true;
-
-        InstantiateEffectBlock(effectBlockManager.effectBlock_RefillSteps_Prefab);
-
-        AdjustPosition();
-        ChangeColor();
-
-        ChangeMovementCost(0);
-    }
-
-    void CheckForEffectBlockUpdate_Pusher()
-    {
-        if (!GetComponent<Block_Pusher>()) return;
-
-        ChangeMovementCost(0);
-
-        if (!effectBlockManager) return;
-        if (!effectBlockManager.effectBlock_Pusher_Prefab) return;
-        if (effectBlock_Pusher_isAdded) return;
-
-        effectBlock_Pusher_isAdded = true;
-
-        InstantiateEffectBlock(effectBlockManager.effectBlock_Pusher_Prefab);
-
-        AdjustPosition();
-        ChangeColor();
-
-        ChangeMovementCost(0);
-    }
-
-    void CheckForEffectBlockUpdate_Teleporter()
-    {
-        if (!GetComponent<Block_Teleport>()) return;
-
-        ChangeMovementCost(0);
-
-        if (!effectBlockManager) return;
-        if (!effectBlockManager.effectBlock_Teleporter_Prefab) return;
-        if (effectBlock_Teleporter_isAdded) return;
-
-        effectBlock_Teleporter_isAdded = true;
-
-        InstantiateEffectBlock(effectBlockManager.effectBlock_Teleporter_Prefab);
-
-        AdjustPosition();
-        ChangeColor();
-
-        ChangeMovementCost(0);
-    }
-
-    void CheckForEffectBlockUpdate_Moveable()
-    {
-        if (!GetComponent<Block_Moveable>()) return;
-
-        if (!effectBlockManager) return;
-        if (effectBlockManager.effectBlock_Moveable_Prefab == null) return;
-        if (effectBlock_Moveable_isAdded) return;
-
-        effectBlock_Moveable_isAdded = true;
-
-        InstantiateEffectBlock(effectBlockManager.effectBlock_Moveable_Prefab);
-
-        AdjustPosition();
-        ChangeColor();
-    }
-
-    void CheckForEffectBlockUpdate_MushroomCircle()
-    {
-        if (!GetComponent<Block_MushroomCircle>()) return;
-
-        ChangeMovementCost(-1);
-
-        if (!effectBlockManager) return;
-        if (!effectBlockManager.effectBlock_MushroomCircle_Prefab) return;
-        if (effectBlock_MushroomCircle_isAdded) return;
-
-        effectBlock_MushroomCircle_isAdded = true;
-
-        InstantiateEffectBlock(effectBlockManager.effectBlock_MushroomCircle_Prefab);
-
-        AdjustPosition();
-        ChangeColor();
-
-        ChangeMovementCost(-1);
-    }
-
-    // --------------------
-    // Instantiate (kept)
-    // --------------------
-    void InstantiateEffectBlock(GameObject effectBlock)
-    {
-        if (HasAnyEffectBlockChild()) return;
-
-        GameObject instance = Instantiate(effectBlock, transform);
-        blockEffectHolding_List.Add(instance);
-
-        // Special case for teleporter
-        var teleport = GetComponent<Block_Teleport>();
-        if (teleport)
-        {
-            teleport.SetupTeleporter();
-        }
-
-        RemoveDuplicateEffectBlocks();
-    }
-
-    // --------------------
-    // Your other helpers (kept)
-    // --------------------
-
-    void ChangeMovementCost(int cost)
-    {
-        var info = GetComponent<BlockInfo>();
-        if (!info) return;
-
-        info.movementCost_Temp = cost;
-        info.movementCost = cost;
-    }
-
-    void ChangeColor()
-    {
-        // (left commented as you had it)
-    }
-
-    void AdjustPosition()
-    {
-        // (left commented as you had it)
-    }
-
-    void AdjustPosition_Snow()
-    {
-        // (left commented as you had it)
-    }
-
-    bool HasAnyEffectBlockChild()
-    {
-        foreach (Transform child in transform)
-        {
-            if (child.GetComponent<EffectBlock_Reference>()) return true;
-        }
-        return false;
-    }
-
-    void RemoveDuplicateEffectBlocks()
-    {
-        var seen = new HashSet<GameObject>();
-        for (int i = blockEffectHolding_List.Count - 1; i >= 0; i--)
-        {
-            var obj = blockEffectHolding_List[i];
-            if (!obj || seen.Contains(obj))
-            {
-                if (obj) DestroyImmediate(obj);
-                blockEffectHolding_List.RemoveAt(i);
-            }
-            else
-            {
-                seen.Add(obj);
-            }
-        }
-    }
 }
