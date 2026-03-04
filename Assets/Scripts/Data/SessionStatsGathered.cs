@@ -196,6 +196,8 @@ public class SessionStatsGathered : Singleton<SessionStatsGathered>
         //General
         DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed = 0;
 
+        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_Menus = 0;
+
         DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_MainMenu = 0;
         DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_OverworldMenu = 0;
         DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_WardrobeMenu = 0;
