@@ -23,6 +23,9 @@ public class WaterDropletScript : MonoBehaviour
 
     AudioSource source;
 
+    float pitchMin = 0.9f;
+    float pitchMax = 1.1f;
+
     void Start()
     {
         AudioClip[] audioClips = new AudioClip[] {waterSound, lavaSound, softSound, hardSound};
@@ -34,6 +37,7 @@ public class WaterDropletScript : MonoBehaviour
 
     private void OnParticleCollision()
     {
+        source.pitch = Random.Range(pitchMin, pitchMax);
         source.Play();
     }
 }
