@@ -6,8 +6,16 @@ using UnityEngine.Experimental.GlobalIllumination;
 public class LightningScript : MonoBehaviour
 {
     ParticleSystem PS;
+    AudioSource source;
 
-    float waitTime = 0.015f;
+    float pitchMin = 0.9f;
+    float pitchMax = 1.1f;
+
+    bool lightning;
+
+    float subEmitterTime = 0.015f;
+    float waitTimeMin = 1f;
+    float waitTimeMax = 10f;
 
     [SerializeField] Light light;
     float lightIntensity;
@@ -25,6 +33,7 @@ public class LightningScript : MonoBehaviour
     void Start()
     {
         PS = GetComponent<ParticleSystem>();
+        source = GetComponent<AudioSource>();
         ambientBaseIntensity = UnityEngine.RenderSettings.ambientIntensity;
         ambientIntensity = ambientBaseIntensity;
 
@@ -36,7 +45,7 @@ public class LightningScript : MonoBehaviour
     void Update()
     {
         //Summon lightning by pressing '1'
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (lightning == false)
         {
             StartCoroutine(Lightning());
         }
@@ -69,11 +78,19 @@ public class LightningScript : MonoBehaviour
     //Lightning animation
     IEnumerator Lightning()
     {
-        lightningPosition = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+        lightning = true;
+
+        source.pitch = Random.Range(pitchMin, pitchMax);
+        source.Play();
+
+        lightningPosition = Camera.main.transform.forward;
+        lightningPosition.y = 0;
         lightningPosition.Normalize();
+        lightningPosition = Quaternion.AngleAxis(Random.Range(-90f, 90f), Vector3.up) * lightningPosition;
         lightningPosition *= 1000;
-        lightningPosition += Vector3.up * 500;
+        lightningPosition += Vector3.up * 333;
         transform.position = lightningPosition;
+
         light.transform.LookAt(Vector3.zero);
         PS.Play();
         lightSpeed = 7;
@@ -81,43 +98,43 @@ public class LightningScript : MonoBehaviour
         Shader.SetGlobalVector("_LightningDirection", Vector3.Normalize(light.transform.position));
         shaderTargetIntensity = shaderMaxIntensity;
 
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(subEmitterTime);
 
         PS.TriggerSubEmitter(0);
 
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(subEmitterTime);
 
         PS.TriggerSubEmitter(0);
 
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(subEmitterTime);
 
         PS.TriggerSubEmitter(0);
 
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(subEmitterTime);
 
         PS.TriggerSubEmitter(0);
 
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(subEmitterTime);
 
         PS.TriggerSubEmitter(0);
 
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(subEmitterTime);
 
         PS.TriggerSubEmitter(0);
 
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(subEmitterTime);
 
         PS.TriggerSubEmitter(0);
 
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(subEmitterTime);
 
         PS.TriggerSubEmitter(0);
 
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(subEmitterTime);
 
         PS.TriggerSubEmitter(0);
 
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(subEmitterTime);
 
         PS.TriggerSubEmitter(0);
         lightIntensity = 0;
@@ -133,6 +150,10 @@ public class LightningScript : MonoBehaviour
         lightIntensity = 0;
         lightSpeed = 1;
         shaderTargetIntensity = 0;
+
+        yield return new WaitForSeconds(Random.Range(waitTimeMin, waitTimeMax));
+
+        lightning = false;
     }
 
 
@@ -141,5 +162,6 @@ public class LightningScript : MonoBehaviour
     {
         Shader.SetGlobalVector("_LightningDirection", Vector3.zero);
         Shader.SetGlobalFloat("_LightningIntensity", 0);
+        UnityEngine.RenderSettings.ambientIntensity = ambientBaseIntensity;
     }
 }
