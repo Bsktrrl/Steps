@@ -4909,6 +4909,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36f7a2339f9f3f94db7023ee6906a570, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 0}
   waitTimeMin: 3
   waitTimeMax: 6
 --- !u!82 &8290560217835097030
@@ -4922,7 +4924,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1710602435764950962}
   - component: {fileID: 6121656896695246690}
   - component: {fileID: 119631974603394725}
-  - component: {fileID: 5869593841410786755}
   - component: {fileID: 6690633713209130097}
+  - component: {fileID: 5869593841410786755}
   m_Layer: 0
   m_Name: Effect_Cricket
   m_TagString: Untagged
@@ -4906,6 +4906,22 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &6690633713209130097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5343294587065272335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36f7a2339f9f3f94db7023ee6906a570, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 0}
+  waitTimeMin: 10
+  waitTimeMax: 15
 --- !u!82 &5869593841410786755
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4917,7 +4933,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -5002,17 +5018,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6690633713209130097
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5343294587065272335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36f7a2339f9f3f94db7023ee6906a570, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waitTimeMin: 10
-  waitTimeMax: 15

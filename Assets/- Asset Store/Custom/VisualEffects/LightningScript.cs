@@ -8,6 +8,8 @@ public class LightningScript : MonoBehaviour
     ParticleSystem PS;
     AudioSource source;
 
+    [SerializeField] AudioClip[] audioClips;
+
     float pitchMin = 0.9f;
     float pitchMax = 1.1f;
 
@@ -40,16 +42,12 @@ public class LightningScript : MonoBehaviour
         //Reset global shader values when play starts
         Shader.SetGlobalVector("_LightningDirection", Vector3.zero);
         Shader.SetGlobalFloat("_LightningIntensity", 0);
+
+        StartCoroutine(Lightning());
     }
 
     void Update()
     {
-        //Summon lightning by pressing '1'
-        if (lightning == false)
-        {
-            StartCoroutine(Lightning());
-        }
-
         //Intensity of the directional light attached to the lightning
         if (light.intensity != lightIntensity)
         {
@@ -78,82 +76,82 @@ public class LightningScript : MonoBehaviour
     //Lightning animation
     IEnumerator Lightning()
     {
-        lightning = true;
+        while (true)
+        {
+            source.clip = audioClips[Random.Range(0, audioClips.Length)];
+            source.pitch = Random.Range(pitchMin, pitchMax);
+            source.Play();
 
-        source.pitch = Random.Range(pitchMin, pitchMax);
-        source.Play();
+            lightningPosition = Camera.main.transform.forward;
+            lightningPosition.y = 0;
+            lightningPosition.Normalize();
+            lightningPosition = Quaternion.AngleAxis(Random.Range(-90f, 90f), Vector3.up) * lightningPosition;
+            lightningPosition *= 1000;
+            lightningPosition += Vector3.up * 333;
+            transform.position = lightningPosition;
 
-        lightningPosition = Camera.main.transform.forward;
-        lightningPosition.y = 0;
-        lightningPosition.Normalize();
-        lightningPosition = Quaternion.AngleAxis(Random.Range(-90f, 90f), Vector3.up) * lightningPosition;
-        lightningPosition *= 1000;
-        lightningPosition += Vector3.up * 333;
-        transform.position = lightningPosition;
+            light.transform.LookAt(Vector3.zero);
+            PS.Play();
+            lightSpeed = 7;
+            lightIntensity = lightMaxIntensity;
+            Shader.SetGlobalVector("_LightningDirection", Vector3.Normalize(light.transform.position));
+            shaderTargetIntensity = shaderMaxIntensity;
 
-        light.transform.LookAt(Vector3.zero);
-        PS.Play();
-        lightSpeed = 7;
-        lightIntensity = lightMaxIntensity;
-        Shader.SetGlobalVector("_LightningDirection", Vector3.Normalize(light.transform.position));
-        shaderTargetIntensity = shaderMaxIntensity;
+            yield return new WaitForSeconds(subEmitterTime);
 
-        yield return new WaitForSeconds(subEmitterTime);
+            PS.TriggerSubEmitter(0);
 
-        PS.TriggerSubEmitter(0);
+            yield return new WaitForSeconds(subEmitterTime);
 
-        yield return new WaitForSeconds(subEmitterTime);
+            PS.TriggerSubEmitter(0);
 
-        PS.TriggerSubEmitter(0);
+            yield return new WaitForSeconds(subEmitterTime);
 
-        yield return new WaitForSeconds(subEmitterTime);
+            PS.TriggerSubEmitter(0);
 
-        PS.TriggerSubEmitter(0);
+            yield return new WaitForSeconds(subEmitterTime);
 
-        yield return new WaitForSeconds(subEmitterTime);
+            PS.TriggerSubEmitter(0);
 
-        PS.TriggerSubEmitter(0);
+            yield return new WaitForSeconds(subEmitterTime);
 
-        yield return new WaitForSeconds(subEmitterTime);
+            PS.TriggerSubEmitter(0);
 
-        PS.TriggerSubEmitter(0);
+            yield return new WaitForSeconds(subEmitterTime);
 
-        yield return new WaitForSeconds(subEmitterTime);
+            PS.TriggerSubEmitter(0);
 
-        PS.TriggerSubEmitter(0);
+            yield return new WaitForSeconds(subEmitterTime);
 
-        yield return new WaitForSeconds(subEmitterTime);
+            PS.TriggerSubEmitter(0);
 
-        PS.TriggerSubEmitter(0);
+            yield return new WaitForSeconds(subEmitterTime);
 
-        yield return new WaitForSeconds(subEmitterTime);
+            PS.TriggerSubEmitter(0);
 
-        PS.TriggerSubEmitter(0);
+            yield return new WaitForSeconds(subEmitterTime);
 
-        yield return new WaitForSeconds(subEmitterTime);
+            PS.TriggerSubEmitter(0);
 
-        PS.TriggerSubEmitter(0);
+            yield return new WaitForSeconds(subEmitterTime);
 
-        yield return new WaitForSeconds(subEmitterTime);
+            PS.TriggerSubEmitter(0);
+            lightIntensity = 0;
+            shaderTargetIntensity = shaderMaxIntensity * 0.5f;
 
-        PS.TriggerSubEmitter(0);
-        lightIntensity = 0;
-        shaderTargetIntensity = shaderMaxIntensity * 0.5f;
+            yield return new WaitForSeconds(0.1f);
 
-        yield return new WaitForSeconds(0.1f);
+            lightIntensity = lightMaxIntensity;
+            shaderTargetIntensity = shaderMaxIntensity;
 
-        lightIntensity = lightMaxIntensity;
-        shaderTargetIntensity = shaderMaxIntensity;
+            yield return new WaitForSeconds(0.5f);
 
-        yield return new WaitForSeconds(0.5f);
+            lightIntensity = 0;
+            lightSpeed = 1;
+            shaderTargetIntensity = 0;
 
-        lightIntensity = 0;
-        lightSpeed = 1;
-        shaderTargetIntensity = 0;
-
-        yield return new WaitForSeconds(Random.Range(waitTimeMin, waitTimeMax));
-
-        lightning = false;
+            yield return new WaitForSeconds(Random.Range(waitTimeMin, waitTimeMax));
+        }
     }
 
 

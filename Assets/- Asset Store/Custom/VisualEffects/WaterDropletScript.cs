@@ -5,10 +5,10 @@ using UnityEngine;
 public class WaterDropletScript : MonoBehaviour
 {
     [Header("Audio Clips")]
-    [SerializeField] AudioClip waterSound;
-    [SerializeField] AudioClip lavaSound;
-    [SerializeField] AudioClip softSound;
-    [SerializeField] AudioClip hardSound;
+    [SerializeField] AudioClip[] waterSound;
+    [SerializeField] AudioClip[] lavaSound;
+    [SerializeField] AudioClip[] softSound;
+    [SerializeField] AudioClip[] hardSound;
 
     enum AudioSurface
     {
@@ -28,15 +28,27 @@ public class WaterDropletScript : MonoBehaviour
 
     void Start()
     {
-        AudioClip[] audioClips = new AudioClip[] {waterSound, lavaSound, softSound, hardSound};
-
         source = GetComponent<AudioSource>();
-        source.clip = audioClips[(int)surfaceType];
-        print("AudioClip Changed");
     }
 
     private void OnParticleCollision()
     {
+        switch (surfaceType)
+        {
+            case AudioSurface.Water:
+                source.clip = waterSound[Random.Range(0, waterSound.Length)];
+                break;
+            case AudioSurface.Lava:
+                source.clip = lavaSound[Random.Range(0, lavaSound.Length)];
+                break;
+            case AudioSurface.Soft:
+                source.clip = softSound[Random.Range(0, softSound.Length)];
+                break;
+            case AudioSurface.Hard:
+                source.clip = hardSound[Random.Range(0, hardSound.Length)];
+                break;
+        }
+
         source.pitch = Random.Range(pitchMin, pitchMax);
         source.Play();
     }

@@ -4835,10 +4835,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e09381ee17c1671458003d0155c2e196, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waterSound: {fileID: 0}
-  lavaSound: {fileID: 0}
-  softSound: {fileID: 0}
-  hardSound: {fileID: 0}
+  waterSound:
+  - {fileID: 0}
+  lavaSound:
+  - {fileID: 0}
+  softSound:
+  - {fileID: 0}
+  hardSound:
+  - {fileID: 0}
   surfaceType: 0
 --- !u!199 &8173326059944084988
 ParticleSystemRenderer:
@@ -4924,7 +4928,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

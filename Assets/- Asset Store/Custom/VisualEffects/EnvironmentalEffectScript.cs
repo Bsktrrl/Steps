@@ -7,36 +7,32 @@ public class EnvironmentalEffectScript : MonoBehaviour
     ParticleSystem PS;
     AudioSource source;
 
+    [SerializeField] AudioClip[] audioClips;
+
     [SerializeField] float waitTimeMin;
     [SerializeField] float waitTimeMax;
 
     float pitchMin = 0.9f;
     float pitchMax = 1.1f;
-
-    bool flying;
     void Start()
     {
         PS = GetComponent<ParticleSystem>();
         source = GetComponent<AudioSource>();
-    }
 
-    void Update()
-    {
-        if (flying == false)
-        {
-            StartCoroutine(PlayParticles());
-        }
+        StartCoroutine(PlayParticles());
     }
 
     IEnumerator PlayParticles()
     {
-        flying = true;
-        PS.Play();
-        source.pitch = Random.Range(pitchMin, pitchMax);
-        source.Play();
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(waitTimeMin, waitTimeMax));
 
-        yield return new WaitForSeconds(Random.Range(waitTimeMin, waitTimeMax));
+            source.clip = audioClips[Random.Range(0, audioClips.Length)];
+            source.pitch = Random.Range(pitchMin, pitchMax);
 
-        flying = false;
+            PS.Play();
+            source.Play();
+        }
     }
 }

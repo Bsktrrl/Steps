@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8085565414646464683}
   - component: {fileID: 1308213007974198482}
   - component: {fileID: 8333859866141486371}
-  - component: {fileID: 1554303436388931125}
   - component: {fileID: 7936882704622351255}
+  - component: {fileID: 1554303436388931125}
   m_Layer: 0
   m_Name: Effect_BuzzingFly
   m_TagString: Untagged
@@ -4906,6 +4906,22 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &7936882704622351255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4417032164731322691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36f7a2339f9f3f94db7023ee6906a570, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 0}
+  waitTimeMin: 5
+  waitTimeMax: 10
 --- !u!82 &1554303436388931125
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4917,7 +4933,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -5002,17 +5018,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7936882704622351255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4417032164731322691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36f7a2339f9f3f94db7023ee6906a570, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waitTimeMin: 5
-  waitTimeMax: 10
