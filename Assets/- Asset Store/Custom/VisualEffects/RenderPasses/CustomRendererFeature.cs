@@ -76,9 +76,8 @@ public class CustomRendererFeature : ScriptableRendererFeature
     class CustomColorPass : ScriptableRenderPass
     {
         RTHandle customColorTexture;
-        RTHandle prevColorTexture;
+        RTHandle lowResColorTexture;
         float downscaleFactor;
-        static readonly int CameraColorID = Shader.PropertyToID("_CustomColorTexture");
 
         public void SetDownscaleFactor(float factor)
         {
@@ -92,50 +91,34 @@ public class CustomRendererFeature : ScriptableRendererFeature
         {
             var baseDesc = renderingData.cameraData.cameraTargetDescriptor;
 
-            int width = Mathf.Max(1, (int)(baseDesc.width * downscaleFactor));
-            int height = Mathf.Max(1, (int)(baseDesc.height * downscaleFactor));
+            int fullWidth = baseDesc.width;
+            int fullHeight = baseDesc.height;
 
-            if (customColorTexture == null || prevColorTexture == null || width != cachedWidth || height != cachedHeight)
-            {
-                cachedWidth = width;
-                cachedHeight = height;
+            int lowResWidth = Mathf.Max(1, (int)(fullWidth * downscaleFactor));
+            int lowResHeight = Mathf.Max(1, (int)(fullHeight * downscaleFactor));
 
-                var desc = new RenderTextureDescriptor(width, height, RenderTextureFormat.DefaultHDR);
-                desc.depthBufferBits = 0;
-                desc.msaaSamples = 1;
-                desc.useMipMap = false;
-                desc.autoGenerateMips = false;
+            var fullDesc = new RenderTextureDescriptor(fullWidth, fullHeight, RenderTextureFormat.DefaultHDR);
+            fullDesc.depthBufferBits = 0;
+            fullDesc.msaaSamples = 1;
+            RenderingUtils.ReAllocateIfNeeded(ref customColorTexture, fullDesc, name: "_CustomColorTexture");
 
-                RenderingUtils.ReAllocateIfNeeded(ref customColorTexture, desc, name: "_CustomColorTexture");
-                RenderingUtils.ReAllocateIfNeeded(ref prevColorTexture, desc, name: "_PrevColorTexture");
-
-                customColorTexture.rt.wrapMode = TextureWrapMode.Clamp;
-                prevColorTexture.rt.wrapMode |= TextureWrapMode.Clamp;
-
-                customColorTexture.rt.filterMode = FilterMode.Bilinear;
-                prevColorTexture.rt.filterMode = FilterMode.Bilinear;
-            }
+            var downDesc = new RenderTextureDescriptor(lowResWidth, lowResHeight, RenderTextureFormat.DefaultHDR);
+            downDesc.depthBufferBits = 0;
+            downDesc.msaaSamples = 1;
+            RenderingUtils.ReAllocateIfNeeded(ref lowResColorTexture, downDesc, name: "_LowResColorTexture");
         }
-    
+
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
             CommandBuffer cmd = CommandBufferPool.Get("Copy Camera Color");
 
-            if (prevColorTexture.rt != null)
-            {
-                cmd.SetGlobalTexture("_PrevColorTexture", prevColorTexture.rt);
-            }
-    
-            cmd.Blit(renderingData.cameraData.renderer.cameraColorTargetHandle, customColorTexture.rt);
+            var source = renderingData.cameraData.renderer.cameraColorTargetHandle;
 
-            if (prevColorTexture.rt == null)
-            {
-                cmd.SetGlobalTexture("_PrevColorTexture", customColorTexture.rt);
-            }
-
-            cmd.Blit(customColorTexture.rt, prevColorTexture.rt);
+            cmd.Blit(source, customColorTexture);
+            cmd.Blit(source, lowResColorTexture);
 
             cmd.SetGlobalTexture("_CustomColorTexture", customColorTexture.rt);
+            cmd.SetGlobalTexture("_LowResColorTexture", lowResColorTexture.rt);
     
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);

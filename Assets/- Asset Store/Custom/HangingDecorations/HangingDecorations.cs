@@ -5,20 +5,25 @@ using UnityEngine;
 public class HangingDecorations : MonoBehaviour
 {
     Animator anim;
-    [SerializeField] [Range(0, 3)] int SwingStrength = 1;
-    [SerializeField] [Range(1, 3)] float SwingSpeed = 1;
-    float RandomSpeed;
-    float RandomSpeedMinMax = 0.15f;
+
+    [SerializeField] [Range(0, 3)] int swingStrength = 1;
+    [SerializeField] [Range(1, 3)] float swingSpeed = 1;
+    [SerializeField] [Range(0, 1)] float windStrength;
+
+    float randomSpeed;
+    float randomSpeedMinMax = 0.15f;
     void Start()
     {
         anim = GetComponent<Animator>();
-        RandomSpeed = Random.Range(-RandomSpeedMinMax, RandomSpeedMinMax);
+        randomSpeed = Random.Range(-randomSpeedMinMax, randomSpeedMinMax);
     }
 
     void Update()
     {
-        anim.SetInteger("SwingStrength", SwingStrength);
-        float ActualSwingSpeed = SwingSpeed + RandomSpeed;
+        anim.SetLayerWeight(1, windStrength);
+        anim.SetInteger("SwingStrength", swingStrength);
+
+        float ActualSwingSpeed = swingSpeed + randomSpeed;
         anim.speed = ActualSwingSpeed;
     }
 }

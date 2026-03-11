@@ -7,6 +7,9 @@ public class FireLightScript : MonoBehaviour
     private Light mainLight;
     private float lightIntensity;
 
+    [SerializeField] float lightIntensityMin;
+    [SerializeField] float lightIntensityMax;
+
     void Start()
     {
         mainLight = gameObject.GetComponent<Light>();
@@ -22,7 +25,7 @@ public class FireLightScript : MonoBehaviour
     {
         while (true)
         {
-            lightIntensity = Random.Range(0.5f, 0.9f);
+            lightIntensity = Random.Range(lightIntensityMin, lightIntensityMax);
 
             yield return new WaitForSeconds(Random.Range(0.1f, 0.2f));
         }
