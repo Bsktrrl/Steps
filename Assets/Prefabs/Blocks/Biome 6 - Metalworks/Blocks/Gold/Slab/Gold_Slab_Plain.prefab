@@ -53,8 +53,16 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: -5797519173446815542, guid: 1736e00d0503637489b435f7c65b64ec, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -5797519173446815542, guid: 1736e00d0503637489b435f7c65b64ec, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -5797519173446815542, guid: 1736e00d0503637489b435f7c65b64ec, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
       objectReference: {fileID: 0}
     - target: {fileID: -5797519173446815542, guid: 1736e00d0503637489b435f7c65b64ec, type: 3}
       propertyPath: m_LocalPosition.y
@@ -73,8 +81,16 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3929508053917383467, guid: 1736e00d0503637489b435f7c65b64ec, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 3929508053917383467, guid: 1736e00d0503637489b435f7c65b64ec, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3929508053917383467, guid: 1736e00d0503637489b435f7c65b64ec, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
       objectReference: {fileID: 0}
     - target: {fileID: 3929508053917383467, guid: 1736e00d0503637489b435f7c65b64ec, type: 3}
       propertyPath: m_LocalPosition.y
@@ -85,8 +101,16 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6208056755066407899, guid: 1736e00d0503637489b435f7c65b64ec, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 6208056755066407899, guid: 1736e00d0503637489b435f7c65b64ec, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6208056755066407899, guid: 1736e00d0503637489b435f7c65b64ec, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
       objectReference: {fileID: 0}
     - target: {fileID: 6208056755066407899, guid: 1736e00d0503637489b435f7c65b64ec, type: 3}
       propertyPath: m_LocalPosition.y
@@ -204,13 +228,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effectVisualParent: {fileID: 0}
+  removeDuplicatesInEditor: 1
   effectBlock_SpawnPoint_isAdded: 0
   effectBlock_RefillSteps_isAdded: 0
   effectBlock_Pusher_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
-  blockEffectHolding_List: []
 --- !u!4 &6499110307995550659 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1736e00d0503637489b435f7c65b64ec, type: 3}

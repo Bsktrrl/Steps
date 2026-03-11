@@ -48,6 +48,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7683265810847435810, guid: c6505a52553495842ad0fe61a4b52eaa, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -7683265810847435810, guid: c6505a52553495842ad0fe61a4b52eaa, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -7683265810847435810, guid: c6505a52553495842ad0fe61a4b52eaa, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -7683265810847435810, guid: c6505a52553495842ad0fe61a4b52eaa, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3550782229806186212, guid: c6505a52553495842ad0fe61a4b52eaa, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -3550782229806186212, guid: c6505a52553495842ad0fe61a4b52eaa, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -3550782229806186212, guid: c6505a52553495842ad0fe61a4b52eaa, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -3550782229806186212, guid: c6505a52553495842ad0fe61a4b52eaa, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c6505a52553495842ad0fe61a4b52eaa, type: 3}
       propertyPath: m_Name
       value: Sandstone_Cube_Tiles
@@ -63,6 +95,22 @@ PrefabInstance:
     - target: {fileID: 4173991829531036707, guid: c6505a52553495842ad0fe61a4b52eaa, type: 3}
       propertyPath: m_Layer
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907426748926008312, guid: c6505a52553495842ad0fe61a4b52eaa, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907426748926008312, guid: c6505a52553495842ad0fe61a4b52eaa, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907426748926008312, guid: c6505a52553495842ad0fe61a4b52eaa, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907426748926008312, guid: c6505a52553495842ad0fe61a4b52eaa, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6290943732070414594, guid: c6505a52553495842ad0fe61a4b52eaa, type: 3}
       propertyPath: m_Layer
@@ -180,13 +228,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effectVisualParent: {fileID: 0}
+  removeDuplicatesInEditor: 1
   effectBlock_SpawnPoint_isAdded: 0
   effectBlock_RefillSteps_isAdded: 0
   effectBlock_Pusher_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
-  blockEffectHolding_List: []
 --- !u!4 &3281850867433115472 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c6505a52553495842ad0fe61a4b52eaa, type: 3}

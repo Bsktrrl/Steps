@@ -49,16 +49,48 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4923062486173630244, guid: a9297d192ea8ebc468088a54984df627, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -4923062486173630244, guid: a9297d192ea8ebc468088a54984df627, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -4923062486173630244, guid: a9297d192ea8ebc468088a54984df627, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -4923062486173630244, guid: a9297d192ea8ebc468088a54984df627, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.32
+      objectReference: {fileID: 0}
+    - target: {fileID: -4923062486173630244, guid: a9297d192ea8ebc468088a54984df627, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -629033434906020970, guid: a9297d192ea8ebc468088a54984df627, type: 3}
       propertyPath: m_Layer
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: -469343608163332848, guid: a9297d192ea8ebc468088a54984df627, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -469343608163332848, guid: a9297d192ea8ebc468088a54984df627, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -469343608163332848, guid: a9297d192ea8ebc468088a54984df627, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -469343608163332848, guid: a9297d192ea8ebc468088a54984df627, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.32
+      objectReference: {fileID: 0}
+    - target: {fileID: -469343608163332848, guid: a9297d192ea8ebc468088a54984df627, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a9297d192ea8ebc468088a54984df627, type: 3}
       propertyPath: m_Name
@@ -73,8 +105,24 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4853705947170752794, guid: a9297d192ea8ebc468088a54984df627, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 4853705947170752794, guid: a9297d192ea8ebc468088a54984df627, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 4853705947170752794, guid: a9297d192ea8ebc468088a54984df627, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 4853705947170752794, guid: a9297d192ea8ebc468088a54984df627, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 4853705947170752794, guid: a9297d192ea8ebc468088a54984df627, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7543187014409839240, guid: a9297d192ea8ebc468088a54984df627, type: 3}
       propertyPath: m_Layer
@@ -197,13 +245,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effectVisualParent: {fileID: 0}
+  removeDuplicatesInEditor: 1
   effectBlock_SpawnPoint_isAdded: 0
   effectBlock_RefillSteps_isAdded: 0
   effectBlock_Pusher_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
-  blockEffectHolding_List: []
 --- !u!1001 &4965384996121949704
 PrefabInstance:
   m_ObjectHideFlags: 0

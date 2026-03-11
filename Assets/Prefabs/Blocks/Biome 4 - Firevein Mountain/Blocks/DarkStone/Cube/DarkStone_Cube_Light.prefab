@@ -48,6 +48,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7269429897129470751, guid: 34096fe12c0c4594fa079b1fedd0946c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -7269429897129470751, guid: 34096fe12c0c4594fa079b1fedd0946c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -7269429897129470751, guid: 34096fe12c0c4594fa079b1fedd0946c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -7269429897129470751, guid: 34096fe12c0c4594fa079b1fedd0946c, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -6958520373548272988, guid: 34096fe12c0c4594fa079b1fedd0946c, type: 3}
       propertyPath: m_Layer
       value: 15
@@ -60,9 +76,41 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 3877536501993095165, guid: 34096fe12c0c4594fa079b1fedd0946c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 3877536501993095165, guid: 34096fe12c0c4594fa079b1fedd0946c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 3877536501993095165, guid: 34096fe12c0c4594fa079b1fedd0946c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 3877536501993095165, guid: 34096fe12c0c4594fa079b1fedd0946c, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3909923407867667238, guid: 34096fe12c0c4594fa079b1fedd0946c, type: 3}
       propertyPath: m_Layer
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490294974871864141, guid: 34096fe12c0c4594fa079b1fedd0946c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490294974871864141, guid: 34096fe12c0c4594fa079b1fedd0946c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490294974871864141, guid: 34096fe12c0c4594fa079b1fedd0946c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490294974871864141, guid: 34096fe12c0c4594fa079b1fedd0946c, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7930422789521728288, guid: 34096fe12c0c4594fa079b1fedd0946c, type: 3}
       propertyPath: m_Layer
@@ -185,13 +233,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effectVisualParent: {fileID: 0}
+  removeDuplicatesInEditor: 1
   effectBlock_SpawnPoint_isAdded: 0
   effectBlock_RefillSteps_isAdded: 0
   effectBlock_Pusher_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
-  blockEffectHolding_List: []
 --- !u!1001 &4008805550814393033
 PrefabInstance:
   m_ObjectHideFlags: 0

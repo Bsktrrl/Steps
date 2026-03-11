@@ -122,6 +122,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: -2835719452518076317, guid: 82be4b2d53980764cb0431ffe84a8a07, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -2835719452518076317, guid: 82be4b2d53980764cb0431ffe84a8a07, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -2835719452518076317, guid: 82be4b2d53980764cb0431ffe84a8a07, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -2835719452518076317, guid: 82be4b2d53980764cb0431ffe84a8a07, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 82be4b2d53980764cb0431ffe84a8a07, type: 3}
       propertyPath: m_Name
       value: Gold_Cube_Screws
@@ -137,6 +153,38 @@ PrefabInstance:
     - target: {fileID: 1730738217117179923, guid: 82be4b2d53980764cb0431ffe84a8a07, type: 3}
       propertyPath: m_Layer
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5745680432590953588, guid: 82be4b2d53980764cb0431ffe84a8a07, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 5745680432590953588, guid: 82be4b2d53980764cb0431ffe84a8a07, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 5745680432590953588, guid: 82be4b2d53980764cb0431ffe84a8a07, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 5745680432590953588, guid: 82be4b2d53980764cb0431ffe84a8a07, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8804477344130961745, guid: 82be4b2d53980764cb0431ffe84a8a07, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 8804477344130961745, guid: 82be4b2d53980764cb0431ffe84a8a07, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 8804477344130961745, guid: 82be4b2d53980764cb0431ffe84a8a07, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 8804477344130961745, guid: 82be4b2d53980764cb0431ffe84a8a07, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -250,13 +298,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effectVisualParent: {fileID: 0}
+  removeDuplicatesInEditor: 1
   effectBlock_SpawnPoint_isAdded: 0
   effectBlock_RefillSteps_isAdded: 0
   effectBlock_Pusher_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
-  blockEffectHolding_List: []
 --- !u!4 &4052562125883721819 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 82be4b2d53980764cb0431ffe84a8a07, type: 3}
