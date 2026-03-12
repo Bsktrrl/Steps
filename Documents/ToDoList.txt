@@ -2,8 +2,33 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 Mars:
-2.0.KameraHidden: 
+2.0. KameraHidden: 
 - Fjerne 3x2 blokker rundt kameraet, ikke bare den blokken som kameraet er inni
+
+
+3.0. Number X
+- Legg til Number X på slopes og Water når man ikke kan gå på dem (Asset Store > Custom > Numbers)
+
+4.0. Glueplant Particle Effect
+- Legg til particle Effect når man plukker opp Glueplanten (Asset Store > Custom > VisualEffects > Prefabs > Player og heter "Effect_GlueplantPickup)
+- Gi en liten delay før man går til hovedmenyen
+
+5.0 Lava-effekt:
+- Legg på effekt av sprutende lava til lavablokker (Blant environment particle effectene)
+
+6.0. Metal-rør
+- Legge til Metal-rør i "6. Metalworks" blok-prefabslisten
+
+7.0. Moving Blocks
+- Legg til nye movingBlocks i prefablisten
+- Sett GoldBlock-animsjoner til å skje når spilleren aktiverer/deaktiverer dem (følg instruksjoner i goldBlock-scriptet)
+
+8.0. Nye Waterfall blocks
+- Sette opp nye Waterfall Blocks (top, midten og på bunnen (med mist)) i Prefab
+- Legge til waterfall EnviromentalSound på dem
+
+
+
 
 
 
@@ -41,6 +66,16 @@ Mars:
 47. Tall på Slopes: Tall på slopes vises under slopen og ikke på den
 
 48. Ascend Tall borte: Tallet til blokken man kan ascenda til, vises ikke og blokken blir ikke mørk, selv om man kan ascende til den
+
+49. Droplets funksjonalitet og lyd
+- Lag gameobject som skal spawne inn droplets fra tak
+
+50. Triggers for innganger/utganger
+- Lag triggers som settes ved huleinngangen for å endre state på om man er ute eller inne
+
+51. Torches/Braziers/Candles:
+- Lage prefabs for disse
+- Legge til light settings og 3D-lyd
 
 
 ----- LATER
