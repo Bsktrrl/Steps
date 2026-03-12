@@ -46,14 +46,10 @@ public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
 
     public void HoleShader_On()
     {
-        print("1. HoleShader_On");
-
         transitionBool = true;
     }
     public void HoleShader_Off()
     {
-        print("2. HoleShader_Off");
-
         transitionBool = false;
     }
 }

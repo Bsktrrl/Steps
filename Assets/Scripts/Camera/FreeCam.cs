@@ -319,6 +319,7 @@ public class FreeCam : Singleton<FreeCam>
         _enterCueRoutine = StartCoroutine(EnterFreeCamCue());
 
         RenderHiderOnContact.Instance.FreeCamOn();
+        HoleShaderOnOffScript.Instance.HoleShader_Off();
     }
 
     private void EndFreeCam()

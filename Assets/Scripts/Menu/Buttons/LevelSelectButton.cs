@@ -91,31 +91,39 @@ public class LevelSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
         coditionsCounter = 0;
 
         //If there isn't any requirements to play the level
-        if (GetComponent<LoadLevel>().levelsToBeFinished.Count <= 0 || (menuLevelInfo && menuLevelInfo.mapInfo_ToSave == null)) return true;
+        if ((GetComponent<LoadLevel>() && GetComponent<LoadLevel>().levelsToBeFinished.Count <= 0) || (menuLevelInfo && menuLevelInfo.mapInfo_ToSave == null)) return true;
         if (menuLevelInfo == null || menuLevelInfo.mapInfo_ToSave == null || menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List == null) return true;
 
         //If there are requirements to play the level
-        for (int i = 0; i < GetComponent<LoadLevel>().levelsToBeFinished.Count; i++)
+        if (GetComponent<LoadLevel>())
         {
-            for (int j = 0; j < menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List.Count; j++)
+            for (int i = 0; i < GetComponent<LoadLevel>().levelsToBeFinished.Count; i++)
             {
-                if (GetComponent<LoadLevel>().levelsToBeFinished[i].GetComponent<LoadLevel>().levelToPlay == menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[j].mapName)
+                for (int j = 0; j < menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List.Count; j++)
                 {
-                    if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[j].isCompleted)
+                    if (GetComponent<LoadLevel>().levelsToBeFinished[i].GetComponent<LoadLevel>().levelToPlay == menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[j].mapName)
                     {
-                        coditionsCounter++;
+                        if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[j].isCompleted)
+                        {
+                            coditionsCounter++;
+                        }
                     }
                 }
             }
-        }
 
-        if (coditionsCounter >= GetComponent<LoadLevel>().levelsToBeFinished.Count)
-        {
-            return true;
+
+            if (coditionsCounter >= GetComponent<LoadLevel>().levelsToBeFinished.Count)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {
-            return false;
+            return true;
         }
     }
 
