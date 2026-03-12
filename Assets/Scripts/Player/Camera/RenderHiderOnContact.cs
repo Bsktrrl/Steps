@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class RenderHiderOnContact : MonoBehaviour
+public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
 {
     [Header("Camera")]
     [Tooltip("Camera used for detection. If null, Camera.main is used.")]
@@ -10,13 +11,13 @@ public class RenderHiderOnContact : MonoBehaviour
 
     [Header("Front Detection")]
     [Tooltip("How far ahead to search for the front anchor block.")]
-    public float frontCheckDistance = 0.6f;
+    public float frontCheckDistance = 0.85f;
 
     [Tooltip("Minimum radius of the sphere cast used to find the anchor block sooner when rotating.")]
-    public float frontCheckRadius = 0.3f;
+    public float frontCheckRadius = 0.25f;
 
     [Tooltip("Offsets the cast start slightly backward so rotation catches nearby blocks earlier.")]
-    public float frontCastBackOffset = 0.1f;
+    public float frontCastBackOffset = 0.75f;
 
     [Tooltip("Use camera near clip / FOV to enlarge the cast radius when needed.")]
     public bool useDynamicCastRadius = true;
@@ -29,7 +30,7 @@ public class RenderHiderOnContact : MonoBehaviour
     public float blockSize = 1f;
 
     [Tooltip("Half-size of the overlap box used to detect a block at a target cell.")]
-    public Vector3 cellCheckExtents = new Vector3(0.2f, 0.2f, 0.2f);
+    public Vector3 cellCheckExtents = new Vector3(0.4f, 0.4f, 0.4f);
 
     [Header("Hide Area")]
     [Tooltip("How many blocks left/right from center to hide. 2 = total width 5.")]
@@ -54,8 +55,7 @@ public class RenderHiderOnContact : MonoBehaviour
 
     private readonly HashSet<Renderer> _currentlyHidden = new HashSet<Renderer>();
     private readonly HashSet<Renderer> _seenThisFrame = new HashSet<Renderer>();
-    private readonly Dictionary<Renderer, ShadowCastingMode> _originalCasting =
-        new Dictionary<Renderer, ShadowCastingMode>();
+    private readonly Dictionary<Renderer, ShadowCastingMode> _originalCasting = new Dictionary<Renderer, ShadowCastingMode>();
     private static readonly List<Renderer> _toRestoreBuffer = new List<Renderer>(64);
 
     private readonly List<Vector3> _debugCellCenters = new List<Vector3>(32);
@@ -63,6 +63,13 @@ public class RenderHiderOnContact : MonoBehaviour
     private Vector3 _debugFrontEnd;
     private float _debugFrontRadius;
     private bool _debugFrontHit;
+
+    [SerializeField] bool _freeCamActive = false;
+    private Coroutine _freeCamCoroutine;
+
+
+    //--------------------
+
 
     void Awake()
     {
@@ -72,8 +79,53 @@ public class RenderHiderOnContact : MonoBehaviour
 
     void Update()
     {
+        if (_freeCamActive) return;
+
         RunHideCheck();
     }
+
+
+    //--------------------
+
+
+    public void FreeCamOn()
+    {
+        if (_freeCamCoroutine != null)
+            StopCoroutine(_freeCamCoroutine);
+
+        _freeCamCoroutine = StartCoroutine(FreeCamOn_Delay());
+    }
+
+    IEnumerator FreeCamOn_Delay()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        if (_freeCamCoroutine == null)
+            yield break;
+
+        _freeCamActive = true;
+        RestoreAll();
+
+        _freeCamCoroutine = null;
+    }
+
+    public void FreeCamOff()
+    {
+        if (_freeCamCoroutine != null)
+        {
+            StopCoroutine(_freeCamCoroutine);
+            _freeCamCoroutine = null;
+        }
+
+        _freeCamActive = false;
+        RunHideCheck();
+
+        print("2. FreeCamOff(): " + _freeCamActive);
+    }
+
+
+    //--------------------
+
 
     void RunHideCheck()
     {
@@ -135,10 +187,7 @@ public class RenderHiderOnContact : MonoBehaviour
         _debugFrontHit = true;
         _debugFrontEnd = hit.point;
 
-        // Center cell = the block the camera hit.
         Vector3 anchorCenter = SnapToGrid(hit.collider.bounds.center);
-
-        // Camera-relative horizontal axis snapped to world grid.
         Vector3 sideAxis = GetHorizontalSideAxis(cam);
         Vector3 upAxis = Vector3.up;
 
@@ -281,11 +330,13 @@ public class RenderHiderOnContact : MonoBehaviour
 
         _currentlyHidden.Clear();
         _seenThisFrame.Clear();
+        _debugCellCenters.Clear();
+        _debugFrontHit = false;
     }
 
     void OnDrawGizmos()
     {
-        if (!debugDraw)
+        if (!debugDraw || _freeCamActive)
             return;
 
         Gizmos.color = _debugFrontHit ? debugColor : Color.gray;
