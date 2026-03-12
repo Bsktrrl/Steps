@@ -10242,16 +10242,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44ad641e988e5484b923df8a7aed1d33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideRadius: 0.15
-  smoothFadeHeight: 0.5
-  debugSphere: 0
-  debugColor: {r: 1, g: 0, b: 0, a: 0.25}
+  targetCamera: {fileID: 0}
+  frontCheckDistance: 0.85
+  frontCheckRadius: 0.25
+  frontCastBackOffset: 0.75
+  useDynamicCastRadius: 1
+  dynamicRadiusMultiplier: 0.6
+  blockSize: 1
+  cellCheckExtents: {x: 0.4, y: 0.4, z: 0.4}
+  horizontalRadius: 2
+  verticalUpRadius: 1
+  verticalDownRadius: 1
   hideableLayers:
     serializedVersion: 2
     m_Bits: 1048503
   ignoreLayers:
     serializedVersion: 2
     m_Bits: 64
+  debugDraw: 1
+  debugColor: {r: 1, g: 0, b: 0, a: 0.25}
 --- !u!114 &1803500977659454348
 MonoBehaviour:
   m_ObjectHideFlags: 0
