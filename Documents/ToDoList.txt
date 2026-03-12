@@ -2,10 +2,6 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 Mars:
-2.0. KameraHidden: 
-- Fjerne 3x2 blokker rundt kameraet, ikke bare den blokken som kameraet er inni
-
-
 3.0. Number X
 - Legg til Number X på slopes og Water når man ikke kan gå på dem (Asset Store > Custom > Numbers)
 
@@ -42,13 +38,9 @@ Mars:
 
 19. Wardrobe: Må kunne rotere spillerObjektet (med høyre joystick)
 
-- 21. FreeCam: Blokker som FreeCam er inni, må ikke bli usynlige (finne hvor dette gjøres og disable det mens FreeCam er akiv). Gjøre "usynlige" blokkker pga. camera, synlige igjen når man er i FreeCam-mode, og usynlige igjen etterpå
-
 37. RootBlockNumbers: Endre slik at nummeret på RotBlocks forsvinner når de skal
 
 38. CameraKø: Hvis man trykker på roteringsknappen mens det roteres, så burde det føre til at roteringen fortsetter 90 grader til, i den retningen
-
-39. RootBlocken vil endre retning hvis man beveger seg i en ny retning etter at den er aktivert. Sett retningen ut fra lookDirection til spilleren i en variabel, så denne ikke endrer seg selv om spilleren gjør det.
 
 40. Step-HUD'en bugger seg hvis man har brukt noen steps og bytter setting til en annen HUD-type. De stegene som ikke er brukt, fylles ikke igjen når man respawner/går på checkpoints
 
