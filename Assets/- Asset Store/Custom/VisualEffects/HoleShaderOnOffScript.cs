@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HoleShaderOnOffScript : MonoBehaviour
+public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
 {
     float transition;
     bool transitionBool;
@@ -13,15 +13,31 @@ public class HoleShaderOnOffScript : MonoBehaviour
     //--------------------
 
 
-    private void OnEnable()
+    //private void OnEnable()
+    //{
+    //    CameraController.Action_RotateCamera_Start += HoleShader_On;
+    //    CameraController.Action_RotateCamera_End += HoleShader_Off;
+    //}
+    //private void OnDisable()
+    //{
+    //    CameraController.Action_RotateCamera_Start -= HoleShader_On;
+    //    CameraController.Action_RotateCamera_End -= HoleShader_Off;
+    //}
+
+    private void Update()
     {
-        CameraController.Action_RotateCamera_Start += HoleShader_On;
-        CameraController.Action_RotateCamera_End += HoleShader_Off;
-    }
-    private void OnDisable()
-    {
-        CameraController.Action_RotateCamera_Start -= HoleShader_On;
-        CameraController.Action_RotateCamera_End -= HoleShader_Off;
+        if (transitionBool)
+        {
+            transition = Mathf.Lerp(transition, (transitionBool ? 1 : 0), transitionSpeed * Time.deltaTime);
+
+            Shader.SetGlobalFloat("_HoleShaderEnabled", transition);
+        }
+        else
+        {
+            transition = Mathf.Lerp(transition, (transitionBool ? 1 : 0), transitionSpeed * Time.deltaTime);
+
+            Shader.SetGlobalFloat("_HoleShaderEnabled", transition);
+        }
     }
 
 
@@ -33,19 +49,11 @@ public class HoleShaderOnOffScript : MonoBehaviour
         print("1. HoleShader_On");
 
         transitionBool = true;
-
-        transition = Mathf.Lerp(transition, (transitionBool ? 1 : 0), transitionSpeed * Time.deltaTime);
-
-        Shader.SetGlobalFloat("_HoleShaderEnabled", transition);
     }
     public void HoleShader_Off()
     {
         print("2. HoleShader_Off");
 
         transitionBool = false;
-
-        transition = Mathf.Lerp(transition, (transitionBool ? 1 : 0), transitionSpeed * Time.deltaTime);
-
-        Shader.SetGlobalFloat("_HoleShaderEnabled", transition);
     }
 }
