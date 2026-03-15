@@ -16,8 +16,8 @@ public class LightningScript : MonoBehaviour
     bool lightning;
 
     float subEmitterTime = 0.015f;
-    float waitTimeMin = 1f;
-    float waitTimeMax = 10f;
+    float waitTimeMin = 3f;
+    float waitTimeMax = 30f;
 
     [SerializeField] Light light;
     float lightIntensity;
