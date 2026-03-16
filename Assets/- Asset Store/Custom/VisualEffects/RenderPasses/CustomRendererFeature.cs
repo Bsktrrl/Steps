@@ -84,8 +84,10 @@ public class CustomRendererFeature : ScriptableRendererFeature
             downscaleFactor = factor;
         }
 
-        int cachedWidth = -1;
-        int cachedHeight = -1;
+        int cachedFullWidth = -1;
+        int cachedFullHeight = -1;
+        int cachedLowResWidth = -1;
+        int cachedLowResHeight = -1;
 
         public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
         {
@@ -97,15 +99,24 @@ public class CustomRendererFeature : ScriptableRendererFeature
             int lowResWidth = Mathf.Max(1, (int)(fullWidth * downscaleFactor));
             int lowResHeight = Mathf.Max(1, (int)(fullHeight * downscaleFactor));
 
-            var fullDesc = new RenderTextureDescriptor(fullWidth, fullHeight, RenderTextureFormat.DefaultHDR);
-            fullDesc.depthBufferBits = 0;
-            fullDesc.msaaSamples = 1;
-            RenderingUtils.ReAllocateIfNeeded(ref customColorTexture, fullDesc, name: "_CustomColorTexture");
+            if (customColorTexture == null || lowResColorTexture == null || fullWidth != cachedFullWidth || fullHeight != cachedFullHeight || lowResWidth != cachedLowResWidth || lowResHeight != cachedLowResHeight)
+            {
+                cachedFullWidth = fullWidth;
+                cachedFullHeight = fullHeight;
+                cachedLowResWidth = lowResWidth;
+                cachedLowResHeight = lowResHeight;
 
-            var downDesc = new RenderTextureDescriptor(lowResWidth, lowResHeight, RenderTextureFormat.DefaultHDR);
-            downDesc.depthBufferBits = 0;
-            downDesc.msaaSamples = 1;
-            RenderingUtils.ReAllocateIfNeeded(ref lowResColorTexture, downDesc, name: "_LowResColorTexture");
+                var fullDesc = new RenderTextureDescriptor(fullWidth, fullHeight, RenderTextureFormat.DefaultHDR);
+                fullDesc.depthBufferBits = 0;
+                fullDesc.msaaSamples = 1;
+                RenderingUtils.ReAllocateIfNeeded(ref customColorTexture, fullDesc, name: "_CustomColorTexture");
+
+                var downDesc = new RenderTextureDescriptor(lowResWidth, lowResHeight, RenderTextureFormat.DefaultHDR);
+                downDesc.depthBufferBits = 0;
+                downDesc.msaaSamples = 1;
+                RenderingUtils.ReAllocateIfNeeded(ref lowResColorTexture, downDesc, name: "_LowResColorTexture");
+                lowResColorTexture.rt.filterMode = FilterMode.Bilinear;
+            }
         }
 
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
