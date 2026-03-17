@@ -1,0 +1,41 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class EnvironmentalGustScript : MonoBehaviour
+{
+    ParticleSystem PS;
+    AudioSource source;
+
+    [SerializeField] AudioClip[] audioClips;
+
+    [SerializeField] float waitTimeMin;
+    [SerializeField] float waitTimeMax;
+
+    float pitchMin = 0.9f;
+    float pitchMax = 1.1f;
+    void Start()
+    {
+        PS = GetComponent<ParticleSystem>();
+        source = GetComponent<AudioSource>();
+
+        StartCoroutine(PlayParticles());
+    }
+
+    IEnumerator PlayParticles()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(waitTimeMin, waitTimeMax));
+
+            if(Random.Range(0, 2) == 0)
+            {
+                source.clip = audioClips[Random.Range(0, audioClips.Length)];
+                source.pitch = Random.Range(pitchMin, pitchMax);
+
+                PS.Play();
+                source.Play();
+            }
+        }
+    }
+}
