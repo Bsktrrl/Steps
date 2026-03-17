@@ -175,6 +175,7 @@ public class CameraController : Singleton<CameraController>
     IEnumerator RotateCamera(float angle)
     {
         Action_RotateCamera_Start?.Invoke();
+        HoleShaderOnOffScript.Instance.HoleShader_On();
 
         isRotating = true;
         PlayerManager.Instance.pauseGame = true;
@@ -216,6 +217,8 @@ public class CameraController : Singleton<CameraController>
         cameraAnchor.transform.rotation = endRotation;
 
         //SetBlockDetectorDirection();
+
+        HoleShaderOnOffScript.Instance.HoleShader_Off();
 
         yield return new WaitForSeconds(waitDelay); // Wait for the next frame
 

@@ -141,35 +141,37 @@ public class Block_Root : MonoBehaviour
     #region BuildRootLine
     void MakeRootFreeCostList()
     {
+        Vector3 lookDir_Temp = playerLookDir;
+
         if (Movement.Instance.isRespawning && transform.parent.gameObject && transform.parent.gameObject.GetComponent<Block_Checkpoint>())
         {
             switch (transform.parent.gameObject.GetComponent<Block_Checkpoint>().spawnDirection)
             {
                 case MovementDirection.None:
-                    playerLookDir = -Vector3.forward;
+                    lookDir_Temp = -Vector3.forward;
                     break;
 
                 case MovementDirection.Forward:
-                    playerLookDir = -Vector3.forward;
+                    lookDir_Temp = -Vector3.forward;
                     break;
                 case MovementDirection.Backward:
-                    playerLookDir = -Vector3.back;
+                    lookDir_Temp = -Vector3.back;
                     break;
                 case MovementDirection.Left:
-                    playerLookDir = -Vector3.left;
+                    lookDir_Temp = -Vector3.left;
                     break;
                 case MovementDirection.Right:
-                    playerLookDir = -Vector3.right;
+                    lookDir_Temp = -Vector3.right;
                     break;
 
                 default:
-                    playerLookDir = -Vector3.forward;
+                    lookDir_Temp = -Vector3.forward;
                     break;
             }
         }
         else
         {
-            playerLookDir = Movement.Instance.lookingDirection;
+            lookDir_Temp = Movement.Instance.lookingDirection;
         }
 
         tempOriginPos = transform.parent.position;
@@ -181,7 +183,7 @@ public class Block_Root : MonoBehaviour
 
             #region Check in line
             GameObject tempBlock_Adjacent = new GameObject();
-            tempBlock_Adjacent = RaycastBlock(tempOriginPos + (Vector3.up * 0.3f), playerLookDir, 1f);
+            tempBlock_Adjacent = RaycastBlock(tempOriginPos + (Vector3.up * 0.3f), lookDir_Temp, 1f);
 
             //If there IS a block adjacent
             if (tempBlock_Adjacent)
@@ -241,8 +243,8 @@ public class Block_Root : MonoBehaviour
             //If there is NOT a block adjacent?
             else
             {
-                GameObject tempBlock_UnderEmpty = RaycastBlock(tempOriginPos + (Vector3.up * 0.3f) + playerLookDir, Vector3.down, 1.25f);
-                GameObject tempBlock_OverEmpty = RaycastBlock(tempOriginPos + (Vector3.up * 0.3f) + playerLookDir, Vector3.up, 1.25f);
+                GameObject tempBlock_UnderEmpty = RaycastBlock(tempOriginPos + (Vector3.up * 0.3f) + lookDir_Temp, Vector3.down, 1.25f);
+                GameObject tempBlock_OverEmpty = RaycastBlock(tempOriginPos + (Vector3.up * 0.3f) + lookDir_Temp, Vector3.up, 1.25f);
 
                 if (tempBlock_UnderEmpty && (tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                     && RootFreeCostBlockList.Count > 0 && (RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Stair || RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slope))
@@ -289,7 +291,7 @@ public class Block_Root : MonoBehaviour
                 {
                     // Cast down in the *next* cell.
                     // Start high so it works regardless of 0.5 offsets.
-                    Vector3 origin = tempOriginPos + playerLookDir + Vector3.up * 2.0f;
+                    Vector3 origin = tempOriginPos + lookDir_Temp + Vector3.up * 2.0f;
 
                     GameObject diagDown = RaycastBlock(origin, Vector3.down, 5.0f);
 
@@ -315,7 +317,7 @@ public class Block_Root : MonoBehaviour
                 {
                     // Probe in the next cell. Start from current level (or a bit below) and cast up.
                     // Using a long-ish ray makes it insensitive to the 0.5 stair center offset.
-                    Vector3 origin = tempOriginPos + playerLookDir + Vector3.up * 0.1f;
+                    Vector3 origin = tempOriginPos + lookDir_Temp + Vector3.up * 0.1f;
 
                     GameObject diagUp = RaycastBlock(origin, Vector3.up, 5.0f);
 
@@ -335,8 +337,8 @@ public class Block_Root : MonoBehaviour
             #region Check stairs/slopes
             if (!blockIsFound)
             {
-                tempBlock_Adjacent = RaycastBlock(tempOriginPos, playerLookDir, 1f);
-                GameObject tempBlock_Over = RaycastBlock(tempOriginPos + Vector3.up, playerLookDir, 1f);
+                tempBlock_Adjacent = RaycastBlock(tempOriginPos, lookDir_Temp, 1f);
+                GameObject tempBlock_Over = RaycastBlock(tempOriginPos + Vector3.up, lookDir_Temp, 1f);
 
                 //Is there a stair/slope adjacent?
                 if (tempBlock_Adjacent && (tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Slope))
@@ -388,10 +390,10 @@ public class Block_Root : MonoBehaviour
             {
                 //print("1. Ladder: tempOriginPos: " + tempOriginPos);
                 GameObject tempBlock_Ladder_Up = new GameObject();
-                tempBlock_Ladder_Up = RaycastLadder(tempOriginPos + Vector3.up, playerLookDir, 1.5f);
+                tempBlock_Ladder_Up = RaycastLadder(tempOriginPos + Vector3.up, lookDir_Temp, 1.5f);
 
                 GameObject tempBlock_Ladder_Down = new GameObject();
-                tempBlock_Ladder_Down = RaycastLadder(tempOriginPos, playerLookDir, 1f);
+                tempBlock_Ladder_Down = RaycastLadder(tempOriginPos, lookDir_Temp, 1f);
 
                 //Ladder Up
                 if (tempBlock_Ladder_Up)
@@ -444,7 +446,7 @@ public class Block_Root : MonoBehaviour
 
                 if (RootFreeCostBlockList.Count > 0 && RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slope)
                 {
-                    tempBlock_Falling = RaycastBlock(tempOriginPos + playerLookDir, Vector3.down, 50f);
+                    tempBlock_Falling = RaycastBlock(tempOriginPos + lookDir_Temp, Vector3.down, 50f);
                 }
                 else
                 {

@@ -1,43 +1,52 @@
 ----- NEXT ON THE LIST -----
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
+Mars:
+1.0. Lag ny Overworld Hovedmeny som kan ta en til de andre regionMenyene
 
-Februar:
-2.0. StatsDatabase
-- 2.1. Legge til tidtaker for WardrobeSkins som spilleren har på seg
-	- Må endres når spilleren bytter skin
--> 2.2. Sjekk alle levelStat-variabler for å se at de oppdateres riktig (i inspectoren)
-	-> Sjekk at alle variabler funger som de skal i alle levels
-- 2.3. Bygg opp alle sessionStat-variabler slik at de fungerer
-- 2.4. Sjekk at alle sessionStat-variabler oppdateres riktig og oppdateres helt til spilleren avslutter spillet (det er kun da de skal legges til i GoogleSheets, som en full oversikt over gjennomspillingen)
--> 2.5. Oppdatere GoogleSheets til å vise xx:xx:xx (tid) på float-variabler
-	-> Legg til "/86400" på slutten av hver funksjon og endre format til "Duration" (som gjort på linje 59)
-- 2.6. Endre GoogleSheet'et slik at kun cells med tall i seg er med i utregningen av "Count", "Sum", "Average" og "Median"
+2.0. HullShader:
+- Deaktiver HullShader i FreeCamModus, så man ikke kan se gjennom blokker
+- Gjør Fences og Stairs som også er nære spilleren (i samme bokser som skjuler blokkObjects) usynlige når blokkene er usynlige
+
+3.0. Number X
+- Legg til Number X på slopes og Water når man ikke kan gå på dem (Asset Store > Custom > Numbers)
+
+4.0. Glueplant Particle Effect
+- Legg til particle Effect når man plukker opp Glueplanten (Asset Store > Custom > VisualEffects > Prefabs > Player og heter "Effect_GlueplantPickup)
+- Gi en liten delay før man går til hovedmenyen
+
+5.0 Lava-effekt:
+- Legg på effekt av sprutende lava til lavablokker (Blant environment particle effectene)
+
+6.0. Metal-rør
+- Legge til Metal-rør i "6. Metalworks" blok-prefabslisten
+
+7.0. Moving Blocks
+- Legg til nye movingBlocks i prefablisten
+- Sett GoldBlock-animsjoner til å skje når spilleren aktiverer/deaktiverer dem (følg instruksjoner i goldBlock-scriptet)
+
+8.0. Nye Waterfall blocks
+- Sette opp nye Waterfall Blocks (top, midten og på bunnen (med mist)) i Prefab
+- Legge til waterfall EnviromentalSound på dem
 
 
 
+--- OTHER FIXES
 
-
---- FROM SARAH PLAYTEST
 
 
 15. Settings: FreeCam Speed & rotation sensetivity (Move Speed & MouseSensitivity/StickSensitivity)
 
 9. PickupAnimasjon i vann: Pickup-animasjonen funker ikke
 
-19. Wardrobe: Må kunne rotere spillerObjektet (med høyre joystick)
-
-- 21. FreeCam: Blokker som FreeCam er inni, må ikke bli usynlige (finne hvor dette gjøres og disable det mens FreeCam er akiv). Gjøre "usynlige" blokkker pga. camera, synlige igjen når man er i FreeCam-mode, og usynlige igjen etterpå
-
 37. RootBlockNumbers: Endre slik at nummeret på RotBlocks forsvinner når de skal
 
 38. CameraKø: Hvis man trykker på roteringsknappen mens det roteres, så burde det føre til at roteringen fortsetter 90 grader til, i den retningen
 
-39. RootBlocken vil endre retning hvis man beveger seg i en ny retning etter at den er aktivert. Sett retningen ut fra lookDirection til spilleren i en variabel, så denne ikke endrer seg selv om spilleren gjør det.
-
 40. Step-HUD'en bugger seg hvis man har brukt noen steps og bytter setting til en annen HUD-type. De stegene som ikke er brukt, fylles ikke igjen når man respawner/går på checkpoints
 
-41. Endre Soppsirkel: Spilleren kan gå 3 steg gratis, uavhengig hvilken blokk den går på
+41. Endre Soppsirkel:
+- Spilleren kan gå 3 steg gratis, uavhengig hvilken blokk den går på
 	- Legg til symbol/tall på HUD
 	- Gratis å gå i Mud-blokk og adjecent blokker
 	- Får igjen +1 steg ved å gå på adjecent blokker til Swamp Water
@@ -46,30 +55,26 @@ Februar:
 
 43. PlayerSpawnEffect: Legge til på starten av første level man spiller (legge inn saveState slik at den ikke dukker opp igjen etter første)
 
-44. KameraHidden: Fjerne 3x2 blokker rundt kameraet, ikke bare den blokken som kameraet er inni
+46: NewGame Language SettingsBug: Gjøre slik at også "language"-posten i "Settings" er satt til Engelsk bilde på starten (første gang man går inn)
 
-45. Checkpoint-røyk: Fikse slik at det kun er 1 røykObject attached til et checkpoint
+47. Tall på Slopes: Tall på slopes vises noen ganger under slopen og ikke på den
 
-46: NewGame Language SettingsBug: Gjøre slik at også "language"-posten i "Settings" er satt til Engelsk bilde
+48. Ascend Tall borte: Tallet til blokken man kan ascende til, vises ikke og blokken blir ikke mørk, selv om man kan ascende til den
 
-47. Tall på Slopes: Tall på slopes vises under slopen og ikke på den
+49. Droplets funksjonalitet og lyd
+- Lag gameobject som skal spawne inn droplets fra tak
 
-48. Ascend Tall borte: Tallet til blokken man kan ascenda til, vises ikke og blokken blir ikke mørk, selv om man kan ascende til den
+50. Triggers for innganger/utganger
+- Lag triggers som settes ved huleinngangen for å endre state på om man er ute eller inne
 
-
------ LATER
-
-
-14. FreeCam: Kan toggle Numbers on/off på alle blokker i levelet
-
-25. Overworld: Vurdere å legge inn en %-bar under navnet for å vise progress med tall også
-
-33. Lage nytt analytics-system for google sheets, for å innhente data
-
+51. Torches/Braziers/Candles:
+- Lage prefabs for disse
+- Legge til light settings og 3D-lyd på disse
 
 
 
 --- OTHER BUGS & FIXES
+
 
 
 1. Make the numbers appear when stopping AND release the movementButton
@@ -122,10 +127,23 @@ Februar:
 
 4. Stairs isn't counted for when ascending/Descending, so you can ascend/Descend through them
 
-5. Move the asset displayed on the EffectBlocks (Checkpoints) on top of the snow on SnowBlocks
+5. Move the asset displayed on the EffectBlocks (Checkpoints & Teleporters) on top of the snow on SnowBlocks
 
-6. Skins in levels make cameras zoom (in and out, based on the rotation of the skin)
+6. Skins-objects in levels make cameras zoom (in and out, based on the rotation of the skin)
 
+
+
+----- LATER
+
+
+
+19. Wardrobe: Må kunne rotere spillerObjektet (med høyre joystick)
+
+14. FreeCam: Kan toggle Numbers on/off på alle blokker i levelet
+
+25. Overworld: Vurdere å legge inn en %-bar under navnet for å vise progress med tall også
+
+51. Legg til Keybind i Controls-menyen av spillet
 
 
 
@@ -133,6 +151,6 @@ Februar:
 
 
 
-
 Switches:
 - Make interactable Wall-switch
+

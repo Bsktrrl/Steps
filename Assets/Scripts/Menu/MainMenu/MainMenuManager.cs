@@ -14,6 +14,15 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     public GameObject newGameWarningMessage_Parent;
 
+    public GameObject regionSelectMenu;
+    public GameObject levelSelectMenu;
+    public GameObject regionMenu_Water;
+    public GameObject regionMenu_Sand;
+    public GameObject regionMenu_Ice;
+    public GameObject regionMenu_Lava;
+    public GameObject regionMenu_Swamp;
+    public GameObject regionMenu_Metal;
+
     [Header("Menu State")]
     public MenuState menuState;
 
@@ -97,6 +106,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
                 Menu_Main();
                 break;
 
+
             case MenuState.Main_Menu:
                 Menu_Main();
                 break;
@@ -113,11 +123,33 @@ public class MainMenuManager : Singleton<MainMenuManager>
                 Menu_Biome();
                 break;
 
+
             case MenuState.NewGameWarningMessage:
                 Menu_NewGameWarningMessage();
                 break;
             case MenuState.NewGameWarningMessage_No:
                 break;
+
+
+            case MenuState.RegionMenu_Water:
+                Menu_Region_Water();
+                break;
+            case MenuState.RegionMenu_Sand:
+                Menu_Region_Sand();
+                break;
+            case MenuState.RegionMenu_Ice:
+                Menu_Region_Ice();
+                break;
+            case MenuState.RegionMenu_Lava:
+                Menu_Region_Lava();
+                break;
+            case MenuState.RegionMenu_Swamp:
+                Menu_Region_Swamp();
+                break;
+            case MenuState.RegionMenu_Metal:
+                Menu_Region_Metal();
+                break;
+
 
             default:
                 Menu_Main();
@@ -166,6 +198,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
         //Open the OverworldMenu
         overworldMenu_Parent.SetActive(true);
+        regionSelectMenu.SetActive(true);
     }
     void Menu_Skins()
     {
@@ -195,6 +228,56 @@ public class MainMenuManager : Singleton<MainMenuManager>
     }
 
 
+    void Menu_Region_Water()
+    {
+        HideAllMenus();
+
+        overworldMenu_Parent.SetActive(true);
+        levelSelectMenu.SetActive(true);
+        regionMenu_Water.SetActive(true);
+    }
+    void Menu_Region_Sand()
+    {
+        HideAllMenus();
+
+        overworldMenu_Parent.SetActive(true);
+        levelSelectMenu.SetActive(true);
+        regionMenu_Sand.SetActive(true);
+    }
+    void Menu_Region_Ice()
+    {
+        HideAllMenus();
+
+        overworldMenu_Parent.SetActive(true);
+        levelSelectMenu.SetActive(true);
+        regionMenu_Ice.SetActive(true);
+    }
+    void Menu_Region_Lava()
+    {
+        HideAllMenus();
+
+        overworldMenu_Parent.SetActive(true);
+        levelSelectMenu.SetActive(true);
+        regionMenu_Lava.SetActive(true);
+    }
+    void Menu_Region_Swamp()
+    {
+        HideAllMenus();
+
+        overworldMenu_Parent.SetActive(true);
+        levelSelectMenu.SetActive(true);
+        regionMenu_Swamp.SetActive(true);
+    }
+    void Menu_Region_Metal()
+    {
+        HideAllMenus();
+
+        overworldMenu_Parent.SetActive(true);
+        levelSelectMenu.SetActive(true);
+        regionMenu_Metal.SetActive(true);
+    }
+
+
     //--------------------
 
 
@@ -210,6 +293,24 @@ public class MainMenuManager : Singleton<MainMenuManager>
             optionsMenu_Parent.SetActive(false);
         if (newGameWarningMessage_Parent)
             newGameWarningMessage_Parent.SetActive(false);
+
+        if (regionSelectMenu)
+            regionSelectMenu.SetActive(false);
+        if (levelSelectMenu)
+            levelSelectMenu.SetActive(false);
+
+        if (regionMenu_Water)
+            regionMenu_Water.SetActive(false);
+        if (regionMenu_Sand)
+            regionMenu_Sand.SetActive(false);
+        if (regionMenu_Ice)
+            regionMenu_Ice.SetActive(false);
+        if (regionMenu_Lava)
+            regionMenu_Lava.SetActive(false);
+        if (regionMenu_Swamp)
+            regionMenu_Swamp.SetActive(false);
+        if (regionMenu_Metal)
+            regionMenu_Metal.SetActive(false);
     }
 
     #endregion

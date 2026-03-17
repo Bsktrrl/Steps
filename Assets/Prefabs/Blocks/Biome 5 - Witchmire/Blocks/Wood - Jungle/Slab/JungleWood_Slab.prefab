@@ -57,12 +57,44 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: -3020648043282393557, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -3020648043282393557, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -3020648043282393557, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -3020648043282393557, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: -3020648043282393557, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2690961031442375108, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -2690961031442375108, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -2690961031442375108, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
       objectReference: {fileID: 0}
     - target: {fileID: -2690961031442375108, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: -2690961031442375108, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_Name
@@ -81,8 +113,24 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5584641881576573271, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 5584641881576573271, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 5584641881576573271, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 5584641881576573271, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 5584641881576573271, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -196,13 +244,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effectVisualParent: {fileID: 0}
+  removeDuplicatesInEditor: 1
   effectBlock_SpawnPoint_isAdded: 0
   effectBlock_RefillSteps_isAdded: 0
   effectBlock_Pusher_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
-  blockEffectHolding_List: []
 --- !u!4 &2080834564837774801 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}

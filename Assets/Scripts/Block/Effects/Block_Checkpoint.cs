@@ -17,14 +17,12 @@ public class Block_Checkpoint : MonoBehaviour
     private void OnEnable()
     {
         Movement.Action_StepTaken += UpdateSpawnPos;
-        //DataManager.Action_dataHasLoaded += UpdateSpawnPos;
         Movement.Action_LandedFromFalling += UpdateSpawnPos;
     }
 
     private void OnDisable()
     {
         Movement.Action_StepTaken -= UpdateSpawnPos;
-        //DataManager.Action_dataHasLoaded -= UpdateSpawnPos;
         Movement.Action_LandedFromFalling -= UpdateSpawnPos;
     }
 

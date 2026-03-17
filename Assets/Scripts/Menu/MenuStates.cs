@@ -59,6 +59,26 @@ public class MenuStates : Singleton<MenuStates>
                 //MainMenuManager.Instance.menuState = MenuState.Main_Menu;
                 break;
 
+
+            case MenuState.RegionMenu_Water:
+                MainMenuManager.Instance.menuState = MenuState.RegionMenu_Water;
+                break;
+            case MenuState.RegionMenu_Sand:
+                MainMenuManager.Instance.menuState = MenuState.RegionMenu_Sand;
+                break;
+            case MenuState.RegionMenu_Ice:
+                MainMenuManager.Instance.menuState = MenuState.RegionMenu_Ice;
+                break;
+            case MenuState.RegionMenu_Lava:
+                MainMenuManager.Instance.menuState = MenuState.RegionMenu_Lava;
+                break;
+            case MenuState.RegionMenu_Swamp:
+                MainMenuManager.Instance.menuState = MenuState.RegionMenu_Swamp;
+                break;
+            case MenuState.RegionMenu_Metal:
+                MainMenuManager.Instance.menuState = MenuState.RegionMenu_Metal;
+                break;
+
             default:
                 break;
         }
@@ -101,4 +121,11 @@ public enum MenuState
 
     NewGameWarningMessage,
     NewGameWarningMessage_No,
+
+    RegionMenu_Water,
+    RegionMenu_Sand,
+    RegionMenu_Ice,
+    RegionMenu_Lava,
+    RegionMenu_Swamp,
+    RegionMenu_Metal,
 }

@@ -134,7 +134,7 @@ public class FreeCam : Singleton<FreeCam>
     private bool _basePrioritiesCached;
 
     private CinemachineCamera _cmPlayer;
-    private bool _isActive;
+    public bool _isActive;
     private Coroutine _returnRoutine;
     private Coroutine _enterCueRoutine;
 
@@ -302,7 +302,7 @@ public class FreeCam : Singleton<FreeCam>
         SetPriorityValue(CM_FreeCam, playerVal + freeCamPriorityBoost);
 
         _isActive = true;
-
+        
         // reset inputs/state
         _digitalInputSum = Vector3.zero;
         _moveAxis = Vector2.zero;
@@ -317,6 +317,9 @@ public class FreeCam : Singleton<FreeCam>
         _smoothedMouseDelta = Vector2.zero;
 
         _enterCueRoutine = StartCoroutine(EnterFreeCamCue());
+
+        RenderHiderOnContact.Instance.FreeCamOn();
+        HoleShaderOnOffScript.Instance.HoleShader_Off();
     }
 
     private void EndFreeCam()
@@ -329,6 +332,8 @@ public class FreeCam : Singleton<FreeCam>
             _isActive = false;
             return;
         }
+
+        RenderHiderOnContact.Instance.FreeCamOff();
 
         if (_returnRoutine != null) StopCoroutine(_returnRoutine);
         _returnRoutine = StartCoroutine(ReturnToPlayerThenSwitch());
@@ -686,6 +691,7 @@ public class FreeCam : Singleton<FreeCam>
         {
             CM_FreeCam.transform.position += fwd * freeCamForwardPush;
             _enterCueRoutine = null;
+
             yield break;
         }
 

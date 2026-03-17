@@ -123,8 +123,24 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 211989304937270384, guid: 89d3b6ea7e573284fa52f3ae4b274153, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 211989304937270384, guid: 89d3b6ea7e573284fa52f3ae4b274153, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 211989304937270384, guid: 89d3b6ea7e573284fa52f3ae4b274153, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 211989304937270384, guid: 89d3b6ea7e573284fa52f3ae4b274153, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 211989304937270384, guid: 89d3b6ea7e573284fa52f3ae4b274153, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 89d3b6ea7e573284fa52f3ae4b274153, type: 3}
       propertyPath: m_Name
@@ -143,12 +159,44 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7423359030703603282, guid: 89d3b6ea7e573284fa52f3ae4b274153, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423359030703603282, guid: 89d3b6ea7e573284fa52f3ae4b274153, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423359030703603282, guid: 89d3b6ea7e573284fa52f3ae4b274153, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423359030703603282, guid: 89d3b6ea7e573284fa52f3ae4b274153, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423359030703603282, guid: 89d3b6ea7e573284fa52f3ae4b274153, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8915644652397420744, guid: 89d3b6ea7e573284fa52f3ae4b274153, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 8915644652397420744, guid: 89d3b6ea7e573284fa52f3ae4b274153, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 8915644652397420744, guid: 89d3b6ea7e573284fa52f3ae4b274153, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98
       objectReference: {fileID: 0}
     - target: {fileID: 8915644652397420744, guid: 89d3b6ea7e573284fa52f3ae4b274153, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 8915644652397420744, guid: 89d3b6ea7e573284fa52f3ae4b274153, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -267,10 +315,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effectVisualParent: {fileID: 0}
+  removeDuplicatesInEditor: 1
   effectBlock_SpawnPoint_isAdded: 0
   effectBlock_RefillSteps_isAdded: 0
   effectBlock_Pusher_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
-  blockEffectHolding_List: []
