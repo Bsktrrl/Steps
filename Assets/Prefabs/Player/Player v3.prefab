@@ -10243,8 +10243,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetCamera: {fileID: 0}
-  frontCheckDistance: 0.85
-  frontCheckRadius: 0.25
+  frontCheckDistance: 1
+  frontCheckRadius: 0.5
   frontCastBackOffset: 0.75
   useDynamicCastRadius: 1
   dynamicRadiusMultiplier: 0.6
@@ -10255,12 +10255,13 @@ MonoBehaviour:
   verticalDownRadius: 1
   hideableLayers:
     serializedVersion: 2
-    m_Bits: 1048503
+    m_Bits: 2097079
   ignoreLayers:
     serializedVersion: 2
     m_Bits: 64
   debugDraw: 1
   debugColor: {r: 1, g: 0, b: 0, a: 0.25}
+  _freeCamActive: 0
 --- !u!114 &1803500977659454348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17125,6 +17126,7 @@ MonoBehaviour:
   sweepPadding: 0.02
   touchSlideStep: 1
   freeCamForwardPush: 1.4
+  _isActive: 0
 --- !u!1 &3728129297529229334
 GameObject:
   m_ObjectHideFlags: 0
@@ -32000,6 +32002,8 @@ MonoBehaviour:
   movementStates: 0
   heightOverBlock: 0.95
   fallSpeed: 6
+  ascend_Distance: 3
+  descend_Distance: 3.5
   savePos: {x: 0, y: 0, z: 0}
   lookingDirection: {x: 0, y: 0, z: 0}
   lookingDirectionDescription: 

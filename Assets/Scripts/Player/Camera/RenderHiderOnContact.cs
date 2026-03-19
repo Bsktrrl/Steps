@@ -80,6 +80,7 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
     void Update()
     {
         if (_freeCamActive) return;
+        if (GlueplantCamera.Instance.camera_isTraveling) { RestoreAll(); return; }
 
         RunHideCheck();
     }
@@ -256,6 +257,7 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
             if (((1 << go.layer) & ignoreLayers.value) != 0)
                 continue;
 
+            //Mesh Renderer
             Renderer[] rends = go.GetComponentsInChildren<Renderer>(includeInactive: false);
             for (int r = 0; r < rends.Length; r++)
             {

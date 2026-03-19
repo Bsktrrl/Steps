@@ -270,51 +270,51 @@ public class Interactable_Pickup : MonoBehaviour
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level5 = WardrobeSkinState.Available;
                 break;
 
-            case SkinType.Firevein_Lv1:
+            case SkinType.Sandlands_Lv1:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level1 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Firevein_Lv2:
+            case SkinType.Sandlands_Lv2:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level2 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Firevein_Lv3:
+            case SkinType.Sandlands_Lv3:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level3 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Firevein_Lv4:
+            case SkinType.Sandlands_Lv4:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level4 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Firevein_Lv5:
+            case SkinType.Sandlands_Lv5:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level5 = WardrobeSkinState.Available;
                 break;
 
-            case SkinType.Sandlands_Lv1:
+            case SkinType.Frostfield_Lv1:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level1 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Sandlands_Lv2:
+            case SkinType.Frostfield_Lv2:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level2 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Sandlands_Lv3:
+            case SkinType.Frostfield_Lv3:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level3 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Sandlands_Lv4:
+            case SkinType.Frostfield_Lv4:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level4 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Sandlands_Lv5:
+            case SkinType.Frostfield_Lv5:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level5 = WardrobeSkinState.Available;
                 break;
 
-            case SkinType.Frostfield_Lv1:
+            case SkinType.Firevein_Lv1:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level1 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Frostfield_Lv2:
+            case SkinType.Firevein_Lv2:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level2 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Frostfield_Lv3:
+            case SkinType.Firevein_Lv3:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level3 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Frostfield_Lv4:
+            case SkinType.Firevein_Lv4:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level4 = WardrobeSkinState.Available;
                 break;
-            case SkinType.Frostfield_Lv5:
+            case SkinType.Firevein_Lv5:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level5 = WardrobeSkinState.Available;
                 break;
 

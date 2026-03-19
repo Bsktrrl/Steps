@@ -54,6 +54,8 @@ public class Movement : Singleton<Movement>
     float baseTime = 1;
     public float fallSpeed = 10f;
     float abilitySpeed = 8;
+    public float ascend_Distance = 3;
+    public float descend_Distance = 3.5f;
     float grapplingLength = 5;
     public Vector3 savePos;
 
@@ -759,7 +761,7 @@ public class Movement : Singleton<Movement>
         Vector3 playerPos = PlayerManager.Instance.player.transform.position;
         Vector3 adjustments;
 
-        if (PerformMovementRaycast(playerPos, Vector3.up, 2, out outObj1) == RaycastHitObjects.BlockInfo)
+        if (PerformMovementRaycast(playerPos, Vector3.up, ascend_Distance, out outObj1) == RaycastHitObjects.BlockInfo)
         {
             if (outObj1.GetComponent<BlockInfo>().blockType == BlockType.Stair || outObj1.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                 adjustments = Vector3.up * 0.5f;
@@ -896,7 +898,7 @@ public class Movement : Singleton<Movement>
         GameObject outObj2 = null;
         Vector3 playerPos = PlayerManager.Instance.player.transform.position;
 
-        if (PerformMovementRaycast(playerPos + Vector3.down, Vector3.down, 2.5f, out outObj1) == RaycastHitObjects.BlockInfo)
+        if (PerformMovementRaycast(playerPos + Vector3.down, Vector3.down, descend_Distance, out outObj1) == RaycastHitObjects.BlockInfo)
         {
             //If hit is a Slab
             if (outObj1.GetComponent<BlockInfo>().blockType == BlockType.Slab)
