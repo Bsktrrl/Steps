@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class GlueplantCamera : MonoBehaviour
+public class GlueplantCamera : Singleton<GlueplantCamera>
 {
     [Header("Cinemachine Cameras")]
     [SerializeField] private CinemachineCamera CM_Glueplant;
@@ -98,7 +98,7 @@ public class GlueplantCamera : MonoBehaviour
     [SerializeField] private bool lockInitialFacing = false;
 
 
-    [SerializeField] private bool camera_isTraveling;
+    public bool camera_isTraveling;
     private Coroutine travelRoutine;
 
 

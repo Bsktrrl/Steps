@@ -2,7 +2,9 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 Mars:
-1.0. Lag ny Overworld Hovedmeny som kan ta en til de andre regionMenyene
+1.0. SandFallingPlayer MoveOff Block
+- Legg til en state som er "SandFalling", hvor spilleren kan gå av blokken underveis i et fall, i "Movement"-scriptet
+- Også legg til mulighet for hopping (kan være at skjer automatisk)
 
 2.0. HullShader:
 - Deaktiver HullShader i FreeCamModus, så man ikke kan se gjennom blokker

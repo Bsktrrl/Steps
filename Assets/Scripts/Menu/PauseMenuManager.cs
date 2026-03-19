@@ -183,7 +183,8 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
         //Set variables
 
-        levelName.text = MapManager.Instance.gameObject.GetComponent<TMPro_TextDisplay>().GetText();
+        if (MapManager.Instance.gameObject && MapManager.Instance.gameObject.GetComponent<TMPro_TextDisplay>())
+            levelName.text = MapManager.Instance.gameObject.GetComponent<TMPro_TextDisplay>().GetText();
 
         ////Language
         //switch (SettingsManager.Instance.settingsData.currentLanguage)
