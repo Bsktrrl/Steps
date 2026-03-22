@@ -13,6 +13,10 @@ public class GlueplantCamera : Singleton<GlueplantCamera>
     [Tooltip("Intermediate world positions the camera will pass through (does not need to include start/end).")]
     [SerializeField] private List<Vector3> travelPosList = new List<Vector3>();
 
+    [Header("Wait Time)")]
+    [Tooltip("Time to wait before the camera starts moving")]
+    [SerializeField] private float waitTimer = 3f;
+
     [Header("Travel Settings (Speed)")]
     [Tooltip("Max travel speed along the path in world units per second (peak speed).")]
     [SerializeField] private float travelSpeed = 3f; //2.7f
@@ -132,7 +136,6 @@ public class GlueplantCamera : Singleton<GlueplantCamera>
 
         if (!DataManager.Instance.oneTimeRunData_Store.forceIntroSequenceInFirstLevel)
         {
-            print("1. OnPlayerSpawned_Delay");
             CM_Player = CameraController.Instance.CM_Player;
 
             SetPriority(CM_Glueplant, glueplantPriorityDuringTravel);
@@ -175,7 +178,7 @@ public class GlueplantCamera : Singleton<GlueplantCamera>
         if (travelRoutine != null)
             StopCoroutine(travelRoutine);
 
-        travelRoutine = StartCoroutine(Co_RunCameraTravel(1.5f));
+        travelRoutine = StartCoroutine(Co_RunCameraTravel(waitTimer));
     }
 
 
