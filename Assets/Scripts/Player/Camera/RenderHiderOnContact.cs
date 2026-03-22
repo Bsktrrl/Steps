@@ -121,7 +121,7 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
         _freeCamActive = false;
         RunHideCheck();
 
-        print("2. FreeCamOff(): " + _freeCamActive);
+        //print("2. FreeCamOff(): " + _freeCamActive);
     }
 
 
