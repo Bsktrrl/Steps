@@ -6,13 +6,13 @@ public class BubbleScript : MonoBehaviour
 {
     Animator anim;
 
-    [SerializeField] float newSpeed = 0.5f;
-    [SerializeField] float rangeMax = 0.5f;
+    [SerializeField] float newSpeed;
+    [SerializeField] float maxOffset;
 
     void Start()
     {
         anim = GetComponent<Animator>();
-        anim.speed = newSpeed;
-        anim.SetFloat("CycleOffset", Random.Range(0f, rangeMax));
+        anim.speed = newSpeed + Random.Range(-0.1f, 0.1f);
+        anim.SetFloat("CycleOffset", Random.Range(0f, maxOffset));
     }
 }
