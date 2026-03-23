@@ -138,41 +138,16 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
             levelName.text = activeLevelObject.GetComponent<TMPro_TextDisplay>().GetText();
 
             //Find the correct mapInfo
+
+            //Glueplant aquired
+            glueplantImage.sprite = SelectGlueplantForLevel(activeLevelObject.GetComponent<LoadLevel>().regionToPlay);
+
             if (menuLevelInfo && menuLevelInfo.mapInfo_ToSave != null && menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List.Count > 0)
             {
                 for (int i = 0; i < menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List.Count; i++)
                 {
                     if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].mapName == activeLevelObject.GetComponent<LoadLevel>().levelToPlay)
                     {
-                        //Glueplant aquired
-                        switch (OverWorldManager.Instance.regionState)
-                        {
-                            case RegionState.None:
-                                break;
-
-                            case RegionState.Rivergreen:
-                                glueplantImage.sprite = glueplantSprite_Rivergreen;
-                                break;
-                            case RegionState.Sandlands:
-                                glueplantImage.sprite = glueplantSprite_Sandlands;
-                                break;
-                            case RegionState.Frostfields:
-                                glueplantImage.sprite = glueplantSprite_Frostfield;
-                                break;
-                            case RegionState.Firevein:
-                                glueplantImage.sprite = glueplantSprite_Firevein;
-                                break;
-                            case RegionState.Witchmire:
-                                glueplantImage.sprite = glueplantSprite_Witchmire;
-                                break;
-                            case RegionState.Metalworks:
-                                glueplantImage.sprite = glueplantSprite_Metalworks;
-                                break;
-
-                            default:
-                                break;
-                        }
-
                         if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].isCompleted)
                             glueplant_Aquired.text = "1 / 1";
                         else
@@ -365,6 +340,39 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
         }
     }
 
+    public Sprite SelectGlueplantForLevel(regions region)
+    {
+        //Glueplant aquired
+        switch (region)
+        {
+            case regions.None:
+                print("0. Glueplant: None");
+                return null;
+
+            case regions.Rivergreen:
+                print("1. Glueplant: Rivergreen");
+                return glueplantSprite_Rivergreen;
+            case regions.Sandlands:
+                print("2. Glueplant: Sandlands");
+                return glueplantSprite_Sandlands;
+            case regions.Frostfield:
+                print("3. Glueplant: Frostfield");
+                return glueplantSprite_Frostfield;
+            case regions.Firevein:
+                print("4. Glueplant: Firevein");
+                return glueplantSprite_Firevein;
+            case regions.Witchmire:
+                print("5. Glueplant: Witchmire");
+                return glueplantSprite_Witchmire;
+            case regions.Metalworks:
+                print("6. Glueplant: Metalworks");
+                return glueplantSprite_Metalworks;
+
+            default:
+                print("00. Glueplant: None");
+                return null;
+        }
+    }
 
     void UpdateProgressBars(int index, float essenceCounter, float skinCounter, float stepsCounter)
     {
