@@ -2395,16 +2395,31 @@ public class Movement : Singleton<Movement>
                 movementDir = teleportMovementDir;
             }
 
-            if (movementDir == Vector3.forward && moveToBlock_Forward.canMoveTo && moveToBlock_Forward.targetBlock != blockStandingOn)
+            if (movementDir == Vector3.forward && moveToBlock_Forward.canMoveTo && moveToBlock_Forward.targetBlock != blockStandingOn && moveToBlock_Forward.targetBlock.GetComponent<BlockInfo>() && moveToBlock_Forward.targetBlock.GetComponent<BlockInfo>().blockElement == BlockElement.Ice)
+            {
                 moveOption = moveToBlock_Forward;
-            else if (movementDir == Vector3.back && moveToBlock_Back.canMoveTo && moveToBlock_Forward.targetBlock != blockStandingOn)
+
+            }
+            else if (movementDir == Vector3.back && moveToBlock_Back.canMoveTo && moveToBlock_Back.targetBlock != blockStandingOn && moveToBlock_Back.targetBlock.GetComponent<BlockInfo>() && moveToBlock_Back.targetBlock.GetComponent<BlockInfo>().blockElement == BlockElement.Ice)
+            {
                 moveOption = moveToBlock_Back;
-            else if (movementDir == Vector3.left && moveToBlock_Left.canMoveTo && moveToBlock_Forward.targetBlock != blockStandingOn)
+
+            }
+            else if (movementDir == Vector3.left && moveToBlock_Left.canMoveTo && moveToBlock_Left.targetBlock != blockStandingOn && moveToBlock_Left.targetBlock.GetComponent<BlockInfo>() && moveToBlock_Left.targetBlock.GetComponent<BlockInfo>().blockElement == BlockElement.Ice)
+            {
                 moveOption = moveToBlock_Left;
-            else if (movementDir == Vector3.right && moveToBlock_Right.canMoveTo && moveToBlock_Forward.targetBlock != blockStandingOn)
+
+            }
+            else if (movementDir == Vector3.right && moveToBlock_Right.canMoveTo && moveToBlock_Right.targetBlock != blockStandingOn && moveToBlock_Right.targetBlock.GetComponent<BlockInfo>() && moveToBlock_Right.targetBlock.GetComponent<BlockInfo>().blockElement == BlockElement.Ice)
+            {
                 moveOption = moveToBlock_Right;
+
+            }
             else
+            {
+                isIceGliding = false;
                 return;
+            }
 
             PerformMovement(moveOption, MovementStates.Moving, blockStandingOn.GetComponent<BlockInfo>().movementSpeed);
 
