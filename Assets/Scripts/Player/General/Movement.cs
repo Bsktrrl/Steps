@@ -2841,6 +2841,8 @@ public class Movement : Singleton<Movement>
 
         CameraController.Instance.directionFacing = GetFacingDirection(finalYRotation);
 
+        UpdateLookDir();
+
         Action_BodyRotated_Invoke();
     }
 
@@ -2913,7 +2915,7 @@ public class Movement : Singleton<Movement>
         }
 
         lookingDirection = lookDir;
-        Player_Pusher.Instance.DisplayPushDirection(lookingDirection, lookingDirectionDescription);
+        //Player_Pusher.Instance.DisplayPushDirection(lookingDirection, lookingDirectionDescription);
     }
 
 

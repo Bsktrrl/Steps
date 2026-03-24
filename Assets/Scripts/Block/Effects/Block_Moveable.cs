@@ -1,19 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class Block_Moveable : MonoBehaviour
 {
-    MovementDirection movementDirection;
+    private MovementDirection movementDirection = MovementDirection.None;
 
-    /*[HideInInspector]*/ public bool canMove;
-    bool isMoving;
-    bool isIceGliding;
+    public bool canMove;
+    [SerializeField] private bool isMoving;
+    [SerializeField] private bool isIceGliding;
 
-    RaycastHit hit;
-    Vector3 startPos;
-    Vector3 savePos;
+    private Vector3 startPos;
+    private Vector3 savePos;
+
+    private BlockInfo blockInfo;
+
+    private const float GRID_SIZE = 1f;
+    private const float SNAP_DISTANCE = 0.03f;
+    private const float DOWN_RAY_START_OFFSET = 0.25f;
+    private const float DOWN_RAY_DISTANCE = 1f;
+    private const float FORWARD_CHECK_DISTANCE = 1f;
 
 
     //--------------------
@@ -23,277 +27,251 @@ public class Block_Moveable : MonoBehaviour
     {
         startPos = transform.position;
         savePos = transform.position;
-    }
-    private void Update()
-    {
-        if (isMoving)
-        {
-            if (isIceGliding)
-                PerformMovement(10);
-            else
-                PerformMovement(gameObject.GetComponent<BlockInfo>().movementSpeed);
-        }
+        blockInfo = GetComponent<BlockInfo>();
+
+        RefreshMovementState();
     }
 
-    private void OnEnable()
+    private void Update()
     {
-        Movement.Action_StepTaken += RaycastForThePlayer;
-        Movement.Action_BodyRotated += RaycastForThePlayer;
-        Movement.Action_RespawnPlayer += ResetBlockPos;
-        Movement.Action_LandedFromFalling += RaycastForThePlayer;
-    }
-    private void OnDisable()
-    {
-        Movement.Action_StepTaken -= RaycastForThePlayer;
-        Movement.Action_BodyRotated -= RaycastForThePlayer;
-        Movement.Action_RespawnPlayer -= ResetBlockPos;
-        Movement.Action_LandedFromFalling -= RaycastForThePlayer;
+        if (!isMoving) return;
+
+        float speed = isIceGliding ? 10f : blockInfo.movementSpeed;
+        PerformMovement(speed);
     }
 
 
     //--------------------
 
 
-    void RaycastForThePlayer()
+    private void OnEnable()
     {
-        movementDirection = MovementDirection.None;
+        Movement.Action_StepTaken += RefreshMovementState;
+        Movement.Action_BodyRotated += RefreshMovementState;
+        Movement.Action_RespawnPlayer += ResetBlockPos;
+        Movement.Action_LandedFromFalling += RefreshMovementState;
 
-        PerformRaycast_Player(Vector3.forward);
-        PerformRaycast_Player(Vector3.back);
-        PerformRaycast_Player(Vector3.left);
-        PerformRaycast_Player(Vector3.right);
-
-        PerformRaycast_Horizontal();
-
-        PerformRaycast_Vertical();
-    }
-    void PerformRaycast_Player(Vector3 direction)
-    {
-        if (movementDirection != MovementDirection.None) { return; }
-
-        if (Physics.Raycast(gameObject.transform.position, direction, out hit, 1, MapManager.Instance.pickup_LayerMask))
-        {
-            Debug.DrawRay(gameObject.transform.position, direction * hit.distance, Color.green);
-
-            if (hit.transform.gameObject == PlayerManager.Instance.player)
-            {
-                if (direction == Vector3.forward)
-                    movementDirection = MovementDirection.Backward;
-                else if (direction == Vector3.back)
-                    movementDirection = MovementDirection.Forward;
-                else if (direction == Vector3.left)
-                    movementDirection = MovementDirection.Right;
-                else if (direction == Vector3.right)
-                    movementDirection = MovementDirection.Left;
-            }
-            else
-            {
-                movementDirection = MovementDirection.None;
-            }
-        }
-        else
-        {
-            movementDirection = MovementDirection.None;
-        }
-    }
-    void PerformRaycast_Horizontal()
-    {
-        if (movementDirection == MovementDirection.None)
-            canMove = false;
-        else if (movementDirection == MovementDirection.Forward)
-            Raycast_Horizontal(Vector3.forward);
-        else if (movementDirection == MovementDirection.Backward)
-            Raycast_Horizontal(Vector3.back);
-        else if (movementDirection == MovementDirection.Left)
-            Raycast_Horizontal(Vector3.left);
-        else if (movementDirection == MovementDirection.Right)
-            Raycast_Horizontal(Vector3.right);
-    }
-    void Raycast_Horizontal(Vector3 direction)
-    {
-        if (Physics.Raycast(gameObject.transform.position, direction, out hit, 1, MapManager.Instance.pickup_LayerMask))
-        {
-            Debug.DrawRay(gameObject.transform.position, direction, Color.green);
-
-            if (hit.transform.gameObject)
-            {
-                canMove = false;
-            }
-            else
-            {
-                if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject && !isIceGliding)
-                {
-                    canMove = true;
-                }
-                else if (isIceGliding)
-                {
-                    canMove = true;
-                }
-                else
-                {
-                    canMove = false;
-                }
-            }
-        }
-        else
-        {
-            if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject && !isIceGliding)
-            {
-                canMove = true;
-            }
-            else if (isIceGliding)
-            {
-                canMove = true;
-            }
-            else
-            {
-                canMove = false;
-            }
-        }
+        Player_KeyInputs.Action_InteractButton_isPressed += ActivateBlockMovement;
     }
 
-    void PerformRaycast_Vertical()
+    private void OnDisable()
     {
-        if (!canMove) { return; }
+        Movement.Action_StepTaken -= RefreshMovementState;
+        Movement.Action_BodyRotated -= RefreshMovementState;
+        Movement.Action_RespawnPlayer -= ResetBlockPos;
+        Movement.Action_LandedFromFalling -= RefreshMovementState;
 
-        if (movementDirection == MovementDirection.None)
-            canMove = false;
-        else if (movementDirection == MovementDirection.Forward)
-            Raycast_Vertical(Vector3.forward);
-        else if (movementDirection == MovementDirection.Backward)
-            Raycast_Vertical(Vector3.back);
-        else if (movementDirection == MovementDirection.Left)
-            Raycast_Vertical(Vector3.left);
-        else if (movementDirection == MovementDirection.Right)
-            Raycast_Vertical(Vector3.right);
-    }
-    void Raycast_Vertical(Vector3 direction)
-    {
-        if (Physics.Raycast(gameObject.transform.position + direction, Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
-        {
-            Debug.DrawRay(gameObject.transform.position + direction, Vector3.down, Color.green);
-
-            if (hit.transform.gameObject)
-            {
-                if (hit.transform.gameObject.GetComponent<BlockInfo>().blockType == BlockType.Cube)
-                {
-                    if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject && !isIceGliding)
-                    {
-                        canMove = true;
-                    }
-                    else if (isIceGliding)
-                    {
-                        canMove = true;
-                    }
-                    else
-                    {
-                        canMove = false;
-                    }
-
-                    if (hit.transform.gameObject.GetComponent<Block_IceGlide>())
-                    {
-                        isIceGliding = true;
-                    }
-                    else
-                    {
-                        isIceGliding = false;
-                    }
-
-                    return;
-                }
-            }
-        }
-
-        canMove = false;
+        Player_KeyInputs.Action_InteractButton_isPressed -= ActivateBlockMovement;
     }
 
-    void ActivateBlockMovement()
+
+    //--------------------
+
+
+    private void RefreshMovementState()
     {
-        if (movementDirection == MovementDirection.None) { return; }
-        if (!canMove) { return; }
+        if (isMoving) return;
 
-        //if (movementDirection == MovementDirection.Forward && PlayerManager.Instance.lookingDirection != Vector3.forward) { return; }
-        //if (movementDirection == MovementDirection.Backward && PlayerManager.Instance.lookingDirection != Vector3.back) { return; }
-        //if (movementDirection == MovementDirection.Left && PlayerManager.Instance.lookingDirection != Vector3.left) { return; }
-        //if (movementDirection == MovementDirection.Right && PlayerManager.Instance.lookingDirection != Vector3.right) { return; }
+        movementDirection = GetPushDirectionFromPlayer();
+        canMove = movementDirection != MovementDirection.None && CanMoveOneStep();
 
-        //PlayerManager.Instance.isTransportingPlayer = true;
-        isMoving = true;
-    }
-    void PerformMovement(float movementSpeed)
-    {
-        Vector3 dirTemp = Vector3.zero;
-
-        if (movementDirection == MovementDirection.Forward)
-            dirTemp = Vector3.forward;
-        else if (movementDirection == MovementDirection.Backward)
-            dirTemp = Vector3.back;
-        else if (movementDirection == MovementDirection.Left)
-            dirTemp = Vector3.left;
-        else if (movementDirection == MovementDirection.Right)
-            dirTemp = Vector3.right;
-
-        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, savePos + dirTemp, movementSpeed * Time.deltaTime);
-        
-        //Snap into place when close enough
-        if (Vector3.Distance(gameObject.transform.position, savePos + dirTemp) <= 0.03f)
-        {
-            gameObject.transform.position = savePos + dirTemp;
-            savePos = transform.position;
-
-            if (!IceGlide())
-            {
-                isMoving = false;
-                isIceGliding = false;
-               // PlayerManager.Instance.isTransportingPlayer = false;
-
-                RaycastForThePlayer();
-            }
-        }
+        Movement.Instance.UpdateAvailableMovementBlocks();
     }
 
-    bool IceGlide()
+    private MovementDirection GetPushDirectionFromPlayer()
     {
-        PerformRaycast_Horizontal();
-        PerformRaycast_Vertical();
+        Vector3 lookDir = Movement.Instance.lookingDirection;
 
-        if (movementDirection == MovementDirection.None) { return false; }
-        if (!canMove) { return false; }
+        if (lookDir == Vector3.forward && IsPlayerAdjacent(-lookDir))
+            return MovementDirection.Backward;
 
-        //Raycast the block under to see if there is an IceBlock there
-        if (Physics.Raycast(gameObject.transform.position, Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
+        if (lookDir == Vector3.back && IsPlayerAdjacent(-lookDir))
+            return MovementDirection.Forward;
+
+        if (lookDir == Vector3.left && IsPlayerAdjacent(-lookDir))
+            return MovementDirection.Right;
+
+        if (lookDir == Vector3.right && IsPlayerAdjacent(-lookDir))
+            return MovementDirection.Left;
+
+        return MovementDirection.None;
+    }
+
+    private bool IsPlayerAdjacent(Vector3 directionToPlayer)
+    {
+        if (Physics.Raycast(transform.position, directionToPlayer, out RaycastHit hit, GRID_SIZE, MapManager.Instance.playerExclusive_LayerMask))
         {
-            Debug.DrawRay(gameObject.transform.position, Vector3.down, Color.green);
-
-            if (hit.transform.gameObject)
-            {
-                if (hit.transform.gameObject.GetComponent<Block_IceGlide>())
-                {
-                    isIceGliding = true;
-                    return true;
-                }
-                else
-                {
-                    canMove = false;
-                }
-            }
-            else
-            {
-                canMove = false;
-            }
-        }
-        else
-        {
-            canMove = false;
+            return hit.collider != null && hit.collider.gameObject == PlayerManager.Instance.player;
         }
 
         return false;
     }
 
-    void ResetBlockPos()
+    private Vector3 GetMoveVector()
     {
-        gameObject.transform.position = startPos;
+        switch (movementDirection)
+        {
+            case MovementDirection.Forward:
+                return Vector3.back;
+            case MovementDirection.Backward:
+                return Vector3.forward;
+            case MovementDirection.Left:
+                return Vector3.right;
+            case MovementDirection.Right:
+                return Vector3.left;
+            default:
+                return Vector3.zero;
+        }
+    }
 
+    private bool CanMoveOneStep()
+    {
+        Vector3 moveDir = GetMoveVector();
+        if (moveDir == Vector3.zero) return false;
+
+        Vector3 targetPos = savePos + moveDir;
+
+        if (HasBlockingObjectInFront(moveDir))
+            return false;
+
+        if (!HasSupportBelow(targetPos))
+            return false;
+
+        return true;
+    }
+
+    private bool HasBlockingObjectInFront(Vector3 moveDir)
+    {
+        if (Physics.Raycast(transform.position, moveDir, out RaycastHit hit, FORWARD_CHECK_DISTANCE))
+        {
+            if (hit.transform != null && hit.transform.GetComponent<BlockInfo>() != null)
+            {
+                Debug.DrawRay(transform.position, moveDir * FORWARD_CHECK_DISTANCE, Color.red, 0.5f);
+                return true;
+            }
+        }
+
+        Debug.DrawRay(transform.position, moveDir * FORWARD_CHECK_DISTANCE, Color.green, 0.5f);
+        return false;
+    }
+
+    private bool HasSupportBelow(Vector3 worldPos)
+    {
+        Vector3 rayOrigin = worldPos + Vector3.up * DOWN_RAY_START_OFFSET;
+
+        if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit, DOWN_RAY_DISTANCE))
+        {
+            if (hit.transform != null && hit.transform.GetComponent<BlockInfo>() != null && hit.transform.GetComponent<BlockInfo>().blockType != BlockType.Stair && hit.transform.GetComponent<BlockInfo>().blockType != BlockType.Slope)
+            {
+                Debug.DrawRay(rayOrigin, Vector3.down * DOWN_RAY_DISTANCE, Color.green, 0.5f);
+                return true;
+            }
+        }
+
+        Debug.DrawRay(rayOrigin, Vector3.down * DOWN_RAY_DISTANCE, Color.red, 0.5f);
+        return false;
+    }
+
+    private bool IsIceBelow(Vector3 worldPos)
+    {
+        Vector3 rayOrigin = worldPos + Vector3.up * DOWN_RAY_START_OFFSET;
+
+        if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit, DOWN_RAY_DISTANCE, MapManager.Instance.pickup_LayerMask))
+        {
+            return hit.transform != null && hit.transform.GetComponent<Block_IceGlide>() != null;
+        }
+
+        return false;
+    }
+
+    private void ActivateBlockMovement()
+    {
+        if (isMoving) return;
+        if (movementDirection == MovementDirection.None) return;
+
+        RefreshMovementState();
+        if (!canMove) return;
+
+        isMoving = true;
+        isIceGliding = false;
+    }
+
+    private void PerformMovement(float movementSpeed)
+    {
+        Vector3 moveDir = GetMoveVector();
+        if (moveDir == Vector3.zero)
+        {
+            StopMovement();
+            return;
+        }
+
+        Vector3 targetPos = savePos + moveDir;
+
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            targetPos,
+            movementSpeed * Time.deltaTime
+        );
+
+        if (Vector3.Distance(transform.position, targetPos) <= SNAP_DISTANCE)
+        {
+            transform.position = targetPos;
+            savePos = targetPos;
+
+            if (ShouldContinueIceGlide())
+            {
+                isMoving = true;
+                isIceGliding = true;
+            }
+            else
+            {
+                StopMovement();
+                RefreshMovementState();
+            }
+        }
+    }
+
+    private bool ShouldContinueIceGlide()
+    {
+        Vector3 moveDir = GetMoveVector();
+        if (moveDir == Vector3.zero)
+            return false;
+
+        // Must currently be standing on ice.
+        if (!IsIceBelow(savePos))
+            return false;
+
+        Vector3 nextPos = savePos + moveDir;
+
+        // Next step must be valid.
+        if (HasBlockingObjectInFront(moveDir))
+            return false;
+
+        if (!HasSupportBelow(nextPos))
+            return false;
+
+        // Only continue gliding if the NEXT tile is also ice.
+        if (!IsIceBelow(nextPos))
+            return false;
+
+        return true;
+    }
+
+    private void StopMovement()
+    {
+        isMoving = false;
+        isIceGliding = false;
+        canMove = false;
+
+        Movement.Instance.UpdateAvailableMovementBlocks();
+    }
+
+    private void ResetBlockPos()
+    {
+        transform.position = startPos;
         savePos = startPos;
+
+        StopMovement();
+        RefreshMovementState();
     }
 }

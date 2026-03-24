@@ -143,7 +143,7 @@ public class EnviromentalSound_3D : Singleton<EnviromentalSound_3D>
         PlaySound(audioSource_EffectBlock_Checkpoint, SoundObjectType.Checkpoint, ref blockSelected_EffectBlock_Checkpoint);
         PlaySound(audioSource_EffectBlock_RefillSteps, SoundObjectType.RefillSteps, ref blockSelected_EffectBlock_RefillSteps);
         PlaySound(audioSource_EffectBlock_Teleporter, SoundObjectType.Teleporter, ref blockSelected_EffectBlock_Teleporter);
-        PlaySound(audioSource_EffectBlock_Pusher, SoundObjectType.Pusher, ref blockSelected_EffectBlock_Pusher);
+        PlaySound(audioSource_EffectBlock_Pusher, SoundObjectType.MoveableObject, ref blockSelected_EffectBlock_Pusher);
         PlaySound(audioSource_EffectBlock_MushroomCircle, SoundObjectType.MushroomCircle, ref blockSelected_EffectBlock_MushroomCircle);
     }
    
@@ -233,6 +233,6 @@ public enum SoundObjectType
     Checkpoint,
     RefillSteps,
     Teleporter,
-    Pusher,
+    MoveableObject,
     MushroomCircle
 }
