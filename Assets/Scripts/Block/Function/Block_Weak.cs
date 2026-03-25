@@ -16,14 +16,14 @@ public class Block_Weak : MonoBehaviour
     private void OnEnable()
     {
         Movement.Action_isSwitchingBlocks += CheckIfSteppenOn;
-        Movement.Action_StepTaken_Late += DisolveBlock;
+        Movement.Action_StepTaken += DisolveBlock;
         Movement.Action_RespawnPlayerEarly += ResetBlock;
     }
 
     private void OnDisable()
     {
         Movement.Action_isSwitchingBlocks -= CheckIfSteppenOn;
-        Movement.Action_StepTaken_Late -= DisolveBlock;
+        Movement.Action_StepTaken -= DisolveBlock;
         Movement.Action_RespawnPlayerEarly -= ResetBlock;
     }
 
@@ -49,7 +49,7 @@ public class Block_Weak : MonoBehaviour
     }
     IEnumerator WaitBeforeDisolveBlock(float waitTime)
     {
-        yield return new WaitForSeconds(waitTime);
+        yield return null /*new WaitForSeconds(waitTime)*/;
 
         originalBlock = Instantiate(newBlock, transform.position, Quaternion.identity);
         Player_BurnChanging.Instance.AddMeltedBlockToList(originalBlock);

@@ -21,6 +21,7 @@ public class MapManager : Singleton<MapManager>
     [Header("LayerMask for Raycasting")]
     public LayerMask pickup_LayerMask;
     public LayerMask player_LayerMask;
+    public LayerMask playerExclusive_LayerMask;
 
     [Header("Sound")]
     public List<AudioTrack> mapAudioList;

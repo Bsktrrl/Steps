@@ -21,6 +21,7 @@ public class PlayerManager : Singleton<PlayerManager>
     //public Vector3 lookingDirection;
     public GameObject block_LookingAt_Horizontal;
     public GameObject block_LookingAt_Vertical;
+    RaycastHit hit;
 
     [Header("Game Paused")]
     public bool pauseGame;
@@ -111,7 +112,6 @@ public class PlayerManager : Singleton<PlayerManager>
 
         return true;
     }
-
 
 
     //--------------------

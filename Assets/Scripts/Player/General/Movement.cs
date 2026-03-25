@@ -60,6 +60,7 @@ public class Movement : Singleton<Movement>
 
     [Header("BlockIsStandingOn")]
     public Vector3 lookingDirection;
+    public Vector3 lookingDirection_Old;
     [SerializeField] string lookingDirectionDescription;
     public GameObject blockStandingOn;
     public GameObject blockStandingOn_Previous;
@@ -220,6 +221,7 @@ public class Movement : Singleton<Movement>
         Action_RespawnPlayerEarly += RespawnUnderGrappling;
 
         Action_BodyRotated += UpdateLookDir;
+        Action_BodyRotated += UpdateAvailableMovementBlocks;
 
         Action_RespawnPlayerEarly += ResetDarkenBlocks;
         Action_StepTaken += TakeAStep;
@@ -245,6 +247,7 @@ public class Movement : Singleton<Movement>
         Action_RespawnPlayerEarly -= RespawnUnderGrappling;
 
         Action_BodyRotated -= UpdateLookDir;
+        Action_BodyRotated -= UpdateAvailableMovementBlocks;
 
         Action_RespawnPlayerEarly -= ResetDarkenBlocks;
         Action_StepTaken -= TakeAStep;
@@ -987,6 +990,12 @@ public class Movement : Singleton<Movement>
     void UpdateDashMovements(MoveOptions moveOption, Vector3 dir)
     {
         if (!PlayerHasDashAbility())
+        {
+            Block_IsNot_Target(moveOption);
+            return;
+        }
+
+        if (lookingDirection_Old != dir)
         {
             Block_IsNot_Target(moveOption);
             return;
@@ -2185,7 +2194,7 @@ public class Movement : Singleton<Movement>
 
         transform.position = newEndPos;
 
-        UpdateLookDir();
+        //UpdateLookDir();
 
         movementStates = MovementStates.Still;
         performGrapplingHooking = false;
@@ -2238,7 +2247,7 @@ public class Movement : Singleton<Movement>
         elevatorBeingFollowed = targetBlockTransform;
         elevatorOffset = targetOffset;
 
-        UpdateLookDir();
+        //UpdateLookDir();
 
         movementStates = MovementStates.Still;
         performGrapplingHooking = false;
@@ -2395,16 +2404,31 @@ public class Movement : Singleton<Movement>
                 movementDir = teleportMovementDir;
             }
 
-            if (movementDir == Vector3.forward && moveToBlock_Forward.canMoveTo && moveToBlock_Forward.targetBlock != blockStandingOn)
+            if (movementDir == Vector3.forward && moveToBlock_Forward.canMoveTo && moveToBlock_Forward.targetBlock != blockStandingOn && moveToBlock_Forward.targetBlock.GetComponent<BlockInfo>() && moveToBlock_Forward.targetBlock.GetComponent<BlockInfo>().blockElement == BlockElement.Ice)
+            {
                 moveOption = moveToBlock_Forward;
-            else if (movementDir == Vector3.back && moveToBlock_Back.canMoveTo && moveToBlock_Forward.targetBlock != blockStandingOn)
+
+            }
+            else if (movementDir == Vector3.back && moveToBlock_Back.canMoveTo && moveToBlock_Back.targetBlock != blockStandingOn && moveToBlock_Back.targetBlock.GetComponent<BlockInfo>() && moveToBlock_Back.targetBlock.GetComponent<BlockInfo>().blockElement == BlockElement.Ice)
+            {
                 moveOption = moveToBlock_Back;
-            else if (movementDir == Vector3.left && moveToBlock_Left.canMoveTo && moveToBlock_Forward.targetBlock != blockStandingOn)
+
+            }
+            else if (movementDir == Vector3.left && moveToBlock_Left.canMoveTo && moveToBlock_Left.targetBlock != blockStandingOn && moveToBlock_Left.targetBlock.GetComponent<BlockInfo>() && moveToBlock_Left.targetBlock.GetComponent<BlockInfo>().blockElement == BlockElement.Ice)
+            {
                 moveOption = moveToBlock_Left;
-            else if (movementDir == Vector3.right && moveToBlock_Right.canMoveTo && moveToBlock_Forward.targetBlock != blockStandingOn)
+
+            }
+            else if (movementDir == Vector3.right && moveToBlock_Right.canMoveTo && moveToBlock_Right.targetBlock != blockStandingOn && moveToBlock_Right.targetBlock.GetComponent<BlockInfo>() && moveToBlock_Right.targetBlock.GetComponent<BlockInfo>().blockElement == BlockElement.Ice)
+            {
                 moveOption = moveToBlock_Right;
+
+            }
             else
+            {
+                isIceGliding = false;
                 return;
+            }
 
             PerformMovement(moveOption, MovementStates.Moving, blockStandingOn.GetComponent<BlockInfo>().movementSpeed);
 
@@ -2826,6 +2850,8 @@ public class Movement : Singleton<Movement>
 
         CameraController.Instance.directionFacing = GetFacingDirection(finalYRotation);
 
+        //UpdateLookDir();
+
         Action_BodyRotated_Invoke();
     }
 
@@ -2898,7 +2924,19 @@ public class Movement : Singleton<Movement>
         }
 
         lookingDirection = lookDir;
-        Player_Pusher.Instance.DisplayPushDirection(lookingDirection, lookingDirectionDescription);
+        //Player_Pusher.Instance.DisplayPushDirection(lookingDirection, lookingDirectionDescription);
+
+        StartCoroutine(UpdateLookDir_Dealy());
+        print("1. UpdateLookDir_Dealy()");
+    }
+
+    IEnumerator UpdateLookDir_Dealy()
+    {
+        yield return new WaitForSeconds(0.15f);
+
+        lookingDirection_Old = lookingDirection;
+
+        UpdateAvailableMovementBlocks();
     }
 
 

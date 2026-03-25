@@ -79,6 +79,7 @@ public class SessionStatsGathered : Singleton<SessionStatsGathered>
             switch (skinsManager.skinInfo.activeSkinType)
             {
                 case SkinType.None:
+                    sessionStats.totalTimeEquippedInLevels_Default += realTime;
                     break;
 
                 case SkinType.Default:
@@ -182,6 +183,7 @@ public class SessionStatsGathered : Singleton<SessionStatsGathered>
                     break;
 
                 default:
+                    sessionStats.totalTimeEquippedInLevels_Default += realTime;
                     break;
             }
         }

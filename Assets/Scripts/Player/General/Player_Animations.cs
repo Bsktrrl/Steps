@@ -204,8 +204,9 @@ public class Player_Animations : Singleton<Player_Animations>
     public void Trigger_WalkingAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
+        if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Ice) return;
 
-        if (!isWalkGliding && !Movement.Instance.isDashing && !Movement.Instance.isJumping && !Movement.Instance.isAscending && !Movement.Instance.isDescending)
+        if (!isWalkGliding && !Movement.Instance.isDashing && !Movement.Instance.isJumping && !Movement.Instance.isAscending)
         {
             playerAnimator.speed = 1.0f;
             playerAnimator.SetTrigger(AnimationManager.Instance.walk);
@@ -214,6 +215,7 @@ public class Player_Animations : Singleton<Player_Animations>
     public void Trigger_StairSlopeWalkingAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
+        if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Ice) return;
 
         playerAnimator.speed = 1.0f;
         playerAnimator.SetTrigger(AnimationManager.Instance.walk);
@@ -221,6 +223,7 @@ public class Player_Animations : Singleton<Player_Animations>
     public void Trigger_SlopeDownAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
+        if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Ice) return;
 
         playerAnimator.speed = 1.0f;
         //anim.SetTrigger(AnimationManager.Instance.walk);
