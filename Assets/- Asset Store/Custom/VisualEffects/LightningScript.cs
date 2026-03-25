@@ -78,6 +78,8 @@ public class LightningScript : MonoBehaviour
     {
         while (true)
         {
+            yield return new WaitForSeconds(Random.Range(waitTimeMin, waitTimeMax));
+
             source.clip = audioClips[Random.Range(0, audioClips.Length)];
             source.pitch = Random.Range(pitchMin, pitchMax);
             source.Play();
@@ -149,8 +151,6 @@ public class LightningScript : MonoBehaviour
             lightIntensity = 0;
             lightSpeed = 1;
             shaderTargetIntensity = 0;
-
-            yield return new WaitForSeconds(Random.Range(waitTimeMin, waitTimeMax));
         }
     }
 

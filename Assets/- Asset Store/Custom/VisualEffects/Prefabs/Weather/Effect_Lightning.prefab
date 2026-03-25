@@ -4940,7 +4940,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioClips:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: ca62fdb0639038149aa7da8e5ceed876, type: 3}
+  - {fileID: 8300000, guid: 395e50aaa9b5ae843a47901b48658917, type: 3}
   light: {fileID: 8360026321684516443}
 --- !u!82 &694312243643937300
 AudioSource:
@@ -4954,7 +4955,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -5271,9 +5272,9 @@ ParticleSystem:
     enabled: 1
     startLifetime:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0.5
-      minScalar: 5
+      minMaxState: 3
+      scalar: 1
+      minScalar: 0.9
       maxCurve:
         serializedVersion: 2
         m_Curve:
