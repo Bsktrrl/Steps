@@ -3041,6 +3041,7 @@ public class Movement : Singleton<Movement>
 
                         PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
 
+                        print("1. Take a Step");
 
                         if (Player_CeilingGrab.Instance.isCeilingGrabbing)
                             MapStatsGathered.Instance.levelStats.ability_CeilingGrab++;

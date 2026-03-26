@@ -44,6 +44,10 @@ public class BlockInfo : MonoBehaviour
 
     public Vector3Int GridPosition => Vector3Int.RoundToInt(transform.position);
 
+    [Header("SlopeEndBlock")]
+    [SerializeField] GameObject slopeEndBlock;
+    RaycastHit hit;
+
 
     //--------------------
 
@@ -65,6 +69,8 @@ public class BlockInfo : MonoBehaviour
         
         SetObjectRenderer();
         SetPropertyBlock();
+
+        GetSlopeEndBlock();
 
         //ResetDarkenColor();
         TintBlock_CheckerPattern();
@@ -93,12 +99,14 @@ public class BlockInfo : MonoBehaviour
     {
         Movement.Action_RespawnToSavePos += ResetDarkenColor;
         Movement.Action_RespawnPlayer += ResetBlock;
+        Movement.Action_StepTaken_Early += GetSlopeEndBlock;
     }
 
     private void OnDisable()
     {
         Movement.Action_RespawnToSavePos -= ResetDarkenColor;
         Movement.Action_RespawnPlayer -= ResetBlock;
+        Movement.Action_StepTaken_Early -= GetSlopeEndBlock;
     }
 
 
@@ -332,6 +340,30 @@ public class BlockInfo : MonoBehaviour
     public Vector3 GetFacingDirection()
     {
         return transform.TransformDirection(Vector3.left); // local -X
+    }
+
+
+    //--------------------
+
+
+    void GetSlopeEndBlock()
+    {
+        if (blockType == BlockType.Slope)
+        {
+            if (Physics.Raycast(gameObject.transform.position + Vector3.forward, Vector3.down, out hit, 1, MapManager.Instance.player_LayerMask))
+            {
+                Debug.DrawLine(gameObject.transform.position + Vector3.forward, Vector3.down, Color.magenta, 2);
+
+                if (hit.collider.gameObject && hit.collider.gameObject.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn == gameObject)
+                {
+                    hit.collider.gameObject.GetComponent<BlockInfo>().movementCost_Temp = 0;
+                }
+                else
+                {
+                    hit.collider.gameObject.GetComponent<BlockInfo>().movementCost_Temp = hit.collider.gameObject.GetComponent<BlockInfo>().movementCost;
+                }
+            }
+        }
     }
 
 
