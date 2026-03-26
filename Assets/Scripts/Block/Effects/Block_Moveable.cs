@@ -75,7 +75,7 @@ public class Block_Moveable : MonoBehaviour
         movementDirection = GetPushDirectionFromPlayer();
         canMove = movementDirection != MovementDirection.None && CanMoveOneStep();
 
-        Movement.Instance.UpdateAvailableMovementBlocks();
+        //Movement.Instance.UpdateAvailableMovementBlocks();
     }
 
     private MovementDirection GetPushDirectionFromPlayer()
