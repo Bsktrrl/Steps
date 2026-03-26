@@ -2927,7 +2927,6 @@ public class Movement : Singleton<Movement>
         //Player_Pusher.Instance.DisplayPushDirection(lookingDirection, lookingDirectionDescription);
 
         StartCoroutine(UpdateLookDir_Dealy());
-        print("1. UpdateLookDir_Dealy()");
     }
 
     IEnumerator UpdateLookDir_Dealy()

@@ -198,7 +198,20 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
         //Open the OverworldMenu
         overworldMenu_Parent.SetActive(true);
-        regionSelectMenu.SetActive(true);
+
+        if (DataManager.Instance.menuState_Store == MenuState.RegionMenu_Water
+            || DataManager.Instance.menuState_Store == MenuState.RegionMenu_Sand
+            || DataManager.Instance.menuState_Store == MenuState.RegionMenu_Ice
+            || DataManager.Instance.menuState_Store == MenuState.RegionMenu_Lava
+            || DataManager.Instance.menuState_Store == MenuState.RegionMenu_Swamp
+            || DataManager.Instance.menuState_Store == MenuState.RegionMenu_Metal)
+        {
+            levelSelectMenu.SetActive(true);
+        }
+        else
+        {
+            regionSelectMenu.SetActive(true);
+        }
     }
     void Menu_Skins()
     {

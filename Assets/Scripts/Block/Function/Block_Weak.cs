@@ -1,11 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Block_Weak : MonoBehaviour
 {
+    public static event Action Action_WalkedOnCrackedIce;
+    public static event Action Action_WalkedOffCrackedIce;
+
     [SerializeField] GameObject originalBlock;
     [SerializeField] GameObject newBlock;
+
+    [SerializeField] GameObject IceCracked_Parent;
+    [SerializeField] GameObject IceCracked_Parent_InScene;
 
     public bool isSteppedOn;
 
@@ -34,9 +42,17 @@ public class Block_Weak : MonoBehaviour
     void CheckIfSteppenOn()
     {
         if (Movement.Instance.blockStandingOn_Previous == gameObject)
+        {
             isSteppedOn = true;
+        }
         else
         {
+            if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Ice && Movement.Instance.blockStandingOn.GetComponent<Block_Weak>())
+            {
+                IceBreakingEffect_Manager.Instance.CrackIce_Start();
+            }
+            
+
             ResetBlock();
         }
     }
@@ -45,11 +61,14 @@ public class Block_Weak : MonoBehaviour
     {
         if (!isSteppedOn || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
-        StartCoroutine(WaitBeforeDisolveBlock(0.05f));
+        StartCoroutine(WaitBeforeDisolveBlock(0.145f));
     }
     IEnumerator WaitBeforeDisolveBlock(float waitTime)
     {
-        yield return null /*new WaitForSeconds(waitTime)*/;
+        IceBreakingEffect_Manager.Instance.BreakIce_Start();
+        //Action_WalkedOffCrackedIce?.Invoke();
+
+        yield return new WaitForSeconds(waitTime);
 
         originalBlock = Instantiate(newBlock, transform.position, Quaternion.identity);
         Player_BurnChanging.Instance.AddMeltedBlockToList(originalBlock);
