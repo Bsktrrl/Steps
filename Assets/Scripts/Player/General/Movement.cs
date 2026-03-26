@@ -2926,7 +2926,8 @@ public class Movement : Singleton<Movement>
         lookingDirection = lookDir;
         //Player_Pusher.Instance.DisplayPushDirection(lookingDirection, lookingDirectionDescription);
 
-        StartCoroutine(UpdateLookDir_Dealy());
+        if (!isSlopeGliding)
+            StartCoroutine(UpdateLookDir_Dealy());
     }
 
     IEnumerator UpdateLookDir_Dealy()
@@ -2935,7 +2936,7 @@ public class Movement : Singleton<Movement>
 
         lookingDirection_Old = lookingDirection;
 
-        UpdateAvailableMovementBlocks();
+       //UpdateAvailableMovementBlocks();
     }
 
 
