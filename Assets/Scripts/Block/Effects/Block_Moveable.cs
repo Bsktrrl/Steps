@@ -263,7 +263,7 @@ public class Block_Moveable : MonoBehaviour
         isIceGliding = false;
         canMove = false;
 
-        Movement.Instance.UpdateAvailableMovementBlocks();
+        Movement.Instance.RefreshAvailableMovementBlocksWithoutFullReset();
     }
 
     private void ResetBlockPos()
