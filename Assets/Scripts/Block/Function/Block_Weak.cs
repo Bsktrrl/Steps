@@ -41,13 +41,13 @@ public class Block_Weak : MonoBehaviour
 
     void CheckIfSteppenOn()
     {
-        if (Movement.Instance.blockStandingOn_Previous == gameObject)
+        if (Movement.Instance.blockStandingOn_Previous && Movement.Instance.blockStandingOn_Previous == gameObject)
         {
             isSteppedOn = true;
         }
         else
         {
-            if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Ice && Movement.Instance.blockStandingOn.GetComponent<Block_Weak>())
+            if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Ice && Movement.Instance.blockStandingOn.GetComponent<Block_Weak>())
             {
                 IceBreakingEffect_Manager.Instance.CrackIce_Start();
             }

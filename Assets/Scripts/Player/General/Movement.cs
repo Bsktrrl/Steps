@@ -154,6 +154,14 @@ public class Movement : Singleton<Movement>
 
     public bool isRespawning;
 
+    private readonly HashSet<GameObject> currentlyDarkenedBlocks = new HashSet<GameObject>();
+
+    //Rotations
+    [SerializeField] private float turnBeforeMoveDelay = 0.12f;
+    private float lastTurnTime = -999f;
+    private bool turnedThisFrame = false;
+    private Vector3 lastTurnedToDir = Vector3.zero;
+
     #endregion
 
 
@@ -200,7 +208,7 @@ public class Movement : Singleton<Movement>
             MovementSetup();
         }
 
-        if (Player_KeyInputs.Instance.grapplingHook_isPressed && !grapplingTargetHasBeenSet && !Player_CeilingGrab.Instance.isCeilingGrabbing)
+        if (!Block_Moveable.AnyBlockMoving && Player_KeyInputs.Instance.grapplingHook_isPressed && !grapplingTargetHasBeenSet && !Player_CeilingGrab.Instance.isCeilingGrabbing)
         {
             UpdateGrapplingHookMovement(moveToBlock_GrapplingHook, lookDir);
             grapplingTargetHasBeenSet = true;
@@ -222,7 +230,7 @@ public class Movement : Singleton<Movement>
         Action_RespawnPlayerEarly += RespawnUnderGrappling;
 
         Action_BodyRotated += UpdateLookDir;
-        Action_BodyRotated += RefreshAvailableMovementBlocksWithoutFullReset;
+        Action_BodyRotated += RefreshAvailableMovementBlocksSmooth;
 
         Action_RespawnPlayerEarly += ResetDarkenBlocks;
         Action_StepTaken += TakeAStep;
@@ -248,7 +256,7 @@ public class Movement : Singleton<Movement>
         Action_RespawnPlayerEarly -= RespawnUnderGrappling;
 
         Action_BodyRotated -= UpdateLookDir;
-        Action_BodyRotated -= RefreshAvailableMovementBlocksWithoutFullReset;
+        Action_BodyRotated -= RefreshAvailableMovementBlocksSmooth;
 
         Action_RespawnPlayerEarly -= ResetDarkenBlocks;
         Action_StepTaken -= TakeAStep;
@@ -275,10 +283,15 @@ public class Movement : Singleton<Movement>
     public void UpdateAvailableMovementBlocks()
     {
         ResetDarkenBlocks();
-
         UpdateBlocks();
-
         SetDarkenBlocks();
+
+        currentlyDarkenedBlocks.Clear();
+        foreach (var block in BuildCurrentTargetSet())
+        {
+            if (block != null)
+                currentlyDarkenedBlocks.Add(block);
+        }
 
         Action_UpdatedBlocks?.Invoke();
     }
@@ -996,7 +1009,7 @@ public class Movement : Singleton<Movement>
             return;
         }
 
-        if (lookingDirection_Old != dir)
+        if (lookDir != dir)
         {
             Block_IsNot_Target(moveOption);
             return;
@@ -1505,6 +1518,17 @@ public class Movement : Singleton<Movement>
                stats.abilitiesGot_Temporary.ClimingGloves;
     }
 
+
+    //-----
+
+
+    bool ShouldDelayAbilityMove(Vector3 desiredDir)
+    {
+        if (desiredDir != lastTurnedToDir)
+            return false;
+
+        return Time.time - lastTurnTime < turnBeforeMoveDelay;
+    }
     #endregion
 
     #endregion
@@ -1644,6 +1668,87 @@ public class Movement : Singleton<Movement>
         {
             obj.GetComponent<BlockInfo>().ResetDarkenColor();
         }
+    }
+
+    public void RefreshAvailableMovementBlocksSmooth()
+    {
+        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
+            return;
+
+        UpdateBlocks();
+        SyncDarkenedBlocksToCurrentTargets();
+        Action_UpdatedBlocks?.Invoke();
+    }
+    void SyncDarkenedBlocksToCurrentTargets()
+    {
+        HashSet<GameObject> newTargets = BuildCurrentTargetSet();
+
+        // Remove old darkened blocks that are no longer valid
+        foreach (var oldBlock in currentlyDarkenedBlocks)
+        {
+            if (oldBlock != null && !newTargets.Contains(oldBlock))
+            {
+                ResetAvailableBlock(oldBlock);
+            }
+        }
+
+        // Darken newly valid blocks
+        foreach (var newBlock in newTargets)
+        {
+            if (newBlock != null && !currentlyDarkenedBlocks.Contains(newBlock))
+            {
+                SetAvailableBlock(newBlock);
+            }
+        }
+
+        currentlyDarkenedBlocks.Clear();
+        foreach (var block in newTargets)
+        {
+            if (block != null)
+                currentlyDarkenedBlocks.Add(block);
+        }
+    }
+
+    HashSet<GameObject> BuildCurrentTargetSet()
+    {
+        HashSet<GameObject> set = new HashSet<GameObject>();
+
+        AddMoveOptionTarget(set, moveToBlock_Forward);
+        AddMoveOptionTarget(set, moveToBlock_Back);
+        AddMoveOptionTarget(set, moveToBlock_Left);
+        AddMoveOptionTarget(set, moveToBlock_Right);
+
+        AddMoveOptionTarget(set, moveToBlock_Ascend);
+        AddMoveOptionTarget(set, moveToBlock_Descend);
+
+        AddMoveOptionTarget(set, moveToBlock_SwiftSwimUp);
+        AddMoveOptionTarget(set, moveToBlock_SwiftSwimDown);
+
+        AddMoveOptionTarget(set, moveToBlock_Dash_Forward);
+        AddMoveOptionTarget(set, moveToBlock_Dash_Back);
+        AddMoveOptionTarget(set, moveToBlock_Dash_Left);
+        AddMoveOptionTarget(set, moveToBlock_Dash_Right);
+
+        AddMoveOptionTarget(set, moveToBlock_Jump_Forward);
+        AddMoveOptionTarget(set, moveToBlock_Jump_Back);
+        AddMoveOptionTarget(set, moveToBlock_Jump_Left);
+        AddMoveOptionTarget(set, moveToBlock_Jump_Right);
+
+        AddMoveOptionTarget(set, moveToBlock_GrapplingHook);
+        AddMoveOptionTarget(set, moveToCeilingGrabbing);
+
+        AddMoveOptionTarget(set, moveToLadder_Forward);
+        AddMoveOptionTarget(set, moveToLadder_Back);
+        AddMoveOptionTarget(set, moveToLadder_Left);
+        AddMoveOptionTarget(set, moveToLadder_Right);
+
+        return set;
+    }
+
+    void AddMoveOptionTarget(HashSet<GameObject> set, MoveOptions moveOption)
+    {
+        if (moveOption != null && moveOption.canMoveTo && moveOption.targetBlock != null)
+            set.Add(moveOption.targetBlock);
     }
 
     #endregion
@@ -1828,6 +1933,7 @@ public class Movement : Singleton<Movement>
     void MovementSetup()
     {
         if (isMoving) return;
+        if (Block_Moveable.AnyBlockMoving) return;
 
         //Rotate Player
         RotatePlayerBody_Setup();
@@ -1862,7 +1968,8 @@ public class Movement : Singleton<Movement>
             PerformMovement(moveToBlock_Right, MovementStates.Moving, blockStandingOn.GetComponent<BlockInfo>().movementSpeed);
 
         //Perform Dash Movement, if possible
-        else if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Dash_Forward.targetBlock && moveToBlock_Dash_Forward.canMoveTo)
+        else if (Player_KeyInputs.Instance.forward_isPressed && moveToBlock_Dash_Forward.targetBlock && moveToBlock_Dash_Forward.canMoveTo
+                 && !ShouldDelayAbilityMove(UpdatedDir(Vector3.forward)))
         {
             if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Dash_Forward.targetBlock.GetComponent<BlockInfo>().movementCost)
             {
@@ -1876,7 +1983,8 @@ public class Movement : Singleton<Movement>
                 RespawnPlayer();
             }
         }
-        else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Dash_Back.targetBlock && moveToBlock_Dash_Back.canMoveTo)
+        else if (Player_KeyInputs.Instance.back_isPressed && moveToBlock_Dash_Back.targetBlock && moveToBlock_Dash_Back.canMoveTo
+                 && !ShouldDelayAbilityMove(UpdatedDir(Vector3.back)))
         {
             if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Dash_Back.targetBlock.GetComponent<BlockInfo>().movementCost)
             {
@@ -1890,7 +1998,8 @@ public class Movement : Singleton<Movement>
                 RespawnPlayer();
             }
         }
-        else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Dash_Left.targetBlock && moveToBlock_Dash_Left.canMoveTo)
+        else if (Player_KeyInputs.Instance.left_isPressed && moveToBlock_Dash_Left.targetBlock && moveToBlock_Dash_Left.canMoveTo
+                 && !ShouldDelayAbilityMove(UpdatedDir(Vector3.left)))
         {
             if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Dash_Left.targetBlock.GetComponent<BlockInfo>().movementCost)
             {
@@ -1904,7 +2013,8 @@ public class Movement : Singleton<Movement>
                 RespawnPlayer();
             }
         }
-        else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Dash_Right.targetBlock && moveToBlock_Dash_Right.canMoveTo)
+        else if (Player_KeyInputs.Instance.right_isPressed && moveToBlock_Dash_Right.targetBlock && moveToBlock_Dash_Right.canMoveTo
+                 && !ShouldDelayAbilityMove(UpdatedDir(Vector3.right)))
         {
             if (PlayerStats.Instance.stats.steps_Current >= moveToBlock_Dash_Right.targetBlock.GetComponent<BlockInfo>().movementCost)
             {
@@ -2816,18 +2926,25 @@ public class Movement : Singleton<Movement>
 
     #region Rotating Player
 
-    void RotatePlayerBody_Setup()
+    bool RotatePlayerBody_Setup()
     {
+        turnedThisFrame = false;
+
         if (Player_KeyInputs.Instance.forward_isPressed)
-            RotatePlayerBody(0);
+            turnedThisFrame = RotatePlayerBody(0);
         else if (Player_KeyInputs.Instance.back_isPressed)
-            RotatePlayerBody(180);
+            turnedThisFrame = RotatePlayerBody(180);
         else if (Player_KeyInputs.Instance.left_isPressed)
-            RotatePlayerBody(-90);
+            turnedThisFrame = RotatePlayerBody(-90);
         else if (Player_KeyInputs.Instance.right_isPressed)
-            RotatePlayerBody(90);
+            turnedThisFrame = RotatePlayerBody(90);
+
+        if (turnedThisFrame)
+            lastTurnTime = Time.time;
+
+        return turnedThisFrame;
     }
-    public void RotatePlayerBody(float rotationValue)
+    public bool RotatePlayerBody(float rotationValue)
     {
         Transform playerBody = PlayerManager.Instance.playerBody.transform;
 
@@ -2839,15 +2956,17 @@ public class Movement : Singleton<Movement>
         float finalYRotation = NormalizeAngle(baseRotation + rotationValue);
         Quaternion newRotation = Quaternion.Euler(0, finalYRotation, rotZ);
 
-        // Prevent re-triggering if already at this rotation
         if (Quaternion.Angle(playerBody.rotation, newRotation) < 0.01f)
-            return;
+            return false;
 
         playerBody.SetPositionAndRotation(playerBody.position, newRotation);
 
-        CameraController.Instance.directionFacing = GetFacingDirection(finalYRotation);
+        Vector3 newFacingDir = GetFacingDirection(finalYRotation);
+        CameraController.Instance.directionFacing = newFacingDir;
+        lastTurnedToDir = newFacingDir;
 
         Action_BodyRotated_Invoke();
+        return true;
     }
 
     float GetBaseCameraRotation(CameraRotationState state)
@@ -2887,100 +3006,14 @@ public class Movement : Singleton<Movement>
         return angle;
     }
 
-    //-----
-
-    public void RefreshAvailableMovementBlocksWithoutFullReset()
+    public bool JustTurnedToward(Vector3 dir)
     {
-        UpdateBlocks();
-        SyncDarkenedBlocksToCurrentTargets();
-        Action_UpdatedBlocks?.Invoke();
-    }
-    void SyncDarkenedBlocksToCurrentTargets()
-    {
-        HashSet<GameObject> currentTargets = new HashSet<GameObject>();
-
-        AddTarget(currentTargets, moveToBlock_Forward);
-        AddTarget(currentTargets, moveToBlock_Back);
-        AddTarget(currentTargets, moveToBlock_Left);
-        AddTarget(currentTargets, moveToBlock_Right);
-
-        AddTarget(currentTargets, moveToBlock_Ascend);
-        AddTarget(currentTargets, moveToBlock_Descend);
-
-        AddTarget(currentTargets, moveToBlock_SwiftSwimUp);
-        AddTarget(currentTargets, moveToBlock_SwiftSwimDown);
-
-        AddTarget(currentTargets, moveToBlock_Dash_Forward);
-        AddTarget(currentTargets, moveToBlock_Dash_Back);
-        AddTarget(currentTargets, moveToBlock_Dash_Left);
-        AddTarget(currentTargets, moveToBlock_Dash_Right);
-
-        AddTarget(currentTargets, moveToBlock_Jump_Forward);
-        AddTarget(currentTargets, moveToBlock_Jump_Back);
-        AddTarget(currentTargets, moveToBlock_Jump_Left);
-        AddTarget(currentTargets, moveToBlock_Jump_Right);
-
-        AddTarget(currentTargets, moveToBlock_GrapplingHook);
-        AddTarget(currentTargets, moveToCeilingGrabbing);
-
-        AddTarget(currentTargets, moveToLadder_Forward);
-        AddTarget(currentTargets, moveToLadder_Back);
-        AddTarget(currentTargets, moveToLadder_Left);
-        AddTarget(currentTargets, moveToLadder_Right);
-
-        // First darken all current valid targets
-        foreach (var obj in currentTargets)
-        {
-            if (obj != null)
-                SetAvailableBlock(obj);
-        }
-
-        // Then remove darkening from stale targets that are no longer valid
-        RemoveIfNotInSet(moveToBlock_Forward, currentTargets);
-        RemoveIfNotInSet(moveToBlock_Back, currentTargets);
-        RemoveIfNotInSet(moveToBlock_Left, currentTargets);
-        RemoveIfNotInSet(moveToBlock_Right, currentTargets);
-
-        RemoveIfNotInSet(moveToBlock_Ascend, currentTargets);
-        RemoveIfNotInSet(moveToBlock_Descend, currentTargets);
-
-        RemoveIfNotInSet(moveToBlock_SwiftSwimUp, currentTargets);
-        RemoveIfNotInSet(moveToBlock_SwiftSwimDown, currentTargets);
-
-        RemoveIfNotInSet(moveToBlock_Dash_Forward, currentTargets);
-        RemoveIfNotInSet(moveToBlock_Dash_Back, currentTargets);
-        RemoveIfNotInSet(moveToBlock_Dash_Left, currentTargets);
-        RemoveIfNotInSet(moveToBlock_Dash_Right, currentTargets);
-
-        RemoveIfNotInSet(moveToBlock_Jump_Forward, currentTargets);
-        RemoveIfNotInSet(moveToBlock_Jump_Back, currentTargets);
-        RemoveIfNotInSet(moveToBlock_Jump_Left, currentTargets);
-        RemoveIfNotInSet(moveToBlock_Jump_Right, currentTargets);
-
-        RemoveIfNotInSet(moveToBlock_GrapplingHook, currentTargets);
-        RemoveIfNotInSet(moveToCeilingGrabbing, currentTargets);
-
-        RemoveIfNotInSet(moveToLadder_Forward, currentTargets);
-        RemoveIfNotInSet(moveToLadder_Back, currentTargets);
-        RemoveIfNotInSet(moveToLadder_Left, currentTargets);
-        RemoveIfNotInSet(moveToLadder_Right, currentTargets);
+        return turnedThisFrame && lookDir == dir;
     }
 
-    void AddTarget(HashSet<GameObject> set, MoveOptions moveOption)
+    public bool IsInTurnAbilityDelay(Vector3 dir)
     {
-        if (moveOption != null && moveOption.canMoveTo && moveOption.targetBlock != null)
-            set.Add(moveOption.targetBlock);
-    }
-
-    void RemoveIfNotInSet(MoveOptions moveOption, HashSet<GameObject> validTargets)
-    {
-        if (moveOption == null || moveOption.targetBlock == null)
-            return;
-
-        if (!validTargets.Contains(moveOption.targetBlock))
-        {
-            ResetAvailableBlock(moveOption.targetBlock);
-        }
+        return lookDir == dir && Time.time - lastTurnTime < turnBeforeMoveDelay;
     }
 
     #endregion
@@ -3015,19 +3048,7 @@ public class Movement : Singleton<Movement>
         }
 
         lookingDirection = lookDir;
-        //Player_Pusher.Instance.DisplayPushDirection(lookingDirection, lookingDirectionDescription);
-
-        if (!isSlopeGliding)
-            StartCoroutine(UpdateLookDir_Dealy());
-    }
-
-    IEnumerator UpdateLookDir_Dealy()
-    {
-        yield return new WaitForSeconds(0.15f);
-
         lookingDirection_Old = lookingDirection;
-
-       //UpdateAvailableMovementBlocks();
     }
 
 
@@ -3133,7 +3154,7 @@ public class Movement : Singleton<Movement>
 
                         PlayerStats.Instance.stats.steps_Current -= blockStandingOn.GetComponent<BlockInfo>().movementCost;
 
-                        print("1. Take a Step");
+                        //print("1. Take a Step");
 
                         if (Player_CeilingGrab.Instance.isCeilingGrabbing)
                             MapStatsGathered.Instance.levelStats.ability_CeilingGrab++;
