@@ -166,6 +166,8 @@ public class Movement : Singleton<Movement>
         Vector3.right
     };
 
+    [SerializeField] private Vector3 lastIceGlideDirection = Vector3.zero;
+
     #endregion
 
     #region Cached Accessors
@@ -698,9 +700,19 @@ public class Movement : Singleton<Movement>
                 }
 
                 if (moveOption.canMoveTo)
+                {
+                    if (isIceGliding && standingInfo.blockElement == BlockElement.Ice)
+                        lastIceGlideDirection = GetMovingDirection(moveOption.targetBlock.transform.position - transform.position);
+
                     PerformMovement(moveOption, MovementStates.Moving, standingInfo.movementSpeed);
+                }
                 else
+                {
+                    if (isIceGliding && standingInfo.blockElement == BlockElement.Ice)
+                        lastIceGlideDirection = GetMovingDirection(slopeForward);
+
                     PerformMovement(blockStandingOn.transform.position + slopeForward + (Vector3.down * 0.5f));
+                }
             }
 
             return;
@@ -2338,21 +2350,36 @@ public class Movement : Singleton<Movement>
              canIceGlide);
 
         if (!canGlide)
+        {
+            lastIceGlideDirection = Vector3.zero;
             return;
+        }
 
         MoveOptions moveOption = null;
         isIceGliding = true;
 
         Vector3 movementDir;
-        if (!canIceGlide)
+
+        if (canIceGlide)
+        {
+            movementDir = teleportMovementDir;
+        }
+        else if (lastIceGlideDirection != Vector3.zero)
+        {
+            movementDir = lastIceGlideDirection;
+        }
+        else
         {
             Vector3 movementDelta = transform.position - previousPosition;
             Vector3 horizontalDirection = new Vector3(movementDelta.x, 0, movementDelta.z);
             movementDir = GetMovingDirection(horizontalDirection);
         }
-        else
+
+        if (movementDir == Vector3.zero)
         {
-            movementDir = teleportMovementDir;
+            isIceGliding = false;
+            lastIceGlideDirection = Vector3.zero;
+            return;
         }
 
         MoveOptions forwardOption = moveToBlock_Forward;
@@ -2371,16 +2398,22 @@ public class Movement : Singleton<Movement>
         else
         {
             isIceGliding = false;
+            lastIceGlideDirection = Vector3.zero;
             return;
         }
 
+        lastIceGlideDirection = movementDir;
         PerformMovement(moveOption, MovementStates.Moving, standingInfo.movementSpeed);
         previousPosition = transform.position;
     }
 
     public Vector3 GetMovingDirection(Vector3 direction)
     {
-        direction.y = 0;
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude < 0.0001f)
+            return Vector3.zero;
+
         direction.Normalize();
 
         float forwardDot = Vector3.Dot(direction, UpdatedDir(Vector3.forward));
@@ -2880,6 +2913,7 @@ public class Movement : Singleton<Movement>
 
         isSlopeGliding = false;
         hasSlopeGlided = false;
+        lastIceGlideDirection = Vector3.zero;
 
         isAscending = false;
         isDescending = false;
