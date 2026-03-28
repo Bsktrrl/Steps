@@ -30,6 +30,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
     public GameObject blackScreen;
     float fadeDuration_In = 1f;
     float fadeDuration_Out = 0.35f;
+    [SerializeField] private Image blackScreenImage;
+    private Coroutine blackScreenFadeRoutine;
 
 
     //--------------------
@@ -37,8 +39,11 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     private void Awake()
     {
-        if (blackScreen)
+        if (blackScreen != null)
+        {
+            blackScreenImage = blackScreen.GetComponent<Image>();
             blackScreen.SetActive(true);
+        }
 
         HideAllMenus();
     }
@@ -176,6 +181,43 @@ public class MainMenuManager : Singleton<MainMenuManager>
             SettingsManager.Instance.Action_SetNewLanguage_isActive();
         }
     }
+
+
+    //--------------------
+
+
+    #region Helpers
+
+    private void StopBlackScreenFadeRoutine()
+    {
+        if (blackScreenFadeRoutine != null)
+        {
+            StopCoroutine(blackScreenFadeRoutine);
+            blackScreenFadeRoutine = null;
+        }
+    }
+
+    public void SetBlackScreenImmediate(bool visible, float alpha = 1f)
+    {
+        if (blackScreen == null)
+            return;
+
+        if (blackScreenImage == null)
+            blackScreenImage = blackScreen.GetComponent<Image>();
+
+        if (blackScreenImage == null)
+            return;
+
+        blackScreen.SetActive(visible);
+
+        Color color = blackScreenImage.color;
+        color.a = Mathf.Clamp01(alpha);
+        blackScreenImage.color = color;
+
+        Canvas.ForceUpdateCanvases();
+    }
+
+    #endregion
 
 
     //--------------------
@@ -367,57 +409,97 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     public void FadeOutBlackScreen()
     {
-        StartCoroutine(FadeOutCoroutine());
+        StopBlackScreenFadeRoutine();
+        blackScreenFadeRoutine = StartCoroutine(FadeOutCoroutine());
     }
+
     private IEnumerator FadeOutCoroutine()
     {
-        Image blackScreenImage = blackScreen.GetComponent<Image>();
+        if (blackScreen == null || blackScreenImage == null)
+            yield break;
+
+        blackScreen.SetActive(true);
 
         Color color = blackScreenImage.color;
         float startAlpha = color.a;
+        float duration = Mathf.Max(0.0001f, fadeDuration_In);
         float elapsed = 0f;
 
-        while (elapsed < fadeDuration_In)
+        while (elapsed < duration)
         {
-            elapsed += Time.deltaTime;
-            float alpha = Mathf.Lerp(startAlpha, 0f, elapsed / fadeDuration_In);
-            color.a = alpha;
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            color.a = Mathf.Lerp(startAlpha, 0f, t);
             blackScreenImage.color = color;
             yield return null;
         }
 
-        // Ensure it's fully transparent at the end
         color.a = 0f;
         blackScreenImage.color = color;
         blackScreen.SetActive(false);
+
+        blackScreenFadeRoutine = null;
     }
 
     public void FadeInBlackScreen()
     {
-        StartCoroutine(FadeInBlackScreenCoroutine());
+        StopBlackScreenFadeRoutine();
+        blackScreenFadeRoutine = StartCoroutine(FadeInBlackScreenCoroutine());
     }
-    public IEnumerator FadeInBlackScreenCoroutine()
+
+    public IEnumerator FadeInBlackScreenCoroutine(float coverThreshold = 0.92f)
     {
+        if (blackScreen == null)
+            yield break;
+
+        if (blackScreenImage == null)
+            blackScreenImage = blackScreen.GetComponent<Image>();
+
+        if (blackScreenImage == null)
+            yield break;
+
         blackScreen.SetActive(true);
-        Image blackScreenImage = blackScreen.GetComponent<Image>();
 
         Color color = blackScreenImage.color;
-        float startAlpha = color.a; // should be 0 if transparent
+        float startAlpha = color.a;
+        float duration = Mathf.Max(0.0001f, fadeDuration_Out);
         float elapsed = 0f;
 
-        while (elapsed < fadeDuration_Out)
+        while (elapsed < duration)
         {
-            elapsed += Time.deltaTime;
-            float alpha = Mathf.Lerp(startAlpha, 1f, elapsed / fadeDuration_Out); // fade to opaque
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            float alpha = Mathf.Lerp(startAlpha, 1f, t);
+
             color.a = alpha;
             blackScreenImage.color = color;
+
+            if (alpha >= coverThreshold)
+                break;
+
             yield return null;
         }
 
-        // Ensure it's fully opaque at the end
         color.a = 1f;
         blackScreenImage.color = color;
+
+        Canvas.ForceUpdateCanvases();
+        yield return new WaitForEndOfFrame();
     }
+    public IEnumerator PlayFadeInAndWait(float coverThreshold = 0.92f)
+    {
+        StopBlackScreenFadeRoutine();
+        blackScreenFadeRoutine = StartCoroutine(FadeInBlackScreenCoroutine(coverThreshold));
+        yield return blackScreenFadeRoutine;
+        blackScreenFadeRoutine = null;
+    }
+    public IEnumerator PlayFadeOutAndWait()
+{
+    StopBlackScreenFadeRoutine();
+    blackScreenFadeRoutine = StartCoroutine(FadeOutCoroutine());
+    yield return blackScreenFadeRoutine;
+    blackScreenFadeRoutine = null;
+}
 
     #endregion
 }

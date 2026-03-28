@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Player_AbilityButtonDisplay : Singleton<Player_AbilityButtonDisplay>
+public class Player_AbilityButtonDisplay : MonoBehaviour
 {
     [Header("Ability Parent")]
     public GameObject abilityParent;
@@ -138,7 +138,27 @@ public class Player_AbilityButtonDisplay : Singleton<Player_AbilityButtonDisplay
 
     public void UpdateDisplay()
     {
-        abilityParent.SetActive(true);
+        if (abilityParent)
+        {
+            abilityParent.SetActive(true);
+
+            if (!abilityParent.activeInHierarchy) return;
+
+            Ability_Appearances_Setup();
+        }
+        else
+        {
+            StartCoroutine(UpdateDisplay_Delay(0.4f));
+        }
+    }
+    IEnumerator UpdateDisplay_Delay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        Ability_Appearances_Setup();
+    }
+    void Ability_Appearances_Setup()
+    {
 
         Ability_Appearance(abilitySprite_Swim, PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel, PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel);
         Ability_Appearance(abilitySprite_SwiftSwim, PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank, PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank);
@@ -152,6 +172,7 @@ public class Player_AbilityButtonDisplay : Singleton<Player_AbilityButtonDisplay
         Ability_Appearance(abilitySprite_CeilingGrab, PlayerStats.Instance.stats.abilitiesGot_Temporary.ClimingGloves, PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimingGloves);
         Ability_Appearance(abilitySprite_GrapplingHook, PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook, PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook);
     }
+
     void Ability_Appearance(GameObject abilityObject, bool tempAbility, bool permAbility)
     {
         if (tempAbility || permAbility)
@@ -170,7 +191,7 @@ public class Player_AbilityButtonDisplay : Singleton<Player_AbilityButtonDisplay
         }
     }
 
-    void HideDisplay()
+    public void HideDisplay()
     {
         abilitySprite_Swim.SetActive(false);
         abilitySprite_SwiftSwim.SetActive(false);

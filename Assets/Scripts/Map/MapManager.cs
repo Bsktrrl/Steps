@@ -37,8 +37,8 @@ public class MapManager : Singleton<MapManager>
     [Header("Black Screen")]
     [SerializeField] GameObject canvas;
     [SerializeField] GameObject blackScreen;
-    float fadeDuration_In = 0.75f;
-    float fadeDuration_Out = 0.25f;
+    public float fadeDuration_In = 0.75f;
+    public float fadeDuration_Out = 0.25f;
 
     [SerializeField] BlockInfo[] blockInfoList;
     Interactable_Pickup[] pickupInfoList;
@@ -225,7 +225,7 @@ public class MapManager : Singleton<MapManager>
 
         while (elapsed < fadeDuration_In)
         {
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime;
             float alpha = Mathf.Lerp(startAlpha, 0f, elapsed / fadeDuration_In);
             color.a = alpha;
             blackScreenImage.color = color;

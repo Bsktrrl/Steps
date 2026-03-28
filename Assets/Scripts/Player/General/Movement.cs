@@ -521,11 +521,6 @@ public class Movement : Singleton<Movement>
         UpdateBlocks();
         SetDarkenBlocks();
 
-        if (moveToBlock_Ascend != null && moveToBlock_Ascend.targetBlock != null)
-        {
-            Debug.Log("AFTER SETDARKENBLOCKS ASCEND TARGET: " + moveToBlock_Ascend.targetBlock.name);
-        }
-
         currentlyDarkenedBlocks.Clear();
         foreach (var block in BuildCurrentTargetSet())
         {
@@ -1008,7 +1003,6 @@ public class Movement : Singleton<Movement>
                     if (secondInfo.blockType == BlockType.Slab)
                     {
                         SetMoveTarget(moveToBlock_Ascend, outObj1);
-                        Debug.Log("ASCEND TARGET SET: " + outObj1.name);
                     }
                     else
                         ClearMoveTarget(moveToBlock_Ascend);
@@ -1033,7 +1027,6 @@ public class Movement : Singleton<Movement>
                         if (PlayerHasSwimAbility())
                         {
                             SetMoveTarget(moveToBlock_Ascend, outObj1);
-                            Debug.Log("ASCEND TARGET SET: " + outObj1.name);
                         }
                         else
                             ClearMoveTarget(moveToBlock_Ascend);
@@ -1657,14 +1650,10 @@ public class Movement : Singleton<Movement>
 
     public void SetDarkenBlocks()
     {
-        Debug.Log("SetDarkenColors START: " + gameObject.name);
-
         if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
             return;
 
         ForEachDarkenMoveOptions(SetMoveVisual);
-
-        Debug.Log("SetDarkenColors END: " + gameObject.name);
     }
 
     void ResetDarkenBlocks()
@@ -1678,7 +1667,6 @@ public class Movement : Singleton<Movement>
         {
             if (!info.blockIsDark)
             {
-                Debug.Log("DARKEN CALLED ON: " + obj.name);
                 info.SetDarkenColors();
             }
         }

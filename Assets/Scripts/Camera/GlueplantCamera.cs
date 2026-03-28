@@ -113,6 +113,8 @@ public class GlueplantCamera : Singleton<GlueplantCamera>
     {
         MapManager.Action_SpawnedPlayerObject += OnPlayerSpawned;
 
+        //Player_AbilityButtonDisplay.Instance.HideDisplay();
+
         if (MapManager.SpawnedPlayer != null)
             OnPlayerSpawned(MapManager.SpawnedPlayer);
     }
@@ -134,7 +136,7 @@ public class GlueplantCamera : Singleton<GlueplantCamera>
     {
         yield return new WaitForSeconds(waitTime);
 
-        if (!DataManager.Instance.oneTimeRunData_Store.forceIntroSequenceInFirstLevel)
+        if (MapManager.Instance.haveIntroSequence && DataManager.Instance.settingData_StoreList.currentSkipIntro == SkipIntro.No)
         {
             CM_Player = CameraController.Instance.CM_Player;
 
@@ -146,24 +148,43 @@ public class GlueplantCamera : Singleton<GlueplantCamera>
         }
         else
         {
-            if (MapManager.Instance.haveIntroSequence)
-            {
+            yield return new WaitForSeconds(MapManager.Instance.fadeDuration_In + 0.1f);
+
+            if (CM_Player == null)
                 CM_Player = CameraController.Instance.CM_Player;
-
-                SetPriority(CM_Glueplant, glueplantPriorityDuringTravel);
-                SetPriority(CM_Player, playerPriorityDuringTravel);
-                CM_Glueplant.Prioritize();
-
-                RunCameraTravel();
-            }
-            else
-            {
-                if (CM_Player == null)
-                    CM_Player = CameraController.Instance.CM_Player;
-                FinishTravel();
-                //MapManager.Instance.Action_EndIntroSequence_Invoke();
-            }
+            FinishTravel();
         }
+
+        //if (!DataManager.Instance.oneTimeRunData_Store.forceIntroSequenceInFirstLevel)
+        //{
+        //    CM_Player = CameraController.Instance.CM_Player;
+
+        //    SetPriority(CM_Glueplant, glueplantPriorityDuringTravel);
+        //    SetPriority(CM_Player, playerPriorityDuringTravel);
+        //    CM_Glueplant.Prioritize();
+
+        //    RunCameraTravel();
+        //}
+        //else
+        //{
+        //    if (MapManager.Instance.haveIntroSequence && DataManager.Instance.settingData_StoreList.currentSkipIntro == SkipIntro.No)
+        //    {
+        //        CM_Player = CameraController.Instance.CM_Player;
+
+        //        SetPriority(CM_Glueplant, glueplantPriorityDuringTravel);
+        //        SetPriority(CM_Player, playerPriorityDuringTravel);
+        //        CM_Glueplant.Prioritize();
+
+        //        RunCameraTravel();
+        //    }
+        //    else
+        //    {
+        //        if (CM_Player == null)
+        //            CM_Player = CameraController.Instance.CM_Player;
+        //        FinishTravel();
+        //        //MapManager.Instance.Action_EndIntroSequence_Invoke();
+        //    }
+        //}
     }
 
     public void RunCameraTravel()
