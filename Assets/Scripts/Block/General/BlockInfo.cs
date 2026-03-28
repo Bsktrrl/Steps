@@ -80,9 +80,10 @@ public class BlockInfo : MonoBehaviour
 
         blockIsDark = false;
     }
+
     private void Update()
     {
-        CheckDarkeningWhenPlayerIsOnElevator();
+        //CheckDarkeningWhenPlayerIsOnElevator();
     }
 
 

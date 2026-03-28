@@ -168,6 +168,10 @@ public class Movement : Singleton<Movement>
 
     [SerializeField] private Vector3 lastIceGlideDirection = Vector3.zero;
 
+    [SerializeField] private bool slopeAutoExitInProgress;
+    [SerializeField] private GameObject slopeAutoExitSourceBlock;
+    [SerializeField] private Vector3 slopeAutoExitTargetPos;
+
     #endregion
 
     #region Cached Accessors
@@ -502,6 +506,11 @@ public class Movement : Singleton<Movement>
         return true;
     }
 
+    private bool IsNearPosition(Vector3 a, Vector3 b, float tolerance = 0.05f)
+    {
+        return Vector3.Distance(a, b) <= tolerance;
+    }
+
     #endregion
 
     #region Movement Functions
@@ -573,6 +582,18 @@ public class Movement : Singleton<Movement>
 
         if (prev != blockStandingOn)
             Action_isSwitchingBlocks_Invoke();
+
+        if (slopeAutoExitInProgress)
+        {
+            bool leftSourceSlope = blockStandingOn != slopeAutoExitSourceBlock;
+            bool reachedTarget = IsNearPosition(transform.position, slopeAutoExitTargetPos + (StandingOffsetDir() * heightOverBlock), 0.15f);
+
+            if (leftSourceSlope || reachedTarget)
+            {
+                slopeAutoExitInProgress = false;
+                slopeAutoExitSourceBlock = null;
+            }
+        }
     }
 
     bool TryGetBlockUnder(Vector3 origin, Vector3 dir, float distance, out GameObject block)
@@ -682,6 +703,11 @@ public class Movement : Singleton<Movement>
 
         if (standingInfo.blockType == BlockType.Slope)
         {
+            // If this slope already started its automatic downhill exit,
+            // don't let it start the same transition again until we've left it.
+            if (slopeAutoExitInProgress && blockStandingOn == slopeAutoExitSourceBlock)
+                return;
+
             Vector3 slopeForward = blockStandingOn.transform.forward.normalized;
 
             if (dir == slopeForward)
@@ -701,17 +727,27 @@ public class Movement : Singleton<Movement>
 
                 if (moveOption.canMoveTo)
                 {
-                    if (isIceGliding && standingInfo.blockElement == BlockElement.Ice)
+                    if (standingInfo.blockElement == BlockElement.Ice)
                         lastIceGlideDirection = GetMovingDirection(moveOption.targetBlock.transform.position - transform.position);
+
+                    slopeAutoExitInProgress = true;
+                    slopeAutoExitSourceBlock = blockStandingOn;
+                    slopeAutoExitTargetPos = moveOption.targetBlock.transform.position;
 
                     PerformMovement(moveOption, MovementStates.Moving, standingInfo.movementSpeed);
                 }
                 else
                 {
-                    if (isIceGliding && standingInfo.blockElement == BlockElement.Ice)
+                    Vector3 fallbackTarget = blockStandingOn.transform.position + slopeForward + (Vector3.down * 0.5f);
+
+                    if (standingInfo.blockElement == BlockElement.Ice)
                         lastIceGlideDirection = GetMovingDirection(slopeForward);
 
-                    PerformMovement(blockStandingOn.transform.position + slopeForward + (Vector3.down * 0.5f));
+                    slopeAutoExitInProgress = true;
+                    slopeAutoExitSourceBlock = blockStandingOn;
+                    slopeAutoExitTargetPos = fallbackTarget;
+
+                    PerformMovement(fallbackTarget);
                 }
             }
 
@@ -2914,6 +2950,11 @@ public class Movement : Singleton<Movement>
         isSlopeGliding = false;
         hasSlopeGlided = false;
         lastIceGlideDirection = Vector3.zero;
+
+        slopeAutoExitInProgress = false;
+        slopeAutoExitSourceBlock = null;
+        slopeAutoExitTargetPos = Vector3.zero;
+
 
         isAscending = false;
         isDescending = false;
