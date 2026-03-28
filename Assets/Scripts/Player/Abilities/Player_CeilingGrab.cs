@@ -113,40 +113,48 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     {
         GameObject outObject1;
 
-        if (Movement.Instance.PerformMovementRaycast(transform.position, Vector3.up, 1, out outObject1) == RaycastHitObjects.BlockInfo)
+        if (Movement.Instance.PerformMovementRaycast(transform.position, Vector3.up, 1, out outObject1) != RaycastHitObjects.BlockInfo)
         {
-            BlockInfo blockInfo = outObject1.GetComponent<BlockInfo>();
-            ceilingGrabBlock = outObject1;
-
-            // Cannot ceiling grab on these block types
-            if (blockInfo.blockType == BlockType.Slab ||
-                blockInfo.blockType == BlockType.Slope ||
-                blockInfo.blockType == BlockType.Stair)
-            {
-                canCeilingGrab = false;
-                ceilingGrabBlock = null;
-                return;
-            }
-
-            if (blockInfo.blockElement == BlockElement.Water &&
-                !Movement.Instance.PlayerHasSwimAbility())
-            {
-                canCeilingGrab = false;
-                ceilingGrabBlock = null;
-                return;
-            }
-
-            canCeilingGrab = true;
-
-            // Only notify ceiling-style systems when actually in ceiling mode
-            if (isCeilingGrabbing)
-                Action_raycastCeiling?.Invoke();
-
+            canCeilingGrab = false;
+            ceilingGrabBlock = null;
             return;
         }
 
-        canCeilingGrab = false;
-        ceilingGrabBlock = null;
+        if (!outObject1.TryGetComponent(out BlockInfo blockInfo))
+        {
+            canCeilingGrab = false;
+            ceilingGrabBlock = null;
+            return;
+        }
+
+        // CeilingGrab should NOT compete with upward SwiftSwim / water-above cases.
+        if (blockInfo.blockElement == BlockElement.Water)
+        {
+            if (ceilingGrabBlock == outObject1)
+                blockInfo.ResetDarkenColor();
+
+            canCeilingGrab = false;
+            ceilingGrabBlock = null;
+            return;
+        }
+
+        // Also block invalid ceiling-grab surfaces
+        if (blockInfo.blockType == BlockType.Slab ||
+            blockInfo.blockType == BlockType.Stair ||
+            blockInfo.blockType == BlockType.Slope)
+        {
+            if (ceilingGrabBlock == outObject1)
+                blockInfo.ResetDarkenColor();
+
+            canCeilingGrab = false;
+            ceilingGrabBlock = null;
+            return;
+        }
+
+        ceilingGrabBlock = outObject1;
+        canCeilingGrab = !isCeilingGrabbing;
+
+        Action_raycastCeiling?.Invoke();
     }
 
 

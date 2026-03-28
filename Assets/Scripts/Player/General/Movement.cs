@@ -172,6 +172,9 @@ public class Movement : Singleton<Movement>
     [SerializeField] private GameObject slopeAutoExitSourceBlock;
     [SerializeField] private Vector3 slopeAutoExitTargetPos;
 
+    [SerializeField] private bool suppressDarkeningWhileChaining;
+    [SerializeField] private bool pendingDarkeningRefreshAfterChain;
+
     #endregion
 
     #region Cached Accessors
@@ -511,6 +514,118 @@ public class Movement : Singleton<Movement>
         return Vector3.Distance(a, b) <= tolerance;
     }
 
+    private bool ShouldSuppressDarkeningForHeldMovement()
+    {
+        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
+            return true;
+
+        // Only suppress darkening when the player is HOLDING a movement key
+        // and there is a valid next normal move in that same held direction.
+        if (Inputs.forward_isHold && HasValidTarget(moveToBlock_Forward))
+            return true;
+
+        if (Inputs.back_isHold && HasValidTarget(moveToBlock_Back))
+            return true;
+
+        if (Inputs.left_isHold && HasValidTarget(moveToBlock_Left))
+            return true;
+
+        if (Inputs.right_isHold && HasValidTarget(moveToBlock_Right))
+            return true;
+
+        return false;
+    }
+
+    private bool ShouldSkipDarkeningBecauseNextHeldMoveWillStart()
+    {
+        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
+            return true;
+
+        // If a direction is still pressed and that direction already has a valid target,
+        // the player is about to continue moving immediately.
+        if (Inputs.forward_isPressed && HasValidTarget(moveToBlock_Forward))
+            return true;
+
+        if (Inputs.back_isPressed && HasValidTarget(moveToBlock_Back))
+            return true;
+
+        if (Inputs.left_isPressed && HasValidTarget(moveToBlock_Left))
+            return true;
+
+        if (Inputs.right_isPressed && HasValidTarget(moveToBlock_Right))
+            return true;
+
+        return false;
+    }
+
+    private bool ShouldBypassWalkDarkeningForHeldChain()
+    {
+        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
+            return false;
+
+        // Only suppress the brief flash for chained horizontal walking.
+        // Do not affect vertical abilities or other move types.
+        if (Inputs.forward_isPressed && HasValidTarget(moveToBlock_Forward))
+            return true;
+
+        if (Inputs.back_isPressed && HasValidTarget(moveToBlock_Back))
+            return true;
+
+        if (Inputs.left_isPressed && HasValidTarget(moveToBlock_Left))
+            return true;
+
+        if (Inputs.right_isPressed && HasValidTarget(moveToBlock_Right))
+            return true;
+
+        return false;
+    }
+
+    private bool IsAnyWalkButtonStillHeldOrPressed()
+    {
+        return Inputs.forward_isPressed ||
+               Inputs.back_isPressed ||
+               Inputs.left_isPressed ||
+               Inputs.right_isPressed ||
+               Inputs.forward_isHold ||
+               Inputs.back_isHold ||
+               Inputs.left_isHold ||
+               Inputs.right_isHold;
+    }
+
+    private bool HasAnyImmediateGroundMoveFromCurrentState()
+    {
+        return HasValidTarget(moveToBlock_Forward) ||
+               HasValidTarget(moveToBlock_Back) ||
+               HasValidTarget(moveToBlock_Left) ||
+               HasValidTarget(moveToBlock_Right);
+    }
+
+    private bool ShouldChainImmediatelyAfterStep()
+    {
+        // Only suppress visuals if player is actually continuing with held walking
+        // AND there is actually somewhere to continue moving.
+        return IsAnyWalkButtonStillHeldOrPressed() && HasAnyImmediateGroundMoveFromCurrentState();
+    }
+
+    private void RefreshDarkeningNow()
+    {
+        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
+            return;
+
+        ResetDarkenBlocks();
+        UpdateBlocks();
+        SetDarkenBlocks();
+
+        currentlyDarkenedBlocks.Clear();
+        foreach (var block in BuildCurrentTargetSet())
+        {
+            if (block != null)
+                currentlyDarkenedBlocks.Add(block);
+        }
+
+        Action_UpdatedBlocks?.Invoke();
+    }
+
     #endregion
 
     #region Movement Functions
@@ -519,6 +634,26 @@ public class Movement : Singleton<Movement>
     {
         ResetDarkenBlocks();
         UpdateBlocks();
+
+        if (ShouldChainImmediatelyAfterStep())
+        {
+            suppressDarkeningWhileChaining = true;
+            pendingDarkeningRefreshAfterChain = true;
+
+            currentlyDarkenedBlocks.Clear();
+            foreach (var block in BuildCurrentTargetSet())
+            {
+                if (block != null)
+                    currentlyDarkenedBlocks.Add(block);
+            }
+
+            Action_UpdatedBlocks?.Invoke();
+            return;
+        }
+
+        suppressDarkeningWhileChaining = false;
+        pendingDarkeningRefreshAfterChain = false;
+
         SetDarkenBlocks();
 
         currentlyDarkenedBlocks.Clear();
@@ -1653,6 +1788,9 @@ public class Movement : Singleton<Movement>
         if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
             return;
 
+        if (suppressDarkeningWhileChaining)
+            return;
+
         ForEachDarkenMoveOptions(SetMoveVisual);
     }
 
@@ -2173,6 +2311,17 @@ public class Movement : Singleton<Movement>
         PlayerCameraOcclusionController.Instance.CameraZoom(false);
 
         Action_StepTaken_Invoke();
+
+        // If we had been suppressing darkening for held-chain movement,
+        // but after this step there is no next valid move, restore visuals now.
+        if (pendingDarkeningRefreshAfterChain &&
+            !ShouldChainImmediatelyAfterStep() &&
+            movementStates == MovementStates.Still)
+        {
+            suppressDarkeningWhileChaining = false;
+            pendingDarkeningRefreshAfterChain = false;
+            RefreshDarkeningNow();
+        }
     }
 
     IEnumerator NormalMovement(Vector3 endPos, MovementStates moveState, float movementSpeed)
@@ -2287,6 +2436,14 @@ public class Movement : Singleton<Movement>
     void WalkButtonIsReleased()
     {
         walkAnimationCheck = false;
+
+        suppressDarkeningWhileChaining = false;
+
+        if (pendingDarkeningRefreshAfterChain && movementStates == MovementStates.Still)
+        {
+            pendingDarkeningRefreshAfterChain = false;
+            RefreshDarkeningNow();
+        }
     }
 
     #endregion
