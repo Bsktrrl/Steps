@@ -142,6 +142,7 @@ public class Movement : Singleton<Movement>
     [Header("Temp Movement Cost for Slope Gliding")]
     [SerializeField] bool hasSlopeGlided;
     [SerializeField] bool isSlopeGliding;
+    [SerializeField] private bool slopeLandingIsFree;
 
     [Header("SwiftSwim")]
     [SerializeField] GameObject swiftSwimObject_StandingOn;
@@ -344,8 +345,10 @@ public class Movement : Singleton<Movement>
 
     private bool CanAfford(GameObject obj)
     {
-        return TryGetBlockInfo(obj, out BlockInfo info) &&
-               StatsRoot.stats.steps_Current >= info.movementCost;
+        if (StatsRoot.stats == null)
+            return false;
+
+        return StatsRoot.stats.steps_Current >= GetRequiredCost(obj);
     }
 
     private float MovementDuration(Vector3 startPos, Vector3 endPos, float movementSpeed)
@@ -626,6 +629,14 @@ public class Movement : Singleton<Movement>
         Action_UpdatedBlocks?.Invoke();
     }
 
+    private int GetRequiredCost(GameObject obj)
+    {
+        if (!TryGetBlockInfo(obj, out BlockInfo info))
+            return int.MaxValue;
+
+        return Mathf.Max(info.movementCost, info.movementCost_Temp);
+    }
+
     #endregion
 
     #region Movement Functions
@@ -864,6 +875,7 @@ public class Movement : Singleton<Movement>
                     slopeAutoExitSourceBlock = blockStandingOn;
                     slopeAutoExitTargetPos = moveOption.targetBlock.transform.position;
 
+                    slopeLandingIsFree = true;
                     PerformMovement(moveOption, MovementStates.Moving, standingInfo.movementSpeed);
                 }
                 else
@@ -877,6 +889,7 @@ public class Movement : Singleton<Movement>
                     slopeAutoExitSourceBlock = blockStandingOn;
                     slopeAutoExitTargetPos = fallbackTarget;
 
+                    slopeLandingIsFree = true;
                     PerformMovement(fallbackTarget);
                 }
             }
@@ -2216,18 +2229,17 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(MoveOptions canMoveBlock, MovementStates moveState, float movementSpeed, ref bool isMovingFlag)
     {
-        if (canMoveBlock == null || canMoveBlock.targetBlock == null || !TryGetBlockInfo(canMoveBlock.targetBlock, out BlockInfo targetInfo) || StatsRoot.stats == null)
+        if (canMoveBlock == null || canMoveBlock.targetBlock == null || !TryGetBlockInfo(canMoveBlock.targetBlock, out BlockInfo _) || StatsRoot.stats == null)
             return;
 
         if (isMovingFlag)
             return;
 
-        if (StatsRoot.stats.steps_Current >= targetInfo.movementCost || Player_Pusher.Instance.playerIsPushed)
+        if (CanAfford(canMoveBlock.targetBlock) || Player_Pusher.Instance.playerIsPushed)
         {
             isMovingFlag = true;
 
             ResetDarkenBlocks();
-
             StartCoroutine(Move(canMoveBlock.targetBlock.transform.position, moveState, movementSpeed, canMoveBlock));
         }
         else
@@ -2238,19 +2250,18 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(MoveOptions canMoveBlock, MovementStates moveState, float movementSpeed)
     {
-        if (canMoveBlock == null || canMoveBlock.targetBlock == null || !TryGetBlockInfo(canMoveBlock.targetBlock, out BlockInfo targetInfo) || StatsRoot.stats == null)
+        if (canMoveBlock == null || canMoveBlock.targetBlock == null || !TryGetBlockInfo(canMoveBlock.targetBlock, out BlockInfo _) || StatsRoot.stats == null)
             return;
 
         bool allowSlopeMove = TryGetStandingInfo(out BlockInfo standingInfo) && standingInfo.blockType == BlockType.Slope;
 
-        if (StatsRoot.stats.steps_Current >= targetInfo.movementCost || allowSlopeMove)
+        if (CanAfford(canMoveBlock.targetBlock) || allowSlopeMove)
         {
             MovingAnimation(canMoveBlock);
 
             isMoving = true;
 
             ResetDarkenBlocks();
-
             StartCoroutine(Move(canMoveBlock.targetBlock.transform.position, moveState, movementSpeed, canMoveBlock));
         }
         else
@@ -2942,6 +2953,7 @@ public class Movement : Singleton<Movement>
 
     #endregion
 
+    #region LookDir
     public void UpdateLookDir()
     {
         float yRotation = Mathf.Round(PM.playerBody.transform.rotation.eulerAngles.y) % 360f;
@@ -3009,6 +3021,10 @@ public class Movement : Singleton<Movement>
         return Vector3.forward;
     }
 
+    #endregion
+
+    #region Take A Step
+
     public void TakeAStep()
     {
         if (TryGetStandingInfo(out BlockInfo standingInfo))
@@ -3018,7 +3034,14 @@ public class Movement : Singleton<Movement>
             if ((hasSlopeGlided && standingInfo.blockType == BlockType.Slope) || standingInfo.blockType == BlockType.Slope)
                 isSlopeGliding = true;
 
-            if (hasSlopeGlided && standingInfo.blockType != BlockType.Slope)
+            // Free landing after slope slide
+            if (slopeLandingIsFree && standingInfo.blockType != BlockType.Slope)
+            {
+                slopeLandingIsFree = false;
+                hasSlopeGlided = false;
+                isSlopeGliding = false;
+            }
+            else if (hasSlopeGlided && standingInfo.blockType != BlockType.Slope)
             {
                 hasSlopeGlided = false;
             }
@@ -3044,7 +3067,8 @@ public class Movement : Singleton<Movement>
             }
         }
 
-        if (StatsRoot.stats.steps_Current < 0 &&
+        if (!slopeLandingIsFree &&
+            StatsRoot.stats.steps_Current < 0 &&
             TryGetStandingInfo(out BlockInfo slopeCheckInfo) &&
             slopeCheckInfo.blockType != BlockType.Slope)
         {
@@ -3058,6 +3082,9 @@ public class Movement : Singleton<Movement>
             isSlopeGliding = false;
     }
 
+    #endregion
+
+    #region Other
     void CancelSlopeIfFalling()
     {
         if (movementStates == MovementStates.Falling && (isSlopeGliding || hasSlopeGlided))
@@ -3094,6 +3121,7 @@ public class Movement : Singleton<Movement>
 
         isSlopeGliding = false;
         hasSlopeGlided = false;
+        slopeLandingIsFree = false;
         lastIceGlideDirection = Vector3.zero;
 
         slopeAutoExitInProgress = false;
@@ -3182,6 +3210,8 @@ public class Movement : Singleton<Movement>
     {
         return movementStates;
     }
+
+    #endregion
 
     #region Actions
 

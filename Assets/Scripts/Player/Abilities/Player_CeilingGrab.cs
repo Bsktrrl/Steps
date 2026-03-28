@@ -127,7 +127,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             return;
         }
 
-        // CeilingGrab should NOT compete with upward SwiftSwim / water-above cases.
+        // Ignore water-above so upward SwiftSwim controls that block
         if (blockInfo.blockElement == BlockElement.Water)
         {
             if (ceilingGrabBlock == outObject1)
@@ -138,7 +138,20 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             return;
         }
 
-        // Also block invalid ceiling-grab surfaces
+        // Ignore the block if it is currently the Ascend target
+        if (Movement.Instance.moveToBlock_Ascend != null &&
+            Movement.Instance.moveToBlock_Ascend.canMoveTo &&
+            Movement.Instance.moveToBlock_Ascend.targetBlock == outObject1)
+        {
+            if (ceilingGrabBlock == outObject1)
+                blockInfo.ResetDarkenColor();
+
+            canCeilingGrab = false;
+            ceilingGrabBlock = null;
+            return;
+        }
+
+        // Invalid ceiling-grab surfaces
         if (blockInfo.blockType == BlockType.Slab ||
             blockInfo.blockType == BlockType.Stair ||
             blockInfo.blockType == BlockType.Slope)
