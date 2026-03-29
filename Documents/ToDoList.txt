@@ -25,20 +25,26 @@ Mars:
 6.0. Metal-rør
 - Legge til Metal-rør i "6. Metalworks" blok-prefabslisten
 
-7.0. Elevator Blocks
+7.0. Elevator Blocks:
 - Legg til nye ElevatorBlocks i prefablisten
 - Sett GoldBlock-animsjoner til å skje når spilleren aktiverer/deaktiverer dem (følg instruksjoner i goldBlock-scriptet)
 
-10. Svømme i vann
+8.0. Looking-kamera:
+- Gjøre om joystick til å snu kameraet litt rundt spilleren
+	- Lage en variant for rundt spilleren (til vurdering)
+	- Lage en variant for rundt seg selv (til vurdering)
+- Gjøre kompatibel for både kontroll og datamus
+
+10.0. Svømme i vann
 - Gjøre slik at man kan gå ut i vann, men at man drukner hvis man ikke har abilitien (la spilleren vente til blokken har druknet og respawnet)
 
-11. Slope fall-animasjon
+11.0. Slope fall-animasjon
 - Spill av falleBakover-animasjon hvis man forsøker å gå opp slopes (la spilleren vente til blokken har kommet seg opp)
 
-12. "Reset Level"-knapp i Pausemenyen
+12.0. "Reset Level"-knapp i Pausemenyen
 - Legge til en knapp som lar spilelren resete levelet (starte fra første checkpoint), slik at spillere som sitter fast, kan starte levelet på nytt om de ønsker det
 
-13. AcsessabilityEssence:
+13.0. AcsessabilityEssence:
 - Legg til et script på hver Essence som endrer dens visibility basert på om den kan fåes tak i eller ikke
 
 
