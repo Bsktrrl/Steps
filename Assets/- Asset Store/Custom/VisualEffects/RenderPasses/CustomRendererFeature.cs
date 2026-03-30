@@ -121,6 +121,9 @@ public class CustomRendererFeature : ScriptableRendererFeature
 
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
+            bool isGameCamera = renderingData.cameraData.cameraType == CameraType.Game;
+            Shader.SetGlobalFloat("_IsGameCamera", isGameCamera ? 1f : 0f);
+
             CommandBuffer cmd = CommandBufferPool.Get("Copy Camera Color");
 
             var source = renderingData.cameraData.renderer.cameraColorTargetHandle;
