@@ -70,8 +70,13 @@ public class Block_Weak : MonoBehaviour
 
         yield return new WaitForSeconds(waitTime);
 
-        originalBlock = Instantiate(newBlock, transform.position, Quaternion.identity);
-        Player_BurnChanging.Instance.AddMeltedBlockToList(originalBlock);
+        if (originalBlock)
+        {
+
+            originalBlock = Instantiate(newBlock, transform.position, Quaternion.identity);
+            Player_BurnChanging.Instance.AddMeltedBlockToList(originalBlock);
+        }
+
         gameObject.SetActive(false);
 
         isSteppedOn = false;
