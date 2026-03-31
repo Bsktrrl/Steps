@@ -29,6 +29,9 @@
         },
         {
             "m_Id": "d026e5bbb217483ba816c8cda8fea55c"
+        },
+        {
+            "m_Id": "06a7ef75cff147d7879de4bce2e98326"
         }
     ],
     "m_Keywords": [],
@@ -416,6 +419,9 @@
         },
         {
             "m_Id": "f9172b706d9e4744a21a0ea136de0db1"
+        },
+        {
+            "m_Id": "1028fc1c86ac48328609c6cc70131216"
         }
     ],
     "m_GroupDatas": [],
@@ -531,6 +537,20 @@
                     "m_Id": "d4e87bb7ce394890a8957005544c91a1"
                 },
                 "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "1028fc1c86ac48328609c6cc70131216"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "3bcebf24e34d48e08dd6ce38263ef648"
+                },
+                "m_SlotId": -1153535796
             }
         },
         {
@@ -2677,6 +2697,34 @@
 }
 
 {
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "06a7ef75cff147d7879de4bce2e98326",
+    "m_Guid": {
+        "m_GuidSerialized": "17503833-532e-4ecf-970c-72fe38aa1daf"
+    },
+    "m_Name": "LowerGoldenAmount",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "LowerGoldenAmount",
+    "m_DefaultReferenceName": "_LowerGoldenAmount",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 2,
+    "m_Hidden": false,
+    "m_Value": 0.5,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
+}
+
+{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "06c536f6e1e24d4ba1b03755af232e8c",
@@ -3052,6 +3100,42 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "1028fc1c86ac48328609c6cc70131216",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -840.0,
+            "y": -592.0000610351563,
+            "width": 185.0,
+            "height": 34.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "e9af92a4262847c59f0a0093906c2c45"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "06a7ef75cff147d7879de4bce2e98326"
+    }
 }
 
 {
@@ -4159,6 +4243,9 @@
         },
         {
             "m_Id": "cf26b9e61fc94f4e8c37e04df7b46029"
+        },
+        {
+            "m_Id": "06a7ef75cff147d7879de4bce2e98326"
         },
         {
             "m_Id": "d026e5bbb217483ba816c8cda8fea55c"
@@ -14356,7 +14443,7 @@
     "m_DismissedVersion": 0,
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
+    "hlslDeclarationOverride": 2,
     "m_Hidden": false,
     "m_Value": 0.0,
     "m_FloatType": 1,
@@ -14656,7 +14743,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "_LowerShineAmount",
     "m_StageCapability": 3,
-    "m_Value": 0.5,
+    "m_Value": 2.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
 }
@@ -15621,6 +15708,21 @@
         "z": 0.0,
         "w": 0.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "e9af92a4262847c59f0a0093906c2c45",
+    "m_Id": 0,
+    "m_DisplayName": "LowerGoldenAmount",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
@@ -16739,9 +16841,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -863.0000610351563,
-            "y": -685.0,
-            "width": 208.0,
+            "x": -863.0,
+            "y": -719.0,
+            "width": 208.00006103515626,
             "height": 127.0
         }
     },
