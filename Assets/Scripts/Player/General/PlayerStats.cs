@@ -88,8 +88,8 @@ public class PlayerStats : Singleton<PlayerStats>
 
         MapManager.Instance.SetAbilities();
 
-        if (!MapManager.Instance.introSequence)
-            Player_AbilityButtonDisplay.Instance.UpdateDisplay();
+        //if (!MapManager.Instance.introSequence)
+        //    Player_AbilityButtonDisplay.Instance.UpdateDisplay();
 
         Action_UpdateAbilityDisplay?.Invoke();
     }

@@ -88,6 +88,9 @@ PrefabInstance:
       insertIndex: 1
       addedObject: {fileID: -6755877020589181053}
     - targetCorrespondingSourceObject: {fileID: 4035386701650000973, guid: e10a59016d6fd924fb7288209b7707a6, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 8383728726188619971}
+    - targetCorrespondingSourceObject: {fileID: 4035386701650000973, guid: e10a59016d6fd924fb7288209b7707a6, type: 3}
       insertIndex: -1
       addedObject: {fileID: -5989539645439304258}
     - targetCorrespondingSourceObject: {fileID: 4035386701650000973, guid: e10a59016d6fd924fb7288209b7707a6, type: 3}
@@ -100,6 +103,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: -5302724811704977388}
   m_SourcePrefab: {fileID: 100100000, guid: e10a59016d6fd924fb7288209b7707a6, type: 3}
+--- !u!1 &373799927933379352 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3590525949552716574, guid: e10a59016d6fd924fb7288209b7707a6, type: 3}
+  m_PrefabInstance: {fileID: 3811203475071584262}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &929025259188696139 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4035386701650000973, guid: e10a59016d6fd924fb7288209b7707a6, type: 3}
@@ -126,6 +134,32 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.13, y: 0.13, z: 0.13}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8383728726188619971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 929025259188696139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5ce39f59b0afe94bb51020fab0205a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  needAbility_Snorkel: 0
+  needAbility_OxygenTank: 0
+  needAbility_Flipper: 0
+  needAbility_DrillHelmet: 0
+  needAbility_DrillBoots: 0
+  needAbility_HandDrill: 0
+  needAbility_GrapplingHook: 0
+  needAbility_SpringShoes: 0
+  needAbility_ClimbingGloves: 0
+  meshRenderer: {fileID: 2546101183363959351}
+  material_Unactive: {fileID: 2100000, guid: 1b9ba15c393b036469c31848c901d568, type: 2}
+  material_Active: {fileID: 2100000, guid: 67e4c9a7e2869ba4289c4649a34e01b8, type: 2}
+  obj_ShineHor: {fileID: 1383295928649065102}
+  obj_ShineDia: {fileID: 373799927933379352}
 --- !u!114 &-5989539645439304258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,3 +212,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72558511130f97f4a823c1020ec18cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  essenceNo: 0
+  footprintNo: 0
+  skinNo: 0
+  abilityNo: 0
+--- !u!1 &1383295928649065102 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2870597327188355720, guid: e10a59016d6fd924fb7288209b7707a6, type: 3}
+  m_PrefabInstance: {fileID: 3811203475071584262}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2546101183363959351 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1707300590523777585, guid: e10a59016d6fd924fb7288209b7707a6, type: 3}
+  m_PrefabInstance: {fileID: 3811203475071584262}
+  m_PrefabAsset: {fileID: 0}

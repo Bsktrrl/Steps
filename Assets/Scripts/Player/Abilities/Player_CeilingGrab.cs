@@ -113,32 +113,61 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     {
         GameObject outObject1;
 
-        if (Movement.Instance.PerformMovementRaycast(transform.position, Vector3.up, 1, out outObject1) == RaycastHitObjects.BlockInfo)
+        if (Movement.Instance.PerformMovementRaycast(transform.position, Vector3.up, 1, out outObject1) != RaycastHitObjects.BlockInfo)
         {
-            if (!isCeilingGrabbing)
-            {
-                outObject1.GetComponent<BlockInfo>().SetDarkenColors();
-                ceilingGrabBlock = outObject1;
-
-                Action_raycastCeiling?.Invoke();
-            }
-
-            if (outObject1.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !Movement.Instance.PlayerHasSwimAbility())
-            {
-
-            }
-            else
-            {
-                outObject1.GetComponent<BlockInfo>().ResetDarkenColor();
-
-                canCeilingGrab = true;
-                return;
-            }
-            
+            canCeilingGrab = false;
+            ceilingGrabBlock = null;
+            return;
         }
 
-        canCeilingGrab = false;
-        ceilingGrabBlock = null;
+        if (!outObject1.TryGetComponent(out BlockInfo blockInfo))
+        {
+            canCeilingGrab = false;
+            ceilingGrabBlock = null;
+            return;
+        }
+
+        // Ignore water-above so upward SwiftSwim controls that block
+        if (blockInfo.blockElement == BlockElement.Water)
+        {
+            if (ceilingGrabBlock == outObject1)
+                blockInfo.ResetDarkenColor();
+
+            canCeilingGrab = false;
+            ceilingGrabBlock = null;
+            return;
+        }
+
+        // Ignore the block if it is currently the Ascend target
+        if (Movement.Instance.moveToBlock_Ascend != null &&
+            Movement.Instance.moveToBlock_Ascend.canMoveTo &&
+            Movement.Instance.moveToBlock_Ascend.targetBlock == outObject1)
+        {
+            if (ceilingGrabBlock == outObject1)
+                blockInfo.ResetDarkenColor();
+
+            canCeilingGrab = false;
+            ceilingGrabBlock = null;
+            return;
+        }
+
+        // Invalid ceiling-grab surfaces
+        if (blockInfo.blockType == BlockType.Slab ||
+            blockInfo.blockType == BlockType.Stair ||
+            blockInfo.blockType == BlockType.Slope)
+        {
+            if (ceilingGrabBlock == outObject1)
+                blockInfo.ResetDarkenColor();
+
+            canCeilingGrab = false;
+            ceilingGrabBlock = null;
+            return;
+        }
+
+        ceilingGrabBlock = outObject1;
+        canCeilingGrab = !isCeilingGrabbing;
+
+        Action_raycastCeiling?.Invoke();
     }
 
 
@@ -194,11 +223,14 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         PlayerManager.Instance.playerBody.transform.localPosition = endPosition;
         PlayerManager.Instance.playerBody.transform.rotation = endRotation;
 
-        //Moving back to ground
+        // Moving back to ground
         if (CameraController.Instance.cameraState == CameraState.GameplayCam)
         {
-            //print("1. RotateToGround");
             isCeilingGrabbing = false;
+
+            // Clear ceiling-only state immediately
+            canCeilingGrab = false;
+            ceilingGrabBlock = null;
 
             yield return new WaitForSeconds(0.02f);
             Action_isCeilingGrabbing_Finished?.Invoke();
@@ -214,10 +246,20 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         PlayerManager.Instance.pauseGame = false;
         isCeilingRotation = false;
 
-        Action_raycastCeiling?.Invoke();
         Movement.Instance.Action_BodyRotated_Invoke();
         Movement.Instance.UpdateAvailableMovementBlocks();
-        RaycastCeiling();
+
+        if (isCeilingGrabbing)
+        {
+            RaycastCeiling();
+            Action_raycastCeiling?.Invoke();
+        }
+        else
+        {
+            canCeilingGrab = false;
+            ceilingGrabBlock = null;
+            StartCoroutine(RefreshCeilingRaycastNextFrame());
+        }
 
         if (CameraController.Instance.cameraState == CameraState.GameplayCam)
             isCeilingRotation_OFF = false;
@@ -318,6 +360,12 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 
             Movement.Instance.Action_StepTaken_Invoke();
         }
+    }
+
+    IEnumerator RefreshCeilingRaycastNextFrame()
+    {
+        yield return null; // wait 1 frame so normal visuals/state settle first
+        RaycastCeiling();
     }
 
     void ResetDarkenColor()

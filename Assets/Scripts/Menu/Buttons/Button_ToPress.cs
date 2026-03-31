@@ -143,6 +143,31 @@ public class Button_ToPress : MonoBehaviour
                 MainMenuManager.Instance.newGameWarningMessage_Parent.SetActive(false);
                 break;
 
+            case MenuState.RegionMenu_Water:
+                DataManager.Instance.menuState_Store = MenuState.RegionMenu_Water;
+                DataPersistanceManager.Instance.SaveGame(); 
+                break;
+            case MenuState.RegionMenu_Sand:
+                DataManager.Instance.menuState_Store = MenuState.RegionMenu_Sand;
+                DataPersistanceManager.Instance.SaveGame();
+                break;
+            case MenuState.RegionMenu_Ice:
+                DataManager.Instance.menuState_Store = MenuState.RegionMenu_Ice;
+                DataPersistanceManager.Instance.SaveGame();
+                break;
+            case MenuState.RegionMenu_Lava:
+                DataManager.Instance.menuState_Store = MenuState.RegionMenu_Lava;
+                DataPersistanceManager.Instance.SaveGame();
+                break;
+            case MenuState.RegionMenu_Swamp:
+                DataManager.Instance.menuState_Store = MenuState.RegionMenu_Swamp;
+                DataPersistanceManager.Instance.SaveGame();
+                break;
+            case MenuState.RegionMenu_Metal:
+                DataManager.Instance.menuState_Store = MenuState.RegionMenu_Metal;
+                DataPersistanceManager.Instance.SaveGame();
+                break;
+
             default:
                 break;
         }

@@ -40,8 +40,7 @@ public class LoadLevel : MonoBehaviour
 
     //--------------------
 
-
-    private void Start()
+    private void Awake()
     {
         mainMenuManager = FindObjectOfType<MainMenuManager>();
         menuLevelInfo = FindObjectOfType<MenuLevelInfo>();
@@ -53,31 +52,32 @@ public class LoadLevel : MonoBehaviour
 
     public void LoadLevelScene()
     {
+        ResolveReferences();
+
         if (_isLoading) return;
+        if (!CheckIfCanBePlayed()) return;
+        if (string.IsNullOrEmpty(levelToPlay)) return;
 
-        if (!CheckIfCanBePlayed()) { return; }
-
-        if (!string.IsNullOrEmpty(levelToPlay))
-        {
-            if (GetComponent<LevelInfo>())
-                GetComponent<LevelInfo>().SaveNameDisplay();
-
-            SessionStatsGathered.Instance.SaveSessionStats();
-
-            StartCoroutine(LoadSceneCoroutine(levelToPlay));
-        }
+        StartCoroutine(LoadSceneCoroutine(levelToPlay));
     }
+
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {
+        ResolveReferences();
+
         if (_isLoading) yield break;
         _isLoading = true;
 
-        if (mainMenuManager)
+        if (mainMenuManager != null)
         {
-            yield return mainMenuManager.FadeInBlackScreenCoroutine();
+            yield return StartCoroutine(mainMenuManager.PlayFadeInAndWait(0.92f));
         }
 
-        // Only do this if these singletons are guaranteed to exist here.
+        if (GetComponent<LevelInfo>())
+            GetComponent<LevelInfo>().SaveNameDisplay();
+
+        SessionStatsGathered.Instance.SaveSessionStats();
+
         if (RememberCurrentlySelectedUIElement.Instance != null && OverWorldManager.Instance != null)
         {
             RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(
@@ -88,22 +88,29 @@ public class LoadLevel : MonoBehaviour
 
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
 
-        // Optional: if you ever use allowSceneActivation elsewhere, set it explicitly
-        // operation.allowSceneActivation = true;
-
-        float nextLogTime = 0f;
-
         while (!operation.isDone)
-        {
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-            if (Time.unscaledTime >= nextLogTime)
-            {
-                nextLogTime = Time.unscaledTime + 0.25f; // 4 times/second max
-                Debug.Log($"Loading progress: {operation.progress * 100f:0.0}%");
-            }
-#endif
             yield return null;
-        }
+    }
+
+
+    //--------------------
+
+
+    private void EnsureMenuReferences()
+    {
+        if (mainMenuManager == null)
+            mainMenuManager = FindObjectOfType<MainMenuManager>(true);
+
+        if (menuLevelInfo == null)
+            menuLevelInfo = FindObjectOfType<MenuLevelInfo>(true);
+    }
+    private void ResolveReferences()
+    {
+        if (mainMenuManager == null)
+            mainMenuManager = FindObjectOfType<MainMenuManager>(true);
+
+        if (menuLevelInfo == null)
+            menuLevelInfo = FindObjectOfType<MenuLevelInfo>(true);
     }
 
 

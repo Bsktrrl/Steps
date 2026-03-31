@@ -2,15 +2,18 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 Mars:
+0.0. Flashing av DarkenBlock:
+- Hvis man holer inne movementknapp for å bevege seg smooth over flere blokker, så flasher Darken på adjacent blokker bittelitt for hvert steg. Det må fjernes/endres.
+
 1.0. SandFallingPlayer MoveOff Block
 - Legg til en state som er "SandFalling", hvor spilleren kan gå av blokken underveis i et fall, i "Movement"-scriptet
-- Også legg til mulighet for hopping (kan være at skjer automatisk)
+- Også legg til mulighet for jumping (kan være at skjer automatisk)
 
 2.0. CameraBlockRender
 - FÅ ladders og pickups til å bli usynlige når blokkene blir det
 
 3.0. Number X
-- Legg til Number X på slopes og Water når man ikke kan gå på dem (Asset Store > Custom > Numbers)
+- Legg til Number X på slopes og Water når man ikke bør gå på dem (Asset Store > Custom > Numbers)
 
 4.0. Glueplant Particle Effect
 - Legg til particle Effect når man plukker opp Glueplanten (Asset Store > Custom > VisualEffects > Prefabs > Player og heter "Effect_GlueplantPickup)
@@ -22,16 +25,25 @@ Mars:
 6.0. Metal-rør
 - Legge til Metal-rør i "6. Metalworks" blok-prefabslisten
 
-7.0. Moving Blocks
-- Legg til nye movingBlocks i prefablisten
+7.0. Elevator Blocks:
+- Legg til nye ElevatorBlocks i prefablisten
 - Sett GoldBlock-animsjoner til å skje når spilleren aktiverer/deaktiverer dem (følg instruksjoner i goldBlock-scriptet)
 
-8.0. Nye Waterfall blocks
-- Sette opp nye Waterfall Blocks (top, midten og på bunnen (med mist)) i Prefab
-- Legge til waterfall EnviromentalSound på dem
+8.0. Looking-kamera:
+- Gjøre om joystick til å snu kameraet litt rundt spilleren
+	- Lage en variant for rundt spilleren (til vurdering)
+	- Lage en variant for rundt seg selv (til vurdering)
+- Gjøre kompatibel for både kontroll og datamus
 
-9.0. Kamerarotasjon i Glueplant zoom Cutscene
-- Kameraet kan roteres på i introsekvensen med Glueplant-zoomen
+10.0. Svømme i vann
+- Gjøre slik at man kan gå ut i vann, men at man drukner hvis man ikke har abilitien (la spilleren vente til blokken har druknet og respawnet)
+
+11.0. Slope fall-animasjon
+- Spill av falleBakover-animasjon hvis man forsøker å gå opp slopes (la spilleren vente til blokken har kommet seg opp)
+
+12.0. "Reset Level"-knapp i Pausemenyen
+- Legge til en knapp som lar spilelren resete levelet (starte fra første checkpoint), slik at spillere som sitter fast, kan starte levelet på nytt om de ønsker det
+
 
 
 --- OTHER FIXES
@@ -43,6 +55,7 @@ Mars:
 9. PickupAnimasjon i vann: Pickup-animasjonen funker ikke
 
 37. RootBlockNumbers: Endre slik at nummeret på RotBlocks forsvinner når de skal
+- Legge til en pil i den retningen som spilleren kan gå inn på den på, istedenfor tall (eventuelt ha tallet litt mindre i midten av pilen?)
 
 38. CameraKø: Hvis man trykker på roteringsknappen mens det roteres, så burde det føre til at roteringen fortsetter 90 grader til, i den retningen
 
@@ -54,15 +67,11 @@ Mars:
 	- Gratis å gå i Mud-blokk og adjecent blokker
 	- Får igjen +1 steg ved å gå på adjecent blokker til Swamp Water
 
-42. Settings: Legge til en setting som lar spilleren toggle on/off InterractableMessages
+42. Settings: Legge til en setting som lar spilleren toggle on/off InterractableMessages som abilities eller guider
 
-43. PlayerSpawnEffect: Legge til på starten av første level man spiller (legge inn saveState slik at den ikke dukker opp igjen etter første)
+43. PlayerSpawn-InEffect: Legge til på starten av første level man spiller (legge inn saveState slik at den ikke dukker opp igjen etter første)
 
 46: NewGame Language SettingsBug: Gjøre slik at også "language"-posten i "Settings" er satt til Engelsk bilde på starten (første gang man går inn)
-
-47. Tall på Slopes: Tall på slopes vises noen ganger under slopen og ikke på den
-
-48. Ascend Tall borte: Tallet til blokken man kan ascende til, vises ikke og blokken blir ikke mørk, selv om man kan ascende til den
 
 49. Droplets funksjonalitet og lyd
 - Lag gameobject som skal spawne inn droplets fra tak
@@ -80,34 +89,15 @@ Mars:
 
 
 
-1. Make the numbers appear when stopping AND release the movementButton
- 	- Now it disappear if moving into a deadEndBlock and holding in the movementButton
-
 2. The player isn't performing walking animation after Ascending/Descending/SwiftSwim (when moving away from the block landed on)
- 	- Also, the darkenBlock isn't activated for blocks 1 block above the player when having Ascending, IF ceilingGrab also is active
- 	- Cannot Ascend from respawn
+
 
 3. ColdWater isn't treating the camera the same way as Water. It may have something to do with the Haze particle
 
-4. When doing CeilingGrabRotation back to the noraml camera, it is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
-
-5. Add "MovingBlock"-EffectBlock
-
-6. Falling onto a fallingblock (sand) prevents movement
-
-7. Make so that abilities are learned permanent when all levels required are completed (custom for fewer levels in demoes)
- 	- Enable Hats when all levels are completed (for the demo only. Questline needs to be finished in the real game)
-8. CeilingClimb works with 2 blocks over, only that the player rotates as it was a block right over it
-
-9. ScenaryBlocks
-- Setup ScenaryBlocks
-- Make ScenaryBlocks collide with FreeCam
+4. When doing CeilingGrabRotation back to the noraml camera, the camrea is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
 
 10. Sound
 - Fix ice glide audio bug
-
-11. IceGliding next to to WaterBlocks
-- Fix so that when icegliding and the player CAN swim, stop before any waterBlock as it was a normal ledge
 
 12. AbilityButton Display (New System):
 - Use the new button icons and stepellierFont for NPC-interaction and when Abilities can be used
@@ -116,19 +106,13 @@ Mars:
 
 
 
---- BUGS FROM TESTBONANZA
+--- BUGS FROM TESTBONANZA (september)
 
 
 
 1. Fences on fallingBlocks (sand) immobilizes movement
 
 2. Falling block let the player move down edges when respawned
-
-3. Sometimes when rotating 90 degrees and the -90 degrees, in narrow places, the right movement result in forward movement
- 	- Sometimes, when rotating to the left twice, the player move in the looking direction after moving
- 	- Almost always when at the edge of something, where not all 4 adjacent blocks can be moved to (maybe blocks isn't updated to "null" when the camera is rotating, so it keeps old blocks when they should have been "null"?
-
-4. Stairs isn't counted for when ascending/Descending, so you can ascend/Descend through them
 
 5. Move the asset displayed on the EffectBlocks (Checkpoints & Teleporters) on top of the snow on SnowBlocks
 
@@ -148,12 +132,5 @@ Mars:
 
 51. Legg til Keybind i Controls-menyen av spillet
 
-
-
------ TASKS TO BE IMPLEMENTED LATER -----
-
-
-
-Switches:
-- Make interactable Wall-switch
+55. Switches: Make interactable Wall-switch
 

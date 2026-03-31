@@ -1,3 +1,4 @@
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
 public class Block_Moveable : MonoBehaviour
@@ -18,6 +19,9 @@ public class Block_Moveable : MonoBehaviour
     private const float DOWN_RAY_START_OFFSET = 0.25f;
     private const float DOWN_RAY_DISTANCE = 1f;
     private const float FORWARD_CHECK_DISTANCE = 1f;
+
+    public static int movingBlockCount = 0;
+    public static bool AnyBlockMoving => movingBlockCount > 0;
 
 
     //--------------------
@@ -75,7 +79,7 @@ public class Block_Moveable : MonoBehaviour
         movementDirection = GetPushDirectionFromPlayer();
         canMove = movementDirection != MovementDirection.None && CanMoveOneStep();
 
-        Movement.Instance.UpdateAvailableMovementBlocks();
+        //Movement.Instance.UpdateAvailableMovementBlocks();
     }
 
     private MovementDirection GetPushDirectionFromPlayer()
@@ -192,8 +196,21 @@ public class Block_Moveable : MonoBehaviour
         RefreshMovementState();
         if (!canMove) return;
 
+        Vector3 pushDir = GetMoveVector();
+        if (pushDir == Vector3.zero) return;
+
+        // Player must be facing toward the block, which is opposite of push direction
+        Vector3 facingTowardBlock = -pushDir;
+
+        if (Movement.Instance.JustTurnedToward(facingTowardBlock))
+            return;
+
+        if (Movement.Instance.IsInTurnAbilityDelay(facingTowardBlock))
+            return;
+
         isMoving = true;
         isIceGliding = false;
+        movingBlockCount++;
     }
 
     private void PerformMovement(float movementSpeed)
@@ -259,19 +276,34 @@ public class Block_Moveable : MonoBehaviour
 
     private void StopMovement()
     {
+        if (isMoving)
+        {
+            movingBlockCount = Mathf.Max(0, movingBlockCount - 1);
+        }
+
         isMoving = false;
         isIceGliding = false;
         canMove = false;
 
-        Movement.Instance.UpdateAvailableMovementBlocks();
+        RefreshMovementState();
+        Movement.Instance.RefreshAvailableMovementBlocksSmooth();
     }
 
     private void ResetBlockPos()
     {
+        if (isMoving)
+        {
+            movingBlockCount = Mathf.Max(0, movingBlockCount - 1);
+        }
+
+        isMoving = false;
+        isIceGliding = false;
+
         transform.position = startPos;
         savePos = startPos;
 
-        StopMovement();
+        canMove = false;
         RefreshMovementState();
+        Movement.Instance.RefreshAvailableMovementBlocksSmooth();
     }
 }

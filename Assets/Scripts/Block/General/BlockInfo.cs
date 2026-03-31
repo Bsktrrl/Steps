@@ -80,9 +80,10 @@ public class BlockInfo : MonoBehaviour
 
         blockIsDark = false;
     }
+
     private void Update()
     {
-        CheckDarkeningWhenPlayerIsOnElevator();
+        //CheckDarkeningWhenPlayerIsOnElevator();
     }
 
 
@@ -174,41 +175,27 @@ public class BlockInfo : MonoBehaviour
 
     public void SetDarkenColors()
     {
-        if (blockIsDark) { return; }
-
-        if (PlayerStats.Instance.stats.steps_Current <= 0 && movementCost > 0)
-        {
-            ResetDarkenColor();
-            return;
-        }
+        if (blockIsDark) return;
 
         color_isAboutToBeDarkened = true;
-
         UpdateBlock_Darken();
-
         color_isAboutToBeDarkened = false;
     }
 
     public void ResetDarkenColor()
     {
-        if (!blockIsDark) { return; }
+        if (!blockIsDark) return;
+
+        for (int i = 0; i < propertyBlocks.Count; i++)
+        {
+            Color restoredColor = ResetBlockColorTint();
+            propertyBlocks[i].SetColor("_BaseColor", restoredColor);
+            objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
+        }
 
         if (numberDisplay)
         {
-            for (int i = 0; i < propertyBlocks.Count; i++)
-            {
-                // Restore the color to full brightness
-                Color restoredColor = ResetBlockColorTint();
-
-                // Set the original color in the MaterialPropertyBlock
-                propertyBlocks[i].SetColor("_BaseColor", restoredColor);
-
-                // Apply the MaterialPropertyBlock to the renderer
-                objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
-
-                //Hide StepCost
-                numberDisplay.HideNumber();
-            }
+            numberDisplay.HideNumber();
         }
 
         blockIsDark = false;
@@ -238,27 +225,20 @@ public class BlockInfo : MonoBehaviour
     }
     void UpdateBlock_Darken()
     {
-        if (blockIsDark) { return; }
+        if (blockIsDark) return;
 
-        //Darken all materials attached
         for (int i = 0; i < propertyBlocks.Count; i++)
         {
-            if (numberDisplay)
-            {
-                //Ensure final value is exactly the target
-                Color finalColor = GetBlockColorTint();
-                propertyBlocks[i].SetColor("_BaseColor", finalColor);
-                objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
-            }
+            Color finalColor = GetBlockColorTint();
+            propertyBlocks[i].SetColor("_BaseColor", finalColor);
+            objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
         }
 
-        //Change StepCost 3D Asset Pos on Snow
         if (GetComponent<Block_Snow>())
         {
             GetComponent<Block_Snow>().ChangeStepCounterPosition();
         }
 
-        //Show StepCost
         if (numberDisplay && finishedSetup)
         {
             numberDisplay.ShowNumber();

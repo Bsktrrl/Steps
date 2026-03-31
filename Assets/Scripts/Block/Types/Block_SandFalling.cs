@@ -19,8 +19,11 @@ public class Block_SandFalling : MonoBehaviour
     [Header("FallingAnimation")]
     float shakingIntensity = 3;
     float shakingSpeed = 50;
-    List<GameObject> LOD_ObjectsList;
+    [SerializeField] List<GameObject> LOD_ObjectsList;
     Quaternion objectInitialRotation;
+
+    [Header("FallingSandObject")]
+    [SerializeField] GameObject sandBlockAsset;
 
     RaycastHit hit;
 
@@ -31,7 +34,7 @@ public class Block_SandFalling : MonoBehaviour
 
     private void Start()
     {
-        GetLODObjects();
+        //GetLODObjects();
 
         CheckIfCanFall();
 
@@ -125,6 +128,7 @@ public class Block_SandFalling : MonoBehaviour
                 if (hit.transform.gameObject.GetComponent<BlockInfo>())
                 {
                     canFall = false;
+                    sandBlockAsset.GetComponent<FallingSandScript>().enabled = false;
                     return;
                 }
             }
@@ -138,11 +142,13 @@ public class Block_SandFalling : MonoBehaviour
                     if (hit.transform.gameObject.GetComponent<BlockInfo>().blockType == BlockType.Slab)
                     {
                         canFall = true;
+                        sandBlockAsset.GetComponent<FallingSandScript>().enabled = true;
                         return;
                     }
                     else
                     {
                         canFall = false;
+                        sandBlockAsset.GetComponent<FallingSandScript>().enabled = false;
                         return;
                     }
                 }
@@ -150,6 +156,7 @@ public class Block_SandFalling : MonoBehaviour
         }
         
         canFall = true;
+        sandBlockAsset.GetComponent<FallingSandScript>().enabled = true;
     }
 
 

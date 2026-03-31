@@ -625,6 +625,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     bool ButtonChecks_Movement()
     {
+        if (!Run_IntroSequance()) return false;
+
         if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
 
         if (PlayerManager.Instance.pauseGame) { return false; }
@@ -654,6 +656,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     bool ButtonChecks_Other()
     {
+        if (!Run_IntroSequance()) return false;
+
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
         if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
 
@@ -686,6 +690,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     bool ButtonChecks_Other_MinusGrapplingHook()
     {
+        if (!Run_IntroSequance()) return false;
+
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
         if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
 
@@ -704,6 +710,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     bool ButtonChecks_Abilities()
     {
+        if (!Run_IntroSequance()) return false;
+
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
         if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
 
@@ -732,7 +740,21 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         Action_PauseMenuIsPressed?.Invoke();
     }
-    
+
+
+    //--------------------
+
+
+    //Into Sequence
+    bool Run_IntroSequance()
+    {
+        if (MapManager.Instance.introSequence_Finished)
+            return true;
+        else
+            return false;
+    }
+
+
 
     //--------------------
 
