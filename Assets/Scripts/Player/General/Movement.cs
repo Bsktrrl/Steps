@@ -1004,6 +1004,13 @@ public class Movement : Singleton<Movement>
 
     void UpdateWaterBlocksForSwiftSwim()
     {
+        int swiftSwimCost = 2;
+        if (StatsRoot.stats.abilitiesGot_Temporary.Flippers || StatsRoot.stats.abilitiesGot_Permanent.Flippers)
+            swiftSwimCost = 1;
+        else
+            swiftSwimCost = 2;
+
+
         if (StatsRoot.stats.abilitiesGot_Temporary.OxygenTank || StatsRoot.stats.abilitiesGot_Permanent.OxygenTank)
         {
             ResetSwiftSwimMovementCost(swiftSwimObject_StandingOn);
@@ -1014,8 +1021,8 @@ public class Movement : Singleton<Movement>
                 TryGetStandingInfo(out BlockInfo standingInfo) &&
                 standingInfo.blockElement == BlockElement.Water)
             {
-                standingInfo.movementCost = 1;
-                standingInfo.movementCost_Temp = 1;
+                standingInfo.movementCost = swiftSwimCost;
+                standingInfo.movementCost_Temp = swiftSwimCost;
                 swiftSwimObject_StandingOn = blockStandingOn;
             }
 
@@ -1025,8 +1032,8 @@ public class Movement : Singleton<Movement>
                     hit.collider.gameObject.TryGetComponent(out BlockInfo upInfo) &&
                     upInfo.blockElement == BlockElement.Water)
                 {
-                    upInfo.movementCost = 1;
-                    upInfo.movementCost_Temp = 1;
+                    upInfo.movementCost = swiftSwimCost;
+                    upInfo.movementCost_Temp = swiftSwimCost;
                     upInfo.ResetDarkenColor();
                     upInfo.SetDarkenColors();
                     swiftSwimObject_Up = hit.collider.gameObject;
@@ -1041,8 +1048,8 @@ public class Movement : Singleton<Movement>
                     TryGetStandingInfo(out BlockInfo standingWaterInfo) &&
                     standingWaterInfo.blockElement == BlockElement.Water)
                 {
-                    downInfo.movementCost = 1;
-                    downInfo.movementCost_Temp = 1;
+                    downInfo.movementCost = swiftSwimCost;
+                    downInfo.movementCost_Temp = swiftSwimCost;
                     downInfo.ResetDarkenColor();
                     downInfo.SetDarkenColors();
                     swiftSwimObject_Down = hit.collider.gameObject;

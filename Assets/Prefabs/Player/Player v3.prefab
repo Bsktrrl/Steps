@@ -26406,7 +26406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03f920e620578114a8d059d938b16c8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runTutorial: 0
+  runTutorial: 1
   state_Movement: 0
   state_CameraRotation: 0
   state_Respawn: 0
@@ -32105,6 +32105,7 @@ MonoBehaviour:
   walkAnimationCheck: 0
   hasSlopeGlided: 0
   isSlopeGliding: 0
+  slopeLandingIsFree: 0
   swiftSwimObject_StandingOn: {fileID: 0}
   swiftSwimObject_Up: {fileID: 0}
   swiftSwimObject_Down: {fileID: 0}
@@ -32112,6 +32113,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 262208
   isRespawning: 0
+  turnBeforeMoveDelay: 0.12
+  lastIceGlideDirection: {x: 0, y: 0, z: 0}
+  slopeAutoExitInProgress: 0
+  slopeAutoExitSourceBlock: {fileID: 0}
+  slopeAutoExitTargetPos: {x: 0, y: 0, z: 0}
+  suppressDarkeningWhileChaining: 0
+  pendingDarkeningRefreshAfterChain: 0
 --- !u!114 &3643509991883984095
 MonoBehaviour:
   m_ObjectHideFlags: 0
