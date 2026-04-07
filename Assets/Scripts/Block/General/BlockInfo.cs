@@ -19,11 +19,6 @@ public class BlockInfo : MonoBehaviour
     public Color stepCostText_Color;
     public Color stepCostText_ColorUnder;
 
-    [Header("Step Sound")]
-    public float stepSound_Volume;
-    public List<AudioClip> stepSound_ClipList;
-    [HideInInspector] public AudioSource stepSound_Source;
-
     [Header("Starting Position")]
     [HideInInspector] public Vector3 startPos;
 
@@ -61,8 +56,6 @@ public class BlockInfo : MonoBehaviour
 
         movementCost_Temp = movementCost;
 
-        stepSound_Source = gameObject.AddComponent<AudioSource>();
-        
         SetObjectRenderer();
         SetPropertyBlock();
 
@@ -281,27 +274,6 @@ public class BlockInfo : MonoBehaviour
         else
         {
             return Color.white;
-        }
-    }
-
-
-    //--------------------
-
-
-    public void MakeStepSound()
-    {
-        if (stepSound_ClipList.Count > 0 && Movement.Instance.blockStandingOn == gameObject)
-        {
-            int sound = UnityEngine.Random.Range(0, stepSound_ClipList.Count);
-
-            stepSound_Source.clip = stepSound_ClipList[sound];
-
-            float volume = UnityEngine.Random.Range(0.75f, 1.25f);
-
-            if (stepSound_Volume > 0)
-                stepSound_Source.volume = stepSound_Volume * volume;
-
-            stepSound_Source.Play();
         }
     }
 
