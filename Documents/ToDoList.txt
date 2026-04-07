@@ -2,44 +2,55 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 Mars:
-0.0. Flashing av DarkenBlock:
-- Hvis man holer inne movementknapp for å bevege seg smooth over flere blokker, så flasher Darken på adjacent blokker bittelitt for hvert steg. Det må fjernes/endres.
+1.0. Lyd:
+- Legge inn lydene fra Lisette
 
-1.0. SandFallingPlayer MoveOff Block
+
+2.0. SandFallingPlayer MoveOff Block
 - Legg til en state som er "SandFalling", hvor spilleren kan gå av blokken underveis i et fall, i "Movement"-scriptet
 - Også legg til mulighet for jumping (kan være at skjer automatisk)
 
-2.0. CameraBlockRender
+
+3.0. CameraBlockRender
 - FÅ ladders og pickups til å bli usynlige når blokkene blir det
 
-3.0. Number X
+
+4.0. Number X
 - Legg til Number X på slopes og Water når man ikke bør gå på dem (Asset Store > Custom > Numbers)
 
-4.0. Glueplant Particle Effect
+
+5.0. Glueplant Particle Effect
 - Legg til particle Effect når man plukker opp Glueplanten (Asset Store > Custom > VisualEffects > Prefabs > Player og heter "Effect_GlueplantPickup)
 - Gi en liten delay før man går til hovedmenyen
 
-5.0 Lava-effekt:
+
+6.0 Lava-effekt:
 - Legg på effekt av sprutende lava til lavablokker (Blant environment particle effectene)
 
-6.0. Metal-rør
+
+7.0. Metal-rør
 - Legge til Metal-rør i "6. Metalworks" blok-prefabslisten
 
-7.0. Elevator Blocks:
+
+8.0. Elevator Blocks:
 - Legg til nye ElevatorBlocks i prefablisten
 - Sett GoldBlock-animsjoner til å skje når spilleren aktiverer/deaktiverer dem (følg instruksjoner i goldBlock-scriptet)
 
-8.0. Looking-kamera:
+
+9.0. Looking-kamera:
 - Gjøre om joystick til å snu kameraet litt rundt spilleren
 	- Lage en variant for rundt spilleren (til vurdering)
 	- Lage en variant for rundt seg selv (til vurdering)
 - Gjøre kompatibel for både kontroll og datamus
 
-10.0. Svømme i vann
+
+10.0. Svømme/Drukning i vann
 - Gjøre slik at man kan gå ut i vann, men at man drukner hvis man ikke har abilitien (la spilleren vente til blokken har druknet og respawnet)
+
 
 11.0. Slope fall-animasjon
 - Spill av falleBakover-animasjon hvis man forsøker å gå opp slopes (la spilleren vente til blokken har kommet seg opp)
+
 
 12.0. "Reset Level"-knapp i Pausemenyen
 - Legge til en knapp som lar spilelren resete levelet (starte fra første checkpoint), slik at spillere som sitter fast, kan starte levelet på nytt om de ønsker det

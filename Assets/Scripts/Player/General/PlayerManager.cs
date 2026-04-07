@@ -45,14 +45,12 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         DataManager.Action_dataHasLoaded += LoadPlayerStats;
         Movement.Action_StepTaken += StepsOnFallableBlock;
-        Movement.Action_StepTaken += MakeStepSound;
     }
 
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= LoadPlayerStats;
         Movement.Action_StepTaken -= StepsOnFallableBlock;
-        Movement.Action_StepTaken -= MakeStepSound;
     }
 
 
@@ -71,17 +69,6 @@ public class PlayerManager : Singleton<PlayerManager>
 
     //--------------------
 
-
-    void MakeStepSound()
-    {
-        if (Movement.Instance.blockStandingOn)
-        {
-            if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>())
-            {
-                Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().MakeStepSound();
-            }
-        }
-    }
     void StepsOnFallableBlock()
     {
         if (Movement.Instance.blockStandingOn && !Player_CeilingGrab.Instance.isCeilingGrabbing)

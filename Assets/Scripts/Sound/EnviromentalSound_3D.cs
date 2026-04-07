@@ -1,214 +1,469 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnviromentalSound_3D : Singleton<EnviromentalSound_3D>
 {
-    [Header("Global Parameters")]
-    [SerializeField] float sphereCastRadius = 5f;
+    [Header("Listener")]
+    [Tooltip("The transform used as the center for distance checks. Usually the player root. If left empty, this object's transform is used.")]
+    [SerializeField] private Transform listenerTarget;
 
-    [Header("Sound Layer")]
-    [SerializeField] LayerMask layer_EnviromentalSound;
+    [Tooltip("If enabled, stereo panning uses the camera anchor yaw so left/right matches what the player sees.")]
+    [SerializeField] private bool useCameraAnchorForPan = true;
 
+    [Header("Detection")]
+    [Tooltip("Only colliders on these layers will be considered environmental sound objects.")]
+    [SerializeField] private LayerMask layer_EnviromentalSound;
 
-    //-----
+    [Tooltip("How often nearby sound objects are scanned. Lower values are more responsive but cost more CPU.")]
+    [Min(0.02f)]
+    [SerializeField] private float scanInterval = 0.08f;
 
+    [Tooltip("Maximum number of colliders the non-alloc overlap scan can detect at once.")]
+    [Min(16)]
+    [SerializeField] private int overlapBufferSize = 256;
 
-    [Header("Water Parameters")]
-    [SerializeField] AudioSource audioSource_Water;
-    GameObject blockSelected_Water;
+    [Header("Listener Smoothing")]
+    [Tooltip("Smooths the listener position used for environmental audio.")]
+    [Min(0.01f)]
+    [SerializeField] private float listenerPositionSmoothTime = 0.12f;
 
-    [Header("Waterfall Parameters")]
-    [SerializeField] AudioSource audioSource_Waterfall;
-    GameObject blockSelected_Waterfall;
+    [Tooltip("Smooths the listener yaw used for stereo panning.")]
+    [Min(0.01f)]
+    [SerializeField] private float listenerYawSmoothTime = 0.18f;
 
-    [Header("Swampwater Parameters")]
-    [SerializeField] AudioSource audioSource_Swampwater;
-    GameObject blockSelected_Swampwater;
+    [Header("Per-Type Sound Channels")]
+    [Tooltip("Each entry represents one looping environmental sound category.")]
+    [SerializeField] private List<SoundChannelSettings> channels = new List<SoundChannelSettings>();
 
-    [Header("Swampwaterfall Parameters")]
-    [SerializeField] AudioSource audioSource_Swampwaterfall;
-    GameObject blockSelected_Swampwaterfall;
+    [Header("Debug")]
+    [SerializeField] private bool debugLogging = false;
 
-    [Header("Mud Parameters")]
-    [SerializeField] AudioSource audioSource_Mud;
-    GameObject blockSelected_Mud;
+    private readonly Dictionary<SoundObjectType, SoundChannelSettings> channelLookup = new Dictionary<SoundObjectType, SoundChannelSettings>();
+    private readonly Dictionary<SoundObjectType, ChannelRuntime> runtimeLookup = new Dictionary<SoundObjectType, ChannelRuntime>();
 
-    [Header("Mudfall Parameters")]
-    [SerializeField] AudioSource audioSource_Mudfall;
-    GameObject blockSelected_Mudfall;
+    private Collider[] overlapBuffer;
+    private float maxSearchRadius = 0f;
+    private float scanTimer = 0f;
 
-    [Header("Lava Parameters")]
-    [SerializeField] AudioSource audioSource_Lava;
-    GameObject blockSelected_Lava;
+    private Vector3 smoothedListenerPosition;
+    private Vector3 listenerPositionVelocity;
 
-    [Header("Lavafall Parameters")]
-    [SerializeField] AudioSource audioSource_Lavafall;
-    GameObject blockSelected_Lavafall;
+    private float smoothedListenerYaw;
+    private float listenerYawVelocity;
 
-    [Header("Quicksand Parameters")]
-    [SerializeField] AudioSource audioSource_Quicksand;
-    GameObject blockSelected_Quicksand;
-
-    [Header("Quicksandfall Parameters")]
-    [SerializeField] AudioSource audioSource_Quicksandfall;
-    GameObject blockSelected_Quicksandfall;
-
-    [Header("IceCrack Parameters")]
-    [SerializeField] AudioSource audioSource_IceCrack;
-    GameObject blockSelected_IceCrack;
-
-    [Header("Effect Blocks")]
-    [SerializeField] AudioSource audioSource_EffectBlock_Checkpoint;
-    GameObject blockSelected_EffectBlock_Checkpoint;
-    [SerializeField] AudioSource audioSource_EffectBlock_RefillSteps;
-    GameObject blockSelected_EffectBlock_RefillSteps;
-    [SerializeField] AudioSource audioSource_EffectBlock_Teleporter;
-    GameObject blockSelected_EffectBlock_Teleporter;
-    [SerializeField] AudioSource audioSource_EffectBlock_Pusher;
-    GameObject blockSelected_EffectBlock_Pusher;
-    [SerializeField] AudioSource audioSource_EffectBlock_MushroomCircle;
-    GameObject blockSelected_EffectBlock_MushroomCircle;
-
-    //-----
-
-
-    List<Collider> hits = new List<Collider>();
-
-    Dictionary<SoundObjectType, List<GameObject>> blocksByType = new Dictionary<SoundObjectType, List<GameObject>>();
-    Dictionary<SoundObjectType, GameObject> closestByType = new Dictionary<SoundObjectType, GameObject>();
-
-
-    //--------------------
-
-
-    void Update()
+    [Serializable]
+    public class SoundChannelSettings
     {
-        SoundSetup();
-        SoundGroup();
+        [Header("Identity")]
+        [Tooltip("The SoundObjectType this channel reacts to.")]
+        public SoundObjectType soundType = SoundObjectType.None;
+
+        [Tooltip("The looping AudioSource used for this sound type. Assign a source with its loop clip already set in the Inspector.")]
+        public AudioSource audioSource;
+
+        [Header("Distance / Loudness")]
+        [Tooltip("How far away this sound type can be detected.")]
+        [Min(0.1f)]
+        public float searchRadius = 5f;
+
+        [Tooltip("Maximum volume this channel can reach when very close.")]
+        [Range(0f, 1f)]
+        public float maxVolume = 1f;
+
+        [Tooltip("Controls how volume falls off over normalized distance. X=0 is very close. X=1 is at the search radius edge.")]
+        public AnimationCurve distanceVolumeCurve = DefaultDistanceCurve();
+
+        [Tooltip("Invert the evaluated curve result. Enable this if a saved inspector curve is upside down.")]
+        public bool invertDistanceCurve = false;
+
+        [Header("Smoothing")]
+        [Tooltip("How quickly this channel changes volume.")]
+        [Min(0.01f)]
+        public float volumeSmoothTime = 0.2f;
+
+        [Tooltip("How quickly this channel changes stereo pan.")]
+        [Min(0.01f)]
+        public float panSmoothTime = 0.2f;
+
+        [Header("Stereo")]
+        [Tooltip("How strongly left/right positioning affects this sound.")]
+        [Range(0f, 1f)]
+        public float panStrength = 0.4f;
+
+        [Header("Playback Thresholds")]
+        [Tooltip("If target volume rises above this, the source starts or resumes.")]
+        [Range(0f, 0.25f)]
+        public float playThreshold = 0.02f;
+
+        [Tooltip("If both target volume and actual volume are below this, the source pauses.")]
+        [Range(0f, 0.25f)]
+        public float pauseThreshold = 0.005f;
+
+        public static AnimationCurve DefaultDistanceCurve()
+        {
+            return new AnimationCurve(
+                new Keyframe(0f, 1f),
+                new Keyframe(1f, 0f)
+            );
+        }
     }
 
-
-    //--------------------
-
-
-    void SoundSetup()
+    private class ChannelRuntime
     {
-        hits.Clear();
-        hits.AddRange(Physics.OverlapSphere(transform.position, sphereCastRadius, layer_EnviromentalSound));
+        public float targetVolume;
+        public float targetPan;
 
-        blocksByType.Clear();
-        closestByType.Clear();
+        public float currentVolumeVelocity;
+        public float currentPanVelocity;
 
-        foreach (var col in hits)
+        public float lastNearestDistance = -1f;
+    }
+
+    private struct ScanAggregate
+    {
+        public bool found;
+        public float nearestDistance;
+        public float weightedPanSum;
+        public float weightSum;
+    }
+
+    private void Start()
+    {
+        if (listenerTarget == null)
+            listenerTarget = transform;
+
+        RebuildRuntimeData();
+
+        smoothedListenerPosition = listenerTarget.position;
+        smoothedListenerYaw = GetTargetYaw();
+    }
+
+    private void Update()
+    {
+        if (listenerTarget == null)
+            listenerTarget = transform;
+
+        UpdateSmoothedListener();
+
+        scanTimer -= Time.deltaTime;
+        if (scanTimer <= 0f)
         {
-            var so = col.GetComponent<SoundObject>();
-            if (so == null) continue;
+            scanTimer = scanInterval;
+            ScanEnvironment();
+        }
 
-            var type = so.soundObjectType;
-            if (!blocksByType.TryGetValue(type, out var list))
+        ApplyAudioSmoothing();
+    }
+
+    private void OnValidate()
+    {
+        if (scanInterval < 0.02f)
+            scanInterval = 0.02f;
+
+        if (overlapBufferSize < 16)
+            overlapBufferSize = 16;
+
+        if (listenerPositionSmoothTime < 0.01f)
+            listenerPositionSmoothTime = 0.01f;
+
+        if (listenerYawSmoothTime < 0.01f)
+            listenerYawSmoothTime = 0.01f;
+
+        if (channels == null)
+            return;
+
+        foreach (var channel in channels)
+        {
+            if (channel == null)
+                continue;
+
+            if (channel.searchRadius < 0.1f)
+                channel.searchRadius = 0.1f;
+
+            if (channel.volumeSmoothTime < 0.01f)
+                channel.volumeSmoothTime = 0.01f;
+
+            if (channel.panSmoothTime < 0.01f)
+                channel.panSmoothTime = 0.01f;
+
+            if (channel.playThreshold < channel.pauseThreshold)
+                channel.playThreshold = channel.pauseThreshold;
+        }
+    }
+
+    [ContextMenu("Rebuild Runtime Data")]
+    private void RebuildRuntimeData()
+    {
+        BuildLookup();
+        PrepareAudioSources();
+        overlapBuffer = new Collider[Mathf.Max(16, overlapBufferSize)];
+    }
+
+    private void BuildLookup()
+    {
+        channelLookup.Clear();
+        runtimeLookup.Clear();
+        maxSearchRadius = 0f;
+
+        for (int i = 0; i < channels.Count; i++)
+        {
+            SoundChannelSettings channel = channels[i];
+            if (channel == null || channel.soundType == SoundObjectType.None || channel.audioSource == null)
+                continue;
+
+            if (channelLookup.ContainsKey(channel.soundType))
             {
-                list = new List<GameObject>();
-                blocksByType[type] = list;
+                Debug.LogWarning($"Duplicate environmental sound channel found for type '{channel.soundType}'. Only the last one will be used.", this);
             }
-            list.Add(col.gameObject);
 
-            // track closest for this type
-            float d = Vector3.Distance(transform.position, col.transform.position);
-            if (!closestByType.ContainsKey(type) || d < Vector3.Distance(transform.position, closestByType[type].transform.position))
+            channelLookup[channel.soundType] = channel;
+            runtimeLookup[channel.soundType] = new ChannelRuntime();
+
+            if (channel.searchRadius > maxSearchRadius)
+                maxSearchRadius = channel.searchRadius;
+        }
+    }
+
+    private void PrepareAudioSources()
+    {
+        for (int i = 0; i < channels.Count; i++)
+        {
+            SoundChannelSettings channel = channels[i];
+            if (channel == null || channel.audioSource == null)
+                continue;
+
+            AudioSource source = channel.audioSource;
+            source.playOnAwake = false;
+            source.loop = true;
+            source.spatialBlend = 0f;
+            source.dopplerLevel = 0f;
+        }
+    }
+
+    private void UpdateSmoothedListener()
+    {
+        smoothedListenerPosition = Vector3.SmoothDamp(
+            smoothedListenerPosition,
+            listenerTarget.position,
+            ref listenerPositionVelocity,
+            listenerPositionSmoothTime
+        );
+
+        float targetYaw = GetTargetYaw();
+
+        smoothedListenerYaw = Mathf.SmoothDampAngle(
+            smoothedListenerYaw,
+            targetYaw,
+            ref listenerYawVelocity,
+            listenerYawSmoothTime
+        );
+    }
+
+    private float GetTargetYaw()
+    {
+        if (useCameraAnchorForPan)
+        {
+            Transform camT = CameraController.Instance?.cameraAnchor?.transform;
+            if (camT != null)
+                return camT.eulerAngles.y;
+        }
+
+        return listenerTarget != null ? listenerTarget.eulerAngles.y : transform.eulerAngles.y;
+    }
+
+    private float EvaluateDistanceCurve(SoundChannelSettings channel, float normalizedDistance)
+    {
+        float value = channel.distanceVolumeCurve != null
+            ? channel.distanceVolumeCurve.Evaluate(normalizedDistance)
+            : 1f - normalizedDistance;
+
+        if (channel.invertDistanceCurve)
+            value = 1f - value;
+
+        return Mathf.Clamp01(value);
+    }
+
+    private void ScanEnvironment()
+    {
+        if (maxSearchRadius <= 0f || overlapBuffer == null || overlapBuffer.Length == 0)
+        {
+            ResetTargetsToSilence();
+            return;
+        }
+
+        Dictionary<SoundObjectType, ScanAggregate> aggregates = new Dictionary<SoundObjectType, ScanAggregate>();
+
+        int hitCount = Physics.OverlapSphereNonAlloc(
+            smoothedListenerPosition,
+            maxSearchRadius,
+            overlapBuffer,
+            layer_EnviromentalSound
+        );
+
+        Vector3 listenerRight = Quaternion.Euler(0f, smoothedListenerYaw, 0f) * Vector3.right;
+
+        for (int i = 0; i < hitCount; i++)
+        {
+            Collider col = overlapBuffer[i];
+            if (col == null)
+                continue;
+
+            if (!col.TryGetComponent<SoundObject>(out SoundObject soundObject))
+                continue;
+
+            if (!channelLookup.TryGetValue(soundObject.soundObjectType, out SoundChannelSettings channel))
+                continue;
+
+            Vector3 toObj = col.transform.position - smoothedListenerPosition;
+            float distance = toObj.magnitude;
+
+            if (distance > channel.searchRadius)
+                continue;
+
+            float normalizedDistance = Mathf.Clamp01(distance / Mathf.Max(0.001f, channel.searchRadius));
+            float weight = EvaluateDistanceCurve(channel, normalizedDistance);
+
+            ScanAggregate aggregate;
+            if (!aggregates.TryGetValue(soundObject.soundObjectType, out aggregate))
             {
-                closestByType[type] = col.gameObject;
+                aggregate = new ScanAggregate
+                {
+                    found = true,
+                    nearestDistance = distance,
+                    weightedPanSum = 0f,
+                    weightSum = 0f
+                };
             }
-        }
-    }
-    void SoundGroup()
-    {
-        PlaySound(audioSource_Water, SoundObjectType.Water, ref blockSelected_Water);
-        PlaySound(audioSource_Waterfall, SoundObjectType.Waterfall, ref blockSelected_Waterfall);
+            else
+            {
+                if (distance < aggregate.nearestDistance)
+                    aggregate.nearestDistance = distance;
+            }
 
-        PlaySound(audioSource_Swampwater, SoundObjectType.Swampwater, ref blockSelected_Swampwater);
-        PlaySound(audioSource_Swampwaterfall, SoundObjectType.Swampwaterfall, ref blockSelected_Swampwaterfall);
-
-        PlaySound(audioSource_Mud, SoundObjectType.Mud, ref blockSelected_Mud);
-        PlaySound(audioSource_Mudfall, SoundObjectType.Mudfall, ref blockSelected_Mudfall);
-
-        PlaySound(audioSource_Lava, SoundObjectType.Lava, ref blockSelected_Lava);
-        PlaySound(audioSource_Lavafall, SoundObjectType.Lavafall, ref blockSelected_Lavafall);
-
-        PlaySound(audioSource_Quicksand, SoundObjectType.Quicksand, ref blockSelected_Quicksand);
-        PlaySound(audioSource_Quicksandfall, SoundObjectType.Quicksandfall, ref blockSelected_Quicksandfall);
-
-        PlaySound(audioSource_IceCrack, SoundObjectType.IceCrack, ref blockSelected_IceCrack);
-
-        PlaySound(audioSource_EffectBlock_Checkpoint, SoundObjectType.Checkpoint, ref blockSelected_EffectBlock_Checkpoint);
-        PlaySound(audioSource_EffectBlock_RefillSteps, SoundObjectType.RefillSteps, ref blockSelected_EffectBlock_RefillSteps);
-        PlaySound(audioSource_EffectBlock_Teleporter, SoundObjectType.Teleporter, ref blockSelected_EffectBlock_Teleporter);
-        PlaySound(audioSource_EffectBlock_Pusher, SoundObjectType.MoveableObject, ref blockSelected_EffectBlock_Pusher);
-        PlaySound(audioSource_EffectBlock_MushroomCircle, SoundObjectType.MushroomCircle, ref blockSelected_EffectBlock_MushroomCircle);
-    }
-   
-    void PlaySound(AudioSource audioSource, SoundObjectType type, ref GameObject closestObjectOut)
-    {
-        if (!audioSource || type == SoundObjectType.None) return;
-
-        if (blocksByType.TryGetValue(type, out var blocks) && blocks.Count > 0)
-        {
-            closestObjectOut = closestByType[type];
-
-            float volume = CalculateVolumeValueFromClosestBlock(closestObjectOut);
-            float pan = CalculateSterioPanValue(blocks);
-
-            audioSource.volume = volume;
-            audioSource.panStereo = pan;
-
-            if (!audioSource.isPlaying) audioSource.Play();
-        }
-        else
-        {
-            closestObjectOut = null;
-            if (audioSource.isPlaying) audioSource.Stop();
-        }
-    }
-   
-    float CalculateVolumeValueFromClosestBlock(GameObject closest)
-    {
-        if (!closest) return 0f;
-        float d = Vector3.Distance(transform.position, closest.transform.position);
-        return 1f - Mathf.Clamp01(d / sphereCastRadius);
-    }
-    float CalculateSterioPanValue(List<GameObject> blocks)
-    {
-        if (blocks == null || blocks.Count == 0) return 0f;
-
-        // Use camera orientation so left/right matches what the player sees.
-        Transform camT = CameraController.Instance?.cameraAnchor?.transform;
-        Transform refT = camT != null ? camT : transform;
-
-        float sum = 0f;
-        float weightSum = 0f;
-
-        foreach (var go in blocks)
-        {
-            if (!go) continue;
-
-            Vector3 toObj = go.transform.position - refT.position;
-
-            // horizontal only for pan
             Vector3 flat = Vector3.ProjectOnPlane(toObj, Vector3.up);
-            if (flat.sqrMagnitude < 1e-6f) continue;
+            if (flat.sqrMagnitude > 0.000001f && weight > 0f)
+            {
+                float pan = Vector3.Dot(listenerRight, flat.normalized);
+                aggregate.weightedPanSum += pan * weight;
+                aggregate.weightSum += weight;
+            }
 
-            float pan = Vector3.Dot(refT.right, flat.normalized);           // [-1, 1]
-            float d = toObj.magnitude;
-            float w = Mathf.Max(0f, 1f - (d / sphereCastRadius));         // same curve as volume
-
-            sum += pan * w;
-            weightSum += w;
+            aggregate.found = true;
+            aggregates[soundObject.soundObjectType] = aggregate;
         }
 
-        if (weightSum <= 0f) return 0f;
-        return Mathf.Clamp(sum / weightSum, -1f, 1f);
+        foreach (var pair in channelLookup)
+        {
+            SoundObjectType type = pair.Key;
+            SoundChannelSettings channel = pair.Value;
+            ChannelRuntime runtime = runtimeLookup[type];
+
+            if (aggregates.TryGetValue(type, out ScanAggregate aggregate) && aggregate.found)
+            {
+                float normalizedNearestDistance = Mathf.Clamp01(
+                    aggregate.nearestDistance / Mathf.Max(0.001f, channel.searchRadius)
+                );
+
+                float volumeMultiplier = EvaluateDistanceCurve(channel, normalizedNearestDistance);
+                runtime.targetVolume = channel.maxVolume * volumeMultiplier;
+
+                if (aggregate.weightSum > 0f)
+                    runtime.targetPan = Mathf.Clamp((aggregate.weightedPanSum / aggregate.weightSum) * channel.panStrength, -1f, 1f);
+                else
+                    runtime.targetPan = 0f;
+
+                runtime.lastNearestDistance = aggregate.nearestDistance;
+
+                if (debugLogging)
+                {
+                    Debug.Log($"{type}: nearest={aggregate.nearestDistance:F2}, normalized={normalizedNearestDistance:F2}, targetVolume={runtime.targetVolume:F2}, targetPan={runtime.targetPan:F2}", this);
+                }
+            }
+            else
+            {
+                runtime.targetVolume = 0f;
+                runtime.targetPan = 0f;
+                runtime.lastNearestDistance = -1f;
+            }
+        }
+
+        if (hitCount == overlapBuffer.Length)
+        {
+            Debug.LogWarning("EnviromentalSound_3D overlap buffer is full. Increase Overlap Buffer Size.", this);
+        }
     }
+
+    private void ApplyAudioSmoothing()
+    {
+        foreach (var pair in channelLookup)
+        {
+            SoundChannelSettings channel = pair.Value;
+            ChannelRuntime runtime = runtimeLookup[pair.Key];
+            AudioSource source = channel.audioSource;
+
+            if (source == null)
+                continue;
+
+            source.volume = Mathf.SmoothDamp(
+                source.volume,
+                runtime.targetVolume,
+                ref runtime.currentVolumeVelocity,
+                Mathf.Max(0.001f, channel.volumeSmoothTime)
+            );
+
+            source.panStereo = Mathf.SmoothDamp(
+                source.panStereo,
+                runtime.targetPan,
+                ref runtime.currentPanVelocity,
+                Mathf.Max(0.001f, channel.panSmoothTime)
+            );
+
+            if (runtime.targetVolume > channel.playThreshold)
+            {
+                if (!source.isPlaying)
+                    source.Play();
+            }
+            else if (runtime.targetVolume <= channel.pauseThreshold && source.volume <= channel.pauseThreshold)
+            {
+                if (source.isPlaying)
+                    source.Pause();
+            }
+        }
+    }
+
+    private void ResetTargetsToSilence()
+    {
+        foreach (var pair in runtimeLookup)
+        {
+            pair.Value.targetVolume = 0f;
+            pair.Value.targetPan = 0f;
+            pair.Value.lastNearestDistance = -1f;
+        }
+    }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        Vector3 center = listenerTarget != null ? listenerTarget.position : transform.position;
+
+        if (channels == null)
+            return;
+
+        Gizmos.color = new Color(0.2f, 0.8f, 1f, 0.15f);
+
+        for (int i = 0; i < channels.Count; i++)
+        {
+            var channel = channels[i];
+            if (channel == null || channel.soundType == SoundObjectType.None)
+                continue;
+
+            Gizmos.DrawWireSphere(center, channel.searchRadius);
+        }
+    }
+#endif
 }
+
 public enum SoundObjectType
 {
     None,
