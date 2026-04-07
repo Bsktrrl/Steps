@@ -27581,9 +27581,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5716584747879069439}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6, y: 0.9, z: -5}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6300712352616878131}
@@ -27602,26 +27602,85 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c65923213ff53459dda42c259c0cbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sphereCastRadius: 5
+  listenerTarget: {fileID: 0}
+  useCameraAnchorForPan: 1
   layer_EnviromentalSound:
     serializedVersion: 2
     m_Bits: 262144
-  audioSource_Water: {fileID: 6931817270891445074}
-  audioSource_Waterfall: {fileID: 5281924810781171158}
-  audioSource_Swampwater: {fileID: 0}
-  audioSource_Swampwaterfall: {fileID: 0}
-  audioSource_Mud: {fileID: 0}
-  audioSource_Mudfall: {fileID: 0}
-  audioSource_Lava: {fileID: 0}
-  audioSource_Lavafall: {fileID: 0}
-  audioSource_Quicksand: {fileID: 0}
-  audioSource_Quicksandfall: {fileID: 0}
-  audioSource_IceCrack: {fileID: 0}
-  audioSource_EffectBlock_Checkpoint: {fileID: 0}
-  audioSource_EffectBlock_RefillSteps: {fileID: 0}
-  audioSource_EffectBlock_Teleporter: {fileID: 0}
-  audioSource_EffectBlock_Pusher: {fileID: 0}
-  audioSource_EffectBlock_MushroomCircle: {fileID: 0}
+  scanInterval: 0.08
+  overlapBufferSize: 256
+  listenerPositionSmoothTime: 0.12
+  listenerYawSmoothTime: 0.18
+  channels:
+  - soundType: 1
+    audioSource: {fileID: 6931817270891445074}
+    searchRadius: 4
+    maxVolume: 0.45
+    distanceVolumeCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    invertDistanceCurve: 1
+    volumeSmoothTime: 0.25
+    panSmoothTime: 0.2
+    panStrength: 0.3
+    playThreshold: 0
+    pauseThreshold: 0
+  - soundType: 2
+    audioSource: {fileID: 5281924810781171158}
+    searchRadius: 5
+    maxVolume: 0.5
+    distanceVolumeCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    invertDistanceCurve: 1
+    volumeSmoothTime: 0.35
+    panSmoothTime: 0.3
+    panStrength: 0.25
+    playThreshold: 0
+    pauseThreshold: 0
+  debugLogging: 0
 --- !u!1 &5738904633956238407
 GameObject:
   m_ObjectHideFlags: 0
@@ -36896,9 +36955,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7859426247820070416}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12, y: -1.8, z: 10}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8903524633790053318}
