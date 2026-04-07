@@ -1,4 +1,4 @@
-Shader "Custom/Shader_Depth"
+Shader "Custom/Shader_DepthCopy"
 {
     SubShader
     {
@@ -11,38 +11,44 @@ Shader "Custom/Shader_Depth"
 
         Pass
         {
-            ZWrite On
-            ZTest LEqual
-            ColorMask R
-            Blend Off
+            ZWrite Off
+            ZTest Always
+            Cull Off
 
             HLSLPROGRAM
-
             #pragma vertex vert
             #pragma fragment frag
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
+            TEXTURE2D(_CameraDepthTexture);
+            SAMPLER(sampler_CameraDepthTexture);
+
             struct Attributes
             {
-                float4 positionOS : POSITION;
+                float3 positionOS : POSITION;
+                float2 uv : TEXCOORD0;
             };
 
-            struct Varyings 
+            struct Varyings
             {
                 float4 positionCS : SV_POSITION;
+                float2 uv : TEXCOORD0;
             };
 
-            Varyings vert (Attributes v)
+            Varyings vert(Attributes v)
             {
                 Varyings o;
-                o.positionCS = TransformObjectToHClip(v.positionOS.xyz);
+                o.positionCS = TransformObjectToHClip(v.positionOS);
+                o.uv = v.uv;
                 return o;
             }
 
             float frag(Varyings i) : SV_Target
             {
-                float linearDepth = LinearEyeDepth(i.positionCS.z / i.positionCS.w, _ZBufferParams);
+                float rawDepth = SAMPLE_TEXTURE2D(_CameraDepthTexture, sampler_CameraDepthTexture, i.uv);
+
+                float linearDepth = LinearEyeDepth(rawDepth);
 
                 return linearDepth;
             }
