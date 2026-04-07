@@ -20,8 +20,6 @@ public class EffectBlockInfo : MonoBehaviour
 
     [Header("Is Added (synced from children)")]
     public bool effectBlock_SpawnPoint_isAdded;
-    [SerializeField] private bool effectBlock_RefillSteps_isAdded;
-    [SerializeField] private bool effectBlock_Pusher_isAdded;
     public bool effectBlock_Teleporter_isAdded;
     [SerializeField] private bool effectBlock_Moveable_isAdded;
     public bool effectBlock_MushroomCircle_isAdded;
@@ -43,6 +41,15 @@ public class EffectBlockInfo : MonoBehaviour
     {
         ApplyMovementCostFromComponents();
         SyncIsAddedFlagsFromChildren();
+
+        if (Application.isPlaying && !effectBlock_SpawnPoint_isAdded && !effectBlock_Teleporter_isAdded && !effectBlock_Moveable_isAdded && !effectBlock_MushroomCircle_isAdded)
+        {
+            this.gameObject.GetComponent<EffectBlockInfo>().enabled = false;
+        }
+        else
+        {
+            this.gameObject.GetComponent<EffectBlockInfo>().enabled = true;
+        }
 
         if (Application.isPlaying) return;
 
@@ -124,8 +131,6 @@ public class EffectBlockInfo : MonoBehaviour
     private void SyncIsAddedFlagsFromChildren()
     {
         effectBlock_SpawnPoint_isAdded = HasType(EffectVisualType.SpawnPoint);
-        effectBlock_RefillSteps_isAdded = HasType(EffectVisualType.RefillSteps);
-        effectBlock_Pusher_isAdded = HasType(EffectVisualType.Pusher);
         effectBlock_Teleporter_isAdded = HasType(EffectVisualType.Teleporter);
         effectBlock_Moveable_isAdded = HasType(EffectVisualType.Moveable);
         effectBlock_MushroomCircle_isAdded = HasType(EffectVisualType.MushroomCircle);
