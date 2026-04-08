@@ -2,13 +2,6 @@ Shader "Custom/Shader_DepthCopy"
 {
     SubShader
     {
-        Tags 
-        {
-            "RenderType"="Opaque"
-            "RenderPipeline" = "UniversalPipeline"
-            "LightMode" = "UniversalForward"
-        }
-
         Pass
         {
             ZWrite Off
@@ -21,15 +14,16 @@ Shader "Custom/Shader_DepthCopy"
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
+            TEXTURE2D(_TempDepthTexture);
             TEXTURE2D(_CameraDepthTexture);
+            SAMPLER(sampler_TempDepthTexture);
             SAMPLER(sampler_CameraDepthTexture);
 
             struct Attributes
             {
-                float3 positionOS : POSITION;
-                float2 uv : TEXCOORD0;
+                uint vertexID : SV_VertexID;
             };
-
+            
             struct Varyings
             {
                 float4 positionCS : SV_POSITION;
@@ -39,18 +33,20 @@ Shader "Custom/Shader_DepthCopy"
             Varyings vert(Attributes v)
             {
                 Varyings o;
-                o.positionCS = TransformObjectToHClip(v.positionOS);
-                o.uv = v.uv;
+                o.positionCS = GetFullScreenTriangleVertexPosition(v.vertexID);
+                o.uv = GetFullScreenTriangleTexCoord(v.vertexID);
                 return o;
             }
 
             float frag(Varyings i) : SV_Target
             {
-                float rawDepth = SAMPLE_TEXTURE2D(_CameraDepthTexture, sampler_CameraDepthTexture, i.uv);
+                float transparentDepth = SAMPLE_TEXTURE2D(_TempDepthTexture, sampler_TempDepthTexture, i.uv);
 
-                float linearDepth = LinearEyeDepth(rawDepth);
+                float cameraDepth = SAMPLE_TEXTURE2D(_CameraDepthTexture, sampler_CameraDepthTexture, i.uv);
 
-                return linearDepth;
+                float depth = max(transparentDepth, cameraDepth);
+                
+                return depth;
             }
 
             ENDHLSL

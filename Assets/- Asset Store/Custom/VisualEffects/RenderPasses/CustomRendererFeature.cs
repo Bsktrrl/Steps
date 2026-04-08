@@ -11,6 +11,7 @@ public class CustomRendererFeature : ScriptableRendererFeature
     class CustomDepthPass : ScriptableRenderPass
     {
         RTHandle depthTexture;
+        RTHandle tempDepthTexture;
         Material depthOverrideMaterial;
         Material depthCopyMaterial;
 
@@ -50,9 +51,10 @@ public class CustomRendererFeature : ScriptableRendererFeature
                 desc.useMipMap = false;
 
                 RenderingUtils.ReAllocateIfNeeded(ref depthTexture, desc, name: "_CustomDepthTexture");
+                RenderingUtils.ReAllocateIfNeeded(ref tempDepthTexture, desc, name: "_TempDepthTexture");
             }
 
-            ConfigureTarget(depthTexture);
+            ConfigureTarget(tempDepthTexture);
             ConfigureClear(ClearFlag.Color, Color.black);
         }
 
@@ -60,21 +62,15 @@ public class CustomRendererFeature : ScriptableRendererFeature
         {
             CommandBuffer cmd = CommandBufferPool.Get("Custom Depth Pass");
 
-            //Input camera depth texture into conversion material
-            Texture cameraDepthTexture = Shader.GetGlobalTexture("_CameraDepthTexture");
-            if (cameraDepthTexture != null)
-            {
-                depthCopyMaterial.SetTexture("_CameraDepthTexture", cameraDepthTexture);
-            }
-
-            //Input conversion material into render texture
-            Blitter.BlitCameraTexture(cmd, renderingData.cameraData.renderer.cameraDepthTargetHandle, depthTexture, depthCopyMaterial, 0);
-
             //Draw transparents
             var transparentFiltering = new FilteringSettings(RenderQueueRange.transparent);
             var transparentDrawing = CreateDrawingSettings(new ShaderTagId("UniversalForward"), ref renderingData, SortingCriteria.CommonTransparent);
             transparentDrawing.overrideMaterial = depthOverrideMaterial;
             context.DrawRenderers(renderingData.cullResults, ref transparentDrawing, ref transparentFiltering);
+
+            //Copy camera depth into render texture
+            depthCopyMaterial.SetTexture("_TempDepthTexture", tempDepthTexture.rt);
+            Blitter.BlitCameraTexture(cmd, renderingData.cameraData.renderer.cameraDepthTargetHandle, depthTexture, depthCopyMaterial, 0);
 
             //Expose render texture globally
             cmd.SetGlobalTexture("_CustomDepthTexture", depthTexture.rt);

@@ -2,13 +2,6 @@ Shader "Custom/Shader_Depth"
 {
     SubShader
     {
-        Tags 
-        {
-            "RenderType"="Opaque"
-            "RenderPipeline" = "UniversalPipeline"
-            "LightMode" = "UniversalForward"
-        }
-
         Pass
         {
             ZWrite On
@@ -42,9 +35,11 @@ Shader "Custom/Shader_Depth"
 
             float frag(Varyings i) : SV_Target
             {
-                float linearDepth = LinearEyeDepth(i.positionCS.z / i.positionCS.w, _ZBufferParams);
 
-                return linearDepth;
+
+                float depth = i.positionCS.z;
+                
+                return depth;
             }
 
             ENDHLSL
