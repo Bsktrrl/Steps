@@ -2,13 +2,6 @@ Shader "Custom/Shader_Depth"
 {
     SubShader
     {
-        Tags 
-        {
-            "RenderType"="Opaque"
-            "RenderPipeline" = "UniversalPipeline"
-            "LightMode" = "UniversalForward"
-        }
-
         Pass
         {
             ZWrite On
@@ -20,6 +13,7 @@ Shader "Custom/Shader_Depth"
 
             #pragma vertex vert
             #pragma fragment frag
+
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             struct Attributes
@@ -39,9 +33,13 @@ Shader "Custom/Shader_Depth"
                 return o;
             }
 
-            half frag(Varyings i) : SV_Target
+            float frag(Varyings i) : SV_Target
             {
-                return Linear01Depth(i.positionCS.z / i.positionCS.w, _ZBufferParams);
+
+
+                float depth = i.positionCS.z;
+                
+                return depth;
             }
 
             ENDHLSL
