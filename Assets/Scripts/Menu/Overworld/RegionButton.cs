@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,8 @@ using UnityEngine.UI;
 
 public class RegionButton : MonoBehaviour
 {
+    public static event Action Action_ButtonIsPressed;
+
     public RegionState regionState;
 
     float changeStatesDuration = 0.3f;
@@ -15,8 +18,21 @@ public class RegionButton : MonoBehaviour
 
     public void Button_isPressed()
     {
-        if (!GetComponent<LevelSelectButton>().CheckButtonStatus()) return;
+        if (!GetComponent<LevelSelectButton>().CheckButtonStatus())
+        {
+            if (gameObject.GetComponent<ButtonSound>())
+                gameObject.GetComponent<ButtonSound>().buttonPress_Sound = ButtonSoundStates.ButtonCannot;
+            else
+                gameObject.GetComponent<ButtonSound>().buttonPress_Sound = ButtonSoundStates.ButtonPress;
 
+            Action_ButtonIsPressed?.Invoke();
+
+            return;
+        }
+        else
+            gameObject.GetComponent<ButtonSound>().buttonPress_Sound = ButtonSoundStates.ButtonPress;
+
+        Action_ButtonIsPressed?.Invoke();
         StartCoroutine(Button_isPressed_Delay(changeStatesDuration));
     }
     IEnumerator Button_isPressed_Delay(float waitTime)

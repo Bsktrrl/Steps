@@ -10302,7 +10302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetCamera: {fileID: 0}
   frontCheckDistance: 1
-  frontCheckRadius: 0.5
+  frontCheckRadius: 0.55
   frontCastBackOffset: 0.75
   useDynamicCastRadius: 1
   dynamicRadiusMultiplier: 0.6
@@ -49830,6 +49830,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2980254954467448722, guid: dbfee099e6359ac4785904751ae42563, type: 3}
+      propertyPath: buttonBack_Sound
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2980254954467448722, guid: dbfee099e6359ac4785904751ae42563, type: 3}
+      propertyPath: buttonPress_Sound
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3801963254039540224, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_Transition
       value: 0
@@ -50350,6 +50358,14 @@ PrefabInstance:
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2980254954467448722, guid: dbfee099e6359ac4785904751ae42563, type: 3}
+      propertyPath: buttonBack_Sound
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2980254954467448722, guid: dbfee099e6359ac4785904751ae42563, type: 3}
+      propertyPath: buttonPress_Sound
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3801963254039540224, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_Transition
@@ -56373,6 +56389,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2980254954467448722, guid: dbfee099e6359ac4785904751ae42563, type: 3}
+      propertyPath: buttonBack_Sound
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2980254954467448722, guid: dbfee099e6359ac4785904751ae42563, type: 3}
+      propertyPath: buttonPress_Sound
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 3801963254039540224, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_Transition
       value: 0
@@ -56598,7 +56622,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb207597d992d4b45a0191ee2a297640, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  closingPauseMenuAnimatorList: []
+  closingPauseMenuAnimatorList:
+  - {fileID: 1946367518335972240}
+  - {fileID: 5736288475818627476}
 --- !u!114 &7707264041701146841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57320,6 +57346,14 @@ PrefabInstance:
     - target: {fileID: 2341052032332683885, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2980254954467448722, guid: dbfee099e6359ac4785904751ae42563, type: 3}
+      propertyPath: buttonBack_Sound
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2980254954467448722, guid: dbfee099e6359ac4785904751ae42563, type: 3}
+      propertyPath: buttonPress_Sound
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3801963254039540224, guid: dbfee099e6359ac4785904751ae42563, type: 3}
       propertyPath: m_Transition

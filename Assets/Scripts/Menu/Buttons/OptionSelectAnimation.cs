@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class OptionSelectAnimation : MonoBehaviour
 {
+    public static event Action Action_ButtonIsPressed;
+
     [Header("Button Type")]
     [SerializeField] bool isLeftArrow;
     [SerializeField] bool isRightArrow;
@@ -83,6 +86,8 @@ public class OptionSelectAnimation : MonoBehaviour
             rt.localScale = Vector2.one;
 
             buttonPressAnimation = true;
+
+            Action_ButtonIsPressed?.Invoke();
         }
     }
     void ButtonPressAnimation_Right()
@@ -93,6 +98,8 @@ public class OptionSelectAnimation : MonoBehaviour
             rt.localScale = Vector2.one;
 
             buttonPressAnimation = true;
+
+            Action_ButtonIsPressed?.Invoke();
         }
     }
 
