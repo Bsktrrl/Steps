@@ -37,7 +37,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
 
     void OnMenuNavigation_Up()
     {
-        //Action_MenuNavigationUp_isPressed?.Invoke();
+        //Action_MenuNavigationLeft_isPressed?.Invoke();
 
         //if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls))
         //{
@@ -52,7 +52,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     }
     void OnMenuNavigation_Down()
     {
-        //Action_MenuNavigationDown_isPressed?.Invoke();
+        //Action_MenuNavigationLeft_isPressed?.Invoke();
 
         //if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls))
         //{
@@ -67,7 +67,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     }
     void OnMenuNavigation_Left()
     {
-        Action_MenuNavigationLeft_isPressed?.Invoke();
+        //Action_MenuNavigationLeft_isPressed?.Invoke();
 
         if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls))
         {
@@ -82,7 +82,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     }
     void OnMenuNavigation_Right()
     {
-        Action_MenuNavigationRight_isPressed?.Invoke();
+        //Action_MenuNavigationRight_isPressed?.Invoke();
 
         if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls))
         {

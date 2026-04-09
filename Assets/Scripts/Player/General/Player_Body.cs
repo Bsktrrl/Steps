@@ -70,10 +70,10 @@ public class Player_Body : Singleton<Player_Body>
 
     private void OnEnable()
     {
-        SkinWardrobeButton.Action_SelectThisSkin += UpdatePlayerSkin;
+        SkinWardrobeButton.Action_SelectSkin += UpdatePlayerSkin;
         DataManager.Action_dataHasLoaded += UpdatePlayerSkin;
 
-        SkinWardrobeButton.Action_SelectThisHat += UpdatePlayerHats;
+        SkinWardrobeButton.Action_SelectHat += UpdatePlayerHats;
         DataManager.Action_dataHasLoaded += UpdatePlayerHats;
 
         UpdatePlayerSkin();
@@ -81,10 +81,10 @@ public class Player_Body : Singleton<Player_Body>
     }
     private void OnDisable()
     {
-        SkinWardrobeButton.Action_SelectThisSkin -= UpdatePlayerSkin;
+        SkinWardrobeButton.Action_SelectSkin -= UpdatePlayerSkin;
         DataManager.Action_dataHasLoaded -= UpdatePlayerSkin;
 
-        SkinWardrobeButton.Action_SelectThisHat -= UpdatePlayerHats;
+        SkinWardrobeButton.Action_SelectHat -= UpdatePlayerHats;
         DataManager.Action_dataHasLoaded -= UpdatePlayerHats;
     }
 

@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MoveOutFromPauseMenu : MonoBehaviour
 {
+    public static event Action Action_MoveOutFromPauseMenu;
+
     [Header("Animator - Closing Animation")]
     [SerializeField] List<Animator> closingPauseMenuAnimatorList = new List<Animator>();
     float closingMenuDelay = 0.2f;
@@ -45,6 +48,8 @@ public class MoveOutFromPauseMenu : MonoBehaviour
         {
             closingPauseMenuAnimatorList[i].SetTrigger("Close");
         }
+
+        Action_MoveOutFromPauseMenu?.Invoke();
 
         yield return new WaitForSeconds(waitTime);
 

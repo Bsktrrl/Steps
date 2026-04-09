@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class PauseMenuManager : Singleton<PauseMenuManager>
 {
+    public static event Action Action_openPauseMenu;
     public static event Action Action_closePauseMenu;
 
     public bool isVisible;
@@ -136,6 +137,8 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     {
         if (PlayerManager.Instance.npcInteraction) return;
 
+        Action_openPauseMenu?.Invoke();
+
         SetLevelInfo();
 
         pauseMenu_Parent.SetActive(true);
@@ -151,8 +154,6 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
     public void ClosePauseMenu()
     {
-        Action_closePauseMenu?.Invoke();
-
         ////Set the first selected button for controller input
         //EventSystem.current.SetSelectedGameObject(pauseMenu_StartButton);
         //print("8. pauseMenuManager = true");
@@ -179,38 +180,12 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     void SetLevelInfo()
     {
         Map_SaveInfo mapInfo = SaveLoad_MapInfo.Instance.GetMapInfo(MapManager.Instance.mapInfo_ToSave.mapName);
-        if (mapInfo == null ) { return; }
+        if (mapInfo == null) { return; }
 
         //Set variables
 
         if (MapManager.Instance.gameObject && MapManager.Instance.gameObject.GetComponent<TMPro_TextDisplay>())
             levelName.text = MapManager.Instance.gameObject.GetComponent<TMPro_TextDisplay>().GetText();
-
-        ////Language
-        //switch (SettingsManager.Instance.settingsData.currentLanguage)
-        //{
-        //    case Languages.Norwegian:
-        //        levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_norwegian;
-        //        break;
-        //    case Languages.English:
-        //        levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_english;
-        //        break;
-        //    case Languages.German:
-        //        levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_german;
-        //        break;
-        //    case Languages.Japanese:
-        //        levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_japanese;
-        //        break;
-        //    case Languages.Chinese:
-        //        levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_chinese;
-        //        break;
-        //    case Languages.Korean:
-        //        levelName.text = mapInfo.mapNameDisplay.mapNameDisplay_korean;
-        //        break;
-
-        //    default:
-        //        break;
-        //}
 
         //Skin
         skinImage.sprite = SelectSpriteForLevel(mapInfo.skintype);
@@ -508,5 +483,11 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     {
         activeMainButton = null;
         activeAbilityButton = null;
+    }
+
+
+    public void Action_closePauseMenu_Action()
+    {
+        Action_closePauseMenu?.Invoke();
     }
 }

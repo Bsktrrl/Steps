@@ -55,6 +55,8 @@ public class Button_ToPress : MonoBehaviour
 
     void JumpToElement()
     {
+        Action_ButtonIsPressed?.Invoke();
+
         //PauseMenu
         if (ActionButtonsManager.Instance.eventSystem == null)
         {
@@ -68,6 +70,7 @@ public class Button_ToPress : MonoBehaviour
 
 
         //-----
+
 
 
         if (closingMenuAnimatorList.Count > 0)
@@ -93,8 +96,6 @@ public class Button_ToPress : MonoBehaviour
     }
     void CloseOpenMenu()
     {
-        Action_ButtonIsPressed?.Invoke();
-
         MenuStates.Instance.ChangeMenuState(newMenuState);
 
         switch (newMenuState)

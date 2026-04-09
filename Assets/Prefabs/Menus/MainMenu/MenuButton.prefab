@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5040496368975379548}
   - component: {fileID: 3801963254039540224}
   - component: {fileID: 5239250863359563056}
+  - component: {fileID: 2980254954467448722}
   m_Layer: 5
   m_Name: MenuButton
   m_TagString: Untagged
@@ -150,6 +151,21 @@ MonoBehaviour:
   uiElementToSelect: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
+  closingMenuAnimatorList: []
+--- !u!114 &2980254954467448722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7429604548242019253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68de5617d365e2848b470269bd4a774c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonPress_Sound: 0
+  buttonBack_Sound: 0
 --- !u!1 &7607200548363880152
 GameObject:
   m_ObjectHideFlags: 0

@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 205536691120116261}
   - component: {fileID: 7506686848536834346}
   - component: {fileID: 2837640005518577901}
+  - component: {fileID: 1958058488362398624}
   m_Layer: 5
   m_Name: MainMenuButton
   m_TagString: Untagged
@@ -245,6 +246,20 @@ MonoBehaviour:
   showVisualization: 0
   navigationColor: {r: 0.9058824, g: 0.8078432, b: 0.91372555, a: 1}
   closingMenuAnimatorList: []
+--- !u!114 &1958058488362398624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 908780873807152418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68de5617d365e2848b470269bd4a774c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonPress_Sound: 0
+  buttonBack_Sound: 0
 --- !u!1 &1107029660272878309
 GameObject:
   m_ObjectHideFlags: 0
@@ -486,6 +501,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textToDisplay: 0
+  textToDisplay_additional: 0
 --- !u!114 &2185777408207192001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -650,6 +666,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textToDisplay: 0
+  textToDisplay_additional: 0
 --- !u!1 &4332440597591964569
 GameObject:
   m_ObjectHideFlags: 0

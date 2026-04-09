@@ -2532,6 +2532,7 @@ GameObject:
   - component: {fileID: 7052086040255745674}
   - component: {fileID: 1002993807252154334}
   - component: {fileID: 2736925950450018824}
+  - component: {fileID: 8277588754494820788}
   m_Layer: 5
   m_Name: HeaderBox - General
   m_TagString: Untagged
@@ -2689,6 +2690,23 @@ MonoBehaviour:
   isBackButton: 0
   isStartButton: 1
   isActive: 0
+--- !u!114 &8277588754494820788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2869430368174387261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68de5617d365e2848b470269bd4a774c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isHighlighted: 0
+  isFirstMuted: 0
+  isBackAndSameMenu: 0
+  buttonPress_Sound: 4
+  buttonBack_Sound: 2
 --- !u!1 &2879856695430036092
 GameObject:
   m_ObjectHideFlags: 0
@@ -3930,6 +3948,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textToDisplay: 66
+  textToDisplay_additional: 0
 --- !u!1 &4034455417608660952
 GameObject:
   m_ObjectHideFlags: 0
@@ -4228,6 +4247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textToDisplay: 134
+  textToDisplay_additional: 0
 --- !u!1 &4268956351895514845
 GameObject:
   m_ObjectHideFlags: 0
@@ -4243,6 +4263,7 @@ GameObject:
   - component: {fileID: 7940662927584145753}
   - component: {fileID: 900785184830213116}
   - component: {fileID: 5035979266194246893}
+  - component: {fileID: 2968584499196748315}
   m_Layer: 5
   m_Name: HeaderBox - Controls
   m_TagString: Untagged
@@ -4400,6 +4421,23 @@ MonoBehaviour:
   isBackButton: 0
   isStartButton: 0
   isActive: 0
+--- !u!114 &2968584499196748315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4268956351895514845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68de5617d365e2848b470269bd4a774c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isHighlighted: 0
+  isFirstMuted: 0
+  isBackAndSameMenu: 0
+  buttonPress_Sound: 4
+  buttonBack_Sound: 2
 --- !u!1 &4292397229840717505
 GameObject:
   m_ObjectHideFlags: 0
@@ -4879,6 +4917,7 @@ GameObject:
   - component: {fileID: 8206449086972708892}
   - component: {fileID: 2351840242640053980}
   - component: {fileID: 2288766883445336086}
+  - component: {fileID: 6325894412379178317}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -5042,6 +5081,23 @@ MonoBehaviour:
   selectedImage: {fileID: 5013727970025735041}
   isSelected: 0
   lastSelected: {fileID: 0}
+--- !u!114 &6325894412379178317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4813638500736966501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68de5617d365e2848b470269bd4a774c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isHighlighted: 0
+  isFirstMuted: 0
+  isBackAndSameMenu: 0
+  buttonPress_Sound: 2
+  buttonBack_Sound: 2
 --- !u!1 &4890943105164052786
 GameObject:
   m_ObjectHideFlags: 0
@@ -5256,6 +5312,7 @@ GameObject:
   - component: {fileID: 7411979751438892319}
   - component: {fileID: 3984930681503858935}
   - component: {fileID: 45817540009124793}
+  - component: {fileID: 4409195571177015585}
   m_Layer: 5
   m_Name: HeaderBox - Video
   m_TagString: Untagged
@@ -5413,6 +5470,23 @@ MonoBehaviour:
   isBackButton: 0
   isStartButton: 0
   isActive: 0
+--- !u!114 &4409195571177015585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5102129622500482870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68de5617d365e2848b470269bd4a774c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isHighlighted: 0
+  isFirstMuted: 0
+  isBackAndSameMenu: 0
+  buttonPress_Sound: 4
+  buttonBack_Sound: 2
 --- !u!1 &5125968699797742035
 GameObject:
   m_ObjectHideFlags: 0
@@ -5636,6 +5710,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textToDisplay: 113
+  textToDisplay_additional: 0
 --- !u!1 &5244964936043668544
 GameObject:
   m_ObjectHideFlags: 0
@@ -7061,6 +7136,7 @@ GameObject:
   - component: {fileID: 4547007358206908250}
   - component: {fileID: 8124633318418823611}
   - component: {fileID: 767834700867226314}
+  - component: {fileID: 7532868674506710422}
   m_Layer: 5
   m_Name: HeaderBox - Audio
   m_TagString: Untagged
@@ -7218,6 +7294,23 @@ MonoBehaviour:
   isBackButton: 0
   isStartButton: 0
   isActive: 0
+--- !u!114 &7532868674506710422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6625705784258096576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68de5617d365e2848b470269bd4a774c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isHighlighted: 0
+  isFirstMuted: 0
+  isBackAndSameMenu: 0
+  buttonPress_Sound: 4
+  buttonBack_Sound: 2
 --- !u!1 &6648704486163601878
 GameObject:
   m_ObjectHideFlags: 0
@@ -9227,6 +9320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textToDisplay: 87
+  textToDisplay_additional: 0
 --- !u!1 &8661558420043112966
 GameObject:
   m_ObjectHideFlags: 0
@@ -10209,6 +10303,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StepDisplay
       objectReference: {fileID: 0}
+    - target: {fileID: 1349986145264159525, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: buttonBack_Sound
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3344971167898997492, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -10391,6 +10489,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4259354577112215085}
     m_Modifications:
+    - target: {fileID: 1349986145264159525, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: buttonBack_Sound
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2209142676151298170, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -10548,6 +10650,10 @@ PrefabInstance:
     - target: {fileID: 1130200383022329103, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
       propertyPath: m_Name
       value: TextSpeedDisplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 1349986145264159525, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: buttonBack_Sound
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3344971167898997492, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
       propertyPath: m_IsActive
@@ -10735,6 +10841,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RevertedCameraDisplay
       objectReference: {fileID: 0}
+    - target: {fileID: 1349986145264159525, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: buttonBack_Sound
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3344971167898997492, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -10921,6 +11031,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CameraDisplay
       objectReference: {fileID: 0}
+    - target: {fileID: 1349986145264159525, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: buttonBack_Sound
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3344971167898997492, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -11106,6 +11220,10 @@ PrefabInstance:
     - target: {fileID: 1130200383022329103, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
       propertyPath: m_Name
       value: SkipLevelDisplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 1349986145264159525, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: buttonBack_Sound
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3344971167898997492, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
       propertyPath: m_IsActive

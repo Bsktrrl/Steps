@@ -446,6 +446,7 @@ GameObject:
   - component: {fileID: 1326154848624953423}
   - component: {fileID: 6693782625000577016}
   - component: {fileID: 1668255464173535912}
+  - component: {fileID: 6070612468512448}
   m_Layer: 5
   m_Name: LevelSelectButton
   m_TagString: Untagged
@@ -695,6 +696,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textToDisplay: 0
+  textToDisplay_additional: 0
+--- !u!114 &6070612468512448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330780132882266929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68de5617d365e2848b470269bd4a774c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isHighlighted: 0
+  isFirstMuted: 0
+  isBackAndSameMenu: 0
+  buttonPress_Sound: 0
+  buttonBack_Sound: 0
 --- !u!1 &2560898602450609842
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,6 +862,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textToDisplay: 0
+  textToDisplay_additional: 0
 --- !u!1 &2827246672141100560
 GameObject:
   m_ObjectHideFlags: 0
@@ -1084,6 +1104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textToDisplay: 0
+  textToDisplay_additional: 0
 --- !u!114 &4682624017848940395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1680,6 +1701,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textToDisplay: 0
+  textToDisplay_additional: 0
 --- !u!1 &8670749920113223684
 GameObject:
   m_ObjectHideFlags: 0
@@ -1829,6 +1851,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textToDisplay: 0
+  textToDisplay_additional: 0
 --- !u!114 &9100396892598045834
 MonoBehaviour:
   m_ObjectHideFlags: 0

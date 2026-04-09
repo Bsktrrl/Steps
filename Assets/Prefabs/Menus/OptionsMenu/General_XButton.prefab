@@ -616,6 +616,7 @@ GameObject:
   - component: {fileID: 4369454770211543016}
   - component: {fileID: 8643375156603559578}
   - component: {fileID: 8323502119208208288}
+  - component: {fileID: 1349986145264159525}
   m_Layer: 5
   m_Name: General_XButton
   m_TagString: Untagged
@@ -753,6 +754,23 @@ MonoBehaviour:
   isBackButton: 0
   isStartButton: 0
   isActive: 0
+--- !u!114 &1349986145264159525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4774837796865197810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68de5617d365e2848b470269bd4a774c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isHighlighted: 0
+  isFirstMuted: 0
+  isBackAndSameMenu: 0
+  buttonPress_Sound: 0
+  buttonBack_Sound: 0
 --- !u!1 &6601951771371946515
 GameObject:
   m_ObjectHideFlags: 0
@@ -1053,3 +1071,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textToDisplay: 0
+  textToDisplay_additional: 0

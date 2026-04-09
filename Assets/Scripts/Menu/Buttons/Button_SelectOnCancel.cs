@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class CancelPauseMenuByButtonPress : MonoBehaviour
 {
-    public static event Action Action_ButtonIsCanceled;
+    public static event Action Action_BackButton_IsPressed;
 
     [Header("Select On Cancel")]
     [SerializeField] Button selectOnCancel;
@@ -85,6 +85,8 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
         //-----
 
 
+        Action_BackButton_IsPressed?.Invoke();
+
         if (closingMenuAnimator)
         {
             //print("2. CloseWindow");
@@ -109,7 +111,6 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
     {
         //print("3. CloseWindow");
 
-        Action_ButtonIsCanceled?.Invoke();
 
         //Open/Close menus
         if (menuToOpen)

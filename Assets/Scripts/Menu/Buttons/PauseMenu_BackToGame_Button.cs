@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PauseMenu_BackToGame_Button : MonoBehaviour
 {
+    public static event Action Action_ClosePauseMenu;
+
     [Header("Animator - Closing Animation")]
     [SerializeField] List<Animator> closingPauseMenuAnimatorList = new List<Animator>();
     float closingMenuDelay = 0.2f;
@@ -27,6 +30,8 @@ public class PauseMenu_BackToGame_Button : MonoBehaviour
         {
             closingPauseMenuAnimatorList[i].SetTrigger("Close");
         }
+
+        Action_ClosePauseMenu?.Invoke();
 
         yield return new WaitForSeconds(waitTime);
 

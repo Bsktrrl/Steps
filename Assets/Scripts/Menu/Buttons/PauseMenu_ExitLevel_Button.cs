@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu_ExitLevel_Button : MonoBehaviour
 {
+    public static event Action Action_ExitLevel;
+
     MapManager mapManager;
     MapStatsGathered mapStatsGathered;
 
@@ -21,6 +24,8 @@ public class PauseMenu_ExitLevel_Button : MonoBehaviour
 
     public void ExitLevelButton_isPressed()
     {
+        Action_ExitLevel?.Invoke();
+
         StartCoroutine(ExitLevelCoroutine());
     }
 
