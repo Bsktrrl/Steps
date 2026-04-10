@@ -179,7 +179,10 @@ public class Movement : Singleton<Movement>
     [SerializeField] bool isDrowning;
 
     [Header("Slope X")]
+    [SerializeField] private bool isSlopeFalling;
     private readonly Dictionary<GameObject, int> slopeDisplayTempOverrides = new Dictionary<GameObject, int>();
+    [SerializeField] private bool pendingSlopeFallAfterUphillAttempt;
+    [SerializeField] private bool isPlayingSlopeFallAnimation;
     #endregion
 
     #region Cached Accessors
@@ -1008,7 +1011,15 @@ public class Movement : Singleton<Movement>
                     slopeAutoExitTargetPos = moveOption.targetBlock.transform.position;
 
                     slopeLandingIsFree = true;
-                    PerformMovement(moveOption, MovementStates.Moving, standingInfo.movementSpeed);
+
+                    if (pendingSlopeFallAfterUphillAttempt && !isPlayingSlopeFallAnimation)
+                    {
+                        StartCoroutine(StartSlopeFalling_MoveOption(moveOption, standingInfo.movementSpeed));
+                    }
+                    else if (!isPlayingSlopeFallAnimation)
+                    {
+                        PerformMovement(moveOption, MovementStates.Moving, standingInfo.movementSpeed);
+                    }
                 }
                 else
                 {
@@ -1022,7 +1033,15 @@ public class Movement : Singleton<Movement>
                     slopeAutoExitTargetPos = fallbackTarget;
 
                     slopeLandingIsFree = true;
-                    PerformMovement(fallbackTarget);
+
+                    if (pendingSlopeFallAfterUphillAttempt && !isPlayingSlopeFallAnimation)
+                    {
+                        StartCoroutine(StartSlopeFalling_Position(fallbackTarget, standingInfo.movementSpeed));
+                    }
+                    else if (!isPlayingSlopeFallAnimation)
+                    {
+                        PerformMovement(fallbackTarget);
+                    }
                 }
             }
 
@@ -2285,11 +2304,25 @@ public class Movement : Singleton<Movement>
                 continue;
 
             MoveOptions moveOption = GetMoveOptionForDirection(localDir);
-            if (HasValidTarget(moveOption))
+            if (!HasValidTarget(moveOption))
+                continue;
+
+            bool tryingToMoveUpIntoSlope =
+                TryGetBlockInfo(moveOption.targetBlock, out BlockInfo targetInfo) &&
+                targetInfo.blockType == BlockType.Slope &&
+                blockStandingOn != null &&
+                blockStandingOn.transform.position.y < moveOption.targetBlock.transform.position.y;
+
+            if (tryingToMoveUpIntoSlope)
             {
-                PerformMovement(moveOption, MovementStates.Moving, standingInfo.movementSpeed);
+                if (!isSlopeFalling)
+                    StartCoroutine(StartSlopeFalling());
+
                 return true;
             }
+
+            PerformMovement(moveOption, MovementStates.Moving, standingInfo.movementSpeed);
+            return true;
         }
 
         return false;
@@ -3241,7 +3274,7 @@ public class Movement : Singleton<Movement>
         isDrowning = true;
         PlayerManager.Instance.PauseGame();
 
-        yield return new WaitForSeconds(0.1f);
+        //yield return new WaitForSeconds(0.1f);
 
         Player_Animations.Instance.Trigger_DrowningAnimation();
 
@@ -3251,16 +3284,64 @@ public class Movement : Singleton<Movement>
     }
     IEnumerator StartSlopeFalling()
     {
-        isDrowning = true;
+        if (isSlopeFalling)
+            yield break;
+
+        isSlopeFalling = true;
         PlayerManager.Instance.PauseGame();
 
-        yield return new WaitForSeconds(0.1f);
+        //yield return new WaitForSeconds(0.1f);
 
         Player_Animations.Instance.Trigger_SlopeFallingAnimation();
 
-        yield return new WaitForSeconds(2.35f);
+        yield return new WaitForSeconds(2f);
 
-        RespawnPlayer();
+        PlayerManager.Instance.UnpauseGame();
+        isSlopeFalling = false;
+    }
+    IEnumerator StartSlopeFalling_MoveOption(MoveOptions moveOption, float movementSpeed)
+    {
+        if (isPlayingSlopeFallAnimation)
+            yield break;
+
+        isPlayingSlopeFallAnimation = true;
+        PlayerManager.Instance.PauseGame();
+
+        //yield return new WaitForSeconds(0.1f);
+
+        Player_Animations.Instance.Trigger_SlopeFallingAnimation();
+
+        yield return new WaitForSeconds(2f);
+
+        PlayerManager.Instance.UnpauseGame();
+
+        pendingSlopeFallAfterUphillAttempt = false;
+        isPlayingSlopeFallAnimation = false;
+
+        if (moveOption != null && moveOption.targetBlock != null)
+            PerformMovement(moveOption, MovementStates.Moving, movementSpeed);
+    }
+
+    IEnumerator StartSlopeFalling_Position(Vector3 targetPos, float movementSpeed)
+    {
+        if (isPlayingSlopeFallAnimation)
+            yield break;
+
+        isPlayingSlopeFallAnimation = true;
+        PlayerManager.Instance.PauseGame();
+
+        //yield return new WaitForSeconds(0.1f);
+
+        Player_Animations.Instance.Trigger_SlopeFallingAnimation();
+
+        yield return new WaitForSeconds(2f);
+
+        PlayerManager.Instance.UnpauseGame();
+
+        pendingSlopeFallAfterUphillAttempt = false;
+        isPlayingSlopeFallAnimation = false;
+
+        PerformMovement(targetPos, movementSpeed);
     }
 
     #endregion
@@ -3348,6 +3429,9 @@ public class Movement : Singleton<Movement>
 
         isRespawning = false;
         isDrowning = false;
+        isSlopeFalling = false;
+        pendingSlopeFallAfterUphillAttempt = false;
+        isPlayingSlopeFallAnimation = false;
 
         PlayerManager.Instance.UnpauseGame();
     }
