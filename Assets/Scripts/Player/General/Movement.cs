@@ -211,14 +211,9 @@ public class Movement : Singleton<Movement>
             return;
 
         //If standing in water and cannot swim, force Dorwning and respawn player
-        if (isDrowning)
-        {
-            return;
-        }
-        else if (!isDrowning && blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !PlayerHasSwimAbility())
+        if (!isDrowning && blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !PlayerHasSwimAbility())
         {
             StartCoroutine(StartDrowning());
-            return;
         }
 
         switch (GetMovementState())
@@ -360,7 +355,14 @@ public class Movement : Singleton<Movement>
         if (StatsRoot.stats == null)
             return false;
 
-        return StatsRoot.stats.steps_Current >= GetRequiredCost(obj);
+        if (obj && obj.GetComponent<BlockInfo>() && obj.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !PlayerHasSwimAbility())
+        {
+            return true;
+        }
+        else
+        {
+            return StatsRoot.stats.steps_Current >= GetRequiredCost(obj);
+        }
     }
 
     private float MovementDuration(Vector3 startPos, Vector3 endPos, float movementSpeed)
@@ -3129,7 +3131,7 @@ public class Movement : Singleton<Movement>
         isDrowning = true;
         PlayerManager.Instance.PauseGame();
 
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.1f);
 
         Player_Animations.Instance.Trigger_DrowningAnimation();
 
