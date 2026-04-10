@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8689872002921466946, guid: fecaed9fef4bcca4b9ad185e267dc2c2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fecaed9fef4bcca4b9ad185e267dc2c2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
@@ -20,9 +24,53 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7426352593379610530, guid: fecaed9fef4bcca4b9ad185e267dc2c2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -6857937868709427282, guid: fecaed9fef4bcca4b9ad185e267dc2c2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -5496249275782632275, guid: fecaed9fef4bcca4b9ad185e267dc2c2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -4801849325887501648, guid: fecaed9fef4bcca4b9ad185e267dc2c2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -790336756904509062, guid: fecaed9fef4bcca4b9ad185e267dc2c2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -372896155938671549, guid: fecaed9fef4bcca4b9ad185e267dc2c2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 552775370419814464, guid: fecaed9fef4bcca4b9ad185e267dc2c2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: fecaed9fef4bcca4b9ad185e267dc2c2, type: 3}
       propertyPath: m_Name
-      value: Chain2.5
+      value: Chain_2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fecaed9fef4bcca4b9ad185e267dc2c2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 988243603903826684, guid: fecaed9fef4bcca4b9ad185e267dc2c2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7429725403870202746, guid: fecaed9fef4bcca4b9ad185e267dc2c2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408095349643887328, guid: fecaed9fef4bcca4b9ad185e267dc2c2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -73,5 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e23d5a25bf980a49bc312311fd0f439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SwingStrength: 1
-  SwingSpeed: 1
+  swingStrength: 1
+  swingSpeed: 1
+  windStrength: 0

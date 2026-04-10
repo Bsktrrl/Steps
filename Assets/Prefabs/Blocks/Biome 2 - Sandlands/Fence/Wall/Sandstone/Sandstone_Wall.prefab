@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1552092444063479204
 Transform:
@@ -50,7 +50,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &680133242214580363
 Transform:
@@ -203,13 +203,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall_LOD0
       objectReference: {fileID: 0}
+    - target: {fileID: -2707286939052031131, guid: 2d7c456120e11874d8adfe2936353f12, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 2d7c456120e11874d8adfe2936353f12, type: 3}
       propertyPath: m_Name
       value: Wall
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2d7c456120e11874d8adfe2936353f12, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1915572704309336694, guid: 2d7c456120e11874d8adfe2936353f12, type: 3}
       propertyPath: m_Name
       value: Wall_LOD1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1915572704309336694, guid: 2d7c456120e11874d8adfe2936353f12, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4879575183063013544, guid: 2d7c456120e11874d8adfe2936353f12, type: 3}
       propertyPath: m_LocalScale.y
@@ -226,6 +238,10 @@ PrefabInstance:
     - target: {fileID: 8560904160714027444, guid: 2d7c456120e11874d8adfe2936353f12, type: 3}
       propertyPath: m_Name
       value: Wall_LOD2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560904160714027444, guid: 2d7c456120e11874d8adfe2936353f12, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

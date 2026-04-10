@@ -88,13 +88,25 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1a4b8db42c2761e46be7bcb99948f7a8, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2515297956997645015, guid: 1a4b8db42c2761e46be7bcb99948f7a8, type: 3}
       propertyPath: m_Layer
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 2515297956997645015, guid: 1a4b8db42c2761e46be7bcb99948f7a8, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4471028167067164080, guid: 1a4b8db42c2761e46be7bcb99948f7a8, type: 3}
       propertyPath: m_Layer
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4471028167067164080, guid: 1a4b8db42c2761e46be7bcb99948f7a8, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4652765405862514707, guid: 1a4b8db42c2761e46be7bcb99948f7a8, type: 3}
       propertyPath: m_LocalScale.x
@@ -115,6 +127,10 @@ PrefabInstance:
     - target: {fileID: 4890375201297337004, guid: 1a4b8db42c2761e46be7bcb99948f7a8, type: 3}
       propertyPath: m_Layer
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4890375201297337004, guid: 1a4b8db42c2761e46be7bcb99948f7a8, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -212,16 +228,6 @@ MonoBehaviour:
   movementState: 0
   stepCostText_Color: {r: 0.617257, g: 0.885638, b: 0.9150943, a: 1}
   stepCostText_ColorUnder: {r: 0, g: 0, b: 0, a: 0}
-  stepSound_Volume: 0.5
-  stepSound_ClipList:
-  - {fileID: 8300000, guid: 4a1bc16a49bf5a447ba311a2df5553eb, type: 3}
-  - {fileID: 8300000, guid: 26a3a2600c980dd4896a4e7bc5601270, type: 3}
-  - {fileID: 8300000, guid: 554fa12ad753d5c4b8e1cd9e5f680fc7, type: 3}
-  - {fileID: 8300000, guid: 9dc96e5b8cc72ff4aae4d6404d51c7d8, type: 3}
-  - {fileID: 8300000, guid: 628bf20e6e1e99142a75558bf932a65d, type: 3}
-  - {fileID: 8300000, guid: 6d09f479640e4c641bd8a97457778bcb, type: 3}
-  - {fileID: 8300000, guid: 869be2ff225a99d439c38c1379d34159, type: 3}
-  stepSound_Source: {fileID: 0}
   startPos: {x: 0, y: 0, z: 0}
   colorTint_isActive: 0
   tintValue: 0.95
@@ -254,8 +260,6 @@ MonoBehaviour:
   effectVisualParent: {fileID: 0}
   removeDuplicatesInEditor: 1
   effectBlock_SpawnPoint_isAdded: 0
-  effectBlock_RefillSteps_isAdded: 0
-  effectBlock_Pusher_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0

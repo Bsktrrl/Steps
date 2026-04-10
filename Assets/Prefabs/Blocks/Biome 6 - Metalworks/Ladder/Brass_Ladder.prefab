@@ -17,7 +17,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2893847461859499829
 Transform:
@@ -111,7 +111,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1626315635768518101
 Transform:
@@ -202,7 +202,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7738909096718468131
 Transform:
@@ -230,6 +230,10 @@ PrefabInstance:
     - target: {fileID: -8774287469598674631, guid: 7122aaa977b71674b9845b5f724c5aa5, type: 3}
       propertyPath: m_Layer
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: -8774287469598674631, guid: 7122aaa977b71674b9845b5f724c5aa5, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7122aaa977b71674b9845b5f724c5aa5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -283,6 +287,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: -5358508833509728412, guid: 7122aaa977b71674b9845b5f724c5aa5, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: -1781513538753353134, guid: 7122aaa977b71674b9845b5f724c5aa5, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.5
@@ -299,9 +307,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7122aaa977b71674b9845b5f724c5aa5, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 5023118083146116718, guid: 7122aaa977b71674b9845b5f724c5aa5, type: 3}
       propertyPath: m_Layer
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5023118083146116718, guid: 7122aaa977b71674b9845b5f724c5aa5, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 6679479344712863907, guid: 7122aaa977b71674b9845b5f724c5aa5, type: 3}
       propertyPath: m_LocalScale.z

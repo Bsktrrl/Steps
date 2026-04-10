@@ -52,9 +52,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: -5713366129916036171, guid: 96df5ada1a5b3b643a67b445de12e06e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 585966129508746163, guid: 96df5ada1a5b3b643a67b445de12e06e, type: 3}
       propertyPath: m_Layer
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 585966129508746163, guid: 96df5ada1a5b3b643a67b445de12e06e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 96df5ada1a5b3b643a67b445de12e06e, type: 3}
       propertyPath: m_Name
@@ -64,9 +72,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 96df5ada1a5b3b643a67b445de12e06e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3465816058242073347, guid: 96df5ada1a5b3b643a67b445de12e06e, type: 3}
       propertyPath: m_Layer
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3465816058242073347, guid: 96df5ada1a5b3b643a67b445de12e06e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -185,9 +201,6 @@ MonoBehaviour:
   movementState: 0
   stepCostText_Color: {r: 0.7058824, g: 0.69411767, b: 0.6627451, a: 1}
   stepCostText_ColorUnder: {r: 0, g: 0, b: 0, a: 1}
-  stepSound_Volume: 0.6
-  stepSound_ClipList: []
-  stepSound_Source: {fileID: 0}
   startPos: {x: 0, y: 0, z: 0}
   colorTint_isActive: 0
   tintValue: 0.95
@@ -207,8 +220,6 @@ MonoBehaviour:
   effectVisualParent: {fileID: 0}
   removeDuplicatesInEditor: 1
   effectBlock_SpawnPoint_isAdded: 0
-  effectBlock_RefillSteps_isAdded: 0
-  effectBlock_Pusher_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0

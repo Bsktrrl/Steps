@@ -8,9 +8,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 100000, guid: 349a7aace0278ff4fb02f193b080e594, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 349a7aace0278ff4fb02f193b080e594, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 349a7aace0278ff4fb02f193b080e594, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 100006, guid: 349a7aace0278ff4fb02f193b080e594, type: 3}
       propertyPath: m_Name
       value: Invisible_Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 349a7aace0278ff4fb02f193b080e594, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 349a7aace0278ff4fb02f193b080e594, type: 3}
       propertyPath: m_LocalScale.y
@@ -197,9 +213,6 @@ MonoBehaviour:
   movementState: 0
   stepCostText_Color: {r: 1, g: 1, b: 1, a: 1}
   stepCostText_ColorUnder: {r: 0, g: 0, b: 0, a: 1}
-  stepSound_Volume: 1
-  stepSound_ClipList: []
-  stepSound_Source: {fileID: 0}
   startPos: {x: 0, y: 0, z: 0}
   colorTint_isActive: 0
   tintValue: 0.95
@@ -216,13 +229,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effectVisualParent: {fileID: 0}
+  removeDuplicatesInEditor: 1
   effectBlock_SpawnPoint_isAdded: 0
-  effectBlock_RefillSteps_isAdded: 0
-  effectBlock_Pusher_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
-  blockEffectHolding_List: []
 --- !u!114 &3110095711647343295
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 19
       objectReference: {fileID: 0}
+    - target: {fileID: 365643882158083748, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_Name
       value: Number_Parent
@@ -19,6 +23,10 @@ PrefabInstance:
     - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_Layer
       value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7379288899374920280, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -130,6 +138,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3201495743548560850, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
       propertyPath: m_Name
       value: SwampWood_Branch_L_LOD1
@@ -138,6 +150,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 3201495743548560850, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4674231361218785462, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
       propertyPath: m_Name
       value: SwampWood_Branch_L_LOD0
@@ -145,6 +161,10 @@ PrefabInstance:
     - target: {fileID: 4674231361218785462, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
       propertyPath: m_Layer
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4674231361218785462, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4875119096820784288, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
       propertyPath: m_Mesh
@@ -157,6 +177,10 @@ PrefabInstance:
     - target: {fileID: 5157657864718262668, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
       propertyPath: m_Layer
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5157657864718262668, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 6414119670256838010, guid: d8218b25ae756444c899c3faf34d727e, type: 3}
       propertyPath: m_Mesh
@@ -282,9 +306,6 @@ MonoBehaviour:
   movementState: 0
   stepCostText_Color: {r: 0.81568635, g: 0.7372549, b: 0.5058824, a: 1}
   stepCostText_ColorUnder: {r: 0, g: 0, b: 0, a: 1}
-  stepSound_Volume: 0.6
-  stepSound_ClipList: []
-  stepSound_Source: {fileID: 0}
   startPos: {x: 0, y: 0, z: 0}
   colorTint_isActive: 0
   tintValue: 0.95
@@ -301,13 +322,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effectVisualParent: {fileID: 0}
+  removeDuplicatesInEditor: 1
   effectBlock_SpawnPoint_isAdded: 0
-  effectBlock_RefillSteps_isAdded: 0
-  effectBlock_Pusher_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
-  blockEffectHolding_List: []
 --- !u!114 &6385352662823931895
 MonoBehaviour:
   m_ObjectHideFlags: 0
