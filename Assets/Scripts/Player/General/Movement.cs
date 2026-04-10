@@ -177,6 +177,9 @@ public class Movement : Singleton<Movement>
 
     [Header("Drowning")]
     [SerializeField] bool isDrowning;
+
+    [Header("Slope X")]
+    private readonly Dictionary<GameObject, int> slopeDisplayTempOverrides = new Dictionary<GameObject, int>();
     #endregion
 
     #region Cached Accessors
@@ -629,8 +632,10 @@ public class Movement : Singleton<Movement>
         if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
             return;
 
+        RestoreAllSlopeDisplayOverrides();
         ResetDarkenBlocks();
         UpdateBlocks();
+        ApplySlopeDisplayOverridesToCurrentTargets();
         SetDarkenBlocks();
 
         currentlyDarkenedBlocks.Clear();
@@ -651,14 +656,127 @@ public class Movement : Singleton<Movement>
         return Mathf.Max(info.movementCost, info.movementCost_Temp);
     }
 
+    private bool ShouldShowSlopeAsX(GameObject obj)
+    {
+        if (!TryGetBlockInfo(obj, out BlockInfo targetInfo))
+            return false;
+
+        if (targetInfo.blockType != BlockType.Slope)
+            return false;
+
+        if (!TryGetStandingInfo(out BlockInfo standingInfo))
+            return false;
+
+        if (blockStandingOn == null)
+            return false;
+
+        // Player must be standing on a lower block than the slope.
+        return blockStandingOn.transform.position.y < obj.transform.position.y;
+    }
+
+    private void ApplySlopeDisplayOverride(GameObject obj)
+    {
+        if (!TryGetBlockInfo(obj, out BlockInfo info))
+            return;
+
+        if (ShouldShowSlopeAsX(obj))
+        {
+            if (!slopeDisplayTempOverrides.ContainsKey(obj))
+                slopeDisplayTempOverrides[obj] = info.movementCost_Temp;
+
+            info.movementCost_Temp = -3;
+        }
+        else
+        {
+            RestoreSlopeDisplayOverride(obj);
+        }
+    }
+
+    private void RestoreSlopeDisplayOverride(GameObject obj)
+    {
+        if (obj == null)
+            return;
+
+        if (!TryGetBlockInfo(obj, out BlockInfo info))
+            return;
+
+        if (slopeDisplayTempOverrides.TryGetValue(obj, out int originalTempValue))
+        {
+            info.movementCost_Temp = originalTempValue;
+            slopeDisplayTempOverrides.Remove(obj);
+        }
+    }
+
+    private void RestoreAllSlopeDisplayOverrides()
+    {
+        foreach (var kvp in slopeDisplayTempOverrides)
+        {
+            if (kvp.Key != null && TryGetBlockInfo(kvp.Key, out BlockInfo info))
+                info.movementCost_Temp = kvp.Value;
+        }
+
+        slopeDisplayTempOverrides.Clear();
+    }
+
+    private void ApplySlopeDisplayOverridesToCurrentTargets()
+    {
+        ApplySlopeDisplayOverride(moveToBlock_Forward?.targetBlock);
+        ApplySlopeDisplayOverride(moveToBlock_Back?.targetBlock);
+        ApplySlopeDisplayOverride(moveToBlock_Left?.targetBlock);
+        ApplySlopeDisplayOverride(moveToBlock_Right?.targetBlock);
+
+        ApplySlopeDisplayOverride(moveToBlock_Ascend?.targetBlock);
+        ApplySlopeDisplayOverride(moveToBlock_Descend?.targetBlock);
+
+        ApplySlopeDisplayOverride(moveToBlock_SwiftSwimUp?.targetBlock);
+        ApplySlopeDisplayOverride(moveToBlock_SwiftSwimDown?.targetBlock);
+
+        ApplySlopeDisplayOverride(moveToBlock_Dash_Forward?.targetBlock);
+        ApplySlopeDisplayOverride(moveToBlock_Dash_Back?.targetBlock);
+        ApplySlopeDisplayOverride(moveToBlock_Dash_Left?.targetBlock);
+        ApplySlopeDisplayOverride(moveToBlock_Dash_Right?.targetBlock);
+
+        ApplySlopeDisplayOverride(moveToBlock_Jump_Forward?.targetBlock);
+        ApplySlopeDisplayOverride(moveToBlock_Jump_Back?.targetBlock);
+        ApplySlopeDisplayOverride(moveToBlock_Jump_Left?.targetBlock);
+        ApplySlopeDisplayOverride(moveToBlock_Jump_Right?.targetBlock);
+
+        ApplySlopeDisplayOverride(moveToBlock_GrapplingHook?.targetBlock);
+        ApplySlopeDisplayOverride(moveToCeilingGrabbing?.targetBlock);
+
+        ApplySlopeDisplayOverride(moveToLadder_Forward?.targetBlock);
+        ApplySlopeDisplayOverride(moveToLadder_Back?.targetBlock);
+        ApplySlopeDisplayOverride(moveToLadder_Left?.targetBlock);
+        ApplySlopeDisplayOverride(moveToLadder_Right?.targetBlock);
+    }
+
+    private bool IsBlockedDeepWater(GameObject obj)
+    {
+        if (!TryGetBlockInfo(obj, out BlockInfo info))
+            return false;
+
+        if (info.blockElement != BlockElement.Water)
+            return false;
+
+        if (PlayerHasSwimAbility())
+            return false;
+
+        // Check for another water block directly above this one.
+        return PerformMovementRaycast(obj.transform.position, Vector3.up, 1f, out GameObject aboveObj) == RaycastHitObjects.BlockInfo &&
+               TryGetBlockInfo(aboveObj, out BlockInfo aboveInfo) &&
+               aboveInfo.blockElement == BlockElement.Water;
+    }
+
     #endregion
 
     #region Movement Functions
 
     public void UpdateAvailableMovementBlocks()
     {
+        RestoreAllSlopeDisplayOverrides();
         ResetDarkenBlocks();
         UpdateBlocks();
+        ApplySlopeDisplayOverridesToCurrentTargets();
 
         if (ShouldChainImmediatelyAfterStep())
         {
@@ -917,12 +1035,10 @@ public class Movement : Singleton<Movement>
         {
             if (targetInfoCube.blockElement == BlockElement.Water)
             {
-                SetMoveTarget(moveOption, outObj2);
-
-                //if (PlayerHasSwimAbility())
-                //    SetMoveTarget(moveOption, outObj2);
-                //else
-                //    ClearMoveTarget(moveOption);
+                if (IsBlockedDeepWater(outObj2))
+                    ClearMoveTarget(moveOption);
+                else
+                    SetMoveTarget(moveOption, outObj2);
             }
             else if (targetInfoCube.blockElement == BlockElement.Lava)
             {
@@ -972,12 +1088,10 @@ public class Movement : Singleton<Movement>
             {
                 if (blockInfo1.blockElement == BlockElement.Water && blockInfo2.blockElement == BlockElement.Water)
                 {
-                    SetMoveTarget(moveOption, outObj2);
-
-                    //if (PlayerHasSwiftSwimAbility())
-                    //    SetMoveTarget(moveOption, outObj2);
-                    //else
-                    //    ClearMoveTarget(moveOption);
+                    if (IsBlockedDeepWater(outObj2))
+                        ClearMoveTarget(moveOption);
+                    else
+                        SetMoveTarget(moveOption, outObj2);
                 }
                 else
                 {
@@ -1001,12 +1115,10 @@ public class Movement : Singleton<Movement>
 
         if (info.blockElement == BlockElement.Water)
         {
-            SetMoveTarget(moveOption, target);
-
-            //if (PlayerHasSwimAbility())
-            //    SetMoveTarget(moveOption, target);
-            //else
-            //    ClearMoveTarget(moveOption);
+            if (IsBlockedDeepWater(target))
+                ClearMoveTarget(moveOption);
+            else
+                SetMoveTarget(moveOption, target);
         }
         else if (info.blockElement == BlockElement.Lava)
         {
@@ -1199,14 +1311,10 @@ public class Movement : Singleton<Movement>
                 {
                     if (secondInfo.blockElement == BlockElement.Water)
                     {
-                        SetMoveTarget(moveToBlock_Ascend, outObj1);
-
-                        //if (PlayerHasSwimAbility())
-                        //{
-                        //    SetMoveTarget(moveToBlock_Ascend, outObj1);
-                        //}
-                        //else
-                        //    ClearMoveTarget(moveToBlock_Ascend);
+                        if (IsBlockedDeepWater(outObj1))
+                            ClearMoveTarget(moveToBlock_Ascend);
+                        else
+                            SetMoveTarget(moveToBlock_Ascend, outObj1);
                     }
                     else if (secondInfo.blockElement == BlockElement.Lava)
                     {
@@ -1323,12 +1431,10 @@ public class Movement : Singleton<Movement>
         {
             if (targetInfo.blockElement == BlockElement.Water)
             {
-                SetMoveTarget(moveOption, outObj3);
-
-                //if (PlayerHasSwimAbility())
-                //    SetMoveTarget(moveOption, outObj3);
-                //else
-                //    ClearMoveTarget(moveOption);
+                if (IsBlockedDeepWater(outObj3))
+                    ClearMoveTarget(moveOption);
+                else
+                    SetMoveTarget(moveOption, outObj3);
             }
             else if (targetInfo.blockElement == BlockElement.Lava)
             {
@@ -1377,12 +1483,10 @@ public class Movement : Singleton<Movement>
         {
             if (info.blockElement == BlockElement.Water)
             {
-                SetMoveTarget(moveOption, finalTarget);
-
-                //if (PlayerHasSwimAbility())
-                //    SetMoveTarget(moveOption, finalTarget);
-                //else
-                //    ClearMoveTarget(moveOption);
+                if (IsBlockedDeepWater(finalTarget))
+                    ClearMoveTarget(moveOption);
+                else
+                    SetMoveTarget(moveOption, finalTarget);
             }
             else if (info.blockElement == BlockElement.Lava)
             {
@@ -1871,7 +1975,9 @@ public class Movement : Singleton<Movement>
         if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
             return;
 
+        RestoreAllSlopeDisplayOverrides();
         UpdateBlocks();
+        ApplySlopeDisplayOverridesToCurrentTargets();
         SyncDarkenedBlocksToCurrentTargets();
         Action_UpdatedBlocks?.Invoke();
     }
@@ -3138,6 +3244,19 @@ public class Movement : Singleton<Movement>
         yield return new WaitForSeconds(0.1f);
 
         Player_Animations.Instance.Trigger_DrowningAnimation();
+
+        yield return new WaitForSeconds(2.35f);
+
+        RespawnPlayer();
+    }
+    IEnumerator StartSlopeFalling()
+    {
+        isDrowning = true;
+        PlayerManager.Instance.PauseGame();
+
+        yield return new WaitForSeconds(0.1f);
+
+        Player_Animations.Instance.Trigger_SlopeFallingAnimation();
 
         yield return new WaitForSeconds(2.35f);
 

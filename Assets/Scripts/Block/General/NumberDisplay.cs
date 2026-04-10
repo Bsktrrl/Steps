@@ -332,7 +332,16 @@ public class NumberDisplay : MonoBehaviour
             tempTintColor = Color.white;
         }
 
-        if (moveCost == blockInfo.movementCost_Temp)
+        //-3 = X - Cannot walk
+        if (moveCost > blockInfo.movementCost_Temp || moveCost == -3)
+        {
+            return BlockManager.Instance.expensive_TextColor * tempTintColor;
+        }
+        else if (moveCost < blockInfo.movementCost_Temp)
+        {
+            return BlockManager.Instance.cheap_TextColor * tempTintColor;
+        }
+        else if (moveCost == blockInfo.movementCost_Temp)
         {
             if (Player_CeilingGrab.Instance.isCeilingGrabbing)
             {
@@ -345,15 +354,6 @@ public class NumberDisplay : MonoBehaviour
             {
                 return blockInfo.stepCostText_Color * tempTintColor;
             }
-        }
-        //-3 = X - Cannot walk
-        else if (moveCost > blockInfo.movementCost_Temp || moveCost == -3)
-        {
-            return BlockManager.Instance.expensive_TextColor * tempTintColor;
-        }
-        else if (moveCost < blockInfo.movementCost_Temp)
-        {
-            return BlockManager.Instance.cheap_TextColor * tempTintColor;
         }
 
         return blockInfo.stepCostText_Color * tempTintColor;
