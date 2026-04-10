@@ -1844,6 +1844,10 @@ public class Movement : Singleton<Movement>
     {
         ForEachAllMoveOptions(ResetMoveVisual);
     }
+    public void ResetDarkenBlocks_External()
+    {
+        ResetDarkenBlocks();
+    }
 
     public void SetAvailableBlock(GameObject obj)
     {
