@@ -19,6 +19,7 @@ public class Player_Animations : Singleton<Player_Animations>
 
     [SerializeField] bool isWalkGliding;
     [SerializeField] bool walkGlidingCheck;
+    public bool isWalkGliding_Delay;
 
 
     //--------------------
@@ -249,6 +250,7 @@ public class Player_Animations : Singleton<Player_Animations>
             //anim.speed = 1.0f;
             playerAnimator.SetBool("Sliding", true);
             isWalkGliding = true;
+            StartCoroutine(IsWalkGliding_Delay());
         }
         else
         {
@@ -256,7 +258,16 @@ public class Player_Animations : Singleton<Player_Animations>
             walkGlidingCheck = false;
             playerAnimator.SetBool("Sliding", false);
             isWalkGliding = false;
+
+            StopCoroutine(IsWalkGliding_Delay());
+            isWalkGliding_Delay = false;
         }
+    }
+    IEnumerator IsWalkGliding_Delay()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        isWalkGliding_Delay = true;
     }
 
     public void Start_RespawnAnimation()
