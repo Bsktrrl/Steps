@@ -346,17 +346,19 @@ public class NumberDisplay : MonoBehaviour
                 return blockInfo.stepCostText_Color * tempTintColor;
             }
         }
+        //-3 = X - Cannot walk
+        else if (moveCost > blockInfo.movementCost_Temp || moveCost == -3)
+        {
+            return BlockManager.Instance.expensive_TextColor * tempTintColor;
+        }
         else if (moveCost < blockInfo.movementCost_Temp)
         {
             return BlockManager.Instance.cheap_TextColor * tempTintColor;
         }
-        else if (moveCost > blockInfo.movementCost_Temp)
-        {
-            return BlockManager.Instance.expensive_TextColor * tempTintColor;
-        }
 
         return blockInfo.stepCostText_Color * tempTintColor;
     }
+
 
     //--------------------
 

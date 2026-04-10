@@ -26464,7 +26464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03f920e620578114a8d059d938b16c8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runTutorial: 1
+  runTutorial: 0
   state_Movement: 0
   state_CameraRotation: 0
   state_Respawn: 0
@@ -32237,6 +32237,7 @@ MonoBehaviour:
   slopeAutoExitTargetPos: {x: 0, y: 0, z: 0}
   suppressDarkeningWhileChaining: 0
   pendingDarkeningRefreshAfterChain: 0
+  isDrowning: 0
 --- !u!114 &3643509991883984095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32301,6 +32302,7 @@ MonoBehaviour:
   effectChargeTime_Pickup_Teleport: 0.23
   isWalkGliding: 0
   walkGlidingCheck: 0
+  isWalkGliding_Delay: 0
 --- !u!114 &8763539080269035516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43665,6 +43667,8 @@ MonoBehaviour:
   effect_Teleport: Teleport
   effect_PickupSmall: Pickup1
   effect_PickupBig: Pickup2
+  movement_Drowning: Drown
+  movement_SlopeFall: SlopeFall
   blink: Blink
   talking: 0
   animationList:

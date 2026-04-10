@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Movement : Singleton<Movement>
 {
@@ -176,6 +175,8 @@ public class Movement : Singleton<Movement>
     [SerializeField] private bool suppressDarkeningWhileChaining;
     [SerializeField] private bool pendingDarkeningRefreshAfterChain;
 
+    [Header("Drowning")]
+    [SerializeField] bool isDrowning;
     #endregion
 
     #region Cached Accessors
@@ -208,6 +209,17 @@ public class Movement : Singleton<Movement>
     {
         if (Tutorial.Instance.tutorial_isRunning && Inputs.tutorialMovementBlocker)
             return;
+
+        //If standing in water and cannot swim, force Dorwning and respawn player
+        if (isDrowning)
+        {
+            return;
+        }
+        else if (!isDrowning && blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !PlayerHasSwimAbility())
+        {
+            StartCoroutine(StartDrowning());
+            return;
+        }
 
         switch (GetMovementState())
         {
@@ -903,10 +915,12 @@ public class Movement : Singleton<Movement>
         {
             if (targetInfoCube.blockElement == BlockElement.Water)
             {
-                if (PlayerHasSwimAbility())
-                    SetMoveTarget(moveOption, outObj2);
-                else
-                    ClearMoveTarget(moveOption);
+                SetMoveTarget(moveOption, outObj2);
+
+                //if (PlayerHasSwimAbility())
+                //    SetMoveTarget(moveOption, outObj2);
+                //else
+                //    ClearMoveTarget(moveOption);
             }
             else if (targetInfoCube.blockElement == BlockElement.Lava)
             {
@@ -956,10 +970,12 @@ public class Movement : Singleton<Movement>
             {
                 if (blockInfo1.blockElement == BlockElement.Water && blockInfo2.blockElement == BlockElement.Water)
                 {
-                    if (PlayerHasSwiftSwimAbility())
-                        SetMoveTarget(moveOption, outObj2);
-                    else
-                        ClearMoveTarget(moveOption);
+                    SetMoveTarget(moveOption, outObj2);
+
+                    //if (PlayerHasSwiftSwimAbility())
+                    //    SetMoveTarget(moveOption, outObj2);
+                    //else
+                    //    ClearMoveTarget(moveOption);
                 }
                 else
                 {
@@ -983,10 +999,12 @@ public class Movement : Singleton<Movement>
 
         if (info.blockElement == BlockElement.Water)
         {
-            if (PlayerHasSwimAbility())
-                SetMoveTarget(moveOption, target);
-            else
-                ClearMoveTarget(moveOption);
+            SetMoveTarget(moveOption, target);
+
+            //if (PlayerHasSwimAbility())
+            //    SetMoveTarget(moveOption, target);
+            //else
+            //    ClearMoveTarget(moveOption);
         }
         else if (info.blockElement == BlockElement.Lava)
         {
@@ -1179,12 +1197,14 @@ public class Movement : Singleton<Movement>
                 {
                     if (secondInfo.blockElement == BlockElement.Water)
                     {
-                        if (PlayerHasSwimAbility())
-                        {
-                            SetMoveTarget(moveToBlock_Ascend, outObj1);
-                        }
-                        else
-                            ClearMoveTarget(moveToBlock_Ascend);
+                        SetMoveTarget(moveToBlock_Ascend, outObj1);
+
+                        //if (PlayerHasSwimAbility())
+                        //{
+                        //    SetMoveTarget(moveToBlock_Ascend, outObj1);
+                        //}
+                        //else
+                        //    ClearMoveTarget(moveToBlock_Ascend);
                     }
                     else if (secondInfo.blockElement == BlockElement.Lava)
                     {
@@ -1301,10 +1321,12 @@ public class Movement : Singleton<Movement>
         {
             if (targetInfo.blockElement == BlockElement.Water)
             {
-                if (PlayerHasSwimAbility())
-                    SetMoveTarget(moveOption, outObj3);
-                else
-                    ClearMoveTarget(moveOption);
+                SetMoveTarget(moveOption, outObj3);
+
+                //if (PlayerHasSwimAbility())
+                //    SetMoveTarget(moveOption, outObj3);
+                //else
+                //    ClearMoveTarget(moveOption);
             }
             else if (targetInfo.blockElement == BlockElement.Lava)
             {
@@ -1353,10 +1375,12 @@ public class Movement : Singleton<Movement>
         {
             if (info.blockElement == BlockElement.Water)
             {
-                if (PlayerHasSwimAbility())
-                    SetMoveTarget(moveOption, finalTarget);
-                else
-                    ClearMoveTarget(moveOption);
+                SetMoveTarget(moveOption, finalTarget);
+
+                //if (PlayerHasSwimAbility())
+                //    SetMoveTarget(moveOption, finalTarget);
+                //else
+                //    ClearMoveTarget(moveOption);
             }
             else if (info.blockElement == BlockElement.Lava)
             {
@@ -1534,8 +1558,8 @@ public class Movement : Singleton<Movement>
         {
             if (middleInfo.blockElement == BlockElement.Water)
             {
-                if (PlayerHasSwimAbility())
-                    return false;
+                //if (PlayerHasSwimAbility())
+                //    return false;
 
                 targetBlock = o4;
                 return true;
@@ -3056,7 +3080,14 @@ public class Movement : Singleton<Movement>
             {
                 if (!isSlopeGliding)
                 {
-                    StatsRoot.stats.steps_Current -= standingInfo.movementCost;
+                    if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !PlayerHasSwimAbility())
+                    {
+                        //Don't take away any steps if in water and cannot swim
+                    }
+                    else
+                    {
+                        StatsRoot.stats.steps_Current -= standingInfo.movementCost;
+                    }
 
                     if (CeilingGrab.isCeilingGrabbing)
                         MapStatsGathered.Instance.levelStats.ability_CeilingGrab++;
@@ -3087,6 +3118,24 @@ public class Movement : Singleton<Movement>
 
         if (isSlopeGliding)
             isSlopeGliding = false;
+    }
+
+    #endregion
+
+    #region Drowning
+
+    IEnumerator StartDrowning()
+    {
+        isDrowning = true;
+        PlayerManager.Instance.PauseGame();
+
+        yield return new WaitForSeconds(0.25f);
+
+        Player_Animations.Instance.Trigger_DrowningAnimation();
+
+        yield return new WaitForSeconds(2.35f);
+
+        RespawnPlayer();
     }
 
     #endregion
@@ -3135,7 +3184,6 @@ public class Movement : Singleton<Movement>
         slopeAutoExitSourceBlock = null;
         slopeAutoExitTargetPos = Vector3.zero;
 
-
         isAscending = false;
         isDescending = false;
         PlayerCameraOcclusionController.Instance.CameraZoom(false);
@@ -3174,6 +3222,9 @@ public class Movement : Singleton<Movement>
         StopAllCoroutines();
 
         isRespawning = false;
+        isDrowning = false;
+
+        PlayerManager.Instance.UnpauseGame();
     }
 
     public Quaternion GetRespawnPlayerDirection(int corr_X, int corr_Y, int corr_Z)

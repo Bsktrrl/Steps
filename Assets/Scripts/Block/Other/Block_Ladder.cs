@@ -206,7 +206,9 @@ public class Block_Ladder : MonoBehaviour
                 if (obj.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !Movement.Instance.PlayerHasSwimAbility())
                 {
                     //print("10. RaycastHitObjects.Other: " + name);
-                    return RaycastHitObjects.Other;
+                    //return RaycastHitObjects.Other;
+
+                    return RaycastHitObjects.BlockInfo;
                 }
                 else if (obj.GetComponent<BlockInfo>().blockElement == BlockElement.Water && Movement.Instance.PlayerHasSwimAbility())
                 {

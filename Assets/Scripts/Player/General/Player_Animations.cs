@@ -425,6 +425,21 @@ public class Player_Animations : Singleton<Player_Animations>
     //--------------------
 
 
+    public void Trigger_DrowningAnimation()
+    {
+        playerAnimator.speed = 1.0f;
+        playerAnimator.SetTrigger(AnimationManager.Instance.movement_Drowning);
+    }
+    public void Trigger_SlopeFallingAnimation()
+    {
+        playerAnimator.speed = 1.0f;
+        playerAnimator.SetTrigger(AnimationManager.Instance.movement_SlopeFall);
+    }
+
+
+    //--------------------
+
+
     IEnumerator RandomBlink()
     {
         float time = Random.Range(0, 10);
