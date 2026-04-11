@@ -643,10 +643,7 @@ public class Movement : Singleton<Movement>
 
     private void RefreshDarkeningNow()
     {
-        if (movementStates == MovementStates.Moving)
-            return;
-
-        if (movementStates == MovementStates.Falling && !ShouldAllowDarkeningWhileFalling())
+        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
             return;
 
         RestoreAllSlopeDisplayOverrides();
@@ -840,11 +837,6 @@ public class Movement : Singleton<Movement>
             return;
     }
 
-    private bool ShouldAllowDarkeningWhileFalling()
-    {
-        return IsFallingWithCarrierBlockActive();
-    }
-
     bool PlayerCanEnterDeepWater()
     {
         var stats = StatsRoot.stats;
@@ -860,12 +852,6 @@ public class Movement : Singleton<Movement>
 
     public void UpdateAvailableMovementBlocks()
     {
-        if (movementStates == MovementStates.Moving)
-            return;
-
-        if (movementStates == MovementStates.Falling && !ShouldAllowDarkeningWhileFalling())
-            return;
-
         RestoreAllSlopeDisplayOverrides();
         ResetDarkenBlocks();
         UpdateBlocks();
@@ -2062,10 +2048,7 @@ public class Movement : Singleton<Movement>
 
     public void SetDarkenBlocks()
     {
-        if (movementStates == MovementStates.Moving)
-            return;
-
-        if (movementStates == MovementStates.Falling && !ShouldAllowDarkeningWhileFalling())
+        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
             return;
 
         if (suppressDarkeningWhileChaining)
@@ -2102,10 +2085,7 @@ public class Movement : Singleton<Movement>
 
     public void RefreshAvailableMovementBlocksSmooth()
     {
-        if (movementStates == MovementStates.Moving)
-            return;
-
-        if (movementStates == MovementStates.Falling && !ShouldAllowDarkeningWhileFalling())
+        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
             return;
 
         RestoreAllSlopeDisplayOverrides();
@@ -2117,18 +2097,6 @@ public class Movement : Singleton<Movement>
 
     void SyncDarkenedBlocksToCurrentTargets()
     {
-        if (movementStates == MovementStates.Falling && !ShouldAllowDarkeningWhileFalling())
-        {
-            foreach (var oldBlock in currentlyDarkenedBlocks)
-            {
-                if (oldBlock != null)
-                    ResetAvailableBlock(oldBlock);
-            }
-
-            currentlyDarkenedBlocks.Clear();
-            return;
-        }
-
         HashSet<GameObject> newTargets = BuildCurrentTargetSet();
 
         foreach (var oldBlock in currentlyDarkenedBlocks)
