@@ -12,7 +12,7 @@ April:
 
 
 3.0. Glueplant Particle Effect
-- Legg til particle Effect når man plukker opp Glueplanten (Asset Store > Custom > VisualEffects > Prefabs > Player og heter "Effect_GlueplantPickup)
+- Legg til particle Effect når man plukker opp Glueplanten (Asset Store > Custom > VisualEffects > Prefabs > Player og heter "Effect_GlueplantPickup")
 - Gi en liten delay før man går til hovedmenyen
 
 
@@ -46,6 +46,10 @@ April:
 	- Gratis å gå i Mud-blokk og adjecent blokker (overskrider MudBlock sin effekt)
 	- Får igjen +1 steg ved å gå på adjecent blokker til Swamp Water (supplementerer SwampWater sin effekt ift. at det nå originalt koster 0 å gå)
 
+
+10.0. Sound:
+- Legg til all lyd fra Lisette
+- fullfør "FadeOutALLSound()" i "SoundManager" slik at all lyd fades fint ut når man exit'er en scene
 
 --- OTHER FIXES
 

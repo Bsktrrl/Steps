@@ -141,6 +141,8 @@ MonoBehaviour:
   playerObject_Parent: {fileID: 2933283360169833092}
   canvas: {fileID: 7664498414304271533}
   blackScreen: {fileID: 6636087618516094172}
+  fadeDuration_In: 0.75
+  fadeDuration_Out: 0.25
   blockInfoList: []
   introSequence: 0
   introSequence_Finished: 0
@@ -2200,6 +2202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dbe74457f37e9e479f5ef7e598481e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelRegion: 0
 --- !u!1001 &845815224867318364
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2854,6 +2857,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4821017876483109200, guid: d849c2a482157524daf80482b6aef7e8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862206214924919342, guid: d849c2a482157524daf80482b6aef7e8, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8332234586163316099, guid: d849c2a482157524daf80482b6aef7e8, type: 3}

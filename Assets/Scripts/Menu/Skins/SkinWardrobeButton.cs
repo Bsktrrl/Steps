@@ -15,6 +15,8 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public static event Action Action_BuySkin;
 
+    public static event Action Action_SkinIsSelected;
+
     [Header("General")]
     public SkinType skinType;
     public HatType hatType;
@@ -176,7 +178,6 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
                     if (skinWardrobeManager.skinWardrobeButton_Default && skinWardrobeManager.skinWardrobeButton_Default.GetComponent<SkinWardrobeButton>())
                         skinWardrobeManager.skinWardrobeButton_Default.GetComponent<SkinWardrobeButton>().UpdateButtonDisplay();
                     break;
-
                 default:
                     break;
             }
@@ -245,6 +246,9 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         skinWardrobeManager.Hat_HatUpdate();
 
         SkinsManager.Instance.SaveData();
+
+        Action_SkinIsSelected?.Invoke();
+        print("----. Action_SkinIsSelected");
     }
 
 

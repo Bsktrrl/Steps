@@ -16,6 +16,8 @@ public class Interactable_Pickup : MonoBehaviour
     public static event Action Action_FlippersGot;
     public static event Action Action_JumpingGot;
 
+    public static event Action Action_goalReached;
+
     MapManager mapManager;
     MapStatsGathered mapStatsGathered;
 
@@ -69,7 +71,7 @@ public class Interactable_Pickup : MonoBehaviour
             {
                 PlayerManager.Instance.PauseGame();
 
-                StartCoroutine(ExitLevel(0.5f));
+                StartCoroutine(GlueplantExitLevel(1.5f));
             }
             else
             {
@@ -82,15 +84,31 @@ public class Interactable_Pickup : MonoBehaviour
     //--------------------
 
 
-    IEnumerator ExitLevel(float waitTime)
+    IEnumerator GlueplantExitLevel(float waitTime)
     {
+        yield return new WaitForSeconds(0.15f);
+
+        //PlayGlueplantEffect
+        if (gameObject.GetComponent<PickupAndSmokeScript>() && gameObject.GetComponent<PickupAndSmokeScript>().gatherEffectObject)
+        {
+            gameObject.GetComponent<PickupAndSmokeScript>().gatherEffectObject.SetActive(true);
+            gameObject.GetComponent<PickupAndSmokeScript>().gatherEffectObject.GetComponent<ParticleSystem>().Play();
+
+            yield return new WaitForSeconds(0.05f);
+
+            gameObject.GetComponent<PickupAndSmokeScript>().glueplantObject.SetActive(false);
+        }
+
         yield return new WaitForSeconds(waitTime);
+
+        MapManager.Instance.FadeInBlackScreen();
+        Action_goalReached?.Invoke();
+
+        yield return new WaitForSeconds(1f);
 
         MapStatsGathered.Instance.CompleteLevel();
 
         PlayerManager.Instance.player.GetComponent<PlayerManager>().QuitLevel();
-
-        gameObject.SetActive(false);
     }
 
 

@@ -5919,8 +5919,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBlocked: 0
-  isBackAndSameMenu: 1
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 3
   buttonBack_Sound: 4
 --- !u!1001 &517517463
@@ -13748,8 +13747,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBlocked: 0
-  isBackAndSameMenu: 1
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 1
   buttonBack_Sound: 4
 --- !u!1 &1162143988
@@ -17534,6 +17532,7 @@ MonoBehaviour:
   menuState: 0
   blackScreen: {fileID: 219398154}
   blackScreenImage: {fileID: 0}
+  blackScreenIconImage: {fileID: 0}
 --- !u!4 &1379088050
 Transform:
   m_ObjectHideFlags: 0
@@ -31240,6 +31239,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1977871663}
     m_Modifications:
+    - target: {fileID: 1042613243668067414, guid: d849c2a482157524daf80482b6aef7e8, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1042613243668067414, guid: d849c2a482157524daf80482b6aef7e8, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1042613243668067414, guid: d849c2a482157524daf80482b6aef7e8, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4821017876483109200, guid: d849c2a482157524daf80482b6aef7e8, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

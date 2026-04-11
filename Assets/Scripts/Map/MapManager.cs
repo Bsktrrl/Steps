@@ -36,7 +36,7 @@ public class MapManager : Singleton<MapManager>
 
     [Header("Black Screen")]
     [SerializeField] GameObject canvas;
-    [SerializeField] GameObject blackScreen;
+    public GameObject blackScreen;
     public float fadeDuration_In = 0.75f;
     public float fadeDuration_Out = 0.25f;
 
@@ -211,11 +211,12 @@ public class MapManager : Singleton<MapManager>
 
     public void FadeOutBlackScreen()
     {
-        StartCoroutine(FadeOutCoroutine());
+        StartCoroutine(FadeOutCoroutine(blackScreen.GetComponent<Image>()));
+        StartCoroutine(FadeOutCoroutine(blackScreen.GetComponent<LoadingIcon>().loadingIcon.GetComponent<Image>()));
     }
-    private IEnumerator FadeOutCoroutine()
+    private IEnumerator FadeOutCoroutine(Image fadeImage)
     {
-        Image blackScreenImage = blackScreen.GetComponent<Image>();
+        Image blackScreenImage = fadeImage;
 
         yield return new WaitForSeconds(1f);
 
@@ -239,13 +240,14 @@ public class MapManager : Singleton<MapManager>
     }
     public void FadeInBlackScreen()
     {
-        StartCoroutine(FadeInBlackScreenCoroutine());
+        StartCoroutine(FadeInBlackScreenCoroutine(blackScreen.GetComponent<Image>()));
+        StartCoroutine(FadeInBlackScreenCoroutine(blackScreen.GetComponent<LoadingIcon>().loadingIcon.GetComponent<Image>()));
     }
-    public IEnumerator FadeInBlackScreenCoroutine()
+    public IEnumerator FadeInBlackScreenCoroutine(Image fadeImage)
     {
         blackScreen.SetActive(true);
 
-        Image blackScreenImage = blackScreen.GetComponent<Image>();
+        Image blackScreenImage = fadeImage;
 
         Color color = blackScreenImage.color;
         float startAlpha = color.a; // should be 0 if transparent
