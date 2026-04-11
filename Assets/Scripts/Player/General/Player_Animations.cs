@@ -21,6 +21,9 @@ public class Player_Animations : Singleton<Player_Animations>
     [SerializeField] bool walkGlidingCheck;
     public bool isWalkGliding_Delay;
 
+    private bool isPlayingPickupAnimation;
+    private Coroutine pickupCoroutine;
+
 
     //--------------------
 
@@ -35,9 +38,14 @@ public class Player_Animations : Singleton<Player_Animations>
 
     private void Update()
     {
-        //Swim Animation
-        if (/*Player_CeilingGrab.Instance.isCeilingGrabbing || */(Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() &&
-            (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water || Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.SwampWater || Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Mud)))
+        if (isPlayingPickupAnimation)
+            return;
+
+        // Swim Animation
+        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() &&
+            (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water ||
+             Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.SwampWater ||
+             Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Mud))
         {
             Set_SwimAnimation(true);
         }
@@ -46,45 +54,30 @@ public class Player_Animations : Singleton<Player_Animations>
             Set_SwimAnimation(false);
         }
 
-        //Extra safety to standing still glidingBug
         if (Movement.Instance.movementStates == MovementStates.Still ||
             (!Player_KeyInputs.Instance.forward_isHold &&
-            !Player_KeyInputs.Instance.back_isHold &&
-            !Player_KeyInputs.Instance.left_isHold &&
-            !Player_KeyInputs.Instance.right_isHold))
+             !Player_KeyInputs.Instance.back_isHold &&
+             !Player_KeyInputs.Instance.left_isHold &&
+             !Player_KeyInputs.Instance.right_isHold))
         {
             Set_WalkGlideAnimation(false);
         }
-
-        //Walk Glide Animation
-        else if (/*Movement.Instance.movementStates == MovementStates.Moving &&*/
-            (Player_KeyInputs.Instance.forward_isHold && Movement.Instance.moveToBlock_Forward.canMoveTo)
-            || (Player_KeyInputs.Instance.back_isHold && Movement.Instance.moveToBlock_Back.canMoveTo)
-            || (Player_KeyInputs.Instance.left_isHold && Movement.Instance.moveToBlock_Left.canMoveTo)
-            || (Player_KeyInputs.Instance.right_isHold && Movement.Instance.moveToBlock_Right.canMoveTo))
+        else if ((Player_KeyInputs.Instance.forward_isHold && Movement.Instance.moveToBlock_Forward.canMoveTo)
+              || (Player_KeyInputs.Instance.back_isHold && Movement.Instance.moveToBlock_Back.canMoveTo)
+              || (Player_KeyInputs.Instance.left_isHold && Movement.Instance.moveToBlock_Left.canMoveTo)
+              || (Player_KeyInputs.Instance.right_isHold && Movement.Instance.moveToBlock_Right.canMoveTo))
         {
-            //print("1. isWalkGliding");
-            //Set_WalkGlideAnimation(true);
-
             if (!walkGlidingCheck)
-            {
-                //print("1. isWalkGliding");
                 Set_WalkGlideAnimation(true);
-            }
-            //else
-            //{
-            //    print("2. isWalkGliding");
-            //    Set_WalkGlideAnimation(false);
-            //}
         }
         else
         {
-            //print("3. isWalkGliding");
             Set_WalkGlideAnimation(false);
         }
 
-        //If gliding on ice, reset animations
-        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Ice)
+        if (Movement.Instance.blockStandingOn &&
+            Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() &&
+            Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Ice)
         {
             Player_KeyInputs.Instance.forward_isHold = false;
             Player_KeyInputs.Instance.back_isHold = false;
@@ -156,6 +149,8 @@ public class Player_Animations : Singleton<Player_Animations>
         ForceStopAllAnimations(AnimationManager.Instance.ability_Jump, "");
         ForceStopAllAnimations(AnimationManager.Instance.ability_CeilingGrab, "");
         ForceStopAllAnimations(AnimationManager.Instance.ability_GrapplingHook, "");
+
+        StopAllAnimationsImmediately();
     }
     public void ForceStopAllAnimations(string triggerName, string stateName)
     {
@@ -164,6 +159,7 @@ public class Player_Animations : Singleton<Player_Animations>
         //playerAnimator.Play("Idle", 0, 0f);
         playerAnimator.SetTrigger("Confident");
     }
+
     bool Animator_HasParameter(Animator anim, string paramName)
     {
         foreach (var p in anim.parameters)
@@ -187,12 +183,18 @@ public class Player_Animations : Singleton<Player_Animations>
 
     public void StopAllAnimationsImmediately()
     {
-        // 1. Reset all triggers so nothing queues
+        if (!playerAnimator) return;
+
         foreach (var p in playerAnimator.parameters)
+        {
             if (p.type == AnimatorControllerParameterType.Trigger)
                 playerAnimator.ResetTrigger(p.name);
+        }
 
-        // 2. Force jump to Idle or a neutral state
+        playerAnimator.SetBool("InWater", false);
+        playerAnimator.SetBool("Sliding", false);
+        playerAnimator.SetBool("Respawn", false);
+
         playerAnimator.Play("Idle", 0, 0f);
     }
 
@@ -345,10 +347,9 @@ public class Player_Animations : Singleton<Player_Animations>
 
     public void PickUpAnimation_Small()
     {
-        PlayerManager.Instance.PauseGame();
-
-        StartCoroutine(RunPickupAnimation_Small());
+        StartPickupAnimation(AnimationManager.Instance.effect_PickupSmall, effectChargeTime_Pickup_Small);
     }
+
     IEnumerator RunPickupAnimation_Small()
     {
         //print("1. Pickup - Small");
@@ -362,9 +363,7 @@ public class Player_Animations : Singleton<Player_Animations>
     }
     public void PickUpAnimation_Big()
     {
-        PlayerManager.Instance.PauseGame();
-
-        StartCoroutine(RunPickupAnimation_Big());
+        StartPickupAnimation(AnimationManager.Instance.effect_PickupBig, effectChargeTime_Pickup_Big);
     }
     IEnumerator RunPickupAnimation_Big()
     {
@@ -376,6 +375,42 @@ public class Player_Animations : Singleton<Player_Animations>
         yield return new WaitForSeconds(effectChargeTime_Pickup_Small);
 
         PlayerManager.Instance.UnpauseGame();
+    }
+
+    private void StartPickupAnimation(string triggerName, float duration)
+    {
+        if (pickupCoroutine != null)
+            StopCoroutine(pickupCoroutine);
+
+        pickupCoroutine = StartCoroutine(RunPickupAnimation(triggerName, duration));
+    }
+
+    private IEnumerator RunPickupAnimation(string triggerName, float duration)
+    {
+        PlayerManager.Instance.PauseGame();
+
+        // Wait until the movement step has actually finished
+        yield return new WaitUntil(() =>
+            Movement.Instance != null &&
+            !Movement.Instance.isMoving &&
+            Movement.Instance.movementStates == MovementStates.Still);
+
+        isPlayingPickupAnimation = true;
+
+        // Prevent locomotion states from fighting the pickup animation
+        Set_SwimAnimation(false);
+        Set_WalkGlideAnimation(false);
+
+        playerAnimator.speed = 1.0f;
+        playerAnimator.SetTrigger(triggerName);
+
+        EffectManager.Instance.PickupSmallHitGorund_Effect();
+
+        yield return new WaitForSeconds(duration);
+
+        isPlayingPickupAnimation = false;
+        PlayerManager.Instance.UnpauseGame();
+        pickupCoroutine = null;
     }
 
     public void Trigger_PickupSmallAnimation()
