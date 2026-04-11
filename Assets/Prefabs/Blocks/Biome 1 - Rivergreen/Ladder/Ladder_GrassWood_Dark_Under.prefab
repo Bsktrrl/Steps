@@ -17,7 +17,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &48004615293435517
 Transform:
@@ -111,7 +111,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6517530626214330498
 Transform:
@@ -202,7 +202,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5454561321993525900
 Transform:
@@ -231,33 +231,61 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 100002, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
       propertyPath: m_Layer
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
       propertyPath: m_Layer
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 100006, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
       propertyPath: m_Name
-      value: Ladder_GrassWood_Dark
+      value: Ladder_GrassWood_Dark_Under
       objectReference: {fileID: 0}
     - target: {fileID: 100006, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
       propertyPath: m_Layer
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.4
       objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
       propertyPath: m_LocalPosition.z
@@ -265,7 +293,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
       propertyPath: m_LocalPosition.z
@@ -311,6 +339,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3300000, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 8287915546157814785, guid: e9a0173e728d5be41b131074dd27ebb4, type: 3}
+    - target: {fileID: 3300002, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5420237298307743992, guid: e9a0173e728d5be41b131074dd27ebb4, type: 3}
+    - target: {fileID: 3300004, guid: 8147db9d19bca6846a1c1742199d9468, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -2163417252259031097, guid: e9a0173e728d5be41b131074dd27ebb4, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

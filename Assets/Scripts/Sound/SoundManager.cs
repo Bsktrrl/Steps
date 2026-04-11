@@ -46,6 +46,8 @@ public class SoundManager : Singleton<SoundManager>
 
         PauseMenu_ExitLevel_Button.Action_ExitLevel += Play_Ui_ButtonPressed;
         QuitGame.Action_QuitGame += Play_Ui_ButtonPressed;
+
+        Interactable_Pickup.Action_goalReached += FadeOutALLSound;
     }
 
     private void OnDisable()
@@ -68,6 +70,8 @@ public class SoundManager : Singleton<SoundManager>
 
         PauseMenu_ExitLevel_Button.Action_ExitLevel -= Play_Ui_ButtonPressed;
         QuitGame.Action_QuitGame -= Play_Ui_ButtonPressed;
+
+        Interactable_Pickup.Action_goalReached -= FadeOutALLSound;
     }
 
 
@@ -137,58 +141,68 @@ public class SoundManager : Singleton<SoundManager>
     void Play_Ui_MenuTransition_Forward()
     {
         PlaySound(audioSource_MenuTransition_List, ui_MenuTransition, 1f, 1f);
-        print("1.1. Play_Ui_MenuTransition_Forward");
+        //print("1.1. Play_Ui_MenuTransition_Forward");
     }
     void Play_Ui_MenuTransition_Back()
     {
         PlaySound(audioSource_MenuTransition_List, ui_MenuTransition, 0.8f, 1f);
-        print("1.2 Play_Ui_MenuTransition_Back");
+        //print("1.2 Play_Ui_MenuTransition_Back");
     }
 
     void Play_Ui_ButtonNavigation()
     {
         PlaySound(audioSource_MenuTransition_List, ui_ButtonNavigation, Random.Range(0.99f, 1.01f), 0.5f);
-        print("2. Play_Ui_ButtonNavigation");
+        //print("2. Play_Ui_ButtonNavigation");
     }
 
     void Play_Ui_ButtonPressed()
     {
         PlaySound(audioSource_MenuTransition_List, ui_ButtonPressed, 1f, 1f);
-        print("3. Play_Ui_ButtonPressed");
+        //print("3. Play_Ui_ButtonPressed");
     }
 
     void Play_Ui_ButtonBackward()
     {
         PlaySound(audioSource_MenuTransition_List, ui_ButtonBackward, 1f, 1f);
-        print("4. Play_Ui_ButtonBackward");
+        //print("4. Play_Ui_ButtonBackward");
     }
 
     void Play_Ui_ButtonCannot()
     {
         PlaySound(audioSource_MenuTransition_List, ui_ButtonCannot, 1f, 1f);
-        print("5. Play_Ui_ButtonCannot");
+        //print("5. Play_Ui_ButtonCannot");
     }
 
     void Play_Ui_Wardrobe_Buy()
     {
         PlaySound(audioSource_MenuTransition_List, ui_Wardrobe_Buy, 1f, 1f);
-        print("6. Play_Ui_Wardrobe_Buy");
+        //print("6. Play_Ui_Wardrobe_Buy");
     }
 
     void Play_Ui_Wardrobe_Equip_On()
     {
         PlaySound(audioSource_MenuTransition_List, ui_Wardrobe_Equip, 1f, 1f);
-        print("7. Play_Ui_Wardrobe_Equip");
+        //print("7. Play_Ui_Wardrobe_Equip");
     }
 
     void Play_Ui_Wardrobe_Equip_Off()
     {
         PlaySound(audioSource_MenuTransition_List, ui_Wardrobe_Equip, 0.8f, 1f);
-        print("8. Play_Ui_Wardrobe_Equip_Off");
+        //print("8. Play_Ui_Wardrobe_Equip_Off");
     }
     void Play_Ui_Options_Select()
     {
         PlaySound(audioSource_MenuTransition_List, ui_Options_Select, 1f, 0.5f);
-        print("9. Play_Ui_Options_Select");
+        //print("9. Play_Ui_Options_Select");
+    }
+
+
+    //--------------------
+
+
+    void FadeOutALLSound()
+    {
+        //Make functionalty to fade out all sounds, for exiting levels
+
     }
 }

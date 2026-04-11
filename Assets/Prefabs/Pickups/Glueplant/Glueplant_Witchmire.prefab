@@ -151,6 +151,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 4215942164743477570, guid: 04768a94ba4606848a1b8cf99a6b850d, type: 3}
+      propertyPath: glueplantObject
+      value: 
+      objectReference: {fileID: 3108318309766288949}
+    - target: {fileID: 4215942164743477570, guid: 04768a94ba4606848a1b8cf99a6b850d, type: 3}
+      propertyPath: gatherEffectObject
+      value: 
+      objectReference: {fileID: 4527611244315501649}
     - target: {fileID: 4543496842754891630, guid: 04768a94ba4606848a1b8cf99a6b850d, type: 3}
       propertyPath: m_Layer
       value: 13
@@ -169,6 +177,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3496939234456819679, guid: 04768a94ba4606848a1b8cf99a6b850d, type: 3}
       insertIndex: 0
       addedObject: {fileID: 2476410065472453029}
+    - targetCorrespondingSourceObject: {fileID: 3496939234456819679, guid: 04768a94ba4606848a1b8cf99a6b850d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2530511082701373263}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4035386701650000973, guid: 04768a94ba4606848a1b8cf99a6b850d, type: 3}
       insertIndex: 1
@@ -183,6 +194,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1128237300230616962}
   m_SourcePrefab: {fileID: 100100000, guid: 04768a94ba4606848a1b8cf99a6b850d, type: 3}
+--- !u!1 &3108318309766288949 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2434478261531619288, guid: 04768a94ba4606848a1b8cf99a6b850d, type: 3}
+  m_PrefabInstance: {fileID: 786993160671132141}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3669137161734063520 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4035386701650000973, guid: 04768a94ba4606848a1b8cf99a6b850d, type: 3}
@@ -307,4 +323,75 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3496939234456819679, guid: 04768a94ba4606848a1b8cf99a6b850d, type: 3}
   m_PrefabInstance: {fileID: 786993160671132141}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3021802719227701426
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4209855925728194098}
+    m_Modifications:
+    - target: {fileID: 788613703606654973, guid: 991861c437ce1ee458c2cd64ba3c0a14, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 788613703606654973, guid: 991861c437ce1ee458c2cd64ba3c0a14, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 788613703606654973, guid: 991861c437ce1ee458c2cd64ba3c0a14, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 788613703606654973, guid: 991861c437ce1ee458c2cd64ba3c0a14, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 788613703606654973, guid: 991861c437ce1ee458c2cd64ba3c0a14, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 788613703606654973, guid: 991861c437ce1ee458c2cd64ba3c0a14, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 788613703606654973, guid: 991861c437ce1ee458c2cd64ba3c0a14, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 788613703606654973, guid: 991861c437ce1ee458c2cd64ba3c0a14, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 788613703606654973, guid: 991861c437ce1ee458c2cd64ba3c0a14, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 788613703606654973, guid: 991861c437ce1ee458c2cd64ba3c0a14, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1673887569242033379, guid: 991861c437ce1ee458c2cd64ba3c0a14, type: 3}
+      propertyPath: m_Name
+      value: Effect_GlueplantPickup
+      objectReference: {fileID: 0}
+    - target: {fileID: 1673887569242033379, guid: 991861c437ce1ee458c2cd64ba3c0a14, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 991861c437ce1ee458c2cd64ba3c0a14, type: 3}
+--- !u!4 &2530511082701373263 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 788613703606654973, guid: 991861c437ce1ee458c2cd64ba3c0a14, type: 3}
+  m_PrefabInstance: {fileID: 3021802719227701426}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4527611244315501649 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1673887569242033379, guid: 991861c437ce1ee458c2cd64ba3c0a14, type: 3}
+  m_PrefabInstance: {fileID: 3021802719227701426}
   m_PrefabAsset: {fileID: 0}

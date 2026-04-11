@@ -74,8 +74,6 @@ public class EssenceActivator : MonoBehaviour
         if (needAbility_GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) return false;
         if (needAbility_SpringShoes && !PlayerStats.Instance.stats.abilitiesGot_Temporary.SpringShoes && !PlayerStats.Instance.stats.abilitiesGot_Permanent.SpringShoes) return false;
         if (needAbility_ClimbingGloves && !PlayerStats.Instance.stats.abilitiesGot_Temporary.ClimingGloves && !PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimingGloves) return false;
-
-        print("1. Return True");
         return true;
     }
 }

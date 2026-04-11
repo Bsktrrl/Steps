@@ -17,6 +17,9 @@ public class AnimationManager : Singleton<AnimationManager>
     public string effect_PickupSmall;
     public string effect_PickupBig;
 
+    public string movement_Drowning;
+    public string movement_SlopeFall;
+
     public string blink;
     public bool talking;
 

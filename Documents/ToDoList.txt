@@ -1,62 +1,37 @@
 ----- NEXT ON THE LIST -----
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
-Mars:
-1.0. Lyd:
-- Legge inn lydene fra Lisette i UI
-- Endre slik at WalkingSounds ikke spilles av når spilleren glir bortover bakken (holder inne bevegelsesknapp)
+April:
+2.0. CameraBlockRender
+- Få ladders og pickups til å bli usynlige når blokkene blir det, så ikke de står mellom kameraet og spilleren
 
 
-2.0. SandFallingPlayer MoveOff Block
-- Legg til en state som er "SandFalling", hvor spilleren kan gå av blokken underveis i et fall, i "Movement"-scriptet
-- Også legg til mulighet for jumping (kan være at skjer automatisk)
-
-
-3.0. CameraBlockRender
-- FÅ ladders og pickups til å bli usynlige når blokkene blir det
-
-
-4.0. Number X
-- Legg til Number X på slopes og Water når man ikke bør gå på dem (Asset Store > Custom > Numbers)
-
-
-5.0. Glueplant Particle Effect
-- Legg til particle Effect når man plukker opp Glueplanten (Asset Store > Custom > VisualEffects > Prefabs > Player og heter "Effect_GlueplantPickup)
-- Gi en liten delay før man går til hovedmenyen
-
-
-6.0 Lava-effekt:
-- Legg på effekt av sprutende lava til lavablokker (Blant environment particle effectene)
-
-
-7.0. Metal-rør
-- Legge til Metal-rør i "6. Metalworks" blok-prefabslisten
-
-
-8.0. Elevator Blocks:
+6.0. Elevator Blocks:
 - Legg til nye ElevatorBlocks i prefablisten
 - Sett GoldBlock-animsjoner til å skje når spilleren aktiverer/deaktiverer dem (følg instruksjoner i goldBlock-scriptet)
 
 
-9.0. Looking-kamera:
+7.0. Looking-kamera:
 - Gjøre om joystick til å snu kameraet litt rundt spilleren
 	- Lage en variant for rundt spilleren (til vurdering)
 	- Lage en variant for rundt seg selv (til vurdering)
 - Gjøre kompatibel for både kontroll og datamus
 
 
-10.0. Svømme/Drukning i vann
-- Gjøre slik at man kan gå ut i vann, men at man drukner hvis man ikke har abilitien (la spilleren vente til blokken har druknet og respawnet)
+8.0. "Reset Level"-knapp i Pausemenyen
+- Legge til en knapp som lar spilleren resete levelet (starte fra første checkpoint), slik at spillere som sitter fast, kan starte levelet på nytt om de ønsker det
 
 
-11.0. Slope fall-animasjon
-- Spill av falleBakover-animasjon hvis man forsøker å gå opp slopes (la spilleren vente til blokken har kommet seg opp)
+9.0. Endre Sopp-sirkel:
+- Spilleren kan gå 3 steg gratis, uavhengig hvilken blokk den går på
+	- Legg til symbol/tall på HUD for å vise at den har +3, +2 og +1
+	- Gratis å gå i Mud-blokk og adjecent blokker (overskrider MudBlock sin effekt)
+	- Får igjen +1 steg ved å gå på adjecent blokker til Swamp Water (supplementerer SwampWater sin effekt ift. at det nå originalt koster 0 å gå)
 
 
-12.0. "Reset Level"-knapp i Pausemenyen
-- Legge til en knapp som lar spilelren resete levelet (starte fra første checkpoint), slik at spillere som sitter fast, kan starte levelet på nytt om de ønsker det
-
-
+10.0. Sound:
+- Legg til all lyd fra Lisette
+- fullfør "FadeOutALLSound()" i "SoundManager" slik at all lyd fades fint ut når man exit'er en scene
 
 --- OTHER FIXES
 
@@ -66,18 +41,12 @@ Mars:
 
 9. PickupAnimasjon i vann: Pickup-animasjonen funker ikke
 
-37. RootBlockNumbers: Endre slik at nummeret på RotBlocks forsvinner når de skal
+37. RootBlockNumbers: Pil på rootblock
 - Legge til en pil i den retningen som spilleren kan gå inn på den på, istedenfor tall (eventuelt ha tallet litt mindre i midten av pilen?)
 
 38. CameraKø: Hvis man trykker på roteringsknappen mens det roteres, så burde det føre til at roteringen fortsetter 90 grader til, i den retningen
 
 40. Step-HUD'en bugger seg hvis man har brukt noen steps og bytter setting til en annen HUD-type. De stegene som ikke er brukt, fylles ikke igjen når man respawner/går på checkpoints
-
-41. Endre Soppsirkel:
-- Spilleren kan gå 3 steg gratis, uavhengig hvilken blokk den går på
-	- Legg til symbol/tall på HUD
-	- Gratis å gå i Mud-blokk og adjecent blokker
-	- Får igjen +1 steg ved å gå på adjecent blokker til Swamp Water
 
 42. Settings: Legge til en setting som lar spilleren toggle on/off InterractableMessages som abilities eller guider
 
@@ -138,7 +107,7 @@ Mars:
 
 19. Wardrobe: Må kunne rotere spillerObjektet (med høyre joystick)
 
-14. FreeCam: Kan toggle Numbers on/off på alle blokker i levelet
+14. FreeCam: Kan toggle Numbers on/off på alle blokker i levelet (bare blokker som er øverst og ikke har noen andre blokker over dem)
 
 25. Overworld: Vurdere å legge inn en %-bar under navnet for å vise progress med tall også
 

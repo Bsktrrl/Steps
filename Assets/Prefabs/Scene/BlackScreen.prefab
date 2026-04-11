@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &774497549093792998
 RectTransform:
   m_ObjectHideFlags: 0
@@ -93,7 +93,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4821017876483109200
 RectTransform:
   m_ObjectHideFlags: 0
@@ -135,14 +135,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 0712b2588273fd744bab19649a3ae819, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -167,3 +167,34 @@ MonoBehaviour:
   loadingIcon: {fileID: 7862206214924919342}
   amplitude: 20
   frequency: 3
+  sprite_Default: {fileID: 21300000, guid: fa2119e4a2ec83a4982d661cfa3e8531, type: 3}
+  sprite_Rivergreen_Lv1: {fileID: 21300000, guid: e89bb5d898f7d8549ba5d467824552da, type: 3}
+  sprite_Rivergreen_Lv2: {fileID: 21300000, guid: 1eca1ca7bc1f7534db99462efc6e52cf, type: 3}
+  sprite_Rivergreen_Lv3: {fileID: 21300000, guid: ba9a7728601b6a74b84ca2e3fdc8efe2, type: 3}
+  sprite_Rivergreen_Lv4: {fileID: 21300000, guid: d4fb481d6730abe45b8a6f1703b86e51, type: 3}
+  sprite_Rivergreen_Lv5: {fileID: 21300000, guid: 08219d9d79cad0d49bd4e5e31a1d0b5a, type: 3}
+  sprite_Sandlands_Lv1: {fileID: 21300000, guid: aeb9e8094b69acf4d85b6f9288533656, type: 3}
+  sprite_Sandlands_Lv2: {fileID: 21300000, guid: eaabcf5be31cb044c883084a45e2335d, type: 3}
+  sprite_Sandlands_Lv3: {fileID: 21300000, guid: 77abcf64f09a44f42a7258d076b581be, type: 3}
+  sprite_Sandlands_Lv4: {fileID: 21300000, guid: 9ef5b3295536c2b4baf11e753600a2d6, type: 3}
+  sprite_Sandlands_Lv5: {fileID: 21300000, guid: 59c7842da1d512d49b23690e00ecda0e, type: 3}
+  sprite_Frostfield_Lv1: {fileID: 21300000, guid: 5c403853a681dec4aa6cf4914d8cd55a, type: 3}
+  sprite_Frostfield_Lv2: {fileID: 21300000, guid: 09d0f0044490bee40b1402b2b015e2a8, type: 3}
+  sprite_Frostfield_Lv3: {fileID: 21300000, guid: 6e6c8f1ce21517647b0cb008156e2f1a, type: 3}
+  sprite_Frostfield_Lv4: {fileID: 21300000, guid: d6e9e5496c12d9d45a00313b4ebaf622, type: 3}
+  sprite_Frostfield_Lv5: {fileID: 21300000, guid: ba7dadcc3f4de3f4f9ee2d5e40e1335b, type: 3}
+  sprite_Firevein_Lv1: {fileID: 21300000, guid: cbb883e9b46f78444b8028b8eb90f632, type: 3}
+  sprite_Firevein_Lv2: {fileID: 21300000, guid: 32420dc6fd4d85e4e97b037856ca8d89, type: 3}
+  sprite_Firevein_Lv3: {fileID: 21300000, guid: 7115a373689739f47bc0033cf294e658, type: 3}
+  sprite_Firevein_Lv4: {fileID: 21300000, guid: 45e9d9e1cd849a84e8ac65d3527511a9, type: 3}
+  sprite_Firevein_Lv5: {fileID: 21300000, guid: a49e7b6ee241bcc449c25def8af4f8fe, type: 3}
+  sprite_Witchmire_Lv1: {fileID: 21300000, guid: 94e10419d34fe1042939a174ec69f9d6, type: 3}
+  sprite_Witchmire_Lv2: {fileID: 21300000, guid: 562ad70ca7334684ea5de1ff9fdade47, type: 3}
+  sprite_Witchmire_Lv3: {fileID: 21300000, guid: 036d71f489296ec44b4e9564a798976e, type: 3}
+  sprite_Witchmire_Lv4: {fileID: 21300000, guid: a7cd31dd8a24dca4691f6ca8a0414f80, type: 3}
+  sprite_Witchmire_Lv5: {fileID: 21300000, guid: d654fc01a64671843a7c1e3351cd09cb, type: 3}
+  sprite_Metalworks_Lv1: {fileID: 21300000, guid: 84fdbb8645bb262489ec6229bd1bffad, type: 3}
+  sprite_Metalworks_Lv2: {fileID: 21300000, guid: ef6a9123fc53ff344b9f10ec572c7126, type: 3}
+  sprite_Metalworks_Lv3: {fileID: 21300000, guid: e31006d24f38a704ba558c4d7b538fe5, type: 3}
+  sprite_Metalworks_Lv4: {fileID: 21300000, guid: 158c50b98fd2ac74b94058ec92f11d49, type: 3}
+  sprite_Metalworks_Lv5: {fileID: 21300000, guid: 47c5485d81451b745a5108cf8ff9a425, type: 3}

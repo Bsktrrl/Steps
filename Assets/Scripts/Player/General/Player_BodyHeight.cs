@@ -18,7 +18,9 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
     float height_QuickSand_2 = -0.4f;
     float height_QuickSand_3 = -0.5f;
     float height_QuickSand_4 = -0.6f;
-    float height_QuickSand_5 = -0.7f; 
+    float height_QuickSand_5 = -0.7f;
+
+    float height_pipe = -0.25f;
 
 
     //--------------------
@@ -119,6 +121,13 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
                 {
                     PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Lava), ReturnRotation());
                     return height_Lava;
+                }
+
+                //Pipe
+                else if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Pipe)
+                {
+                    PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_pipe), ReturnRotation());
+                    return height_pipe;
                 }
 
                 //Other

@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 19
       objectReference: {fileID: 0}
+    - target: {fileID: 365643882158083748, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_Name
       value: Number_Parent
@@ -19,6 +23,10 @@ PrefabInstance:
     - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_Layer
       value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7379288899374920280, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -122,9 +130,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: -7381490739708147833, guid: 3fe632a2e1b0b466ab55e6576ff848fd, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: -7369507508169409122, guid: 3fe632a2e1b0b466ab55e6576ff848fd, type: 3}
       propertyPath: m_Layer
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -7369507508169409122, guid: 3fe632a2e1b0b466ab55e6576ff848fd, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: -5453342055684136572, guid: 3fe632a2e1b0b466ab55e6576ff848fd, type: 3}
       propertyPath: m_LocalScale.x
@@ -166,6 +182,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3fe632a2e1b0b466ab55e6576ff848fd, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4955618800245078816, guid: 3fe632a2e1b0b466ab55e6576ff848fd, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.98
@@ -185,6 +205,10 @@ PrefabInstance:
     - target: {fileID: 7274541225595790196, guid: 3fe632a2e1b0b466ab55e6576ff848fd, type: 3}
       propertyPath: m_Layer
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7274541225595790196, guid: 3fe632a2e1b0b466ab55e6576ff848fd, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -279,14 +303,6 @@ MonoBehaviour:
   movementState: 0
   stepCostText_Color: {r: 0.67058825, g: 0.6039216, b: 0.43529415, a: 1}
   stepCostText_ColorUnder: {r: 0.9150943, g: 0.8329085, b: 0.6250267, a: 1}
-  stepSound_Volume: 0.6
-  stepSound_ClipList:
-  - {fileID: 8300000, guid: d9fad1328eecd694397ba95125922636, type: 3}
-  - {fileID: 8300000, guid: 9a2d741359f219b4faa61b6652e2d23b, type: 3}
-  - {fileID: 8300000, guid: 1f026e83b8b867e4dbeaec69457b37e1, type: 3}
-  - {fileID: 8300000, guid: 185fae9c2c4746145b751cb6dce757b6, type: 3}
-  - {fileID: 8300000, guid: b6db7a5326870f148a703205b41e4003, type: 3}
-  stepSound_Source: {fileID: 0}
   startPos: {x: 0, y: 0, z: 0}
   colorTint_isActive: 0
   tintValue: 0.95
@@ -306,8 +322,6 @@ MonoBehaviour:
   effectVisualParent: {fileID: 0}
   removeDuplicatesInEditor: 1
   effectBlock_SpawnPoint_isAdded: 0
-  effectBlock_RefillSteps_isAdded: 0
-  effectBlock_Pusher_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0

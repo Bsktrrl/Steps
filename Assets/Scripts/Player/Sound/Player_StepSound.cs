@@ -83,6 +83,8 @@ public class Player_StepSound : Singleton<Player_StepSound>
 
     public void MakeStepSound()
     {
+        if (Player_Animations.Instance.isWalkGliding_Delay) return;
+
         GameObject currentBlock = Movement.Instance.blockStandingOn;
         if (currentBlock == null)
             return;

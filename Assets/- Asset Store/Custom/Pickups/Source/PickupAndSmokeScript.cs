@@ -13,6 +13,14 @@ public class PickupAndSmokeScript : MonoBehaviour
     private float scaleObjectSize;
     [SerializeField] private Light pointLight;
 
+    [Header("Glueplant Parts")]
+    public GameObject gatherEffectObject;
+    public GameObject glueplantObject;
+
+
+    //--------------------
+
+
     void Start()
     {
         if(shineHor != null)

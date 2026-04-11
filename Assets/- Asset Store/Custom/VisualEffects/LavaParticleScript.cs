@@ -11,13 +11,23 @@ public class LavaParticleScript : MonoBehaviour
     [SerializeField] ParticleSystem PS2;
 
     int randomness;
+
+
+    //--------------------
+
+
     void Start()
     {
         StartCoroutine(Lava());
     }
 
+
+    //--------------------
+
+
     IEnumerator Lava()
     {
+        print("1. Run Lava Effect");
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(waitTimeMin, waitTimeMax));

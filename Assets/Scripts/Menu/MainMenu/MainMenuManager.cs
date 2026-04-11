@@ -31,6 +31,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
     float fadeDuration_In = 1f;
     float fadeDuration_Out = 0.35f;
     [SerializeField] private Image blackScreenImage;
+    [SerializeField] private Image blackScreenIconImage;
     private Coroutine blackScreenFadeRoutine;
 
 
@@ -42,6 +43,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
         if (blackScreen != null)
         {
             blackScreenImage = blackScreen.GetComponent<Image>();
+            blackScreenIconImage = blackScreen.GetComponent<LoadingIcon>().loadingIcon.GetComponent<Image>();
             blackScreen.SetActive(true);
         }
 
@@ -205,8 +207,14 @@ public class MainMenuManager : Singleton<MainMenuManager>
         if (blackScreenImage == null)
             blackScreenImage = blackScreen.GetComponent<Image>();
 
+        if (blackScreenIconImage == null)
+            blackScreenIconImage = blackScreen.GetComponent<LoadingIcon>().loadingIcon.GetComponent<Image>();
+
         if (blackScreenImage == null)
             return;
+        if (blackScreenIconImage == null)
+            return;
+
 
         blackScreen.SetActive(visible);
 
@@ -415,7 +423,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     private IEnumerator FadeOutCoroutine()
     {
-        if (blackScreen == null || blackScreenImage == null)
+        if (blackScreen == null || blackScreenImage == null || blackScreenIconImage == null)
             yield break;
 
         blackScreen.SetActive(true);
@@ -431,11 +439,13 @@ public class MainMenuManager : Singleton<MainMenuManager>
             float t = Mathf.Clamp01(elapsed / duration);
             color.a = Mathf.Lerp(startAlpha, 0f, t);
             blackScreenImage.color = color;
+            blackScreenIconImage.color = color;
             yield return null;
         }
 
         color.a = 0f;
         blackScreenImage.color = color;
+        blackScreenIconImage.color = color;
         blackScreen.SetActive(false);
 
         blackScreenFadeRoutine = null;
@@ -455,7 +465,10 @@ public class MainMenuManager : Singleton<MainMenuManager>
         if (blackScreenImage == null)
             blackScreenImage = blackScreen.GetComponent<Image>();
 
-        if (blackScreenImage == null)
+        if (blackScreenIconImage == null)
+            blackScreenIconImage = blackScreen.GetComponent<LoadingIcon>().loadingIcon.GetComponent<Image>();
+
+        if (blackScreenImage == null || blackScreenIconImage == null)
             yield break;
 
         blackScreen.SetActive(true);
@@ -473,6 +486,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
             color.a = alpha;
             blackScreenImage.color = color;
+            blackScreenIconImage.color = color;
 
             if (alpha >= coverThreshold)
                 break;
@@ -482,6 +496,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
         color.a = 1f;
         blackScreenImage.color = color;
+        blackScreenIconImage.color = color;
 
         Canvas.ForceUpdateCanvases();
         yield return new WaitForEndOfFrame();

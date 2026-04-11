@@ -48,7 +48,7 @@ public class Block_Snow : MonoBehaviour
         if (GetComponent<BlockInfo>().blockType == BlockType.Slab)
             scale_Y_Value = UnityEngine.Random.Range(1f, 1.3f);
         else
-            scale_Y_Value = UnityEngine.Random.Range(1, 1.3f);
+            scale_Y_Value = UnityEngine.Random.Range(1f, 1.3f);
 
         for (int i = 0; i < LOD_ObjectList.Count; i++)
         {
