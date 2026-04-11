@@ -2,6 +2,7 @@ using Unity.Cinemachine;
 using System;
 using System.Collections;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class CameraController : Singleton<CameraController>
 {
@@ -26,7 +27,8 @@ public class CameraController : Singleton<CameraController>
 
     [Header("Parameters")]
     float rotationDuration_Movement = 0.35f;
-    float waitDelay = 0.05f;
+    float rotationDegreesPerSecond => 90f / rotationDuration_Movement;
+    float waitDelay = 0.02f;
     public bool isRotating;
     public bool isIgnoringObstaclesWhenRotating;
     public bool isCeilingRotating;
@@ -42,6 +44,25 @@ public class CameraController : Singleton<CameraController>
     [Header("NPC Camera")]
     float npcMovementTimer = 0.85f;
 
+    [Header("Rotation Que")]
+    Coroutine rotationCoroutine;
+
+    // The last fully completed 90-degree camera state.
+    CameraRotationState snappedRotationState;
+
+    // Direction of current active segment:
+    // +1 = +90, -1 = -90
+    int activeRotationDirection = 0;
+
+    // Single buffered extra rotation.
+    // 0 = none, +1 = queue +90, -1 = queue -90
+    const int maxQueuedRotations = 3;
+    Queue<int> queuedRotationDirections = new Queue<int>(maxQueuedRotations);
+
+    // The state the current segment is moving toward.
+    CameraRotationState activeSegmentTargetState;
+    CameraRotationState activeSegmentStartState;
+
 
     //--------------------
 
@@ -49,6 +70,10 @@ public class CameraController : Singleton<CameraController>
     private void Start()
     {
         cameraRotationState = CameraRotationState.Forward;
+        snappedRotationState = cameraRotationState;
+        activeSegmentStartState = cameraRotationState;
+        activeSegmentTargetState = cameraRotationState;
+
         directionFacing = Vector3.forward;
 
         cameraAnchor_originalPos = cameraAnchor.transform.localPosition;
@@ -63,116 +88,84 @@ public class CameraController : Singleton<CameraController>
 
     public void RotateCameraX()
     {
-        //Don't be able to switch camera angle before the rotation has been done
-        if (isRotating) { return; }
         if (isCeilingRotating) { return; }
         if (Player_Interact.Instance.isInteracting) { return; }
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
-        //if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
-        //Rotate Camera
+        int rotationDirection = 0;
+
         if (DataManager.Instance.settingData_StoreList.currentRevertedCameraMotion == RevertedCameraMotion.Normal)
         {
-            switch (cameraRotationState)
-            {
-                case CameraRotationState.Forward:
-                    cameraRotationState = CameraRotationState.Left;
-                    break;
-                case CameraRotationState.Backward:
-                    cameraRotationState = CameraRotationState.Right;
-                    break;
-                case CameraRotationState.Left:
-                    cameraRotationState = CameraRotationState.Backward;
-                    break;
-                case CameraRotationState.Right:
-                    cameraRotationState = CameraRotationState.Forward;
-                    break;
-                default:
-                    break;
-            }
-
-            StartCoroutine(RotateCamera(90));
+            rotationDirection = +1;
         }
-        else if (DataManager.Instance.settingData_StoreList.currentRevertedCameraMotion == RevertedCameraMotion.Reverted)
+        else
         {
-            switch (cameraRotationState)
-            {
-                case CameraRotationState.Forward:
-                    cameraRotationState = CameraRotationState.Right;
-                    break;
-                case CameraRotationState.Backward:
-                    cameraRotationState = CameraRotationState.Left;
-                    break;
-                case CameraRotationState.Left:
-                    cameraRotationState = CameraRotationState.Forward;
-                    break;
-                case CameraRotationState.Right:
-                    cameraRotationState = CameraRotationState.Backward;
-                    break;
-                default:
-                    break;
-            }
-
-            StartCoroutine(RotateCamera(-90));
+            rotationDirection = -1;
         }
+
+        RequestCameraRotation(rotationDirection);
     }
+
     public void RotateCameraY()
     {
-        //Don't be able to switch camera angle before the rotation has been done
-        if (isRotating) { return; }
         if (isCeilingRotating) { return; }
         if (Player_Interact.Instance.isInteracting) { return; }
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
-        //if (PlayerManager.Instance.isTransportingPlayer) { return; }
 
-        //Rotate Camera
+        int rotationDirection = 0;
+
         if (DataManager.Instance.settingData_StoreList.currentRevertedCameraMotion == RevertedCameraMotion.Normal)
         {
-            switch (cameraRotationState)
-            {
-                case CameraRotationState.Forward:
-                    cameraRotationState = CameraRotationState.Right;
-                    break;
-                case CameraRotationState.Backward:
-                    cameraRotationState = CameraRotationState.Left;
-                    break;
-                case CameraRotationState.Left:
-                    cameraRotationState = CameraRotationState.Forward;
-                    break;
-                case CameraRotationState.Right:
-                    cameraRotationState = CameraRotationState.Backward;
-                    break;
-                default:
-                    break;
-            }
-
-            StartCoroutine(RotateCamera(-90));
+            rotationDirection = -1;
         }
-        else if (DataManager.Instance.settingData_StoreList.currentRevertedCameraMotion == RevertedCameraMotion.Reverted)
+        else
         {
-            switch (cameraRotationState)
+            rotationDirection = +1;
+        }
+
+        RequestCameraRotation(rotationDirection);
+    }
+
+    void RequestCameraRotation(int rotationDirection)
+    {
+        if (rotationDirection == 0) { return; }
+
+        // If not rotating, start immediately.
+        if (!isRotating)
+        {
+            activeRotationDirection = rotationDirection;
+            queuedRotationDirections.Clear();
+
+            activeSegmentStartState = snappedRotationState;
+            activeSegmentTargetState = GetNextRotationState(snappedRotationState, activeRotationDirection);
+            cameraRotationState = activeSegmentTargetState;
+
+            rotationCoroutine = StartCoroutine(RotateCamera());
+            return;
+        }
+
+        // Same direction while rotating:
+        // allow up to 2 queued extra turns.
+        if (rotationDirection == activeRotationDirection)
+        {
+            if (queuedRotationDirections.Count < maxQueuedRotations)
             {
-                case CameraRotationState.Forward:
-                    cameraRotationState = CameraRotationState.Left;
-                    break;
-                case CameraRotationState.Backward:
-                    cameraRotationState = CameraRotationState.Right;
-                    break;
-                case CameraRotationState.Left:
-                    cameraRotationState = CameraRotationState.Backward;
-                    break;
-                case CameraRotationState.Right:
-                    cameraRotationState = CameraRotationState.Forward;
-                    break;
-                default:
-                    break;
+                queuedRotationDirections.Enqueue(rotationDirection);
             }
 
-            StartCoroutine(RotateCamera(90));
+            return;
         }
+
+        // Opposite direction while rotating:
+        // clear the queue and reverse immediately back to the current segment's start state.
+        queuedRotationDirections.Clear();
+        activeRotationDirection = rotationDirection;
+
+        activeSegmentTargetState = activeSegmentStartState;
+        cameraRotationState = activeSegmentTargetState;
     }
-    
-    IEnumerator RotateCamera(float angle)
+
+    IEnumerator RotateCamera()
     {
         Action_RotateCamera_Start?.Invoke();
         HoleShaderOnOffScript.Instance.HoleShader_On();
@@ -180,54 +173,116 @@ public class CameraController : Singleton<CameraController>
         isRotating = true;
         PlayerManager.Instance.pauseGame = true;
 
-        // Record the starting rotation
-        Quaternion startRotation = cameraAnchor.transform.rotation;
-
-        // Calculate the target rotation
-        Quaternion endRotation = startRotation * Quaternion.Euler(0, angle, 0);
-
-        if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Can)
+        while (true)
         {
-            float elapsed = 0f;
+            Quaternion targetRotation = GetRotationForState(activeSegmentTargetState);
 
-            // Smoothly interpolate the rotation
-            while (elapsed < rotationDuration_Movement)
+            while (Quaternion.Angle(cameraAnchor.transform.rotation, targetRotation) > 0.01f)
             {
-                if (elapsed <= (rotationDuration_Movement / 4 ) * 0.5) //First 25% of movement
+                float remainingAngle = Quaternion.Angle(cameraAnchor.transform.rotation, targetRotation);
+
+                if (remainingAngle <= 22.5f || remainingAngle >= 67.5f)
                 {
                     isIgnoringObstaclesWhenRotating = false;
                 }
-                else if (elapsed >= (rotationDuration_Movement / 4) * 3.5) //Last 25% of movement
-                {
-                    isIgnoringObstaclesWhenRotating = false;
-                }
-                else //The middle 50% of movement
+                else
                 {
                     isIgnoringObstaclesWhenRotating = true;
                 }
 
-                elapsed += Time.deltaTime;
-                float t = Mathf.Clamp01(elapsed / rotationDuration_Movement); // Normalize the time
-                cameraAnchor.transform.rotation = Quaternion.Lerp(startRotation, endRotation, t);
-                yield return null; // Wait for the next frame
+                if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Can)
+                {
+                    float step = rotationDegreesPerSecond * Time.deltaTime;
+                    cameraAnchor.transform.rotation = Quaternion.RotateTowards(
+                        cameraAnchor.transform.rotation,
+                        targetRotation,
+                        step
+                    );
+                }
+                else
+                {
+                    cameraAnchor.transform.rotation = targetRotation;
+                }
+
+                // If target changed during rotation (for example reverse input),
+                // immediately continue toward the new exact snapped target
+                // with the same angular speed.
+                targetRotation = GetRotationForState(activeSegmentTargetState);
+
+                yield return null;
             }
+
+            // Snap exactly to the final legal state.
+            cameraAnchor.transform.rotation = targetRotation;
+
+            snappedRotationState = activeSegmentTargetState;
+            cameraRotationState = snappedRotationState;
+            AdjustFacingDirection();
+
+            // If queued extra turns exist, continue immediately with no pause.
+            if (queuedRotationDirections.Count > 0)
+            {
+                activeRotationDirection = queuedRotationDirections.Dequeue();
+
+                activeSegmentStartState = snappedRotationState;
+                activeSegmentTargetState = GetNextRotationState(snappedRotationState, activeRotationDirection);
+                cameraRotationState = activeSegmentTargetState;
+
+                continue;
+            }
+
+            break;
         }
-        
-        // Ensure the final rotation is set exactly
-        cameraAnchor.transform.rotation = endRotation;
 
-        //SetBlockDetectorDirection();
-
+        isIgnoringObstaclesWhenRotating = false;
         HoleShaderOnOffScript.Instance.HoleShader_Off();
 
-        yield return new WaitForSeconds(waitDelay); // Wait for the next frame
+        yield return new WaitForSeconds(waitDelay);
 
         PlayerManager.Instance.pauseGame = false;
+        isRotating = false;
 
         Movement.Instance.previousPosition = transform.position;
 
         Action_RotateCamera_End?.Invoke();
-        Action_RotateCamera_End?.Invoke();
+        rotationCoroutine = null;
+    }
+
+    CameraRotationState GetNextRotationState(CameraRotationState currentState, int rotationDirection)
+    {
+        // +1 = +90
+        // -1 = -90
+
+        if (rotationDirection > 0)
+        {
+            switch (currentState)
+            {
+                case CameraRotationState.Forward:
+                    return CameraRotationState.Left;
+                case CameraRotationState.Left:
+                    return CameraRotationState.Backward;
+                case CameraRotationState.Backward:
+                    return CameraRotationState.Right;
+                case CameraRotationState.Right:
+                    return CameraRotationState.Forward;
+            }
+        }
+        else if (rotationDirection < 0)
+        {
+            switch (currentState)
+            {
+                case CameraRotationState.Forward:
+                    return CameraRotationState.Right;
+                case CameraRotationState.Right:
+                    return CameraRotationState.Backward;
+                case CameraRotationState.Backward:
+                    return CameraRotationState.Left;
+                case CameraRotationState.Left:
+                    return CameraRotationState.Forward;
+            }
+        }
+
+        return currentState;
     }
 
     public IEnumerator CeilingCameraRotation(float angle)
@@ -269,13 +324,32 @@ public class CameraController : Singleton<CameraController>
         ResetCameraPriority();
 
         cameraRotationState = CameraRotationState.Forward;
+        snappedRotationState = cameraRotationState;
+        activeSegmentStartState = cameraRotationState;
+        activeSegmentTargetState = cameraRotationState;
         cameraState = CameraState.GameplayCam;
+
+        activeRotationDirection = 0;
+        queuedRotationDirections.Clear();
+        activeSegmentTargetState = cameraRotationState;
+
+        if (rotationCoroutine != null)
+        {
+            StopCoroutine(rotationCoroutine);
+            rotationCoroutine = null;
+        }
+
+        isRotating = false;
+        isIgnoringObstaclesWhenRotating = false;
 
         cameraAnchor.transform.rotation = Quaternion.Euler(cameraAnchor_originalRot.eulerAngles.x, 0, 0);
 
         cameraAnchor.transform.localPosition = cameraAnchor_originalPos;
         cameraAnchor.transform.rotation = cameraAnchor_originalRot;
+
+        AdjustFacingDirection();
     }
+
     public void SetRespawnCameraRotation()
     {
         ResetCameraPriority();
@@ -310,8 +384,15 @@ public class CameraController : Singleton<CameraController>
                 break;
         }
 
+        snappedRotationState = cameraRotationState;
+        activeRotationDirection = 0;
+        queuedRotationDirections.Clear();
+        activeSegmentStartState = cameraRotationState;
+        activeSegmentTargetState = cameraRotationState;
+
         cameraState = CameraState.GameplayCam;
 
+        AdjustFacingDirection();
         Movement.Instance.previousPosition = transform.position;
     }
 
@@ -442,6 +523,27 @@ public class CameraController : Singleton<CameraController>
         }
     }
 
+    Quaternion GetRotationForState(CameraRotationState state)
+    {
+        switch (state)
+        {
+            case CameraRotationState.Forward:
+                return Quaternion.Euler(0f, 0f, 0f);
+
+            case CameraRotationState.Backward:
+                return Quaternion.Euler(0f, 180f, 0f);
+
+            case CameraRotationState.Left:
+                return Quaternion.Euler(0f, 90f, 0f);
+
+            case CameraRotationState.Right:
+                return Quaternion.Euler(0f, -90f, 0f);
+
+            default:
+                return Quaternion.Euler(0f, 0f, 0f);
+        }
+    }
+
 
     //--------------------
 
@@ -477,22 +579,8 @@ public class CameraController : Singleton<CameraController>
 
         CM_Brain.DefaultBlend.Time = npcMovementTimer;
         yield return new WaitForSeconds(CM_Brain.DefaultBlend.Time + 0.15f);
-
-        //if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Cannot)
-        //{
-        //    MotionSicknessToggle.Instance.SetReduceMotion(true);
-
-        //    CM_Brain.DefaultBlend.Time = 0;
-        //    yield return new WaitForSeconds(0 + 0.35f);
-
-        //    MotionSicknessToggle.Instance.SetReduceMotion(false);
-        //}
-        //else
-        //{
-        //    CM_Brain.DefaultBlend.Time = npcMovementTimer;
-        //    yield return new WaitForSeconds(CM_Brain.DefaultBlend.Time + 0.15f);
-        //}
     }
+
     public IEnumerator StartVirtualCameraBlend_Out(CinemachineCamera blendCamera)
     {
         if (blendCamera)
@@ -508,27 +596,9 @@ public class CameraController : Singleton<CameraController>
 
         CM_Brain.DefaultBlend.Time = npcMovementTimer;
         yield return new WaitForSeconds(CM_Brain.DefaultBlend.Time + 0.15f);
-
-        //if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Cannot)
-        //{
-        //    MotionSicknessToggle.Instance.SetReduceMotion(true);
-
-        //    CM_Brain.DefaultBlend.Time = 0;
-
-        //    yield return new WaitForSeconds(0 + 0.35f);
-        //    //yield return new WaitUntil(() => CM_Brain.IsBlending == false);
-
-        //    MotionSicknessToggle.Instance.SetReduceMotion(false);
-        //}
-        //else
-        //{
-        //    CM_Brain.DefaultBlend.Time = npcMovementTimer;
-
-        //    yield return new WaitForSeconds(CM_Brain.DefaultBlend.Time + 0.15f);
-        //    //yield return new WaitUntil(() => CM_Brain.IsBlending == false);
-        //}
     }
 }
+
 public enum CameraState
 {
     GameplayCam,

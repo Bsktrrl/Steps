@@ -416,7 +416,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         Run_CameraRotation_Tutorial(true);
         Run_DemoMessage_Tutorial_End();
 
-        if (!ButtonChecks_Other()) { return; }
+        if (!ButtonChecks_CameraRotation()) { return; }
         if (Movement.Instance.isUpdatingDarkenBlocks) { return; }
 
         MapStatsGathered.Instance.levelStats.cameraRotationTaken++;
@@ -446,7 +446,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         Run_CameraRotation_Tutorial(false);
         Run_DemoMessage_Tutorial_End();
 
-        if (!ButtonChecks_Other()) { return; }
+        if (!ButtonChecks_CameraRotation()) { return; }
         if (Movement.Instance.isUpdatingDarkenBlocks) { return; }
 
         MapStatsGathered.Instance.levelStats.cameraRotationTaken++;
@@ -459,6 +459,53 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     void OnCameraRotateY_Up()
     {
         FreeCam.Instance.SetMoveDirection(Vector3.up, false);
+    }
+
+    bool ButtonChecks_CameraRotation()
+    {
+        if (!Run_IntroSequance()) return false;
+
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
+
+        if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
+
+        // IMPORTANT:
+        // Allow input during pause ONLY if the camera is currently rotating.
+        if (PlayerManager.Instance.pauseGame && !CameraController.Instance.isRotating) { return false; }
+
+        if (PlayerManager.Instance.npcInteraction) { return false; }
+
+        // IMPORTANT:
+        // Do NOT block when camera is rotating, because that is exactly when we want buffering/reversing.
+        // if (CameraController.Instance.isRotating) { return false; }
+
+        if (Player_Interact.Instance.isInteracting) { return false; }
+        if (Tutorial.Instance.tutorial_isRunning) { return false; }
+        if (PopUpManager.Instance.ability_Active) { return false; }
+        if (PopUpManager.Instance.oneTimer_Active) { return false; }
+        if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
+        if (MapManager.Instance.introSequence) { return false; }
+
+        if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
+
+        // Prevent camera rotation while actual pause menu is open.
+        if (pauseMenuManager && pauseMenuManager.pauseMenu_MainMenu_Parent.activeInHierarchy) { return false; }
+
+        if (grapplingHook_isPressed)
+        {
+            Movement.Instance.moveToBlock_GrapplingHook.canMoveTo = false;
+
+            if (Movement.Instance.moveToBlock_GrapplingHook != null &&
+                Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>())
+            {
+                Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
+            }
+
+            grapplingHook_isPressed = false;
+        }
+
+        return true;
     }
 
 
