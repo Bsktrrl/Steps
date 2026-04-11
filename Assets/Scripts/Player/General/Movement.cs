@@ -183,6 +183,11 @@ public class Movement : Singleton<Movement>
     private readonly Dictionary<GameObject, int> slopeDisplayTempOverrides = new Dictionary<GameObject, int>();
     [SerializeField] private bool pendingSlopeFallAfterUphillAttempt;
     [SerializeField] private bool isPlayingSlopeFallAnimation;
+
+    [Header("Falling With Block")]
+    [SerializeField] private bool isFallingWithCarrierBlock;
+    [SerializeField] private GameObject fallingCarrierBlock;
+
     #endregion
 
     #region Cached Accessors
@@ -231,6 +236,12 @@ public class Movement : Singleton<Movement>
             case MovementStates.Falling:
                 UpdateBlockStandingOn();
                 PlayerIsFalling();
+
+                if (IsFallingWithCarrierBlockActive())
+                {
+                    UpdateBlocks();
+                    MovementSetup_FallingWithCarrierBlock();
+                }
                 break;
 
             default:
@@ -632,7 +643,10 @@ public class Movement : Singleton<Movement>
 
     private void RefreshDarkeningNow()
     {
-        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
+        if (movementStates == MovementStates.Moving)
+            return;
+
+        if (movementStates == MovementStates.Falling && !ShouldAllowDarkeningWhileFalling())
             return;
 
         RestoreAllSlopeDisplayOverrides();
@@ -761,7 +775,7 @@ public class Movement : Singleton<Movement>
         if (info.blockElement != BlockElement.Water)
             return false;
 
-        if (PlayerHasSwimAbility())
+        if (PlayerCanEnterDeepWater())
             return false;
 
         // Check for another water block directly above this one.
@@ -770,12 +784,88 @@ public class Movement : Singleton<Movement>
                aboveInfo.blockElement == BlockElement.Water;
     }
 
+    private bool IsFallingWithCarrierBlockActive()
+    {
+        if (!isFallingWithCarrierBlock || fallingCarrierBlock == null)
+            return false;
+
+        if (!fallingCarrierBlock.activeInHierarchy)
+            return false;
+
+        if (!TryGetBlockInfo(fallingCarrierBlock, out BlockInfo info))
+            return false;
+
+        return movementStates == MovementStates.Falling &&
+               info.movementState == MovementStates.Falling;
+    }
+
+    private void SetFallingCarrierBlock(GameObject carrierBlock)
+    {
+        if (carrierBlock == null)
+            return;
+
+        isFallingWithCarrierBlock = true;
+        fallingCarrierBlock = carrierBlock;
+        blockStandingOn = carrierBlock;
+    }
+
+    private void ClearFallingCarrierBlock()
+    {
+        isFallingWithCarrierBlock = false;
+        fallingCarrierBlock = null;
+
+        foreach (var oldBlock in currentlyDarkenedBlocks)
+        {
+            if (oldBlock != null)
+                ResetAvailableBlock(oldBlock);
+        }
+
+        currentlyDarkenedBlocks.Clear();
+    }
+
+    private void MovementSetup_FallingWithCarrierBlock()
+    {
+        if (!IsFallingWithCarrierBlockActive())
+            return;
+
+        if (isMoving) return;
+        if (Block_Moveable.AnyBlockMoving) return;
+
+        RotatePlayerBody_Setup();
+
+        if (TryHandleNormalMovement())
+            return;
+
+        if (TryHandleJumpMovement())
+            return;
+    }
+
+    private bool ShouldAllowDarkeningWhileFalling()
+    {
+        return IsFallingWithCarrierBlockActive();
+    }
+
+    bool PlayerCanEnterDeepWater()
+    {
+        var stats = StatsRoot.stats;
+        return stats.abilitiesGot_Permanent.OxygenTank ||
+               stats.abilitiesGot_Permanent.Flippers ||
+               stats.abilitiesGot_Temporary.OxygenTank ||
+               stats.abilitiesGot_Temporary.Flippers;
+    }
+
     #endregion
 
     #region Movement Functions
 
     public void UpdateAvailableMovementBlocks()
     {
+        if (movementStates == MovementStates.Moving)
+            return;
+
+        if (movementStates == MovementStates.Falling && !ShouldAllowDarkeningWhileFalling())
+            return;
+
         RestoreAllSlopeDisplayOverrides();
         ResetDarkenBlocks();
         UpdateBlocks();
@@ -847,6 +937,24 @@ public class Movement : Singleton<Movement>
         GameObject prev = blockStandingOn;
         Vector3 playerPos = PM.player.transform.position;
         Vector3 rayDir = CeilingGrab.isCeilingGrabbing ? Vector3.up : Vector3.down;
+
+        //If falling with block
+        if (IsFallingWithCarrierBlockActive())
+        {
+            blockStandingOn = fallingCarrierBlock;
+
+            if (blockStandingOn_Previous != blockStandingOn && !CeilingGrab.isCeilingGrabbing)
+                blockStandingOn_Previous = prev;
+
+            if (prev != blockStandingOn)
+                Action_isSwitchingBlocks_Invoke();
+
+            return;
+        }
+        else if (isFallingWithCarrierBlock)
+        {
+            ClearFallingCarrierBlock();
+        }
 
         if (TryGetBlockUnder(playerPos, rayDir, 1.25f, out GameObject obj))
             blockStandingOn = obj;
@@ -1954,7 +2062,10 @@ public class Movement : Singleton<Movement>
 
     public void SetDarkenBlocks()
     {
-        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
+        if (movementStates == MovementStates.Moving)
+            return;
+
+        if (movementStates == MovementStates.Falling && !ShouldAllowDarkeningWhileFalling())
             return;
 
         if (suppressDarkeningWhileChaining)
@@ -1991,7 +2102,10 @@ public class Movement : Singleton<Movement>
 
     public void RefreshAvailableMovementBlocksSmooth()
     {
-        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
+        if (movementStates == MovementStates.Moving)
+            return;
+
+        if (movementStates == MovementStates.Falling && !ShouldAllowDarkeningWhileFalling())
             return;
 
         RestoreAllSlopeDisplayOverrides();
@@ -2003,6 +2117,18 @@ public class Movement : Singleton<Movement>
 
     void SyncDarkenedBlocksToCurrentTargets()
     {
+        if (movementStates == MovementStates.Falling && !ShouldAllowDarkeningWhileFalling())
+        {
+            foreach (var oldBlock in currentlyDarkenedBlocks)
+            {
+                if (oldBlock != null)
+                    ResetAvailableBlock(oldBlock);
+            }
+
+            currentlyDarkenedBlocks.Clear();
+            return;
+        }
+
         HashSet<GameObject> newTargets = BuildCurrentTargetSet();
 
         foreach (var oldBlock in currentlyDarkenedBlocks)
@@ -2415,6 +2541,7 @@ public class Movement : Singleton<Movement>
         {
             isMovingFlag = true;
 
+            ClearFallingCarrierBlock();
             ResetDarkenBlocks();
             StartCoroutine(Move(canMoveBlock.targetBlock.transform.position, moveState, movementSpeed, canMoveBlock));
         }
@@ -2437,6 +2564,7 @@ public class Movement : Singleton<Movement>
 
             isMoving = true;
 
+            ClearFallingCarrierBlock();
             ResetDarkenBlocks();
             StartCoroutine(Move(canMoveBlock.targetBlock.transform.position, moveState, movementSpeed, canMoveBlock));
         }
@@ -2452,6 +2580,8 @@ public class Movement : Singleton<Movement>
             return;
 
         isMoving = true;
+
+        ClearFallingCarrierBlock();
         ResetDarkenBlocks();
         StartCoroutine(Move(targetPos, MovementStates.Moving, standingInfo.movementSpeed, null));
     }
@@ -2459,6 +2589,8 @@ public class Movement : Singleton<Movement>
     public void PerformMovement(Vector3 targetPos, float movementSpeed)
     {
         isMoving = true;
+
+        ClearFallingCarrierBlock();
         ResetDarkenBlocks();
         StartCoroutine(Move(targetPos, MovementStates.Moving, movementSpeed, null));
     }
@@ -2643,6 +2775,7 @@ public class Movement : Singleton<Movement>
             info.movementState == MovementStates.Falling &&
             !CeilingGrab.isCeilingGrabbing)
         {
+            SetFallingCarrierBlock(blockStandingOn);
             SetMovementState(MovementStates.Falling);
             ResetDarkenBlocks();
         }
@@ -2652,6 +2785,7 @@ public class Movement : Singleton<Movement>
     {
         if (!CeilingGrab.isCeilingGrabbing)
         {
+            ClearFallingCarrierBlock();
             SetMovementState(MovementStates.Falling);
             ResetDarkenBlocks();
         }
@@ -2659,6 +2793,12 @@ public class Movement : Singleton<Movement>
 
     void PlayerIsFalling()
     {
+        if (IsFallingWithCarrierBlockActive())
+        {
+            transform.position = fallingCarrierBlock.transform.position + (Vector3.up * heightOverBlock);
+            return;
+        }
+
         if (blockStandingOn != null)
         {
             if (Vector3.Distance(blockStandingOn.transform.position, transform.position) < heightOverBlock + 0.1f)
@@ -2686,6 +2826,7 @@ public class Movement : Singleton<Movement>
     {
         if (TryGetStandingInfo(out BlockInfo info) && info.movementState != MovementStates.Falling)
         {
+            ClearFallingCarrierBlock();
             SetMovementState(MovementStates.Still);
             Action_LandedFromFalling_Invoke();
         }
@@ -3274,7 +3415,7 @@ public class Movement : Singleton<Movement>
         isDrowning = true;
         PlayerManager.Instance.PauseGame();
 
-        //yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.15f);
 
         Player_Animations.Instance.Trigger_DrowningAnimation();
 
@@ -3394,6 +3535,7 @@ public class Movement : Singleton<Movement>
         isDescending = false;
         PlayerCameraOcclusionController.Instance.CameraZoom(false);
 
+        ClearFallingCarrierBlock();
         SetMovementState(MovementStates.Moving);
 
         if (!SFX_Respawn.Instance.isRespawning)
