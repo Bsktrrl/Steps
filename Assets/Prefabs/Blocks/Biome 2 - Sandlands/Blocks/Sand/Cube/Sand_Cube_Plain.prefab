@@ -150,9 +150,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 400006, guid: ac1da33644b28bc4b9091e01cf543bea, type: 3}
       insertIndex: 0
       addedObject: {fileID: 303218015336273692}
-    - targetCorrespondingSourceObject: {fileID: 400006, guid: ac1da33644b28bc4b9091e01cf543bea, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 870908124030520620}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 100006, guid: ac1da33644b28bc4b9091e01cf543bea, type: 3}
       insertIndex: -1
@@ -248,18 +245,6 @@ MonoBehaviour:
   movementState: 0
   stepCostText_Color: {r: 0.9960785, g: 0.9803922, b: 0.6431373, a: 1}
   stepCostText_ColorUnder: {r: 0, g: 0, b: 0, a: 0}
-  stepSound_Volume: 0.75
-  stepSound_ClipList:
-  - {fileID: 8300000, guid: 648179f02878b9e4fac6731c934ab895, type: 3}
-  - {fileID: 8300000, guid: b3bc773b8c9a20047bef3b94d462181f, type: 3}
-  - {fileID: 8300000, guid: 885d93e2cef3aa14c84cc0b05300c879, type: 3}
-  - {fileID: 8300000, guid: 9bbcb6daae63a0643af4b0f30c593d7c, type: 3}
-  - {fileID: 8300000, guid: 360b3f29e658e6b4586b96d1746cde3c, type: 3}
-  - {fileID: 8300000, guid: 5644ba4033cee4e428b9ae11f84a4e66, type: 3}
-  - {fileID: 8300000, guid: 4f88c18f553756142b3a5c01ff3ad82f, type: 3}
-  - {fileID: 8300000, guid: 08e96d41fb52ab449819bfa332565247, type: 3}
-  - {fileID: 8300000, guid: dbfbee47da7a9f94aa9a633fe7cb217c, type: 3}
-  stepSound_Source: {fileID: 0}
   startPos: {x: 0, y: 0, z: 0}
   colorTint_isActive: 0
   tintValue: 0.95
@@ -302,8 +287,6 @@ MonoBehaviour:
   effectVisualParent: {fileID: 0}
   removeDuplicatesInEditor: 1
   effectBlock_SpawnPoint_isAdded: 0
-  effectBlock_RefillSteps_isAdded: 0
-  effectBlock_Pusher_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
@@ -380,7 +363,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5351828474339817298, guid: 99b19c70d7161bb4b9f4fce55ab13803, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 870908124030520620}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99b19c70d7161bb4b9f4fce55ab13803, type: 3}
 --- !u!4 &303218015336273692 stripped
@@ -396,6 +382,11 @@ GameObject:
 --- !u!95 &1587838153183220456 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5060387704778250165, guid: 99b19c70d7161bb4b9f4fce55ab13803, type: 3}
+  m_PrefabInstance: {fileID: 5779026163250988381}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1906916040854204943 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5351828474339817298, guid: 99b19c70d7161bb4b9f4fce55ab13803, type: 3}
   m_PrefabInstance: {fileID: 5779026163250988381}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1906916040854236713 stripped
@@ -419,7 +410,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 4262541881227922136}
+    m_TransformParent: {fileID: 1906916040854204943}
     m_Modifications:
     - target: {fileID: 365643882158083748, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_Layer

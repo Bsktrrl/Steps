@@ -658,20 +658,27 @@ public class NumberDisplay : MonoBehaviour
         Vector3 worldTopPosition = Vector3.zero;
         if (parent.gameObject.GetComponent<Block_Snow>())
         {
-            worldTopPosition = parent.position + topDirection * (cubeHeight / 2f + offsetAboveSurface - 0.6f) + (Vector3.up * localStartHeight);
+            worldTopPosition = parent.position + topDirection * (cubeHeight / 2f + offsetAboveSurface - 0.6f + 0.0075f) + (Vector3.up * localStartHeight);
         }
         else
         {
-            worldTopPosition = parent.position + topDirection * (cubeHeight / 2f + offsetAboveSurface - 0.6f);
+            worldTopPosition = parent.position + topDirection * (cubeHeight / 2f + offsetAboveSurface - 0.6f + 0.0075f);
         }
 
         // Apply the world position
         cachedTransform.position = worldTopPosition;
 
+        // Pipe blocks should force local Y to -0.1
+        BlockInfo parentBlockInfo = parent.GetComponent<BlockInfo>();
+        if (blockInfo != null && blockInfo.blockElement == BlockElement.Pipe)
+        {
+            Vector3 localPos = cachedTransform.localPosition;
+            localPos.y = -0.115f;
+            cachedTransform.localPosition = localPos;
+        }
+
         // Keep the number upright in world space
         cachedTransform.rotation = Quaternion.identity;
-        // Optional: if you want the number to always face the camera:
-        // cachedTransform.rotation = Quaternion.LookRotation(Camera.main.transform.forward, Vector3.up);
     }
 
     public void PositionOnBottomOfParentCube()
@@ -691,10 +698,19 @@ public class NumberDisplay : MonoBehaviour
         float cubeHeight = parent.localScale.y;
 
         // World position at bottom of the cube
-        Vector3 worldBottomPosition = parent.position + bottomDirection * (cubeHeight / 2f + offsetAboveSurface - 0.6f) + (Vector3.up * localStartHeight);
+        Vector3 worldBottomPosition = parent.position + bottomDirection * (cubeHeight / 2f + offsetAboveSurface - 0.6f + 0.0075f) + (Vector3.up * localStartHeight);
 
         // Move the number object to the bottom in world space
         cachedTransform.position = worldBottomPosition;
+
+        // Pipe blocks should force local Y to -0.1
+        BlockInfo parentBlockInfo = parent.GetComponent<BlockInfo>();
+        if (blockInfo != null && blockInfo.blockElement == BlockElement.Pipe)
+        {
+            Vector3 localPos = cachedTransform.localPosition;
+            localPos.y = -0.115f;
+            cachedTransform.localPosition = localPos;
+        }
 
         // Make the number face downward in world space
         cachedTransform.up = Vector3.down;
