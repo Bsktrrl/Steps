@@ -2648,7 +2648,7 @@ public class Movement : Singleton<Movement>
         isAscending = false;
         isDescending = false;
 
-        ResetWalkAnimationCheck();
+        //ResetWalkAnimationCheck();
 
         PlayerCameraOcclusionController.Instance.CameraZoom(false);
 
