@@ -58,12 +58,15 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     }
     public void CeilingGrab()
     {
-        //Don't be able to switch camera angle before the rotation has been done
-        if (!canCeilingGrab) { return; }
-        if (CameraController.Instance.isRotating) { return; }
-        if (CameraController.Instance.isCeilingRotating) { return; }
-        if (Player_Interact.Instance.isInteracting) { return; }
-        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
+        // Allow pressing the same button again to EXIT ceiling grab.
+        // Only require canCeilingGrab when ENTERING ceiling grab.
+        if (!isCeilingGrabbing && !canCeilingGrab) return;
+
+        if (CameraController.Instance.isRotating) return;
+        if (CameraController.Instance.isCeilingRotating) return;
+        if (Player_Interact.Instance.isInteracting) return;
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving) return;
+        if (isCeilingRotation) return;
 
         StartCoroutine(RunCeilingGrab());
     }
@@ -127,7 +130,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             return;
         }
 
-        // Ignore water-above so upward SwiftSwim controls that block
+        // Ignore water-above so upward SwiftSwim controls that block.
         if (blockInfo.blockElement == BlockElement.Water)
         {
             if (ceilingGrabBlock == outObject1)
@@ -138,20 +141,10 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
             return;
         }
 
-        // Ignore the block if it is currently the Ascend target
-        if (Movement.Instance.moveToBlock_Ascend != null &&
-            Movement.Instance.moveToBlock_Ascend.canMoveTo &&
-            Movement.Instance.moveToBlock_Ascend.targetBlock == outObject1)
-        {
-            if (ceilingGrabBlock == outObject1)
-                blockInfo.ResetDarkenColor();
+        // IMPORTANT:
+        // Do NOT block ceiling grab just because this block is also an Ascend target.
+        // CeilingGrab and Ascend use different buttons, so both should be allowed.
 
-            canCeilingGrab = false;
-            ceilingGrabBlock = null;
-            return;
-        }
-
-        // Invalid ceiling-grab surfaces
         if (blockInfo.blockType == BlockType.Slab ||
             blockInfo.blockType == BlockType.Stair ||
             blockInfo.blockType == BlockType.Slope)
@@ -165,7 +158,10 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         }
 
         ceilingGrabBlock = outObject1;
-        canCeilingGrab = !isCeilingGrabbing;
+
+        // Keep this true even while already ceiling-grabbing,
+        // otherwise the exit press gets blocked.
+        canCeilingGrab = true;
 
         Action_raycastCeiling?.Invoke();
     }
@@ -279,85 +275,36 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 
     public void CheckBlockStandingUnder()
     {
-        if (!isCeilingGrabbing) { return; }
+        if (!isCeilingGrabbing) return;
 
-        if (Movement.Instance.GetMovementState() == MovementStates.Still)
+        if (Physics.Raycast(transform.position, Vector3.up, out hit, 1, MapManager.Instance.pickup_LayerMask) &&
+            hit.transform.GetComponent<BlockInfo>())
         {
-            if (Physics.Raycast(transform.position, Vector3.up, out hit, 1, MapManager.Instance.pickup_LayerMask))
+            Movement.Instance.blockStandingOn = hit.transform.gameObject;
+
+            if (Movement.Instance.blockStandingOn_Previous != Movement.Instance.blockStandingOn)
             {
-                if (hit.transform.GetComponent<BlockInfo>())
-                {
-                    Movement.Instance.blockStandingOn = hit.transform.gameObject;
-                    Movement.Instance.blockStandingOn.transform.position = hit.transform.position;
-                    Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType = hit.transform.GetComponent<BlockInfo>().blockType;
-
-                    if (Movement.Instance.blockStandingOn_Previous != Movement.Instance.blockStandingOn)
-                    {
-                        Movement.Instance.Action_isSwitchingBlocks_Invoke();
-                        Movement.Instance.blockStandingOn_Previous = Movement.Instance.blockStandingOn;
-                    }
-
-                    gameObject.transform.position = Movement.Instance.blockStandingOn.transform.position + Vector3.down + (Vector3.down * (1 - Movement.Instance.heightOverBlock));
-                }
+                Movement.Instance.Action_isSwitchingBlocks_Invoke();
+                Movement.Instance.blockStandingOn_Previous = Movement.Instance.blockStandingOn;
             }
-            else
+
+            if (Movement.Instance.GetMovementState() == MovementStates.Still)
             {
-                Movement.Instance.blockStandingOn = null;
-                Movement.Instance.blockStandingOn.transform.position = Vector3.zero;
-                Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType = BlockType.None;
+                transform.position =
+                    Movement.Instance.blockStandingOn.transform.position +
+                    Vector3.down +
+                    (Vector3.down * (1 - Movement.Instance.heightOverBlock));
             }
         }
-        else if (Movement.Instance.GetMovementState() == MovementStates.Moving)
+        else
         {
-            if (Physics.Raycast(transform.position, Vector3.up, out hit, 1, MapManager.Instance.pickup_LayerMask))
-            {
-                if (hit.transform.GetComponent<BlockInfo>())
-                {
-                    Movement.Instance.blockStandingOn = hit.transform.gameObject;
-                    Movement.Instance.blockStandingOn.transform.position = hit.transform.position;
-                    Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType = hit.transform.GetComponent<BlockInfo>().blockType;
+            Movement.Instance.blockStandingOn = null;
+        }
 
-                    if (Movement.Instance.blockStandingOn_Previous != Movement.Instance.blockStandingOn)
-                    {
-                        Movement.Instance.Action_isSwitchingBlocks_Invoke();
-                        Movement.Instance.blockStandingOn_Previous = Movement.Instance.blockStandingOn;
-                    }
-
-                    //IceBlock
-                    //if (hit.transform.GetComponent<Block_IceGlide>() && Movement.Instance.GetMovementState() == MovementStates.Moving)
-                    //{
-                    //    switch (Player_Movement.Instance.lastMovementButtonPressed)
-                    //    {
-                    //        case ButtonsToPress.None:
-                    //            break;
-                    //        case ButtonsToPress.W:
-                    //            Player_Movement.Instance.StartCeilingGrabMovement(Vector3.forward);
-                    //            return;
-                    //        case ButtonsToPress.S:
-                    //            Player_Movement.Instance.StartCeilingGrabMovement(Vector3.back);
-                    //            return;
-                    //        case ButtonsToPress.A:
-                    //            Player_Movement.Instance.StartCeilingGrabMovement(Vector3.left);
-                    //            return;
-                    //        case ButtonsToPress.D:
-                    //            Player_Movement.Instance.StartCeilingGrabMovement(Vector3.right);
-                    //            return;
-                    //        default:
-                    //            break;
-                    //    }
-                    //}
-                }
-            }
-            else
-            {
-                Movement.Instance.blockStandingOn = null;
-                Movement.Instance.blockStandingOn.transform.position = Vector3.zero;
-                Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType = BlockType.None;
-            }
-
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving)
+        {
             Movement.Instance.SetMovementState(MovementStates.Still);
             PlayerManager.Instance.pauseGame = false;
-
             Movement.Instance.Action_StepTaken_Invoke();
         }
     }
