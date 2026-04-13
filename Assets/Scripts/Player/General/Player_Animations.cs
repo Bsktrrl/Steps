@@ -24,6 +24,10 @@ public class Player_Animations : Singleton<Player_Animations>
     private bool isPlayingPickupAnimation;
     private Coroutine pickupCoroutine;
 
+    private Coroutine walkGlideDelayCoroutine;
+    [SerializeField] private bool suppressWalkGlideUntilWalkInputReleased;
+    [SerializeField] private bool blockWalkGlideAfterVerticalAbility;
+
 
     //--------------------
 
@@ -41,8 +45,8 @@ public class Player_Animations : Singleton<Player_Animations>
         if (isPlayingPickupAnimation)
             return;
 
-        // Swim Animation
-        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() &&
+        if (Movement.Instance.blockStandingOn &&
+            Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() &&
             (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water ||
              Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.SwampWater ||
              Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Mud))
@@ -54,25 +58,43 @@ public class Player_Animations : Singleton<Player_Animations>
             Set_SwimAnimation(false);
         }
 
-        if (Movement.Instance.movementStates == MovementStates.Still ||
-            (!Player_KeyInputs.Instance.forward_isHold &&
-             !Player_KeyInputs.Instance.back_isHold &&
-             !Player_KeyInputs.Instance.left_isHold &&
-             !Player_KeyInputs.Instance.right_isHold))
-        {
-            Set_WalkGlideAnimation(false);
-        }
-        else if ((Player_KeyInputs.Instance.forward_isHold && Movement.Instance.moveToBlock_Forward.canMoveTo)
-              || (Player_KeyInputs.Instance.back_isHold && Movement.Instance.moveToBlock_Back.canMoveTo)
-              || (Player_KeyInputs.Instance.left_isHold && Movement.Instance.moveToBlock_Left.canMoveTo)
-              || (Player_KeyInputs.Instance.right_isHold && Movement.Instance.moveToBlock_Right.canMoveTo))
-        {
-            if (!walkGlidingCheck)
-                Set_WalkGlideAnimation(true);
-        }
+        bool holdingWalkDirection =
+            Player_KeyInputs.Instance.forward_isHold ||
+            Player_KeyInputs.Instance.back_isHold ||
+            Player_KeyInputs.Instance.left_isHold ||
+            Player_KeyInputs.Instance.right_isHold;
+
+        bool hasHorizontalWalkTarget =
+            (Player_KeyInputs.Instance.forward_isHold && Movement.Instance.moveToBlock_Forward.canMoveTo) ||
+            (Player_KeyInputs.Instance.back_isHold && Movement.Instance.moveToBlock_Back.canMoveTo) ||
+            (Player_KeyInputs.Instance.left_isHold && Movement.Instance.moveToBlock_Left.canMoveTo) ||
+            (Player_KeyInputs.Instance.right_isHold && Movement.Instance.moveToBlock_Right.canMoveTo);
+
+        bool isAbilityMovement =
+            Movement.Instance.isAscending ||
+            Movement.Instance.isDescending ||
+            Movement.Instance.isDashing ||
+            Movement.Instance.isJumping ||
+            Movement.Instance.isGrapplingHooking ||
+            Player_CeilingGrab.Instance.isCeilingGrabbing;
+
+        bool shouldGlide =
+            Movement.Instance.movementStates == MovementStates.Moving &&
+            holdingWalkDirection &&
+            hasHorizontalWalkTarget &&
+            !isAbilityMovement &&
+            !blockWalkGlideAfterVerticalAbility;
+
+        if (shouldGlide)
+            Set_WalkGlideAnimation(true);
         else
-        {
             Set_WalkGlideAnimation(false);
+
+        if (Movement.Instance.movementStates == MovementStates.Still &&
+            !Movement.Instance.isAscending &&
+            !Movement.Instance.isDescending)
+        {
+            blockWalkGlideAfterVerticalAbility = false;
         }
 
         if (Movement.Instance.blockStandingOn &&
@@ -138,6 +160,8 @@ public class Player_Animations : Singleton<Player_Animations>
 
     public void ResetAnimations()
     {
+        blockWalkGlideAfterVerticalAbility = false;
+
         Set_SwimAnimation(false);
         Set_WalkGlideAnimation(false);
 
@@ -209,7 +233,13 @@ public class Player_Animations : Singleton<Player_Animations>
         if (Movement.Instance.isMoving) { return; }
         if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Ice) return;
 
-        if (!isWalkGliding && !Movement.Instance.isDashing && !Movement.Instance.isJumping && !Movement.Instance.isAscending)
+        blockWalkGlideAfterVerticalAbility = false;
+        Set_WalkGlideAnimation(false);
+
+        if (!Movement.Instance.isDashing &&
+            !Movement.Instance.isJumping &&
+            !Movement.Instance.isAscending &&
+            !Movement.Instance.isDescending)
         {
             playerAnimator.speed = 1.0f;
             playerAnimator.SetTrigger(AnimationManager.Instance.walk);
@@ -219,6 +249,9 @@ public class Player_Animations : Singleton<Player_Animations>
     {
         if (Movement.Instance.isMoving) { return; }
         if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Ice) return;
+
+        blockWalkGlideAfterVerticalAbility = false;
+        Set_WalkGlideAnimation(false);
 
         playerAnimator.speed = 1.0f;
         playerAnimator.SetTrigger(AnimationManager.Instance.walk);
@@ -245,24 +278,32 @@ public class Player_Animations : Singleton<Player_Animations>
     }
     public void Set_WalkGlideAnimation(bool state)
     {
-        if (state /*&& Movement.Instance.movementStates == MovementStates.Still*/)
+        if (state)
         {
-            //print("4. isWalkGliding");
+            if (isWalkGliding)
+                return;
+
             walkGlidingCheck = true;
-            //anim.speed = 1.0f;
             playerAnimator.SetBool("Sliding", true);
             isWalkGliding = true;
-            StartCoroutine(IsWalkGliding_Delay());
+
+            if (walkGlideDelayCoroutine != null)
+                StopCoroutine(walkGlideDelayCoroutine);
+
+            walkGlideDelayCoroutine = StartCoroutine(IsWalkGliding_Delay());
         }
         else
         {
-            //print("5. isWalkGliding");
             walkGlidingCheck = false;
             playerAnimator.SetBool("Sliding", false);
             isWalkGliding = false;
-
-            StopCoroutine(IsWalkGliding_Delay());
             isWalkGliding_Delay = false;
+
+            if (walkGlideDelayCoroutine != null)
+            {
+                StopCoroutine(walkGlideDelayCoroutine);
+                walkGlideDelayCoroutine = null;
+            }
         }
     }
     IEnumerator IsWalkGliding_Delay()
@@ -270,6 +311,7 @@ public class Player_Animations : Singleton<Player_Animations>
         yield return new WaitForSeconds(0.2f);
 
         isWalkGliding_Delay = true;
+        walkGlideDelayCoroutine = null;
     }
 
     public void Start_RespawnAnimation()
@@ -291,6 +333,9 @@ public class Player_Animations : Singleton<Player_Animations>
     {
         if (Movement.Instance.isMoving) { return; }
 
+        blockWalkGlideAfterVerticalAbility = true;
+        Set_WalkGlideAnimation(false);
+
         playerAnimator.speed = 1.0f;
         playerAnimator.SetTrigger(AnimationManager.Instance.ability_Ascend);
         EffectManager.Instance.PerformAscendEffect();
@@ -298,6 +343,9 @@ public class Player_Animations : Singleton<Player_Animations>
     public void Trigger_DescendAnimation()
     {
         if (Movement.Instance.isMoving) { return; }
+
+        blockWalkGlideAfterVerticalAbility = true;
+        Set_WalkGlideAnimation(false);
 
         playerAnimator.speed = 1.0f;
         playerAnimator.SetTrigger(AnimationManager.Instance.ability_Descend);
@@ -503,4 +551,21 @@ public class Player_Animations : Singleton<Player_Animations>
     {
         StartCoroutine(RandomIdle());
     }
+
+
+    #region Helpers
+
+    public void SuppressWalkGlideAfterVerticalAbility()
+    {
+        suppressWalkGlideUntilWalkInputReleased = true;
+        Set_WalkGlideAnimation(false);
+
+        if (playerAnimator != null)
+        {
+            playerAnimator.SetBool("Sliding", false);
+            playerAnimator.ResetTrigger(AnimationManager.Instance.walk);
+        }
+    }
+
+    #endregion
 }

@@ -890,6 +890,11 @@ public class Movement : Singleton<Movement>
         RefreshAvailableMovementBlocksSmooth();
     }
 
+    void ResetWalkAnimationCheck()
+    {
+        walkAnimationCheck = false;
+    }
+
     #endregion
 
     #region Movement Functions
@@ -2309,6 +2314,8 @@ public class Movement : Singleton<Movement>
             return false;
         }
 
+        ResetWalkAnimationCheck();
+
         isAscending = true;
         PlayerCameraOcclusionController.Instance.CameraZoom(true);
 
@@ -2329,6 +2336,8 @@ public class Movement : Singleton<Movement>
             RespawnPlayer();
             return false;
         }
+
+        ResetWalkAnimationCheck();
 
         isDescending = true;
         PlayerCameraOcclusionController.Instance.CameraZoom(true);
@@ -2639,12 +2648,12 @@ public class Movement : Singleton<Movement>
         isAscending = false;
         isDescending = false;
 
+        ResetWalkAnimationCheck();
+
         PlayerCameraOcclusionController.Instance.CameraZoom(false);
 
         Action_StepTaken_Invoke();
 
-        // If we had been suppressing darkening for held-chain movement,
-        // but after this step there is no next valid move, restore visuals now.
         if (pendingDarkeningRefreshAfterChain &&
             !ShouldChainImmediatelyAfterStep() &&
             movementStates == MovementStates.Still)
