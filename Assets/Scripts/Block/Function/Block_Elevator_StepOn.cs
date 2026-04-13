@@ -10,9 +10,21 @@ public class Block_Elevator_StepOn : MonoBehaviour
     //--------------------
 
 
-    private void Update()
+    //private void Update()
+    //{
+    //    CheckIfPlayerIsOn();
+    //}
+
+    private void OnTriggerEnter(Collider other)
     {
-        CheckIfPlayerIsOn();
+        if (other.CompareTag("Player"))
+            isStandingOnBlock = true;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+            isStandingOnBlock = false;
     }
 
 
@@ -21,6 +33,14 @@ public class Block_Elevator_StepOn : MonoBehaviour
 
     void CheckIfPlayerIsOn()
     {
+        StartCoroutine(CheckIfPlayerIsOn_Delay(0.2f));
+    }
+    IEnumerator CheckIfPlayerIsOn_Delay(float waitTime)
+    {
+        PlayerManager.Instance.PauseGame();
+
+        yield return new WaitForSeconds(waitTime);
+
         if (Movement.Instance.blockStandingOn != gameObject && isStandingOnBlock)
         {
             isStandingOnBlock = false;
@@ -29,5 +49,8 @@ public class Block_Elevator_StepOn : MonoBehaviour
         {
             isStandingOnBlock = true;
         }
+
+
+        PlayerManager.Instance.UnpauseGame();
     }
 }

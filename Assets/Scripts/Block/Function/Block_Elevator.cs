@@ -30,27 +30,40 @@ public class Block_Elevator : MonoBehaviour
 
     float UpdateBlocksCounter = 0;
 
+    MovingMachineScript movingMachineScript;
+
 
     //--------------------
 
 
     private void Start()
     {
-        if (gameObject.GetComponent<Block_Elevator_StepOn>())
+        if (GetComponent<Block_Elevator_StepOn>())
             stepOn_Elevator = true;
-        
+
+        movingMachineScript = GetComponent<MovingMachineScript>();
         lastPosition = transform.position;
+
+        if (movementPath == null || movementPath.Count == 0)
+        {
+            Debug.LogError("Block_Elevator has no movement path assigned.", this);
+            enabled = false;
+            return;
+        }
 
         CalculateMovementPath();
     }
     private void Update()
     {
-        //Moving towards new endPos
+        if (movementPath == null || movementPath.Count == 0)
+            return;
+
         if (!waiting && isMoving)
         {
             if (stepOn_Elevator)
             {
-                if (gameObject.GetComponent<Block_Elevator_StepOn>().isStandingOnBlock)
+                var stepOn = GetComponent<Block_Elevator_StepOn>();
+                if (stepOn != null && stepOn.isStandingOnBlock)
                 {
                     ElevatorMovement(pathSegmentCounter);
                 }
@@ -68,10 +81,6 @@ public class Block_Elevator : MonoBehaviour
             }
         }
 
-        //Check distance before updating DarkenBlocks
-
-        //CheckIfInRangeOfPlayer();
-        //CheckIfDarkenBlock();
         UpdateBlocks();
 
         if (Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position) <= 2f)
@@ -237,26 +246,41 @@ public class Block_Elevator : MonoBehaviour
 
     void ElevatorMovement(int index)
     {
-        transform.position = Vector3.MoveTowards(transform.position, movementPath[index].endPos, movementSpeed * Time.deltaTime);
+        if (movementPath == null || movementPath.Count == 0)
+            return;
+
+        if (index < 0 || index >= movementPath.Count)
+        {
+            Debug.LogError($"Invalid path index {index}. movementPath count: {movementPath.Count}", this);
+            return;
+        }
+
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            movementPath[index].endPos,
+            movementSpeed * Time.deltaTime
+        );
 
         if (Vector3.Distance(transform.position, movementPath[index].endPos) <= 0.03f)
         {
             pathSegmentCounter++;
-            if (pathSegmentCounter > movementPath.Count - 1)
+
+            if (pathSegmentCounter >= movementPath.Count)
             {
                 pathSegmentCounter = 0;
 
-                if (gameObject.GetComponentInChildren<Block_Ladder>())
+                var ladder = GetComponentInChildren<Block_Ladder>();
+                if (ladder != null)
                 {
                     print("100. Get Ladder Child");
-                    gameObject.GetComponentInChildren<Block_Ladder>().SetupLadder();
+                    ladder.SetupLadder();
                 }
             }
 
             if (movementPath[index].waitAfterMoving)
             {
                 isMoving = false;
-
+                StopAnimaton();
                 StartCoroutine(BlockWaiting(waitingTime));
             }
         }
@@ -270,7 +294,25 @@ public class Block_Elevator : MonoBehaviour
 
         waiting = false;
         isMoving = true;
+        StartAnimation();
     }
+
+
+    //--------------------
+
+
+    void StartAnimation()
+    {
+        if (movingMachineScript)
+            movingMachineScript.StartMovement();
+    }
+    void StopAnimaton()
+    {
+        if (movingMachineScript)
+            movingMachineScript.StopMovement();
+    }
+
+    
 
 
     //--------------------
