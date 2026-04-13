@@ -2,31 +2,38 @@
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
 April:
-1.0. CameraBlockRender
-- Få ladders og pickups til å bli usynlige når blokkene blir det, så ikke de står mellom kameraet og spilleren
+1.0. Lage levels:
+- Lage Tutorial level
+	- Lage funksjonalitet for Tutorial-levelet i OverworldMenyen
+	- Gjøre slik at man kan velge og kjøre Tutorial-levelet fra OverworldMenyen
+- Lage level i Frostfield
+- Lage level i Firevein
+- Lage level i Witchmire
+- Lage level i Metalworks
 
 
-2.0. Looking-kamera:
-- Gjøre om joystick til å snu kameraet litt rundt spilleren
-	- Lage en variant for rundt spilleren (til vurdering)
-	- Lage en variant for rundt seg selv (til vurdering)
-- Gjøre kompatibel for både kontroll og datamus
-
-
-4.0. Endre Sopp-sirkel:
+2.0. Endre Sopp-sirkel og dens funksjon:
 - Spilleren kan gå 3 steg gratis, uavhengig av hvilken blokk den går på
 	- Legg til symbol/tall på HUD for å vise at den har +3, +2 og +1 ekstra steg
 	- Gratis å gå i Mud-blokk og adjecent blokker (overskrider MudBlock sin effekt)
 	- Får igjen +1 steg ved å gå på adjecent blokker til Swamp Water (supplementerer SwampWater sin effekt ift. at det nå originalt koster 0 å gå)
 
 
+3.0. CameraBlockRender
+- Få ladders og pickups til å bli usynlige når blokkene blir det, så ikke de står mellom kameraet og spilleren
+
+
+4.0. Looking-kamera:
+- Gjøre om joystick til å snu kameraet litt rundt spilleren
+	- Lage en variant for rundt spilleren (til vurdering)
+	- Lage en variant for rundt seg selv (til vurdering)
+- Gjøre kompatibel for både kontroll og datamus
+
+
 5.0. Sound:
 - Legg til all lyd fra Lisette
 - fullfør "FadeOutALLSound()" i "SoundManager" slik at all lyd fades fint ut når man exit'er en scene
 
-
-6.0. Jumping:
-- Jumping-ferdigheten oppdateres ikke riktig ift. numberDisplay, så mange flere blokker viser tall enn det skal
 
 
 --- OTHER FIXES
