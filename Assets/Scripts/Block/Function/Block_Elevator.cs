@@ -41,6 +41,21 @@ public class Block_Elevator : MonoBehaviour
     [SerializeField] private float stepOnDelay = 0.25f;
     private float stepOnTimer = 0f;
 
+    [Header("Snapping Into Place")]
+    [SerializeField] private float stepOnSnapSpeed = 1f;
+    [SerializeField] private float snapCompleteDistance = 0.001f;
+
+    private bool wasPlayerStandingOnThisBlock;
+    private bool isSnappingToGrid;
+    private Vector3 snapTargetPosition;
+
+    public bool IsSnappingToGrid => isSnappingToGrid;
+    private Vector3 lastValidStepOnGridPosition;
+
+    private bool stepOnMovementLocked;
+    private Vector3 lastStepOnFrameStartPosition;
+    private Vector3 lastStepOnGridPosition;
+
 
     //--------------------
 
@@ -59,6 +74,10 @@ public class Block_Elevator : MonoBehaviour
 
         lastPosition = transform.position;
         lastElevatorPosition = transform.position;
+
+        lastValidStepOnGridPosition = RoundToGrid(transform.position);
+        lastStepOnFrameStartPosition = transform.position;
+        lastStepOnGridPosition = RoundToGrid(transform.position);
 
         if (movementPath == null || movementPath.Count == 0)
         {
@@ -125,6 +144,27 @@ public class Block_Elevator : MonoBehaviour
 
     void HandleElevatorMovement()
     {
+        // For Step_On elevators, snapping must be allowed to continue even if normal movement is locked.
+        if (stepOn_Elevator && isSnappingToGrid)
+        {
+            Vector3 positionBefore = transform.position;
+
+            SmoothSnapToGrid();
+
+            bool actuallyMoved = (transform.position - positionBefore).sqrMagnitude > 0.000001f;
+
+            if (actuallyMoved)
+                StartAnimation();
+            else
+                StopAnimation();
+
+            // Unlock only when snap is fully done
+            if (!isSnappingToGrid)
+                stepOnMovementLocked = false;
+
+            return;
+        }
+
         if (waiting || !isMoving)
         {
             StopAnimation();
@@ -132,19 +172,46 @@ public class Block_Elevator : MonoBehaviour
         }
 
         bool shouldMove = false;
+        bool playerStandingOnThisBlock = Movement.Instance != null && Movement.Instance.blockStandingOn == gameObject;
+
+        bool playerIsStill = Movement.Instance != null && Movement.Instance.movementStates == MovementStates.Still;
+
+        bool stepOnShouldControlElevator =
+            playerStandingOnThisBlock && playerIsStill;
 
         if (stepOn_Elevator)
         {
-            bool playerStandingOnThisBlock =
-                Movement.Instance != null &&
-                Movement.Instance.blockStandingOn == gameObject;
+            // If movement is locked after stepping off, never allow normal path movement.
+            if (stepOnMovementLocked)
+            {
+                StopAnimation();
+                return;
+            }
 
-            if (playerStandingOnThisBlock)
+            if (stepOnShouldControlElevator)
+            {
+                lastStepOnFrameStartPosition = transform.position;
+                lastStepOnGridPosition = RoundToGrid(lastStepOnFrameStartPosition);
+                lastValidStepOnGridPosition = lastStepOnGridPosition;
+
                 stepOnTimer += Time.deltaTime;
+                isSnappingToGrid = false;
+            }
             else
+            {
                 stepOnTimer = 0f;
 
-            shouldMove = stepOnTimer >= stepOnDelay;
+                if (wasPlayerStandingOnThisBlock)
+                {
+                    stepOnMovementLocked = true;
+                    transform.position = lastStepOnFrameStartPosition;
+                    StartSnapToGridPosition(lastStepOnGridPosition);
+                }
+            }
+
+            wasPlayerStandingOnThisBlock = stepOnShouldControlElevator;
+
+            shouldMove = stepOnShouldControlElevator && stepOnTimer >= stepOnDelay;
         }
         else if (activate_Elevator)
         {
@@ -161,13 +228,13 @@ public class Block_Elevator : MonoBehaviour
             return;
         }
 
-        Vector3 positionBefore = transform.position;
+        Vector3 before = transform.position;
 
         ElevatorMovement(pathSegmentCounter);
 
-        bool actuallyMoved = (transform.position - positionBefore).sqrMagnitude > 0.000001f;
+        bool moved = (transform.position - before).sqrMagnitude > 0.000001f;
 
-        if (actuallyMoved)
+        if (moved)
             StartAnimation();
         else
             StopAnimation();
@@ -421,9 +488,18 @@ public class Block_Elevator : MonoBehaviour
         pathSegmentCounter = 0;
         stepOnTimer = 0f;
 
+        isSnappingToGrid = false;
+        wasPlayerStandingOnThisBlock = false;
+        stepOnMovementLocked = false;
+        snapTargetPosition = Vector3.zero;
+
         transform.position = movementPath != null && movementPath.Count > 0
             ? movementPath[0].startPos
             : transform.position;
+
+        lastValidStepOnGridPosition = RoundToGrid(transform.position);
+        lastStepOnFrameStartPosition = transform.position;
+        lastStepOnGridPosition = RoundToGrid(transform.position);
 
         lastPosition = transform.position;
         lastElevatorPosition = transform.position;
@@ -432,6 +508,50 @@ public class Block_Elevator : MonoBehaviour
 
         StartCoroutine(BlockWaiting(waitingTime));
     }
+
+    #region Helpers
+
+    void StartSnapToGridPosition(Vector3 targetPosition)
+    {
+        if (!stepOn_Elevator)
+            return;
+
+        snapTargetPosition = targetPosition;
+        isSnappingToGrid = true;
+
+        if ((transform.position - snapTargetPosition).sqrMagnitude <= snapCompleteDistance * snapCompleteDistance)
+        {
+            transform.position = snapTargetPosition;
+            isSnappingToGrid = false;
+            stepOnMovementLocked = false;
+        }
+    }
+
+    void SmoothSnapToGrid()
+    {
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            snapTargetPosition,
+            stepOnSnapSpeed * Time.deltaTime
+        );
+
+        if ((transform.position - snapTargetPosition).sqrMagnitude <= snapCompleteDistance * snapCompleteDistance)
+        {
+            transform.position = snapTargetPosition;
+            isSnappingToGrid = false;
+        }
+    }
+
+    Vector3 RoundToGrid(Vector3 position)
+    {
+        return new Vector3(
+            Mathf.Round(position.x),
+            Mathf.Round(position.y),
+            Mathf.Round(position.z)
+        );
+    }
+
+    #endregion
 }
 
 public enum elevatorDirection

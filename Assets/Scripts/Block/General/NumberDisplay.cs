@@ -364,34 +364,29 @@ public class NumberDisplay : MonoBehaviour
 
     public void UpdateRotation()
     {
-        // If this block can be ceilinggrabbed
-        if (Player_CeilingGrab.Instance.ceilingGrabBlock == cachedTransform.parent.gameObject)
+        bool isAscendTarget = IsAscendTarget();
+        bool isCeilingGrabTarget = IsCeilingGrabTarget();
+        bool isCurrentlyCeilingGrabbing = Player_CeilingGrab.Instance != null &&
+                                          Player_CeilingGrab.Instance.isCeilingGrabbing;
+
+        // PRIORITY: Ascend visuals should win over CeilingGrab visuals.
+        if (isAscendTarget)
+        {
+            if (blockInfo.blockType == BlockType.Stair || blockInfo.blockType == BlockType.Slope)
+                RotateBlockCheck_Stair();
+            else
+                PositionOnTopOfParentCube();
+        }
+        else if (isCeilingGrabTarget || isCurrentlyCeilingGrabbing)
         {
             PositionOnBottomOfParentCube();
         }
-
-        // If ceilingGrabbing
-        else if (Player_CeilingGrab.Instance.isCeilingGrabbing)
-        {
-            //RotateBlockCheck_Cube_CeilingGrab();
-            PositionOnBottomOfParentCube();
-        }
-
-        // If normal movement
         else
         {
-            // If the block is a Stair or Slope
             if (blockInfo.blockType == BlockType.Stair || blockInfo.blockType == BlockType.Slope)
-            {
                 RotateBlockCheck_Stair();
-            }
-
-            // If the block is a Cube or Slab
             else
-            {
-                //RotateBlockCheck_Cube();
                 PositionOnTopOfParentCube();
-            }
         }
 
         ResetRotationTracking();
@@ -724,4 +719,24 @@ public class NumberDisplay : MonoBehaviour
         lastIsCeilingGrabbing = false;
         lastCameraRotationState = default;
     }
+
+
+
+    #region Helpers
+
+    bool IsAscendTarget()
+    {
+        return Movement.Instance != null &&
+               Movement.Instance.moveToBlock_Ascend != null &&
+               Movement.Instance.moveToBlock_Ascend.canMoveTo &&
+               Movement.Instance.moveToBlock_Ascend.targetBlock == cachedParent.gameObject;
+    }
+
+    bool IsCeilingGrabTarget()
+    {
+        return Player_CeilingGrab.Instance != null &&
+               Player_CeilingGrab.Instance.ceilingGrabBlock == cachedParent.gameObject;
+    }
+
+    #endregion
 }

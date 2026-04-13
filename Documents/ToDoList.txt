@@ -6,33 +6,24 @@ April:
 - Få ladders og pickups til å bli usynlige når blokkene blir det, så ikke de står mellom kameraet og spilleren
 
 
-2.0. Elevator Blocks:
-- Legg til nye ElevatorBlocks i prefablisten
-- Sett GoldBlock-animasjoner til å skje når spilleren aktiverer/deaktiverer dem (følg instruksjoner i goldBlock-scriptet)
-- Sett BrassBlock-animasjoner når de beveger seg
-
-
-3.0. Looking-kamera:
+2.0. Looking-kamera:
 - Gjøre om joystick til å snu kameraet litt rundt spilleren
 	- Lage en variant for rundt spilleren (til vurdering)
 	- Lage en variant for rundt seg selv (til vurdering)
 - Gjøre kompatibel for både kontroll og datamus
 
 
-4.0. "Reset Level"-knapp i Pausemenyen
-- Legge til en knapp som lar spilleren resete levelet (starte fra første checkpoint), slik at spillere som sitter fast, kan starte levelet på nytt om de ønsker det
-
-
-5.0. Endre Sopp-sirkel:
+4.0. Endre Sopp-sirkel:
 - Spilleren kan gå 3 steg gratis, uavhengig av hvilken blokk den går på
 	- Legg til symbol/tall på HUD for å vise at den har +3, +2 og +1 ekstra steg
 	- Gratis å gå i Mud-blokk og adjecent blokker (overskrider MudBlock sin effekt)
 	- Får igjen +1 steg ved å gå på adjecent blokker til Swamp Water (supplementerer SwampWater sin effekt ift. at det nå originalt koster 0 å gå)
 
 
-6.0. Sound:
+5.0. Sound:
 - Legg til all lyd fra Lisette
 - fullfør "FadeOutALLSound()" i "SoundManager" slik at all lyd fades fint ut når man exit'er en scene
+
 
 
 --- OTHER FIXES
@@ -110,4 +101,7 @@ April:
 51. Legg til Keybind i Controls-menyen av spillet
 
 55. Switches: Make interactable Wall-switch
+
+56. "Reset Level"-knapp i Pausemenyen
+- Legge til en knapp som lar spilleren resete levelet (starte fra første checkpoint), slik at spillere som sitter fast, kan starte levelet på nytt om de ønsker det
 
