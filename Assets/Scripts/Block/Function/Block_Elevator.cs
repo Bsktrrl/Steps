@@ -204,7 +204,6 @@ public class Block_Elevator : MonoBehaviour
                 if (wasPlayerStandingOnThisBlock)
                 {
                     stepOnMovementLocked = true;
-                    transform.position = lastStepOnFrameStartPosition;
                     StartSnapToGridPosition(lastStepOnGridPosition);
                 }
             }
