@@ -415,6 +415,9 @@ PrefabInstance:
       addedObject: {fileID: 7567072727863368624}
     - targetCorrespondingSourceObject: {fileID: 1799429309432074896, guid: 5956cb7d1aecf1b47b877a2de2f7b8aa, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 8009378291282697985}
+    - targetCorrespondingSourceObject: {fileID: 1799429309432074896, guid: 5956cb7d1aecf1b47b877a2de2f7b8aa, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 270441238026076197}
   m_SourcePrefab: {fileID: 100100000, guid: 5956cb7d1aecf1b47b877a2de2f7b8aa, type: 3}
 --- !u!4 &7055911197091764651 stripped
@@ -517,6 +520,19 @@ MonoBehaviour:
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
+--- !u!114 &8009378291282697985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7683265711886254865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe6c648dc1c1ccc4bbc93007bad607ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isStandingOnBlock: 0
 --- !u!114 &270441238026076197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -539,3 +555,4 @@ MonoBehaviour:
   pathSegmentCounter: 0
   elevatorIsActivated: 0
   hasCheckedForPlayer: 0
+  stepOnDelay: 0.25

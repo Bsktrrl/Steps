@@ -26,11 +26,9 @@ public class MovingMachineScript : MonoBehaviour
     public void StartMovement()
     {
         anim.SetBool("Moving", true);
-        print("10. StartMovement");
     }
     public void StopMovement()
     {
         anim.SetBool("Moving", false);
-        print("20. StopMovement");
     }
 }

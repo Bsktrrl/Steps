@@ -258,6 +258,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 6824350586905103561, guid: f86d5903781af5246a66469f13c361e6, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 14900334dab5b6a43a33fabdadba1dbc, type: 2}
     - target: {fileID: 6888102774972972341, guid: f86d5903781af5246a66469f13c361e6, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.98
@@ -355,22 +359,19 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4947505486690622416, guid: f86d5903781af5246a66469f13c361e6, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 8816443726903767571}
+    - targetCorrespondingSourceObject: {fileID: 4947505486690622416, guid: f86d5903781af5246a66469f13c361e6, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 7564723182833221272}
     - targetCorrespondingSourceObject: {fileID: 4947505486690622416, guid: f86d5903781af5246a66469f13c361e6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7860241854130974362}
     - targetCorrespondingSourceObject: {fileID: 4947505486690622416, guid: f86d5903781af5246a66469f13c361e6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8816443726903767571}
-    - targetCorrespondingSourceObject: {fileID: 4947505486690622416, guid: f86d5903781af5246a66469f13c361e6, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 8421556338823103665}
     - targetCorrespondingSourceObject: {fileID: 4947505486690622416, guid: f86d5903781af5246a66469f13c361e6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 165204242167420142}
-    - targetCorrespondingSourceObject: {fileID: 4947505486690622416, guid: f86d5903781af5246a66469f13c361e6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7541724984477597477}
     - targetCorrespondingSourceObject: {fileID: 4947505486690622416, guid: f86d5903781af5246a66469f13c361e6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6464080628927348014}
@@ -385,6 +386,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4947505486690622416, guid: f86d5903781af5246a66469f13c361e6, type: 3}
   m_PrefabInstance: {fileID: 7566239831312147372}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8816443726903767571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3290368874972199036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fd6bd3afab0ee3419fcbee06734f970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &7564723182833221272
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -433,18 +446,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8816443726903767571
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3290368874972199036}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fd6bd3afab0ee3419fcbee06734f970, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8421556338823103665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -487,19 +488,6 @@ MonoBehaviour:
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
---- !u!114 &7541724984477597477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3290368874972199036}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe6c648dc1c1ccc4bbc93007bad607ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isStandingOnBlock: 0
 --- !u!114 &6464080628927348014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,3 +510,4 @@ MonoBehaviour:
   pathSegmentCounter: 0
   elevatorIsActivated: 0
   hasCheckedForPlayer: 0
+  stepOnDelay: 0.25

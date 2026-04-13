@@ -17,14 +17,10 @@ public class Block_Elevator_StepOn : MonoBehaviour
             if (isStandingOnBlock)
             {
                 gameObject.GetComponent<MovingMachineScript>().StartMovement();
-
-                print("1. StartMovement");
             }
             else
             {
                 gameObject.GetComponent<MovingMachineScript>().StopMovement();
-
-                print("2. StopMovement");
             }
         }
     }

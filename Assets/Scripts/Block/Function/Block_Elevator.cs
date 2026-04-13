@@ -226,30 +226,46 @@ public class Block_Elevator : MonoBehaviour
             playerIsOn = false;
         }
 
+        Vector3 elevatorDelta = transform.position - lastElevatorPosition;
+        float movedDistance = elevatorDelta.magnitude;
+
+        // Move the player together with the elevator when standing still on it.
         if (playerStandingOnThisBlock &&
             Movement.Instance.movementStates == MovementStates.Still &&
             Player_CeilingGrab.Instance != null &&
             !Player_CeilingGrab.Instance.isCeilingRotation_OFF)
         {
-            Vector3 elevatorDelta = transform.position - lastElevatorPosition;
-
             if (elevatorDelta != Vector3.zero)
             {
                 playerTransform.position += elevatorDelta;
             }
 
-            float delta = elevatorDelta.magnitude;
-            accumulatedDistance += delta;
+            lastPosition = transform.position;
+        }
+
+        // Refresh available blocks / darkening / numbers when this elevator moves
+        // close enough to matter for the player, including:
+        // 1) player standing on this elevator
+        // 2) elevator moving near the player
+        bool shouldRefreshMovementTargets =
+            movedDistance > 0f &&
+            (playerStandingOnThisBlock ||
+             Vector3.Distance(transform.position, playerTransform.position) <= 2f);
+
+        if (shouldRefreshMovementTargets)
+        {
+            accumulatedDistance += movedDistance;
 
             if (accumulatedDistance >= 0.1f)
             {
                 accumulatedDistance = 0f;
                 Movement.Instance.elevatorPos_Previous = transform.position;
-                Movement.Instance.UpdateBlocks();
-                Movement.Instance.SetDarkenBlocks();
+                Movement.Instance.RefreshAvailableMovementBlocksSmooth();
             }
-
-            lastPosition = transform.position;
+        }
+        else
+        {
+            accumulatedDistance = 0f;
         }
     }
 

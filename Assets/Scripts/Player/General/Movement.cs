@@ -121,6 +121,9 @@ public class Movement : Singleton<Movement>
     public Vector3 elevatorPos_Previous;
     private Transform elevatorBeingFollowed = null;
     private Vector3 elevatorOffset = Vector3.zero;
+    private Vector3 lastFollowedElevatorPosition;
+    [SerializeField] private float elevatorRefreshDistance = 0.05f;
+    private float elevatorRefreshAccumulatedDistance = 0f;
 
     RaycastHit hit;
 
@@ -213,6 +216,9 @@ public class Movement : Singleton<Movement>
         previousPosition = transform.position;
         elevatorPos_Previous = transform.position;
 
+        lastFollowedElevatorPosition = transform.position;
+        elevatorRefreshAccumulatedDistance = 0f;
+
         RespawnPlayer();
     }
 
@@ -264,7 +270,17 @@ public class Movement : Singleton<Movement>
         CancelSlopeIfFalling();
 
         if (elevatorBeingFollowed != null && blockStandingOn != null && blockStandingOn.transform == elevatorBeingFollowed)
+        {
             transform.position = elevatorBeingFollowed.position + elevatorOffset;
+            RefreshBlocksWhileStandingOnMovingElevator();
+        }
+        else
+        {
+            elevatorRefreshAccumulatedDistance = 0f;
+
+            if (elevatorBeingFollowed != null)
+                lastFollowedElevatorPosition = elevatorBeingFollowed.position;
+        }
     }
 
     private void OnEnable()
@@ -844,6 +860,34 @@ public class Movement : Singleton<Movement>
                stats.abilitiesGot_Permanent.Flippers ||
                stats.abilitiesGot_Temporary.OxygenTank ||
                stats.abilitiesGot_Temporary.Flippers;
+    }
+
+    void RefreshBlocksWhileStandingOnMovingElevator()
+    {
+        if (movementStates != MovementStates.Still)
+            return;
+
+        if (elevatorBeingFollowed == null || blockStandingOn == null)
+            return;
+
+        if (blockStandingOn.transform != elevatorBeingFollowed)
+            return;
+
+        Vector3 elevatorDelta = elevatorBeingFollowed.position - lastFollowedElevatorPosition;
+        float movedDistance = elevatorDelta.magnitude;
+
+        if (movedDistance > 0f)
+        {
+            elevatorRefreshAccumulatedDistance += movedDistance;
+            lastFollowedElevatorPosition = elevatorBeingFollowed.position;
+        }
+
+        if (elevatorRefreshAccumulatedDistance < elevatorRefreshDistance)
+            return;
+
+        elevatorRefreshAccumulatedDistance = 0f;
+
+        RefreshAvailableMovementBlocksSmooth();
     }
 
     #endregion
@@ -2652,7 +2696,6 @@ public class Movement : Singleton<Movement>
 
         Transform targetBlockTransform = moveOptions.targetBlock.transform;
         Vector3 startPos = transform.position;
-        //Vector3 targetOffset = new Vector3(0f, (rayDir * (heightOverBlock - (Player_BodyHeight.Instance.height_Normal) / 2f)).y, 0f);
         Vector3 targetOffset = new Vector3(0f, (rayDir * heightOverBlock).y, 0f);
         Vector3 endPos = targetBlockTransform.position + targetOffset;
 
@@ -2673,6 +2716,9 @@ public class Movement : Singleton<Movement>
 
         elevatorBeingFollowed = targetBlockTransform;
         elevatorOffset = targetOffset;
+
+        lastFollowedElevatorPosition = targetBlockTransform.position;
+        elevatorRefreshAccumulatedDistance = 0f;
 
         movementStates = MovementStates.Still;
         performGrapplingHooking = false;
@@ -3530,7 +3576,13 @@ public class Movement : Singleton<Movement>
         RespawnPlayer_Action();
 
         yield return new WaitForSeconds(waitTime * 30f);
+
         previousPosition = transform.position;
+
+        elevatorBeingFollowed = null;
+        elevatorOffset = Vector3.zero;
+        lastFollowedElevatorPosition = transform.position;
+        elevatorRefreshAccumulatedDistance = 0f;
 
         SetMovementState(MovementStates.Still);
 
