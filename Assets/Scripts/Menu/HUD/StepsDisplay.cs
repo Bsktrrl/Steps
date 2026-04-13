@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class StepsDisplay : Singleton<StepsDisplay>
@@ -39,63 +37,40 @@ public class StepsDisplay : Singleton<StepsDisplay>
 
     private void OnEnable()
     {
-        MapManager.Action_EndIntroSequence += SetStepsDisplay;
-
-        //if (MapManager.Instance.haveIntroSequence)
-        //    MapManager.Action_EndIntroSequence += SetStepsDisplay;
-        //else
-        //    DataManager.Action_dataHasLoaded += SetStepsDisplay;
-
-        SettingsManager.Action_SetNewStepDisplay += SetStepsDisplay;
+        MapManager.Action_EndIntroSequence += SetStepsDisplay_FromSceneStart;
+        SettingsManager.Action_SetNewStepDisplay += SetStepsDisplay_FromSettings;
     }
+
     private void OnDisable()
     {
-        MapManager.Action_EndIntroSequence -= SetStepsDisplay;
-
-        //if (MapManager.Instance.haveIntroSequence)
-        //    MapManager.Action_EndIntroSequence -= SetStepsDisplay;
-        //else
-        //    DataManager.Action_dataHasLoaded -= SetStepsDisplay;
-
-        SettingsManager.Action_SetNewStepDisplay -= SetStepsDisplay;
+        MapManager.Action_EndIntroSequence -= SetStepsDisplay_FromSceneStart;
+        SettingsManager.Action_SetNewStepDisplay -= SetStepsDisplay_FromSettings;
     }
 
 
     //--------------------
 
 
-    void SetStepsDisplay()
+    void SetStepsDisplay_FromSceneStart()
     {
-        HideAllMenus();
+        SetStepsDisplayBase();
 
-        switch (DataManager.Instance.settingData_StoreList.currentStepDisplay)
+        if (ShouldShowFootprints())
         {
-            case StepDisplay.Steps:
-                stepDisplay_Steps.SetActive(true);
-                footsteps_Parent.SetActive(true);
-                StepsHUD.Instance.UpdateStepsDisplay_Walking();
-                break;
-            case StepDisplay.Number:
-                stepDisplay_Number.SetActive(true);
-                break;
-            case StepDisplay.NumberSteps:
-                stepDisplay_NumbersSteps.SetActive(true);
-                footsteps_Parent.SetActive(true);
-                StepsHUD.Instance.UpdateStepsDisplay_Walking();
-                break;
-            case StepDisplay.None:
-                HideAllMenus();
-                break;
-
-            default:
-                break;
-        }
-
-        if (MapManager.Instance.haveIntroSequence)
-        {
-            //Movement.Instance.RespawnPlayer();
-            //PlayerStats.Instance.RefillStepsToMax();
+            // Scene start should fill one-by-one, like respawn.
             StepsHUD.Instance.UpdateStepsDisplay_Respawn();
+        }
+    }
+
+    void SetStepsDisplay_FromSettings()
+    {
+        SetStepsDisplayBase();
+
+        if (ShouldShowFootprints())
+        {
+            // Settings change should snap to current state.
+            // No counting, no one-by-one refill.
+            StepsHUD.Instance.RefreshAllFootprintsImmediate(false);
         }
     }
 
@@ -107,4 +82,57 @@ public class StepsDisplay : Singleton<StepsDisplay>
 
         footsteps_Parent.SetActive(false);
     }
+
+    private void RefreshFootprintsNowAndNextFrame()
+    {
+        if (StepsHUD.Instance == null)
+            return;
+
+        StepsHUD.Instance.RefreshAllFootprintsImmediate(false);
+        StartCoroutine(RefreshFootprintsNextFrame());
+    }
+
+    private IEnumerator RefreshFootprintsNextFrame()
+    {
+        yield return null;
+
+        if (StepsHUD.Instance != null)
+            StepsHUD.Instance.RefreshAllFootprintsImmediate(false);
+    }
+
+    #region Helpers
+
+    void SetStepsDisplayBase()
+    {
+        HideAllMenus();
+
+        switch (DataManager.Instance.settingData_StoreList.currentStepDisplay)
+        {
+            case StepDisplay.Steps:
+                stepDisplay_Steps.SetActive(true);
+                footsteps_Parent.SetActive(true);
+                break;
+
+            case StepDisplay.Number:
+                stepDisplay_Number.SetActive(true);
+                break;
+
+            case StepDisplay.NumberSteps:
+                stepDisplay_NumbersSteps.SetActive(true);
+                footsteps_Parent.SetActive(true);
+                break;
+
+            case StepDisplay.None:
+                HideAllMenus();
+                break;
+        }
+    }
+
+    bool ShouldShowFootprints()
+    {
+        return DataManager.Instance.settingData_StoreList.currentStepDisplay == StepDisplay.Steps ||
+               DataManager.Instance.settingData_StoreList.currentStepDisplay == StepDisplay.NumberSteps;
+    }
+
+    #endregion
 }

@@ -14,10 +14,11 @@ public class NumberOfSetpsDisplay : MonoBehaviour
     [SerializeField] float extraTimeDelay = 0.2f;
 
     bool firstTimeRun_Check;
-
     bool firstTime_Check;
 
     private Coroutine updateFootprintCoroutine;
+
+    private bool hasInitializedThisScene;
 
 
     //--------------------
@@ -25,10 +26,7 @@ public class NumberOfSetpsDisplay : MonoBehaviour
 
     private void OnEnable()
     {
-        UpdateNumbersDisplay();
-
-        if (!firstTimeRun_Check)
-            FirstTimeUpdate();
+        UpdateNumberDisplaySpeed();
 
         Action_Run_FirstTime += Update_FirstTime;
 
@@ -40,10 +38,26 @@ public class NumberOfSetpsDisplay : MonoBehaviour
         Movement.Action_RespawnPlayerLate += UpdateNumberDisplay_Respawn;
         Block_Checkpoint.Action_CheckPointEntered += UpdateNumberDisplay_Checkpoint;
 
+        SettingsManager.Action_SetNewStepDisplay += HandleStepDisplayChanged;
         SettingsManager.Action_SetNewStepDisplay += UpdateNumberDisplaySpeed;
 
-        Action_Run_FirstTime?.Invoke();
+        // If this number display is being enabled because of a settings change,
+        // it should snap to the real current value immediately.
+        SetNumbersInstant(PlayerStats.Instance.stats.steps_Current, PlayerStats.Instance.stats.steps_Max);
+
+        // Only run the startup animation once per scene, not every time the object is re-enabled.
+        if (!hasInitializedThisScene)
+        {
+            hasInitializedThisScene = true;
+
+            if (!firstTimeRun_Check)
+            {
+                FirstTimeUpdate();
+                Action_Run_FirstTime?.Invoke();
+            }
+        }
     }
+
     private void OnDisable()
     {
         Action_Run_FirstTime -= Update_FirstTime;
@@ -56,7 +70,10 @@ public class NumberOfSetpsDisplay : MonoBehaviour
         Movement.Action_RespawnPlayerLate -= UpdateNumberDisplay_Respawn;
         Block_Checkpoint.Action_CheckPointEntered -= UpdateNumberDisplay_Checkpoint;
 
+        SettingsManager.Action_SetNewStepDisplay -= HandleStepDisplayChanged;
         SettingsManager.Action_SetNewStepDisplay -= UpdateNumberDisplaySpeed;
+
+        StopRunningNumberCoroutine();
     }
 
 
@@ -74,59 +91,28 @@ public class NumberOfSetpsDisplay : MonoBehaviour
 
     void FirstTimeUpdate()
     {
-        StartCoroutine(UpdateFootprintDelay_FirstTime(StepsHUD.Instance.StepsDisplay_CheckpointTime, StepsHUD.Instance.footprint_SpawnTime));
+        StopRunningNumberCoroutine();
+        updateFootprintCoroutine = StartCoroutine(UpdateFootprintDelay_FirstTime(StepsHUD.Instance.StepsDisplay_CheckpointTime, StepsHUD.Instance.footprint_SpawnTime));
     }
+
     IEnumerator UpdateFootprintDelay_FirstTime(float startDelay, float waitTime)
     {
         yield return null;
 
-        number_Current.sprite = StepsDisplay.Instance.number_0;
+        SetNumbersInstant(0, PlayerStats.Instance.stats.steps_Max);
 
-        yield return new WaitForSeconds(startDelay + extraTimeDelay);
+        yield return new WaitForSeconds(startDelay /*+ extraTimeDelay*/);
 
-        for (int i = 0; i < PlayerStats.Instance.stats.steps_Max; i++)
+        int max = PlayerStats.Instance.stats.steps_Max;
+
+        for (int value = 1; value <= max; value++)
         {
-            switch (GetCurrentNumberDisplay())
-            {
-                case 0:
-                    number_Current.sprite = StepsDisplay.Instance.number_1;
-                    break;
-                case 1:
-                    number_Current.sprite = StepsDisplay.Instance.number_2;
-                    break;
-                case 2:
-                    number_Current.sprite = StepsDisplay.Instance.number_3;
-                    break;
-                case 3:
-                    number_Current.sprite = StepsDisplay.Instance.number_4;
-                    break;
-                case 4:
-                    number_Current.sprite = StepsDisplay.Instance.number_5;
-                    break;
-                case 5:
-                    number_Current.sprite = StepsDisplay.Instance.number_6;
-                    break;
-                case 6:
-                    number_Current.sprite = StepsDisplay.Instance.number_7;
-                    break;
-                case 7:
-                    number_Current.sprite = StepsDisplay.Instance.number_8;
-                    break;
-                case 8:
-                    number_Current.sprite = StepsDisplay.Instance.number_9;
-                    break;
-                case 9:
-                    number_Current.sprite = StepsDisplay.Instance.number_10;
-                    break;
-
-                default:
-                    break;
-            }
-
+            SetCurrentNumber(value);
             yield return new WaitForSeconds(waitTime);
         }
 
-        UpdateNumbersDisplay();
+        SetNumbersInstant(PlayerStats.Instance.stats.steps_Current, PlayerStats.Instance.stats.steps_Max);
+        updateFootprintCoroutine = null;
     }
 
 
@@ -141,103 +127,30 @@ public class NumberOfSetpsDisplay : MonoBehaviour
             numberSpawnTime = 0.1f;
     }
 
+    void HandleStepDisplayChanged()
+    {
+        StopRunningNumberCoroutine();
+        SetNumbersInstant(PlayerStats.Instance.stats.steps_Current, PlayerStats.Instance.stats.steps_Max);
+    }
+
 
     //--------------------
 
 
     void UpdateNumbersDisplay()
     {
-        if ((Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<Block_Checkpoint>()) && firstTime_Check) return;
+        if (PlayerStats.Instance == null || PlayerStats.Instance.stats == null || StepsDisplay.Instance == null)
+            return;
 
-        if (updateFootprintCoroutine != null)
-        {
-            StopCoroutine(updateFootprintCoroutine);
-            updateFootprintCoroutine = null;
-        }
+        // Do not let normal walking updates override the delayed checkpoint update.
+        if (IsStandingOnCheckpoint() && firstTime_Check)
+            return;
+
+        StopRunningNumberCoroutine();
 
         firstTime_Check = true;
 
-        //Current
-        switch (PlayerStats.Instance.stats.steps_Current)
-        {
-            case 0:
-                number_Current.sprite = StepsDisplay.Instance.number_0;
-                break;
-            case 1:
-                number_Current.sprite = StepsDisplay.Instance.number_1;
-                break;
-            case 2:
-                number_Current.sprite = StepsDisplay.Instance.number_2;
-                break;
-            case 3:
-                number_Current.sprite = StepsDisplay.Instance.number_3;
-                break;
-            case 4:
-                number_Current.sprite = StepsDisplay.Instance.number_4;
-                break;
-            case 5:
-                number_Current.sprite = StepsDisplay.Instance.number_5;
-                break;
-            case 6:
-                number_Current.sprite = StepsDisplay.Instance.number_6;
-                break;
-            case 7:
-                number_Current.sprite = StepsDisplay.Instance.number_7;
-                break;
-            case 8:
-                number_Current.sprite = StepsDisplay.Instance.number_8;
-                break;
-            case 9:
-                number_Current.sprite = StepsDisplay.Instance.number_9;
-                break;
-            case 10:
-                number_Current.sprite = StepsDisplay.Instance.number_10;
-                break;
-
-            default:
-                break;
-        }
-
-        //Max
-        switch (PlayerStats.Instance.stats.steps_Max)
-        {
-            case 0:
-                number_Max.sprite = StepsDisplay.Instance.number_0;
-                break;
-            case 1:
-                number_Max.sprite = StepsDisplay.Instance.number_1;
-                break;
-            case 2:
-                number_Max.sprite = StepsDisplay.Instance.number_2;
-                break;
-            case 3:
-                number_Max.sprite = StepsDisplay.Instance.number_3;
-                break;
-            case 4:
-                number_Max.sprite = StepsDisplay.Instance.number_4;
-                break;
-            case 5:
-                number_Max.sprite = StepsDisplay.Instance.number_5;
-                break;
-            case 6:
-                number_Max.sprite = StepsDisplay.Instance.number_6;
-                break;
-            case 7:
-                number_Max.sprite = StepsDisplay.Instance.number_7;
-                break;
-            case 8:
-                number_Max.sprite = StepsDisplay.Instance.number_8;
-                break;
-            case 9:
-                number_Max.sprite = StepsDisplay.Instance.number_9;
-                break;
-            case 10:
-                number_Max.sprite = StepsDisplay.Instance.number_10;
-                break;
-
-            default:
-                break;
-        }
+        SetNumbersInstant(PlayerStats.Instance.stats.steps_Current, PlayerStats.Instance.stats.steps_Max);
     }
 
 
@@ -246,30 +159,19 @@ public class NumberOfSetpsDisplay : MonoBehaviour
 
     int GetCurrentNumberDisplay()
     {
-        if (number_Current.sprite == StepsDisplay.Instance.number_0)
-            return 0;
-        else if (number_Current.sprite == StepsDisplay.Instance.number_1)
-            return 1;
-        else if (number_Current.sprite == StepsDisplay.Instance.number_2)
-            return 2;
-        else if (number_Current.sprite == StepsDisplay.Instance.number_3)
-            return 3;
-        else if (number_Current.sprite == StepsDisplay.Instance.number_4)
-            return 4;
-        else if (number_Current.sprite == StepsDisplay.Instance.number_5)
-            return 5;
-        else if (number_Current.sprite == StepsDisplay.Instance.number_6)
-            return 6;
-        else if (number_Current.sprite == StepsDisplay.Instance.number_7)
-            return 7;
-        else if (number_Current.sprite == StepsDisplay.Instance.number_8)
-            return 8;
-        else if (number_Current.sprite == StepsDisplay.Instance.number_9)
-            return 9;
-        else if (number_Current.sprite == StepsDisplay.Instance.number_10)
-            return 10;
-        else
-            return 0;
+        if (number_Current.sprite == StepsDisplay.Instance.number_0) return 0;
+        if (number_Current.sprite == StepsDisplay.Instance.number_1) return 1;
+        if (number_Current.sprite == StepsDisplay.Instance.number_2) return 2;
+        if (number_Current.sprite == StepsDisplay.Instance.number_3) return 3;
+        if (number_Current.sprite == StepsDisplay.Instance.number_4) return 4;
+        if (number_Current.sprite == StepsDisplay.Instance.number_5) return 5;
+        if (number_Current.sprite == StepsDisplay.Instance.number_6) return 6;
+        if (number_Current.sprite == StepsDisplay.Instance.number_7) return 7;
+        if (number_Current.sprite == StepsDisplay.Instance.number_8) return 8;
+        if (number_Current.sprite == StepsDisplay.Instance.number_9) return 9;
+        if (number_Current.sprite == StepsDisplay.Instance.number_10) return 10;
+
+        return 0;
     }
 
 
@@ -278,59 +180,97 @@ public class NumberOfSetpsDisplay : MonoBehaviour
 
     public void UpdateNumberDisplay_Respawn()
     {
-        updateFootprintCoroutine = StartCoroutine(UpdateFootprintDelay(StepsHUD.Instance.StepsDisplay_RespawnTime, numberSpawnTime));
+        StopRunningNumberCoroutine();
+        updateFootprintCoroutine = StartCoroutine(UpdateNumberDelay_Respawn(StepsHUD.Instance.StepsDisplay_RespawnTime, numberSpawnTime));
     }
+
     public void UpdateNumberDisplay_Checkpoint()
     {
-        updateFootprintCoroutine = StartCoroutine(UpdateFootprintDelay(StepsHUD.Instance.StepsDisplay_CheckpointTime, numberSpawnTime));
+        StopRunningNumberCoroutine();
+        updateFootprintCoroutine = StartCoroutine(UpdateNumberDelay_Checkpoint(StepsHUD.Instance.StepsDisplay_CheckpointTime));
     }
 
-    IEnumerator UpdateFootprintDelay(float startDelay, float waitTime)
+    IEnumerator UpdateNumberDelay_Respawn(float startDelay, float waitTime)
     {
-        yield return new WaitForSeconds(startDelay + extraTimeDelay);
+        yield return new WaitForSeconds(startDelay /*+ extraTimeDelay*/);
 
-        for (int i = StepsHUD.Instance.stepCounter; i < PlayerStats.Instance.stats.steps_Max; i++)
+        int startValue = Mathf.Clamp(StepsHUD.Instance.stepCounter, 0, PlayerStats.Instance.stats.steps_Max);
+        int maxValue = PlayerStats.Instance.stats.steps_Max;
+
+        SetNumbersInstant(startValue, maxValue);
+
+        for (int value = startValue + 1; value <= maxValue; value++)
         {
-            switch (GetCurrentNumberDisplay())
-            {
-                case 0:
-                    number_Current.sprite = StepsDisplay.Instance.number_1;
-                    break;
-                case 1:
-                    number_Current.sprite = StepsDisplay.Instance.number_2;
-                    break;
-                case 2:
-                    number_Current.sprite = StepsDisplay.Instance.number_3;
-                    break;
-                case 3:
-                    number_Current.sprite = StepsDisplay.Instance.number_4;
-                    break;
-                case 4:
-                    number_Current.sprite = StepsDisplay.Instance.number_5;
-                    break;
-                case 5:
-                    number_Current.sprite = StepsDisplay.Instance.number_6;
-                    break;
-                case 6:
-                    number_Current.sprite = StepsDisplay.Instance.number_7;
-                    break;
-                case 7:
-                    number_Current.sprite = StepsDisplay.Instance.number_8;
-                    break;
-                case 8:
-                    number_Current.sprite = StepsDisplay.Instance.number_9;
-                    break;
-                case 9:
-                    number_Current.sprite = StepsDisplay.Instance.number_10;
-                    break;
-
-                default:
-                    break;
-            }
-
+            SetCurrentNumber(value);
             yield return new WaitForSeconds(waitTime);
         }
 
-        UpdateNumbersDisplay();
+        SetNumbersInstant(PlayerStats.Instance.stats.steps_Current, PlayerStats.Instance.stats.steps_Max);
+        updateFootprintCoroutine = null;
+    }
+
+    IEnumerator UpdateNumberDelay_Checkpoint(float startDelay)
+    {
+        yield return new WaitForSeconds(startDelay /*+ extraTimeDelay*/);
+
+        // Checkpoint should jump directly to max, not count upward.
+        SetNumbersInstant(PlayerStats.Instance.stats.steps_Max, PlayerStats.Instance.stats.steps_Max);
+
+        updateFootprintCoroutine = null;
+    }
+
+
+    //--------------------
+
+
+    private void StopRunningNumberCoroutine()
+    {
+        if (updateFootprintCoroutine != null)
+        {
+            StopCoroutine(updateFootprintCoroutine);
+            updateFootprintCoroutine = null;
+        }
+    }
+
+    private bool IsStandingOnCheckpoint()
+    {
+        return Movement.Instance != null &&
+               Movement.Instance.blockStandingOn != null &&
+               Movement.Instance.blockStandingOn.GetComponent<Block_Checkpoint>() != null;
+    }
+
+    private void SetNumbersInstant(int current, int max)
+    {
+        SetCurrentNumber(current);
+        SetMaxNumber(max);
+    }
+
+    private void SetCurrentNumber(int value)
+    {
+        number_Current.sprite = GetNumberSprite(Mathf.Clamp(value, 0, 10));
+    }
+
+    private void SetMaxNumber(int value)
+    {
+        number_Max.sprite = GetNumberSprite(Mathf.Clamp(value, 0, 10));
+    }
+
+    private Sprite GetNumberSprite(int value)
+    {
+        switch (value)
+        {
+            case 0: return StepsDisplay.Instance.number_0;
+            case 1: return StepsDisplay.Instance.number_1;
+            case 2: return StepsDisplay.Instance.number_2;
+            case 3: return StepsDisplay.Instance.number_3;
+            case 4: return StepsDisplay.Instance.number_4;
+            case 5: return StepsDisplay.Instance.number_5;
+            case 6: return StepsDisplay.Instance.number_6;
+            case 7: return StepsDisplay.Instance.number_7;
+            case 8: return StepsDisplay.Instance.number_8;
+            case 9: return StepsDisplay.Instance.number_9;
+            case 10: return StepsDisplay.Instance.number_10;
+            default: return StepsDisplay.Instance.number_0;
+        }
     }
 }

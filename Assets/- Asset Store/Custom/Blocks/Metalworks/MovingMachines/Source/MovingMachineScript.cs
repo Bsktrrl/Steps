@@ -5,20 +5,42 @@ using UnityEngine;
 public class MovingMachineScript : MonoBehaviour
 {
     Animator anim;
-    void Start()
+
+
+    //--------------------
+
+
+    void Awake()
     {
         anim = GetComponent<Animator>();
     }
-
-    void Update()
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            anim.SetBool("Moving", true);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            anim.SetBool("Moving", false);
-        }
+        StopMovement();
+    }
+
+    //void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Alpha1))
+    //    {
+    //        anim.SetBool("Moving", true);
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.Alpha2))
+    //    {
+    //        anim.SetBool("Moving", false);
+    //    }
+    //}
+
+
+    //--------------------
+
+
+    public void StartMovement()
+    {
+        anim.SetBool("Moving", true);
+    }
+    public void StopMovement()
+    {
+        anim.SetBool("Moving", false);
     }
 }
