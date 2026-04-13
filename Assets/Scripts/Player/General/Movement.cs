@@ -2652,7 +2652,8 @@ public class Movement : Singleton<Movement>
 
         Transform targetBlockTransform = moveOptions.targetBlock.transform;
         Vector3 startPos = transform.position;
-        Vector3 targetOffset = new Vector3(0f, (rayDir * (heightOverBlock - (Player_BodyHeight.Instance.height_Normal) / 2f)).y, 0f);
+        //Vector3 targetOffset = new Vector3(0f, (rayDir * (heightOverBlock - (Player_BodyHeight.Instance.height_Normal) / 2f)).y, 0f);
+        Vector3 targetOffset = new Vector3(0f, (rayDir * heightOverBlock).y, 0f);
         Vector3 endPos = targetBlockTransform.position + targetOffset;
 
         movementStates = moveState;

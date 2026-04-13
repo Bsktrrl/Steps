@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Block_Elevator_StepOn : MonoBehaviour
@@ -10,47 +8,24 @@ public class Block_Elevator_StepOn : MonoBehaviour
     //--------------------
 
 
-    //private void Update()
-    //{
-    //    CheckIfPlayerIsOn();
-    //}
-
-    private void OnTriggerEnter(Collider other)
+    private void Update()
     {
-        if (other.CompareTag("Player"))
-            isStandingOnBlock = true;
-    }
+        isStandingOnBlock = Movement.Instance != null && Movement.Instance.blockStandingOn == gameObject;
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-            isStandingOnBlock = false;
-    }
-
-
-    //--------------------
-
-
-    void CheckIfPlayerIsOn()
-    {
-        StartCoroutine(CheckIfPlayerIsOn_Delay(0.2f));
-    }
-    IEnumerator CheckIfPlayerIsOn_Delay(float waitTime)
-    {
-        PlayerManager.Instance.PauseGame();
-
-        yield return new WaitForSeconds(waitTime);
-
-        if (Movement.Instance.blockStandingOn != gameObject && isStandingOnBlock)
+        if (gameObject.GetComponent<MovingMachineScript>())
         {
-            isStandingOnBlock = false;
-        }
-        else if (Movement.Instance.blockStandingOn == gameObject && !isStandingOnBlock)
-        {
-            isStandingOnBlock = true;
-        }
+            if (isStandingOnBlock)
+            {
+                gameObject.GetComponent<MovingMachineScript>().StartMovement();
 
+                print("1. StartMovement");
+            }
+            else
+            {
+                gameObject.GetComponent<MovingMachineScript>().StopMovement();
 
-        PlayerManager.Instance.UnpauseGame();
+                print("2. StopMovement");
+            }
+        }
     }
 }

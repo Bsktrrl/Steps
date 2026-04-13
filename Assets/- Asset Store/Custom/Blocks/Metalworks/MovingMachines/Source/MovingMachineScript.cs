@@ -19,18 +19,6 @@ public class MovingMachineScript : MonoBehaviour
         StopMovement();
     }
 
-    //void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Alpha1))
-    //    {
-    //        anim.SetBool("Moving", true);
-    //    }
-    //    if (Input.GetKeyDown(KeyCode.Alpha2))
-    //    {
-    //        anim.SetBool("Moving", false);
-    //    }
-    //}
-
 
     //--------------------
 
@@ -38,9 +26,11 @@ public class MovingMachineScript : MonoBehaviour
     public void StartMovement()
     {
         anim.SetBool("Moving", true);
+        print("10. StartMovement");
     }
     public void StopMovement()
     {
         anim.SetBool("Moving", false);
+        print("20. StopMovement");
     }
 }
