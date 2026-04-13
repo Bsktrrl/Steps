@@ -895,6 +895,14 @@ public class Movement : Singleton<Movement>
         walkAnimationCheck = false;
     }
 
+    public void StopFollowingElevator()
+    {
+        elevatorBeingFollowed = null;
+        elevatorOffset = Vector3.zero;
+        lastFollowedElevatorPosition = transform.position;
+        elevatorRefreshAccumulatedDistance = 0f;
+    }
+
     #endregion
 
     #region Movement Functions

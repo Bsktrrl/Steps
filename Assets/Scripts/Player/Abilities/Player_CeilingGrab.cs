@@ -190,6 +190,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         }
         else if (CameraController.Instance.cameraState == CameraState.CeilingCam)
         {
+            Movement.Instance.StopFollowingElevator();
             endPosition = new Vector3(0, Player_BodyHeight.Instance.height_CeilingGrab, 0);
             endRotation = Quaternion.Euler(0, PlayerManager.Instance.playerBody.transform.localRotation.eulerAngles.y, angle);
         }
