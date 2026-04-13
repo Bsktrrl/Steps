@@ -2105,7 +2105,7 @@ public class Movement : Singleton<Movement>
 
     public void SetDarkenBlocks()
     {
-        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
+        if (isMoving || movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
             return;
 
         if (suppressDarkeningWhileChaining)

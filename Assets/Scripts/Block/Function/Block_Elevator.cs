@@ -107,7 +107,9 @@ public class Block_Elevator : MonoBehaviour
             {
                 updateBlocksCounter = 0f;
 
-                if (Movement.Instance != null)
+                if (Movement.Instance != null &&
+                    !Movement.Instance.isMoving &&
+                    Movement.Instance.GetMovementState() == MovementStates.Still)
                 {
                     Movement.Instance.UpdateBlocks();
                     Movement.Instance.SetDarkenBlocks();
