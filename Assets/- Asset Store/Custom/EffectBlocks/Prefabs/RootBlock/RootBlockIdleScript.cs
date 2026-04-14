@@ -24,7 +24,6 @@ public class RootBlockIdleScript : MonoBehaviour
 
             anim.SetInteger("IdleAnimation", Random.Range(0,3));
             anim.SetTrigger("Idle");
-            print(anim.GetInteger("IdleAnimation"));
         }
     }
 }
