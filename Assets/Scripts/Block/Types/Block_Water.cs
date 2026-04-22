@@ -6,6 +6,9 @@ public class Block_Water : MonoBehaviour
 {
     public bool hasRoots;
 
+    float movementSpeed_Normal = 2.75f;
+    float movementSpeed_Flippers = 6;
+
 
     //--------------------
 
@@ -43,13 +46,13 @@ public class Block_Water : MonoBehaviour
             {
                 gameObject.GetComponent<BlockInfo>().movementCost = 0;
                 gameObject.GetComponent<BlockInfo>().movementCost_Temp = 0;
-                gameObject.GetComponent<BlockInfo>().movementSpeed = 4;
+                gameObject.GetComponent<BlockInfo>().movementSpeed = movementSpeed_Flippers;
             }
             else if (gameObject && gameObject.GetComponent<BlockInfo>())
             {
                 gameObject.GetComponent<BlockInfo>().movementCost = 0;
                 gameObject.GetComponent<BlockInfo>().movementCost_Temp = 0;
-                gameObject.GetComponent<BlockInfo>().movementSpeed = 2.75f;
+                gameObject.GetComponent<BlockInfo>().movementSpeed = movementSpeed_Normal;
             }
         }
         else
@@ -66,7 +69,7 @@ public class Block_Water : MonoBehaviour
                             {
                                 gameObject.GetComponent<BlockInfo>().movementCost = 0;
                                 gameObject.GetComponent<BlockInfo>().movementCost_Temp = 0;
-                                gameObject.GetComponent<BlockInfo>().movementSpeed = 4;
+                                gameObject.GetComponent<BlockInfo>().movementSpeed = movementSpeed_Flippers;
                             }
                         }
                         else
@@ -75,7 +78,7 @@ public class Block_Water : MonoBehaviour
                             {
                                 gameObject.GetComponent<BlockInfo>().movementCost = 2;
                                 gameObject.GetComponent<BlockInfo>().movementCost_Temp = 2;
-                                gameObject.GetComponent<BlockInfo>().movementSpeed = 2.75f;
+                                gameObject.GetComponent<BlockInfo>().movementSpeed = movementSpeed_Normal;
                             }
                         }
                     }

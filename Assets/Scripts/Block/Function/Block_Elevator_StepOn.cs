@@ -1,56 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Block_Elevator_StepOn : MonoBehaviour
 {
     public bool isStandingOnBlock;
 
-
-    //--------------------
-
-
-    //private void Update()
-    //{
-    //    CheckIfPlayerIsOn();
-    //}
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-            isStandingOnBlock = true;
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-            isStandingOnBlock = false;
-    }
+    private MovingMachineScript movingMachineScript;
+    private Block_Elevator blockElevator;
 
 
     //--------------------
 
 
-    void CheckIfPlayerIsOn()
+    private void Awake()
     {
-        StartCoroutine(CheckIfPlayerIsOn_Delay(0.2f));
+        movingMachineScript = GetComponent<MovingMachineScript>();
+        blockElevator = GetComponent<Block_Elevator>();
     }
-    IEnumerator CheckIfPlayerIsOn_Delay(float waitTime)
+
+    private void Update()
     {
-        PlayerManager.Instance.PauseGame();
+        isStandingOnBlock = Movement.Instance != null && Movement.Instance.blockStandingOn == gameObject;
 
-        yield return new WaitForSeconds(waitTime);
+        if (movingMachineScript == null)
+            return;
 
-        if (Movement.Instance.blockStandingOn != gameObject && isStandingOnBlock)
-        {
-            isStandingOnBlock = false;
-        }
-        else if (Movement.Instance.blockStandingOn == gameObject && !isStandingOnBlock)
-        {
-            isStandingOnBlock = true;
-        }
+        bool shouldAnimate = isStandingOnBlock;
 
+        if (blockElevator != null && blockElevator.IsSnappingToGrid)
+            shouldAnimate = true;
 
-        PlayerManager.Instance.UnpauseGame();
+        if (shouldAnimate)
+            movingMachineScript.StartMovement();
+        else
+            movingMachineScript.StopMovement();
     }
 }
