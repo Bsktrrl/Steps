@@ -903,6 +903,91 @@ public class Movement : Singleton<Movement>
         elevatorRefreshAccumulatedDistance = 0f;
     }
 
+    private bool TryGetLandingBlockWhileFollowingCarrier(out GameObject landingBlock)
+    {
+        landingBlock = null;
+
+        Vector3 origin = transform.position + (Vector3.up * 0.05f);
+        RaycastHit[] hits = Physics.RaycastAll(
+            origin,
+            Vector3.down,
+            heightOverBlock + 0.4f,
+            Map.player_LayerMask,
+            QueryTriggerInteraction.Ignore);
+
+        float closestDistance = float.MaxValue;
+
+        foreach (var h in hits)
+        {
+            GameObject obj = h.transform.gameObject;
+
+            if (!obj.TryGetComponent(out BlockInfo info))
+                continue;
+
+            if (obj == fallingCarrierBlock)
+                continue;
+
+            if (info.movementState == MovementStates.Falling)
+                continue;
+
+            if (h.distance < closestDistance)
+            {
+                closestDistance = h.distance;
+                landingBlock = obj;
+            }
+        }
+
+        return landingBlock != null;
+    }
+
+    private bool TryGetPotentialLandingBlockBelowCarrier(out GameObject landingBlock)
+    {
+        landingBlock = null;
+
+        Vector3 origin = transform.position + (Vector3.up * 0.1f);
+        RaycastHit[] hits = Physics.RaycastAll(
+            origin,
+            Vector3.down,
+            3f,
+            Map.player_LayerMask,
+            QueryTriggerInteraction.Ignore);
+
+        float closestDistance = float.MaxValue;
+
+        foreach (RaycastHit h in hits)
+        {
+            GameObject obj = h.transform.gameObject;
+
+            if (!obj.TryGetComponent(out BlockInfo info))
+                continue;
+
+            if (obj == fallingCarrierBlock)
+                continue;
+
+            if (info.movementState == MovementStates.Falling)
+                continue;
+
+            if (h.distance < closestDistance)
+            {
+                closestDistance = h.distance;
+                landingBlock = obj;
+            }
+        }
+
+        return landingBlock != null;
+    }
+
+    private bool CarrierHasReachedLandingHeight(GameObject landingBlock)
+    {
+        if (fallingCarrierBlock == null || landingBlock == null)
+            return false;
+
+        float carrierTop = fallingCarrierBlock.transform.position.y + 0.5f;
+        float landingTop = landingBlock.transform.position.y + 0.5f;
+
+        return carrierTop <= landingTop + 0.001f;
+    }
+
     #endregion
 
     #region Movement Functions
@@ -984,7 +1069,10 @@ public class Movement : Singleton<Movement>
         //If falling with block
         if (IsFallingWithCarrierBlockActive())
         {
-            blockStandingOn = fallingCarrierBlock;
+            if (TryGetLandingBlockWhileFollowingCarrier(out GameObject landingBlock))
+                blockStandingOn = landingBlock;
+            else
+                blockStandingOn = fallingCarrierBlock;
 
             if (blockStandingOn_Previous != blockStandingOn && !CeilingGrab.isCeilingGrabbing)
                 blockStandingOn_Previous = prev;
@@ -2827,7 +2915,40 @@ public class Movement : Singleton<Movement>
     {
         if (IsFallingWithCarrierBlockActive())
         {
-            transform.position = fallingCarrierBlock.transform.position + (Vector3.up * heightOverBlock);
+            float carrierPlayerY = fallingCarrierBlock.transform.position.y + heightOverBlock;
+
+            if (TryGetPotentialLandingBlockBelowCarrier(out GameObject landingBlock))
+            {
+                float landedY = landingBlock.transform.position.y + heightOverBlock;
+
+                if (carrierPlayerY <= landedY)
+                {
+                    ClearFallingCarrierBlock();
+                    blockStandingOn = landingBlock;
+
+                    transform.position = new Vector3(
+                        transform.position.x,
+                        landedY,
+                        transform.position.z);
+
+                    EndFalling();
+                    UpdateAvailableMovementBlocks();
+                    return;
+                }
+
+                transform.position = new Vector3(
+                    transform.position.x,
+                    carrierPlayerY,
+                    transform.position.z);
+
+                return;
+            }
+
+            transform.position = new Vector3(
+                transform.position.x,
+                carrierPlayerY,
+                transform.position.z);
+
             return;
         }
 
