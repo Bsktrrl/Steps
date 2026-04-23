@@ -191,6 +191,8 @@ public class Movement : Singleton<Movement>
     [SerializeField] private bool isFallingWithCarrierBlock;
     [SerializeField] private GameObject fallingCarrierBlock;
 
+    [SerializeField] private bool pendingFreeLandingFromSlope;
+
     #endregion
 
     #region Cached Accessors
@@ -988,6 +990,12 @@ public class Movement : Singleton<Movement>
         return carrierTop <= landingTop + 0.001f;
     }
 
+    private void ClearSlopeFreeLandingState()
+    {
+        slopeLandingIsFree = false;
+        pendingFreeLandingFromSlope = false;
+    }
+
     #endregion
 
     #region Movement Functions
@@ -1249,7 +1257,8 @@ public class Movement : Singleton<Movement>
                     slopeAutoExitSourceBlock = blockStandingOn;
                     slopeAutoExitTargetPos = moveOption.targetBlock.transform.position;
 
-                    slopeLandingIsFree = true;
+                    slopeLandingIsFree = true;              // optional: keep if other logic depends on it
+                    pendingFreeLandingFromSlope = true;     // this is the cost flag
 
                     if (pendingSlopeFallAfterUphillAttempt && !isPlayingSlopeFallAnimation)
                     {
@@ -1271,7 +1280,8 @@ public class Movement : Singleton<Movement>
                     slopeAutoExitSourceBlock = blockStandingOn;
                     slopeAutoExitTargetPos = fallbackTarget;
 
-                    slopeLandingIsFree = true;
+                    slopeLandingIsFree = true;              // optional: keep if other logic depends on it
+                    pendingFreeLandingFromSlope = true;     // this is the cost flag
 
                     if (pendingSlopeFallAfterUphillAttempt && !isPlayingSlopeFallAnimation)
                     {
@@ -2895,6 +2905,7 @@ public class Movement : Singleton<Movement>
             info.movementState == MovementStates.Falling &&
             !CeilingGrab.isCeilingGrabbing)
         {
+            ClearSlopeFreeLandingState();
             SetFallingCarrierBlock(blockStandingOn);
             SetMovementState(MovementStates.Falling);
             ResetDarkenBlocks();
@@ -2905,6 +2916,7 @@ public class Movement : Singleton<Movement>
     {
         if (!CeilingGrab.isCeilingGrabbing)
         {
+            ClearSlopeFreeLandingState();
             ClearFallingCarrierBlock();
             SetMovementState(MovementStates.Falling);
             ResetDarkenBlocks();
@@ -3497,55 +3509,53 @@ public class Movement : Singleton<Movement>
 
     public void TakeAStep()
     {
-        if (TryGetStandingInfo(out BlockInfo standingInfo))
+        if (!TryGetStandingInfo(out BlockInfo standingInfo))
         {
-            UpdateWaterBlocksForSwiftSwim();
-
-            if ((hasSlopeGlided && standingInfo.blockType == BlockType.Slope) || standingInfo.blockType == BlockType.Slope)
-                isSlopeGliding = true;
-
-            // Free landing after slope slide
-            if (slopeLandingIsFree && standingInfo.blockType != BlockType.Slope)
-            {
-                slopeLandingIsFree = false;
-                hasSlopeGlided = false;
-                isSlopeGliding = false;
-            }
-            else if (hasSlopeGlided && standingInfo.blockType != BlockType.Slope)
-            {
-                hasSlopeGlided = false;
-            }
-            else if (!hasSlopeGlided && standingInfo.blockType != BlockType.Slope)
-            {
-                if (!isSlopeGliding)
-                {
-                    if (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !PlayerHasSwimAbility())
-                    {
-                        //Don't take away any steps if in water and cannot swim
-                    }
-                    else
-                    {
-                        StatsRoot.stats.steps_Current -= standingInfo.movementCost;
-                    }
-
-                    if (CeilingGrab.isCeilingGrabbing)
-                        MapStatsGathered.Instance.levelStats.ability_CeilingGrab++;
-                }
-
-                isSlopeGliding = false;
-            }
-            else if (isSlopeGliding && standingInfo.blockType != BlockType.Slope)
-            {
-                isSlopeGliding = false;
-            }
-            else
-            {
-                hasSlopeGlided = false;
-            }
+            Action_StepTaken_Late_Invoke();
+            return;
         }
 
-        if (!slopeLandingIsFree &&
-            StatsRoot.stats.steps_Current < 0 &&
+        UpdateWaterBlocksForSwiftSwim();
+
+        bool standingOnSlope = standingInfo.blockType == BlockType.Slope;
+
+        // Maintain visual / state info for slope travel only
+        if (standingOnSlope)
+        {
+            hasSlopeGlided = true;
+            isSlopeGliding = true;
+        }
+        else
+        {
+            bool useFreeLanding = pendingFreeLandingFromSlope;
+
+            // Consume immediately so it can never leak into the next move
+            pendingFreeLandingFromSlope = false;
+            slopeLandingIsFree = false;
+
+            if (!useFreeLanding)
+            {
+                bool standingInUnswimmableWater =
+                    blockStandingOn != null &&
+                    blockStandingOn.GetComponent<BlockInfo>() != null &&
+                    blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water &&
+                    !PlayerHasSwimAbility();
+
+                if (!standingInUnswimmableWater)
+                {
+                    StatsRoot.stats.steps_Current -= standingInfo.movementCost;
+                }
+
+                if (CeilingGrab.isCeilingGrabbing)
+                    MapStatsGathered.Instance.levelStats.ability_CeilingGrab++;
+            }
+
+            // Leaving slope context completely once on a non-slope tile
+            hasSlopeGlided = false;
+            isSlopeGliding = false;
+        }
+
+        if (StatsRoot.stats.steps_Current < 0 &&
             TryGetStandingInfo(out BlockInfo slopeCheckInfo) &&
             slopeCheckInfo.blockType != BlockType.Slope)
         {
@@ -3554,9 +3564,6 @@ public class Movement : Singleton<Movement>
         }
 
         Action_StepTaken_Late_Invoke();
-
-        if (isSlopeGliding)
-            isSlopeGliding = false;
     }
 
     #endregion
@@ -3647,6 +3654,9 @@ public class Movement : Singleton<Movement>
         {
             isSlopeGliding = false;
             hasSlopeGlided = false;
+
+            slopeLandingIsFree = false;
+            pendingFreeLandingFromSlope = false;
         }
     }
 
@@ -3666,6 +3676,8 @@ public class Movement : Singleton<Movement>
         Inputs.up_isPressed = false;
         Inputs.down_isPressed = false;
         Inputs.grapplingHook_isPressed = false;
+
+        pendingFreeLandingFromSlope = false;
 
         Inputs.forward_isHold = false;
         Inputs.back_isHold = false;
