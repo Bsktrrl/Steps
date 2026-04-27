@@ -11,6 +11,7 @@ public class EnvironmentalEffectScript : MonoBehaviour
 
     [SerializeField] float waitTimeMin;
     [SerializeField] float waitTimeMax;
+    [SerializeField] float length;
 
     float pitchMin = 0.9f;
     float pitchMax = 1.1f;
@@ -30,9 +31,21 @@ public class EnvironmentalEffectScript : MonoBehaviour
 
             source.clip = audioClips[Random.Range(0, audioClips.Length)];
             source.pitch = Random.Range(pitchMin, pitchMax);
+            source.time = Random.Range(0f, 2f);
+            source.volume = 1f;
 
             PS.Play();
             source.Play();
+
+            yield return new WaitForSeconds(length);
+
+            while(source.volume > 0f)
+            {
+                source.volume -= Time.deltaTime;
+                yield return null;
+            }
+
+            source.Stop();
         }
     }
 }

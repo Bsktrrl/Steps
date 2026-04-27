@@ -4836,13 +4836,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waterSound:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 3a664ab7affe2b946ba45959a57a7feb, type: 3}
+  - {fileID: 8300000, guid: ff9d8320d4159f54ca2485371fff1ee6, type: 3}
+  - {fileID: 8300000, guid: a92bad30ef97c664088754f84b5c3ae5, type: 3}
+  - {fileID: 8300000, guid: 19fe96e67a241d6458d032bc52a4624f, type: 3}
   lavaSound:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 52a159e50fbc27e4b80fbbaaf410ec69, type: 3}
+  - {fileID: 8300000, guid: bfa85542ed19e5e4f992bd83ad0d29fb, type: 3}
+  - {fileID: 8300000, guid: 79e47185aeaa99144a992a930f9491a4, type: 3}
   softSound:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: f5f371a2d2a2ed148b62deb43b1fdbd6, type: 3}
+  - {fileID: 8300000, guid: a67cc588c587d7a458d1a86086063213, type: 3}
+  - {fileID: 8300000, guid: 54652ac6219cf594191ab88a410c80a1, type: 3}
+  - {fileID: 8300000, guid: c024b807b3891e5409a2c1609b680933, type: 3}
   hardSound:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 62afeb12f1590ec4d8f0bc7c22608e9d, type: 3}
+  - {fileID: 8300000, guid: 8840917f4bb13a547993312318fa9485, type: 3}
+  - {fileID: 8300000, guid: 75c54f41ad166d24e9773a874eaf3955, type: 3}
   surfaceType: 0
 --- !u!199 &8173326059944084988
 ParticleSystemRenderer:
@@ -4938,9 +4948,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 12
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -4948,23 +4958,50 @@ AudioSource:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
+      time: 0.083333336
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: -12.004798
+      outSlope: -12.004798
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.16666667
+      value: 0.5
+      inSlope: -3.0011995
+      outSlope: -3.0011995
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.33333334
+      value: 0.25
+      inSlope: -0.7502999
+      outSlope: -0.7502999
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.6666667
+      value: 0.125
+      inSlope: -0.18757497
+      outSlope: -0.18757497
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: -0.083366595
+      outSlope: -0.083366595
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -4973,7 +5010,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
