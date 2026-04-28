@@ -6,6 +6,8 @@ April:
 - DarkenBlock med Dashing registreres ikke når spilleren ikke er rotert mot dashing-blokken. Det burde den.
 - SandBlocks burde også sjekke om det er en blokk rett over den, for å se om den skal riste, for å unngå at de nederste blokkene i et level skal riste
 - CeilingGrab: Kan ikke gjøres fra start eller rett etter respawn. Kan gjøres etter at man har falt, men det ikke er en blokk over, så spilelren står bare i løse luften.
+- Dashing og MovementBlocks: Gjøre slik at man attid dasher automatisk, utenom hvis man roterer mot en MovementBlock. Da skal det være samme system som det er nå.
+- Kamera: Legge til en sjekk som gjør at dersom spilleren er rett under en Slab, så zoomer ikke kameraet inn
 
 
 1.0. Lage levels:

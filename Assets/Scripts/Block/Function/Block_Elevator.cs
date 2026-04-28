@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class Block_Elevator : MonoBehaviour
 {
+    [Header("Audio")]
+    [SerializeField] PlayMovementSound playMovementSound_Script;
+    private bool movementEffectsArePlaying;
+
     [Header("Elevator Stats")]
     [SerializeField] private float movementSpeed = 2f;
     [SerializeField] private float waitingTime = 1f;
@@ -156,9 +160,9 @@ public class Block_Elevator : MonoBehaviour
             bool actuallyMoved = (transform.position - positionBefore).sqrMagnitude > 0.000001f;
 
             if (actuallyMoved)
-                StartAnimation();
+                StartMovementEffects();
             else
-                StopAnimation();
+                StopMovementEffects();
 
             // Unlock only when snap is fully done
             if (!isSnappingToGrid)
@@ -169,7 +173,7 @@ public class Block_Elevator : MonoBehaviour
 
         if (waiting || !isMoving)
         {
-            StopAnimation();
+            StopMovementEffects();
             return;
         }
 
@@ -186,7 +190,7 @@ public class Block_Elevator : MonoBehaviour
             // If movement is locked after stepping off, never allow normal path movement.
             if (stepOnMovementLocked)
             {
-                StopAnimation();
+                StopMovementEffects();
                 return;
             }
 
@@ -225,7 +229,7 @@ public class Block_Elevator : MonoBehaviour
 
         if (!shouldMove)
         {
-            StopAnimation();
+            StopMovementEffects();
             return;
         }
 
@@ -236,9 +240,9 @@ public class Block_Elevator : MonoBehaviour
         bool moved = (transform.position - before).sqrMagnitude > 0.000001f;
 
         if (moved)
-            StartAnimation();
+            StartMovementEffects();
         else
-            StopAnimation();
+            StopMovementEffects();
     }
 
     void CalculateMovementPath()
@@ -374,7 +378,7 @@ public class Block_Elevator : MonoBehaviour
             if (movementPath[index].waitAfterMoving)
             {
                 isMoving = false;
-                StopAnimation();
+                StopMovementEffects();
                 StartCoroutine(BlockWaiting(waitingTime));
             }
         }
@@ -383,7 +387,7 @@ public class Block_Elevator : MonoBehaviour
     IEnumerator BlockWaiting(float waitTime)
     {
         waiting = true;
-        StopAnimation();
+        StopMovementEffects();
 
         yield return new WaitForSeconds(waitTime);
 
@@ -391,16 +395,32 @@ public class Block_Elevator : MonoBehaviour
         isMoving = true;
     }
 
-    void StartAnimation()
+    void StartMovementEffects()
     {
+        if (movementEffectsArePlaying)
+            return;
+
+        movementEffectsArePlaying = true;
+
         if (movingMachineScript != null && !gameObject.GetComponent<Block_Elevator_StepOn>())
             movingMachineScript.StartMovement();
+
+        if (playMovementSound_Script != null)
+            playMovementSound_Script.StartAudio();
     }
 
-    void StopAnimation()
+    void StopMovementEffects()
     {
+        if (!movementEffectsArePlaying)
+            return;
+
+        movementEffectsArePlaying = false;
+
         if (movingMachineScript != null && !gameObject.GetComponent<Block_Elevator_StepOn>())
             movingMachineScript.StopMovement();
+
+        if (playMovementSound_Script != null)
+            playMovementSound_Script.StopAudio();
     }
 
     void CheckIfInRangeOfPlayer()
@@ -483,6 +503,7 @@ public class Block_Elevator : MonoBehaviour
     void ResetBlock()
     {
         StopAllCoroutines();
+        StopMovementEffects();
 
         isMoving = true;
         waiting = true;
@@ -553,6 +574,7 @@ public class Block_Elevator : MonoBehaviour
     }
 
     #endregion
+
 }
 
 public enum elevatorDirection

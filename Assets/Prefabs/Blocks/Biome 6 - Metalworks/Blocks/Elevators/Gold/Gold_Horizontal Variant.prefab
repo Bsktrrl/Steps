@@ -62,6 +62,79 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7379288899374920280, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
   m_PrefabInstance: {fileID: 928354560230352734}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4798026365523866534
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7055911197091764651}
+    m_Modifications:
+    - target: {fileID: 1799420606816799723, guid: fa3e0417b7d197a45aca3387009b1fb6, type: 3}
+      propertyPath: m_Name
+      value: Audio Source - ElevatorBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897615706336359460, guid: fa3e0417b7d197a45aca3387009b1fb6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897615706336359460, guid: fa3e0417b7d197a45aca3387009b1fb6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897615706336359460, guid: fa3e0417b7d197a45aca3387009b1fb6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897615706336359460, guid: fa3e0417b7d197a45aca3387009b1fb6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897615706336359460, guid: fa3e0417b7d197a45aca3387009b1fb6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897615706336359460, guid: fa3e0417b7d197a45aca3387009b1fb6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897615706336359460, guid: fa3e0417b7d197a45aca3387009b1fb6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897615706336359460, guid: fa3e0417b7d197a45aca3387009b1fb6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897615706336359460, guid: fa3e0417b7d197a45aca3387009b1fb6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897615706336359460, guid: fa3e0417b7d197a45aca3387009b1fb6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fa3e0417b7d197a45aca3387009b1fb6, type: 3}
+--- !u!114 &1483977339971138682 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6200935560517208028, guid: fa3e0417b7d197a45aca3387009b1fb6, type: 3}
+  m_PrefabInstance: {fileID: 4798026365523866534}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 171a4068b07b09a4ba24e60679093acf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &7683252766651139970 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2897615706336359460, guid: fa3e0417b7d197a45aca3387009b1fb6, type: 3}
+  m_PrefabInstance: {fileID: 4798026365523866534}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8239522544182055297
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -400,6 +473,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1419491230195140650, guid: 5956cb7d1aecf1b47b877a2de2f7b8aa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7677139442915431686}
+    - targetCorrespondingSourceObject: {fileID: 1419491230195140650, guid: 5956cb7d1aecf1b47b877a2de2f7b8aa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7683252766651139970}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1799429309432074896, guid: 5956cb7d1aecf1b47b877a2de2f7b8aa, type: 3}
       insertIndex: -1
@@ -545,6 +621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3708beebcb60888449efe582466e0143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playMovementSound_Script: {fileID: 1483977339971138682}
   movementSpeed: 2
   waitingTime: 1
   activate_Elevator: 0
