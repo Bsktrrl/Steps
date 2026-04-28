@@ -82,6 +82,12 @@ public class AbilityUIAnimator : MonoBehaviour
     private void OnDisable()
     {
         Movement.Action_RespawnPlayer -= ResetAbilityActive;
+
+        if (_co != null)
+        {
+            StopCoroutine(_co);
+            _co = null;
+        }
     }
 
 
@@ -90,6 +96,25 @@ public class AbilityUIAnimator : MonoBehaviour
 
     void ResetAbilityActive()
     {
+        if (!isActiveAndEnabled || !gameObject.activeInHierarchy)
+        {
+            _co = null;
+
+            if (targetImage)
+            {
+                targetImage.sprite = GetCorrectIdleSprite();
+                SetAlpha(targetImage, 1f);
+            }
+
+            if (_overlay)
+                SetAlpha(_overlay, 0f);
+
+            if (_rt)
+                _rt.localScale = Vector3.one * deactivateEndScale;
+
+            return;
+        }
+
         Deactivating();
     }
 
@@ -101,6 +126,12 @@ public class AbilityUIAnimator : MonoBehaviour
     {
         isActive = true;
 
+        if (!isActiveAndEnabled || !gameObject.activeInHierarchy)
+        {
+            _co = null;
+            return;
+        }
+
         if (_co != null) StopCoroutine(_co);
         _co = StartCoroutine(CoAppearing());
     }
@@ -110,6 +141,12 @@ public class AbilityUIAnimator : MonoBehaviour
     /// </summary>
     public void Activating()
     {
+        if (!isActiveAndEnabled || !gameObject.activeInHierarchy)
+        {
+            _co = null;
+            return;
+        }
+
         if (_co != null) StopCoroutine(_co);
         _co = StartCoroutine(CoActivating());
     }
@@ -119,6 +156,12 @@ public class AbilityUIAnimator : MonoBehaviour
     /// </summary>
     public void Deactivating()
     {
+        if (!isActiveAndEnabled || !gameObject.activeInHierarchy)
+        {
+            _co = null;
+            return;
+        }
+
         if (_co != null) StopCoroutine(_co);
         _co = StartCoroutine(CoDeactivating());
     }

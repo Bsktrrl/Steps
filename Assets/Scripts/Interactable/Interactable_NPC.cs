@@ -525,6 +525,8 @@ public class Interactable_NPC : MonoBehaviour
     }
     public void ReadExcelSheet()
     {
+        if (dialogueSheet == null) return;
+
         //Separate Excel Sheet into a string[] by its ";"
         string[] excelData = dialogueSheet.text.Split(new string[] { ";", "\n" }, StringSplitOptions.None);
 

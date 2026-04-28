@@ -443,7 +443,6 @@ GameObject:
   - component: {fileID: 1055775704402836038}
   - component: {fileID: 1216312224889572074}
   - component: {fileID: 257882234535915844}
-  - component: {fileID: 1326154848624953423}
   - component: {fileID: 6693782625000577016}
   - component: {fileID: 1668255464173535912}
   - component: {fileID: 6070612468512448}
@@ -640,7 +639,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1330780132882266929}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11bc6d5f0490dab41b78896bde301482, type: 3}
   m_Name: 
@@ -648,22 +647,6 @@ MonoBehaviour:
   norwegian_MapNameDisplay: Elverotlunden
   english_MapNameDisplay: Riverroot Grove
   german_MapNameDisplay: Riverroot Hain
---- !u!114 &1326154848624953423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1330780132882266929}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1536de82641a04c4ab789fbd1e799b89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  text_Can_Active: {fileID: 8525251864124794463}
-  text_Can_Passive: {fileID: 5749648434051216976}
-  text_Cannot_Active: {fileID: 3514470533341589450}
-  text_Cannot_Passive: {fileID: 6167468544460470994}
 --- !u!114 &6693782625000577016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -690,7 +673,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1330780132882266929}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05b6c2085c53ed74e88dde152f971388, type: 3}
   m_Name: 
@@ -711,7 +694,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 0
 --- !u!1 &2560898602450609842

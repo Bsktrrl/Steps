@@ -346,30 +346,30 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
         switch (region)
         {
             case regions.None:
-                print("0. Glueplant: None");
+                //print("0. Glueplant: None");
                 return null;
 
             case regions.Rivergreen:
-                print("1. Glueplant: Rivergreen");
+                //print("1. Glueplant: Rivergreen");
                 return glueplantSprite_Rivergreen;
             case regions.Sandlands:
-                print("2. Glueplant: Sandlands");
+                //print("2. Glueplant: Sandlands");
                 return glueplantSprite_Sandlands;
             case regions.Frostfield:
-                print("3. Glueplant: Frostfield");
+                //print("3. Glueplant: Frostfield");
                 return glueplantSprite_Frostfield;
             case regions.Firevein:
-                print("4. Glueplant: Firevein");
+                //print("4. Glueplant: Firevein");
                 return glueplantSprite_Firevein;
             case regions.Witchmire:
-                print("5. Glueplant: Witchmire");
+                //print("5. Glueplant: Witchmire");
                 return glueplantSprite_Witchmire;
             case regions.Metalworks:
-                print("6. Glueplant: Metalworks");
+                //print("6. Glueplant: Metalworks");
                 return glueplantSprite_Metalworks;
 
             default:
-                print("00. Glueplant: None");
+                //print("00. Glueplant: None");
                 return null;
         }
     }
