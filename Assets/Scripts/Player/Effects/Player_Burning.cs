@@ -1,54 +1,80 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player_Burning : Singleton<Player_Burning>
 {
+    [Header("Burning State")]
     public bool isBurning;
     public int flameableStepCounter;
 
-    [SerializeField] GameObject flameEffectObject;
+    [Header("Burn Settings")]
+    [SerializeField] private float burnDistance = 0.7f;
+    [SerializeField] private Vector3 checkOffset = Vector3.zero;
+    [SerializeField] private LayerMask lavaCheckMask = ~0;
 
-    bool firstTimeCheck;
+    [Header("Effects")]
+    [SerializeField] private GameObject flameEffectObject;
 
-    RaycastHit hit;
-
-
-    //--------------------
-
+    private Coroutine burnDelayCoroutine;
 
     private void OnEnable()
     {
-        //Movement.Action_isSwitchingBlocks += BecomeFlameable;
-        Movement.Action_StepTaken += BecomeFlameable;
+        Movement.Action_StepTaken += CheckForNearbyLava;
         Movement.Action_StepTaken += CheckFlameableCounter;
         Movement.Action_RespawnPlayer += RemoveFlameable;
     }
+
     private void OnDisable()
     {
-        //Movement.Action_isSwitchingBlocks -= BecomeFlameable;
-        Movement.Action_StepTaken -= BecomeFlameable;
+        Movement.Action_StepTaken -= CheckForNearbyLava;
         Movement.Action_StepTaken -= CheckFlameableCounter;
-        Movement.Action_RespawnPlayerEarly -= RemoveFlameable;
+        Movement.Action_RespawnPlayer -= RemoveFlameable;
     }
 
-
-    //--------------------
-
-
-    void BecomeFlameable()
+    private void CheckForNearbyLava()
     {
-        if (RaycastForLavaBlock(Vector3.forward) || RaycastForLavaBlock(Vector3.back) || RaycastForLavaBlock(Vector3.left) || RaycastForLavaBlock(Vector3.right))
+        if (IsCloseEnoughToLava())
         {
             AddFlameable();
         }
     }
-    bool RaycastForLavaBlock(Vector3 dir)
+
+    private bool IsCloseEnoughToLava()
     {
-        if (Physics.Raycast(transform.position + dir, Vector3.down, out hit, 1.4f))
+        Vector3 checkPosition = transform.position + checkOffset;
+
+        Collider[] nearbyColliders = Physics.OverlapSphere(
+            checkPosition,
+            burnDistance,
+            lavaCheckMask,
+            QueryTriggerInteraction.Collide
+        );
+
+        foreach (Collider collider in nearbyColliders)
         {
-            if ((hit.collider.transform.gameObject && hit.collider.transform.gameObject.GetComponent<BlockInfo>() && hit.collider.transform.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Lava)
-                || (hit.collider.transform.gameObject && hit.collider.transform.parent && hit.collider.transform.parent.gameObject.GetComponent<BlockInfo>() && hit.collider.transform.parent.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Lava))
+            BlockInfo blockInfo = collider.GetComponent<BlockInfo>();
+
+            if (blockInfo == null)
+            {
+                blockInfo = collider.GetComponentInParent<BlockInfo>();
+            }
+
+            if (blockInfo == null)
+            {
+                continue;
+            }
+
+            if (blockInfo.blockElement != BlockElement.Lava)
+            {
+                continue;
+            }
+
+            float distanceToLava = Vector3.Distance(
+                checkPosition,
+                collider.ClosestPoint(checkPosition)
+            );
+
+            if (distanceToLava <= burnDistance)
             {
                 return true;
             }
@@ -57,20 +83,23 @@ public class Player_Burning : Singleton<Player_Burning>
         return false;
     }
 
-
-    void CheckFlameableCounter()
+    private void CheckFlameableCounter()
     {
-        if (!isBurning) { return; }
+        if (!isBurning)
+        {
+            return;
+        }
 
         flameableStepCounter += 1;
 
-        //Remove Flameable after 5 steps
+        // Remove burning after 5 steps
         if (flameableStepCounter > 5)
         {
             RemoveFlameable();
+            return;
         }
 
-        //Remove Flameable in water
+        // Remove burning when standing on water
         if (Movement.Instance.blockStandingOn)
         {
             if (Movement.Instance.blockStandingOn.GetComponent<Block_Water>())
@@ -79,29 +108,57 @@ public class Player_Burning : Singleton<Player_Burning>
             }
         }
     }
-    void AddFlameable()
+
+    private void AddFlameable()
     {
-        StartCoroutine(DelayFlammable());
+        if (burnDelayCoroutine != null)
+        {
+            StopCoroutine(burnDelayCoroutine);
+        }
+
+        burnDelayCoroutine = StartCoroutine(DelayFlammable());
     }
-    IEnumerator DelayFlammable()
+
+    private IEnumerator DelayFlammable()
     {
         yield return new WaitForEndOfFrame();
 
         isBurning = true;
         flameableStepCounter = 0;
 
-        flameEffectObject.SetActive(true);
-    }
-    void RemoveFlameable()
-    {
-        if (isBurning)
+        if (flameEffectObject != null)
         {
-            isBurning = false;
-            flameableStepCounter = 0;
-
-            flameEffectObject.SetActive(false);
-
-            firstTimeCheck = false;
+            flameEffectObject.SetActive(true);
         }
+
+        burnDelayCoroutine = null;
+    }
+
+    private void RemoveFlameable()
+    {
+        if (burnDelayCoroutine != null)
+        {
+            StopCoroutine(burnDelayCoroutine);
+            burnDelayCoroutine = null;
+        }
+
+        if (!isBurning)
+        {
+            return;
+        }
+
+        isBurning = false;
+        flameableStepCounter = 0;
+
+        if (flameEffectObject != null)
+        {
+            flameEffectObject.SetActive(false);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position + checkOffset, burnDistance);
     }
 }

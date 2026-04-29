@@ -32545,6 +32545,7 @@ MonoBehaviour:
   isPlayingSlopeFallAnimation: 0
   isFallingWithCarrierBlock: 0
   fallingCarrierBlock: {fileID: 0}
+  pendingFreeLandingFromSlope: 0
 --- !u!114 &3643509991883984095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32610,6 +32611,8 @@ MonoBehaviour:
   isWalkGliding: 0
   walkGlidingCheck: 0
   isWalkGliding_Delay: 0
+  suppressWalkGlideUntilWalkInputReleased: 0
+  blockWalkGlideAfterVerticalAbility: 0
 --- !u!114 &8763539080269035516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32770,6 +32773,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isBurning: 0
   flameableStepCounter: 0
+  burnDistance: 0.7
+  checkOffset: {x: 0, y: 0, z: 0}
+  lavaCheckMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
   flameEffectObject: {fileID: 2807386271657241968}
 --- !u!114 &1191866112101601512
 MonoBehaviour:

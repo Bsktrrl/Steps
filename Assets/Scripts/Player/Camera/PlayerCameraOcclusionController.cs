@@ -234,7 +234,8 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
 
             // Skip this hit if the collider's GameObject has BlockInfo
             if (hit.collider && hit.collider.GetComponent<BlockInfo>()
-                && (hit.collider.GetComponent<BlockInfo>().blockElement == BlockElement.Water
+                && (hit.collider.GetComponent<BlockInfo>().blockType == BlockType.Slab
+                || hit.collider.GetComponent<BlockInfo>().blockElement == BlockElement.Water
                 || hit.collider.GetComponent<BlockInfo>().blockElement == BlockElement.Mud
                 || hit.collider.GetComponent<BlockInfo>().blockElement == BlockElement.SwampWater))
             {
@@ -421,7 +422,8 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
 
             // Skip any hit that belongs to a BlockInfo object
             if (hit.collider && hit.collider.GetComponent<BlockInfo>()
-                && (hit.collider.GetComponent<BlockInfo>().blockElement == BlockElement.Water
+                && (hit.collider.GetComponent<BlockInfo>().blockType == BlockType.Slab
+                || hit.collider.GetComponent<BlockInfo>().blockElement == BlockElement.Water
                 || hit.collider.GetComponent<BlockInfo>().blockElement == BlockElement.Mud
                 || hit.collider.GetComponent<BlockInfo>().blockElement == BlockElement.SwampWater))
             {
