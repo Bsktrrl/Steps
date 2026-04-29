@@ -558,7 +558,13 @@ public class NumberDisplay : MonoBehaviour
             return;
 
         float cameraY = cameraAnchorTransform.localEulerAngles.y;
-        float blockY = blockInfo.transform.localEulerAngles.y;
+
+        // Important:
+        // Use world rotation, not local rotation.
+        // Burned/swapped blocks are parented under the original block,
+        // so localEulerAngles can be different from the actual visible block rotation.
+        float blockY = blockInfo.transform.eulerAngles.y;
+
         bool isCeilingGrabbing = Player_CeilingGrab.Instance.isCeilingGrabbing;
         CameraRotationState cameraState = cameraController.cameraRotationState;
 
@@ -599,8 +605,6 @@ public class NumberDisplay : MonoBehaviour
 
             numberChildTransform.localRotation = numberRotation;
         }
-
-        // If the block is a Cube or Slab
         else
         {
             float yRotationOffset;

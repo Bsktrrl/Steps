@@ -114,7 +114,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3778a9645e67a514bb6fc60cb49a089b, type: 3}
       propertyPath: m_Name
-      value: Brick_Black_Slope_2_Straight
+      value: Brick_Black_Slope_Straight
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3778a9645e67a514bb6fc60cb49a089b, type: 3}
       propertyPath: m_Layer
@@ -160,6 +160,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3778a9645e67a514bb6fc60cb49a089b, type: 3}
       insertIndex: -1
       addedObject: {fileID: -1510870949824020546}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3778a9645e67a514bb6fc60cb49a089b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -9079540605702584293}
   m_SourcePrefab: {fileID: 100100000, guid: 3778a9645e67a514bb6fc60cb49a089b, type: 3}
 --- !u!1 &4648012088421672049 stripped
 GameObject:
@@ -239,6 +242,21 @@ MonoBehaviour:
   colorTint_isActive: 0
   tintValue: 0.95
   blockIsDark: 0
+--- !u!114 &-9079540605702584293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4648012088421672049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dde6ba806fa6fc48a79c6c003ef1b31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  burningBlock: {fileID: 4133031918596957217, guid: 3ca24f93f9944bc4c94a3b985366c99c, type: 3}
+  burningBlock_InScene: {fileID: 0}
+  isSteppedOn: 0
 --- !u!4 &5461422632738504395 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3778a9645e67a514bb6fc60cb49a089b, type: 3}

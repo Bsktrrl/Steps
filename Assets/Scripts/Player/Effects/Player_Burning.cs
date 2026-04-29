@@ -21,6 +21,8 @@ public class Player_Burning : Singleton<Player_Burning>
     private Coroutine burnDelayCoroutine;
     private Coroutine checkForLavaDelayCoroutine;
 
+    private bool flameableCounterWasResetThisStep;
+
     private void OnEnable()
     {
         Movement.Action_StepTaken += CheckForNearbyLava;
@@ -120,6 +122,22 @@ public class Player_Burning : Singleton<Player_Burning>
             return;
         }
 
+        // Remove burning when standing on water
+        if (Movement.Instance.blockStandingOn)
+        {
+            if (Movement.Instance.blockStandingOn.GetComponent<Block_Water>())
+            {
+                RemoveFlameable();
+                return;
+            }
+        }
+
+        if (flameableCounterWasResetThisStep)
+        {
+            flameableCounterWasResetThisStep = false;
+            return;
+        }
+
         flameableStepCounter += 1;
 
         // Remove burning after 5 steps
@@ -128,21 +146,20 @@ public class Player_Burning : Singleton<Player_Burning>
             RemoveFlameable();
             return;
         }
-
-        // Remove burning when standing on water
-        if (Movement.Instance.blockStandingOn)
-        {
-            if (Movement.Instance.blockStandingOn.GetComponent<Block_Water>())
-            {
-                RemoveFlameable();
-            }
-        }
     }
 
     private void AddFlameable()
     {
         if (isBurning)
         {
+            flameableStepCounter = 0;
+            flameableCounterWasResetThisStep = true;
+
+            if (flameEffectObject != null)
+            {
+                flameEffectObject.SetActive(true);
+            }
+
             return;
         }
 
@@ -160,6 +177,7 @@ public class Player_Burning : Singleton<Player_Burning>
 
         isBurning = true;
         flameableStepCounter = 0;
+        flameableCounterWasResetThisStep = false;
 
         if (flameEffectObject != null)
         {
@@ -186,6 +204,7 @@ public class Player_Burning : Singleton<Player_Burning>
 
         isBurning = false;
         flameableStepCounter = 0;
+        flameableCounterWasResetThisStep = false;
 
         if (flameEffectObject != null)
         {

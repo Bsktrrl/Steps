@@ -229,6 +229,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100006, guid: 36fd6da3ce911ed479d6f19d66afd2c5, type: 3}
       insertIndex: -1
       addedObject: {fileID: -3077181598132120827}
+    - targetCorrespondingSourceObject: {fileID: 100006, guid: 36fd6da3ce911ed479d6f19d66afd2c5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8527780239752991873}
   m_SourcePrefab: {fileID: 100100000, guid: 36fd6da3ce911ed479d6f19d66afd2c5, type: 3}
 --- !u!1 &5261063650517694321 stripped
 GameObject:
@@ -325,6 +328,21 @@ MonoBehaviour:
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
+--- !u!114 &-8527780239752991873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5261063650517694321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dde6ba806fa6fc48a79c6c003ef1b31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  burningBlock: {fileID: 5343428498399941360, guid: af004f2a1747f3445b5a866591bcb72b, type: 3}
+  burningBlock_InScene: {fileID: 0}
+  isSteppedOn: 0
 --- !u!4 &5261063650517723985 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400006, guid: 36fd6da3ce911ed479d6f19d66afd2c5, type: 3}
