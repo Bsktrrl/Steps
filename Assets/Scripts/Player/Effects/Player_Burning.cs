@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class Player_Burning : Singleton<Player_Burning>
 {
+    public static Action Action_PlayerStartedBurning;
+
     [Header("Burning State")]
     public bool isBurning;
     public int flameableStepCounter;
@@ -16,12 +19,16 @@ public class Player_Burning : Singleton<Player_Burning>
     [SerializeField] private GameObject flameEffectObject;
 
     private Coroutine burnDelayCoroutine;
+    private Coroutine checkForLavaDelayCoroutine;
 
     private void OnEnable()
     {
         Movement.Action_StepTaken += CheckForNearbyLava;
         Movement.Action_StepTaken += CheckFlameableCounter;
         Movement.Action_RespawnPlayer += RemoveFlameable;
+
+        Movement.Action_RespawnPlayer += CheckForNearbyLavaDelayed;
+        DataManager.Action_dataHasLoaded += CheckForNearbyLavaDelayed;
     }
 
     private void OnDisable()
@@ -29,6 +36,9 @@ public class Player_Burning : Singleton<Player_Burning>
         Movement.Action_StepTaken -= CheckForNearbyLava;
         Movement.Action_StepTaken -= CheckFlameableCounter;
         Movement.Action_RespawnPlayer -= RemoveFlameable;
+
+        Movement.Action_RespawnPlayer -= CheckForNearbyLavaDelayed;
+        DataManager.Action_dataHasLoaded -= CheckForNearbyLavaDelayed;
     }
 
     private void CheckForNearbyLava()
@@ -37,6 +47,26 @@ public class Player_Burning : Singleton<Player_Burning>
         {
             AddFlameable();
         }
+    }
+
+    private void CheckForNearbyLavaDelayed()
+    {
+        if (checkForLavaDelayCoroutine != null)
+        {
+            StopCoroutine(checkForLavaDelayCoroutine);
+        }
+
+        checkForLavaDelayCoroutine = StartCoroutine(DelayCheckForNearbyLava());
+    }
+
+    private IEnumerator DelayCheckForNearbyLava()
+    {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+
+        CheckForNearbyLava();
+
+        checkForLavaDelayCoroutine = null;
     }
 
     private bool IsCloseEnoughToLava()
@@ -111,6 +141,11 @@ public class Player_Burning : Singleton<Player_Burning>
 
     private void AddFlameable()
     {
+        if (isBurning)
+        {
+            return;
+        }
+
         if (burnDelayCoroutine != null)
         {
             StopCoroutine(burnDelayCoroutine);
@@ -130,6 +165,8 @@ public class Player_Burning : Singleton<Player_Burning>
         {
             flameEffectObject.SetActive(true);
         }
+
+        Action_PlayerStartedBurning?.Invoke();
 
         burnDelayCoroutine = null;
     }
