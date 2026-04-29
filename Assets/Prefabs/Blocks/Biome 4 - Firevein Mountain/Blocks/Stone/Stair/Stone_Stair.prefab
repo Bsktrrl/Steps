@@ -238,6 +238,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100006, guid: e0baf42a40b5ec348be5877a32f38262, type: 3}
       insertIndex: -1
       addedObject: {fileID: -1821224761240077532}
+    - targetCorrespondingSourceObject: {fileID: 100006, guid: e0baf42a40b5ec348be5877a32f38262, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8723873794470619878}
   m_SourcePrefab: {fileID: 100100000, guid: e0baf42a40b5ec348be5877a32f38262, type: 3}
 --- !u!1 &8830182015675088597 stripped
 GameObject:
@@ -317,6 +320,21 @@ MonoBehaviour:
   colorTint_isActive: 0
   tintValue: 0.95
   blockIsDark: 0
+--- !u!114 &-8723873794470619878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8830182015675088597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dde6ba806fa6fc48a79c6c003ef1b31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  burningBlock: {fileID: 5915575614772172363, guid: c61900c278d1fea47bf8f9c077c8e604, type: 3}
+  burningBlock_InScene: {fileID: 0}
+  isSteppedOn: 0
 --- !u!4 &8830182015675179765 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400006, guid: e0baf42a40b5ec348be5877a32f38262, type: 3}

@@ -74,7 +74,7 @@ public class Block_Weak : MonoBehaviour
         {
 
             originalBlock = Instantiate(newBlock, transform.position, Quaternion.identity);
-            Player_BurnChanging.Instance.AddMeltedBlockToList(originalBlock);
+            Player_BurnChanging.Instance.AddBurnedBlockToList(originalBlock);
         }
 
         gameObject.SetActive(false);

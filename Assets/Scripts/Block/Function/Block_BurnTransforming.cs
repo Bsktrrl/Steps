@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Block_BurnTransforming : MonoBehaviour
 {
-    [SerializeField] GameObject meltingBlock;
-    [SerializeField] GameObject meltingBlock_InScene;
+    [Header("New Block When Burned")]
+    [SerializeField] GameObject burningBlock;
+
+    [Header("Other Parameters")]
+    [SerializeField] GameObject burningBlock_InScene;
     public bool isSteppedOn;
 
 
@@ -15,14 +18,14 @@ public class Block_BurnTransforming : MonoBehaviour
     private void OnEnable()
     {
         Movement.Action_isSwitchingBlocks += CheckIfSteppenOn;
-        Movement.Action_StepTaken += MeltBlock;
+        Movement.Action_StepTaken += BurnBlock;
         Movement.Action_RespawnPlayerEarly += ResetBlock;
     }
 
     private void OnDisable()
     {
         Movement.Action_isSwitchingBlocks -= CheckIfSteppenOn;
-        Movement.Action_StepTaken -= MeltBlock;
+        Movement.Action_StepTaken -= BurnBlock;
         Movement.Action_RespawnPlayerEarly -= ResetBlock;
     }
 
@@ -32,7 +35,7 @@ public class Block_BurnTransforming : MonoBehaviour
 
     void CheckIfSteppenOn()
     {
-        if (Movement.Instance.blockStandingOn_Previous == gameObject)
+        if (Movement.Instance.blockStandingOn == gameObject)
             isSteppedOn = true;
         else
         {
@@ -40,20 +43,21 @@ public class Block_BurnTransforming : MonoBehaviour
         }
     }
 
-    void MeltBlock()
+    void BurnBlock()
     {
         if (!Player_Burning.Instance.isBurning || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
         if (!isSteppedOn) { return; }
 
-        StartCoroutine(WaitBeforeMeltingBlock(0.005f));
+        StartCoroutine(WaitBeforeBurningBlock(0.005f));
     }
-    IEnumerator WaitBeforeMeltingBlock(float waitTime)
+
+    IEnumerator WaitBeforeBurningBlock(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
 
-        meltingBlock_InScene = Instantiate(meltingBlock, transform.position, Quaternion.identity);
-        Player_BurnChanging.Instance.AddMeltedBlockToList(meltingBlock_InScene);
+        burningBlock_InScene = Instantiate(burningBlock, transform.position, transform.rotation);
+        Player_BurnChanging.Instance.AddBurnedBlockToList(burningBlock_InScene);
         gameObject.SetActive(false);
 
         isSteppedOn = false;
@@ -65,10 +69,10 @@ public class Block_BurnTransforming : MonoBehaviour
         isSteppedOn = false;
         gameObject.SetActive(true);
 
-        if (meltingBlock_InScene != null)
+        if (burningBlock_InScene != null)
         {
-            Destroy(meltingBlock_InScene);
-            meltingBlock_InScene = null;
+            Destroy(burningBlock_InScene);
+            burningBlock_InScene = null;
         }
     }
 }

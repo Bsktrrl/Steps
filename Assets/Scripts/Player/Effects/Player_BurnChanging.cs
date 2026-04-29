@@ -28,7 +28,7 @@ public class Player_BurnChanging : Singleton<Player_BurnChanging>
     //--------------------
 
 
-    public void AddMeltedBlockToList(GameObject obj)
+    public void AddBurnedBlockToList(GameObject obj)
     {
         meltedBlocksList.Add(obj);
     }
