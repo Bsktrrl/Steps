@@ -47,6 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 6522520251212414415}
   movementSound: {fileID: 8300000, guid: d9ee428efe4550e498b7b64bb46c21dd, type: 3}
+  fadeDuration: 0.2
+  targetVolume: 1
   force3DSound: 1
   minDistance: 0
   maxDistance: 12
@@ -70,8 +72,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 0.5
-  MaxDistance: 5
+  MinDistance: 0
+  MaxDistance: 12
   Pan2D: 0
   rolloffMode: 1
   BypassEffects: 0
