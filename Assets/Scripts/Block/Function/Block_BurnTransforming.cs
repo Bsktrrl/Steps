@@ -67,7 +67,7 @@ public class Block_BurnTransforming : MonoBehaviour
     {
         if (!Player_Burning.Instance.isBurning || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
 
-        if (burningBlock_InScene != null) { return; }
+        if (burningBlock_InScene != null || burningBlock == null) { return; }
 
         if (isBurningBlock) { return; }
 

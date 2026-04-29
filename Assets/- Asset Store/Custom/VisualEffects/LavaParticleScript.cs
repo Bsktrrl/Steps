@@ -27,7 +27,7 @@ public class LavaParticleScript : MonoBehaviour
 
     IEnumerator Lava()
     {
-        print("1. Run Lava Effect");
+        //print("1. Run Lava Effect");
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(waitTimeMin, waitTimeMax));

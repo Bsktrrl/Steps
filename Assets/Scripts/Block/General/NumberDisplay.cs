@@ -83,29 +83,32 @@ public class NumberDisplay : MonoBehaviour
         SetObjectRenderer();
         SetPropertyBlock();
 
-        SetNumberColors(SetNumberColor_MoreOrLess(blockInfo.movementCost));
-
-        if (blockInfo.blockType == BlockType.Stair)
+        if (blockInfo)
         {
-            cachedTransform.localPosition = new Vector3(0, 0.2f + 0.02f, -0.4f + 0.02f);
-            cachedTransform.localRotation = Quaternion.Euler(45, 0, 0);
+            SetNumberColors(SetNumberColor_MoreOrLess(blockInfo.movementCost));
 
-            if (numberChildTransform != null)
-                numberChildTransform.localPosition = new Vector3(0, 0.56f, 0.05f);
-        }
-        else if (blockInfo.blockType == BlockType.Slope)
-        {
-            cachedTransform.localPosition = new Vector3(0, 0.2f + 0.02f, -0.4f + 0.02f);
-            cachedTransform.localRotation = Quaternion.Euler(45, 0, 0);
-        }
-        else
-        {
-            //numberChildTransform.localPosition = new Vector3(0, 0.48f, 0);
-        }
+            if (blockInfo.blockType == BlockType.Stair)
+            {
+                cachedTransform.localPosition = new Vector3(0, 0.2f + 0.02f, -0.4f + 0.02f);
+                cachedTransform.localRotation = Quaternion.Euler(45, 0, 0);
 
-        UpdateRotation();
-        ResetRotationTracking();
-        GetBlockOrientationWithCamera(true);
+                if (numberChildTransform != null)
+                    numberChildTransform.localPosition = new Vector3(0, 0.56f, 0.05f);
+            }
+            else if (blockInfo.blockType == BlockType.Slope)
+            {
+                cachedTransform.localPosition = new Vector3(0, 0.2f + 0.02f, -0.4f + 0.02f);
+                cachedTransform.localRotation = Quaternion.Euler(45, 0, 0);
+            }
+            else
+            {
+                //numberChildTransform.localPosition = new Vector3(0, 0.48f, 0);
+            }
+
+            UpdateRotation();
+            ResetRotationTracking();
+            GetBlockOrientationWithCamera(true);
+        }
     }
 
     private void Update()

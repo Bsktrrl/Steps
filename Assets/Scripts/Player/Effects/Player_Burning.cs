@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Player_Burning : Singleton<Player_Burning>
@@ -16,7 +17,7 @@ public class Player_Burning : Singleton<Player_Burning>
     [SerializeField] private LayerMask lavaCheckMask = ~0;
 
     [Header("Effects")]
-    [SerializeField] private GameObject flameEffectObject;
+    [SerializeField] private List<GameObject> flameEffectObjectList;
 
     private Coroutine burnDelayCoroutine;
     private Coroutine checkForLavaDelayCoroutine;
@@ -155,9 +156,12 @@ public class Player_Burning : Singleton<Player_Burning>
             flameableStepCounter = 0;
             flameableCounterWasResetThisStep = true;
 
-            if (flameEffectObject != null)
+            if (flameEffectObjectList != null)
             {
-                flameEffectObject.SetActive(true);
+                for (int i = 0; i < flameEffectObjectList.Count; i++)
+                {
+                    flameEffectObjectList[i].SetActive(true);
+                }
             }
 
             return;
@@ -179,9 +183,12 @@ public class Player_Burning : Singleton<Player_Burning>
         flameableStepCounter = 0;
         flameableCounterWasResetThisStep = false;
 
-        if (flameEffectObject != null)
+        if (flameEffectObjectList != null)
         {
-            flameEffectObject.SetActive(true);
+            for (int i = 0; i < flameEffectObjectList.Count; i++)
+            {
+                flameEffectObjectList[i].SetActive(true);
+            }
         }
 
         Action_PlayerStartedBurning?.Invoke();
@@ -206,9 +213,12 @@ public class Player_Burning : Singleton<Player_Burning>
         flameableStepCounter = 0;
         flameableCounterWasResetThisStep = false;
 
-        if (flameEffectObject != null)
+        if (flameEffectObjectList != null)
         {
-            flameEffectObject.SetActive(false);
+            for (int i = 0; i < flameEffectObjectList.Count; i++)
+            {
+                flameEffectObjectList[i].SetActive(false);
+            }
         }
     }
 
