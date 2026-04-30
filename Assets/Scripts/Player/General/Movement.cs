@@ -230,9 +230,7 @@ public class Movement : Singleton<Movement>
             return;
 
         //If standing in water and cannot swim, or standing in lava, force Dorwning and respawn player
-        if (!isDrowning
-            && ((blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !PlayerHasSwimAbility())
-            || (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Lava)))
+        if (ShouldStartDrowning())
         {
             StartCoroutine(StartDrowning());
         }
@@ -996,6 +994,28 @@ public class Movement : Singleton<Movement>
     {
         slopeLandingIsFree = false;
         pendingFreeLandingFromSlope = false;
+    }
+
+    private bool ShouldStartDrowning()
+    {
+        if (isDrowning)
+            return false;
+
+        // Do not drown while moving, jumping, dashing, falling, grappling, etc.
+        // Wait until the player has actually landed / settled on a block.
+        if (isMoving || movementStates != MovementStates.Still)
+            return false;
+
+        if (!TryGetStandingInfo(out BlockInfo standingInfo))
+            return false;
+
+        if (standingInfo.blockElement == BlockElement.Water && !PlayerHasSwimAbility())
+            return true;
+
+        if (standingInfo.blockElement == BlockElement.Lava)
+            return true;
+
+        return false;
     }
 
     #endregion
@@ -1932,7 +1952,8 @@ public class Movement : Singleton<Movement>
             PerformMovementRaycast(playerPos + dir + dir + (-rayDir * correction), rayDir, 1, out o4) == RaycastHitObjects.BlockInfo &&
             TryGetBlockInfo(o2, out BlockInfo middleInfo))
         {
-            if (middleInfo.blockElement == BlockElement.Water)
+            if (middleInfo.blockElement == BlockElement.Water
+                || middleInfo.blockElement == BlockElement.Lava)
             {
                 //if (PlayerHasSwimAbility())
                 //    return false;
