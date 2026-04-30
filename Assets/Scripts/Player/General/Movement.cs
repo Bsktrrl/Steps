@@ -1751,6 +1751,18 @@ public class Movement : Singleton<Movement>
         UpdateJumpMovements(moveToBlock_Jump_Back, UpdatedDir(Vector3.back));
         UpdateJumpMovements(moveToBlock_Jump_Left, UpdatedDir(Vector3.left));
         UpdateJumpMovements(moveToBlock_Jump_Right, UpdatedDir(Vector3.right));
+
+        DisableJumpIfWalkIsPossible(moveToBlock_Forward, moveToBlock_Jump_Forward);
+        DisableJumpIfWalkIsPossible(moveToBlock_Back, moveToBlock_Jump_Back);
+        DisableJumpIfWalkIsPossible(moveToBlock_Left, moveToBlock_Jump_Left);
+        DisableJumpIfWalkIsPossible(moveToBlock_Right, moveToBlock_Jump_Right);
+    }
+    private void DisableJumpIfWalkIsPossible(MoveOptions walkOption, MoveOptions jumpOption)
+    {
+        if (HasValidTarget(walkOption))
+        {
+            ClearMoveTarget(jumpOption);
+        }
     }
 
     void UpdateJumpMovements(MoveOptions moveOption, Vector3 dir)
