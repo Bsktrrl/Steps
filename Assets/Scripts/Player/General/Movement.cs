@@ -229,8 +229,10 @@ public class Movement : Singleton<Movement>
         if (Tutorial.Instance.tutorial_isRunning && Inputs.tutorialMovementBlocker)
             return;
 
-        //If standing in water and cannot swim, force Dorwning and respawn player
-        if (!isDrowning && blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !PlayerHasSwimAbility())
+        //If standing in water and cannot swim, or standing in lava, force Dorwning and respawn player
+        if (!isDrowning
+            && ((blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !PlayerHasSwimAbility())
+            || (blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Lava)))
         {
             StartCoroutine(StartDrowning());
         }

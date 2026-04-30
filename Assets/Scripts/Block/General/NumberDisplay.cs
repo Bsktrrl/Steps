@@ -147,6 +147,7 @@ public class NumberDisplay : MonoBehaviour
         }
     }
 
+
     //--------------------
 
     public void ShowNumber()
