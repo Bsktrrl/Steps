@@ -52,32 +52,19 @@ public class NumberDisplay : MonoBehaviour
     private void Awake()
     {
         cachedTransform = transform;
-        cachedParent = cachedTransform.parent;
 
-        if (cachedTransform.childCount > 0)
-        {
-            numberChildTransform = cachedTransform.GetChild(0);
-            numberChildObject = numberChildTransform.gameObject;
-        }
+        CacheReferencesIfNeeded();
 
         HideNumber();
     }
 
     private void Start()
     {
-        blockInfo = GetComponentInParent<BlockInfo>();
-        player_BlockDetector = FindObjectOfType<Player_BlockDetector>();
-        cameraController = FindObjectOfType<CameraController>();
+        CacheReferencesIfNeeded();
 
-        if (cameraController != null && cameraController.cameraAnchor != null)
+        if (blockInfo == null)
         {
-            cameraAnchorTransform = cameraController.cameraAnchor.transform;
-        }
-
-        if (cachedParent != null)
-        {
-            parentEffectBlockInfo = cachedParent.GetComponent<EffectBlockInfo>();
-            parentQuicksandBlock = GetComponentInParent<Block_Quicksand>();
+            return;
         }
 
         SetObjectRenderer();
@@ -115,6 +102,8 @@ public class NumberDisplay : MonoBehaviour
 
     private void OnEnable()
     {
+        CacheReferencesIfNeeded();
+
         CameraController.Action_RotateCamera_End += UpdateRotation;
         Player_CeilingGrab.Action_raycastCeiling += UpdateRotation;
         Player_CeilingGrab.Action_isCeilingGrabbing_Finished += UpdateRotation;
@@ -158,10 +147,17 @@ public class NumberDisplay : MonoBehaviour
         }
     }
 
+
     //--------------------
 
     public void ShowNumber()
     {
+        CacheReferencesIfNeeded();
+
+        if (blockInfo == null) return;
+
+        if (cachedParent == null) return;
+
         // If a Teleporter, don't show the number at all
         if (parentEffectBlockInfo != null && parentEffectBlockInfo.effectBlock_Teleporter_isAdded)
         {
@@ -364,6 +360,18 @@ public class NumberDisplay : MonoBehaviour
 
     public void UpdateRotation()
     {
+        CacheReferencesIfNeeded();
+
+        if (blockInfo == null)
+        {
+            return;
+        }
+
+        if (cachedTransform == null)
+        {
+            return;
+        }
+
         bool isAscendTarget = IsAscendTarget();
         bool isCeilingGrabTarget = IsCeilingGrabTarget();
         bool isCurrentlyCeilingGrabbing = Player_CeilingGrab.Instance != null &&
@@ -558,7 +566,13 @@ public class NumberDisplay : MonoBehaviour
             return;
 
         float cameraY = cameraAnchorTransform.localEulerAngles.y;
-        float blockY = blockInfo.transform.localEulerAngles.y;
+
+        // Important:
+        // Use world rotation, not local rotation.
+        // Burned/swapped blocks are parented under the original block,
+        // so localEulerAngles can be different from the actual visible block rotation.
+        float blockY = blockInfo.transform.eulerAngles.y;
+
         bool isCeilingGrabbing = Player_CeilingGrab.Instance.isCeilingGrabbing;
         CameraRotationState cameraState = cameraController.cameraRotationState;
 
@@ -599,8 +613,6 @@ public class NumberDisplay : MonoBehaviour
 
             numberChildTransform.localRotation = numberRotation;
         }
-
-        // If the block is a Cube or Slab
         else
         {
             float yRotationOffset;
@@ -727,6 +739,7 @@ public class NumberDisplay : MonoBehaviour
     bool IsAscendTarget()
     {
         return Movement.Instance != null &&
+               cachedParent != null &&
                Movement.Instance.moveToBlock_Ascend != null &&
                Movement.Instance.moveToBlock_Ascend.canMoveTo &&
                Movement.Instance.moveToBlock_Ascend.targetBlock == cachedParent.gameObject;
@@ -735,7 +748,58 @@ public class NumberDisplay : MonoBehaviour
     bool IsCeilingGrabTarget()
     {
         return Player_CeilingGrab.Instance != null &&
+               cachedParent != null &&
                Player_CeilingGrab.Instance.ceilingGrabBlock == cachedParent.gameObject;
+    }
+
+    void CacheReferencesIfNeeded()
+    {
+        if (cachedTransform == null)
+        {
+            cachedTransform = transform;
+        }
+
+        if (cachedParent != cachedTransform.parent)
+        {
+            cachedParent = cachedTransform.parent;
+            parentEffectBlockInfo = null;
+        }
+
+        if (numberChildTransform == null && cachedTransform.childCount > 0)
+        {
+            numberChildTransform = cachedTransform.GetChild(0);
+            numberChildObject = numberChildTransform.gameObject;
+        }
+
+        if (blockInfo == null)
+        {
+            blockInfo = GetComponentInParent<BlockInfo>();
+        }
+
+        if (player_BlockDetector == null)
+        {
+            player_BlockDetector = FindObjectOfType<Player_BlockDetector>();
+        }
+
+        if (cameraController == null)
+        {
+            cameraController = FindObjectOfType<CameraController>();
+        }
+
+        if (cameraAnchorTransform == null && cameraController != null && cameraController.cameraAnchor != null)
+        {
+            cameraAnchorTransform = cameraController.cameraAnchor.transform;
+        }
+
+        if (parentEffectBlockInfo == null && cachedParent != null)
+        {
+            parentEffectBlockInfo = cachedParent.GetComponent<EffectBlockInfo>();
+        }
+
+        if (parentQuicksandBlock == null)
+        {
+            parentQuicksandBlock = GetComponentInParent<Block_Quicksand>();
+        }
     }
 
     #endregion

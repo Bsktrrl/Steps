@@ -120,6 +120,17 @@ public class Block_SandFalling : MonoBehaviour
 
     void CheckIfCanFall()
     {
+        //Check if the Block has another block over itself
+        if (Physics.Raycast(gameObject.transform.position, Vector3.up, out hit, 1, MapManager.Instance.pickup_LayerMask))
+        {
+            if (hit.transform.gameObject.GetComponent<BlockInfo>())
+            {
+                canFall = false;
+                sandBlockAsset.GetComponent<FallingSandScript>().enabled = false;
+                return;
+            }
+        }
+
         //Check if the Block has another block under itself
         if (GetComponent<BlockInfo>().blockType == BlockType.Stair)
         {
@@ -154,7 +165,7 @@ public class Block_SandFalling : MonoBehaviour
                 }
             }
         }
-        
+
         canFall = true;
         sandBlockAsset.GetComponent<FallingSandScript>().enabled = true;
     }

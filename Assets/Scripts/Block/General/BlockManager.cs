@@ -62,5 +62,7 @@ public enum BlockElement
     DarkStone,
 
     Root,
-    Pipe
+    Pipe,
+
+    Quartz
 }

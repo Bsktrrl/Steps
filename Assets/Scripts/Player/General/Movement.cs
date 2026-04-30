@@ -229,9 +229,14 @@ public class Movement : Singleton<Movement>
         if (Tutorial.Instance.tutorial_isRunning && Inputs.tutorialMovementBlocker)
             return;
 
-        //If standing in water and cannot swim, force Dorwning and respawn player
-        if (!isDrowning && blockStandingOn && blockStandingOn.GetComponent<BlockInfo>() && blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !PlayerHasSwimAbility())
+        //If standing in water and cannot swim, or standing in lava, force Dorwning and respawn player
+        if (ShouldStartDrowning(out BlockInfo hazardInfo, out GameObject hazardBlock))
         {
+            if (hazardInfo.blockElement == BlockElement.Lava)
+            {
+                Player_Burning.Instance.IgniteImmediately();
+            }
+
             StartCoroutine(StartDrowning());
         }
 
@@ -996,6 +1001,39 @@ public class Movement : Singleton<Movement>
         pendingFreeLandingFromSlope = false;
     }
 
+    private bool ShouldStartDrowning(out BlockInfo hazardInfo, out GameObject hazardBlock)
+    {
+        hazardInfo = null;
+        hazardBlock = null;
+
+        if (isDrowning)
+            return false;
+
+        // Do not drown while moving/jumping/falling.
+        // Wait until the player has actually landed.
+        if (isMoving || movementStates != MovementStates.Still)
+            return false;
+
+        if (!TryGetStandingInfo(out BlockInfo standingInfo))
+            return false;
+
+        if (standingInfo.blockElement == BlockElement.Water && !PlayerHasSwimAbility())
+        {
+            hazardInfo = standingInfo;
+            hazardBlock = blockStandingOn;
+            return true;
+        }
+
+        if (standingInfo.blockElement == BlockElement.Lava)
+        {
+            hazardInfo = standingInfo;
+            hazardBlock = blockStandingOn;
+            return true;
+        }
+
+        return false;
+    }
+
     #endregion
 
     #region Movement Functions
@@ -1729,6 +1767,18 @@ public class Movement : Singleton<Movement>
         UpdateJumpMovements(moveToBlock_Jump_Back, UpdatedDir(Vector3.back));
         UpdateJumpMovements(moveToBlock_Jump_Left, UpdatedDir(Vector3.left));
         UpdateJumpMovements(moveToBlock_Jump_Right, UpdatedDir(Vector3.right));
+
+        DisableJumpIfWalkIsPossible(moveToBlock_Forward, moveToBlock_Jump_Forward);
+        DisableJumpIfWalkIsPossible(moveToBlock_Back, moveToBlock_Jump_Back);
+        DisableJumpIfWalkIsPossible(moveToBlock_Left, moveToBlock_Jump_Left);
+        DisableJumpIfWalkIsPossible(moveToBlock_Right, moveToBlock_Jump_Right);
+    }
+    private void DisableJumpIfWalkIsPossible(MoveOptions walkOption, MoveOptions jumpOption)
+    {
+        if (HasValidTarget(walkOption))
+        {
+            ClearMoveTarget(jumpOption);
+        }
     }
 
     void UpdateJumpMovements(MoveOptions moveOption, Vector3 dir)
@@ -1930,7 +1980,8 @@ public class Movement : Singleton<Movement>
             PerformMovementRaycast(playerPos + dir + dir + (-rayDir * correction), rayDir, 1, out o4) == RaycastHitObjects.BlockInfo &&
             TryGetBlockInfo(o2, out BlockInfo middleInfo))
         {
-            if (middleInfo.blockElement == BlockElement.Water)
+            if (middleInfo.blockElement == BlockElement.Water
+                || middleInfo.blockElement == BlockElement.Lava)
             {
                 //if (PlayerHasSwimAbility())
                 //    return false;

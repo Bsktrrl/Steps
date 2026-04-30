@@ -1,54 +1,137 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player_Burning : Singleton<Player_Burning>
 {
+    public static Action Action_PlayerStartedBurning;
+
+    [Header("Burning State")]
     public bool isBurning;
     public int flameableStepCounter;
 
-    [SerializeField] GameObject flameEffectObject;
+    [Header("Burn Settings")]
+    [SerializeField] private float burnDistance = 0.7f;
+    [SerializeField] private Vector3 checkOffset = Vector3.zero;
+    [SerializeField] private LayerMask lavaCheckMask = ~0;
 
-    bool firstTimeCheck;
+    [Header("Effects")]
+    [SerializeField] private List<GameObject> flameEffectObjectList;
 
-    RaycastHit hit;
+    [Header("Effect Animation")]
+    [SerializeField] private float flameIgniteScaleUpDuration = 0.3f;
+    [SerializeField] private float flameIgniteSettleDuration = 0.2f;
+    [SerializeField] private float flameExtinguishDuration = 0.3f;
+    [SerializeField] private float flameIgniteOvershootScale = 1.25f;
+    [SerializeField] private float flameActiveScale = 1f;
 
+    private Coroutine burnDelayCoroutine;
+    private Coroutine checkForLavaDelayCoroutine;
+    private Coroutine flameEffectAnimationCoroutine;
 
-    //--------------------
+    private bool flameableCounterWasResetThisStep;
 
+    private Dictionary<GameObject, Vector3> flameEffectOriginalScales = new Dictionary<GameObject, Vector3>();
+
+    private void Awake()
+    {
+        CacheOriginalFlameEffectScales();
+    }
 
     private void OnEnable()
     {
-        //Movement.Action_isSwitchingBlocks += BecomeFlameable;
-        Movement.Action_StepTaken += BecomeFlameable;
+        Movement.Action_StepTaken += CheckForNearbyLava;
         Movement.Action_StepTaken += CheckFlameableCounter;
         Movement.Action_RespawnPlayer += RemoveFlameable;
+
+        Movement.Action_RespawnPlayer += CheckForNearbyLavaDelayed;
+        DataManager.Action_dataHasLoaded += CheckForNearbyLavaDelayed;
     }
+
     private void OnDisable()
     {
-        //Movement.Action_isSwitchingBlocks -= BecomeFlameable;
-        Movement.Action_StepTaken -= BecomeFlameable;
+        Movement.Action_StepTaken -= CheckForNearbyLava;
         Movement.Action_StepTaken -= CheckFlameableCounter;
-        Movement.Action_RespawnPlayerEarly -= RemoveFlameable;
+        Movement.Action_RespawnPlayer -= RemoveFlameable;
+
+        Movement.Action_RespawnPlayer -= CheckForNearbyLavaDelayed;
+        DataManager.Action_dataHasLoaded -= CheckForNearbyLavaDelayed;
     }
 
-
-    //--------------------
-
-
-    void BecomeFlameable()
+    private void CheckForNearbyLava()
     {
-        if (RaycastForLavaBlock(Vector3.forward) || RaycastForLavaBlock(Vector3.back) || RaycastForLavaBlock(Vector3.left) || RaycastForLavaBlock(Vector3.right))
+        // Water has priority over nearby lava.
+        // If the player is standing on water, stop burning and do not ignite,
+        // even if lava is inside burnDistance.
+        if (IsStandingOnWater())
+        {
+            RemoveFlameable();
+            return;
+        }
+
+        if (IsCloseEnoughToLava())
         {
             AddFlameable();
         }
     }
-    bool RaycastForLavaBlock(Vector3 dir)
+
+    private void CheckForNearbyLavaDelayed()
     {
-        if (Physics.Raycast(transform.position + dir, Vector3.down, out hit, 1.4f))
+        if (checkForLavaDelayCoroutine != null)
         {
-            if ((hit.collider.transform.gameObject && hit.collider.transform.gameObject.GetComponent<BlockInfo>() && hit.collider.transform.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Lava)
-                || (hit.collider.transform.gameObject && hit.collider.transform.parent && hit.collider.transform.parent.gameObject.GetComponent<BlockInfo>() && hit.collider.transform.parent.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Lava))
+            StopCoroutine(checkForLavaDelayCoroutine);
+        }
+
+        checkForLavaDelayCoroutine = StartCoroutine(DelayCheckForNearbyLava());
+    }
+
+    private IEnumerator DelayCheckForNearbyLava()
+    {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+
+        CheckForNearbyLava();
+
+        checkForLavaDelayCoroutine = null;
+    }
+
+    private bool IsCloseEnoughToLava()
+    {
+        Vector3 checkPosition = transform.position + checkOffset;
+
+        Collider[] nearbyColliders = Physics.OverlapSphere(
+            checkPosition,
+            burnDistance,
+            lavaCheckMask,
+            QueryTriggerInteraction.Collide
+        );
+
+        foreach (Collider collider in nearbyColliders)
+        {
+            BlockInfo blockInfo = collider.GetComponent<BlockInfo>();
+
+            if (blockInfo == null)
+            {
+                blockInfo = collider.GetComponentInParent<BlockInfo>();
+            }
+
+            if (blockInfo == null)
+            {
+                continue;
+            }
+
+            if (blockInfo.blockElement != BlockElement.Lava)
+            {
+                continue;
+            }
+
+            float distanceToLava = Vector3.Distance(
+                checkPosition,
+                collider.ClosestPoint(checkPosition)
+            );
+
+            if (distanceToLava <= burnDistance)
             {
                 return true;
             }
@@ -57,51 +140,395 @@ public class Player_Burning : Singleton<Player_Burning>
         return false;
     }
 
-
-    void CheckFlameableCounter()
+    private void CheckFlameableCounter()
     {
-        if (!isBurning) { return; }
+        if (!isBurning)
+        {
+            return;
+        }
+
+        // Remove burning when standing on water
+        if (IsStandingOnWater())
+        {
+            RemoveFlameable();
+            return;
+        }
+
+        if (flameableCounterWasResetThisStep)
+        {
+            flameableCounterWasResetThisStep = false;
+            return;
+        }
 
         flameableStepCounter += 1;
 
-        //Remove Flameable after 5 steps
+        // Remove burning after 5 steps
         if (flameableStepCounter > 5)
         {
             RemoveFlameable();
-        }
-
-        //Remove Flameable in water
-        if (Movement.Instance.blockStandingOn)
-        {
-            if (Movement.Instance.blockStandingOn.GetComponent<Block_Water>())
-            {
-                RemoveFlameable();
-            }
+            return;
         }
     }
-    void AddFlameable()
-    {
-        StartCoroutine(DelayFlammable());
-    }
-    IEnumerator DelayFlammable()
-    {
-        yield return new WaitForEndOfFrame();
 
-        isBurning = true;
-        flameableStepCounter = 0;
-
-        flameEffectObject.SetActive(true);
-    }
-    void RemoveFlameable()
+    private void AddFlameable()
     {
         if (isBurning)
         {
-            isBurning = false;
             flameableStepCounter = 0;
+            flameableCounterWasResetThisStep = true;
 
-            flameEffectObject.SetActive(false);
+            if (!AnyFlameEffectIsActive())
+            {
+                StartFlameEffectIgniteAnimation();
+            }
 
-            firstTimeCheck = false;
+            return;
         }
+
+        if (burnDelayCoroutine != null)
+        {
+            StopCoroutine(burnDelayCoroutine);
+        }
+
+        burnDelayCoroutine = StartCoroutine(DelayFlammable());
+    }
+
+    public void IgniteImmediately()
+    {
+        if (burnDelayCoroutine != null)
+        {
+            StopCoroutine(burnDelayCoroutine);
+            burnDelayCoroutine = null;
+        }
+
+        isBurning = true;
+        flameableStepCounter = 0;
+        flameableCounterWasResetThisStep = true;
+
+        // Make sure the flame is visible immediately,
+        // even if the game gets paused right after this.
+        CacheOriginalFlameEffectScales();
+        SetFlameEffectsScale(flameActiveScale);
+        SetFlameEffectsActive(true);
+        PlayFlameParticles();
+
+        Action_PlayerStartedBurning?.Invoke();
+    }
+
+    private IEnumerator DelayFlammable()
+    {
+        yield return new WaitForEndOfFrame();
+
+        if (IsStandingOnWater())
+        {
+            burnDelayCoroutine = null;
+            RemoveFlameable();
+            yield break;
+        }
+
+        isBurning = true;
+        flameableStepCounter = 0;
+        flameableCounterWasResetThisStep = false;
+
+        StartFlameEffectIgniteAnimation();
+
+        Action_PlayerStartedBurning?.Invoke();
+
+        burnDelayCoroutine = null;
+    }
+
+    private void RemoveFlameable()
+    {
+        if (burnDelayCoroutine != null)
+        {
+            StopCoroutine(burnDelayCoroutine);
+            burnDelayCoroutine = null;
+        }
+
+        if (!isBurning)
+        {
+            return;
+        }
+
+        isBurning = false;
+        flameableStepCounter = 0;
+        flameableCounterWasResetThisStep = false;
+
+        StartFlameEffectExtinguishAnimation();
+    }
+
+    private void StartFlameEffectIgniteAnimation()
+    {
+        if (flameEffectAnimationCoroutine != null)
+        {
+            StopCoroutine(flameEffectAnimationCoroutine);
+        }
+
+        flameEffectAnimationCoroutine = StartCoroutine(AnimateFlameEffectIn());
+    }
+
+    private void StartFlameEffectExtinguishAnimation()
+    {
+        if (flameEffectAnimationCoroutine != null)
+        {
+            StopCoroutine(flameEffectAnimationCoroutine);
+        }
+
+        flameEffectAnimationCoroutine = StartCoroutine(AnimateFlameEffectOut());
+    }
+
+    private IEnumerator AnimateFlameEffectIn()
+    {
+        CacheOriginalFlameEffectScales();
+
+        SetFlameEffectsScale(0f);
+        SetFlameEffectsActive(true);
+        PlayFlameParticles();
+
+        yield return ScaleFlameEffects(0f, flameIgniteOvershootScale, flameIgniteScaleUpDuration);
+        yield return ScaleFlameEffects(flameIgniteOvershootScale, flameActiveScale, flameIgniteSettleDuration);
+
+        SetFlameEffectsScale(flameActiveScale);
+
+        flameEffectAnimationCoroutine = null;
+    }
+
+    private IEnumerator AnimateFlameEffectOut()
+    {
+        CacheOriginalFlameEffectScales();
+
+        StopFlameParticles();
+
+        Dictionary<GameObject, Vector3> startScales = new Dictionary<GameObject, Vector3>();
+
+        if (flameEffectObjectList != null)
+        {
+            for (int i = 0; i < flameEffectObjectList.Count; i++)
+            {
+                GameObject flameObject = flameEffectObjectList[i];
+
+                if (flameObject == null) { continue; }
+
+                startScales[flameObject] = flameObject.transform.localScale;
+            }
+        }
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < flameExtinguishDuration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            float t = Mathf.Clamp01(elapsedTime / flameExtinguishDuration);
+            float easedT = Mathf.SmoothStep(0f, 1f, t);
+
+            if (flameEffectObjectList != null)
+            {
+                for (int i = 0; i < flameEffectObjectList.Count; i++)
+                {
+                    GameObject flameObject = flameEffectObjectList[i];
+
+                    if (flameObject == null) { continue; }
+
+                    if (!startScales.ContainsKey(flameObject)) { continue; }
+
+                    flameObject.transform.localScale = Vector3.Lerp(
+                        startScales[flameObject],
+                        Vector3.zero,
+                        easedT
+                    );
+                }
+            }
+
+            yield return null;
+        }
+
+        SetFlameEffectsScale(0f);
+        SetFlameEffectsActive(false);
+
+        flameEffectAnimationCoroutine = null;
+    }
+
+    private IEnumerator ScaleFlameEffects(float fromScale, float toScale, float duration)
+    {
+        if (duration <= 0f)
+        {
+            SetFlameEffectsScale(toScale);
+            yield break;
+        }
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            float t = Mathf.Clamp01(elapsedTime / duration);
+            float easedT = Mathf.SmoothStep(0f, 1f, t);
+
+            float currentScale = Mathf.Lerp(fromScale, toScale, easedT);
+
+            SetFlameEffectsScale(currentScale);
+
+            yield return null;
+        }
+
+        SetFlameEffectsScale(toScale);
+    }
+
+    private void CacheOriginalFlameEffectScales()
+    {
+        if (flameEffectObjectList == null) { return; }
+
+        for (int i = 0; i < flameEffectObjectList.Count; i++)
+        {
+            GameObject flameObject = flameEffectObjectList[i];
+
+            if (flameObject == null) { continue; }
+
+            if (flameEffectOriginalScales.ContainsKey(flameObject)) { continue; }
+
+            if (flameObject.transform.localScale.sqrMagnitude <= 0.0001f)
+            {
+                flameEffectOriginalScales.Add(flameObject, Vector3.one);
+            }
+            else
+            {
+                flameEffectOriginalScales.Add(flameObject, flameObject.transform.localScale);
+            }
+        }
+    }
+
+    private void SetFlameEffectsScale(float scaleMultiplier)
+    {
+        if (flameEffectObjectList == null) { return; }
+
+        for (int i = 0; i < flameEffectObjectList.Count; i++)
+        {
+            GameObject flameObject = flameEffectObjectList[i];
+
+            if (flameObject == null) { continue; }
+
+            Vector3 originalScale = GetOriginalFlameEffectScale(flameObject);
+
+            flameObject.transform.localScale = originalScale * scaleMultiplier;
+        }
+    }
+
+    private Vector3 GetOriginalFlameEffectScale(GameObject flameObject)
+    {
+        if (flameObject == null)
+        {
+            return Vector3.one;
+        }
+
+        if (!flameEffectOriginalScales.ContainsKey(flameObject))
+        {
+            if (flameObject.transform.localScale.sqrMagnitude <= 0.0001f)
+            {
+                flameEffectOriginalScales.Add(flameObject, Vector3.one);
+            }
+            else
+            {
+                flameEffectOriginalScales.Add(flameObject, flameObject.transform.localScale);
+            }
+        }
+
+        return flameEffectOriginalScales[flameObject];
+    }
+
+    private void SetFlameEffectsActive(bool active)
+    {
+        if (flameEffectObjectList == null) { return; }
+
+        for (int i = 0; i < flameEffectObjectList.Count; i++)
+        {
+            if (flameEffectObjectList[i] == null) { continue; }
+
+            flameEffectObjectList[i].SetActive(active);
+        }
+    }
+
+    private bool AnyFlameEffectIsActive()
+    {
+        if (flameEffectObjectList == null) { return false; }
+
+        for (int i = 0; i < flameEffectObjectList.Count; i++)
+        {
+            if (flameEffectObjectList[i] == null) { continue; }
+
+            if (flameEffectObjectList[i].activeSelf)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void PlayFlameParticles()
+    {
+        if (flameEffectObjectList == null) { return; }
+
+        for (int i = 0; i < flameEffectObjectList.Count; i++)
+        {
+            GameObject flameObject = flameEffectObjectList[i];
+
+            if (flameObject == null) { continue; }
+
+            ParticleSystem[] particleSystems = flameObject.GetComponentsInChildren<ParticleSystem>(true);
+
+            for (int j = 0; j < particleSystems.Length; j++)
+            {
+                if (particleSystems[j] == null) { continue; }
+
+                particleSystems[j].Play(true);
+            }
+        }
+    }
+
+    private void StopFlameParticles()
+    {
+        if (flameEffectObjectList == null) { return; }
+
+        for (int i = 0; i < flameEffectObjectList.Count; i++)
+        {
+            GameObject flameObject = flameEffectObjectList[i];
+
+            if (flameObject == null) { continue; }
+
+            ParticleSystem[] particleSystems = flameObject.GetComponentsInChildren<ParticleSystem>(true);
+
+            for (int j = 0; j < particleSystems.Length; j++)
+            {
+                if (particleSystems[j] == null) { continue; }
+
+                particleSystems[j].Stop(true, ParticleSystemStopBehavior.StopEmitting);
+            }
+        }
+    }
+
+    private bool IsStandingOnWater()
+    {
+        if (Movement.Instance == null)
+            return false;
+
+        GameObject standingBlock = Movement.Instance.blockStandingOn;
+
+        if (standingBlock == null)
+            return false;
+
+        BlockInfo blockInfo = standingBlock.GetComponent<BlockInfo>();
+
+        if (blockInfo == null)
+            return false;
+
+        return blockInfo.blockElement == BlockElement.Water;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position + checkOffset, burnDistance);
     }
 }
