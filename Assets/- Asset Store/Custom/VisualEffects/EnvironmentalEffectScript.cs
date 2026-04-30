@@ -13,10 +13,11 @@ public class EnvironmentalEffectScript : MonoBehaviour
 
     [SerializeField] float waitTimeMin;
     [SerializeField] float waitTimeMax;
+    [SerializeField] float volume;
     [SerializeField] float length;
 
-    float pitchMin = 0.9f;
-    float pitchMax = 1.1f;
+    float pitchMin = 0.8f;
+    float pitchMax = 1.2f;
     void Start()
     {
         PS = GetComponent<ParticleSystem>();
@@ -46,7 +47,7 @@ public class EnvironmentalEffectScript : MonoBehaviour
             source.clip = audioClips[Random.Range(0, audioClips.Length)];
             source.pitch = Random.Range(pitchMin, pitchMax);
             source.time = Random.Range(0f, 2f);
-            source.volume = 1f;
+            source.volume = volume;
 
             PS.Play();
             source.Play();

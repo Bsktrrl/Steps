@@ -7,8 +7,8 @@ public class RootBlockIdleScript : MonoBehaviour
     float waitTimeMin = 3f;
     float waitTimeMax = 10f;
 
-    float pitchMin = 0.9f;
-    float pitchMax = 1.1f;
+    float pitchMin = 0.8f;
+    float pitchMax = 1.2f;
 
     Animator anim;
     AudioSource source;

@@ -4920,8 +4920,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioClips:
   - {fileID: 8300000, guid: af5552ccc4c4c9d4aa13abfd373d37a9, type: 3}
-  waitTimeMin: 5
-  waitTimeMax: 10
+  waitTimeMin: 10
+  waitTimeMax: 15
+  volume: 0.5
   length: 4
 --- !u!82 &1554303436388931125
 AudioSource:
@@ -4944,9 +4945,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 32
+  MaxDistance: 12
   Pan2D: 0
-  rolloffMode: 2
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0

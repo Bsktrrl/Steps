@@ -7,8 +7,8 @@ public class RootLineScript : MonoBehaviour
     AudioSource source;
 
     [SerializeField] AudioClip[] clips;
-    float pitchMin = 0.9f;
-    float pitchMax = 1.1f;
+    float pitchMin = 0.8f;
+    float pitchMax = 1.2f;
 
     void OnEnable()
     {

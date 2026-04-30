@@ -4922,6 +4922,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9b4703a6f6b77af4598c152e045377f6, type: 3}
   waitTimeMin: 10
   waitTimeMax: 15
+  volume: 1
   length: 4.5
 --- !u!82 &5869593841410786755
 AudioSource:
@@ -4944,9 +4945,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 32
+  MaxDistance: 12
   Pan2D: 0
-  rolloffMode: 2
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
