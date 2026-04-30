@@ -230,8 +230,13 @@ public class Movement : Singleton<Movement>
             return;
 
         //If standing in water and cannot swim, or standing in lava, force Dorwning and respawn player
-        if (ShouldStartDrowning())
+        if (ShouldStartDrowning(out BlockInfo hazardInfo, out GameObject hazardBlock))
         {
+            if (hazardInfo.blockElement == BlockElement.Lava)
+            {
+                Player_Burning.Instance.IgniteImmediately();
+            }
+
             StartCoroutine(StartDrowning());
         }
 
@@ -996,13 +1001,16 @@ public class Movement : Singleton<Movement>
         pendingFreeLandingFromSlope = false;
     }
 
-    private bool ShouldStartDrowning()
+    private bool ShouldStartDrowning(out BlockInfo hazardInfo, out GameObject hazardBlock)
     {
+        hazardInfo = null;
+        hazardBlock = null;
+
         if (isDrowning)
             return false;
 
-        // Do not drown while moving, jumping, dashing, falling, grappling, etc.
-        // Wait until the player has actually landed / settled on a block.
+        // Do not drown while moving/jumping/falling.
+        // Wait until the player has actually landed.
         if (isMoving || movementStates != MovementStates.Still)
             return false;
 
@@ -1010,10 +1018,18 @@ public class Movement : Singleton<Movement>
             return false;
 
         if (standingInfo.blockElement == BlockElement.Water && !PlayerHasSwimAbility())
+        {
+            hazardInfo = standingInfo;
+            hazardBlock = blockStandingOn;
             return true;
+        }
 
         if (standingInfo.blockElement == BlockElement.Lava)
+        {
+            hazardInfo = standingInfo;
+            hazardBlock = blockStandingOn;
             return true;
+        }
 
         return false;
     }

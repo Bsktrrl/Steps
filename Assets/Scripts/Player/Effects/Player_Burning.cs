@@ -61,6 +61,15 @@ public class Player_Burning : Singleton<Player_Burning>
 
     private void CheckForNearbyLava()
     {
+        // Water has priority over nearby lava.
+        // If the player is standing on water, stop burning and do not ignite,
+        // even if lava is inside burnDistance.
+        if (IsStandingOnWater())
+        {
+            RemoveFlameable();
+            return;
+        }
+
         if (IsCloseEnoughToLava())
         {
             AddFlameable();
@@ -139,13 +148,10 @@ public class Player_Burning : Singleton<Player_Burning>
         }
 
         // Remove burning when standing on water
-        if (Movement.Instance.blockStandingOn)
+        if (IsStandingOnWater())
         {
-            if (Movement.Instance.blockStandingOn.GetComponent<Block_Water>())
-            {
-                RemoveFlameable();
-                return;
-            }
+            RemoveFlameable();
+            return;
         }
 
         if (flameableCounterWasResetThisStep)
@@ -187,9 +193,38 @@ public class Player_Burning : Singleton<Player_Burning>
         burnDelayCoroutine = StartCoroutine(DelayFlammable());
     }
 
+    public void IgniteImmediately()
+    {
+        if (burnDelayCoroutine != null)
+        {
+            StopCoroutine(burnDelayCoroutine);
+            burnDelayCoroutine = null;
+        }
+
+        isBurning = true;
+        flameableStepCounter = 0;
+        flameableCounterWasResetThisStep = true;
+
+        // Make sure the flame is visible immediately,
+        // even if the game gets paused right after this.
+        CacheOriginalFlameEffectScales();
+        SetFlameEffectsScale(flameActiveScale);
+        SetFlameEffectsActive(true);
+        PlayFlameParticles();
+
+        Action_PlayerStartedBurning?.Invoke();
+    }
+
     private IEnumerator DelayFlammable()
     {
         yield return new WaitForEndOfFrame();
+
+        if (IsStandingOnWater())
+        {
+            burnDelayCoroutine = null;
+            RemoveFlameable();
+            yield break;
+        }
 
         isBurning = true;
         flameableStepCounter = 0;
@@ -471,6 +506,24 @@ public class Player_Burning : Singleton<Player_Burning>
                 particleSystems[j].Stop(true, ParticleSystemStopBehavior.StopEmitting);
             }
         }
+    }
+
+    private bool IsStandingOnWater()
+    {
+        if (Movement.Instance == null)
+            return false;
+
+        GameObject standingBlock = Movement.Instance.blockStandingOn;
+
+        if (standingBlock == null)
+            return false;
+
+        BlockInfo blockInfo = standingBlock.GetComponent<BlockInfo>();
+
+        if (blockInfo == null)
+            return false;
+
+        return blockInfo.blockElement == BlockElement.Water;
     }
 
     private void OnDrawGizmosSelected()
