@@ -19,10 +19,25 @@ public class Player_Burning : Singleton<Player_Burning>
     [Header("Effects")]
     [SerializeField] private List<GameObject> flameEffectObjectList;
 
+    [Header("Effect Animation")]
+    [SerializeField] private float flameIgniteScaleUpDuration = 0.3f;
+    [SerializeField] private float flameIgniteSettleDuration = 0.2f;
+    [SerializeField] private float flameExtinguishDuration = 0.3f;
+    [SerializeField] private float flameIgniteOvershootScale = 1.25f;
+    [SerializeField] private float flameActiveScale = 1f;
+
     private Coroutine burnDelayCoroutine;
     private Coroutine checkForLavaDelayCoroutine;
+    private Coroutine flameEffectAnimationCoroutine;
 
     private bool flameableCounterWasResetThisStep;
+
+    private Dictionary<GameObject, Vector3> flameEffectOriginalScales = new Dictionary<GameObject, Vector3>();
+
+    private void Awake()
+    {
+        CacheOriginalFlameEffectScales();
+    }
 
     private void OnEnable()
     {
@@ -156,12 +171,9 @@ public class Player_Burning : Singleton<Player_Burning>
             flameableStepCounter = 0;
             flameableCounterWasResetThisStep = true;
 
-            if (flameEffectObjectList != null)
+            if (!AnyFlameEffectIsActive())
             {
-                for (int i = 0; i < flameEffectObjectList.Count; i++)
-                {
-                    flameEffectObjectList[i].SetActive(true);
-                }
+                StartFlameEffectIgniteAnimation();
             }
 
             return;
@@ -183,13 +195,7 @@ public class Player_Burning : Singleton<Player_Burning>
         flameableStepCounter = 0;
         flameableCounterWasResetThisStep = false;
 
-        if (flameEffectObjectList != null)
-        {
-            for (int i = 0; i < flameEffectObjectList.Count; i++)
-            {
-                flameEffectObjectList[i].SetActive(true);
-            }
-        }
+        StartFlameEffectIgniteAnimation();
 
         Action_PlayerStartedBurning?.Invoke();
 
@@ -213,11 +219,256 @@ public class Player_Burning : Singleton<Player_Burning>
         flameableStepCounter = 0;
         flameableCounterWasResetThisStep = false;
 
+        StartFlameEffectExtinguishAnimation();
+    }
+
+    private void StartFlameEffectIgniteAnimation()
+    {
+        if (flameEffectAnimationCoroutine != null)
+        {
+            StopCoroutine(flameEffectAnimationCoroutine);
+        }
+
+        flameEffectAnimationCoroutine = StartCoroutine(AnimateFlameEffectIn());
+    }
+
+    private void StartFlameEffectExtinguishAnimation()
+    {
+        if (flameEffectAnimationCoroutine != null)
+        {
+            StopCoroutine(flameEffectAnimationCoroutine);
+        }
+
+        flameEffectAnimationCoroutine = StartCoroutine(AnimateFlameEffectOut());
+    }
+
+    private IEnumerator AnimateFlameEffectIn()
+    {
+        CacheOriginalFlameEffectScales();
+
+        SetFlameEffectsScale(0f);
+        SetFlameEffectsActive(true);
+        PlayFlameParticles();
+
+        yield return ScaleFlameEffects(0f, flameIgniteOvershootScale, flameIgniteScaleUpDuration);
+        yield return ScaleFlameEffects(flameIgniteOvershootScale, flameActiveScale, flameIgniteSettleDuration);
+
+        SetFlameEffectsScale(flameActiveScale);
+
+        flameEffectAnimationCoroutine = null;
+    }
+
+    private IEnumerator AnimateFlameEffectOut()
+    {
+        CacheOriginalFlameEffectScales();
+
+        StopFlameParticles();
+
+        Dictionary<GameObject, Vector3> startScales = new Dictionary<GameObject, Vector3>();
+
         if (flameEffectObjectList != null)
         {
             for (int i = 0; i < flameEffectObjectList.Count; i++)
             {
-                flameEffectObjectList[i].SetActive(false);
+                GameObject flameObject = flameEffectObjectList[i];
+
+                if (flameObject == null) { continue; }
+
+                startScales[flameObject] = flameObject.transform.localScale;
+            }
+        }
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < flameExtinguishDuration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            float t = Mathf.Clamp01(elapsedTime / flameExtinguishDuration);
+            float easedT = Mathf.SmoothStep(0f, 1f, t);
+
+            if (flameEffectObjectList != null)
+            {
+                for (int i = 0; i < flameEffectObjectList.Count; i++)
+                {
+                    GameObject flameObject = flameEffectObjectList[i];
+
+                    if (flameObject == null) { continue; }
+
+                    if (!startScales.ContainsKey(flameObject)) { continue; }
+
+                    flameObject.transform.localScale = Vector3.Lerp(
+                        startScales[flameObject],
+                        Vector3.zero,
+                        easedT
+                    );
+                }
+            }
+
+            yield return null;
+        }
+
+        SetFlameEffectsScale(0f);
+        SetFlameEffectsActive(false);
+
+        flameEffectAnimationCoroutine = null;
+    }
+
+    private IEnumerator ScaleFlameEffects(float fromScale, float toScale, float duration)
+    {
+        if (duration <= 0f)
+        {
+            SetFlameEffectsScale(toScale);
+            yield break;
+        }
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            float t = Mathf.Clamp01(elapsedTime / duration);
+            float easedT = Mathf.SmoothStep(0f, 1f, t);
+
+            float currentScale = Mathf.Lerp(fromScale, toScale, easedT);
+
+            SetFlameEffectsScale(currentScale);
+
+            yield return null;
+        }
+
+        SetFlameEffectsScale(toScale);
+    }
+
+    private void CacheOriginalFlameEffectScales()
+    {
+        if (flameEffectObjectList == null) { return; }
+
+        for (int i = 0; i < flameEffectObjectList.Count; i++)
+        {
+            GameObject flameObject = flameEffectObjectList[i];
+
+            if (flameObject == null) { continue; }
+
+            if (flameEffectOriginalScales.ContainsKey(flameObject)) { continue; }
+
+            if (flameObject.transform.localScale.sqrMagnitude <= 0.0001f)
+            {
+                flameEffectOriginalScales.Add(flameObject, Vector3.one);
+            }
+            else
+            {
+                flameEffectOriginalScales.Add(flameObject, flameObject.transform.localScale);
+            }
+        }
+    }
+
+    private void SetFlameEffectsScale(float scaleMultiplier)
+    {
+        if (flameEffectObjectList == null) { return; }
+
+        for (int i = 0; i < flameEffectObjectList.Count; i++)
+        {
+            GameObject flameObject = flameEffectObjectList[i];
+
+            if (flameObject == null) { continue; }
+
+            Vector3 originalScale = GetOriginalFlameEffectScale(flameObject);
+
+            flameObject.transform.localScale = originalScale * scaleMultiplier;
+        }
+    }
+
+    private Vector3 GetOriginalFlameEffectScale(GameObject flameObject)
+    {
+        if (flameObject == null)
+        {
+            return Vector3.one;
+        }
+
+        if (!flameEffectOriginalScales.ContainsKey(flameObject))
+        {
+            if (flameObject.transform.localScale.sqrMagnitude <= 0.0001f)
+            {
+                flameEffectOriginalScales.Add(flameObject, Vector3.one);
+            }
+            else
+            {
+                flameEffectOriginalScales.Add(flameObject, flameObject.transform.localScale);
+            }
+        }
+
+        return flameEffectOriginalScales[flameObject];
+    }
+
+    private void SetFlameEffectsActive(bool active)
+    {
+        if (flameEffectObjectList == null) { return; }
+
+        for (int i = 0; i < flameEffectObjectList.Count; i++)
+        {
+            if (flameEffectObjectList[i] == null) { continue; }
+
+            flameEffectObjectList[i].SetActive(active);
+        }
+    }
+
+    private bool AnyFlameEffectIsActive()
+    {
+        if (flameEffectObjectList == null) { return false; }
+
+        for (int i = 0; i < flameEffectObjectList.Count; i++)
+        {
+            if (flameEffectObjectList[i] == null) { continue; }
+
+            if (flameEffectObjectList[i].activeSelf)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void PlayFlameParticles()
+    {
+        if (flameEffectObjectList == null) { return; }
+
+        for (int i = 0; i < flameEffectObjectList.Count; i++)
+        {
+            GameObject flameObject = flameEffectObjectList[i];
+
+            if (flameObject == null) { continue; }
+
+            ParticleSystem[] particleSystems = flameObject.GetComponentsInChildren<ParticleSystem>(true);
+
+            for (int j = 0; j < particleSystems.Length; j++)
+            {
+                if (particleSystems[j] == null) { continue; }
+
+                particleSystems[j].Play(true);
+            }
+        }
+    }
+
+    private void StopFlameParticles()
+    {
+        if (flameEffectObjectList == null) { return; }
+
+        for (int i = 0; i < flameEffectObjectList.Count; i++)
+        {
+            GameObject flameObject = flameEffectObjectList[i];
+
+            if (flameObject == null) { continue; }
+
+            ParticleSystem[] particleSystems = flameObject.GetComponentsInChildren<ParticleSystem>(true);
+
+            for (int j = 0; j < particleSystems.Length; j++)
+            {
+                if (particleSystems[j] == null) { continue; }
+
+                particleSystems[j].Stop(true, ParticleSystemStopBehavior.StopEmitting);
             }
         }
     }

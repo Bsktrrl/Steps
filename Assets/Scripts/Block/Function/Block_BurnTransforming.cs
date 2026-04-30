@@ -97,6 +97,9 @@ public class Block_BurnTransforming : MonoBehaviour
         burningBlock_InScene = Instantiate(burningBlock, transform.position, transform.rotation);
         burningBlock_InScene.transform.SetParent(transform, true);
 
+        // Match the new swapped block's world scale to this original block.
+        SetWorldScale(burningBlock_InScene.transform, transform.lossyScale);
+
         AddEffectBlockToBurningBlock();
 
         Movement.Instance.blockStandingOn = burningBlock_InScene;
@@ -704,6 +707,25 @@ public class Block_BurnTransforming : MonoBehaviour
         }
 
         return false;
+    }
+
+    void SetWorldScale(Transform target, Vector3 wantedWorldScale)
+    {
+        if (target == null) { return; }
+
+        if (target.parent == null)
+        {
+            target.localScale = wantedWorldScale;
+            return;
+        }
+
+        Vector3 parentWorldScale = target.parent.lossyScale;
+
+        target.localScale = new Vector3(
+            parentWorldScale.x != 0 ? wantedWorldScale.x / parentWorldScale.x : wantedWorldScale.x,
+            parentWorldScale.y != 0 ? wantedWorldScale.y / parentWorldScale.y : wantedWorldScale.y,
+            parentWorldScale.z != 0 ? wantedWorldScale.z / parentWorldScale.z : wantedWorldScale.z
+        );
     }
 
     string GetEffectVisualMarkerTypeAsString(EffectVisualMarker effectVisualMarker)
