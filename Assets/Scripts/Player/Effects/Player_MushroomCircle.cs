@@ -9,6 +9,8 @@ public class Player_MushroomCircle : Singleton<Player_MushroomCircle>
     public static event Action Action_EndMushroomCircle;
     public static event Action Action_UpdateMushroomCircle;
 
+    int freeStepCost_Max = 3;
+
     public int freeStepsCounter;
 
     public bool activeMushroomCircle;
@@ -37,7 +39,7 @@ public class Player_MushroomCircle : Singleton<Player_MushroomCircle>
         //Check if standing on a MushroomCircle
         if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.MushroomCircle)
         {
-            freeStepsCounter = 3;
+            freeStepsCounter = freeStepCost_Max;
             Action_StartMushroomCircle?.Invoke();
             activeMushroomCircle = true;
         }

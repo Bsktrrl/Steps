@@ -39,6 +39,8 @@ public class BlockInfo : MonoBehaviour
 
     public Vector3Int GridPosition => Vector3Int.RoundToInt(transform.position);
 
+    int mushroomCircle_Buff = 0;
+
 
     //--------------------
 
@@ -87,12 +89,20 @@ public class BlockInfo : MonoBehaviour
     {
         Movement.Action_RespawnToSavePos += ResetDarkenColor;
         Movement.Action_RespawnPlayer += ResetBlock;
+
+
+        Player_MushroomCircle.Action_StartMushroomCircle += ActivateMushroomCircleBuff;
+        Player_MushroomCircle.Action_EndMushroomCircle += DeactivateMushroomCircleBuff;
     }
 
     private void OnDisable()
     {
         Movement.Action_RespawnToSavePos -= ResetDarkenColor;
         Movement.Action_RespawnPlayer -= ResetBlock;
+
+
+        Player_MushroomCircle.Action_StartMushroomCircle -= ActivateMushroomCircleBuff;
+        Player_MushroomCircle.Action_EndMushroomCircle -= DeactivateMushroomCircleBuff;
     }
 
 
@@ -284,6 +294,19 @@ public class BlockInfo : MonoBehaviour
     public Vector3 GetFacingDirection()
     {
         return transform.TransformDirection(Vector3.left); // local -X
+    }
+
+
+    //--------------------
+
+
+    void ActivateMushroomCircleBuff()
+    {
+        mushroomCircle_Buff = 1;
+    }
+    void DeactivateMushroomCircleBuff()
+    {
+        mushroomCircle_Buff = 0;
     }
 
 

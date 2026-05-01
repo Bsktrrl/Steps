@@ -49,6 +49,10 @@ public class NumberDisplay : MonoBehaviour
     CameraRotationState lastCameraRotationState;
     bool hasRotationStateBeenInitialized = false;
 
+
+    //--------------------
+
+
     private void Awake()
     {
         cachedTransform = transform;
@@ -100,6 +104,10 @@ public class NumberDisplay : MonoBehaviour
         GetBlockOrientationWithCamera();
     }
 
+
+    //--------------------
+
+
     private void OnEnable()
     {
         CacheReferencesIfNeeded();
@@ -116,7 +124,9 @@ public class NumberDisplay : MonoBehaviour
         Player_CeilingGrab.Action_isCeilingGrabbing_Finished -= UpdateRotation;
     }
 
+
     //--------------------
+
 
     void SetObjectRenderer()
     {
@@ -634,7 +644,9 @@ public class NumberDisplay : MonoBehaviour
         }
     }
 
+
     //--------------------
+
 
     public void DestroyBlockStepCostDisplay()
     {
@@ -643,7 +655,9 @@ public class NumberDisplay : MonoBehaviour
         Destroy(this);
     }
 
+
     //--------------------
+
 
     public void PositionOnTopOfParentCube()
     {
@@ -732,8 +746,6 @@ public class NumberDisplay : MonoBehaviour
         lastCameraRotationState = default;
     }
 
-
-
     #region Helpers
 
     bool IsAscendTarget()
@@ -803,4 +815,5 @@ public class NumberDisplay : MonoBehaviour
     }
 
     #endregion
+
 }
