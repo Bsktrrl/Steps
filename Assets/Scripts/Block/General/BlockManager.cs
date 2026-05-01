@@ -64,5 +64,7 @@ public enum BlockElement
     Root,
     Pipe,
 
-    Quartz
+    Quartz,
+    PurpleGrass,
+    MushroomCircle
 }

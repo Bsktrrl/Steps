@@ -10,7 +10,7 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
 
     float height_Stair = 0.08f;
     float height_Water = -0.5f; //-0.8 is where the player is right under water surface
-    float height_SwampWater = -0.35f;
+    float height_SwampWater = -0.4f;
     float height_Mud = -0.6f;
     float height_Lava = -0.7f;
 

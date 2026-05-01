@@ -152,6 +152,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: afb66c8a706fdeb4c86364921c38c190, type: 3}
       insertIndex: -1
       addedObject: {fileID: -8567817815897174833}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: afb66c8a706fdeb4c86364921c38c190, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6735710858105558767}
   m_SourcePrefab: {fileID: 100100000, guid: afb66c8a706fdeb4c86364921c38c190, type: 3}
 --- !u!1 &1196619467382725215 stripped
 GameObject:
@@ -230,6 +233,24 @@ MonoBehaviour:
   colorTint_isActive: 0
   tintValue: 0.95
   blockIsDark: 0
+--- !u!114 &-6735710858105558767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196619467382725215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectVisualParent: {fileID: 0}
+  removeDuplicatesInEditor: 1
+  effectBlock_SpawnPoint_isAdded: 0
+  effectBlock_Teleporter_isAdded: 0
+  effectBlock_Moveable_isAdded: 0
+  effectBlock_MushroomCircle_isAdded: 0
 --- !u!4 &2004365426357321957 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: afb66c8a706fdeb4c86364921c38c190, type: 3}

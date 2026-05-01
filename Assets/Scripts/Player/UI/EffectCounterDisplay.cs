@@ -27,13 +27,21 @@ public class EffectCounterDisplay : MonoBehaviour
     {
         Player_Burning.Action_PlayerStartedBurning += StartFlameCounter;
         Player_Burning.Action_PlayerEndBurning += EndFlameCounter;
-        Player_Burning.Action_ChangeFlamCounter += ChangeFlameCounter;
+        Player_Burning.Action_UpdateFlamCounter += ChangeFlameCounter;
+
+        Player_MushroomCircle.Action_StartMushroomCircle += StartMushroomCircleCounter;
+        Player_MushroomCircle.Action_EndMushroomCircle += EndMushroomCircleCounter;
+        Player_MushroomCircle.Action_UpdateMushroomCircle += ChangeMushroomCircleCounter;
     }
     private void OnDisable()
     {
         Player_Burning.Action_PlayerStartedBurning -= StartFlameCounter;
         Player_Burning.Action_PlayerEndBurning -= EndFlameCounter;
-        Player_Burning.Action_ChangeFlamCounter -= ChangeFlameCounter;
+        Player_Burning.Action_UpdateFlamCounter -= ChangeFlameCounter;
+
+        Player_MushroomCircle.Action_StartMushroomCircle -= StartMushroomCircleCounter;
+        Player_MushroomCircle.Action_EndMushroomCircle -= EndMushroomCircleCounter;
+        Player_MushroomCircle.Action_UpdateMushroomCircle -= ChangeMushroomCircleCounter;
     }
 
 
@@ -97,7 +105,7 @@ public class EffectCounterDisplay : MonoBehaviour
     }
     void ChangeMushroomCircleCounter()
     {
-        ChangeCounter(ui_Parent_FlameCounter.GetComponentInChildren<TextMeshProUGUI>(), 0); //Change to new value in MushroomCircleScript
+        ChangeCounter(ui_Parent_MushroomCircleCounter.GetComponentInChildren<TextMeshProUGUI>(), Player_MushroomCircle.Instance.freeStepsCounter);
     }
 
 

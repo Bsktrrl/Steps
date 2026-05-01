@@ -7,7 +7,7 @@ public class Player_Burning : Singleton<Player_Burning>
 {
     public static Action Action_PlayerStartedBurning;
     public static Action Action_PlayerEndBurning;
-    public static Action Action_ChangeFlamCounter;
+    public static Action Action_UpdateFlamCounter;
 
     [Header("Burning State")]
     public bool isBurning;
@@ -171,7 +171,7 @@ public class Player_Burning : Singleton<Player_Burning>
             return;
         }
 
-        Action_ChangeFlamCounter?.Invoke();
+        Action_UpdateFlamCounter?.Invoke();
     }
 
     private void AddFlameable()
@@ -179,7 +179,7 @@ public class Player_Burning : Singleton<Player_Burning>
         if (isBurning)
         {
             flameableStepCounter = 0;
-            Action_ChangeFlamCounter?.Invoke();
+            Action_UpdateFlamCounter?.Invoke();
             flameableCounterWasResetThisStep = true;
 
             if (!AnyFlameEffectIsActive())

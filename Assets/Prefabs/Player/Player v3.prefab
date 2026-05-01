@@ -32249,6 +32249,7 @@ GameObject:
   - component: {fileID: 7911760123166948170}
   - component: {fileID: 5719477613546976637}
   - component: {fileID: 6240145603939652248}
+  - component: {fileID: -4011929934423254070}
   - component: {fileID: 1897597376279654518}
   m_Layer: 6
   m_Name: Player v3
@@ -32869,6 +32870,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInMud: 0
+--- !u!114 &-4011929934423254070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649856597487831825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2cff04d48dadba41b1e5068c58f2b4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  freeStepsCounter: 0
+  activeMushroomCircle: 0
 --- !u!114 &1897597376279654518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60415,19 +60430,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5159286529547106149, guid: 93bd7d97a91be9943ac3a5b32b721bfe, type: 3}
       propertyPath: m_fontColor.b
-      value: 0.8941177
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5159286529547106149, guid: 93bd7d97a91be9943ac3a5b32b721bfe, type: 3}
       propertyPath: m_fontColor.g
-      value: 0.67058825
+      value: 0.7783019
       objectReference: {fileID: 0}
     - target: {fileID: 5159286529547106149, guid: 93bd7d97a91be9943ac3a5b32b721bfe, type: 3}
       propertyPath: m_fontColor.r
-      value: 0.882353
+      value: 0.98833174
       objectReference: {fileID: 0}
     - target: {fileID: 5159286529547106149, guid: 93bd7d97a91be9943ac3a5b32b721bfe, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4293176289
+      value: 4294952700
       objectReference: {fileID: 0}
     - target: {fileID: 6662644260277508519, guid: 93bd7d97a91be9943ac3a5b32b721bfe, type: 3}
       propertyPath: m_Name
