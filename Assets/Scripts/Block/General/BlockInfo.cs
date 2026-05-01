@@ -6,10 +6,12 @@ using UnityEngine;
 public class BlockInfo : MonoBehaviour
 {
     [Header("Stats")]
-    //public BlockElement blockElement;
     public BlockType blockType;
     public BlockElement blockElement;
+
     [HideInInspector] public int movementCost_Temp;
+    [HideInInspector] public int movementCost_Temp_Base;
+
     public int movementCost;
     public float movementSpeed;
 
@@ -42,6 +44,7 @@ public class BlockInfo : MonoBehaviour
     int mushroomCircle_Buff = 0;
 
 
+
     //--------------------
 
 
@@ -56,7 +59,8 @@ public class BlockInfo : MonoBehaviour
 
         numberDisplay = GetComponentInChildren<NumberDisplay>();
 
-        movementCost_Temp = movementCost;
+        movementCost_Temp_Base = movementCost;
+        movementCost_Temp = movementCost_Temp_Base;
 
         SetObjectRenderer();
         SetPropertyBlock();
@@ -90,9 +94,9 @@ public class BlockInfo : MonoBehaviour
         Movement.Action_RespawnToSavePos += ResetDarkenColor;
         Movement.Action_RespawnPlayer += ResetBlock;
 
-
         Player_MushroomCircle.Action_StartMushroomCircle += ActivateMushroomCircleBuff;
         Player_MushroomCircle.Action_EndMushroomCircle += DeactivateMushroomCircleBuff;
+        Player_MushroomCircle.Action_UpdateMushroomCircle += RefreshStepCostDisplay;
     }
 
     private void OnDisable()
@@ -103,6 +107,7 @@ public class BlockInfo : MonoBehaviour
 
         Player_MushroomCircle.Action_StartMushroomCircle -= ActivateMushroomCircleBuff;
         Player_MushroomCircle.Action_EndMushroomCircle -= DeactivateMushroomCircleBuff;
+        Player_MushroomCircle.Action_UpdateMushroomCircle -= RefreshStepCostDisplay;
     }
 
 
@@ -180,6 +185,8 @@ public class BlockInfo : MonoBehaviour
     {
         if (blockIsDark) return;
 
+        ApplyTemporaryMovementCostModifiers();
+
         color_isAboutToBeDarkened = true;
         UpdateBlock_Darken();
         color_isAboutToBeDarkened = false;
@@ -188,6 +195,8 @@ public class BlockInfo : MonoBehaviour
     public void ResetDarkenColor()
     {
         if (!blockIsDark) return;
+
+        ResetTemporaryMovementCostModifiers();
 
         for (int i = 0; i < propertyBlocks.Count; i++)
         {
@@ -303,10 +312,82 @@ public class BlockInfo : MonoBehaviour
     void ActivateMushroomCircleBuff()
     {
         mushroomCircle_Buff = 1;
+        RefreshStepCostDisplay();
     }
+
     void DeactivateMushroomCircleBuff()
     {
         mushroomCircle_Buff = 0;
+        RefreshStepCostDisplay();
+    }
+
+    public bool HasMushroomCircleBuff()
+    {
+        return mushroomCircle_Buff > 0;
+    }
+
+    public int GetCurrentStepCostModifier()
+    {
+        int modifier = 0;
+
+        // Mud increases cost by +1
+        if (Player_Mud.Instance != null && Player_Mud.Instance.isInMud)
+        {
+            modifier += 1;
+        }
+
+        // SwampWater reduces cost by -1
+        if (Player_SwampWater.Instance != null && Player_SwampWater.Instance.isInSwampWater)
+        {
+            modifier -= 1;
+        }
+
+        // MushroomCircle reduces cost by -1
+        if (HasMushroomCircleBuff())
+        {
+            modifier -= 1;
+        }
+
+        return modifier;
+    }
+
+    public int GetMovementCost_WithTemporaryEffects()
+    {
+        return movementCost_Temp_Base + GetCurrentStepCostModifier();
+    }
+
+    public int GetMovementCost_ForPlayerMove()
+    {
+        ApplyTemporaryMovementCostModifiers();
+        return movementCost_Temp;
+    }
+
+    public void ApplyTemporaryMovementCostModifiers()
+    {
+        movementCost_Temp = GetMovementCost_WithTemporaryEffects();
+    }
+
+    public void ResetTemporaryMovementCostModifiers()
+    {
+        movementCost_Temp = movementCost_Temp_Base;
+    }
+
+    public void RefreshStepCostDisplay()
+    {
+        if (!finishedSetup) return;
+
+        ApplyTemporaryMovementCostModifiers();
+
+        if (blockIsDark && numberDisplay != null)
+        {
+            numberDisplay.ShowNumber();
+        }
+    }
+    public void SetBaseMovementCost(int newCost)
+    {
+        movementCost = newCost;
+        movementCost_Temp_Base = newCost;
+        movementCost_Temp = GetMovementCost_WithTemporaryEffects();
     }
 
 

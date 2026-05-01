@@ -65,8 +65,11 @@ public class Player_MushroomCircle : Singleton<Player_MushroomCircle>
 
     void ResetMushroomCircle()
     {
+        if (!activeMushroomCircle && freeStepsCounter <= 0)
+            return;
+
         freeStepsCounter = 0;
-        Action_EndMushroomCircle?.Invoke();
         activeMushroomCircle = false;
+        Action_EndMushroomCircle?.Invoke();
     }
 }

@@ -10,6 +10,7 @@ April:
 - CeilingGrab: Kan ikke gjøres fra start eller rett etter respawn. Kan gjøres etter at man har falt, men det ikke er en blokk over, så spilleren står bare i løse luften.
 - Dashing og MovementBlocks: Gjøre slik at man alltid dasher automatisk, utenom hvis man roterer mot en MovementBlock. Da skal det være samme system som det er nå.
 - Kamera: Bør kunne roteres underveis i Slope_X_Animasjonen
+- GrapplingHook: Endre visuals med ny effekt
 
 
 1.0. Lage levels:
@@ -19,13 +20,6 @@ April:
 - Lage level i Witchmire
 - Lage Rivergreen-levelet i Metalworks (plassere 4 glueplants i 4 beholdere på ulike steder i levelet)
 	- Lage funksjonalitet for å plassere glueplants i holderne sine (ved å trykke på interact-knappen)
-
-
-2.0. Endre Sopp-sirkel og dens funksjon:
-- Spilleren kan gå 3 steg gratis, uavhengig av hvilken blokk den går på
-	- Legg til symbol/tall på HUD for å vise at den har +3, +2 og +1 ekstra steg
-	- Gratis å gå i Mud-blokk og adjecent blokker (overskrider MudBlock sin effekt)
-	- Får igjen +1 steg ved å gå på adjecent blokker til Swamp Water (supplementerer SwampWater sin effekt ift. at det nå originalt koster 0 å gå)
 
 
 3.0. CameraBlockRender
