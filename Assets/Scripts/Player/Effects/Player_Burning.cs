@@ -6,6 +6,8 @@ using UnityEngine;
 public class Player_Burning : Singleton<Player_Burning>
 {
     public static Action Action_PlayerStartedBurning;
+    public static Action Action_PlayerEndBurning;
+    public static Action Action_ChangeFlamCounter;
 
     [Header("Burning State")]
     public bool isBurning;
@@ -168,6 +170,8 @@ public class Player_Burning : Singleton<Player_Burning>
             RemoveFlameable();
             return;
         }
+
+        Action_ChangeFlamCounter?.Invoke();
     }
 
     private void AddFlameable()
@@ -175,6 +179,7 @@ public class Player_Burning : Singleton<Player_Burning>
         if (isBurning)
         {
             flameableStepCounter = 0;
+            Action_ChangeFlamCounter?.Invoke();
             flameableCounterWasResetThisStep = true;
 
             if (!AnyFlameEffectIsActive())
@@ -252,6 +257,7 @@ public class Player_Burning : Singleton<Player_Burning>
 
         isBurning = false;
         flameableStepCounter = 0;
+        Action_PlayerEndBurning?.Invoke();
         flameableCounterWasResetThisStep = false;
 
         StartFlameEffectExtinguishAnimation();

@@ -196,6 +196,8 @@ public class MapManager : Singleton<MapManager>
 
             mapAudioSourceList[mapAudioSourceList.Count - 1].clip = mapAudioList[i].track;
 
+            mapAudioSourceList[mapAudioSourceList.Count - 1].pitch = mapAudioList[i].pitch;
+
             if (mapAudioList[i].volume > 0)
                 mapAudioSourceList[mapAudioSourceList.Count - 1].volume = mapAudioList[i].volume;
 
@@ -294,6 +296,7 @@ public class AudioTrack
 {
     public AudioClip track;
     public float volume;
+    public float pitch;
 }
 
 public enum LevelNames
