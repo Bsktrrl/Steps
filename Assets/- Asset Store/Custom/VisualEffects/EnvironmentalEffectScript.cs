@@ -7,13 +7,17 @@ public class EnvironmentalEffectScript : MonoBehaviour
     ParticleSystem PS;
     AudioSource source;
 
+    bool first = true;
+
     [SerializeField] AudioClip[] audioClips;
 
     [SerializeField] float waitTimeMin;
     [SerializeField] float waitTimeMax;
+    [SerializeField] float volume;
+    [SerializeField] float length;
 
-    float pitchMin = 0.9f;
-    float pitchMax = 1.1f;
+    float pitchMin = 0.8f;
+    float pitchMax = 1.2f;
     void Start()
     {
         PS = GetComponent<ParticleSystem>();
@@ -26,13 +30,37 @@ public class EnvironmentalEffectScript : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(waitTimeMin, waitTimeMax));
+            //50% chance to wait first time, 100% after that
+            if (first)
+            {
+                if (Random.Range(0, 2) == 0)
+                {
+                    yield return new WaitForSeconds(Random.Range(waitTimeMin, waitTimeMax));
+                }
+            }
+            else
+            {
+                yield return new WaitForSeconds(Random.Range(waitTimeMin, waitTimeMax));
+            }
+            first = false;
 
             source.clip = audioClips[Random.Range(0, audioClips.Length)];
             source.pitch = Random.Range(pitchMin, pitchMax);
+            source.time = Random.Range(0f, 2f);
+            source.volume = volume;
 
             PS.Play();
             source.Play();
+
+            yield return new WaitForSeconds(length);
+
+            while(source.volume > 0f)
+            {
+                source.volume -= Time.deltaTime;
+                yield return null;
+            }
+
+            source.Stop();
         }
     }
 }
