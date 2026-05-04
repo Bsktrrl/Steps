@@ -1,5 +1,80 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &28387485204535269
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5675573370303245836}
+  - component: {fileID: 5694590076211939450}
+  - component: {fileID: 1836485956426360850}
+  m_Layer: 5
+  m_Name: PlayerDisplay_Background
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5675573370303245836
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28387485204535269}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 70867004945345062}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 5.499996, y: 33}
+  m_SizeDelta: {x: -211, y: -206}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &5694590076211939450
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28387485204535269}
+  m_CullTransparentMesh: 1
+--- !u!114 &1836485956426360850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28387485204535269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.93948025, g: 0.9811321, b: 0.9772575, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 4ab2fe45c2714e743b43b159d2700430, type: 3}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 3
 --- !u!1 &67225465258948552
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,7 +267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 2
   buttonBack_Sound: 2
 --- !u!1 &93226368838051328
@@ -617,7 +692,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 1, g: 0.72617465, b: 0.3820755, a: 0}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -681,8 +756,8 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
-  m_Antialiasing: 0
+  m_RenderPostProcessing: 1
+  m_Antialiasing: 2
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -1714,7 +1789,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &724452384944896560
@@ -1998,7 +2073,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &876634756156626166
@@ -2282,7 +2357,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &909319064595248868
@@ -3151,7 +3226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &1257634976893979763
@@ -3435,7 +3510,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &1343961341117971693
@@ -3780,7 +3855,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &1401226781531489182
@@ -4828,7 +4903,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &1784194860038776683
@@ -5697,7 +5772,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 1, g: 0.72617465, b: 0.3820755, a: 0}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -5761,8 +5836,8 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
-  m_Antialiasing: 0
+  m_RenderPostProcessing: 1
+  m_Antialiasing: 2
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -5988,7 +6063,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &2349806434880543686
@@ -6197,7 +6272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &2399146924877359472
@@ -6736,7 +6811,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &2598354453265099056
@@ -7722,7 +7797,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &3085846515022355448
@@ -8234,7 +8309,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &3301485600440708370
@@ -8781,7 +8856,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &3409984046143117779
@@ -10227,7 +10302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &3918437782044901876
@@ -10856,7 +10931,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &4132342038206767329
@@ -11199,7 +11274,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &4176558003156441245
@@ -11520,7 +11595,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &4407468840743959145
@@ -12138,7 +12213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &4564493502536975766
@@ -12556,7 +12631,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &4590604847780799870
@@ -12974,7 +13049,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &4677738581218657348
@@ -13526,7 +13601,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &4797514114459505891
@@ -14403,6 +14478,7 @@ RectTransform:
   - {fileID: 3739953912334292322}
   - {fileID: 550816276105371088}
   - {fileID: 6062143845771973282}
+  - {fileID: 5675573370303245836}
   m_Father: {fileID: 6173768469014091317}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -16125,7 +16201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &6176288227979814852
@@ -17242,7 +17318,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &6693716677702822598
@@ -17572,7 +17648,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 1, g: 0.72617465, b: 0.3820755, a: 0}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -17636,8 +17712,8 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
-  m_Antialiasing: 0
+  m_RenderPostProcessing: 1
+  m_Antialiasing: 2
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -17863,7 +17939,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &6908869045382471318
@@ -18467,7 +18543,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &7032174766843639706
@@ -19721,7 +19797,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &7359021952767638794
@@ -19930,7 +20006,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &7391000574690027923
@@ -19967,8 +20043,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 25}
-  m_SizeDelta: {x: 700, y: 700}
+  m_AnchoredPosition: {x: 6, y: 33}
+  m_SizeDelta: {x: 685, y: 685}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9094382407870846265
 CanvasRenderer:
@@ -20345,7 +20421,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &7540772685694785561
@@ -20984,7 +21060,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &7897265902036246671
@@ -21469,7 +21545,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &8010190065415642058
@@ -21678,7 +21754,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &8019066690736201558
@@ -22171,7 +22247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &8190199449371840040
@@ -22380,7 +22456,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &8199756122739214045
@@ -23090,7 +23166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &8617827639063281280
@@ -23543,7 +23619,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &8763183459822343625
@@ -23902,7 +23978,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &8909768220343707138
@@ -24111,7 +24187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 2
 --- !u!1 &9030795520615115395
@@ -26349,6 +26425,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 17
       objectReference: {fileID: 0}
+    - target: {fileID: 3157855754293835788, guid: 4c7dfc501cfd648489c955d98d0b331e, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3191055057445257723, guid: 4c7dfc501cfd648489c955d98d0b331e, type: 3}
       propertyPath: m_Layer
       value: 17
@@ -26384,6 +26464,10 @@ PrefabInstance:
     - target: {fileID: 4749696726742139260, guid: 4c7dfc501cfd648489c955d98d0b331e, type: 3}
       propertyPath: m_Layer
       value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5136624993145038819, guid: 4c7dfc501cfd648489c955d98d0b331e, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5574074490161957210, guid: 4c7dfc501cfd648489c955d98d0b331e, type: 3}
       propertyPath: m_Layer
@@ -26934,6 +27018,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 17
       objectReference: {fileID: 0}
+    - target: {fileID: 733357351077229402, guid: 8830db1983aaaca4b9e81493c601a188, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 831941679781504948, guid: 8830db1983aaaca4b9e81493c601a188, type: 3}
       propertyPath: m_Layer
       value: 17
@@ -27081,6 +27169,10 @@ PrefabInstance:
     - target: {fileID: 5889798627007818799, guid: 8830db1983aaaca4b9e81493c601a188, type: 3}
       propertyPath: m_Layer
       value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 6663764011284643141, guid: 8830db1983aaaca4b9e81493c601a188, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6705160074933101577, guid: 8830db1983aaaca4b9e81493c601a188, type: 3}
       propertyPath: m_Layer
@@ -27344,6 +27436,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 17
       objectReference: {fileID: 0}
+    - target: {fileID: 246840980465569899, guid: a3e4aa5ef4068c34cb822536979521be, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 378616939675596386, guid: a3e4aa5ef4068c34cb822536979521be, type: 3}
       propertyPath: m_Layer
       value: 17
@@ -27508,6 +27604,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 17
       objectReference: {fileID: 0}
+    - target: {fileID: 7647411379345279500, guid: a3e4aa5ef4068c34cb822536979521be, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8152056635494788057, guid: a3e4aa5ef4068c34cb822536979521be, type: 3}
       propertyPath: m_Layer
       value: 17
@@ -27591,6 +27691,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 17
       objectReference: {fileID: 0}
+    - target: {fileID: 2766432294650882456, guid: d9fa7457274c3cd4f8bff66999185e0b, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3090481029516037257, guid: d9fa7457274c3cd4f8bff66999185e0b, type: 3}
       propertyPath: m_Layer
       value: 17
@@ -27634,6 +27738,10 @@ PrefabInstance:
     - target: {fileID: 4477251759903795899, guid: d9fa7457274c3cd4f8bff66999185e0b, type: 3}
       propertyPath: m_Layer
       value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 4815012772212568556, guid: d9fa7457274c3cd4f8bff66999185e0b, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5238011534514968967, guid: d9fa7457274c3cd4f8bff66999185e0b, type: 3}
       propertyPath: m_Layer
@@ -30286,6 +30394,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3635289614945144120}
     m_Modifications:
+    - target: {fileID: 64494838566860894, guid: a4e6a441a3d29af47852531854265f91, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 123899538265809463, guid: a4e6a441a3d29af47852531854265f91, type: 3}
       propertyPath: m_Layer
       value: 17
@@ -30357,6 +30469,10 @@ PrefabInstance:
     - target: {fileID: 3352881680737188651, guid: a4e6a441a3d29af47852531854265f91, type: 3}
       propertyPath: m_Layer
       value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 3631487467767370492, guid: a4e6a441a3d29af47852531854265f91, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3653101517883834942, guid: a4e6a441a3d29af47852531854265f91, type: 3}
       propertyPath: m_Layer
@@ -31640,6 +31756,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 17
       objectReference: {fileID: 0}
+    - target: {fileID: 5010595443042233675, guid: cddf2afb5c35403429e7b2899d12781b, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5121055120553966415, guid: cddf2afb5c35403429e7b2899d12781b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -31683,6 +31803,10 @@ PrefabInstance:
     - target: {fileID: 5146124444697679385, guid: cddf2afb5c35403429e7b2899d12781b, type: 3}
       propertyPath: m_Layer
       value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5170311897639845292, guid: cddf2afb5c35403429e7b2899d12781b, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5343595663297006489, guid: cddf2afb5c35403429e7b2899d12781b, type: 3}
       propertyPath: m_Layer
