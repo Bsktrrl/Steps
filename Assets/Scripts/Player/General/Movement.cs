@@ -193,6 +193,10 @@ public class Movement : Singleton<Movement>
 
     [SerializeField] private bool pendingFreeLandingFromSlope;
 
+    [Header("Pending Step Cost")]
+    [SerializeField] private bool hasPendingStepCost;
+    [SerializeField] private int pendingStepCost;
+
     #endregion
 
     #region Cached Accessors
@@ -395,14 +399,21 @@ public class Movement : Singleton<Movement>
         if (StatsRoot.stats == null)
             return false;
 
-        if (obj && obj.GetComponent<BlockInfo>() && obj.GetComponent<BlockInfo>().blockElement == BlockElement.Water && !PlayerHasSwimAbility())
+        if (obj &&
+            obj.GetComponent<BlockInfo>() &&
+            obj.GetComponent<BlockInfo>().blockElement == BlockElement.Water &&
+            !PlayerHasSwimAbility())
         {
             return true;
         }
-        else
-        {
-            return StatsRoot.stats.steps_Current >= GetRequiredCost(obj);
-        }
+
+        int requiredCost = GetRequiredCost(obj);
+
+        // Negative or zero-cost moves are always affordable
+        if (requiredCost <= 0)
+            return true;
+
+        return StatsRoot.stats.steps_Current >= requiredCost;
     }
 
     private float MovementDuration(Vector3 startPos, Vector3 endPos, float movementSpeed)
@@ -690,7 +701,7 @@ public class Movement : Singleton<Movement>
         if (!TryGetBlockInfo(obj, out BlockInfo info))
             return int.MaxValue;
 
-        return Mathf.Max(info.movementCost, info.movementCost_Temp);
+        return info.GetMovementCost_ForPlayerMove();
     }
 
     private bool ShouldShowSlopeAsX(GameObject obj)
@@ -1032,6 +1043,48 @@ public class Movement : Singleton<Movement>
         }
 
         return false;
+    }
+
+    private void CacheStepCostForMove(GameObject targetBlock)
+    {
+        if (targetBlock == null)
+        {
+            hasPendingStepCost = false;
+            pendingStepCost = 0;
+            return;
+        }
+
+        pendingStepCost = GetRequiredCost(targetBlock);
+        hasPendingStepCost = true;
+    }
+
+    private int ConsumePendingStepCost(BlockInfo fallbackStandingInfo)
+    {
+        int cost;
+
+        if (hasPendingStepCost)
+        {
+            cost = pendingStepCost;
+        }
+        else if (fallbackStandingInfo != null)
+        {
+            cost = fallbackStandingInfo.GetMovementCost_ForPlayerMove();
+        }
+        else
+        {
+            cost = 0;
+        }
+
+        hasPendingStepCost = false;
+        pendingStepCost = 0;
+
+        return cost;
+    }
+
+    private void ClearPendingStepCost()
+    {
+        hasPendingStepCost = false;
+        pendingStepCost = 0;
     }
 
     #endregion
@@ -1459,8 +1512,7 @@ public class Movement : Singleton<Movement>
                 TryGetStandingInfo(out BlockInfo standingInfo) &&
                 standingInfo.blockElement == BlockElement.Water)
             {
-                standingInfo.movementCost = swiftSwimCost;
-                standingInfo.movementCost_Temp = swiftSwimCost;
+                standingInfo.SetBaseMovementCost(swiftSwimCost);
                 swiftSwimObject_StandingOn = blockStandingOn;
             }
 
@@ -1470,8 +1522,7 @@ public class Movement : Singleton<Movement>
                     hit.collider.gameObject.TryGetComponent(out BlockInfo upInfo) &&
                     upInfo.blockElement == BlockElement.Water)
                 {
-                    upInfo.movementCost = swiftSwimCost;
-                    upInfo.movementCost_Temp = swiftSwimCost;
+                    upInfo.SetBaseMovementCost(swiftSwimCost);
                     upInfo.ResetDarkenColor();
                     upInfo.SetDarkenColors();
                     swiftSwimObject_Up = hit.collider.gameObject;
@@ -1486,8 +1537,7 @@ public class Movement : Singleton<Movement>
                     TryGetStandingInfo(out BlockInfo standingWaterInfo) &&
                     standingWaterInfo.blockElement == BlockElement.Water)
                 {
-                    downInfo.movementCost = swiftSwimCost;
-                    downInfo.movementCost_Temp = swiftSwimCost;
+                    downInfo.SetBaseMovementCost(swiftSwimCost);
                     downInfo.ResetDarkenColor();
                     downInfo.SetDarkenColors();
                     swiftSwimObject_Down = hit.collider.gameObject;
@@ -1506,8 +1556,7 @@ public class Movement : Singleton<Movement>
     {
         if (TryGetBlockInfo(obj, out BlockInfo info))
         {
-            info.movementCost = 0;
-            info.movementCost_Temp = 0;
+            info.SetBaseMovementCost(0);
         }
     }
 
@@ -2163,7 +2212,7 @@ public class Movement : Singleton<Movement>
                 return;
             }
 
-            StatsRoot.stats.steps_Current -= standingInfo.movementCost;
+            StatsRoot.stats.steps_Current -= standingInfo.GetMovementCost_ForPlayerMove();
             StepsHUD.Instance.UpdateStepsDisplay_Walking();
         }
     }
@@ -2719,6 +2768,8 @@ public class Movement : Singleton<Movement>
         {
             isMovingFlag = true;
 
+            CacheStepCostForMove(canMoveBlock.targetBlock);
+
             ClearFallingCarrierBlock();
             ResetDarkenBlocks();
             StartCoroutine(Move(canMoveBlock.targetBlock.transform.position, moveState, movementSpeed, canMoveBlock));
@@ -2742,6 +2793,8 @@ public class Movement : Singleton<Movement>
 
             isMoving = true;
 
+            CacheStepCostForMove(canMoveBlock.targetBlock);
+
             ClearFallingCarrierBlock();
             ResetDarkenBlocks();
             StartCoroutine(Move(canMoveBlock.targetBlock.transform.position, moveState, movementSpeed, canMoveBlock));
@@ -2759,6 +2812,8 @@ public class Movement : Singleton<Movement>
 
         isMoving = true;
 
+        ClearPendingStepCost();
+
         ClearFallingCarrierBlock();
         ResetDarkenBlocks();
         StartCoroutine(Move(targetPos, MovementStates.Moving, standingInfo.movementSpeed, null));
@@ -2767,6 +2822,8 @@ public class Movement : Singleton<Movement>
     public void PerformMovement(Vector3 targetPos, float movementSpeed)
     {
         isMoving = true;
+
+        ClearPendingStepCost();
 
         ClearFallingCarrierBlock();
         ResetDarkenBlocks();
@@ -3234,8 +3291,7 @@ public class Movement : Singleton<Movement>
 
         if (targetPosObj.GetComponent<Block_Ladder>() &&
             targetPosObj.GetComponent<Block_Ladder>().exitBlock_Up &&
-            (StatsRoot.stats.steps_Current < targetPosObj.GetComponent<Block_Ladder>().exitBlock_Up.GetComponent<BlockInfo>().movementCost ||
-             StatsRoot.stats.steps_Current < targetPosObj.GetComponent<Block_Ladder>().exitBlock_Up.GetComponent<BlockInfo>().movementCost_Temp))
+            !CanAfford(targetPosObj.GetComponent<Block_Ladder>().exitBlock_Up))
         {
             RespawnPlayer();
             yield break;
@@ -3302,8 +3358,7 @@ public class Movement : Singleton<Movement>
 
         if (targetPosObj.GetComponent<Block_Ladder>() &&
             targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down &&
-            (StatsRoot.stats.steps_Current < targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down.GetComponent<BlockInfo>().movementCost ||
-             StatsRoot.stats.steps_Current < targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down.GetComponent<BlockInfo>().movementCost_Temp))
+            !CanAfford(targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down))
         {
             RespawnPlayer();
             yield break;
@@ -3594,11 +3649,20 @@ public class Movement : Singleton<Movement>
 
                 if (!standingInUnswimmableWater)
                 {
-                    StatsRoot.stats.steps_Current -= standingInfo.movementCost;
+                    int stepCost = ConsumePendingStepCost(standingInfo);
+                    StatsRoot.stats.steps_Current -= stepCost;
+                }
+                else
+                {
+                    ClearPendingStepCost();
                 }
 
                 if (CeilingGrab.isCeilingGrabbing)
                     MapStatsGathered.Instance.levelStats.ability_CeilingGrab++;
+            }
+            else
+            {
+                ClearPendingStepCost();
             }
 
             // Leaving slope context completely once on a non-slope tile
@@ -3729,6 +3793,7 @@ public class Movement : Singleton<Movement>
         Inputs.grapplingHook_isPressed = false;
 
         pendingFreeLandingFromSlope = false;
+        ClearPendingStepCost();
 
         Inputs.forward_isHold = false;
         Inputs.back_isHold = false;

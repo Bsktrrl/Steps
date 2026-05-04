@@ -49,6 +49,10 @@ public class NumberDisplay : MonoBehaviour
     CameraRotationState lastCameraRotationState;
     bool hasRotationStateBeenInitialized = false;
 
+
+    //--------------------
+
+
     private void Awake()
     {
         cachedTransform = transform;
@@ -100,6 +104,10 @@ public class NumberDisplay : MonoBehaviour
         GetBlockOrientationWithCamera();
     }
 
+
+    //--------------------
+
+
     private void OnEnable()
     {
         CacheReferencesIfNeeded();
@@ -116,7 +124,9 @@ public class NumberDisplay : MonoBehaviour
         Player_CeilingGrab.Action_isCeilingGrabbing_Finished -= UpdateRotation;
     }
 
+
     //--------------------
+
 
     void SetObjectRenderer()
     {
@@ -164,59 +174,21 @@ public class NumberDisplay : MonoBehaviour
             return;
         }
 
+        // Make sure the temp cost is updated before showing the number
+        blockInfo.ApplyTemporaryMovementCostModifiers();
+
         // If in quicksand
         if (Player_Quicksand.Instance.isInQuicksand && parentQuicksandBlock != null)
         {
             DisplayNumber(Player_Quicksand.Instance.quicksandCounter);
         }
 
-        // If in SwampWater
-        else if (Player_SwampWater.Instance.isInSwampWater)
-        {
-            if (blockInfo.movementCost_Temp == -1)
-                DisplayNumber(-2);
-            else if (blockInfo.movementCost_Temp == 0)
-                DisplayNumber(-1);
-            else if (blockInfo.movementCost_Temp == 1)
-                DisplayNumber(0);
-            else if (blockInfo.movementCost_Temp == 2)
-                DisplayNumber(1);
-            else if (blockInfo.movementCost_Temp == 3)
-                DisplayNumber(2);
-            else if (blockInfo.movementCost_Temp == 4)
-                DisplayNumber(3);
-            else if (blockInfo.movementCost_Temp == 5)
-                DisplayNumber(4);
-        }
-
-        // If in Mud
-        else if (Player_Mud.Instance.isInMud)
-        {
-            if (blockInfo.movementCost_Temp == 0)
-                DisplayNumber(1);
-            else if (blockInfo.movementCost_Temp == 1)
-                DisplayNumber(2);
-            else if (blockInfo.movementCost_Temp == 2)
-                DisplayNumber(3);
-            else if (blockInfo.movementCost_Temp == 3)
-                DisplayNumber(4);
-            else if (blockInfo.movementCost_Temp == 4)
-                DisplayNumber(5);
-            else if (blockInfo.movementCost_Temp == 5)
-                DisplayNumber(6);
-            else if (blockInfo.movementCost_Temp == 6)
-                DisplayNumber(7);
-            else if (blockInfo.movementCost_Temp == 7)
-                DisplayNumber(8);
-            else if (blockInfo.movementCost_Temp == 8)
-                DisplayNumber(9);
-        }
-
         // Other
         else
         {
-            //If this block is a Water Block and the player cannot swim
-            if (gameObject.transform.parent.gameObject.GetComponent<BlockInfo>() && gameObject.transform.parent.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Water
+            // If this block is a Water Block and the player cannot swim
+            if (gameObject.transform.parent.gameObject.GetComponent<BlockInfo>() &&
+                gameObject.transform.parent.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Water
                 && !PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel
                 && !PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank && !PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank
                 && !PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers)
@@ -240,7 +212,6 @@ public class NumberDisplay : MonoBehaviour
 
     void DisplayNumber(int value)
     {
-        blockInfo.movementCost = value;
         SetNumberColors(SetNumberColor_MoreOrLess(value));
 
         if (value == -1)
@@ -317,7 +288,9 @@ public class NumberDisplay : MonoBehaviour
 
     public Color SetNumberColor_MoreOrLess(float moveCost)
     {
-        Color tempTintColor = new Color();
+        float originalCost = blockInfo.movementCost_Temp_Base;
+
+        Color tempTintColor;
 
         if (blockInfo.colorTint_isActive)
         {
@@ -328,31 +301,34 @@ public class NumberDisplay : MonoBehaviour
             tempTintColor = Color.white;
         }
 
-        //-3 = X - Cannot walk
-        if (moveCost > blockInfo.movementCost_Temp || moveCost == -3)
+        // -3 = X - Cannot walk
+        if (moveCost > originalCost || moveCost == -3)
         {
             return BlockManager.Instance.expensive_TextColor * tempTintColor;
         }
-        else if (moveCost < blockInfo.movementCost_Temp)
+        else if (moveCost < originalCost)
         {
             return BlockManager.Instance.cheap_TextColor * tempTintColor;
         }
-        else if (moveCost == blockInfo.movementCost_Temp)
+        else
         {
             if (Player_CeilingGrab.Instance.isCeilingGrabbing)
             {
-                if (blockInfo.stepCostText_ColorUnder.a == 0 || (blockInfo.stepCostText_ColorUnder.r == 0 && blockInfo.stepCostText_ColorUnder.g == 0 && blockInfo.stepCostText_ColorUnder.b == 0))
+                if (blockInfo.stepCostText_ColorUnder.a == 0 ||
+                    (blockInfo.stepCostText_ColorUnder.r == 0 &&
+                     blockInfo.stepCostText_ColorUnder.g == 0 &&
+                     blockInfo.stepCostText_ColorUnder.b == 0))
+                {
                     return blockInfo.stepCostText_Color * tempTintColor;
+                }
                 else
+                {
                     return blockInfo.stepCostText_ColorUnder * tempTintColor;
+                }
             }
-            else
-            {
-                return blockInfo.stepCostText_Color * tempTintColor;
-            }
-        }
 
-        return blockInfo.stepCostText_Color * tempTintColor;
+            return blockInfo.stepCostText_Color * tempTintColor;
+        }
     }
 
 
@@ -634,7 +610,9 @@ public class NumberDisplay : MonoBehaviour
         }
     }
 
+
     //--------------------
+
 
     public void DestroyBlockStepCostDisplay()
     {
@@ -643,7 +621,9 @@ public class NumberDisplay : MonoBehaviour
         Destroy(this);
     }
 
+
     //--------------------
+
 
     public void PositionOnTopOfParentCube()
     {
@@ -732,8 +712,6 @@ public class NumberDisplay : MonoBehaviour
         lastCameraRotationState = default;
     }
 
-
-
     #region Helpers
 
     bool IsAscendTarget()
@@ -803,4 +781,5 @@ public class NumberDisplay : MonoBehaviour
     }
 
     #endregion
+
 }
