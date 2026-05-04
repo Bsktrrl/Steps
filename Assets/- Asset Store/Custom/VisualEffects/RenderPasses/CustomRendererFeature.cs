@@ -90,17 +90,9 @@ public class CustomRendererFeature : ScriptableRendererFeature
     {
         RTHandle customColorTexture;
         RTHandle lowResColorTexture;
-        float downscaleFactor;
-
-        public void SetDownscaleFactor(float factor)
-        {
-            downscaleFactor = factor;
-        }
 
         int cachedFullWidth = -1;
         int cachedFullHeight = -1;
-        int cachedLowResWidth = -1;
-        int cachedLowResHeight = -1;
 
         public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
         {
@@ -109,26 +101,17 @@ public class CustomRendererFeature : ScriptableRendererFeature
             int fullWidth = baseDesc.width;
             int fullHeight = baseDesc.height;
 
-            int lowResWidth = Mathf.Max(1, (int)(fullWidth * downscaleFactor));
-            int lowResHeight = Mathf.Max(1, (int)(fullHeight * downscaleFactor));
-
-            if (customColorTexture == null || lowResColorTexture == null || fullWidth != cachedFullWidth || fullHeight != cachedFullHeight || lowResWidth != cachedLowResWidth || lowResHeight != cachedLowResHeight)
+            if (customColorTexture == null || lowResColorTexture == null || fullWidth != cachedFullWidth || fullHeight != cachedFullHeight)
             {
                 cachedFullWidth = fullWidth;
                 cachedFullHeight = fullHeight;
-                cachedLowResWidth = lowResWidth;
-                cachedLowResHeight = lowResHeight;
 
                 var fullDesc = new RenderTextureDescriptor(fullWidth, fullHeight, RenderTextureFormat.DefaultHDR);
                 fullDesc.depthBufferBits = 0;
                 fullDesc.msaaSamples = 1;
+                fullDesc.useMipMap = true;
+                fullDesc.autoGenerateMips = false;
                 RenderingUtils.ReAllocateIfNeeded(ref customColorTexture, fullDesc, name: "_CustomColorTexture");
-
-                var downDesc = new RenderTextureDescriptor(lowResWidth, lowResHeight, RenderTextureFormat.DefaultHDR);
-                downDesc.depthBufferBits = 0;
-                downDesc.msaaSamples = 1;
-                RenderingUtils.ReAllocateIfNeeded(ref lowResColorTexture, downDesc, name: "_LowResColorTexture");
-                lowResColorTexture.rt.filterMode = FilterMode.Bilinear;
             }
         }
 
@@ -142,10 +125,10 @@ public class CustomRendererFeature : ScriptableRendererFeature
             var source = renderingData.cameraData.renderer.cameraColorTargetHandle;
 
             cmd.Blit(source, customColorTexture);
-            cmd.Blit(customColorTexture, lowResColorTexture);
+
+            cmd.GenerateMips(customColorTexture);
 
             cmd.SetGlobalTexture("_CustomColorTexture", customColorTexture.rt);
-            cmd.SetGlobalTexture("_LowResColorTexture", lowResColorTexture.rt);
     
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);
@@ -154,7 +137,6 @@ public class CustomRendererFeature : ScriptableRendererFeature
 
     [SerializeField] Material depthMaterial;
     [SerializeField] Material depthCopyMaterial;
-    [SerializeField] float downscaleFactor;
     CustomDepthPass depthPass;
     CustomColorPass colorPass;
 
@@ -174,7 +156,6 @@ public class CustomRendererFeature : ScriptableRendererFeature
         depthPass.SetVisualize(visualize);
         renderer.EnqueuePass(depthPass);
 
-        colorPass.SetDownscaleFactor(downscaleFactor);
         renderer.EnqueuePass(colorPass);
     }
 }
