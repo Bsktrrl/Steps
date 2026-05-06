@@ -15,10 +15,10 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
     float height_Lava = -0.7f;
 
     float height_QuickSand_1 = -0.3f;
-    float height_QuickSand_2 = -0.4f;
-    float height_QuickSand_3 = -0.5f;
-    float height_QuickSand_4 = -0.6f;
-    float height_QuickSand_5 = -0.7f;
+    float height_QuickSand_2 = -0.42f;
+    float height_QuickSand_3 = -0.54f;
+    float height_QuickSand_4 = -0.66f;
+    float height_QuickSand_5 = -0.78f;
 
     float height_pipe = -0.25f;
 

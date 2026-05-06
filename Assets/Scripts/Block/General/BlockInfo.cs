@@ -364,6 +364,15 @@ public class BlockInfo : MonoBehaviour
             return movementCost_OverrideValue;
         }
 
+        // Quicksand uses the quicksand counter as the actual step cost,
+        // not only as the displayed number.
+        if (GetComponent<Block_Quicksand>() &&
+            Player_Quicksand.Instance != null &&
+            Player_Quicksand.Instance.isInQuicksand)
+        {
+            return Player_Quicksand.Instance.quicksandCounter;
+        }
+
         if (blockElement == BlockElement.Water && PlayerHasFlippers())
         {
             return 0;
