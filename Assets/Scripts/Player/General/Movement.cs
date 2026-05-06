@@ -732,10 +732,7 @@ public class Movement : Singleton<Movement>
 
         if (ShouldShowSlopeAsX(obj))
         {
-            if (!slopeDisplayTempOverrides.ContainsKey(obj))
-                slopeDisplayTempOverrides[obj] = info.movementCost_Temp;
-
-            info.movementCost_Temp = -3;
+            info.SetDisplayMovementCostOverride(-3);
         }
         else
         {
@@ -751,11 +748,7 @@ public class Movement : Singleton<Movement>
         if (!TryGetBlockInfo(obj, out BlockInfo info))
             return;
 
-        if (slopeDisplayTempOverrides.TryGetValue(obj, out int originalTempValue))
-        {
-            info.movementCost_Temp = originalTempValue;
-            slopeDisplayTempOverrides.Remove(obj);
-        }
+        info.ClearDisplayMovementCostOverride();
     }
 
     private void RestoreAllSlopeDisplayOverrides()
@@ -763,7 +756,7 @@ public class Movement : Singleton<Movement>
         foreach (var kvp in slopeDisplayTempOverrides)
         {
             if (kvp.Key != null && TryGetBlockInfo(kvp.Key, out BlockInfo info))
-                info.movementCost_Temp = kvp.Value;
+                info.ClearDisplayMovementCostOverride();
         }
 
         slopeDisplayTempOverrides.Clear();

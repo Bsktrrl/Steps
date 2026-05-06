@@ -15,6 +15,9 @@ public class BlockInfo : MonoBehaviour
     [HideInInspector] public bool movementCost_OverrideActive;
     [HideInInspector] public int movementCost_OverrideValue;
 
+    [HideInInspector] public bool movementCost_DisplayOverrideActive;
+    [HideInInspector] public int movementCost_DisplayOverrideValue;
+
     public int movementCost;
     public float movementSpeed;
 
@@ -444,7 +447,36 @@ public class BlockInfo : MonoBehaviour
                PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers;
     }
 
+    public int GetMovementCost_ForDisplay()
+    {
+        if (movementCost_DisplayOverrideActive)
+            return movementCost_DisplayOverrideValue;
 
+        ApplyTemporaryMovementCostModifiers();
+        return movementCost_Temp;
+    }
+
+    public void SetDisplayMovementCostOverride(int newCost)
+    {
+        movementCost_DisplayOverrideActive = true;
+        movementCost_DisplayOverrideValue = newCost;
+
+        if (blockIsDark && numberDisplay != null)
+        {
+            numberDisplay.ShowNumber();
+        }
+    }
+
+    public void ClearDisplayMovementCostOverride()
+    {
+        movementCost_DisplayOverrideActive = false;
+        movementCost_DisplayOverrideValue = 0;
+
+        if (blockIsDark && numberDisplay != null)
+        {
+            numberDisplay.ShowNumber();
+        }
+    }
 
 
     //--------------------
