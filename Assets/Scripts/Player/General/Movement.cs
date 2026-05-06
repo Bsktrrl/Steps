@@ -151,6 +151,7 @@ public class Movement : Singleton<Movement>
     [SerializeField] GameObject swiftSwimObject_Up;
     [SerializeField] GameObject swiftSwimObject_Down;
     [SerializeField] LayerMask swiftSwimLayersToIgnore;
+    private readonly HashSet<GameObject> swiftSwimPreviewOverrideBlocks = new HashSet<GameObject>();
 
     public bool isRespawning;
 
@@ -319,6 +320,7 @@ public class Movement : Singleton<Movement>
         SFX_Respawn.Action_RespawnPlayer += RespawnPlayer;
 
         Interactable_Pickup.Action_AbilityPickupGot += UpdateLookDir;
+        Interactable_Pickup.Action_AbilityPickupGot += RefreshAvailableMovementBlocksSmooth;
     }
 
     private void OnDisable()
@@ -346,6 +348,7 @@ public class Movement : Singleton<Movement>
         SFX_Respawn.Action_RespawnPlayer -= RespawnPlayer;
 
         Interactable_Pickup.Action_AbilityPickupGot -= UpdateLookDir;
+        Interactable_Pickup.Action_AbilityPickupGot -= RefreshAvailableMovementBlocksSmooth;
     }
 
     #endregion
@@ -874,10 +877,12 @@ public class Movement : Singleton<Movement>
     bool PlayerCanEnterDeepWater()
     {
         var stats = StatsRoot.stats;
+
+        if (stats == null)
+            return false;
+
         return stats.abilitiesGot_Permanent.OxygenTank ||
-               stats.abilitiesGot_Permanent.Flippers ||
-               stats.abilitiesGot_Temporary.OxygenTank ||
-               stats.abilitiesGot_Temporary.Flippers;
+               stats.abilitiesGot_Temporary.OxygenTank;
     }
 
     void RefreshBlocksWhileStandingOnMovingElevator()
@@ -1085,6 +1090,69 @@ public class Movement : Singleton<Movement>
     {
         hasPendingStepCost = false;
         pendingStepCost = 0;
+    }
+
+    private void CacheStepCostForSwiftSwim()
+    {
+        pendingStepCost = GetSwiftSwimCost();
+        hasPendingStepCost = true;
+    }
+
+    private int GetSwiftSwimCost()
+    {
+        if (StatsRoot.stats == null)
+            return 0;
+
+        bool hasFlippers =
+            StatsRoot.stats.abilitiesGot_Temporary.Flippers ||
+            StatsRoot.stats.abilitiesGot_Permanent.Flippers;
+
+        return hasFlippers ? 1 : 2;
+    }
+
+    private void ApplySwiftSwimPreviewCost(MoveOptions swiftSwimOption)
+    {
+        if (!HasValidTarget(swiftSwimOption))
+            return;
+
+        GameObject target = swiftSwimOption.targetBlock;
+
+        if (TryGetBlockInfo(target, out BlockInfo info))
+        {
+            info.SetTemporaryMovementCostOverride(GetSwiftSwimCost());
+            swiftSwimPreviewOverrideBlocks.Add(target);
+        }
+    }
+
+    private void ClearSwiftSwimPreviewCost(MoveOptions swiftSwimOption)
+    {
+        if (swiftSwimOption == null || swiftSwimOption.targetBlock == null)
+            return;
+
+        GameObject target = swiftSwimOption.targetBlock;
+
+        if (!swiftSwimPreviewOverrideBlocks.Contains(target))
+            return;
+
+        if (TryGetBlockInfo(target, out BlockInfo info))
+        {
+            info.ClearTemporaryMovementCostOverride();
+        }
+
+        swiftSwimPreviewOverrideBlocks.Remove(target);
+    }
+
+    private void ClearAllSwiftSwimPreviewCosts()
+    {
+        foreach (GameObject block in swiftSwimPreviewOverrideBlocks)
+        {
+            if (block != null && TryGetBlockInfo(block, out BlockInfo info))
+            {
+                info.ClearTemporaryMovementCostOverride();
+            }
+        }
+
+        swiftSwimPreviewOverrideBlocks.Clear();
     }
 
     #endregion
@@ -1495,56 +1563,6 @@ public class Movement : Singleton<Movement>
 
     void UpdateWaterBlocksForSwiftSwim()
     {
-        int swiftSwimCost = 2;
-        if (StatsRoot.stats.abilitiesGot_Temporary.Flippers || StatsRoot.stats.abilitiesGot_Permanent.Flippers)
-            swiftSwimCost = 1;
-        else
-            swiftSwimCost = 2;
-
-
-        if (StatsRoot.stats.abilitiesGot_Temporary.OxygenTank || StatsRoot.stats.abilitiesGot_Permanent.OxygenTank)
-        {
-            ResetSwiftSwimMovementCost(swiftSwimObject_StandingOn);
-            ResetSwiftSwimMovementCost(swiftSwimObject_Up);
-            ResetSwiftSwimMovementCost(swiftSwimObject_Down);
-
-            if (isSwiftSwim &&
-                TryGetStandingInfo(out BlockInfo standingInfo) &&
-                standingInfo.blockElement == BlockElement.Water)
-            {
-                standingInfo.SetBaseMovementCost(swiftSwimCost);
-                swiftSwimObject_StandingOn = blockStandingOn;
-            }
-
-            if (Physics.Raycast(transform.position + Vector3.down, Vector3.up, out hit, 1, ~swiftSwimLayersToIgnore))
-            {
-                if (hit.collider != null &&
-                    hit.collider.gameObject.TryGetComponent(out BlockInfo upInfo) &&
-                    upInfo.blockElement == BlockElement.Water)
-                {
-                    upInfo.SetBaseMovementCost(swiftSwimCost);
-                    upInfo.ResetDarkenColor();
-                    upInfo.SetDarkenColors();
-                    swiftSwimObject_Up = hit.collider.gameObject;
-                }
-            }
-
-            if (Physics.Raycast(transform.position + Vector3.down, Vector3.down, out hit, 1, ~swiftSwimLayersToIgnore))
-            {
-                if (hit.collider != null &&
-                    hit.collider.gameObject.TryGetComponent(out BlockInfo downInfo) &&
-                    downInfo.blockElement == BlockElement.Water &&
-                    TryGetStandingInfo(out BlockInfo standingWaterInfo) &&
-                    standingWaterInfo.blockElement == BlockElement.Water)
-                {
-                    downInfo.SetBaseMovementCost(swiftSwimCost);
-                    downInfo.ResetDarkenColor();
-                    downInfo.SetDarkenColors();
-                    swiftSwimObject_Down = hit.collider.gameObject;
-                }
-            }
-        }
-
         if (isSwiftSwim)
         {
             Action_isSwiftSwim_Finished?.Invoke();
@@ -1552,16 +1570,18 @@ public class Movement : Singleton<Movement>
         }
     }
 
-    private void ResetSwiftSwimMovementCost(GameObject obj)
-    {
-        if (TryGetBlockInfo(obj, out BlockInfo info))
-        {
-            info.SetBaseMovementCost(0);
-        }
-    }
+    //private void ResetSwiftSwimMovementCost(GameObject obj)
+    //{
+    //    if (TryGetBlockInfo(obj, out BlockInfo info))
+    //    {
+    //        info.SetBaseMovementCost(0);
+    //    }
+    //}
 
     void UpdateSwiftSwimMovement(MoveOptions swiftSwimOption, Vector3 dir)
     {
+        ClearSwiftSwimPreviewCost(swiftSwimOption);
+
         if (!StatsRoot.stats.abilitiesGot_Temporary.OxygenTank && !StatsRoot.stats.abilitiesGot_Permanent.OxygenTank)
         {
             ClearMoveTarget(swiftSwimOption);
@@ -1588,6 +1608,7 @@ public class Movement : Singleton<Movement>
                 else
                 {
                     SetMoveTarget(swiftSwimOption, outObj1);
+                    ApplySwiftSwimPreviewCost(swiftSwimOption);
                 }
             }
             else
@@ -2225,6 +2246,8 @@ public class Movement : Singleton<Movement>
         ResetBlocksOnTheGrapplingWay();
     }
 
+
+
     #endregion
 
     #region PlayerHasAbility
@@ -2425,6 +2448,9 @@ public class Movement : Singleton<Movement>
         if (moveToBlock_SwiftSwimUp.canMoveTo)
         {
             isSwiftSwim = true;
+
+            CacheStepCostForSwiftSwim();
+
             PerformMovement(moveToBlock_SwiftSwimUp, MovementStates.Moving, 2f);
             Action_isSwiftSwim?.Invoke();
             return true;
@@ -2438,6 +2464,9 @@ public class Movement : Singleton<Movement>
         if (moveToBlock_SwiftSwimDown.canMoveTo)
         {
             isSwiftSwim = true;
+
+            CacheStepCostForSwiftSwim();
+
             PerformMovement(moveToBlock_SwiftSwimDown, MovementStates.Moving, 2f);
             Action_isSwiftSwim?.Invoke();
             return true;
@@ -2768,7 +2797,8 @@ public class Movement : Singleton<Movement>
         {
             isMovingFlag = true;
 
-            CacheStepCostForMove(canMoveBlock.targetBlock);
+            if (!hasPendingStepCost)
+                CacheStepCostForMove(canMoveBlock.targetBlock);
 
             ClearFallingCarrierBlock();
             ResetDarkenBlocks();
@@ -2793,7 +2823,8 @@ public class Movement : Singleton<Movement>
 
             isMoving = true;
 
-            CacheStepCostForMove(canMoveBlock.targetBlock);
+            if (!hasPendingStepCost)
+                CacheStepCostForMove(canMoveBlock.targetBlock);
 
             ClearFallingCarrierBlock();
             ResetDarkenBlocks();
@@ -3794,6 +3825,7 @@ public class Movement : Singleton<Movement>
 
         pendingFreeLandingFromSlope = false;
         ClearPendingStepCost();
+        ClearAllSwiftSwimPreviewCosts();
 
         Inputs.forward_isHold = false;
         Inputs.back_isHold = false;
