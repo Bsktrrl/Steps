@@ -175,6 +175,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4445177878566483483, guid: d718df003f0e7480e9b65cb3d67e3003, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9022485719016508642}
+    - targetCorrespondingSourceObject: {fileID: 4445177878566483483, guid: d718df003f0e7480e9b65cb3d67e3003, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7270566931461968751}
+    - targetCorrespondingSourceObject: {fileID: 4445177878566483483, guid: d718df003f0e7480e9b65cb3d67e3003, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -7324603518508563755}
   m_SourcePrefab: {fileID: 100100000, guid: d718df003f0e7480e9b65cb3d67e3003, type: 3}
 --- !u!4 &8569241899309204808 stripped
 Transform:
@@ -250,6 +256,10 @@ MonoBehaviour:
   blockElement: 31
   movementCost_Temp: 0
   movementCost_Temp_Base: 0
+  movementCost_OverrideActive: 0
+  movementCost_OverrideValue: 0
+  movementCost_DisplayOverrideActive: 0
+  movementCost_DisplayOverrideValue: 0
   movementCost: 1
   movementSpeed: 5
   movementState: 0
@@ -277,6 +287,30 @@ MonoBehaviour:
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
+--- !u!114 &7270566931461968751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9054417470479687666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da6a707a33e89284ea3da75bb5dfe26f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-7324603518508563755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9054417470479687666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 799c2ad7f50f2ce449c71e3aa9f0a4e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7579860771526273126
 PrefabInstance:
   m_ObjectHideFlags: 0

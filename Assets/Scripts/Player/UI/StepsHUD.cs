@@ -16,6 +16,7 @@ public class StepsHUD : Singleton<StepsHUD>
     public float activateStartScale = 0.85f;
     public float activateOvershootScale = 1.15f;
     public float activateEndScale = 1.0f;
+
     [Tooltip("How much of the duration is spent going StartScale -> OvershootScale (0..1).")]
     [Range(0.05f, 0.95f)] public float activateOvershootPortion = 0.4f;
     public Ease activateEaseUp = Ease.Linear;
@@ -37,9 +38,9 @@ public class StepsHUD : Singleton<StepsHUD>
     [Header("stepsIconList")]
     [SerializeField] List<GameObject> stepsIconList = new List<GameObject>();
 
-    public float footprint_SpawnTime = 0.1f;
-    public float StepsDisplay_RespawnTime = 0.5f;
-    public float StepsDisplay_CheckpointTime = 0.65f;
+    public float footprint_SpawnTime = 0.03f; //0.1f
+    public float StepsDisplay_RespawnTime = 0f; //0.5f
+    public float StepsDisplay_CheckpointTime = 0f; //0.65f
     
     [Header("Checkpoint Glow")]
     [SerializeField] float checkpointGlowHoldTime = 0.18f;
@@ -77,7 +78,7 @@ public class StepsHUD : Singleton<StepsHUD>
     {
         Interactable_Pickup.Action_StepsUpPickupGot += GetExtraFootprint;
         Movement.Action_StepTaken += UpdateStepsDisplay_Walking;
-        Movement.Action_RespawnPlayerLate += UpdateStepsDisplay_Respawn;
+        Movement.Action_RespawnPlayerEarly += UpdateStepsDisplay_Respawn;
         Block_Checkpoint.Action_CheckPointEntered += UpdateStepsDisplay_Checkpoint;
     }
 
@@ -85,7 +86,7 @@ public class StepsHUD : Singleton<StepsHUD>
     {
         Interactable_Pickup.Action_StepsUpPickupGot -= GetExtraFootprint;
         Movement.Action_StepTaken -= UpdateStepsDisplay_Walking;
-        Movement.Action_RespawnPlayerLate -= UpdateStepsDisplay_Respawn;
+        Movement.Action_RespawnPlayerEarly -= UpdateStepsDisplay_Respawn;
         Block_Checkpoint.Action_CheckPointEntered -= UpdateStepsDisplay_Checkpoint;
     }
 

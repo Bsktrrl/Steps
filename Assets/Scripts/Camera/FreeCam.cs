@@ -334,6 +334,7 @@ public class FreeCam : Singleton<FreeCam>
         }
 
         RenderHiderOnContact.Instance.FreeCamOff();
+        HoleShaderOnOffScript.Instance.HoleShader_On();
 
         if (_returnRoutine != null) StopCoroutine(_returnRoutine);
         _returnRoutine = StartCoroutine(ReturnToPlayerThenSwitch());

@@ -3,24 +3,26 @@
 
 April:
 0.0. Bugs:
-- Legg til en UI-visual som viser hvor mange steg spilleren har igjen før den stopper å brenne
-- Legg til en UI-visual som viser hvor mange gratis steg spilleren har igjen etter at den har gått på en Soppsirkel
+- DarkenBlock med Dashing:
+	- Registreres ikke når spilleren ikke er rotert mot dashing-blokken. Det burde den.
+- CeilingGrab: 
+	- Kan ikke gjøres fra start eller rett etter respawn. 
+	- Kan gjøres etter at man har falt, men det ikke er en blokk over, så spilleren står bare i løse luften.
+- Dashing og MovementBlocks: 
+	- Gjøre slik at man alltid dasher automatisk, utenom hvis man roterer mot en MovementBlock. Da skal det være samme system som det er nå.
+- Kamera: 
+	- Bør kunne roteres underveis i Slope_X_Animasjonen
+- GrapplingHook: 
+	- Endre visuals med nye effekter
+- RootBlock:
+	- Røttene blir ikke borte hvis man går under røttene (eks. i vann eller under en slope den er på)
 
-- DarkenBlock med Dashing registreres ikke når spilleren ikke er rotert mot dashing-blokken. Det burde den.
-- CeilingGrab: Kan ikke gjøres fra start eller rett etter respawn. Kan gjøres etter at man har falt, men det ikke er en blokk over, så spilleren står bare i løse luften.
-- Dashing og MovementBlocks: Gjøre slik at man alltid dasher automatisk, utenom hvis man roterer mot en MovementBlock. Da skal det være samme system som det er nå.
-- Kamera: Bør kunne roteres underveis i Slope_X_Animasjonen
-- GrapplingHook: Endre visuals med ny effekt
-- RootBlock blir ikke borte hvis man går under røttene (eks. i vann eller under en slope den er på)
-
-- Fiske stepCost til Quicksand
 
 
 1.0. Lage levels:
 - Lage Tutorial level
 	- Lage funksjonalitet for Tutorial-levelet i OverworldMenyen
 	- Gjøre slik at man kan velge og kjøre Tutorial-levelet fra OverworldMenyen
-- Lage level i Witchmire
 - Lage Rivergreen-levelet i Metalworks (plassere 4 glueplants i 4 beholdere på ulike steder i levelet)
 	- Lage funksjonalitet for å plassere glueplants i holderne sine (ved å trykke på interact-knappen)
 
@@ -44,6 +46,10 @@ April:
 
 --- OTHER FIXES
 
+
+14. Nytt StepCost-system:
+- Spilleren må respawne idet den får 0 steg, heller enn at man må trykke på knapp mens man har 0 steg for å respawne
+	- Man må sjekke om det skjer noe på blokken før spilleren respawner (eks. pickups, soppsirkel
 
 
 15. Settings: FreeCam Speed & rotation sensetivity (Move Speed & MouseSensitivity/StickSensitivity)

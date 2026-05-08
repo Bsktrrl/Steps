@@ -168,7 +168,7 @@ public class CameraController : Singleton<CameraController>
     IEnumerator RotateCamera()
     {
         Action_RotateCamera_Start?.Invoke();
-        HoleShaderOnOffScript.Instance.HoleShader_On();
+        //HoleShaderOnOffScript.Instance.HoleShader_On();
 
         isRotating = true;
         PlayerManager.Instance.pauseGame = true;
@@ -235,7 +235,7 @@ public class CameraController : Singleton<CameraController>
         }
 
         isIgnoringObstaclesWhenRotating = false;
-        HoleShaderOnOffScript.Instance.HoleShader_Off();
+        //HoleShaderOnOffScript.Instance.HoleShader_Off();
 
         yield return new WaitForSeconds(waitDelay);
 

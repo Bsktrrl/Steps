@@ -209,6 +209,7 @@ public class GlueplantCamera : Singleton<GlueplantCamera>
     private IEnumerator Co_RunCameraTravel(float waitTime)
     {
         camera_isTraveling = true;
+        HoleShaderOnOffScript.Instance.HoleShader_Off();
 
         if (waitTime > 0f)
             yield return new WaitForSeconds(waitTime);
@@ -432,6 +433,7 @@ public class GlueplantCamera : Singleton<GlueplantCamera>
     {
         camera_isTraveling = false;
         travelRoutine = null;
+        HoleShaderOnOffScript.Instance.HoleShader_On();
 
         SetPriority(CM_Player, glueplantPriorityDuringTravel);
         SetPriority(CM_Glueplant, playerPriorityDuringTravel);

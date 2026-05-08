@@ -257,6 +257,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2072997062959057419, guid: 00795b05bd49348fd963e2f48a58cc92, type: 3}
       insertIndex: -1
       addedObject: {fileID: -9148853764038582708}
+    - targetCorrespondingSourceObject: {fileID: 2072997062959057419, guid: 00795b05bd49348fd963e2f48a58cc92, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4376435221822680633}
+    - targetCorrespondingSourceObject: {fileID: 2072997062959057419, guid: 00795b05bd49348fd963e2f48a58cc92, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -2390962907984587164}
   m_SourcePrefab: {fileID: 100100000, guid: 00795b05bd49348fd963e2f48a58cc92, type: 3}
 --- !u!1 &7479176082871937720 stripped
 GameObject:
@@ -327,6 +333,10 @@ MonoBehaviour:
   blockElement: 31
   movementCost_Temp: 0
   movementCost_Temp_Base: 0
+  movementCost_OverrideActive: 0
+  movementCost_OverrideValue: 0
+  movementCost_DisplayOverrideActive: 0
+  movementCost_DisplayOverrideValue: 0
   movementCost: 1
   movementSpeed: 5
   movementState: 0
@@ -354,6 +364,30 @@ MonoBehaviour:
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
+--- !u!114 &-4376435221822680633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7479176082871937720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da6a707a33e89284ea3da75bb5dfe26f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-2390962907984587164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7479176082871937720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 799c2ad7f50f2ce449c71e3aa9f0a4e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7818406913332064258 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1697596977449668785, guid: 00795b05bd49348fd963e2f48a58cc92, type: 3}
