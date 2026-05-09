@@ -44,6 +44,9 @@ public class GameData
     //PlayerStatsData
     /*[HideInInspector]*/ public PlayerStatsData PlayerStatsData_Save = new PlayerStatsData();
 
+    //PlayerStatsData
+    /*[HideInInspector]*/ public GlueplantStandStats glueplantStandStats_Save = new GlueplantStandStats();
+
 
     //--------------------
 
@@ -62,6 +65,8 @@ public class GameData
         PlayerStatsData_Save = new PlayerStatsData();
 
         oneTimeRunData_Save = new OneTimeRunData();
+
+        glueplantStandStats_Save = new GlueplantStandStats();
 
         //game_TextDatabase_Save = new Game_TextDatabase();
     }

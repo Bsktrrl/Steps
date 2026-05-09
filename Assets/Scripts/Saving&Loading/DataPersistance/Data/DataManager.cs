@@ -58,7 +58,10 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     /*[HideInInspector]*/public Game_TextDatabase game_TextDatabase_Store = new Game_TextDatabase();
 
     //PlayerStatsData
-    /*[HideInInspector]*/ public PlayerStatsData PlayerStatsData_Store = new PlayerStatsData();
+    /*[HideInInspector]*/ public PlayerStatsData playerStatsData_Store = new PlayerStatsData();
+
+    //PlayerStatsData
+    /*[HideInInspector]*/ public GlueplantStandStats glueplantStandStats_Store = new GlueplantStandStats();
 
     #endregion
 
@@ -100,9 +103,11 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.skinsInfo_Store = gameData.skinsInfo_Save;
         this.game_TextDatabase_Store = gameData.game_TextDatabase_Save;
 
-        this.PlayerStatsData_Store = gameData.PlayerStatsData_Save;
+        this.playerStatsData_Store = gameData.PlayerStatsData_Save;
 
         this.oneTimeRunData_Store = gameData.oneTimeRunData_Save;
+
+        this.glueplantStandStats_Store = gameData.glueplantStandStats_Save;
     }
 
     void LoadDataIntoProject(GameData gameData)
@@ -165,11 +170,13 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         gameData.skinsInfo_Save = this.skinsInfo_Store;
         gameData.game_TextDatabase_Save = this.game_TextDatabase_Store;
 
-        gameData.PlayerStatsData_Save = this.PlayerStatsData_Store;
+        gameData.PlayerStatsData_Save = this.playerStatsData_Store;
 
         gameData.oneTimeRunData_Save = this.oneTimeRunData_Store;
 
         gameData.haveStartedNewGame_Save = this.haveStartedNewGame_Store;
+
+        gameData.glueplantStandStats_Save = this.glueplantStandStats_Store;
     }
 
     public void Load_NewGame_Data(GameData oldData, GameData newData)
@@ -188,8 +195,10 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
         this.haveStartedNewGame_Store = newData.haveStartedNewGame_Save;
 
-        this.PlayerStatsData_Store = newData.PlayerStatsData_Save;
-        this.PlayerStatsData_Store.sessionStats.session_No = 1;
+        this.playerStatsData_Store = newData.PlayerStatsData_Save;
+        this.playerStatsData_Store.sessionStats.session_No = 1;
+
+        this.glueplantStandStats_Store = newData.glueplantStandStats_Save;
 
 
         //Persist through newGame
