@@ -177,43 +177,48 @@ public class Block_Root : MonoBehaviour
         }
 
         GameObject blockPlayerStartedOn = Movement.Instance.blockStandingOn;
+        GameObject actualTargetBlock = Movement.Instance.currentMoveTargetBlock;
 
-        delayedRootExitCheckCoroutine = StartCoroutine(CheckWhenToResetRootLine_Delayed(blockPlayerStartedOn));
+        delayedRootExitCheckCoroutine = StartCoroutine(CheckWhenToResetRootLine_Delayed(blockPlayerStartedOn, actualTargetBlock));
     }
 
-    IEnumerator CheckWhenToResetRootLine_Delayed(GameObject blockPlayerStartedOn)
+    IEnumerator CheckWhenToResetRootLine_Delayed(GameObject blockPlayerStartedOn, GameObject actualTargetBlock)
     {
-        // Wait at least one frame.
         yield return null;
 
-        // Wait until Movement.blockStandingOn has actually updated.
-        // This is the important part.
+        // Wait until the player actually leaves the starting block.
         while (isActive && Movement.Instance.blockStandingOn == blockPlayerStartedOn)
         {
             yield return null;
         }
+
+        // Do not destroy roots while the player is still travelling.
+        // This is important for moving elevators/rooted moving blocks.
+        while (isActive &&
+               (Movement.Instance.isMoving ||
+                Movement.Instance.GetMovementState() == MovementStates.Moving ||
+                Movement.Instance.GetMovementState() == MovementStates.Falling))
+        {
+            yield return null;
+        }
+
+        // Give Movement one frame to update blockStandingOn after landing.
+        yield return null;
 
         delayedRootExitCheckCoroutine = null;
 
         if (!isActive)
             yield break;
 
-        bool standingOnRootSegment = false;
-
-        for (int i = 0; i < RootFreeCostBlockList.Count; i++)
+        // If the actual target block had roots when the move started,
+        // keep roots alive even if the block moved during the transition.
+        if (IsBlockRooted(actualTargetBlock))
         {
-            if (RootFreeCostBlockList[i].block == null)
-                continue;
-
-            if (Movement.Instance.blockStandingOn == RootFreeCostBlockList[i].block)
-            {
-                standingOnRootSegment = true;
-                break;
-            }
+            yield break;
         }
 
-        // Keep roots alive while standing on any root segment.
-        if (standingOnRootSegment)
+        // Normal final check.
+        if (IsBlockRooted(Movement.Instance.blockStandingOn))
         {
             yield break;
         }
@@ -224,8 +229,20 @@ public class Block_Root : MonoBehaviour
             yield break;
         }
 
-        // Player has moved from a rooted block/root block onto a non-rooted block.
         DestroyRootFreeCostList();
+    }
+
+    bool IsBlockRooted(GameObject block)
+    {
+        if (!block) return false;
+
+        for (int i = 0; i < RootFreeCostBlockList.Count; i++)
+        {
+            if (RootFreeCostBlockList[i].block == block)
+                return true;
+        }
+
+        return false;
     }
 
 

@@ -62,6 +62,9 @@ public class Movement : Singleton<Movement>
     public GameObject blockStandingOn;
     public GameObject blockStandingOn_Previous;
 
+    [Header("Current Move Target")]
+    public GameObject currentMoveTargetBlock;
+
     [Header("LookDirection")]
     [HideInInspector] public Vector3 lookDir;
     [HideInInspector] public float lookDir_Temp;
@@ -2858,6 +2861,8 @@ public class Movement : Singleton<Movement>
     {
         isMoving = true;
 
+        currentMoveTargetBlock = moveOptions != null ? moveOptions.targetBlock : null;
+
         Action_StepTaken_Early_Invoke();
 
         if (TryGetStandingInfo(out BlockInfo standingInfo) && standingInfo.blockType == BlockType.Slope)
@@ -2891,6 +2896,8 @@ public class Movement : Singleton<Movement>
         PlayerCameraOcclusionController.Instance.CameraZoom(false);
 
         Action_StepTaken_Invoke();
+
+        currentMoveTargetBlock = null;
 
         if (pendingDarkeningRefreshAfterChain &&
             !ShouldChainImmediatelyAfterStep() &&
