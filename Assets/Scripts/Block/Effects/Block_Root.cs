@@ -2,9 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.UI.Image;
 
 public class Block_Root : MonoBehaviour
 {
@@ -33,6 +31,13 @@ public class Block_Root : MonoBehaviour
 
     Coroutine rootAnimCoroutine;
 
+    [Header("Live Root Continuation")]
+    [SerializeField] bool checkForRootContinuation = true;
+    [SerializeField] float continuationCheckInterval = 0.05f;
+    [SerializeField] int maxContinuationSegmentsPerCheck = 8;
+
+    float nextContinuationCheckTime;
+
 
     //--------------------
 
@@ -50,6 +55,8 @@ public class Block_Root : MonoBehaviour
         if (Movement.Instance.isMovingOnLadder_Down || Movement.Instance.isMovingOnLadder_Up || Movement.Instance.isRespawning) return;
 
         //CheckWhenToResetRootLine();
+
+        UpdateLiveRootContinuation();
     }
 
     private void OnEnable()
@@ -833,6 +840,390 @@ public class Block_Root : MonoBehaviour
             info.ClearTemporaryMovementCostOverride();
         }
     }
+    #endregion
+
+    #region LiveRootContinuation
+
+    void UpdateLiveRootContinuation()
+    {
+        if (!checkForRootContinuation) return;
+        if (!isActive) return;
+        if (RootFreeCostBlockList.Count <= 0) return;
+
+        // Keep existing root visuals attached to their blocks.
+        // This is important when rooted blocks move.
+        SetRootLineObjectsOrientation();
+
+        if (Time.time < nextContinuationCheckTime) return;
+        nextContinuationCheckTime = Time.time + continuationCheckInterval;
+
+        TryContinueRootLineFromLastSegment();
+    }
+
+    void TryContinueRootLineFromLastSegment()
+    {
+        if (RootFreeCostBlockList.Count <= 0) return;
+
+        int addedCount = 0;
+
+        while (addedCount < maxContinuationSegmentsPerCheck)
+        {
+            if (RootFreeCostBlockList.Count >= RootObjectList.Count)
+            {
+                Debug.LogWarning($"{nameof(Block_Root)} on {name}: Not enough root objects in RootObjectList to continue root line.");
+                break;
+            }
+
+            GameObject nextBlock = FindNextBlockForLiveContinuation();
+
+            if (!nextBlock)
+                break;
+
+            if (IsBlockAlreadyInRootLine(nextBlock))
+                break;
+
+            bool nextIsStairOrSlope = false;
+
+            BlockInfo nextInfo = nextBlock.GetComponent<BlockInfo>();
+
+            if (nextInfo)
+            {
+                nextIsStairOrSlope = nextInfo.blockType == BlockType.Stair || nextInfo.blockType == BlockType.Slope;
+            }
+
+            int newRootIndex = RootFreeCostBlockList.Count;
+
+            SetupEntryInBlockList(nextBlock, nextIsStairOrSlope);
+
+            // Place all roots again so moving blocks and newly added roots are correct.
+            SetRootLineObjectsOrientation();
+
+            // Show only the newly added visual.
+            ActivateSingleRootObject(newRootIndex);
+
+            // Apply 0 movement cost to the new block.
+            ChangeBlockMovementCost();
+
+            // Refresh movement visuals.
+            Movement.Instance.UpdateBlocks();
+            Movement.Instance.SetDarkenBlocks();
+
+            addedCount++;
+        }
+    }
+
+    GameObject FindNextBlockForLiveContinuation()
+    {
+        Vector3 lookDir_Temp = playerLookDir;
+
+        if (lookDir_Temp.sqrMagnitude < 0.001f)
+            lookDir_Temp = Movement.Instance.lookingDirection;
+
+        lookDir_Temp.y = 0f;
+        lookDir_Temp.Normalize();
+
+        tempOriginPos = RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].block.transform.position;
+
+        bool blockIsFound = false;
+        GameObject foundBlock = null;
+
+        #region Check in line
+
+        GameObject tempBlock_Adjacent = RaycastBlock(tempOriginPos + (Vector3.up * 0.3f), lookDir_Temp, 1f);
+
+        if (tempBlock_Adjacent)
+        {
+            GameObject tempBlock_Over = RaycastBlock(tempBlock_Adjacent.transform.position + (Vector3.up * 0.3f), Vector3.up, 1f);
+
+            if (!tempBlock_Over || (tempBlock_Over && tempBlock_Over.GetComponent<BlockInfo>() && tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slab))
+            {
+                if (tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                {
+                    StairSlopeCorrectionLive(ref tempBlock_Adjacent, lookDir_Temp);
+
+                    if (tempBlock_Adjacent)
+                    {
+                        foundBlock = tempBlock_Adjacent;
+                        blockIsFound = true;
+                    }
+                }
+                else
+                {
+                    foundBlock = tempBlock_Adjacent;
+                    blockIsFound = true;
+                }
+            }
+            else
+            {
+                if (tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                {
+                    StairSlopeCorrectionLive(ref tempBlock_Over, lookDir_Temp);
+
+                    if (tempBlock_Over)
+                    {
+                        foundBlock = tempBlock_Over;
+                        blockIsFound = true;
+                    }
+                }
+            }
+        }
+        else
+        {
+            GameObject tempBlock_UnderEmpty = RaycastBlock(tempOriginPos + (Vector3.up * 0.3f) + lookDir_Temp, Vector3.down, 1.25f);
+            GameObject tempBlock_OverEmpty = RaycastBlock(tempOriginPos + (Vector3.up * 0.3f) + lookDir_Temp, Vector3.up, 1.25f);
+
+            if (tempBlock_UnderEmpty &&
+                (tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope) &&
+                RootFreeCostBlockList.Count > 0 &&
+                (RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Stair || RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slope))
+            {
+                StairSlopeCorrectionLive(ref tempBlock_UnderEmpty, lookDir_Temp);
+
+                if (tempBlock_UnderEmpty)
+                {
+                    foundBlock = tempBlock_UnderEmpty;
+                    blockIsFound = true;
+                }
+            }
+            else if (tempBlock_OverEmpty &&
+                     (tempBlock_OverEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_OverEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope))
+            {
+                StairSlopeCorrectionLive(ref tempBlock_OverEmpty, lookDir_Temp);
+
+                if (tempBlock_OverEmpty)
+                {
+                    foundBlock = tempBlock_OverEmpty;
+                    blockIsFound = true;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Check diagonal down after stair/slope
+
+        if (!blockIsFound && RootFreeCostBlockList.Count > 0)
+        {
+            var lastType = RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType;
+
+            if (lastType == BlockType.Stair || lastType == BlockType.Slope)
+            {
+                Vector3 origin = tempOriginPos + lookDir_Temp + Vector3.up * 2.0f;
+
+                GameObject diagDown = RaycastBlock(origin, Vector3.down, 5.0f);
+
+                if (diagDown)
+                {
+                    if (diagDown.transform.position.y < tempOriginPos.y - 0.25f)
+                    {
+                        foundBlock = diagDown;
+                        blockIsFound = true;
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region Check diagonal up after stair/slope
+
+        if (!blockIsFound && RootFreeCostBlockList.Count > 0)
+        {
+            var lastType = RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType;
+
+            if (lastType == BlockType.Stair || lastType == BlockType.Slope)
+            {
+                Vector3 origin = tempOriginPos + lookDir_Temp + Vector3.up * 0.1f;
+
+                GameObject diagUp = RaycastBlock(origin, Vector3.up, 5.0f);
+
+                if (diagUp)
+                {
+                    if (diagUp.transform.position.y > tempOriginPos.y + 0.25f)
+                    {
+                        foundBlock = diagUp;
+                        blockIsFound = true;
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region Check stairs/slopes
+
+        if (!blockIsFound)
+        {
+            tempBlock_Adjacent = RaycastBlock(tempOriginPos, lookDir_Temp, 1f);
+            GameObject tempBlock_Over = RaycastBlock(tempOriginPos + Vector3.up, lookDir_Temp, 1f);
+
+            if (tempBlock_Adjacent &&
+                (tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Slope))
+            {
+                StairSlopeCorrectionLive(ref tempBlock_Adjacent, lookDir_Temp);
+
+                if (tempBlock_Adjacent)
+                {
+                    foundBlock = tempBlock_Adjacent;
+                    blockIsFound = true;
+                }
+            }
+
+            if (!blockIsFound &&
+                tempBlock_Adjacent &&
+                tempBlock_Over &&
+                (tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slope))
+            {
+                StairSlopeCorrectionLive(ref tempBlock_Over, lookDir_Temp);
+
+                if (tempBlock_Over)
+                {
+                    foundBlock = tempBlock_Over;
+                    blockIsFound = true;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Check Ladder
+
+        if (!blockIsFound)
+        {
+            GameObject tempBlock_Ladder_Up = RaycastLadder(tempOriginPos + Vector3.up, lookDir_Temp, 1.5f);
+            GameObject tempBlock_Ladder_Down = RaycastLadder(tempOriginPos, lookDir_Temp, 1f);
+
+            if (tempBlock_Ladder_Up)
+            {
+                if (tempBlock_Ladder_Up.GetComponent<Block_Ladder>() &&
+                    tempBlock_Ladder_Up.GetComponent<Block_Ladder>().exitBlock_Up &&
+                    tempBlock_Ladder_Up.GetComponent<Block_Ladder>().exitBlock_Up.GetComponent<BlockInfo>())
+                {
+                    foundBlock = tempBlock_Ladder_Up.GetComponent<Block_Ladder>().exitBlock_Up;
+                    blockIsFound = true;
+                }
+            }
+            else if (tempBlock_Ladder_Down)
+            {
+                if (tempBlock_Ladder_Down.GetComponent<Block_Ladder>() &&
+                    tempBlock_Ladder_Down.GetComponent<Block_Ladder>().exitBlock_Down &&
+                    tempBlock_Ladder_Down.GetComponent<Block_Ladder>().exitBlock_Down.GetComponent<BlockInfo>())
+                {
+                    foundBlock = tempBlock_Ladder_Down.GetComponent<Block_Ladder>().exitBlock_Down;
+                    blockIsFound = true;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Check after slope after falling
+
+        if (!blockIsFound)
+        {
+            GameObject tempBlock_Falling = null;
+
+            if (RootFreeCostBlockList.Count > 0 && RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slope)
+            {
+                tempBlock_Falling = RaycastBlock(tempOriginPos + lookDir_Temp, Vector3.down, 50f);
+            }
+
+            if (tempBlock_Falling)
+            {
+                foundBlock = tempBlock_Falling;
+                blockIsFound = true;
+            }
+        }
+
+        #endregion
+
+        if (!blockIsFound)
+            return null;
+
+        if (!foundBlock)
+            return null;
+
+        if (!foundBlock.GetComponent<BlockInfo>())
+            return null;
+
+        return foundBlock;
+    }
+
+    void ActivateSingleRootObject(int index)
+    {
+        if (index < 0) return;
+        if (index >= RootObjectList.Count) return;
+        if (RootObjectList[index] == null) return;
+
+        RootObjectList[index].SetActive(true);
+
+        Animator rootAnimator = RootObjectList[index].GetComponent<Animator>();
+
+        if (rootAnimator)
+        {
+            rootAnimator.SetTrigger("Activate");
+        }
+    }
+
+    bool IsBlockAlreadyInRootLine(GameObject block)
+    {
+        if (!block) return false;
+
+        for (int i = 0; i < RootFreeCostBlockList.Count; i++)
+        {
+            if (RootFreeCostBlockList[i].block == block)
+                return true;
+        }
+
+        return false;
+    }
+
+    void StairSlopeCorrectionLive(ref GameObject obj, Vector3 travelDir)
+    {
+        if (!obj) return;
+
+        var info = obj.GetComponent<BlockInfo>();
+
+        if (!info)
+        {
+            obj = null;
+            return;
+        }
+
+        if (info.blockType != BlockType.Stair && info.blockType != BlockType.Slope) return;
+
+        Vector3 stairDir = obj.transform.forward.normalized;
+
+        travelDir.y = 0f;
+
+        if (travelDir.sqrMagnitude > 0.0001f)
+            travelDir.Normalize();
+
+        float dot = Vector3.Dot(stairDir, travelDir);
+
+        float y = obj.transform.position.y;
+
+        bool ok;
+        const float eps = 0.05f;
+
+        bool Approx(float a, float b) => Mathf.Abs(a - b) < eps;
+
+        if (dot < 0f)
+        {
+            ok = Approx(tempOriginPos.y, y - 0.5f) || Approx(tempOriginPos.y, y - 1.0f) || Approx(tempOriginPos.y, y - 1.5f);
+        }
+        else
+        {
+            ok = Approx(tempOriginPos.y, y + 0.5f) || Approx(tempOriginPos.y, y + 1.0f) || Approx(tempOriginPos.y, y + 1.5f);
+        }
+
+        if (!ok)
+        {
+            Debug.LogWarning($"REJECT live stair {obj.name}: originY={tempOriginPos.y} stairY={y} dot={dot}");
+            obj = null;
+        }
+    }
+
     #endregion
 
 
