@@ -5,20 +5,28 @@ April:
 0.0. Bugs:
 - DarkenBlock med Dashing:
 	- Registreres ikke når spilleren ikke er rotert mot dashing-blokken. Det burde den.
+
 - CeilingGrab: 
 	- Kan ikke gjøres fra start eller rett etter respawn. 
 	- Kan gjøres etter at man har falt, men det ikke er en blokk over, så spilleren står bare i løse luften.
+
 - Dashing og MovementBlocks: 
 	- Gjøre slik at man alltid dasher automatisk, utenom hvis man roterer mot en MovementBlock. Da skal det være samme system som det er nå.
+
 - Kamera: 
 	- Bør kunne roteres underveis i Slope_X_Animasjonen
+
 - GrapplingHook: 
 	- Endre visuals med nye effekter
+
 - RootBlock:
 	- Røttene blir ikke borte hvis man går under røttene (eks. i vann eller under en slope den er på)
+
 - MainMenu PinkButton:
 	- Siden Rivergreen-knappen i Overworld er "first", så vil den aktiveres, og ikke den som skal aktiveres, hvis man har gått inn i et level som ikke er Rivergreen, gått tilbake til menyen og så tilbake til RegionSelect i Overworld.
 	- Mulig fix: Sett "First" for disse knappene (spesifikt), basert på saveState av region man har vært sist innom
+
+- Hull-shader: Skjul hull-shaderen dersom det ikke er noe som er mellom kameraet og spilleren, for å unngå at hull-shaderen klipper i blokker på siden av spilleren når dette ikke trengs. Kjør sjekker i "Update()" (for å sikre mot bl.a. ElevatorBlocks)
 
 
 
