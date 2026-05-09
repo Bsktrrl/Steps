@@ -540,7 +540,7 @@ public class Block_Root : MonoBehaviour
     {
         RootBlockLineInfo rootBlockLineInfo = new RootBlockLineInfo();
         rootBlockLineInfo.block = tempBlock;
-        rootBlockLineInfo.originalMovemetCost = tempBlock.GetComponent<BlockInfo>().movementCost_Temp;
+        rootBlockLineInfo.originalMovemetCost = tempBlock.GetComponent<BlockInfo>().movementCost_Temp_Base;
         rootBlockLineInfo.blockType = tempBlock.GetComponent<BlockInfo>().blockType;
         rootBlockLineInfo.facingDir = tempBlock.transform.localPosition;
 
@@ -747,8 +747,15 @@ public class Block_Root : MonoBehaviour
     {
         for (int i = 0; i < RootFreeCostBlockList.Count; i++)
         {
-            RootFreeCostBlockList[i].block.GetComponent<BlockInfo>().movementCost_Temp = 0;
-            RootFreeCostBlockList[i].block.GetComponent<BlockInfo>().movementCost = 0;
+            if (RootFreeCostBlockList[i].block == null)
+                continue;
+
+            BlockInfo info = RootFreeCostBlockList[i].block.GetComponent<BlockInfo>();
+
+            if (info == null)
+                continue;
+
+            info.SetTemporaryMovementCostOverride(0);
         }
     }
     #endregion
@@ -778,6 +785,10 @@ public class Block_Root : MonoBehaviour
         finishedCheckingForBlocks = false;
 
         onTrigger = false;
+
+        Movement.Instance.ResetDarkenBlocks_External();
+        Movement.Instance.UpdateBlocks();
+        Movement.Instance.SetDarkenBlocks();
     }
 
 
@@ -804,14 +815,22 @@ public class Block_Root : MonoBehaviour
     {
         for (int i = 0; i < RootFreeCostBlockList.Count; i++)
         {
-            if (RootFreeCostBlockList[i].block && RootFreeCostBlockList[i].block.GetComponent<Block_Water>())
-                RootFreeCostBlockList[i].block.GetComponent<Block_Water>().hasRoots = false;
+            GameObject block = RootFreeCostBlockList[i].block;
 
-            if (RootFreeCostBlockList[i].block && RootFreeCostBlockList[i].block.GetComponent<BlockInfo>())
+            if (block == null)
+                continue;
+
+            if (block.GetComponent<Block_Water>())
             {
-                RootFreeCostBlockList[i].block.GetComponent<BlockInfo>().movementCost_Temp = RootFreeCostBlockList[i].originalMovemetCost;
-                RootFreeCostBlockList[i].block.GetComponent<BlockInfo>().movementCost = RootFreeCostBlockList[i].originalMovemetCost;
+                block.GetComponent<Block_Water>().hasRoots = false;
             }
+
+            BlockInfo info = block.GetComponent<BlockInfo>();
+
+            if (info == null)
+                continue;
+
+            info.ClearTemporaryMovementCostOverride();
         }
     }
     #endregion

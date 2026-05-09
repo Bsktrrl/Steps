@@ -123,6 +123,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 56254f88a3662bb44bbd91465f917bfc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8271979915618413173}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 56254f88a3662bb44bbd91465f917bfc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4251303077518392973}
   m_SourcePrefab: {fileID: 100100000, guid: 56254f88a3662bb44bbd91465f917bfc, type: 3}
 --- !u!1 &1658154360824172033 stripped
 GameObject:
@@ -192,6 +195,11 @@ MonoBehaviour:
   blockType: 2
   blockElement: 15
   movementCost_Temp: 0
+  movementCost_Temp_Base: 0
+  movementCost_OverrideActive: 0
+  movementCost_OverrideValue: 0
+  movementCost_DisplayOverrideActive: 0
+  movementCost_DisplayOverrideValue: 0
   movementCost: 1
   movementSpeed: 5
   movementState: 0
@@ -219,6 +227,18 @@ MonoBehaviour:
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
+--- !u!114 &-4251303077518392973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658154360824172033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da6a707a33e89284ea3da75bb5dfe26f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2038197928144721083 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 56254f88a3662bb44bbd91465f917bfc, type: 3}

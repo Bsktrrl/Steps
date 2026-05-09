@@ -66,15 +66,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3020648043282393557, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.98
+      value: 0.96
       objectReference: {fileID: 0}
     - target: {fileID: -3020648043282393557, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.98
+      value: 0.96
       objectReference: {fileID: 0}
     - target: {fileID: -3020648043282393557, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.98
+      value: 0.96
       objectReference: {fileID: 0}
     - target: {fileID: -3020648043282393557, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_LocalPosition.y
@@ -86,15 +86,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2690961031442375108, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.98
+      value: 0.96
       objectReference: {fileID: 0}
     - target: {fileID: -2690961031442375108, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.98
+      value: 0.96
       objectReference: {fileID: 0}
     - target: {fileID: -2690961031442375108, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.98
+      value: 0.96
       objectReference: {fileID: 0}
     - target: {fileID: -2690961031442375108, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_LocalPosition.y
@@ -130,15 +130,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5584641881576573271, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.98
+      value: 0.96
       objectReference: {fileID: 0}
     - target: {fileID: 5584641881576573271, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.98
+      value: 0.96
       objectReference: {fileID: 0}
     - target: {fileID: 5584641881576573271, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.98
+      value: 0.96
       objectReference: {fileID: 0}
     - target: {fileID: 5584641881576573271, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       propertyPath: m_LocalPosition.y
@@ -167,6 +167,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2309797409200129886}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8831928665769639308}
   m_SourcePrefab: {fileID: 100100000, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}
 --- !u!1 &1705541200728215403 stripped
 GameObject:
@@ -236,6 +239,11 @@ MonoBehaviour:
   blockType: 2
   blockElement: 19
   movementCost_Temp: 0
+  movementCost_Temp_Base: 0
+  movementCost_OverrideActive: 0
+  movementCost_OverrideValue: 0
+  movementCost_DisplayOverrideActive: 0
+  movementCost_DisplayOverrideValue: 0
   movementCost: 1
   movementSpeed: 5
   movementState: 0
@@ -263,6 +271,18 @@ MonoBehaviour:
   effectBlock_Teleporter_isAdded: 0
   effectBlock_Moveable_isAdded: 0
   effectBlock_MushroomCircle_isAdded: 0
+--- !u!114 &-8831928665769639308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705541200728215403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da6a707a33e89284ea3da75bb5dfe26f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2080834564837774801 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 48c661c5c634a4d4e882f190d72bf584, type: 3}

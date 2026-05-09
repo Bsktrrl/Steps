@@ -66,5 +66,7 @@ public enum BlockElement
 
     Quartz,
     PurpleGrass,
-    MushroomCircle
+    MushroomCircle,
+    Bush,
+    Temple
 }

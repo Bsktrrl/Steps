@@ -193,7 +193,7 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
         // Normal mode: "ceiling" is above; ceilingGrab: "ceiling" is below world-up
         Vector3 dir = ceilingGrabActive ? Vector3.down : Vector3.up;
 
-        bool hit = RaycastSkippingBlockInfo(followTarget.position, dir, rig.ceilingCheckDistance, obstructionLayers, out _);
+        bool hit = RaycastSkippingTarget(followTarget.position, dir, rig.ceilingCheckDistance, obstructionLayers, out _);
 
         return hit;
     }
@@ -211,7 +211,7 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
         dir /= dist;
         float checkDist = Mathf.Min(dist, rig.wallCheckDistance);
 
-        bool hit = RaycastSkippingBlockInfo(origin, dir, checkDist, obstructionLayers, out _);
+        bool hit = RaycastSkippingTarget(origin, dir, checkDist, obstructionLayers, out _);
 
         if (debugDraw)
         {
@@ -220,7 +220,7 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
 
         return hit;
     }
-    static bool RaycastSkippingBlockInfo(Vector3 origin, Vector3 dir, float maxDistance, int layerMask, out RaycastHit validHit)
+    static bool RaycastSkippingTarget(Vector3 origin, Vector3 dir, float maxDistance, int layerMask, out RaycastHit validHit)
     {
         float remaining = maxDistance;
 
@@ -233,11 +233,8 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
             }
 
             // Skip this hit if the collider's GameObject has BlockInfo
-            if (hit.collider && hit.collider.GetComponent<BlockInfo>()
-                && (hit.collider.GetComponent<BlockInfo>().blockType == BlockType.Slab
-                || hit.collider.GetComponent<BlockInfo>().blockElement == BlockElement.Water
-                || hit.collider.GetComponent<BlockInfo>().blockElement == BlockElement.Mud
-                || hit.collider.GetComponent<BlockInfo>().blockElement == BlockElement.SwampWater))
+            if ((hit.collider && hit.collider.GetComponent<CameraZoomIgnore>())
+                || (hit.collider && hit.collider.transform.parent && hit.collider.transform.parent.GetComponent<CameraZoomIgnore>()))
             {
                 float step = hit.distance + 0.001f;
                 origin += dir * step;
@@ -355,7 +352,7 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
 
         rayDir /= rayLen;
 
-        if (RaycastSkippingBlockInfo(targetPos, rayDir, rayLen, obstructionLayers, out RaycastHit hit))
+        if (RaycastSkippingTarget(targetPos, rayDir, rayLen, obstructionLayers, out RaycastHit hit))
         {
             // Where the obstruction is, but keep a small buffer off the wall
             Vector3 point = targetPos + rayDir * (hit.distance - wallBuffer);
@@ -421,11 +418,8 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
             }
 
             // Skip any hit that belongs to a BlockInfo object
-            if (hit.collider && hit.collider.GetComponent<BlockInfo>()
-                && (hit.collider.GetComponent<BlockInfo>().blockType == BlockType.Slab
-                || hit.collider.GetComponent<BlockInfo>().blockElement == BlockElement.Water
-                || hit.collider.GetComponent<BlockInfo>().blockElement == BlockElement.Mud
-                || hit.collider.GetComponent<BlockInfo>().blockElement == BlockElement.SwampWater))
+            if ((hit.collider && hit.collider.GetComponent<CameraZoomIgnore>())
+                || (hit.collider && hit.collider.transform.parent && hit.collider.transform.parent.GetComponent<CameraZoomIgnore>()))
             {
                 float step = hit.distance + 0.001f;
                 origin += dir * step;

@@ -197,7 +197,7 @@ public class NumberDisplay : MonoBehaviour
             }
             else
             {
-                DisplayNumber(blockInfo.movementCost_Temp);
+                DisplayNumber(blockInfo.GetMovementCost_ForDisplay());
             }
         }
 

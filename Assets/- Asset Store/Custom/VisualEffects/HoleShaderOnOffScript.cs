@@ -24,20 +24,25 @@ public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
     //    CameraController.Action_RotateCamera_End -= HoleShader_Off;
     //}
 
+    private void Start()
+    {
+        Shader.SetGlobalFloat("_HoleShaderEnabled", 1);
+    }
+
     private void Update()
     {
-        if (transitionBool)
-        {
-            transition = Mathf.Lerp(transition, (transitionBool ? 1 : 0), transitionSpeed * Time.deltaTime);
+        //if (transitionBool)
+        //{
+        //    transition = Mathf.Lerp(transition, (transitionBool ? 1 : 0), transitionSpeed * Time.deltaTime);
 
-            Shader.SetGlobalFloat("_HoleShaderEnabled", transition);
-        }
-        else
-        {
-            transition = Mathf.Lerp(transition, (transitionBool ? 1 : 0), transitionSpeed * Time.deltaTime);
+        //    Shader.SetGlobalFloat("_HoleShaderEnabled", transition);
+        //}
+        //else
+        //{
+        //    transition = Mathf.Lerp(transition, (transitionBool ? 1 : 0), transitionSpeed * Time.deltaTime);
 
-            Shader.SetGlobalFloat("_HoleShaderEnabled", transition);
-        }
+        //    Shader.SetGlobalFloat("_HoleShaderEnabled", transition);
+        //}
     }
 
 
@@ -47,9 +52,11 @@ public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
     public void HoleShader_On()
     {
         transitionBool = true;
+        Shader.SetGlobalFloat("_HoleShaderEnabled", 1);
     }
     public void HoleShader_Off()
     {
         transitionBool = false;
+        Shader.SetGlobalFloat("_HoleShaderEnabled", 0);
     }
 }

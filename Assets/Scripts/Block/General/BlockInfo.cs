@@ -12,6 +12,12 @@ public class BlockInfo : MonoBehaviour
     [HideInInspector] public int movementCost_Temp;
     [HideInInspector] public int movementCost_Temp_Base;
 
+    [HideInInspector] public bool movementCost_OverrideActive;
+    [HideInInspector] public int movementCost_OverrideValue;
+
+    [HideInInspector] public bool movementCost_DisplayOverrideActive;
+    [HideInInspector] public int movementCost_DisplayOverrideValue;
+
     public int movementCost;
     public float movementSpeed;
 
@@ -353,6 +359,25 @@ public class BlockInfo : MonoBehaviour
 
     public int GetMovementCost_WithTemporaryEffects()
     {
+        if (movementCost_OverrideActive)
+        {
+            return movementCost_OverrideValue;
+        }
+
+        // Quicksand uses the quicksand counter as the actual step cost,
+        // not only as the displayed number.
+        if (GetComponent<Block_Quicksand>() &&
+            Player_Quicksand.Instance != null &&
+            Player_Quicksand.Instance.isInQuicksand)
+        {
+            return Player_Quicksand.Instance.quicksandCounter;
+        }
+
+        if (blockElement == BlockElement.Water && PlayerHasFlippers())
+        {
+            return 0;
+        }
+
         return movementCost_Temp_Base + GetCurrentStepCostModifier();
     }
 
@@ -369,6 +394,12 @@ public class BlockInfo : MonoBehaviour
 
     public void ResetTemporaryMovementCostModifiers()
     {
+        if (movementCost_OverrideActive)
+        {
+            movementCost_Temp = movementCost_OverrideValue;
+            return;
+        }
+
         movementCost_Temp = movementCost_Temp_Base;
     }
 
@@ -388,6 +419,72 @@ public class BlockInfo : MonoBehaviour
         movementCost = newCost;
         movementCost_Temp_Base = newCost;
         movementCost_Temp = GetMovementCost_WithTemporaryEffects();
+    }
+
+    public void SetTemporaryMovementCostOverride(int newCost)
+    {
+        movementCost_OverrideActive = true;
+        movementCost_OverrideValue = newCost;
+
+        movementCost_Temp = newCost;
+
+        if (blockIsDark && numberDisplay != null)
+        {
+            numberDisplay.ShowNumber();
+        }
+    }
+
+    public void ClearTemporaryMovementCostOverride()
+    {
+        movementCost_OverrideActive = false;
+        movementCost_OverrideValue = 0;
+
+        ApplyTemporaryMovementCostModifiers();
+
+        if (blockIsDark && numberDisplay != null)
+        {
+            numberDisplay.ShowNumber();
+        }
+    }
+
+    bool PlayerHasFlippers()
+    {
+        if (PlayerStats.Instance == null || PlayerStats.Instance.stats == null)
+            return false;
+
+        return PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers ||
+               PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers;
+    }
+
+    public int GetMovementCost_ForDisplay()
+    {
+        if (movementCost_DisplayOverrideActive)
+            return movementCost_DisplayOverrideValue;
+
+        ApplyTemporaryMovementCostModifiers();
+        return movementCost_Temp;
+    }
+
+    public void SetDisplayMovementCostOverride(int newCost)
+    {
+        movementCost_DisplayOverrideActive = true;
+        movementCost_DisplayOverrideValue = newCost;
+
+        if (blockIsDark && numberDisplay != null)
+        {
+            numberDisplay.ShowNumber();
+        }
+    }
+
+    public void ClearDisplayMovementCostOverride()
+    {
+        movementCost_DisplayOverrideActive = false;
+        movementCost_DisplayOverrideValue = 0;
+
+        if (blockIsDark && numberDisplay != null)
+        {
+            numberDisplay.ShowNumber();
+        }
     }
 
 
