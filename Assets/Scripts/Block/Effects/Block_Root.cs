@@ -39,6 +39,10 @@ public class Block_Root : MonoBehaviour
 
     float nextContinuationCheckTime;
 
+    [Header("Empty Root Start")]
+    [SerializeField] bool keepCheckingFromRootBlockWhenNoRoots = true;
+    [SerializeField] bool keepCheckingFromRootBlockEvenWhenRootsExist = true;
+
 
     //--------------------
 
@@ -909,16 +913,97 @@ public class Block_Root : MonoBehaviour
     {
         if (!checkForRootContinuation) return;
         if (!isActive) return;
-        if (RootFreeCostBlockList.Count <= 0) return;
 
-        // Keep existing root visuals attached to their blocks.
-        // This is important when rooted blocks move.
-        SetRootLineObjectsOrientation();
+        // Keep existing root visuals attached to moving blocks.
+        if (RootFreeCostBlockList.Count > 0)
+        {
+            SetRootLineObjectsOrientation();
+        }
 
         if (Time.time < nextContinuationCheckTime) return;
         nextContinuationCheckTime = Time.time + continuationCheckInterval;
 
-        TryContinueRootLineFromOpenSegments();
+        // Always let existing root segments continue normally.
+        if (RootFreeCostBlockList.Count > 0)
+        {
+            TryContinueRootLineFromOpenSegments();
+        }
+
+        // Also let the RootBlock itself keep checking.
+        // This allows several moving blocks to receive roots from the source block.
+        if (keepCheckingFromRootBlockEvenWhenRootsExist ||
+            (keepCheckingFromRootBlockWhenNoRoots && RootFreeCostBlockList.Count <= 0))
+        {
+            TryStartRootLineFromRootBlock();
+        }
+    }
+    void TryStartRootLineFromRootBlock()
+    {
+        if (RootObjectList.Count <= 0)
+        {
+            Debug.LogWarning($"{nameof(Block_Root)} on {name}: No root objects assigned in RootObjectList.");
+            return;
+        }
+
+        if (RootFreeCostBlockList.Count >= RootObjectList.Count)
+        {
+            Debug.LogWarning($"{nameof(Block_Root)} on {name}: Not enough root objects in RootObjectList.");
+            return;
+        }
+
+        Vector3 lookDir_Temp = GetRootTravelDirection();
+
+        GameObject rootParentBlock = transform.parent != null ? transform.parent.gameObject : null;
+
+        if (rootParentBlock == null)
+            return;
+
+        GameObject firstBlock = FindNextBlockFromRootBlock(rootParentBlock, lookDir_Temp);
+
+        if (!firstBlock)
+            return;
+
+        if (IsBlockAlreadyInRootLine(firstBlock))
+            return;
+
+        BlockInfo firstInfo = firstBlock.GetComponent<BlockInfo>();
+
+        if (!firstInfo)
+            return;
+
+        bool firstIsStairOrSlope =
+            firstInfo.blockType == BlockType.Stair ||
+            firstInfo.blockType == BlockType.Slope;
+
+        int newRootIndex = RootFreeCostBlockList.Count;
+
+        SetupEntryInBlockList(firstBlock, firstIsStairOrSlope);
+
+        SetRootLineObjectsOrientation();
+
+        ActivateSingleRootObject(newRootIndex);
+
+        ChangeBlockMovementCost();
+
+        Movement.Instance.UpdateBlocks();
+        Movement.Instance.SetDarkenBlocks();
+    }
+    GameObject FindNextBlockFromRootBlock(GameObject rootBlock, Vector3 lookDir_Temp)
+    {
+        if (!rootBlock)
+            return null;
+
+        RootBlockLineInfo temporarySource = new RootBlockLineInfo();
+        temporarySource.block = rootBlock;
+
+        BlockInfo rootInfo = rootBlock.GetComponent<BlockInfo>();
+
+        if (rootInfo != null)
+            temporarySource.blockType = rootInfo.blockType;
+        else
+            temporarySource.blockType = BlockType.Cube; // Use your default block type if Cube is not correct.
+
+        return FindNextBlockForLiveContinuationFrom(temporarySource, lookDir_Temp);
     }
 
     void TryContinueRootLineFromOpenSegments()
