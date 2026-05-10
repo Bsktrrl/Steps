@@ -85,7 +85,7 @@ public class Block_Elevator : MonoBehaviour
 
         if (movementPath == null || movementPath.Count == 0)
         {
-            Debug.LogError("Block_Elevator has no movement path assigned.", this);
+            //Debug.LogError("Block_Elevator has no movement path assigned.", this);
             enabled = false;
             return;
         }

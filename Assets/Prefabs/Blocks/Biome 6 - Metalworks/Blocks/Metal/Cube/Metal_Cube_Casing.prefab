@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 463069350317194430, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.45
+      objectReference: {fileID: 0}
     - target: {fileID: 4954520870340970370, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
       propertyPath: m_Name
       value: Number_Parent
@@ -88,15 +92,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 18d212d7a9dc31649a366bc2b82c47b8, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.9
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 18d212d7a9dc31649a366bc2b82c47b8, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.9
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 18d212d7a9dc31649a366bc2b82c47b8, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.9
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 18d212d7a9dc31649a366bc2b82c47b8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -144,15 +148,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8391863273761098940, guid: 18d212d7a9dc31649a366bc2b82c47b8, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.98
+      value: 0.89
       objectReference: {fileID: 0}
     - target: {fileID: -8391863273761098940, guid: 18d212d7a9dc31649a366bc2b82c47b8, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.98
+      value: 0.89
       objectReference: {fileID: 0}
     - target: {fileID: -8391863273761098940, guid: 18d212d7a9dc31649a366bc2b82c47b8, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.98
+      value: 0.89
       objectReference: {fileID: 0}
     - target: {fileID: -8391863273761098940, guid: 18d212d7a9dc31649a366bc2b82c47b8, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -168,15 +172,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6102624425184086847, guid: 18d212d7a9dc31649a366bc2b82c47b8, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.98
+      value: 0.89
       objectReference: {fileID: 0}
     - target: {fileID: -6102624425184086847, guid: 18d212d7a9dc31649a366bc2b82c47b8, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.98
+      value: 0.89
       objectReference: {fileID: 0}
     - target: {fileID: -6102624425184086847, guid: 18d212d7a9dc31649a366bc2b82c47b8, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.98
+      value: 0.89
       objectReference: {fileID: 0}
     - target: {fileID: -6102624425184086847, guid: 18d212d7a9dc31649a366bc2b82c47b8, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -204,15 +208,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3544364825730473738, guid: 18d212d7a9dc31649a366bc2b82c47b8, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.98
+      value: 0.89
       objectReference: {fileID: 0}
     - target: {fileID: 3544364825730473738, guid: 18d212d7a9dc31649a366bc2b82c47b8, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.98
+      value: 0.89
       objectReference: {fileID: 0}
     - target: {fileID: 3544364825730473738, guid: 18d212d7a9dc31649a366bc2b82c47b8, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.98
+      value: 0.89
       objectReference: {fileID: 0}
     - target: {fileID: 3544364825730473738, guid: 18d212d7a9dc31649a366bc2b82c47b8, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -319,6 +323,11 @@ MonoBehaviour:
   blockType: 1
   blockElement: 17
   movementCost_Temp: 0
+  movementCost_Temp_Base: 0
+  movementCost_OverrideActive: 0
+  movementCost_OverrideValue: 0
+  movementCost_DisplayOverrideActive: 0
+  movementCost_DisplayOverrideValue: 0
   movementCost: 1
   movementSpeed: 5
   movementState: 0
@@ -335,7 +344,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7572230764765429407}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
   m_Name: 
