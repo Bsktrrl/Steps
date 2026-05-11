@@ -12,6 +12,7 @@ public class CustomRendererFeature : ScriptableRendererFeature
     {
         RTHandle depthTexture;
         RTHandle tempDepthTexture;
+        RTHandle tempDepthBuffer;
         Material depthOverrideMaterial;
         Material depthCopyMaterial;
 
@@ -50,11 +51,18 @@ public class CustomRendererFeature : ScriptableRendererFeature
                 desc.msaaSamples = 1;
                 desc.useMipMap = false;
 
+                var depthDesc = baseDesc;
+                depthDesc.colorFormat = RenderTextureFormat.Depth;
+                depthDesc.depthBufferBits = 32;
+                depthDesc.msaaSamples = 1;
+
                 RenderingUtils.ReAllocateIfNeeded(ref depthTexture, desc, name: "_CustomDepthTexture");
                 RenderingUtils.ReAllocateIfNeeded(ref tempDepthTexture, desc, name: "_TempDepthTexture");
+
+                RenderingUtils.ReAllocateIfNeeded(ref tempDepthBuffer, depthDesc, name: "_TempDepthBuffer");
             }
 
-            ConfigureTarget(tempDepthTexture);
+            ConfigureTarget(tempDepthTexture, tempDepthBuffer);
             ConfigureClear(ClearFlag.Color, Color.black);
         }
 
@@ -62,11 +70,22 @@ public class CustomRendererFeature : ScriptableRendererFeature
         {
             CommandBuffer cmd = CommandBufferPool.Get("Custom Depth Pass");
 
+            cmd.SetRenderTarget(tempDepthTexture.nameID, RenderBufferLoadAction.DontCare, RenderBufferStoreAction.Store, tempDepthBuffer.nameID, RenderBufferLoadAction.DontCare, RenderBufferStoreAction.Store);
+            cmd.ClearRenderTarget(true, true, Color.black);
+            context.ExecuteCommandBuffer(cmd);
+            cmd.Clear();
+
             //Draw transparents
             var transparentFiltering = new FilteringSettings(RenderQueueRange.transparent);
             var transparentDrawing = CreateDrawingSettings(new ShaderTagId("UniversalForward"), ref renderingData, SortingCriteria.CommonTransparent);
             transparentDrawing.overrideMaterial = depthOverrideMaterial;
-            context.DrawRenderers(renderingData.cullResults, ref transparentDrawing, ref transparentFiltering);
+
+            var stateBlock = new RenderStateBlock(RenderStateMask.Depth)
+            {
+                depthState = new DepthState(writeEnabled: true, compareFunction: CompareFunction.LessEqual)
+            };
+
+            context.DrawRenderers(renderingData.cullResults, ref transparentDrawing, ref transparentFiltering, ref stateBlock);
 
             //Copy camera depth into render texture
             depthCopyMaterial.SetTexture("_TempDepthTexture", tempDepthTexture.rt);
@@ -143,7 +162,7 @@ public class CustomRendererFeature : ScriptableRendererFeature
     public override void Create()
     {
         depthPass = new CustomDepthPass();
-        depthPass.renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
+        depthPass.renderPassEvent = RenderPassEvent.BeforeRenderingTransparents;
 
         colorPass = new CustomColorPass();
         colorPass.renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
