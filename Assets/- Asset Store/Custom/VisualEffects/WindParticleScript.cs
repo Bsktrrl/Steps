@@ -5,6 +5,7 @@ using UnityEngine;
 public class WindParticleScript : MonoBehaviour
 {
     Vector3 partPos;
+
     void Update()
     {
         partPos = Camera.main.transform.position + Camera.main.transform.forward * 10;

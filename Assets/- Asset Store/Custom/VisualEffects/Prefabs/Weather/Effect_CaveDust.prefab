@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6839764445902675541}
   - component: {fileID: 5304137648773589973}
   - component: {fileID: 5280572298665619789}
+  - component: {fileID: -8856010704682277697}
   - component: {fileID: 4721609603032814779}
   m_Layer: 0
   m_Name: Effect_CaveDust
@@ -4842,6 +4843,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7422c795085742541967266df9c9c5b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-8856010704682277697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6608028007333410950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d6bb1470009e3045a130d1be9c7286d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pitchMin: 0.5
+  pitchMax: 1.5
 --- !u!82 &4721609603032814779
 AudioSource:
   m_ObjectHideFlags: 0

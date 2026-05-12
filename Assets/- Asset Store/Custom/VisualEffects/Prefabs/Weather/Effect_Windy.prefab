@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5603835870940712724}
   - component: {fileID: 2633416207386056407}
   - component: {fileID: 8662475061184544977}
+  - component: {fileID: 2363161915633822783}
   - component: {fileID: 2133298660317536341}
   m_Layer: 0
   m_Name: Effect_Windy
@@ -4969,6 +4970,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7422c795085742541967266df9c9c5b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2363161915633822783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4665437370368793720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d6bb1470009e3045a130d1be9c7286d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pitchMin: 0.5
+  pitchMax: 1.5
 --- !u!82 &2133298660317536341
 AudioSource:
   m_ObjectHideFlags: 0
