@@ -634,8 +634,20 @@ public class Block_Root : MonoBehaviour
         playerLookDir = SnapDirection(lookDir_Temp);
         tempOriginPos = transform.parent.position;
 
+        int safetyCounter = 0;
+        int maxSafetyIterations = Mathf.Max(1, RootObjectList.Count + 8);
+
         while (!finishedCheckingForBlocks)
         {
+            safetyCounter++;
+
+            if (safetyCounter > maxSafetyIterations)
+            {
+                Debug.LogWarning($"{nameof(Block_Root)} on {name}: Root path calculation stopped by safety counter.", this);
+                finishedCheckingForBlocks = true;
+                break;
+            }
+
             bool blockIsFound = false;
 
             #region Check in line
@@ -856,6 +868,11 @@ public class Block_Root : MonoBehaviour
             {
                 finishedCheckingForBlocks = true;
             }
+
+            if (RootFreeCostBlockList.Count >= RootObjectList.Count)
+            {
+                finishedCheckingForBlocks = true;
+            }
         }
 
         SetRootLineObjectsOrientation();
@@ -941,7 +958,10 @@ public class Block_Root : MonoBehaviour
         }
 
         if (IsBlockAlreadyInRootLine(tempBlock))
+        {
+            finishedCheckingForBlocks = true;
             return false;
+        }
 
         BlockInfo info = tempBlock.GetComponent<BlockInfo>();
 
@@ -983,6 +1003,12 @@ public class Block_Root : MonoBehaviour
 
         if (teleporter.newLandingSpot.GetComponent<BlockInfo>() == null)
             return false;
+
+        if (IsBlockAlreadyInRootLine(teleporter.newLandingSpot))
+        {
+            finishedCheckingForBlocks = true;
+            return false;
+        }
 
         linkedTeleportBlock = teleporter.newLandingSpot;
         return true;
@@ -1810,6 +1836,13 @@ public class Block_Root : MonoBehaviour
         }
 
         return false;
+    }
+    bool ShouldStopRootPathBecauseBlockAlreadyHasRoots(GameObject block)
+    {
+        if (!block)
+            return false;
+
+        return IsBlockAlreadyInRootLine(block);
     }
 
     void StairSlopeCorrectionLive(ref GameObject obj, Vector3 travelDir)

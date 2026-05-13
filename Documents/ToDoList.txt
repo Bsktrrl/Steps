@@ -3,6 +3,12 @@
 
 April:
 0.0. Bugs:
+- SwiftSwim-knapp:
+	- Når man holder inne SwiftSwim-knappen, så dukker tallene rundt opp veldig raskt før man går videre. Dette må fjernes.
+
+- GrapplingHook & Swim:
+	- Endre slik at hvis man grapplingHooker og kan swømme, så vil ikke numbers vises over/under waterBlokken man er på, i en foss, siden man ikke kan SwiftSwimme opp-ned
+
 - DarkenBlock med Dashing:
 	- Registreres ikke når spilleren ikke er rotert mot dashing-blokken. Det burde den.
 
@@ -55,8 +61,7 @@ April:
 --- OTHER FIXES
 
 
-13. SwiftSwim-knapp:
-- Når man holder inne SwiftSwim-knappen, så dukker tallene rundt opp veldig raskt før man går videre. Dette må fjernes.
+
 
 14. Nytt StepCost-system:
 - Spilleren må respawne idet den får 0 steg, heller enn at man må trykke på knapp mens man har 0 steg for å respawne
