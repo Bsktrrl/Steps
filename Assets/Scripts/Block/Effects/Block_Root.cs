@@ -863,37 +863,129 @@ public class Block_Root : MonoBehaviour
         ChangeBlockMovementCost();
     }
 
-    void SetupEntryInBlockList(GameObject tempBlock, bool stair)
+    int SetupEntryInBlockList(GameObject tempBlock, bool stair)
     {
         if (tempBlock == null)
-            return;
+            return 0;
+
+        GameObject linkedTeleportBlock = null;
+        bool shouldTeleportRoots = TryGetLinkedTeleportBlock(tempBlock, out linkedTeleportBlock);
+
+        int addedCount = 0;
+
+        // If this block is a teleporter with a valid linked teleporter,
+        // this block should receive roots, but roots should NOT continue from it.
+        bool blockShouldStopContinuation = shouldTeleportRoots;
+
+        if (AddRootEntryToBlockList(tempBlock, stair, blockShouldStopContinuation))
+        {
+            addedCount++;
+        }
+        else
+        {
+            return addedCount;
+        }
+
+        tempOriginPos = tempBlock.transform.position;
+
+        // Teleporter redirect:
+        // roots hit teleporter A, then appear on linked teleporter B,
+        // and continuation continues from B in the same direction.
+        if (shouldTeleportRoots)
+        {
+            if (linkedTeleportBlock == null)
+                return addedCount;
+
+            if (RootFreeCostBlockList.Count >= RootObjectList.Count)
+            {
+                Debug.LogWarning($"{nameof(Block_Root)} on {name}: Not enough root objects in RootObjectList for linked teleporter root.", this);
+                finishedCheckingForBlocks = true;
+                return addedCount;
+            }
+
+            if (!IsBlockAlreadyInRootLine(linkedTeleportBlock))
+            {
+                BlockInfo linkedInfo = linkedTeleportBlock.GetComponent<BlockInfo>();
+
+                if (linkedInfo != null)
+                {
+                    bool linkedIsStairOrSlope =
+                        linkedInfo.blockType == BlockType.Stair ||
+                        linkedInfo.blockType == BlockType.Slope;
+
+                    if (AddRootEntryToBlockList(linkedTeleportBlock, linkedIsStairOrSlope, false))
+                    {
+                        addedCount++;
+                    }
+                }
+            }
+
+            // Important:
+            // Continue the root search from the linked teleporter,
+            // not from the teleporter that was hit.
+            tempOriginPos = linkedTeleportBlock.transform.position;
+        }
+
+        return addedCount;
+    }
+    bool AddRootEntryToBlockList(GameObject tempBlock, bool stair, bool stopContinuationFromThisBlock)
+    {
+        if (tempBlock == null)
+            return false;
 
         if (RootFreeCostBlockList.Count >= RootObjectList.Count)
         {
             Debug.LogWarning($"{nameof(Block_Root)} on {name}: Not enough root objects in RootObjectList.", this);
             finishedCheckingForBlocks = true;
-            return;
+            return false;
         }
 
         if (IsBlockAlreadyInRootLine(tempBlock))
-            return;
+            return false;
 
         BlockInfo info = tempBlock.GetComponent<BlockInfo>();
 
         if (info == null)
-            return;
+            return false;
 
         RootBlockLineInfo rootBlockLineInfo = new RootBlockLineInfo();
         rootBlockLineInfo.block = tempBlock;
         rootBlockLineInfo.originalMovemetCost = info.movementCost_Temp_Base;
         rootBlockLineInfo.blockType = info.blockType;
         rootBlockLineInfo.facingDir = tempBlock.transform.localPosition;
+        rootBlockLineInfo.stopContinuationFromThisBlock = stopContinuationFromThisBlock;
 
         if (rootBlockLineInfo.block && rootBlockLineInfo.block.GetComponent<Block_Water>())
             rootBlockLineInfo.block.GetComponent<Block_Water>().hasRoots = true;
 
         RootFreeCostBlockList.Add(rootBlockLineInfo);
-        tempOriginPos = tempBlock.transform.position;
+
+        return true;
+    }
+
+    bool TryGetLinkedTeleportBlock(GameObject block, out GameObject linkedTeleportBlock)
+    {
+        linkedTeleportBlock = null;
+
+        if (block == null)
+            return false;
+
+        Block_Teleport teleporter = block.GetComponent<Block_Teleport>();
+
+        if (teleporter == null)
+            return false;
+
+        if (teleporter.newLandingSpot == null)
+            return false;
+
+        if (teleporter.newLandingSpot == block)
+            return false;
+
+        if (teleporter.newLandingSpot.GetComponent<BlockInfo>() == null)
+            return false;
+
+        linkedTeleportBlock = teleporter.newLandingSpot;
+        return true;
     }
 
 
@@ -1300,10 +1392,18 @@ public class Block_Root : MonoBehaviour
 
         int newRootIndex = RootFreeCostBlockList.Count;
 
-        SetupEntryInBlockList(firstBlock, firstIsStairOrSlope);
+        int addedRootCount = SetupEntryInBlockList(firstBlock, firstIsStairOrSlope);
+
+        if (addedRootCount <= 0)
+            return;
 
         SetRootLineObjectsOrientation();
-        ActivateSingleRootObject(newRootIndex);
+
+        for (int i = newRootIndex; i < newRootIndex + addedRootCount; i++)
+        {
+            ActivateSingleRootObject(i);
+        }
+
         ChangeBlockMovementCost();
 
         if (Movement.Instance != null)
@@ -1356,6 +1456,9 @@ public class Block_Root : MonoBehaviour
             if (sourceRootInfo == null || sourceRootInfo.block == null)
                 continue;
 
+            if (sourceRootInfo.stopContinuationFromThisBlock)
+                continue;
+
             if (HasRootSegmentAdjacentInDirection(sourceRootInfo.block, lookDir_Temp))
                 continue;
 
@@ -1378,10 +1481,18 @@ public class Block_Root : MonoBehaviour
 
             int newRootIndex = RootFreeCostBlockList.Count;
 
-            SetupEntryInBlockList(nextBlock, nextIsStairOrSlope);
+            int addedRootCount = SetupEntryInBlockList(nextBlock, nextIsStairOrSlope);
+
+            if (addedRootCount <= 0)
+                continue;
 
             SetRootLineObjectsOrientation();
-            ActivateSingleRootObject(newRootIndex);
+
+            for (int rootIndex = newRootIndex; rootIndex < newRootIndex + addedRootCount; rootIndex++)
+            {
+                ActivateSingleRootObject(rootIndex);
+            }
+
             ChangeBlockMovementCost();
 
             if (Movement.Instance != null)
@@ -1390,7 +1501,7 @@ public class Block_Root : MonoBehaviour
                 Movement.Instance.SetDarkenBlocks();
             }
 
-            addedCount++;
+            addedCount += addedRootCount;
         }
     }
 
@@ -1803,4 +1914,6 @@ public class RootBlockLineInfo
 
     public BlockType blockType;
     public Vector3 facingDir;
+
+    public bool stopContinuationFromThisBlock;
 }
