@@ -22,7 +22,7 @@ public class Block_Root : MonoBehaviour
 
     [Header("Root Placement Tuning")]
     [SerializeField] float stairUpForwardOffset = 0.30f;
-    [SerializeField] float stairDownForwardOffset = -0.20f; // = 0.30 - 0.50
+    [SerializeField] float stairDownForwardOffset = -0.20f;
     [SerializeField] float stairUpHeightOffset = 0.20f;
     [SerializeField] float stairSurfaceTilt = -45f;
 
@@ -31,6 +31,11 @@ public class Block_Root : MonoBehaviour
 
     Coroutine rootAnimCoroutine;
     Coroutine delayedRootExitCheckCoroutine;
+    Coroutine delayedRootActivationCoroutine;
+    Coroutine confirmedStandingActivationCoroutine;
+
+    bool playerIsInsideRootTrigger;
+    bool rootActivationQueued;
 
     [Header("Live Root Continuation")]
     [SerializeField] bool checkForRootContinuation = true;
@@ -43,6 +48,15 @@ public class Block_Root : MonoBehaviour
     [SerializeField] bool keepCheckingFromRootBlockWhenNoRoots = true;
     [SerializeField] bool keepCheckingFromRootBlockEvenWhenRootsExist = true;
 
+    [Header("Activation Safety")]
+    [SerializeField] private bool activateFromConfirmedStanding = true;
+    [SerializeField] private bool allowTriggerFallback = true;
+
+    private bool activatedForCurrentRootStand;
+    private Vector3 queuedActivationDirection;
+
+    private bool ignoreNextSelfReset;
+
 
     //--------------------
 
@@ -53,21 +67,30 @@ public class Block_Root : MonoBehaviour
 
         // Detect duplicates
         var duplicates = RootObjectList.GroupBy(r => r.GetInstanceID()).Where(g => g.Count() > 1).ToList();
+
+        if (duplicates.Count > 0)
+        {
+            Debug.LogWarning($"{nameof(Block_Root)} on {name}: Duplicate root objects detected in RootObjectList.", this);
+        }
     }
 
     private void Update()
     {
-        if (Movement.Instance.isMovingOnLadder_Down || Movement.Instance.isMovingOnLadder_Up || Movement.Instance.isRespawning) return;
+        if (Movement.Instance == null)
+            return;
 
-        //CheckWhenToResetRootLine();
+        if (Movement.Instance.isMovingOnLadder_Down ||
+            Movement.Instance.isMovingOnLadder_Up ||
+            Movement.Instance.isRespawning)
+            return;
 
         UpdateLiveRootContinuation();
     }
 
     private void OnEnable()
     {
-        // Reset before Movement recalculates visuals on step complete.
         Movement.Action_StepTaken_Early += CheckWhenToResetRootLine;
+        Movement.Action_StepTaken_Late += CheckActivateFromConfirmedStanding;
 
         Movement.Action_RespawnPlayer += ResetOnRespawn;
         Action_StandingOnRootBlock_Early += ResetRootOnly;
@@ -76,10 +99,58 @@ public class Block_Root : MonoBehaviour
     private void OnDisable()
     {
         Movement.Action_StepTaken_Early -= CheckWhenToResetRootLine;
+        Movement.Action_StepTaken_Late -= CheckActivateFromConfirmedStanding;
 
         Movement.Action_RespawnPlayer -= ResetOnRespawn;
         Action_StandingOnRootBlock_Early -= ResetRootOnly;
 
+        StopRootCoroutines();
+    }
+
+
+    //--------------------
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!allowTriggerFallback)
+            return;
+
+        if (other.transform.gameObject.layer != 6) // 6 = PlayerLayer
+            return;
+
+        playerIsInsideRootTrigger = true;
+
+        QueueRootActivation();
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (!allowTriggerFallback)
+            return;
+
+        if (other.transform.gameObject.layer != 6) // 6 = PlayerLayer
+            return;
+
+        playerIsInsideRootTrigger = true;
+
+        QueueRootActivation();
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.transform.gameObject.layer != 6) // 6 = PlayerLayer
+            return;
+
+        playerIsInsideRootTrigger = false;
+    }
+
+
+    //--------------------
+
+
+    void StopRootCoroutines()
+    {
         if (rootAnimCoroutine != null)
         {
             StopCoroutine(rootAnimCoroutine);
@@ -91,27 +162,256 @@ public class Block_Root : MonoBehaviour
             StopCoroutine(delayedRootExitCheckCoroutine);
             delayedRootExitCheckCoroutine = null;
         }
+
+        if (delayedRootActivationCoroutine != null)
+        {
+            StopCoroutine(delayedRootActivationCoroutine);
+            delayedRootActivationCoroutine = null;
+        }
+
+        if (confirmedStandingActivationCoroutine != null)
+        {
+            StopCoroutine(confirmedStandingActivationCoroutine);
+            confirmedStandingActivationCoroutine = null;
+        }
     }
 
-
-    //--------------------
-
-
-    private void OnTriggerEnter(Collider other)
+    void QueueRootActivation()
     {
-        if (other.transform.gameObject.layer != 6) // 6 = PlayerLayer
+        if (Movement.Instance == null)
             return;
 
-        SetupActivateRoot();
+        if (Movement.Instance.isRespawning)
+            return;
+
+        GameObject rootSourceBlock = GetRootSourceBlock();
+
+        if (rootSourceBlock == null)
+            return;
+
+        bool playerIsStandingOnRootBlock =
+            Movement.Instance.blockStandingOn == rootSourceBlock;
+
+        bool playerIsMovingOntoRootBlock =
+            Movement.Instance.currentMoveTargetBlock == rootSourceBlock;
+
+        // The trigger can overlap before Movement knows the player is targeting/standing on this block.
+        // In that case, let the coroutine wait shortly instead of activating immediately.
+        if (!playerIsStandingOnRootBlock && !playerIsMovingOntoRootBlock && !playerIsInsideRootTrigger)
+            return;
+
+        if (activatedForCurrentRootStand)
+            return;
+
+        if (rootActivationQueued)
+            return;
+
+        queuedActivationDirection = GetRootDirectionFromCurrentMovement();
+
+        rootActivationQueued = true;
+
+        if (delayedRootActivationCoroutine != null)
+        {
+            StopCoroutine(delayedRootActivationCoroutine);
+            delayedRootActivationCoroutine = null;
+        }
+
+        delayedRootActivationCoroutine = StartCoroutine(ActivateRootWhenPlayerIsOnOrMovingOntoRootBlock());
     }
 
-    void SetupActivateRoot()
+    IEnumerator ActivateRootWhenPlayerIsOnOrMovingOntoRootBlock()
     {
-        if (Movement.Instance.isRespawning) return;
+        GameObject rootSourceBlock = GetRootSourceBlock();
 
+        if (rootSourceBlock == null)
+        {
+            ClearActivationQueue();
+            yield break;
+        }
+
+        // Wait one frame so Movement.currentMoveTargetBlock has time to be assigned.
+        yield return null;
+
+        while (Movement.Instance != null)
+        {
+            if (Movement.Instance.isRespawning)
+            {
+                ClearActivationQueue();
+                yield break;
+            }
+
+            if (activatedForCurrentRootStand)
+            {
+                ClearActivationQueue();
+                yield break;
+            }
+
+            bool playerIsStandingOnRootBlock =
+                Movement.Instance.blockStandingOn == rootSourceBlock;
+
+            bool playerIsMovingOntoRootBlock =
+                Movement.Instance.currentMoveTargetBlock == rootSourceBlock;
+
+            if (playerIsStandingOnRootBlock || playerIsMovingOntoRootBlock)
+            {
+                Vector3 activationDirection = queuedActivationDirection;
+
+                if (activationDirection.sqrMagnitude < 0.001f)
+                    activationDirection = GetRootDirectionFromCurrentMovement();
+
+                ClearActivationQueue();
+
+                ActivateRootOnceForCurrentStand(activationDirection);
+                yield break;
+            }
+
+            // If the player is no longer inside/near the trigger and is not targeting the RootBlock, stop waiting.
+            if (!playerIsInsideRootTrigger)
+            {
+                ClearActivationQueue();
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        ClearActivationQueue();
+    }
+
+    void ClearActivationQueue()
+    {
+        rootActivationQueued = false;
+        delayedRootActivationCoroutine = null;
+        queuedActivationDirection = Vector3.zero;
+    }
+
+    void ActivateRootOnceForCurrentStand(Vector3 rootDirection)
+    {
+        if (Movement.Instance == null)
+            return;
+
+        if (Movement.Instance.isRespawning)
+            return;
+
+        if (activatedForCurrentRootStand)
+            return;
+
+        GameObject rootSourceBlock = GetRootSourceBlock();
+
+        if (rootSourceBlock == null)
+            return;
+
+        bool playerIsStandingOnRootBlock =
+            Movement.Instance.blockStandingOn == rootSourceBlock;
+
+        bool playerIsMovingOntoRootBlock =
+            Movement.Instance.currentMoveTargetBlock == rootSourceBlock;
+
+        if (!playerIsStandingOnRootBlock && !playerIsMovingOntoRootBlock)
+            return;
+
+        // Important: lock this BEFORE invoking the global reset event.
+        activatedForCurrentRootStand = true;
+
+        // Prevent this root block from resetting itself from its own static event.
+        ignoreNextSelfReset = true;
         Action_StandingOnRootBlock_Early?.Invoke();
+        ignoreNextSelfReset = false;
 
-        ActivateRoots();
+        ActivateRoots(rootDirection);
+    }
+
+    void CheckActivateFromConfirmedStanding()
+    {
+        if (!activateFromConfirmedStanding)
+            return;
+
+        if (confirmedStandingActivationCoroutine != null)
+        {
+            StopCoroutine(confirmedStandingActivationCoroutine);
+            confirmedStandingActivationCoroutine = null;
+        }
+
+        confirmedStandingActivationCoroutine = StartCoroutine(CheckActivateFromConfirmedStanding_Delayed());
+    }
+
+    IEnumerator CheckActivateFromConfirmedStanding_Delayed()
+    {
+        yield return null;
+
+        confirmedStandingActivationCoroutine = null;
+
+        if (Movement.Instance == null)
+            yield break;
+
+        if (Movement.Instance.isRespawning)
+            yield break;
+
+        GameObject rootSourceBlock = GetRootSourceBlock();
+
+        if (rootSourceBlock == null)
+            yield break;
+
+        bool playerIsStandingOnThisRootBlock =
+            Movement.Instance.blockStandingOn == rootSourceBlock;
+
+        if (!playerIsStandingOnThisRootBlock)
+        {
+            activatedForCurrentRootStand = false;
+            yield break;
+        }
+
+        QueueRootActivation();
+    }
+
+    GameObject GetRootSourceBlock()
+    {
+        return transform.parent != null ? transform.parent.gameObject : null;
+    }
+
+    Vector3 GetRootDirectionFromCurrentMovement()
+    {
+        GameObject rootSourceBlock = GetRootSourceBlock();
+
+        if (rootSourceBlock == null || Movement.Instance == null)
+            return Vector3.forward;
+
+        // Best case: player is currently moving onto the RootBlock.
+        // Use the block they are moving FROM.
+        if (Movement.Instance.currentMoveTargetBlock == rootSourceBlock &&
+            Movement.Instance.blockStandingOn != null &&
+            Movement.Instance.blockStandingOn != rootSourceBlock)
+        {
+            Vector3 dir = rootSourceBlock.transform.position - Movement.Instance.blockStandingOn.transform.position;
+            return SnapDirection(dir);
+        }
+
+        // After landing: use previous standing block.
+        if (Movement.Instance.blockStandingOn == rootSourceBlock &&
+            Movement.Instance.blockStandingOn_Previous != null &&
+            Movement.Instance.blockStandingOn_Previous != rootSourceBlock)
+        {
+            Vector3 dir = rootSourceBlock.transform.position - Movement.Instance.blockStandingOn_Previous.transform.position;
+            return SnapDirection(dir);
+        }
+
+        // Fallback.
+        return SnapDirection(Movement.Instance.lookingDirection);
+    }
+
+    Vector3 SnapDirection(Vector3 dir)
+    {
+        dir.y = 0f;
+
+        if (dir.sqrMagnitude < 0.001f)
+            return Vector3.forward;
+
+        dir.Normalize();
+
+        if (Mathf.Abs(dir.x) > Mathf.Abs(dir.z))
+            return dir.x > 0f ? Vector3.right : Vector3.left;
+
+        return dir.z > 0f ? Vector3.forward : Vector3.back;
     }
 
 
@@ -120,13 +420,25 @@ public class Block_Root : MonoBehaviour
 
     public void ActivateRoots()
     {
+        ActivateRoots(Vector3.zero);
+    }
+
+    public void ActivateRoots(Vector3 forcedRootDirection)
+    {
+        if (Movement.Instance == null)
+            return;
+
         HardResetRootsBeforeRebuild();
 
-        playerLookDir = Movement.Instance.lookingDirection;
+        if (forcedRootDirection.sqrMagnitude > 0.001f)
+            playerLookDir = SnapDirection(forcedRootDirection);
+        else
+            playerLookDir = GetRootDirectionFromCurrentMovement();
 
         isActive = true;
 
-        anim.SetTrigger("Activate");
+        if (anim != null)
+            anim.SetTrigger("Activate");
 
         MakeRootFreeCostList();
 
@@ -147,10 +459,8 @@ public class Block_Root : MonoBehaviour
             rootAnimCoroutine = null;
         }
 
-        // Restore previous rooted blocks first.
         SetBlockMovementCostToDefault();
 
-        // Hide pooled root visuals immediately.
         for (int i = 0; i < RootObjectList.Count; i++)
         {
             if (RootObjectList[i] == null) continue;
@@ -162,10 +472,12 @@ public class Block_Root : MonoBehaviour
         RootFreeCostBlockList.Clear();
         finishedCheckingForBlocks = false;
 
-        // Rebuild movement visuals from a fully clean state.
-        Movement.Instance.ResetDarkenBlocks_External();
-        Movement.Instance.UpdateBlocks();
-        Movement.Instance.SetDarkenBlocks();
+        if (Movement.Instance != null)
+        {
+            Movement.Instance.ResetDarkenBlocks_External();
+            Movement.Instance.UpdateBlocks();
+            Movement.Instance.SetDarkenBlocks();
+        }
     }
 
 
@@ -174,6 +486,12 @@ public class Block_Root : MonoBehaviour
 
     void CheckWhenToResetRootLine()
     {
+        if (!isActive)
+            return;
+
+        if (Movement.Instance == null)
+            return;
+
         if (delayedRootExitCheckCoroutine != null)
         {
             StopCoroutine(delayedRootExitCheckCoroutine);
@@ -183,22 +501,52 @@ public class Block_Root : MonoBehaviour
         GameObject blockPlayerStartedOn = Movement.Instance.blockStandingOn;
         GameObject actualTargetBlock = Movement.Instance.currentMoveTargetBlock;
 
-        delayedRootExitCheckCoroutine = StartCoroutine(CheckWhenToResetRootLine_Delayed(blockPlayerStartedOn, actualTargetBlock));
+        bool startedFromRootArea =
+            IsBlockRooted(blockPlayerStartedOn) ||
+            IsRootSourceBlock(blockPlayerStartedOn);
+
+        bool targetKeepsRoots =
+            IsBlockRooted(actualTargetBlock) ||
+            IsRootSourceBlock(actualTargetBlock);
+
+        // If the player leaves rooted/root-source area onto a non-rooted block, remove immediately.
+        if (startedFromRootArea && !targetKeepsRoots)
+        {
+            DestroyRootFreeCostList();
+            return;
+        }
+
+        delayedRootExitCheckCoroutine = StartCoroutine(
+            CheckWhenToResetRootLine_Delayed(blockPlayerStartedOn, actualTargetBlock)
+        );
+    }
+
+    bool IsRootSourceBlock(GameObject block)
+    {
+        if (!block)
+            return false;
+
+        GameObject rootSourceBlock = GetRootSourceBlock();
+
+        return rootSourceBlock != null && block == rootSourceBlock;
+    }
+
+    bool ShouldBlockKeepRoots(GameObject block)
+    {
+        return IsBlockRooted(block) || IsRootSourceBlock(block);
     }
 
     IEnumerator CheckWhenToResetRootLine_Delayed(GameObject blockPlayerStartedOn, GameObject actualTargetBlock)
     {
         yield return null;
 
-        // Wait until the player actually leaves the starting block.
-        while (isActive && Movement.Instance.blockStandingOn == blockPlayerStartedOn)
+        while (isActive && Movement.Instance != null && Movement.Instance.blockStandingOn == blockPlayerStartedOn)
         {
             yield return null;
         }
 
-        // Do not destroy roots while the player is still travelling.
-        // This is important for moving elevators/rooted moving blocks.
         while (isActive &&
+               Movement.Instance != null &&
                (Movement.Instance.isMoving ||
                 Movement.Instance.GetMovementState() == MovementStates.Moving ||
                 Movement.Instance.GetMovementState() == MovementStates.Falling))
@@ -206,7 +554,6 @@ public class Block_Root : MonoBehaviour
             yield return null;
         }
 
-        // Give Movement one frame to update blockStandingOn after landing.
         yield return null;
 
         delayedRootExitCheckCoroutine = null;
@@ -214,24 +561,14 @@ public class Block_Root : MonoBehaviour
         if (!isActive)
             yield break;
 
-        // If the actual target block had roots when the move started,
-        // keep roots alive even if the block moved during the transition.
-        if (IsBlockRooted(actualTargetBlock))
-        {
+        if (Movement.Instance == null)
             yield break;
-        }
 
-        // Normal final check.
-        if (IsBlockRooted(Movement.Instance.blockStandingOn))
-        {
+        if (ShouldBlockKeepRoots(actualTargetBlock))
             yield break;
-        }
 
-        // Keep roots alive while standing on the RootBlock itself.
-        if (Movement.Instance.blockStandingOn == transform.parent.gameObject)
-        {
+        if (ShouldBlockKeepRoots(Movement.Instance.blockStandingOn))
             yield break;
-        }
 
         DestroyRootFreeCostList();
     }
@@ -254,9 +591,15 @@ public class Block_Root : MonoBehaviour
 
 
     #region BuildRootLine
+
     void MakeRootFreeCostList()
     {
         Vector3 lookDir_Temp = playerLookDir;
+
+        if (lookDir_Temp.sqrMagnitude < 0.001f)
+            lookDir_Temp = GetRootDirectionFromCurrentMovement();
+
+        lookDir_Temp = SnapDirection(lookDir_Temp);
 
         if (Movement.Instance.isRespawning && transform.parent.gameObject && transform.parent.gameObject.GetComponent<Block_Checkpoint>())
         {
@@ -269,12 +612,15 @@ public class Block_Root : MonoBehaviour
                 case MovementDirection.Forward:
                     lookDir_Temp = -Vector3.forward;
                     break;
+
                 case MovementDirection.Backward:
                     lookDir_Temp = -Vector3.back;
                     break;
+
                 case MovementDirection.Left:
                     lookDir_Temp = -Vector3.left;
                     break;
+
                 case MovementDirection.Right:
                     lookDir_Temp = -Vector3.right;
                     break;
@@ -284,29 +630,22 @@ public class Block_Root : MonoBehaviour
                     break;
             }
         }
-        else
-        {
-            lookDir_Temp = Movement.Instance.lookingDirection;
-        }
 
+        playerLookDir = SnapDirection(lookDir_Temp);
         tempOriginPos = transform.parent.position;
 
-        //Make list of blocks that must cost 0 and get rootLines on them
         while (!finishedCheckingForBlocks)
         {
             bool blockIsFound = false;
 
             #region Check in line
-            GameObject tempBlock_Adjacent = new GameObject();
-            tempBlock_Adjacent = RaycastBlock(tempOriginPos + (Vector3.up * 0.3f), lookDir_Temp, 1f);
 
-            //If there IS a block adjacent
+            GameObject tempBlock_Adjacent = RaycastBlock(tempOriginPos + (Vector3.up * 0.3f), lookDir_Temp, 1f);
+
             if (tempBlock_Adjacent)
             {
-                //is there a block over adjacent?
                 GameObject tempBlock_Over = RaycastBlock(tempBlock_Adjacent.transform.position + (Vector3.up * 0.3f), Vector3.up, 1f);
 
-                //If there is NOT a block over adjacent
                 if (!tempBlock_Over || (tempBlock_Over && tempBlock_Over.GetComponent<BlockInfo>() && tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slab))
                 {
                     if (tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Slope)
@@ -318,10 +657,6 @@ public class Block_Root : MonoBehaviour
                             SetupEntryInBlockList(tempBlock_Adjacent, true);
                             blockIsFound = true;
                         }
-                        else
-                        {
-                            blockIsFound = false;
-                        }
                     }
                     else
                     {
@@ -329,8 +664,6 @@ public class Block_Root : MonoBehaviour
                         blockIsFound = true;
                     }
                 }
-
-                //If there IS a block over adjacent
                 else
                 {
                     if (tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slope)
@@ -340,29 +673,20 @@ public class Block_Root : MonoBehaviour
                         if (tempBlock_Over)
                         {
                             SetupEntryInBlockList(tempBlock_Over, true);
-
                             blockIsFound = true;
                         }
-                        else
-                        {
-                            blockIsFound = false;
-                        }
-                    }
-                    else
-                    {
-                        blockIsFound = false;
                     }
                 }
             }
-
-            //If there is NOT a block adjacent?
             else
             {
                 GameObject tempBlock_UnderEmpty = RaycastBlock(tempOriginPos + (Vector3.up * 0.3f) + lookDir_Temp, Vector3.down, 1.25f);
                 GameObject tempBlock_OverEmpty = RaycastBlock(tempOriginPos + (Vector3.up * 0.3f) + lookDir_Temp, Vector3.up, 1.25f);
 
-                if (tempBlock_UnderEmpty && (tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope)
-                    && RootFreeCostBlockList.Count > 0 && (RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Stair || RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slope))
+                if (tempBlock_UnderEmpty &&
+                    (tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope) &&
+                    RootFreeCostBlockList.Count > 0 &&
+                    (RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Stair || RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slope))
                 {
                     StairSlopeCorrection(ref tempBlock_UnderEmpty);
 
@@ -371,12 +695,9 @@ public class Block_Root : MonoBehaviour
                         SetupEntryInBlockList(tempBlock_UnderEmpty, true);
                         blockIsFound = true;
                     }
-                    else
-                    {
-                        blockIsFound = false;
-                    }
                 }
-                else if (tempBlock_OverEmpty && (tempBlock_OverEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_OverEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope))
+                else if (tempBlock_OverEmpty &&
+                         (tempBlock_OverEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_OverEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope))
                 {
                     StairSlopeCorrection(ref tempBlock_OverEmpty);
 
@@ -385,19 +706,13 @@ public class Block_Root : MonoBehaviour
                         SetupEntryInBlockList(tempBlock_OverEmpty, true);
                         blockIsFound = true;
                     }
-                    else
-                    {
-                        blockIsFound = false;
-                    }
-                }
-                else
-                {
-                    blockIsFound = false;
                 }
             }
+
             #endregion
 
-            #region Check diagonal down after stair/slope (step off down-stair)
+            #region Check diagonal down after stair/slope
+
             if (!blockIsFound && RootFreeCostBlockList.Count > 0)
             {
                 var lastType = RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType;
@@ -405,22 +720,20 @@ public class Block_Root : MonoBehaviour
                 if (lastType == BlockType.Stair || lastType == BlockType.Slope)
                 {
                     Vector3 origin = tempOriginPos + lookDir_Temp + Vector3.up * 2.0f;
-
                     GameObject diagDown = RaycastBlock(origin, Vector3.down, 5.0f);
 
-                    if (diagDown)
+                    if (diagDown && diagDown.transform.position.y < tempOriginPos.y - 0.25f)
                     {
-                        if (diagDown.transform.position.y < tempOriginPos.y - 0.25f)
-                        {
-                            SetupEntryInBlockList(diagDown, false);
-                            blockIsFound = true;
-                        }
+                        SetupEntryInBlockList(diagDown, false);
+                        blockIsFound = true;
                     }
                 }
             }
+
             #endregion
 
-            #region Check diagonal up after stair/slope (step off up-stair)
+            #region Check diagonal up after stair/slope
+
             if (!blockIsFound && RootFreeCostBlockList.Count > 0)
             {
                 var lastType = RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType;
@@ -428,29 +741,28 @@ public class Block_Root : MonoBehaviour
                 if (lastType == BlockType.Stair || lastType == BlockType.Slope)
                 {
                     Vector3 origin = tempOriginPos + lookDir_Temp + Vector3.up * 0.1f;
-
                     GameObject diagUp = RaycastBlock(origin, Vector3.up, 5.0f);
 
-                    if (diagUp)
+                    if (diagUp && diagUp.transform.position.y > tempOriginPos.y + 0.25f)
                     {
-                        if (diagUp.transform.position.y > tempOriginPos.y + 0.25f)
-                        {
-                            SetupEntryInBlockList(diagUp, false);
-                            blockIsFound = true;
-                        }
+                        SetupEntryInBlockList(diagUp, false);
+                        blockIsFound = true;
                     }
                 }
             }
+
             #endregion
 
             #region Check stairs/slopes
+
             if (!blockIsFound)
             {
                 tempBlock_Adjacent = RaycastBlock(tempOriginPos, lookDir_Temp, 1f);
                 GameObject tempBlock_Over = RaycastBlock(tempOriginPos + Vector3.up, lookDir_Temp, 1f);
 
-                //Is there a stair/slope adjacent?
-                if (tempBlock_Adjacent && (tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Slope))
+                if (tempBlock_Adjacent &&
+                    (tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Stair ||
+                     tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Slope))
                 {
                     StairSlopeCorrection(ref tempBlock_Adjacent);
 
@@ -459,18 +771,13 @@ public class Block_Root : MonoBehaviour
                         SetupEntryInBlockList(tempBlock_Adjacent, true);
                         blockIsFound = true;
                     }
-                    else
-                    {
-                        blockIsFound = false;
-                    }
-                }
-                else
-                {
-                    blockIsFound = false;
                 }
 
-                //is there a stair/slope over adjacent?
-                if (!blockIsFound && tempBlock_Adjacent && tempBlock_Over && (tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slope))
+                if (!blockIsFound &&
+                    tempBlock_Adjacent &&
+                    tempBlock_Over &&
+                    (tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Stair ||
+                     tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slope))
                 {
                     StairSlopeCorrection(ref tempBlock_Over);
 
@@ -479,66 +786,40 @@ public class Block_Root : MonoBehaviour
                         SetupEntryInBlockList(tempBlock_Over, true);
                         blockIsFound = true;
                     }
-                    else
-                    {
-                        blockIsFound = false;
-                    }
-                }
-                else
-                {
-                    blockIsFound = false;
                 }
             }
+
             #endregion
 
             #region Check Ladder
+
             if (!blockIsFound)
             {
-                GameObject tempBlock_Ladder_Up = new GameObject();
-                tempBlock_Ladder_Up = RaycastLadder(tempOriginPos + Vector3.up, lookDir_Temp, 1.5f);
+                GameObject tempBlock_Ladder_Up = RaycastLadder(tempOriginPos + Vector3.up, lookDir_Temp, 1.5f);
+                GameObject tempBlock_Ladder_Down = RaycastLadder(tempOriginPos, lookDir_Temp, 1f);
 
-                GameObject tempBlock_Ladder_Down = new GameObject();
-                tempBlock_Ladder_Down = RaycastLadder(tempOriginPos, lookDir_Temp, 1f);
-
-                //Ladder Up
                 if (tempBlock_Ladder_Up)
                 {
-                    if (tempBlock_Ladder_Up && tempBlock_Ladder_Up.GetComponent<Block_Ladder>() && tempBlock_Ladder_Up.GetComponent<Block_Ladder>().exitBlock_Up && tempBlock_Ladder_Up.GetComponent<Block_Ladder>().exitBlock_Up.GetComponent<BlockInfo>())
+                    if (tempBlock_Ladder_Up.GetComponent<Block_Ladder>() &&
+                        tempBlock_Ladder_Up.GetComponent<Block_Ladder>().exitBlock_Up &&
+                        tempBlock_Ladder_Up.GetComponent<Block_Ladder>().exitBlock_Up.GetComponent<BlockInfo>())
                     {
                         SetupEntryInBlockList(tempBlock_Ladder_Up.GetComponent<Block_Ladder>().exitBlock_Up, false);
                         blockIsFound = true;
-
-                        print("1.2. Ladder IS Detected");
-                    }
-                    else
-                    {
-                        print("1.2. Ladder is NOT Detected");
-                        blockIsFound = false;
                     }
                 }
-
-                //Ladder Down
                 else if (tempBlock_Ladder_Down)
                 {
-                    if (tempBlock_Ladder_Down && tempBlock_Ladder_Down.GetComponent<Block_Ladder>() && tempBlock_Ladder_Down.GetComponent<Block_Ladder>().exitBlock_Down && tempBlock_Ladder_Down.GetComponent<Block_Ladder>().exitBlock_Down.GetComponent<BlockInfo>())
+                    if (tempBlock_Ladder_Down.GetComponent<Block_Ladder>() &&
+                        tempBlock_Ladder_Down.GetComponent<Block_Ladder>().exitBlock_Down &&
+                        tempBlock_Ladder_Down.GetComponent<Block_Ladder>().exitBlock_Down.GetComponent<BlockInfo>())
                     {
                         SetupEntryInBlockList(tempBlock_Ladder_Down.GetComponent<Block_Ladder>().exitBlock_Down, false);
                         blockIsFound = true;
-
-                        print("2.1. Ladder IS Detected");
                     }
-                    else
-                    {
-                        print("2.2. Ladder is NOT Detected");
-                        blockIsFound = false;
-                    }
-                }
-
-                else
-                {
-                    blockIsFound = false;
                 }
             }
+
             #endregion
 
             #region Check after slope after falling
@@ -547,44 +828,29 @@ public class Block_Root : MonoBehaviour
             {
                 GameObject tempBlock_Falling = null;
 
-                if (RootFreeCostBlockList.Count > 0 && RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slope)
+                if (RootFreeCostBlockList.Count > 0 &&
+                    RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slope)
                 {
                     tempBlock_Falling = RaycastBlock(tempOriginPos + lookDir_Temp, Vector3.down, 50f);
                 }
-                else
-                {
-                    tempBlock_Falling = null;
-                }
 
-                //Is there a block under when falling?
                 if (tempBlock_Falling)
                 {
-                    //Check orientation of stair/slope
-                    if (tempBlock_Falling.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Falling.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                    if (tempBlock_Falling.GetComponent<BlockInfo>().blockType == BlockType.Stair ||
+                        tempBlock_Falling.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                     {
-                        if (tempBlock_Falling)
-                        {
-                            SetupEntryInBlockList(tempBlock_Falling, true);
-                            blockIsFound = true;
-                        }
-                        else
-                        {
-                            blockIsFound = false;
-                        }
+                        SetupEntryInBlockList(tempBlock_Falling, true);
                     }
                     else
                     {
                         SetupEntryInBlockList(tempBlock_Falling, false);
-                        blockIsFound = true;
                     }
-                }
-                else
-                {
-                    blockIsFound = false;
+
+                    blockIsFound = true;
                 }
             }
-            #endregion
 
+            #endregion
 
             if (!blockIsFound)
             {
@@ -592,35 +858,42 @@ public class Block_Root : MonoBehaviour
             }
         }
 
-        //Change position of each rootLine to their new blocks, and rotate them to correct orientation
         SetRootLineObjectsOrientation();
-
-        for (int i = 0; i < RootFreeCostBlockList.Count; i++)
-        {
-            var b = RootFreeCostBlockList[i].block;
-            var r = RootObjectList[i];
-        }
-
-        //Make RootLines visible and add animation to them, not all at once, but in order, with some delay
         MakeRootObjectsVisible();
-
-        //Change the cost of blocks in the list to 0 (save their original costs so they can be reset)
         ChangeBlockMovementCost();
     }
 
     void SetupEntryInBlockList(GameObject tempBlock, bool stair)
     {
+        if (tempBlock == null)
+            return;
+
+        if (RootFreeCostBlockList.Count >= RootObjectList.Count)
+        {
+            Debug.LogWarning($"{nameof(Block_Root)} on {name}: Not enough root objects in RootObjectList.", this);
+            finishedCheckingForBlocks = true;
+            return;
+        }
+
+        if (IsBlockAlreadyInRootLine(tempBlock))
+            return;
+
+        BlockInfo info = tempBlock.GetComponent<BlockInfo>();
+
+        if (info == null)
+            return;
+
         RootBlockLineInfo rootBlockLineInfo = new RootBlockLineInfo();
         rootBlockLineInfo.block = tempBlock;
-        rootBlockLineInfo.originalMovemetCost = tempBlock.GetComponent<BlockInfo>().movementCost_Temp_Base;
-        rootBlockLineInfo.blockType = tempBlock.GetComponent<BlockInfo>().blockType;
+        rootBlockLineInfo.originalMovemetCost = info.movementCost_Temp_Base;
+        rootBlockLineInfo.blockType = info.blockType;
         rootBlockLineInfo.facingDir = tempBlock.transform.localPosition;
 
         if (rootBlockLineInfo.block && rootBlockLineInfo.block.GetComponent<Block_Water>())
             rootBlockLineInfo.block.GetComponent<Block_Water>().hasRoots = true;
 
         RootFreeCostBlockList.Add(rootBlockLineInfo);
-        tempOriginPos = RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].block.transform.position;
+        tempOriginPos = tempBlock.transform.position;
     }
 
 
@@ -635,15 +908,9 @@ public class Block_Root : MonoBehaviour
             {
                 return hit.collider.transform.gameObject;
             }
-            else
-            {
-                return null;
-            }
         }
-        else
-        {
-            return null;
-        }
+
+        return null;
     }
 
     GameObject RaycastLadder(Vector3 origin, Vector3 dir, float distance)
@@ -656,26 +923,30 @@ public class Block_Root : MonoBehaviour
             {
                 return hit.collider.transform.parent.gameObject;
             }
-            else
-            {
-                return null;
-            }
         }
-        else
-        {
-            return null;
-        }
+
+        return null;
     }
 
     void StairSlopeCorrection(ref GameObject obj)
     {
+        if (obj == null)
+            return;
+
         var info = obj.GetComponent<BlockInfo>();
-        if (info.blockType != BlockType.Stair && info.blockType != BlockType.Slope) return;
+
+        if (info == null)
+        {
+            obj = null;
+            return;
+        }
+
+        if (info.blockType != BlockType.Stair && info.blockType != BlockType.Slope)
+            return;
 
         Vector3 stairDir = obj.transform.forward.normalized;
-        Vector3 travelDir = Movement.Instance.lookingDirection.normalized;
+        Vector3 travelDir = playerLookDir.sqrMagnitude > 0.001f ? playerLookDir.normalized : Movement.Instance.lookingDirection.normalized;
 
-        //Correction if respawning on a RootBlockCheckpoint
         if (Movement.Instance.isRespawning && transform.parent.gameObject && transform.parent.gameObject.GetComponent<Block_Checkpoint>())
         {
             switch (transform.parent.gameObject.GetComponent<Block_Checkpoint>().spawnDirection)
@@ -687,12 +958,15 @@ public class Block_Root : MonoBehaviour
                 case MovementDirection.Forward:
                     travelDir = -Vector3.forward;
                     break;
+
                 case MovementDirection.Backward:
                     travelDir = -Vector3.back;
                     break;
+
                 case MovementDirection.Left:
                     travelDir = -Vector3.left;
                     break;
+
                 case MovementDirection.Right:
                     travelDir = -Vector3.right;
                     break;
@@ -704,8 +978,6 @@ public class Block_Root : MonoBehaviour
         }
 
         float dot = Vector3.Dot(stairDir, travelDir);
-
-        // Expected origin Y relative to this stair depends on whether we're entering from high side or low side.
         float y = obj.transform.position.y;
 
         bool ok;
@@ -715,13 +987,15 @@ public class Block_Root : MonoBehaviour
 
         if (dot < 0f)
         {
-            // entering from the "high" side (travel against stairDir)
-            ok = Approx(tempOriginPos.y, y - 0.5f) || Approx(tempOriginPos.y, y - 1.0f) || Approx(tempOriginPos.y, y - 1.5f);
+            ok = Approx(tempOriginPos.y, y - 0.5f) ||
+                 Approx(tempOriginPos.y, y - 1.0f) ||
+                 Approx(tempOriginPos.y, y - 1.5f);
         }
         else
         {
-            // entering from the "low" side (travel with stairDir)
-            ok = Approx(tempOriginPos.y, y + 0.5f) || Approx(tempOriginPos.y, y + 1.0f) || Approx(tempOriginPos.y, y + 1.5f);
+            ok = Approx(tempOriginPos.y, y + 0.5f) ||
+                 Approx(tempOriginPos.y, y + 1.0f) ||
+                 Approx(tempOriginPos.y, y + 1.5f);
         }
 
         if (!ok)
@@ -735,15 +1009,27 @@ public class Block_Root : MonoBehaviour
     {
         Vector3 dir = playerLookDir;
 
+        if (dir.sqrMagnitude < 0.001f)
+            dir = GetRootDirectionFromCurrentMovement();
+
+        dir = SnapDirection(dir);
+
         for (int i = 0; i < RootFreeCostBlockList.Count; i++)
         {
             var block = RootFreeCostBlockList[i].block;
             var type = RootFreeCostBlockList[i].blockType;
 
+            if (block == null)
+                continue;
+
+            if (i >= RootObjectList.Count || RootObjectList[i] == null)
+                continue;
+
             if (type == BlockType.Stair || type == BlockType.Slope)
             {
                 bool isDownStep = false;
-                if (i > 0)
+
+                if (i > 0 && RootFreeCostBlockList[i - 1].block != null)
                 {
                     float prevY = RootFreeCostBlockList[i - 1].block.transform.position.y;
                     float currY = block.transform.position.y;
@@ -767,29 +1053,27 @@ public class Block_Root : MonoBehaviour
         var block = RootFreeCostBlockList[i].block;
         var root = RootObjectList[i];
 
-        // Ensure travelDir is horizontal + normalized
-        travelDir.y = 0f;
-        if (travelDir.sqrMagnitude > 0.0001f) travelDir.Normalize();
+        if (block == null || root == null)
+            return;
 
-        // Flip facing for down-steps
+        travelDir = SnapDirection(travelDir);
+
         Vector3 rootForward = isDownStep ? -travelDir : travelDir;
-
-        // Use different forward offset for down vs up
         float forwardOffset = isDownStep ? stairDownForwardOffset : stairUpForwardOffset;
 
-        // Position
         Vector3 pos = block.transform.position
                       + Vector3.up * stairUpHeightOffset
                       + travelDir * forwardOffset;
 
         root.transform.SetPositionAndRotation(pos, Quaternion.LookRotation(rootForward));
-
-        // Tilt onto the surface
         root.transform.Rotate(stairSurfaceTilt, 0f, 0f, Space.Self);
     }
 
     void MakeRootObjectsVisible()
     {
+        if (RootFreeCostBlockList.Count <= 0)
+            return;
+
         if (rootAnimCoroutine != null)
         {
             StopCoroutine(rootAnimCoroutine);
@@ -801,15 +1085,13 @@ public class Block_Root : MonoBehaviour
 
     IEnumerator AnimationDelay(float waitTime)
     {
-        for (int i = 0; i < RootFreeCostBlockList.Count; i++)
+        int rootsToAnimate = RootFreeCostBlockList.Count;
+
+        for (int i = 0; i < rootsToAnimate; i++)
         {
             yield return new WaitForSeconds(waitTime);
 
-            if (i < RootObjectList.Count && RootObjectList[i] != null)
-            {
-                RootObjectList[i].SetActive(true);
-                RootObjectList[i].GetComponent<Animator>().SetTrigger("Activate");
-            }
+            ActivateSingleRootObject(i);
         }
 
         rootAnimCoroutine = null;
@@ -830,6 +1112,7 @@ public class Block_Root : MonoBehaviour
             info.SetTemporaryMovementCostOverride(0);
         }
     }
+
     #endregion
 
 
@@ -837,9 +1120,26 @@ public class Block_Root : MonoBehaviour
 
 
     #region DestroyRootLine
+
     void DestroyRootFreeCostList()
     {
         isActive = false;
+
+        rootActivationQueued = false;
+        queuedActivationDirection = Vector3.zero;
+
+        // Do NOT always reset activatedForCurrentRootStand here.
+        // It should only reset when the player is no longer standing on this RootBlock.
+        if (!IsPlayerStandingOnRootSourceBlock())
+        {
+            activatedForCurrentRootStand = false;
+        }
+
+        if (delayedRootActivationCoroutine != null)
+        {
+            StopCoroutine(delayedRootActivationCoroutine);
+            delayedRootActivationCoroutine = null;
+        }
 
         if (rootAnimCoroutine != null)
         {
@@ -847,7 +1147,8 @@ public class Block_Root : MonoBehaviour
             rootAnimCoroutine = null;
         }
 
-        playerLookDir = Movement.Instance.lookingDirection;
+        if (Movement.Instance != null)
+            playerLookDir = Movement.Instance.lookingDirection;
 
         ResetBlockLineObjects();
         SetBlockMovementCostToDefault();
@@ -855,12 +1156,14 @@ public class Block_Root : MonoBehaviour
         RootFreeCostBlockList.Clear();
 
         finishedCheckingForBlocks = false;
-
         onTrigger = false;
 
-        Movement.Instance.ResetDarkenBlocks_External();
-        Movement.Instance.UpdateBlocks();
-        Movement.Instance.SetDarkenBlocks();
+        if (Movement.Instance != null)
+        {
+            Movement.Instance.ResetDarkenBlocks_External();
+            Movement.Instance.UpdateBlocks();
+            Movement.Instance.SetDarkenBlocks();
+        }
     }
 
 
@@ -875,7 +1178,14 @@ public class Block_Root : MonoBehaviour
 
             if (RootObjectList[i].activeInHierarchy)
             {
-                RootObjectList[i].GetComponent<Animator>().SetTrigger("Deactivate");
+                Animator rootAnimator = RootObjectList[i].GetComponent<Animator>();
+
+                if (rootAnimator != null)
+                {
+                    rootAnimator.ResetTrigger("Activate");
+                    rootAnimator.SetTrigger("Deactivate");
+                }
+
                 RootObjectList[i].SetActive(false);
             }
 
@@ -905,7 +1215,9 @@ public class Block_Root : MonoBehaviour
             info.ClearTemporaryMovementCostOverride();
         }
     }
+
     #endregion
+
 
     #region LiveRootContinuation
 
@@ -914,7 +1226,6 @@ public class Block_Root : MonoBehaviour
         if (!checkForRootContinuation) return;
         if (!isActive) return;
 
-        // Keep existing root visuals attached to moving blocks.
         if (RootFreeCostBlockList.Count > 0)
         {
             SetRootLineObjectsOrientation();
@@ -923,37 +1234,49 @@ public class Block_Root : MonoBehaviour
         if (Time.time < nextContinuationCheckTime) return;
         nextContinuationCheckTime = Time.time + continuationCheckInterval;
 
-        // Always let existing root segments continue normally.
         if (RootFreeCostBlockList.Count > 0)
         {
             TryContinueRootLineFromOpenSegments();
         }
 
-        // Also let the RootBlock itself keep checking.
-        // This allows several moving blocks to receive roots from the source block.
+        // Let the RootBlock source keep checking while this root line is active,
+        // even if the player is no longer standing on the RootBlock.
         if (keepCheckingFromRootBlockEvenWhenRootsExist ||
             (keepCheckingFromRootBlockWhenNoRoots && RootFreeCostBlockList.Count <= 0))
         {
             TryStartRootLineFromRootBlock();
         }
     }
+
+    bool IsPlayerStandingOnRootSourceBlock()
+    {
+        if (Movement.Instance == null)
+            return false;
+
+        GameObject rootSourceBlock = GetRootSourceBlock();
+
+        if (rootSourceBlock == null)
+            return false;
+
+        return Movement.Instance.blockStandingOn == rootSourceBlock;
+    }
+
     void TryStartRootLineFromRootBlock()
     {
         if (RootObjectList.Count <= 0)
         {
-            Debug.LogWarning($"{nameof(Block_Root)} on {name}: No root objects assigned in RootObjectList.");
+            Debug.LogWarning($"{nameof(Block_Root)} on {name}: No root objects assigned in RootObjectList.", this);
             return;
         }
 
         if (RootFreeCostBlockList.Count >= RootObjectList.Count)
         {
-            Debug.LogWarning($"{nameof(Block_Root)} on {name}: Not enough root objects in RootObjectList.");
             return;
         }
 
         Vector3 lookDir_Temp = GetRootTravelDirection();
 
-        GameObject rootParentBlock = transform.parent != null ? transform.parent.gameObject : null;
+        GameObject rootParentBlock = GetRootSourceBlock();
 
         if (rootParentBlock == null)
             return;
@@ -980,14 +1303,16 @@ public class Block_Root : MonoBehaviour
         SetupEntryInBlockList(firstBlock, firstIsStairOrSlope);
 
         SetRootLineObjectsOrientation();
-
         ActivateSingleRootObject(newRootIndex);
-
         ChangeBlockMovementCost();
 
-        Movement.Instance.UpdateBlocks();
-        Movement.Instance.SetDarkenBlocks();
+        if (Movement.Instance != null)
+        {
+            Movement.Instance.UpdateBlocks();
+            Movement.Instance.SetDarkenBlocks();
+        }
     }
+
     GameObject FindNextBlockFromRootBlock(GameObject rootBlock, Vector3 lookDir_Temp)
     {
         if (!rootBlock)
@@ -1001,7 +1326,7 @@ public class Block_Root : MonoBehaviour
         if (rootInfo != null)
             temporarySource.blockType = rootInfo.blockType;
         else
-            temporarySource.blockType = BlockType.Cube; // Use your default block type if Cube is not correct.
+            temporarySource.blockType = BlockType.Cube;
 
         return FindNextBlockForLiveContinuationFrom(temporarySource, lookDir_Temp);
     }
@@ -1013,9 +1338,6 @@ public class Block_Root : MonoBehaviour
         Vector3 lookDir_Temp = GetRootTravelDirection();
 
         int addedCount = 0;
-
-        // Snapshot count so newly added roots do not all check in the same pass.
-        // They can continue expanding on the next interval.
         int rootCountAtStart = RootFreeCostBlockList.Count;
 
         for (int i = 0; i < rootCountAtStart; i++)
@@ -1025,7 +1347,7 @@ public class Block_Root : MonoBehaviour
 
             if (RootFreeCostBlockList.Count >= RootObjectList.Count)
             {
-                Debug.LogWarning($"{nameof(Block_Root)} on {name}: Not enough root objects in RootObjectList to continue root line.");
+                Debug.LogWarning($"{nameof(Block_Root)} on {name}: Not enough root objects in RootObjectList to continue root line.", this);
                 break;
             }
 
@@ -1034,8 +1356,6 @@ public class Block_Root : MonoBehaviour
             if (sourceRootInfo == null || sourceRootInfo.block == null)
                 continue;
 
-            // Optimization:
-            // Only root segments with no rooted block in front are allowed to search.
             if (HasRootSegmentAdjacentInDirection(sourceRootInfo.block, lookDir_Temp))
                 continue;
 
@@ -1052,24 +1372,23 @@ public class Block_Root : MonoBehaviour
             if (!nextInfo)
                 continue;
 
-            bool nextIsStairOrSlope = nextInfo.blockType == BlockType.Stair || nextInfo.blockType == BlockType.Slope;
+            bool nextIsStairOrSlope =
+                nextInfo.blockType == BlockType.Stair ||
+                nextInfo.blockType == BlockType.Slope;
 
             int newRootIndex = RootFreeCostBlockList.Count;
 
             SetupEntryInBlockList(nextBlock, nextIsStairOrSlope);
 
-            // Re-place all roots so moving blocks and newly added roots are correct.
             SetRootLineObjectsOrientation();
-
-            // Show only the newly added visual.
             ActivateSingleRootObject(newRootIndex);
-
-            // Apply 0 movement cost to the new block.
             ChangeBlockMovementCost();
 
-            // Refresh movement visuals.
-            Movement.Instance.UpdateBlocks();
-            Movement.Instance.SetDarkenBlocks();
+            if (Movement.Instance != null)
+            {
+                Movement.Instance.UpdateBlocks();
+                Movement.Instance.SetDarkenBlocks();
+            }
 
             addedCount++;
         }
@@ -1095,7 +1414,8 @@ public class Block_Root : MonoBehaviour
 
             if (!tempBlock_Over || (tempBlock_Over && tempBlock_Over.GetComponent<BlockInfo>() && tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slab))
             {
-                if (tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                if (tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Stair ||
+                    tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                 {
                     StairSlopeCorrectionLive(ref tempBlock_Adjacent, lookDir_Temp);
 
@@ -1113,7 +1433,8 @@ public class Block_Root : MonoBehaviour
             }
             else
             {
-                if (tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slope)
+                if (tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Stair ||
+                    tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                 {
                     StairSlopeCorrectionLive(ref tempBlock_Over, lookDir_Temp);
 
@@ -1131,7 +1452,8 @@ public class Block_Root : MonoBehaviour
             GameObject tempBlock_OverEmpty = RaycastBlock(tempOriginPos + (Vector3.up * 0.3f) + lookDir_Temp, Vector3.up, 1.25f);
 
             if (tempBlock_UnderEmpty &&
-                (tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope) &&
+                (tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair ||
+                 tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope) &&
                 (sourceRootInfo.blockType == BlockType.Stair || sourceRootInfo.blockType == BlockType.Slope))
             {
                 StairSlopeCorrectionLive(ref tempBlock_UnderEmpty, lookDir_Temp);
@@ -1143,7 +1465,8 @@ public class Block_Root : MonoBehaviour
                 }
             }
             else if (tempBlock_OverEmpty &&
-                     (tempBlock_OverEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_OverEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope))
+                     (tempBlock_OverEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair ||
+                      tempBlock_OverEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope))
             {
                 StairSlopeCorrectionLive(ref tempBlock_OverEmpty, lookDir_Temp);
 
@@ -1166,16 +1489,12 @@ public class Block_Root : MonoBehaviour
             if (sourceType == BlockType.Stair || sourceType == BlockType.Slope)
             {
                 Vector3 origin = tempOriginPos + lookDir_Temp + Vector3.up * 2.0f;
-
                 GameObject diagDown = RaycastBlock(origin, Vector3.down, 5.0f);
 
-                if (diagDown)
+                if (diagDown && diagDown.transform.position.y < tempOriginPos.y - 0.25f)
                 {
-                    if (diagDown.transform.position.y < tempOriginPos.y - 0.25f)
-                    {
-                        foundBlock = diagDown;
-                        blockIsFound = true;
-                    }
+                    foundBlock = diagDown;
+                    blockIsFound = true;
                 }
             }
         }
@@ -1191,16 +1510,12 @@ public class Block_Root : MonoBehaviour
             if (sourceType == BlockType.Stair || sourceType == BlockType.Slope)
             {
                 Vector3 origin = tempOriginPos + lookDir_Temp + Vector3.up * 0.1f;
-
                 GameObject diagUp = RaycastBlock(origin, Vector3.up, 5.0f);
 
-                if (diagUp)
+                if (diagUp && diagUp.transform.position.y > tempOriginPos.y + 0.25f)
                 {
-                    if (diagUp.transform.position.y > tempOriginPos.y + 0.25f)
-                    {
-                        foundBlock = diagUp;
-                        blockIsFound = true;
-                    }
+                    foundBlock = diagUp;
+                    blockIsFound = true;
                 }
             }
         }
@@ -1215,7 +1530,8 @@ public class Block_Root : MonoBehaviour
             GameObject tempBlock_Over = RaycastBlock(tempOriginPos + Vector3.up, lookDir_Temp, 1f);
 
             if (tempBlock_Adjacent &&
-                (tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Slope))
+                (tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Stair ||
+                 tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Slope))
             {
                 StairSlopeCorrectionLive(ref tempBlock_Adjacent, lookDir_Temp);
 
@@ -1229,7 +1545,8 @@ public class Block_Root : MonoBehaviour
             if (!blockIsFound &&
                 tempBlock_Adjacent &&
                 tempBlock_Over &&
-                (tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Stair || tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slope))
+                (tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Stair ||
+                 tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slope))
             {
                 StairSlopeCorrectionLive(ref tempBlock_Over, lookDir_Temp);
 
@@ -1311,14 +1628,9 @@ public class Block_Root : MonoBehaviour
         Vector3 lookDir_Temp = playerLookDir;
 
         if (lookDir_Temp.sqrMagnitude < 0.001f)
-            lookDir_Temp = Movement.Instance.lookingDirection;
+            lookDir_Temp = GetRootDirectionFromCurrentMovement();
 
-        lookDir_Temp.y = 0f;
-
-        if (lookDir_Temp.sqrMagnitude > 0.001f)
-            lookDir_Temp.Normalize();
-
-        return lookDir_Temp;
+        return SnapDirection(lookDir_Temp);
     }
 
     bool HasRootSegmentAdjacentInDirection(GameObject sourceBlock, Vector3 dir)
@@ -1327,12 +1639,7 @@ public class Block_Root : MonoBehaviour
 
         Vector3 sourcePos = sourceBlock.transform.position;
 
-        dir.y = 0f;
-
-        if (dir.sqrMagnitude < 0.001f)
-            return false;
-
-        dir.Normalize();
+        dir = SnapDirection(dir);
 
         for (int i = 0; i < RootFreeCostBlockList.Count; i++)
         {
@@ -1342,7 +1649,6 @@ public class Block_Root : MonoBehaviour
             if (otherBlock == sourceBlock) continue;
 
             Vector3 offset = otherBlock.transform.position - sourcePos;
-
             Vector3 horizontalOffset = new Vector3(offset.x, 0f, offset.z);
 
             float forwardDistance = Vector3.Dot(horizontalOffset, dir);
@@ -1350,8 +1656,6 @@ public class Block_Root : MonoBehaviour
 
             bool isInFront = forwardDistance > 0.75f && forwardDistance < 1.25f;
             bool isSameLine = sideDistance < 0.25f;
-
-            // Allows stairs/slopes to count as connected even if Y differs.
             bool isCloseEnoughVertically = Mathf.Abs(offset.y) <= 1.6f;
 
             if (isInFront && isSameLine && isCloseEnoughVertically)
@@ -1369,12 +1673,17 @@ public class Block_Root : MonoBehaviour
         if (index >= RootObjectList.Count) return;
         if (RootObjectList[index] == null) return;
 
+        if (RootObjectList[index].activeSelf)
+            return;
+
         RootObjectList[index].SetActive(true);
 
         Animator rootAnimator = RootObjectList[index].GetComponent<Animator>();
 
         if (rootAnimator)
         {
+            rootAnimator.ResetTrigger("Deactivate");
+            rootAnimator.ResetTrigger("Activate");
             rootAnimator.SetTrigger("Activate");
         }
     }
@@ -1404,17 +1713,14 @@ public class Block_Root : MonoBehaviour
             return;
         }
 
-        if (info.blockType != BlockType.Stair && info.blockType != BlockType.Slope) return;
+        if (info.blockType != BlockType.Stair && info.blockType != BlockType.Slope)
+            return;
 
         Vector3 stairDir = obj.transform.forward.normalized;
 
-        travelDir.y = 0f;
-
-        if (travelDir.sqrMagnitude > 0.0001f)
-            travelDir.Normalize();
+        travelDir = SnapDirection(travelDir);
 
         float dot = Vector3.Dot(stairDir, travelDir);
-
         float y = obj.transform.position.y;
 
         bool ok;
@@ -1424,11 +1730,15 @@ public class Block_Root : MonoBehaviour
 
         if (dot < 0f)
         {
-            ok = Approx(tempOriginPos.y, y - 0.5f) || Approx(tempOriginPos.y, y - 1.0f) || Approx(tempOriginPos.y, y - 1.5f);
+            ok = Approx(tempOriginPos.y, y - 0.5f) ||
+                 Approx(tempOriginPos.y, y - 1.0f) ||
+                 Approx(tempOriginPos.y, y - 1.5f);
         }
         else
         {
-            ok = Approx(tempOriginPos.y, y + 0.5f) || Approx(tempOriginPos.y, y + 1.0f) || Approx(tempOriginPos.y, y + 1.5f);
+            ok = Approx(tempOriginPos.y, y + 0.5f) ||
+                 Approx(tempOriginPos.y, y + 1.0f) ||
+                 Approx(tempOriginPos.y, y + 1.5f);
         }
 
         if (!ok)
@@ -1446,14 +1756,23 @@ public class Block_Root : MonoBehaviour
 
     void ResetRootOnly()
     {
+        // This prevents the RootBlock that is currently activating
+        // from destroying its own roots / activation state.
+        if (ignoreNextSelfReset)
+            return;
+
         DestroyRootFreeCostList();
     }
 
     void ResetOnRespawn()
     {
+        rootActivationQueued = false;
+        activatedForCurrentRootStand = false;
+        queuedActivationDirection = Vector3.zero;
+        playerIsInsideRootTrigger = false;
+
         DestroyRootFreeCostList();
 
-        //Activate if standing on it after respawn
         StartCoroutine(ActivateIfStandinOnAfterRespawn());
     }
 
@@ -1461,9 +1780,17 @@ public class Block_Root : MonoBehaviour
     {
         yield return null;
 
-        if (Movement.Instance.blockStandingOn == transform.parent.gameObject)
+        if (Movement.Instance == null)
+            yield break;
+
+        GameObject rootSourceBlock = GetRootSourceBlock();
+
+        if (rootSourceBlock == null)
+            yield break;
+
+        if (Movement.Instance.blockStandingOn == rootSourceBlock)
         {
-            ActivateRoots();
+            ActivateRootOnceForCurrentStand(GetRootDirectionFromCurrentMovement());
         }
     }
 }

@@ -256,6 +256,7 @@ public class Block_Elevator : MonoBehaviour
                 case elevatorDirection.None:
                     movementPath[i].endPos = movementPath[i].startPos;
                     break;
+
                 case elevatorDirection.Up:
                     movementPath[i].endPos = movementPath[i].startPos + (Vector3.up * movementPath[i].distance);
                     break;
@@ -274,6 +275,35 @@ public class Block_Elevator : MonoBehaviour
                 case elevatorDirection.Right:
                     movementPath[i].endPos = movementPath[i].startPos + (Vector3.right * movementPath[i].distance);
                     break;
+
+                case elevatorDirection.forwardUp:
+                    movementPath[i].endPos = movementPath[i].startPos + (Vector3.forward * movementPath[i].distance) + (Vector3.up * movementPath[i].distance);
+                    break;
+                case elevatorDirection.forwardDown:
+                    movementPath[i].endPos = movementPath[i].startPos + (Vector3.forward * movementPath[i].distance) + (Vector3.down * movementPath[i].distance);
+                    break;
+
+                case elevatorDirection.backwardUp:
+                    movementPath[i].endPos = movementPath[i].startPos + (Vector3.back * movementPath[i].distance) + (Vector3.up * movementPath[i].distance);
+                    break;
+                case elevatorDirection.backwardDown:
+                    movementPath[i].endPos = movementPath[i].startPos + (Vector3.back * movementPath[i].distance) + (Vector3.down * movementPath[i].distance);
+                    break;
+
+                case elevatorDirection.leftUp:
+                    movementPath[i].endPos = movementPath[i].startPos + (Vector3.left * movementPath[i].distance) + (Vector3.up * movementPath[i].distance);
+                    break;
+                case elevatorDirection.leftDown:
+                    movementPath[i].endPos = movementPath[i].startPos + (Vector3.left * movementPath[i].distance) + (Vector3.down * movementPath[i].distance);
+                    break;
+
+                case elevatorDirection.rightUp:
+                    movementPath[i].endPos = movementPath[i].startPos + (Vector3.right * movementPath[i].distance) + (Vector3.up * movementPath[i].distance);
+                    break;
+                case elevatorDirection.rightDown:
+                    movementPath[i].endPos = movementPath[i].startPos + (Vector3.right * movementPath[i].distance) + (Vector3.down * movementPath[i].distance);
+                    break;
+
                 default:
                     movementPath[i].endPos = movementPath[i].startPos;
                     break;
@@ -586,6 +616,15 @@ public enum elevatorDirection
     backward,
     Left,
     Right,
+
+    forwardUp,
+    forwardDown,
+    backwardUp,
+    backwardDown,
+    leftUp,
+    leftDown,
+    rightUp,
+    rightDown
 }
 
 [Serializable]
