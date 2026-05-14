@@ -35,8 +35,6 @@ Shader "Custom/Shader_Depth"
 
             float frag(Varyings i) : SV_Target
             {
-
-
                 float depth = i.positionCS.z;
                 
                 return depth;

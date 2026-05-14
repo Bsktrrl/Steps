@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3765427278538652376}
   - component: {fileID: 8003797075463224715}
   - component: {fileID: 9102964202806396638}
+  - component: {fileID: 2887491382198877704}
   - component: {fileID: 694312243643937300}
   m_Layer: 0
   m_Name: Effect_Lightning
@@ -4943,6 +4944,20 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ca62fdb0639038149aa7da8e5ceed876, type: 3}
   - {fileID: 8300000, guid: 395e50aaa9b5ae843a47901b48658917, type: 3}
   light: {fileID: 8360026321684516443}
+--- !u!114 &2887491382198877704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2764437585532433765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d6bb1470009e3045a130d1be9c7286d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pitchMin: 0.5
+  pitchMax: 1.5
 --- !u!82 &694312243643937300
 AudioSource:
   m_ObjectHideFlags: 0

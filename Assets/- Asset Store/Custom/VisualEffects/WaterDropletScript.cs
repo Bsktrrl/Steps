@@ -10,6 +10,15 @@ public class WaterDropletScript : MonoBehaviour
     [SerializeField] AudioClip[] softSound;
     [SerializeField] AudioClip[] hardSound;
 
+    float waterPitch = 0.1f;
+    float lavaPitch = 0.5f;
+    float softPitch = -0.2f;
+    float hardPitch = -0.2f;
+    float extraPitch;
+
+    float pitchMin = 0.9f;
+    float pitchMax = 1.1f;
+
     enum AudioSurface
     {
         Water = 0,
@@ -23,12 +32,25 @@ public class WaterDropletScript : MonoBehaviour
 
     AudioSource source;
 
-    float pitchMin = 0.9f;
-    float pitchMax = 1.1f;
-
     void Start()
     {
         source = GetComponent<AudioSource>();
+
+        switch (surfaceType)
+        {
+            case AudioSurface.Water:
+                extraPitch = waterPitch;
+                break;
+            case AudioSurface.Lava:
+                extraPitch = lavaPitch;
+                break;
+            case AudioSurface.Soft:
+                extraPitch = softPitch;
+                break;
+            case AudioSurface.Hard:
+                extraPitch = hardPitch;
+                break;
+        }
     }
 
     private void OnParticleCollision()
@@ -49,7 +71,7 @@ public class WaterDropletScript : MonoBehaviour
                 break;
         }
 
-        source.pitch = Random.Range(pitchMin, pitchMax);
+        source.pitch = Random.Range(pitchMin, pitchMax) + extraPitch;
         source.Play();
     }
 }
