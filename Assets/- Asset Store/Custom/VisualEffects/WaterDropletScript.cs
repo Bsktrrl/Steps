@@ -10,9 +10,9 @@ public class WaterDropletScript : MonoBehaviour
     [SerializeField] AudioClip[] softSound;
     [SerializeField] AudioClip[] hardSound;
 
-    float waterPitch = 0f;
+    float waterPitch = 0.1f;
     float lavaPitch = 0.5f;
-    float softPitch = 0f;
+    float softPitch = -0.2f;
     float hardPitch = -0.2f;
     float extraPitch;
 
