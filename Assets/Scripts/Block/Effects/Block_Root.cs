@@ -894,7 +894,11 @@ public class Block_Root : MonoBehaviour
         // this block should receive roots, but roots should NOT continue from it.
         bool blockShouldStopContinuation = shouldTeleportRoots;
 
-        if (AddRootEntryToBlockList(tempBlock, stair, blockShouldStopContinuation))
+        // The teleport effect should happen later, when the root object
+        // is actually activated on this teleporter block.
+        bool triggerTeleportEffectWhenRootActivates = shouldTeleportRoots;
+
+        if (AddRootEntryToBlockList(tempBlock, stair, blockShouldStopContinuation, triggerTeleportEffectWhenRootActivates))
         {
             addedCount++;
         }
@@ -920,6 +924,8 @@ public class Block_Root : MonoBehaviour
                 return addedCount;
             }
 
+            bool addedLinkedTeleportRoot = false;
+
             if (!IsBlockAlreadyInRootLine(linkedTeleportBlock))
             {
                 BlockInfo linkedInfo = linkedTeleportBlock.GetComponent<BlockInfo>();
@@ -933,19 +939,17 @@ public class Block_Root : MonoBehaviour
                     if (AddRootEntryToBlockList(linkedTeleportBlock, linkedIsStairOrSlope, false))
                     {
                         addedCount++;
+                        addedLinkedTeleportRoot = true;
                     }
                 }
             }
 
-            // Important:
-            // Continue the root search from the linked teleporter,
-            // not from the teleporter that was hit.
             tempOriginPos = linkedTeleportBlock.transform.position;
         }
 
         return addedCount;
     }
-    bool AddRootEntryToBlockList(GameObject tempBlock, bool stair, bool stopContinuationFromThisBlock)
+    bool AddRootEntryToBlockList(GameObject tempBlock, bool stair, bool stopContinuationFromThisBlock, bool triggerTeleportEffectWhenRootActivates = false)
     {
         if (tempBlock == null)
             return false;
@@ -974,6 +978,8 @@ public class Block_Root : MonoBehaviour
         rootBlockLineInfo.blockType = info.blockType;
         rootBlockLineInfo.facingDir = tempBlock.transform.localPosition;
         rootBlockLineInfo.stopContinuationFromThisBlock = stopContinuationFromThisBlock;
+        rootBlockLineInfo.triggerTeleportEffectWhenRootActivates = triggerTeleportEffectWhenRootActivates;
+        rootBlockLineInfo.teleportEffectHasTriggered = false;
 
         if (rootBlockLineInfo.block && rootBlockLineInfo.block.GetComponent<Block_Water>())
             rootBlockLineInfo.block.GetComponent<Block_Water>().hasRoots = true;
@@ -981,6 +987,18 @@ public class Block_Root : MonoBehaviour
         RootFreeCostBlockList.Add(rootBlockLineInfo);
 
         return true;
+    }
+    void ActivateRootTeleportEffect(GameObject teleportBlock)
+    {
+        if (teleportBlock == null)
+            return;
+
+        Block_Teleport teleporter = teleportBlock.GetComponent<Block_Teleport>();
+
+        if (teleporter == null)
+            return;
+
+        teleporter.ActivateRootTeleportEffect();
     }
 
     bool TryGetLinkedTeleportBlock(GameObject block, out GameObject linkedTeleportBlock)
@@ -1823,6 +1841,28 @@ public class Block_Root : MonoBehaviour
             rootAnimator.ResetTrigger("Activate");
             rootAnimator.SetTrigger("Activate");
         }
+
+        ActivateTeleportEffectForRootSegment(index);
+    }
+    void ActivateTeleportEffectForRootSegment(int index)
+    {
+        if (index < 0) return;
+        if (index >= RootFreeCostBlockList.Count) return;
+
+        RootBlockLineInfo rootInfo = RootFreeCostBlockList[index];
+
+        if (rootInfo == null)
+            return;
+
+        if (!rootInfo.triggerTeleportEffectWhenRootActivates)
+            return;
+
+        if (rootInfo.teleportEffectHasTriggered)
+            return;
+
+        rootInfo.teleportEffectHasTriggered = true;
+
+        ActivateRootTeleportEffect(rootInfo.block);
     }
 
     bool IsBlockAlreadyInRootLine(GameObject block)
@@ -1949,4 +1989,7 @@ public class RootBlockLineInfo
     public Vector3 facingDir;
 
     public bool stopContinuationFromThisBlock;
+
+    public bool triggerTeleportEffectWhenRootActivates;
+    public bool teleportEffectHasTriggered;
 }
