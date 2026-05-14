@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5607910448600395393, guid: 17fe9bd5d2a522f4496b71af251316a1, type: 3}
       propertyPath: m_Name
-      value: Smoke_Portal
+      value: EffectBlock_Portal
       objectReference: {fileID: 0}
     - target: {fileID: 6091848721831342627, guid: 17fe9bd5d2a522f4496b71af251316a1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -82,6 +82,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5607910448600395393, guid: 17fe9bd5d2a522f4496b71af251316a1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4117128256043012442}
+    - targetCorrespondingSourceObject: {fileID: 5864684033895076797, guid: 17fe9bd5d2a522f4496b71af251316a1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6578453552584629288}
+    - targetCorrespondingSourceObject: {fileID: 5864684033895076797, guid: 17fe9bd5d2a522f4496b71af251316a1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 239803628611265986}
+    - targetCorrespondingSourceObject: {fileID: 5864684033895076797, guid: 17fe9bd5d2a522f4496b71af251316a1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9171280692528180712}
   m_SourcePrefab: {fileID: 100100000, guid: 17fe9bd5d2a522f4496b71af251316a1, type: 3}
 --- !u!1 &454524455770188417 stripped
 GameObject:
@@ -114,3 +123,66 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
+--- !u!1 &1945005612493920189 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5864684033895076797, guid: 17fe9bd5d2a522f4496b71af251316a1, type: 3}
+  m_PrefabInstance: {fileID: 5448659845398905856}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &6578453552584629288
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945005612493920189}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5, y: 0.15, z: 0.5}
+  m_Center: {x: -0, y: 0.01, z: -0}
+--- !u!114 &239803628611265986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945005612493920189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 185b19e4fdbfb2147b07d5d580b8eff7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed_X: 0
+  rotationSpeed_Y: 35
+  rotationSpeed_Z: 0
+--- !u!114 &9171280692528180712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945005612493920189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94333d03fe0ab5845a6687a2a3561541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scale_Wait: 0.07
+  scale_Speed: 2.5
+  scaleX: 1
+  scaleY: 1
+  scaleZ: 1
+  scale_Min: 1
+  scale_Max: 1.4
+  scale_Up_End: 1.2
+  scale_ReturnSpeed: 1.5
+  debugLogs: 0
