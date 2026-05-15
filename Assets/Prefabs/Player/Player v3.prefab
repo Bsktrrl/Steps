@@ -17359,7 +17359,7 @@ MonoBehaviour:
   CM_FreeCam: {fileID: 8727301439873084190}
   toggleFreeCamGameObject: 0
   freeCamPriorityBoost: 10
-  moveSpeed: 6
+  moveSpeed: 10
   moveInLookDirection: 1
   acceleration: 12
   deceleration: 18
@@ -19325,6 +19325,32 @@ MonoBehaviour:
         ability_3_TotalTimer: 0
         ability_3_TotalTimer_Check: 0
         talkTo_NPC: 0
+    glueplantStandStats_Save:
+      standStats_Rivergreen:
+        stand_1_isTaken: 0
+        stand_2_isTaken: 0
+        stand_3_isTaken: 0
+        stand_4_isTaken: 0
+      standStats_Sandlands:
+        stand_1_isTaken: 0
+        stand_2_isTaken: 0
+        stand_3_isTaken: 0
+        stand_4_isTaken: 0
+      standStats_Frostfield:
+        stand_1_isTaken: 0
+        stand_2_isTaken: 0
+        stand_3_isTaken: 0
+        stand_4_isTaken: 0
+      standStats_Firevein:
+        stand_1_isTaken: 0
+        stand_2_isTaken: 0
+        stand_3_isTaken: 0
+        stand_4_isTaken: 0
+      standStats_Witchmire:
+        stand_1_isTaken: 0
+        stand_2_isTaken: 0
+        stand_3_isTaken: 0
+        stand_4_isTaken: 0
 --- !u!1 &3807087922992491712
 GameObject:
   m_ObjectHideFlags: 0
@@ -32429,6 +32455,7 @@ MonoBehaviour:
   lookingDirectionDescription: 
   blockStandingOn: {fileID: 0}
   blockStandingOn_Previous: {fileID: 0}
+  currentMoveTargetBlock: {fileID: 0}
   lookDir: {x: 0, y: 0, z: 0}
   lookDir_Temp: 0
   moveToBlock_Forward:
@@ -41405,6 +41432,32 @@ MonoBehaviour:
         ability_3_TotalTimer: 0
         ability_3_TotalTimer_Check: 0
         talkTo_NPC: 0
+    glueplantStandStats_Save:
+      standStats_Rivergreen:
+        stand_1_isTaken: 0
+        stand_2_isTaken: 0
+        stand_3_isTaken: 0
+        stand_4_isTaken: 0
+      standStats_Sandlands:
+        stand_1_isTaken: 0
+        stand_2_isTaken: 0
+        stand_3_isTaken: 0
+        stand_4_isTaken: 0
+      standStats_Frostfield:
+        stand_1_isTaken: 0
+        stand_2_isTaken: 0
+        stand_3_isTaken: 0
+        stand_4_isTaken: 0
+      standStats_Firevein:
+        stand_1_isTaken: 0
+        stand_2_isTaken: 0
+        stand_3_isTaken: 0
+        stand_4_isTaken: 0
+      standStats_Witchmire:
+        stand_1_isTaken: 0
+        stand_2_isTaken: 0
+        stand_3_isTaken: 0
+        stand_4_isTaken: 0
   oneTimeRunData_Store:
     startLanguage_English: 0
     forceIntroSequenceInFirstLevel: 0
@@ -41566,7 +41619,7 @@ MonoBehaviour:
       hat_Region6_Version: 0
   game_TextDatabase_Store:
     gameText_LanguageList: []
-  PlayerStatsData_Store:
+  playerStatsData_Store:
     sessionStats:
       session_No: 0
       totalTimeUsed: 0
@@ -43145,6 +43198,32 @@ MonoBehaviour:
       ability_3_TotalTimer: 0
       ability_3_TotalTimer_Check: 0
       talkTo_NPC: 0
+  glueplantStandStats_Store:
+    standStats_Rivergreen:
+      stand_1_isTaken: 0
+      stand_2_isTaken: 0
+      stand_3_isTaken: 0
+      stand_4_isTaken: 0
+    standStats_Sandlands:
+      stand_1_isTaken: 0
+      stand_2_isTaken: 0
+      stand_3_isTaken: 0
+      stand_4_isTaken: 0
+    standStats_Frostfield:
+      stand_1_isTaken: 0
+      stand_2_isTaken: 0
+      stand_3_isTaken: 0
+      stand_4_isTaken: 0
+    standStats_Firevein:
+      stand_1_isTaken: 0
+      stand_2_isTaken: 0
+      stand_3_isTaken: 0
+      stand_4_isTaken: 0
+    standStats_Witchmire:
+      stand_1_isTaken: 0
+      stand_2_isTaken: 0
+      stand_3_isTaken: 0
+      stand_4_isTaken: 0
 --- !u!1 &8613915611943033480
 GameObject:
   m_ObjectHideFlags: 0

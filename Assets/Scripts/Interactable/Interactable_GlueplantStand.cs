@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Interactable_GlueplantStand : MonoBehaviour
 {
+    public static event Action Action_Glueplant_isPlaced;
+
     [Header("Glueplant Type")]
     [SerializeField] GlueplantType glueplantType;
     [SerializeField] int standNumber;
@@ -132,6 +134,8 @@ public class Interactable_GlueplantStand : MonoBehaviour
         }
 
         UpdateSaveState();
+
+        Action_Glueplant_isPlaced?.Invoke();
     }
     void UpdateSaveState()
     {
