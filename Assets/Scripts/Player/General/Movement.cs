@@ -676,9 +676,23 @@ public class Movement : Singleton<Movement>
 
     private bool ShouldChainImmediatelyAfterStep()
     {
-        // Only suppress visuals if player is actually continuing with held walking
-        // AND there is actually somewhere to continue moving.
-        return IsAnyWalkButtonStillHeldOrPressed() && HasAnyImmediateGroundMoveFromCurrentState();
+        // Walking chain:
+        // Suppress visuals if the player is holding a horizontal movement key
+        // and there is actually another ground move ready.
+        if (IsAnyWalkButtonStillHeldOrPressed() && HasAnyImmediateGroundMoveFromCurrentState())
+            return true;
+
+        // SwiftSwim chain:
+        // Suppress visuals if the player is holding up/down and there is another
+        // SwiftSwim water block ready.
+        if (!CeilingGrab.isCeilingGrabbing &&
+            IsAnySwiftSwimButtonStillPressed() &&
+            HasAnyImmediateSwiftSwimMoveFromCurrentState())
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private void RefreshDarkeningNow()
@@ -1161,6 +1175,13 @@ public class Movement : Singleton<Movement>
         if (CeilingGrab.isCeilingGrabbing)
             return true;
 
+        bool targetIsWater =
+            TryGetBlockInfo(targetBlock, out BlockInfo targetInfo) &&
+            targetInfo.blockElement == BlockElement.Water;
+
+        bool playerCanEnterWaterColumn =
+            targetIsWater && PlayerCanEnterDeepWater();
+
         // Check the space directly above the target block.
         // This is more reliable than a raycast when elevators are moving
         // or when block scale is small, for example 0.5 x 1 x 0.5.
@@ -1194,6 +1215,13 @@ public class Movement : Singleton<Movement>
             if (hitBlock == targetBlock)
                 continue;
 
+            // Water column exception:
+            // If the target is water, the block above is also water,
+            // and the player has OxygenTank, this is a valid space.
+            // This allows normal movement into waterfalls / stacked water.
+            if (playerCanEnterWaterColumn && hitInfo.blockElement == BlockElement.Water)
+                continue;
+
             // Any other block in the space above the target means
             // the player should not be allowed to move there.
             return false;
@@ -1208,6 +1236,75 @@ public class Movement : Singleton<Movement>
             SetMoveTarget(moveOption, targetBlock);
         else
             ClearMoveTarget(moveOption);
+    }
+
+    private bool IsAnySwiftSwimButtonStillPressed()
+    {
+        return Inputs.up_isPressed || Inputs.down_isPressed;
+    }
+
+    private bool HasAnyImmediateSwiftSwimMoveFromCurrentState()
+    {
+        return HasValidTarget(moveToBlock_SwiftSwimUp) ||
+               HasValidTarget(moveToBlock_SwiftSwimDown);
+    }
+
+    private bool ShouldChainSwiftSwimImmediatelyAfterStep()
+    {
+        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
+            return false;
+
+        if (CeilingGrab.isCeilingGrabbing)
+            return false;
+
+        if (!isSwiftSwim)
+            return false;
+
+        if (Inputs.up_isPressed && HasValidTarget(moveToBlock_SwiftSwimUp))
+            return true;
+
+        if (Inputs.down_isPressed && HasValidTarget(moveToBlock_SwiftSwimDown))
+            return true;
+
+        return false;
+    }
+
+    private bool TryContinueHeldSwiftSwimImmediately()
+    {
+        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
+            return false;
+
+        if (CeilingGrab.isCeilingGrabbing)
+            return false;
+
+        if (Inputs.up_isPressed && HasValidTarget(moveToBlock_SwiftSwimUp))
+        {
+            CheckAscend();
+            return true;
+        }
+
+        if (Inputs.down_isPressed && HasValidTarget(moveToBlock_SwiftSwimDown))
+        {
+            CheckDescend();
+            return true;
+        }
+
+        return false;
+    }
+
+    private float GetSwiftSwimMovementSpeed()
+    {
+        if (StatsRoot.stats == null)
+            return 2f;
+
+        bool hasFlippers =
+            StatsRoot.stats.abilitiesGot_Temporary.Flippers ||
+            StatsRoot.stats.abilitiesGot_Permanent.Flippers;
+
+        if (hasFlippers && TryGetStandingInfo(out BlockInfo standingInfo))
+            return Mathf.Max(0.01f, standingInfo.movementSpeed - 1.5f);
+
+        return 2f;
     }
 
     #endregion
@@ -1652,6 +1749,15 @@ public class Movement : Singleton<Movement>
     void UpdateSwiftSwimMovement(MoveOptions swiftSwimOption, Vector3 dir)
     {
         ClearSwiftSwimPreviewCost(swiftSwimOption);
+
+        // SwiftSwim should not be available in CeilingGrab mode.
+        // This prevents water blocks above/below the player from showing numbers
+        // while ceiling grabbing, even if the player has OxygenTank.
+        if (CeilingGrab.isCeilingGrabbing)
+        {
+            ClearMoveTarget(swiftSwimOption);
+            return;
+        }
 
         if (!StatsRoot.stats.abilitiesGot_Temporary.OxygenTank && !StatsRoot.stats.abilitiesGot_Permanent.OxygenTank)
         {
@@ -2522,7 +2628,7 @@ public class Movement : Singleton<Movement>
 
             CacheStepCostForSwiftSwim();
 
-            PerformMovement(moveToBlock_SwiftSwimUp, MovementStates.Moving, 2f);
+            PerformMovement(moveToBlock_SwiftSwimUp, MovementStates.Moving, GetSwiftSwimMovementSpeed());
             Action_isSwiftSwim?.Invoke();
             return true;
         }
@@ -2538,7 +2644,7 @@ public class Movement : Singleton<Movement>
 
             CacheStepCostForSwiftSwim();
 
-            PerformMovement(moveToBlock_SwiftSwimDown, MovementStates.Moving, 2f);
+            PerformMovement(moveToBlock_SwiftSwimDown, MovementStates.Moving, GetSwiftSwimMovementSpeed());
             Action_isSwiftSwim?.Invoke();
             return true;
         }
@@ -2599,14 +2705,18 @@ public class Movement : Singleton<Movement>
 
     void CheckAscend()
     {
-        if (!RunSwiftSwimUp())
-            RunAscend();
+        if (!CeilingGrab.isCeilingGrabbing && RunSwiftSwimUp())
+            return;
+
+        RunAscend();
     }
 
     void CheckDescend()
     {
-        if (!RunSwiftSwimDown())
-            RunDescend();
+        if (!CeilingGrab.isCeilingGrabbing && RunSwiftSwimDown())
+            return;
+
+        RunDescend();
     }
 
     bool RunAscend()
@@ -2829,16 +2939,21 @@ public class Movement : Singleton<Movement>
 
     private bool TryHandleVerticalMovement()
     {
-        if (Inputs.up_isPressed && HasValidTarget(moveToBlock_SwiftSwimUp))
+        // SwiftSwim should never run while CeilingGrab is active.
+        // Ascend / Descend may still run normally, depending on your abilities.
+        if (!CeilingGrab.isCeilingGrabbing)
         {
-            CheckAscend();
-            return true;
-        }
+            if (Inputs.up_isPressed && HasValidTarget(moveToBlock_SwiftSwimUp))
+            {
+                CheckAscend();
+                return true;
+            }
 
-        if (Inputs.down_isPressed && HasValidTarget(moveToBlock_SwiftSwimDown))
-        {
-            CheckDescend();
-            return true;
+            if (Inputs.down_isPressed && HasValidTarget(moveToBlock_SwiftSwimDown))
+            {
+                CheckDescend();
+                return true;
+            }
         }
 
         if (Inputs.up_isPressed && HasValidTarget(moveToBlock_Ascend))
@@ -2957,6 +3072,8 @@ public class Movement : Singleton<Movement>
         else
             yield return NormalMovement(endPos, moveState, movementSpeed);
 
+        bool finishedMoveWasSwiftSwim = isSwiftSwim;
+
         isMoving = false;
         isDashing = false;
         isJumping = false;
@@ -2965,8 +3082,6 @@ public class Movement : Singleton<Movement>
 
         isAscending = false;
         isDescending = false;
-
-        //ResetWalkAnimationCheck();
 
         PlayerCameraOcclusionController.Instance.CameraZoom(false);
 
@@ -2981,6 +3096,17 @@ public class Movement : Singleton<Movement>
             suppressDarkeningWhileChaining = false;
             pendingDarkeningRefreshAfterChain = false;
             RefreshDarkeningNow();
+        }
+
+        // SwiftSwim chaining:
+        // If this move was a SwiftSwim move and the player is still holding up/down,
+        // immediately start the next SwiftSwim move. This prevents the tiny stop
+        // between water blocks in a waterfall.
+        if (finishedMoveWasSwiftSwim &&
+            !CeilingGrab.isCeilingGrabbing &&
+            movementStates == MovementStates.Still)
+        {
+            TryContinueHeldSwiftSwimImmediately();
         }
     }
 
