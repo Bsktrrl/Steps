@@ -60,6 +60,13 @@ public class Block_Elevator : MonoBehaviour
     private Vector3 lastStepOnFrameStartPosition;
     private Vector3 lastStepOnGridPosition;
 
+    [Header("Number Display Visibility")]
+    [SerializeField] private float enterRange = 1.45f;
+    [SerializeField] private float exitRange = 1.65f;
+
+    private bool elevatorNumberIsVisible;
+    private BlockInfo blockInfo;
+
 
     //--------------------
 
@@ -72,6 +79,7 @@ public class Block_Elevator : MonoBehaviour
 
         movingMachineScript = GetComponent<MovingMachineScript>();
         ladderChild = GetComponentInChildren<Block_Ladder>();
+        blockInfo = GetComponent<BlockInfo>();
 
         if (PlayerManager.Instance != null && PlayerManager.Instance.player != null)
             playerTransform = PlayerManager.Instance.player.transform;
@@ -85,7 +93,6 @@ public class Block_Elevator : MonoBehaviour
 
         if (movementPath == null || movementPath.Count == 0)
         {
-            //Debug.LogError("Block_Elevator has no movement path assigned.", this);
             enabled = false;
             return;
         }
@@ -104,25 +111,7 @@ public class Block_Elevator : MonoBehaviour
         HandleElevatorMovement();
         UpdateBlocks();
 
-        if (playerTransform != null && Vector3.Distance(transform.position, playerTransform.position) <= 2f)
-        {
-            updateBlocksCounter += Time.deltaTime;
-            if (updateBlocksCounter >= 0.05f)
-            {
-                updateBlocksCounter = 0f;
-
-                if (Movement.Instance != null &&
-                    !Movement.Instance.isMoving &&
-                    Movement.Instance.GetMovementState() == MovementStates.Still)
-                {
-                    Movement.Instance.UpdateBlocks();
-                    Movement.Instance.SetDarkenBlocks();
-                }
-
-                if (Player_CeilingGrab.Instance != null)
-                    Player_CeilingGrab.Instance.RaycastCeiling();
-            }
-        }
+        UpdateOwnNumberDisplayOnly();
     }
 
     private void LateUpdate()
@@ -147,6 +136,58 @@ public class Block_Elevator : MonoBehaviour
 
     //--------------------
 
+
+    void UpdateOwnNumberDisplayOnly()
+    {
+        if (Movement.Instance == null || playerTransform == null || blockInfo == null)
+            return;
+
+        // Do not let this system fight with the normal player-movement update.
+        if (Movement.Instance.isMoving || Movement.Instance.GetMovementState() != MovementStates.Still)
+            return;
+
+        bool playerStandingOnThisBlock = Movement.Instance.blockStandingOn == gameObject;
+
+        // If the player is standing on the elevator, the normal movement system should handle it.
+        if (playerStandingOnThisBlock)
+            return;
+
+        float distance = Vector3.Distance(transform.position, playerTransform.position);
+
+        // Hysteresis:
+        // - show when entering the smaller range
+        // - hide when leaving the larger range
+        // This prevents flickering around the border.
+        if (!elevatorNumberIsVisible)
+        {
+            if (distance <= enterRange && IsElevatorInEnterableHeight())
+            {
+                elevatorNumberIsVisible = true;
+                blockInfo.SetDarkenColors();
+            }
+        }
+        else
+        {
+            if (distance >= exitRange || !IsElevatorInEnterableHeight())
+            {
+                elevatorNumberIsVisible = false;
+                blockInfo.ResetDarkenColor();
+            }
+        }
+    }
+    bool IsElevatorInEnterableHeight()
+    {
+        if (playerTransform == null)
+            return false;
+
+        float yDifference = transform.position.y - playerTransform.position.y;
+
+        // Your old CheckIfInRangeOfPlayer used this:
+        // distance > -1f && distance < -0.9f
+        //
+        // Keep that rule if it matches your game's block/player height setup.
+        return yDifference > -1f && yDifference < -0.9f;
+    }
 
     void HandleElevatorMovement()
     {
@@ -349,10 +390,7 @@ public class Block_Elevator : MonoBehaviour
         // close enough to matter for the player, including:
         // 1) player standing on this elevator
         // 2) elevator moving near the player
-        bool shouldRefreshMovementTargets =
-            movedDistance > 0f &&
-            (playerStandingOnThisBlock ||
-             Vector3.Distance(transform.position, playerTransform.position) <= 2f);
+        bool shouldRefreshMovementTargets = movedDistance > 0f && playerStandingOnThisBlock;
 
         if (shouldRefreshMovementTargets)
         {
@@ -544,6 +582,11 @@ public class Block_Elevator : MonoBehaviour
         wasPlayerStandingOnThisBlock = false;
         stepOnMovementLocked = false;
         snapTargetPosition = Vector3.zero;
+
+        elevatorNumberIsVisible = false;
+
+        if (blockInfo != null)
+            blockInfo.ResetDarkenColor();
 
         transform.position = movementPath != null && movementPath.Count > 0
             ? movementPath[0].startPos
