@@ -1151,6 +1151,65 @@ public class Movement : Singleton<Movement>
         swiftSwimPreviewOverrideBlocks.Clear();
     }
 
+    private bool HasStandingRoomAboveNormalTarget(GameObject targetBlock)
+    {
+        if (targetBlock == null)
+            return false;
+
+        // Do not change CeilingGrab movement.
+        // CeilingGrab uses its own underside logic and already works as intended.
+        if (CeilingGrab.isCeilingGrabbing)
+            return true;
+
+        // Check the space directly above the target block.
+        // This is more reliable than a raycast when elevators are moving
+        // or when block scale is small, for example 0.5 x 1 x 0.5.
+        Vector3 checkCenter = targetBlock.transform.position + Vector3.up;
+
+        // Small X/Z extents so we only check the block column above this target,
+        // not neighboring blocks.
+        Vector3 halfExtents = new Vector3(0.22f, 0.45f, 0.22f);
+
+        Collider[] hits = Physics.OverlapBox(
+            checkCenter,
+            halfExtents,
+            Quaternion.identity,
+            Map.player_LayerMask,
+            QueryTriggerInteraction.Ignore
+        );
+
+        foreach (Collider hitCollider in hits)
+        {
+            if (hitCollider == null)
+                continue;
+
+            BlockInfo hitInfo = hitCollider.GetComponentInParent<BlockInfo>();
+
+            if (hitInfo == null)
+                continue;
+
+            GameObject hitBlock = hitInfo.gameObject;
+
+            // The target block itself is allowed.
+            if (hitBlock == targetBlock)
+                continue;
+
+            // Any other block in the space above the target means
+            // the player should not be allowed to move there.
+            return false;
+        }
+
+        return true;
+    }
+
+    private void SetNormalMoveTarget(MoveOptions moveOption, GameObject targetBlock)
+    {
+        if (HasStandingRoomAboveNormalTarget(targetBlock))
+            SetMoveTarget(moveOption, targetBlock);
+        else
+            ClearMoveTarget(moveOption);
+    }
+
     #endregion
 
     #region Movement Functions
@@ -1361,7 +1420,7 @@ public class Movement : Singleton<Movement>
                         float dot = Vector3.Dot(forwardCurrent, forwardTarget);
 
                         if (dot > 0.9f)
-                            SetMoveTarget(moveOption, outObj2);
+                            SetNormalMoveTarget(moveOption, outObj2);
                         else
                             ClearMoveTarget(moveOption);
                     }
@@ -1381,8 +1440,6 @@ public class Movement : Singleton<Movement>
 
         if (standingInfo.blockType == BlockType.Slope)
         {
-            // If this slope already started its automatic downhill exit,
-            // don't let it start the same transition again until we've left it.
             if (slopeAutoExitInProgress && blockStandingOn == slopeAutoExitSourceBlock)
                 return;
 
@@ -1393,7 +1450,7 @@ public class Movement : Singleton<Movement>
                 if (PerformMovementRaycast(playerPos, slopeForward, 1, out outObj1) == RaycastHitObjects.None &&
                     PerformMovementRaycast(playerPos + (slopeForward / 1.5f), rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
                 {
-                    if (outObj2 != blockStandingOn)
+                    if (outObj2 != blockStandingOn && HasStandingRoomAboveNormalTarget(outObj2))
                         SetMoveTarget(moveOption, outObj2);
                     else
                         ClearMoveTarget(moveOption);
@@ -1412,8 +1469,8 @@ public class Movement : Singleton<Movement>
                     slopeAutoExitSourceBlock = blockStandingOn;
                     slopeAutoExitTargetPos = moveOption.targetBlock.transform.position;
 
-                    slopeLandingIsFree = true;              // optional: keep if other logic depends on it
-                    pendingFreeLandingFromSlope = true;     // this is the cost flag
+                    slopeLandingIsFree = true;
+                    pendingFreeLandingFromSlope = true;
 
                     if (pendingSlopeFallAfterUphillAttempt && !isPlayingSlopeFallAnimation)
                     {
@@ -1435,8 +1492,8 @@ public class Movement : Singleton<Movement>
                     slopeAutoExitSourceBlock = blockStandingOn;
                     slopeAutoExitTargetPos = fallbackTarget;
 
-                    slopeLandingIsFree = true;              // optional: keep if other logic depends on it
-                    pendingFreeLandingFromSlope = true;     // this is the cost flag
+                    slopeLandingIsFree = true;
+                    pendingFreeLandingFromSlope = true;
 
                     if (pendingSlopeFallAfterUphillAttempt && !isPlayingSlopeFallAnimation)
                     {
@@ -1456,12 +1513,18 @@ public class Movement : Singleton<Movement>
             PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo &&
             TryGetBlockInfo(outObj2, out BlockInfo targetInfoCube))
         {
+            if (!HasStandingRoomAboveNormalTarget(outObj2))
+            {
+                ClearMoveTarget(moveOption);
+                return;
+            }
+
             if (targetInfoCube.blockElement == BlockElement.Water)
             {
                 if (IsBlockedDeepWater(outObj2))
                     ClearMoveTarget(moveOption);
                 else
-                    SetMoveTarget(moveOption, outObj2);
+                    SetNormalMoveTarget(moveOption, outObj2);
             }
             else if (targetInfoCube.blockElement == BlockElement.Lava)
             {
@@ -1472,7 +1535,7 @@ public class Movement : Singleton<Movement>
                 if (transform.position.y > outObj2.transform.position.y + 0.5f &&
                     Vector3.Dot(outObj2.transform.forward, dir.normalized) > 0.5f)
                 {
-                    SetMoveTarget(moveOption, outObj2);
+                    SetNormalMoveTarget(moveOption, outObj2);
                 }
                 else
                 {
@@ -1481,7 +1544,7 @@ public class Movement : Singleton<Movement>
             }
             else
             {
-                SetMoveTarget(moveOption, outObj2);
+                SetNormalMoveTarget(moveOption, outObj2);
             }
 
             return;
@@ -1496,10 +1559,10 @@ public class Movement : Singleton<Movement>
                 float dot = Vector3.Dot(stairForward, toPlayer);
 
                 if (dot > 0.5f)
-                    SetMoveTarget(moveOption, outObj1);
+                    SetNormalMoveTarget(moveOption, outObj1);
                 else if (transform.position.y > outObj1.transform.position.y + 0.5f &&
                          Vector3.Dot(stairForward, dir.normalized) > 0.5f)
-                    SetMoveTarget(moveOption, outObj1);
+                    SetNormalMoveTarget(moveOption, outObj1);
                 else
                     ClearMoveTarget(moveOption);
 
@@ -1509,12 +1572,18 @@ public class Movement : Singleton<Movement>
             if (PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo &&
                 TryGetBlockInfo(outObj2, out BlockInfo blockInfo2))
             {
+                if (!HasStandingRoomAboveNormalTarget(outObj2))
+                {
+                    ClearMoveTarget(moveOption);
+                    return;
+                }
+
                 if (blockInfo1.blockElement == BlockElement.Water && blockInfo2.blockElement == BlockElement.Water)
                 {
                     if (IsBlockedDeepWater(outObj2))
                         ClearMoveTarget(moveOption);
                     else
-                        SetMoveTarget(moveOption, outObj2);
+                        SetNormalMoveTarget(moveOption, outObj2);
                 }
                 else
                 {
@@ -1536,12 +1605,18 @@ public class Movement : Singleton<Movement>
             return;
         }
 
+        if (!HasStandingRoomAboveNormalTarget(target))
+        {
+            ClearMoveTarget(moveOption);
+            return;
+        }
+
         if (info.blockElement == BlockElement.Water)
         {
             if (IsBlockedDeepWater(target))
                 ClearMoveTarget(moveOption);
             else
-                SetMoveTarget(moveOption, target);
+                SetNormalMoveTarget(moveOption, target);
         }
         else if (info.blockElement == BlockElement.Lava)
         {
@@ -1549,7 +1624,7 @@ public class Movement : Singleton<Movement>
         }
         else if (target != currentStandingBlock)
         {
-            SetMoveTarget(moveOption, target);
+            SetNormalMoveTarget(moveOption, target);
         }
         else
         {
