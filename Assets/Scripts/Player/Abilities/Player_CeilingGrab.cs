@@ -68,16 +68,17 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) return;
         if (isCeilingRotation) return;
 
+        // Prevent exiting CeilingGrab while inside a waterfall:
+        // player is under a WaterBlock and also has a WaterBlock below.
+        if (IsTryingToExitCeilingGrab() && IsInCeilingGrabWaterfall())
+            return;
+
         StartCoroutine(RunCeilingGrab());
     }
     IEnumerator RunCeilingGrab()
     {
-        //print("0. Start CeilingGrab");
-
         Player_Animations.Instance.Trigger_CeilingGrabAnimation();
         yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_CeilingGrab);
-
-        //print("1. Start CeilingGrab");
 
         if (CameraController.Instance.cameraState == CameraState.GameplayCam)
         {
@@ -97,8 +98,12 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         }
         else if (CameraController.Instance.cameraState == CameraState.CeilingCam)
         {
+            // Check again after the charge time, in case the player/block state changed.
+            if (IsInCeilingGrabWaterfall())
+                yield break;
+
             isCeilingGrabbing = false;
-            print("2. CeilingGrab");
+
             if (CameraController.Instance.cameraRotationState == CameraRotationState.Forward)
                 StartCoroutine(CameraController.Instance.CeilingCameraRotation(0));
             else if (CameraController.Instance.cameraRotationState == CameraRotationState.Backward)
@@ -322,6 +327,77 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         {
             ceilingGrabBlock.GetComponent<BlockInfo>().ResetDarkenColor();
         }
+    }
+
+
+    //--------------------
+
+
+    private bool IsTryingToExitCeilingGrab()
+    {
+        return isCeilingGrabbing ||
+               CameraController.Instance.cameraState == CameraState.CeilingCam;
+    }
+
+    private bool IsWaterBlock(GameObject obj)
+    {
+        if (obj == null)
+            return false;
+
+        return obj.TryGetComponent(out BlockInfo info) &&
+               info.blockElement == BlockElement.Water;
+    }
+
+    private bool TryGetBlockInDirection(Vector3 dir, float distance, out GameObject block)
+    {
+        block = null;
+
+        if (Movement.Instance == null)
+            return false;
+
+        RaycastHitObjects hitResult = Movement.Instance.PerformMovementRaycast(
+            transform.position,
+            dir,
+            distance,
+            out GameObject outObj
+        );
+
+        if (hitResult == RaycastHitObjects.BlockInfo && outObj != null)
+        {
+            block = outObj;
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool IsInCeilingGrabWaterfall()
+    {
+        if (!isCeilingGrabbing)
+            return false;
+
+        GameObject waterAbove = null;
+        GameObject waterBelow = null;
+
+        // In CeilingGrab, the block the player is "standing on" is usually the block above.
+        if (IsWaterBlock(Movement.Instance.blockStandingOn))
+        {
+            waterAbove = Movement.Instance.blockStandingOn;
+        }
+        else if (TryGetBlockInDirection(Vector3.up, 1.25f, out GameObject blockAbove) &&
+                 IsWaterBlock(blockAbove))
+        {
+            waterAbove = blockAbove;
+        }
+
+        // Water directly below the player means the player would exit into the waterfall column.
+        if (TryGetBlockInDirection(Vector3.down, 1.25f, out GameObject blockBelow) &&
+            IsWaterBlock(blockBelow))
+        {
+            waterBelow = blockBelow;
+        }
+
+        return waterAbove != null && waterBelow != null;
     }
 
 
