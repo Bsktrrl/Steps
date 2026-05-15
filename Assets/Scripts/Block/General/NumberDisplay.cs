@@ -49,6 +49,10 @@ public class NumberDisplay : MonoBehaviour
     CameraRotationState lastCameraRotationState;
     bool hasRotationStateBeenInitialized = false;
 
+    private bool numberIsVisible;
+    private int lastDisplayedRawValue = int.MinValue;
+    private int lastDisplayedMeshIndex = int.MinValue;
+
 
     //--------------------
 
@@ -177,13 +181,13 @@ public class NumberDisplay : MonoBehaviour
         // Make sure the temp cost is updated before showing the number
         blockInfo.ApplyTemporaryMovementCostModifiers();
 
+        int displayValue;
+
         // If in quicksand
         if (Player_Quicksand.Instance.isInQuicksand && parentQuicksandBlock != null)
         {
-            DisplayNumber(Player_Quicksand.Instance.quicksandCounter);
+            displayValue = Player_Quicksand.Instance.quicksandCounter;
         }
-
-        // Other
         else
         {
             // If this block is a Water Block and the player cannot swim
@@ -193,13 +197,15 @@ public class NumberDisplay : MonoBehaviour
                 && !PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank && !PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank
                 && !PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers)
             {
-                DisplayNumber(-3);
+                displayValue = -3;
             }
             else
             {
-                DisplayNumber(blockInfo.GetMovementCost_ForDisplay());
+                displayValue = blockInfo.GetMovementCost_ForDisplay();
             }
         }
+
+        DisplayNumber(displayValue);
 
         UpdateRotation();
         ResetRotationTracking();
@@ -207,34 +213,55 @@ public class NumberDisplay : MonoBehaviour
         if (numberMeshRenderer != null)
             numberMeshRenderer.gameObject.SetActive(true);
 
+        numberIsVisible = true;
+
         GetBlockOrientationWithCamera(true);
     }
 
     void DisplayNumber(int value)
     {
-        SetNumberColors(SetNumberColor_MoreOrLess(value));
+        int rawValue = value;
+        int meshIndex = value;
 
-        if (value == -1)
+        if (meshIndex == -1)
         {
-            value = 10;
+            meshIndex = 10;
         }
-        else if (value == -2)
+        else if (meshIndex == -2)
         {
-            value = 11;
+            meshIndex = 11;
         }
-        else if (value == -3)
+        else if (meshIndex == -3)
         {
-            value = 12;
+            meshIndex = 12;
         }
-        else if (value <= -4)
+        else if (meshIndex <= -4)
         {
             return;
         }
 
-        if (value < 0 || value >= numberMeshList.Count)
+        if (meshIndex < 0 || meshIndex >= numberMeshList.Count)
             return;
 
-        numberMeshRenderer.sharedMesh = numberMeshList[value];
+        bool sameNumberAlreadyVisible =
+            numberIsVisible &&
+            lastDisplayedRawValue == rawValue &&
+            lastDisplayedMeshIndex == meshIndex &&
+            numberMeshRenderer != null &&
+            numberMeshRenderer.gameObject.activeInHierarchy;
+
+        // Always keep color correct, because temporary effects can change tint/color.
+        SetNumberColors(SetNumberColor_MoreOrLess(rawValue));
+
+        // If the same number is already visible, do NOT restart the appearance animation.
+        // This is what prevents flickering when elevators cause repeated visual refreshes.
+        if (sameNumberAlreadyVisible)
+            return;
+
+        lastDisplayedRawValue = rawValue;
+        lastDisplayedMeshIndex = meshIndex;
+
+        numberMeshRenderer.sharedMesh = numberMeshList[meshIndex];
 
         if (numberAnimationCoroutine != null)
         {
@@ -246,8 +273,21 @@ public class NumberDisplay : MonoBehaviour
 
     public void HideNumber()
     {
+        if (!numberIsVisible && numberMeshRenderer != null && !numberMeshRenderer.gameObject.activeInHierarchy)
+            return;
+
+        if (numberAnimationCoroutine != null)
+        {
+            StopCoroutine(numberAnimationCoroutine);
+            numberAnimationCoroutine = null;
+        }
+
         if (numberMeshRenderer != null)
             numberMeshRenderer.gameObject.SetActive(false);
+
+        numberIsVisible = false;
+        lastDisplayedRawValue = int.MinValue;
+        lastDisplayedMeshIndex = int.MinValue;
 
         ResetRotationTracking();
     }

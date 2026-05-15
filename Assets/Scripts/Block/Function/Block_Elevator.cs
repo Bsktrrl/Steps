@@ -60,6 +60,10 @@ public class Block_Elevator : MonoBehaviour
     private Vector3 lastStepOnFrameStartPosition;
     private Vector3 lastStepOnGridPosition;
 
+    private bool wasInMovementRefreshRange;
+    [SerializeField] private float movementRefreshRange = 2f;
+    [SerializeField] private float movementRefreshDistance = 0.1f;
+
 
     //--------------------
 
@@ -104,24 +108,24 @@ public class Block_Elevator : MonoBehaviour
         HandleElevatorMovement();
         UpdateBlocks();
 
-        if (playerTransform != null && Vector3.Distance(transform.position, playerTransform.position) <= 2f)
+        // CeilingGrab already has its own visual/raycast refresh path.
+        // Keep this, because you said CeilingGrab mode works as intended.
+        if (playerTransform != null &&
+            Player_CeilingGrab.Instance != null &&
+            Player_CeilingGrab.Instance.isCeilingGrabbing &&
+            Vector3.Distance(transform.position, playerTransform.position) <= movementRefreshRange)
         {
             updateBlocksCounter += Time.deltaTime;
+
             if (updateBlocksCounter >= 0.05f)
             {
                 updateBlocksCounter = 0f;
-
-                if (Movement.Instance != null &&
-                    !Movement.Instance.isMoving &&
-                    Movement.Instance.GetMovementState() == MovementStates.Still)
-                {
-                    Movement.Instance.UpdateBlocks();
-                    Movement.Instance.SetDarkenBlocks();
-                }
-
-                if (Player_CeilingGrab.Instance != null)
-                    Player_CeilingGrab.Instance.RaycastCeiling();
+                Player_CeilingGrab.Instance.RaycastCeiling();
             }
+        }
+        else
+        {
+            updateBlocksCounter = 0f;
         }
     }
 
@@ -345,29 +349,67 @@ public class Block_Elevator : MonoBehaviour
             lastPosition = transform.position;
         }
 
-        // Refresh available blocks / darkening / numbers when this elevator moves
-        // close enough to matter for the player, including:
-        // 1) player standing on this elevator
-        // 2) elevator moving near the player
-        bool shouldRefreshMovementTargets =
-            movedDistance > 0f &&
-            (playerStandingOnThisBlock ||
-             Vector3.Distance(transform.position, playerTransform.position) <= 2f);
+        bool playerIsStill =
+            !Movement.Instance.isMoving &&
+            Movement.Instance.GetMovementState() == MovementStates.Still;
 
-        if (shouldRefreshMovementTargets)
-        {
-            accumulatedDistance += movedDistance;
-
-            if (accumulatedDistance >= 0.1f)
-            {
-                accumulatedDistance = 0f;
-                Movement.Instance.elevatorPos_Previous = transform.position;
-                Movement.Instance.RefreshAvailableMovementBlocksSmooth();
-            }
-        }
-        else
+        if (!playerIsStill)
         {
             accumulatedDistance = 0f;
+            return;
+        }
+
+        BlockInfo elevatorBlockInfo = GetComponent<BlockInfo>();
+        bool thisElevatorIsCurrentlyDarkened =
+            elevatorBlockInfo != null &&
+            elevatorBlockInfo.blockIsDark;
+
+        bool isInMovementRefreshRange =
+            playerStandingOnThisBlock ||
+            Vector3.Distance(transform.position, playerTransform.position) <= movementRefreshRange;
+
+        bool rangeStateChanged = isInMovementRefreshRange != wasInMovementRefreshRange;
+        wasInMovementRefreshRange = isInMovementRefreshRange;
+
+        // Refresh once when entering/leaving the broader refresh range.
+        if (rangeStateChanged)
+        {
+            accumulatedDistance = 0f;
+            Movement.Instance.elevatorPos_Previous = transform.position;
+            Movement.Instance.RefreshAvailableMovementBlocksSmooth();
+            return;
+        }
+
+        if (movedDistance <= 0f)
+        {
+            accumulatedDistance = 0f;
+            return;
+        }
+
+        // Important:
+        // Keep refreshing while this elevator is darkened.
+        // This lets Movement.SyncDarkenedBlocksToCurrentTargets() remove the number
+        // as soon as the elevator is no longer an actual valid movement target.
+        bool shouldRefreshBecauseThisElevatorMayNeedToBeRemoved =
+            thisElevatorIsCurrentlyDarkened;
+
+        bool shouldRefreshBecauseElevatorIsNearPlayer =
+            isInMovementRefreshRange;
+
+        if (!shouldRefreshBecauseElevatorIsNearPlayer &&
+            !shouldRefreshBecauseThisElevatorMayNeedToBeRemoved)
+        {
+            accumulatedDistance = 0f;
+            return;
+        }
+
+        accumulatedDistance += movedDistance;
+
+        if (accumulatedDistance >= movementRefreshDistance)
+        {
+            accumulatedDistance = 0f;
+            Movement.Instance.elevatorPos_Previous = transform.position;
+            Movement.Instance.RefreshAvailableMovementBlocksSmooth();
         }
     }
 
