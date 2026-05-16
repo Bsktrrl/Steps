@@ -509,16 +509,56 @@ public class Block_Root : MonoBehaviour
             IsBlockRooted(actualTargetBlock) ||
             IsRootSourceBlock(actualTargetBlock);
 
-        // If the player leaves rooted/root-source area onto a non-rooted block, remove immediately.
-        if (startedFromRootArea && !targetKeepsRoots)
+        bool shouldDelayBecausePlayerMayBeFalling =
+            ShouldDelayRootResetBecausePlayerMayBeFalling(blockPlayerStartedOn, actualTargetBlock);
+
+        // If the player clearly leaves rooted/root-source area onto a non-rooted block, remove immediately.
+        // But do NOT remove immediately during falling / vertical slope movement, because the target block
+        // may not be valid yet or may have a changed Y value.
+        if (startedFromRootArea && !targetKeepsRoots && !shouldDelayBecausePlayerMayBeFalling)
         {
             DestroyRootFreeCostList();
             return;
         }
 
         delayedRootExitCheckCoroutine = StartCoroutine(
-            CheckWhenToResetRootLine_Delayed(blockPlayerStartedOn, actualTargetBlock)
+            CheckWhenToResetRootLine_Delayed(
+                blockPlayerStartedOn,
+                actualTargetBlock,
+                shouldDelayBecausePlayerMayBeFalling
+            )
         );
+    }
+    bool ShouldDelayRootResetBecausePlayerMayBeFalling(GameObject blockPlayerStartedOn, GameObject actualTargetBlock)
+    {
+        if (Movement.Instance == null)
+            return false;
+
+        MovementStates movementState = Movement.Instance.GetMovementState();
+
+        if (movementState == MovementStates.Falling)
+            return true;
+
+        if (Movement.Instance.isMoving || movementState == MovementStates.Moving)
+        {
+            // During slope/fall transitions the target may briefly be null or not finalized yet.
+            if (actualTargetBlock == null)
+                return true;
+
+            if (blockPlayerStartedOn == null)
+                return false;
+
+            float yDifference = Mathf.Abs(
+                actualTargetBlock.transform.position.y -
+                blockPlayerStartedOn.transform.position.y
+            );
+
+            // Any vertical block change should use the delayed reset path instead of instantly
+            // destroying the roots.
+            return yDifference > 0.01f;
+        }
+
+        return false;
     }
 
     bool IsRootSourceBlock(GameObject block)
@@ -536,7 +576,7 @@ public class Block_Root : MonoBehaviour
         return IsBlockRooted(block) || IsRootSourceBlock(block);
     }
 
-    IEnumerator CheckWhenToResetRootLine_Delayed(GameObject blockPlayerStartedOn, GameObject actualTargetBlock)
+    IEnumerator CheckWhenToResetRootLine_Delayed(GameObject blockPlayerStartedOn, GameObject actualTargetBlock, bool delayedBecausePlayerMayBeFalling)
     {
         yield return null;
 
@@ -552,6 +592,25 @@ public class Block_Root : MonoBehaviour
                 Movement.Instance.GetMovementState() == MovementStates.Falling))
         {
             yield return null;
+        }
+
+        // Give slope/fall landing one extra frame so Movement.blockStandingOn and live root
+        // continuation can settle before deciding whether roots should be destroyed.
+        if (delayedBecausePlayerMayBeFalling)
+        {
+            yield return null;
+
+            if (isActive && Movement.Instance != null)
+            {
+                if (RootFreeCostBlockList.Count > 0)
+                    TryContinueRootLineFromOpenSegments();
+
+                if (keepCheckingFromRootBlockEvenWhenRootsExist ||
+                    (keepCheckingFromRootBlockWhenNoRoots && RootFreeCostBlockList.Count <= 0))
+                {
+                    TryStartRootLineFromRootBlock();
+                }
+            }
         }
 
         yield return null;
