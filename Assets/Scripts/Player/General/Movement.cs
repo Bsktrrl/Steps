@@ -1222,6 +1222,12 @@ public class Movement : Singleton<Movement>
             if (playerCanEnterWaterColumn && hitInfo.blockElement == BlockElement.Water)
                 continue;
 
+            // Slab exception:
+            // A slab directly above the target block should not block normal movement.
+            // This allows the player to move onto blocks that have a slab/slope-cover setup above them.
+            if (hitInfo.blockType == BlockType.Slab)
+                continue;
+
             // Any other block in the space above the target means
             // the player should not be allowed to move there.
             return false;
