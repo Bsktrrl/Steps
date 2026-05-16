@@ -3,11 +3,6 @@
 
 April:
 0.0. Bugs:
-- SwiftSwim-knapp:
-	- Når man holder inne SwiftSwim-knappen, så dukker tallene rundt opp veldig raskt før man går videre. Dette må fjernes.
-
-- GrapplingHook & Swim:
-	- Endre slik at hvis man grapplingHooker og kan swømme, så vil ikke numbers vises over/under waterBlokken man er på, i en foss, siden man ikke kan SwiftSwimme opp-ned
 
 - DarkenBlock med Dashing:
 	- Registreres ikke når spilleren ikke er rotert mot dashing-blokken. Det burde den.
@@ -29,7 +24,11 @@ April:
 	- Siden Rivergreen-knappen i Overworld er "first", så vil den aktiveres, og ikke den som skal aktiveres, hvis man har gått inn i et level som ikke er Rivergreen, gått tilbake til menyen og så tilbake til RegionSelect i Overworld.
 	- Mulig fix: Sett "First" for disse knappene (spesifikt), basert på saveState av region man har vært sist innom
 
-- Hull-shader: Skjul hull-shaderen dersom det ikke er noe som er mellom kameraet og spilleren, for å unngå at hull-shaderen klipper i blokker på siden av spilleren når dette ikke trengs. Kjør sjekker i "Update()" (for å sikre mot bl.a. ElevatorBlocks)
+- Hull-shader:
+	- Skjul hull-shaderen dersom det ikke er noe som er mellom kameraet og spilleren, for å unngå at hull-shaderen klipper i blokker på siden av spilleren når dette ikke trengs. Kjør sjekker i "Update()" (for å sikre mot bl.a. ElevatorBlocks)
+
+- Intraktable-knapp på GlueplantStand
+	- Legg til knapp, så spilleren vet at den kna trykke på GlueplantStands
 
 
 

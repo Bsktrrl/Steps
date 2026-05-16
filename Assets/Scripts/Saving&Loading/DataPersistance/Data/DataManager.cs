@@ -63,6 +63,9 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     //PlayerStatsData
     /*[HideInInspector]*/ public GlueplantStandStats glueplantStandStats_Store = new GlueplantStandStats();
 
+    //PlayerStatsData
+    /*[HideInInspector]*/ public SwitchesData switchesData_Store = new SwitchesData();
+
     #endregion
 
 
@@ -108,6 +111,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.oneTimeRunData_Store = gameData.oneTimeRunData_Save;
 
         this.glueplantStandStats_Store = gameData.glueplantStandStats_Save;
+        this.switchesData_Store = gameData.switchesData_Save;
     }
 
     void LoadDataIntoProject(GameData gameData)
@@ -177,6 +181,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         gameData.haveStartedNewGame_Save = this.haveStartedNewGame_Store;
 
         gameData.glueplantStandStats_Save = this.glueplantStandStats_Store;
+        gameData.switchesData_Save = this.switchesData_Store;
     }
 
     public void Load_NewGame_Data(GameData oldData, GameData newData)
@@ -199,6 +204,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.playerStatsData_Store.sessionStats.session_No = 1;
 
         this.glueplantStandStats_Store = newData.glueplantStandStats_Save;
+        this.switchesData_Store = newData.switchesData_Save;
 
 
         //Persist through newGame

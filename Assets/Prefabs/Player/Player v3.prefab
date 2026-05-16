@@ -16682,6 +16682,51 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 8
+--- !u!1 &3524454051504024176
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1602849146244931179}
+  - component: {fileID: 4887212272854955665}
+  m_Layer: 6
+  m_Name: SwitchManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1602849146244931179
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3524454051504024176}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5286349041414221409}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4887212272854955665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3524454051504024176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 018964e48f61f0f4c8c6f7f232ccdbad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fence_Sound: {fileID: 8300000, guid: 044989114f9db804e8c02bd6c09ff080, type: 3}
 --- !u!1 &3541742901219896047
 GameObject:
   m_ObjectHideFlags: 0
@@ -19351,6 +19396,112 @@ MonoBehaviour:
         stand_2_isTaken: 0
         stand_3_isTaken: 0
         stand_4_isTaken: 0
+    switchesData_Save:
+      switches_Rivergreen:
+        switch_1: 0
+        switch_2: 0
+        switch_3: 0
+        switch_4: 0
+        switch_5: 0
+        switch_6: 0
+        switch_7: 0
+        switch_8: 0
+        switch_9: 0
+        switch_10: 0
+        switch_11: 0
+        switch_12: 0
+        switch_13: 0
+        switch_14: 0
+        switch_15: 0
+        switch_16: 0
+        switch_17: 0
+        switch_18: 0
+        switch_19: 0
+        switch_20: 0
+      switches_Sandlands:
+        switch_1: 0
+        switch_2: 0
+        switch_3: 0
+        switch_4: 0
+        switch_5: 0
+        switch_6: 0
+        switch_7: 0
+        switch_8: 0
+        switch_9: 0
+        switch_10: 0
+        switch_11: 0
+        switch_12: 0
+        switch_13: 0
+        switch_14: 0
+        switch_15: 0
+        switch_16: 0
+        switch_17: 0
+        switch_18: 0
+        switch_19: 0
+        switch_20: 0
+      switches_Frostfield:
+        switch_1: 0
+        switch_2: 0
+        switch_3: 0
+        switch_4: 0
+        switch_5: 0
+        switch_6: 0
+        switch_7: 0
+        switch_8: 0
+        switch_9: 0
+        switch_10: 0
+        switch_11: 0
+        switch_12: 0
+        switch_13: 0
+        switch_14: 0
+        switch_15: 0
+        switch_16: 0
+        switch_17: 0
+        switch_18: 0
+        switch_19: 0
+        switch_20: 0
+      switches_Firevein:
+        switch_1: 0
+        switch_2: 0
+        switch_3: 0
+        switch_4: 0
+        switch_5: 0
+        switch_6: 0
+        switch_7: 0
+        switch_8: 0
+        switch_9: 0
+        switch_10: 0
+        switch_11: 0
+        switch_12: 0
+        switch_13: 0
+        switch_14: 0
+        switch_15: 0
+        switch_16: 0
+        switch_17: 0
+        switch_18: 0
+        switch_19: 0
+        switch_20: 0
+      switches_Witchmire:
+        switch_1: 0
+        switch_2: 0
+        switch_3: 0
+        switch_4: 0
+        switch_5: 0
+        switch_6: 0
+        switch_7: 0
+        switch_8: 0
+        switch_9: 0
+        switch_10: 0
+        switch_11: 0
+        switch_12: 0
+        switch_13: 0
+        switch_14: 0
+        switch_15: 0
+        switch_16: 0
+        switch_17: 0
+        switch_18: 0
+        switch_19: 0
+        switch_20: 0
 --- !u!1 &3807087922992491712
 GameObject:
   m_ObjectHideFlags: 0
@@ -37376,6 +37527,7 @@ Transform:
   - {fileID: 4008010432699892754}
   - {fileID: 8192583502177524562}
   - {fileID: 6479779543292306366}
+  - {fileID: 1602849146244931179}
   m_Father: {fileID: 5013509160915303274}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7907695831080925989
@@ -41458,6 +41610,112 @@ MonoBehaviour:
         stand_2_isTaken: 0
         stand_3_isTaken: 0
         stand_4_isTaken: 0
+    switchesData_Save:
+      switches_Rivergreen:
+        switch_1: 0
+        switch_2: 0
+        switch_3: 0
+        switch_4: 0
+        switch_5: 0
+        switch_6: 0
+        switch_7: 0
+        switch_8: 0
+        switch_9: 0
+        switch_10: 0
+        switch_11: 0
+        switch_12: 0
+        switch_13: 0
+        switch_14: 0
+        switch_15: 0
+        switch_16: 0
+        switch_17: 0
+        switch_18: 0
+        switch_19: 0
+        switch_20: 0
+      switches_Sandlands:
+        switch_1: 0
+        switch_2: 0
+        switch_3: 0
+        switch_4: 0
+        switch_5: 0
+        switch_6: 0
+        switch_7: 0
+        switch_8: 0
+        switch_9: 0
+        switch_10: 0
+        switch_11: 0
+        switch_12: 0
+        switch_13: 0
+        switch_14: 0
+        switch_15: 0
+        switch_16: 0
+        switch_17: 0
+        switch_18: 0
+        switch_19: 0
+        switch_20: 0
+      switches_Frostfield:
+        switch_1: 0
+        switch_2: 0
+        switch_3: 0
+        switch_4: 0
+        switch_5: 0
+        switch_6: 0
+        switch_7: 0
+        switch_8: 0
+        switch_9: 0
+        switch_10: 0
+        switch_11: 0
+        switch_12: 0
+        switch_13: 0
+        switch_14: 0
+        switch_15: 0
+        switch_16: 0
+        switch_17: 0
+        switch_18: 0
+        switch_19: 0
+        switch_20: 0
+      switches_Firevein:
+        switch_1: 0
+        switch_2: 0
+        switch_3: 0
+        switch_4: 0
+        switch_5: 0
+        switch_6: 0
+        switch_7: 0
+        switch_8: 0
+        switch_9: 0
+        switch_10: 0
+        switch_11: 0
+        switch_12: 0
+        switch_13: 0
+        switch_14: 0
+        switch_15: 0
+        switch_16: 0
+        switch_17: 0
+        switch_18: 0
+        switch_19: 0
+        switch_20: 0
+      switches_Witchmire:
+        switch_1: 0
+        switch_2: 0
+        switch_3: 0
+        switch_4: 0
+        switch_5: 0
+        switch_6: 0
+        switch_7: 0
+        switch_8: 0
+        switch_9: 0
+        switch_10: 0
+        switch_11: 0
+        switch_12: 0
+        switch_13: 0
+        switch_14: 0
+        switch_15: 0
+        switch_16: 0
+        switch_17: 0
+        switch_18: 0
+        switch_19: 0
+        switch_20: 0
   oneTimeRunData_Store:
     startLanguage_English: 0
     forceIntroSequenceInFirstLevel: 0
@@ -43224,6 +43482,112 @@ MonoBehaviour:
       stand_2_isTaken: 0
       stand_3_isTaken: 0
       stand_4_isTaken: 0
+  switchesData_Store:
+    switches_Rivergreen:
+      switch_1: 0
+      switch_2: 0
+      switch_3: 0
+      switch_4: 0
+      switch_5: 0
+      switch_6: 0
+      switch_7: 0
+      switch_8: 0
+      switch_9: 0
+      switch_10: 0
+      switch_11: 0
+      switch_12: 0
+      switch_13: 0
+      switch_14: 0
+      switch_15: 0
+      switch_16: 0
+      switch_17: 0
+      switch_18: 0
+      switch_19: 0
+      switch_20: 0
+    switches_Sandlands:
+      switch_1: 0
+      switch_2: 0
+      switch_3: 0
+      switch_4: 0
+      switch_5: 0
+      switch_6: 0
+      switch_7: 0
+      switch_8: 0
+      switch_9: 0
+      switch_10: 0
+      switch_11: 0
+      switch_12: 0
+      switch_13: 0
+      switch_14: 0
+      switch_15: 0
+      switch_16: 0
+      switch_17: 0
+      switch_18: 0
+      switch_19: 0
+      switch_20: 0
+    switches_Frostfield:
+      switch_1: 0
+      switch_2: 0
+      switch_3: 0
+      switch_4: 0
+      switch_5: 0
+      switch_6: 0
+      switch_7: 0
+      switch_8: 0
+      switch_9: 0
+      switch_10: 0
+      switch_11: 0
+      switch_12: 0
+      switch_13: 0
+      switch_14: 0
+      switch_15: 0
+      switch_16: 0
+      switch_17: 0
+      switch_18: 0
+      switch_19: 0
+      switch_20: 0
+    switches_Firevein:
+      switch_1: 0
+      switch_2: 0
+      switch_3: 0
+      switch_4: 0
+      switch_5: 0
+      switch_6: 0
+      switch_7: 0
+      switch_8: 0
+      switch_9: 0
+      switch_10: 0
+      switch_11: 0
+      switch_12: 0
+      switch_13: 0
+      switch_14: 0
+      switch_15: 0
+      switch_16: 0
+      switch_17: 0
+      switch_18: 0
+      switch_19: 0
+      switch_20: 0
+    switches_Witchmire:
+      switch_1: 0
+      switch_2: 0
+      switch_3: 0
+      switch_4: 0
+      switch_5: 0
+      switch_6: 0
+      switch_7: 0
+      switch_8: 0
+      switch_9: 0
+      switch_10: 0
+      switch_11: 0
+      switch_12: 0
+      switch_13: 0
+      switch_14: 0
+      switch_15: 0
+      switch_16: 0
+      switch_17: 0
+      switch_18: 0
+      switch_19: 0
+      switch_20: 0
 --- !u!1 &8613915611943033480
 GameObject:
   m_ObjectHideFlags: 0
