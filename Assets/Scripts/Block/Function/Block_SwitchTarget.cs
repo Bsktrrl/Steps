@@ -27,6 +27,9 @@ public class Block_SwitchTarget : MonoBehaviour
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        audioSource.spatialBlend = 1;
+        audioSource.minDistance = 0;
+        audioSource.maxDistance = 12;
 
         closedPosition = transform.position;
         openPosition = closedPosition + GetMovementVector() * movementDistance;
