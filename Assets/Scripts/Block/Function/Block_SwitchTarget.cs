@@ -31,6 +31,8 @@ public class Block_SwitchTarget : MonoBehaviour
         audioSource.minDistance = 0;
         audioSource.maxDistance = 12;
 
+        audioSource.rolloffMode = AudioRolloffMode.Linear;
+
         closedPosition = transform.position;
         openPosition = closedPosition + GetMovementVector() * movementDistance;
 
@@ -96,6 +98,11 @@ public class Block_SwitchTarget : MonoBehaviour
         {
             transform.position = currentTargetPosition;
             isMoving = false;
+
+            //If ladder, setup the ladders again
+            if (GetComponent<Block_Ladder>())
+                GetComponent<Block_Ladder>().SetupLadder();
+
             return;
         }
 
@@ -142,6 +149,8 @@ public class Block_SwitchTarget : MonoBehaviour
     {
         if (block_Switch_Manager == null)
             return;
+
+        audioSource.clip = block_Switch_Manager.fence_Sound;
 
         if (block_Switch_Manager.fence_Sound == null)
             return;
