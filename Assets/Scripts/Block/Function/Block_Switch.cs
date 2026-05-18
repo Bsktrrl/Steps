@@ -942,14 +942,14 @@ public class Block_Switch : MonoBehaviour
     {
         foreach (var lod in lodRenderers)
         {
-            lod.SetBlendShapeWeight(1, 100);
+            lod.SetBlendShapeWeight(0, 100);
         }
     }
     void ButtonAnimation_Off()
     {
         foreach (var lod in lodRenderers)
         {
-            lod.SetBlendShapeWeight(1, 0);
+            lod.SetBlendShapeWeight(0, 0);
         }
     }
 }
