@@ -293,7 +293,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cc6fb5ba6d989cc45a8b6d698ac9a4ce, type: 3}
       propertyPath: m_Name
-      value: Metal_Ladder
+      value: Metal_Ladder_Under
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cc6fb5ba6d989cc45a8b6d698ac9a4ce, type: 3}
       propertyPath: m_Layer
@@ -343,6 +343,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cc6fb5ba6d989cc45a8b6d698ac9a4ce, type: 3}
       insertIndex: -1
       addedObject: {fileID: -1602942291309699847}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cc6fb5ba6d989cc45a8b6d698ac9a4ce, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8712468390667804798}
   m_SourcePrefab: {fileID: 100100000, guid: cc6fb5ba6d989cc45a8b6d698ac9a4ce, type: 3}
 --- !u!4 &3771767748841027445 stripped
 Transform:
@@ -371,3 +374,15 @@ MonoBehaviour:
   lastLadderPart_Down: {fileID: 0}
   exitBlock_Up: {fileID: 0}
   exitBlock_Down: {fileID: 0}
+--- !u!114 &-8712468390667804798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4545207776795815375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da6a707a33e89284ea3da75bb5dfe26f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

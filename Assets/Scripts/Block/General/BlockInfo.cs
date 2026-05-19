@@ -493,7 +493,7 @@ public class BlockInfo : MonoBehaviour
 
     void ResetBlock()
     {
-        if (transform.position != startPos)
+        if (transform.position != startPos && !GetComponent<Block_SwitchTarget>())
         {
             transform.position = startPos;
         }

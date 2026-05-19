@@ -214,13 +214,23 @@ public class Block_Teleport : MonoBehaviour
 
         Movement.Instance.IceGlideMovement(true);
     }
-    void ActivatePortalsEffect()
+    public void ActivatePortalsEffect()
     {
         if (GetComponentInChildren<PortalScript>())
-        GetComponentInChildren<PortalScript>().ActivatePortalEffect();
+            GetComponentInChildren<PortalScript>().ActivatePortalEffect();
 
         if (newLandingSpot && newLandingSpot.GetComponentInChildren<PortalScript>())
             newLandingSpot.GetComponentInChildren<PortalScript>().ActivatePortalEffect();
+    }
+    public void ActivateRootTeleportEffect()
+    {
+        ActivatePortalsEffect();
+
+        // If your teleport sound is played inside PortalScript.ActivatePortalEffect(),
+        // you do not need anything else here.
+        //
+        // If the teleport sound is played somewhere else for the player,
+        // call that same sound method here too.
     }
 
     void StartTeleport_Action()

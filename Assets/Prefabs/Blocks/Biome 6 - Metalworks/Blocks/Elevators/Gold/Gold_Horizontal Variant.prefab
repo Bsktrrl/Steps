@@ -114,6 +114,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6200935560517208028, guid: fa3e0417b7d197a45aca3387009b1fb6, type: 3}
+      propertyPath: maxDistance
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -495,6 +499,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1799429309432074896, guid: 5956cb7d1aecf1b47b877a2de2f7b8aa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 270441238026076197}
+    - targetCorrespondingSourceObject: {fileID: 1799429309432074896, guid: 5956cb7d1aecf1b47b877a2de2f7b8aa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6599278506438112386}
   m_SourcePrefab: {fileID: 100100000, guid: 5956cb7d1aecf1b47b877a2de2f7b8aa, type: 3}
 --- !u!4 &7055911197091764651 stripped
 Transform:
@@ -569,6 +576,11 @@ MonoBehaviour:
   blockType: 1
   blockElement: 16
   movementCost_Temp: 0
+  movementCost_Temp_Base: 0
+  movementCost_OverrideActive: 0
+  movementCost_OverrideValue: 0
+  movementCost_DisplayOverrideActive: 0
+  movementCost_DisplayOverrideValue: 0
   movementCost: 1
   movementSpeed: 5
   movementState: 0
@@ -635,3 +647,15 @@ MonoBehaviour:
   stepOnDelay: 0.25
   stepOnSnapSpeed: 1
   snapCompleteDistance: 0.001
+--- !u!114 &6599278506438112386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7683265711886254865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da6a707a33e89284ea3da75bb5dfe26f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

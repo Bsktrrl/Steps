@@ -196,124 +196,124 @@ public class SessionStatsGathered : Singleton<SessionStatsGathered>
     public void ResetSessionStats()
     {
         //General
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed = 0;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_Menus = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed_Menus = 0;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_MainMenu = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_OverworldMenu = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_WardrobeMenu = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_OptionsMenu = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_InPauseMenu = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_InLevels = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_InFreeCam = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed_MainMenu = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed_OverworldMenu = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed_WardrobeMenu = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed_OptionsMenu = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed_InPauseMenu = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed_InLevels = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed_InFreeCam = 0;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalLevelsVisited = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalLevelExited = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalLevelsCleared = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalStepsTaken = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalRespawnTaken = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalCameraRotationTaken = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalLevelsVisited = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalLevelExited = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalLevelsCleared = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalStepsTaken = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalRespawnTaken = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalCameraRotationTaken = 0;
 
         //WardrobeSkin Wearing
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default = 0;
 
         DataPersistanceManager.instance.SaveGame();
     }
     public void SaveSessionStats()
     {
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed += sessionStats.totalTimeUsed;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed += sessionStats.totalTimeUsed;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_Menus += sessionStats.totalTimeUsed_Menus;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed_Menus += sessionStats.totalTimeUsed_Menus;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_MainMenu += sessionStats.totalTimeUsed_MainMenu;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_OverworldMenu += sessionStats.totalTimeUsed_OverworldMenu;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_WardrobeMenu += sessionStats.totalTimeUsed_WardrobeMenu;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_OptionsMenu += sessionStats.totalTimeUsed_OptionsMenu;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_InPauseMenu += sessionStats.totalTimeUsed_InPauseMenu;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_InLevels += sessionStats.totalTimeUsed_InLevels;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeUsed_InFreeCam += sessionStats.totalTimeUsed_InFreeCam;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed_MainMenu += sessionStats.totalTimeUsed_MainMenu;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed_OverworldMenu += sessionStats.totalTimeUsed_OverworldMenu;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed_WardrobeMenu += sessionStats.totalTimeUsed_WardrobeMenu;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed_OptionsMenu += sessionStats.totalTimeUsed_OptionsMenu;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed_InPauseMenu += sessionStats.totalTimeUsed_InPauseMenu;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed_InLevels += sessionStats.totalTimeUsed_InLevels;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed_InFreeCam += sessionStats.totalTimeUsed_InFreeCam;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default += sessionStats.totalTimeEquippedInLevels_Default;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_Default += sessionStats.totalTimeEquippedInLevels_Default;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_RivergreenLv1 += sessionStats.totalTimeEquippedInLevels_RivergreenLv1;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_RivergreenLv2 += sessionStats.totalTimeEquippedInLevels_RivergreenLv2;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_RivergreenLv3 += sessionStats.totalTimeEquippedInLevels_RivergreenLv3;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_RivergreenLv4 += sessionStats.totalTimeEquippedInLevels_RivergreenLv4;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_RivergreenLv5 += sessionStats.totalTimeEquippedInLevels_RivergreenLv5;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_RivergreenLv1 += sessionStats.totalTimeEquippedInLevels_RivergreenLv1;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_RivergreenLv2 += sessionStats.totalTimeEquippedInLevels_RivergreenLv2;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_RivergreenLv3 += sessionStats.totalTimeEquippedInLevels_RivergreenLv3;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_RivergreenLv4 += sessionStats.totalTimeEquippedInLevels_RivergreenLv4;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_RivergreenLv5 += sessionStats.totalTimeEquippedInLevels_RivergreenLv5;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_SandlandsLv1 += sessionStats.totalTimeEquippedInLevels_SandlandsLv1;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_SandlandsLv2 += sessionStats.totalTimeEquippedInLevels_SandlandsLv2;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_SandlandsLv3 += sessionStats.totalTimeEquippedInLevels_SandlandsLv3;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_SandlandsLv4 += sessionStats.totalTimeEquippedInLevels_SandlandsLv4;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_SandlandsLv5 += sessionStats.totalTimeEquippedInLevels_SandlandsLv5;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_SandlandsLv1 += sessionStats.totalTimeEquippedInLevels_SandlandsLv1;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_SandlandsLv2 += sessionStats.totalTimeEquippedInLevels_SandlandsLv2;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_SandlandsLv3 += sessionStats.totalTimeEquippedInLevels_SandlandsLv3;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_SandlandsLv4 += sessionStats.totalTimeEquippedInLevels_SandlandsLv4;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_SandlandsLv5 += sessionStats.totalTimeEquippedInLevels_SandlandsLv5;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FrostfieldLv1 += sessionStats.totalTimeEquippedInLevels_FrostfieldLv1;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FrostfieldLv2 += sessionStats.totalTimeEquippedInLevels_FrostfieldLv2;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FrostfieldLv3 += sessionStats.totalTimeEquippedInLevels_FrostfieldLv3;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FrostfieldLv4 += sessionStats.totalTimeEquippedInLevels_FrostfieldLv4;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FrostfieldLv5 += sessionStats.totalTimeEquippedInLevels_FrostfieldLv5;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FrostfieldLv1 += sessionStats.totalTimeEquippedInLevels_FrostfieldLv1;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FrostfieldLv2 += sessionStats.totalTimeEquippedInLevels_FrostfieldLv2;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FrostfieldLv3 += sessionStats.totalTimeEquippedInLevels_FrostfieldLv3;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FrostfieldLv4 += sessionStats.totalTimeEquippedInLevels_FrostfieldLv4;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FrostfieldLv5 += sessionStats.totalTimeEquippedInLevels_FrostfieldLv5;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FireveinLv1 += sessionStats.totalTimeEquippedInLevels_FireveinLv1;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FireveinLv2 += sessionStats.totalTimeEquippedInLevels_FireveinLv2;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FireveinLv3 += sessionStats.totalTimeEquippedInLevels_FireveinLv3;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FireveinLv4 += sessionStats.totalTimeEquippedInLevels_FireveinLv4;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FireveinLv5 += sessionStats.totalTimeEquippedInLevels_FireveinLv5;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FireveinLv1 += sessionStats.totalTimeEquippedInLevels_FireveinLv1;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FireveinLv2 += sessionStats.totalTimeEquippedInLevels_FireveinLv2;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FireveinLv3 += sessionStats.totalTimeEquippedInLevels_FireveinLv3;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FireveinLv4 += sessionStats.totalTimeEquippedInLevels_FireveinLv4;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_FireveinLv5 += sessionStats.totalTimeEquippedInLevels_FireveinLv5;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_WitchmireLv1 += sessionStats.totalTimeEquippedInLevels_WitchmireLv1;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_WitchmireLv2 += sessionStats.totalTimeEquippedInLevels_WitchmireLv2;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_WitchmireLv3 += sessionStats.totalTimeEquippedInLevels_WitchmireLv3;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_WitchmireLv4 += sessionStats.totalTimeEquippedInLevels_WitchmireLv4;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_WitchmireLv5 += sessionStats.totalTimeEquippedInLevels_WitchmireLv5;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_WitchmireLv1 += sessionStats.totalTimeEquippedInLevels_WitchmireLv1;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_WitchmireLv2 += sessionStats.totalTimeEquippedInLevels_WitchmireLv2;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_WitchmireLv3 += sessionStats.totalTimeEquippedInLevels_WitchmireLv3;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_WitchmireLv4 += sessionStats.totalTimeEquippedInLevels_WitchmireLv4;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_WitchmireLv5 += sessionStats.totalTimeEquippedInLevels_WitchmireLv5;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_MetalworksLv1 += sessionStats.totalTimeEquippedInLevels_MetalworksLv1;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_MetalworksLv2 += sessionStats.totalTimeEquippedInLevels_MetalworksLv2;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_MetalworksLv3 += sessionStats.totalTimeEquippedInLevels_MetalworksLv3;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_MetalworksLv4 += sessionStats.totalTimeEquippedInLevels_MetalworksLv4;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalTimeEquippedInLevels_MetalworksLv5 += sessionStats.totalTimeEquippedInLevels_MetalworksLv5;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_MetalworksLv1 += sessionStats.totalTimeEquippedInLevels_MetalworksLv1;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_MetalworksLv2 += sessionStats.totalTimeEquippedInLevels_MetalworksLv2;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_MetalworksLv3 += sessionStats.totalTimeEquippedInLevels_MetalworksLv3;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_MetalworksLv4 += sessionStats.totalTimeEquippedInLevels_MetalworksLv4;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeEquippedInLevels_MetalworksLv5 += sessionStats.totalTimeEquippedInLevels_MetalworksLv5;
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalLevelsVisited += sessionStats.totalLevelsVisited;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalLevelExited += sessionStats.totalLevelExited;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalLevelsCleared += sessionStats.totalLevelsCleared;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalStepsTaken += sessionStats.totalStepsTaken;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalRespawnTaken += sessionStats.totalRespawnTaken;
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.totalCameraRotationTaken += sessionStats.totalCameraRotationTaken;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalLevelsVisited += sessionStats.totalLevelsVisited;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalLevelExited += sessionStats.totalLevelExited;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalLevelsCleared += sessionStats.totalLevelsCleared;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalStepsTaken += sessionStats.totalStepsTaken;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalRespawnTaken += sessionStats.totalRespawnTaken;
+        DataManager.Instance.playerStatsData_Store.sessionStats.totalCameraRotationTaken += sessionStats.totalCameraRotationTaken;
 
         DataPersistanceManager.instance.SaveGame();
     }

@@ -10,9 +10,9 @@ public class EffectBlockInfo : MonoBehaviour
 {
     private EffectBlockManager effectBlockManager;
 
-    [Header("Effect visual parent (optional)")]
-    [Tooltip("If empty, auto-uses child named 'Number_Parent'. If not found, uses this transform.")]
-    [SerializeField] private Transform effectVisualParent;
+    //[Header("Effect visual parent (optional)")]
+    //[Tooltip("If empty, auto-uses child named 'Number_Parent'. If not found, uses this transform.")]
+    //[SerializeField] private Transform effectVisualParent;
 
     [Header("Editor behavior")]
     [Tooltip("If true, removes duplicates so only 1 per type remains (Editor only).")]
@@ -117,9 +117,10 @@ public class EffectBlockInfo : MonoBehaviour
     // --------------------
     private Transform GetEffectParent()
     {
-        if (effectVisualParent) return effectVisualParent;
+        //if (effectVisualParent) return effectVisualParent;
 
-        var t = transform.Find("Number_Parent");
+        var t = transform;
+        //var t = transform.Find("Number_Parent").gameObject.transform.parent;
         if (t) return t;
 
         return transform;

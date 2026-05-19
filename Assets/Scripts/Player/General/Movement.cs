@@ -62,6 +62,9 @@ public class Movement : Singleton<Movement>
     public GameObject blockStandingOn;
     public GameObject blockStandingOn_Previous;
 
+    [Header("Current Move Target")]
+    public GameObject currentMoveTargetBlock;
+
     [Header("LookDirection")]
     [HideInInspector] public Vector3 lookDir;
     [HideInInspector] public float lookDir_Temp;
@@ -198,6 +201,13 @@ public class Movement : Singleton<Movement>
     [SerializeField] private bool hasPendingStepCost;
     [SerializeField] private int pendingStepCost;
 
+    [Header("Cube Block Following")]
+    [SerializeField] private Transform cubeBlockBeingFollowed = null;
+    [SerializeField] private float cubeBlockYOffset = 0f;
+    [SerializeField] private float lastFollowedCubeBlockY = 0f;
+    [SerializeField] private float cubeBlockRefreshDistance = 0.05f;
+    [SerializeField] private float cubeBlockRefreshAccumulatedDistance = 0f;
+
     #endregion
 
     #region Cached Accessors
@@ -293,6 +303,8 @@ public class Movement : Singleton<Movement>
             if (elevatorBeingFollowed != null)
                 lastFollowedElevatorPosition = elevatorBeingFollowed.position;
         }
+
+        FollowStandingCubeBlock();
     }
 
     private void OnEnable()
@@ -673,9 +685,23 @@ public class Movement : Singleton<Movement>
 
     private bool ShouldChainImmediatelyAfterStep()
     {
-        // Only suppress visuals if player is actually continuing with held walking
-        // AND there is actually somewhere to continue moving.
-        return IsAnyWalkButtonStillHeldOrPressed() && HasAnyImmediateGroundMoveFromCurrentState();
+        // Walking chain:
+        // Suppress visuals if the player is holding a horizontal movement key
+        // and there is actually another ground move ready.
+        if (IsAnyWalkButtonStillHeldOrPressed() && HasAnyImmediateGroundMoveFromCurrentState())
+            return true;
+
+        // SwiftSwim chain:
+        // Suppress visuals if the player is holding up/down and there is another
+        // SwiftSwim water block ready.
+        if (!CeilingGrab.isCeilingGrabbing &&
+            IsAnySwiftSwimButtonStillPressed() &&
+            HasAnyImmediateSwiftSwimMoveFromCurrentState())
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private void RefreshDarkeningNow()
@@ -1148,6 +1174,255 @@ public class Movement : Singleton<Movement>
         swiftSwimPreviewOverrideBlocks.Clear();
     }
 
+    private bool HasStandingRoomAboveNormalTarget(GameObject targetBlock)
+    {
+        if (targetBlock == null)
+            return false;
+
+        // Do not change CeilingGrab movement.
+        // CeilingGrab uses its own underside logic and already works as intended.
+        if (CeilingGrab.isCeilingGrabbing)
+            return true;
+
+        bool targetIsWater =
+            TryGetBlockInfo(targetBlock, out BlockInfo targetInfo) &&
+            targetInfo.blockElement == BlockElement.Water;
+
+        bool playerCanEnterWaterColumn =
+            targetIsWater && PlayerCanEnterDeepWater();
+
+        // Check the space directly above the target block.
+        // This is more reliable than a raycast when elevators are moving
+        // or when block scale is small, for example 0.5 x 1 x 0.5.
+        Vector3 checkCenter = targetBlock.transform.position + Vector3.up;
+
+        // Small X/Z extents so we only check the block column above this target,
+        // not neighboring blocks.
+        Vector3 halfExtents = new Vector3(0.22f, 0.45f, 0.22f);
+
+        Collider[] hits = Physics.OverlapBox(
+            checkCenter,
+            halfExtents,
+            Quaternion.identity,
+            Map.player_LayerMask,
+            QueryTriggerInteraction.Ignore
+        );
+
+        foreach (Collider hitCollider in hits)
+        {
+            if (hitCollider == null)
+                continue;
+
+            BlockInfo hitInfo = hitCollider.GetComponentInParent<BlockInfo>();
+
+            if (hitInfo == null)
+                continue;
+
+            GameObject hitBlock = hitInfo.gameObject;
+
+            // The target block itself is allowed.
+            if (hitBlock == targetBlock)
+                continue;
+
+            // Water column exception:
+            // If the target is water, the block above is also water,
+            // and the player has OxygenTank, this is a valid space.
+            // This allows normal movement into waterfalls / stacked water.
+            if (playerCanEnterWaterColumn && hitInfo.blockElement == BlockElement.Water)
+                continue;
+
+            // Slab exception:
+            // A slab directly above the target block should not block normal movement.
+            // This allows the player to move onto blocks that have a slab/slope-cover setup above them.
+            if (hitInfo.blockType == BlockType.Slab)
+                continue;
+
+            // Any other block in the space above the target means
+            // the player should not be allowed to move there.
+            return false;
+        }
+
+        return true;
+    }
+
+    private void SetNormalMoveTarget(MoveOptions moveOption, GameObject targetBlock)
+    {
+        if (HasStandingRoomAboveNormalTarget(targetBlock))
+            SetMoveTarget(moveOption, targetBlock);
+        else
+            ClearMoveTarget(moveOption);
+    }
+
+    private bool IsAnySwiftSwimButtonStillPressed()
+    {
+        return Inputs.up_isPressed || Inputs.down_isPressed;
+    }
+
+    private bool HasAnyImmediateSwiftSwimMoveFromCurrentState()
+    {
+        return HasValidTarget(moveToBlock_SwiftSwimUp) ||
+               HasValidTarget(moveToBlock_SwiftSwimDown);
+    }
+
+    private bool ShouldChainSwiftSwimImmediatelyAfterStep()
+    {
+        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
+            return false;
+
+        if (CeilingGrab.isCeilingGrabbing)
+            return false;
+
+        if (!isSwiftSwim)
+            return false;
+
+        if (Inputs.up_isPressed && HasValidTarget(moveToBlock_SwiftSwimUp))
+            return true;
+
+        if (Inputs.down_isPressed && HasValidTarget(moveToBlock_SwiftSwimDown))
+            return true;
+
+        return false;
+    }
+
+    private bool TryContinueHeldSwiftSwimImmediately()
+    {
+        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
+            return false;
+
+        if (CeilingGrab.isCeilingGrabbing)
+            return false;
+
+        if (Inputs.up_isPressed && HasValidTarget(moveToBlock_SwiftSwimUp))
+        {
+            CheckAscend();
+            return true;
+        }
+
+        if (Inputs.down_isPressed && HasValidTarget(moveToBlock_SwiftSwimDown))
+        {
+            CheckDescend();
+            return true;
+        }
+
+        return false;
+    }
+
+    private float GetSwiftSwimMovementSpeed()
+    {
+        if (StatsRoot.stats == null)
+            return 2f;
+
+        bool hasFlippers =
+            StatsRoot.stats.abilitiesGot_Temporary.Flippers ||
+            StatsRoot.stats.abilitiesGot_Permanent.Flippers;
+
+        if (hasFlippers && TryGetStandingInfo(out BlockInfo standingInfo))
+            return Mathf.Max(0.01f, standingInfo.movementSpeed - 1.5f);
+
+        return 2f;
+    }
+
+    private bool IsCubeBlock(GameObject obj)
+    {
+        return TryGetBlockInfo(obj, out BlockInfo info) &&
+               info.blockType == BlockType.Cube;
+    }
+
+    private bool ShouldFollowHoverBlock(GameObject obj)
+    {
+        if (obj == null)
+            return false;
+
+        if (CeilingGrab.isCeilingGrabbing)
+            return false;
+
+        return TryGetBlockInfo(obj, out BlockInfo info) &&
+               info.blockType == BlockType.Cube &&
+               obj.GetComponent<Block_Hover>() != null;
+    }
+
+    private float GetStandingYOffset()
+    {
+        return (StandingOffsetDir() * heightOverBlock).y;
+    }
+
+    private Vector3 WithStandingY(Vector3 currentPlayerPos, Vector3 blockPos)
+    {
+        return new Vector3(
+            currentPlayerPos.x,
+            blockPos.y + GetStandingYOffset(),
+            currentPlayerPos.z
+        );
+    }
+
+    private Vector3 GetMoveTargetPosForBlock(GameObject targetBlock)
+    {
+        if (targetBlock == null)
+            return transform.position;
+
+        Vector3 targetPos = targetBlock.transform.position + (StandingOffsetDir() * heightOverBlock);
+
+        if (CeilingGrab.isCeilingGrabbing)
+        {
+            targetPos = targetBlock.transform.position +
+                        (StandingOffsetDir() * (heightOverBlock - Player_BodyHeight.Instance.height_Normal / 2f));
+        }
+
+        return targetPos;
+    }
+
+    private void StopFollowingCubeBlock()
+    {
+        cubeBlockBeingFollowed = null;
+        cubeBlockYOffset = 0f;
+        lastFollowedCubeBlockY = transform.position.y;
+        cubeBlockRefreshAccumulatedDistance = 0f;
+    }
+
+    private void FollowStandingCubeBlock()
+    {
+        if (isMoving || movementStates != MovementStates.Still)
+            return;
+
+        if (blockStandingOn == null || !ShouldFollowHoverBlock(blockStandingOn))
+        {
+            StopFollowingCubeBlock();
+            return;
+        }
+
+        Transform cubeTransform = blockStandingOn.transform;
+
+        if (cubeBlockBeingFollowed != cubeTransform)
+        {
+            cubeBlockBeingFollowed = cubeTransform;
+            cubeBlockYOffset = GetStandingYOffset();
+            lastFollowedCubeBlockY = cubeTransform.position.y;
+            cubeBlockRefreshAccumulatedDistance = 0f;
+        }
+
+        float targetY = cubeTransform.position.y + cubeBlockYOffset;
+
+        transform.position = new Vector3(
+            transform.position.x,
+            targetY,
+            transform.position.z
+        );
+
+        float movedDistance = Mathf.Abs(cubeTransform.position.y - lastFollowedCubeBlockY);
+
+        if (movedDistance > 0f)
+        {
+            cubeBlockRefreshAccumulatedDistance += movedDistance;
+            lastFollowedCubeBlockY = cubeTransform.position.y;
+        }
+
+        if (cubeBlockRefreshAccumulatedDistance >= cubeBlockRefreshDistance)
+        {
+            cubeBlockRefreshAccumulatedDistance = 0f;
+            RefreshAvailableMovementBlocksSmooth();
+        }
+    }
+
     #endregion
 
     #region Movement Functions
@@ -1358,7 +1633,7 @@ public class Movement : Singleton<Movement>
                         float dot = Vector3.Dot(forwardCurrent, forwardTarget);
 
                         if (dot > 0.9f)
-                            SetMoveTarget(moveOption, outObj2);
+                            SetNormalMoveTarget(moveOption, outObj2);
                         else
                             ClearMoveTarget(moveOption);
                     }
@@ -1378,8 +1653,6 @@ public class Movement : Singleton<Movement>
 
         if (standingInfo.blockType == BlockType.Slope)
         {
-            // If this slope already started its automatic downhill exit,
-            // don't let it start the same transition again until we've left it.
             if (slopeAutoExitInProgress && blockStandingOn == slopeAutoExitSourceBlock)
                 return;
 
@@ -1390,7 +1663,7 @@ public class Movement : Singleton<Movement>
                 if (PerformMovementRaycast(playerPos, slopeForward, 1, out outObj1) == RaycastHitObjects.None &&
                     PerformMovementRaycast(playerPos + (slopeForward / 1.5f), rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
                 {
-                    if (outObj2 != blockStandingOn)
+                    if (outObj2 != blockStandingOn && HasStandingRoomAboveNormalTarget(outObj2))
                         SetMoveTarget(moveOption, outObj2);
                     else
                         ClearMoveTarget(moveOption);
@@ -1409,8 +1682,8 @@ public class Movement : Singleton<Movement>
                     slopeAutoExitSourceBlock = blockStandingOn;
                     slopeAutoExitTargetPos = moveOption.targetBlock.transform.position;
 
-                    slopeLandingIsFree = true;              // optional: keep if other logic depends on it
-                    pendingFreeLandingFromSlope = true;     // this is the cost flag
+                    slopeLandingIsFree = true;
+                    pendingFreeLandingFromSlope = true;
 
                     if (pendingSlopeFallAfterUphillAttempt && !isPlayingSlopeFallAnimation)
                     {
@@ -1432,8 +1705,8 @@ public class Movement : Singleton<Movement>
                     slopeAutoExitSourceBlock = blockStandingOn;
                     slopeAutoExitTargetPos = fallbackTarget;
 
-                    slopeLandingIsFree = true;              // optional: keep if other logic depends on it
-                    pendingFreeLandingFromSlope = true;     // this is the cost flag
+                    slopeLandingIsFree = true;
+                    pendingFreeLandingFromSlope = true;
 
                     if (pendingSlopeFallAfterUphillAttempt && !isPlayingSlopeFallAnimation)
                     {
@@ -1453,12 +1726,18 @@ public class Movement : Singleton<Movement>
             PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo &&
             TryGetBlockInfo(outObj2, out BlockInfo targetInfoCube))
         {
+            if (!HasStandingRoomAboveNormalTarget(outObj2))
+            {
+                ClearMoveTarget(moveOption);
+                return;
+            }
+
             if (targetInfoCube.blockElement == BlockElement.Water)
             {
                 if (IsBlockedDeepWater(outObj2))
                     ClearMoveTarget(moveOption);
                 else
-                    SetMoveTarget(moveOption, outObj2);
+                    SetNormalMoveTarget(moveOption, outObj2);
             }
             else if (targetInfoCube.blockElement == BlockElement.Lava)
             {
@@ -1469,7 +1748,7 @@ public class Movement : Singleton<Movement>
                 if (transform.position.y > outObj2.transform.position.y + 0.5f &&
                     Vector3.Dot(outObj2.transform.forward, dir.normalized) > 0.5f)
                 {
-                    SetMoveTarget(moveOption, outObj2);
+                    SetNormalMoveTarget(moveOption, outObj2);
                 }
                 else
                 {
@@ -1478,7 +1757,7 @@ public class Movement : Singleton<Movement>
             }
             else
             {
-                SetMoveTarget(moveOption, outObj2);
+                SetNormalMoveTarget(moveOption, outObj2);
             }
 
             return;
@@ -1493,10 +1772,10 @@ public class Movement : Singleton<Movement>
                 float dot = Vector3.Dot(stairForward, toPlayer);
 
                 if (dot > 0.5f)
-                    SetMoveTarget(moveOption, outObj1);
+                    SetNormalMoveTarget(moveOption, outObj1);
                 else if (transform.position.y > outObj1.transform.position.y + 0.5f &&
                          Vector3.Dot(stairForward, dir.normalized) > 0.5f)
-                    SetMoveTarget(moveOption, outObj1);
+                    SetNormalMoveTarget(moveOption, outObj1);
                 else
                     ClearMoveTarget(moveOption);
 
@@ -1506,12 +1785,18 @@ public class Movement : Singleton<Movement>
             if (PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo &&
                 TryGetBlockInfo(outObj2, out BlockInfo blockInfo2))
             {
+                if (!HasStandingRoomAboveNormalTarget(outObj2))
+                {
+                    ClearMoveTarget(moveOption);
+                    return;
+                }
+
                 if (blockInfo1.blockElement == BlockElement.Water && blockInfo2.blockElement == BlockElement.Water)
                 {
                     if (IsBlockedDeepWater(outObj2))
                         ClearMoveTarget(moveOption);
                     else
-                        SetMoveTarget(moveOption, outObj2);
+                        SetNormalMoveTarget(moveOption, outObj2);
                 }
                 else
                 {
@@ -1533,12 +1818,18 @@ public class Movement : Singleton<Movement>
             return;
         }
 
+        if (!HasStandingRoomAboveNormalTarget(target))
+        {
+            ClearMoveTarget(moveOption);
+            return;
+        }
+
         if (info.blockElement == BlockElement.Water)
         {
             if (IsBlockedDeepWater(target))
                 ClearMoveTarget(moveOption);
             else
-                SetMoveTarget(moveOption, target);
+                SetNormalMoveTarget(moveOption, target);
         }
         else if (info.blockElement == BlockElement.Lava)
         {
@@ -1546,7 +1837,7 @@ public class Movement : Singleton<Movement>
         }
         else if (target != currentStandingBlock)
         {
-            SetMoveTarget(moveOption, target);
+            SetNormalMoveTarget(moveOption, target);
         }
         else
         {
@@ -1574,6 +1865,15 @@ public class Movement : Singleton<Movement>
     void UpdateSwiftSwimMovement(MoveOptions swiftSwimOption, Vector3 dir)
     {
         ClearSwiftSwimPreviewCost(swiftSwimOption);
+
+        // SwiftSwim should not be available in CeilingGrab mode.
+        // This prevents water blocks above/below the player from showing numbers
+        // while ceiling grabbing, even if the player has OxygenTank.
+        if (CeilingGrab.isCeilingGrabbing)
+        {
+            ClearMoveTarget(swiftSwimOption);
+            return;
+        }
 
         if (!StatsRoot.stats.abilitiesGot_Temporary.OxygenTank && !StatsRoot.stats.abilitiesGot_Permanent.OxygenTank)
         {
@@ -2444,7 +2744,7 @@ public class Movement : Singleton<Movement>
 
             CacheStepCostForSwiftSwim();
 
-            PerformMovement(moveToBlock_SwiftSwimUp, MovementStates.Moving, 2f);
+            PerformMovement(moveToBlock_SwiftSwimUp, MovementStates.Moving, GetSwiftSwimMovementSpeed());
             Action_isSwiftSwim?.Invoke();
             return true;
         }
@@ -2460,7 +2760,7 @@ public class Movement : Singleton<Movement>
 
             CacheStepCostForSwiftSwim();
 
-            PerformMovement(moveToBlock_SwiftSwimDown, MovementStates.Moving, 2f);
+            PerformMovement(moveToBlock_SwiftSwimDown, MovementStates.Moving, GetSwiftSwimMovementSpeed());
             Action_isSwiftSwim?.Invoke();
             return true;
         }
@@ -2521,14 +2821,18 @@ public class Movement : Singleton<Movement>
 
     void CheckAscend()
     {
-        if (!RunSwiftSwimUp())
-            RunAscend();
+        if (!CeilingGrab.isCeilingGrabbing && RunSwiftSwimUp())
+            return;
+
+        RunAscend();
     }
 
     void CheckDescend()
     {
-        if (!RunSwiftSwimDown())
-            RunDescend();
+        if (!CeilingGrab.isCeilingGrabbing && RunSwiftSwimDown())
+            return;
+
+        RunDescend();
     }
 
     bool RunAscend()
@@ -2751,16 +3055,21 @@ public class Movement : Singleton<Movement>
 
     private bool TryHandleVerticalMovement()
     {
-        if (Inputs.up_isPressed && HasValidTarget(moveToBlock_SwiftSwimUp))
+        // SwiftSwim should never run while CeilingGrab is active.
+        // Ascend / Descend may still run normally, depending on your abilities.
+        if (!CeilingGrab.isCeilingGrabbing)
         {
-            CheckAscend();
-            return true;
-        }
+            if (Inputs.up_isPressed && HasValidTarget(moveToBlock_SwiftSwimUp))
+            {
+                CheckAscend();
+                return true;
+            }
 
-        if (Inputs.down_isPressed && HasValidTarget(moveToBlock_SwiftSwimDown))
-        {
-            CheckDescend();
-            return true;
+            if (Inputs.down_isPressed && HasValidTarget(moveToBlock_SwiftSwimDown))
+            {
+                CheckDescend();
+                return true;
+            }
         }
 
         if (Inputs.up_isPressed && HasValidTarget(moveToBlock_Ascend))
@@ -2858,6 +3167,8 @@ public class Movement : Singleton<Movement>
     {
         isMoving = true;
 
+        currentMoveTargetBlock = moveOptions != null ? moveOptions.targetBlock : null;
+
         Action_StepTaken_Early_Invoke();
 
         if (TryGetStandingInfo(out BlockInfo standingInfo) && standingInfo.blockType == BlockType.Slope)
@@ -2877,6 +3188,8 @@ public class Movement : Singleton<Movement>
         else
             yield return NormalMovement(endPos, moveState, movementSpeed);
 
+        bool finishedMoveWasSwiftSwim = isSwiftSwim;
+
         isMoving = false;
         isDashing = false;
         isJumping = false;
@@ -2886,11 +3199,11 @@ public class Movement : Singleton<Movement>
         isAscending = false;
         isDescending = false;
 
-        //ResetWalkAnimationCheck();
-
         PlayerCameraOcclusionController.Instance.CameraZoom(false);
 
         Action_StepTaken_Invoke();
+
+        currentMoveTargetBlock = null;
 
         if (pendingDarkeningRefreshAfterChain &&
             !ShouldChainImmediatelyAfterStep() &&
@@ -2900,33 +3213,68 @@ public class Movement : Singleton<Movement>
             pendingDarkeningRefreshAfterChain = false;
             RefreshDarkeningNow();
         }
+
+        // SwiftSwim chaining:
+        // If this move was a SwiftSwim move and the player is still holding up/down,
+        // immediately start the next SwiftSwim move. This prevents the tiny stop
+        // between water blocks in a waterfall.
+        if (finishedMoveWasSwiftSwim &&
+            !CeilingGrab.isCeilingGrabbing &&
+            movementStates == MovementStates.Still)
+        {
+            TryContinueHeldSwiftSwimImmediately();
+        }
     }
 
     IEnumerator NormalMovement(Vector3 endPos, MovementStates moveState, float movementSpeed)
     {
-        Vector3 rayDir = StandingOffsetDir();
         previousPosition = transform.position;
 
         Vector3 startPos = transform.position;
-        Vector3 newEndPos = endPos + (rayDir * heightOverBlock);
+        Vector3 fixedEndPos = endPos + (StandingOffsetDir() * heightOverBlock);
 
         if (CeilingGrab.isCeilingGrabbing)
-            newEndPos = endPos + (rayDir * (heightOverBlock - (Player_BodyHeight.Instance.height_Normal) / 2f));
+        {
+            fixedEndPos = endPos +
+                          (StandingOffsetDir() * (heightOverBlock - Player_BodyHeight.Instance.height_Normal / 2f));
+        }
+
+        GameObject dynamicTargetBlock = currentMoveTargetBlock;
+        bool followCubeTarget = ShouldFollowHoverBlock(dynamicTargetBlock);
 
         movementStates = moveState;
 
         float elapsed = 0f;
-        float duration = MovementDuration(startPos, newEndPos, movementSpeed);
+        float duration = MovementDuration(startPos, fixedEndPos, movementSpeed);
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
-            transform.position = Vector3.Lerp(startPos, newEndPos, t);
+
+            Vector3 currentEndPos = followCubeTarget && dynamicTargetBlock != null
+                ? GetMoveTargetPosForBlock(dynamicTargetBlock)
+                : fixedEndPos;
+
+            transform.position = Vector3.Lerp(startPos, currentEndPos, t);
+
             yield return null;
         }
 
-        transform.position = newEndPos;
+        if (followCubeTarget && dynamicTargetBlock != null)
+        {
+            transform.position = GetMoveTargetPosForBlock(dynamicTargetBlock);
+
+            cubeBlockBeingFollowed = dynamicTargetBlock.transform;
+            cubeBlockYOffset = GetStandingYOffset();
+            lastFollowedCubeBlockY = dynamicTargetBlock.transform.position.y;
+            cubeBlockRefreshAccumulatedDistance = 0f;
+        }
+        else
+        {
+            transform.position = fixedEndPos;
+            StopFollowingCubeBlock();
+        }
 
         movementStates = MovementStates.Still;
         performGrapplingHooking = false;
@@ -3048,6 +3396,7 @@ public class Movement : Singleton<Movement>
     {
         if (!CeilingGrab.isCeilingGrabbing)
         {
+            StopFollowingCubeBlock();
             ClearSlopeFreeLandingState();
             ClearFallingCarrierBlock();
             SetMovementState(MovementStates.Falling);
@@ -3841,6 +4190,7 @@ public class Movement : Singleton<Movement>
         isDescending = false;
         PlayerCameraOcclusionController.Instance.CameraZoom(false);
 
+        StopFollowingCubeBlock();
         ClearFallingCarrierBlock();
         SetMovementState(MovementStates.Moving);
 

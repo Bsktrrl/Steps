@@ -45,12 +45,16 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         DataManager.Action_dataHasLoaded += LoadPlayerStats;
         Movement.Action_StepTaken += StepsOnFallableBlock;
+        Movement.Action_StepTaken += BlockLookingAt;
+        Movement.Action_BodyRotated += BlockLookingAt;
     }
 
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= LoadPlayerStats;
         Movement.Action_StepTaken -= StepsOnFallableBlock;
+        Movement.Action_StepTaken -= BlockLookingAt;
+        Movement.Action_BodyRotated -= BlockLookingAt;
     }
 
 
@@ -98,6 +102,32 @@ public class PlayerManager : Singleton<PlayerManager>
         if (!Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
 
         return true;
+    }
+
+
+    //--------------------
+
+
+    void BlockLookingAt()
+    {
+        Vector3 origin = playerBody.transform.position;
+        Vector3 direction = playerBody.transform.forward;
+
+        if (Physics.Raycast(origin + (Vector3.up * 0.25f), direction, out hit, 1.1f))
+        {
+            if (hit.collider.TryGetComponent<BlockInfo>(out _))
+            {
+                block_LookingAt_Horizontal = hit.collider.gameObject;
+            }
+            else
+            {
+                block_LookingAt_Horizontal = null;
+            }
+        }
+        else
+        {
+            block_LookingAt_Horizontal = null;
+        }
     }
 
 

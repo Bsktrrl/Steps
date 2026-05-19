@@ -112,7 +112,7 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
         if (FindObjectOfType<SessionStatsGathered>())
             SessionStatsGathered.Instance.ResetSessionStats();
 
-        DataManager.Instance.PlayerStatsData_Store.sessionStats.session_No += 1;
+        DataManager.Instance.playerStatsData_Store.sessionStats.session_No += 1;
 
         //Save the variables
         DataManager.Instance.menuState_Store = MenuState.Main_Menu;

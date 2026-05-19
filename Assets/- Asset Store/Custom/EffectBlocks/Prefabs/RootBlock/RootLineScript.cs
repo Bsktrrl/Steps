@@ -10,6 +10,7 @@ public class RootLineScript : MonoBehaviour
     float pitchMin = 0.8f;
     float pitchMax = 1.2f;
 
+
     void OnEnable()
     {
         source = GetComponent<AudioSource>();

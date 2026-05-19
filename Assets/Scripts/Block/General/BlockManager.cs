@@ -68,5 +68,7 @@ public enum BlockElement
     PurpleGrass,
     MushroomCircle,
     Bush,
-    Temple
+    Temple,
+
+    GlueplantStand
 }
