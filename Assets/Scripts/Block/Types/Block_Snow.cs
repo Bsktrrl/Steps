@@ -25,6 +25,8 @@ public class Block_Snow : MonoBehaviour
 
         ChangeStepCounterPosition();
 
+        CorrectChilderenForSnow();
+
         Action_SnowSetup_End?.Invoke();
     }
 
@@ -76,6 +78,14 @@ public class Block_Snow : MonoBehaviour
                 numberDisplayObject.transform.localPosition = new Vector3(0, Mathf.Abs((1 - childScale_Y) / 2), 0);
                 numberDisplayObject.GetComponent<NumberDisplay>().localStartHeight = numberDisplayObject.transform.localPosition.y;
             }
+        }
+    }
+
+    void CorrectChilderenForSnow()
+    {
+        if (GetComponentInChildren<EffectVisualMarker>())
+        {
+            GetComponentInChildren<EffectVisualMarker>().gameObject.transform.localPosition += new Vector3(0, (scale_Y_Value - 1) / 2, 0);
         }
     }
 }
