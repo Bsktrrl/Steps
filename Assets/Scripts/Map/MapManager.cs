@@ -10,6 +10,7 @@ public class MapManager : Singleton<MapManager>
     public static event Action Action_EndIntroSequence;
 
     public static event Action<GameObject> Action_SpawnedPlayerObject;
+    public static event Action Action_PlayerObject_IsSpawned;
     public static GameObject SpawnedPlayer { get; private set; }
 
     [Header("Player")]
@@ -137,6 +138,7 @@ public class MapManager : Singleton<MapManager>
         SetAbilities();
 
         Action_SpawnedPlayerObject?.Invoke(SpawnedPlayer);
+        Action_PlayerObject_IsSpawned?.Invoke();
     }
     public void SetAbilities()
     {

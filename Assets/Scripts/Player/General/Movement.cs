@@ -201,6 +201,13 @@ public class Movement : Singleton<Movement>
     [SerializeField] private bool hasPendingStepCost;
     [SerializeField] private int pendingStepCost;
 
+    [Header("Cube Block Following")]
+    [SerializeField] private Transform cubeBlockBeingFollowed = null;
+    [SerializeField] private float cubeBlockYOffset = 0f;
+    [SerializeField] private float lastFollowedCubeBlockY = 0f;
+    [SerializeField] private float cubeBlockRefreshDistance = 0.05f;
+    [SerializeField] private float cubeBlockRefreshAccumulatedDistance = 0f;
+
     #endregion
 
     #region Cached Accessors
@@ -296,6 +303,8 @@ public class Movement : Singleton<Movement>
             if (elevatorBeingFollowed != null)
                 lastFollowedElevatorPosition = elevatorBeingFollowed.position;
         }
+
+        FollowStandingCubeBlock();
     }
 
     private void OnEnable()
@@ -1311,6 +1320,107 @@ public class Movement : Singleton<Movement>
             return Mathf.Max(0.01f, standingInfo.movementSpeed - 1.5f);
 
         return 2f;
+    }
+
+    private bool IsCubeBlock(GameObject obj)
+    {
+        return TryGetBlockInfo(obj, out BlockInfo info) &&
+               info.blockType == BlockType.Cube;
+    }
+
+    private bool ShouldFollowHoverBlock(GameObject obj)
+    {
+        if (obj == null)
+            return false;
+
+        if (CeilingGrab.isCeilingGrabbing)
+            return false;
+
+        return TryGetBlockInfo(obj, out BlockInfo info) &&
+               info.blockType == BlockType.Cube &&
+               obj.GetComponent<Block_Hover>() != null;
+    }
+
+    private float GetStandingYOffset()
+    {
+        return (StandingOffsetDir() * heightOverBlock).y;
+    }
+
+    private Vector3 WithStandingY(Vector3 currentPlayerPos, Vector3 blockPos)
+    {
+        return new Vector3(
+            currentPlayerPos.x,
+            blockPos.y + GetStandingYOffset(),
+            currentPlayerPos.z
+        );
+    }
+
+    private Vector3 GetMoveTargetPosForBlock(GameObject targetBlock)
+    {
+        if (targetBlock == null)
+            return transform.position;
+
+        Vector3 targetPos = targetBlock.transform.position + (StandingOffsetDir() * heightOverBlock);
+
+        if (CeilingGrab.isCeilingGrabbing)
+        {
+            targetPos = targetBlock.transform.position +
+                        (StandingOffsetDir() * (heightOverBlock - Player_BodyHeight.Instance.height_Normal / 2f));
+        }
+
+        return targetPos;
+    }
+
+    private void StopFollowingCubeBlock()
+    {
+        cubeBlockBeingFollowed = null;
+        cubeBlockYOffset = 0f;
+        lastFollowedCubeBlockY = transform.position.y;
+        cubeBlockRefreshAccumulatedDistance = 0f;
+    }
+
+    private void FollowStandingCubeBlock()
+    {
+        if (isMoving || movementStates != MovementStates.Still)
+            return;
+
+        if (blockStandingOn == null || !ShouldFollowHoverBlock(blockStandingOn))
+        {
+            StopFollowingCubeBlock();
+            return;
+        }
+
+        Transform cubeTransform = blockStandingOn.transform;
+
+        if (cubeBlockBeingFollowed != cubeTransform)
+        {
+            cubeBlockBeingFollowed = cubeTransform;
+            cubeBlockYOffset = GetStandingYOffset();
+            lastFollowedCubeBlockY = cubeTransform.position.y;
+            cubeBlockRefreshAccumulatedDistance = 0f;
+        }
+
+        float targetY = cubeTransform.position.y + cubeBlockYOffset;
+
+        transform.position = new Vector3(
+            transform.position.x,
+            targetY,
+            transform.position.z
+        );
+
+        float movedDistance = Mathf.Abs(cubeTransform.position.y - lastFollowedCubeBlockY);
+
+        if (movedDistance > 0f)
+        {
+            cubeBlockRefreshAccumulatedDistance += movedDistance;
+            lastFollowedCubeBlockY = cubeTransform.position.y;
+        }
+
+        if (cubeBlockRefreshAccumulatedDistance >= cubeBlockRefreshDistance)
+        {
+            cubeBlockRefreshAccumulatedDistance = 0f;
+            RefreshAvailableMovementBlocksSmooth();
+        }
     }
 
     #endregion
@@ -3118,29 +3228,53 @@ public class Movement : Singleton<Movement>
 
     IEnumerator NormalMovement(Vector3 endPos, MovementStates moveState, float movementSpeed)
     {
-        Vector3 rayDir = StandingOffsetDir();
         previousPosition = transform.position;
 
         Vector3 startPos = transform.position;
-        Vector3 newEndPos = endPos + (rayDir * heightOverBlock);
+        Vector3 fixedEndPos = endPos + (StandingOffsetDir() * heightOverBlock);
 
         if (CeilingGrab.isCeilingGrabbing)
-            newEndPos = endPos + (rayDir * (heightOverBlock - (Player_BodyHeight.Instance.height_Normal) / 2f));
+        {
+            fixedEndPos = endPos +
+                          (StandingOffsetDir() * (heightOverBlock - Player_BodyHeight.Instance.height_Normal / 2f));
+        }
+
+        GameObject dynamicTargetBlock = currentMoveTargetBlock;
+        bool followCubeTarget = ShouldFollowHoverBlock(dynamicTargetBlock);
 
         movementStates = moveState;
 
         float elapsed = 0f;
-        float duration = MovementDuration(startPos, newEndPos, movementSpeed);
+        float duration = MovementDuration(startPos, fixedEndPos, movementSpeed);
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
-            transform.position = Vector3.Lerp(startPos, newEndPos, t);
+
+            Vector3 currentEndPos = followCubeTarget && dynamicTargetBlock != null
+                ? GetMoveTargetPosForBlock(dynamicTargetBlock)
+                : fixedEndPos;
+
+            transform.position = Vector3.Lerp(startPos, currentEndPos, t);
+
             yield return null;
         }
 
-        transform.position = newEndPos;
+        if (followCubeTarget && dynamicTargetBlock != null)
+        {
+            transform.position = GetMoveTargetPosForBlock(dynamicTargetBlock);
+
+            cubeBlockBeingFollowed = dynamicTargetBlock.transform;
+            cubeBlockYOffset = GetStandingYOffset();
+            lastFollowedCubeBlockY = dynamicTargetBlock.transform.position.y;
+            cubeBlockRefreshAccumulatedDistance = 0f;
+        }
+        else
+        {
+            transform.position = fixedEndPos;
+            StopFollowingCubeBlock();
+        }
 
         movementStates = MovementStates.Still;
         performGrapplingHooking = false;
@@ -3262,6 +3396,7 @@ public class Movement : Singleton<Movement>
     {
         if (!CeilingGrab.isCeilingGrabbing)
         {
+            StopFollowingCubeBlock();
             ClearSlopeFreeLandingState();
             ClearFallingCarrierBlock();
             SetMovementState(MovementStates.Falling);
@@ -4055,6 +4190,7 @@ public class Movement : Singleton<Movement>
         isDescending = false;
         PlayerCameraOcclusionController.Instance.CameraZoom(false);
 
+        StopFollowingCubeBlock();
         ClearFallingCarrierBlock();
         SetMovementState(MovementStates.Moving);
 

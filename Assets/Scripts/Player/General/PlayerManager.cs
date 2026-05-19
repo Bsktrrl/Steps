@@ -113,7 +113,7 @@ public class PlayerManager : Singleton<PlayerManager>
         Vector3 origin = playerBody.transform.position;
         Vector3 direction = playerBody.transform.forward;
 
-        if (Physics.Raycast(origin, direction, out hit, 1.1f))
+        if (Physics.Raycast(origin + (Vector3.up * 0.25f), direction, out hit, 1.1f))
         {
             if (hit.collider.TryGetComponent<BlockInfo>(out _))
             {
