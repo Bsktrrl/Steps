@@ -32728,6 +32728,11 @@ MonoBehaviour:
   pendingFreeLandingFromSlope: 0
   hasPendingStepCost: 0
   pendingStepCost: 0
+  cubeBlockBeingFollowed: {fileID: 0}
+  cubeBlockYOffset: 0
+  lastFollowedCubeBlockY: 0
+  cubeBlockRefreshDistance: 0.05
+  cubeBlockRefreshAccumulatedDistance: 0
 --- !u!114 &3643509991883984095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44673,16 +44678,14 @@ MonoBehaviour:
   - Prat
   - Talk
   - Sprechen
-  - "\u8BB2\u8BDD"
-  - "\u8A71\u3059"
-  - "\uB9D0\uD558\uB2E4"
   interact_Push_Message:
   - Dytt
   - Push
   - "Dr\xFCcken"
-  - "\u63A8"
-  - "\u62BC\u3059"
-  - "\uD478\uC2DC"
+  interact_PlaceGlueplant:
+  - 
+  - 
+  - 
 --- !u!1 &9036044701790778677
 GameObject:
   m_ObjectHideFlags: 0

@@ -23,6 +23,22 @@ public class Interactable_GlueplantStand : MonoBehaviour
     //--------------------
 
 
+    private void Update()
+    {
+        if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject)
+        {
+            ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, MessageManager.Instance.Show_Message(MessageManager.Instance.interact_PlaceGlueplant));
+        }
+        else
+        {
+            ButtonMessages.Instance.HideButtonMessage();
+        }
+    }
+
+
+    //--------------------
+
+
     private void OnEnable()
     {
         DataManager.Action_dataHasLoaded += LoadGame;
