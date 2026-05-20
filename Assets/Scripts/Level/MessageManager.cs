@@ -13,6 +13,15 @@ public class MessageManager : Singleton<MessageManager>
     //--------------------
 
 
+    private void Start()
+    {
+        
+    }
+
+
+    //--------------------
+
+
     public string Show_Message(List<string> stringList)
     {
         return stringList[(int)SettingsManager.Instance.settingsData.currentLanguage];

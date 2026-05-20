@@ -129,12 +129,6 @@ public class ButtonMessages : Singleton<ButtonMessages>
     }
 }
 
-public enum ControlTypes
-{
-    Keyboard,
-    XBox,
-    PlayStation
-}
 public enum ControlButtons
 {
     Left,
