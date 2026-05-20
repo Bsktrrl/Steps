@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class Block_Moveable : MonoBehaviour
 {
+    public static event Action Action_ObjectHasBeenPushed;
+
     private MovementDirection movementDirection = MovementDirection.None;
 
     public bool canMove;
@@ -55,6 +58,8 @@ public class Block_Moveable : MonoBehaviour
         Movement.Action_LandedFromFalling += RefreshMovementState;
 
         Player_KeyInputs.Action_InteractButton_isPressed += ActivateBlockMovement;
+
+        PlayerManager.Action_UpdatedLookingAtHorizontal += DisplayButtonMessage;
     }
 
     private void OnDisable()
@@ -65,6 +70,8 @@ public class Block_Moveable : MonoBehaviour
         Movement.Action_LandedFromFalling -= RefreshMovementState;
 
         Player_KeyInputs.Action_InteractButton_isPressed -= ActivateBlockMovement;
+
+        PlayerManager.Action_UpdatedLookingAtHorizontal -= DisplayButtonMessage;
     }
 
 
@@ -78,12 +85,14 @@ public class Block_Moveable : MonoBehaviour
         movementDirection = GetPushDirectionFromPlayer();
         canMove = movementDirection != MovementDirection.None && CanMoveOneStep();
 
-        //Movement.Instance.UpdateAvailableMovementBlocks();
+        Movement.Instance.UpdateAvailableMovementBlocks();
+
+        DisplayButtonMessage();
     }
 
     private MovementDirection GetPushDirectionFromPlayer()
     {
-        Vector3 lookDir = Movement.Instance.lookingDirection;
+        Vector3 lookDir = Movement.Instance.lookDir;
 
         if (lookDir == Vector3.forward && IsPlayerAdjacent(-lookDir))
             return MovementDirection.Backward;
@@ -190,15 +199,15 @@ public class Block_Moveable : MonoBehaviour
     private void ActivateBlockMovement()
     {
         if (isMoving) return;
-        if (movementDirection == MovementDirection.None) return;
 
         RefreshMovementState();
+
+        if (movementDirection == MovementDirection.None) return;
         if (!canMove) return;
 
         Vector3 pushDir = GetMoveVector();
         if (pushDir == Vector3.zero) return;
 
-        // Player must be facing toward the block, which is opposite of push direction
         Vector3 facingTowardBlock = -pushDir;
 
         if (Movement.Instance.JustTurnedToward(facingTowardBlock))
@@ -244,6 +253,8 @@ public class Block_Moveable : MonoBehaviour
                 StopMovement();
                 RefreshMovementState();
             }
+
+            Action_ObjectHasBeenPushed?.Invoke();
         }
     }
 
@@ -304,5 +315,22 @@ public class Block_Moveable : MonoBehaviour
         canMove = false;
         RefreshMovementState();
         Movement.Instance.RefreshAvailableMovementBlocksSmooth();
+    }
+
+
+    //--------------------
+
+
+    void DisplayButtonMessage()
+    {
+        if (PlayerManager.Instance.block_LookingAt_Horizontal && PlayerManager.Instance.block_LookingAt_Horizontal.GetComponent<Block_Moveable>() && PlayerManager.Instance.block_LookingAt_Horizontal.GetComponent<Block_Moveable>().canMove)
+        {
+            ButtonMessageManager.Instance.SetButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Push);
+            ButtonMessageManager.Instance.ShowButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Push);
+        }
+        else
+        {
+            ButtonMessageManager.Instance.HideButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Push);
+        }
     }
 }

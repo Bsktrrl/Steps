@@ -143,7 +143,9 @@ public class DialogueManager : Singleton<DialogueManager>
 
         yield return StartCoroutine(CameraController.Instance.StartVirtualCameraBlend_Out(CameraController.Instance.CM_Other));
 
-        ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, MessageManager.Instance.Show_Message(MessageManager.Instance.interact_Talk_Message));
+        ButtonMessageManager.Instance.SetButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Talk);
+        ButtonMessageManager.Instance.ShowButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Talk);
+
 
         if (nPCManager && npcObject != null)
         {

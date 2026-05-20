@@ -20,7 +20,7 @@ public class Interactable_NPC_ColliderTrigger : MonoBehaviour
     {
         if (DisableDialogue())
         {
-            ButtonMessages.Instance.HideButtonMessage();
+            ButtonMessageManager.Instance.HideButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Talk);
             parentScript.canInteract = false;
             GetComponent<BoxCollider>().enabled = false;
 
@@ -42,16 +42,15 @@ public class Interactable_NPC_ColliderTrigger : MonoBehaviour
 
             if (roundedToNPC == playerFacing && HasLineOfSightToNPC())
             {
-                ButtonMessages.Instance.ShowButtonMessage(
-                    ControlButtons.Down,
-                    MessageManager.Instance.Show_Message(MessageManager.Instance.interact_Talk_Message)
-                );
+                ButtonMessageManager.Instance.SetButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Talk);
+                ButtonMessageManager.Instance.ShowButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Talk);
+
                 parentScript.canInteract = true;
                 CameraController.Instance.CM_Other = parentScript.NPCVirtualCamera;
             }
             else
             {
-                ButtonMessages.Instance.HideButtonMessage();
+                ButtonMessageManager.Instance.HideButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Talk);
                 parentScript.canInteract = false;
                 CameraController.Instance.CM_Other = null;
             }
@@ -67,7 +66,7 @@ public class Interactable_NPC_ColliderTrigger : MonoBehaviour
     {
         if (DisableDialogue())
         {
-            ButtonMessages.Instance.HideButtonMessage();
+            ButtonMessageManager.Instance.HideButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Talk);
             parentScript.canInteract = false;
             GetComponent<BoxCollider>().enabled = false;
 
@@ -89,16 +88,15 @@ public class Interactable_NPC_ColliderTrigger : MonoBehaviour
 
             if (roundedToNPC == playerFacing && HasLineOfSightToNPC())
             {
-                ButtonMessages.Instance.ShowButtonMessage(
-                    ControlButtons.Down,
-                    MessageManager.Instance.Show_Message(MessageManager.Instance.interact_Talk_Message)
-                );
+                ButtonMessageManager.Instance.SetButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Talk);
+                ButtonMessageManager.Instance.ShowButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Talk);
+
                 parentScript.canInteract = true;
                 CameraController.Instance.CM_Other = parentScript.NPCVirtualCamera;
             }
             else
             {
-                ButtonMessages.Instance.HideButtonMessage();
+                ButtonMessageManager.Instance.HideButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Talk);
                 parentScript.canInteract = false;
                 CameraController.Instance.CM_Other = null;
             }
@@ -106,7 +104,7 @@ public class Interactable_NPC_ColliderTrigger : MonoBehaviour
         }
         else
         {
-            ButtonMessages.Instance.HideButtonMessage();
+            ButtonMessageManager.Instance.HideButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Talk);
             parentScript.canInteract = false;
             GetComponent<BoxCollider>().enabled = false;
         }
@@ -115,7 +113,7 @@ public class Interactable_NPC_ColliderTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player") && !Player_CeilingGrab.Instance.isCeilingGrabbing && !Player_CeilingGrab.Instance.isCeilingRotation)
         {
-            ButtonMessages.Instance.HideButtonMessage();
+            ButtonMessageManager.Instance.HideButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Talk);
             parentScript.canInteract = false;
 
             CameraController.Instance.CM_Other = null;

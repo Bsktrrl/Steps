@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3594551830216134793
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3689591963343634869}
+  - component: {fileID: 4163589610448778830}
+  m_Layer: 0
+  m_Name: ButtonMessageManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3689591963343634869
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3594551830216134793}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4163589610448778830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3594551830216134793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cd80dce3930459489fe389b355b727d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonMessages:
+    buttonMessage_Talk:
+      button_MessageText: 
+      button_MessageSprite_Keyboard: {fileID: 213037863, guid: 63bc0728f3094c14285080981e00fc87, type: 3}
+      button_MessageSprite_PlayStation: {fileID: -1761952427, guid: 63bc0728f3094c14285080981e00fc87, type: 3}
+      button_MessageSprite_xBox: {fileID: 391559415, guid: 63bc0728f3094c14285080981e00fc87, type: 3}
+    buttonMessage_SwiftSwim_Up:
+      button_MessageText: 
+      button_MessageSprite_Keyboard: {fileID: 0}
+      button_MessageSprite_PlayStation: {fileID: 0}
+      button_MessageSprite_xBox: {fileID: 0}
+    buttonMessage_SwiftSwim_Down:
+      button_MessageText: 
+      button_MessageSprite_Keyboard: {fileID: 0}
+      button_MessageSprite_PlayStation: {fileID: 0}
+      button_MessageSprite_xBox: {fileID: 0}
+    buttonMessage_Ascend:
+      button_MessageText: 
+      button_MessageSprite_Keyboard: {fileID: 0}
+      button_MessageSprite_PlayStation: {fileID: 0}
+      button_MessageSprite_xBox: {fileID: 0}
+    buttonMessage_Descend:
+      button_MessageText: 
+      button_MessageSprite_Keyboard: {fileID: 0}
+      button_MessageSprite_PlayStation: {fileID: 0}
+      button_MessageSprite_xBox: {fileID: 0}
+    buttonMessage_Dash:
+      button_MessageText: 
+      button_MessageSprite_Keyboard: {fileID: 0}
+      button_MessageSprite_PlayStation: {fileID: 0}
+      button_MessageSprite_xBox: {fileID: 0}
+    buttonMessage_GrapplingHook:
+      button_MessageText: 
+      button_MessageSprite_Keyboard: {fileID: 0}
+      button_MessageSprite_PlayStation: {fileID: 0}
+      button_MessageSprite_xBox: {fileID: 0}
+    buttonMessage_Jump:
+      button_MessageText: 
+      button_MessageSprite_Keyboard: {fileID: 0}
+      button_MessageSprite_PlayStation: {fileID: 0}
+      button_MessageSprite_xBox: {fileID: 0}
+    buttonMessage_CeilingClimb:
+      button_MessageText: 
+      button_MessageSprite_Keyboard: {fileID: 0}
+      button_MessageSprite_PlayStation: {fileID: 0}
+      button_MessageSprite_xBox: {fileID: 0}
+    buttonMessage_Respawn:
+      button_MessageText: 
+      button_MessageSprite_Keyboard: {fileID: 0}
+      button_MessageSprite_PlayStation: {fileID: 0}
+      button_MessageSprite_xBox: {fileID: 0}
+    buttonMessage_PlaceGlueplant:
+      button_MessageText: 
+      button_MessageSprite_Keyboard: {fileID: 213037863, guid: 63bc0728f3094c14285080981e00fc87, type: 3}
+      button_MessageSprite_PlayStation: {fileID: -1761952427, guid: 63bc0728f3094c14285080981e00fc87, type: 3}
+      button_MessageSprite_xBox: {fileID: 391559415, guid: 63bc0728f3094c14285080981e00fc87, type: 3}

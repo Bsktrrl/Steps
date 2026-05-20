@@ -3861,8 +3861,14 @@ public class Movement : Singleton<Movement>
         playerBody.SetPositionAndRotation(playerBody.position, newRotation);
 
         Vector3 newFacingDir = GetFacingDirection(finalYRotation);
+
         Cam.directionFacing = newFacingDir;
         lastTurnedToDir = newFacingDir;
+
+        // Important: update these immediately before notifying listeners.
+        lookDir = newFacingDir;
+        lookingDirection = newFacingDir;
+        lookingDirection_Old = lookingDirection;
 
         Action_BodyRotated_Invoke();
         return true;

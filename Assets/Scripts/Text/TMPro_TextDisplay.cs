@@ -16,23 +16,23 @@ public class TMPro_TextDisplay : MonoBehaviour
 
     private void Start()
     {
-        ShowText();
+        DisplayText();
     }
 
     private void OnEnable()
     {
-        SettingsManager.Action_SetNewLanguage += ShowText;
+        SettingsManager.Action_SetNewLanguage += DisplayText;
         SceneManager.activeSceneChanged += HandleSceneChanged;
     }
     private void OnDestroy()
     {
-        SettingsManager.Action_SetNewLanguage -= ShowText;
+        SettingsManager.Action_SetNewLanguage -= DisplayText;
         SceneManager.activeSceneChanged -= HandleSceneChanged;
     }
 
     private void HandleSceneChanged(Scene oldScene, Scene newScene)
     {
-        SettingsManager.Action_SetNewLanguage -= ShowText;
+        SettingsManager.Action_SetNewLanguage -= DisplayText;
     }
 
 
@@ -40,7 +40,12 @@ public class TMPro_TextDisplay : MonoBehaviour
     //--------------------
 
 
-    void ShowText()
+    void DisplayText()
+    {
+        ShowText(textToDisplay);
+    }
+
+    public void ShowText(Text_Database_Enum _textToDisplay)
     {
         if (!GetComponent<TextMeshProUGUI>()) return;
         if (DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList.Count <= 0) return;
@@ -49,7 +54,7 @@ public class TMPro_TextDisplay : MonoBehaviour
         if (DataManager.Instance.settingData_StoreList.currentLanguage > 0)
             languageTemp = (int)DataManager.Instance.settingData_StoreList.currentLanguage;
 
-        switch (textToDisplay)
+        switch (_textToDisplay)
         {
             //None
             case Text_Database_Enum.None:
@@ -1293,23 +1298,23 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.interractableButton_Message_Respawn_xBox:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Respawn_xBox;
                 break;
-            case Text_Database_Enum.interractableButton_Message_12_Keyboard:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_12_Keyboard;
+            case Text_Database_Enum.interractableButton_Message_PlaceGlueplant_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_PlaceGlueplant_Keyboard;
                 break;
-            case Text_Database_Enum.interractableButton_Message_12_PlayStation:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_12_PlayStation;
+            case Text_Database_Enum.interractableButton_Message_PlaceGlueplant_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_PlaceGlueplant_PlayStation;
                 break;
-            case Text_Database_Enum.interractableButton_Message_12_xBox:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_12_xBox;
+            case Text_Database_Enum.interractableButton_Message_PlaceGlueplant_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_PlaceGlueplant_xBox;
                 break;
-            case Text_Database_Enum.interractableButton_Message_13_Keyboard:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_13_Keyboard;
+            case Text_Database_Enum.interractableButton_Message_Push_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Push_Keyboard;
                 break;
-            case Text_Database_Enum.interractableButton_Message_13_PlayStation:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_13_PlayStation;
+            case Text_Database_Enum.interractableButton_Message_Push_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Push_PlayStation;
                 break;
-            case Text_Database_Enum.interractableButton_Message_13_xBox:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_13_xBox;
+            case Text_Database_Enum.interractableButton_Message_Push_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Push_xBox;
                 break;
             case Text_Database_Enum.interractableButton_Message_14_Keyboard:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_14_Keyboard;
@@ -2413,23 +2418,23 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.interractableButton_Message_Respawn_xBox:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Respawn_xBox;
 
-            case Text_Database_Enum.interractableButton_Message_12_Keyboard:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_12_Keyboard;
+            case Text_Database_Enum.interractableButton_Message_PlaceGlueplant_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_PlaceGlueplant_Keyboard;
 
-            case Text_Database_Enum.interractableButton_Message_12_PlayStation:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_12_PlayStation;
+            case Text_Database_Enum.interractableButton_Message_PlaceGlueplant_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_PlaceGlueplant_PlayStation;
 
-            case Text_Database_Enum.interractableButton_Message_12_xBox:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_12_xBox;
+            case Text_Database_Enum.interractableButton_Message_PlaceGlueplant_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_PlaceGlueplant_xBox;
 
-            case Text_Database_Enum.interractableButton_Message_13_Keyboard:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_13_Keyboard;
+            case Text_Database_Enum.interractableButton_Message_Push_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Push_Keyboard;
 
-            case Text_Database_Enum.interractableButton_Message_13_PlayStation:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_13_PlayStation;
+            case Text_Database_Enum.interractableButton_Message_Push_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Push_PlayStation;
 
-            case Text_Database_Enum.interractableButton_Message_13_xBox:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_13_xBox;
+            case Text_Database_Enum.interractableButton_Message_Push_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Push_xBox;
 
             case Text_Database_Enum.interractableButton_Message_14_Keyboard:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_14_Keyboard;
