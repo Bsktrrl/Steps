@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,19 +31,9 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
 
     void UpdateButtonMessages()
     {
-        //buttonMessages.buttonMessage_SwiftSwim_Up.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_FlippersUP_Keyboard;
-        //buttonMessages.buttonMessage_SwiftSwim_Down.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_FlippersDOWN_Keyboard;
-        //buttonMessages.buttonMessage_Ascend.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_DrillHelmet_Keyboard;
-        //buttonMessages.buttonMessage_Descend.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_DrillShoes_Keyboard;
-        //buttonMessages.buttonMessage_Dash.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].ability_Message_HandDrill_Keyboard;
-        //buttonMessages.buttonMessage_GrapplingHook.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].ability_Message_GrapplingHook_Keyboard;
-        //buttonMessages.buttonMessage_Jump.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].ability_Message_SpringShoes_Keyboard;
-        //buttonMessages.buttonMessage_CeilingClimb.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_ClimbingGloves_Keyboard;
-
-        //buttonMessages.buttonMessage_Respawn.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_Respawn_Keyboard;
-
         buttonMessages.buttonMessage_Talk.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_Talk_Keyboard;
         buttonMessages.buttonMessage_PlaceGlueplant.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_PlaceGlueplant_Keyboard;
+        buttonMessages.buttonMessage_Push.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_Push_Keyboard;
 
         SetAllButtonMessages();
     }
@@ -58,6 +46,7 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
     {
         SetButtonMessage(buttonMessages.buttonMessage_Talk);
         SetButtonMessage(buttonMessages.buttonMessage_PlaceGlueplant);
+        SetButtonMessage(buttonMessages.buttonMessage_Push);
     }
 
     public void SetButtonMessage(ButtonMessage _buttonMessage)
@@ -105,17 +94,7 @@ public class ButtonMessageList
 {
     public ButtonMessage buttonMessage_Talk;
     public ButtonMessage buttonMessage_PlaceGlueplant;
-
-    //public ButtonMessage buttonMessage_SwiftSwim_Up;
-    //public ButtonMessage buttonMessage_SwiftSwim_Down;
-    //public ButtonMessage buttonMessage_Ascend;
-    //public ButtonMessage buttonMessage_Descend;
-    //public ButtonMessage buttonMessage_Dash;
-    //public ButtonMessage buttonMessage_GrapplingHook;
-    //public ButtonMessage buttonMessage_Jump;
-    //public ButtonMessage buttonMessage_CeilingClimb;
-    //public ButtonMessage buttonMessage_Respawn;
-
+    public ButtonMessage buttonMessage_Push;
 }
 [Serializable]
 public class ButtonMessage

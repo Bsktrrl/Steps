@@ -1307,14 +1307,14 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.interractableButton_Message_PlaceGlueplant_xBox:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_PlaceGlueplant_xBox;
                 break;
-            case Text_Database_Enum.interractableButton_Message_13_Keyboard:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_13_Keyboard;
+            case Text_Database_Enum.interractableButton_Message_Push_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Push_Keyboard;
                 break;
-            case Text_Database_Enum.interractableButton_Message_13_PlayStation:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_13_PlayStation;
+            case Text_Database_Enum.interractableButton_Message_Push_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Push_PlayStation;
                 break;
-            case Text_Database_Enum.interractableButton_Message_13_xBox:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_13_xBox;
+            case Text_Database_Enum.interractableButton_Message_Push_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Push_xBox;
                 break;
             case Text_Database_Enum.interractableButton_Message_14_Keyboard:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_14_Keyboard;
@@ -2427,14 +2427,14 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.interractableButton_Message_PlaceGlueplant_xBox:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_PlaceGlueplant_xBox;
 
-            case Text_Database_Enum.interractableButton_Message_13_Keyboard:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_13_Keyboard;
+            case Text_Database_Enum.interractableButton_Message_Push_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Push_Keyboard;
 
-            case Text_Database_Enum.interractableButton_Message_13_PlayStation:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_13_PlayStation;
+            case Text_Database_Enum.interractableButton_Message_Push_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Push_PlayStation;
 
-            case Text_Database_Enum.interractableButton_Message_13_xBox:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_13_xBox;
+            case Text_Database_Enum.interractableButton_Message_Push_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Push_xBox;
 
             case Text_Database_Enum.interractableButton_Message_14_Keyboard:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_14_Keyboard;

@@ -7,6 +7,8 @@ public class PlayerManager : Singleton<PlayerManager>
 {
     #region Variables
 
+    public static event Action Action_UpdatedLookingAtHorizontal;
+
     [Header("Player Object")]
     public GameObject player;
     public GameObject playerBody;
@@ -47,6 +49,8 @@ public class PlayerManager : Singleton<PlayerManager>
         Movement.Action_StepTaken += StepsOnFallableBlock;
         Movement.Action_StepTaken += BlockLookingAt;
         Movement.Action_BodyRotated += BlockLookingAt;
+
+        Block_Moveable.Action_ObjectHasBeenPushed += BlockLookingAt;
     }
 
     private void OnDisable()
@@ -55,6 +59,8 @@ public class PlayerManager : Singleton<PlayerManager>
         Movement.Action_StepTaken -= StepsOnFallableBlock;
         Movement.Action_StepTaken -= BlockLookingAt;
         Movement.Action_BodyRotated -= BlockLookingAt;
+
+        Block_Moveable.Action_ObjectHasBeenPushed -= BlockLookingAt;
     }
 
 
@@ -117,16 +123,22 @@ public class PlayerManager : Singleton<PlayerManager>
         {
             if (hit.collider.TryGetComponent<BlockInfo>(out _))
             {
-                block_LookingAt_Horizontal = hit.collider.gameObject;
+                if (block_LookingAt_Horizontal != hit.collider.gameObject)
+                {
+                    block_LookingAt_Horizontal = hit.collider.gameObject;
+                    Action_UpdatedLookingAtHorizontal?.Invoke();
+                }
             }
             else
             {
                 block_LookingAt_Horizontal = null;
+                Action_UpdatedLookingAtHorizontal?.Invoke();
             }
         }
         else
         {
             block_LookingAt_Horizontal = null;
+            Action_UpdatedLookingAtHorizontal?.Invoke();
         }
     }
 

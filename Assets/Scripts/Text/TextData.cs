@@ -513,9 +513,9 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_PlaceGlueplant_Keyboard, 425);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_PlaceGlueplant_PlayStation, 426);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_PlaceGlueplant_xBox, 427);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_13_Keyboard, 428);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_13_PlayStation, 429);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_13_xBox, 430);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Push_Keyboard, 428);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Push_PlayStation, 429);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Push_xBox, 430);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_14_Keyboard, 431);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_14_PlayStation, 432);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_14_xBox, 433);
@@ -1075,9 +1075,9 @@ public class Game_TextDatabase_Language
     public string interractableButton_Message_PlaceGlueplant_Keyboard;
     public string interractableButton_Message_PlaceGlueplant_PlayStation;
     public string interractableButton_Message_PlaceGlueplant_xBox;
-    public string interractableButton_Message_13_Keyboard;
-    public string interractableButton_Message_13_PlayStation;
-    public string interractableButton_Message_13_xBox;
+    public string interractableButton_Message_Push_Keyboard;
+    public string interractableButton_Message_Push_PlayStation;
+    public string interractableButton_Message_Push_xBox;
     public string interractableButton_Message_14_Keyboard;
     public string interractableButton_Message_14_PlayStation;
     public string interractableButton_Message_14_xBox;
@@ -1617,9 +1617,9 @@ public enum Text_Database_Enum
     [InspectorName("InterractableButton Message / PlaceGlueplant")] interractableButton_Message_PlaceGlueplant_Keyboard,
     [InspectorName("InterractableButton Message / PlaceGlueplant")] interractableButton_Message_PlaceGlueplant_PlayStation,
     [InspectorName("InterractableButton Message / PlaceGlueplant")] interractableButton_Message_PlaceGlueplant_xBox,
-    [InspectorName("InterractableButton Message / 13")] interractableButton_Message_13_Keyboard,
-    [InspectorName("InterractableButton Message / 13")] interractableButton_Message_13_PlayStation,
-    [InspectorName("InterractableButton Message / 13")] interractableButton_Message_13_xBox,
+    [InspectorName("InterractableButton Message / Push")] interractableButton_Message_Push_Keyboard,
+    [InspectorName("InterractableButton Message / Push")] interractableButton_Message_Push_PlayStation,
+    [InspectorName("InterractableButton Message / Push")] interractableButton_Message_Push_xBox,
     [InspectorName("InterractableButton Message / 14")] interractableButton_Message_14_Keyboard,
     [InspectorName("InterractableButton Message / 14")] interractableButton_Message_14_PlayStation,
     [InspectorName("InterractableButton Message / 14")] interractableButton_Message_14_xBox,
