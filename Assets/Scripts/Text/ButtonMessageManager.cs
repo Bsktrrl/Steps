@@ -1,14 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ButtonMessageManager : Singleton<ButtonMessageManager>
 {
+
+    [Header("Button Messages")]
     public ButtonMessageList buttonMessages;
 
-    public GameObject buttonMessage_Parent;
 
 
     //--------------------
@@ -31,37 +33,51 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
 
     void UpdateButtonMessages()
     {
-        buttonMessages.buttonMessage_SwiftSwim_Up.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_FlippersUP_Keyboard;
-        buttonMessages.buttonMessage_SwiftSwim_Down.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_FlippersDOWN_Keyboard;
-        buttonMessages.buttonMessage_Ascend.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_DrillHelmet_Keyboard;
-        buttonMessages.buttonMessage_Descend.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_DrillShoes_Keyboard;
-        buttonMessages.buttonMessage_Dash.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].ability_Message_HandDrill_Keyboard;
-        buttonMessages.buttonMessage_GrapplingHook.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].ability_Message_GrapplingHook_Keyboard;
-        buttonMessages.buttonMessage_Jump.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].ability_Message_SpringShoes_Keyboard;
-        buttonMessages.buttonMessage_CeilingClimb.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_ClimbingGloves_Keyboard;
+        //buttonMessages.buttonMessage_SwiftSwim_Up.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_FlippersUP_Keyboard;
+        //buttonMessages.buttonMessage_SwiftSwim_Down.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_FlippersDOWN_Keyboard;
+        //buttonMessages.buttonMessage_Ascend.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_DrillHelmet_Keyboard;
+        //buttonMessages.buttonMessage_Descend.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_DrillShoes_Keyboard;
+        //buttonMessages.buttonMessage_Dash.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].ability_Message_HandDrill_Keyboard;
+        //buttonMessages.buttonMessage_GrapplingHook.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].ability_Message_GrapplingHook_Keyboard;
+        //buttonMessages.buttonMessage_Jump.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].ability_Message_SpringShoes_Keyboard;
+        //buttonMessages.buttonMessage_CeilingClimb.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_ClimbingGloves_Keyboard;
+
+        //buttonMessages.buttonMessage_Respawn.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_Respawn_Keyboard;
 
         buttonMessages.buttonMessage_Talk.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_Talk_Keyboard;
-        buttonMessages.buttonMessage_Respawn.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_Respawn_Keyboard;
         buttonMessages.buttonMessage_PlaceGlueplant.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_PlaceGlueplant_Keyboard;
+
+        SetAllButtonMessages();
     }
 
 
     //--------------------
 
 
-    public string GetButtonMessageText(ButtonMessage _buttonMessage)
+    void SetAllButtonMessages()
+    {
+        SetButtonMessage(buttonMessages.buttonMessage_Talk);
+        SetButtonMessage(buttonMessages.buttonMessage_PlaceGlueplant);
+    }
+
+    public void SetButtonMessage(ButtonMessage _buttonMessage)
+    {
+        _buttonMessage.buttonMessage_Text.text = SetButtonMessageText(_buttonMessage);
+        _buttonMessage.buttonMessage_Image.sprite = SetButtonMessageSprite(_buttonMessage);
+    }
+    string SetButtonMessageText(ButtonMessage _buttonMessage)
     {
         return _buttonMessage.button_MessageText;
     }
-    public Sprite GetButtonMessageSprite(ControlTypes _controlTypes, ButtonMessage _buttonMessage)
+    Sprite SetButtonMessageSprite(ButtonMessage _buttonMessage)
     {
-        switch (_controlTypes)
+        switch (ControllerState.Instance.activeController)
         {
-            case ControlTypes.Keyboard:
+            case InputType.Keyboard:
                 return _buttonMessage.button_MessageSprite_Keyboard;
-            case ControlTypes.XBox:
+            case InputType.Xbox:
                 return _buttonMessage.button_MessageSprite_PlayStation;
-            case ControlTypes.PlayStation:
+            case InputType.PlayStation:
                 return _buttonMessage.button_MessageSprite_xBox;
 
             default:
@@ -73,13 +89,13 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
     //--------------------
 
 
-    public void ShowButtonMessage()
+    public void ShowButtonMessage(ButtonMessage _buttonMessage)
     {
-        buttonMessage_Parent.SetActive(true);
+        _buttonMessage.buttonMessage_Parent.SetActive(true);
     }
-    public void HideButtonMessage()
+    public void HideButtonMessage(ButtonMessage _buttonMessage)
     {
-        buttonMessage_Parent.SetActive(false);
+        _buttonMessage.buttonMessage_Parent.SetActive(false);
     }
 }
 
@@ -88,20 +104,27 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
 public class ButtonMessageList
 {
     public ButtonMessage buttonMessage_Talk;
-    public ButtonMessage buttonMessage_SwiftSwim_Up;
-    public ButtonMessage buttonMessage_SwiftSwim_Down;
-    public ButtonMessage buttonMessage_Ascend;
-    public ButtonMessage buttonMessage_Descend;
-    public ButtonMessage buttonMessage_Dash;
-    public ButtonMessage buttonMessage_GrapplingHook;
-    public ButtonMessage buttonMessage_Jump;
-    public ButtonMessage buttonMessage_CeilingClimb;
-    public ButtonMessage buttonMessage_Respawn;
     public ButtonMessage buttonMessage_PlaceGlueplant;
+
+    //public ButtonMessage buttonMessage_SwiftSwim_Up;
+    //public ButtonMessage buttonMessage_SwiftSwim_Down;
+    //public ButtonMessage buttonMessage_Ascend;
+    //public ButtonMessage buttonMessage_Descend;
+    //public ButtonMessage buttonMessage_Dash;
+    //public ButtonMessage buttonMessage_GrapplingHook;
+    //public ButtonMessage buttonMessage_Jump;
+    //public ButtonMessage buttonMessage_CeilingClimb;
+    //public ButtonMessage buttonMessage_Respawn;
+
 }
 [Serializable]
 public class ButtonMessage
 {
+    [Header("Parents")]
+    public GameObject buttonMessage_Parent;
+    public TextMeshProUGUI buttonMessage_Text;
+    public Image buttonMessage_Image;
+
     [Header("Message Text List in languages")]
     [HideInInspector] public string button_MessageText;
 
@@ -109,11 +132,4 @@ public class ButtonMessage
     public Sprite button_MessageSprite_Keyboard;
     public Sprite button_MessageSprite_PlayStation;
     public Sprite button_MessageSprite_xBox;
-}
-
-public enum ControlTypes
-{
-    Keyboard,
-    XBox,
-    PlayStation
 }

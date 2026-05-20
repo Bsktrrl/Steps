@@ -23,31 +23,25 @@ public class Interactable_GlueplantStand : MonoBehaviour
     //--------------------
 
 
-    private void Update()
-    {
-        if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject)
-        {
-            ButtonMessages.Instance.ShowButtonMessage(ControlButtons.Down, MessageManager.Instance.Show_Message(MessageManager.Instance.interact_PlaceGlueplant));
-        }
-        else
-        {
-            ButtonMessages.Instance.HideButtonMessage();
-        }
-    }
-
-
-    //--------------------
-
-
     private void OnEnable()
     {
         DataManager.Action_dataHasLoaded += LoadGame;
         Player_KeyInputs.Action_InteractButton_isPressed += RunInterraction;
+
+        Movement.Action_StepTaken_Late += DisplayButtonMessage;
+        Movement.Action_BodyRotated += DisplayButtonMessage;
+        Movement.Action_RespawnPlayerLate += DisplayButtonMessage;
+        Action_Glueplant_isPlaced += DisplayButtonMessage;
     }
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= LoadGame;
         Player_KeyInputs.Action_InteractButton_isPressed -= RunInterraction;
+
+        Movement.Action_StepTaken_Late -= DisplayButtonMessage;
+        Movement.Action_BodyRotated -= DisplayButtonMessage;
+        Movement.Action_RespawnPlayerLate -= DisplayButtonMessage;
+        Action_Glueplant_isPlaced += DisplayButtonMessage;
     }
 
 
@@ -258,6 +252,23 @@ public class Interactable_GlueplantStand : MonoBehaviour
         }
 
         DataPersistanceManager.instance.SaveGame();
+    }
+
+
+    //--------------------
+
+
+    void DisplayButtonMessage()
+    {
+        if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject && !IsStandTaken(GetStandStats(glueplantType), standNumber))
+        {
+            ButtonMessageManager.Instance.SetButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_PlaceGlueplant);
+            ButtonMessageManager.Instance.ShowButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_PlaceGlueplant);
+        }
+        else
+        {
+            ButtonMessageManager.Instance.HideButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_PlaceGlueplant);
+        }   
     }
 }
 
