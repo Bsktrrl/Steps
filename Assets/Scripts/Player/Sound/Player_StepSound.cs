@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Player_StepSound : Singleton<Player_StepSound>
 {
@@ -14,12 +15,11 @@ public class Player_StepSound : Singleton<Player_StepSound>
     [SerializeField] private List<BlockStepSoundSet> blockSounds = new List<BlockStepSoundSet>();
 
     private readonly List<AudioSource> stepSound_AudioSources = new List<AudioSource>();
-    private readonly Dictionary<BlockElement, AudioClip[]> soundLookup = new Dictionary<BlockElement, AudioClip[]>();
+
+    private readonly Dictionary<BlockElement, BlockStepSoundSet> soundLookup =
+        new Dictionary<BlockElement, BlockStepSoundSet>();
 
     private int nextSourceIndex = 0;
-
-
-    //--------------------
 
 
     private void Start()
@@ -27,9 +27,6 @@ public class Player_StepSound : Singleton<Player_StepSound>
         BuildLookup();
         CreateAudioSourcePool();
     }
-
-
-    //--------------------
 
 
     private void OnEnable()
@@ -43,9 +40,6 @@ public class Player_StepSound : Singleton<Player_StepSound>
     }
 
 
-    //--------------------
-
-
     private void BuildLookup()
     {
         soundLookup.Clear();
@@ -54,12 +48,19 @@ public class Player_StepSound : Singleton<Player_StepSound>
         {
             BlockStepSoundSet set = blockSounds[i];
 
-            if (set == null || set.blockElement == BlockElement.None || set.clips == null || set.clips.Length == 0)
+            if (set == null)
                 continue;
 
-            soundLookup[set.blockElement] = set.clips;
+            if (set.blockElement == BlockElement.None)
+                continue;
+
+            if (set.clips == null || set.clips.Length == 0)
+                continue;
+
+            soundLookup[set.blockElement] = set;
         }
     }
+
     private void CreateAudioSourcePool()
     {
         stepSound_AudioSources.Clear();
@@ -78,12 +79,10 @@ public class Player_StepSound : Singleton<Player_StepSound>
     }
 
 
-    //--------------------
-
-
     public void MakeStepSound()
     {
-        if (Player_Animations.Instance.isWalkGliding_Delay) return;
+        if (Player_Animations.Instance.isWalkGliding_Delay)
+            return;
 
         GameObject currentBlock = Movement.Instance.blockStandingOn;
         if (currentBlock == null)
@@ -95,7 +94,11 @@ public class Player_StepSound : Singleton<Player_StepSound>
         if (blockInfo.blockElement == BlockElement.None)
             return;
 
-        AudioClip clipToPlay = GetRandomClip(blockInfo.blockElement);
+        BlockStepSoundSet soundSet = GetSoundSet(blockInfo.blockElement);
+        if (soundSet == null)
+            return;
+
+        AudioClip clipToPlay = GetRandomClip(soundSet);
         if (clipToPlay == null)
             return;
 
@@ -109,19 +112,29 @@ public class Player_StepSound : Singleton<Player_StepSound>
         source.pitch = randomPitch;
         source.volume = stepSound_Volume * randomVolume;
 
+        source.outputAudioMixerGroup = soundSet.outputMixerGroup;
+
         source.PlayOneShot(clipToPlay);
     }
 
-    private AudioClip GetRandomClip(BlockElement element)
+    private BlockStepSoundSet GetSoundSet(BlockElement element)
     {
-        if (!soundLookup.TryGetValue(element, out AudioClip[] clips))
+        if (!soundLookup.TryGetValue(element, out BlockStepSoundSet soundSet))
             return null;
 
-        if (clips == null || clips.Length == 0)
+        return soundSet;
+    }
+
+    private AudioClip GetRandomClip(BlockStepSoundSet soundSet)
+    {
+        if (soundSet == null)
             return null;
 
-        int index = UnityEngine.Random.Range(0, clips.Length);
-        return clips[index];
+        if (soundSet.clips == null || soundSet.clips.Length == 0)
+            return null;
+
+        int index = UnityEngine.Random.Range(0, soundSet.clips.Length);
+        return soundSet.clips[index];
     }
 
     private AudioSource FindAudioSource()
@@ -130,7 +143,6 @@ public class Player_StepSound : Singleton<Player_StepSound>
         if (sourceCount == 0)
             return null;
 
-        // First try to find a free source, starting from the last used index.
         for (int i = 0; i < sourceCount; i++)
         {
             int index = (nextSourceIndex + i) % sourceCount;
@@ -142,7 +154,6 @@ public class Player_StepSound : Singleton<Player_StepSound>
             }
         }
 
-        // Fallback: all sources are busy, reuse the next one in round-robin.
         AudioSource fallback = stepSound_AudioSources[nextSourceIndex];
         nextSourceIndex = (nextSourceIndex + 1) % sourceCount;
         return fallback;
@@ -154,5 +165,8 @@ public class Player_StepSound : Singleton<Player_StepSound>
 public class BlockStepSoundSet
 {
     public BlockElement blockElement;
+
+    [Header("Audio")]
+    public AudioMixerGroup outputMixerGroup;
     public AudioClip[] clips;
 }

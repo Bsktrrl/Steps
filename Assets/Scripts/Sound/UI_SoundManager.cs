@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundManager : Singleton<SoundManager>
+public class UI_SoundManager : Singleton<UI_SoundManager>
 {
     [Header("Audio Sources (Pool)")]
     public List<AudioSource> audioSource_MenuTransition_List = new List<AudioSource>();
