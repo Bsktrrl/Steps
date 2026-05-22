@@ -51,7 +51,7 @@ public class Block_Weak : MonoBehaviour
             {
                 IceBreakingEffect_Manager.Instance.CrackIce_Start();
             }
-            
+
 
             ResetBlock();
         }
@@ -65,15 +65,16 @@ public class Block_Weak : MonoBehaviour
     }
     IEnumerator WaitBeforeDisolveBlock(float waitTime)
     {
-        IceBreakingEffect_Manager.Instance.BreakIce_Start();
-        //Action_WalkedOffCrackedIce?.Invoke();
+        Vector3 breakPosition = transform.position;
+        Quaternion breakRotation = transform.rotation;
+
+        IceBreakingEffect_Manager.Instance.BreakIce_Start(breakPosition, breakRotation);
 
         yield return new WaitForSeconds(waitTime);
 
         if (originalBlock)
         {
-
-            originalBlock = Instantiate(newBlock, transform.position, Quaternion.identity);
+            originalBlock = Instantiate(newBlock, breakPosition, Quaternion.identity);
             Player_BurnChanging.Instance.AddBurnedBlockToList(originalBlock);
         }
 

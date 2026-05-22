@@ -6,7 +6,7 @@ public class CrackedIceScript : MonoBehaviour
 {
     [SerializeField] ParticleSystem PS1;
     [SerializeField] ParticleSystem PS2;
-    [SerializeField] AudioSource source;
+    [SerializeField] AudioSource audioSource;
 
     [SerializeField] AudioClip[] crackSounds;
     [SerializeField] AudioClip[] breakSounds;
@@ -37,20 +37,20 @@ public class CrackedIceScript : MonoBehaviour
     {
         if (crackSounds.Length <= 0) return;
 
-        source.clip = crackSounds[Random.Range(0, crackSounds.Length)];
-        source.pitch = Random.Range(pitchMin, pitchMax);
+        audioSource.clip = crackSounds[Random.Range(0, crackSounds.Length)];
+        audioSource.pitch = Random.Range(pitchMin, pitchMax);
 
         PS1.Play();
-        source.Play();
+        audioSource.PlayOneShot(audioSource.clip);
     }
     public void Break()
     {
         if (breakSounds.Length <= 0) return;
 
-        source.clip = breakSounds[Random.Range(0, breakSounds.Length)];
-        source.pitch = Random.Range(pitchMin, pitchMax);
+        audioSource.clip = breakSounds[Random.Range(0, breakSounds.Length)];
+        audioSource.pitch = Random.Range(pitchMin, pitchMax);
 
         PS2.Play();
-        source.Play();
+        audioSource.PlayOneShot(audioSource.clip);
     }
 }

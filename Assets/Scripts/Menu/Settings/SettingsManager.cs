@@ -573,10 +573,21 @@ public class SettingsManager : Singleton<SettingsManager>
 [Serializable]
 public class SettingData
 {
+    //General
+    [Header("General")]
     public Languages currentLanguage;
     public TextSpeed currentTextSpeed;
     public StepDisplay currentStepDisplay;
     public CameraMotion currentCameraMotion;
     public RevertedCameraMotion currentRevertedCameraMotion;
     public SkipIntro currentSkipIntro;
+
+    //Audio
+    [Header("Volume Parameters")]
+    public float volume_Master;
+
+    public float volume_3DEnviroment;
+    public float volume_Weather;
+    public float volume_Player;
+    public float volume_UI;
 }

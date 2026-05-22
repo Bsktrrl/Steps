@@ -66,6 +66,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     //PlayerStatsData
     /*[HideInInspector]*/ public SwitchesData switchesData_Store = new SwitchesData();
 
+
     #endregion
 
 
