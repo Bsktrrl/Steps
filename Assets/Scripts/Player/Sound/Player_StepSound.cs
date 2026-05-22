@@ -83,8 +83,8 @@ public class Player_StepSound : Singleton<Player_StepSound>
 
     private void TryPlaySameElementMoveSoundEarly()
     {
-        if (Player_Animations.Instance.isWalkGliding_Delay)
-            return;
+        //if (Player_Animations.Instance.isWalkGliding_Delay)
+        //    return;
 
         GameObject startBlock = Movement.Instance.blockStandingOn;
         GameObject targetBlock = Movement.Instance.currentMoveTargetBlock;
@@ -190,8 +190,8 @@ public class Player_StepSound : Singleton<Player_StepSound>
             return;
         }
 
-        if (Player_Animations.Instance.isWalkGliding_Delay)
-            return;
+        //if (Player_Animations.Instance.isWalkGliding_Delay)
+        //    return;
 
         GameObject currentBlock = Movement.Instance.blockStandingOn;
         if (currentBlock == null)
