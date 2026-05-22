@@ -7,7 +7,7 @@ public class Player_StepSound : Singleton<Player_StepSound>
 {
     [Header("General")]
     [SerializeField] private int audioSourcePoolSize = 10;
-    [SerializeField] private float stepSound_Volume = 1f;
+    [SerializeField] private float stepSound_Volume = 0.4f;
     [SerializeField] private Vector2 randomVolumeRange = new Vector2(0.9f, 4.1f);
     [SerializeField] private Vector2 randomPitchRange = new Vector2(0.9f, 1.1f);
 
@@ -34,6 +34,7 @@ public class Player_StepSound : Singleton<Player_StepSound>
 
     private bool sameElementMoveSoundWasPlayedEarly = false;
 
+  
 
     private void Start()
     {

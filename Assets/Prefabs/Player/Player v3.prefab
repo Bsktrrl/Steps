@@ -4858,7 +4858,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSourcePoolSize: 10
-  stepSound_Volume: 1
+  stepSound_Volume: 0.4
   randomVolumeRange: {x: 0.9, y: 1.1}
   randomPitchRange: {x: 0.85, y: 1.15}
   blockSounds:
@@ -14029,6 +14029,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textToDisplay: 316
   textToDisplay_additional: 0
+--- !u!1 &2906883728106573479
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3927087778628741712}
+  - component: {fileID: 7203162916284711663}
+  m_Layer: 6
+  m_Name: AudioListener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3927087778628741712
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2906883728106573479}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4384189134210150580}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &7203162916284711663
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2906883728106573479}
+  m_Enabled: 1
 --- !u!1 &2914540091656963202
 GameObject:
   m_ObjectHideFlags: 0
@@ -31180,7 +31220,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2817571988293551415}
   - component: {fileID: 6814781028617225250}
-  - component: {fileID: 4005528204463356118}
   - component: {fileID: 5600943496660680174}
   - component: {fileID: 7576718626474269610}
   - component: {fileID: 7032684046350423564}
@@ -31258,14 +31297,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &4005528204463356118
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6058242050083391972}
-  m_Enabled: 1
 --- !u!114 &5600943496660680174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45197,6 +45228,7 @@ Transform:
   - {fileID: 772715103446994038}
   - {fileID: 8994846775534225980}
   - {fileID: 7871295395825991287}
+  - {fileID: 3927087778628741712}
   m_Father: {fileID: 5013509160915303274}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8663534849403044508

@@ -535,7 +535,9 @@ public class Interactable_Pickup : MonoBehaviour
         if (audioSource == null || audioSource.clip == null)
             return;
 
-        audioSource.Play();
+        audioSource.PlayOneShot(audioSource.clip);
+
+        print("100000. Pickup");
     }
 
 
