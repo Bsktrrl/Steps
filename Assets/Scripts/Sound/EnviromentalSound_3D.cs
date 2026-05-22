@@ -489,5 +489,20 @@ public enum SoundObjectType
     RefillSteps,
     Teleporter,
     MoveableObject,
-    MushroomCircle
+    MushroomCircle,
+
+    Leaves_Rivergreen,
+    Leaves_Sandlands,
+    Leaves_Frostfield,
+    Leaves_Firevein,
+    Leaves_Witchmire,
+    Leaves_Metalworks,
+
+    WoodCreek_Rivergreen,
+    WoodCreek_Sandlands,
+    WoodCreek_Frostfield,
+    WoodCreek_Firevein,
+    WoodCreek_Witchmire,
+    WoodCreek_Metalworks,
+
 }

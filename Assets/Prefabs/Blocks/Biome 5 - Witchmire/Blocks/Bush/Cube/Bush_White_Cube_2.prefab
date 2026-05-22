@@ -86,6 +86,76 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7379288899374920280, guid: d7b7c36e498590d4eb6d2e0a40706d4c, type: 3}
   m_PrefabInstance: {fileID: 4124202831221590317}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5140068825197429770
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4803476269290141760}
+    m_Modifications:
+    - target: {fileID: 329978523120599912, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_Name
+      value: EnviromentalSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 329978523120599912, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8837184016162984374, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+      propertyPath: soundObjectType
+      value: 21
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+--- !u!4 &8151257678227241708 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3911979870432476902, guid: 39b91801e892c1f48b17aa4532b42eab, type: 3}
+  m_PrefabInstance: {fileID: 5140068825197429770}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5873813371685225109
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -248,6 +318,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1381085644388989653, guid: 061ebfbdde77b47589ba68bda76fcf63, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6869287645309451125}
+    - targetCorrespondingSourceObject: {fileID: 1381085644388989653, guid: 061ebfbdde77b47589ba68bda76fcf63, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8151257678227241708}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1756767514328703087, guid: 061ebfbdde77b47589ba68bda76fcf63, type: 3}
       insertIndex: -1
@@ -336,6 +409,10 @@ MonoBehaviour:
   blockElement: 30
   movementCost_Temp: 0
   movementCost_Temp_Base: 0
+  movementCost_OverrideActive: 0
+  movementCost_OverrideValue: 0
+  movementCost_DisplayOverrideActive: 0
+  movementCost_DisplayOverrideValue: 0
   movementCost: 1
   movementSpeed: 5
   movementState: 0
@@ -357,7 +434,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectVisualParent: {fileID: 0}
   removeDuplicatesInEditor: 1
   effectBlock_SpawnPoint_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
