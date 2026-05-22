@@ -590,4 +590,5 @@ public class SettingData
     public float volume_Weather;
     public float volume_Player;
     public float volume_UI;
+    public float volume_Dialogue;
 }

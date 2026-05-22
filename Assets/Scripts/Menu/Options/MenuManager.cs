@@ -71,8 +71,8 @@ public enum MenuCategories
     //Options
     Settings,
     Controls,
-    nr03,
-    nr04,
+    Video,
+    Audio,
 
     //Skins
     Wardrobe

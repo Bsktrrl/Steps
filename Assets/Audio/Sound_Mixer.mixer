@@ -1,5 +1,19 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!244 &-9125950914189057674
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 2613731e17937944e88985a8f29ca1eb
+  m_EffectName: Attenuation
+  m_MixLevel: 0f3d8bbe15730d540960a2866a590af0
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!244 &-9125427849337225808
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -203,6 +217,25 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!243 &-8177861833059439041
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Dialogue
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 40c53a9a711513b40b77830d79186436
+  m_Children: []
+  m_Volume: e3b83d36d2edb4d438f980b33e70cd01
+  m_Pitch: 6c936136c54a5fa4f873c6dc35228afe
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -9125950914189057674}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!243 &-8049279135295484260
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
@@ -1300,6 +1333,8 @@ AudioMixerController:
   m_EnableSuspend: 1
   m_UpdateMode: 0
   m_ExposedParameters:
+  - guid: e3b83d36d2edb4d438f980b33e70cd01
+    name: DialogueVolume
   - guid: 2e349a764c394b842960538eaca9213d
     name: 3D_EnviromentalVolume
   - guid: 89a8110eb70ddec44a9669c1e3c0c14f
@@ -1380,6 +1415,7 @@ AudioMixerController:
     - 5291e6cb432921547b587158463dd847
     - 2931f0aacf44f774f901029f5bb7c4f0
     - 3bb7b73f675963946a8631082e389688
+    - 40c53a9a711513b40b77830d79186436
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -1397,6 +1433,7 @@ AudioMixerGroupController:
   - {fileID: -5513700797119371371}
   - {fileID: -7851721591762942279}
   - {fileID: 3909382507062559292}
+  - {fileID: -8177861833059439041}
   m_Volume: 89a8110eb70ddec44a9669c1e3c0c14f
   m_Pitch: 24ae472977589df4caca548ecbdb0ab1
   m_Send: 00000000000000000000000000000000

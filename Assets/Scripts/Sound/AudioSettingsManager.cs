@@ -16,6 +16,7 @@ public class AudioSettingsManager : MonoBehaviour
     private const string volumeParameter_Group_Weather = "WeatherVolume";
     private const string volumeParameter_Group_Player = "PlayerVolume";
     private const string volumeParameter_Group_UI = "UIVolume";
+    private const string volumeParameter_Group_Dialogue = "DialogueVolume";
 
 
     //--------------------
@@ -45,6 +46,7 @@ public class AudioSettingsManager : MonoBehaviour
         Set_Weather_GroupVolume(DataManager.Instance.settingData_StoreList.volume_Weather);
         Set_Player_GroupVolume(DataManager.Instance.settingData_StoreList.volume_Player);
         Set_UI_GroupVolume(DataManager.Instance.settingData_StoreList.volume_UI);
+        Set_Dialogue_GroupVolume(DataManager.Instance.settingData_StoreList.volume_Dialogue);
     }
 
 
@@ -85,6 +87,13 @@ public class AudioSettingsManager : MonoBehaviour
     {
         SetMixerVolume(volumeParameter_Group_UI, volume);
         DataManager.Instance.settingData_StoreList.volume_UI = volume;
+
+        SaveAudioSettings();
+    }
+    public void Set_Dialogue_GroupVolume(float volume)
+    {
+        SetMixerVolume(volumeParameter_Group_Dialogue, volume);
+        DataManager.Instance.settingData_StoreList.volume_Dialogue = volume;
 
         SaveAudioSettings();
     }
