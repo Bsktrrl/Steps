@@ -37,12 +37,14 @@ public class Movement : Singleton<Movement>
     public static event Action Action_isDescending_Finished;
     public static event Action Action_isGrapplingHooking;
     public static event Action Action_isGrapplingHooking_Finished;
+    public static event Action Action_isGrapplingHooking_SendPlayer;
+    public static event Action Action_isGrapplingHooking_RollBack;
 
     #endregion
 
     #region Variables
 
-    [Header("States")]
+   [Header("States")]
     public bool isMoving;
     public MovementStates movementStates = MovementStates.Still;
 
@@ -2429,6 +2431,8 @@ public class Movement : Singleton<Movement>
             Player_GraplingHook.Instance.redDotSceneObject.SetActive(true);
             Player_GraplingHook.Instance.RunLineReader();
 
+            Action_isGrapplingHooking_RollBack?.Invoke();
+
             UpdateBlocksOnTheGrapplingWay(moveOption);
         }
         else
@@ -2446,6 +2450,8 @@ public class Movement : Singleton<Movement>
         {
             if (Vector3.Distance(transform.position, moveToBlock_GrapplingHook.targetBlock.transform.position) > 1.1f)
             {
+                Action_isGrapplingHooking_SendPlayer?.Invoke();
+
                 tempGrapplingTaregtPos = moveToBlock_GrapplingHook.targetBlock.transform.position;
                 performGrapplingHooking = true;
                 RunGrapplingHook();

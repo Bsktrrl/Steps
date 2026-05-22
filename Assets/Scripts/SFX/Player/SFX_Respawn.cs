@@ -11,7 +11,7 @@ public class SFX_Respawn : Singleton<SFX_Respawn>
     public static event Action Action_RespawnPlayerAnimation;
 
     [Header("KeyPresses Parameters")]
-    float holdDuration = 0.4f;
+    float holdDuration = 0.6f;
     [SerializeField] float holdtimer = 0;
     [SerializeField] bool useUnscaledTime = true; // ignore timescale (pause)
     Coroutine holdRoutine;

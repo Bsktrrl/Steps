@@ -78,8 +78,10 @@ public class UI_SoundManager : Singleton<UI_SoundManager>
     //--------------------
 
 
-    void PlaySound(List<AudioSource> audioSourcePool, AudioClip clip, float pitch, float volume)
+    void PlaySound(AudioClip clip, float pitch, float volume)
     {
+        List<AudioSource> audioSourcePool = audioSource_MenuTransition_List;
+
         if (clip == null || audioSourcePool == null || audioSourcePool.Count == 0)
             return;
 
@@ -140,59 +142,59 @@ public class UI_SoundManager : Singleton<UI_SoundManager>
 
     void Play_Ui_MenuTransition_Forward()
     {
-        PlaySound(audioSource_MenuTransition_List, ui_MenuTransition, 1f, 1f);
+        PlaySound(ui_MenuTransition, 1f, 1f);
         //print("1.1. Play_Ui_MenuTransition_Forward");
     }
     void Play_Ui_MenuTransition_Back()
     {
-        PlaySound(audioSource_MenuTransition_List, ui_MenuTransition, 0.8f, 1f);
+        PlaySound(ui_MenuTransition, 0.8f, 1f);
         //print("1.2 Play_Ui_MenuTransition_Back");
     }
 
     void Play_Ui_ButtonNavigation()
     {
-        PlaySound(audioSource_MenuTransition_List, ui_ButtonNavigation, Random.Range(0.99f, 1.01f), 0.5f);
+        PlaySound(ui_ButtonNavigation, Random.Range(0.99f, 1.01f), 0.5f);
         //print("2. Play_Ui_ButtonNavigation");
     }
 
     void Play_Ui_ButtonPressed()
     {
-        PlaySound(audioSource_MenuTransition_List, ui_ButtonPressed, 1f, 1f);
+        PlaySound(ui_ButtonPressed, 1f, 1f);
         //print("3. Play_Ui_ButtonPressed");
     }
 
     void Play_Ui_ButtonBackward()
     {
-        PlaySound(audioSource_MenuTransition_List, ui_ButtonBackward, 1f, 1f);
+        PlaySound(ui_ButtonBackward, 1f, 1f);
         //print("4. Play_Ui_ButtonBackward");
     }
 
     void Play_Ui_ButtonCannot()
     {
-        PlaySound(audioSource_MenuTransition_List, ui_ButtonCannot, 1f, 1f);
+        PlaySound(ui_ButtonCannot, 1f, 1f);
         //print("5. Play_Ui_ButtonCannot");
     }
 
     void Play_Ui_Wardrobe_Buy()
     {
-        PlaySound(audioSource_MenuTransition_List, ui_Wardrobe_Buy, 1f, 1f);
+        PlaySound(ui_Wardrobe_Buy, 1f, 1f);
         //print("6. Play_Ui_Wardrobe_Buy");
     }
 
     void Play_Ui_Wardrobe_Equip_On()
     {
-        PlaySound(audioSource_MenuTransition_List, ui_Wardrobe_Equip, 1f, 1f);
+        PlaySound(ui_Wardrobe_Equip, 1f, 1f);
         //print("7. Play_Ui_Wardrobe_Equip");
     }
 
     void Play_Ui_Wardrobe_Equip_Off()
     {
-        PlaySound(audioSource_MenuTransition_List, ui_Wardrobe_Equip, 0.8f, 1f);
+        PlaySound(ui_Wardrobe_Equip, 0.8f, 1f);
         //print("8. Play_Ui_Wardrobe_Equip_Off");
     }
     void Play_Ui_Options_Select()
     {
-        PlaySound(audioSource_MenuTransition_List, ui_Options_Select, 1f, 0.5f);
+        PlaySound(ui_Options_Select, 1f, 0.5f);
         //print("9. Play_Ui_Options_Select");
     }
 
