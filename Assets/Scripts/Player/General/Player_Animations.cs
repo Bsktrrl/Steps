@@ -316,7 +316,7 @@ public class Player_Animations : Singleton<Player_Animations>
 
     public void Start_RespawnAnimation()
     {
-        playerAnimator.speed = 1.6f;
+        playerAnimator.speed = 1.4f;
         playerAnimator.SetBool("Respawn", true);
     }
     public void End_RespawnAnimation()
