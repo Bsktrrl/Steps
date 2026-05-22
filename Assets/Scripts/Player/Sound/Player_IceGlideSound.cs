@@ -33,6 +33,9 @@ public class Player_IceGlideSound : Singleton<Player_IceGlideSound>
     private int _savedPlaybackSample;
 
 
+    //--------------------
+
+
     private void Awake()
     {
         if (audioSource != null)
@@ -41,6 +44,9 @@ public class Player_IceGlideSound : Singleton<Player_IceGlideSound>
             audioSource.loop = true;
         }
     }
+
+
+    //--------------------
 
 
     private void Update()
@@ -64,6 +70,9 @@ public class Player_IceGlideSound : Singleton<Player_IceGlideSound>
             }
         }
     }
+
+
+    //--------------------
 
 
     private bool ShouldPlayIceGlidingSound()

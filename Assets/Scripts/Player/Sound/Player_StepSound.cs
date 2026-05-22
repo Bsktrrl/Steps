@@ -14,12 +14,25 @@ public class Player_StepSound : Singleton<Player_StepSound>
     [Header("Block Sounds")]
     [SerializeField] private List<BlockStepSoundSet> blockSounds = new List<BlockStepSoundSet>();
 
+    [Header("Block Sounds With Same Element Variant")]
+    [SerializeField]
+    private List<BlockStepSoundSet_WithSameElementVariant> blockSounds_WithSameElementVariant =
+        new List<BlockStepSoundSet_WithSameElementVariant>();
+
     private readonly List<AudioSource> stepSound_AudioSources = new List<AudioSource>();
 
     private readonly Dictionary<BlockElement, BlockStepSoundSet> soundLookup =
         new Dictionary<BlockElement, BlockStepSoundSet>();
 
+    private readonly Dictionary<BlockElement, BlockStepSoundSet_WithSameElementVariant> sameElementVariantLookup =
+        new Dictionary<BlockElement, BlockStepSoundSet_WithSameElementVariant>();
+
     private int nextSourceIndex = 0;
+
+    private BlockElement stepStartedOnElement = BlockElement.None;
+    private GameObject stepStartedOnBlock = null;
+
+    private bool sameElementMoveSoundWasPlayedEarly = false;
 
 
     private void Start()
@@ -31,18 +44,85 @@ public class Player_StepSound : Singleton<Player_StepSound>
 
     private void OnEnable()
     {
+        Movement.Action_StepTaken_Early += CacheStepStartBlock;
+        Movement.Action_StepTaken_Early += TryPlaySameElementMoveSoundEarly;
+
         Movement.Action_StepTaken += MakeStepSound;
     }
 
     private void OnDisable()
     {
+        Movement.Action_StepTaken_Early -= CacheStepStartBlock;
+        Movement.Action_StepTaken_Early -= TryPlaySameElementMoveSoundEarly;
+
         Movement.Action_StepTaken -= MakeStepSound;
+    }
+
+
+    private void CacheStepStartBlock()
+    {
+        sameElementMoveSoundWasPlayedEarly = false;
+
+        stepStartedOnElement = BlockElement.None;
+        stepStartedOnBlock = Movement.Instance.blockStandingOn;
+
+        if (stepStartedOnBlock == null)
+            return;
+
+        if (!stepStartedOnBlock.TryGetComponent<BlockInfo>(out BlockInfo blockInfo))
+            return;
+
+        stepStartedOnElement = blockInfo.blockElement;
+    }
+
+    private void TryPlaySameElementMoveSoundEarly()
+    {
+        if (Player_Animations.Instance.isWalkGliding_Delay)
+            return;
+
+        GameObject startBlock = Movement.Instance.blockStandingOn;
+        GameObject targetBlock = Movement.Instance.currentMoveTargetBlock;
+
+        if (startBlock == null || targetBlock == null)
+            return;
+
+        if (startBlock == targetBlock)
+            return;
+
+        if (!startBlock.TryGetComponent<BlockInfo>(out BlockInfo startBlockInfo))
+            return;
+
+        if (!targetBlock.TryGetComponent<BlockInfo>(out BlockInfo targetBlockInfo))
+            return;
+
+        BlockElement startElement = startBlockInfo.blockElement;
+        BlockElement targetElement = targetBlockInfo.blockElement;
+
+        if (startElement == BlockElement.None || targetElement == BlockElement.None)
+            return;
+
+        if (startElement != targetElement)
+            return;
+
+        if (!sameElementVariantLookup.TryGetValue(targetElement, out BlockStepSoundSet_WithSameElementVariant variantSoundSet))
+            return;
+
+        if (!HasClips(variantSoundSet.moveOn_SameElement_Clips))
+            return;
+
+        PlayStepSound(
+            variantSoundSet.moveOn_SameElement_Clips,
+            variantSoundSet.outputMixerGroup
+        );
+
+        sameElementMoveSoundWasPlayedEarly = true;
     }
 
 
     private void BuildLookup()
     {
         soundLookup.Clear();
+        sameElementVariantLookup.Clear();
 
         for (int i = 0; i < blockSounds.Count; i++)
         {
@@ -54,10 +134,26 @@ public class Player_StepSound : Singleton<Player_StepSound>
             if (set.blockElement == BlockElement.None)
                 continue;
 
-            if (set.clips == null || set.clips.Length == 0)
+            if (set.stepOn_Clips == null || set.stepOn_Clips.Length == 0)
                 continue;
 
             soundLookup[set.blockElement] = set;
+        }
+
+        for (int i = 0; i < blockSounds_WithSameElementVariant.Count; i++)
+        {
+            BlockStepSoundSet_WithSameElementVariant set = blockSounds_WithSameElementVariant[i];
+
+            if (set == null)
+                continue;
+
+            if (set.blockElement == BlockElement.None)
+                continue;
+
+            if (!HasClips(set.stepOn_Clips) && !HasClips(set.moveOn_SameElement_Clips))
+                continue;
+
+            sameElementVariantLookup[set.blockElement] = set;
         }
     }
 
@@ -81,6 +177,13 @@ public class Player_StepSound : Singleton<Player_StepSound>
 
     public void MakeStepSound()
     {
+        if (sameElementMoveSoundWasPlayedEarly)
+        {
+            ClearCachedStepStartBlock();
+            sameElementMoveSoundWasPlayedEarly = false;
+            return;
+        }
+
         if (Player_Animations.Instance.isWalkGliding_Delay)
             return;
 
@@ -88,17 +191,52 @@ public class Player_StepSound : Singleton<Player_StepSound>
         if (currentBlock == null)
             return;
 
-        if (!currentBlock.TryGetComponent<BlockInfo>(out BlockInfo blockInfo))
+        if (!currentBlock.TryGetComponent<BlockInfo>(out BlockInfo currentBlockInfo))
             return;
 
-        if (blockInfo.blockElement == BlockElement.None)
+        BlockElement currentElement = currentBlockInfo.blockElement;
+
+        if (currentElement == BlockElement.None)
             return;
 
-        BlockStepSoundSet soundSet = GetSoundSet(blockInfo.blockElement);
-        if (soundSet == null)
-            return;
+        BlockElement previousElement = GetPreviousBlockElement();
 
-        AudioClip clipToPlay = GetRandomClip(soundSet);
+        AudioClip[] clipsToPlay = null;
+        AudioMixerGroup mixerGroupToUse = null;
+
+        if (sameElementVariantLookup.TryGetValue(currentElement, out BlockStepSoundSet_WithSameElementVariant variantSoundSet))
+        {
+            bool movedFromSameElement =
+                previousElement == currentElement &&
+                stepStartedOnBlock != currentBlock;
+
+            clipsToPlay = movedFromSameElement
+                ? variantSoundSet.moveOn_SameElement_Clips
+                : variantSoundSet.stepOn_Clips;
+
+            if (!HasClips(clipsToPlay))
+                clipsToPlay = variantSoundSet.stepOn_Clips;
+
+            mixerGroupToUse = variantSoundSet.outputMixerGroup;
+        }
+        else
+        {
+            BlockStepSoundSet soundSet = GetSoundSet(currentElement);
+            if (soundSet == null)
+                return;
+
+            clipsToPlay = soundSet.stepOn_Clips;
+            mixerGroupToUse = soundSet.outputMixerGroup;
+        }
+
+        PlayStepSound(clipsToPlay, mixerGroupToUse);
+
+        ClearCachedStepStartBlock();
+    }
+
+    private void PlayStepSound(AudioClip[] clips, AudioMixerGroup outputMixerGroup)
+    {
+        AudioClip clipToPlay = GetRandomClip(clips);
         if (clipToPlay == null)
             return;
 
@@ -111,10 +249,31 @@ public class Player_StepSound : Singleton<Player_StepSound>
 
         source.pitch = randomPitch;
         source.volume = stepSound_Volume * randomVolume;
-
-        source.outputAudioMixerGroup = soundSet.outputMixerGroup;
+        source.outputAudioMixerGroup = outputMixerGroup;
 
         source.PlayOneShot(clipToPlay);
+    }
+
+    private void ClearCachedStepStartBlock()
+    {
+        stepStartedOnElement = BlockElement.None;
+        stepStartedOnBlock = null;
+    }
+
+    private BlockElement GetPreviousBlockElement()
+    {
+        if (stepStartedOnElement != BlockElement.None)
+            return stepStartedOnElement;
+
+        GameObject previousBlock = Movement.Instance.blockStandingOn_Previous;
+
+        if (previousBlock == null)
+            return BlockElement.None;
+
+        if (!previousBlock.TryGetComponent<BlockInfo>(out BlockInfo previousBlockInfo))
+            return BlockElement.None;
+
+        return previousBlockInfo.blockElement;
     }
 
     private BlockStepSoundSet GetSoundSet(BlockElement element)
@@ -125,16 +284,18 @@ public class Player_StepSound : Singleton<Player_StepSound>
         return soundSet;
     }
 
-    private AudioClip GetRandomClip(BlockStepSoundSet soundSet)
+    private AudioClip GetRandomClip(AudioClip[] clips)
     {
-        if (soundSet == null)
+        if (!HasClips(clips))
             return null;
 
-        if (soundSet.clips == null || soundSet.clips.Length == 0)
-            return null;
+        int index = UnityEngine.Random.Range(0, clips.Length);
+        return clips[index];
+    }
 
-        int index = UnityEngine.Random.Range(0, soundSet.clips.Length);
-        return soundSet.clips[index];
+    private bool HasClips(AudioClip[] clips)
+    {
+        return clips != null && clips.Length > 0;
     }
 
     private AudioSource FindAudioSource()
@@ -168,5 +329,21 @@ public class BlockStepSoundSet
 
     [Header("Audio")]
     public AudioMixerGroup outputMixerGroup;
-    public AudioClip[] clips;
+    public AudioClip[] stepOn_Clips;
+}
+
+
+[Serializable]
+public class BlockStepSoundSet_WithSameElementVariant
+{
+    public BlockElement blockElement;
+
+    [Header("Audio")]
+    public AudioMixerGroup outputMixerGroup;
+
+    [Header("Different Element Into This Element")]
+    public AudioClip[] stepOn_Clips;
+
+    [Header("Same Element Into Same Element")]
+    public AudioClip[] moveOn_SameElement_Clips;
 }
