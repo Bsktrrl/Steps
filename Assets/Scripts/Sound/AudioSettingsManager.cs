@@ -22,6 +22,17 @@ public class AudioSettingsManager : Singleton<AudioSettingsManager>
     private const string volumeParameter_Group_UI = "UIVolume";
     private const string volumeParameter_Group_Dialogue = "DialogueVolume";
 
+    private static bool masterVolume_ShouldFadeUpAfterSceneLoad;
+
+
+    //--------------------
+
+
+    private void Awake()
+    {
+        SetMasteVolum_Fade(0f);
+    }
+
 
     //--------------------
 
@@ -47,7 +58,15 @@ public class AudioSettingsManager : Singleton<AudioSettingsManager>
     }
     void LoadAudioSettings()
     {
-        Set_Master_Volume(DataManager.Instance.settingData_StoreList.volume_Master);
+        if (!masterVolume_ShouldFadeUpAfterSceneLoad)
+        {
+            Set_Master_Volume(DataManager.Instance.settingData_StoreList.volume_Master);
+        }
+        else
+        {
+            SetMasteVolum_Fade(0f);
+        }
+
         Set_Enviroment_GroupVolume(DataManager.Instance.settingData_StoreList.volume_3DEnviroment);
         Set_Weather_GroupVolume(DataManager.Instance.settingData_StoreList.volume_Weather);
         Set_Player_GroupVolume(DataManager.Instance.settingData_StoreList.volume_Player);
@@ -235,30 +254,34 @@ public class AudioSettingsManager : Singleton<AudioSettingsManager>
 
     #region SoundFade
 
+    public void MarkMasterVolumeShouldFadeUpAfterSceneLoad()
+    {
+        masterVolume_ShouldFadeUpAfterSceneLoad = true;
+    }
+
+    public bool ConsumeMasterVolumeShouldFadeUpAfterSceneLoad()
+    {
+        bool shouldFade = masterVolume_ShouldFadeUpAfterSceneLoad;
+        masterVolume_ShouldFadeUpAfterSceneLoad = false;
+        return shouldFade;
+    }
+
     public void PrepareMasterVolumeFadeDown()
     {
-        if (!masterVolume_FadeValueStored)
-        {
-            masterVolume_BeforeFade = GetCurrentMasterVolumeFromSettings();
-            masterVolume_FadeValueStored = true;
-        }
+        masterVolume_BeforeFade = GetCurrentMasterVolumeFromSettings();
+        masterVolume_FadeValueStored = true;
     }
 
     public void PrepareMasterVolumeFadeUp()
     {
-        if (!masterVolume_FadeValueStored)
-        {
-            masterVolume_BeforeFade = GetCurrentMasterVolumeFromSettings();
-            masterVolume_FadeValueStored = true;
-        }
+        masterVolume_BeforeFade = GetCurrentMasterVolumeFromSettings();
+        masterVolume_FadeValueStored = true;
 
         SetMasteVolum_Fade(0f);
     }
 
     public void FadeMasterVolumeDown(float t)
     {
-        PrepareMasterVolumeFadeDown();
-
         t = Mathf.Clamp01(t);
         float volume = Mathf.Lerp(masterVolume_BeforeFade, 0f, t);
 
@@ -268,7 +291,6 @@ public class AudioSettingsManager : Singleton<AudioSettingsManager>
     public void FadeMasterVolumeUp(float t)
     {
         t = Mathf.Clamp01(t);
-
         float volume = Mathf.Lerp(0f, masterVolume_BeforeFade, t);
 
         SetMasteVolum_Fade(volume);
@@ -277,12 +299,14 @@ public class AudioSettingsManager : Singleton<AudioSettingsManager>
     public void FinishMasterVolumeFadeDown()
     {
         SetMasteVolum_Fade(0f);
+        MarkMasterVolumeShouldFadeUpAfterSceneLoad();
     }
 
     public void FinishMasterVolumeFadeUp()
     {
         SetMasteVolum_Fade(masterVolume_BeforeFade);
         masterVolume_FadeValueStored = false;
+        masterVolume_ShouldFadeUpAfterSceneLoad = false;
     }
 
     public void SetMasteVolum_Fade(float _volum)

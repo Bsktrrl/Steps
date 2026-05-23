@@ -29,6 +29,9 @@ public class Block_Checkpoint_Animation : MonoBehaviour
         {
             playerInside = true;
             ScaleUp();
+
+            if (!Movement.Instance.isRespawning && GetComponent<AudioSource>())
+                GetComponent<AudioSource>().PlayOneShot(GetComponent<AudioSource>().clip);
         }
     }
 

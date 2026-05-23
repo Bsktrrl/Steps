@@ -28,20 +28,21 @@ public class Interactable_GlueplantStand : MonoBehaviour
         DataManager.Action_dataHasLoaded += LoadGame;
         Player_KeyInputs.Action_InteractButton_isPressed += RunInterraction;
 
-        Movement.Action_StepTaken_Late += DisplayButtonMessage;
-        Movement.Action_BodyRotated += DisplayButtonMessage;
-        Movement.Action_RespawnPlayerLate += DisplayButtonMessage;
-        Action_Glueplant_isPlaced += DisplayButtonMessage;
+        Movement.Action_StepTaken_Late += DisplayButtonMessageDelayed;
+        Movement.Action_BodyRotated += DisplayButtonMessageDelayed;
+        Movement.Action_RespawnPlayerLate += DisplayButtonMessageDelayed;
+        Action_Glueplant_isPlaced += DisplayButtonMessageDelayed;
     }
+
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= LoadGame;
         Player_KeyInputs.Action_InteractButton_isPressed -= RunInterraction;
 
-        Movement.Action_StepTaken_Late -= DisplayButtonMessage;
-        Movement.Action_BodyRotated -= DisplayButtonMessage;
-        Movement.Action_RespawnPlayerLate -= DisplayButtonMessage;
-        Action_Glueplant_isPlaced += DisplayButtonMessage;
+        Movement.Action_StepTaken_Late -= DisplayButtonMessageDelayed;
+        Movement.Action_BodyRotated -= DisplayButtonMessageDelayed;
+        Movement.Action_RespawnPlayerLate -= DisplayButtonMessageDelayed;
+        Action_Glueplant_isPlaced -= DisplayButtonMessageDelayed;
     }
 
 
@@ -258,17 +259,74 @@ public class Interactable_GlueplantStand : MonoBehaviour
     //--------------------
 
 
+    void DisplayButtonMessageDelayed()
+    {
+        StartCoroutine(DisplayButtonMessageAfterFrame());
+    }
+
+    IEnumerator DisplayButtonMessageAfterFrame()
+    {
+        yield return null;
+        DisplayButtonMessage();
+    }
     void DisplayButtonMessage()
     {
-        if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject && !IsStandTaken(GetStandStats(glueplantType), standNumber))
+        GameObject lookedAtObject = PlayerManager.Instance.block_LookingAt_Horizontal;
+
+        if (lookedAtObject == null)
         {
-            ButtonMessageManager.Instance.SetButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_PlaceGlueplant);
-            ButtonMessageManager.Instance.ShowButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_PlaceGlueplant);
+            ButtonMessageManager.Instance.HideButtonMessage(
+                ButtonMessageManager.Instance.buttonMessages.buttonMessage_PlaceGlueplant
+            );
+            return;
+        }
+
+        BlockInfo blockInfo = lookedAtObject.GetComponent<BlockInfo>();
+
+        if (blockInfo == null || blockInfo.blockElement != BlockElement.GlueplantStand)
+        {
+            ButtonMessageManager.Instance.HideButtonMessage(
+                ButtonMessageManager.Instance.buttonMessages.buttonMessage_PlaceGlueplant
+            );
+            return;
+        }
+
+        // Important:
+        // The player is looking at a GlueplantStand, but not THIS GlueplantStand.
+        // Let the correct GlueplantStand decide whether to show/hide the message.
+        if (lookedAtObject != gameObject)
+        {
+            return;
+        }
+
+        StandStats stats = GetStandStats(glueplantType);
+
+        if (stats == null)
+        {
+            ButtonMessageManager.Instance.HideButtonMessage(
+                ButtonMessageManager.Instance.buttonMessages.buttonMessage_PlaceGlueplant
+            );
+
+            Debug.LogWarning($"No StandStats found for {glueplantType} on {gameObject.name}");
+            return;
+        }
+
+        if (IsStandTaken(stats, standNumber))
+        {
+            ButtonMessageManager.Instance.HideButtonMessage(
+                ButtonMessageManager.Instance.buttonMessages.buttonMessage_PlaceGlueplant
+            );
         }
         else
         {
-            ButtonMessageManager.Instance.HideButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_PlaceGlueplant);
-        }   
+            ButtonMessageManager.Instance.SetButtonMessage(
+                ButtonMessageManager.Instance.buttonMessages.buttonMessage_PlaceGlueplant
+            );
+
+            ButtonMessageManager.Instance.ShowButtonMessage(
+                ButtonMessageManager.Instance.buttonMessages.buttonMessage_PlaceGlueplant
+            );
+        }
     }
 }
 

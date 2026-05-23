@@ -194,7 +194,7 @@ public class UI_SoundManager : Singleton<UI_SoundManager>
     }
     void Play_Ui_Options_Select()
     {
-        PlaySound(ui_Options_Select, 1f, 0.6f);
+        PlaySound(ui_Options_Select, 1f, 0.25f);
         //print("9. Play_Ui_Options_Select");
     }
 

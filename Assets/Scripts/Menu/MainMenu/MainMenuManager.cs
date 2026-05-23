@@ -34,6 +34,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
     [SerializeField] private Image blackScreenIconImage;
     private Coroutine blackScreenFadeRoutine;
 
+    private bool hasDoneFirstStartupFadeOut;
+
 
     //--------------------
 
@@ -418,17 +420,28 @@ public class MainMenuManager : Singleton<MainMenuManager>
     public void FadeOutBlackScreen()
     {
         StopBlackScreenFadeRoutine();
-        blackScreenFadeRoutine = StartCoroutine(FadeOutCoroutine());
+
+        bool fadeAudio = false;
+
+        if (AudioSettingsManager.Instance != null)
+        {
+            fadeAudio = AudioSettingsManager.Instance.ConsumeMasterVolumeShouldFadeUpAfterSceneLoad();
+        }
+
+        blackScreenFadeRoutine = StartCoroutine(FadeOutCoroutine(fadeAudio));
     }
 
-    private IEnumerator FadeOutCoroutine()
+    private IEnumerator FadeOutCoroutine(bool fadeAudio)
     {
         if (blackScreen == null || blackScreenImage == null || blackScreenIconImage == null)
             yield break;
 
         blackScreen.SetActive(true);
 
-        AudioSettingsManager.Instance.PrepareMasterVolumeFadeUp();
+        if (fadeAudio && AudioSettingsManager.Instance != null)
+        {
+            AudioSettingsManager.Instance.PrepareMasterVolumeFadeUp();
+        }
 
         Color color = blackScreenImage.color;
         float startAlpha = color.a;
@@ -444,7 +457,10 @@ public class MainMenuManager : Singleton<MainMenuManager>
             blackScreenImage.color = color;
             blackScreenIconImage.color = color;
 
-            AudioSettingsManager.Instance.FadeMasterVolumeUp(t);
+            if (fadeAudio && AudioSettingsManager.Instance != null)
+            {
+                AudioSettingsManager.Instance.FadeMasterVolumeUp(t);
+            }
 
             yield return null;
         }
@@ -454,7 +470,10 @@ public class MainMenuManager : Singleton<MainMenuManager>
         blackScreenIconImage.color = color;
         blackScreen.SetActive(false);
 
-        AudioSettingsManager.Instance.FinishMasterVolumeFadeUp();
+        if (fadeAudio && AudioSettingsManager.Instance != null)
+        {
+            AudioSettingsManager.Instance.FinishMasterVolumeFadeUp();
+        }
 
         blackScreenFadeRoutine = null;
     }
@@ -524,12 +543,12 @@ public class MainMenuManager : Singleton<MainMenuManager>
         blackScreenFadeRoutine = null;
     }
     public IEnumerator PlayFadeOutAndWait()
-{
-    StopBlackScreenFadeRoutine();
-    blackScreenFadeRoutine = StartCoroutine(FadeOutCoroutine());
-    yield return blackScreenFadeRoutine;
-    blackScreenFadeRoutine = null;
-}
+    {
+        StopBlackScreenFadeRoutine();
+        blackScreenFadeRoutine = StartCoroutine(FadeOutCoroutine(true));
+        yield return blackScreenFadeRoutine;
+        blackScreenFadeRoutine = null;
+    }
 
     #endregion
 }

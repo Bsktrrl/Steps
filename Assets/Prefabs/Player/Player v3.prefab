@@ -11199,7 +11199,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 2.27, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3927087778628741712}
   m_Father: {fileID: 7774417135674195314}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &938365120460394521
@@ -14310,12 +14311,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2906883728106573479}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalRotation: {x: -0.23651226, y: -0, z: -0, w: 0.9716285}
+  m_LocalPosition: {x: 0, y: -0.2664373, z: 4.641757}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4384189134210150580}
+  m_Father: {fileID: 8595211647056653443}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!81 &7203162916284711663
 AudioListener:
@@ -15850,10 +15851,10 @@ AudioSource:
   m_GameObject: {fileID: 3255786537093393474}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 8807801697033188187, guid: 6b878df000a20bb4f907ade306c2748b, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -28968,7 +28969,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03f920e620578114a8d059d938b16c8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runTutorial: 0
+  runTutorial: 1
   state_Movement: 0
   state_CameraRotation: 0
   state_Respawn: 0
@@ -30112,8 +30113,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c65923213ff53459dda42c259c0cbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listenerTarget: {fileID: 0}
-  useCameraAnchorForPan: 1
+  listenerTarget: {fileID: 3927087778628741712}
+  useCameraAnchorForPan: 0
   layer_EnviromentalSound:
     serializedVersion: 2
     m_Bits: 262144
@@ -40510,7 +40511,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3459181242433867220
 RectTransform:
   m_ObjectHideFlags: 0
@@ -47128,7 +47129,6 @@ Transform:
   - {fileID: 772715103446994038}
   - {fileID: 8994846775534225980}
   - {fileID: 7871295395825991287}
-  - {fileID: 3927087778628741712}
   m_Father: {fileID: 5013509160915303274}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8663534849403044508
