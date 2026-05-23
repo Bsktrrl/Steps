@@ -58,14 +58,21 @@ public class AudioSettingsManager : Singleton<AudioSettingsManager>
     }
     void LoadAudioSettings()
     {
+        AudioVolumStates savedMasterVolume = DataManager.Instance.settingData_StoreList.volume_Master;
+
         if (!masterVolume_ShouldFadeUpAfterSceneLoad)
         {
-            Set_Master_Volume(DataManager.Instance.settingData_StoreList.volume_Master);
+            SetMixerVolume(volumeParameter_Master, SetVolumeFromSettings(savedMasterVolume));
         }
         else
         {
             SetMasteVolum_Fade(0f);
         }
+
+        SettingsManager.Instance.SetVolumeMarker(
+            SettingsManager.Instance.marker_MasterVolume,
+            savedMasterVolume
+        );
 
         Set_Enviroment_GroupVolume(DataManager.Instance.settingData_StoreList.volume_3DEnviroment);
         Set_Weather_GroupVolume(DataManager.Instance.settingData_StoreList.volume_Weather);
@@ -73,7 +80,6 @@ public class AudioSettingsManager : Singleton<AudioSettingsManager>
         Set_UI_GroupVolume(DataManager.Instance.settingData_StoreList.volume_UI);
         Set_Dialogue_GroupVolume(DataManager.Instance.settingData_StoreList.volume_Dialogue);
     }
-
 
     //--------------------
 

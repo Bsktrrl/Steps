@@ -114,6 +114,7 @@ public class Interactable_GlueplantStand : MonoBehaviour
     {
         if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject)
         {
+            GlueplantStandManager.Instance.playerPlacingGlueplant = true;
             PlaceGlueplant();
         }
         //Check conditions for being able to interract
@@ -253,6 +254,14 @@ public class Interactable_GlueplantStand : MonoBehaviour
         }
 
         DataPersistanceManager.instance.SaveGame();
+
+        StartCoroutine(CheckPlacedGlueplant_Delay());
+    }
+    IEnumerator CheckPlacedGlueplant_Delay()
+    {
+        yield return new WaitForEndOfFrame();
+
+        GlueplantStandManager.Instance.playerPlacingGlueplant = false;
     }
 
 

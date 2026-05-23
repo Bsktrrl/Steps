@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GlueplantStandManager : MonoBehaviour
+public class GlueplantStandManager : Singleton<GlueplantStandManager>
 {
     [SerializeField] RegionState regionState;
+
+    public bool playerPlacingGlueplant;
 
 
     //--------------------
@@ -25,6 +27,8 @@ public class GlueplantStandManager : MonoBehaviour
 
     void CheckIfLevelIsComplete()
     {
+        if (!playerPlacingGlueplant) return;
+
         switch (regionState)
         {
             case RegionState.None:
