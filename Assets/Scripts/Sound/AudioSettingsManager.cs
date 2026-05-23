@@ -12,6 +12,9 @@ public class AudioSettingsManager : Singleton<AudioSettingsManager>
     [Header("Master Volume")]
     private const string volumeParameter_Master = "MasterVolume";
 
+    private float masterVolume_BeforeFade = 1f;
+    private bool masterVolume_FadeValueStored;
+
     [Header("Group Volumes")]
     private const string volumeParameter_Group_3DEnviroment = "3D_EnviromentalVolume";
     private const string volumeParameter_Group_Weather = "WeatherVolume";
@@ -73,6 +76,10 @@ public class AudioSettingsManager : Singleton<AudioSettingsManager>
         }
     }
 
+
+    //--------------------
+
+
     float SetVolumeFromSettings(AudioVolumStates volumeSettings)
     {
         switch (volumeSettings)
@@ -104,6 +111,7 @@ public class AudioSettingsManager : Singleton<AudioSettingsManager>
                 return 0f;
         }
     }
+
 
     public void Set_Master_Volume(AudioVolumStates volumeSettings)
     {
@@ -220,4 +228,75 @@ public class AudioSettingsManager : Singleton<AudioSettingsManager>
             Debug.LogWarning("AudioSettingsManager: Could not find exposed mixer parameter: " + parameterName);
         }
     }
+
+
+    //--------------------
+
+
+    #region SoundFade
+
+    public void PrepareMasterVolumeFadeDown()
+    {
+        if (!masterVolume_FadeValueStored)
+        {
+            masterVolume_BeforeFade = GetCurrentMasterVolumeFromSettings();
+            masterVolume_FadeValueStored = true;
+        }
+    }
+
+    public void PrepareMasterVolumeFadeUp()
+    {
+        if (!masterVolume_FadeValueStored)
+        {
+            masterVolume_BeforeFade = GetCurrentMasterVolumeFromSettings();
+            masterVolume_FadeValueStored = true;
+        }
+
+        SetMasteVolum_Fade(0f);
+    }
+
+    public void FadeMasterVolumeDown(float t)
+    {
+        PrepareMasterVolumeFadeDown();
+
+        t = Mathf.Clamp01(t);
+        float volume = Mathf.Lerp(masterVolume_BeforeFade, 0f, t);
+
+        SetMasteVolum_Fade(volume);
+    }
+
+    public void FadeMasterVolumeUp(float t)
+    {
+        t = Mathf.Clamp01(t);
+
+        float volume = Mathf.Lerp(0f, masterVolume_BeforeFade, t);
+
+        SetMasteVolum_Fade(volume);
+    }
+
+    public void FinishMasterVolumeFadeDown()
+    {
+        SetMasteVolum_Fade(0f);
+    }
+
+    public void FinishMasterVolumeFadeUp()
+    {
+        SetMasteVolum_Fade(masterVolume_BeforeFade);
+        masterVolume_FadeValueStored = false;
+    }
+
+    public void SetMasteVolum_Fade(float _volum)
+    {
+        SetMixerVolume(volumeParameter_Master, _volum);
+    }
+
+    private float GetCurrentMasterVolumeFromSettings()
+    {
+        if (DataManager.Instance == null)
+            return 1f;
+
+        return SetVolumeFromSettings(DataManager.Instance.settingData_StoreList.volume_Master);
+    }
+
+    #endregion
 }

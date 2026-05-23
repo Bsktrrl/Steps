@@ -29,9 +29,9 @@ public class Ability_SoundManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Player_KeyInputs.Action_Ascend_isPressed += PlaySound_Ascend;
-        Player_KeyInputs.Action_Descend_isPressed += PlaySound_Descend;
-        Player_KeyInputs.Action_CeilingGrab_isPressed += PlaySound_CeilingGrab;
+        Movement.Action_isAscending += PlaySound_Ascend;
+        Movement.Action_isDescending += PlaySound_Descend;
+        Player_CeilingGrab.Action_CeilingGrab_isPressed += PlaySound_CeilingGrab;
 
         Movement.Action_isDashing += PlaySound_Dash;
         Movement.Action_isJumping += PlaySound_Jump;
@@ -45,9 +45,9 @@ public class Ability_SoundManager : MonoBehaviour
     }
     private void OnDisable()
     {
-        Player_KeyInputs.Action_Ascend_isPressed -= PlaySound_Ascend;
-        Player_KeyInputs.Action_Descend_isPressed -= PlaySound_Descend;
-        Player_KeyInputs.Action_CeilingGrab_isPressed -= PlaySound_CeilingGrab;
+        Movement.Action_isAscending -= PlaySound_Ascend;
+        Movement.Action_isDescending -= PlaySound_Descend;
+        Player_CeilingGrab.Action_CeilingGrab_isPressed -= PlaySound_CeilingGrab;
 
         Movement.Action_isDashing -= PlaySound_Dash;
         Movement.Action_isJumping -= PlaySound_Jump;

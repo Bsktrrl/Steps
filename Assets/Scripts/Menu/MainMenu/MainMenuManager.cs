@@ -428,6 +428,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
         blackScreen.SetActive(true);
 
+        AudioSettingsManager.Instance.PrepareMasterVolumeFadeUp();
+
         Color color = blackScreenImage.color;
         float startAlpha = color.a;
         float duration = Mathf.Max(0.0001f, fadeDuration_In);
@@ -437,9 +439,13 @@ public class MainMenuManager : Singleton<MainMenuManager>
         {
             elapsed += Time.unscaledDeltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
+
             color.a = Mathf.Lerp(startAlpha, 0f, t);
             blackScreenImage.color = color;
             blackScreenIconImage.color = color;
+
+            AudioSettingsManager.Instance.FadeMasterVolumeUp(t);
+
             yield return null;
         }
 
@@ -447,6 +453,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
         blackScreenImage.color = color;
         blackScreenIconImage.color = color;
         blackScreen.SetActive(false);
+
+        AudioSettingsManager.Instance.FinishMasterVolumeFadeUp();
 
         blackScreenFadeRoutine = null;
     }
@@ -473,6 +481,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
         blackScreen.SetActive(true);
 
+        AudioSettingsManager.Instance.PrepareMasterVolumeFadeDown();
+
         Color color = blackScreenImage.color;
         float startAlpha = color.a;
         float duration = Mathf.Max(0.0001f, fadeDuration_Out);
@@ -482,11 +492,14 @@ public class MainMenuManager : Singleton<MainMenuManager>
         {
             elapsed += Time.unscaledDeltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
+
             float alpha = Mathf.Lerp(startAlpha, 1f, t);
 
             color.a = alpha;
             blackScreenImage.color = color;
             blackScreenIconImage.color = color;
+
+            AudioSettingsManager.Instance.FadeMasterVolumeDown(t);
 
             if (alpha >= coverThreshold)
                 break;
@@ -497,6 +510,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
         color.a = 1f;
         blackScreenImage.color = color;
         blackScreenIconImage.color = color;
+
+        AudioSettingsManager.Instance.FinishMasterVolumeFadeDown();
 
         Canvas.ForceUpdateCanvases();
         yield return new WaitForEndOfFrame();

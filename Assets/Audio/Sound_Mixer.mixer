@@ -108,30 +108,6 @@ AudioMixerGroupController:
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
---- !u!244 &-8502034007551964701
-AudioMixerEffectController:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_EffectID: 76d6dfd96bcd35040a84138aded15792
-  m_EffectName: Echo
-  m_MixLevel: 71a3ee814f492f94e926171aefd60f10
-  m_Parameters:
-  - m_ParameterName: Delay
-    m_GUID: 7ab1db2222e32c446aff151a1053d061
-  - m_ParameterName: Decay
-    m_GUID: 559b4a088cc334240a0924c6be75a625
-  - m_ParameterName: Max channels
-    m_GUID: 018ba3b1562b5c740b0326766c5b844b
-  - m_ParameterName: Drymix
-    m_GUID: db0939ee8c783c849991e3f2afbd70bd
-  - m_ParameterName: Wetmix
-    m_GUID: 7dc158ad2a5ded84cbac18e867c5f9d2
-  m_SendTarget: {fileID: 0}
-  m_EnableWetMix: 0
-  m_Bypass: 0
 --- !u!243 &-8471603591718224378
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
@@ -1472,16 +1448,21 @@ AudioMixerSnapshotController:
     a70a19513a846494a9c12dd7c07f5b42: 1.5
     9e964a626722f1f4e83edf524845a892: 0.22
     fe67c472e483b1247a45c53e937ca98a: -5
+    1f413d13eb71adf4cb537b3707ab888b: 0.6
     9af7fe8619566f84297ea141cb51812e: -500
     71ae51d6189e6d34ca8fccaf274b171f: 20
     6facf9f80108d9444b612e59582f64fa: 0
     d979139a328e9464e9baf43aadc0ca04: 0.8
+    bede494b0a868fc4891a35566b65ba9f: 0.8
     b009f98d78954954baf54ba3e4fb5f8e: 50
     71c283cdb6aa811469e8c5ea702d1729: 0.12
     0dd1cecd66df21d4ebbae090a1381def: 8500
     95960e4e242849c4dab51ce7952114b1: 180
     8eb81b9e38187174aac15b74acab2469: 0.7
+    115009de27b943d4eaba1f71ddaf5471: 0.6
     3868b3fec61406e4ea02f68466ba5de6: 95
+    2f7cdcfe0f334e046947008d7b347c10: 0.8
+    363a095f787c5c94f95df89adbf65e78: 0.8
   m_TransitionOverrides: {}
 --- !u!244 &249541466914927120
 AudioMixerEffectController:
@@ -2428,7 +2409,6 @@ AudioMixerGroupController:
   m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: 1901469240154723224}
-  - {fileID: -8502034007551964701}
   m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0
