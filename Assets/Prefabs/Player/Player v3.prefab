@@ -4858,7 +4858,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSourcePoolSize: 10
-  stepSound_Volume: 0.3
+  stepSound_Volume: 0.25
   randomVolumeRange: {x: 0.9, y: 1.1}
   randomPitchRange: {x: 0.85, y: 1.15}
   blockSounds:
@@ -18900,6 +18900,7 @@ MonoBehaviour:
     tutorial_Finished_Save: 0
     oneTimeRunData_Save:
       startLanguage_English: 0
+      startVolum_Values: 0
       forceIntroSequenceInFirstLevel: 0
       tutorial_Finished: 0
       pickup_FirstFootprint: 0
@@ -30157,7 +30158,7 @@ MonoBehaviour:
     pauseThreshold: 0
   - soundType: 2
     audioSource: {fileID: 5281924810781171158}
-    searchRadius: 5
+    searchRadius: 3
     maxVolume: 0.5
     distanceVolumeCurve:
       serializedVersion: 2
@@ -30191,7 +30192,7 @@ MonoBehaviour:
     pauseThreshold: 0
   - soundType: 3
     audioSource: {fileID: 8190932490498425406}
-    searchRadius: 5
+    searchRadius: 3
     maxVolume: 0.5
     distanceVolumeCurve:
       serializedVersion: 2
@@ -30225,7 +30226,7 @@ MonoBehaviour:
     pauseThreshold: 0
   - soundType: 5
     audioSource: {fileID: 6583234744207168893}
-    searchRadius: 5
+    searchRadius: 4
     maxVolume: 0.5
     distanceVolumeCurve:
       serializedVersion: 2
@@ -30259,7 +30260,7 @@ MonoBehaviour:
     pauseThreshold: 0
   - soundType: 7
     audioSource: {fileID: 6694098562175132447}
-    searchRadius: 5
+    searchRadius: 4.25
     maxVolume: 0.5
     distanceVolumeCurve:
       serializedVersion: 2
@@ -30293,7 +30294,7 @@ MonoBehaviour:
     pauseThreshold: 0
   - soundType: 9
     audioSource: {fileID: 5772272145050624527}
-    searchRadius: 5
+    searchRadius: 4
     maxVolume: 0.5
     distanceVolumeCurve:
       serializedVersion: 2
@@ -30327,7 +30328,7 @@ MonoBehaviour:
     pauseThreshold: 0
   - soundType: 17
     audioSource: {fileID: 6529881966381136509}
-    searchRadius: 10
+    searchRadius: 6
     maxVolume: 1
     distanceVolumeCurve:
       serializedVersion: 2
@@ -30361,7 +30362,7 @@ MonoBehaviour:
     pauseThreshold: 0
   - soundType: 18
     audioSource: {fileID: 1605472016360991214}
-    searchRadius: 10
+    searchRadius: 6
     maxVolume: 0.5
     distanceVolumeCurve:
       serializedVersion: 2
@@ -30395,7 +30396,7 @@ MonoBehaviour:
     pauseThreshold: 0
   - soundType: 19
     audioSource: {fileID: 1023471289226225683}
-    searchRadius: 10
+    searchRadius: 6
     maxVolume: 1
     distanceVolumeCurve:
       serializedVersion: 2
@@ -30429,7 +30430,7 @@ MonoBehaviour:
     pauseThreshold: 0
   - soundType: 20
     audioSource: {fileID: 3442709982163058519}
-    searchRadius: 10
+    searchRadius: 6
     maxVolume: 1
     distanceVolumeCurve:
       serializedVersion: 2
@@ -30463,7 +30464,7 @@ MonoBehaviour:
     pauseThreshold: 0
   - soundType: 21
     audioSource: {fileID: 975808302536567041}
-    searchRadius: 10
+    searchRadius: 6
     maxVolume: 1
     distanceVolumeCurve:
       serializedVersion: 2
@@ -30497,7 +30498,7 @@ MonoBehaviour:
     pauseThreshold: 0
   - soundType: 22
     audioSource: {fileID: 3086023904213089798}
-    searchRadius: 10
+    searchRadius: 6
     maxVolume: 1
     distanceVolumeCurve:
       serializedVersion: 2
@@ -43108,6 +43109,7 @@ MonoBehaviour:
     tutorial_Finished_Save: 0
     oneTimeRunData_Save:
       startLanguage_English: 0
+      startVolum_Values: 0
       forceIntroSequenceInFirstLevel: 0
       tutorial_Finished: 0
       pickup_FirstFootprint: 0
@@ -44827,6 +44829,7 @@ MonoBehaviour:
         switch_20: 0
   oneTimeRunData_Store:
     startLanguage_English: 0
+    startVolum_Values: 0
     forceIntroSequenceInFirstLevel: 0
     tutorial_Finished: 0
     pickup_FirstFootprint: 0
@@ -49365,6 +49368,10 @@ PrefabInstance:
     - target: {fileID: 3939907491752451385, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -182.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022960838977833527, guid: 708f515159424df4292f33b367a505ee, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4077596397776755678, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: m_AnchoredPosition.x

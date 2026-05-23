@@ -142,59 +142,59 @@ public class UI_SoundManager : Singleton<UI_SoundManager>
 
     void Play_Ui_MenuTransition_Forward()
     {
-        PlaySound(ui_MenuTransition, 1f, 1f);
+        PlaySound(ui_MenuTransition, 1f, 0.75f);
         //print("1.1. Play_Ui_MenuTransition_Forward");
     }
     void Play_Ui_MenuTransition_Back()
     {
-        PlaySound(ui_MenuTransition, 0.8f, 1f);
+        PlaySound(ui_MenuTransition, 0.8f, 0.75f);
         //print("1.2 Play_Ui_MenuTransition_Back");
     }
 
     void Play_Ui_ButtonNavigation()
     {
-        PlaySound(ui_ButtonNavigation, Random.Range(0.99f, 1.01f), 0.5f);
+        PlaySound(ui_ButtonNavigation, Random.Range(0.99f, 1.01f), 0.6f);
         //print("2. Play_Ui_ButtonNavigation");
     }
 
     void Play_Ui_ButtonPressed()
     {
-        PlaySound(ui_ButtonPressed, 1f, 1f);
+        PlaySound(ui_ButtonPressed, 1f, 0.7f);
         //print("3. Play_Ui_ButtonPressed");
     }
 
     void Play_Ui_ButtonBackward()
     {
-        PlaySound(ui_ButtonBackward, 1f, 1f);
+        PlaySound(ui_ButtonBackward, 1f, 0.7f);
         //print("4. Play_Ui_ButtonBackward");
     }
 
     void Play_Ui_ButtonCannot()
     {
-        PlaySound(ui_ButtonCannot, 1f, 1f);
+        PlaySound(ui_ButtonCannot, 1f, 0.7f);
         //print("5. Play_Ui_ButtonCannot");
     }
 
     void Play_Ui_Wardrobe_Buy()
     {
-        PlaySound(ui_Wardrobe_Buy, 1f, 1f);
+        PlaySound(ui_Wardrobe_Buy, 1f, 0.7f);
         //print("6. Play_Ui_Wardrobe_Buy");
     }
 
     void Play_Ui_Wardrobe_Equip_On()
     {
-        PlaySound(ui_Wardrobe_Equip, 1f, 1f);
+        PlaySound(ui_Wardrobe_Equip, 1f, 0.7f);
         //print("7. Play_Ui_Wardrobe_Equip");
     }
 
     void Play_Ui_Wardrobe_Equip_Off()
     {
-        PlaySound(ui_Wardrobe_Equip, 0.8f, 1f);
+        PlaySound(ui_Wardrobe_Equip, 0.8f, 0.7f);
         //print("8. Play_Ui_Wardrobe_Equip_Off");
     }
     void Play_Ui_Options_Select()
     {
-        PlaySound(ui_Options_Select, 1f, 0.5f);
+        PlaySound(ui_Options_Select, 1f, 0.6f);
         //print("9. Play_Ui_Options_Select");
     }
 
