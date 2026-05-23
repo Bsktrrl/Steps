@@ -33,14 +33,16 @@ public class BranchOptions : MonoBehaviour
         {
             for (int i = 0; i < collidersList.Count; i++)
             {
-                collidersList[i].SetActive(false);
+                if (collidersList[i])
+                    collidersList[i].SetActive(false);
             }
         }
         else
         {
             for (int i = 0; i < collidersList.Count; i++)
             {
-                collidersList[i].SetActive(true);
+                if (collidersList[i])
+                    collidersList[i].SetActive(true);
             }
         }
     }
