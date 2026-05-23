@@ -69,7 +69,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     {
         //Action_MenuNavigationLeft_isPressed?.Invoke();
 
-        if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls))
+        if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls || optionsManager.currentMenuCategorySelected == MenuCategories.Video || optionsManager.currentMenuCategorySelected == MenuCategories.Audio))
         {
             //print("1. MainMenuManager: OnMenuNavigation_Left");
             Action_MenuSettingsNavigationLeft_isPressed?.Invoke();
@@ -84,7 +84,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     {
         //Action_MenuNavigationRight_isPressed?.Invoke();
 
-        if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls))
+        if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls || optionsManager.currentMenuCategorySelected == MenuCategories.Video || optionsManager.currentMenuCategorySelected == MenuCategories.Audio))
         {
             //print("1. MainMenuManager: OnMenuNavigation_Right");
             Action_MenuSettingsNavigationRight_isPressed?.Invoke();

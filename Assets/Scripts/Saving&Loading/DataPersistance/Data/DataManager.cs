@@ -219,6 +219,9 @@ public class OneTimeRunData
     //English Start Language
     /*[HideInInspector]*/ public bool startLanguage_English = new bool();
 
+    //Volum Start Values
+    /*[HideInInspector]*/ public bool startVolum_Values = new bool();
+
     //Force FirstIntroSequence
     /*[HideInInspector]*/
     public bool forceIntroSequenceInFirstLevel = new bool();

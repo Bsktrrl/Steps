@@ -131,6 +131,15 @@ public enum SettingState
     Settings_CameraMotion,
     Settings_RevertedCameraMotion,
     Settings_SkipLevelIntro,
+
+    //Audio
+    Audio_Master,
+    Audio_Enviroment,
+    Audio_Weather,
+    Audio_Player,
+    Audio_UI,
+    Audio_Dialogue,
+
 }
 public enum Languages
 {
@@ -168,4 +177,19 @@ public enum SkipIntro
 {
     Yes,
     No
+}
+
+public enum AudioVolumStates
+{
+    _0_percent,
+    _10_percent,
+    _20_percent,
+    _30_percent,
+    _40_percent,
+    _50_percent,
+    _60_percent,
+    _70_percent,
+    _80_percent,
+    _90_percent,
+    _100_percent,
 }
