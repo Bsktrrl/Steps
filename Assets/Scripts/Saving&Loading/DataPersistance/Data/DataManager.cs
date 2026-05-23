@@ -210,6 +210,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
         //Persist through newGame
         this.settingData_StoreList = oldData.settingData_SaveList;
+        this.oneTimeRunData_Store.startVolum_Values = oldData.oneTimeRunData_Save.startVolum_Values;
     }
 }
 
