@@ -15310,10 +15310,12 @@ MonoBehaviour:
   currentMenuCategorySelected: 0
   settingsMenuParent: {fileID: 8218483163978393711}
   controlsMenuParent: {fileID: 8474056514623596352}
+  videoMenuParent: {fileID: 4036444078741832294}
+  audioMenuParent: {fileID: 3777807521485224069}
   settingsMenuButton: {fileID: 2624289935510241935}
   controlsMenuButton: {fileID: 4073359982229789807}
-  third_MenuButton: {fileID: 5005607642771205508}
-  forth_MenuButton: {fileID: 6361939424964271986}
+  video_MenuButton: {fileID: 5005607642771205508}
+  audio_MenuButton: {fileID: 6361939424964271986}
   wardrobeMenuParent: {fileID: 4138936105110009209}
   wardrobe_StartButton: {fileID: 7964082358389730030}
 --- !u!1 &3160193544547300013
@@ -18782,6 +18784,7 @@ MonoBehaviour:
       volume_Weather: 0
       volume_Player: 0
       volume_UI: 0
+      volume_Dialogue: 0
     mapNameDisplay_Save:
       mapNameDisplay_norwegian: 
       mapNameDisplay_english: 
@@ -42989,6 +42992,7 @@ MonoBehaviour:
       volume_Weather: 0
       volume_Player: 0
       volume_UI: 0
+      volume_Dialogue: 0
     mapNameDisplay_Save:
       mapNameDisplay_norwegian: 
       mapNameDisplay_english: 
@@ -44873,6 +44877,7 @@ MonoBehaviour:
     volume_Weather: 0
     volume_Player: 0
     volume_UI: 0
+    volume_Dialogue: 0
   mapNameDisplay_Store:
     mapNameDisplay_norwegian: 
     mapNameDisplay_english: 
@@ -49100,11 +49105,11 @@ PrefabInstance:
     - target: {fileID: 220225984855704253, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: m_Navigation.m_SelectOnLeft
       value: 
-      objectReference: {fileID: 51646400149762063}
+      objectReference: {fileID: 1096380245279425176}
     - target: {fileID: 220225984855704253, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
-      objectReference: {fileID: 51646400149762063}
+      objectReference: {fileID: 1096380245279425176}
     - target: {fileID: 234147286894179345, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: newMenuState
       value: 5
@@ -49755,7 +49760,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6625705784258096576, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7086064068776850784, guid: 708f515159424df4292f33b367a505ee, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -49920,6 +49925,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1096380245279425176 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 904724876879392810, guid: 708f515159424df4292f33b367a505ee, type: 3}
+  m_PrefabInstance: {fileID: 268274778513093298}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6361939424964271986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2624289935510241935 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2869430368174387261, guid: 708f515159424df4292f33b367a505ee, type: 3}
@@ -49947,6 +49963,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &3777807521485224069 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4022960838977833527, guid: 708f515159424df4292f33b367a505ee, type: 3}
+  m_PrefabInstance: {fileID: 268274778513093298}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4036444078741832294 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4304683670429167828, guid: 708f515159424df4292f33b367a505ee, type: 3}
+  m_PrefabInstance: {fileID: 268274778513093298}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4073359982229789807 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4268956351895514845, guid: 708f515159424df4292f33b367a505ee, type: 3}

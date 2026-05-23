@@ -12,12 +12,14 @@ public class MenuManager : Singleton<MenuManager>
     [Header("Options Menues")]
     public GameObject settingsMenuParent;
     public GameObject controlsMenuParent;
+    public GameObject videoMenuParent;
+    public GameObject audioMenuParent;
 
     [Header("Option Buttons")]
     public GameObject settingsMenuButton;
     public GameObject controlsMenuButton;
-    public GameObject third_MenuButton;
-    public GameObject forth_MenuButton;
+    public GameObject video_MenuButton;
+    public GameObject audio_MenuButton;
 
     [Header("Skin Menues")]
     public GameObject wardrobeMenuParent;
@@ -43,6 +45,14 @@ public class MenuManager : Singleton<MenuManager>
                 currentMenuCategorySelected = MenuCategories.Controls;
                 controlsMenuParent.SetActive(true);
                 break;
+            case MenuCategories.Video:
+                currentMenuCategorySelected = MenuCategories.Video;
+                videoMenuParent.SetActive(true);
+                break;
+            case MenuCategories.Audio:
+                currentMenuCategorySelected = MenuCategories.Audio;
+                audioMenuParent.SetActive(true);
+                break;
 
             case MenuCategories.Wardrobe:
                 currentMenuCategorySelected = MenuCategories.Wardrobe;
@@ -57,6 +67,8 @@ public class MenuManager : Singleton<MenuManager>
     {
         settingsMenuParent.SetActive(false);
         controlsMenuParent.SetActive(false);
+        videoMenuParent.SetActive(false);
+        audioMenuParent.SetActive(false);
 
         wardrobeMenuParent.SetActive(false);
 
