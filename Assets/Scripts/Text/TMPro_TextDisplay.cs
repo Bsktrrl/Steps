@@ -500,22 +500,22 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.options_Header_Audio:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Header_Audio;
                 break;
-            case Text_Database_Enum.options_Audio_1:
+            case Text_Database_Enum.options_Audio_Master:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Audio_1;
                 break;
-            case Text_Database_Enum.options_Audio_2:
+            case Text_Database_Enum.options_Audio_Enviroment:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Audio_2;
                 break;
-            case Text_Database_Enum.options_Audio_3:
+            case Text_Database_Enum.options_Audio_Weather:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Audio_3;
                 break;
-            case Text_Database_Enum.options_Audio_4:
+            case Text_Database_Enum.options_Audio_Player:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Audio_4;
                 break;
-            case Text_Database_Enum.options_Audio_5:
+            case Text_Database_Enum.options_Audio_UI:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Audio_5;
                 break;
-            case Text_Database_Enum.options_Audio_6:
+            case Text_Database_Enum.options_Audio_Dialogue:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Audio_6;
                 break;
             case Text_Database_Enum.options_Audio_7:
@@ -1828,17 +1828,17 @@ public class TMPro_TextDisplay : MonoBehaviour
             #region Audio
             case Text_Database_Enum.options_Header_Audio:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Header_Audio;
-            case Text_Database_Enum.options_Audio_1:
+            case Text_Database_Enum.options_Audio_Master:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Audio_1;
-            case Text_Database_Enum.options_Audio_2:
+            case Text_Database_Enum.options_Audio_Enviroment:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Audio_2;
-            case Text_Database_Enum.options_Audio_3:
+            case Text_Database_Enum.options_Audio_Weather:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Audio_3;
-            case Text_Database_Enum.options_Audio_4:
+            case Text_Database_Enum.options_Audio_Player:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Audio_4;
-            case Text_Database_Enum.options_Audio_5:
+            case Text_Database_Enum.options_Audio_UI:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Audio_5;
-            case Text_Database_Enum.options_Audio_6:
+            case Text_Database_Enum.options_Audio_Dialogue:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Audio_6;
             case Text_Database_Enum.options_Audio_7:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Audio_7;

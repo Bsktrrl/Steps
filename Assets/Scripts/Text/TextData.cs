@@ -1325,12 +1325,12 @@ public enum Text_Database_Enum
     #endregion
     #region Audio
     [InspectorName("Options Menu / Audio / Header / Header")] options_Header_Audio,
-    [InspectorName("Options Menu / Audio / 1")] options_Audio_1,
-    [InspectorName("Options Menu / Audio / 2")] options_Audio_2,
-    [InspectorName("Options Menu / Audio / 3")] options_Audio_3,
-    [InspectorName("Options Menu / Audio / 4")] options_Audio_4,
-    [InspectorName("Options Menu / Audio / 5")] options_Audio_5,
-    [InspectorName("Options Menu / Audio / 6")] options_Audio_6,
+    [InspectorName("Options Menu / Audio / Master")] options_Audio_Master,
+    [InspectorName("Options Menu / Audio / Enviroment")] options_Audio_Enviroment,
+    [InspectorName("Options Menu / Audio / Weather")] options_Audio_Weather,
+    [InspectorName("Options Menu / Audio / Player")] options_Audio_Player,
+    [InspectorName("Options Menu / Audio / UI")] options_Audio_UI,
+    [InspectorName("Options Menu / Audio / Dialogue")] options_Audio_Dialogue,
     [InspectorName("Options Menu / Audio / 7")] options_Audio_7,
     [InspectorName("Options Menu / Audio / 8")] options_Audio_8,
     [InspectorName("Options Menu / Audio / 9")] options_Audio_9,

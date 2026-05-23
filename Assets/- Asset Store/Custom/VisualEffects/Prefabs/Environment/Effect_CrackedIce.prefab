@@ -14923,14 +14923,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PS1: {fileID: 7854999216111822390}
   PS2: {fileID: 2375822821422348891}
-  source: {fileID: 1564654783436068336}
-  crackSounds:
-  - {fileID: 8300000, guid: 45ac3722be6b7884f9aea044f6eb9405, type: 3}
-  - {fileID: 8300000, guid: d406d47701206284cb6e09b515f87f0a, type: 3}
-  - {fileID: 8300000, guid: 7721bd9272ca34a43b25043a94c1f6d0, type: 3}
+  audioSource: {fileID: 1564654783436068336}
+  crackSounds: []
   breakSounds:
-  - {fileID: 8300000, guid: e480d7250f78f6347810b95e5ad4e7a4, type: 3}
-  - {fileID: 8300000, guid: 1570ae7a2ab50f043a0c4d1d7d2c77dc, type: 3}
+  - {fileID: 8300000, guid: 67822f60cbec6624e88c52d464bdbac7, type: 3}
+  - {fileID: 8300000, guid: 43d3292c81f3a3d4f98ca2344e911b42, type: 3}
+  - {fileID: 8300000, guid: d07c9b2609c23304b8d959ffbe002fc0, type: 3}
 --- !u!82 &1564654783436068336
 AudioSource:
   m_ObjectHideFlags: 0
@@ -14940,10 +14938,10 @@ AudioSource:
   m_GameObject: {fileID: 2550131581923175073}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -391037566016900312, guid: 6b878df000a20bb4f907ade306c2748b, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.55
   m_Pitch: 1
   Loop: 0
   Mute: 0

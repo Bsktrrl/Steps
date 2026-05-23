@@ -14,7 +14,7 @@ public class PlayMovementSound : MonoBehaviour
     [Header("3D Sound Settings")]
     [SerializeField] private bool force3DSound = true;
     [SerializeField] private float minDistance = 0f;
-    [SerializeField] private float maxDistance = 12f;
+    [SerializeField] private float maxDistance = 6f;
 
     private Coroutine fadeCoroutine;
     private bool isPlaying;

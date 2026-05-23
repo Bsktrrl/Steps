@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player_GraplingHook : Singleton<Player_GraplingHook>
 {
+    public static event Action Action_GrapplingHook_Hit;
+
     [Header("Grappling Distance")]
     //float grapplingDistance = 5.55f;
     //float movementSpeed = 15;
@@ -79,6 +82,8 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
 
         //Beam End
         lineRenderer.SetPosition(1, redDotSceneObject.transform.position);
+
+        Action_GrapplingHook_Hit?.Invoke();
     }
     public void EndLineRenderer()
     {

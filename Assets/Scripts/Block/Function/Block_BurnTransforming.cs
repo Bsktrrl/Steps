@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class Block_BurnTransforming : MonoBehaviour
 {
     [Header("New Block When Burned")]
@@ -93,6 +94,8 @@ public class Block_BurnTransforming : MonoBehaviour
             isBurningBlock = false;
             yield break;
         }
+
+        GetComponent<AudioSource>().PlayOneShot(GetComponent<AudioSource>().clip);
 
         burningBlock_InScene = Instantiate(burningBlock, transform.position, transform.rotation);
         burningBlock_InScene.transform.SetParent(transform, true);

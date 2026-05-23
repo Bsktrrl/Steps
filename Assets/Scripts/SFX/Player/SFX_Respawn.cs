@@ -11,7 +11,7 @@ public class SFX_Respawn : Singleton<SFX_Respawn>
     public static event Action Action_RespawnPlayerAnimation;
 
     [Header("KeyPresses Parameters")]
-    float holdDuration = 0.4f;
+    float holdDuration = 0.5f;
     [SerializeField] float holdtimer = 0;
     [SerializeField] bool useUnscaledTime = true; // ignore timescale (pause)
     Coroutine holdRoutine;
@@ -104,11 +104,14 @@ public class SFX_Respawn : Singleton<SFX_Respawn>
 
         // finished
         holdRoutine = null;
-        if (audioSource_Player != null && audioSource_Player.isPlaying) audioSource_Player.Stop();
 
         isRespawning = true;
         Action_RespawnPlayerAnimation?.Invoke();
         yield return new WaitForSeconds(Player_Animations.Instance.effectChargeTime_Pickup_Teleport);
+
+        if (audioSource_Player != null && audioSource_Player.isPlaying)
+            audioSource_Player.Stop();
+
         event_OnHoldCompleted?.Invoke();
 
         StartCoroutine(IsRespawning_Delay(0.02f));

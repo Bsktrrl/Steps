@@ -439,9 +439,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4947505486690622416, guid: f86d5903781af5246a66469f13c361e6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8816443726903767571}
-    - targetCorrespondingSourceObject: {fileID: 4947505486690622416, guid: f86d5903781af5246a66469f13c361e6, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 7564723182833221272}
     - targetCorrespondingSourceObject: {fileID: 4947505486690622416, guid: f86d5903781af5246a66469f13c361e6, type: 3}
       insertIndex: -1
@@ -457,6 +454,9 @@ PrefabInstance:
       addedObject: {fileID: 6464080628927348014}
     - targetCorrespondingSourceObject: {fileID: 4947505486690622416, guid: f86d5903781af5246a66469f13c361e6, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 8816443726903767571}
+    - targetCorrespondingSourceObject: {fileID: 4947505486690622416, guid: f86d5903781af5246a66469f13c361e6, type: 3}
+      insertIndex: -1
       addedObject: {fileID: -1464925040565712738}
   m_SourcePrefab: {fileID: 100100000, guid: f86d5903781af5246a66469f13c361e6, type: 3}
 --- !u!4 &2801922467676316358 stripped
@@ -469,18 +469,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4947505486690622416, guid: f86d5903781af5246a66469f13c361e6, type: 3}
   m_PrefabInstance: {fileID: 7566239831312147372}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8816443726903767571
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3290368874972199036}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fd6bd3afab0ee3419fcbee06734f970, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &7564723182833221272
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -570,7 +558,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectVisualParent: {fileID: 0}
   removeDuplicatesInEditor: 1
   effectBlock_SpawnPoint_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
@@ -602,6 +589,20 @@ MonoBehaviour:
   stepOnDelay: 0.25
   stepOnSnapSpeed: 1
   snapCompleteDistance: 0.001
+  movementRefreshRange: 2
+  movementRefreshDistance: 0.1
+--- !u!114 &8816443726903767571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3290368874972199036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fd6bd3afab0ee3419fcbee06734f970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &-1464925040565712738
 MonoBehaviour:
   m_ObjectHideFlags: 0

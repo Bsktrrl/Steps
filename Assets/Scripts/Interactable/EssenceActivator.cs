@@ -26,6 +26,9 @@ public class EssenceActivator : MonoBehaviour
     [SerializeField] GameObject obj_ShineHor;
     [SerializeField] GameObject obj_ShineDia;
 
+    [Header("Idle Sound")]
+    [SerializeField] AudioSource idleSound;
+
 
     //--------------------
 
@@ -52,12 +55,16 @@ public class EssenceActivator : MonoBehaviour
             meshRenderer.material = material_Active;
             obj_ShineHor.SetActive(true);
             obj_ShineDia.SetActive(true);
+
+            idleSound.Play();
         }
         else
         {
             meshRenderer.material = material_Unactive;
             obj_ShineHor.SetActive(false);
             obj_ShineDia.SetActive(false);
+
+            idleSound.Stop();
         }
     }
 
@@ -74,6 +81,7 @@ public class EssenceActivator : MonoBehaviour
         if (needAbility_GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) return false;
         if (needAbility_SpringShoes && !PlayerStats.Instance.stats.abilitiesGot_Temporary.SpringShoes && !PlayerStats.Instance.stats.abilitiesGot_Permanent.SpringShoes) return false;
         if (needAbility_ClimbingGloves && !PlayerStats.Instance.stats.abilitiesGot_Temporary.ClimingGloves && !PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimingGloves) return false;
+
         return true;
     }
 }

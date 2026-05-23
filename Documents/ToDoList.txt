@@ -17,7 +17,7 @@ April:
 - Kamera: 
 	- Bør kunne roteres underveis i Slope_X_Animasjonen
 
-- FreeCam followElevatorBlocks:
+- FreeCam følger ElevatorBlocks:
 	- Koble fra FreeCam fra spilleren når den er i freeCam-modus, så kameraet ikke følger med ElevatorBlocks
 	- Flytte lyd-targeten til freeCam nå man er i freeCam, og ikke spilleren
 
@@ -36,6 +36,9 @@ April:
 
 - SwampWater:
 	- Endre til å koste 0, og at alle adjacent blokker koster 0 uavhengig av tidligere kost
+
+- PauseMeny:
+	- Må kunne entres via FreeCam
 
 
 
@@ -59,6 +62,8 @@ April:
 5.0. Sound:
 - Legg til all lyd fra Lisette
 - fullfør "FadeOutALLSound()" i "SoundManager" slik at all lyd fades fint ut når man exit'er en scene
+- Gjøre slik at det er lyd fra spilleren hver gang den går, selv om den glir
+
 
 
 

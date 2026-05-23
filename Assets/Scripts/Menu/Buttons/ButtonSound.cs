@@ -43,7 +43,7 @@ public class ButtonSound : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private void Start()
     {
-        if (!SoundManager.Instance.pauseMenu)
+        if (!UI_SoundManager.Instance.pauseMenu)
             isStart = true;
     }
 

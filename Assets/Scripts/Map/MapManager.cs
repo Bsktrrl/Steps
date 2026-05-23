@@ -24,10 +24,6 @@ public class MapManager : Singleton<MapManager>
     public LayerMask player_LayerMask;
     public LayerMask playerExclusive_LayerMask;
 
-    [Header("Sound")]
-    public List<AudioTrack> mapAudioList;
-    [SerializeField] List<AudioSource> mapAudioSourceList;
-
     [Header("MapInfo")]
     public LevelNames levelName;
     public Map_SaveInfo mapInfo_ToSave = new Map_SaveInfo();
@@ -75,10 +71,6 @@ public class MapManager : Singleton<MapManager>
     {
         blockInfoList = FindObjectsOfType<BlockInfo>();
         pickupInfoList = FindObjectsOfType<Interactable_Pickup>();
-
-        //Movement.Instance.RotatePlayerBody(180);
-
-        PlayAudio();
     }
 
     private void OnEnable()
@@ -181,31 +173,6 @@ public class MapManager : Singleton<MapManager>
                     block.gameObject.GetComponent<Block_Falling>().ResetBlock();
                 }
             }
-        }
-    }
-
-
-    //--------------------
-
-
-    void PlayAudio()
-    {
-        for (int i = 0; i < mapAudioList.Count; i++)
-        {
-            //Make a new AudioSource
-            AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-            mapAudioSourceList.Add(audioSource);
-
-            mapAudioSourceList[mapAudioSourceList.Count - 1].clip = mapAudioList[i].track;
-
-            mapAudioSourceList[mapAudioSourceList.Count - 1].pitch = mapAudioList[i].pitch;
-
-            if (mapAudioList[i].volume > 0)
-                mapAudioSourceList[mapAudioSourceList.Count - 1].volume = mapAudioList[i].volume;
-
-            mapAudioSourceList[mapAudioSourceList.Count - 1].loop = true;
-
-            mapAudioSourceList[mapAudioSourceList.Count - 1].Play();
         }
     }
 

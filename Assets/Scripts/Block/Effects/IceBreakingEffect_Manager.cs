@@ -21,13 +21,13 @@ public class IceBreakingEffect_Manager : Singleton<IceBreakingEffect_Manager>
 
     private void OnEnable()
     {
-        Block_Weak.Action_WalkedOnCrackedIce += CrackIce_Start;
+        //Block_Weak.Action_WalkedOnCrackedIce += CrackIce_Start;
         Block_Weak.Action_WalkedOffCrackedIce += BreakIce_Start;
-        Movement.Action_RespawnPlayerEarly -= ResetEffects;
+        Movement.Action_RespawnPlayerEarly += ResetEffects;
     }
     private void OnDisable()
     {
-        Block_Weak.Action_WalkedOnCrackedIce -= CrackIce_Start;
+        //Block_Weak.Action_WalkedOnCrackedIce -= CrackIce_Start;
         Block_Weak.Action_WalkedOffCrackedIce -= BreakIce_Start;
         Movement.Action_RespawnPlayerEarly -= ResetEffects;
     }
@@ -38,19 +38,24 @@ public class IceBreakingEffect_Manager : Singleton<IceBreakingEffect_Manager>
 
     public void CrackIce_Start()
     {
-        if (Movement.Instance.blockStandingOn == null) return;
+        CrackIce_Start(Movement.Instance.blockStandingOn);
+    }
+    public void CrackIce_Start(GameObject targetBlock)
+    {
+        if (targetBlock == null) return;
 
         if (!crack_isGenerated)
         {
             crack_isGenerated = true;
 
-            blockToEffect = Movement.Instance.blockStandingOn;
-
             for (int i = 0; i < IceBreakObject_List.Count; i++)
             {
                 if (!IceBreakObject_List[i].activeInHierarchy)
                 {
-                    IceBreakObject_List[i].transform.SetPositionAndRotation(blockToEffect.transform.position, blockToEffect.transform.rotation);
+                    IceBreakObject_List[i].transform.SetPositionAndRotation(
+                        targetBlock.transform.position,
+                        targetBlock.transform.rotation);
+
                     IceBreakObject_List[i].SetActive(true);
                     IceBreakObject_List[i].GetComponent<CrackedIceScript>().Crack();
 
@@ -65,19 +70,22 @@ public class IceBreakingEffect_Manager : Singleton<IceBreakingEffect_Manager>
     }
     public void BreakIce_Start()
     {
-        //if (Movement.Instance.blockStandingOn == null) return;
+        if (blockToEffect == null) return;
 
+        BreakIce_Start(blockToEffect.transform.position, blockToEffect.transform.rotation);
+    }
+
+    public void BreakIce_Start(Vector3 effectPosition, Quaternion effectRotation)
+    {
         if (!break_isGenerated)
         {
             break_isGenerated = true;
-
-            //blockToEffect = Movement.Instance.blockStandingOn;
 
             for (int i = 0; i < IceBreakObject_List.Count; i++)
             {
                 if (!IceBreakObject_List[i].activeInHierarchy)
                 {
-                    IceBreakObject_List[i].transform.SetPositionAndRotation(blockToEffect.transform.position, blockToEffect.transform.rotation);
+                    IceBreakObject_List[i].transform.SetPositionAndRotation(effectPosition, effectRotation);
                     IceBreakObject_List[i].SetActive(true);
                     IceBreakObject_List[i].GetComponent<CrackedIceScript>().Break();
 
@@ -97,7 +105,7 @@ public class IceBreakingEffect_Manager : Singleton<IceBreakingEffect_Manager>
 
     IEnumerator Ice_End(float duration, GameObject effectObject)
     {
-        yield return new WaitForSeconds(CrackEffectDuration);
+        yield return new WaitForSeconds(duration);
 
         effectObject.SetActive(false);
     }

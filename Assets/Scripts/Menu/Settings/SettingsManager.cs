@@ -22,6 +22,7 @@ public class SettingsManager : Singleton<SettingsManager>
     [Header("Color")]
     public Color activeSettingSegmentColor;
 
+    #region General Settings
     [Header("Flag")]
     [SerializeField] Image flagImage;
     [SerializeField] Sprite flag_Norway_Sprite;
@@ -58,6 +59,27 @@ public class SettingsManager : Singleton<SettingsManager>
     [SerializeField] Image skipIntroImage;
     [SerializeField] Sprite skipIntro_YES_Sprite;
     [SerializeField] Sprite skipIntro_NO_Sprite;
+
+    #endregion
+
+    #region Controls Settings
+
+    #endregion
+
+    #region Video Settings
+
+    #endregion
+
+    #region Audio Settings
+    [Header("Volume Parameters")]
+    public GameObject marker_MasterVolume;
+    public GameObject marker_EnviromentVolume;
+    public GameObject marker_WeatherVolume;
+    public GameObject marker_PlayerVolume;
+    public GameObject marker_UIVolume;
+    public GameObject marker_DialogueVolume;
+
+    #endregion
 
 
     //--------------------
@@ -147,6 +169,19 @@ public class SettingsManager : Singleton<SettingsManager>
             RevertedCameraMotion_LeftButton_isPressed();
         else if (settingState == SettingState.Settings_SkipLevelIntro)
             SkipIntro_LeftButton_isPressed();
+
+        else if (settingState == SettingState.Audio_Master)
+            Audio_Master_LeftButton_isPressed();
+        else if (settingState == SettingState.Audio_Enviroment)
+            Audio_Enviroment_LeftButton_isPressed();
+        else if (settingState == SettingState.Audio_Weather)
+            Audio_Weather_LeftButton_isPressed();
+        else if (settingState == SettingState.Audio_Player)
+            Audio_Player_LeftButton_isPressed();
+        else if (settingState == SettingState.Audio_UI)
+            Audio_UI_LeftButton_isPressed();
+        else if (settingState == SettingState.Audio_Dialogue)
+            Audio_Dialogue_LeftButton_isPressed();
     }
     void PerformButtonAction_Right()
     {
@@ -162,12 +197,26 @@ public class SettingsManager : Singleton<SettingsManager>
             RevertedCameraMotion_RightButton_isPressed();
         else if (settingState == SettingState.Settings_SkipLevelIntro)
             SkipIntro_RightButton_isPressed();
+
+        else if (settingState == SettingState.Audio_Master)
+            Audio_Master_RightButton_isPressed();
+        else if (settingState == SettingState.Audio_Enviroment)
+            Audio_Enviroment_RightButton_isPressed();
+        else if (settingState == SettingState.Audio_Weather)
+            Audio_Weather_RightButton_isPressed();
+        else if (settingState == SettingState.Audio_Player)
+            Audio_Player_RightButton_isPressed();
+        else if (settingState == SettingState.Audio_UI)
+            Audio_UI_RightButton_isPressed();
+        else if (settingState == SettingState.Audio_Dialogue)
+            Audio_Dialogue_RightButton_isPressed();
     }
 
 
     //--------------------
 
 
+    #region General Settings ButtonPress
     public void Flag_RightButton_isPressed()
     {
         switch (settingsData.currentLanguage)
@@ -568,15 +617,197 @@ public class SettingsManager : Singleton<SettingsManager>
     {
         Action_SetNewLanguage?.Invoke();
     }
+
+    #endregion
+
+    #region Audio SettingsButtonPress
+
+    AudioVolumStates SetPercentageRightButtonClick(AudioVolumStates audioVolumeState)
+    {
+        switch (audioVolumeState)
+        {
+            case AudioVolumStates._0_percent:
+                return AudioVolumStates._10_percent;
+            case AudioVolumStates._10_percent:
+                return AudioVolumStates._20_percent;
+            case AudioVolumStates._20_percent:
+                return AudioVolumStates._30_percent;
+            case AudioVolumStates._30_percent:
+                return AudioVolumStates._40_percent;
+            case AudioVolumStates._40_percent:
+                return AudioVolumStates._50_percent;
+            case AudioVolumStates._50_percent:
+                return AudioVolumStates._60_percent;
+            case AudioVolumStates._60_percent:
+                return AudioVolumStates._70_percent;
+            case AudioVolumStates._70_percent:
+                return AudioVolumStates._80_percent;
+            case AudioVolumStates._80_percent:
+                return AudioVolumStates._90_percent;
+            case AudioVolumStates._90_percent:
+                return AudioVolumStates._100_percent;
+            case AudioVolumStates._100_percent:
+                return AudioVolumStates._100_percent;
+
+            default:
+                return AudioVolumStates._0_percent;
+        }
+    }
+    AudioVolumStates SetPercentageLeftButtonClick(AudioVolumStates audioVolumeState)
+    {
+        switch (audioVolumeState)
+        {
+            case AudioVolumStates._0_percent:
+                return AudioVolumStates._0_percent;
+            case AudioVolumStates._10_percent:
+                return AudioVolumStates._0_percent;
+            case AudioVolumStates._20_percent:
+                return AudioVolumStates._10_percent;
+            case AudioVolumStates._30_percent:
+                return AudioVolumStates._20_percent;
+            case AudioVolumStates._40_percent:
+                return AudioVolumStates._30_percent;
+            case AudioVolumStates._50_percent:
+                return AudioVolumStates._40_percent;
+            case AudioVolumStates._60_percent:
+                return AudioVolumStates._50_percent;
+            case AudioVolumStates._70_percent:
+                return AudioVolumStates._60_percent;
+            case AudioVolumStates._80_percent:
+                return AudioVolumStates._70_percent;
+            case AudioVolumStates._90_percent:
+                return AudioVolumStates._80_percent;
+            case AudioVolumStates._100_percent:
+                return AudioVolumStates._90_percent;
+
+            default:
+                return AudioVolumStates._0_percent;
+        }
+    }
+
+    public void Audio_Master_RightButton_isPressed()
+    {
+        AudioSettingsManager.Instance.Set_Master_Volume(SetPercentageRightButtonClick(DataManager.Instance.settingData_StoreList.volume_Master));
+    }
+    public void Audio_Master_LeftButton_isPressed()
+    {
+        AudioSettingsManager.Instance.Set_Master_Volume(SetPercentageLeftButtonClick(DataManager.Instance.settingData_StoreList.volume_Master));
+    }
+
+    public void Audio_Enviroment_RightButton_isPressed()
+    {
+        AudioSettingsManager.Instance.Set_Enviroment_GroupVolume(SetPercentageRightButtonClick(DataManager.Instance.settingData_StoreList.volume_3DEnviroment));
+    }
+    public void Audio_Enviroment_LeftButton_isPressed()
+    {
+        AudioSettingsManager.Instance.Set_Enviroment_GroupVolume(SetPercentageLeftButtonClick(DataManager.Instance.settingData_StoreList.volume_3DEnviroment));
+    }
+
+    public void Audio_Weather_RightButton_isPressed()
+    {
+        AudioSettingsManager.Instance.Set_Weather_GroupVolume(SetPercentageRightButtonClick(DataManager.Instance.settingData_StoreList.volume_Weather));
+    }
+    public void Audio_Weather_LeftButton_isPressed()
+    {
+        AudioSettingsManager.Instance.Set_Weather_GroupVolume(SetPercentageLeftButtonClick(DataManager.Instance.settingData_StoreList.volume_Weather));
+    }
+
+    public void Audio_Player_RightButton_isPressed()
+    {
+        AudioSettingsManager.Instance.Set_Player_GroupVolume(SetPercentageRightButtonClick(DataManager.Instance.settingData_StoreList.volume_Player));
+    }
+    public void Audio_Player_LeftButton_isPressed()
+    {
+        AudioSettingsManager.Instance.Set_Player_GroupVolume(SetPercentageLeftButtonClick(DataManager.Instance.settingData_StoreList.volume_Player));
+    }
+
+    public void Audio_UI_RightButton_isPressed()
+    {
+        AudioSettingsManager.Instance.Set_UI_GroupVolume(SetPercentageRightButtonClick(DataManager.Instance.settingData_StoreList.volume_UI));
+    }
+    public void Audio_UI_LeftButton_isPressed()
+    {
+        AudioSettingsManager.Instance.Set_UI_GroupVolume(SetPercentageLeftButtonClick(DataManager.Instance.settingData_StoreList.volume_UI));
+    }
+
+    public void Audio_Dialogue_RightButton_isPressed()
+    {
+        AudioSettingsManager.Instance.Set_Dialogue_GroupVolume(SetPercentageRightButtonClick(DataManager.Instance.settingData_StoreList.volume_Dialogue));
+    }
+    public void Audio_Dialogue_LeftButton_isPressed()
+    {
+        AudioSettingsManager.Instance.Set_Dialogue_GroupVolume(SetPercentageLeftButtonClick(DataManager.Instance.settingData_StoreList.volume_Dialogue));
+    }
+
+    public void SetVolumeMarker(GameObject volumeMarker, AudioVolumStates volume)
+    {
+        RectTransform markerRect = volumeMarker.GetComponent<RectTransform>();
+
+        float step = 51.5f;
+        float x = 0f;
+
+        switch (volume)
+        {
+            case AudioVolumStates._0_percent:
+                x = -5f * step;
+                break;
+            case AudioVolumStates._10_percent:
+                x = -4f * step;
+                break;
+            case AudioVolumStates._20_percent:
+                x = -3f * step;
+                break;
+            case AudioVolumStates._30_percent:
+                x = -2f * step;
+                break;
+            case AudioVolumStates._40_percent:
+                x = -1f * step;
+                break;
+            case AudioVolumStates._50_percent:
+                x = 0f;
+                break;
+            case AudioVolumStates._60_percent:
+                x = 1f * step;
+                break;
+            case AudioVolumStates._70_percent:
+                x = 2f * step;
+                break;
+            case AudioVolumStates._80_percent:
+                x = 3f * step;
+                break;
+            case AudioVolumStates._90_percent:
+                x = 4f * step;
+                break;
+            case AudioVolumStates._100_percent:
+                x = 5f * step;
+                break;
+        }
+
+        markerRect.anchoredPosition = new Vector2(x, markerRect.anchoredPosition.y);
+    }
+
+    #endregion
 }
 
 [Serializable]
 public class SettingData
 {
+    //General
+    [Header("General")]
     public Languages currentLanguage;
     public TextSpeed currentTextSpeed;
     public StepDisplay currentStepDisplay;
     public CameraMotion currentCameraMotion;
     public RevertedCameraMotion currentRevertedCameraMotion;
     public SkipIntro currentSkipIntro;
+
+    //Audio
+    [Header("Volume Parameters")]
+    public AudioVolumStates volume_Master;
+
+    public AudioVolumStates volume_3DEnviroment;
+    public AudioVolumStates volume_Weather;
+    public AudioVolumStates volume_Player;
+    public AudioVolumStates volume_UI;
+    public AudioVolumStates volume_Dialogue;
 }

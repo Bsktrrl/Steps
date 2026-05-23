@@ -1,7 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
 {
@@ -18,7 +17,24 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     [Header("Input System")]
     public PlayerControls playerControls;
 
+    [Header("Hold Settings")]
+    [SerializeField] float holdDelay = 0.2f;
+    [SerializeField] float holdRepeatRate = 0.1f;
+
     MenuManager optionsManager;
+    PlayerInput playerInput;
+
+    InputAction leftAction;
+    InputAction rightAction;
+
+    bool leftWasPressed;
+    bool rightWasPressed;
+
+    float leftHoldTimer;
+    float rightHoldTimer;
+
+    bool leftHoldStarted;
+    bool rightHoldStarted;
 
 
     //--------------------
@@ -29,6 +45,20 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
         playerControls = new PlayerControls();
 
         optionsManager = FindObjectOfType<MenuManager>();
+
+        playerInput = GetComponent<PlayerInput>();
+
+        if (playerInput != null && playerInput.actions != null)
+        {
+            leftAction = playerInput.actions.FindAction("MenuNavigation_Left");
+            rightAction = playerInput.actions.FindAction("MenuNavigation_Right");
+        }
+    }
+
+    private void Update()
+    {
+        HandleLeftInput();
+        HandleRightInput();
     }
 
 
@@ -37,62 +67,182 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
 
     void OnMenuNavigation_Up()
     {
-        //Action_MenuNavigationLeft_isPressed?.Invoke();
-
-        //if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls))
-        //{
-        //    //print("1. MainMenuManager: OnMenuNavigation_Up");
-        //    Action_MenuSettingsNavigationUp_isPressed?.Invoke();
-        //}
-        //else if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Wardrobe || optionsManager.currentMenuCategorySelected == MenuCategories.Shop))
-        //{
-        //    //print("1. MainMenuManager: OnMenuNavigation_Up");
-        //    Action_MenuNavigationUp_isPressed?.Invoke();
-        //}
+        // Existing up logic if needed later.
     }
+
     void OnMenuNavigation_Down()
     {
-        //Action_MenuNavigationLeft_isPressed?.Invoke();
-
-        //if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls))
-        //{
-        //    //print("1. MainMenuManager: OnMenuNavigation_Down");
-        //    Action_MenuSettingsNavigationDown_isPressed?.Invoke();
-        //}
-        //else if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Wardrobe || optionsManager.currentMenuCategorySelected == MenuCategories.Shop))
-        //{
-        //    //print("1. MainMenuManager: OnMenuNavigation_Up");
-        //    Action_MenuNavigationDown_isPressed?.Invoke();
-        //}
+        // Existing down logic if needed later.
     }
+
     void OnMenuNavigation_Left()
     {
-        //Action_MenuNavigationLeft_isPressed?.Invoke();
-
-        if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls))
-        {
-            //print("1. MainMenuManager: OnMenuNavigation_Left");
-            Action_MenuSettingsNavigationLeft_isPressed?.Invoke();
-        }
-        //else if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Wardrobe || optionsManager.currentMenuCategorySelected == MenuCategories.Shop))
-        //{
-        //    //print("1. MainMenuManager: OnMenuNavigation_Up");
-        //    Action_MenuNavigationLeft_isPressed?.Invoke();
-        //}
+        // Do nothing here.
+        // Left input is handled safely in Update() instead.
     }
+
     void OnMenuNavigation_Right()
     {
-        //Action_MenuNavigationRight_isPressed?.Invoke();
+        // Do nothing here.
+        // Right input is handled safely in Update() instead.
+    }
 
-        if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Settings || optionsManager.currentMenuCategorySelected == MenuCategories.Controls))
+
+    //--------------------
+    // LEFT / RIGHT HOLD INPUT
+    //--------------------
+
+
+    void HandleLeftInput()
+    {
+        bool leftIsPressed = leftAction != null && leftAction.IsPressed();
+
+        if (leftIsPressed)
         {
-            //print("1. MainMenuManager: OnMenuNavigation_Right");
+            if (!leftWasPressed)
+            {
+                leftWasPressed = true;
+                leftHoldTimer = 0f;
+                leftHoldStarted = false;
+
+                InvokeMenuNavigationLeft();
+            }
+            else
+            {
+                HandleLeftHold();
+            }
+        }
+        else
+        {
+            ResetLeftHold();
+        }
+    }
+
+    void HandleRightInput()
+    {
+        bool rightIsPressed = rightAction != null && rightAction.IsPressed();
+
+        if (rightIsPressed)
+        {
+            if (!rightWasPressed)
+            {
+                rightWasPressed = true;
+                rightHoldTimer = 0f;
+                rightHoldStarted = false;
+
+                InvokeMenuNavigationRight();
+            }
+            else
+            {
+                HandleRightHold();
+            }
+        }
+        else
+        {
+            ResetRightHold();
+        }
+    }
+
+
+    //--------------------
+
+
+    void HandleLeftHold()
+    {
+        leftHoldTimer += Time.unscaledDeltaTime;
+
+        if (!leftHoldStarted)
+        {
+            if (leftHoldTimer >= holdDelay)
+            {
+                leftHoldStarted = true;
+                leftHoldTimer = 0f;
+
+                InvokeMenuNavigationLeft();
+            }
+        }
+        else
+        {
+            if (leftHoldTimer >= holdRepeatRate)
+            {
+                leftHoldTimer = 0f;
+
+                InvokeMenuNavigationLeft();
+            }
+        }
+    }
+
+    void HandleRightHold()
+    {
+        rightHoldTimer += Time.unscaledDeltaTime;
+
+        if (!rightHoldStarted)
+        {
+            if (rightHoldTimer >= holdDelay)
+            {
+                rightHoldStarted = true;
+                rightHoldTimer = 0f;
+
+                InvokeMenuNavigationRight();
+            }
+        }
+        else
+        {
+            if (rightHoldTimer >= holdRepeatRate)
+            {
+                rightHoldTimer = 0f;
+
+                InvokeMenuNavigationRight();
+            }
+        }
+    }
+
+
+    //--------------------
+
+
+    void ResetLeftHold()
+    {
+        leftWasPressed = false;
+        leftHoldTimer = 0f;
+        leftHoldStarted = false;
+    }
+
+    void ResetRightHold()
+    {
+        rightWasPressed = false;
+        rightHoldTimer = 0f;
+        rightHoldStarted = false;
+    }
+
+
+    //--------------------
+
+
+    void InvokeMenuNavigationLeft()
+    {
+        if (IsSettingsCategorySelected())
+        {
+            Action_MenuSettingsNavigationLeft_isPressed?.Invoke();
+        }
+    }
+
+    void InvokeMenuNavigationRight()
+    {
+        if (IsSettingsCategorySelected())
+        {
             Action_MenuSettingsNavigationRight_isPressed?.Invoke();
         }
-        //else if (optionsManager && (optionsManager.currentMenuCategorySelected == MenuCategories.Wardrobe || optionsManager.currentMenuCategorySelected == MenuCategories.Shop))
-        //{
-        //    //print("1. MainMenuManager: OnMenuNavigation_Up");
-        //    Action_MenuNavigationRight_isPressed?.Invoke();
-        //}
+    }
+
+    bool IsSettingsCategorySelected()
+    {
+        return optionsManager &&
+        (
+            optionsManager.currentMenuCategorySelected == MenuCategories.Settings ||
+            optionsManager.currentMenuCategorySelected == MenuCategories.Controls ||
+            optionsManager.currentMenuCategorySelected == MenuCategories.Video ||
+            optionsManager.currentMenuCategorySelected == MenuCategories.Audio
+        );
     }
 }
