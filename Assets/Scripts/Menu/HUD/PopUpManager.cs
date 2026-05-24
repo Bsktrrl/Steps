@@ -146,10 +146,8 @@ public class PopUpManager : Singleton<PopUpManager>
     }
     void ShowFootprintPopup()
     {
-        print("1. ShowFootprintPopup");
         if (!DataManager.Instance.oneTimeRunData_Store.pickup_FirstFootprint)
         {
-            print("2. ShowFootprintPopup");
             ShowOneTimerPopup(footprint_Parent, footprint_Children);
 
             DataManager.Instance.oneTimeRunData_Store.pickup_FirstFootprint = true;
@@ -157,7 +155,6 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         else
         {
-            print("3. ShowFootprintPopup");
             StartCoroutine(FootprintRoutine());
         }
     }

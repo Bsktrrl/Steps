@@ -272,7 +272,9 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         //print("1. OnAbilityUp_Down");
 
         up_isPressed = true;
-        Action_Ascend_isPressed?.Invoke();
+
+        //if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Water)
+            Action_Ascend_isPressed?.Invoke();
     }
     void OnAbilityUp_Up()
     {
@@ -300,7 +302,9 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         //print("2. OnAbilityDown_Down");
 
         down_isPressed = true;
-        Action_Descend_isPressed?.Invoke();
+
+        //if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Water)
+            Action_Descend_isPressed?.Invoke();
     }
     void OnAbilityDown_Up()
     {

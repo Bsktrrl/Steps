@@ -169,13 +169,8 @@ public class SFX_Respawn : Singleton<SFX_Respawn>
         SetEffectsOff();
 
         //Sound Effect
-        if (audioSource_Player)
-        {
-            audioSource_Player.clip = sound_RespawnComplete;
-            audioSource_Player.loop = false;
-            audioSource_Player.Play();
-        }
-        
+        //PlayRespawnSound();
+
         //SFX
         if (sfx_OnHoldCompleted)
         {
@@ -185,6 +180,15 @@ public class SFX_Respawn : Singleton<SFX_Respawn>
         
         //Perform Respawn
         Action_RespawnPlayer?.Invoke();
+    }
+    public void PlayRespawnSound()
+    {
+        if (audioSource_Player)
+        {
+            audioSource_Player.clip = sound_RespawnComplete;
+            audioSource_Player.loop = false;
+            audioSource_Player.Play();
+        }
     }
 
     void SetEffectsOff()

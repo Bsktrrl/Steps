@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 {
+    public static event Action Action_CeilingGrab_isPressed;
     public static event Action Action_isCeilingGrabbing;
     public static event Action Action_isCeilingGrabbing_Finished;
     public static event Action Action_raycastCeiling;
@@ -73,6 +74,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
         if (IsTryingToExitCeilingGrab() && IsInCeilingGrabWaterfall())
             return;
 
+        Action_CeilingGrab_isPressed?.Invoke();
         StartCoroutine(RunCeilingGrab());
     }
     IEnumerator RunCeilingGrab()

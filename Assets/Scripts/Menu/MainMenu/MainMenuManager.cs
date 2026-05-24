@@ -34,6 +34,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
     [SerializeField] private Image blackScreenIconImage;
     private Coroutine blackScreenFadeRoutine;
 
+    private bool hasDoneFirstStartupFadeOut;
+
 
     //--------------------
 
@@ -418,15 +420,28 @@ public class MainMenuManager : Singleton<MainMenuManager>
     public void FadeOutBlackScreen()
     {
         StopBlackScreenFadeRoutine();
-        blackScreenFadeRoutine = StartCoroutine(FadeOutCoroutine());
+
+        bool fadeAudio = false;
+
+        if (AudioSettingsManager.Instance != null)
+        {
+            fadeAudio = AudioSettingsManager.Instance.ConsumeMasterVolumeShouldFadeUpAfterSceneLoad();
+        }
+
+        blackScreenFadeRoutine = StartCoroutine(FadeOutCoroutine(fadeAudio));
     }
 
-    private IEnumerator FadeOutCoroutine()
+    private IEnumerator FadeOutCoroutine(bool fadeAudio)
     {
         if (blackScreen == null || blackScreenImage == null || blackScreenIconImage == null)
             yield break;
 
         blackScreen.SetActive(true);
+
+        if (fadeAudio && AudioSettingsManager.Instance != null)
+        {
+            AudioSettingsManager.Instance.PrepareMasterVolumeFadeUp();
+        }
 
         Color color = blackScreenImage.color;
         float startAlpha = color.a;
@@ -437,9 +452,16 @@ public class MainMenuManager : Singleton<MainMenuManager>
         {
             elapsed += Time.unscaledDeltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
+
             color.a = Mathf.Lerp(startAlpha, 0f, t);
             blackScreenImage.color = color;
             blackScreenIconImage.color = color;
+
+            if (fadeAudio && AudioSettingsManager.Instance != null)
+            {
+                AudioSettingsManager.Instance.FadeMasterVolumeUp(t);
+            }
+
             yield return null;
         }
 
@@ -447,6 +469,11 @@ public class MainMenuManager : Singleton<MainMenuManager>
         blackScreenImage.color = color;
         blackScreenIconImage.color = color;
         blackScreen.SetActive(false);
+
+        if (fadeAudio && AudioSettingsManager.Instance != null)
+        {
+            AudioSettingsManager.Instance.FinishMasterVolumeFadeUp();
+        }
 
         blackScreenFadeRoutine = null;
     }
@@ -473,6 +500,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
         blackScreen.SetActive(true);
 
+        AudioSettingsManager.Instance.PrepareMasterVolumeFadeDown();
+
         Color color = blackScreenImage.color;
         float startAlpha = color.a;
         float duration = Mathf.Max(0.0001f, fadeDuration_Out);
@@ -482,11 +511,14 @@ public class MainMenuManager : Singleton<MainMenuManager>
         {
             elapsed += Time.unscaledDeltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
+
             float alpha = Mathf.Lerp(startAlpha, 1f, t);
 
             color.a = alpha;
             blackScreenImage.color = color;
             blackScreenIconImage.color = color;
+
+            AudioSettingsManager.Instance.FadeMasterVolumeDown(t);
 
             if (alpha >= coverThreshold)
                 break;
@@ -497,6 +529,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
         color.a = 1f;
         blackScreenImage.color = color;
         blackScreenIconImage.color = color;
+
+        AudioSettingsManager.Instance.FinishMasterVolumeFadeDown();
 
         Canvas.ForceUpdateCanvases();
         yield return new WaitForEndOfFrame();
@@ -509,12 +543,12 @@ public class MainMenuManager : Singleton<MainMenuManager>
         blackScreenFadeRoutine = null;
     }
     public IEnumerator PlayFadeOutAndWait()
-{
-    StopBlackScreenFadeRoutine();
-    blackScreenFadeRoutine = StartCoroutine(FadeOutCoroutine());
-    yield return blackScreenFadeRoutine;
-    blackScreenFadeRoutine = null;
-}
+    {
+        StopBlackScreenFadeRoutine();
+        blackScreenFadeRoutine = StartCoroutine(FadeOutCoroutine(true));
+        yield return blackScreenFadeRoutine;
+        blackScreenFadeRoutine = null;
+    }
 
     #endregion
 }

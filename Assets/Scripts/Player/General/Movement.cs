@@ -4164,7 +4164,6 @@ public class Movement : Singleton<Movement>
     {
         StartCoroutine(Resetplayer(0.01f));
     }
-
     IEnumerator Resetplayer(float waitTime)
     {
         isRespawning = true;
@@ -4220,6 +4219,8 @@ public class Movement : Singleton<Movement>
             PM.playerBody.transform.localRotation);
 
         CeilingGrab.ResetCeilingGrab();
+
+        SFX_Respawn.Instance.PlayRespawnSound();
 
         yield return new WaitForSeconds(waitTime);
 

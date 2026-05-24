@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class PauseMenu_ExitLevel_Button : MonoBehaviour
 {
@@ -11,10 +8,6 @@ public class PauseMenu_ExitLevel_Button : MonoBehaviour
 
     MapManager mapManager;
     MapStatsGathered mapStatsGathered;
-
-
-    //--------------------
-
 
     private void Start()
     {
@@ -31,12 +24,11 @@ public class PauseMenu_ExitLevel_Button : MonoBehaviour
 
     IEnumerator ExitLevelCoroutine()
     {
-        yield return mapManager.FadeInBlackScreenCoroutine(MapManager.Instance.blackScreen.GetComponent<Image>());
-        yield return mapManager.FadeInBlackScreenCoroutine(MapManager.Instance.blackScreen.GetComponent<LoadingIcon>().loadingIcon.GetComponent<Image>());
+        yield return mapManager.FadeInBlackScreenCoroutine();
 
         MapStatsGathered.Instance.ExitLevel();
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
 
         PlayerManager.Instance.QuitLevel();
 

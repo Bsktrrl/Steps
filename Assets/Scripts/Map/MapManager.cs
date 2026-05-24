@@ -44,6 +44,8 @@ public class MapManager : Singleton<MapManager>
     public bool introSequence_Finished;
     public bool haveIntroSequence = true;
 
+    private Coroutine blackScreenFadeRoutine;
+
 
     //--------------------
 
@@ -182,60 +184,115 @@ public class MapManager : Singleton<MapManager>
 
     public void FadeOutBlackScreen()
     {
-        StartCoroutine(FadeOutCoroutine(blackScreen.GetComponent<Image>()));
-        StartCoroutine(FadeOutCoroutine(blackScreen.GetComponent<LoadingIcon>().loadingIcon.GetComponent<Image>()));
+        StopBlackScreenFadeRoutine();
+        blackScreenFadeRoutine = StartCoroutine(FadeOutCoroutine());
     }
-    private IEnumerator FadeOutCoroutine(Image fadeImage)
-    {
-        Image blackScreenImage = fadeImage;
 
-        yield return new WaitForSeconds(1f);
+    private IEnumerator FadeOutCoroutine()
+    {
+        if (blackScreen == null)
+            yield break;
+
+        Image blackScreenImage = blackScreen.GetComponent<Image>();
+        Image blackScreenIconImage = blackScreen.GetComponent<LoadingIcon>().loadingIcon.GetComponent<Image>();
+
+        if (blackScreenImage == null || blackScreenIconImage == null)
+            yield break;
+
+        blackScreen.SetActive(true);
+
+        AudioSettingsManager.Instance.PrepareMasterVolumeFadeUp();
+
+        yield return new WaitForSecondsRealtime(1f);
 
         Color color = blackScreenImage.color;
         float startAlpha = color.a;
+        float duration = Mathf.Max(0.0001f, fadeDuration_In);
         float elapsed = 0f;
 
-        while (elapsed < fadeDuration_In)
+        while (elapsed < duration)
         {
             elapsed += Time.unscaledDeltaTime;
-            float alpha = Mathf.Lerp(startAlpha, 0f, elapsed / fadeDuration_In);
+            float t = Mathf.Clamp01(elapsed / duration);
+
+            float alpha = Mathf.Lerp(startAlpha, 0f, t);
+
             color.a = alpha;
             blackScreenImage.color = color;
+            blackScreenIconImage.color = color;
+
+            AudioSettingsManager.Instance.FadeMasterVolumeUp(t);
+
             yield return null;
         }
 
-        // Ensure it's fully transparent at the end
         color.a = 0f;
         blackScreenImage.color = color;
+        blackScreenIconImage.color = color;
+
         blackScreen.SetActive(false);
+
+        AudioSettingsManager.Instance.FinishMasterVolumeFadeUp();
+
+        blackScreenFadeRoutine = null;
     }
     public void FadeInBlackScreen()
     {
-        StartCoroutine(FadeInBlackScreenCoroutine(blackScreen.GetComponent<Image>()));
-        StartCoroutine(FadeInBlackScreenCoroutine(blackScreen.GetComponent<LoadingIcon>().loadingIcon.GetComponent<Image>()));
+        StopBlackScreenFadeRoutine();
+        blackScreenFadeRoutine = StartCoroutine(FadeInBlackScreenCoroutine());
     }
-    public IEnumerator FadeInBlackScreenCoroutine(Image fadeImage)
+
+    public IEnumerator FadeInBlackScreenCoroutine()
     {
+        if (blackScreen == null)
+            yield break;
+
+        Image blackScreenImage = blackScreen.GetComponent<Image>();
+        Image blackScreenIconImage = blackScreen.GetComponent<LoadingIcon>().loadingIcon.GetComponent<Image>();
+
+        if (blackScreenImage == null || blackScreenIconImage == null)
+            yield break;
+
         blackScreen.SetActive(true);
 
-        Image blackScreenImage = fadeImage;
+        AudioSettingsManager.Instance.PrepareMasterVolumeFadeDown();
 
         Color color = blackScreenImage.color;
-        float startAlpha = color.a; // should be 0 if transparent
+        float startAlpha = color.a;
+        float duration = Mathf.Max(0.0001f, fadeDuration_Out);
         float elapsed = 0f;
 
-        while (elapsed < fadeDuration_Out)
+        while (elapsed < duration)
         {
-            elapsed += Time.deltaTime;
-            float alpha = Mathf.Lerp(startAlpha, 1f, elapsed / fadeDuration_Out); // fade to opaque
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+
+            float alpha = Mathf.Lerp(startAlpha, 1f, t);
+
             color.a = alpha;
             blackScreenImage.color = color;
+            blackScreenIconImage.color = color;
+
+            AudioSettingsManager.Instance.FadeMasterVolumeDown(t);
+
             yield return null;
         }
 
-        // Ensure it's fully opaque at the end
         color.a = 1f;
         blackScreenImage.color = color;
+        blackScreenIconImage.color = color;
+
+        AudioSettingsManager.Instance.FinishMasterVolumeFadeDown();
+
+        blackScreenFadeRoutine = null;
+    }
+    private void StopBlackScreenFadeRoutine()
+    {
+        if (blackScreenFadeRoutine != null)
+        {
+            StopCoroutine(blackScreenFadeRoutine);
+            blackScreenFadeRoutine = null;
+        }
     }
 
     public void Action_EndIntroSequence_Invoke()

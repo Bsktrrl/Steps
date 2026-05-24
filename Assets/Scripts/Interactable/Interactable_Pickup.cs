@@ -16,6 +16,7 @@ public class Interactable_Pickup : MonoBehaviour
     public static event Action Action_FlippersGot;
     public static event Action Action_JumpingGot;
 
+    public static event Action Action_goalReached_Early;
     public static event Action Action_goalReached;
 
     MapManager mapManager;
@@ -116,6 +117,9 @@ public class Interactable_Pickup : MonoBehaviour
     {
         yield return new WaitForSeconds(0.15f);
 
+        Action_goalReached_Early?.Invoke();
+        PlayPickupSound();
+
         //PlayGlueplantEffect
         if (gameObject.GetComponent<PickupAndSmokeScript>() && gameObject.GetComponent<PickupAndSmokeScript>().gatherEffectObject)
         {
@@ -131,7 +135,6 @@ public class Interactable_Pickup : MonoBehaviour
 
         MapManager.Instance.FadeInBlackScreen();
         Action_goalReached?.Invoke();
-        PlayPickupSound();
 
         yield return new WaitForSeconds(1f);
 
@@ -236,7 +239,6 @@ public class Interactable_Pickup : MonoBehaviour
                             {
                                 DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].essenceList[j].isTaken = true;
                                 Action_EssencePickupGot_isActive();
-                                PlayPickupSound();
 
                                 //print("0. Pickup got: Essence");
 
@@ -251,7 +253,6 @@ public class Interactable_Pickup : MonoBehaviour
                         {
                             DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].levelSkin.isTaken = true;
                             Action_SkinPickupGot_isActive();
-                            PlayPickupSound();
 
                             //print("0. Pickup got: Skin");
                             return;
@@ -266,7 +267,6 @@ public class Interactable_Pickup : MonoBehaviour
                             {
                                 DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].maxStepList[j].isTaken = true;
                                 Action_StepUpPickupGot_isActive();
-                                PlayPickupSound();
 
                                 //print("0. Pickup got: MaxStep");
                                 return;
@@ -277,6 +277,8 @@ public class Interactable_Pickup : MonoBehaviour
                     default:
                         break;
                 }
+
+                //PlayPickupSound();
 
                 //If it's a goal
                 if (goal)
@@ -423,7 +425,6 @@ public class Interactable_Pickup : MonoBehaviour
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Snorkel = true;
                 MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
                 Action_AbilityPickupGot_isActive();
-                PlayPickupSound();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.Snorkel = true;
                 Action_SnorkelGot?.Invoke();
                 break;
@@ -431,7 +432,6 @@ public class Interactable_Pickup : MonoBehaviour
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers = true;
                 MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
                 Action_AbilityPickupGot_isActive();
-                PlayPickupSound();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.Flippers = true;
                 Action_FlippersGot?.Invoke();
                 break;
@@ -439,14 +439,12 @@ public class Interactable_Pickup : MonoBehaviour
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.OxygenTank = true;
                 MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
                 Action_AbilityPickupGot_isActive();
-                PlayPickupSound();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.OxygenTank = true;
                 break;
             case Abilities.SpringShoes:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SpringShoes = true;
                 MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
                 Action_AbilityPickupGot_isActive();
-                PlayPickupSound();
                 Action_JumpingGot?.Invoke();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.SpringShoes = true;
                 break;
@@ -454,41 +452,38 @@ public class Interactable_Pickup : MonoBehaviour
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.GrapplingHook = true;
                 MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
                 Action_AbilityPickupGot_isActive();
-                PlayPickupSound();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.GrapplingHook = true;
                 break;
             case Abilities.ClimingGloves:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.ClimingGloves = true;
                 MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
                 Action_AbilityPickupGot_isActive();
-                PlayPickupSound();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.ClimingGloves = true;
                 break;
             case Abilities.HandDrill:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.HandDrill = true;
                 MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
                 Action_AbilityPickupGot_isActive();
-                PlayPickupSound();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.HandDrill = true;
                 break;
             case Abilities.DrillHelmet:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.DrillHelmet = true;
                 MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
                 Action_AbilityPickupGot_isActive();
-                PlayPickupSound();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.DrillHelmet = true;
                 break;
             case Abilities.DrillBoots:
                 PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.DrillBoots = true;
                 MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
                 Action_AbilityPickupGot_isActive();
-                PlayPickupSound();
                 mapManager.mapInfo_ToSave.abilitiesGotInLevel.DrillBoots = true;
                 break;
 
             default:
                 break;
         }
+
+        //PlayPickupSound();
 
         mapManager.SaveMapInfo();
 
@@ -532,12 +527,10 @@ public class Interactable_Pickup : MonoBehaviour
     {
         AudioSource audioSource = GetComponent<AudioSource>();
 
-        if (audioSource == null || audioSource.clip == null)
+        if (audioSource == null || audioSource.clip == null || !gameObject.activeInHierarchy)
             return;
 
         audioSource.PlayOneShot(audioSource.clip);
-
-        print("100000. Pickup");
     }
 
 
