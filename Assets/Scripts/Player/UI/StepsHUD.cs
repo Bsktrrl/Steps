@@ -463,7 +463,33 @@ public class StepsHUD : Singleton<StepsHUD>
 
         GlowUpAll();
 
-        for (int i = 0; i < stepsIconList.Count; i++)
+        int maxSteps = Mathf.Clamp(
+            PlayerStats.Instance.stats.steps_Max,
+            0,
+            stepsIconList.Count
+        );
+
+        int startIndex = Mathf.Clamp(
+            stepCounter,
+            0,
+            maxSteps
+        );
+
+        // Make sure all already-filled footprints are correct,
+        // but do not animate them.
+        for (int i = 0; i < startIndex; i++)
+        {
+            UpdateFootprints(i, false);
+        }
+
+        // Make sure unavailable extra footprints are passive immediately.
+        for (int i = maxSteps; i < stepsIconList.Count; i++)
+        {
+            UpdateFootprints(i, false);
+        }
+
+        // Animate only from the first inactive/used footprint.
+        for (int i = startIndex; i < maxSteps; i++)
         {
             UpdateFootprints(i, true);
             yield return new WaitForSeconds(waitTime);

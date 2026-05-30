@@ -4346,6 +4346,13 @@ public class Movement : Singleton<Movement>
 
     public void RespawnPlayer()
     {
+        if (StepsHUD.Instance != null &&
+            StatsRoot != null &&
+            StatsRoot.stats != null)
+        {
+            StepsHUD.Instance.stepCounter = StatsRoot.stats.steps_Current;
+        }
+
         StartCoroutine(Resetplayer(0.01f));
     }
     IEnumerator Resetplayer(float waitTime)
