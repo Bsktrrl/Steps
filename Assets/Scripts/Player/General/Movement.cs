@@ -4095,14 +4095,59 @@ public class Movement : Singleton<Movement>
         }
 
         // 3. Pickup: wait for pickup animation/sound, then respawn.
-        if (IsStandingOnRespawnDelayingPickup())
+        Interactable_Pickup pickup = GetPickupOnStandingBlock();
+
+        if (pickup != null && !pickup.goal)
         {
-            StartCoroutine(RespawnAfterPickupHasFinished());
-            return;
+            if (pickup.abilityReceived != Abilities.None)
+            {
+                StartCoroutine(RespawnAfterAbilityPopupHasClosed());
+                return;
+            }
+
+            if (IsRespawnDelayingItemPickup(pickup))
+            {
+                StartCoroutine(RespawnAfterPickupHasFinished());
+                return;
+            }
         }
 
         // 4. Normal zero-step case.
         StartCoroutine(RespawnPlayerWhenReachingZeroSteps_Delay(0.1f));
+    }
+    private bool IsRespawnDelayingItemPickup(Interactable_Pickup pickup)
+    {
+        if (pickup == null)
+            return false;
+
+        return pickup.itemReceived == Items.Essence ||
+               pickup.itemReceived == Items.Footprint ||
+               pickup.itemReceived == Items.Skin;
+    }
+    private IEnumerator RespawnAfterAbilityPopupHasClosed()
+    {
+        // Wait one frame so Interactable_Pickup.GetAbility()
+        // has time to call PopUpManager.ShowAbilityPopup().
+        yield return null;
+
+        // Wait until the ability popup has actually opened.
+        while (PopUpManager.Instance != null &&
+               !PopUpManager.Instance.ability_Active)
+        {
+            yield return null;
+        }
+
+        // Wait until the player closes the ability popup.
+        while (PopUpManager.Instance != null &&
+               PopUpManager.Instance.ability_Active)
+        {
+            yield return null;
+        }
+
+        // Optional: wait a short moment so the UI fade-out starts/finishes more cleanly.
+        yield return new WaitForSeconds(0.1f);
+
+        RespawnPlayer();
     }
     private bool IsStandingOnCheckpoint()
     {
@@ -4202,9 +4247,7 @@ public class Movement : Singleton<Movement>
         if (pickup.goal)
             return false;
 
-        return pickup.itemReceived == Items.Essence ||
-               pickup.itemReceived == Items.Footprint ||
-               pickup.itemReceived == Items.Skin;
+        return IsRespawnDelayingItemPickup(pickup);
     }
 
     #endregion
