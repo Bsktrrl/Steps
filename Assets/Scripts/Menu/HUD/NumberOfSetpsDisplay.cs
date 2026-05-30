@@ -10,7 +10,6 @@ public class NumberOfSetpsDisplay : MonoBehaviour
     [SerializeField] Image number_Current;
     [SerializeField] Image number_Max;
 
-    [SerializeField] float numberSpawnTime = 0.15f;
     [SerializeField] float extraTimeDelay = 0.2f;
 
     bool firstTimeRun_Check;
@@ -26,8 +25,6 @@ public class NumberOfSetpsDisplay : MonoBehaviour
 
     private void OnEnable()
     {
-        UpdateNumberDisplaySpeed();
-
         Action_Run_FirstTime += Update_FirstTime;
 
         Interactable_Pickup.Action_PickupGot += UpdateNumbersDisplay;
@@ -35,11 +32,10 @@ public class NumberOfSetpsDisplay : MonoBehaviour
         Movement.Action_StepTaken += UpdateNumbersDisplay;
         Block_MushroomCircle.Action_MushroomCircleEntered += UpdateNumbersDisplay;
 
-        Movement.Action_RespawnPlayerLate += UpdateNumberDisplay_Respawn;
+        Movement.Action_RespawnPlayer += UpdateNumberDisplay_Respawn;
         Block_Checkpoint.Action_CheckPointEntered += UpdateNumberDisplay_Checkpoint;
 
         SettingsManager.Action_SetNewStepDisplay += HandleStepDisplayChanged;
-        SettingsManager.Action_SetNewStepDisplay += UpdateNumberDisplaySpeed;
 
         // If this number display is being enabled because of a settings change,
         // it should snap to the real current value immediately.
@@ -67,11 +63,10 @@ public class NumberOfSetpsDisplay : MonoBehaviour
         Movement.Action_StepTaken -= UpdateNumbersDisplay;
         Block_MushroomCircle.Action_MushroomCircleEntered -= UpdateNumbersDisplay;
 
-        Movement.Action_RespawnPlayerLate -= UpdateNumberDisplay_Respawn;
+        Movement.Action_RespawnPlayer -= UpdateNumberDisplay_Respawn;
         Block_Checkpoint.Action_CheckPointEntered -= UpdateNumberDisplay_Checkpoint;
 
         SettingsManager.Action_SetNewStepDisplay -= HandleStepDisplayChanged;
-        SettingsManager.Action_SetNewStepDisplay -= UpdateNumberDisplaySpeed;
 
         StopRunningNumberCoroutine();
     }
@@ -118,14 +113,6 @@ public class NumberOfSetpsDisplay : MonoBehaviour
 
     //--------------------
 
-
-    void UpdateNumberDisplaySpeed()
-    {
-        if (DataManager.Instance.settingData_StoreList.currentStepDisplay == StepDisplay.Number)
-            numberSpawnTime = 0.15f;
-        else
-            numberSpawnTime = 0.1f;
-    }
 
     void HandleStepDisplayChanged()
     {
@@ -181,7 +168,8 @@ public class NumberOfSetpsDisplay : MonoBehaviour
     public void UpdateNumberDisplay_Respawn()
     {
         StopRunningNumberCoroutine();
-        updateFootprintCoroutine = StartCoroutine(UpdateNumberDelay_Respawn(StepsHUD.Instance.StepsDisplay_RespawnTime, numberSpawnTime));
+
+        updateFootprintCoroutine = StartCoroutine(UpdateNumberDelay_Respawn(StepsHUD.Instance.StepsDisplay_RespawnTime,StepsHUD.Instance.footprint_SpawnTime));
     }
 
     public void UpdateNumberDisplay_Checkpoint()
@@ -192,7 +180,7 @@ public class NumberOfSetpsDisplay : MonoBehaviour
 
     IEnumerator UpdateNumberDelay_Respawn(float startDelay, float waitTime)
     {
-        yield return new WaitForSeconds(startDelay /*+ extraTimeDelay*/);
+        yield return new WaitForSeconds(startDelay + StepsHUD.Instance.footprint_SpawnTime + 0.15f);
 
         int startValue = Mathf.Clamp(StepsHUD.Instance.stepCounter, 0, PlayerStats.Instance.stats.steps_Max);
         int maxValue = PlayerStats.Instance.stats.steps_Max;
@@ -211,7 +199,7 @@ public class NumberOfSetpsDisplay : MonoBehaviour
 
     IEnumerator UpdateNumberDelay_Checkpoint(float startDelay)
     {
-        yield return new WaitForSeconds(startDelay /*+ extraTimeDelay*/);
+        yield return new WaitForSeconds(startDelay + 0.25f);
 
         // Checkpoint should jump directly to max, not count upward.
         SetNumbersInstant(PlayerStats.Instance.stats.steps_Max, PlayerStats.Instance.stats.steps_Max);
