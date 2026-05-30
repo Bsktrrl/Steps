@@ -4055,20 +4055,16 @@ public class Movement : Singleton<Movement>
             isSlopeGliding = false;
         }
 
-        if (StatsRoot.stats.steps_Current <= 0 &&
-            TryGetStandingInfo(out BlockInfo slopeCheckInfo) &&
-            slopeCheckInfo.blockType != BlockType.Slope)
+        if (StatsRoot.stats.steps_Current <= 0 && TryGetStandingInfo(out BlockInfo slopeCheckInfo) && slopeCheckInfo.blockType != BlockType.Slope)
         {
             StatsRoot.stats.steps_Current = 0;
-
-            StartCoroutine(RespawnPlayerWhenReachingZeroSteps_Delay(0.2f));
+            HandleZeroStepsAfterLanding();
         }
         else
         {
             Action_StepTaken_Late_Invoke();
         }
     }
-
     IEnumerator RespawnPlayerWhenReachingZeroSteps_Delay(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
@@ -4076,6 +4072,139 @@ public class Movement : Singleton<Movement>
         RespawnPlayer();
 
         Action_StepTaken_Late_Invoke();
+    }
+
+    private void HandleZeroStepsAfterLanding()
+    {
+        // Let late step systems run first, so landing/pickup/goal/checkpoint systems
+        // get a chance to react to the final step.
+        Action_StepTaken_Late_Invoke();
+
+        // 1. Checkpoint: do not respawn. Fill steps instead.
+        if (IsStandingOnCheckpoint())
+        {
+            FillStepsToMax();
+            UpdateAvailableMovementBlocks();
+            return;
+        }
+
+        // 2. Goal: do not respawn. Let Interactable_Pickup continue its goal system.
+        if (IsStandingOnGoal())
+        {
+            return;
+        }
+
+        // 3. Pickup: wait for pickup animation/sound, then respawn.
+        if (IsStandingOnRespawnDelayingPickup())
+        {
+            StartCoroutine(RespawnAfterPickupHasFinished());
+            return;
+        }
+
+        // 4. Normal zero-step case.
+        StartCoroutine(RespawnPlayerWhenReachingZeroSteps_Delay(0.1f));
+    }
+    private bool IsStandingOnCheckpoint()
+    {
+        return blockStandingOn != null &&
+               blockStandingOn.GetComponent<Block_Checkpoint>() != null;
+    }
+
+    private void FillStepsToMax()
+    {
+        if (StatsRoot.stats == null)
+            return;
+
+        StatsRoot.stats.steps_Current = StatsRoot.stats.steps_Max;
+
+        if (StepsHUD.Instance != null)
+            StepsHUD.Instance.stepCounter = StatsRoot.stats.steps_Current;
+    }
+    private Interactable_Pickup GetPickupAtPlayerPosition()
+    {
+        Collider[] hits = Physics.OverlapSphere(
+            transform.position,
+            0.45f,
+            ~0,
+            QueryTriggerInteraction.Collide
+        );
+
+        foreach (Collider hit in hits)
+        {
+            Interactable_Pickup pickup = hit.GetComponentInParent<Interactable_Pickup>();
+
+            if (pickup != null)
+                return pickup;
+        }
+
+        return null;
+    }
+    private IEnumerator RespawnAfterPickupHasFinished()
+    {
+        bool pickupFinished = false;
+
+        void OnPickupFinished()
+        {
+            pickupFinished = true;
+        }
+
+        Action_PickupAnimation_Complete += OnPickupFinished;
+
+        // Safety fallback, so the player does not get stuck forever
+        // if the pickup has no audio clip or something goes wrong.
+        float timer = 0f;
+        float maxWaitTime = 2.5f;
+
+        while (!pickupFinished && timer < maxWaitTime)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        Action_PickupAnimation_Complete -= OnPickupFinished;
+
+        RespawnPlayer();
+    }
+    private Interactable_Pickup GetPickupOnStandingBlock()
+    {
+        Collider[] hits = Physics.OverlapSphere(
+            transform.position,
+            0.45f,
+            ~0,
+            QueryTriggerInteraction.Collide
+        );
+
+        foreach (Collider hit in hits)
+        {
+            Interactable_Pickup pickup = hit.GetComponentInParent<Interactable_Pickup>();
+
+            if (pickup != null)
+                return pickup;
+        }
+
+        return null;
+    }
+
+    private bool IsStandingOnGoal()
+    {
+        Interactable_Pickup pickup = GetPickupOnStandingBlock();
+
+        return pickup != null && pickup.goal;
+    }
+
+    private bool IsStandingOnRespawnDelayingPickup()
+    {
+        Interactable_Pickup pickup = GetPickupOnStandingBlock();
+
+        if (pickup == null)
+            return false;
+
+        if (pickup.goal)
+            return false;
+
+        return pickup.itemReceived == Items.Essence ||
+               pickup.itemReceived == Items.Footprint ||
+               pickup.itemReceived == Items.Skin;
     }
 
     #endregion
@@ -4394,6 +4523,11 @@ public class Movement : Singleton<Movement>
     public void Action_isGrapplingHooking_Finished_Invoke()
     {
         Action_isGrapplingHooking_Finished?.Invoke();
+    }
+
+    public void Action_PickupAnimation_Complete_Invoke()
+    {
+        Action_PickupAnimation_Complete?.Invoke();
     }
 
     #endregion
