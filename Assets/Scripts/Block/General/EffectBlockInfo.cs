@@ -97,12 +97,15 @@ public class EffectBlockInfo : MonoBehaviour
 
         int? forcedCost = null;
 
-        if (GetComponent<Block_MushroomCircle>())
-            forcedCost = -1;
-        else if (GetComponent<Block_Checkpoint>()
-              || GetComponent<Block_RefillSteps>()
-              || GetComponent<Block_Pusher>()
-              || GetComponent<Block_Teleport>())
+        //if (GetComponent<Block_MushroomCircle>())
+        //    forcedCost = -1;
+        //else if (GetComponent<Block_Checkpoint>()
+        //      || GetComponent<Block_RefillSteps>()
+        //      || GetComponent<Block_Pusher>()
+        //      || GetComponent<Block_Teleport>())
+        //    forcedCost = 0;
+
+        if (GetComponent<Block_Teleport>())
             forcedCost = 0;
 
         if (forcedCost.HasValue)

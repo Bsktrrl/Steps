@@ -4055,13 +4055,25 @@ public class Movement : Singleton<Movement>
             isSlopeGliding = false;
         }
 
-        if (StatsRoot.stats.steps_Current < 0 &&
+        if (StatsRoot.stats.steps_Current <= 0 &&
             TryGetStandingInfo(out BlockInfo slopeCheckInfo) &&
             slopeCheckInfo.blockType != BlockType.Slope)
         {
             StatsRoot.stats.steps_Current = 0;
-            RespawnPlayer();
+
+            StartCoroutine(RespawnPlayerWhenReachingZeroSteps_Delay(0.2f));
         }
+        else
+        {
+            Action_StepTaken_Late_Invoke();
+        }
+    }
+
+    IEnumerator RespawnPlayerWhenReachingZeroSteps_Delay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        RespawnPlayer();
 
         Action_StepTaken_Late_Invoke();
     }
