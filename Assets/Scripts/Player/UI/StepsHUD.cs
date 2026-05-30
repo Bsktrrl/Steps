@@ -78,7 +78,7 @@ public class StepsHUD : Singleton<StepsHUD>
     {
         Interactable_Pickup.Action_StepsUpPickupGot += GetExtraFootprint;
         Movement.Action_StepTaken += UpdateStepsDisplay_Walking;
-        Movement.Action_RespawnPlayerEarly += UpdateStepsDisplay_Respawn;
+        Movement.Action_RespawnPlayer += UpdateStepsDisplay_Respawn;
         Block_Checkpoint.Action_CheckPointEntered += UpdateStepsDisplay_Checkpoint;
     }
 
@@ -86,7 +86,7 @@ public class StepsHUD : Singleton<StepsHUD>
     {
         Interactable_Pickup.Action_StepsUpPickupGot -= GetExtraFootprint;
         Movement.Action_StepTaken -= UpdateStepsDisplay_Walking;
-        Movement.Action_RespawnPlayerEarly -= UpdateStepsDisplay_Respawn;
+        Movement.Action_RespawnPlayer -= UpdateStepsDisplay_Respawn;
         Block_Checkpoint.Action_CheckPointEntered -= UpdateStepsDisplay_Checkpoint;
     }
 
