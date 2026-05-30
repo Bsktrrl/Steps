@@ -210,6 +210,11 @@ public class Movement : Singleton<Movement>
     [SerializeField] private float cubeBlockRefreshDistance = 0.05f;
     [SerializeField] private float cubeBlockRefreshAccumulatedDistance = 0f;
 
+    [Header("Pickup Respawn waitTime")]
+    [SerializeField] private float zeroStepRespawnDelay = 0.1f;
+    [SerializeField] private float pickupRespawnDelayReduction = 0.0f;
+    [SerializeField] private float abilityRespawnExtraDelay = 0.3f;
+
     #endregion
 
     #region Cached Accessors
@@ -4101,19 +4106,19 @@ public class Movement : Singleton<Movement>
         {
             if (pickup.abilityReceived != Abilities.None)
             {
-                StartCoroutine(RespawnAfterAbilityPopupHasClosed());
+                StartCoroutine(RespawnAfterAbilityPopupHasClosed(zeroStepRespawnDelay + abilityRespawnExtraDelay));
                 return;
             }
 
             if (IsRespawnDelayingItemPickup(pickup))
             {
-                StartCoroutine(RespawnAfterPickupHasFinished());
+                StartCoroutine(RespawnAfterPickupHasFinished(Mathf.Max(0f, zeroStepRespawnDelay - pickupRespawnDelayReduction)));
                 return;
             }
         }
 
         // 4. Normal zero-step case.
-        StartCoroutine(RespawnPlayerWhenReachingZeroSteps_Delay(0.1f));
+        StartCoroutine(RespawnPlayerWhenReachingZeroSteps_Delay(zeroStepRespawnDelay));
     }
     private bool IsRespawnDelayingItemPickup(Interactable_Pickup pickup)
     {
@@ -4124,28 +4129,23 @@ public class Movement : Singleton<Movement>
                pickup.itemReceived == Items.Footprint ||
                pickup.itemReceived == Items.Skin;
     }
-    private IEnumerator RespawnAfterAbilityPopupHasClosed()
+    private IEnumerator RespawnAfterAbilityPopupHasClosed(float waitTimeAfterPopupClosed)
     {
-        // Wait one frame so Interactable_Pickup.GetAbility()
-        // has time to call PopUpManager.ShowAbilityPopup().
         yield return null;
 
-        // Wait until the ability popup has actually opened.
         while (PopUpManager.Instance != null &&
                !PopUpManager.Instance.ability_Active)
         {
             yield return null;
         }
 
-        // Wait until the player closes the ability popup.
         while (PopUpManager.Instance != null &&
                PopUpManager.Instance.ability_Active)
         {
             yield return null;
         }
 
-        // Optional: wait a short moment so the UI fade-out starts/finishes more cleanly.
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(waitTimeAfterPopupClosed);
 
         RespawnPlayer();
     }
@@ -4184,7 +4184,7 @@ public class Movement : Singleton<Movement>
 
         return null;
     }
-    private IEnumerator RespawnAfterPickupHasFinished()
+    private IEnumerator RespawnAfterPickupHasFinished(float waitTimeAfterPickup)
     {
         bool pickupFinished = false;
 
@@ -4195,8 +4195,6 @@ public class Movement : Singleton<Movement>
 
         Action_PickupAnimation_Complete += OnPickupFinished;
 
-        // Safety fallback, so the player does not get stuck forever
-        // if the pickup has no audio clip or something goes wrong.
         float timer = 0f;
         float maxWaitTime = 2.5f;
 
@@ -4207,6 +4205,8 @@ public class Movement : Singleton<Movement>
         }
 
         Action_PickupAnimation_Complete -= OnPickupFinished;
+
+        yield return new WaitForSeconds(waitTimeAfterPickup);
 
         RespawnPlayer();
     }
