@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,15 +6,7 @@ using UnityEngine;
 public class EssenceActivator : MonoBehaviour
 {
     [Header("Abilities Needed to Aquire Essence")]
-    [SerializeField] bool needAbility_Snorkel;
-    [SerializeField] bool needAbility_OxygenTank;
-    [SerializeField] bool needAbility_Flipper;
-    [SerializeField] bool needAbility_DrillHelmet;
-    [SerializeField] bool needAbility_DrillBoots;
-    [SerializeField] bool needAbility_HandDrill;
-    [SerializeField] bool needAbility_GrapplingHook;
-    [SerializeField] bool needAbility_SpringShoes;
-    [SerializeField] bool needAbility_ClimbingGloves;
+    [SerializeField] List<EssenceRequirements> essenceRequirementsList = new List<EssenceRequirements>();
 
     [Header("MeshRenderer")]
     [SerializeField] MeshRenderer meshRenderer;
@@ -68,20 +61,62 @@ public class EssenceActivator : MonoBehaviour
         }
     }
 
+
+    //--------------------
+
+
     bool CheckIfActive()
     {
-        if (needAbility_Snorkel && !PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel) return false;
-        if (needAbility_OxygenTank && !PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank && !PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank) return false;
-        if (needAbility_Flipper && !PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers) return false;
+        if (essenceRequirementsList.Count <= 0) return true;
 
-        if (needAbility_DrillHelmet && !PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillHelmet && !PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillHelmet) return false;
-        if (needAbility_DrillBoots && !PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillBoots && !PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillBoots) return false;
+        foreach (EssenceRequirements requirements in essenceRequirementsList)
+        {
+            if (RequirementsAreMet(requirements))
+                return true;
+        }
 
-        if (needAbility_HandDrill && !PlayerStats.Instance.stats.abilitiesGot_Temporary.HandDrill && !PlayerStats.Instance.stats.abilitiesGot_Permanent.HandDrill) return false;
-        if (needAbility_GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) return false;
-        if (needAbility_SpringShoes && !PlayerStats.Instance.stats.abilitiesGot_Temporary.SpringShoes && !PlayerStats.Instance.stats.abilitiesGot_Permanent.SpringShoes) return false;
-        if (needAbility_ClimbingGloves && !PlayerStats.Instance.stats.abilitiesGot_Temporary.ClimingGloves && !PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimingGloves) return false;
+        return false;
+    }
+
+    bool RequirementsAreMet(EssenceRequirements requirements)
+    {
+        if (requirements.needAbility_Snorkel && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel, PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel)) return false;
+
+        if (requirements.needAbility_OxygenTank && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank, PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank)) return false;
+
+        if (requirements.needAbility_Flipper && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers, PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers)) return false;
+
+        if (requirements.needAbility_DrillHelmet && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillHelmet, PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillHelmet)) return false;
+
+        if (requirements.needAbility_DrillBoots && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillBoots, PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillBoots)) return false;
+
+        if (requirements.needAbility_HandDrill && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.HandDrill, PlayerStats.Instance.stats.abilitiesGot_Permanent.HandDrill)) return false;
+
+        if (requirements.needAbility_GrapplingHook && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook, PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook)) return false;
+
+        if (requirements.needAbility_SpringShoes && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.SpringShoes, PlayerStats.Instance.stats.abilitiesGot_Permanent.SpringShoes)) return false;
+
+        if (requirements.needAbility_ClimbingGloves && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.ClimingGloves, PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimingGloves)) return false;
 
         return true;
     }
+
+    bool HasAbility(bool temporaryAbility, bool permanentAbility)
+    {
+        return temporaryAbility || permanentAbility;
+    }
+}
+
+[Serializable]
+public class EssenceRequirements
+{
+    public bool needAbility_Snorkel;
+    public bool needAbility_OxygenTank;
+    public bool needAbility_Flipper;
+    public bool needAbility_DrillHelmet;
+    public bool needAbility_DrillBoots;
+    public bool needAbility_HandDrill;
+    public bool needAbility_GrapplingHook;
+    public bool needAbility_SpringShoes;
+    public bool needAbility_ClimbingGloves;
 }
