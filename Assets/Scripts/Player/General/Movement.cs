@@ -2171,10 +2171,26 @@ public class Movement : Singleton<Movement>
         {
             if (info.blockElement == BlockElement.Water)
             {
-                if (IsBlockedDeepWater(finalTarget))
+                bool targetHasWaterAbove =
+                    PerformMovementRaycast(finalTarget.transform.position, Vector3.up, 1f, out GameObject aboveWaterObj) == RaycastHitObjects.BlockInfo &&
+                    TryGetBlockInfo(aboveWaterObj, out BlockInfo aboveWaterInfo) &&
+                    aboveWaterInfo.blockElement == BlockElement.Water;
+
+                if (PlayerCanEnterDeepWater())
+                {
+                    if (targetHasWaterAbove)
+                        SetMoveTarget(moveOption, finalTarget);
+                    else
+                        ClearMoveTarget(moveOption);
+                }
+                else if (IsBlockedDeepWater(finalTarget))
+                {
                     ClearMoveTarget(moveOption);
+                }
                 else
+                {
                     SetMoveTarget(moveOption, finalTarget);
+                }
             }
             else if (info.blockElement == BlockElement.Lava)
             {
@@ -2335,27 +2351,44 @@ public class Movement : Singleton<Movement>
 
         targetBlock = null;
 
-        if (PerformMovementRaycast(playerPos + (-rayDir * correction), dir, 1, out o1) == RaycastHitObjects.None &&
-            PerformMovementRaycast(playerPos + dir + (-rayDir * correction), rayDir, 1, out o2) == RaycastHitObjects.None &&
-            PerformMovementRaycast(playerPos + dir + (-rayDir * correction), dir, 1, out o3) == RaycastHitObjects.None &&
-            PerformMovementRaycast(playerPos + dir + dir + (-rayDir * correction), rayDir, 1, out o4) == RaycastHitObjects.BlockInfo)
+        RaycastHitObjects hit1 = PerformMovementRaycast(playerPos + (-rayDir * correction), dir, 1, out o1);
+        RaycastHitObjects hit2 = PerformMovementRaycast(playerPos + dir + (-rayDir * correction), rayDir, 1, out o2);
+        RaycastHitObjects hit3 = PerformMovementRaycast(playerPos + dir + (-rayDir * correction), dir, 1, out o3);
+        RaycastHitObjects hit4 = PerformMovementRaycast(playerPos + dir + dir + (-rayDir * correction), rayDir, 1, out o4);
+
+        bool targetIsWater =
+            hit4 == RaycastHitObjects.BlockInfo &&
+            TryGetBlockInfo(o4, out BlockInfo targetInfo) &&
+            targetInfo.blockElement == BlockElement.Water;
+
+        bool waterAboveTarget =
+            hit3 == RaycastHitObjects.BlockInfo &&
+            TryGetBlockInfo(o3, out BlockInfo aboveTargetInfo) &&
+            aboveTargetInfo.blockElement == BlockElement.Water;
+
+        bool canJumpIntoWaterfall =
+            PlayerCanEnterDeepWater() &&
+            targetIsWater &&
+            waterAboveTarget;
+
+        if (hit1 == RaycastHitObjects.None &&
+            hit2 == RaycastHitObjects.None &&
+            (hit3 == RaycastHitObjects.None || canJumpIntoWaterfall) &&
+            hit4 == RaycastHitObjects.BlockInfo)
         {
             targetBlock = o4;
             return true;
         }
 
-        if (PerformMovementRaycast(playerPos + (-rayDir * correction), dir, 1, out o1) == RaycastHitObjects.None &&
-            PerformMovementRaycast(playerPos + dir + (-rayDir * correction), rayDir, 1, out o2) == RaycastHitObjects.BlockInfo &&
-            PerformMovementRaycast(playerPos + dir + (-rayDir * correction), dir, 1, out o3) == RaycastHitObjects.None &&
-            PerformMovementRaycast(playerPos + dir + dir + (-rayDir * correction), rayDir, 1, out o4) == RaycastHitObjects.BlockInfo &&
+        if (hit1 == RaycastHitObjects.None &&
+            hit2 == RaycastHitObjects.BlockInfo &&
+            hit3 == RaycastHitObjects.None &&
+            hit4 == RaycastHitObjects.BlockInfo &&
             TryGetBlockInfo(o2, out BlockInfo middleInfo))
         {
             if (middleInfo.blockElement == BlockElement.Water
                 || middleInfo.blockElement == BlockElement.Lava)
             {
-                //if (PlayerHasSwimAbility())
-                //    return false;
-
                 targetBlock = o4;
                 return true;
             }
