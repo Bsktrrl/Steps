@@ -222,8 +222,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3496939234456819679}
   - component: {fileID: 4215942164743477570}
+  - component: {fileID: 778135425099628705}
   m_Layer: 0
-  m_Name: Glueplant_FrostFields
+  m_Name: Glueplant_Frostfields
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -244,6 +245,7 @@ Transform:
   m_Children:
   - {fileID: 8222395924741694509}
   - {fileID: 4334259632274399815}
+  - {fileID: 5967021537730188851}
   - {fileID: 2103693899567512319}
   - {fileID: 3246052714295550357}
   - {fileID: 3359056981818616406}
@@ -268,6 +270,24 @@ MonoBehaviour:
   rotationObject: {fileID: 0}
   scaleObject: {fileID: 0}
   pointLight: {fileID: 1294877717242233298}
+  gatherEffectObject: {fileID: 0}
+  glueplantObject: {fileID: 0}
+--- !u!114 &778135425099628705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4035386701650000973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eeb97b6b250618040a088e329a124b87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  picked: 0
+  glueplant: {fileID: 3994044739194697981}
+  glueplantPicked: {fileID: 6450507983900314761}
+  light: {fileID: 1294877717242233298}
 --- !u!1 &4543496842754891630
 GameObject:
   m_ObjectHideFlags: 0
@@ -15194,6 +15214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PS: {fileID: 424092758917344307}
   region: 1
+  onlyIdle: 0
 --- !u!4 &4334259632274399815 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c661de28574f6344ca26494d6f920ac8, type: 3}
@@ -15266,3 +15287,116 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1951315681113999276, guid: 17b19da2cdcc0c34d90d44183c6fab0b, type: 3}
   m_PrefabInstance: {fileID: 4786436414551412704}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6144500902997668312
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3496939234456819679}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: bf774b85e943f634c8058de2fdc2b3f8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bf774b85e943f634c8058de2fdc2b3f8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bf774b85e943f634c8058de2fdc2b3f8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bf774b85e943f634c8058de2fdc2b3f8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bf774b85e943f634c8058de2fdc2b3f8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bf774b85e943f634c8058de2fdc2b3f8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bf774b85e943f634c8058de2fdc2b3f8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bf774b85e943f634c8058de2fdc2b3f8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bf774b85e943f634c8058de2fdc2b3f8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bf774b85e943f634c8058de2fdc2b3f8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bf774b85e943f634c8058de2fdc2b3f8, type: 3}
+      propertyPath: m_Name
+      value: Glueplant_FrostFields_Picked
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bf774b85e943f634c8058de2fdc2b3f8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bf774b85e943f634c8058de2fdc2b3f8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7026224678840243376}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bf774b85e943f634c8058de2fdc2b3f8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8244494290807123663}
+  m_SourcePrefab: {fileID: 100100000, guid: bf774b85e943f634c8058de2fdc2b3f8, type: 3}
+--- !u!4 &5967021537730188851 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: bf774b85e943f634c8058de2fdc2b3f8, type: 3}
+  m_PrefabInstance: {fileID: 6144500902997668312}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6450507983900314761 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: bf774b85e943f634c8058de2fdc2b3f8, type: 3}
+  m_PrefabInstance: {fileID: 6144500902997668312}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &7026224678840243376
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6450507983900314761}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c593eca2d35dbc44b8547321050a3925, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8244494290807123663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6450507983900314761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d8f57320bef71a41a0571f49c22a859, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PS: {fileID: 424092758917344307}
+  region: 1
+  onlyIdle: 1
