@@ -340,6 +340,8 @@ public class Movement : Singleton<Movement>
 
         Interactable_Pickup.Action_AbilityPickupGot += UpdateLookDir;
         Interactable_Pickup.Action_AbilityPickupGot += RefreshAvailableMovementBlocksSmooth;
+
+        Action_RespawnPlayerEarly += ResetGrapplingHookMovementState;
     }
 
     private void OnDisable()
@@ -368,6 +370,8 @@ public class Movement : Singleton<Movement>
 
         Interactable_Pickup.Action_AbilityPickupGot -= UpdateLookDir;
         Interactable_Pickup.Action_AbilityPickupGot -= RefreshAvailableMovementBlocksSmooth;
+
+        Action_RespawnPlayerEarly -= ResetGrapplingHookMovementState;
     }
 
     #endregion
@@ -1429,6 +1433,17 @@ public class Movement : Singleton<Movement>
             RefreshAvailableMovementBlocksSmooth();
         }
     }
+    private bool IsLiquidGrapplingBlock(BlockInfo info)
+    {
+        if (info == null)
+            return false;
+
+        return info.blockElement == BlockElement.Water ||
+               info.blockElement == BlockElement.Lava ||
+               info.blockElement == BlockElement.Quicksand ||
+               info.blockElement == BlockElement.SwampWater ||
+               info.blockElement == BlockElement.Mud;
+    }
 
     #endregion
 
@@ -2420,16 +2435,41 @@ public class Movement : Singleton<Movement>
 
         Vector3 playerPos = transform.position;
 
-        if (PerformMovementRaycast(playerPos, dir, grapplingLength, out GameObject outObj1) == RaycastHitObjects.BlockInfo)
-        {
-            Collider objCollider = outObj1.GetComponent<Collider>();
-            Vector3 contactPoint = objCollider != null
-                ? objCollider.ClosestPoint(playerPos + dir * (grapplingLength + 1))
-                : outObj1.transform.position + (Vector3.forward * (grapplingLength + 1));
+        RaycastHit[] hits = Physics.RaycastAll(
+            playerPos,
+            dir,
+            grapplingLength,
+            Map.player_LayerMask,
+            QueryTriggerInteraction.Ignore
+        );
 
+        Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+        GameObject targetObj = null;
+        Vector3 contactPoint = Vector3.zero;
+
+        foreach (RaycastHit localHit in hits)
+        {
+            if (localHit.transform == null)
+                continue;
+
+            if (!localHit.transform.TryGetComponent(out BlockInfo hitInfo))
+                continue;
+
+            // Ignore liquid blocks and keep searching forward.
+            if (IsLiquidGrapplingBlock(hitInfo))
+                continue;
+
+            targetObj = localHit.transform.gameObject;
+            contactPoint = localHit.point;
+            break;
+        }
+
+        if (targetObj != null)
+        {
             Player_GraplingHook.Instance.endPoint = contactPoint + (-dir * 0.05f);
 
-            SetMoveTarget(moveOption, outObj1);
+            SetMoveTarget(moveOption, targetObj);
 
             if (TryGetBlockInfo(moveOption.targetBlock, out BlockInfo targetInfo) &&
                 (targetInfo.blockType == BlockType.Stair || targetInfo.blockType == BlockType.Slope))
@@ -2447,18 +2487,7 @@ public class Movement : Singleton<Movement>
                 (grapplingInfo.blockType == BlockType.Stair || grapplingInfo.blockType == BlockType.Slope) &&
                 Vector3.Dot(moveToBlock_GrapplingHook.targetBlock.transform.forward, toPlayer) > 0.5f;
 
-            if (stairIsFacingPlayer)
-            {
-                Player_GraplingHook.Instance.redDotSceneObject.transform.SetPositionAndRotation(
-                    Player_GraplingHook.Instance.endPoint - (dir * 0.5f),
-                    Quaternion.LookRotation(dir));
-            }
-            else
-            {
-                Player_GraplingHook.Instance.redDotSceneObject.transform.SetPositionAndRotation(
-                    Player_GraplingHook.Instance.endPoint - dir,
-                    Quaternion.LookRotation(dir));
-            }
+            Player_GraplingHook.Instance.redDotSceneObject.transform.SetPositionAndRotation(Player_GraplingHook.Instance.endPoint, Quaternion.LookRotation(dir));
 
             Player_GraplingHook.Instance.hitEffect.transform.SetPositionAndRotation(
                 Player_GraplingHook.Instance.redDotSceneObject.transform.position,
@@ -2475,9 +2504,9 @@ public class Movement : Singleton<Movement>
         }
         else
         {
-            Player_GraplingHook.Instance.endPoint = transform.position + (dir * grapplingLength);
+            Player_GraplingHook.Instance.EndLineRenderer();
+            Player_GraplingHook.Instance.endPoint = Vector3.zero;
             Player_GraplingHook.Instance.redDotSceneObject.SetActive(false);
-            Player_GraplingHook.Instance.RunLineReader();
             ClearMoveTarget(moveOption);
         }
     }
@@ -2553,6 +2582,29 @@ public class Movement : Singleton<Movement>
                 info.ResetDarkenColor();
 
             grapplingObjects.RemoveAt(i);
+        }
+    }
+
+    private void ResetGrapplingHookMovementState()
+    {
+        ResetBlocksOnTheGrapplingWay();
+        ResetMoveVisual(moveToBlock_GrapplingHook);
+        ClearMoveTarget(moveToBlock_GrapplingHook);
+
+        grapplingTargetHasBeenSet = false;
+        grapplingTowardsStair = false;
+        performGrapplingHooking = false;
+        isGrapplingHooking = false;
+
+        if (Player_GraplingHook.Instance != null)
+        {
+            Player_GraplingHook.Instance.isGrapplingHooking = false;
+            Player_GraplingHook.Instance.endPoint = Vector3.zero;
+
+            if (Player_GraplingHook.Instance.redDotSceneObject != null)
+                Player_GraplingHook.Instance.redDotSceneObject.SetActive(false);
+
+            Player_GraplingHook.Instance.EndLineRenderer();
         }
     }
 
