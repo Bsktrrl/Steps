@@ -215,6 +215,9 @@ public class Movement : Singleton<Movement>
     [SerializeField] private float pickupRespawnDelayReduction = 0.0f;
     [SerializeField] private float abilityRespawnExtraDelay = 0.3f;
 
+    [SerializeField] private bool blockMovementInputUntilReleased;
+    [SerializeField] private bool zeroStepRespawnStarted;
+
     #endregion
 
     #region Cached Accessors
@@ -3024,6 +3027,9 @@ public class Movement : Singleton<Movement>
         if (isMoving) return;
         if (Block_Moveable.AnyBlockMoving) return;
 
+        if (ShouldBlockMovementInputBecauseOfZeroSteps())
+            return;
+
         RotatePlayerBody_Setup();
 
         if (TryHandleLadderMovement())
@@ -3462,6 +3468,8 @@ public class Movement : Singleton<Movement>
     {
         walkAnimationCheck = false;
 
+        blockMovementInputUntilReleased = false;
+
         suppressDarkeningWhileChaining = false;
 
         if (pendingDarkeningRefreshAfterChain && movementStates == MovementStates.Still)
@@ -3469,6 +3477,20 @@ public class Movement : Singleton<Movement>
             pendingDarkeningRefreshAfterChain = false;
             RefreshDarkeningNow();
         }
+    }
+
+    private bool ShouldBlockMovementInputBecauseOfZeroSteps()
+    {
+        if (!blockMovementInputUntilReleased)
+            return false;
+
+        if (!IsAnyWalkButtonStillHeldOrPressed())
+        {
+            blockMovementInputUntilReleased = false;
+            return false;
+        }
+
+        return true;
     }
 
     #endregion
@@ -4145,15 +4167,22 @@ public class Movement : Singleton<Movement>
             isSlopeGliding = false;
         }
 
-        if (StatsRoot.stats.steps_Current <= 0 && TryGetStandingInfo(out BlockInfo slopeCheckInfo) && slopeCheckInfo.blockType != BlockType.Slope)
+        if (StatsRoot.stats.steps_Current <= 0)
         {
             StatsRoot.stats.steps_Current = 0;
-            HandleZeroStepsAfterLanding();
+
+            blockMovementInputUntilReleased = true;
+
+            if (!zeroStepRespawnStarted)
+            {
+                zeroStepRespawnStarted = true;
+                HandleZeroStepsAfterLanding();
+            }
+
+            return;
         }
-        else
-        {
-            Action_StepTaken_Late_Invoke();
-        }
+
+        Action_StepTaken_Late_Invoke();
     }
     IEnumerator RespawnPlayerWhenReachingZeroSteps_Delay(float waitTime)
     {
@@ -4166,25 +4195,25 @@ public class Movement : Singleton<Movement>
 
     private void HandleZeroStepsAfterLanding()
     {
-        // Let late step systems run first, so landing/pickup/goal/checkpoint systems
-        // get a chance to react to the final step.
         Action_StepTaken_Late_Invoke();
 
-        // 1. Checkpoint: do not respawn. Fill steps instead.
         if (IsStandingOnCheckpoint())
         {
+            zeroStepRespawnStarted = false;
+            blockMovementInputUntilReleased = false;
+
             FillStepsToMax();
             UpdateAvailableMovementBlocks();
             return;
         }
 
-        // 2. Goal: do not respawn. Let Interactable_Pickup continue its goal system.
         if (IsStandingOnGoal())
         {
+            zeroStepRespawnStarted = false;
+            blockMovementInputUntilReleased = false;
             return;
         }
 
-        // 3. Pickup: wait for pickup animation/sound, then respawn.
         Interactable_Pickup pickup = GetPickupOnStandingBlock();
 
         if (pickup != null && !pickup.goal)
@@ -4202,7 +4231,6 @@ public class Movement : Singleton<Movement>
             }
         }
 
-        // 4. Normal zero-step case.
         StartCoroutine(RespawnPlayerWhenReachingZeroSteps_Delay(zeroStepRespawnDelay));
     }
     private bool IsRespawnDelayingItemPickup(Interactable_Pickup pickup)
@@ -4443,6 +4471,9 @@ public class Movement : Singleton<Movement>
     IEnumerator Resetplayer(float waitTime)
     {
         isRespawning = true;
+
+        zeroStepRespawnStarted = false;
+        blockMovementInputUntilReleased = false;
 
         Inputs.forward_isPressed = false;
         Inputs.back_isPressed = false;
