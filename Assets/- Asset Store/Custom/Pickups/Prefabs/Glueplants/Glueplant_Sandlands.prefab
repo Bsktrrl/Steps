@@ -5109,6 +5109,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3496939234456819679}
   - component: {fileID: 4215942164743477570}
+  - component: {fileID: 950555186171511748}
   m_Layer: 0
   m_Name: Glueplant_Sandlands
   m_TagString: Untagged
@@ -5131,6 +5132,7 @@ Transform:
   m_Children:
   - {fileID: 2458202275569393195}
   - {fileID: 3451204809304288950}
+  - {fileID: 420381742374008609}
   - {fileID: 2103693899567512319}
   - {fileID: 3246052714295550357}
   - {fileID: 3359056981818616406}
@@ -5155,6 +5157,24 @@ MonoBehaviour:
   rotationObject: {fileID: 0}
   scaleObject: {fileID: 0}
   pointLight: {fileID: 1294877717242233298}
+  gatherEffectObject: {fileID: 0}
+  glueplantObject: {fileID: 0}
+--- !u!114 &950555186171511748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4035386701650000973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eeb97b6b250618040a088e329a124b87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  picked: 0
+  glueplant: {fileID: 2643319212936000524}
+  glueplantPicked: {fileID: 1053471069571345819}
+  light: {fileID: 1294877717242233298}
 --- !u!1 &4543496842754891630
 GameObject:
   m_ObjectHideFlags: 0
@@ -14988,6 +15008,119 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1001 &171074709989773514
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3496939234456819679}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: c87c213a6311d1342b5340c66f8a1920, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c87c213a6311d1342b5340c66f8a1920, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c87c213a6311d1342b5340c66f8a1920, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c87c213a6311d1342b5340c66f8a1920, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c87c213a6311d1342b5340c66f8a1920, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c87c213a6311d1342b5340c66f8a1920, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c87c213a6311d1342b5340c66f8a1920, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c87c213a6311d1342b5340c66f8a1920, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c87c213a6311d1342b5340c66f8a1920, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c87c213a6311d1342b5340c66f8a1920, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c87c213a6311d1342b5340c66f8a1920, type: 3}
+      propertyPath: m_Name
+      value: Glueplant_Sandlands_Picked
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c87c213a6311d1342b5340c66f8a1920, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c87c213a6311d1342b5340c66f8a1920, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2685095716943967522}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c87c213a6311d1342b5340c66f8a1920, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9003086404262806374}
+  m_SourcePrefab: {fileID: 100100000, guid: c87c213a6311d1342b5340c66f8a1920, type: 3}
+--- !u!4 &420381742374008609 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c87c213a6311d1342b5340c66f8a1920, type: 3}
+  m_PrefabInstance: {fileID: 171074709989773514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1053471069571345819 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c87c213a6311d1342b5340c66f8a1920, type: 3}
+  m_PrefabInstance: {fileID: 171074709989773514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &2685095716943967522
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053471069571345819}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c593eca2d35dbc44b8547321050a3925, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &9003086404262806374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053471069571345819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d8f57320bef71a41a0571f49c22a859, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PS: {fileID: 8834276703436585958}
+  region: 4
+  onlyIdle: 1
 --- !u!1001 &2913720108852365661
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15097,6 +15230,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PS: {fileID: 8834276703436585958}
   region: 4
+  onlyIdle: 0
 --- !u!4 &3451204809304288950 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 086055afeb5e5dd4f9998101097c1f4a, type: 3}

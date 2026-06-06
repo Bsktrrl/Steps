@@ -9,6 +9,8 @@ public class GlueplantAnimScript : MonoBehaviour
     [SerializeField] ParticleSystem PS;
 
     [SerializeField] Region region;
+
+    [SerializeField] bool onlyIdle;
     enum Region
     {
         Firevein,
@@ -54,14 +56,21 @@ public class GlueplantAnimScript : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(minWaitTime, maxWaitTime));
+            if (!onlyIdle)
+            {
+                yield return new WaitForSeconds(Random.Range(minWaitTime, maxWaitTime));
 
-            anim.SetInteger("PuffType", Random.Range(0,3));
-            anim.SetTrigger("Puff");
+                anim.SetInteger("PuffType", Random.Range(0, 3));
+                anim.SetTrigger("Puff");
 
-            yield return new WaitForSeconds(animWaitTime);
+                yield return new WaitForSeconds(animWaitTime);
 
-            PS.Play();
+                PS.Play();
+            }
+            else
+            {
+                yield return null;
+            }
         }
     }
 }

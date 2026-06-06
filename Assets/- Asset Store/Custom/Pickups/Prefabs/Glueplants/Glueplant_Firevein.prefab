@@ -5109,6 +5109,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3496939234456819679}
   - component: {fileID: 4215942164743477570}
+  - component: {fileID: 4216336072970703508}
   m_Layer: 0
   m_Name: Glueplant_Firevein
   m_TagString: Untagged
@@ -5131,6 +5132,7 @@ Transform:
   m_Children:
   - {fileID: 7290180832099185592}
   - {fileID: 5751694741948827756}
+  - {fileID: 3809487481255342224}
   - {fileID: 2103693899567512319}
   - {fileID: 3246052714295550357}
   - {fileID: 3359056981818616406}
@@ -5158,6 +5160,22 @@ MonoBehaviour:
   pointLight: {fileID: 1294877717242233298}
   gatherEffectObject: {fileID: 0}
   glueplantObject: {fileID: 0}
+--- !u!114 &4216336072970703508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4035386701650000973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eeb97b6b250618040a088e329a124b87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  picked: 0
+  glueplant: {fileID: 4943209975316468438}
+  glueplantPicked: {fileID: 4581801304635337258}
+  light: {fileID: 1294877717242233298}
 --- !u!1 &4543496842754891630
 GameObject:
   m_ObjectHideFlags: 0
@@ -15091,6 +15109,119 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4682113502980938288, guid: af676056555a85248a972c68b9acb4ab, type: 3}
   m_PrefabInstance: {fileID: 3482294221794109636}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3698789908957681531
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3496939234456819679}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 91580a5711e845b489fd255cc3583348, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 91580a5711e845b489fd255cc3583348, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 91580a5711e845b489fd255cc3583348, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 91580a5711e845b489fd255cc3583348, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 91580a5711e845b489fd255cc3583348, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 91580a5711e845b489fd255cc3583348, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 91580a5711e845b489fd255cc3583348, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 91580a5711e845b489fd255cc3583348, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 91580a5711e845b489fd255cc3583348, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 91580a5711e845b489fd255cc3583348, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 91580a5711e845b489fd255cc3583348, type: 3}
+      propertyPath: m_Name
+      value: Glueplant_Firevein_Picked
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 91580a5711e845b489fd255cc3583348, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 91580a5711e845b489fd255cc3583348, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8184220030534974319}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 91580a5711e845b489fd255cc3583348, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5687902243412383487}
+  m_SourcePrefab: {fileID: 100100000, guid: 91580a5711e845b489fd255cc3583348, type: 3}
+--- !u!4 &3809487481255342224 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 91580a5711e845b489fd255cc3583348, type: 3}
+  m_PrefabInstance: {fileID: 3698789908957681531}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4581801304635337258 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 91580a5711e845b489fd255cc3583348, type: 3}
+  m_PrefabInstance: {fileID: 3698789908957681531}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8184220030534974319
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4581801304635337258}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c593eca2d35dbc44b8547321050a3925, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5687902243412383487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4581801304635337258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d8f57320bef71a41a0571f49c22a859, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PS: {fileID: 4432456190939503906}
+  region: 0
+  onlyIdle: 1
 --- !u!1001 &4508567170789746503
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15267,6 +15398,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PS: {fileID: 4432456190939503906}
   region: 0
+  onlyIdle: 0
 --- !u!4 &5751694741948827756 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 08a6f2a4fbf53604ab6515027aa1cb51, type: 3}
