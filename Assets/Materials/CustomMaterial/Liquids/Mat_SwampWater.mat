@@ -267,6 +267,8 @@ Material:
     - _DownFlow: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
+    - _EdgeAmount: 0.5
+    - _EdgeStrength: 0.5
     - _Emissive: 0
     - _EnvironmentReflections: 1
     - _Fade: 0
@@ -310,8 +312,8 @@ Material:
     - _UseBaseColor: 1
     - _WaterfallDisplacement: 0
     - _WaterfallFade: 1
-    - _WaterfallFoamAmount: 0.42
-    - _WaterfallStrength: 0.77
+    - _WaterfallFoamAmount: 0.33
+    - _WaterfallStrength: 0.64
     - _WaveDensity: 1.5
     - _WaveSpeed: 0.67
     - _WaveStrength: 1
@@ -328,8 +330,9 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color1: {r: 1, g: 1, b: 0.9411765, a: 1}
     - _Color2: {r: 0.2862745, g: 0.7882354, b: 0.7686275, a: 1}
+    - _EdgeColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GoldenColor: {r: 0.9490196, g: 0.7490196, b: 0.21568628, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _WaterfallFoamColor: {r: 0.7137255, g: 0.48235294, b: 0.74509805, a: 0}
+    - _WaterfallFoamColor: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
