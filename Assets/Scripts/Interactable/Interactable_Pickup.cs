@@ -106,6 +106,8 @@ public class Interactable_Pickup : MonoBehaviour
             yield return new WaitForSeconds(audioSource.clip.length);
         }
 
+        Movement.Instance.Action_PickupAnimation_Complete_Invoke();
+
         gameObject.SetActive(false);
     }
 

@@ -1,8 +1,34 @@
 ----- NEXT ON THE LIST -----
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
-April:
+Juni:
 0.0. Bugs:
+
+----- HVA SOM MÅ GJØRES FØR TESTBUILD -----
+
+- Hull-shader:
+	- Skjul hull-shaderen dersom det ikke er noe som er mellom kameraet og spilleren, for å unngå at hull-shaderen klipper i blokker på siden av spilleren når dette ikke trengs. Kjør sjekker i "Update()" (for å sikre mot bl.a. ElevatorBlocks)
+	- Deaktivere Kamaera-kant-hull-shaderen
+
+
+- PauseMeny:
+	- Må kunne entres via FreeCam
+
+
+- FreeCam følger ElevatorBlocks:
+	- Koble fra FreeCam fra spilleren når den er i freeCam-modus, så kameraet ikke følger med ElevatorBlocks
+	- Flytte lyd-targeten til freeCam nå man er i freeCam, og ikke spilleren
+
+
+37. RootBlockNumbers: Pil på rootblock
+- Legge til en pil i den retningen som spilleren kan gå inn på den på, istedenfor tall (eventuelt ha tallet litt mindre i midten av pilen?)
+
+
+
+
+
+
+
 
 - DarkenBlock med Dashing:
 	- Registreres ikke når spilleren ikke er rotert mot dashing-blokken. Det burde den.
@@ -17,10 +43,6 @@ April:
 - Kamera: 
 	- Bør kunne roteres underveis i Slope_X_Animasjonen
 
-- FreeCam følger ElevatorBlocks:
-	- Koble fra FreeCam fra spilleren når den er i freeCam-modus, så kameraet ikke følger med ElevatorBlocks
-	- Flytte lyd-targeten til freeCam nå man er i freeCam, og ikke spilleren
-
 - GrapplingHook: 
 	- Endre visuals med nye effekter
 
@@ -29,16 +51,6 @@ April:
 		- Mulig fix: Sett "First" for disse knappene (spesifikt), basert på saveState av region man har vært sist innom
 	- La neste tilgjengelige level være highlighted hvis spilleren klarer et level
 	- La valgt level være highlighted hvis spilleren går ut av et level
-
-- Hull-shader:
-	- Skjul hull-shaderen dersom det ikke er noe som er mellom kameraet og spilleren, for å unngå at hull-shaderen klipper i blokker på siden av spilleren når dette ikke trengs. Kjør sjekker i "Update()" (for å sikre mot bl.a. ElevatorBlocks)
-	- Deaktivere Kamaera-kant-hull-shaderen
-
-- SwampWater:
-	- Endre til å koste 0, og at alle adjacent blokker koster 0 uavhengig av tidligere kost
-
-- PauseMeny:
-	- Må kunne entres via FreeCam
 
 
 
@@ -59,12 +71,6 @@ April:
 - Gjøre kompatibel for både kontroll og datamus
 
 
-5.0. Sound:
-- Legg til all lyd fra Lisette
-- fullfør "FadeOutALLSound()" i "SoundManager" slik at all lyd fades fint ut når man exit'er en scene
-- Gjøre slik at det er lyd fra spilleren hver gang den går, selv om den glir
-
-
 
 
 --- OTHER FIXES
@@ -72,16 +78,11 @@ April:
 
 
 
-14. Nytt StepCost-system:
-- Spilleren må respawne idet den får 0 steg, heller enn at man må trykke på knapp mens man har 0 steg for å respawne
-	- Man må sjekke om det skjer noe på blokken før spilleren respawner (eks. pickups, soppsirkel
-- Checkpoints må koste det som blokken den er på koster. Altså, slå av at blokken endrer sin StepCost når et checkpoint attaches til den.
+
 
 
 15. Settings: FreeCam Speed & rotation sensetivity (Move Speed & MouseSensitivity/StickSensitivity)
 
-37. RootBlockNumbers: Pil på rootblock
-- Legge til en pil i den retningen som spilleren kan gå inn på den på, istedenfor tall (eventuelt ha tallet litt mindre i midten av pilen?)
 
 42. Settings: Legge til en setting som lar spilleren toggle on/off InterractableMessages som abilities eller guider
 

@@ -210,6 +210,14 @@ public class Movement : Singleton<Movement>
     [SerializeField] private float cubeBlockRefreshDistance = 0.05f;
     [SerializeField] private float cubeBlockRefreshAccumulatedDistance = 0f;
 
+    [Header("Pickup Respawn waitTime")]
+    [SerializeField] private float zeroStepRespawnDelay = 0.1f;
+    [SerializeField] private float pickupRespawnDelayReduction = 0.0f;
+    [SerializeField] private float abilityRespawnExtraDelay = 0.3f;
+
+    [SerializeField] private bool blockMovementInputUntilReleased;
+    [SerializeField] private bool zeroStepRespawnStarted;
+
     #endregion
 
     #region Cached Accessors
@@ -335,6 +343,8 @@ public class Movement : Singleton<Movement>
 
         Interactable_Pickup.Action_AbilityPickupGot += UpdateLookDir;
         Interactable_Pickup.Action_AbilityPickupGot += RefreshAvailableMovementBlocksSmooth;
+
+        Action_RespawnPlayerEarly += ResetGrapplingHookMovementState;
     }
 
     private void OnDisable()
@@ -363,6 +373,8 @@ public class Movement : Singleton<Movement>
 
         Interactable_Pickup.Action_AbilityPickupGot -= UpdateLookDir;
         Interactable_Pickup.Action_AbilityPickupGot -= RefreshAvailableMovementBlocksSmooth;
+
+        Action_RespawnPlayerEarly -= ResetGrapplingHookMovementState;
     }
 
     #endregion
@@ -1424,6 +1436,17 @@ public class Movement : Singleton<Movement>
             RefreshAvailableMovementBlocksSmooth();
         }
     }
+    private bool IsLiquidGrapplingBlock(BlockInfo info)
+    {
+        if (info == null)
+            return false;
+
+        return info.blockElement == BlockElement.Water ||
+               info.blockElement == BlockElement.Lava ||
+               info.blockElement == BlockElement.Quicksand ||
+               info.blockElement == BlockElement.SwampWater ||
+               info.blockElement == BlockElement.Mud;
+    }
 
     #endregion
 
@@ -2166,10 +2189,26 @@ public class Movement : Singleton<Movement>
         {
             if (info.blockElement == BlockElement.Water)
             {
-                if (IsBlockedDeepWater(finalTarget))
+                bool targetHasWaterAbove =
+                    PerformMovementRaycast(finalTarget.transform.position, Vector3.up, 1f, out GameObject aboveWaterObj) == RaycastHitObjects.BlockInfo &&
+                    TryGetBlockInfo(aboveWaterObj, out BlockInfo aboveWaterInfo) &&
+                    aboveWaterInfo.blockElement == BlockElement.Water;
+
+                if (PlayerCanEnterDeepWater())
+                {
+                    if (targetHasWaterAbove)
+                        SetMoveTarget(moveOption, finalTarget);
+                    else
+                        ClearMoveTarget(moveOption);
+                }
+                else if (IsBlockedDeepWater(finalTarget))
+                {
                     ClearMoveTarget(moveOption);
+                }
                 else
+                {
                     SetMoveTarget(moveOption, finalTarget);
+                }
             }
             else if (info.blockElement == BlockElement.Lava)
             {
@@ -2330,27 +2369,44 @@ public class Movement : Singleton<Movement>
 
         targetBlock = null;
 
-        if (PerformMovementRaycast(playerPos + (-rayDir * correction), dir, 1, out o1) == RaycastHitObjects.None &&
-            PerformMovementRaycast(playerPos + dir + (-rayDir * correction), rayDir, 1, out o2) == RaycastHitObjects.None &&
-            PerformMovementRaycast(playerPos + dir + (-rayDir * correction), dir, 1, out o3) == RaycastHitObjects.None &&
-            PerformMovementRaycast(playerPos + dir + dir + (-rayDir * correction), rayDir, 1, out o4) == RaycastHitObjects.BlockInfo)
+        RaycastHitObjects hit1 = PerformMovementRaycast(playerPos + (-rayDir * correction), dir, 1, out o1);
+        RaycastHitObjects hit2 = PerformMovementRaycast(playerPos + dir + (-rayDir * correction), rayDir, 1, out o2);
+        RaycastHitObjects hit3 = PerformMovementRaycast(playerPos + dir + (-rayDir * correction), dir, 1, out o3);
+        RaycastHitObjects hit4 = PerformMovementRaycast(playerPos + dir + dir + (-rayDir * correction), rayDir, 1, out o4);
+
+        bool targetIsWater =
+            hit4 == RaycastHitObjects.BlockInfo &&
+            TryGetBlockInfo(o4, out BlockInfo targetInfo) &&
+            targetInfo.blockElement == BlockElement.Water;
+
+        bool waterAboveTarget =
+            hit3 == RaycastHitObjects.BlockInfo &&
+            TryGetBlockInfo(o3, out BlockInfo aboveTargetInfo) &&
+            aboveTargetInfo.blockElement == BlockElement.Water;
+
+        bool canJumpIntoWaterfall =
+            PlayerCanEnterDeepWater() &&
+            targetIsWater &&
+            waterAboveTarget;
+
+        if (hit1 == RaycastHitObjects.None &&
+            hit2 == RaycastHitObjects.None &&
+            (hit3 == RaycastHitObjects.None || canJumpIntoWaterfall) &&
+            hit4 == RaycastHitObjects.BlockInfo)
         {
             targetBlock = o4;
             return true;
         }
 
-        if (PerformMovementRaycast(playerPos + (-rayDir * correction), dir, 1, out o1) == RaycastHitObjects.None &&
-            PerformMovementRaycast(playerPos + dir + (-rayDir * correction), rayDir, 1, out o2) == RaycastHitObjects.BlockInfo &&
-            PerformMovementRaycast(playerPos + dir + (-rayDir * correction), dir, 1, out o3) == RaycastHitObjects.None &&
-            PerformMovementRaycast(playerPos + dir + dir + (-rayDir * correction), rayDir, 1, out o4) == RaycastHitObjects.BlockInfo &&
+        if (hit1 == RaycastHitObjects.None &&
+            hit2 == RaycastHitObjects.BlockInfo &&
+            hit3 == RaycastHitObjects.None &&
+            hit4 == RaycastHitObjects.BlockInfo &&
             TryGetBlockInfo(o2, out BlockInfo middleInfo))
         {
             if (middleInfo.blockElement == BlockElement.Water
                 || middleInfo.blockElement == BlockElement.Lava)
             {
-                //if (PlayerHasSwimAbility())
-                //    return false;
-
                 targetBlock = o4;
                 return true;
             }
@@ -2382,16 +2438,41 @@ public class Movement : Singleton<Movement>
 
         Vector3 playerPos = transform.position;
 
-        if (PerformMovementRaycast(playerPos, dir, grapplingLength, out GameObject outObj1) == RaycastHitObjects.BlockInfo)
-        {
-            Collider objCollider = outObj1.GetComponent<Collider>();
-            Vector3 contactPoint = objCollider != null
-                ? objCollider.ClosestPoint(playerPos + dir * (grapplingLength + 1))
-                : outObj1.transform.position + (Vector3.forward * (grapplingLength + 1));
+        RaycastHit[] hits = Physics.RaycastAll(
+            playerPos,
+            dir,
+            grapplingLength,
+            Map.player_LayerMask,
+            QueryTriggerInteraction.Ignore
+        );
 
+        Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+        GameObject targetObj = null;
+        Vector3 contactPoint = Vector3.zero;
+
+        foreach (RaycastHit localHit in hits)
+        {
+            if (localHit.transform == null)
+                continue;
+
+            if (!localHit.transform.TryGetComponent(out BlockInfo hitInfo))
+                continue;
+
+            // Ignore liquid blocks and keep searching forward.
+            if (IsLiquidGrapplingBlock(hitInfo))
+                continue;
+
+            targetObj = localHit.transform.gameObject;
+            contactPoint = localHit.point;
+            break;
+        }
+
+        if (targetObj != null)
+        {
             Player_GraplingHook.Instance.endPoint = contactPoint + (-dir * 0.05f);
 
-            SetMoveTarget(moveOption, outObj1);
+            SetMoveTarget(moveOption, targetObj);
 
             if (TryGetBlockInfo(moveOption.targetBlock, out BlockInfo targetInfo) &&
                 (targetInfo.blockType == BlockType.Stair || targetInfo.blockType == BlockType.Slope))
@@ -2409,18 +2490,7 @@ public class Movement : Singleton<Movement>
                 (grapplingInfo.blockType == BlockType.Stair || grapplingInfo.blockType == BlockType.Slope) &&
                 Vector3.Dot(moveToBlock_GrapplingHook.targetBlock.transform.forward, toPlayer) > 0.5f;
 
-            if (stairIsFacingPlayer)
-            {
-                Player_GraplingHook.Instance.redDotSceneObject.transform.SetPositionAndRotation(
-                    Player_GraplingHook.Instance.endPoint - (dir * 0.5f),
-                    Quaternion.LookRotation(dir));
-            }
-            else
-            {
-                Player_GraplingHook.Instance.redDotSceneObject.transform.SetPositionAndRotation(
-                    Player_GraplingHook.Instance.endPoint - dir,
-                    Quaternion.LookRotation(dir));
-            }
+            Player_GraplingHook.Instance.redDotSceneObject.transform.SetPositionAndRotation(Player_GraplingHook.Instance.endPoint, Quaternion.LookRotation(dir));
 
             Player_GraplingHook.Instance.hitEffect.transform.SetPositionAndRotation(
                 Player_GraplingHook.Instance.redDotSceneObject.transform.position,
@@ -2437,9 +2507,9 @@ public class Movement : Singleton<Movement>
         }
         else
         {
-            Player_GraplingHook.Instance.endPoint = transform.position + (dir * grapplingLength);
+            Player_GraplingHook.Instance.EndLineRenderer();
+            Player_GraplingHook.Instance.endPoint = Vector3.zero;
             Player_GraplingHook.Instance.redDotSceneObject.SetActive(false);
-            Player_GraplingHook.Instance.RunLineReader();
             ClearMoveTarget(moveOption);
         }
     }
@@ -2515,6 +2585,29 @@ public class Movement : Singleton<Movement>
                 info.ResetDarkenColor();
 
             grapplingObjects.RemoveAt(i);
+        }
+    }
+
+    private void ResetGrapplingHookMovementState()
+    {
+        ResetBlocksOnTheGrapplingWay();
+        ResetMoveVisual(moveToBlock_GrapplingHook);
+        ClearMoveTarget(moveToBlock_GrapplingHook);
+
+        grapplingTargetHasBeenSet = false;
+        grapplingTowardsStair = false;
+        performGrapplingHooking = false;
+        isGrapplingHooking = false;
+
+        if (Player_GraplingHook.Instance != null)
+        {
+            Player_GraplingHook.Instance.isGrapplingHooking = false;
+            Player_GraplingHook.Instance.endPoint = Vector3.zero;
+
+            if (Player_GraplingHook.Instance.redDotSceneObject != null)
+                Player_GraplingHook.Instance.redDotSceneObject.SetActive(false);
+
+            Player_GraplingHook.Instance.EndLineRenderer();
         }
     }
 
@@ -2933,6 +3026,9 @@ public class Movement : Singleton<Movement>
     {
         if (isMoving) return;
         if (Block_Moveable.AnyBlockMoving) return;
+
+        if (ShouldBlockMovementInputBecauseOfZeroSteps())
+            return;
 
         RotatePlayerBody_Setup();
 
@@ -3372,6 +3468,8 @@ public class Movement : Singleton<Movement>
     {
         walkAnimationCheck = false;
 
+        blockMovementInputUntilReleased = false;
+
         suppressDarkeningWhileChaining = false;
 
         if (pendingDarkeningRefreshAfterChain && movementStates == MovementStates.Still)
@@ -3379,6 +3477,20 @@ public class Movement : Singleton<Movement>
             pendingDarkeningRefreshAfterChain = false;
             RefreshDarkeningNow();
         }
+    }
+
+    private bool ShouldBlockMovementInputBecauseOfZeroSteps()
+    {
+        if (!blockMovementInputUntilReleased)
+            return false;
+
+        if (!IsAnyWalkButtonStillHeldOrPressed())
+        {
+            blockMovementInputUntilReleased = false;
+            return false;
+        }
+
+        return true;
     }
 
     #endregion
@@ -4055,15 +4167,200 @@ public class Movement : Singleton<Movement>
             isSlopeGliding = false;
         }
 
-        if (StatsRoot.stats.steps_Current < 0 &&
-            TryGetStandingInfo(out BlockInfo slopeCheckInfo) &&
-            slopeCheckInfo.blockType != BlockType.Slope)
+        if (StatsRoot.stats.steps_Current <= 0)
         {
             StatsRoot.stats.steps_Current = 0;
-            RespawnPlayer();
+
+            blockMovementInputUntilReleased = true;
+
+            if (!zeroStepRespawnStarted)
+            {
+                zeroStepRespawnStarted = true;
+                HandleZeroStepsAfterLanding();
+            }
+
+            return;
         }
 
         Action_StepTaken_Late_Invoke();
+    }
+    IEnumerator RespawnPlayerWhenReachingZeroSteps_Delay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        RespawnPlayer();
+
+        Action_StepTaken_Late_Invoke();
+    }
+
+    private void HandleZeroStepsAfterLanding()
+    {
+        Action_StepTaken_Late_Invoke();
+
+        if (IsStandingOnCheckpoint())
+        {
+            zeroStepRespawnStarted = false;
+            blockMovementInputUntilReleased = false;
+
+            FillStepsToMax();
+            UpdateAvailableMovementBlocks();
+            return;
+        }
+
+        if (IsStandingOnGoal())
+        {
+            zeroStepRespawnStarted = false;
+            blockMovementInputUntilReleased = false;
+            return;
+        }
+
+        Interactable_Pickup pickup = GetPickupOnStandingBlock();
+
+        if (pickup != null && !pickup.goal)
+        {
+            if (pickup.abilityReceived != Abilities.None)
+            {
+                StartCoroutine(RespawnAfterAbilityPopupHasClosed(zeroStepRespawnDelay + abilityRespawnExtraDelay));
+                return;
+            }
+
+            if (IsRespawnDelayingItemPickup(pickup))
+            {
+                StartCoroutine(RespawnAfterPickupHasFinished(Mathf.Max(0f, zeroStepRespawnDelay - pickupRespawnDelayReduction)));
+                return;
+            }
+        }
+
+        StartCoroutine(RespawnPlayerWhenReachingZeroSteps_Delay(zeroStepRespawnDelay));
+    }
+    private bool IsRespawnDelayingItemPickup(Interactable_Pickup pickup)
+    {
+        if (pickup == null)
+            return false;
+
+        return pickup.itemReceived == Items.Essence ||
+               pickup.itemReceived == Items.Footprint ||
+               pickup.itemReceived == Items.Skin;
+    }
+    private IEnumerator RespawnAfterAbilityPopupHasClosed(float waitTimeAfterPopupClosed)
+    {
+        yield return null;
+
+        while (PopUpManager.Instance != null &&
+               !PopUpManager.Instance.ability_Active)
+        {
+            yield return null;
+        }
+
+        while (PopUpManager.Instance != null &&
+               PopUpManager.Instance.ability_Active)
+        {
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(waitTimeAfterPopupClosed);
+
+        RespawnPlayer();
+    }
+    private bool IsStandingOnCheckpoint()
+    {
+        return blockStandingOn != null &&
+               blockStandingOn.GetComponent<Block_Checkpoint>() != null;
+    }
+
+    private void FillStepsToMax()
+    {
+        if (StatsRoot.stats == null)
+            return;
+
+        StatsRoot.stats.steps_Current = StatsRoot.stats.steps_Max;
+
+        if (StepsHUD.Instance != null)
+            StepsHUD.Instance.stepCounter = StatsRoot.stats.steps_Current;
+    }
+    private Interactable_Pickup GetPickupAtPlayerPosition()
+    {
+        Collider[] hits = Physics.OverlapSphere(
+            transform.position,
+            0.45f,
+            ~0,
+            QueryTriggerInteraction.Collide
+        );
+
+        foreach (Collider hit in hits)
+        {
+            Interactable_Pickup pickup = hit.GetComponentInParent<Interactable_Pickup>();
+
+            if (pickup != null)
+                return pickup;
+        }
+
+        return null;
+    }
+    private IEnumerator RespawnAfterPickupHasFinished(float waitTimeAfterPickup)
+    {
+        bool pickupFinished = false;
+
+        void OnPickupFinished()
+        {
+            pickupFinished = true;
+        }
+
+        Action_PickupAnimation_Complete += OnPickupFinished;
+
+        float timer = 0f;
+        float maxWaitTime = 2.5f;
+
+        while (!pickupFinished && timer < maxWaitTime)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        Action_PickupAnimation_Complete -= OnPickupFinished;
+
+        yield return new WaitForSeconds(waitTimeAfterPickup);
+
+        RespawnPlayer();
+    }
+    private Interactable_Pickup GetPickupOnStandingBlock()
+    {
+        Collider[] hits = Physics.OverlapSphere(
+            transform.position,
+            0.45f,
+            ~0,
+            QueryTriggerInteraction.Collide
+        );
+
+        foreach (Collider hit in hits)
+        {
+            Interactable_Pickup pickup = hit.GetComponentInParent<Interactable_Pickup>();
+
+            if (pickup != null)
+                return pickup;
+        }
+
+        return null;
+    }
+
+    private bool IsStandingOnGoal()
+    {
+        Interactable_Pickup pickup = GetPickupOnStandingBlock();
+
+        return pickup != null && pickup.goal;
+    }
+
+    private bool IsStandingOnRespawnDelayingPickup()
+    {
+        Interactable_Pickup pickup = GetPickupOnStandingBlock();
+
+        if (pickup == null)
+            return false;
+
+        if (pickup.goal)
+            return false;
+
+        return IsRespawnDelayingItemPickup(pickup);
     }
 
     #endregion
@@ -4162,11 +4459,21 @@ public class Movement : Singleton<Movement>
 
     public void RespawnPlayer()
     {
+        if (StepsHUD.Instance != null &&
+            StatsRoot != null &&
+            StatsRoot.stats != null)
+        {
+            StepsHUD.Instance.stepCounter = StatsRoot.stats.steps_Current;
+        }
+
         StartCoroutine(Resetplayer(0.01f));
     }
     IEnumerator Resetplayer(float waitTime)
     {
         isRespawning = true;
+
+        zeroStepRespawnStarted = false;
+        blockMovementInputUntilReleased = false;
 
         Inputs.forward_isPressed = false;
         Inputs.back_isPressed = false;
@@ -4382,6 +4689,11 @@ public class Movement : Singleton<Movement>
     public void Action_isGrapplingHooking_Finished_Invoke()
     {
         Action_isGrapplingHooking_Finished?.Invoke();
+    }
+
+    public void Action_PickupAnimation_Complete_Invoke()
+    {
+        Action_PickupAnimation_Complete?.Invoke();
     }
 
     #endregion

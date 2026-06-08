@@ -342,12 +342,6 @@ public class BlockInfo : MonoBehaviour
             modifier += 1;
         }
 
-        // SwampWater reduces cost by -1
-        if (Player_SwampWater.Instance != null && Player_SwampWater.Instance.isInSwampWater)
-        {
-            modifier -= 1;
-        }
-
         // MushroomCircle reduces cost by -1
         if (HasMushroomCircleBuff())
         {
@@ -374,6 +368,13 @@ public class BlockInfo : MonoBehaviour
         }
 
         if (blockElement == BlockElement.Water && PlayerHasFlippers())
+        {
+            return 0;
+        }
+
+        // SwampWater makes reachable adjacent blocks cost 0.
+        if (Player_SwampWater.Instance != null &&
+            Player_SwampWater.Instance.isInSwampWater)
         {
             return 0;
         }
