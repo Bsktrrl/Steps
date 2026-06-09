@@ -222,11 +222,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4297227475059503744, guid: d17032b22c7223b4aa9042690074e35f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.1
+      value: 0.95
       objectReference: {fileID: 0}
     - target: {fileID: -4297227475059503744, guid: d17032b22c7223b4aa9042690074e35f, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -4297227475059503744, guid: d17032b22c7223b4aa9042690074e35f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.05
       objectReference: {fileID: 0}
     - target: {fileID: -4099616358905012366, guid: d17032b22c7223b4aa9042690074e35f, type: 3}
       propertyPath: m_Layer
@@ -250,11 +254,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1719834720137182673, guid: d17032b22c7223b4aa9042690074e35f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.1
+      value: 0.95
       objectReference: {fileID: 0}
     - target: {fileID: 1719834720137182673, guid: d17032b22c7223b4aa9042690074e35f, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 1719834720137182673, guid: d17032b22c7223b4aa9042690074e35f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.05
       objectReference: {fileID: 0}
     - target: {fileID: 8225285210373615809, guid: d17032b22c7223b4aa9042690074e35f, type: 3}
       propertyPath: m_LocalScale.x
@@ -262,11 +270,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8225285210373615809, guid: d17032b22c7223b4aa9042690074e35f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.1
+      value: 0.95
       objectReference: {fileID: 0}
     - target: {fileID: 8225285210373615809, guid: d17032b22c7223b4aa9042690074e35f, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 8225285210373615809, guid: d17032b22c7223b4aa9042690074e35f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.05
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -394,7 +406,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectVisualParent: {fileID: 0}
   removeDuplicatesInEditor: 1
   effectBlock_SpawnPoint_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
