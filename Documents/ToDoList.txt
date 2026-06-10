@@ -6,6 +6,10 @@ Juni:
 
 ----- HVA SOM MÅ GJØRES FØR TESTBUILD -----
 
+- Movement:
+	- Gjøre slik at alt som skal oppdateres blir oppdatert før spilleren kan bevege seg videre (eller beveger seg videre om man holder inne movement-knapper)
+
+
 - Hull-shader:
 	- Skjul hull-shaderen dersom det ikke er noe som er mellom kameraet og spilleren, for å unngå at hull-shaderen klipper i blokker på siden av spilleren når dette ikke trengs. Kjør sjekker i "Update()" (for å sikre mot bl.a. ElevatorBlocks)
 	- Deaktivere Kamaera-kant-hull-shaderen
