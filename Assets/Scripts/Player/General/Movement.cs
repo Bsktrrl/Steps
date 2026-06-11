@@ -1917,6 +1917,123 @@ public class Movement : Singleton<Movement>
         {
             if (hitBlock.blockElement == BlockElement.Water)
             {
+                if (dir == Vector3.up)
+                {
+                    // First: check if a slab is sharing/overlapping the landing water block's own space.
+                    // Only count slabs in the same X/Z column as this exact water block.
+                    Collider waterCollider = outObj1.GetComponent<Collider>();
+
+                    if (waterCollider != null)
+                    {
+                        Bounds waterBounds = waterCollider.bounds;
+
+                        Collider[] overlappingWaterSpaceHits = Physics.OverlapBox(
+                            waterBounds.center,
+                            waterBounds.extents + new Vector3(0.02f, 0.02f, 0.02f),
+                            Quaternion.identity,
+                            Map.player_LayerMask,
+                            QueryTriggerInteraction.Ignore
+                        );
+
+                        foreach (Collider hitCollider in overlappingWaterSpaceHits)
+                        {
+                            if (hitCollider == null)
+                                continue;
+
+                            BlockInfo overlappingInfo = hitCollider.GetComponentInParent<BlockInfo>();
+
+                            if (overlappingInfo == null)
+                                continue;
+
+                            GameObject overlappingBlock = overlappingInfo.gameObject;
+
+                            if (overlappingBlock == outObj1)
+                                continue;
+
+                            // Important:
+                            // Ignore slabs on adjacent water blocks.
+                            // Only the slab in the same X/Z column as this water block should block SwiftSwim.
+                            bool sameColumn =
+                                Mathf.Abs(overlappingBlock.transform.position.x - outObj1.transform.position.x) < 0.1f &&
+                                Mathf.Abs(overlappingBlock.transform.position.z - outObj1.transform.position.z) < 0.1f;
+
+                            if (!sameColumn)
+                                continue;
+
+                            if (overlappingInfo.blockType == BlockType.Slab)
+                            {
+                                ClearMoveTarget(swiftSwimOption);
+                                return;
+                            }
+                        }
+                    }
+
+                    bool hasBlockDirectlyAboveLanding = false;
+                    bool blockDirectlyAboveLandingIsAllowed = false;
+
+                    // Second: check only the space exactly 1 unit above the landing water block.
+                    // Blocks higher than this should not affect SwiftSwim.
+                    Vector3 checkCenter = outObj1.transform.position + Vector3.up;
+                    Vector3 halfExtents = new Vector3(0.22f, 0.45f, 0.22f);
+
+                    Collider[] hits = Physics.OverlapBox(
+                        checkCenter,
+                        halfExtents,
+                        Quaternion.identity,
+                        Map.player_LayerMask,
+                        QueryTriggerInteraction.Ignore
+                    );
+
+                    foreach (Collider hitCollider in hits)
+                    {
+                        if (hitCollider == null)
+                            continue;
+
+                        BlockInfo blockAboveLandingInfo = hitCollider.GetComponentInParent<BlockInfo>();
+
+                        if (blockAboveLandingInfo == null)
+                            continue;
+
+                        GameObject blockAboveLanding = blockAboveLandingInfo.gameObject;
+
+                        if (blockAboveLanding == outObj1)
+                            continue;
+
+                        // Ignore blocks that are not in the same X/Z column.
+                        bool sameColumn =
+                            Mathf.Abs(blockAboveLanding.transform.position.x - outObj1.transform.position.x) < 0.1f &&
+                            Mathf.Abs(blockAboveLanding.transform.position.z - outObj1.transform.position.z) < 0.1f;
+
+                        if (!sameColumn)
+                            continue;
+
+                        // Only care about blocks whose object position is exactly 1 unit above the water block.
+                        if (!Mathf.Approximately(blockAboveLanding.transform.position.y, outObj1.transform.position.y + 1f))
+                            continue;
+
+                        hasBlockDirectlyAboveLanding = true;
+
+                        if (blockAboveLandingInfo.blockType == BlockType.Slab ||
+                            blockAboveLandingInfo.blockElement == BlockElement.Water ||
+                            blockAboveLandingInfo.blockElement == BlockElement.Quicksand ||
+                            blockAboveLandingInfo.blockElement == BlockElement.Mud ||
+                            blockAboveLandingInfo.blockElement == BlockElement.SwampWater)
+                        {
+                            blockDirectlyAboveLandingIsAllowed = true;
+                        }
+
+                        break;
+                    }
+
+                    // Only block SwiftSwim if there is actually a block directly above
+                    // and that block is not one of the allowed types/elements.
+                    if (hasBlockDirectlyAboveLanding && !blockDirectlyAboveLandingIsAllowed)
+                    {
+                        ClearMoveTarget(swiftSwimOption);
+                        return;
+                    }
+                }
+
                 if (dir == Vector3.down &&
                     TryGetStandingInfo(out BlockInfo standingInfo) &&
                     standingInfo.blockElement != BlockElement.Water)
