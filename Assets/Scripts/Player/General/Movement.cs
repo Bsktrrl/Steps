@@ -1448,6 +1448,69 @@ public class Movement : Singleton<Movement>
                info.blockElement == BlockElement.Mud;
     }
 
+    private bool InputHeldOrPressedForDirection(Vector3 localDir)
+    {
+        if (localDir == Vector3.forward) return Inputs.forward_isPressed || Inputs.forward_isHold;
+        if (localDir == Vector3.back) return Inputs.back_isPressed || Inputs.back_isHold;
+        if (localDir == Vector3.left) return Inputs.left_isPressed || Inputs.left_isHold;
+        if (localDir == Vector3.right) return Inputs.right_isPressed || Inputs.right_isHold;
+
+        return false;
+    }
+
+    private bool HasWaterDirectlyAbove(GameObject block)
+    {
+        return block != null &&
+               PerformMovementRaycast(block.transform.position, Vector3.up, 1f, out GameObject aboveBlock) == RaycastHitObjects.BlockInfo &&
+               TryGetBlockInfo(aboveBlock, out BlockInfo aboveInfo) &&
+               aboveInfo.blockElement == BlockElement.Water;
+    }
+
+    private bool TryContinueHeldHorizontalWaterMovementImmediately()
+    {
+        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
+            return false;
+
+        if (CeilingGrab.isCeilingGrabbing)
+            return false;
+
+        if (!TryGetStandingInfo(out BlockInfo standingInfo))
+            return false;
+
+        if (standingInfo.blockElement != BlockElement.Water)
+            return false;
+
+        // Only use this smoother chaining in water columns.
+        // Normal single-layer water movement stays unchanged.
+        if (!HasWaterDirectlyAbove(blockStandingOn))
+            return false;
+
+        foreach (var localDir in LocalDirections)
+        {
+            if (!InputHeldOrPressedForDirection(localDir))
+                continue;
+
+            MoveOptions moveOption = GetMoveOptionForDirection(localDir);
+
+            if (!HasValidTarget(moveOption))
+                continue;
+
+            if (!TryGetBlockInfo(moveOption.targetBlock, out BlockInfo targetInfo))
+                continue;
+
+            if (targetInfo.blockElement != BlockElement.Water)
+                continue;
+
+            if (!HasWaterDirectlyAbove(moveOption.targetBlock))
+                continue;
+
+            PerformMovement(moveOption, MovementStates.Moving, standingInfo.movementSpeed);
+            return true;
+        }
+
+        return false;
+    }
+
     #endregion
 
     #region Movement Functions
@@ -3442,6 +3505,18 @@ public class Movement : Singleton<Movement>
             movementStates == MovementStates.Still)
         {
             TryContinueHeldSwiftSwimImmediately();
+            yield break;
+        }
+
+        // Horizontal water-column chaining:
+        // If the player is swimming horizontally through water that has water directly above it,
+        // immediately start the next held horizontal water move.
+        // This avoids the visible pause/lag that happens when waiting for the next Update cycle.
+        if (!finishedMoveWasSwiftSwim &&
+            !CeilingGrab.isCeilingGrabbing &&
+            movementStates == MovementStates.Still)
+        {
+            TryContinueHeldHorizontalWaterMovementImmediately();
         }
     }
 
