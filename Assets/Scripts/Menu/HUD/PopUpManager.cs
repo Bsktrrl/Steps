@@ -122,7 +122,7 @@ public class PopUpManager : Singleton<PopUpManager>
         DataManager.Action_dataHasLoaded += ShowLevelNamePopup;
         //MapManager.Action_StartIntroSequence += ShowLevelNamePopup;
 
-        Interactable_Pickup.Action_StepsUpPickupGot += ShowFootprintPopup;
+        Interactable_Pickup.Action_FootprintPickupGot += ShowFootprintPopup;
         Interactable_Pickup.Action_EssencePickupGot += ShowEssencePopup;
         Interactable_Pickup.Action_SkinPickupGot += ShowSkinPopup;
     }
@@ -131,7 +131,7 @@ public class PopUpManager : Singleton<PopUpManager>
         DataManager.Action_dataHasLoaded -= ShowLevelNamePopup;
         //MapManager.Action_StartIntroSequence -= ShowLevelNamePopup;
 
-        Interactable_Pickup.Action_StepsUpPickupGot -= ShowFootprintPopup;
+        Interactable_Pickup.Action_FootprintPickupGot -= ShowFootprintPopup;
         Interactable_Pickup.Action_EssencePickupGot -= ShowEssencePopup;
         Interactable_Pickup.Action_SkinPickupGot -= ShowSkinPopup;
     }

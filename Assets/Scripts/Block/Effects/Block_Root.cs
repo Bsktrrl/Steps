@@ -57,6 +57,17 @@ public class Block_Root : MonoBehaviour
 
     private bool ignoreNextSelfReset;
 
+    [Header("Root Obstacle Blocking")]
+    [SerializeField]
+    private LayerMask rootBlockingCollisionMask =
+    ~((1 << 15) | (1 << 6) | (1 << 20));
+    // Excludes BlockLayer 15, PlayerLayer 6, LadderLayer 20 by default.
+
+    [SerializeField] private float rootBlockerCheckHeight = 1.3f;
+    [SerializeField] private float rootBlockerCheckDistance = 1f;
+    [SerializeField] private float rootBlockerCheckRadius = 0.18f;
+    [SerializeField] private bool showRootBlockerDebugRays = false;
+
 
     //--------------------
 
@@ -693,9 +704,27 @@ public class Block_Root : MonoBehaviour
         }
 
         // Keep playerLookDir as the original direction from the RootBlock.
-        // The local lookDir_Temp will change whenever the path reaches a slope.
+        // The local lookDir_Temp can still change whenever the path reaches a slope.
         playerLookDir = SnapDirection(lookDir_Temp);
-        tempOriginPos = transform.parent.position;
+
+        GameObject rootSourceBlock = GetRootSourceBlock();
+
+        if (rootSourceBlock == null)
+        {
+            finishedCheckingForBlocks = true;
+            return;
+        }
+
+        RootBlockLineInfo sourceRootInfo = new RootBlockLineInfo();
+        sourceRootInfo.block = rootSourceBlock;
+        sourceRootInfo.facingDir = lookDir_Temp;
+
+        BlockInfo rootSourceInfo = rootSourceBlock.GetComponent<BlockInfo>();
+
+        if (rootSourceInfo != null)
+            sourceRootInfo.blockType = rootSourceInfo.blockType;
+        else
+            sourceRootInfo.blockType = BlockType.Cube;
 
         int safetyCounter = 0;
         int maxSafetyIterations = Mathf.Max(1, RootObjectList.Count + 8);
@@ -715,321 +744,54 @@ public class Block_Root : MonoBehaviour
                 break;
             }
 
-            bool blockIsFound = false;
+            lookDir_Temp = GetRootDirectionForSegment(sourceRootInfo, lookDir_Temp);
 
-            #region Check in line
+            GameObject nextBlock =
+                FindNextBlockForLiveContinuationFrom(sourceRootInfo, lookDir_Temp);
 
-            GameObject tempBlock_Adjacent =
-                RaycastBlock(tempOriginPos + Vector3.up * 0.3f, lookDir_Temp, 1f);
-
-            if (tempBlock_Adjacent)
-            {
-                GameObject tempBlock_Over =
-                    RaycastBlock(
-                        tempBlock_Adjacent.transform.position + Vector3.up * 0.3f,
-                        Vector3.up,
-                        1f
-                    );
-
-                if (!tempBlock_Over ||
-                    (tempBlock_Over &&
-                     tempBlock_Over.GetComponent<BlockInfo>() &&
-                     tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slab))
-                {
-                    BlockInfo adjacentInfo = tempBlock_Adjacent.GetComponent<BlockInfo>();
-
-                    if (adjacentInfo != null &&
-                        (adjacentInfo.blockType == BlockType.Stair ||
-                         adjacentInfo.blockType == BlockType.Slope))
-                    {
-                        StairSlopeCorrection(ref tempBlock_Adjacent, lookDir_Temp);
-
-                        if (TryAddRootBlockAndUpdateDirection(
-                                tempBlock_Adjacent,
-                                true,
-                                ref lookDir_Temp))
-                        {
-                            blockIsFound = true;
-                        }
-                    }
-                    else
-                    {
-                        if (TryAddRootBlockAndUpdateDirection(
-                                tempBlock_Adjacent,
-                                false,
-                                ref lookDir_Temp))
-                        {
-                            blockIsFound = true;
-                        }
-                    }
-                }
-                else
-                {
-                    BlockInfo overInfo = tempBlock_Over.GetComponent<BlockInfo>();
-
-                    if (overInfo != null &&
-                        (overInfo.blockType == BlockType.Stair ||
-                         overInfo.blockType == BlockType.Slope))
-                    {
-                        StairSlopeCorrection(ref tempBlock_Over, lookDir_Temp);
-
-                        if (TryAddRootBlockAndUpdateDirection(
-                                tempBlock_Over,
-                                true,
-                                ref lookDir_Temp))
-                        {
-                            blockIsFound = true;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                GameObject tempBlock_UnderEmpty =
-                    RaycastBlock(
-                        tempOriginPos + Vector3.up * 0.3f + lookDir_Temp,
-                        Vector3.down,
-                        1.25f
-                    );
-
-                GameObject tempBlock_OverEmpty =
-                    RaycastBlock(
-                        tempOriginPos + Vector3.up * 0.3f + lookDir_Temp,
-                        Vector3.up,
-                        1.25f
-                    );
-
-                if (tempBlock_UnderEmpty &&
-                    tempBlock_UnderEmpty.GetComponent<BlockInfo>() &&
-                    (tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair ||
-                     tempBlock_UnderEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope) &&
-                    RootFreeCostBlockList.Count > 0 &&
-                    (RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Stair ||
-                     RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slope))
-                {
-                    StairSlopeCorrection(ref tempBlock_UnderEmpty, lookDir_Temp);
-
-                    if (TryAddRootBlockAndUpdateDirection(
-                            tempBlock_UnderEmpty,
-                            true,
-                            ref lookDir_Temp))
-                    {
-                        blockIsFound = true;
-                    }
-                }
-                else if (tempBlock_OverEmpty &&
-                         tempBlock_OverEmpty.GetComponent<BlockInfo>() &&
-                         (tempBlock_OverEmpty.GetComponent<BlockInfo>().blockType == BlockType.Stair ||
-                          tempBlock_OverEmpty.GetComponent<BlockInfo>().blockType == BlockType.Slope))
-                {
-                    StairSlopeCorrection(ref tempBlock_OverEmpty, lookDir_Temp);
-
-                    if (TryAddRootBlockAndUpdateDirection(
-                            tempBlock_OverEmpty,
-                            true,
-                            ref lookDir_Temp))
-                    {
-                        blockIsFound = true;
-                    }
-                }
-            }
-
-            #endregion
-
-            #region Check diagonal down after stair/slope
-
-            if (!blockIsFound && RootFreeCostBlockList.Count > 0)
-            {
-                BlockType lastType =
-                    RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType;
-
-                if (lastType == BlockType.Stair || lastType == BlockType.Slope)
-                {
-                    Vector3 origin =
-                        tempOriginPos + lookDir_Temp + Vector3.up * 2.0f;
-
-                    GameObject diagDown =
-                        RaycastBlock(origin, Vector3.down, 5.0f);
-
-                    if (diagDown &&
-                        diagDown.transform.position.y < tempOriginPos.y - 0.25f)
-                    {
-                        if (TryAddRootBlockAndUpdateDirection(
-                                diagDown,
-                                false,
-                                ref lookDir_Temp))
-                        {
-                            blockIsFound = true;
-                        }
-                    }
-                }
-            }
-
-            #endregion
-
-            #region Check diagonal up after stair/slope
-
-            if (!blockIsFound && RootFreeCostBlockList.Count > 0)
-            {
-                BlockType lastType =
-                    RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType;
-
-                if (lastType == BlockType.Stair || lastType == BlockType.Slope)
-                {
-                    Vector3 origin =
-                        tempOriginPos + lookDir_Temp + Vector3.up * 0.1f;
-
-                    GameObject diagUp =
-                        RaycastBlock(origin, Vector3.up, 5.0f);
-
-                    if (diagUp &&
-                        diagUp.transform.position.y > tempOriginPos.y + 0.25f)
-                    {
-                        if (TryAddRootBlockAndUpdateDirection(
-                                diagUp,
-                                false,
-                                ref lookDir_Temp))
-                        {
-                            blockIsFound = true;
-                        }
-                    }
-                }
-            }
-
-            #endregion
-
-            #region Check stairs/slopes
-
-            if (!blockIsFound)
-            {
-                tempBlock_Adjacent =
-                    RaycastBlock(tempOriginPos, lookDir_Temp, 1f);
-
-                GameObject tempBlock_Over =
-                    RaycastBlock(tempOriginPos + Vector3.up, lookDir_Temp, 1f);
-
-                if (tempBlock_Adjacent &&
-                    tempBlock_Adjacent.GetComponent<BlockInfo>() &&
-                    (tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Stair ||
-                     tempBlock_Adjacent.GetComponent<BlockInfo>().blockType == BlockType.Slope))
-                {
-                    StairSlopeCorrection(ref tempBlock_Adjacent, lookDir_Temp);
-
-                    if (TryAddRootBlockAndUpdateDirection(
-                            tempBlock_Adjacent,
-                            true,
-                            ref lookDir_Temp))
-                    {
-                        blockIsFound = true;
-                    }
-                }
-
-                if (!blockIsFound &&
-                    tempBlock_Adjacent &&
-                    tempBlock_Over &&
-                    tempBlock_Over.GetComponent<BlockInfo>() &&
-                    (tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Stair ||
-                     tempBlock_Over.GetComponent<BlockInfo>().blockType == BlockType.Slope))
-                {
-                    StairSlopeCorrection(ref tempBlock_Over, lookDir_Temp);
-
-                    if (TryAddRootBlockAndUpdateDirection(
-                            tempBlock_Over,
-                            true,
-                            ref lookDir_Temp))
-                    {
-                        blockIsFound = true;
-                    }
-                }
-            }
-
-            #endregion
-
-            #region Check Ladder
-
-            if (!blockIsFound)
-            {
-                GameObject tempBlock_Ladder_Up =
-                    RaycastLadder(tempOriginPos + Vector3.up, lookDir_Temp, 1.5f);
-
-                GameObject tempBlock_Ladder_Down =
-                    RaycastLadder(tempOriginPos, lookDir_Temp, 1f);
-
-                if (tempBlock_Ladder_Up)
-                {
-                    Block_Ladder ladder = tempBlock_Ladder_Up.GetComponent<Block_Ladder>();
-
-                    if (ladder &&
-                        ladder.exitBlock_Up &&
-                        ladder.exitBlock_Up.GetComponent<BlockInfo>())
-                    {
-                        if (TryAddRootBlockAndUpdateDirection(
-                                ladder.exitBlock_Up,
-                                false,
-                                ref lookDir_Temp))
-                        {
-                            blockIsFound = true;
-                        }
-                    }
-                }
-                else if (tempBlock_Ladder_Down)
-                {
-                    Block_Ladder ladder = tempBlock_Ladder_Down.GetComponent<Block_Ladder>();
-
-                    if (ladder &&
-                        ladder.exitBlock_Down &&
-                        ladder.exitBlock_Down.GetComponent<BlockInfo>())
-                    {
-                        if (TryAddRootBlockAndUpdateDirection(
-                                ladder.exitBlock_Down,
-                                false,
-                                ref lookDir_Temp))
-                        {
-                            blockIsFound = true;
-                        }
-                    }
-                }
-            }
-
-            #endregion
-
-            #region Check after slope after falling
-
-            if (!blockIsFound)
-            {
-                GameObject tempBlock_Falling = null;
-
-                if (RootFreeCostBlockList.Count > 0 &&
-                    RootFreeCostBlockList[RootFreeCostBlockList.Count - 1].blockType == BlockType.Slope)
-                {
-                    tempBlock_Falling =
-                        RaycastBlock(tempOriginPos + lookDir_Temp, Vector3.down, 50f);
-                }
-
-                if (tempBlock_Falling)
-                {
-                    BlockInfo fallingInfo = tempBlock_Falling.GetComponent<BlockInfo>();
-
-                    bool fallingBlockIsStairOrSlope =
-                        fallingInfo != null &&
-                        (fallingInfo.blockType == BlockType.Stair ||
-                         fallingInfo.blockType == BlockType.Slope);
-
-                    if (TryAddRootBlockAndUpdateDirection(
-                            tempBlock_Falling,
-                            fallingBlockIsStairOrSlope,
-                            ref lookDir_Temp))
-                    {
-                        blockIsFound = true;
-                    }
-                }
-            }
-
-            #endregion
-
-            if (!blockIsFound)
+            if (!nextBlock)
             {
                 finishedCheckingForBlocks = true;
+                break;
+            }
+
+            if (IsBlockAlreadyInRootLine(nextBlock))
+            {
+                finishedCheckingForBlocks = true;
+                break;
+            }
+
+            BlockInfo nextInfo = nextBlock.GetComponent<BlockInfo>();
+
+            if (!nextInfo)
+            {
+                finishedCheckingForBlocks = true;
+                break;
+            }
+
+            bool nextIsStairOrSlope =
+                nextInfo.blockType == BlockType.Stair ||
+                nextInfo.blockType == BlockType.Slope;
+
+            int addedRootCount =
+                SetupEntryInBlockList(
+                    nextBlock,
+                    nextIsStairOrSlope,
+                    lookDir_Temp
+                );
+
+            if (addedRootCount <= 0)
+            {
+                finishedCheckingForBlocks = true;
+                break;
+            }
+
+            lookDir_Temp = GetLastRootTravelDirection(lookDir_Temp);
+
+            if (RootFreeCostBlockList.Count > 0)
+            {
+                sourceRootInfo =
+                    RootFreeCostBlockList[RootFreeCostBlockList.Count - 1];
             }
 
             if (RootFreeCostBlockList.Count >= RootObjectList.Count)
@@ -1551,6 +1313,9 @@ public class Block_Root : MonoBehaviour
         if (!checkForRootContinuation) return;
         if (!isActive) return;
 
+        // Do NOT trim/remove already-created roots when a blocker appears.
+        // Blockers should only prevent NEW root segments from being added.
+
         if (RootFreeCostBlockList.Count > 0)
         {
             SetRootLineObjectsOrientation();
@@ -1572,7 +1337,6 @@ public class Block_Root : MonoBehaviour
             TryStartRootLineFromRootBlock();
         }
     }
-
     bool IsPlayerStandingOnRootSourceBlock()
     {
         if (Movement.Instance == null)
@@ -1787,6 +1551,12 @@ public class Block_Root : MonoBehaviour
             GetRootDirectionForSegment(sourceRootInfo, lookDir_Temp);
 
         tempOriginPos = sourceRootInfo.block.transform.position;
+
+        // New blocker check:
+        // If a fence/wall/obstacle is between this source block and the next block,
+        // roots stop here. No new root block is added.
+        if (IsRootPathBlocked(tempOriginPos, lookDir_Temp))
+            return null;
 
         bool blockIsFound = false;
         GameObject foundBlock = null;
@@ -2046,6 +1816,101 @@ public class Block_Root : MonoBehaviour
             bool isCloseEnoughVertically = Mathf.Abs(offset.y) <= 1.6f;
 
             if (isInFront && isSameLine && isCloseEnoughVertically)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    bool IsRootPathBlocked(Vector3 sourceBlockPosition, Vector3 travelDir)
+    {
+        travelDir = SnapDirection(travelDir);
+
+        if (travelDir.sqrMagnitude < 0.001f)
+            return false;
+
+        Vector3 origin =
+            sourceBlockPosition + Vector3.up * rootBlockerCheckHeight;
+
+        if (showRootBlockerDebugRays)
+        {
+            Debug.DrawLine(
+                origin,
+                origin + travelDir * rootBlockerCheckDistance,
+                Color.red,
+                continuationCheckInterval
+            );
+        }
+
+        RaycastHit[] hits =
+            Physics.SphereCastAll(
+                origin,
+                rootBlockerCheckRadius,
+                travelDir,
+                rootBlockerCheckDistance,
+                rootBlockingCollisionMask,
+                QueryTriggerInteraction.Ignore
+            );
+
+        if (hits == null || hits.Length <= 0)
+            return false;
+
+        hits = hits.OrderBy(h => h.distance).ToArray();
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            Collider hitCollider = hits[i].collider;
+
+            if (ShouldIgnoreRootBlockerHit(hitCollider))
+                continue;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    bool ShouldIgnoreRootBlockerHit(Collider hitCollider)
+    {
+        if (hitCollider == null)
+            return true;
+
+        if (hitCollider.isTrigger)
+            return true;
+
+        BlockInfo blockInfo = hitCollider.GetComponent<BlockInfo>();
+
+        // Ignore normal block colliders if they accidentally end up in the mask.
+        // Also ignore slabs, because roots should be allowed to continue under/through slab-over-block situations.
+        if (blockInfo != null)
+            return true;
+
+        // Also handle cases where the collider is on a child object of the block.
+        BlockInfo parentBlockInfo = hitCollider.GetComponentInParent<BlockInfo>();
+
+        if (parentBlockInfo != null)
+        {
+            if (parentBlockInfo.blockType == BlockType.Slab)
+                return true;
+
+            // Optional: ignore all block parents too, if block colliders are sometimes on children.
+            return true;
+        }
+
+        if (hitCollider.GetComponent<Block_Ladder>() != null)
+            return true;
+
+        if (hitCollider.transform == transform)
+            return true;
+
+        for (int i = 0; i < RootObjectList.Count; i++)
+        {
+            if (RootObjectList[i] == null)
+                continue;
+
+            if (hitCollider.transform == RootObjectList[i].transform ||
+                hitCollider.transform.IsChildOf(RootObjectList[i].transform))
             {
                 return true;
             }

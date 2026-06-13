@@ -70,5 +70,6 @@ public enum BlockElement
     Bush,
     Temple,
 
-    GlueplantStand
+    GlueplantStand,
+    Tablet
 }

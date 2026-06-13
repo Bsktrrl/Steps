@@ -8,7 +8,7 @@ public class Interactable_Pickup : MonoBehaviour
 {
     public static event Action Action_PickupGot;
     public static event Action Action_EssencePickupGot;
-    public static event Action Action_StepsUpPickupGot;
+    public static event Action Action_FootprintPickupGot;
     public static event Action Action_SkinPickupGot;
     public static event Action Action_AbilityPickupGot;
 
@@ -268,7 +268,7 @@ public class Interactable_Pickup : MonoBehaviour
                                 && DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].maxStepList[j].pos.z == gameObject.transform.position.z)
                             {
                                 DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].maxStepList[j].isTaken = true;
-                                Action_StepUpPickupGot_isActive();
+                                Action_FootprintPickupGot_isActive();
 
                                 //print("0. Pickup got: MaxStep");
                                 return;
@@ -548,9 +548,9 @@ public class Interactable_Pickup : MonoBehaviour
     {
         Action_EssencePickupGot?.Invoke();
     }
-    public void Action_StepUpPickupGot_isActive()
+    public void Action_FootprintPickupGot_isActive()
     {
-        Action_StepsUpPickupGot?.Invoke();
+        Action_FootprintPickupGot?.Invoke();
     }
     public void Action_SkinPickupGot_isActive()
     {

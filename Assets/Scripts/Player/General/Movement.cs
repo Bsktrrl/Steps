@@ -44,7 +44,7 @@ public class Movement : Singleton<Movement>
 
     #region Variables
 
-   [Header("States")]
+    [Header("States")]
     public bool isMoving;
     public MovementStates movementStates = MovementStates.Still;
 
@@ -1448,6 +1448,95 @@ public class Movement : Singleton<Movement>
                info.blockElement == BlockElement.Mud;
     }
 
+    private bool InputHeldOrPressedForDirection(Vector3 localDir)
+    {
+        if (localDir == Vector3.forward) return Inputs.forward_isPressed || Inputs.forward_isHold;
+        if (localDir == Vector3.back) return Inputs.back_isPressed || Inputs.back_isHold;
+        if (localDir == Vector3.left) return Inputs.left_isPressed || Inputs.left_isHold;
+        if (localDir == Vector3.right) return Inputs.right_isPressed || Inputs.right_isHold;
+
+        return false;
+    }
+
+    private bool HasWaterDirectlyAbove(GameObject block)
+    {
+        return block != null &&
+               PerformMovementRaycast(block.transform.position, Vector3.up, 1f, out GameObject aboveBlock) == RaycastHitObjects.BlockInfo &&
+               TryGetBlockInfo(aboveBlock, out BlockInfo aboveInfo) &&
+               aboveInfo.blockElement == BlockElement.Water;
+    }
+
+    private bool TryContinueHeldHorizontalWaterMovementImmediately()
+    {
+        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
+            return false;
+
+        if (CeilingGrab.isCeilingGrabbing)
+            return false;
+
+        if (!TryGetStandingInfo(out BlockInfo standingInfo))
+            return false;
+
+        if (standingInfo.blockElement != BlockElement.Water)
+            return false;
+
+        // Only use this smoother chaining in water columns.
+        // Normal single-layer water movement stays unchanged.
+        if (!HasWaterDirectlyAbove(blockStandingOn))
+            return false;
+
+        foreach (var localDir in LocalDirections)
+        {
+            if (!InputHeldOrPressedForDirection(localDir))
+                continue;
+
+            MoveOptions moveOption = GetMoveOptionForDirection(localDir);
+
+            if (!HasValidTarget(moveOption))
+                continue;
+
+            if (!TryGetBlockInfo(moveOption.targetBlock, out BlockInfo targetInfo))
+                continue;
+
+            if (targetInfo.blockElement != BlockElement.Water)
+                continue;
+
+            if (!HasWaterDirectlyAbove(moveOption.targetBlock))
+                continue;
+
+            PerformMovement(moveOption, MovementStates.Moving, standingInfo.movementSpeed);
+            return true;
+        }
+
+        return false;
+    }
+
+    private Vector3 GetVerticalAbilityTargetPosition(GameObject targetBlock)
+    {
+        return new Vector3(
+            transform.position.x,
+            targetBlock.transform.position.y,
+            transform.position.z
+        );
+    }
+
+    private void PerformVerticalAbilityMovement(MoveOptions option, MovementStates moveState, float movementSpeed)
+    {
+        if (!HasValidTarget(option))
+            return;
+
+        isMoving = true;
+
+        CacheStepCostForMove(option.targetBlock);
+
+        ClearFallingCarrierBlock();
+        ResetDarkenBlocks();
+
+        Vector3 targetPos = GetVerticalAbilityTargetPosition(option.targetBlock);
+
+        StartCoroutine(Move(targetPos, moveState, movementSpeed, option));
+    }
+
     #endregion
 
     #region Movement Functions
@@ -1917,6 +2006,123 @@ public class Movement : Singleton<Movement>
         {
             if (hitBlock.blockElement == BlockElement.Water)
             {
+                if (dir == Vector3.up)
+                {
+                    // First: check if a slab is sharing/overlapping the landing water block's own space.
+                    // Only count slabs in the same X/Z column as this exact water block.
+                    Collider waterCollider = outObj1.GetComponent<Collider>();
+
+                    if (waterCollider != null)
+                    {
+                        Bounds waterBounds = waterCollider.bounds;
+
+                        Collider[] overlappingWaterSpaceHits = Physics.OverlapBox(
+                            waterBounds.center,
+                            waterBounds.extents + new Vector3(0.02f, 0.02f, 0.02f),
+                            Quaternion.identity,
+                            Map.player_LayerMask,
+                            QueryTriggerInteraction.Ignore
+                        );
+
+                        foreach (Collider hitCollider in overlappingWaterSpaceHits)
+                        {
+                            if (hitCollider == null)
+                                continue;
+
+                            BlockInfo overlappingInfo = hitCollider.GetComponentInParent<BlockInfo>();
+
+                            if (overlappingInfo == null)
+                                continue;
+
+                            GameObject overlappingBlock = overlappingInfo.gameObject;
+
+                            if (overlappingBlock == outObj1)
+                                continue;
+
+                            // Important:
+                            // Ignore slabs on adjacent water blocks.
+                            // Only the slab in the same X/Z column as this water block should block SwiftSwim.
+                            bool sameColumn =
+                                Mathf.Abs(overlappingBlock.transform.position.x - outObj1.transform.position.x) < 0.1f &&
+                                Mathf.Abs(overlappingBlock.transform.position.z - outObj1.transform.position.z) < 0.1f;
+
+                            if (!sameColumn)
+                                continue;
+
+                            if (overlappingInfo.blockType == BlockType.Slab)
+                            {
+                                ClearMoveTarget(swiftSwimOption);
+                                return;
+                            }
+                        }
+                    }
+
+                    bool hasBlockDirectlyAboveLanding = false;
+                    bool blockDirectlyAboveLandingIsAllowed = false;
+
+                    // Second: check only the space exactly 1 unit above the landing water block.
+                    // Blocks higher than this should not affect SwiftSwim.
+                    Vector3 checkCenter = outObj1.transform.position + Vector3.up;
+                    Vector3 halfExtents = new Vector3(0.22f, 0.45f, 0.22f);
+
+                    Collider[] hits = Physics.OverlapBox(
+                        checkCenter,
+                        halfExtents,
+                        Quaternion.identity,
+                        Map.player_LayerMask,
+                        QueryTriggerInteraction.Ignore
+                    );
+
+                    foreach (Collider hitCollider in hits)
+                    {
+                        if (hitCollider == null)
+                            continue;
+
+                        BlockInfo blockAboveLandingInfo = hitCollider.GetComponentInParent<BlockInfo>();
+
+                        if (blockAboveLandingInfo == null)
+                            continue;
+
+                        GameObject blockAboveLanding = blockAboveLandingInfo.gameObject;
+
+                        if (blockAboveLanding == outObj1)
+                            continue;
+
+                        // Ignore blocks that are not in the same X/Z column.
+                        bool sameColumn =
+                            Mathf.Abs(blockAboveLanding.transform.position.x - outObj1.transform.position.x) < 0.1f &&
+                            Mathf.Abs(blockAboveLanding.transform.position.z - outObj1.transform.position.z) < 0.1f;
+
+                        if (!sameColumn)
+                            continue;
+
+                        // Only care about blocks whose object position is exactly 1 unit above the water block.
+                        if (!Mathf.Approximately(blockAboveLanding.transform.position.y, outObj1.transform.position.y + 1f))
+                            continue;
+
+                        hasBlockDirectlyAboveLanding = true;
+
+                        if (blockAboveLandingInfo.blockType == BlockType.Slab ||
+                            blockAboveLandingInfo.blockElement == BlockElement.Water ||
+                            blockAboveLandingInfo.blockElement == BlockElement.Quicksand ||
+                            blockAboveLandingInfo.blockElement == BlockElement.Mud ||
+                            blockAboveLandingInfo.blockElement == BlockElement.SwampWater)
+                        {
+                            blockDirectlyAboveLandingIsAllowed = true;
+                        }
+
+                        break;
+                    }
+
+                    // Only block SwiftSwim if there is actually a block directly above
+                    // and that block is not one of the allowed types/elements.
+                    if (hasBlockDirectlyAboveLanding && !blockDirectlyAboveLandingIsAllowed)
+                    {
+                        ClearMoveTarget(swiftSwimOption);
+                        return;
+                    }
+                }
+
                 if (dir == Vector3.down &&
                     TryGetStandingInfo(out BlockInfo standingInfo) &&
                     standingInfo.blockElement != BlockElement.Water)
@@ -1956,16 +2162,29 @@ public class Movement : Singleton<Movement>
 
         GameObject outObj1 = null;
         GameObject outObj2 = null;
+
         Vector3 playerPos = PM.player.transform.position;
+
+        // When standing on a stair, start the ascend ray slightly higher.
+        // This prevents the ray from hitting the stair the player is already standing on.
+        // Do not do this for slopes.
+        if (TryGetStandingInfo(out BlockInfo standingInfo) &&
+            standingInfo.blockType == BlockType.Stair)
+        {
+            playerPos += Vector3.up * 0.5f;
+        }
+
         Vector3 adjustments;
 
         if (PerformMovementRaycast(playerPos, Vector3.up, ascendDescend_Distance, out outObj1) == RaycastHitObjects.BlockInfo &&
             TryGetBlockInfo(outObj1, out BlockInfo firstInfo))
         {
-            // Block Ascend through stairs and slopes
+            // Allow Ascend onto stairs and slopes.
+            // Do this before the normal second upward raycast,
+            // because stairs/slopes can hit their own collider and clear the ascend target.
             if (firstInfo.blockType == BlockType.Stair || firstInfo.blockType == BlockType.Slope)
             {
-                ClearMoveTarget(moveToBlock_Ascend);
+                EvaluateStandardMovementTarget(moveToBlock_Ascend, outObj1, blockStandingOn);
                 return;
             }
 
@@ -2049,13 +2268,31 @@ public class Movement : Singleton<Movement>
         GameObject outObj2 = null;
         Vector3 playerPos = PM.player.transform.position;
 
-        if (PerformMovementRaycast(playerPos + Vector3.down, Vector3.down, ascendDescend_Distance + 0.5f, out outObj1) == RaycastHitObjects.BlockInfo &&
+        RaycastHitObjects firstHit = PerformMovementRaycast(playerPos + Vector3.down, Vector3.down, ascendDescend_Distance + 0.5f, out outObj1);
+
+        // Only if the normal descend check finds nothing,
+        // do one extra 0.5f check for stairs/slopes.
+        // This keeps cube descend range unchanged.
+        if (firstHit == RaycastHitObjects.None)
+        {
+            GameObject stairSlopeObj;
+
+            if (PerformMovementRaycast(playerPos + Vector3.down, Vector3.down, ascendDescend_Distance + 1f, out stairSlopeObj) == RaycastHitObjects.BlockInfo &&
+                TryGetBlockInfo(stairSlopeObj, out BlockInfo stairSlopeInfo) &&
+                (stairSlopeInfo.blockType == BlockType.Stair || stairSlopeInfo.blockType == BlockType.Slope))
+            {
+                outObj1 = stairSlopeObj;
+                firstHit = RaycastHitObjects.BlockInfo;
+            }
+        }
+
+        if (firstHit == RaycastHitObjects.BlockInfo &&
             TryGetBlockInfo(outObj1, out BlockInfo firstInfo))
         {
-            // Block Descend through stairs and slopes
+            // Allow Descend onto stairs and slopes.
             if (firstInfo.blockType == BlockType.Stair || firstInfo.blockType == BlockType.Slope)
             {
-                ClearMoveTarget(moveToBlock_Descend);
+                EvaluateStandardMovementTarget(moveToBlock_Descend, outObj1, blockStandingOn);
                 return;
             }
 
@@ -2952,7 +3189,12 @@ public class Movement : Singleton<Movement>
 
         MapStatsGathered.Instance.levelStats.ability_Ascend++;
         Anims.Trigger_AscendAnimation();
-        PerformMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
+
+        if (IsStairOrSlope(moveToBlock_Ascend.targetBlock))
+            PerformVerticalAbilityMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
+        else
+            PerformMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
+
         Action_isAscending?.Invoke();
         return true;
     }
@@ -2975,7 +3217,12 @@ public class Movement : Singleton<Movement>
 
         MapStatsGathered.Instance.levelStats.ability_Descend++;
         Anims.Trigger_DescendAnimation();
-        PerformMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
+
+        if (IsStairOrSlope(moveToBlock_Descend.targetBlock))
+            PerformVerticalAbilityMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
+        else
+            PerformMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
+
         Action_isDescending?.Invoke();
         return true;
     }
@@ -3325,6 +3572,18 @@ public class Movement : Singleton<Movement>
             movementStates == MovementStates.Still)
         {
             TryContinueHeldSwiftSwimImmediately();
+            yield break;
+        }
+
+        // Horizontal water-column chaining:
+        // If the player is swimming horizontally through water that has water directly above it,
+        // immediately start the next held horizontal water move.
+        // This avoids the visible pause/lag that happens when waiting for the next Update cycle.
+        if (!finishedMoveWasSwiftSwim &&
+            !CeilingGrab.isCeilingGrabbing &&
+            movementStates == MovementStates.Still)
+        {
+            TryContinueHeldHorizontalWaterMovementImmediately();
         }
     }
 

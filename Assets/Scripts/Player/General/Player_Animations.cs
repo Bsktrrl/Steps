@@ -126,7 +126,7 @@ public class Player_Animations : Singleton<Player_Animations>
 
         Interactable_Pickup.Action_EssencePickupGot += PickUpAnimation_Small;
         Interactable_Pickup.Action_SkinPickupGot += PickUpAnimation_Small;
-        Interactable_Pickup.Action_StepsUpPickupGot += PickUpAnimation_Big;
+        Interactable_Pickup.Action_FootprintPickupGot += PickUpAnimation_Big;
         Interactable_Pickup.Action_AbilityPickupGot += PickUpAnimation_Big;
     }
     private void OnDisable()
@@ -143,7 +143,7 @@ public class Player_Animations : Singleton<Player_Animations>
 
         Interactable_Pickup.Action_EssencePickupGot -= PickUpAnimation_Small;
         Interactable_Pickup.Action_SkinPickupGot -= PickUpAnimation_Small;
-        Interactable_Pickup.Action_StepsUpPickupGot -= PickUpAnimation_Big;
+        Interactable_Pickup.Action_FootprintPickupGot -= PickUpAnimation_Big;
         Interactable_Pickup.Action_AbilityPickupGot -= PickUpAnimation_Big;
     }
 
