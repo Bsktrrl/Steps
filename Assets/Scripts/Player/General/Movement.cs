@@ -44,7 +44,7 @@ public class Movement : Singleton<Movement>
 
     #region Variables
 
-   [Header("States")]
+    [Header("States")]
     public bool isMoving;
     public MovementStates movementStates = MovementStates.Still;
 
@@ -1511,6 +1511,32 @@ public class Movement : Singleton<Movement>
         return false;
     }
 
+    private Vector3 GetVerticalAbilityTargetPosition(GameObject targetBlock)
+    {
+        return new Vector3(
+            transform.position.x,
+            targetBlock.transform.position.y,
+            transform.position.z
+        );
+    }
+
+    private void PerformVerticalAbilityMovement(MoveOptions option, MovementStates moveState, float movementSpeed)
+    {
+        if (!HasValidTarget(option))
+            return;
+
+        isMoving = true;
+
+        CacheStepCostForMove(option.targetBlock);
+
+        ClearFallingCarrierBlock();
+        ResetDarkenBlocks();
+
+        Vector3 targetPos = GetVerticalAbilityTargetPosition(option.targetBlock);
+
+        StartCoroutine(Move(targetPos, moveState, movementSpeed, option));
+    }
+
     #endregion
 
     #region Movement Functions
@@ -2136,16 +2162,29 @@ public class Movement : Singleton<Movement>
 
         GameObject outObj1 = null;
         GameObject outObj2 = null;
+
         Vector3 playerPos = PM.player.transform.position;
+
+        // When standing on a stair, start the ascend ray slightly higher.
+        // This prevents the ray from hitting the stair the player is already standing on.
+        // Do not do this for slopes.
+        if (TryGetStandingInfo(out BlockInfo standingInfo) &&
+            standingInfo.blockType == BlockType.Stair)
+        {
+            playerPos += Vector3.up * 0.5f;
+        }
+
         Vector3 adjustments;
 
         if (PerformMovementRaycast(playerPos, Vector3.up, ascendDescend_Distance, out outObj1) == RaycastHitObjects.BlockInfo &&
             TryGetBlockInfo(outObj1, out BlockInfo firstInfo))
         {
-            // Block Ascend through stairs and slopes
+            // Allow Ascend onto stairs and slopes.
+            // Do this before the normal second upward raycast,
+            // because stairs/slopes can hit their own collider and clear the ascend target.
             if (firstInfo.blockType == BlockType.Stair || firstInfo.blockType == BlockType.Slope)
             {
-                ClearMoveTarget(moveToBlock_Ascend);
+                EvaluateStandardMovementTarget(moveToBlock_Ascend, outObj1, blockStandingOn);
                 return;
             }
 
@@ -2229,13 +2268,31 @@ public class Movement : Singleton<Movement>
         GameObject outObj2 = null;
         Vector3 playerPos = PM.player.transform.position;
 
-        if (PerformMovementRaycast(playerPos + Vector3.down, Vector3.down, ascendDescend_Distance + 0.5f, out outObj1) == RaycastHitObjects.BlockInfo &&
+        RaycastHitObjects firstHit = PerformMovementRaycast(playerPos + Vector3.down, Vector3.down, ascendDescend_Distance + 0.5f, out outObj1);
+
+        // Only if the normal descend check finds nothing,
+        // do one extra 0.5f check for stairs/slopes.
+        // This keeps cube descend range unchanged.
+        if (firstHit == RaycastHitObjects.None)
+        {
+            GameObject stairSlopeObj;
+
+            if (PerformMovementRaycast(playerPos + Vector3.down, Vector3.down, ascendDescend_Distance + 1f, out stairSlopeObj) == RaycastHitObjects.BlockInfo &&
+                TryGetBlockInfo(stairSlopeObj, out BlockInfo stairSlopeInfo) &&
+                (stairSlopeInfo.blockType == BlockType.Stair || stairSlopeInfo.blockType == BlockType.Slope))
+            {
+                outObj1 = stairSlopeObj;
+                firstHit = RaycastHitObjects.BlockInfo;
+            }
+        }
+
+        if (firstHit == RaycastHitObjects.BlockInfo &&
             TryGetBlockInfo(outObj1, out BlockInfo firstInfo))
         {
-            // Block Descend through stairs and slopes
+            // Allow Descend onto stairs and slopes.
             if (firstInfo.blockType == BlockType.Stair || firstInfo.blockType == BlockType.Slope)
             {
-                ClearMoveTarget(moveToBlock_Descend);
+                EvaluateStandardMovementTarget(moveToBlock_Descend, outObj1, blockStandingOn);
                 return;
             }
 
@@ -3132,7 +3189,12 @@ public class Movement : Singleton<Movement>
 
         MapStatsGathered.Instance.levelStats.ability_Ascend++;
         Anims.Trigger_AscendAnimation();
-        PerformMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
+
+        if (IsStairOrSlope(moveToBlock_Ascend.targetBlock))
+            PerformVerticalAbilityMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
+        else
+            PerformMovement(moveToBlock_Ascend, MovementStates.Moving, abilitySpeed);
+
         Action_isAscending?.Invoke();
         return true;
     }
@@ -3155,7 +3217,12 @@ public class Movement : Singleton<Movement>
 
         MapStatsGathered.Instance.levelStats.ability_Descend++;
         Anims.Trigger_DescendAnimation();
-        PerformMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
+
+        if (IsStairOrSlope(moveToBlock_Descend.targetBlock))
+            PerformVerticalAbilityMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
+        else
+            PerformMovement(moveToBlock_Descend, MovementStates.Moving, abilitySpeed);
+
         Action_isDescending?.Invoke();
         return true;
     }

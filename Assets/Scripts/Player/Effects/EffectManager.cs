@@ -70,7 +70,7 @@ public class EffectManager : Singleton<EffectManager>
         Movement.Action_isGrapplingHooking += Set_isGrapplingHooking;
 
         Interactable_Pickup.Action_EssencePickupGot += PerformPickupEffect;
-        Interactable_Pickup.Action_StepsUpPickupGot += PerformPickupEffect;
+        Interactable_Pickup.Action_FootprintPickupGot += PerformPickupEffect;
         Interactable_Pickup.Action_SkinPickupGot += PerformPickupEffect;
         Interactable_Pickup.Action_AbilityPickupGot += PerformPickupEffect;
 
@@ -92,7 +92,7 @@ public class EffectManager : Singleton<EffectManager>
         Movement.Action_isGrapplingHooking -= Set_isGrapplingHooking;
 
         Interactable_Pickup.Action_EssencePickupGot -= PerformPickupEffect;
-        Interactable_Pickup.Action_StepsUpPickupGot -= PerformPickupEffect;
+        Interactable_Pickup.Action_FootprintPickupGot -= PerformPickupEffect;
         Interactable_Pickup.Action_SkinPickupGot -= PerformPickupEffect;
         Interactable_Pickup.Action_AbilityPickupGot -= PerformPickupEffect;
 

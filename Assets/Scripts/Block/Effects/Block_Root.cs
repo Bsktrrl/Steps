@@ -1879,21 +1879,31 @@ public class Block_Root : MonoBehaviour
         if (hitCollider.isTrigger)
             return true;
 
+        BlockInfo blockInfo = hitCollider.GetComponent<BlockInfo>();
+
         // Ignore normal block colliders if they accidentally end up in the mask.
-        // Important: this only checks the collider object itself, not parents,
-        // so fences parented under blocks can still be detected.
-        if (hitCollider.GetComponent<BlockInfo>() != null)
+        // Also ignore slabs, because roots should be allowed to continue under/through slab-over-block situations.
+        if (blockInfo != null)
             return true;
 
-        // Ignore ladder colliders if they accidentally end up in the mask.
+        // Also handle cases where the collider is on a child object of the block.
+        BlockInfo parentBlockInfo = hitCollider.GetComponentInParent<BlockInfo>();
+
+        if (parentBlockInfo != null)
+        {
+            if (parentBlockInfo.blockType == BlockType.Slab)
+                return true;
+
+            // Optional: ignore all block parents too, if block colliders are sometimes on children.
+            return true;
+        }
+
         if (hitCollider.GetComponent<Block_Ladder>() != null)
             return true;
 
-        // Ignore this RootBlock script object.
         if (hitCollider.transform == transform)
             return true;
 
-        // Ignore active root visual objects, in case they have colliders.
         for (int i = 0; i < RootObjectList.Count; i++)
         {
             if (RootObjectList[i] == null)

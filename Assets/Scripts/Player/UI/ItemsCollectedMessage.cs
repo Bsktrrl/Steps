@@ -38,7 +38,7 @@ public class ItemsCollectedMessage : MonoBehaviour
     private void OnEnable()
     {
         Interactable_Pickup.Action_EssencePickupGot += ReadyEssanceMessage;
-        Interactable_Pickup.Action_StepsUpPickupGot += ReadyStepUpMessage;
+        Interactable_Pickup.Action_FootprintPickupGot += ReadyStepUpMessage;
         Interactable_Pickup.Action_SkinPickupGot += ReadySkinMessage;
 
         Movement.Action_PickupAnimation_Complete += ShowMessage;
@@ -46,7 +46,7 @@ public class ItemsCollectedMessage : MonoBehaviour
     private void OnDisable()
     {
         Interactable_Pickup.Action_EssencePickupGot -= ReadyEssanceMessage;
-        Interactable_Pickup.Action_StepsUpPickupGot -= ReadyStepUpMessage;
+        Interactable_Pickup.Action_FootprintPickupGot -= ReadyStepUpMessage;
         Interactable_Pickup.Action_SkinPickupGot -= ReadySkinMessage;
 
         Movement.Action_PickupAnimation_Complete -= ShowMessage;

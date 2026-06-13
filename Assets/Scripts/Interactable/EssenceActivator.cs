@@ -30,11 +30,13 @@ public class EssenceActivator : MonoBehaviour
     {
         DataManager.Action_dataHasLoaded += SetMaterial;
         Interactable_Pickup.Action_AbilityPickupGot += SetMaterial;
+        Interactable_Pickup.Action_FootprintPickupGot += SetMaterial;
     }
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= SetMaterial;
         Interactable_Pickup.Action_AbilityPickupGot -= SetMaterial;
+        Interactable_Pickup.Action_FootprintPickupGot -= SetMaterial;
     }
 
 
@@ -80,6 +82,10 @@ public class EssenceActivator : MonoBehaviour
 
     bool RequirementsAreMet(EssenceRequirements requirements)
     {
+        //Check Steps Requirement
+        if (PlayerStats.Instance.stats.steps_Max < requirements.stepsRequirement) return false;
+
+        //Check Abilities Requirement
         if (requirements.needAbility_Snorkel && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel, PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel)) return false;
 
         if (requirements.needAbility_OxygenTank && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank, PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank)) return false;
@@ -110,6 +116,10 @@ public class EssenceActivator : MonoBehaviour
 [Serializable]
 public class EssenceRequirements
 {
+    [Header("Steps")]
+    public int stepsRequirement;
+
+    [Header("Abilities")]
     public bool needAbility_Snorkel;
     public bool needAbility_OxygenTank;
     public bool needAbility_Flipper;

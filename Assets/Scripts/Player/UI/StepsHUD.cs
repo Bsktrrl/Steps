@@ -76,7 +76,7 @@ public class StepsHUD : Singleton<StepsHUD>
 
     private void OnEnable()
     {
-        Interactable_Pickup.Action_StepsUpPickupGot += GetExtraFootprint;
+        Interactable_Pickup.Action_FootprintPickupGot += GetExtraFootprint;
         Movement.Action_StepTaken += UpdateStepsDisplay_Walking;
         Movement.Action_RespawnPlayer += UpdateStepsDisplay_Respawn;
         Block_Checkpoint.Action_CheckPointEntered += UpdateStepsDisplay_Checkpoint;
@@ -84,7 +84,7 @@ public class StepsHUD : Singleton<StepsHUD>
 
     private void OnDisable()
     {
-        Interactable_Pickup.Action_StepsUpPickupGot -= GetExtraFootprint;
+        Interactable_Pickup.Action_FootprintPickupGot -= GetExtraFootprint;
         Movement.Action_StepTaken -= UpdateStepsDisplay_Walking;
         Movement.Action_RespawnPlayer -= UpdateStepsDisplay_Respawn;
         Block_Checkpoint.Action_CheckPointEntered -= UpdateStepsDisplay_Checkpoint;

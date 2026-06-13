@@ -28,7 +28,7 @@ public class NumberOfSetpsDisplay : MonoBehaviour
         Action_Run_FirstTime += Update_FirstTime;
 
         Interactable_Pickup.Action_PickupGot += UpdateNumbersDisplay;
-        Interactable_Pickup.Action_StepsUpPickupGot += UpdateNumbersDisplay;
+        Interactable_Pickup.Action_FootprintPickupGot += UpdateNumbersDisplay;
         Movement.Action_StepTaken += UpdateNumbersDisplay;
         Block_MushroomCircle.Action_MushroomCircleEntered += UpdateNumbersDisplay;
 
@@ -59,7 +59,7 @@ public class NumberOfSetpsDisplay : MonoBehaviour
         Action_Run_FirstTime -= Update_FirstTime;
 
         Interactable_Pickup.Action_PickupGot -= UpdateNumbersDisplay;
-        Interactable_Pickup.Action_StepsUpPickupGot -= UpdateNumbersDisplay;
+        Interactable_Pickup.Action_FootprintPickupGot -= UpdateNumbersDisplay;
         Movement.Action_StepTaken -= UpdateNumbersDisplay;
         Block_MushroomCircle.Action_MushroomCircleEntered -= UpdateNumbersDisplay;
 
