@@ -147,6 +147,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 3847799898447950594, guid: 0f4e7d0a66493ec43ae1cfc4d4713ce4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4035386701650000973, guid: 0f4e7d0a66493ec43ae1cfc4d4713ce4, type: 3}
       propertyPath: m_Name
       value: Glueplant_Rivergreens
@@ -342,6 +346,8 @@ MonoBehaviour:
   itemReceived: 0
   abilityReceived: 0
   goal: 1
+  glueplant: {fileID: 4157194347558233163}
+  glueplantPicked: {fileID: 3008651495480310041}
 --- !u!114 &-3994309516002252710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,6 +426,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2a8dfece72ecda4787365e763d976d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &3008651495480310041 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3847799898447950594, guid: 0f4e7d0a66493ec43ae1cfc4d4713ce4, type: 3}
+  m_PrefabInstance: {fileID: 2064549715957713435}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3179926939056463300 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3496939234456819679, guid: 0f4e7d0a66493ec43ae1cfc4d4713ce4, type: 3}

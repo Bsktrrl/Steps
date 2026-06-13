@@ -22,10 +22,15 @@ public class Interactable_Pickup : MonoBehaviour
     MapManager mapManager;
     MapStatsGathered mapStatsGathered;
 
+    [Header("Object Type")]
     public SkinType skinReceived;
     public Items itemReceived;
     public Abilities abilityReceived;
     public bool goal;
+
+    [Header("Glueplant Versions")]
+    [SerializeField] GameObject glueplant;
+    [SerializeField] GameObject glueplantPicked;
 
     Vector3 startPos;
     RaycastHit hit;
@@ -45,10 +50,12 @@ public class Interactable_Pickup : MonoBehaviour
     private void OnEnable()
     {
         PlayerStats.Action_UpdateAbilityDisplay += HideAbility;
+        DataManager.Action_dataHasLoaded += HideGlueplant;
     }
     private void OnDisable()
     {
         PlayerStats.Action_UpdateAbilityDisplay -= HideAbility;
+        DataManager.Action_dataHasLoaded -= HideGlueplant;
     }
 
 
@@ -121,6 +128,7 @@ public class Interactable_Pickup : MonoBehaviour
 
         Action_goalReached_Early?.Invoke();
         PlayPickupSound();
+        HideGlueplant();
 
         //PlayGlueplantEffect
         if (gameObject.GetComponent<PickupAndSmokeScript>() && gameObject.GetComponent<PickupAndSmokeScript>().gatherEffectObject)
@@ -519,6 +527,22 @@ public class Interactable_Pickup : MonoBehaviour
             || (PlayerStats.Instance.stats.abilitiesGot_Temporary.ClimingGloves && abilityReceived == Abilities.ClimingGloves))
 
             gameObject.SetActive(false);
+    }
+    void HideGlueplant()
+    {
+        if (goal)
+        {
+            if (mapManager && mapManager.mapInfo_ToSave != null && mapManager.mapInfo_ToSave.isCompleted)
+            {
+                glueplantPicked.SetActive(true);
+                glueplant.SetActive(false);
+            }
+            else
+            {
+                glueplantPicked.SetActive(false);
+                glueplant.SetActive(true);
+            }
+        }
     }
 
 

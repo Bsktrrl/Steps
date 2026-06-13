@@ -36,7 +36,7 @@ public class Light_GlueplantChange : MonoBehaviour
     void ChangeLight()
     {
         if (!colorHasChanged && CheckIfGlueplantPickedUp())
-            ChangeLight_Orange();
+            ChangeLight_Purple();
     }
 
 
@@ -181,23 +181,23 @@ public class Light_GlueplantChange : MonoBehaviour
                 return "";
         }
     }
-    string GetOrangeColor()
+    string GetPurpleColor()
     {
-        return "#6F2500";
+        return "#41193F";
     }
 
 
     //--------------------
 
 
-    void ChangeLight_Orange()
+    void ChangeLight_Purple()
     {
         Light lightComponent = GetComponent<Light>();
 
         if (lightComponent)
         {
             string originalColor = GetOriginalColor();
-            string newColor = GetOrangeColor();
+            string newColor = GetPurpleColor();
 
             if (ColorUtility.TryParseHtmlString(originalColor, out Color startColor) &&
                 ColorUtility.TryParseHtmlString(newColor, out Color endColor))
