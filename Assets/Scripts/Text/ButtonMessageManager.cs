@@ -34,6 +34,7 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
         buttonMessages.buttonMessage_Talk.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_Talk_Keyboard;
         buttonMessages.buttonMessage_PlaceGlueplant.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_PlaceGlueplant_Keyboard;
         buttonMessages.buttonMessage_Push.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_Push_Keyboard;
+        buttonMessages.buttonMessage_Read.button_MessageText = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)SettingsManager.Instance.settingsData.currentLanguage].interractableButton_Message_Read_Keyboard;
 
         SetAllButtonMessages();
     }
@@ -47,6 +48,7 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
         SetButtonMessage(buttonMessages.buttonMessage_Talk);
         SetButtonMessage(buttonMessages.buttonMessage_PlaceGlueplant);
         SetButtonMessage(buttonMessages.buttonMessage_Push);
+        SetButtonMessage(buttonMessages.buttonMessage_Read);
     }
 
     public void SetButtonMessage(ButtonMessage _buttonMessage)
@@ -95,6 +97,7 @@ public class ButtonMessageList
     public ButtonMessage buttonMessage_Talk;
     public ButtonMessage buttonMessage_PlaceGlueplant;
     public ButtonMessage buttonMessage_Push;
+    public ButtonMessage buttonMessage_Read;
 }
 [Serializable]
 public class ButtonMessage
