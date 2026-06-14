@@ -25,6 +25,8 @@ public class Player_Body : Singleton<Player_Body>
 
     [Header("PlayerSkinObjects")]
     public GameObject skinObject_Default;
+    public GameObject skinObject_Default_Quartz;
+    public GameObject skinObject_Default_SourceBlock;
 
     public GameObject skinObject_Rivergreen_Lv1;
     public GameObject skinObject_Rivergreen_Lv2;
@@ -103,6 +105,20 @@ public class Player_Body : Singleton<Player_Body>
                 {
                     selectedSkinBlock = skinObject_Default;
                     skinObject_Default.SetActive(true);
+                }
+                break;
+            case SkinType.Quartz:
+                if (skinObject_Default_Quartz)
+                {
+                    selectedSkinBlock = skinObject_Default_Quartz;
+                    skinObject_Default_Quartz.SetActive(true);
+                }
+                break;
+            case SkinType.SourceBlock:
+                if (skinObject_Default_SourceBlock)
+                {
+                    selectedSkinBlock = skinObject_Default_SourceBlock;
+                    skinObject_Default_SourceBlock.SetActive(true);
                 }
                 break;
 
@@ -345,6 +361,10 @@ public class Player_Body : Singleton<Player_Body>
     {
         if (skinObject_Default)
             skinObject_Default.SetActive(false);
+        if (skinObject_Default_Quartz)
+            skinObject_Default_Quartz.SetActive(false);
+        if (skinObject_Default_SourceBlock)
+            skinObject_Default_SourceBlock.SetActive(false);
 
         if (skinObject_Rivergreen_Lv1)
             skinObject_Rivergreen_Lv1.SetActive(false);

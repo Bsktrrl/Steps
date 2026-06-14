@@ -56,7 +56,7 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Lava, 3);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Swamp, 4);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Metal, 5);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_7, 6);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_HUB, 6);
             #endregion
 
             #region Names of levels in Water Region
@@ -298,8 +298,8 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_6, 222);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_7, 223);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_8, 224);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_9, 225);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_10, 226);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].skinName_HUB_Quartz, 225);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].skinName_HUB_SourceBlock, 226);
             #endregion
 
             #region Skin Names
@@ -625,7 +625,7 @@ public class Game_TextDatabase_Language
     public string name_Region_Lava;
     public string name_Region_Swamp;
     public string name_Region_Metal;
-    public string name_Region_7;
+    public string name_Region_HUB;
     #endregion
 
     //Level Names
@@ -860,8 +860,8 @@ public class Game_TextDatabase_Language
     public string pauseMenu_Button_6;
     public string pauseMenu_Button_7;
     public string pauseMenu_Button_8;
-    public string pauseMenu_Button_9;
-    public string pauseMenu_Button_10;
+    public string skinName_HUB_Quartz;
+    public string skinName_HUB_SourceBlock;
     #endregion
 
     #region Skin Names
@@ -1402,8 +1402,8 @@ public enum Text_Database_Enum
     [InspectorName("Pause Menu / Button 6")] pauseMenu_Button_6,
     [InspectorName("Pause Menu / Button 7")] pauseMenu_Button_7,
     [InspectorName("Pause Menu / Button 8")] pauseMenu_Button_8,
-    [InspectorName("Pause Menu / Button 9")] pauseMenu_Button_9,
-    [InspectorName("Pause Menu / Button 10")] pauseMenu_Button_10,
+    [InspectorName("Pause Menu / HUB / Quartz")] skinName_HUB_Quartz,
+    [InspectorName("Pause Menu / HUB / SourceBlock")] skinName_HUB_SourceBlock,
     #endregion
 
     #region Skin Names

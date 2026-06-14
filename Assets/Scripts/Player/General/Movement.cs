@@ -4410,8 +4410,15 @@ public class Movement : Singleton<Movement>
 
                 if (!standingInUnswimmableWater)
                 {
-                    int stepCost = ConsumePendingStepCost(standingInfo);
-                    StatsRoot.stats.steps_Current -= stepCost;
+                    if (DataManager.Instance.skinsInfo_Store.activeSkinType == SkinType.SourceBlock)
+                    {
+
+                    }
+                    else
+                    {
+                        int stepCost = ConsumePendingStepCost(standingInfo);
+                        StatsRoot.stats.steps_Current -= stepCost;
+                    }
                 }
                 else
                 {

@@ -12089,6 +12089,8 @@ MonoBehaviour:
       skin_Region6_level4: 0
       skin_Region6_level5: 0
       skin_Default: 0
+      skin_Default_Quartz: 0
+      skin_Default_SourceBlock: 0
     skinHatInfo:
       hat_Region1: 0
       hat_Region2: 0
@@ -15153,6 +15155,8 @@ MonoBehaviour:
         skin_Region6_level4: 0
         skin_Region6_level5: 0
         skin_Default: 0
+        skin_Default_Quartz: 0
+        skin_Default_SourceBlock: 0
       skinHatInfo:
         hat_Region1: 0
         hat_Region2: 0
@@ -16887,6 +16891,13 @@ MonoBehaviour:
         switch_18: 0
         switch_19: 0
         switch_20: 0
+    permanentAbilitiesReceived_Save:
+      permanentAbility_Rivregreen: 0
+      permanentAbility_Sandlands: 0
+      permanentAbility_Frostfield: 0
+      permanentAbility_Firevein: 0
+      permanentAbility_Witchmire: 0
+      permanentAbility_Metalworks: 0
 --- !u!1 &1249729863
 GameObject:
   m_ObjectHideFlags: 0
@@ -21393,6 +21404,8 @@ MonoBehaviour:
         skin_Region6_level4: 0
         skin_Region6_level5: 0
         skin_Default: 0
+        skin_Default_Quartz: 0
+        skin_Default_SourceBlock: 0
       skinHatInfo:
         hat_Region1: 0
         hat_Region2: 0
@@ -23127,6 +23140,13 @@ MonoBehaviour:
         switch_18: 0
         switch_19: 0
         switch_20: 0
+    permanentAbilitiesReceived_Save:
+      permanentAbility_Rivregreen: 0
+      permanentAbility_Sandlands: 0
+      permanentAbility_Frostfield: 0
+      permanentAbility_Firevein: 0
+      permanentAbility_Witchmire: 0
+      permanentAbility_Metalworks: 0
   oneTimeRunData_Store:
     startLanguage_English: 0
     startVolum_Values: 0
@@ -23280,6 +23300,8 @@ MonoBehaviour:
       skin_Region6_level4: 0
       skin_Region6_level5: 0
       skin_Default: 0
+      skin_Default_Quartz: 0
+      skin_Default_SourceBlock: 0
     skinHatInfo:
       hat_Region1: 0
       hat_Region2: 0
@@ -25006,6 +25028,13 @@ MonoBehaviour:
       switch_18: 0
       switch_19: 0
       switch_20: 0
+  permanentAbilitiesReceived_Store:
+    permanentAbility_Rivregreen: 0
+    permanentAbility_Sandlands: 0
+    permanentAbility_Frostfield: 0
+    permanentAbility_Firevein: 0
+    permanentAbility_Witchmire: 0
+    permanentAbility_Metalworks: 0
 --- !u!114 &1662478633 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3695912814936919590, guid: 708f515159424df4292f33b367a505ee, type: 3}
@@ -32577,6 +32606,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2522827695117250384, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 2522827695117250384, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 2522827695117250384, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 1712554314}
+    - target: {fileID: 2522827695117250384, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2528443211554367825, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: menuToOpen
       value: 
@@ -35024,6 +35069,22 @@ PrefabInstance:
     - target: {fileID: 8939846607076920317, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: overlay
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8966072410865111847, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToOpen
+      value: 
+      objectReference: {fileID: 1723724837}
+    - target: {fileID: 8966072410865111847, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuToClose
+      value: 
+      objectReference: {fileID: 4160885316144579235}
+    - target: {fileID: 8966072410865111847, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: selectOnCancel
+      value: 
+      objectReference: {fileID: 1712554314}
+    - target: {fileID: 8966072410865111847, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
+      propertyPath: menuState_ToSelect
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8974366608767578940, guid: 381f9e576de98f149b21e00a85e7ed56, type: 3}
       propertyPath: m_Layer

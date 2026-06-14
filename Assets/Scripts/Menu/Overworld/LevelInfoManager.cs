@@ -565,6 +565,9 @@ public enum SkinType
     Metalworks_Lv3,
     Metalworks_Lv4,
     Metalworks_Lv5,
+
+    Quartz,
+    SourceBlock
 }
 
 public enum HatType

@@ -19,8 +19,10 @@ Juni:
 
 
 3. Importere Assets:
-- Lage prefabs av nye assets fra Mathias (GlueplantStand, Quartz-pillarer osv.)
-
+- Gjøre SourceBlock usynlig i menyen hvis den ikke er "Available"
+	- Endre buttonMovement basert på om SourceBlock er "Available" eller ikke
+	- Gjøre slik at alle andre skins må være kjøpt (og ha 10 EssenceCubes) for å kunne unlocke SpourceBlockSkinnet (skrive dette i info-boksen)
+- Gjøre QuartzPilar og SourceBlock tilgjengelig i WardrobMenyen når de plukkes opp i HUB'en (prøve å legge til et ekstra alternativ for et ekstra skin i et level, i MapManager, så både QuartsPilar og SourceBlock kan bli plukket opp i HUB'en og lagt til i WardrobMenyen)
 
 
 4. Movement Bug:

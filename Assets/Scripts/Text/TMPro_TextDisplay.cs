@@ -81,7 +81,7 @@ public class TMPro_TextDisplay : MonoBehaviour
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].name_Region_Metal;
                 break;
             case Text_Database_Enum.name_Region_6:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].name_Region_7;
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].name_Region_HUB;
                 break;
             #endregion
 
@@ -716,11 +716,11 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.pauseMenu_Button_8:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_8;
                 break;
-            case Text_Database_Enum.pauseMenu_Button_9:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_9;
+            case Text_Database_Enum.skinName_HUB_Quartz:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].skinName_HUB_Quartz;
                 break;
-            case Text_Database_Enum.pauseMenu_Button_10:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_10;
+            case Text_Database_Enum.skinName_HUB_SourceBlock:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].skinName_HUB_SourceBlock;
                 break;
             #endregion
 
@@ -1537,7 +1537,7 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.name_Region_Metal:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].name_Region_Metal;
             case Text_Database_Enum.name_Region_6:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].name_Region_7;
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].name_Region_HUB;
             #endregion
 
             #region Names of levels in Water Region
@@ -1975,10 +1975,10 @@ public class TMPro_TextDisplay : MonoBehaviour
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_7;
             case Text_Database_Enum.pauseMenu_Button_8:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_8;
-            case Text_Database_Enum.pauseMenu_Button_9:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_9;
-            case Text_Database_Enum.pauseMenu_Button_10:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_10;
+            case Text_Database_Enum.skinName_HUB_Quartz:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].skinName_HUB_Quartz;
+            case Text_Database_Enum.skinName_HUB_SourceBlock:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].skinName_HUB_SourceBlock;
             #endregion
 
             #region Skin Names

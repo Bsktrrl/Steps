@@ -415,6 +415,12 @@ public class Interactable_Pickup : MonoBehaviour
             case SkinType.Default:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default = WardrobeSkinState.Available;
                 break;
+            case SkinType.Quartz:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_Quartz = WardrobeSkinState.Available;
+                break;
+            case SkinType.SourceBlock:
+                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_SourceBlock = WardrobeSkinState.Available;
+                break;
 
             default:
                 DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default = WardrobeSkinState.Available;
