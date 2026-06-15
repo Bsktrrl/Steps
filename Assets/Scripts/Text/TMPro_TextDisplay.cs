@@ -266,8 +266,8 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.WardrobeMenu_Message_Headgear_Unavailable:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].WardrobeMenu_Message_Headgear_Unavailable;
                 break;
-            case Text_Database_Enum.WardrobeMenu_Message_Wardrobe_8:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].WardrobeMenu_Message_Wardrobe_8;
+            case Text_Database_Enum.WardrobeMenu_Message_UnlockAllOtherSkins:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].WardrobeMenu_Message_UnlockAllSkins;
                 break;
             case Text_Database_Enum.WardrobeMenu_Message_Wardrobe_9:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].WardrobeMenu_Message_Wardrobe_9;
@@ -1668,8 +1668,8 @@ public class TMPro_TextDisplay : MonoBehaviour
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].WardrobeMenu_Message_SkinEquipped;
             case Text_Database_Enum.WardrobeMenu_Message_Headgear_Unavailable:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].WardrobeMenu_Message_Headgear_Unavailable;
-            case Text_Database_Enum.WardrobeMenu_Message_Wardrobe_8:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].WardrobeMenu_Message_Wardrobe_8;
+            case Text_Database_Enum.WardrobeMenu_Message_UnlockAllOtherSkins:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].WardrobeMenu_Message_UnlockAllSkins;
             case Text_Database_Enum.WardrobeMenu_Message_Wardrobe_9:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].WardrobeMenu_Message_Wardrobe_9;
             case Text_Database_Enum.WardrobeMenu_Message_Wardrobe_10:

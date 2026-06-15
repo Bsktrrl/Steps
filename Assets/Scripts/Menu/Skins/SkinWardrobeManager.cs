@@ -165,7 +165,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
         UpdatePlayerBodyDisplay();
         UpdatePlayerHatDisplay();
 
-        UpdateWardrobeIfSourceBlock_isPickedUp();
+        UpdateWardrobe_IfSourceBlockIsPickedUp();
 
         if (skinWardrobeButton_Default && skinWardrobeButton_Default.GetComponent<UI_PulsatingMotion_WhenSelected>())
         {
@@ -505,7 +505,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     //--------------------
 
 
-    void UpdateWardrobeIfSourceBlock_isPickedUp()
+    void UpdateWardrobe_IfSourceBlockIsPickedUp()
     {
         //If SourceBlock is picked up
         if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_SourceBlock == WardrobeSkinState.Available

@@ -134,7 +134,7 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_SkinEquip, 73);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_SkinEquipped, 74);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_Headgear_Unavailable, 75);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_Wardrobe_8, 76);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_UnlockAllSkins, 76);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_Wardrobe_9, 77);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_Wardrobe_10, 78);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_Wardrobe_11, 79);
@@ -699,7 +699,7 @@ public class Game_TextDatabase_Language
     public string WardrobeMenu_Message_SkinEquip;
     public string WardrobeMenu_Message_SkinEquipped;
     public string WardrobeMenu_Message_Headgear_Unavailable;
-    public string WardrobeMenu_Message_Wardrobe_8;
+    public string WardrobeMenu_Message_UnlockAllSkins;
     public string WardrobeMenu_Message_Wardrobe_9;
     public string WardrobeMenu_Message_Wardrobe_10;
     public string WardrobeMenu_Message_Wardrobe_11;
@@ -1241,7 +1241,7 @@ public enum Text_Database_Enum
     [InspectorName("Wardrobe Menu / Message / SkinEquip")] WardrobeMenu_Message_SkinEquip,
     [InspectorName("Wardrobe Menu / Message / SkinEquipped")] WardrobeMenu_Message_SkinEquipped,
     [InspectorName("Wardrobe Menu / Message / Headgear_Unavailable")] WardrobeMenu_Message_Headgear_Unavailable,
-    [InspectorName("Wardrobe Menu / Message / Wardrobe_8")] WardrobeMenu_Message_Wardrobe_8,
+    [InspectorName("Wardrobe Menu / Message / Unlock All Other Skins")] WardrobeMenu_Message_UnlockAllOtherSkins,
     [InspectorName("Wardrobe Menu / Message / Wardrobe_9")] WardrobeMenu_Message_Wardrobe_9,
     [InspectorName("Wardrobe Menu / Message / Wardrobe_10")] WardrobeMenu_Message_Wardrobe_10,
     [InspectorName("Wardrobe Menu / Message / Wardrobe_11")] WardrobeMenu_Message_Wardrobe_11,

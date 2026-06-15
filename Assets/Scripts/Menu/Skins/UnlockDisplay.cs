@@ -13,6 +13,7 @@ public class UnlockDisplay : MonoBehaviour
     [SerializeField] GameObject canUnlock_obj;
     [SerializeField] GameObject canEquip_obj;
     [SerializeField] GameObject isEquipped_obj;
+    [SerializeField] GameObject unlockAllOtherSkins_obj;
 
     [SerializeField] GameObject finishQuestline_obj;
 
@@ -36,6 +37,7 @@ public class UnlockDisplay : MonoBehaviour
         canUnlock_obj.SetActive(false);
         canEquip_obj.SetActive(false);
         isEquipped_obj.SetActive(false);
+        unlockAllOtherSkins_obj.SetActive(false);
         finishQuestline_obj.SetActive(false);
 
         _currentPulsingImageRt = unavailable_obj.GetComponentInChildren<Image>().rectTransform;
@@ -53,6 +55,7 @@ public class UnlockDisplay : MonoBehaviour
         canUnlock_obj.SetActive(false);
         canEquip_obj.SetActive(false);
         isEquipped_obj.SetActive(false);
+        unlockAllOtherSkins_obj.SetActive(false);
         finishQuestline_obj.SetActive(false);
 
         _currentPulsingImageRt = levelReached_obj.GetComponentInChildren<Image>().rectTransform;
@@ -68,6 +71,7 @@ public class UnlockDisplay : MonoBehaviour
         canUnlock_obj.SetActive(false);
         canEquip_obj.SetActive(false);
         isEquipped_obj.SetActive(false);
+        unlockAllOtherSkins_obj.SetActive(false);
         finishQuestline_obj.SetActive(false);
 
         _currentPulsingImageRt = canNotUnlock_obj.GetComponentInChildren<Image>().rectTransform;
@@ -83,6 +87,7 @@ public class UnlockDisplay : MonoBehaviour
         canNotUnlock_obj.SetActive(false);
         canEquip_obj.SetActive(false);
         isEquipped_obj.SetActive(false);
+        unlockAllOtherSkins_obj.SetActive(false);
         finishQuestline_obj.SetActive(false);
 
         _currentPulsingImageRt = canUnlock_obj.GetComponentInChildren<Image>().rectTransform;
@@ -98,6 +103,7 @@ public class UnlockDisplay : MonoBehaviour
         canNotUnlock_obj.SetActive(false);
         canUnlock_obj.SetActive(false);
         isEquipped_obj.SetActive(false);
+        unlockAllOtherSkins_obj.SetActive(false);
         finishQuestline_obj.SetActive(false);
 
         _currentPulsingImageRt = canEquip_obj.GetComponentInChildren<Image>().rectTransform;
@@ -108,6 +114,23 @@ public class UnlockDisplay : MonoBehaviour
         CopyPulseScaleTo(isEquipped_obj);
 
         isEquipped_obj.SetActive(true);
+        unavailable_obj.SetActive(false);
+        levelReached_obj.SetActive(false);
+        canNotUnlock_obj.SetActive(false);
+        canUnlock_obj.SetActive(false);
+        canEquip_obj.SetActive(false);
+        unlockAllOtherSkins_obj.SetActive(false);
+        finishQuestline_obj.SetActive(false);
+
+        _currentPulsingImageRt = isEquipped_obj.GetComponentInChildren<Image>().rectTransform;
+    }
+
+    public void SetDisplay_UnlockAllOtherSkins()
+    {
+        CopyPulseScaleTo(isEquipped_obj);
+
+        unlockAllOtherSkins_obj.SetActive(true);
+        isEquipped_obj.SetActive(false);
         unavailable_obj.SetActive(false);
         levelReached_obj.SetActive(false);
         canNotUnlock_obj.SetActive(false);
@@ -205,7 +228,7 @@ public class UnlockDisplay : MonoBehaviour
                 }
                 else if (level == "2")
                 {
-                    return ""; //This message is never shown, since the SourceBlock appear when the skin is picked up
+                    return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_UnlockAllSkins;
                 }
                 return "";
             case RegionName.Rivergreen:
