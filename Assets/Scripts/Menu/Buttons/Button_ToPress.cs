@@ -50,6 +50,13 @@ public class Button_ToPress : MonoBehaviour
 
     public void Button_isPressed()
     {
+        if (GetComponent<RegionLocked>() && GetComponent<RegionLocked>().regionIsLocked)
+        {
+            UI_SoundManager.Instance.Play_Ui_ButtonCannot();
+
+            return;
+        }
+
         JumpToElement();
     }
 

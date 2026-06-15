@@ -297,7 +297,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2870597327188355720, guid: b350c77698839624a9bfe5a34e5af802, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3496939234456819679, guid: b350c77698839624a9bfe5a34e5af802, type: 3}
       propertyPath: m_LocalPosition.x
@@ -345,7 +345,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3590525949552716574, guid: b350c77698839624a9bfe5a34e5af802, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4035386701650000973, guid: b350c77698839624a9bfe5a34e5af802, type: 3}
       propertyPath: m_Name
@@ -356,6 +356,10 @@ PrefabInstance:
       value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 4215942164743477570, guid: b350c77698839624a9bfe5a34e5af802, type: 3}
+      propertyPath: glueplantObject
+      value: 
+      objectReference: {fileID: 232803160674848776}
+    - target: {fileID: 4215942164743477570, guid: b350c77698839624a9bfe5a34e5af802, type: 3}
       propertyPath: gatherEffectObject
       value: 
       objectReference: {fileID: 1363870151978335643}
@@ -365,7 +369,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4543496842754891630, guid: b350c77698839624a9bfe5a34e5af802, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4581801304635337258, guid: b350c77698839624a9bfe5a34e5af802, type: 3}
       propertyPath: m_IsActive
@@ -381,7 +385,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5493762826206957307, guid: b350c77698839624a9bfe5a34e5af802, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5759509909978089368, guid: b350c77698839624a9bfe5a34e5af802, type: 3}
       propertyPath: m_Layer
@@ -393,7 +397,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7190039616570232088, guid: b350c77698839624a9bfe5a34e5af802, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8847321348523971545, guid: b350c77698839624a9bfe5a34e5af802, type: 3}
       propertyPath: m_Layer
@@ -711,6 +715,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: bbc82926772e1df40965970145c33615, type: 3}
       propertyPath: m_Name
       value: Glueplant_Quartz_Picked
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bbc82926772e1df40965970145c33615, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

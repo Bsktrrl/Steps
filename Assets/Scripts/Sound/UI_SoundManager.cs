@@ -169,7 +169,7 @@ public class UI_SoundManager : Singleton<UI_SoundManager>
         //print("4. Play_Ui_ButtonBackward");
     }
 
-    void Play_Ui_ButtonCannot()
+    public void Play_Ui_ButtonCannot()
     {
         PlaySound(ui_ButtonCannot, 1f, 0.7f);
         //print("5. Play_Ui_ButtonCannot");
