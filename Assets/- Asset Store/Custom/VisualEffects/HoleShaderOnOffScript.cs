@@ -5,44 +5,106 @@ using UnityEngine;
 
 public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
 {
-    float transition;
+    [SerializeField] private Camera cameraObject;
+
+    [Header("Raycast Settings")]
+    [SerializeField] private LayerMask obstacleLayers;
+    [SerializeField] private bool checkEveryFrame = true;
+
+    private bool holeShaderIsOn;
     bool transitionBool;
-    float transitionSpeed = 7;
 
 
     //--------------------
 
 
-    //private void OnEnable()
-    //{
-    //    CameraController.Action_RotateCamera_Start += HoleShader_On;
-    //    CameraController.Action_RotateCamera_End += HoleShader_Off;
-    //}
-    //private void OnDisable()
-    //{
-    //    CameraController.Action_RotateCamera_Start -= HoleShader_On;
-    //    CameraController.Action_RotateCamera_End -= HoleShader_Off;
-    //}
-
-    private void Start()
+    private void Awake()
     {
-        Shader.SetGlobalFloat("_HoleShaderEnabled", 1);
+        if (cameraObject == null)
+            cameraObject = Camera.main;
     }
-
     private void Update()
     {
-        //if (transitionBool)
-        //{
-        //    transition = Mathf.Lerp(transition, (transitionBool ? 1 : 0), transitionSpeed * Time.deltaTime);
+        if (checkEveryFrame)
+        {
+            CheckForBlockInfoBetweenPlayerAndCamera();
+        }
+    }
 
-        //    Shader.SetGlobalFloat("_HoleShaderEnabled", transition);
-        //}
-        //else
-        //{
-        //    transition = Mathf.Lerp(transition, (transitionBool ? 1 : 0), transitionSpeed * Time.deltaTime);
 
-        //    Shader.SetGlobalFloat("_HoleShaderEnabled", transition);
-        //}
+    //--------------------
+
+
+    private void CheckForBlockInfoBetweenPlayerAndCamera()
+    {
+        if (PlayerManager.Instance == null ||
+            PlayerManager.Instance.playerBody == null ||
+            cameraObject == null)
+        {
+            HoleShader_Off();
+            return;
+        }
+
+        Vector3 playerPosition = PlayerManager.Instance.playerBody.transform.position;
+        Vector3 cameraPosition = cameraObject.transform.position;
+
+        Vector3 direction = cameraPosition - playerPosition;
+        float distance = direction.magnitude;
+
+        if (distance <= 0.01f)
+        {
+            HoleShader_Off();
+            return;
+        }
+
+        direction.Normalize();
+
+        bool foundBlockInfo = false;
+
+        RaycastHit[] hits = Physics.RaycastAll(
+            playerPosition,
+            direction,
+            distance,
+            obstacleLayers,
+            QueryTriggerInteraction.Ignore
+        );
+
+        foreach (RaycastHit hit in hits)
+        {
+            BlockInfo blockInfo = hit.collider.GetComponentInParent<BlockInfo>();
+
+            if (blockInfo != null)
+            {
+                foundBlockInfo = true;
+                break;
+            }
+        }
+
+        if (foundBlockInfo)
+        {
+            SetHoleShaderState(true);
+        }
+        else
+        {
+            SetHoleShaderState(false);
+        }
+    }
+
+    private void SetHoleShaderState(bool active)
+    {
+        if (holeShaderIsOn == active)
+            return;
+
+        holeShaderIsOn = active;
+
+        if (active)
+        {
+            HoleShader_On();
+        }
+        else
+        {
+            HoleShader_Off();
+        }
     }
 
 
@@ -58,5 +120,23 @@ public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
     {
         transitionBool = false;
         Shader.SetGlobalFloat("_HoleShaderEnabled", 0);
+    }
+
+
+    //--------------------
+
+
+    private void OnDrawGizmosSelected()
+    {
+        if (cameraObject == null)
+            return;
+
+        if (PlayerManager.Instance == null || PlayerManager.Instance.playerBody == null)
+            return;
+
+        Gizmos.DrawLine(
+            PlayerManager.Instance.playerBody.transform.position,
+            cameraObject.transform.position
+        );
     }
 }

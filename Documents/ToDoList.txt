@@ -9,7 +9,9 @@ Juni:
 
 2. Tutorial Levelet
 - Bygge levelet
-- Lage Tutorial-levelBilde
+- Lage Tutorial-levelBildet
+- Legge in en OneTimeSave/Load, der levelet har sin startPos, men før denne er slått på så spawner spilleren et annet sted i map'et
+	- Sett OneTimeSave/Load = true etter at spilleren har gått til Glueplanten første gang
 - Lage Stepellier Tutorial	
 	- Lage appear/dissapearAnimasjon-funsksjon for Stepellier
 	- Lage triggerpunkter (enums) som starter dialog
@@ -23,7 +25,6 @@ Juni:
 
 
 5. Hull-shader:
-- Skjul hull-shaderen dersom det ikke er noe som er mellom kameraet og spilleren, for å unngå at hull-shaderen klipper i blokker på siden av spilleren når dette ikke trengs. Kjør sjekker i "Update()" (for å sikre mot bl.a. ElevatorBlocks)
 - Deaktivere Kamaera-kant-hull-shaderen
 
 
