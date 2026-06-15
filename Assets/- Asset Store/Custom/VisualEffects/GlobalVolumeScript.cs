@@ -15,6 +15,8 @@ public class GlobalVolumeScript : MonoBehaviour
     float conversionCalculation;
     float blurSpeed = 10f;
     float directionDistance = 5.6f;
+    float sphereCastRadius = 0.25f;
+    float maxDistance = 56f;
 
     void Start()
     {
@@ -41,7 +43,7 @@ public class GlobalVolumeScript : MonoBehaviour
 
         conversionCalculation = conversionValue / (Camera.main.fieldOfView / 58);
 
-        if (Physics.Raycast(Camera.main.transform.position, blurDirection, out hit, directionDistance))
+        if (Physics.SphereCast(Camera.main.transform.position, sphereCastRadius, blurDirection, out hit, directionDistance, LayerMask.GetMask("Player")))
         {
             blurDistance = Mathf.Lerp(Shader.GetGlobalFloat("_BlurDistance"), Vector3.Distance(Camera.main.transform.position, hit.point) / conversionCalculation, blurSpeed * Time.deltaTime);
         }
