@@ -51,11 +51,13 @@ public class Interactable_Pickup : MonoBehaviour
     {
         PlayerStats.Action_UpdateAbilityDisplay += HideAbility;
         DataManager.Action_dataHasLoaded += HideGlueplant;
+        DataManager.Action_dataHasLoaded += HideSkin;
     }
     private void OnDisable()
     {
         PlayerStats.Action_UpdateAbilityDisplay -= HideAbility;
         DataManager.Action_dataHasLoaded -= HideGlueplant;
+        DataManager.Action_dataHasLoaded -= HideSkin;
     }
 
 
@@ -307,6 +309,12 @@ public class Interactable_Pickup : MonoBehaviour
             if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName == mapManager.mapInfo_ToSave.mapName)
             {
                 tempType = mapManager.mapInfo_ToSave.skintype;
+
+                if (mapManager.mapInfo_ToSave.skintype_2 == SkinType.SourceBlock && skinReceived == SkinType.SourceBlock)
+                {
+                    tempType = SkinType.SourceBlock;
+                }
+
                 break;
             }
         }
@@ -548,6 +556,23 @@ public class Interactable_Pickup : MonoBehaviour
                 glueplantPicked.SetActive(false);
                 glueplant.SetActive(true);
             }
+        }
+    }
+    void HideSkin()
+    {
+        if ((DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_SourceBlock == WardrobeSkinState.Available
+            || DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_SourceBlock == WardrobeSkinState.Bought
+            || DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_SourceBlock == WardrobeSkinState.Selected)
+            && skinReceived == SkinType.SourceBlock)
+        {
+            gameObject.SetActive(false);
+        }
+        else if ((DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_Quartz == WardrobeSkinState.Available
+            || DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_Quartz == WardrobeSkinState.Bought
+            || DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_Quartz == WardrobeSkinState.Selected)
+            && skinReceived == SkinType.Quartz)
+        {
+            gameObject.SetActive(false);
         }
     }
 

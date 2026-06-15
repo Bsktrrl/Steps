@@ -34,6 +34,7 @@ public class Map_SaveInfo
 
     [Header("Skin available")]
     public SkinType skintype;
+    public SkinType skintype_2;
 
     [Header("Abilities available")]
     public AbilitiesGot abilitiesInLevel;
