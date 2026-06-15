@@ -165,6 +165,8 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
         UpdatePlayerBodyDisplay();
         UpdatePlayerHatDisplay();
 
+        UpdateWardrobeIfSourceBlock_isPickedUp();
+
         if (skinWardrobeButton_Default && skinWardrobeButton_Default.GetComponent<UI_PulsatingMotion_WhenSelected>())
         {
             skinWardrobeButton_Default.GetComponent<UI_PulsatingMotion_WhenSelected>().EnableStartButton();
@@ -497,6 +499,65 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
             hat_Mossy.SetActive(false);
         if (hat_Larry)
             hat_Larry.SetActive(false);
+    }
+
+
+    //--------------------
+
+
+    void UpdateWardrobeIfSourceBlock_isPickedUp()
+    {
+        //If SourceBlock is picked up
+        if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_SourceBlock == WardrobeSkinState.Available
+            || DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_SourceBlock == WardrobeSkinState.Bought
+            || DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_SourceBlock == WardrobeSkinState.Selected)
+        {
+            skinWardrobeButton_Default_SourceBlock.SetActive(true);
+
+            //Link Buttons Together
+            SetButtonNavigation(skinWardrobeButton_Default.GetComponent<Button>(), skinWardrobeButton_Default_SourceBlock.GetComponent<Button>(), ButtonNavigationDirection.Left);
+            SetButtonNavigation(skinWardrobeButton_Default_Quartz.GetComponent<Button>(), skinWardrobeButton_Default_SourceBlock.GetComponent<Button>(), ButtonNavigationDirection.Right);
+            SetButtonNavigation(skinWardrobeButton_Region1_Level3.GetComponent<Button>(), skinWardrobeButton_Default_SourceBlock.GetComponent<Button>(), ButtonNavigationDirection.Up);
+            SetButtonNavigation(skinWardrobeButton_Region6_Level3.GetComponent<Button>(), skinWardrobeButton_Default_SourceBlock.GetComponent<Button>(), ButtonNavigationDirection.Down);
+        }
+
+        //If SourceBlock is NOT picked up
+        else
+        {
+            skinWardrobeButton_Default_SourceBlock.SetActive(false);
+
+            //Link Buttons Together
+            SetButtonNavigation(skinWardrobeButton_Default.GetComponent<Button>(), skinWardrobeButton_Default_Quartz.GetComponent<Button>(), ButtonNavigationDirection.Left);
+            SetButtonNavigation(skinWardrobeButton_Default_Quartz.GetComponent<Button>(), skinWardrobeButton_Default.GetComponent<Button>(), ButtonNavigationDirection.Right);
+            SetButtonNavigation(skinWardrobeButton_Region1_Level3.GetComponent<Button>(), skinWardrobeButton_Region6_Level3.GetComponent<Button>(), ButtonNavigationDirection.Up);
+            SetButtonNavigation(skinWardrobeButton_Region6_Level3.GetComponent<Button>(), skinWardrobeButton_Region1_Level3.GetComponent<Button>(), ButtonNavigationDirection.Down);
+        }
+    }
+    private void SetButtonNavigation(Button buttonInFocus, Button buttonToRefference, ButtonNavigationDirection direction)
+    {
+        Navigation nav = buttonInFocus.navigation;
+        nav.mode = Navigation.Mode.Explicit;
+
+        switch (direction)
+        {
+            case ButtonNavigationDirection.Up:
+                nav.selectOnUp = buttonToRefference;
+                break;
+
+            case ButtonNavigationDirection.Down:
+                nav.selectOnDown = buttonToRefference;
+                break;
+
+            case ButtonNavigationDirection.Left:
+                nav.selectOnLeft = buttonToRefference;
+                break;
+
+            case ButtonNavigationDirection.Right:
+                nav.selectOnRight = buttonToRefference;
+                break;
+        }
+
+        buttonInFocus.navigation = nav;
     }
 
 
@@ -1454,4 +1515,11 @@ public enum WardrobeHatState
     Hidden,
     Available,
     Selected
+}
+public enum ButtonNavigationDirection
+{
+    Up,
+    Down,
+    Left,
+    Right
 }

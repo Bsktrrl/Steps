@@ -604,5 +604,6 @@ public enum RegionName
     Frostfields,
     Firevein,
     Witchmire,
-    Metalworks
+    Metalworks,
+    HUB
 }
