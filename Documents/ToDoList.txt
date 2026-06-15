@@ -16,14 +16,10 @@ Juni:
 	- Lage Excel-ark (med språkstøtte) der dialogen hentes fra
 
 
-3. Importere Assets:
-- Gjøre QuartzPilar og SourceBlock tilgjengelig i WardrobMenyen når de plukkes opp i HUB'en (prøve å legge til et ekstra alternativ for et ekstra skin i et level, i MapManager, så både QuartsPilar og SourceBlock kan bli plukket opp i HUB'en og lagt til i WardrobMenyen)
-- Gjøre slik at alle andre skins må være kjøpt (og ha 10 EssenceCubes) for å kunne unlocke SpourceBlockSkinnet (skrive dette i info-boksen)
-
-
-
 4. Movement Bug:
 - Gjøre slik at alt som skal oppdateres blir oppdatert før spilleren kan bevege seg videre (eller før man beveger seg videre om man holder inne movement-knapper)
+	- Dobbeltsjekke Water og SwiftSwim
+	- Dobbeltsjekke RootBlcoks, og at de forsvinner med en gang spilleren går vekk fra blokken, når den ikke er på en blokk med røtter (Eks. stiger som ikke leder til en blokk med røtter)
 
 
 5. Hull-shader:
@@ -126,6 +122,10 @@ Juni:
 51. Torches/Braziers/Candles:
 - Lage prefabs for disse
 - Legge til light settings og 3D-lyd på disse
+
+52. Hint-system:
+- Lage en feature i Settings som gir spilleren hint om hvilket checkpoint den skal gå til neste.
+	- Lage en List<GameObject> av rekkefølgen til de unlike checkpointsa, og bestemme hva som må inkluderes for at neste checkpoint skal hintes til
 
 
 
