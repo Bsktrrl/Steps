@@ -4898,7 +4898,6 @@ GameObject:
   - component: {fileID: 3246052714295550357}
   - component: {fileID: 6435071243120127416}
   - component: {fileID: 3539627466318568466}
-  - component: {fileID: 8169758055299240019}
   m_Layer: 0
   m_Name: ShineHor
   m_TagString: Untagged
@@ -4971,28 +4970,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &8169758055299240019
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2870597327188355720}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &3590525949552716574
 GameObject:
   m_ObjectHideFlags: 0
@@ -5004,7 +4981,6 @@ GameObject:
   - component: {fileID: 3359056981818616406}
   - component: {fileID: 3764899552539615280}
   - component: {fileID: 6656292551956475272}
-  - component: {fileID: 8135603985045877172}
   m_Layer: 0
   m_Name: ShineDia
   m_TagString: Untagged
@@ -5077,28 +5053,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &8135603985045877172
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3590525949552716574}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &4035386701650000973
 GameObject:
   m_ObjectHideFlags: 0
@@ -5175,7 +5129,6 @@ MonoBehaviour:
   picked: 0
   glueplant: {fileID: 4943209975316468438}
   glueplantPicked: {fileID: 4581801304635337258}
-  light: {fileID: 1294877717242233298}
 --- !u!1 &4543496842754891630
 GameObject:
   m_ObjectHideFlags: 0
