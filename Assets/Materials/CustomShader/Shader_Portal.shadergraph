@@ -17,6 +17,9 @@
         },
         {
             "m_Id": "2bad727bb12b45b08072fc38e49e8a93"
+        },
+        {
+            "m_Id": "056d554db94c468fb72b17ec886a78c2"
         }
     ],
     "m_Keywords": [],
@@ -323,6 +326,9 @@
         },
         {
             "m_Id": "2654f79a47fb4829ad399e3fa97d0cff"
+        },
+        {
+            "m_Id": "eef119d8be0f4667a9d751a75a5566b9"
         }
     ],
     "m_GroupDatas": [],
@@ -1605,6 +1611,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "eef119d8be0f4667a9d751a75a5566b9"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "331419893c2444969dcf203613632593"
+                },
+                "m_SlotId": 79554833
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "f3b25363b7fc40a683f62acfea4cc414"
                 },
                 "m_SlotId": 3
@@ -2079,6 +2099,34 @@
     "useTilingAndOffset": false,
     "m_Modifiable": true,
     "m_DefaultType": 0
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "056d554db94c468fb72b17ec886a78c2",
+    "m_Guid": {
+        "m_GuidSerialized": "63bf4333-8acd-45c3-a374-98c3f8eb2313"
+    },
+    "m_Name": "CameraHoleEnabled",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "CameraHoleEnabled",
+    "m_DefaultReferenceName": "_CameraHoleEnabled",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": false,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 0.0,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
 }
 
 {
@@ -3759,10 +3807,10 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
     "m_ObjectId": "2d3bc722444f4834a1565073af1bc67b",
     "m_Id": -404247326,
-    "m_DisplayName": "PlayerPos",
+    "m_DisplayName": "PlayerPosition",
     "m_SlotType": 0,
     "m_Hidden": false,
-    "m_ShaderOutputName": "_PlayerPos",
+    "m_ShaderOutputName": "_PlayerPosition",
     "m_StageCapability": 3,
     "m_Value": {
         "x": 0.0,
@@ -4033,10 +4081,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 501.0,
-            "y": 199.99998474121095,
-            "width": 232.0,
-            "height": 303.0
+            "x": 450.9999694824219,
+            "y": 320.0,
+            "width": 236.00003051757813,
+            "height": 327.0
         }
     },
     "m_Slots": [
@@ -4045,6 +4093,9 @@
         },
         {
             "m_Id": "691dcd1d6fc14d9584f699559872b86c"
+        },
+        {
+            "m_Id": "9caff22ebd754ea7a3ea611e9a767da6"
         },
         {
             "m_Id": "7a9ac384257e41909e1ab4fb26391121"
@@ -4061,11 +4112,13 @@
     "m_SerializedSubGraph": "{\n    \"subGraph\": {\n        \"fileID\": -5475051401550479605,\n        \"guid\": \"1513cfbd4a958164f905afb80e689e6d\",\n        \"type\": 3\n    }\n}",
     "m_PropertyGuids": [
         "b525a6d5-6dfb-42ff-9a02-85725665b862",
-        "c653b8d1-14f6-4927-b16d-bcc902ee9b48"
+        "c653b8d1-14f6-4927-b16d-bcc902ee9b48",
+        "dbd32ca9-4121-4e5f-a5fc-89a23c78b833"
     ],
     "m_PropertyIds": [
         -404247326,
-        240332692
+        240332692,
+        79554833
     ],
     "m_Dropdowns": [],
     "m_DropdownSelectedEntries": []
@@ -7154,6 +7207,21 @@
 }
 
 {
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "7e4c9feff9ab4d9a9229ca15fa3704b2",
+    "m_Id": 0,
+    "m_DisplayName": "CameraHoleEnabled",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
     "m_SGVersion": 1,
     "m_Type": "UnityEditor.ShaderGraph.PositionNode",
     "m_ObjectId": "7fd3f4ead58b41249de1db2065d275db",
@@ -8513,6 +8581,21 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "9caff22ebd754ea7a3ea611e9a767da6",
+    "m_Id": 79554833,
+    "m_DisplayName": "CameraHoleEnabled",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_CameraHoleEnabled",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
@@ -10728,6 +10811,9 @@
         },
         {
             "m_Id": "2bad727bb12b45b08072fc38e49e8a93"
+        },
+        {
+            "m_Id": "056d554db94c468fb72b17ec886a78c2"
         }
     ]
 }
@@ -11701,10 +11787,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 592.0,
-            "y": 131.99996948242188,
+            "x": 546.0,
+            "y": 217.99998474121095,
             "width": 141.0,
-            "height": 34.00006103515625
+            "height": 34.00001525878906
         }
     },
     "m_Slots": [
@@ -11957,10 +12043,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 565.0000610351563,
-            "y": 166.00003051757813,
-            "width": 167.99993896484376,
-            "height": 33.99995422363281
+            "x": 519.0,
+            "y": 252.0,
+            "width": 168.0,
+            "height": 34.0
         }
     },
     "m_Slots": [
@@ -12647,6 +12733,42 @@
     },
     "m_Property": {
         "m_Id": "c16fa062b2d84d99be009b54a69e98ed"
+    }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "eef119d8be0f4667a9d751a75a5566b9",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 515.0,
+            "y": 286.0,
+            "width": 172.0,
+            "height": 34.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "7e4c9feff9ab4d9a9229ca15fa3704b2"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "056d554db94c468fb72b17ec886a78c2"
     }
 }
 

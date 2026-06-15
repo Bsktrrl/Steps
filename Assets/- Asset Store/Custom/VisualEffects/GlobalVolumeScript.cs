@@ -16,7 +16,6 @@ public class GlobalVolumeScript : MonoBehaviour
     float blurSpeed = 10f;
     float directionDistance = 5.6f;
     float sphereCastRadius = 0.25f;
-    float maxDistance = 56f;
 
     void Start()
     {
@@ -60,6 +59,7 @@ public class GlobalVolumeScript : MonoBehaviour
     {
         //Hole Shader
         Shader.SetGlobalFloat("_HoleShaderEnabled", 0);
+        Shader.SetGlobalFloat("_CameraHoleEnabled", 0);
 
         //Depth of Field
         Shader.SetGlobalFloat("_DOFEnabled", 0);
