@@ -8,8 +8,9 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
     [HideInInspector] public float height_Normal = -0.15f; //Where the player is on the block under
     [HideInInspector] public float height_CeilingGrab = 0.26f;
 
+    //INFO: -0.8 is where the player is right under water surface
     float height_Stair = 0.08f;
-    float height_Water = -0.5f; //-0.8 is where the player is right under water surface
+    float height_Water = -0.5f; 
     float height_SwampWater = -0.4f;
     float height_Mud = -0.6f;
     float height_Lava = -0.7f;
@@ -52,6 +53,8 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
                 if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Stair || Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockType == BlockType.Slope)
                 {
                     PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Stair), ReturnRotation());
+                    HoleShaderOnOffScript.Instance.SetHullShaderPosY(height_Stair);
+                    HoleShaderOnOffScript.Instance.PlayerBody_offset = height_Stair;
                     return height_Stair;
                 }
 
@@ -59,6 +62,8 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
                 else if (Movement.Instance.blockStandingOn.GetComponent<Block_Water>())
                 {
                     PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Water), ReturnRotation());
+                    HoleShaderOnOffScript.Instance.SetHullShaderPosY(height_Water);
+                    HoleShaderOnOffScript.Instance.PlayerBody_offset = height_Water;
                     return height_Water;
                 }
 
@@ -66,6 +71,8 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
                 else if (Movement.Instance.blockStandingOn.GetComponent<Block_SwampWater>())
                 {
                     PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_SwampWater), ReturnRotation());
+                    HoleShaderOnOffScript.Instance.SetHullShaderPosY(height_SwampWater);
+                    HoleShaderOnOffScript.Instance.PlayerBody_offset = height_SwampWater;
                     return height_SwampWater;
                 }
 
@@ -73,6 +80,8 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
                 else if (Movement.Instance.blockStandingOn.GetComponent<Block_Mud>())
                 {
                     PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Mud), ReturnRotation());
+                    HoleShaderOnOffScript.Instance.SetHullShaderPosY(height_Mud);
+                    HoleShaderOnOffScript.Instance.PlayerBody_offset = height_Mud;
                     return height_Mud;
                 }
 
@@ -82,36 +91,50 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
                     if (Player_Quicksand.Instance.quicksandCounter == 0)
                     {
                         PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Normal), ReturnRotation());
+                        HoleShaderOnOffScript.Instance.SetHullShaderPosY(height_Normal);
+                        HoleShaderOnOffScript.Instance.PlayerBody_offset = height_Normal;
                         return height_Normal;
                     }
                     else if (Player_Quicksand.Instance.quicksandCounter == 1)
                     {
                         PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_1), ReturnRotation());
+                        HoleShaderOnOffScript.Instance.SetHullShaderPosY(height_QuickSand_1);
+                        HoleShaderOnOffScript.Instance.PlayerBody_offset = height_QuickSand_1;
                         return height_QuickSand_1;
                     }
                     else if (Player_Quicksand.Instance.quicksandCounter == 2)
                     {
                         PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_2), ReturnRotation());
+                        HoleShaderOnOffScript.Instance.SetHullShaderPosY(height_QuickSand_2);
+                        HoleShaderOnOffScript.Instance.PlayerBody_offset = height_QuickSand_2;
                         return height_QuickSand_2;
                     }
                     else if (Player_Quicksand.Instance.quicksandCounter == 3)
                     {
                         PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_3), ReturnRotation());
+                        HoleShaderOnOffScript.Instance.SetHullShaderPosY(height_QuickSand_3);
+                        HoleShaderOnOffScript.Instance.PlayerBody_offset = height_QuickSand_3;
                         return height_QuickSand_3;
                     }
                     else if (Player_Quicksand.Instance.quicksandCounter == 4)
                     {
                         PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_4), ReturnRotation());
+                        HoleShaderOnOffScript.Instance.SetHullShaderPosY(height_QuickSand_4);
+                        HoleShaderOnOffScript.Instance.PlayerBody_offset = height_QuickSand_4;
                         return height_QuickSand_4;
                     }
                     else if (Player_Quicksand.Instance.quicksandCounter == 5)
                     {
                         PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_QuickSand_5), ReturnRotation());
+                        HoleShaderOnOffScript.Instance.SetHullShaderPosY(height_QuickSand_5);
+                        HoleShaderOnOffScript.Instance.PlayerBody_offset = height_QuickSand_5;
                         return height_QuickSand_5;
                     }
                     else
                     {
                         PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Normal), ReturnRotation());
+                        HoleShaderOnOffScript.Instance.SetHullShaderPosY(height_Normal);
+                        HoleShaderOnOffScript.Instance.PlayerBody_offset = height_Normal;
                         return height_Normal;
                     }
                 }
@@ -120,6 +143,8 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
                 else if (Movement.Instance.blockStandingOn.GetComponent<Block_Lava>())
                 {
                     PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Lava), ReturnRotation());
+                    HoleShaderOnOffScript.Instance.SetHullShaderPosY(height_Lava);
+                    HoleShaderOnOffScript.Instance.PlayerBody_offset = height_Lava;
                     return height_Lava;
                 }
 
@@ -127,6 +152,8 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
                 else if (Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Pipe)
                 {
                     PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_pipe), ReturnRotation());
+                    HoleShaderOnOffScript.Instance.SetHullShaderPosY(height_pipe);
+                    HoleShaderOnOffScript.Instance.PlayerBody_offset = height_pipe;
                     return height_pipe;
                 }
 
@@ -134,9 +161,17 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
                 else
                 {
                     if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+                    {
                         PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_CeilingGrab), ReturnRotation());
+                        HoleShaderOnOffScript.Instance.SetHullShaderPosY(height_CeilingGrab);
+                        HoleShaderOnOffScript.Instance.PlayerBody_offset = height_CeilingGrab;
+                    }
                     else
+                    {
                         PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Normal), ReturnRotation());
+                        HoleShaderOnOffScript.Instance.SetHullShaderPosY(height_Normal);
+                        HoleShaderOnOffScript.Instance.PlayerBody_offset = height_Normal;
+                    }
 
                     return height_Normal;
                 }
@@ -146,6 +181,8 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
             else
             {
                 PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Normal), ReturnRotation());
+                HoleShaderOnOffScript.Instance.SetHullShaderPosY(height_Normal);
+                HoleShaderOnOffScript.Instance.PlayerBody_offset = height_Normal;
                 return height_Normal;
             }
 
@@ -162,6 +199,8 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
         else
         {
             PlayerManager.Instance.playerBody.transform.SetLocalPositionAndRotation(ReturnPosition(height_Normal), ReturnRotation());
+            HoleShaderOnOffScript.Instance.SetHullShaderPosY(height_Normal);
+            HoleShaderOnOffScript.Instance.PlayerBody_offset = height_Normal;
             return height_Normal;
         }
     }

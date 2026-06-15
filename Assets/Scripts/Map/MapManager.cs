@@ -123,6 +123,7 @@ public class MapManager : Singleton<MapManager>
         var playerObjectInScene = Instantiate(playerObject);
 
         playerStartPos = playerStartPos + new Vector3(0, -1 + Movement.Instance.heightOverBlock, 0);
+
         playerObjectInScene.transform.position = playerStartPos;
 
         playerObjectInScene.transform.parent = playerObject_Parent.transform;
@@ -134,6 +135,8 @@ public class MapManager : Singleton<MapManager>
         Action_SpawnedPlayerObject?.Invoke(SpawnedPlayer);
         Action_PlayerObject_IsSpawned?.Invoke();
     }
+    
+
     public void SetAbilities()
     {
         if (mapInfo_ToSave.abilitiesGotInLevel.Snorkel)

@@ -245,4 +245,8 @@ public class OneTimeRunData
 
     //Skin
     /*[HideInInspector]*/ public bool pickup_FirstSkin = new bool();
+
+
+    //Skin
+    /*[HideInInspector]*/ public bool glueplantHUB_PickedUp = new bool();
 }

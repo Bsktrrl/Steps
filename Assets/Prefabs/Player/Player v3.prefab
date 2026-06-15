@@ -11471,6 +11471,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 32768
   checkEveryFrame: 1
+  PlayerBody_offset: 0
 --- !u!1 &2483270047424893871
 GameObject:
   m_ObjectHideFlags: 0
@@ -19041,6 +19042,7 @@ MonoBehaviour:
       tutorial_Finished: 0
       pickup_FirstFootprint: 0
       pickup_FirstSkin: 0
+      glueplantHUB_PickedUp: 0
     game_TextDatabase_Save:
       gameText_LanguageList: []
     PlayerStatsData_Save:
@@ -35799,7 +35801,7 @@ Transform:
   m_GameObject: {fileID: 6649856597487831825}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 6.95, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -43421,6 +43423,7 @@ MonoBehaviour:
       tutorial_Finished: 0
       pickup_FirstFootprint: 0
       pickup_FirstSkin: 0
+      glueplantHUB_PickedUp: 0
     game_TextDatabase_Save:
       gameText_LanguageList: []
     PlayerStatsData_Save:
@@ -45148,6 +45151,7 @@ MonoBehaviour:
     tutorial_Finished: 0
     pickup_FirstFootprint: 0
     pickup_FirstSkin: 0
+    glueplantHUB_PickedUp: 0
   haveStartedNewGame_Store: 0
   menuState_Store: 0
   playerStats_Store:

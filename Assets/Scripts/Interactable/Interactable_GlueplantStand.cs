@@ -360,7 +360,7 @@ public class StandStats
 
 public enum GlueplantType
 {
-    Tutorial,
+    HUB,
     Rivergreen,
     Sandlands,
     Frostfield,

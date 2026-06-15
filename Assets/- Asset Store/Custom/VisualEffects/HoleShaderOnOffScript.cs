@@ -11,6 +11,8 @@ public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
     [SerializeField] private LayerMask obstacleLayers;
     [SerializeField] private bool checkEveryFrame = true;
 
+    public float PlayerBody_offset;
+
     private bool holeShaderIsOn;
     bool transitionBool;
 
@@ -45,7 +47,9 @@ public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
             return;
         }
 
+        //Vector3 playerPosition = PlayerManager.Instance.playerBody.transform.position + (Vector3.up * (Mathf.Abs(Player_BodyHeight.Instance.height_Normal) + Mathf.Abs(PlayerBody_offset)));
         Vector3 playerPosition = PlayerManager.Instance.playerBody.transform.position;
+
         Vector3 cameraPosition = cameraObject.transform.position;
 
         Vector3 direction = cameraPosition - playerPosition;
@@ -113,13 +117,22 @@ public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
 
     public void HoleShader_On()
     {
+        if (FreeCam.Instance._isActive) return;
+
         transitionBool = true;
         Shader.SetGlobalFloat("_HoleShaderEnabled", 1);
+        Shader.SetGlobalFloat("_CameraHoleEnabled", 1);
     }
     public void HoleShader_Off()
     {
         transitionBool = false;
         Shader.SetGlobalFloat("_HoleShaderEnabled", 0);
+        Shader.SetGlobalFloat("_CameraHoleEnabled", 0);
+    }
+
+    public void SetHullShaderPosY(float y)
+    {
+        Shader.SetGlobalFloat("_PlayerOffset", y);
     }
 
 

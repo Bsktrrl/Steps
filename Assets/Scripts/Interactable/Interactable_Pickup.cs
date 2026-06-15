@@ -26,7 +26,9 @@ public class Interactable_Pickup : MonoBehaviour
     public SkinType skinReceived;
     public Items itemReceived;
     public Abilities abilityReceived;
+
     public bool goal;
+    [SerializeField] GlueplantType glueplantType;
 
     [Header("Glueplant Versions")]
     [SerializeField] GameObject glueplant;
@@ -80,6 +82,13 @@ public class Interactable_Pickup : MonoBehaviour
             if (goal)
             {
                 PlayerManager.Instance.PauseGame();
+
+                //If glueplant is from HUB, update spawnPoint in HUB-level
+                if (glueplantType == GlueplantType.HUB)
+                {
+                    DataManager.Instance.oneTimeRunData_Store.glueplantHUB_PickedUp = true;
+                    DataPersistanceManager.instance.SaveGame();
+                }
 
                 StartCoroutine(GlueplantExitLevel(1.5f));
             }
@@ -546,15 +555,23 @@ public class Interactable_Pickup : MonoBehaviour
     {
         if (goal)
         {
+            if (mapManager.levelName == LevelNames.HUB)
+            {
+                glueplant.SetActive(true);
+                glueplantPicked.SetActive(false);
+
+                return;
+            }
+
             if (mapManager && mapManager.mapInfo_ToSave != null && mapManager.mapInfo_ToSave.isCompleted)
             {
-                glueplantPicked.SetActive(true);
                 glueplant.SetActive(false);
+                glueplantPicked.SetActive(true);
             }
             else
             {
-                glueplantPicked.SetActive(false);
                 glueplant.SetActive(true);
+                glueplantPicked.SetActive(false);
             }
         }
     }

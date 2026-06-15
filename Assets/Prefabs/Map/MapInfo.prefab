@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4418828074990884557}
   - component: {fileID: 5810466023685760520}
+  - component: {fileID: 2025580462952245226}
   - component: {fileID: 5161795108974153893}
   - component: {fileID: 2034764898522537326}
   - component: {fileID: 2728631236010153721}
@@ -98,8 +99,6 @@ MonoBehaviour:
   playerExclusive_LayerMask:
     serializedVersion: 2
     m_Bits: 64
-  mapAudioList: []
-  mapAudioSourceList: []
   levelName: 0
   mapInfo_ToSave:
     mapName: 
@@ -118,6 +117,7 @@ MonoBehaviour:
       isTaken: 0
     maxStepList: []
     skintype: 0
+    skintype_2: 0
     abilitiesInLevel:
       Snorkel: 0
       Flippers: 0
@@ -147,6 +147,18 @@ MonoBehaviour:
   introSequence: 0
   introSequence_Finished: 0
   haveIntroSequence: 1
+--- !u!114 &2025580462952245226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4454345480955054035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa5a991ebcf30ee4691b2650683fbec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5161795108974153893
 MonoBehaviour:
   m_ObjectHideFlags: 0
