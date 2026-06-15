@@ -80,8 +80,8 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.name_Region_Metal:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].name_Region_Metal;
                 break;
-            case Text_Database_Enum.name_Region_6:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].name_Region_7;
+            case Text_Database_Enum.name_Region_HUB:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].name_Region_HUB;
                 break;
             #endregion
 
@@ -266,8 +266,8 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.WardrobeMenu_Message_Headgear_Unavailable:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].WardrobeMenu_Message_Headgear_Unavailable;
                 break;
-            case Text_Database_Enum.WardrobeMenu_Message_Wardrobe_8:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].WardrobeMenu_Message_Wardrobe_8;
+            case Text_Database_Enum.WardrobeMenu_Message_UnlockAllOtherSkins:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].WardrobeMenu_Message_UnlockAllSkins;
                 break;
             case Text_Database_Enum.WardrobeMenu_Message_Wardrobe_9:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].WardrobeMenu_Message_Wardrobe_9;
@@ -716,11 +716,11 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.pauseMenu_Button_8:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_8;
                 break;
-            case Text_Database_Enum.pauseMenu_Button_9:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_9;
+            case Text_Database_Enum.skinName_HUB_Quartz:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].skinName_HUB_Quartz;
                 break;
-            case Text_Database_Enum.pauseMenu_Button_10:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_10;
+            case Text_Database_Enum.skinName_HUB_SourceBlock:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].skinName_HUB_SourceBlock;
                 break;
             #endregion
 
@@ -1316,14 +1316,14 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.interractableButton_Message_Push_xBox:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Push_xBox;
                 break;
-            case Text_Database_Enum.interractableButton_Message_14_Keyboard:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_14_Keyboard;
+            case Text_Database_Enum.interractableButton_Message_Read_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Read_Keyboard;
                 break;
-            case Text_Database_Enum.interractableButton_Message_14_PlayStation:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_14_PlayStation;
+            case Text_Database_Enum.interractableButton_Message_Read_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Read_PlayStation;
                 break;
-            case Text_Database_Enum.interractableButton_Message_14_xBox:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_14_xBox;
+            case Text_Database_Enum.interractableButton_Message_Read_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Read_xBox;
                 break;
             case Text_Database_Enum.interractableButton_Message_15_Keyboard:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_15_Keyboard;
@@ -1536,8 +1536,8 @@ public class TMPro_TextDisplay : MonoBehaviour
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].name_Region_Swamp;
             case Text_Database_Enum.name_Region_Metal:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].name_Region_Metal;
-            case Text_Database_Enum.name_Region_6:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].name_Region_7;
+            case Text_Database_Enum.name_Region_HUB:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].name_Region_HUB;
             #endregion
 
             #region Names of levels in Water Region
@@ -1668,8 +1668,8 @@ public class TMPro_TextDisplay : MonoBehaviour
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].WardrobeMenu_Message_SkinEquipped;
             case Text_Database_Enum.WardrobeMenu_Message_Headgear_Unavailable:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].WardrobeMenu_Message_Headgear_Unavailable;
-            case Text_Database_Enum.WardrobeMenu_Message_Wardrobe_8:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].WardrobeMenu_Message_Wardrobe_8;
+            case Text_Database_Enum.WardrobeMenu_Message_UnlockAllOtherSkins:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].WardrobeMenu_Message_UnlockAllSkins;
             case Text_Database_Enum.WardrobeMenu_Message_Wardrobe_9:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].WardrobeMenu_Message_Wardrobe_9;
             case Text_Database_Enum.WardrobeMenu_Message_Wardrobe_10:
@@ -1975,10 +1975,10 @@ public class TMPro_TextDisplay : MonoBehaviour
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_7;
             case Text_Database_Enum.pauseMenu_Button_8:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_8;
-            case Text_Database_Enum.pauseMenu_Button_9:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_9;
-            case Text_Database_Enum.pauseMenu_Button_10:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_10;
+            case Text_Database_Enum.skinName_HUB_Quartz:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].skinName_HUB_Quartz;
+            case Text_Database_Enum.skinName_HUB_SourceBlock:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].skinName_HUB_SourceBlock;
             #endregion
 
             #region Skin Names
@@ -2436,14 +2436,14 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.interractableButton_Message_Push_xBox:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Push_xBox;
 
-            case Text_Database_Enum.interractableButton_Message_14_Keyboard:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_14_Keyboard;
+            case Text_Database_Enum.interractableButton_Message_Read_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Read_Keyboard;
 
-            case Text_Database_Enum.interractableButton_Message_14_PlayStation:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_14_PlayStation;
+            case Text_Database_Enum.interractableButton_Message_Read_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Read_PlayStation;
 
-            case Text_Database_Enum.interractableButton_Message_14_xBox:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_14_xBox;
+            case Text_Database_Enum.interractableButton_Message_Read_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Read_xBox;
 
             case Text_Database_Enum.interractableButton_Message_15_Keyboard:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_15_Keyboard;

@@ -64,6 +64,10 @@ public class SkinsOverview : Singleton<SkinsOverview>
 
             case SkinType.Default:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_Default;
+            case SkinType.Quartz:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_HUB_Quartz + " " + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_HUB;
+            case SkinType.SourceBlock:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_HUB_SourceBlock;
 
             case SkinType.Rivergreen_Lv1:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].skinName_WaterRegion_Lv1 + " " + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Water;

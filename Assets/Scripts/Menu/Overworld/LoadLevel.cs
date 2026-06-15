@@ -178,5 +178,6 @@ public enum regions
     Frostfield,
     Firevein,
     Witchmire,
-    Metalworks
+    Metalworks,
+    HUB
 }

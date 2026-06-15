@@ -50,6 +50,9 @@ public class GameData
     //PlayerStatsData
     /*[HideInInspector]*/ public SwitchesData switchesData_Save = new SwitchesData();
 
+    //PlayerStatsData
+    /*[HideInInspector]*/ public PermanentAbilitiesReceived permanentAbilitiesReceived_Save = new PermanentAbilitiesReceived();
+
 
     //--------------------
 
@@ -71,6 +74,8 @@ public class GameData
 
         glueplantStandStats_Save = new GlueplantStandStats();
         switchesData_Save = new SwitchesData();
+
+        permanentAbilitiesReceived_Save = new PermanentAbilitiesReceived();
 
         //game_TextDatabase_Save = new Game_TextDatabase();
     }

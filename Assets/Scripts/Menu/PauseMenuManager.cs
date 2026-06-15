@@ -62,6 +62,8 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
     [Header("Skin Sprites")]
     #region Sprites
+    public Sprite sprite_PauseMenu_HUB;
+
     public Sprite sprite_PauseMenu_Rivergreen_Lv1;
     public Sprite sprite_PauseMenu_Rivergreen_Lv2;
     public Sprite sprite_PauseMenu_Rivergreen_Lv3;
@@ -382,6 +384,9 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         {
             case SkinType.None:
                 return null;
+
+            case SkinType.Quartz:
+                return sprite_PauseMenu_HUB;
 
             case SkinType.Rivergreen_Lv1:
                 return sprite_PauseMenu_Rivergreen_Lv1;

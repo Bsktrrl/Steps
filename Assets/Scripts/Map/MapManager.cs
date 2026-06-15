@@ -364,4 +364,6 @@ public enum LevelNames
     [InspectorName("Metalworks / Level 3")] Metalworks_Lv3,
     [InspectorName("Metalworks / Level 4")] Metalworks_Lv4,
     [InspectorName("Metalworks / Level 5")] Metalworks_Lv5,
+
+    [InspectorName("HUB")] HUB,
 }

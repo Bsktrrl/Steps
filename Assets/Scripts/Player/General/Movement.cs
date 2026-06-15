@@ -411,6 +411,11 @@ public class Movement : Singleton<Movement>
     {
         return TryGetBlockInfo(obj, out BlockInfo info) && info.blockElement == BlockElement.Lava;
     }
+    private bool IsBlockedPlayerMoveElement(BlockElement element)
+    {
+        return element == BlockElement.Lava ||
+               element == BlockElement.Tablet;
+    }
 
     private bool IsIce(GameObject obj)
     {
@@ -1853,7 +1858,7 @@ public class Movement : Singleton<Movement>
                 else
                     SetNormalMoveTarget(moveOption, outObj2);
             }
-            else if (targetInfoCube.blockElement == BlockElement.Lava)
+            else if (IsBlockedPlayerMoveElement(targetInfoCube.blockElement))
             {
                 ClearMoveTarget(moveOption);
             }
@@ -1945,7 +1950,7 @@ public class Movement : Singleton<Movement>
             else
                 SetNormalMoveTarget(moveOption, target);
         }
-        else if (info.blockElement == BlockElement.Lava)
+        else if (IsBlockedPlayerMoveElement(info.blockElement))
         {
             ClearMoveTarget(moveOption);
         }
@@ -2367,7 +2372,7 @@ public class Movement : Singleton<Movement>
                 else
                     SetMoveTarget(moveOption, outObj3);
             }
-            else if (targetInfo.blockElement == BlockElement.Lava)
+            else if (IsBlockedPlayerMoveElement(targetInfo.blockElement))
             {
                 ClearMoveTarget(moveOption);
             }
@@ -2447,7 +2452,7 @@ public class Movement : Singleton<Movement>
                     SetMoveTarget(moveOption, finalTarget);
                 }
             }
-            else if (info.blockElement == BlockElement.Lava)
+            else if (IsBlockedPlayerMoveElement(info.blockElement))
             {
                 ClearMoveTarget(moveOption);
             }
@@ -4405,8 +4410,15 @@ public class Movement : Singleton<Movement>
 
                 if (!standingInUnswimmableWater)
                 {
-                    int stepCost = ConsumePendingStepCost(standingInfo);
-                    StatsRoot.stats.steps_Current -= stepCost;
+                    if (DataManager.Instance.skinsInfo_Store.activeSkinType == SkinType.SourceBlock)
+                    {
+
+                    }
+                    else
+                    {
+                        int stepCost = ConsumePendingStepCost(standingInfo);
+                        StatsRoot.stats.steps_Current -= stepCost;
+                    }
                 }
                 else
                 {

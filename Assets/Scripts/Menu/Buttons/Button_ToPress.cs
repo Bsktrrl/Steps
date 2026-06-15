@@ -50,6 +50,13 @@ public class Button_ToPress : MonoBehaviour
 
     public void Button_isPressed()
     {
+        if (GetComponent<RegionLocked>() && GetComponent<RegionLocked>().regionIsLocked)
+        {
+            UI_SoundManager.Instance.Play_Ui_ButtonCannot();
+
+            return;
+        }
+
         JumpToElement();
     }
 
@@ -144,6 +151,10 @@ public class Button_ToPress : MonoBehaviour
                 MainMenuManager.Instance.newGameWarningMessage_Parent.SetActive(false);
                 break;
 
+            case MenuState.RegionMenu_HUB:
+                DataManager.Instance.menuState_Store = MenuState.RegionMenu_HUB;
+                DataPersistanceManager.Instance.SaveGame();
+                break;
             case MenuState.RegionMenu_Water:
                 DataManager.Instance.menuState_Store = MenuState.RegionMenu_Water;
                 DataPersistanceManager.Instance.SaveGame(); 
@@ -168,6 +179,7 @@ public class Button_ToPress : MonoBehaviour
                 DataManager.Instance.menuState_Store = MenuState.RegionMenu_Metal;
                 DataPersistanceManager.Instance.SaveGame();
                 break;
+
 
             default:
                 break;

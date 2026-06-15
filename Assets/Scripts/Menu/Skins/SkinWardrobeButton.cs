@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Net.NetworkInformation;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -134,7 +133,26 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
                     break;
                 case WardrobeSkinState.Available:
                     //Check condition to see if button is bought
-                    if (PlayerStats.Instance.stats.itemsGot.essence_Current >= skinWardrobeManager.skinCost)
+                    if (skinType == SkinType.SourceBlock)
+                    {
+                        if (CheckIfAllSkinsIsBought() && PlayerStats.Instance.stats.itemsGot.essence_Current >= skinWardrobeManager.skinCost)
+                        {
+                            PlayerStats.Instance.stats.itemsGot.essence_Current -= skinWardrobeManager.skinCost;
+                            skinWardrobeManager.UpdateEssenceDisplay();
+
+                            skinWardrobeManager.SetSkinSaveData(GetRegionNumber(region), level, WardrobeSkinState.Bought);
+
+                            WardrobeSounds(ButtonSoundStates.ButtonBuy);
+
+                            Action_BuySkin?.Invoke();
+                        }
+                        else
+                        {
+                            WardrobeSounds(ButtonSoundStates.ButtonCannot);
+                        }
+                    }
+
+                    else if (PlayerStats.Instance.stats.itemsGot.essence_Current >= skinWardrobeManager.skinCost)
                     {
                         PlayerStats.Instance.stats.itemsGot.essence_Current -= skinWardrobeManager.skinCost;
                         skinWardrobeManager.UpdateEssenceDisplay();
@@ -500,17 +518,33 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
                     skinWardrobeManager.HideAllHats();
                     break;
                 case WardrobeSkinState.Available:
-                    if (PlayerStats.Instance.stats.itemsGot.essence_Current >= 10)
-                        unlockDisplay.SetDisplay_CanUnlock();
+                    if (skinType == SkinType.SourceBlock)
+                    {
+                        if (CheckIfAllSkinsIsBought())
+                        {
+                            if (PlayerStats.Instance.stats.itemsGot.essence_Current >= 10)
+                                unlockDisplay.SetDisplay_CanUnlock();
+                            else
+                                unlockDisplay.SetDisplay_CanNotUnlock();
+                        }
+                        else
+                        {
+                            unlockDisplay.SetDisplay_UnlockAllOtherSkins();
+                        }
+                    }
                     else
-                        unlockDisplay.SetDisplay_CanNotUnlock();
+                    {
+                        if (PlayerStats.Instance.stats.itemsGot.essence_Current >= 10)
+                            unlockDisplay.SetDisplay_CanUnlock();
+                        else
+                            unlockDisplay.SetDisplay_CanNotUnlock();
+                    }
 
                     unlockDisplay.SetSelectedBlockName(SkinsOverview.Instance.GetSkinName(skinType));
 
                     skinWardrobeManager.selectedSkinType = skinType;
                     skinWardrobeManager.selectedSkin = skinWardrobeManager.GetTempSkinSelectedObject();
                     skinWardrobeManager.UpdatePlayerBodyDisplay();
-                    //skinWardrobeManager.Hat_HatUpdate();
                     break;
                 case WardrobeSkinState.Bought:
                     unlockDisplay.SetDisplay_CanEquip();
@@ -589,6 +623,52 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
                     break;
             }
         }
+    }
+
+    bool CheckIfAllSkinsIsBought()
+    {
+        if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_Quartz >= WardrobeSkinState.Bought
+
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level1 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level2 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level3 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level4 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region1_level5 >= WardrobeSkinState.Bought
+
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level1 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level2 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level3 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level4 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region2_level5 >= WardrobeSkinState.Bought
+
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level1 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level2 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level3 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level4 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region3_level5 >= WardrobeSkinState.Bought
+
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level1 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level2 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level3 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level4 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region4_level5 >= WardrobeSkinState.Bought
+
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level1 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level2 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level3 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level4 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region5_level5 >= WardrobeSkinState.Bought
+
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level1 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level2 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level3 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level4 >= WardrobeSkinState.Bought
+            && DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Region6_level5 >= WardrobeSkinState.Bought)
+        {
+            return true;
+        }
+
+        return false;
     }
 
 

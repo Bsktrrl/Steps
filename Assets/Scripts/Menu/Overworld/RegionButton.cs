@@ -48,6 +48,11 @@ public class RegionButton : MonoBehaviour
             case RegionState.None:
                 break;
 
+            case RegionState.HUB:
+                if (OverWorldManager.Instance.panelBackground) OverWorldManager.Instance.panelBackground.SetActive(true);
+                if (OverWorldManager.Instance.levelPanel_HUB) OverWorldManager.Instance.levelPanel_HUB.SetActive(true);
+                ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(OverWorldManager.Instance.levelPanel_HUB.transform.GetChild(0).gameObject);
+                break;
             case RegionState.Rivergreen:
                 if (OverWorldManager.Instance.panelBackground) OverWorldManager.Instance.panelBackground.SetActive(true);
                 if (OverWorldManager.Instance.levelPanel_Rivergreen) OverWorldManager.Instance.levelPanel_Rivergreen.SetActive(true);

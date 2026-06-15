@@ -442,6 +442,7 @@ GameObject:
   - component: {fileID: 3372689721122040330}
   - component: {fileID: 6693782625000577016}
   - component: {fileID: 1532502734276095383}
+  - component: {fileID: -5280400533892772224}
   m_Layer: 5
   m_Name: RegionlSelectButton
   m_TagString: Untagged
@@ -609,9 +610,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHighlighted: 0
   isFirstMuted: 0
-  isBackAndSameMenu: 0
+  isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 0
   buttonBack_Sound: 0
+--- !u!114 &-5280400533892772224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330780132882266929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45c324a1c50c0cc4a8e716656f516a56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  padlock: {fileID: 740285638388840974}
+  levelsToBeFinished: []
+  regionIsLocked: 0
 --- !u!1 &2560898602450609842
 GameObject:
   m_ObjectHideFlags: 0

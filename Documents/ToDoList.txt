@@ -6,37 +6,25 @@ Juni:
 
 ----- HVA SOM MÅ GJØRES FØR SPILLKONVENTET -----
 
-1. Tablets:
-- Lage TabletPrefaben
-- Lage selectableFunksjonalitet
-- Lage tekst på stor UI (teksten dukker opp med en gang)
-- Lage CameraTransition inn/ut til å se rett foran tableten, over hodet foran på spilleren (husk at hatter kan komme i veien)
-- Legge ut 1 Tablet i hvert Rivergreen-level
-
 
 2. Tutorial Levelet
 - Bygge levelet
-- Legge til at man gå direkte til levelet fra RegionMeny-knappen, så man ikke må inn til en meny med bare ett valg
-- Lage Tutorial-bilde
+- Lage Tutorial-levelBildet
+- Legge in en OneTimeSave/Load, der levelet har sin startPos, men før denne er slått på så spawner spilleren et annet sted i map'et
+	- Sett OneTimeSave/Load = true etter at spilleren har gått til Glueplanten første gang
 - Lage Stepellier Tutorial	
 	- Lage appear/dissapearAnimasjon-funsksjon for Stepellier
 	- Lage triggerpunkter (enums) som starter dialog
 	- Lage Excel-ark (med språkstøtte) der dialogen hentes fra
-- Endre slik at Metalworks Lv.1 kun kan spilles etter at Rivergreen Lv.5 er fullført
-
-
-3. Importere Assets:
-- Lage prefabs av nye assets fra Mathias (GlueplantStand, Quartz-pillarer osv.)
-- Legge til at Glueplants som er plukket opp (leveler som har blitt fullført), mister glueplanten i levelet (bytte til plukket asset når levelet starter)
-	- Bytt til plukket-asset når spilleren går på Glueplanten
 
 
 4. Movement Bug:
 - Gjøre slik at alt som skal oppdateres blir oppdatert før spilleren kan bevege seg videre (eller før man beveger seg videre om man holder inne movement-knapper)
+	- Dobbeltsjekke Water og SwiftSwim
+	- Dobbeltsjekke RootBlcoks, og at de forsvinner med en gang spilleren går vekk fra blokken, når den ikke er på en blokk med røtter (Eks. stiger som ikke leder til en blokk med røtter)
 
 
 5. Hull-shader:
-- Skjul hull-shaderen dersom det ikke er noe som er mellom kameraet og spilleren, for å unngå at hull-shaderen klipper i blokker på siden av spilleren når dette ikke trengs. Kjør sjekker i "Update()" (for å sikre mot bl.a. ElevatorBlocks)
 - Deaktivere Kamaera-kant-hull-shaderen
 
 
@@ -135,6 +123,10 @@ Juni:
 51. Torches/Braziers/Candles:
 - Lage prefabs for disse
 - Legge til light settings og 3D-lyd på disse
+
+52. Hint-system:
+- Lage en feature i Settings som gir spilleren hint om hvilket checkpoint den skal gå til neste.
+	- Lage en List<GameObject> av rekkefølgen til de unlike checkpointsa, og bestemme hva som må inkluderes for at neste checkpoint skal hintes til
 
 
 

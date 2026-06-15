@@ -121,6 +121,17 @@ public class LevelSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
                 return false;
             }
         }
+        else if (GetComponent<RegionLocked>())
+        {
+            if (GetComponent<RegionLocked>().CheckIfCanBePlayed())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         else
         {
             return true;

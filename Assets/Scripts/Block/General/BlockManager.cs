@@ -71,5 +71,6 @@ public enum BlockElement
     Temple,
 
     GlueplantStand,
+    AbilityStand,
     Tablet
 }

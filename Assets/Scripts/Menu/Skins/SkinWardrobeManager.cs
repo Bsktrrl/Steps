@@ -72,6 +72,8 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     public GameObject skinWardrobeButton_Region6_Level5;
 
     public GameObject skinWardrobeButton_Default;
+    public GameObject skinWardrobeButton_Default_Quartz;
+    public GameObject skinWardrobeButton_Default_SourceBlock;
     #endregion
 
     #region Wardrobe - PlayerHatObjects
@@ -93,6 +95,8 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     [Header("Wardrobe - PlayerSkinObjects")]
     public string sprite_PauseMenu_default_Name;
     public GameObject skin_Default;
+    public GameObject skin_Default_Quartz;
+    public GameObject skin_Default_SourceBlock;
 
     public GameObject object_Rivergreen_Lv1;
     public GameObject object_Rivergreen_Lv2;
@@ -161,6 +165,8 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
         UpdatePlayerBodyDisplay();
         UpdatePlayerHatDisplay();
 
+        UpdateWardrobe_IfSourceBlockIsPickedUp();
+
         if (skinWardrobeButton_Default && skinWardrobeButton_Default.GetComponent<UI_PulsatingMotion_WhenSelected>())
         {
             skinWardrobeButton_Default.GetComponent<UI_PulsatingMotion_WhenSelected>().EnableStartButton();
@@ -189,6 +195,12 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
             case SkinType.Default:
                 SetStartButton(skinWardrobeButton_Default);
+                break;
+            case SkinType.Quartz:
+                SetStartButton(skinWardrobeButton_Default_Quartz);
+                break;
+            case SkinType.SourceBlock:
+                SetStartButton(skinWardrobeButton_Default_SourceBlock);
                 break;
 
             case SkinType.Rivergreen_Lv1:
@@ -294,6 +306,9 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     }
     void RemoveStartButton()
     {
+        skinWardrobeButton_Default_Quartz.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+        skinWardrobeButton_Default_SourceBlock.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
+
         skinWardrobeButton_Region1_Level1.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
         skinWardrobeButton_Region1_Level2.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
         skinWardrobeButton_Region1_Level3.GetComponent<UI_PulsatingMotion_WhenSelected>().isStartButton = false;
@@ -365,6 +380,11 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     {
         if (skin_Default)
             skin_Default.SetActive(false);
+
+        if (skin_Default_Quartz)
+            skin_Default_Quartz.SetActive(false);
+        if (skin_Default_SourceBlock)
+            skin_Default_SourceBlock.SetActive(false);
 
         if (object_Rivergreen_Lv1)
             object_Rivergreen_Lv1.SetActive(false);
@@ -485,10 +505,80 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     //--------------------
 
 
+    void UpdateWardrobe_IfSourceBlockIsPickedUp()
+    {
+        //If SourceBlock is picked up
+        if (DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_SourceBlock == WardrobeSkinState.Available
+            || DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_SourceBlock == WardrobeSkinState.Bought
+            || DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_SourceBlock == WardrobeSkinState.Selected)
+        {
+            skinWardrobeButton_Default_SourceBlock.SetActive(true);
+
+            //Link Buttons Together
+            SetButtonNavigation(skinWardrobeButton_Default.GetComponent<Button>(), skinWardrobeButton_Default_SourceBlock.GetComponent<Button>(), ButtonNavigationDirection.Left);
+            SetButtonNavigation(skinWardrobeButton_Default_Quartz.GetComponent<Button>(), skinWardrobeButton_Default_SourceBlock.GetComponent<Button>(), ButtonNavigationDirection.Right);
+            SetButtonNavigation(skinWardrobeButton_Region1_Level3.GetComponent<Button>(), skinWardrobeButton_Default_SourceBlock.GetComponent<Button>(), ButtonNavigationDirection.Up);
+            SetButtonNavigation(skinWardrobeButton_Region6_Level3.GetComponent<Button>(), skinWardrobeButton_Default_SourceBlock.GetComponent<Button>(), ButtonNavigationDirection.Down);
+        }
+
+        //If SourceBlock is NOT picked up
+        else
+        {
+            skinWardrobeButton_Default_SourceBlock.SetActive(false);
+
+            //Link Buttons Together
+            SetButtonNavigation(skinWardrobeButton_Default.GetComponent<Button>(), skinWardrobeButton_Default_Quartz.GetComponent<Button>(), ButtonNavigationDirection.Left);
+            SetButtonNavigation(skinWardrobeButton_Default_Quartz.GetComponent<Button>(), skinWardrobeButton_Default.GetComponent<Button>(), ButtonNavigationDirection.Right);
+            SetButtonNavigation(skinWardrobeButton_Region1_Level3.GetComponent<Button>(), skinWardrobeButton_Region6_Level3.GetComponent<Button>(), ButtonNavigationDirection.Up);
+            SetButtonNavigation(skinWardrobeButton_Region6_Level3.GetComponent<Button>(), skinWardrobeButton_Region1_Level3.GetComponent<Button>(), ButtonNavigationDirection.Down);
+        }
+    }
+    private void SetButtonNavigation(Button buttonInFocus, Button buttonToRefference, ButtonNavigationDirection direction)
+    {
+        Navigation nav = buttonInFocus.navigation;
+        nav.mode = Navigation.Mode.Explicit;
+
+        switch (direction)
+        {
+            case ButtonNavigationDirection.Up:
+                nav.selectOnUp = buttonToRefference;
+                break;
+
+            case ButtonNavigationDirection.Down:
+                nav.selectOnDown = buttonToRefference;
+                break;
+
+            case ButtonNavigationDirection.Left:
+                nav.selectOnLeft = buttonToRefference;
+                break;
+
+            case ButtonNavigationDirection.Right:
+                nav.selectOnRight = buttonToRefference;
+                break;
+        }
+
+        buttonInFocus.navigation = nav;
+    }
+
+
+    //--------------------
+
+
     public GameObject GetSkinButtonObject(int region, int level)
     {
         switch (region)
         {
+            case 0:
+                switch (level)
+                {
+                    case 2:
+                        return skinWardrobeButton_Default_Quartz;
+                    case 3:
+                        return skinWardrobeButton_Default_SourceBlock;
+
+                    default:
+                        return null;
+                }
             case 1:
                 switch (level)
                 {
@@ -629,6 +719,10 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
         {
             case SkinType.None:
                 return skin_Default;
+            case SkinType.Quartz:
+                return skin_Default_Quartz;
+            case SkinType.SourceBlock:
+                return skin_Default_SourceBlock;
 
             case SkinType.Rivergreen_Lv1:
                 return object_Rivergreen_Lv1;
@@ -704,12 +798,16 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
         }
     }
 
-    public GameObject GetTempSkinSelectedObject()
+    public GameObject GetTempSkinSelectedObject() 
     {
         switch (selectedSkinType)
         {
             case SkinType.None:
                 return skin_Default;
+            case SkinType.Quartz:
+                return skin_Default_Quartz;
+            case SkinType.SourceBlock:
+                return skin_Default_SourceBlock;
 
             case SkinType.Rivergreen_Lv1:
                 return object_Rivergreen_Lv1;
@@ -790,6 +888,10 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
         {
             case SkinType.None:
                 return skin_Default;
+            case SkinType.Quartz:
+                return skin_Default_Quartz;
+            case SkinType.SourceBlock:
+                return skin_Default_SourceBlock;
 
             case SkinType.Rivergreen_Lv1:
                 return object_Rivergreen_Lv1;
@@ -925,9 +1027,14 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                 {
                     case 0:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default;
+                    case 1:
+                        return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_Quartz;
+                    case 2:
+                        return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_SourceBlock;
                     default:
                         return DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default;
                 }
+
                 
             case 1:
                 switch (level)
@@ -1062,7 +1169,18 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
         switch (region)
         {
             case 0:
-                DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default = skinState;
+                switch (level)
+                {
+                    case 0:
+                        DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default = skinState;
+                        break;
+                    case 1:
+                        DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_Quartz = skinState;
+                        break;
+                    case 2:
+                        DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_SourceBlock = skinState;
+                        break;
+                }
                 break;
             case 1:
                 switch (level)
@@ -1360,6 +1478,8 @@ public class SkinsWardrobeInfo
 
     [Header("Default")]
     public WardrobeSkinState skin_Default;
+    public WardrobeSkinState skin_Default_Quartz;
+    public WardrobeSkinState skin_Default_SourceBlock;
 }
 
 [Serializable]
@@ -1395,4 +1515,11 @@ public enum WardrobeHatState
     Hidden,
     Available,
     Selected
+}
+public enum ButtonNavigationDirection
+{
+    Up,
+    Down,
+    Left,
+    Right
 }

@@ -56,7 +56,7 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Lava, 3);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Swamp, 4);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_Metal, 5);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_7, 6);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].name_Region_HUB, 6);
             #endregion
 
             #region Names of levels in Water Region
@@ -134,7 +134,7 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_SkinEquip, 73);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_SkinEquipped, 74);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_Headgear_Unavailable, 75);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_Wardrobe_8, 76);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_UnlockAllSkins, 76);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_Wardrobe_9, 77);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_Wardrobe_10, 78);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].WardrobeMenu_Message_Wardrobe_11, 79);
@@ -298,8 +298,8 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_6, 222);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_7, 223);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_8, 224);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_9, 225);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_10, 226);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].skinName_HUB_Quartz, 225);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].skinName_HUB_SourceBlock, 226);
             #endregion
 
             #region Skin Names
@@ -516,9 +516,9 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Push_Keyboard, 428);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Push_PlayStation, 429);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Push_xBox, 430);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_14_Keyboard, 431);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_14_PlayStation, 432);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_14_xBox, 433);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Read_Keyboard, 431);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Read_PlayStation, 432);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Read_xBox, 433);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_15_Keyboard, 434);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_15_PlayStation, 435);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_15_xBox, 436);
@@ -625,7 +625,7 @@ public class Game_TextDatabase_Language
     public string name_Region_Lava;
     public string name_Region_Swamp;
     public string name_Region_Metal;
-    public string name_Region_7;
+    public string name_Region_HUB;
     #endregion
 
     //Level Names
@@ -699,7 +699,7 @@ public class Game_TextDatabase_Language
     public string WardrobeMenu_Message_SkinEquip;
     public string WardrobeMenu_Message_SkinEquipped;
     public string WardrobeMenu_Message_Headgear_Unavailable;
-    public string WardrobeMenu_Message_Wardrobe_8;
+    public string WardrobeMenu_Message_UnlockAllSkins;
     public string WardrobeMenu_Message_Wardrobe_9;
     public string WardrobeMenu_Message_Wardrobe_10;
     public string WardrobeMenu_Message_Wardrobe_11;
@@ -860,8 +860,8 @@ public class Game_TextDatabase_Language
     public string pauseMenu_Button_6;
     public string pauseMenu_Button_7;
     public string pauseMenu_Button_8;
-    public string pauseMenu_Button_9;
-    public string pauseMenu_Button_10;
+    public string skinName_HUB_Quartz;
+    public string skinName_HUB_SourceBlock;
     #endregion
 
     #region Skin Names
@@ -1078,9 +1078,9 @@ public class Game_TextDatabase_Language
     public string interractableButton_Message_Push_Keyboard;
     public string interractableButton_Message_Push_PlayStation;
     public string interractableButton_Message_Push_xBox;
-    public string interractableButton_Message_14_Keyboard;
-    public string interractableButton_Message_14_PlayStation;
-    public string interractableButton_Message_14_xBox;
+    public string interractableButton_Message_Read_Keyboard;
+    public string interractableButton_Message_Read_PlayStation;
+    public string interractableButton_Message_Read_xBox;
     public string interractableButton_Message_15_Keyboard;
     public string interractableButton_Message_15_PlayStation;
     public string interractableButton_Message_15_xBox;
@@ -1167,7 +1167,7 @@ public enum Text_Database_Enum
     [InspectorName("Region Name / Lava")] name_Region_Lava,
     [InspectorName("Region Name / Swamp")] name_Region_Swamp,
     [InspectorName("Region Name / Metal")] name_Region_Metal,
-    [InspectorName("Region Name / Region 6")] name_Region_6,
+    [InspectorName("Region Name / HUB")] name_Region_HUB,
     #endregion
 
     //Level Names
@@ -1241,7 +1241,7 @@ public enum Text_Database_Enum
     [InspectorName("Wardrobe Menu / Message / SkinEquip")] WardrobeMenu_Message_SkinEquip,
     [InspectorName("Wardrobe Menu / Message / SkinEquipped")] WardrobeMenu_Message_SkinEquipped,
     [InspectorName("Wardrobe Menu / Message / Headgear_Unavailable")] WardrobeMenu_Message_Headgear_Unavailable,
-    [InspectorName("Wardrobe Menu / Message / Wardrobe_8")] WardrobeMenu_Message_Wardrobe_8,
+    [InspectorName("Wardrobe Menu / Message / Unlock All Other Skins")] WardrobeMenu_Message_UnlockAllOtherSkins,
     [InspectorName("Wardrobe Menu / Message / Wardrobe_9")] WardrobeMenu_Message_Wardrobe_9,
     [InspectorName("Wardrobe Menu / Message / Wardrobe_10")] WardrobeMenu_Message_Wardrobe_10,
     [InspectorName("Wardrobe Menu / Message / Wardrobe_11")] WardrobeMenu_Message_Wardrobe_11,
@@ -1402,8 +1402,8 @@ public enum Text_Database_Enum
     [InspectorName("Pause Menu / Button 6")] pauseMenu_Button_6,
     [InspectorName("Pause Menu / Button 7")] pauseMenu_Button_7,
     [InspectorName("Pause Menu / Button 8")] pauseMenu_Button_8,
-    [InspectorName("Pause Menu / Button 9")] pauseMenu_Button_9,
-    [InspectorName("Pause Menu / Button 10")] pauseMenu_Button_10,
+    [InspectorName("Pause Menu / HUB / Quartz")] skinName_HUB_Quartz,
+    [InspectorName("Pause Menu / HUB / SourceBlock")] skinName_HUB_SourceBlock,
     #endregion
 
     #region Skin Names
@@ -1620,9 +1620,9 @@ public enum Text_Database_Enum
     [InspectorName("InterractableButton Message / Push")] interractableButton_Message_Push_Keyboard,
     [InspectorName("InterractableButton Message / Push")] interractableButton_Message_Push_PlayStation,
     [InspectorName("InterractableButton Message / Push")] interractableButton_Message_Push_xBox,
-    [InspectorName("InterractableButton Message / 14")] interractableButton_Message_14_Keyboard,
-    [InspectorName("InterractableButton Message / 14")] interractableButton_Message_14_PlayStation,
-    [InspectorName("InterractableButton Message / 14")] interractableButton_Message_14_xBox,
+    [InspectorName("InterractableButton Message / Read")] interractableButton_Message_Read_Keyboard,
+    [InspectorName("InterractableButton Message / Read")] interractableButton_Message_Read_PlayStation,
+    [InspectorName("InterractableButton Message / Read")] interractableButton_Message_Read_xBox,
     [InspectorName("InterractableButton Message / 15")] interractableButton_Message_15_Keyboard,
     [InspectorName("InterractableButton Message / 15")] interractableButton_Message_15_PlayStation,
     [InspectorName("InterractableButton Message / 15")] interractableButton_Message_15_xBox,

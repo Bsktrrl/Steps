@@ -41,6 +41,7 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
 
     [Header("Glueplant Sprites")]
     #region Glueplant Sprites
+    public Sprite glueplantSprite_HUB;
     public Sprite glueplantSprite_Rivergreen;
     public Sprite glueplantSprite_Sandlands;
     public Sprite glueplantSprite_Frostfield;
@@ -51,6 +52,9 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
 
     [Header("Skin Sprites")]
     #region Skin Sprites
+    public Sprite sprite_HUB_Quartz;
+    public Sprite sprite_HUB_SourceBlock;
+
     public Sprite sprite_Rivergreen_Lv1;
     public Sprite sprite_Rivergreen_Lv2;
     public Sprite sprite_Rivergreen_Lv3;
@@ -351,6 +355,11 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
             case SkinType.None:
                 return null;
 
+            case SkinType.Quartz:
+                return sprite_HUB_Quartz;
+            case SkinType.SourceBlock:
+                return sprite_HUB_SourceBlock;
+
             case SkinType.Rivergreen_Lv1:
                 return sprite_Rivergreen_Lv1;
             case SkinType.Rivergreen_Lv2:
@@ -430,6 +439,10 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
             case regions.None:
                 //print("0. Glueplant: None");
                 return null;
+
+            case regions.HUB:
+                //print("1. Glueplant: Rivergreen");
+                return glueplantSprite_HUB;
 
             case regions.Rivergreen:
                 //print("1. Glueplant: Rivergreen");
@@ -565,6 +578,9 @@ public enum SkinType
     Metalworks_Lv3,
     Metalworks_Lv4,
     Metalworks_Lv5,
+
+    Quartz,
+    SourceBlock
 }
 
 public enum HatType
@@ -588,5 +604,6 @@ public enum RegionName
     Frostfields,
     Firevein,
     Witchmire,
-    Metalworks
+    Metalworks,
+    HUB
 }

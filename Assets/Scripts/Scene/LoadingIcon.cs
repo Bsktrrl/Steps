@@ -17,6 +17,8 @@ public class LoadingIcon : MonoBehaviour
 
     [Header("Sprites")]
     [SerializeField] Sprite sprite_Default;
+    [SerializeField] Sprite sprite_HUB_Quartz;
+    [SerializeField] Sprite sprite_HUB_SourceBlock;
 
     [SerializeField] Sprite sprite_Rivergreen_Lv1;
     [SerializeField] Sprite sprite_Rivergreen_Lv2;
@@ -121,6 +123,10 @@ public class LoadingIcon : MonoBehaviour
 
             case SkinType.Default:
                 return sprite_Default;
+            case SkinType.Quartz:
+                return sprite_HUB_Quartz;
+            case SkinType.SourceBlock:
+                return sprite_HUB_SourceBlock;
 
             case SkinType.Rivergreen_Lv1:
                 return sprite_Rivergreen_Lv1;
