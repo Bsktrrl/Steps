@@ -29,6 +29,9 @@
         },
         {
             "m_Id": "43632dd06e5e4e4784170317e2a29049"
+        },
+        {
+            "m_Id": "c28d289db2fb4227a4bc7d52a23840d3"
         }
     ],
     "m_Keywords": [],
@@ -242,6 +245,9 @@
         },
         {
             "m_Id": "4dd06bce127e4a02993f3c50ab70c47a"
+        },
+        {
+            "m_Id": "cc463095e8074952b6a941d97a237897"
         }
     ],
     "m_GroupDatas": [],
@@ -1160,6 +1166,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "cc463095e8074952b6a941d97a237897"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "7e074563801a4137a56498330cfe6b4b"
+                },
+                "m_SlotId": 79554833
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "da3ec34ebcf2473fb48c9032309a4bac"
                 },
                 "m_SlotId": 0
@@ -1944,8 +1964,26 @@
         },
         {
             "m_Id": "43632dd06e5e4e4784170317e2a29049"
+        },
+        {
+            "m_Id": "c28d289db2fb4227a4bc7d52a23840d3"
         }
     ]
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "1db2703f37d24a5a81534e8a6890e26c",
+    "m_Id": 0,
+    "m_DisplayName": "CameraHoleEnabled",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
@@ -2308,8 +2346,8 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 172.00001525878907,
-            "y": 723.0,
+            "x": 176.00001525878907,
+            "y": 689.0,
             "width": 167.99998474121095,
             "height": 34.0
         }
@@ -5079,6 +5117,9 @@
             "m_Id": "86e54fa11f7b47eaa0ebb47138c40ab0"
         },
         {
+            "m_Id": "8e565ea9493247f2b025299dd71c5527"
+        },
+        {
             "m_Id": "998cd69d55f04bf9b6c893260078e590"
         }
     ],
@@ -5093,11 +5134,13 @@
     "m_SerializedSubGraph": "{\n    \"subGraph\": {\n        \"fileID\": -5475051401550479605,\n        \"guid\": \"1513cfbd4a958164f905afb80e689e6d\",\n        \"type\": 3\n    }\n}",
     "m_PropertyGuids": [
         "b525a6d5-6dfb-42ff-9a02-85725665b862",
-        "c653b8d1-14f6-4927-b16d-bcc902ee9b48"
+        "c653b8d1-14f6-4927-b16d-bcc902ee9b48",
+        "dbd32ca9-4121-4e5f-a5fc-89a23c78b833"
     ],
     "m_PropertyIds": [
         -404247326,
-        240332692
+        240332692,
+        79554833
     ],
     "m_Dropdowns": [],
     "m_DropdownSelectedEntries": []
@@ -5641,6 +5684,21 @@
         "e32": 0.0,
         "e33": 1.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "8e565ea9493247f2b025299dd71c5527",
+    "m_Id": 79554833,
+    "m_DisplayName": "CameraHoleEnabled",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_CameraHoleEnabled",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
@@ -7218,6 +7276,34 @@
 }
 
 {
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "c28d289db2fb4227a4bc7d52a23840d3",
+    "m_Guid": {
+        "m_GuidSerialized": "bc4c2c9a-57d8-4df2-bba2-fa66b2a9cb65"
+    },
+    "m_Name": "CameraHoleEnabled",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "CameraHoleEnabled",
+    "m_DefaultReferenceName": "_CameraHoleEnabled",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": false,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 0.0,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
+}
+
+{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "c33caaf5032442feb4af6844de06d70f",
@@ -7578,6 +7664,42 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
+    }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "cc463095e8074952b6a941d97a237897",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 172.00001525878907,
+            "y": 723.0,
+            "width": 171.99998474121095,
+            "height": 34.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "1db2703f37d24a5a81534e8a6890e26c"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "c28d289db2fb4227a4bc7d52a23840d3"
     }
 }
 
@@ -7966,8 +8088,8 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 199.0,
-            "y": 689.0,
+            "x": 203.0,
+            "y": 655.0,
             "width": 141.0,
             "height": 34.0
         }
