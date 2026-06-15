@@ -60,6 +60,9 @@ public class MenuStates : Singleton<MenuStates>
                 break;
 
 
+            case MenuState.RegionMenu_HUB:
+                MainMenuManager.Instance.menuState = MenuState.RegionMenu_HUB;
+                break;
             case MenuState.RegionMenu_Water:
                 MainMenuManager.Instance.menuState = MenuState.RegionMenu_Water;
                 break;
@@ -128,4 +131,5 @@ public enum MenuState
     RegionMenu_Lava,
     RegionMenu_Swamp,
     RegionMenu_Metal,
+    RegionMenu_HUB,
 }

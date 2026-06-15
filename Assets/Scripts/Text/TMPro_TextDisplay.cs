@@ -80,7 +80,7 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.name_Region_Metal:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].name_Region_Metal;
                 break;
-            case Text_Database_Enum.name_Region_6:
+            case Text_Database_Enum.name_Region_HUB:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].name_Region_HUB;
                 break;
             #endregion
@@ -1536,7 +1536,7 @@ public class TMPro_TextDisplay : MonoBehaviour
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].name_Region_Swamp;
             case Text_Database_Enum.name_Region_Metal:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].name_Region_Metal;
-            case Text_Database_Enum.name_Region_6:
+            case Text_Database_Enum.name_Region_HUB:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].name_Region_HUB;
             #endregion
 

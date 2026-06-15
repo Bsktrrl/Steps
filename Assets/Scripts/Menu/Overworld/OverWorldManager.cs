@@ -11,6 +11,7 @@ public class OverWorldManager : Singleton<OverWorldManager>
 
     [Header("Panel")]
     public GameObject panelBackground;
+    public GameObject levelPanel_HUB;
     public GameObject levelPanel_Rivergreen;
     public GameObject levelPanel_Sandlands;
     public GameObject levelPanel_Frostfield;
@@ -19,6 +20,7 @@ public class OverWorldManager : Singleton<OverWorldManager>
     public GameObject levelPanel_Metalworks;
 
     [Header("Panel")]
+    public GameObject levelPanel_HUB_FirstLevel;
     public GameObject levelPanel_Rivergreen_FirstLevel;
     public GameObject levelPanel_Sandlands_FirstLevel;
     public GameObject levelPanel_Frostfield_FirstLevel;
@@ -138,6 +140,12 @@ public class OverWorldManager : Singleton<OverWorldManager>
                 case RegionState.None:
                     break;
 
+                case RegionState.HUB:
+                    if (panelBackground) panelBackground.SetActive(true);
+                    levelPanel_HUB.SetActive(true);
+                    SetSelected(levelPanel_HUB);
+                    break;
+
 
                 case RegionState.Rivergreen:
                     if (panelBackground) panelBackground.SetActive(true);
@@ -235,6 +243,33 @@ public class OverWorldManager : Singleton<OverWorldManager>
 
         switch (regionState)
         {
+            case RegionState.HUB:
+                switch (levelState)
+                {
+                    case LevelState.None:
+                        region_Rivergreen.sprite = grass_Selected;
+                        break;
+                    case LevelState.Second:
+                        region_Rivergreen.sprite = grass_2;
+                        break;
+                    case LevelState.Third:
+                        region_Rivergreen.sprite = grass_3;
+                        break;
+                    case LevelState.Forth:
+                        region_Rivergreen.sprite = grass_4;
+                        break;
+                    case LevelState.Fifth:
+                        region_Rivergreen.sprite = grass_5;
+                        break;
+                    case LevelState.edge:
+                        region_Rivergreen.sprite = grass_Void;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+
+
             case RegionState.Rivergreen:
                 switch (levelState)
                 {
@@ -263,7 +298,6 @@ public class OverWorldManager : Singleton<OverWorldManager>
                         break;
                 }
                 break;
-
 
             case RegionState.Sandlands:
                 switch (levelState)
@@ -437,6 +471,7 @@ public enum RegionState
     Firevein,
     Witchmire,
     Metalworks,
+    HUB,
 }
 public enum LevelState
 {

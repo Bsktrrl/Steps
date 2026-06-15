@@ -30,6 +30,9 @@ public class ExitMapMenuReference : MonoBehaviour
             case regions.None:
                 break;
 
+            case regions.HUB:
+                DataManager.Instance.menuState_Store = MenuState.RegionMenu_HUB;
+                break;
             case regions.Rivergreen:
                 DataManager.Instance.menuState_Store = MenuState.RegionMenu_Water;
                 break;

@@ -122,6 +122,8 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
 
         Level_Stats levelStats_DataManger = GetLevelData(MapManager.Instance.levelName);
 
+        if (levelStats_DataManger == null) return;
+
         if (levelStats_DataManger.essence_1_TotalTimer_Check)
         {
             levelStats.essence_1_TotalTimer = 0;

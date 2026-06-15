@@ -403,6 +403,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         popupParent.SetActive(true);
         popupManager.SetActive(true);
+
         if (ControllerState.Instance.activeController == InputType.Keyboard)
             controllerVersions_Child[0].SetActive(true);
         else if (ControllerState.Instance.activeController == InputType.PlayStation)

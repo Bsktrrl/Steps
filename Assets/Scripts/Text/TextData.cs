@@ -1167,7 +1167,7 @@ public enum Text_Database_Enum
     [InspectorName("Region Name / Lava")] name_Region_Lava,
     [InspectorName("Region Name / Swamp")] name_Region_Swamp,
     [InspectorName("Region Name / Metal")] name_Region_Metal,
-    [InspectorName("Region Name / Region 6")] name_Region_6,
+    [InspectorName("Region Name / HUB")] name_Region_HUB,
     #endregion
 
     //Level Names

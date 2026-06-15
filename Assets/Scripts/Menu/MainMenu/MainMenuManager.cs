@@ -16,6 +16,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     public GameObject regionSelectMenu;
     public GameObject levelSelectMenu;
+    public GameObject regionMenu_HUB;
     public GameObject regionMenu_Water;
     public GameObject regionMenu_Sand;
     public GameObject regionMenu_Ice;
@@ -140,6 +141,9 @@ public class MainMenuManager : Singleton<MainMenuManager>
                 break;
 
 
+            case MenuState.RegionMenu_HUB:
+                Menu_Region_HUB();
+                break;
             case MenuState.RegionMenu_Water:
                 Menu_Region_Water();
                 break;
@@ -251,7 +255,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
         //Open the OverworldMenu
         overworldMenu_Parent.SetActive(true);
 
-        if (DataManager.Instance.menuState_Store == MenuState.RegionMenu_Water
+        if (DataManager.Instance.menuState_Store == MenuState.RegionMenu_HUB
+            || DataManager.Instance.menuState_Store == MenuState.RegionMenu_Water
             || DataManager.Instance.menuState_Store == MenuState.RegionMenu_Sand
             || DataManager.Instance.menuState_Store == MenuState.RegionMenu_Ice
             || DataManager.Instance.menuState_Store == MenuState.RegionMenu_Lava
@@ -292,7 +297,14 @@ public class MainMenuManager : Singleton<MainMenuManager>
         newGameWarningMessage_Parent.SetActive(true);
     }
 
+    void Menu_Region_HUB()
+    {
+        HideAllMenus();
 
+        overworldMenu_Parent.SetActive(true);
+        levelSelectMenu.SetActive(true);
+        regionMenu_HUB.SetActive(true);
+    }
     void Menu_Region_Water()
     {
         HideAllMenus();
@@ -364,6 +376,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
         if (levelSelectMenu)
             levelSelectMenu.SetActive(false);
 
+        if (regionMenu_HUB)
+            regionMenu_HUB.SetActive(false);
         if (regionMenu_Water)
             regionMenu_Water.SetActive(false);
         if (regionMenu_Sand)

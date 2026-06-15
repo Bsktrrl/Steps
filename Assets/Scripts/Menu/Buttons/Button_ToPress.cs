@@ -144,6 +144,10 @@ public class Button_ToPress : MonoBehaviour
                 MainMenuManager.Instance.newGameWarningMessage_Parent.SetActive(false);
                 break;
 
+            case MenuState.RegionMenu_HUB:
+                DataManager.Instance.menuState_Store = MenuState.RegionMenu_HUB;
+                DataPersistanceManager.Instance.SaveGame();
+                break;
             case MenuState.RegionMenu_Water:
                 DataManager.Instance.menuState_Store = MenuState.RegionMenu_Water;
                 DataPersistanceManager.Instance.SaveGame(); 
@@ -168,6 +172,7 @@ public class Button_ToPress : MonoBehaviour
                 DataManager.Instance.menuState_Store = MenuState.RegionMenu_Metal;
                 DataPersistanceManager.Instance.SaveGame();
                 break;
+
 
             default:
                 break;
