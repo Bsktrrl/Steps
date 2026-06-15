@@ -60,6 +60,7 @@ public class GlobalVolumeScript : MonoBehaviour
         //Hole Shader
         Shader.SetGlobalFloat("_HoleShaderEnabled", 0);
         Shader.SetGlobalFloat("_CameraHoleEnabled", 0);
+        Shader.SetGlobalFloat("_PlayerOffset", 0);
 
         //Depth of Field
         Shader.SetGlobalFloat("_DOFEnabled", 0);
