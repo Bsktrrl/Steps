@@ -103,6 +103,7 @@ public class PlayerManager : Singleton<PlayerManager>
             Movement.Instance.RotatePlayerBody(180);
 
             gameObject.transform.position = newPlayerPosition;
+            MapManager.Instance.playerStartPos = newPlayerPosition;
         }
         else if (MapManager.Instance.levelName == LevelNames.HUB && DataManager.Instance.oneTimeRunData_Store.glueplantHUB_PickedUp)
         {
@@ -114,6 +115,7 @@ public class PlayerManager : Singleton<PlayerManager>
             Movement.Instance.RotatePlayerBody(180);
 
             gameObject.transform.position = newPlayerPosition;
+            MapManager.Instance.playerStartPos = newPlayerPosition;
         }
     }
 
