@@ -10,7 +10,7 @@ public class Button_ToPress : MonoBehaviour
     public static event Action Action_ButtonIsPressed;
 
     [Header("MenuState")]
-    [SerializeField] MenuState newMenuState;
+    public MenuState newMenuState;
 
     [Header("Setup")]
     public Selectable uiElementToSelect;

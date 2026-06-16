@@ -26,6 +26,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     [Header("Menu State")]
     public MenuState menuState;
+    public MenuState subMenuState;
 
     [Header("BlackScreen")]
     public GameObject blackScreen;
