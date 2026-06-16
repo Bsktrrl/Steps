@@ -2,19 +2,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.Windows;
+using static UnityEngine.Rendering.HableCurve;
 
 public class HUBTutorial : Singleton<HUBTutorial>
 {
     [Header("Document")]
-    [SerializeField] TextAsset stepellierTutorialDocument;
+    [SerializeField] TextAsset stepellierTutorialDocument_Keyboard;
+    [SerializeField] TextAsset stepellierTutorialDocument_PlayStation;
+    [SerializeField] TextAsset stepellierTutorialDocument_xBox;
 
     [Header("Data from Excel")]
     public TutorialData tutorialData = new TutorialData();
     int startRow = 2;
-    int columns = 10; //Size + 1
+    int columns = 11; //Size + 1
     int currentLanguageAmount = 3;
 
     [Header("Stepellier Object")]
@@ -22,14 +26,29 @@ public class HUBTutorial : Singleton<HUBTutorial>
     [SerializeField] List<GameObject> stepellier_MeshObjectList;
     [SerializeField] Animator stepellier_Animator;
 
+    [Header("Dialogue Display")]
+    [SerializeField] GameObject dialogueDisplayCanvas_Parent;
+    [SerializeField] TextMeshProUGUI dialogueDisplay_Text;
+    [SerializeField] TextMeshProUGUI dialogueDisplay_Name;
+
+    [Header("Current Segment showing")]
+    [SerializeField] int currentSegmentShowing = -1;
+    [SerializeField] TutorialParts currentTutorialPart;
+
+    float playerRotY_Temp;
+
 
     //--------------------
 
 
     private void Start()
     {
+        PlayerManager.Instance.PauseGame();
+
         HideStepellier();
-        BuildTabletTextDatabase();
+        HideArrow();
+
+        BuildTutorialTextDatabase();
     }
 
 
@@ -39,36 +58,141 @@ public class HUBTutorial : Singleton<HUBTutorial>
     private void OnEnable()
     {
         DataManager.Action_dataHasLoaded += SetupTutorialSaveStates;
+        DataManager.Action_dataHasLoaded += SetupDialogueRefferences;
+
+        Player_KeyInputs.Action_dialogueNextButton_isPressed += StartNewSegment;
+
+        TypewriterEffect.Action_Typewriting_Finished += ShowArrow;
+
+        DataManager.Action_dataHasLoaded += SetupTutorial_Movement;
+        Movement.Action_RespawnPlayerLate += SetupTutorial_Respawn;
+        DataManager.Action_dataHasLoaded += UnPauseGame;
     }
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= SetupTutorialSaveStates;
+        DataManager.Action_dataHasLoaded -= SetupDialogueRefferences;
+
+        Player_KeyInputs.Action_dialogueNextButton_isPressed -= StartNewSegment;
+
+        TypewriterEffect.Action_Typewriting_Finished -= ShowArrow;
+
+        DataManager.Action_dataHasLoaded -= SetupTutorial_Movement;
+        Movement.Action_RespawnPlayerLate -= SetupTutorial_Respawn;
+        DataManager.Action_dataHasLoaded -= UnPauseGame;
     }
 
     void SetupTutorialSaveStates()
     {
         //Build SaveStates of TutorialSegements, if there are none yet
-        if (DataManager.Instance.oneTimeRunData_Store.tutorialSegmenet.Count <= 0)
+        if (DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets.Count <= 0)
         {
-            for (int i = 0; i < tutorialData.tutorialDataSegment.Count; i++)
+            int enumSize = Enum.GetValues(typeof(TutorialParts)).Length;
+
+            for (int i = 1; i < enumSize; i++)
             {
-                DataManager.Instance.oneTimeRunData_Store.tutorialSegmenet.Add(false);
+                TutorialDataParts tutorialParts = new TutorialDataParts();
+                tutorialParts.tutorialParts = (TutorialParts)i;
+                tutorialParts.isGoneThrough = false;
+
+                DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets.Add(tutorialParts);
             }
         }
+
+        DataPersistanceManager.instance.SaveGame();
+    }
+    void SetupDialogueRefferences()
+    {
+        dialogueDisplayCanvas_Parent = DialogueManager.Instance.dialogueCanvas;
+        dialogueDisplay_Name = DialogueManager.Instance.nameText;
     }
 
 
     //--------------------
 
 
-    public void StartTutorial(int index)
+    #region Tutorial Setup
+
+    public void StartTutorial(TutorialParts tutorialPart)
     {
-        Stepellier_Enter(index);
+        PlayerManager.Instance.PauseGame();
+
+        GetCorrectSegment((int)tutorialPart, tutorialPart);
+
+        StartCoroutine(StartTutorial_Delay());
     }
-    public void EndTutorial(int index)
+    public void EndTutorial()
     {
-        Stepellier_Exit(index);
+        StartCoroutine(EndTutorial_Delay());
     }
+
+    IEnumerator StartTutorial_Delay()
+    {
+        yield return StartCoroutine(Stepellier_Enter());
+
+        yield return ShowDialogueDisplay();
+    }
+    IEnumerator EndTutorial_Delay()
+    {
+        yield return CloseDialogueDisplay();
+
+        yield return StartCoroutine(Stepellier_Exit());
+    }
+
+    void GetCorrectSegment(int index, TutorialParts tutorialPart)
+    {
+        int tempSegment = -1;
+
+        for (int i = 0; i < tutorialData.tutorialDataSegment.Count; i++)
+        {
+            if (tutorialData.tutorialDataSegment[i].segmentNumber == index)
+            {
+                tempSegment = i;
+                break;
+            }
+        }
+
+        currentSegmentShowing = tempSegment;
+        currentTutorialPart = tutorialPart;
+    }
+
+
+    //-----
+
+
+    void SetupTutorial_Movement()
+    {
+        StartCoroutine(SetupTutorial_Movement_Delay(1.4f));
+    }
+    IEnumerator SetupTutorial_Movement_Delay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        StartTutorial(TutorialParts.Movement);
+    }
+    void SetupTutorial_Respawn()
+    {
+        if (Movement.Instance.isRespawningFirstTime)
+        {
+            //Set new SpawnPos for Stepellier
+
+
+            StartCoroutine(SetupTutorial_Respawn_Delay(0.4f));
+        }
+    }
+    IEnumerator SetupTutorial_Respawn_Delay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        StartTutorial(TutorialParts.Respawn);
+    }
+
+    void UnPauseGame()
+    {
+        PlayerManager.Instance.UnpauseGame();
+    }
+
+    #endregion
 
 
     //--------------------
@@ -76,33 +200,39 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
     #region StepellierSpawn
 
-    void Stepellier_Enter(int index)
+    IEnumerator Stepellier_Enter()
     {
-        StartCoroutine(SpawnStepellier_Delay(0.2f, index));
+        //Spawn in Stepellier
+        yield return StartCoroutine(SpawnStepellier_Delay(0.2f));
+
+        //Set Player reaction (and rotation) to Stepellier
+        yield return StartCoroutine(PlayerReactToStepellierSpawning());
     }
-    void Stepellier_Exit(int index)
+    IEnumerator Stepellier_Exit()
     {
-        StartCoroutine(DespawnStepellier_Delay(0.2f, index));
+        //Despawn Stepellier
+        yield return StartCoroutine(DespawnStepellier_Delay(0.2f));
+
+        yield return PlayerRotateBackToOriginalRotation();
     }
 
-    IEnumerator SpawnStepellier_Delay(float waitTime, int index)
-    {
-        PlayerManager.Instance.PauseGame();
 
+    //-----
+
+
+    IEnumerator SpawnStepellier_Delay(float waitTime)
+    {
         stepellier_Animator.SetTrigger(AnimationManager.Instance.effect_Teleport);
 
         yield return new WaitForSeconds(waitTime);
 
-        stepellier_Object.transform.SetPositionAndRotation(tutorialData.tutorialDataSegment[index].stepellier_spawnPos, RotateStepellier(index));
+        stepellier_Object.transform.SetPositionAndRotation(tutorialData.tutorialDataSegment[currentSegmentShowing].stepellier_spawnPos, RotateStepellier());
 
         ShowStepellier();
         SFX_Respawn.Instance.PlayRespawnSound();
 
-        yield return StartCoroutine(PlayerReactToStepellierSpawning(index));
-
-        EndTutorial(index);
     }
-    IEnumerator DespawnStepellier_Delay(float waitTime, int index)
+    IEnumerator DespawnStepellier_Delay(float waitTime)
     {
         stepellier_Animator.SetTrigger(AnimationManager.Instance.effect_Teleport);
 
@@ -120,17 +250,29 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
         Movement.Instance.UpdateAvailableMovementBlocks();
 
-        //SHOW THIS AFTER TESTING
-        //DataManager.Instance.oneTimeRunData_Store.tutorialSegmenet[index] = true;
-        //DataPersistanceManager.instance.SaveGame();
+        yield return new WaitForSeconds(waitTime);
+
+        //SHOW THIS AFTER TESTING TO PREVENT THE PLAYER OF GOING TROUGH THE SAME TUTORIAL AGAIN
+        //for (int i = 0; i < DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets.Count; i++)
+        //{
+        //    if (DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets[i].tutorialParts == currentTutorialPart)
+        //    {
+        //        DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets[i].isGoneThrough = true;
+        //        DataPersistanceManager.instance.SaveGame();
+
+        //        break;
+        //    }
+        //}
 
         PlayerManager.Instance.UnpauseGame();
     }
-    IEnumerator PlayerReactToStepellierSpawning(int index)
+    
+    IEnumerator PlayerReactToStepellierSpawning()
     {
         yield return new WaitForSeconds(0.1f);
 
-        Movement.Instance.RotatePlayerBody(RotatePlayer(index));
+        playerRotY_Temp = PlayerManager.Instance.playerBody.transform.position.y;
+        Movement.Instance.RotatePlayerBody(RotatePlayer());
 
         yield return new WaitForSeconds(0.15f);
 
@@ -138,7 +280,13 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
         yield return new WaitForSeconds(0.15f);
     }
+    IEnumerator PlayerRotateBackToOriginalRotation()
+    {
+        Movement.Instance.RotatePlayerBody(playerRotY_Temp);
 
+        yield return new WaitForSeconds(0.1f);
+    }
+    
     IEnumerator PlayerJump()
     {
         Transform playerTransform = PlayerManager.Instance.playerBody.transform;
@@ -178,9 +326,9 @@ public class HUBTutorial : Singleton<HUBTutorial>
         playerTransform.position = startPos;
     }
 
-    Quaternion RotateStepellier(int index)
+    Quaternion RotateStepellier()
     {
-        MoveDirection moveDir = tutorialData.tutorialDataSegment[index].stepellier_spawnRot;
+        MoveDirection moveDir = tutorialData.tutorialDataSegment[currentSegmentShowing].stepellier_spawnRot;
 
         switch (moveDir)
         {
@@ -203,9 +351,9 @@ public class HUBTutorial : Singleton<HUBTutorial>
                 return Quaternion.identity;
         }
     }
-    float RotatePlayer(int index)
+    float RotatePlayer()
     {
-        MoveDirection moveDir = tutorialData.tutorialDataSegment[index].stepellier_spawnRot;
+        MoveDirection moveDir = tutorialData.tutorialDataSegment[currentSegmentShowing].stepellier_spawnRot;
 
         switch (moveDir)
         {
@@ -252,9 +400,84 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
     #region Dialogue
 
-    void SetupDialogueDisplay()
+    IEnumerator ShowDialogueDisplay()
     {
+        yield return new WaitForSeconds(0f);
 
+        SetupStepellierNameText_toDisplay();
+
+        if (!dialogueDisplayCanvas_Parent.activeInHierarchy)
+        {
+            dialogueDisplayCanvas_Parent.SetActive(true);
+        }
+
+        yield return new WaitForSeconds(0.4f);
+
+        PlayerManager.Instance.npcInteraction = true;
+        SelectSegment();
+    }
+    IEnumerator CloseDialogueDisplay()
+    {
+        yield return new WaitForSeconds(0f);
+
+        if (DialogueManager.Instance.closingMenuAnimatorList.Count > 0)
+        {
+            for (int i = 0; i < DialogueManager.Instance.closingMenuAnimatorList.Count; i++)
+            {
+                DialogueManager.Instance.closingMenuAnimatorList[i].SetTrigger("Close");
+            }
+        }
+
+        yield return new WaitForSeconds(DialogueManager.Instance.closingMenuDelay);
+
+        dialogueDisplayCanvas_Parent.SetActive(false);
+    }
+
+
+    void StartNewSegment()
+    {
+        if (TypewriterEffect.Instance.isTyping)
+        {
+            TypewriterEffect.Instance.SkipTypewriter();
+        }
+        else if (tutorialData.tutorialDataSegment[currentSegmentShowing].isEnding)
+        {
+            PlayerManager.Instance.npcInteraction = false;
+
+            SetupDialogueText_toDisplay("");
+            EndTutorial();
+        }
+        else
+        {
+            currentSegmentShowing++;
+            SelectSegment();
+        }
+    }
+    void SelectSegment()
+    {
+        HideArrow();
+
+        SetupDialogueText_toDisplay(tutorialData.tutorialDataSegment[currentSegmentShowing].languageDialogueList[(int)DataManager.Instance.settingData_StoreList.currentLanguage]);
+    }
+
+    void SetupStepellierNameText_toDisplay()
+    {
+        dialogueDisplay_Name.text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].NPCName_Antagonist;
+    }
+    void SetupDialogueText_toDisplay(string _text)
+    {
+        TypewriterEffect.Instance.ShowText(_text);
+    }
+
+
+    void ShowArrow()
+    {
+        DialogueManager.Instance.activeNPC = NPCs.Stepellier;
+        DialogueManager.Instance.ShowArrow();
+    }
+    void HideArrow()
+    {
+        DialogueManager.Instance.HideArrow();
     }
 
     #endregion
@@ -265,16 +488,25 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
     #region Excel Setup
 
-    void BuildTabletTextDatabase()
+    void BuildTutorialTextDatabase()
     {
         ReadExcelSheet();
     }
     public void ReadExcelSheet()
     {
-        if (stepellierTutorialDocument == null) return;
+        TextAsset activeTutorialDocument = null;
 
-        //Separate Excel Sheet into a string[] by its ";"
-        string[] excelData = stepellierTutorialDocument.text.Split(new string[] { ";", "\n" }, StringSplitOptions.None);
+        if (ControllerState.Instance.activeController == InputType.Keyboard)
+            activeTutorialDocument = stepellierTutorialDocument_Keyboard;
+        else if (ControllerState.Instance.activeController == InputType.PlayStation)
+            activeTutorialDocument = stepellierTutorialDocument_PlayStation;
+        else if (ControllerState.Instance.activeController == InputType.Xbox)
+            activeTutorialDocument = stepellierTutorialDocument_xBox;
+
+        if (activeTutorialDocument == null) return;
+
+        // Separate Excel Sheet into a string[] by its ";" and line breaks
+        string[] excelData = activeTutorialDocument.text.Split(new string[] { ";", "\n" }, StringSplitOptions.None);
 
         // Calculate the size of the Excel table
         int excelTableSize = (excelData.Length / columns - 1) - 0;
@@ -300,7 +532,6 @@ public class HUBTutorial : Singleton<HUBTutorial>
         {
             #region Description
 
-            //Segment Description
             if (excelData[columns * (i + startRow - 1) + 0] != "")
                 tutorialData.tutorialDataSegment[i].segmentDescription = excelData[columns * (i + startRow - 1) + 0].Trim();
             else
@@ -308,29 +539,47 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
             #endregion
 
+            #region Segment
+
+            if (excelData[columns * (i + startRow - 1) + 1] != "")
+                tutorialData.tutorialDataSegment[i].segmentNumber = ParseIntSafe(excelData, columns * (i + startRow - 1) + 1);
+            else
+                tutorialData.tutorialDataSegment[i].segmentNumber = 0;
+
+            #endregion
+
+            #region Is Ending
+
+            if (excelData[columns * (i + startRow - 1) + 2] != "")
+                tutorialData.tutorialDataSegment[i].isEnding = true;
+            else
+                tutorialData.tutorialDataSegment[i].isEnding = false;
+
+            #endregion
+
             #region Position and Rotation
 
             //Position X
-            if (excelData[columns * (i + startRow - 1) + 1] != "")
-                tutorialData.tutorialDataSegment[i].stepellier_spawnPos.x = ParseIntSafe(excelData, columns * (i + startRow - 1) + 1);
+            if (excelData[columns * (i + startRow - 1) + 3] != "")
+                tutorialData.tutorialDataSegment[i].stepellier_spawnPos.x = ParseIntSafe(excelData, columns * (i + startRow - 1) + 3);
             else
                 tutorialData.tutorialDataSegment[i].stepellier_spawnPos.x = 0;
 
             //Position Y
-            if (excelData[columns * (i + startRow - 1) + 2] != "")
-                tutorialData.tutorialDataSegment[i].stepellier_spawnPos.y = ParseIntSafe(excelData, columns * (i + startRow - 1) + 2);
+            if (excelData[columns * (i + startRow - 1) + 4] != "")
+                tutorialData.tutorialDataSegment[i].stepellier_spawnPos.y = ParseIntSafe(excelData, columns * (i + startRow - 1) + 4);
             else
                 tutorialData.tutorialDataSegment[i].stepellier_spawnPos.y = 0;
 
             //Position Z
-            if (excelData[columns * (i + startRow - 1) + 3] != "")
-                tutorialData.tutorialDataSegment[i].stepellier_spawnPos.z = ParseIntSafe(excelData, columns * (i + startRow - 1) + 3);
+            if (excelData[columns * (i + startRow - 1) + 5] != "")
+                tutorialData.tutorialDataSegment[i].stepellier_spawnPos.z = ParseIntSafe(excelData, columns * (i + startRow - 1) + 5);
             else
                 tutorialData.tutorialDataSegment[i].stepellier_spawnPos.z = 0;
 
             //Rotation
-            if (excelData[columns * (i + startRow - 1) + 4] != "")
-                tutorialData.tutorialDataSegment[i].stepellier_spawnRot = SetRotationValue(excelData[columns * (i + startRow - 1) + 4].Trim());
+            if (excelData[columns * (i + startRow - 1) + 6] != "")
+                tutorialData.tutorialDataSegment[i].stepellier_spawnRot = SetRotationValue(excelData[columns * (i + startRow - 1) + 6].Trim());
             else
                 tutorialData.tutorialDataSegment[i].stepellier_spawnRot = MoveDirection.None;
 
@@ -338,9 +587,8 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
             #region Talk Animation
 
-            //Segment Description
-            if (excelData[columns * (i + startRow - 1) + 5] != "")
-                tutorialData.tutorialDataSegment[i].talkAnimation = ParseIntSafe(excelData, columns * (i + startRow - 1) + 5);
+            if (excelData[columns * (i + startRow - 1) + 7] != "")
+                tutorialData.tutorialDataSegment[i].talkAnimation = ParseIntSafe(excelData, columns * (i + startRow - 1) + 7);
             else
                 tutorialData.tutorialDataSegment[i].talkAnimation = 0;
 
@@ -350,8 +598,8 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
             for (int j = 0; j < currentLanguageAmount; j++)
             {
-                if (excelData[columns * (i + startRow - 1) + 6 + j] != "")
-                    tutorialData.tutorialDataSegment[i].languageDialogueList[j] = excelData[columns * (i + startRow - 1) + 6 + j].Trim();
+                if (excelData[columns * (i + startRow - 1) + 8 + j] != "")
+                    tutorialData.tutorialDataSegment[i].languageDialogueList[j] = excelData[columns * (i + startRow - 1) + 8 + j].Trim();
                 else
                     tutorialData.tutorialDataSegment[i].languageDialogueList[j] = "";
             }
@@ -414,7 +662,6 @@ public class HUBTutorial : Singleton<HUBTutorial>
     #endregion
 }
 
-
 [Serializable]
 public class TutorialData
 {
@@ -434,4 +681,17 @@ public class TutorialDataSegment
 
     [Header("TalkAnimation")]
     public int talkAnimation;
+
+    [Header("Segment")]
+    public int segmentNumber;
+
+    [Header("Ending")]
+    public bool isEnding;
+}
+
+[Serializable]
+public class TutorialDataParts
+{
+    public TutorialParts tutorialParts = TutorialParts.None;
+    public bool isGoneThrough;
 }

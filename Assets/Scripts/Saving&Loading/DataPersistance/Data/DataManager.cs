@@ -250,5 +250,5 @@ public class OneTimeRunData
     /*[HideInInspector]*/ public bool glueplantHUB_PickedUp = new bool();
 
     //Skin
-    /*[HideInInspector]*/public List<bool> tutorialSegmenet = new List<bool>();
+    /*[HideInInspector]*/public List<TutorialDataParts> tutorialSegmenets = new List<TutorialDataParts>();
 }

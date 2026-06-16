@@ -159,6 +159,7 @@ public class Movement : Singleton<Movement>
     private readonly HashSet<GameObject> swiftSwimPreviewOverrideBlocks = new HashSet<GameObject>();
 
     public bool isRespawning;
+    public bool isRespawningFirstTime;
 
     private readonly HashSet<GameObject> currentlyDarkenedBlocks = new HashSet<GameObject>();
 
@@ -4827,6 +4828,8 @@ public class Movement : Singleton<Movement>
         isSlopeFalling = false;
         pendingSlopeFallAfterUphillAttempt = false;
         isPlayingSlopeFallAnimation = false;
+
+        isRespawningFirstTime = true;
 
         PlayerManager.Instance.UnpauseGame();
     }
