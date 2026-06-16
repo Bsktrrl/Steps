@@ -15,6 +15,8 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
     public static Action Action_dataIsSaving;
     public static Action Action_dataHasLoaded;
+
+    public bool dataHasLoaded_Check;
     #endregion
 
 
@@ -89,6 +91,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
         print("------------------------------");
 
+        dataHasLoaded_Check = true;
         Action_dataHasLoaded?.Invoke();
     }
 

@@ -64,7 +64,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
         TypewriterEffect.Action_Typewriting_Finished += ShowArrow;
 
-        DataManager.Action_dataHasLoaded += SetupTutorial_Movement;
+        LoadingIcon.Action_BlackScreenIsGone += SetupTutorial_Movement;
         Movement.Action_RespawnPlayerLate += SetupTutorial_Respawn;
         DataManager.Action_dataHasLoaded += UnPauseGame;
     }
@@ -77,7 +77,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
         TypewriterEffect.Action_Typewriting_Finished -= ShowArrow;
 
-        DataManager.Action_dataHasLoaded -= SetupTutorial_Movement;
+        LoadingIcon.Action_BlackScreenIsGone -= SetupTutorial_Movement;
         Movement.Action_RespawnPlayerLate -= SetupTutorial_Respawn;
         DataManager.Action_dataHasLoaded -= UnPauseGame;
     }
@@ -115,6 +115,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
     public void StartTutorial(TutorialParts tutorialPart)
     {
+        print("10000. ShowDialogueDisplay");
         PlayerManager.Instance.PauseGame();
 
         GetCorrectSegment((int)tutorialPart, tutorialPart);
@@ -162,7 +163,11 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
     void SetupTutorial_Movement()
     {
-        StartCoroutine(SetupTutorial_Movement_Delay(1.4f));
+        //0 is Movement Tutorial
+        if (DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets[0].isGoneThrough) return;
+
+        PlayerManager.Instance.PauseGame();
+        StartCoroutine(SetupTutorial_Movement_Delay(0f));
     }
     IEnumerator SetupTutorial_Movement_Delay(float waitTime)
     {
@@ -172,12 +177,17 @@ public class HUBTutorial : Singleton<HUBTutorial>
     }
     void SetupTutorial_Respawn()
     {
+        //1 is Respawn Tutorial
+        if (DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets[1].isGoneThrough) return;
+
         if (Movement.Instance.isRespawningFirstTime)
         {
-            //Set new SpawnPos for Stepellier
+            PlayerManager.Instance.PauseGame();
+
+            //Set new SpawnPos for Stepellier based on which chekpoint the player respawns to
 
 
-            StartCoroutine(SetupTutorial_Respawn_Delay(0.4f));
+            StartCoroutine(SetupTutorial_Respawn_Delay(0.5f));
         }
     }
     IEnumerator SetupTutorial_Respawn_Delay(float waitTime)
@@ -211,9 +221,10 @@ public class HUBTutorial : Singleton<HUBTutorial>
     IEnumerator Stepellier_Exit()
     {
         //Despawn Stepellier
+
         yield return StartCoroutine(DespawnStepellier_Delay(0.2f));
 
-        yield return PlayerRotateBackToOriginalRotation();
+        //yield return PlayerRotateBackToOriginalRotation();
     }
 
 
@@ -252,18 +263,19 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
         yield return new WaitForSeconds(waitTime);
 
-        //SHOW THIS AFTER TESTING TO PREVENT THE PLAYER OF GOING TROUGH THE SAME TUTORIAL AGAIN
-        //for (int i = 0; i < DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets.Count; i++)
-        //{
-        //    if (DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets[i].tutorialParts == currentTutorialPart)
-        //    {
-        //        DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets[i].isGoneThrough = true;
-        //        DataPersistanceManager.instance.SaveGame();
+        //Save the tutorial State
+        for (int i = 0; i < DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets.Count; i++)
+        {
+            if (DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets[i].tutorialParts == currentTutorialPart)
+            {
+                DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets[i].isGoneThrough = true;
+                DataPersistanceManager.instance.SaveGame();
 
-        //        break;
-        //    }
-        //}
+                break;
+            }
+        }
 
+        print("2000. DespawnStepellier_Delay");
         PlayerManager.Instance.UnpauseGame();
     }
     
@@ -271,7 +283,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
     {
         yield return new WaitForSeconds(0.1f);
 
-        playerRotY_Temp = PlayerManager.Instance.playerBody.transform.position.y;
+        playerRotY_Temp = PlayerManager.Instance.playerBody.transform.eulerAngles.y;
         Movement.Instance.RotatePlayerBody(RotatePlayer());
 
         yield return new WaitForSeconds(0.15f);
@@ -284,7 +296,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
     {
         Movement.Instance.RotatePlayerBody(playerRotY_Temp);
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.25f);
     }
     
     IEnumerator PlayerJump()

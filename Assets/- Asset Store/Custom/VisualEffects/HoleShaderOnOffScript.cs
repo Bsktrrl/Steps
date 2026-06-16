@@ -27,7 +27,7 @@ public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
     }
     private void Update()
     {
-        if (checkEveryFrame)
+        if (checkEveryFrame && !GlueplantCamera.Instance.camera_isTraveling)
         {
             CheckForBlockInfoBetweenPlayerAndCamera();
         }

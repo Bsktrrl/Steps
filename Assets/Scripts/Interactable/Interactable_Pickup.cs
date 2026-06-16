@@ -28,7 +28,7 @@ public class Interactable_Pickup : MonoBehaviour
     public Abilities abilityReceived;
 
     public bool goal;
-    [SerializeField] GlueplantType glueplantType;
+    public GlueplantType glueplantType;
 
     [Header("Glueplant Versions")]
     [SerializeField] GameObject glueplant;

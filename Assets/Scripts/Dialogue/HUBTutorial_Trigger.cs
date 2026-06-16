@@ -16,7 +16,7 @@ public class HUBTutorial_Trigger : MonoBehaviour
             }
         }
 
-        if (other.CompareTag("Player") && !Player_CeilingGrab.Instance.isCeilingGrabbing && !Player_CeilingGrab.Instance.isCeilingRotation)
+        if (other.CompareTag("Player") && !Player_CeilingGrab.Instance.isCeilingGrabbing && !Player_CeilingGrab.Instance.isCeilingRotation && DataManager.Instance.dataHasLoaded_Check)
         {
             HUBTutorial.Instance.StartTutorial(tutorialSegementIndex);
         }
