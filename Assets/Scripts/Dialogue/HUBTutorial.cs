@@ -3,10 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
-using UnityEngine.Windows;
-using static UnityEngine.Rendering.HableCurve;
 
 public class HUBTutorial : Singleton<HUBTutorial>
 {

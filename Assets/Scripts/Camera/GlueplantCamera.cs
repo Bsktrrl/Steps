@@ -136,7 +136,7 @@ public class GlueplantCamera : Singleton<GlueplantCamera>
     {
         yield return new WaitForSeconds(waitTime);
 
-        if (GetComponent<Interactable_Pickup>().glueplantType == GlueplantType.HUB)
+        if (GetComponent<Interactable_Pickup>() && (GetComponent<Interactable_Pickup>().glueplantType == GlueplantType.HUB) || GetComponent<Interactable_Pickup>().glueplantType == GlueplantType.Metalworks)
         {
             yield return new WaitForSeconds(MapManager.Instance.fadeDuration_In + 0.1f);
 
