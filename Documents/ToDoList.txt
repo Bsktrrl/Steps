@@ -10,12 +10,19 @@ Juni:
 2. Tutorial Levelet
 - Bygge levelet
 - Lage Tutorial-levelBildet
-- Legge in en OneTimeSave/Load, der levelet har sin startPos, men før denne er slått på så spawner spilleren et annet sted i map'et
-	- Sett OneTimeSave/Load = true etter at spilleren har gått til Glueplanten første gang
 - Lage Stepellier Tutorial	
 	- Lage appear/dissapearAnimasjon-funsksjon for Stepellier
 	- Lage triggerpunkter (enums) som starter dialog
 	- Lage Excel-ark (med språkstøtte) der dialogen hentes fra
+- Rekkefølge på ting som må skje i tutorialen
+	V WASD - Movement
+	x Respawn
+	V Camera Rotation
+	V Footprint
+	x Skin
+	x Essence
+	V FreeCam
+	V Glueplant
 
 
 4. Movement Bug:
@@ -24,13 +31,9 @@ Juni:
 	- Dobbeltsjekke RootBlcoks, og at de forsvinner med en gang spilleren går vekk fra blokken, når den ikke er på en blokk med røtter (Eks. stiger som ikke leder til en blokk med røtter)
 
 
-5. Hull-shader:
-- Deaktivere Kamaera-kant-hull-shaderen
-
 
 
 --------------------
-
 
 
 

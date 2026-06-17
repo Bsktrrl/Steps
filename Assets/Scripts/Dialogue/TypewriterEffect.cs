@@ -61,7 +61,7 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
         skipRequested = false;
         typingCoroutine = StartCoroutine(TypeText());
     }
-    void SkipTypewriter()
+    public void SkipTypewriter()
     {
         if (isTyping)
         {

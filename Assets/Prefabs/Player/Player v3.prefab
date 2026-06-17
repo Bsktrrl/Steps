@@ -11198,7 +11198,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2459496152789468630}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.23651226, y: -0, z: -0, w: 0.9716285}
+  m_LocalRotation: {x: 0.23651229, y: -0, z: -0, w: 0.9716285}
   m_LocalPosition: {x: 0, y: 2.27, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11471,6 +11471,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 32768
   checkEveryFrame: 1
+  PlayerBody_offset: 0
 --- !u!1 &2483270047424893871
 GameObject:
   m_ObjectHideFlags: 0
@@ -19041,6 +19042,8 @@ MonoBehaviour:
       tutorial_Finished: 0
       pickup_FirstFootprint: 0
       pickup_FirstSkin: 0
+      glueplantHUB_PickedUp: 0
+      tutorialSegmenets: []
     game_TextDatabase_Save:
       gameText_LanguageList: []
     PlayerStatsData_Save:
@@ -33118,7 +33121,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6058242050083391972}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.23651226, y: -0, z: -0, w: 0.9716285}
+  m_LocalRotation: {x: 0.23651229, y: -0, z: -0, w: 0.9716285}
   m_LocalPosition: {x: 0, y: 2.27, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -35799,7 +35802,7 @@ Transform:
   m_GameObject: {fileID: 6649856597487831825}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 6.95, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -36067,6 +36070,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 262208
   isRespawning: 0
+  isRespawningFirstTime: 0
   turnBeforeMoveDelay: 0.12
   lastIceGlideDirection: {x: 0, y: 0, z: 0}
   slopeAutoExitInProgress: 0
@@ -40546,7 +40550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c2278b5498d7a741b9862a4184d6347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectData: 0
+  collectData: 1
 --- !u!1 &7812761235500051849
 GameObject:
   m_ObjectHideFlags: 0
@@ -43421,6 +43425,8 @@ MonoBehaviour:
       tutorial_Finished: 0
       pickup_FirstFootprint: 0
       pickup_FirstSkin: 0
+      glueplantHUB_PickedUp: 0
+      tutorialSegmenets: []
     game_TextDatabase_Save:
       gameText_LanguageList: []
     PlayerStatsData_Save:
@@ -45141,6 +45147,7 @@ MonoBehaviour:
       permanentAbility_Firevein: 0
       permanentAbility_Witchmire: 0
       permanentAbility_Metalworks: 0
+  dataHasLoaded_Check: 0
   oneTimeRunData_Store:
     startLanguage_English: 0
     startVolum_Values: 0
@@ -45148,6 +45155,8 @@ MonoBehaviour:
     tutorial_Finished: 0
     pickup_FirstFootprint: 0
     pickup_FirstSkin: 0
+    glueplantHUB_PickedUp: 0
+    tutorialSegmenets: []
   haveStartedNewGame_Store: 0
   menuState_Store: 0
   playerStats_Store:

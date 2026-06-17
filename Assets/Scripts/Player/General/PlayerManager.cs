@@ -46,6 +46,7 @@ public class PlayerManager : Singleton<PlayerManager>
     private void OnEnable()
     {
         DataManager.Action_dataHasLoaded += LoadPlayerStats;
+        DataManager.Action_dataHasLoaded += SetNewPlayerPosition;
         Movement.Action_StepTaken += StepsOnFallableBlock;
         Movement.Action_StepTaken += BlockLookingAt;
         Movement.Action_BodyRotated += BlockLookingAt;
@@ -56,6 +57,7 @@ public class PlayerManager : Singleton<PlayerManager>
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= LoadPlayerStats;
+        DataManager.Action_dataHasLoaded -= SetNewPlayerPosition;
         Movement.Action_StepTaken -= StepsOnFallableBlock;
         Movement.Action_StepTaken -= BlockLookingAt;
         Movement.Action_BodyRotated -= BlockLookingAt;
@@ -78,6 +80,48 @@ public class PlayerManager : Singleton<PlayerManager>
 
 
     //--------------------
+
+
+    void SetNewPlayerPosition()
+    {
+        StartCoroutine(SetNewPlayerPosition_Delay(0.1f));
+    }
+    IEnumerator SetNewPlayerPosition_Delay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        Vector3 newPlayerPosition = Vector3.zero;
+
+        //Spawn player at a different point if in HUB and haven't gone through the Tutorial yet
+        if (MapManager.Instance.levelName == LevelNames.HUB && !DataManager.Instance.oneTimeRunData_Store.glueplantHUB_PickedUp)
+        {
+            newPlayerPosition = HUD_Map.Instance.playerStartPosition_Beginning.pos;
+
+            MapManager.Instance.playerStartRot = HUD_Map.Instance.playerStartPosition_Beginning.rot;
+            CameraController.Instance.SetRespawnCameraRotation();
+
+            Movement.Instance.RotatePlayerBody(180);
+
+            gameObject.transform.position = newPlayerPosition;
+            MapManager.Instance.playerStartPos = newPlayerPosition;
+        }
+        else if (MapManager.Instance.levelName == LevelNames.HUB && DataManager.Instance.oneTimeRunData_Store.glueplantHUB_PickedUp)
+        {
+            newPlayerPosition = HUD_Map.Instance.playerStartPosition_Later.pos;
+
+            MapManager.Instance.playerStartRot = HUD_Map.Instance.playerStartPosition_Later.rot;
+            CameraController.Instance.SetRespawnCameraRotation();
+
+            Movement.Instance.RotatePlayerBody(180);
+
+            gameObject.transform.position = newPlayerPosition;
+            MapManager.Instance.playerStartPos = newPlayerPosition;
+        }
+    }
+
+
+    //--------------------
+
 
     void StepsOnFallableBlock()
     {

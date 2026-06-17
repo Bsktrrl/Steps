@@ -33,7 +33,7 @@ public class DialogueManager : Singleton<DialogueManager>
     public int currentSegement;
 
     [Header("Animator - Closing Animation")]
-    [SerializeField] List<Animator> closingMenuAnimatorList = new List<Animator>();
+    public List<Animator> closingMenuAnimatorList = new List<Animator>();
     public float closingMenuDelay = 0.5f;
 
     bool isFirstTimeDialogue;
@@ -168,13 +168,13 @@ public class DialogueManager : Singleton<DialogueManager>
         else
             ShowArrow();
     }
-    void ShowArrow()
+    public void ShowArrow()
     {
         SelectColor(arrowImage, ColorVariants.Pressed);
 
         arrowImage.gameObject.SetActive(true);
     }
-    void HideArrow()
+    public void HideArrow()
     {
         arrowImage.gameObject.SetActive(false);
     }

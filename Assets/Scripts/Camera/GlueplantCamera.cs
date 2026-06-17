@@ -136,7 +136,15 @@ public class GlueplantCamera : Singleton<GlueplantCamera>
     {
         yield return new WaitForSeconds(waitTime);
 
-        if (MapManager.Instance.haveIntroSequence && DataManager.Instance.settingData_StoreList.currentSkipIntro == SkipIntro.No)
+        if (GetComponent<Interactable_Pickup>() && (GetComponent<Interactable_Pickup>().glueplantType == GlueplantType.HUB) || GetComponent<Interactable_Pickup>().glueplantType == GlueplantType.Metalworks)
+        {
+            yield return new WaitForSeconds(MapManager.Instance.fadeDuration_In + 0.1f);
+
+            if (CM_Player == null)
+                CM_Player = CameraController.Instance.CM_Player;
+            FinishTravel();
+        }
+        else if (MapManager.Instance.haveIntroSequence && DataManager.Instance.settingData_StoreList.currentSkipIntro == SkipIntro.No)
         {
             CM_Player = CameraController.Instance.CM_Player;
 
@@ -154,37 +162,6 @@ public class GlueplantCamera : Singleton<GlueplantCamera>
                 CM_Player = CameraController.Instance.CM_Player;
             FinishTravel();
         }
-
-        //if (!DataManager.Instance.oneTimeRunData_Store.forceIntroSequenceInFirstLevel)
-        //{
-        //    CM_Player = CameraController.Instance.CM_Player;
-
-        //    SetPriority(CM_Glueplant, glueplantPriorityDuringTravel);
-        //    SetPriority(CM_Player, playerPriorityDuringTravel);
-        //    CM_Glueplant.Prioritize();
-
-        //    RunCameraTravel();
-        //}
-        //else
-        //{
-        //    if (MapManager.Instance.haveIntroSequence && DataManager.Instance.settingData_StoreList.currentSkipIntro == SkipIntro.No)
-        //    {
-        //        CM_Player = CameraController.Instance.CM_Player;
-
-        //        SetPriority(CM_Glueplant, glueplantPriorityDuringTravel);
-        //        SetPriority(CM_Player, playerPriorityDuringTravel);
-        //        CM_Glueplant.Prioritize();
-
-        //        RunCameraTravel();
-        //    }
-        //    else
-        //    {
-        //        if (CM_Player == null)
-        //            CM_Player = CameraController.Instance.CM_Player;
-        //        FinishTravel();
-        //        //MapManager.Instance.Action_EndIntroSequence_Invoke();
-        //    }
-        //}
     }
 
     public void RunCameraTravel()

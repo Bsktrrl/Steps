@@ -160,7 +160,7 @@ public class Light_GlueplantChange : MonoBehaviour
     {
         switch (glueplantType)
         {
-            case GlueplantType.Tutorial:
+            case GlueplantType.HUB:
                 return "#000000";
 
             case GlueplantType.Rivergreen:

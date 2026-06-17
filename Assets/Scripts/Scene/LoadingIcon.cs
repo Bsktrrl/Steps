@@ -1,11 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoadingIcon : MonoBehaviour
 {
+    public static event Action Action_BlackScreenIsGone;
+
     [Header("LoadingSprite Object")]
     public GameObject loadingIcon;
 
@@ -88,6 +91,8 @@ public class LoadingIcon : MonoBehaviour
     {
         DataManager.Action_dataHasLoaded -= LoadingSprite;
         SkinWardrobeButton.Action_SkinIsSelected -= LoadingSpriteInGame;
+
+        Action_BlackScreenIsGone?.Invoke();
     }
 
 
