@@ -231,10 +231,10 @@ Material:
     - _RainRingSpeed: 10
     - _RainRings: 0
     - _ReceiveShadows: 1
-    - _Reflectiveness: 0.1
+    - _Reflectiveness: 0.015
     - _Refraction: 0.25
     - _SeeThrough: 0
-    - _Smoothness: 1
+    - _Smoothness: 0.7
     - _SmoothnessTextureChannel: 0
     - _Smothness: 0
     - _SortOrder: 0
@@ -247,6 +247,7 @@ Material:
     - _WaterfallDisplacement: 0
     - _WaterfallFade: 1
     - _WaterfallFoamAmount: 0.25
+    - _WaterfallFoamEmission: 0
     - _WaterfallStrength: 0.5
     - _WaveDensity: 0.5
     - _WaveSpeed: 0.75
@@ -260,6 +261,7 @@ Material:
     - _EdgeColor: {r: 0.98823535, g: 0.9725491, b: 0.3372549, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 0, a: 0}
     - _WaterfallColor: {r: 1, g: 1, b: 1, a: 0}
     - _WaterfallFoamColor: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
