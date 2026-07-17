@@ -1,16 +1,15 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class NumberDisplay : MonoBehaviour
 {
     BlockInfo blockInfo;
-    Player_BlockDetector player_BlockDetector;
     CameraController cameraController;
+
+    // Shared scene reference. The first visible NumberDisplay finds the camera;
+    // later displays reuse the same reference.
+    static CameraController sharedCameraController;
 
     [HideInInspector] public float duration = 0.2f;
     float blandShapeWeightValue = 60;
@@ -53,58 +52,86 @@ public class NumberDisplay : MonoBehaviour
     private int lastDisplayedRawValue = int.MinValue;
     private int lastDisplayedMeshIndex = int.MinValue;
 
+    // Lazy setup / event state
+    private bool numberDisplayIsSetup;
+    private bool eventsAreSubscribed;
+
+    public bool NumberDisplayIsSetup => numberDisplayIsSetup;
+
 
     //--------------------
 
 
-    private void Awake()
+    /// <summary>
+    /// Performs the one-time setup that used to happen in Awake() and Start().
+    /// Safe to call more than once.
+    ///
+    /// Call this after the NumberDisplay GameObject is activated and before
+    /// ShowNumber(). ShowNumber() also calls it automatically as a safety net.
+    /// </summary>
+    public void SetupNumberDisplay()
     {
-        cachedTransform = transform;
+        if (numberDisplayIsSetup)
+        {
+            return;
+        }
 
-        CacheReferencesIfNeeded();
-
-        HideNumber();
-    }
-
-    private void Start()
-    {
-        CacheReferencesIfNeeded();
+        CacheLocalReferencesIfNeeded();
 
         if (blockInfo == null)
         {
+            Debug.LogWarning(
+                $"NumberDisplay on '{name}' could not find a parent BlockInfo.",
+                this);
+
+            return;
+        }
+
+        if (numberMeshRenderer == null)
+        {
+            Debug.LogWarning(
+                $"NumberDisplay on '{name}' has no Number Mesh Renderer assigned.",
+                this);
+
+            return;
+        }
+
+        if (numberMeshList == null || numberMeshList.Count == 0)
+        {
+            Debug.LogWarning(
+                $"NumberDisplay on '{name}' has no number meshes assigned.",
+                this);
+
             return;
         }
 
         SetObjectRenderer();
         SetPropertyBlock();
+        ApplyBlockSpecificLayout();
 
-        SetNumberColors(SetNumberColor_MoreOrLess(blockInfo.movementCost));
+        // Keep the visual hidden until ShowNumber() is called.
+        SetNumberVisualActive(false);
 
-        if (blockInfo.blockType == BlockType.Stair)
-        {
-            cachedTransform.localPosition = new Vector3(0, 0.2f + 0.02f, -0.4f + 0.02f);
-            cachedTransform.localRotation = Quaternion.Euler(45, 0, 0);
-
-            if (numberChildTransform != null)
-                numberChildTransform.localPosition = new Vector3(0, 0.56f, 0.05f);
-        }
-        else if (blockInfo.blockType == BlockType.Slope)
-        {
-            cachedTransform.localPosition = new Vector3(0, 0.2f + 0.02f, -0.4f + 0.02f);
-            cachedTransform.localRotation = Quaternion.Euler(45, 0, 0);
-        }
-        else
-        {
-            //numberChildTransform.localPosition = new Vector3(0, 0.48f, 0);
-        }
-
-        UpdateRotation();
+        numberIsVisible = false;
+        lastDisplayedRawValue = int.MinValue;
+        lastDisplayedMeshIndex = int.MinValue;
         ResetRotationTracking();
-        GetBlockOrientationWithCamera(true);
+
+        numberDisplayIsSetup = true;
+
+        // A hidden display does not need Update().
+        // Public methods can still be called while this component is disabled.
+        enabled = false;
     }
 
     private void Update()
     {
+        // Only visible displays should normally have this component enabled.
+        if (!numberDisplayIsSetup || !numberIsVisible)
+        {
+            return;
+        }
+
         GetBlockOrientationWithCamera();
     }
 
@@ -114,18 +141,96 @@ public class NumberDisplay : MonoBehaviour
 
     private void OnEnable()
     {
-        CacheReferencesIfNeeded();
+        // Intentionally no reference searches or setup here.
+        // SetActive(true) can therefore remain very cheap.
+        if (!numberDisplayIsSetup)
+        {
+            // Prevent hundreds of unused NumberDisplay components from
+            // receiving Update() while waiting for first use.
+            enabled = false;
+            return;
+        }
 
-        CameraController.Action_RotateCamera_End += UpdateRotation;
-        Player_CeilingGrab.Action_raycastCeiling += UpdateRotation;
-        Player_CeilingGrab.Action_isCeilingGrabbing_Finished += UpdateRotation;
+        if (numberIsVisible)
+        {
+            SubscribeToEvents();
+        }
     }
 
     private void OnDisable()
     {
+        UnsubscribeFromEvents();
+    }
+
+    private void OnDestroy()
+    {
+        UnsubscribeFromEvents();
+    }
+
+
+    //--------------------
+
+
+    void ApplyBlockSpecificLayout()
+    {
+        if (blockInfo.blockType == BlockType.Stair)
+        {
+            cachedTransform.localPosition =
+                new Vector3(0f, 0.22f, -0.38f);
+
+            cachedTransform.localRotation =
+                Quaternion.Euler(45f, 0f, 0f);
+
+            if (numberChildTransform != null)
+            {
+                numberChildTransform.localPosition =
+                    new Vector3(0f, 0.56f, 0.05f);
+            }
+        }
+        else if (blockInfo.blockType == BlockType.Slope)
+        {
+            cachedTransform.localPosition =
+                new Vector3(0f, 0.22f, -0.38f);
+
+            cachedTransform.localRotation =
+                Quaternion.Euler(45f, 0f, 0f);
+        }
+    }
+
+    void SetNumberVisualActive(bool shouldBeActive)
+    {
+        if (numberMeshRenderer != null)
+        {
+            numberMeshRenderer.gameObject.SetActive(shouldBeActive);
+        }
+    }
+
+    void SubscribeToEvents()
+    {
+        if (eventsAreSubscribed)
+        {
+            return;
+        }
+
+        CameraController.Action_RotateCamera_End += UpdateRotation;
+        Player_CeilingGrab.Action_raycastCeiling += UpdateRotation;
+        Player_CeilingGrab.Action_isCeilingGrabbing_Finished += UpdateRotation;
+
+        eventsAreSubscribed = true;
+    }
+
+    void UnsubscribeFromEvents()
+    {
+        if (!eventsAreSubscribed)
+        {
+            return;
+        }
+
         CameraController.Action_RotateCamera_End -= UpdateRotation;
         Player_CeilingGrab.Action_raycastCeiling -= UpdateRotation;
         Player_CeilingGrab.Action_isCeilingGrabbing_Finished -= UpdateRotation;
+
+        eventsAreSubscribed = false;
     }
 
 
@@ -166,56 +271,64 @@ public class NumberDisplay : MonoBehaviour
 
     public void ShowNumber()
     {
-        CacheReferencesIfNeeded();
+        SetupNumberDisplay();
 
-        if (blockInfo == null) return;
-
-        if (cachedParent == null) return;
-
-        // If a Teleporter, don't show the number at all
-        if (parentEffectBlockInfo != null && parentEffectBlockInfo.effectBlock_Teleporter_isAdded)
+        if (!numberDisplayIsSetup || blockInfo == null || cachedParent == null)
         {
             return;
         }
 
-        // Make sure the temp cost is updated before showing the number
+        RefreshRuntimeReferencesIfNeeded();
+
+        // If a Teleporter, do not show the number at all.
+        if (parentEffectBlockInfo != null &&
+            parentEffectBlockInfo.effectBlock_Teleporter_isAdded)
+        {
+            HideNumber();
+            return;
+        }
+
+        // Enable this component only while the number is visible.
+        if (!enabled)
+        {
+            enabled = true;
+        }
+
+        SubscribeToEvents();
+
+        // Make sure the temporary cost is updated before showing the number.
         blockInfo.ApplyTemporaryMovementCostModifiers();
 
         int displayValue;
 
-        // If in quicksand
-        if (Player_Quicksand.Instance.isInQuicksand && parentQuicksandBlock != null)
+        if (Player_Quicksand.Instance != null &&
+            Player_Quicksand.Instance.isInQuicksand &&
+            parentQuicksandBlock != null)
         {
             displayValue = Player_Quicksand.Instance.quicksandCounter;
         }
         else
         {
-            // If this block is a Water Block and the player cannot swim
-            if (gameObject.transform.parent.gameObject.GetComponent<BlockInfo>() &&
-                gameObject.transform.parent.gameObject.GetComponent<BlockInfo>().blockElement == BlockElement.Water
-                && !PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel
-                && !PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank && !PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank
-                && !PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers)
-            {
-                displayValue = -3;
-            }
-            else
-            {
-                displayValue = blockInfo.GetMovementCost_ForDisplay();
-            }
+            bool cannotEnterWater =
+                blockInfo.blockElement == BlockElement.Water &&
+                !PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel &&
+                !PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel &&
+                !PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank &&
+                !PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank &&
+                !PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers &&
+                !PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers;
+
+            displayValue = cannotEnterWater
+                ? -3
+                : blockInfo.GetMovementCost_ForDisplay();
         }
 
         DisplayNumber(displayValue);
 
-        UpdateRotation();
-        ResetRotationTracking();
-
-        if (numberMeshRenderer != null)
-            numberMeshRenderer.gameObject.SetActive(true);
-
+        SetNumberVisualActive(true);
         numberIsVisible = true;
 
-        GetBlockOrientationWithCamera(true);
+        UpdateRotation();
     }
 
     void DisplayNumber(int value)
@@ -273,8 +386,21 @@ public class NumberDisplay : MonoBehaviour
 
     public void HideNumber()
     {
-        if (!numberIsVisible && numberMeshRenderer != null && !numberMeshRenderer.gameObject.activeInHierarchy)
+        bool visualAlreadyHidden =
+            numberMeshRenderer == null ||
+            !numberMeshRenderer.gameObject.activeInHierarchy;
+
+        if (!numberIsVisible && visualAlreadyHidden)
+        {
+            UnsubscribeFromEvents();
+
+            if (enabled)
+            {
+                enabled = false;
+            }
+
             return;
+        }
 
         if (numberAnimationCoroutine != null)
         {
@@ -282,14 +408,20 @@ public class NumberDisplay : MonoBehaviour
             numberAnimationCoroutine = null;
         }
 
-        if (numberMeshRenderer != null)
-            numberMeshRenderer.gameObject.SetActive(false);
+        SetNumberVisualActive(false);
 
         numberIsVisible = false;
         lastDisplayedRawValue = int.MinValue;
         lastDisplayedMeshIndex = int.MinValue;
 
         ResetRotationTracking();
+        UnsubscribeFromEvents();
+
+        // This removes Update() overhead while the display is hidden.
+        if (enabled)
+        {
+            enabled = false;
+        }
     }
 
     //--------------------
@@ -328,6 +460,16 @@ public class NumberDisplay : MonoBehaviour
 
     public Color SetNumberColor_MoreOrLess(float moveCost)
     {
+        if (!numberDisplayIsSetup)
+        {
+            SetupNumberDisplay();
+        }
+
+        if (blockInfo == null)
+        {
+            return Color.white;
+        }
+
         float originalCost = blockInfo.movementCost_Temp_Base;
 
         Color tempTintColor;
@@ -376,7 +518,18 @@ public class NumberDisplay : MonoBehaviour
 
     public void UpdateRotation()
     {
-        CacheReferencesIfNeeded();
+        if (!numberDisplayIsSetup)
+        {
+            SetupNumberDisplay();
+        }
+
+        if (!numberDisplayIsSetup)
+        {
+            return;
+        }
+
+        CacheLocalReferencesIfNeeded();
+        RefreshRuntimeReferencesIfNeeded();
 
         if (blockInfo == null)
         {
@@ -589,8 +742,12 @@ public class NumberDisplay : MonoBehaviour
         // so localEulerAngles can be different from the actual visible block rotation.
         float blockY = blockInfo.transform.eulerAngles.y;
 
-        bool isCeilingGrabbing = Player_CeilingGrab.Instance.isCeilingGrabbing;
-        CameraRotationState cameraState = cameraController.cameraRotationState;
+        bool isCeilingGrabbing =
+            Player_CeilingGrab.Instance != null &&
+            Player_CeilingGrab.Instance.isCeilingGrabbing;
+
+        CameraRotationState cameraState =
+            cameraController.cameraRotationState;
 
         if (!forceUpdate && hasRotationStateBeenInitialized)
         {
@@ -656,8 +813,7 @@ public class NumberDisplay : MonoBehaviour
 
     public void DestroyBlockStepCostDisplay()
     {
-        CameraController.Action_RotateCamera_Start -= UpdateRotation;
-
+        UnsubscribeFromEvents();
         Destroy(this);
     }
 
@@ -667,7 +823,12 @@ public class NumberDisplay : MonoBehaviour
 
     public void PositionOnTopOfParentCube()
     {
-        if (cachedTransform.parent == null)
+        if (!numberDisplayIsSetup)
+        {
+            SetupNumberDisplay();
+        }
+
+        if (cachedTransform == null || cachedTransform.parent == null)
         {
             Debug.LogWarning("NumberDisplay has no parent to align with.");
             return;
@@ -696,7 +857,6 @@ public class NumberDisplay : MonoBehaviour
         cachedTransform.position = worldTopPosition;
 
         // Pipe blocks should force local Y to -0.1
-        BlockInfo parentBlockInfo = parent.GetComponent<BlockInfo>();
         if (blockInfo != null && blockInfo.blockElement == BlockElement.Pipe)
         {
             Vector3 localPos = cachedTransform.localPosition;
@@ -710,7 +870,12 @@ public class NumberDisplay : MonoBehaviour
 
     public void PositionOnBottomOfParentCube()
     {
-        if (cachedTransform.parent == null)
+        if (!numberDisplayIsSetup)
+        {
+            SetupNumberDisplay();
+        }
+
+        if (cachedTransform == null || cachedTransform.parent == null)
         {
             Debug.LogWarning("NumberDisplay has no parent to align with.");
             return;
@@ -731,7 +896,6 @@ public class NumberDisplay : MonoBehaviour
         cachedTransform.position = worldBottomPosition;
 
         // Pipe blocks should force local Y to -0.1
-        BlockInfo parentBlockInfo = parent.GetComponent<BlockInfo>();
         if (blockInfo != null && blockInfo.blockElement == BlockElement.Pipe)
         {
             Vector3 localPos = cachedTransform.localPosition;
@@ -770,7 +934,7 @@ public class NumberDisplay : MonoBehaviour
                Player_CeilingGrab.Instance.ceilingGrabBlock == cachedParent.gameObject;
     }
 
-    void CacheReferencesIfNeeded()
+    void CacheLocalReferencesIfNeeded()
     {
         if (cachedTransform == null)
         {
@@ -780,7 +944,11 @@ public class NumberDisplay : MonoBehaviour
         if (cachedParent != cachedTransform.parent)
         {
             cachedParent = cachedTransform.parent;
+
+            // Parent-dependent references must be refreshed after reparenting.
+            blockInfo = null;
             parentEffectBlockInfo = null;
+            parentQuicksandBlock = null;
         }
 
         if (numberChildTransform == null && cachedTransform.childCount > 0)
@@ -794,29 +962,38 @@ public class NumberDisplay : MonoBehaviour
             blockInfo = GetComponentInParent<BlockInfo>();
         }
 
-        if (player_BlockDetector == null)
-        {
-            player_BlockDetector = FindObjectOfType<Player_BlockDetector>();
-        }
-
-        if (cameraController == null)
-        {
-            cameraController = FindObjectOfType<CameraController>();
-        }
-
-        if (cameraAnchorTransform == null && cameraController != null && cameraController.cameraAnchor != null)
-        {
-            cameraAnchorTransform = cameraController.cameraAnchor.transform;
-        }
-
         if (parentEffectBlockInfo == null && cachedParent != null)
         {
-            parentEffectBlockInfo = cachedParent.GetComponent<EffectBlockInfo>();
+            parentEffectBlockInfo =
+                cachedParent.GetComponent<EffectBlockInfo>();
         }
 
         if (parentQuicksandBlock == null)
         {
-            parentQuicksandBlock = GetComponentInParent<Block_Quicksand>();
+            parentQuicksandBlock =
+                GetComponentInParent<Block_Quicksand>();
+        }
+    }
+
+    void RefreshRuntimeReferencesIfNeeded()
+    {
+        if (cameraController == null)
+        {
+            if (sharedCameraController == null)
+            {
+                sharedCameraController =
+                    FindObjectOfType<CameraController>();
+            }
+
+            cameraController = sharedCameraController;
+        }
+
+        if (cameraAnchorTransform == null &&
+            cameraController != null &&
+            cameraController.cameraAnchor != null)
+        {
+            cameraAnchorTransform =
+                cameraController.cameraAnchor.transform;
         }
     }
 
