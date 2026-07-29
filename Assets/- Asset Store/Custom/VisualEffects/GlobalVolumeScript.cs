@@ -17,6 +17,10 @@ public class GlobalVolumeScript : MonoBehaviour
     float directionDistance = 5.6f;
     float sphereCastRadius = 0.25f;
 
+    PlayerStats playerStats;
+    float vignetteStrength;
+    float vignetteSpeed = 25;
+
     void Start()
     {
         //Hole Shader
@@ -24,6 +28,8 @@ public class GlobalVolumeScript : MonoBehaviour
 
         //Depth of Field
         Shader.SetGlobalFloat("_DOFEnabled", 1);
+
+        playerStats = PlayerStats.Instance;
     }
 
     void Update()
@@ -53,6 +59,10 @@ public class GlobalVolumeScript : MonoBehaviour
 
         blurDistance = Mathf.Clamp(blurDistance, 1, 100);
         Shader.SetGlobalFloat("_BlurDistance", blurDistance);
+
+        //Low Steps Vignette
+        vignetteStrength = Mathf.Lerp(vignetteStrength, playerStats.stats.steps_Current, vignetteSpeed * Time.deltaTime);
+        Shader.SetGlobalFloat("_StepsAmount", vignetteStrength);
     }
 
     void OnDisable()
@@ -64,5 +74,8 @@ public class GlobalVolumeScript : MonoBehaviour
 
         //Depth of Field
         Shader.SetGlobalFloat("_DOFEnabled", 0);
+
+        //Low Steps Vignette
+        Shader.SetGlobalFloat("_StepsAmount", 7);
     }
 }
