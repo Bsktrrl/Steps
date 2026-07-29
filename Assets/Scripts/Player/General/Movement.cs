@@ -3311,15 +3311,32 @@ public class Movement : Singleton<Movement>
             Vector3 worldDir = UpdatedDir(localDir);
             MoveOptions ladderOption = GetLadderOptionForDirection(localDir);
 
-            if (CheckLaddersToEnter_Up(worldDir) && ladderOption != null && ladderOption.targetBlock && ladderOption.canMoveTo)
+            // Exit_Block_Up behaviour is unchanged.
+            if (CheckLaddersToEnter_Up(worldDir) &&
+                ladderOption != null &&
+                ladderOption.targetBlock &&
+                ladderOption.canMoveTo)
             {
-                StartCoroutine(PerformLadderMovement_Up(worldDir, GetLadderExitPart_Up(worldDir)));
+                StartCoroutine(
+                    PerformLadderMovement_Up(
+                        worldDir,
+                        GetLadderExitPart_Up(worldDir)));
+
                 return true;
             }
 
-            if (CheckLaddersToEnter_Down(worldDir) && ladderOption != null && ladderOption.targetBlock && ladderOption.canMoveTo)
+            // Downward ladder movement is also valid when exitBlock_Down is null.
+            // In that case, canMoveTo is true, but there is intentionally no
+            // target block.
+            if (CheckLaddersToEnter_Down(worldDir) &&
+                ladderOption != null &&
+                ladderOption.canMoveTo)
             {
-                StartCoroutine(PerformLadderMovement_Down(worldDir, GetLadderExitPart_Down(worldDir)));
+                StartCoroutine(
+                    PerformLadderMovement_Down(
+                        worldDir,
+                        GetLadderExitPart_Down(worldDir)));
+
                 return true;
             }
         }
@@ -3981,27 +3998,60 @@ public class Movement : Singleton<Movement>
         CheckAvailableLadderExitBlocks(UpdatedDir(Vector3.right), moveToLadder_Right);
     }
 
-    void CheckAvailableLadderExitBlocks(Vector3 dir, MoveOptions moveOptions)
+    void CheckAvailableLadderExitBlocks(
+    Vector3 dir,
+    MoveOptions moveOptions)
     {
-        RaycastHitObjects directHit = PerformMovementRaycast(transform.position, dir, 1, out GameObject outObj1);
+        RaycastHitObjects directHit =
+            PerformMovementRaycast(
+                transform.position,
+                dir,
+                1,
+                out GameObject outObj1);
 
-        if (directHit == RaycastHitObjects.LadderBlocker || directHit == RaycastHitObjects.Fence)
+        if (directHit == RaycastHitObjects.LadderBlocker ||
+            directHit == RaycastHitObjects.Fence)
         {
             ClearMoveTarget(moveOptions);
             return;
         }
 
+        // Exit_Block_Up behaviour is unchanged.
         if (directHit == RaycastHitObjects.Ladder)
         {
-            SetMoveTarget(moveOptions, outObj1.GetComponent<Block_Ladder>().exitBlock_Up);
-            outObj1.GetComponent<Block_Ladder>().DarkenExitBlock_Up(dir);
+            SetMoveTarget(
+                moveOptions,
+                outObj1.GetComponent<Block_Ladder>().exitBlock_Up);
+
+            outObj1
+                .GetComponent<Block_Ladder>()
+                .DarkenExitBlock_Up(dir);
+
             return;
         }
 
-        if (PerformMovementRaycast(transform.position + (dir * 0.65f), Vector3.down, 1, out outObj1) == RaycastHitObjects.Ladder)
+        if (PerformMovementRaycast(
+                transform.position + (dir * 0.65f),
+                Vector3.down,
+                1,
+                out outObj1) == RaycastHitObjects.Ladder)
         {
-            SetMoveTarget(moveOptions, outObj1.GetComponent<Block_Ladder>().exitBlock_Down);
-            outObj1.GetComponent<Block_Ladder>().DarkenExitBlock_Down();
+            Block_Ladder ladder =
+                outObj1.GetComponent<Block_Ladder>();
+
+            // SetMoveTarget also sets canMoveTo to true.
+            // Its target may intentionally be null when the ladder has no
+            // Exit_Block_Down.
+            SetMoveTarget(
+                moveOptions,
+                ladder.exitBlock_Down);
+
+            // There is no exit block to darken when the ladder ends in open air.
+            if (ladder.exitBlock_Down != null)
+            {
+                ladder.DarkenExitBlock_Down();
+            }
+
             return;
         }
 
@@ -4107,14 +4157,28 @@ public class Movement : Singleton<Movement>
         Action_StepTaken_Invoke();
     }
 
-    IEnumerator PerformLadderMovement_Down(Vector3 dir, GameObject targetPosObj)
+    IEnumerator PerformLadderMovement_Down(
+    Vector3 dir,
+    GameObject targetPosObj)
     {
         if (targetPosObj == null)
             yield break;
 
-        if (targetPosObj.GetComponent<Block_Ladder>() &&
-            targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down &&
-            !CanAfford(targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down))
+        Block_Ladder targetLadder =
+            targetPosObj.GetComponent<Block_Ladder>();
+
+        GameObject exitBlockDown =
+            targetLadder != null
+                ? targetLadder.exitBlock_Down
+                : null;
+
+        bool fallFromLadderEnd =
+            targetLadder != null &&
+            exitBlockDown == null;
+
+        // Only check the movement cost when an Exit_Block_Down exists.
+        if (exitBlockDown != null &&
+            !CanAfford(exitBlockDown))
         {
             RespawnPlayer();
             yield break;
@@ -4128,13 +4192,19 @@ public class Movement : Singleton<Movement>
         movementStates = MovementStates.Moving;
         PM.pauseGame = true;
 
-        float targetY = targetPosObj.transform.eulerAngles.y;
+        // Face the ladder while climbing down.
+        float targetY =
+            targetPosObj.transform.eulerAngles.y;
+
         PM.playerBody.transform.SetLocalPositionAndRotation(
             PM.playerBody.transform.localPosition,
             Quaternion.Euler(0, targetY, 0));
 
-        Vector3 startPosition = transform.position;
-        Vector3 endPosition = startPosition + dir;
+        Vector3 startPosition =
+            transform.position;
+
+        Vector3 endPosition =
+            startPosition + dir;
 
         float ladderClimbDuration = 0.4f;
         float elapsedTime = 0f;
@@ -4142,8 +4212,16 @@ public class Movement : Singleton<Movement>
         while (elapsedTime < ladderClimbDuration)
         {
             elapsedTime += Time.deltaTime;
-            float progress = elapsedTime / ladderClimbDuration;
-            transform.position = Vector3.Lerp(startPosition, endPosition, progress);
+
+            float progress =
+                elapsedTime / ladderClimbDuration;
+
+            transform.position =
+                Vector3.Lerp(
+                    startPosition,
+                    endPosition,
+                    progress);
+
             yield return null;
         }
 
@@ -4152,14 +4230,26 @@ public class Movement : Singleton<Movement>
         startPosition = transform.position;
         endPosition = targetPosObj.transform.position;
 
-        ladderClimbDuration = Vector3.Distance(startPosition, endPosition) * 0.4f;
+        ladderClimbDuration =
+            Vector3.Distance(
+                startPosition,
+                endPosition) * 0.4f;
+
         elapsedTime = 0f;
 
         while (elapsedTime < ladderClimbDuration)
         {
             elapsedTime += Time.deltaTime;
-            float progress = elapsedTime / ladderClimbDuration;
-            transform.position = Vector3.Lerp(startPosition, endPosition, progress);
+
+            float progress =
+                elapsedTime / ladderClimbDuration;
+
+            transform.position =
+                Vector3.Lerp(
+                    startPosition,
+                    endPosition,
+                    progress);
+
             yield return null;
         }
 
@@ -4167,26 +4257,46 @@ public class Movement : Singleton<Movement>
 
         ResetLadderTargets();
 
-        if (targetPosObj &&
-            targetPosObj.GetComponent<Block_Ladder>() &&
-            targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down &&
-            targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down.GetComponent<BlockInfo>() &&
-            targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down.GetComponent<BlockInfo>().blockElement == BlockElement.Root &&
-            targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down.GetComponentInChildren<Block_Root>())
+        // Preserve the existing Root-block behaviour.
+        if (exitBlockDown != null &&
+            exitBlockDown.GetComponent<BlockInfo>() &&
+            exitBlockDown
+                .GetComponent<BlockInfo>()
+                .blockElement == BlockElement.Root &&
+            exitBlockDown.GetComponentInChildren<Block_Root>())
         {
-            targetPosObj.GetComponent<Block_Ladder>().exitBlock_Down.GetComponentInChildren<Block_Root>().ActivateRoots();
+            exitBlockDown
+                .GetComponentInChildren<Block_Root>()
+                .ActivateRoots();
         }
 
-        UpdateAvailableMovementBlocks();
+        if (!fallFromLadderEnd)
+        {
+            UpdateAvailableMovementBlocks();
+        }
 
-        targetY = targetPosObj.transform.eulerAngles.y + 180f;
+        isMovingOnLadder_Down = false;
+        PM.pauseGame = false;
+
+        if (fallFromLadderEnd)
+        {
+            // Do not rotate the player here.
+            // The player keeps the same rotation used while climbing down.
+            StartFallingWithNoBlock();
+
+            Action_StepTaken_Invoke();
+            yield break;
+        }
+
+        // Only turn away from the ladder when exiting onto Exit_Block_Down.
+        targetY =
+            targetPosObj.transform.eulerAngles.y + 180f;
+
         PM.playerBody.transform.SetLocalPositionAndRotation(
             PM.playerBody.transform.localPosition,
             Quaternion.Euler(0, targetY, 0));
 
-        isMovingOnLadder_Down = false;
         movementStates = MovementStates.Still;
-        PM.pauseGame = false;
 
         FindLadderExitBlock();
         Action_StepTaken_Invoke();
