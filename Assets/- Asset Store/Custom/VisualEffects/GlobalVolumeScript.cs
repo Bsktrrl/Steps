@@ -19,7 +19,7 @@ public class GlobalVolumeScript : MonoBehaviour
 
     PlayerStats playerStats;
     float vignetteStrength;
-    float vignetteSpeed = 10;
+    float vignetteSpeed = 25;
 
     void Start()
     {
