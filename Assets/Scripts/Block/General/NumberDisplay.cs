@@ -836,35 +836,70 @@ public class NumberDisplay : MonoBehaviour
 
         Transform parent = cachedTransform.parent;
 
-        // Use parent's up direction to find top in world space
-        Vector3 topDirection = parent.up;
+        /*
+         * A NumberDisplay is already a child of the block. When the block is
+         * scaled, Unity automatically applies that scale to the complete child
+         * hierarchy. Moving this transform again in world space applies a
+         * second scale correction and produces values such as -0.3208335.
+         *
+         * If the direct parent has Block_HeightOffset, preserve the local
+         * prefab position instead. With localStartHeight at its default value,
+         * the NumberDisplay object's local Y remains exactly 0.
+         */
+        if (ParentHasHeightOffset())
+        {
+            Vector3 localPosition = cachedTransform.localPosition;
+            localPosition.y = localStartHeight;
+            cachedTransform.localPosition = localPosition;
 
-        // Use parent's Y-scale as height (assuming cube is upright)
+            // Keep the number upright in world space.
+            cachedTransform.rotation = Quaternion.identity;
+
+            // Preserve the existing pipe behaviour.
+            if (blockInfo != null && blockInfo.blockElement == BlockElement.Pipe)
+            {
+                localPosition = cachedTransform.localPosition;
+                localPosition.y = -0.115f;
+                cachedTransform.localPosition = localPosition;
+            }
+
+            return;
+        }
+
+        // Preserve the original positioning for all blocks that do not use
+        // the scaled-height override.
+        Vector3 topDirection = parent.up;
         float cubeHeight = parent.localScale.y;
 
-        // Compute world position for the top center of the cube
-        Vector3 worldTopPosition = Vector3.zero;
+        Vector3 worldTopPosition;
+
         if (parent.gameObject.GetComponent<Block_Snow>())
         {
-            worldTopPosition = parent.position + topDirection * (cubeHeight / 2f + offsetAboveSurface - 0.6f + 0.0075f) + (Vector3.up * localStartHeight);
+            worldTopPosition =
+                parent.position +
+                topDirection *
+                (cubeHeight / 2f + offsetAboveSurface - 0.6f + 0.0075f) +
+                (Vector3.up * localStartHeight);
         }
         else
         {
-            worldTopPosition = parent.position + topDirection * (cubeHeight / 2f + offsetAboveSurface - 0.6f + 0.0075f);
+            worldTopPosition =
+                parent.position +
+                topDirection *
+                (cubeHeight / 2f + offsetAboveSurface - 0.6f + 0.0075f);
         }
 
-        // Apply the world position
         cachedTransform.position = worldTopPosition;
 
-        // Pipe blocks should force local Y to -0.1
+        // Pipe blocks should force local Y to -0.115.
         if (blockInfo != null && blockInfo.blockElement == BlockElement.Pipe)
         {
-            Vector3 localPos = cachedTransform.localPosition;
-            localPos.y = -0.115f;
-            cachedTransform.localPosition = localPos;
+            Vector3 localPosition = cachedTransform.localPosition;
+            localPosition.y = -0.115f;
+            cachedTransform.localPosition = localPosition;
         }
 
-        // Keep the number upright in world space
+        // Keep the number upright in world space.
         cachedTransform.rotation = Quaternion.identity;
     }
 
@@ -917,6 +952,13 @@ public class NumberDisplay : MonoBehaviour
     }
 
     #region Helpers
+
+    bool ParentHasHeightOffset()
+    {
+        return cachedParent != null &&
+               cachedParent.TryGetComponent(
+                   out Block_HeightOffset _);
+    }
 
     bool IsAscendTarget()
     {

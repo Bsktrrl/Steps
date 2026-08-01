@@ -3110,10 +3110,93 @@ public class Movement : Singleton<Movement>
         return false;
     }
 
+    private GameObject grappleHeightOffsetLandingBlock;
+
+    private Vector3 CorrectGrappleTargetForHeightOffset(Vector3 originalTarget)
+    {
+        grappleHeightOffsetLandingBlock = null;
+
+        /*
+         * Grappling normally calculates its landing height from the hooked
+         * block and assumes that the landing block is exactly one grid unit
+         * below it.
+         *
+         * That assumption is wrong in the parts of the map that use
+         * Block_HeightOffset. Normal walking, jumping and dashing use the
+         * actual destination block's transform Y, but grappling does not.
+         *
+         * Find the real uppermost BlockInfo directly below the grapple
+         * destination. Only change the grapple Y when that landing block
+         * explicitly has Block_HeightOffset, so all existing normal grapple
+         * behaviour remains untouched everywhere else.
+         */
+        float rayStartY = Mathf.Max(
+            transform.position.y,
+            moveToBlock_GrapplingHook.targetBlock.transform.position.y) + 2f;
+
+        Vector3 rayOrigin = new Vector3(
+            originalTarget.x,
+            rayStartY,
+            originalTarget.z);
+
+        RaycastHit[] landingHits = Physics.RaycastAll(
+            rayOrigin,
+            Vector3.down,
+            8f,
+            Map.player_LayerMask,
+            QueryTriggerInteraction.Ignore);
+
+        GameObject landingBlock = null;
+        float nearestDistance = float.MaxValue;
+
+        foreach (RaycastHit landingHit in landingHits)
+        {
+            if (landingHit.collider == null)
+                continue;
+
+            BlockInfo landingInfo =
+                landingHit.collider.GetComponentInParent<BlockInfo>();
+
+            if (landingInfo == null)
+                continue;
+
+            if (landingHit.distance >= nearestDistance)
+                continue;
+
+            nearestDistance = landingHit.distance;
+            landingBlock = landingInfo.gameObject;
+        }
+
+        if (landingBlock == null)
+            return originalTarget;
+
+        if (!landingBlock.TryGetComponent(
+                out Block_HeightOffset _))
+        {
+            return originalTarget;
+        }
+
+        /*
+         * NormalMovement adds heightOverBlock after receiving this target.
+         * Supplying the actual landing block's transform Y therefore makes
+         * grappling finish at exactly the same root height as normal movement.
+         *
+         * Player_BodyHeight then applies height_Offset to the visual body,
+         * exactly as it does for walking, jumping and dashing.
+         */
+        grappleHeightOffsetLandingBlock = landingBlock;
+        originalTarget.y = landingBlock.transform.position.y;
+
+        return originalTarget;
+    }
+
     void RunGrapplingHook()
     {
-        if (!moveToBlock_GrapplingHook.canMoveTo || moveToBlock_GrapplingHook.targetBlock == null)
+        if (!moveToBlock_GrapplingHook.canMoveTo ||
+            moveToBlock_GrapplingHook.targetBlock == null)
+        {
             return;
+        }
 
         if (!CanAfford(moveToBlock_GrapplingHook.targetBlock))
         {
@@ -3128,34 +3211,67 @@ public class Movement : Singleton<Movement>
         else
             Anims.Trigger_GrapplingHookDraggingAnimation();
 
-        if (TryGetBlockInfo(moveToBlock_GrapplingHook.targetBlock, out BlockInfo info) &&
-            (info.blockType == BlockType.Stair || info.blockType == BlockType.Slope))
+        Vector3 grappleMovementTarget;
+
+        if (TryGetBlockInfo(
+                moveToBlock_GrapplingHook.targetBlock,
+                out BlockInfo info) &&
+            (info.blockType == BlockType.Stair ||
+             info.blockType == BlockType.Slope))
         {
-            Vector3 toPlayer = (transform.position - moveToBlock_GrapplingHook.targetBlock.transform.position).normalized;
-            bool isFacingPlayer = Vector3.Dot(moveToBlock_GrapplingHook.targetBlock.transform.forward, toPlayer) > 0.5f;
+            Vector3 toPlayer =
+                (transform.position -
+                 moveToBlock_GrapplingHook.targetBlock.transform.position)
+                .normalized;
+
+            bool isFacingPlayer =
+                Vector3.Dot(
+                    moveToBlock_GrapplingHook.targetBlock.transform.forward,
+                    toPlayer) > 0.5f;
 
             if (isFacingPlayer)
             {
-                PerformMovement(
-                    moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down + (Vector3.up * 0.95f) + lookDir,
-                    abilitySpeed + grapplingLength);
+                grappleMovementTarget =
+                    moveToBlock_GrapplingHook.targetBlock.transform.position -
+                    lookDir.normalized +
+                    Vector3.down +
+                    (Vector3.up * 0.95f) +
+                    lookDir;
             }
             else
             {
-                PerformMovement(
-                    moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down + (Vector3.up * 0.5f),
-                    abilitySpeed + grapplingLength);
+                grappleMovementTarget =
+                    moveToBlock_GrapplingHook.targetBlock.transform.position -
+                    lookDir.normalized +
+                    Vector3.down +
+                    (Vector3.up * 0.5f);
             }
         }
         else
         {
-            PerformMovement(moveToBlock_GrapplingHook.targetBlock.transform.position - lookDir.normalized + Vector3.down, abilitySpeed + grapplingLength);
+            grappleMovementTarget =
+                moveToBlock_GrapplingHook.targetBlock.transform.position -
+                lookDir.normalized +
+                Vector3.down;
         }
 
-        MapStatsGathered.Instance.levelStats.ability_GrapplingHook++;
+        grappleMovementTarget =
+            CorrectGrappleTargetForHeightOffset(
+                grappleMovementTarget);
 
-        if (TryGetBlockInfo(moveToBlock_GrapplingHook.targetBlock, out BlockInfo targetInfo))
+        PerformMovement(
+            grappleMovementTarget,
+            abilitySpeed + grapplingLength);
+
+        MapStatsGathered.Instance.levelStats
+            .ability_GrapplingHook++;
+
+        if (TryGetBlockInfo(
+                moveToBlock_GrapplingHook.targetBlock,
+                out BlockInfo targetInfo))
+        {
             targetInfo.ResetDarkenColor();
+        }
 
         ClearMoveTarget(moveToBlock_GrapplingHook);
         Player_GraplingHook.Instance.EndLineRenderer();
@@ -3539,6 +3655,10 @@ public class Movement : Singleton<Movement>
     {
         isMoving = true;
 
+        bool thisMoveWasGrappling =
+            isGrapplingHooking ||
+            performGrapplingHooking;
+
         currentMoveTargetBlock = moveOptions != null ? moveOptions.targetBlock : null;
 
         Action_StepTaken_Early_Invoke();
@@ -3570,6 +3690,21 @@ public class Movement : Singleton<Movement>
 
         isAscending = false;
         isDescending = false;
+
+        if (thisMoveWasGrappling &&
+            grappleHeightOffsetLandingBlock != null)
+        {
+            blockStandingOn =
+                grappleHeightOffsetLandingBlock;
+
+            if (Player_BodyHeight.Instance != null)
+            {
+                Player_BodyHeight.Instance
+                    .SetPlayerBodyHeight();
+            }
+
+            grappleHeightOffsetLandingBlock = null;
+        }
 
         PlayerCameraOcclusionController.Instance.CameraZoom(false);
 
@@ -3658,6 +3793,28 @@ public class Movement : Singleton<Movement>
         {
             transform.position = fixedEndPos;
             StopFollowingCubeBlock();
+        }
+
+        /*
+         * Only for a grapple landing on a block that explicitly uses
+         * Block_HeightOffset, force the player root to the same Y that
+         * ordinary movement would use for that actual landing block.
+         */
+        if (performGrapplingHooking &&
+            grappleHeightOffsetLandingBlock != null)
+        {
+            Vector3 correctedRootPosition =
+                transform.position;
+
+            correctedRootPosition.y =
+                grappleHeightOffsetLandingBlock.transform.position.y +
+                GetStandingYOffset();
+
+            transform.position =
+                correctedRootPosition;
+
+            blockStandingOn =
+                grappleHeightOffsetLandingBlock;
         }
 
         movementStates = MovementStates.Still;
