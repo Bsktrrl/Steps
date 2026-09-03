@@ -126,6 +126,10 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
     IEnumerator StartTutorial_Delay()
     {
+        // Camera must finish rotating before the tutorial continues.
+        yield return StartCoroutine(RotateCameraAndWait());
+
+        // Only now spawn Stepellier.
         yield return StartCoroutine(Stepellier_Enter());
 
         yield return ShowDialogueDisplay();
@@ -262,6 +266,24 @@ public class HUBTutorial : Singleton<HUBTutorial>
                     CameraController.Instance.RotateCameraX();
                 }
             }
+        }
+    }
+
+    IEnumerator RotateCameraAndWait()
+    {
+        // Wait until the camera is allowed to rotate.
+        while (Movement.Instance.GetMovementState() == MovementStates.Moving)
+        {
+            yield return null;
+        }
+
+        // Start the rotation.
+        RotateCamera();
+
+        // Wait until ALL requested camera rotations are complete.
+        while (CameraController.Instance.isRotating)
+        {
+            yield return null;
         }
     }
 
@@ -534,7 +556,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
         yield return new WaitForSeconds(0.4f);
 
         PlayerManager.Instance.npcInteraction = true;
-        SelectSegment();
+        yield return StartCoroutine(SelectSegment());
     }
     IEnumerator CloseDialogueDisplay()
     {
@@ -571,14 +593,15 @@ public class HUBTutorial : Singleton<HUBTutorial>
         {
             currentSegmentShowing++;
 
-            SelectSegment();
+            StartCoroutine(SelectSegment());
         }
     }
-    void SelectSegment()
+    IEnumerator SelectSegment()
     {
         HideArrow();
 
-        RotateCamera();
+        // Finish camera rotation before showing the new segment.
+        yield return StartCoroutine(RotateCameraAndWait());
 
         SetupDialogueText_toDisplay(
             tutorialData.tutorialDataSegment[currentSegmentShowing]
