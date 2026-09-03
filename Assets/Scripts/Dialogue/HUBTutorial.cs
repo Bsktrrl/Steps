@@ -15,7 +15,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
     [Header("Data from Excel")]
     public TutorialData tutorialData = new TutorialData();
     int startRow = 2;
-    int columns = 11; //Size + 1
+    int columns = 12; //Size + 1
     int currentLanguageAmount = 3;
 
     [Header("Stepellier Object")]
@@ -62,7 +62,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
         TypewriterEffect.Action_Typewriting_Finished += ShowArrow;
 
         LoadingIcon.Action_BlackScreenIsGone += SetupTutorial_Movement;
-        Movement.Action_RespawnPlayerLate += SetupTutorial_Respawn;
+        //Movement.Action_RespawnPlayerLate += SetupTutorial_Respawn;
         DataManager.Action_dataHasLoaded += UnPauseGame;
     }
     private void OnDisable()
@@ -75,7 +75,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
         TypewriterEffect.Action_Typewriting_Finished -= ShowArrow;
 
         LoadingIcon.Action_BlackScreenIsGone -= SetupTutorial_Movement;
-        Movement.Action_RespawnPlayerLate -= SetupTutorial_Respawn;
+        //Movement.Action_RespawnPlayerLate -= SetupTutorial_Respawn;
         DataManager.Action_dataHasLoaded -= UnPauseGame;
     }
 
@@ -154,6 +154,117 @@ public class HUBTutorial : Singleton<HUBTutorial>
         currentTutorialPart = tutorialPart;
     }
 
+    void RotateCamera()
+    {
+        MoveDirection moveDirection = tutorialData.tutorialDataSegment[currentSegmentShowing].camera_Rotation;
+        Vector3 desiredDirection = Vector3.zero;
+
+        switch (moveDirection)
+        {
+            case MoveDirection.None:
+                desiredDirection = Vector3.zero;
+                break;
+
+            case MoveDirection.Forward:
+                desiredDirection = Vector3.forward;
+                break;
+            case MoveDirection.Backward:
+                desiredDirection = Vector3.back;
+                break;
+            case MoveDirection.Right:
+                desiredDirection = Vector3.right;
+                break;
+            case MoveDirection.Left:
+                desiredDirection = Vector3.left;
+                break;
+        }
+
+        if (desiredDirection == Vector3.zero)
+        {
+            return;
+        }
+
+        CameraRotationState targetState;
+
+        if (desiredDirection == Vector3.forward)
+        {
+            targetState = CameraRotationState.Forward;
+        }
+        else if (desiredDirection == Vector3.back)
+        {
+            targetState = CameraRotationState.Backward;
+        }
+        else if (desiredDirection == Vector3.left)
+        {
+            targetState = CameraRotationState.Left;
+        }
+        else if (desiredDirection == Vector3.right)
+        {
+            targetState = CameraRotationState.Right;
+        }
+        else
+        {
+            return;
+        }
+
+        CameraRotationState currentState = CameraController.Instance.cameraRotationState;
+
+        if (currentState == targetState)
+        {
+            return;
+        }
+
+        // Camera rotation order for +1:
+        // Forward -> Left -> Backward -> Right -> Forward
+        CameraRotationState[] rotationOrder =
+        {
+        CameraRotationState.Forward,
+        CameraRotationState.Left,
+        CameraRotationState.Backward,
+        CameraRotationState.Right
+    };
+
+        int currentIndex = Array.IndexOf(rotationOrder, currentState);
+        int targetIndex = Array.IndexOf(rotationOrder, targetState);
+
+        int positiveSteps = (targetIndex - currentIndex + 4) % 4;
+        int negativeSteps = (currentIndex - targetIndex + 4) % 4;
+
+        // Take the shortest route.
+        if (positiveSteps <= negativeSteps)
+        {
+            for (int i = 0; i < positiveSteps; i++)
+            {
+                // RotateCameraX is +1 when camera motion is Normal.
+                if (DataManager.Instance.settingData_StoreList.currentRevertedCameraMotion
+                    == RevertedCameraMotion.Normal)
+                {
+                    CameraController.Instance.RotateCameraX();
+                }
+                else
+                {
+                    CameraController.Instance.RotateCameraY();
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < negativeSteps; i++)
+            {
+                // RotateCameraY is -1 when camera motion is Normal.
+                if (DataManager.Instance.settingData_StoreList.currentRevertedCameraMotion
+                    == RevertedCameraMotion.Normal)
+                {
+                    CameraController.Instance.RotateCameraY();
+                }
+                else
+                {
+                    CameraController.Instance.RotateCameraX();
+                }
+            }
+        }
+    }
+
 
     //-----
 
@@ -170,29 +281,29 @@ public class HUBTutorial : Singleton<HUBTutorial>
     {
         yield return new WaitForSeconds(waitTime);
 
-        StartTutorial(TutorialParts.Movement);
+        StartTutorial(TutorialParts.Start);
     }
-    void SetupTutorial_Respawn()
-    {
-        //1 is Respawn Tutorial
-        if (DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets[1].isGoneThrough) return;
+    //void SetupTutorial_Respawn()
+    //{
+    //    //1 is Respawn Tutorial
+    //    if (DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets[1].isGoneThrough) return;
 
-        if (Movement.Instance.isRespawningFirstTime)
-        {
-            PlayerManager.Instance.PauseGame();
+    //    if (Movement.Instance.isRespawningFirstTime)
+    //    {
+    //        PlayerManager.Instance.PauseGame();
 
-            //Set new SpawnPos for Stepellier based on which chekpoint the player respawns to
+    //        //Set new SpawnPos for Stepellier based on which chekpoint the player respawns to
 
 
-            StartCoroutine(SetupTutorial_Respawn_Delay(0.5f));
-        }
-    }
-    IEnumerator SetupTutorial_Respawn_Delay(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
+    //        StartCoroutine(SetupTutorial_Respawn_Delay(0.5f));
+    //    }
+    //}
+    //IEnumerator SetupTutorial_Respawn_Delay(float waitTime)
+    //{
+    //    yield return new WaitForSeconds(waitTime);
 
-        StartTutorial(TutorialParts.Respawn);
-    }
+    //    StartTutorial(TutorialParts.Respawn);
+    //}
 
     void UnPauseGame()
     {
@@ -459,6 +570,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
         else
         {
             currentSegmentShowing++;
+
             SelectSegment();
         }
     }
@@ -466,7 +578,14 @@ public class HUBTutorial : Singleton<HUBTutorial>
     {
         HideArrow();
 
-        SetupDialogueText_toDisplay(tutorialData.tutorialDataSegment[currentSegmentShowing].languageDialogueList[(int)DataManager.Instance.settingData_StoreList.currentLanguage]);
+        RotateCamera();
+
+        SetupDialogueText_toDisplay(
+            tutorialData.tutorialDataSegment[currentSegmentShowing]
+                .languageDialogueList[
+                    (int)DataManager.Instance.settingData_StoreList.currentLanguage
+                ]
+        );
     }
 
     void SetupStepellierNameText_toDisplay()
@@ -594,10 +713,19 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
             #endregion
 
-            #region Talk Animation
+            #region Camera Rotation
 
             if (excelData[columns * (i + startRow - 1) + 7] != "")
-                tutorialData.tutorialDataSegment[i].talkAnimation = ParseIntSafe(excelData, columns * (i + startRow - 1) + 7);
+                tutorialData.tutorialDataSegment[i].camera_Rotation = SetRotationValue(excelData[columns * (i + startRow - 1) + 7].Trim());
+            else
+                tutorialData.tutorialDataSegment[i].camera_Rotation = 0;
+
+            #endregion
+
+            #region Talk Animation
+
+            if (excelData[columns * (i + startRow - 1) + 8] != "")
+                tutorialData.tutorialDataSegment[i].talkAnimation = ParseIntSafe(excelData, columns * (i + startRow - 1) + 8);
             else
                 tutorialData.tutorialDataSegment[i].talkAnimation = 0;
 
@@ -607,8 +735,8 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
             for (int j = 0; j < currentLanguageAmount; j++)
             {
-                if (excelData[columns * (i + startRow - 1) + 8 + j] != "")
-                    tutorialData.tutorialDataSegment[i].languageDialogueList[j] = excelData[columns * (i + startRow - 1) + 8 + j].Trim();
+                if (excelData[columns * (i + startRow - 1) + 9 + j] != "")
+                    tutorialData.tutorialDataSegment[i].languageDialogueList[j] = excelData[columns * (i + startRow - 1) + 9 + j].Trim();
                 else
                     tutorialData.tutorialDataSegment[i].languageDialogueList[j] = "";
             }
@@ -687,6 +815,8 @@ public class TutorialDataSegment
     [Header("Stepellier Spawn Position")]
     public Vector3 stepellier_spawnPos;
     public MoveDirection stepellier_spawnRot;
+
+    public MoveDirection camera_Rotation;
 
     [Header("TalkAnimation")]
     public int talkAnimation;
