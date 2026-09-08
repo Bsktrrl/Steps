@@ -61,7 +61,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
         TypewriterEffect.Action_Typewriting_Finished += ShowArrow;
 
-        LoadingIcon.Action_BlackScreenIsGone += SetupTutorial_Movement;
+        PlayerSpawnScript.Action_PlayerHasSpawned += SetupTutorial_Movement;
         //Movement.Action_RespawnPlayerLate += SetupTutorial_Respawn;
         DataManager.Action_dataHasLoaded += UnPauseGame;
     }
@@ -74,7 +74,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
         TypewriterEffect.Action_Typewriting_Finished -= ShowArrow;
 
-        LoadingIcon.Action_BlackScreenIsGone -= SetupTutorial_Movement;
+        PlayerSpawnScript.Action_PlayerHasSpawned -= SetupTutorial_Movement;
         //Movement.Action_RespawnPlayerLate -= SetupTutorial_Respawn;
         DataManager.Action_dataHasLoaded -= UnPauseGame;
     }

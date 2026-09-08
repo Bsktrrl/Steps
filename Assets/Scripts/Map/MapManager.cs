@@ -73,6 +73,8 @@ public class MapManager : Singleton<MapManager>
     {
         blockInfoList = FindObjectsOfType<BlockInfo>();
         pickupInfoList = FindObjectsOfType<Interactable_Pickup>();
+
+        PlayerManager.Instance.PauseGame();
     }
 
     private void OnEnable()

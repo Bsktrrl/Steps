@@ -171,7 +171,7 @@ public class CameraController : Singleton<CameraController>
         //HoleShaderOnOffScript.Instance.HoleShader_On();
 
         isRotating = true;
-        PlayerManager.Instance.pauseGame = true;
+        PlayerManager.Instance.PauseGame();
 
         while (true)
         {
@@ -239,7 +239,7 @@ public class CameraController : Singleton<CameraController>
 
         yield return new WaitForSeconds(waitDelay);
 
-        PlayerManager.Instance.pauseGame = false;
+        PlayerManager.Instance.UnpauseGame();
         isRotating = false;
 
         Movement.Instance.previousPosition = transform.position;
@@ -288,7 +288,7 @@ public class CameraController : Singleton<CameraController>
     public IEnumerator CeilingCameraRotation(float angle)
     {
         isCeilingRotating = true;
-        PlayerManager.Instance.pauseGame = true;
+        PlayerManager.Instance.PauseGame();
 
         //Iterate the states
         if (cameraState == CameraState.GameplayCam)
@@ -315,7 +315,7 @@ public class CameraController : Singleton<CameraController>
 
         yield return new WaitForSeconds(waitDelay); // Wait for the next frame
 
-        PlayerManager.Instance.pauseGame = false;
+        PlayerManager.Instance.UnpauseGame();
         isCeilingRotating = false;
     }
 

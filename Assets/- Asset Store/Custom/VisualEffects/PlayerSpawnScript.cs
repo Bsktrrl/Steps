@@ -1,9 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
-public class PlayerSpawnScript : MonoBehaviour
+public class PlayerSpawnScript : Singleton<PlayerSpawnScript>
 {
+    public static event Action Action_PlayerHasSpawned;
+
+    public bool playerIsSpawning;
+
     [SerializeField] ParticleSystem PS1;
     [SerializeField] ParticleSystem PS2;
     [SerializeField] GameObject playerBody;
@@ -24,12 +30,23 @@ public class PlayerSpawnScript : MonoBehaviour
     float spawnSpeed3 = 4f;
     float spawnSpeed4 = 3.5f;
 
+
+    //--------------------
+
+
+    private void Start()
+    {
+        if (!DataManager.Instance.oneTimeRunData_Store.tutorial_PlayerSpawned) //Need to have a ! at the start
+        {
+            playerBody.SetActive(false);
+        }
+    }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            StartCoroutine(Spawn());
-        }
+        //if (Input.GetKeyDown(KeyCode.Alpha3))
+        //{
+        //    StartCoroutine(Spawn());
+        //}
 
         if (spawning)
         {
@@ -57,39 +74,89 @@ public class PlayerSpawnScript : MonoBehaviour
         }
     }
 
+
+    //--------------------
+
+
+    private void OnEnable()
+    {
+        LoadingIcon.Action_BlackScreenIsGone += SpawnPlayer_Animation;
+    }
+    private void OnDisable()
+    {
+        LoadingIcon.Action_BlackScreenIsGone -= SpawnPlayer_Animation;
+    }
+
+
+    //--------------------
+
+
+    void SpawnPlayer_Animation()
+    {
+        if (!DataManager.Instance.oneTimeRunData_Store.tutorial_PlayerSpawned) //Need to have a ! at the start
+        {
+            Movement.Instance.ResetDarkenBlocks_External();
+            StartCoroutine(Spawn());
+        }
+        else
+        {
+            if (playerBody)
+                playerBody.SetActive(true);
+
+            Movement.Instance.SetDarkenBlocks();
+        }
+    }
     IEnumerator Spawn()
     {
+        playerIsSpawning = true;
+
+        PlayerManager.Instance.PauseGame();
+        playerBody.SetActive(true);
+
         playerBody.transform.localScale = Vector3.zero;
         PS1.Play();
 
         yield return new WaitForSeconds(5);
+        PlayerManager.Instance.PauseGame();
 
         PS2.Play();
         spawning = true;
 
         yield return new WaitForSeconds(0.1f);
+        PlayerManager.Instance.PauseGame();
 
         spawning = false;
         spawnCorrection0 = true;
 
         yield return new WaitForSeconds(0.1f);
+        PlayerManager.Instance.PauseGame();
 
         spawnCorrection0 = false;
         spawnCorrection1 = true;
 
         yield return new WaitForSeconds(0.33f);
+        PlayerManager.Instance.PauseGame();
 
         spawnCorrection1 = false;
         spawnCorrection2 = true;
 
         yield return new WaitForSeconds(0.33f);
+        PlayerManager.Instance.PauseGame();
 
         spawnCorrection2 = false;
         spawnCorrection3 = true;
 
-        yield return new WaitForSeconds(1);
-
         spawnCorrection3 = false;
         playerBody.transform.localScale = Vector3.one;
+
+        playerIsSpawning = false;
+        Movement.Instance.SetDarkenBlocks();
+
+        yield return new WaitForSeconds(1f);
+
+        DataManager.Instance.oneTimeRunData_Store.tutorial_PlayerSpawned = true;
+        DataPersistanceManager.instance.SaveGame();
+
+        Action_PlayerHasSpawned?.Invoke();
     }
 }
