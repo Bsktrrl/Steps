@@ -495,6 +495,12 @@ public class HUBTutorial : Singleton<HUBTutorial>
     }
     float RotatePlayer()
     {
+        if (tutorialData.tutorialDataSegment[currentSegmentShowing].segmentNumber == 1)
+        {
+            print("11. Rot SegmentNumebr = 1");
+            return 90;
+        }
+
         MoveDirection moveDir = tutorialData.tutorialDataSegment[currentSegmentShowing].stepellier_spawnRot;
 
         switch (moveDir)
@@ -517,6 +523,8 @@ public class HUBTutorial : Singleton<HUBTutorial>
             default:
                 return 0;
         }
+
+        
     }
 
     void ShowStepellier()
