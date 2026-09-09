@@ -15,7 +15,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
     [Header("Data from Excel")]
     public TutorialData tutorialData = new TutorialData();
     int startRow = 2;
-    int columns = 12; //Size + 1
+    int columns = 13; //Size + 1
     int currentLanguageAmount = 3;
 
     [Header("Stepellier Object")]
@@ -405,8 +405,9 @@ public class HUBTutorial : Singleton<HUBTutorial>
             }
         }
 
-        print("2000. DespawnStepellier_Delay");
         PlayerManager.Instance.UnpauseGame();
+
+        Movement.Instance.SetDarkenBlocks();
     }
     
     IEnumerator PlayerReactToStepellierSpawning()
@@ -495,13 +496,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
     }
     float RotatePlayer()
     {
-        if (tutorialData.tutorialDataSegment[currentSegmentShowing].segmentNumber == 1)
-        {
-            print("11. Rot SegmentNumebr = 1");
-            return 90;
-        }
-
-        MoveDirection moveDir = tutorialData.tutorialDataSegment[currentSegmentShowing].stepellier_spawnRot;
+        MoveDirection moveDir = tutorialData.tutorialDataSegment[currentSegmentShowing].player_Rot;
 
         switch (moveDir)
         {
@@ -512,10 +507,10 @@ public class HUBTutorial : Singleton<HUBTutorial>
                 return 180;
 
             case MoveDirection.Right:
-                return 90;
+                return -90;
 
             case MoveDirection.Left:
-                return -90;
+                return 90;
 
             case MoveDirection.None:
                 return 0;
@@ -523,8 +518,6 @@ public class HUBTutorial : Singleton<HUBTutorial>
             default:
                 return 0;
         }
-
-        
     }
 
     void ShowStepellier()
@@ -736,18 +729,24 @@ public class HUBTutorial : Singleton<HUBTutorial>
             else
                 tutorialData.tutorialDataSegment[i].stepellier_spawnPos.z = 0;
 
-            //Rotation
+            //Rotation NPC
             if (excelData[columns * (i + startRow - 1) + 6] != "")
                 tutorialData.tutorialDataSegment[i].stepellier_spawnRot = SetRotationValue(excelData[columns * (i + startRow - 1) + 6].Trim());
             else
                 tutorialData.tutorialDataSegment[i].stepellier_spawnRot = MoveDirection.None;
 
+            //Rotation Player
+            if (excelData[columns * (i + startRow - 1) + 7] != "")
+                tutorialData.tutorialDataSegment[i].player_Rot = SetRotationValue(excelData[columns * (i + startRow - 1) + 7].Trim());
+            else
+                tutorialData.tutorialDataSegment[i].player_Rot = MoveDirection.None;
+
             #endregion
 
             #region Camera Rotation
 
-            if (excelData[columns * (i + startRow - 1) + 7] != "")
-                tutorialData.tutorialDataSegment[i].camera_Rotation = SetRotationValue(excelData[columns * (i + startRow - 1) + 7].Trim());
+            if (excelData[columns * (i + startRow - 1) + 8] != "")
+                tutorialData.tutorialDataSegment[i].camera_Rotation = SetRotationValue(excelData[columns * (i + startRow - 1) + 8].Trim());
             else
                 tutorialData.tutorialDataSegment[i].camera_Rotation = 0;
 
@@ -755,8 +754,8 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
             #region Talk Animation
 
-            if (excelData[columns * (i + startRow - 1) + 8] != "")
-                tutorialData.tutorialDataSegment[i].talkAnimation = ParseIntSafe(excelData, columns * (i + startRow - 1) + 8);
+            if (excelData[columns * (i + startRow - 1) + 9] != "")
+                tutorialData.tutorialDataSegment[i].talkAnimation = ParseIntSafe(excelData, columns * (i + startRow - 1) + 9);
             else
                 tutorialData.tutorialDataSegment[i].talkAnimation = 0;
 
@@ -766,8 +765,8 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
             for (int j = 0; j < currentLanguageAmount; j++)
             {
-                if (excelData[columns * (i + startRow - 1) + 9 + j] != "")
-                    tutorialData.tutorialDataSegment[i].languageDialogueList[j] = excelData[columns * (i + startRow - 1) + 9 + j].Trim();
+                if (excelData[columns * (i + startRow - 1) + 10 + j] != "")
+                    tutorialData.tutorialDataSegment[i].languageDialogueList[j] = excelData[columns * (i + startRow - 1) + 10 + j].Trim();
                 else
                     tutorialData.tutorialDataSegment[i].languageDialogueList[j] = "";
             }
@@ -846,6 +845,7 @@ public class TutorialDataSegment
     [Header("Stepellier Spawn Position")]
     public Vector3 stepellier_spawnPos;
     public MoveDirection stepellier_spawnRot;
+    public MoveDirection player_Rot;
 
     public MoveDirection camera_Rotation;
 

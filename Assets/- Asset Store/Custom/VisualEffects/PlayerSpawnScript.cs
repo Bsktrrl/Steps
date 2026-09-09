@@ -150,7 +150,7 @@ public class PlayerSpawnScript : Singleton<PlayerSpawnScript>
         playerBody.transform.localScale = Vector3.one;
 
         playerIsSpawning = false;
-        Movement.Instance.SetDarkenBlocks();
+        //Movement.Instance.SetDarkenBlocks();
 
         yield return new WaitForSeconds(1f);
 
