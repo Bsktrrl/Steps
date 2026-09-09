@@ -27,12 +27,8 @@ public enum TutorialParts
 {
     None,
 
-    Movement,
-    Respawn,
-    CameraRotation,
-    Footprint,
+    Start,
+    Corner,
     Skin,
-    Essence,
-    FreeCam,
     Glueplant,
 }

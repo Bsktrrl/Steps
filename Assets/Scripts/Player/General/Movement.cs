@@ -2961,6 +2961,8 @@ public class Movement : Singleton<Movement>
 
     public void SetDarkenBlocks()
     {
+        if (PlayerSpawnScript.Instance.playerIsSpawning || LoadingIcon.Instance.blackscreenIsFading) return;
+
         if (isMoving || movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
             return;
 

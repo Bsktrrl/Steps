@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class LoadingIcon : MonoBehaviour
+public class LoadingIcon : Singleton<LoadingIcon>
 {
     public static event Action Action_BlackScreenIsGone;
 
@@ -59,6 +59,8 @@ public class LoadingIcon : MonoBehaviour
     [SerializeField] Sprite sprite_Metalworks_Lv4;
     [SerializeField] Sprite sprite_Metalworks_Lv5;
 
+    public bool blackscreenIsFading;
+
 
     //--------------------
 
@@ -86,11 +88,15 @@ public class LoadingIcon : MonoBehaviour
     {
         DataManager.Action_dataHasLoaded += LoadingSprite;
         SkinWardrobeButton.Action_SkinIsSelected += LoadingSpriteInGame;
+
+        blackscreenIsFading = true;
     }
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= LoadingSprite;
         SkinWardrobeButton.Action_SkinIsSelected -= LoadingSpriteInGame;
+
+        blackscreenIsFading = false;
 
         Action_BlackScreenIsGone?.Invoke();
     }

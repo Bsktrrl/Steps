@@ -38,6 +38,14 @@ public class PlayerManager : Singleton<PlayerManager>
     //--------------------
 
 
+    private void Start()
+    {
+        if (!DataManager.Instance.oneTimeRunData_Store.tutorial_PlayerSpawned)
+        {
+            PauseGame();
+        }
+    }
+
     private void Update()
     {
         RespawnPlayerIfToLowInMapHeight();

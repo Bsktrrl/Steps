@@ -236,12 +236,11 @@ public class OneTimeRunData
     /*[HideInInspector]*/ public bool startVolum_Values = new bool();
 
     //Force FirstIntroSequence
-    /*[HideInInspector]*/
-    public bool forceIntroSequenceInFirstLevel = new bool();
+    /*[HideInInspector]*/ public bool forceIntroSequenceInFirstLevel = new bool();
 
     //Tutorial
-    /*[HideInInspector]*/
-    public bool tutorial_Finished = new bool();
+    /*[HideInInspector]*/ public bool tutorial_PlayerSpawned = new bool();
+    /*[HideInInspector]*/ public bool tutorial_Finished = new bool();
 
     //Footprint
     /*[HideInInspector]*/public bool pickup_FirstFootprint = new bool();
