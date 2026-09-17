@@ -4,27 +4,6 @@
 Juni:
 0.0. Bugs:
 
------ HVA SOM MÅ GJØRES FØR SPILLKONVENTET -----
-
-
-2. Tutorial Levelet
-- Bygge levelet
-- Lage Tutorial-levelBildet
-- Lage Stepellier Tutorial	
-	- Lage appear/dissapearAnimasjon-funsksjon for Stepellier
-	- Lage triggerpunkter (enums) som starter dialog
-	- Lage Excel-ark (med språkstøtte) der dialogen hentes fra
-- Rekkefølge på ting som må skje i tutorialen
-	V WASD - Movement
-	x Respawn
-	V Camera Rotation
-	V Footprint
-	x Skin
-	x Essence
-	V FreeCam
-	V Glueplant
-
-
 4. Movement Bug:
 - Gjøre slik at alt som skal oppdateres blir oppdatert før spilleren kan bevege seg videre (eller før man beveger seg videre om man holder inne movement-knapper)
 	- Dobbeltsjekke Water og SwiftSwim
@@ -33,6 +12,9 @@ Juni:
 
 FallingSandBlock:
 - Hvis man hopper av en blokk som skal falle, hvis man hopper over en slope, så blir spilleren dratt nedover slopen etter å ha landet på blokken
+
+Landelyd etter falling:
+- Lyd fra blokken en lander på må spilles av når spilleren lander etter å ha falt
 
 
 
