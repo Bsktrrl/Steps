@@ -24,6 +24,8 @@ public class Movement : Singleton<Movement>
 
     public static event Action Action_PickupAnimation_Complete;
 
+    public static event Action Action_HasLandedFromFalling;
+
     public static event Action Action_isSwiftSwim;
     public static event Action Action_isSwiftSwim_Finished;
 
@@ -4034,6 +4036,8 @@ public class Movement : Singleton<Movement>
             ClearFallingCarrierBlock();
             SetMovementState(MovementStates.Still);
             Action_LandedFromFalling_Invoke();
+
+            Action_HasLandedFromFalling?.Invoke();
         }
     }
 

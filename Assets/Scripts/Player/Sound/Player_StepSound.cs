@@ -49,6 +49,7 @@ public class Player_StepSound : Singleton<Player_StepSound>
         Movement.Action_StepTaken_Early += TryPlaySameElementMoveSoundEarly;
 
         Movement.Action_StepTaken += MakeStepSound;
+        Movement.Action_HasLandedFromFalling += MakeStepSound;
 
         Player_CeilingGrab.Action_isCeilingGrabbing += MakeStepSound;
         Player_CeilingGrab.Action_isCeilingGrabbing_Finished += MakeStepSound;
@@ -60,6 +61,7 @@ public class Player_StepSound : Singleton<Player_StepSound>
         Movement.Action_StepTaken_Early -= TryPlaySameElementMoveSoundEarly;
 
         Movement.Action_StepTaken -= MakeStepSound;
+        Movement.Action_HasLandedFromFalling -= MakeStepSound;
 
         Player_CeilingGrab.Action_isCeilingGrabbing -= MakeStepSound;
         Player_CeilingGrab.Action_isCeilingGrabbing_Finished -= MakeStepSound;
