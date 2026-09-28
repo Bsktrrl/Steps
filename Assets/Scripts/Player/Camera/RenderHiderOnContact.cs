@@ -67,14 +67,29 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
     [SerializeField] bool _freeCamActive = false;
     private Coroutine _freeCamCoroutine;
 
+    private readonly Dictionary<Renderer, float> _lastSeenTime = new Dictionary<Renderer, float>();
+
 
     //--------------------
 
 
     void Awake()
     {
+        // RenderHiderOnContact is attached to the physical camera,
+        // so obtain that component directly instead of using Camera.main.
         if (targetCamera == null)
-            targetCamera = Camera.main;
+            targetCamera = GetComponent<Camera>();
+
+        if (targetCamera == null)
+        {
+            Debug.LogError(
+                "RenderHiderOnContact could not find a Camera component. " +
+                "Assign Target Camera in the Inspector.",
+                this
+            );
+
+            enabled = false;
+        }
     }
 
     void Update()
@@ -138,24 +153,54 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
 
         Transform cam = targetCamera.transform;
 
-        Vector3 castOrigin = cam.position - cam.forward * frontCastBackOffset;
+        // Keep the origin slightly behind the lens so a block containing
+        // the camera can still be detected, without reaching far behind it.
+        float safeBackOffset = Mathf.Min(frontCastBackOffset, 0.1f);
+
+        Vector3 castOrigin =
+            cam.position - cam.forward * safeBackOffset;
+
         Vector3 castDirection = cam.forward;
 
         float castRadius = frontCheckRadius;
+
         if (useDynamicCastRadius)
         {
             float nearClipRadius =
-                Mathf.Tan(targetCamera.fieldOfView * 0.5f * Mathf.Deg2Rad) *
+                Mathf.Tan(
+                    targetCamera.fieldOfView *
+                    0.5f *
+                    Mathf.Deg2Rad
+                ) *
                 targetCamera.nearClipPlane *
                 dynamicRadiusMultiplier;
 
-            castRadius = Mathf.Max(frontCheckRadius, nearClipRadius);
+            castRadius = Mathf.Max(
+                frontCheckRadius,
+                nearClipRadius
+            );
         }
 
-        Ray ray = new Ray(castOrigin, castDirection);
+        // A large sphere reaches into walls beside the camera.
+        // This smaller cap focuses on the block obstructing the view.
+        castRadius = Mathf.Clamp(
+            castRadius,
+            0.02f,
+            0.1f
+        );
 
-        _debugFrontOrigin = ray.origin;
-        _debugFrontEnd = ray.origin + ray.direction * frontCheckDistance;
+        float castDistance =
+            frontCheckDistance + safeBackOffset;
+
+        Ray ray = new Ray(
+            castOrigin,
+            castDirection
+        );
+
+        _debugFrontOrigin = castOrigin;
+        _debugFrontEnd =
+            castOrigin + castDirection * castDistance;
+
         _debugFrontRadius = castRadius;
         _debugFrontHit = false;
 
@@ -163,7 +208,7 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
                 ray,
                 castRadius,
                 out RaycastHit hit,
-                frontCheckDistance,
+                castDistance,
                 hideableLayers,
                 QueryTriggerInteraction.Ignore))
         {
@@ -177,9 +222,9 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
             return;
         }
 
-        GameObject frontObject = hit.collider.gameObject;
+        GameObject hitObject = hit.collider.gameObject;
 
-        if (((1 << frontObject.layer) & ignoreLayers.value) != 0)
+        if (((1 << hitObject.layer) & ignoreLayers.value) != 0)
         {
             RestoreNoLongerSeen();
             return;
@@ -188,23 +233,14 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
         _debugFrontHit = true;
         _debugFrontEnd = hit.point;
 
-        Vector3 anchorCenter = SnapToGrid(hit.collider.bounds.center);
-        Vector3 sideAxis = GetHorizontalSideAxis(cam);
-        Vector3 upAxis = Vector3.up;
+        // Hide only the grid block that actually obstructs the camera.
+        // Do not hide a rectangular area of neighbouring blocks.
+        Vector3 obstructingCell =
+            SnapToGrid(hit.collider.bounds.center);
 
-        for (int y = verticalUpRadius; y >= -verticalDownRadius; y--)
-        {
-            for (int x = -horizontalRadius; x <= horizontalRadius; x++)
-            {
-                Vector3 cellCenter =
-                    anchorCenter +
-                    sideAxis * (x * blockSize) +
-                    upAxis * (y * blockSize);
+        _debugCellCenters.Add(obstructingCell);
 
-                _debugCellCenters.Add(cellCenter);
-                HideBlockAtCell(cellCenter);
-            }
-        }
+        HideBlockAtCell(obstructingCell);
 
         RestoreNoLongerSeen();
     }
@@ -249,6 +285,7 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
         for (int i = 0; i < hits.Length; i++)
         {
             Collider col = hits[i];
+
             if (col == null)
                 continue;
 
@@ -257,30 +294,42 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
             if (((1 << go.layer) & ignoreLayers.value) != 0)
                 continue;
 
-            //Mesh Renderer
-            Renderer[] rends = go.GetComponentsInChildren<Renderer>(includeInactive: false);
-            for (int r = 0; r < rends.Length; r++)
+            Renderer[] renderers =
+                go.GetComponentsInChildren<Renderer>(
+                    includeInactive: false
+                );
+
+            for (int r = 0; r < renderers.Length; r++)
             {
-                Renderer rend = rends[r];
+                Renderer rend = renderers[r];
+
                 if (rend == null)
                     continue;
 
                 _seenThisFrame.Add(rend);
+                _lastSeenTime[rend] = Time.unscaledTime;
 
-                if (!_currentlyHidden.Contains(rend))
+                if (_currentlyHidden.Contains(rend))
+                    continue;
+
+                if (!_originalCasting.ContainsKey(rend))
                 {
-                    if (!_originalCasting.ContainsKey(rend))
-                        _originalCasting[rend] = rend.shadowCastingMode;
-
-                    rend.shadowCastingMode = ShadowCastingMode.ShadowsOnly;
-                    _currentlyHidden.Add(rend);
+                    _originalCasting[rend] =
+                        rend.shadowCastingMode;
                 }
+
+                rend.shadowCastingMode =
+                    ShadowCastingMode.ShadowsOnly;
+
+                _currentlyHidden.Add(rend);
             }
         }
     }
 
     void RestoreNoLongerSeen()
     {
+        const float restoreDelay = 0.15f;
+
         if (_currentlyHidden.Count == 0)
             return;
 
@@ -288,22 +337,52 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
 
         foreach (Renderer rend in _currentlyHidden)
         {
-            if (!_seenThisFrame.Contains(rend))
+            if (rend == null)
+            {
                 _toRestoreBuffer.Add(rend);
+                continue;
+            }
+
+            if (_seenThisFrame.Contains(rend))
+                continue;
+
+            if (!_lastSeenTime.TryGetValue(
+                    rend,
+                    out float lastSeenTime))
+            {
+                _toRestoreBuffer.Add(rend);
+                continue;
+            }
+
+            // Keep the block hidden briefly when the cast crosses a
+            // collider or grid-cell boundary. This prevents flickering.
+            if (Time.unscaledTime - lastSeenTime >= restoreDelay)
+            {
+                _toRestoreBuffer.Add(rend);
+            }
         }
 
         for (int i = 0; i < _toRestoreBuffer.Count; i++)
         {
             Renderer rend = _toRestoreBuffer[i];
+
             if (rend != null)
             {
-                if (_originalCasting.TryGetValue(rend, out ShadowCastingMode originalMode))
+                if (_originalCasting.TryGetValue(
+                        rend,
+                        out ShadowCastingMode originalMode))
+                {
                     rend.shadowCastingMode = originalMode;
+                }
                 else
-                    rend.shadowCastingMode = ShadowCastingMode.On;
+                {
+                    rend.shadowCastingMode =
+                        ShadowCastingMode.On;
+                }
             }
 
             _currentlyHidden.Remove(rend);
+            _lastSeenTime.Remove(rend);
         }
     }
 
@@ -321,17 +400,25 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
     {
         foreach (Renderer rend in _currentlyHidden)
         {
-            if (rend != null)
+            if (rend == null)
+                continue;
+
+            if (_originalCasting.TryGetValue(
+                    rend,
+                    out ShadowCastingMode originalMode))
             {
-                if (_originalCasting.TryGetValue(rend, out ShadowCastingMode originalMode))
-                    rend.shadowCastingMode = originalMode;
-                else
-                    rend.shadowCastingMode = ShadowCastingMode.On;
+                rend.shadowCastingMode = originalMode;
+            }
+            else
+            {
+                rend.shadowCastingMode =
+                    ShadowCastingMode.On;
             }
         }
 
         _currentlyHidden.Clear();
         _seenThisFrame.Clear();
+        _lastSeenTime.Clear();
         _debugCellCenters.Clear();
         _debugFrontHit = false;
     }

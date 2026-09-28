@@ -24,6 +24,8 @@ public class Movement : Singleton<Movement>
 
     public static event Action Action_PickupAnimation_Complete;
 
+    public static event Action Action_HasLandedFromFalling;
+
     public static event Action Action_isSwiftSwim;
     public static event Action Action_isSwiftSwim_Finished;
 
@@ -1449,7 +1451,7 @@ public class Movement : Singleton<Movement>
 
         return info.blockElement == BlockElement.Water ||
                info.blockElement == BlockElement.Lava ||
-               info.blockElement == BlockElement.Quicksand ||
+               //info.blockElement == BlockElement.Quicksand ||
                info.blockElement == BlockElement.SwampWater ||
                info.blockElement == BlockElement.Mud;
     }
@@ -2350,7 +2352,7 @@ public class Movement : Singleton<Movement>
 
     void UpdateDashMovements(MoveOptions moveOption, Vector3 dir)
     {
-        if (!PlayerHasDashAbility() || lookDir != dir || !TryGetStandingInfo(out BlockInfo standingInfo))
+        if (!PlayerHasDashAbility() || !TryGetStandingInfo(out BlockInfo standingInfo))
         {
             ClearMoveTarget(moveOption);
             return;
@@ -2955,6 +2957,18 @@ public class Movement : Singleton<Movement>
         return Time.time - lastTurnTime < turnBeforeMoveDelay;
     }
 
+    private bool DashPassesThroughMoveableBlock(Vector3 dir)
+    {
+        if (!TryGetStandingInfo(out BlockInfo standingInfo))
+            return false;
+
+        float correction = standingInfo.blockType == BlockType.Stair ? 0.25f : 0f;
+        Vector3 rayStart = PM.player.transform.position + (Vector3.up * correction);
+
+        return PerformMovementRaycast(rayStart, dir, 1, out GameObject passedBlock) == RaycastHitObjects.BlockInfo &&
+               passedBlock.GetComponent<Block_Moveable>() != null;
+    }
+
     #endregion
 
     #region SetBlocks
@@ -3501,13 +3515,18 @@ public class Movement : Singleton<Movement>
     {
         foreach (var localDir in LocalDirections)
         {
+            //Turn player before movement
             if (!InputPressedForDirection(localDir))
                 continue;
 
             MoveOptions dashOption = GetDashOptionForDirection(localDir);
             Vector3 worldDir = UpdatedDir(localDir);
 
-            if (HasValidTarget(dashOption) && !ShouldDelayAbilityMove(worldDir))
+            bool shouldDelayDash =
+                DashPassesThroughMoveableBlock(worldDir) &&
+                ShouldDelayAbilityMove(worldDir);
+
+            if (HasValidTarget(dashOption) && !shouldDelayDash)
             {
                 return TryRunAbilityMove(
                     dashOption,
@@ -4034,6 +4053,8 @@ public class Movement : Singleton<Movement>
             ClearFallingCarrierBlock();
             SetMovementState(MovementStates.Still);
             Action_LandedFromFalling_Invoke();
+
+            Action_HasLandedFromFalling?.Invoke();
         }
     }
 
