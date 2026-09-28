@@ -70,19 +70,24 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
 
     void LateUpdate()
     {
-        if (followTarget == null || _tpf == null || effect_isDisabled || CameraController.Instance.isIgnoringObstaclesWhenRotating)
+        if (followTarget == null || _tpf == null || effect_isDisabled)
             return;
 
-        bool ceilingGrabActive = Player_CeilingGrab.Instance != null && Player_CeilingGrab.Instance.isCeilingGrabbing;
+        bool ceilingGrabActive =
+            Player_CeilingGrab.Instance != null &&
+            Player_CeilingGrab.Instance.isCeilingGrabbing;
 
-        // 1. Smooth the mode blend (0 normal → 1 ceilingGrab)
         float targetBlend = ceilingGrabActive ? 1f : 0f;
 
-        _modeBlend = Mathf.Lerp(_modeBlend, targetBlend, 1f - Mathf.Exp(-modeSwitchLerpSpeed * Time.deltaTime));
+        _modeBlend = Mathf.Lerp(
+            _modeBlend,
+            targetBlend,
+            1f - Mathf.Exp(-modeSwitchLerpSpeed * Time.deltaTime)
+        );
 
         RigSettings blendedRig = BuildBlendedRigForFrame(_modeBlend);
 
-        bool useCeilingGrabRules = (_modeBlend >= 0.5f);
+        bool useCeilingGrabRules = _modeBlend >= 0.5f;
 
         EvaluateRigAndApply(blendedRig, useCeilingGrabRules);
     }
@@ -105,15 +110,15 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
         normalRig.ceilingCheckDistance = 0.5f;
         normalRig.wallCheckDistance = 0.55f;
 
-        normalRig.nearShoulderY_Ceiling = 1.5f; 
-        normalRig.nearShoulderY_Clear = 1.45f; 
+        normalRig.nearShoulderY_Ceiling = 1.5f;
+        normalRig.nearShoulderY_Clear = 1.45f;
 
         normalRig.nearShoulderY_Wall = 1.5f; //1.17f
         normalRig.nearShoulderY_NoWall = 1.65f;
 
-        normalRig.nearShoulderZ_Wall = -0.18f; //-0.24f
+        normalRig.nearShoulderZ_Wall = 0.21f; //-0.24f
         normalRig.nearShoulderZ_NoWall = -0.2f;
-}
+    }
     void SetupCeilingGrabCameraValues()
     {
         ceilingGrabRig.farCameraDistance = 4f;
@@ -143,48 +148,120 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
 
     void EvaluateRigAndApply(RigSettings rig, bool ceilingGrabActive)
     {
-        // 1. Snapshot base near shoulder for this frame (pre-adjust)
+        const float collisionEnterSpeed = 30f;
+
         Vector3 baseNearShoulder = rig.nearShoulderOffset;
 
-        // 2. Predict where near camera would be using base values
-        Vector3 predictedNearCamPosWorld = GetCameraWorldPosFromRig(followTarget, baseNearShoulder, rig.nearVerticalArmLength, rig.nearCameraDistance);
+        Vector3 predictedNearCamPosWorld = GetCameraWorldPosFromRig(
+            followTarget,
+            baseNearShoulder,
+            rig.nearVerticalArmLength,
+            rig.nearCameraDistance
+        );
 
-        // 3. Sense environment for this rig
-        bool hasCeilingLikeSurface = CheckCeilingLikeSurface(rig, ceilingGrabActive);
-        bool hasSideWall = HasSideWall(predictedNearCamPosWorld, rig);
+        bool hasCeilingLikeSurface =
+            CheckCeilingLikeSurface(rig, ceilingGrabActive);
 
-        // 4. Pick final Y/Z offsets for "near"
-        Vector3 adjustedNearShoulder = ChooseShoulderForThisFrame(rig, baseNearShoulder, hasCeilingLikeSurface, hasSideWall);
+        bool hasSideWall =
+            HasSideWall(predictedNearCamPosWorld, rig);
 
-        // Debug lines
+        Vector3 adjustedNearShoulder = ChooseShoulderForThisFrame(
+            rig,
+            baseNearShoulder,
+            hasCeilingLikeSurface,
+            hasSideWall
+        );
+
         if (debugDraw)
         {
-            Vector3 upOrDown = ceilingGrabActive ? Vector3.down : Vector3.up;
-            Debug.DrawRay(followTarget.position, upOrDown * rig.ceilingCheckDistance, hasCeilingLikeSurface ? Color.red : Color.green);
+            Vector3 upOrDown =
+                ceilingGrabActive ? Vector3.down : Vector3.up;
+
+            Debug.DrawRay(
+                followTarget.position,
+                upOrDown * rig.ceilingCheckDistance,
+                hasCeilingLikeSurface ? Color.red : Color.green
+            );
         }
 
-        // 5. Find allowed camera distance (line-of-sight between player and far camera)
-        float allowedDistanceLOS = ComputeAllowedDistance(rig);
+        float allowedDistanceLOS = ComputeAllowedDistance(
+            rig,
+            adjustedNearShoulder
+        );
 
-        // 6. Smooth distance we are trying to sit at
-        _currentDistance = Mathf.Lerp(_currentDistance, allowedDistanceLOS, 1f - Mathf.Exp(-lerpSpeed * Time.deltaTime));
-        _currentDistance = Mathf.Clamp(_currentDistance, minDistance, maxDistance);
+        // Retract quickly when encountering a wall, but return using the
+        // original smoother speed.
+        float distanceSpeed =
+            allowedDistanceLOS < _currentDistance
+                ? collisionEnterSpeed
+                : lerpSpeed;
 
-        // 7. Blend from near rig to far rig based on how far we made it
-        float t = Mathf.InverseLerp(rig.nearCameraDistance, rig.farCameraDistance, _currentDistance);
+        _currentDistance = Mathf.Lerp(
+            _currentDistance,
+            allowedDistanceLOS,
+            1f - Mathf.Exp(-distanceSpeed * Time.deltaTime)
+        );
+
+        _currentDistance = Mathf.Clamp(
+            _currentDistance,
+            minDistance,
+            maxDistance
+        );
+
+        float t = Mathf.InverseLerp(
+            rig.nearCameraDistance,
+            rig.farCameraDistance,
+            _currentDistance
+        );
+
         t = Mathf.Clamp01(t);
 
-        float blendedDistance = Mathf.Lerp(rig.nearCameraDistance, rig.farCameraDistance, t);
-        Vector3 blendedShoulder = Vector3.Lerp(adjustedNearShoulder, rig.farShoulderOffset, t);
-        float blendedArm = Mathf.Lerp(rig.nearVerticalArmLength, rig.farVerticalArmLength, t);
+        float blendedDistance = Mathf.Lerp(
+            rig.nearCameraDistance,
+            rig.farCameraDistance,
+            t
+        );
 
-        // 8. Resolve side collision using final blended shoulder/arm
-        blendedDistance = ResolveSideCollision(blendedDistance, blendedShoulder, blendedArm);
+        Vector3 blendedShoulder = Vector3.Lerp(
+            adjustedNearShoulder,
+            rig.farShoulderOffset,
+            t
+        );
 
-        // 9. Push to Cinemachine with smoothing
-        _tpf.CameraDistance = Mathf.Lerp(_tpf.CameraDistance, blendedDistance, 1f - Mathf.Exp(-lerpSpeed * Time.deltaTime));
-        _tpf.ShoulderOffset = Vector3.Lerp(_tpf.ShoulderOffset, blendedShoulder, 1f - Mathf.Exp(-lerpSpeed * Time.deltaTime));
-        _tpf.VerticalArmLength = Mathf.Lerp(_tpf.VerticalArmLength, blendedArm, 1f - Mathf.Exp(-lerpSpeed * Time.deltaTime));
+        float blendedArm = Mathf.Lerp(
+            rig.nearVerticalArmLength,
+            rig.farVerticalArmLength,
+            t
+        );
+
+        blendedDistance = ResolveSideCollision(
+            blendedDistance,
+            blendedShoulder,
+            blendedArm
+        );
+
+        float applySpeed =
+            blendedDistance < _tpf.CameraDistance
+                ? collisionEnterSpeed
+                : lerpSpeed;
+
+        _tpf.CameraDistance = Mathf.Lerp(
+            _tpf.CameraDistance,
+            blendedDistance,
+            1f - Mathf.Exp(-applySpeed * Time.deltaTime)
+        );
+
+        _tpf.ShoulderOffset = Vector3.Lerp(
+            _tpf.ShoulderOffset,
+            blendedShoulder,
+            1f - Mathf.Exp(-lerpSpeed * Time.deltaTime)
+        );
+
+        _tpf.VerticalArmLength = Mathf.Lerp(
+            _tpf.VerticalArmLength,
+            blendedArm,
+            1f - Mathf.Exp(-lerpSpeed * Time.deltaTime)
+        );
     }
 
 
@@ -333,67 +410,197 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
     }
 
 
-    float ComputeAllowedDistance(RigSettings rig)
+    float ComputeAllowedDistance(
+        RigSettings rig,
+        Vector3 adjustedNearShoulder)
     {
-        Transform pivot = followTarget;
+        // ShoulderOffset, VerticalArmLength and CameraDistance all change
+        // together. A hit along the far rig's diagonal therefore cannot be
+        // converted reliably into CameraDistance alone. Instead, test the
+        // actual interpolated rigs and choose the farthest one with a clear
+        // line from the follow target to the camera.
+        // Unobstructed spaces exit after the first test. Indoors, this gives
+        // a fine final boundary without doing an excessive number of casts.
+        const int outwardSearchSteps = 12;
+        const int refineSteps = 7;
 
-        Vector3 targetPos = pivot.position;
-        Quaternion targetRot = pivot.rotation;
+        float farthestClearT = 0f;
+        float blockedTAbove = 1f;
+        bool foundClearRig = false;
 
-        // approximate "far" camera position
-        Vector3 worldShoulderPos = targetPos + targetRot * rig.farShoulderOffset;
-        Vector3 worldHandPos = worldShoulderPos + Vector3.up * rig.farVerticalArmLength;
-        Vector3 desiredCamPos = worldHandPos - (pivot.forward * rig.farCameraDistance);
-
-        Vector3 rayDir = desiredCamPos - targetPos;
-        float rayLen = rayDir.magnitude;
-        if (rayLen < 0.0001f)
-            return rig.nearCameraDistance;
-
-        rayDir /= rayLen;
-
-        if (RaycastSkippingTarget(targetPos, rayDir, rayLen, obstructionLayers, out RaycastHit hit))
+        // Search from far to near. This makes the resting result prefer the
+        // greatest usable distance, including in non-trivial indoor spaces.
+        for (int i = outwardSearchSteps; i >= 0; i--)
         {
-            // Where the obstruction is, but keep a small buffer off the wall
-            Vector3 point = targetPos + rayDir * (hit.distance - wallBuffer);
+            float t = i / (float)outwardSearchSteps;
 
-            // Project along -pivot.forward from the near hand position
-            Vector3 worldShoulderPosNear = targetPos + targetRot * rig.nearShoulderOffset;
-            Vector3 worldHandPosNear = worldShoulderPosNear + Vector3.up * rig.nearVerticalArmLength;
-
-            float usableDist = Vector3.Dot(point - worldHandPosNear, -pivot.forward);
-            usableDist = Mathf.Abs(usableDist);
-
-            return Mathf.Clamp(usableDist, minDistance, rig.farCameraDistance);
+            if (IsRigPositionClear(rig, adjustedNearShoulder, t))
+            {
+                farthestClearT = t;
+                blockedTAbove = Mathf.Min(
+                    1f,
+                    t + 1f / outwardSearchSteps
+                );
+                foundClearRig = true;
+                break;
+            }
         }
 
-        // Nothing blocking within rayLen
-        return rig.farCameraDistance;
+        if (!foundClearRig)
+            return Mathf.Clamp(
+                rig.nearCameraDistance,
+                minDistance,
+                maxDistance
+            );
+
+        // Refine the boundary so the camera does not stop one whole search
+        // step closer than necessary.
+        if (farthestClearT < 1f)
+        {
+            float clearT = farthestClearT;
+            float blockedT = blockedTAbove;
+
+            for (int i = 0; i < refineSteps; i++)
+            {
+                float testT = (clearT + blockedT) * 0.5f;
+
+                if (IsRigPositionClear(rig, adjustedNearShoulder, testT))
+                    clearT = testT;
+                else
+                    blockedT = testT;
+            }
+
+            farthestClearT = clearT;
+        }
+
+        float allowedDistance = Mathf.Lerp(
+            rig.nearCameraDistance,
+            rig.farCameraDistance,
+            farthestClearT
+        );
+
+        return Mathf.Clamp(
+            allowedDistance,
+            minDistance,
+            maxDistance
+        );
     }
 
-    float ResolveSideCollision(float desiredDistance, Vector3 shoulderOffset, float armLen)
+    bool IsRigPositionClear(
+        RigSettings rig,
+        Vector3 adjustedNearShoulder,
+        float t)
+    {
+        float candidateDistance = Mathf.Lerp(
+            rig.nearCameraDistance,
+            rig.farCameraDistance,
+            t
+        );
+
+        Vector3 candidateShoulder = Vector3.Lerp(
+            adjustedNearShoulder,
+            rig.farShoulderOffset,
+            t
+        );
+
+        float candidateArm = Mathf.Lerp(
+            rig.nearVerticalArmLength,
+            rig.farVerticalArmLength,
+            t
+        );
+
+        Vector3 targetPos = followTarget.position;
+        Vector3 candidateCamPos = GetCameraWorldPosFromRig(
+            followTarget,
+            candidateShoulder,
+            candidateArm,
+            candidateDistance
+        );
+
+        Vector3 direction = candidateCamPos - targetPos;
+        float pathDistance = direction.magnitude;
+
+        if (pathDistance < 0.0001f)
+            return true;
+
+        direction /= pathDistance;
+
+        float effectiveRadius = Mathf.Max(
+            cameraCollisionRadius,
+            0.12f
+        );
+
+        // Leave the same safety margin used by the original obstruction
+        // calculation, without incorrectly projecting the hit afterward.
+        float checkedDistance = Mathf.Max(
+            0f,
+            pathDistance + wallBuffer
+        );
+
+        return !SphereCastSkippingBlockInfo(
+            targetPos,
+            effectiveRadius,
+            direction,
+            checkedDistance,
+            obstructionLayers,
+            out _
+        );
+    }
+
+    float ResolveSideCollision(
+    float desiredDistance,
+    Vector3 shoulderOffset,
+    float armLen)
     {
         Transform pivot = followTarget;
 
         Vector3 targetPos = pivot.position;
         Quaternion targetRot = pivot.rotation;
 
-        Vector3 worldShoulderPos = targetPos + targetRot * shoulderOffset;
-        Vector3 worldHandPos = worldShoulderPos + Vector3.up * armLen;
-        Vector3 desiredCamPos = worldHandPos - (pivot.forward * desiredDistance);
+        Vector3 worldShoulderPos =
+            targetPos + targetRot * shoulderOffset;
 
-        Vector3 dir = desiredCamPos - targetPos;
-        float dist = dir.magnitude;
-        if (dist < 0.0001f)
+        Vector3 worldHandPos =
+            worldShoulderPos + Vector3.up * armLen;
+
+        Vector3 desiredCamPos =
+            worldHandPos - pivot.forward * desiredDistance;
+
+        Vector3 direction = desiredCamPos - targetPos;
+        float pathDistance = direction.magnitude;
+
+        if (pathDistance < 0.0001f)
             return desiredDistance;
 
-        dir /= dist;
+        direction /= pathDistance;
 
-        if (SphereCastSkippingBlockInfo(targetPos, cameraCollisionRadius, dir, dist, obstructionLayers, out RaycastHit hit))
+        float effectiveRadius = Mathf.Max(
+            cameraCollisionRadius,
+            0.12f
+        );
+
+        if (SphereCastSkippingBlockInfo(targetPos, effectiveRadius, direction, pathDistance, obstructionLayers, out RaycastHit hit))
         {
-            float allowed = hit.distance - cameraSurfaceOffset;
-            allowed = Mathf.Clamp(allowed, minDistance, desiredDistance);
-            return allowed;
+            float allowedAlongPath = Mathf.Max(
+                0f,
+                hit.distance - cameraSurfaceOffset
+            );
+
+            // The sphere cast travels diagonally from the target to the
+            // desired camera position. Convert that fraction into
+            // Cinemachine's longitudinal CameraDistance.
+            float pathFraction = Mathf.Clamp01(
+                allowedAlongPath / pathDistance
+            );
+
+            float allowedCameraDistance =
+                desiredDistance * pathFraction;
+
+            return Mathf.Clamp(
+                allowedCameraDistance,
+                minDistance,
+                desiredDistance
+            );
         }
 
         return desiredDistance;

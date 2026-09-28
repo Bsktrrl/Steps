@@ -168,9 +168,10 @@ public class CameraController : Singleton<CameraController>
     IEnumerator RotateCamera()
     {
         Action_RotateCamera_Start?.Invoke();
-        //HoleShaderOnOffScript.Instance.HoleShader_On();
 
         isRotating = true;
+        isIgnoringObstaclesWhenRotating = false;
+
         PlayerManager.Instance.PauseGame();
 
         while (true)
@@ -179,20 +180,13 @@ public class CameraController : Singleton<CameraController>
 
             while (Quaternion.Angle(cameraAnchor.transform.rotation, targetRotation) > 0.01f)
             {
-                float remainingAngle = Quaternion.Angle(cameraAnchor.transform.rotation, targetRotation);
-
-                if (remainingAngle <= 22.5f || remainingAngle >= 67.5f)
-                {
-                    isIgnoringObstaclesWhenRotating = false;
-                }
-                else
-                {
-                    isIgnoringObstaclesWhenRotating = true;
-                }
+                // Keep camera collision active during the entire rotation.
+                isIgnoringObstaclesWhenRotating = false;
 
                 if (SettingsManager.Instance.settingsData.currentCameraMotion == CameraMotion.Can)
                 {
                     float step = rotationDegreesPerSecond * Time.deltaTime;
+
                     cameraAnchor.transform.rotation = Quaternion.RotateTowards(
                         cameraAnchor.transform.rotation,
                         targetRotation,
@@ -204,30 +198,30 @@ public class CameraController : Singleton<CameraController>
                     cameraAnchor.transform.rotation = targetRotation;
                 }
 
-                // If target changed during rotation (for example reverse input),
-                // immediately continue toward the new exact snapped target
-                // with the same angular speed.
+                // The target can change if the player reverses direction.
                 targetRotation = GetRotationForState(activeSegmentTargetState);
 
                 yield return null;
             }
 
-            // Snap exactly to the final legal state.
             cameraAnchor.transform.rotation = targetRotation;
 
             snappedRotationState = activeSegmentTargetState;
             cameraRotationState = snappedRotationState;
+
             AdjustFacingDirection();
 
-            // If queued extra turns exist, continue immediately with no pause.
             if (queuedRotationDirections.Count > 0)
             {
                 activeRotationDirection = queuedRotationDirections.Dequeue();
 
                 activeSegmentStartState = snappedRotationState;
-                activeSegmentTargetState = GetNextRotationState(snappedRotationState, activeRotationDirection);
-                cameraRotationState = activeSegmentTargetState;
+                activeSegmentTargetState = GetNextRotationState(
+                    snappedRotationState,
+                    activeRotationDirection
+                );
 
+                cameraRotationState = activeSegmentTargetState;
                 continue;
             }
 
@@ -235,7 +229,6 @@ public class CameraController : Singleton<CameraController>
         }
 
         isIgnoringObstaclesWhenRotating = false;
-        //HoleShaderOnOffScript.Instance.HoleShader_Off();
 
         yield return new WaitForSeconds(waitDelay);
 
