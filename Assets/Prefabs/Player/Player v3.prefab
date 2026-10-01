@@ -11601,7 +11601,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1177206071146539063
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11621,7 +11621,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &140658885707220832
 CanvasGroup:
@@ -29570,22 +29570,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Lo, in the elder age, the world was whole, and every stone knew its place.
-    Then came the Sundering, and the land was cleft into blocks. From that hour,
-    each step bore weight, and haste became folly.
-
-
-    Upon the broken paths arose
-    the small ones, shaped of earth, will, and longing. Each wandered beneath pale
-    skies, seeking the hollow where it might belong.
-
-
-    Mark this, O seeker: no
-    step is merely motion, and no path is merely stone.
-
-
-    Walk with courage,
-    for thy place is found only by journeying onward.'
+  m_text: "Ved tidens begynnelse, var det ett fundament.<br>\xC9n enkelt blokk, uten
+    begrensninger, helt omnipotent.<br>I tomrommet hvor den sto,<br>Slo den seg til
+    ro,<br>Forn\xF8yd og ivrig var Kjerneblokken verdens f\xF8rste segment.<br><br>Verden
+    fortsatte \xE5 vokse, hver generasjon var frekvent.<br>Og liv fortsatte \xE5
+    str\xF8mme, nydelig og eksellent.<br>Verdens natur,<br>Intensjoner i kontur,<br>All
+    livsessens flyter med Kjerneblokken som produsent.\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dfbdd2096e005a447b83ba15e4de6767, type: 2}
   m_sharedMaterial: {fileID: 6701643693541814340, guid: dfbdd2096e005a447b83ba15e4de6767, type: 2}
@@ -29619,8 +29609,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0

@@ -5296,7 +5296,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -2553998132767137330, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
       propertyPath: effectBlock_SpawnPoint_isAdded
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
       propertyPath: m_LocalPosition.x
@@ -14429,6 +14429,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
       insertIndex: -1
       addedObject: {fileID: 605978182}
+    - targetCorrespondingSourceObject: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1662472402}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4262541881228351224, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
       insertIndex: -1
@@ -26215,7 +26218,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -2553998132767137330, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
       propertyPath: effectBlock_SpawnPoint_isAdded
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
       propertyPath: m_LocalPosition.x
@@ -41113,7 +41116,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -3697673341567075071, guid: 62a2f74e4f32b0e4ca03a1783bbc5bb1, type: 3}
       propertyPath: effectBlock_SpawnPoint_isAdded
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2980024393608627075, guid: 62a2f74e4f32b0e4ca03a1783bbc5bb1, type: 3}
       propertyPath: movementCost
@@ -46156,6 +46159,68 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7137238214358080797, guid: 17a74b5a1f4e2e34d8f5c57da24adcb2, type: 3}
   m_PrefabInstance: {fileID: 1721087301}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1662472401
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 511172553}
+    m_Modifications:
+    - target: {fileID: 1079680861842687076, guid: 82dd8f49487aa0544b73aa148683dcfc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1079680861842687076, guid: 82dd8f49487aa0544b73aa148683dcfc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1079680861842687076, guid: 82dd8f49487aa0544b73aa148683dcfc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1079680861842687076, guid: 82dd8f49487aa0544b73aa148683dcfc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1079680861842687076, guid: 82dd8f49487aa0544b73aa148683dcfc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1079680861842687076, guid: 82dd8f49487aa0544b73aa148683dcfc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1079680861842687076, guid: 82dd8f49487aa0544b73aa148683dcfc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1079680861842687076, guid: 82dd8f49487aa0544b73aa148683dcfc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1079680861842687076, guid: 82dd8f49487aa0544b73aa148683dcfc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 1079680861842687076, guid: 82dd8f49487aa0544b73aa148683dcfc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1702951044272642246, guid: 82dd8f49487aa0544b73aa148683dcfc, type: 3}
+      propertyPath: m_Name
+      value: EffectBlock_Pusher
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 82dd8f49487aa0544b73aa148683dcfc, type: 3}
+--- !u!4 &1662472402 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1079680861842687076, guid: 82dd8f49487aa0544b73aa148683dcfc, type: 3}
+  m_PrefabInstance: {fileID: 1662472401}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1664702264
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47557,7 +47622,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -2553998132767137330, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
       propertyPath: effectBlock_SpawnPoint_isAdded
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
       propertyPath: m_LocalPosition.x
@@ -53315,7 +53380,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -2553998132767137330, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
       propertyPath: effectBlock_SpawnPoint_isAdded
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
       propertyPath: m_LocalPosition.x
@@ -53927,7 +53992,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -2553998132767137330, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
       propertyPath: effectBlock_SpawnPoint_isAdded
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
       propertyPath: m_LocalPosition.x
@@ -57889,7 +57954,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -2553998132767137330, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
       propertyPath: effectBlock_SpawnPoint_isAdded
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4262541881227922136, guid: 5fb4aed30f2ddd9498407dafa669c821, type: 3}
       propertyPath: m_LocalPosition.x

@@ -2182,38 +2182,59 @@ public class Movement : Singleton<Movement>
             playerPos += Vector3.up * 0.5f;
         }
 
-        Vector3 adjustments;
-
-        if (PerformMovementRaycast(playerPos, Vector3.up, ascendDescend_Distance, out outObj1) == RaycastHitObjects.BlockInfo &&
+        if (PerformMovementRaycast(
+                playerPos,
+                Vector3.up,
+                ascendDescend_Distance,
+                out outObj1) == RaycastHitObjects.BlockInfo &&
             TryGetBlockInfo(outObj1, out BlockInfo firstInfo))
         {
             // Allow Ascend onto stairs and slopes.
-            // Do this before the normal second upward raycast,
-            // because stairs/slopes can hit their own collider and clear the ascend target.
-            if (firstInfo.blockType == BlockType.Stair || firstInfo.blockType == BlockType.Slope)
+            if (firstInfo.blockType == BlockType.Stair ||
+                firstInfo.blockType == BlockType.Slope)
             {
-                EvaluateStandardMovementTarget(moveToBlock_Ascend, outObj1, blockStandingOn);
+                EvaluateStandardMovementTarget(
+                    moveToBlock_Ascend,
+                    outObj1,
+                    blockStandingOn);
+
                 return;
             }
 
-            adjustments = Vector3.zero;
+            // Start above a slab's own collider so the clearance check behaves
+            // the same as it does for a normal block.
+            Vector3 adjustments = firstInfo.blockType == BlockType.Slab
+                ? Vector3.up * 0.25f
+                : Vector3.zero;
 
-            if (firstInfo.blockType == BlockType.Slab)
+            RaycastHitObjects secondHit = PerformMovementRaycast(
+                outObj1.transform.position + adjustments,
+                Vector3.up,
+                1,
+                out outObj2);
+
+            if (secondHit == RaycastHitObjects.None)
             {
-                RaycastHitObjects secondHit = PerformMovementRaycast(outObj1.transform.position + adjustments, Vector3.up, 1, out outObj2);
-
-                if (secondHit == RaycastHitObjects.None)
+                EvaluateStandardMovementTarget(
+                    moveToBlock_Ascend,
+                    outObj1,
+                    blockStandingOn);
+            }
+            else if (secondHit == RaycastHitObjects.BlockInfo &&
+                     TryGetBlockInfo(outObj2, out BlockInfo secondInfo))
+            {
+                // A slab above another slab leaves enough room to ascend.
+                if (firstInfo.blockType == BlockType.Slab &&
+                    secondInfo.blockType == BlockType.Slab)
                 {
-                    EvaluateStandardMovementTarget(moveToBlock_Ascend, outObj1, blockStandingOn);
+                    SetMoveTarget(moveToBlock_Ascend, outObj1);
                 }
-                else if (secondHit == RaycastHitObjects.BlockInfo && TryGetBlockInfo(outObj2, out BlockInfo secondInfo))
+                else if (secondInfo.blockElement == BlockElement.Water)
                 {
-                    if (secondInfo.blockType == BlockType.Slab)
-                    {
-                        SetMoveTarget(moveToBlock_Ascend, outObj1);
-                    }
-                    else
+                    if (IsBlockedDeepWater(outObj1))
                         ClearMoveTarget(moveToBlock_Ascend);
+                    else
+                        SetMoveTarget(moveToBlock_Ascend, outObj1);
                 }
                 else
                 {
@@ -2222,34 +2243,7 @@ public class Movement : Singleton<Movement>
             }
             else
             {
-                RaycastHitObjects secondHit = PerformMovementRaycast(outObj1.transform.position + adjustments, Vector3.up, 1, out outObj2);
-
-                if (secondHit == RaycastHitObjects.None)
-                {
-                    EvaluateStandardMovementTarget(moveToBlock_Ascend, outObj1, blockStandingOn);
-                }
-                else if (secondHit == RaycastHitObjects.BlockInfo && TryGetBlockInfo(outObj2, out BlockInfo secondInfo))
-                {
-                    if (secondInfo.blockElement == BlockElement.Water)
-                    {
-                        if (IsBlockedDeepWater(outObj1))
-                            ClearMoveTarget(moveToBlock_Ascend);
-                        else
-                            SetMoveTarget(moveToBlock_Ascend, outObj1);
-                    }
-                    else if (secondInfo.blockElement == BlockElement.Lava)
-                    {
-                        ClearMoveTarget(moveToBlock_Ascend);
-                    }
-                    else
-                    {
-                        ClearMoveTarget(moveToBlock_Ascend);
-                    }
-                }
-                else
-                {
-                    ClearMoveTarget(moveToBlock_Ascend);
-                }
+                ClearMoveTarget(moveToBlock_Ascend);
             }
         }
         else
