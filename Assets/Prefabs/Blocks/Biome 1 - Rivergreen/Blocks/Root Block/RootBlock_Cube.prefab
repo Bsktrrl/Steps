@@ -256,6 +256,17 @@ MonoBehaviour:
   checkForRootContinuation: 1
   continuationCheckInterval: 0.05
   maxContinuationSegmentsPerCheck: 8
+  keepCheckingFromRootBlockWhenNoRoots: 1
+  keepCheckingFromRootBlockEvenWhenRootsExist: 1
+  activateFromConfirmedStanding: 1
+  allowTriggerFallback: 1
+  rootBlockingCollisionMask:
+    serializedVersion: 2
+    m_Bits: 7307191
+  rootBlockerCheckHeight: 1.3
+  rootBlockerCheckDistance: 1
+  rootBlockerCheckRadius: 0.18
+  showRootBlockerDebugRays: 0
 --- !u!1001 &239650573650499974
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1489,6 +1500,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5890921039681984982, guid: 753316717b39e8c48b36107efb37fdad, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -5814696647784536095, guid: 6b878df000a20bb4f907ade306c2748b, type: 2}
     - target: {fileID: 28403519284208854, guid: 753316717b39e8c48b36107efb37fdad, type: 3}
       propertyPath: m_Layer
       value: 15
@@ -1882,7 +1897,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectVisualParent: {fileID: 0}
   removeDuplicatesInEditor: 1
   effectBlock_SpawnPoint_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
@@ -8095,6 +8109,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3213180450584725282}
     m_Modifications:
+    - target: {fileID: 847781881401621843, guid: 6147103cbebe05f4e8fa9eca4a69db61, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -5814696647784536095, guid: 6b878df000a20bb4f907ade306c2748b, type: 2}
     - target: {fileID: 911103841144996216, guid: 6147103cbebe05f4e8fa9eca4a69db61, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647

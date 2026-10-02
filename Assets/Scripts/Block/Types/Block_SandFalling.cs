@@ -28,7 +28,6 @@ public class Block_SandFalling : MonoBehaviour
     RaycastHit hit;
 
 
-
     //--------------------
 
 
@@ -38,30 +37,18 @@ public class Block_SandFalling : MonoBehaviour
 
         CheckIfCanFall();
 
-        //Get endPos
-        if (Physics.Raycast(gameObject.transform.position, Vector3.down, out hit, MapManager.Instance.pickup_LayerMask, MapManager.Instance.pickup_LayerMask))
-        {
-            if (hit.transform.gameObject.GetComponent<BlockInfo>())
-            {
-                endPos = hit.transform.position;
-            }
-            else
-            {
-                endPos = gameObject.transform.position + (Vector3.down * 15);
-            }
-        }
-        else
-        {
-            endPos = gameObject.transform.position + (Vector3.down * 15);
-        }
+        // Get the lowest fallback position if the block never lands.
+        endPos = transform.position + (Vector3.down * 15);
     }
+
     private void Update()
     {
-        if (!canFall) { return; }
+        if (!canFall)
+            return;
 
-        if (CheckIfReadyToFall() /*&& !Player_CeilingGrab.Instance.isCeilingGrabbing*/)
+        if (CheckIfReadyToFall())
         {
-            gameObject.GetComponent<BlockInfo>().movementState = MovementStates.Falling;
+            GetComponent<BlockInfo>().movementState = MovementStates.Falling;
 
             if (gameObject == Movement.Instance.blockStandingOn)
             {
@@ -100,17 +87,14 @@ public class Block_SandFalling : MonoBehaviour
     {
         LOD_ObjectsList = new List<GameObject>();
 
-        // Find all child GameObjects of the parent that have the LoadLevel script
-        foreach (Transform child in gameObject.transform)
+        foreach (Transform child in transform)
         {
-            // Check if the child has the LoadLevel script
             if (child.GetComponent<MeshRenderer>() != null)
             {
-                // Add the child GameObject to the list
                 LOD_ObjectsList.Add(child.gameObject);
             }
 
-            objectInitialRotation = /*child.*/transform.rotation;
+            objectInitialRotation = transform.rotation;
         }
     }
 
@@ -120,54 +104,84 @@ public class Block_SandFalling : MonoBehaviour
 
     void CheckIfCanFall()
     {
-        //Check if the Block has another block over itself
-        if (Physics.Raycast(gameObject.transform.position, Vector3.up, out hit, 1, MapManager.Instance.pickup_LayerMask))
+        // Check if the block has another block above itself.
+        if (Physics.Raycast(
+                transform.position,
+                Vector3.up,
+                out hit,
+                1,
+                MapManager.Instance.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
                 canFall = false;
-                sandBlockAsset.GetComponent<FallingSandScript>().enabled = false;
+                SetFallingSandEnabled(false);
                 return;
             }
         }
 
-        //Check if the Block has another block under itself
+        // Check if the block has another block under itself.
         if (GetComponent<BlockInfo>().blockType == BlockType.Stair)
         {
-            if (Physics.Raycast(gameObject.transform.position + (Vector3.up * 0.5f), Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
+            if (Physics.Raycast(
+                    transform.position + (Vector3.up * 0.5f),
+                    Vector3.down,
+                    out hit,
+                    1,
+                    MapManager.Instance.pickup_LayerMask))
             {
                 if (hit.transform.gameObject.GetComponent<BlockInfo>())
                 {
                     canFall = false;
-                    sandBlockAsset.GetComponent<FallingSandScript>().enabled = false;
+                    SetFallingSandEnabled(false);
                     return;
                 }
             }
         }
         else
         {
-            if (Physics.Raycast(gameObject.transform.position, Vector3.down, out hit, 1, MapManager.Instance.pickup_LayerMask))
+            if (Physics.Raycast(
+                    transform.position,
+                    Vector3.down,
+                    out hit,
+                    1,
+                    MapManager.Instance.pickup_LayerMask))
             {
-                if (hit.transform.gameObject.GetComponent<BlockInfo>())
+                BlockInfo blockBelow =
+                    hit.transform.gameObject.GetComponent<BlockInfo>();
+
+                if (blockBelow != null)
                 {
-                    if (hit.transform.gameObject.GetComponent<BlockInfo>().blockType == BlockType.Slab)
+                    if (blockBelow.blockType == BlockType.Slab)
                     {
                         canFall = true;
-                        sandBlockAsset.GetComponent<FallingSandScript>().enabled = true;
+                        SetFallingSandEnabled(true);
                         return;
                     }
-                    else
-                    {
-                        canFall = false;
-                        sandBlockAsset.GetComponent<FallingSandScript>().enabled = false;
-                        return;
-                    }
+
+                    canFall = false;
+                    SetFallingSandEnabled(false);
+                    return;
                 }
             }
         }
 
         canFall = true;
-        sandBlockAsset.GetComponent<FallingSandScript>().enabled = true;
+        SetFallingSandEnabled(true);
+    }
+
+    void SetFallingSandEnabled(bool enabled)
+    {
+        if (sandBlockAsset == null)
+            return;
+
+        FallingSandScript fallingSand =
+            sandBlockAsset.GetComponent<FallingSandScript>();
+
+        if (fallingSand != null)
+        {
+            fallingSand.enabled = enabled;
+        }
     }
 
 
@@ -176,9 +190,13 @@ public class Block_SandFalling : MonoBehaviour
 
     void CheckIfStandingOn()
     {
-        if (!canFall) { return; }
+        if (!canFall)
+            return;
 
-        if (Movement.Instance.blockStandingOn == gameObject && !isSteppedOn && !Player_CeilingGrab.Instance.isCeilingGrabbing && Movement.Instance.GetMovementState() != MovementStates.Falling)
+        if (Movement.Instance.blockStandingOn == gameObject &&
+            !isSteppedOn &&
+            !Player_CeilingGrab.Instance.isCeilingGrabbing &&
+            Movement.Instance.GetMovementState() != MovementStates.Falling)
         {
             isSteppedOn = true;
         }
@@ -204,51 +222,153 @@ public class Block_SandFalling : MonoBehaviour
 
         return false;
     }
+
     void Falling()
     {
         if (resettingBlock)
+        {
             isSteppedOn = false;
+            return;
+        }
 
-        //if (GetComponent<BoxCollider>())
-        //    GetComponent<BoxCollider>().enabled = false;
-        //else if (GetComponent<MeshCollider>())
-        //    GetComponent<MeshCollider>().enabled = false;
+        float fallDistance =
+            PlayerManager.Instance.player.GetComponent<Movement>().fallSpeed *
+            Time.deltaTime;
 
-        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, endPos, PlayerManager.Instance.player.GetComponent<Movement>().fallSpeed * Time.deltaTime);
+        // Stop on the first block encountered underneath instead of
+        // continuing through it.
+        if (TryLandOnBlockBelow(fallDistance))
+        {
+            LandBlock();
+            return;
+        }
 
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            endPos,
+            fallDistance);
+
+        // The block still disappears if it falls out of the playable area
+        // without finding another block.
         if (Vector3.Distance(transform.position, endPos) <= 0.03f)
         {
-            gameObject.GetComponent<BlockInfo>().movementState = MovementStates.Still;
+            GetComponent<BlockInfo>().movementState = MovementStates.Still;
 
             HideBlock();
 
             isSteppedOn = false;
             waitCounter = 0;
-            transform.position = gameObject.GetComponent<BlockInfo>().startPos;
+            transform.position = GetComponent<BlockInfo>().startPos;
         }
     }
+
+    bool TryLandOnBlockBelow(float fallDistance)
+    {
+        Collider fallingCollider = GetComponent<Collider>();
+
+        if (fallingCollider == null)
+            return false;
+
+        Bounds fallingBounds = fallingCollider.bounds;
+        float skinWidth = 0.03f;
+
+        // Cast from the centre far enough to include the lower half of this
+        // block and the distance it will travel during this frame.
+        float rayDistance =
+            fallingBounds.extents.y + fallDistance + skinWidth;
+
+        RaycastHit[] hits = Physics.RaycastAll(
+            fallingBounds.center,
+            Vector3.down,
+            rayDistance,
+            MapManager.Instance.pickup_LayerMask,
+            QueryTriggerInteraction.Ignore);
+
+        RaycastHit closestHit = new RaycastHit();
+        bool blockFound = false;
+        float closestDistance = float.MaxValue;
+
+        foreach (RaycastHit currentHit in hits)
+        {
+            BlockInfo hitBlock =
+                currentHit.collider.GetComponentInParent<BlockInfo>();
+
+            if (hitBlock == null)
+                continue;
+
+            // Ignore this falling block and any of its own child colliders.
+            if (hitBlock.gameObject == gameObject ||
+                currentHit.collider.transform.IsChildOf(transform))
+            {
+                continue;
+            }
+
+            if (currentHit.distance < closestDistance)
+            {
+                closestDistance = currentHit.distance;
+                closestHit = currentHit;
+                blockFound = true;
+            }
+        }
+
+        if (!blockFound)
+            return false;
+
+        // Place the bottom of this block directly on the top surface
+        // of the block it landed on.
+        float landingAdjustment =
+            closestHit.point.y - fallingCollider.bounds.min.y;
+
+        transform.position += Vector3.up * landingAdjustment;
+
+        return true;
+    }
+
+    void LandBlock()
+    {
+        GetComponent<BlockInfo>().movementState = MovementStates.Still;
+
+        isSteppedOn = false;
+        canFall = false;
+        waitCounter = 0;
+
+        SetFallingSandEnabled(false);
+
+        // Remove any remaining rotation from the warning shake.
+        for (int i = 0; i < LOD_ObjectsList.Count; i++)
+        {
+            LOD_ObjectsList[i].transform.SetPositionAndRotation(
+                LOD_ObjectsList[i].transform.position,
+                objectInitialRotation);
+        }
+    }
+
     void FallingAlertAnimation()
     {
         if (resettingBlock)
             isSteppedOn = false;
 
-        //When falling, straighten up the rotation from the shaking
+        // When falling, straighten the rotation after the shaking.
         if (waitCounter >= waitTime_BeforeFalling)
         {
             for (int i = 0; i < LOD_ObjectsList.Count; i++)
             {
-                LOD_ObjectsList[i].transform.SetPositionAndRotation(LOD_ObjectsList[i].transform.position, objectInitialRotation);
+                LOD_ObjectsList[i].transform.SetPositionAndRotation(
+                    LOD_ObjectsList[i].transform.position,
+                    objectInitialRotation);
             }
 
             return;
         }
 
-        //Shake the block
+        // Shake the block.
         if (LOD_ObjectsList.Count > 0)
         {
             for (int i = 0; i < LOD_ObjectsList.Count; i++)
             {
-                float shakeValue = Mathf.Sin(Time.time * shakingSpeed) * shakingIntensity;
+                float shakeValue =
+                    Mathf.Sin(Time.time * shakingSpeed) * shakingIntensity;
+
                 Vector3 currentRotation = transform.eulerAngles;
                 currentRotation.x = objectInitialRotation.x + shakeValue;
 
@@ -265,6 +385,7 @@ public class Block_SandFalling : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
     public void ShowBlock()
     {
         gameObject.SetActive(true);
@@ -286,16 +407,16 @@ public class Block_SandFalling : MonoBehaviour
         else if (GetComponent<MeshCollider>())
             GetComponent<MeshCollider>().enabled = true;
 
-        gameObject.GetComponent<BlockInfo>().movementState = MovementStates.Still;
+        GetComponent<BlockInfo>().movementState = MovementStates.Still;
 
         waitCounter = 0;
-
-        transform.position = gameObject.GetComponent<BlockInfo>().startPos;
+        transform.position = GetComponent<BlockInfo>().startPos;
 
         StartCoroutine(ResetBlockWaiting(0.1f));
 
         ShowBlock();
     }
+
     IEnumerator ResetBlockWaiting(float waitTime)
     {
         isSteppedOn = false;
@@ -308,5 +429,8 @@ public class Block_SandFalling : MonoBehaviour
             GetComponent<MeshCollider>().enabled = true;
 
         resettingBlock = false;
+
+        // Re-evaluate whether the block can fall from its original position.
+        CheckIfCanFall();
     }
 }
