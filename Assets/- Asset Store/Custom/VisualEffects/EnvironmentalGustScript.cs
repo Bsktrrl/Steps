@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnvironmentalGustScript : MonoBehaviour
 {
     ParticleSystem PS;
-    AudioSource source;
+    [SerializeField] AudioSource source;
 
     [SerializeField] AudioClip[] audioClips;
 
@@ -17,7 +17,6 @@ public class EnvironmentalGustScript : MonoBehaviour
     void Start()
     {
         PS = GetComponent<ParticleSystem>();
-        source = GetComponent<AudioSource>();
 
         StartCoroutine(PlayParticles());
     }

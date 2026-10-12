@@ -49,6 +49,36 @@ public class BlockInfo : MonoBehaviour
 
     int mushroomCircle_Buff = 0;
 
+    // Root cost is independent of short-lived preview and ability overrides.
+    // An owner set also prevents one RootBlock from clearing another's roots.
+    private readonly HashSet<Block_Root> rootMovementCostSources = new HashSet<Block_Root>();
+
+    public bool HasRootMovementCostSource(Block_Root source)
+    {
+        return source != null && rootMovementCostSources.Contains(source);
+    }
+
+    public bool HasRootMovementCostOverride()
+    {
+        return rootMovementCostSources.Count > 0;
+    }
+
+    public void AddRootMovementCostSource(Block_Root source)
+    {
+        if (source == null || !rootMovementCostSources.Add(source))
+            return;
+
+        RefreshStepCostDisplay();
+    }
+
+    public void RemoveRootMovementCostSource(Block_Root source)
+    {
+        if (source == null || !rootMovementCostSources.Remove(source))
+            return;
+
+        RefreshStepCostDisplay();
+    }
+
 
 
     //--------------------
@@ -353,6 +383,11 @@ public class BlockInfo : MonoBehaviour
 
     public int GetMovementCost_WithTemporaryEffects()
     {
+        // Rooted destinations must remain free regardless of other temporary
+        // cost overrides (e.g., SwiftSwim previews being rebuilt).
+        if (HasRootMovementCostOverride())
+            return 0;
+
         if (movementCost_OverrideActive)
         {
             return movementCost_OverrideValue;
@@ -395,6 +430,12 @@ public class BlockInfo : MonoBehaviour
 
     public void ResetTemporaryMovementCostModifiers()
     {
+        if (HasRootMovementCostOverride())
+        {
+            movementCost_Temp = 0;
+            return;
+        }
+
         if (movementCost_OverrideActive)
         {
             movementCost_Temp = movementCost_OverrideValue;
@@ -402,6 +443,14 @@ public class BlockInfo : MonoBehaviour
         }
 
         movementCost_Temp = movementCost_Temp_Base;
+    }
+
+    // Repairs a number that another movement preview hid while leaving the block marked dark.
+    public void EnsureVisibleStepCostDisplay()
+    {
+        if (!finishedSetup || !blockIsDark || numberDisplay == null) return;
+        if (!numberDisplay.IsNumberVisible)
+            numberDisplay.ShowNumber();
     }
 
     public void RefreshStepCostDisplay()
@@ -427,7 +476,7 @@ public class BlockInfo : MonoBehaviour
         movementCost_OverrideActive = true;
         movementCost_OverrideValue = newCost;
 
-        movementCost_Temp = newCost;
+        movementCost_Temp = HasRootMovementCostOverride() ? 0 : newCost;
 
         if (blockIsDark && numberDisplay != null)
         {
@@ -499,4 +548,19 @@ public class BlockInfo : MonoBehaviour
             transform.position = startPos;
         }
     }
+}
+
+[Serializable]
+public class RootBlockLineInfo
+{
+    public GameObject block;
+    public int originalMovemetCost;
+
+    public BlockType blockType;
+    public Vector3 facingDir;
+
+    public bool stopContinuationFromThisBlock;
+
+    public bool triggerTeleportEffectWhenRootActivates;
+    public bool teleportEffectHasTriggered;
 }

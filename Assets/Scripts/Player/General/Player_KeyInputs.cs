@@ -144,7 +144,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         Action_WalkButton_isReleased?.Invoke();
     }
-   
+
     void OnBackward_Down()
     {
         if (!Run_StayingPopupDisplayExit()) return;
@@ -179,7 +179,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         Action_WalkButton_isReleased?.Invoke();
     }
-  
+
     void OnLeft_Down()
     {
         if (!Run_StayingPopupDisplayExit()) return;
@@ -214,7 +214,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         Action_WalkButton_isReleased?.Invoke();
     }
-  
+
     void OnRight_Down()
     {
         if (!Run_StayingPopupDisplayExit()) return;
@@ -274,7 +274,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         up_isPressed = true;
 
         //if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Water)
-            Action_Ascend_isPressed?.Invoke();
+        Action_Ascend_isPressed?.Invoke();
     }
     void OnAbilityUp_Up()
     {
@@ -304,7 +304,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         down_isPressed = true;
 
         //if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Water)
-            Action_Descend_isPressed?.Invoke();
+        Action_Descend_isPressed?.Invoke();
     }
     void OnAbilityDown_Up()
     {
@@ -676,6 +676,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     bool ButtonChecks_Movement()
     {
+        if (Movement.Instance != null && Movement.Instance.isRespawning) return false;
         if (!Run_IntroSequance()) return false;
 
         if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
@@ -707,6 +708,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     bool ButtonChecks_Other()
     {
+        if (Movement.Instance != null && Movement.Instance.isRespawning) return false;
         if (!Run_IntroSequance()) return false;
 
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
@@ -741,6 +743,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     bool ButtonChecks_Other_MinusGrapplingHook()
     {
+        if (Movement.Instance != null && Movement.Instance.isRespawning) return false;
         if (!Run_IntroSequance()) return false;
 
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
@@ -761,6 +764,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     bool ButtonChecks_Abilities()
     {
+        if (Movement.Instance != null && Movement.Instance.isRespawning) return false;
         if (!Run_IntroSequance()) return false;
 
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
@@ -826,7 +830,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Tutorial.Instance.state_CameraRotation)
         {
             MapStatsGathered.Instance.levelStats.cameraRotationTaken++;
-            
+
             if (cameraX)
                 CameraController.Instance.RotateCameraX();
             else
@@ -858,14 +862,14 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
             Tutorial.Instance.Tutorial_FreeCam_2(false);
         }
     }
-    
+
     void Run_DemoMessage_Tutorial_End()
     {
         if (Tutorial.Instance.state_DemoMessage)
         {
             Tutorial.Instance.Tutorial_DemoMessage(false);
         }
-}
+    }
 
 
     //--------------------

@@ -18,6 +18,9 @@ public class Movement : Singleton<Movement>
     public static event Action Action_StepTaken_Early;
     public static event Action Action_StepTaken;
     public static event Action Action_StepTaken_Late;
+    // Fired after paying a completed move, before IceGlide/SwiftSwim or other
+    // late callbacks may immediately start another movement.
+    public static event Action Action_StepSettledBeforeChaining;
     public static event Action Action_BodyRotated;
     public static event Action Action_isSwitchingBlocks;
     public static event Action Action_LandedFromFalling;
@@ -68,6 +71,8 @@ public class Movement : Singleton<Movement>
 
     [Header("Current Move Target")]
     public GameObject currentMoveTargetBlock;
+    // Frozen origin for the active move; physics may update blockStandingOn in transit.
+    public GameObject currentMoveStartBlock { get; private set; }
 
     [Header("LookDirection")]
     [HideInInspector] public Vector3 lookDir;
@@ -139,6 +144,10 @@ public class Movement : Singleton<Movement>
     public bool isDashing;
     public bool isIceGliding;
     public bool isSwiftSwim;
+    // Both the public SwiftSwim flag and its visual/audio event span an
+    // entire held-button chain. A brief false value at each intermediate
+    // landing can make listeners flicker, even if the Finished event is stable.
+    private bool swiftSwimEffectIsActive;
     public bool isAscending;
     public bool isDescending;
 
@@ -205,6 +214,9 @@ public class Movement : Singleton<Movement>
     [Header("Pending Step Cost")]
     [SerializeField] private bool hasPendingStepCost;
     [SerializeField] private int pendingStepCost;
+    private GameObject pendingStepTargetBlock;
+    private bool pendingStepCostIsSwiftSwim;
+    private int movementTransactionSerial;
 
     [Header("Cube Block Following")]
     [SerializeField] private Transform cubeBlockBeingFollowed = null;
@@ -254,6 +266,11 @@ public class Movement : Singleton<Movement>
 
     private void Update()
     {
+        // Never let the old tile, an elevator follow, a falling update, or
+        // another movement system overwrite a checkpoint teleport mid-respawn.
+        if (isRespawning)
+            return;
+
         if (Tutorial.Instance.tutorial_isRunning && Inputs.tutorialMovementBlocker)
             return;
 
@@ -322,7 +339,8 @@ public class Movement : Singleton<Movement>
 
     private void OnEnable()
     {
-        Action_StepTaken += UpdateAvailableMovementBlocks;
+        // Cost is finalized inside TakeAStep BEFORE movement previews and
+        // late auto-chaining are processed (see PublishSettledStep).
         Action_RespawnPlayerLate += UpdateAvailableMovementBlocks;
         Action_LandedFromFalling += UpdateAvailableMovementBlocks;
 
@@ -352,7 +370,6 @@ public class Movement : Singleton<Movement>
 
     private void OnDisable()
     {
-        Action_StepTaken -= UpdateAvailableMovementBlocks;
         Action_RespawnPlayerLate -= UpdateAvailableMovementBlocks;
         Action_LandedFromFalling -= UpdateAvailableMovementBlocks;
 
@@ -728,22 +745,17 @@ public class Movement : Singleton<Movement>
 
     private void RefreshDarkeningNow()
     {
-        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
+        if (isRespawning || isMoving ||
+            movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
             return;
 
+        // Diff the old and new target sets. Clearing EVERY old target first
+        // causes a dark -> light -> dark flash when a held move ends.
         RestoreAllSlopeDisplayOverrides();
-        ResetDarkenBlocks();
         UpdateBlocks();
         ApplySlopeDisplayOverridesToCurrentTargets();
-        SetDarkenBlocks();
-
-        currentlyDarkenedBlocks.Clear();
-        foreach (var block in BuildCurrentTargetSet())
-        {
-            if (block != null)
-                currentlyDarkenedBlocks.Add(block);
-        }
-
+        SyncDarkenedBlocksToCurrentTargets();
+        EnsureCurrentTargetNumbersVisible();
         Action_UpdatedBlocks?.Invoke();
     }
 
@@ -751,6 +763,21 @@ public class Movement : Singleton<Movement>
     {
         if (!TryGetBlockInfo(obj, out BlockInfo info))
             return int.MaxValue;
+
+        // Entering quicksand starts at cost 0. Player_Quicksand updates its
+        // counter after the player changes standing blocks, so the normal
+        // temporary-cost calculation can already be one step ahead at landing.
+        // Use this same rule for affordability and the move-start snapshot.
+        // Root ownership retains its existing highest-priority free cost.
+        if (info.HasRootMovementCostOverride())
+            return 0;
+
+        if (obj.GetComponent<Block_Quicksand>() != null &&
+            (Player_Quicksand.Instance == null ||
+             !Player_Quicksand.Instance.isInQuicksand))
+        {
+            return 0;
+        }
 
         return info.GetMovementCost_ForPlayerMove();
     }
@@ -1093,37 +1120,64 @@ public class Movement : Singleton<Movement>
 
     private void CacheStepCostForMove(GameObject targetBlock)
     {
-        if (targetBlock == null)
+        // ALWAYS replace the cost for a new move. A previous landing on a
+        // slope, a null block, or a free landing must not leak into this move.
+        pendingStepTargetBlock = targetBlock;
+        pendingStepCostIsSwiftSwim = false;
+        hasPendingStepCost = targetBlock != null;
+        pendingStepCost = hasPendingStepCost ? GetRequiredCost(targetBlock) : 0;
+    }
+
+    private void PrepareStepCostForNewMove(GameObject targetBlock)
+    {
+        // SwiftSwim has a deliberate special cost (1/2 steps); retain it
+        // only for the move that was explicitly started as SwiftSwim.
+        if (isSwiftSwim && hasPendingStepCost && pendingStepCostIsSwiftSwim)
         {
-            hasPendingStepCost = false;
-            pendingStepCost = 0;
+            pendingStepTargetBlock = targetBlock;
+            if (TryGetBlockInfo(targetBlock, out BlockInfo info) &&
+                info.HasRootMovementCostOverride())
+            {
+                pendingStepCost = 0;
+            }
             return;
         }
 
-        pendingStepCost = GetRequiredCost(targetBlock);
-        hasPendingStepCost = true;
+        CacheStepCostForMove(targetBlock);
     }
 
     private int ConsumePendingStepCost(BlockInfo fallbackStandingInfo)
     {
-        int cost;
+        int cost = hasPendingStepCost
+            ? pendingStepCost
+            : (fallbackStandingInfo != null
+                ? fallbackStandingInfo.GetMovementCost_ForPlayerMove()
+                : 0);
 
-        if (hasPendingStepCost)
+        // A root might finish growing onto the destination while the player
+        // is in transit. The final rooted destination always costs zero.
+        BlockInfo targetInfo;
+        if (TryGetBlockInfo(pendingStepTargetBlock, out targetInfo) ||
+            TryGetBlockInfo(currentMoveTargetBlock, out targetInfo) ||
+            (targetInfo = fallbackStandingInfo) != null)
         {
-            cost = pendingStepCost;
-        }
-        else if (fallbackStandingInfo != null)
-        {
-            cost = fallbackStandingInfo.GetMovementCost_ForPlayerMove();
-        }
-        else
-        {
-            cost = 0;
+            if (targetInfo.HasRootMovementCostOverride())
+            {
+                cost = 0;
+            }
+            else if (hasPendingStepCost && !pendingStepCostIsSwiftSwim &&
+                     targetInfo.gameObject == pendingStepTargetBlock &&
+                     targetInfo.GetComponent<Block_Quicksand>() == null)
+            {
+                // Other temporary costs still use the final landing state.
+                // Quicksand is the exception: its counter advances during
+                // arrival, so the cost frozen at move START is authoritative.
+                // Otherwise entry 0 is incorrectly charged as 1, etc.
+                cost = targetInfo.GetMovementCost_ForPlayerMove();
+            }
         }
 
-        hasPendingStepCost = false;
-        pendingStepCost = 0;
-
+        ClearPendingStepCost();
         return cost;
     }
 
@@ -1131,12 +1185,22 @@ public class Movement : Singleton<Movement>
     {
         hasPendingStepCost = false;
         pendingStepCost = 0;
+        pendingStepTargetBlock = null;
+        pendingStepCostIsSwiftSwim = false;
     }
 
-    private void CacheStepCostForSwiftSwim()
+    private void CacheStepCostForSwiftSwim(GameObject targetBlock)
     {
+        pendingStepTargetBlock = targetBlock;
         pendingStepCost = GetSwiftSwimCost();
+        pendingStepCostIsSwiftSwim = true;
         hasPendingStepCost = true;
+
+        if (TryGetBlockInfo(targetBlock, out BlockInfo info) &&
+            info.HasRootMovementCostOverride())
+        {
+            pendingStepCost = 0;
+        }
     }
 
     private int GetSwiftSwimCost()
@@ -1451,7 +1515,7 @@ public class Movement : Singleton<Movement>
 
         return info.blockElement == BlockElement.Water ||
                info.blockElement == BlockElement.Lava ||
-               //info.blockElement == BlockElement.Quicksand ||
+               info.blockElement == BlockElement.Quicksand ||
                info.blockElement == BlockElement.SwampWater ||
                info.blockElement == BlockElement.Mud;
     }
@@ -1530,7 +1594,7 @@ public class Movement : Singleton<Movement>
 
     private void PerformVerticalAbilityMovement(MoveOptions option, MovementStates moveState, float movementSpeed)
     {
-        if (!HasValidTarget(option))
+        if (isMoving || isRespawning || isMovingOnLadder_Up || isMovingOnLadder_Down || !HasValidTarget(option))
             return;
 
         isMoving = true;
@@ -1549,42 +1613,95 @@ public class Movement : Singleton<Movement>
 
     #region Movement Functions
 
+    // Timestamp of the last completed or started move. The visual safety net
+    // must never run in the tiny between-moves gap of a held direction.
+    private float lastMovementVisualActivityTime = -999f;
+    private float nextVisualReconciliationTime;
+
     public void UpdateAvailableMovementBlocks()
     {
+        // Movement targets and costs always update immediately. Only the
+        // visuals are deferred while another held move can begin.
         RestoreAllSlopeDisplayOverrides();
-        ResetDarkenBlocks();
         UpdateBlocks();
         ApplySlopeDisplayOverridesToCurrentTargets();
+        lastMovementVisualActivityTime = Time.unscaledTime;
+
+        if (isRespawning || isMoving ||
+            movementStates == MovementStates.Moving ||
+            movementStates == MovementStates.Falling)
+        {
+            pendingDarkeningRefreshAfterChain = true;
+            Action_UpdatedBlocks?.Invoke();
+            return;
+        }
 
         if (ShouldChainImmediatelyAfterStep())
         {
             suppressDarkeningWhileChaining = true;
             pendingDarkeningRefreshAfterChain = true;
-
-            currentlyDarkenedBlocks.Clear();
-            foreach (var block in BuildCurrentTargetSet())
-            {
-                if (block != null)
-                    currentlyDarkenedBlocks.Add(block);
-            }
-
+            // The outgoing move has already hidden its preview. Do not
+            // show it again for a single frame just before the next move.
             Action_UpdatedBlocks?.Invoke();
             return;
         }
 
         suppressDarkeningWhileChaining = false;
         pendingDarkeningRefreshAfterChain = false;
+        SyncDarkenedBlocksToCurrentTargets();
+        EnsureCurrentTargetNumbersVisible();
+        Action_UpdatedBlocks?.Invoke();
+    }
 
-        SetDarkenBlocks();
+    private void EnsureCurrentTargetNumbersVisible()
+    {
+        if (isMoving || movementStates == MovementStates.Moving ||
+            movementStates == MovementStates.Falling || isRespawning)
+            return;
 
-        currentlyDarkenedBlocks.Clear();
-        foreach (var block in BuildCurrentTargetSet())
+        // Only repair a missing visual. A healthy preview is never hidden,
+        // recolored or restarted by this method.
+        foreach (GameObject block in BuildCurrentTargetSet())
         {
-            if (block != null)
-                currentlyDarkenedBlocks.Add(block);
+            if (TryGetBlockInfo(block, out BlockInfo info))
+            {
+                if (!info.blockIsDark)
+                    info.SetDarkenColors();
+                else
+                    info.EnsureVisibleStepCostDisplay();
+            }
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (isRespawning || isMoving || movementStates != MovementStates.Still ||
+            PM == null || PM.pauseGame)
+            return;
+
+        // While input is being held and a next step is available, it is NOT
+        // a settled view. No periodic redraws during a walking/swim chain.
+        if (ShouldChainImmediatelyAfterStep())
+            return;
+
+        if (pendingDarkeningRefreshAfterChain)
+        {
+            suppressDarkeningWhileChaining = false;
+            pendingDarkeningRefreshAfterChain = false;
+            RefreshDarkeningNow();
+            nextVisualReconciliationTime = Time.unscaledTime + 0.30f;
+            return;
         }
 
-        Action_UpdatedBlocks?.Invoke();
+        // A low-frequency, *idle-only* safety net still repairs displays
+        // hidden by external scripts. Never run within 0.20 seconds of a
+        // movement transition, and never re-darken healthy targets.
+        if (Time.unscaledTime - lastMovementVisualActivityTime < 0.20f ||
+            Time.unscaledTime < nextVisualReconciliationTime)
+            return;
+
+        nextVisualReconciliationTime = Time.unscaledTime + 0.30f;
+        EnsureCurrentTargetNumbersVisible();
     }
 
     public void UpdateBlocks()
@@ -1969,11 +2086,35 @@ public class Movement : Singleton<Movement>
 
     void UpdateWaterBlocksForSwiftSwim()
     {
-        if (isSwiftSwim)
-        {
-            Action_isSwiftSwim_Finished?.Invoke();
+        // Do not set isSwiftSwim=false between water blocks while the same
+        // held-button swim is continuing. External components may read this
+        // public flag every frame to control an outline/hull shader. Even
+        // without a Finished event, a one-frame false can toggle the shader.
+        // It is cleared only when the continuous effect actually finishes.
+        if (!swiftSwimEffectIsActive)
             isSwiftSwim = false;
-        }
+    }
+
+    private void StartSwiftSwimEffectIfNeeded()
+    {
+        if (swiftSwimEffectIsActive)
+            return;
+
+        swiftSwimEffectIsActive = true;
+        Action_isSwiftSwim?.Invoke();
+    }
+
+    private void FinishSwiftSwimEffectIfNeeded()
+    {
+        // Keep public movement state and the effect event in sync: neither
+        // may fall to false at intermediate water-block landings.
+        isSwiftSwim = false;
+
+        if (!swiftSwimEffectIsActive)
+            return;
+
+        swiftSwimEffectIsActive = false;
+        Action_isSwiftSwim_Finished?.Invoke();
     }
 
     //private void ResetSwiftSwimMovementCost(GameObject obj)
@@ -2182,38 +2323,59 @@ public class Movement : Singleton<Movement>
             playerPos += Vector3.up * 0.5f;
         }
 
-        Vector3 adjustments;
-
-        if (PerformMovementRaycast(playerPos, Vector3.up, ascendDescend_Distance, out outObj1) == RaycastHitObjects.BlockInfo &&
+        if (PerformMovementRaycast(
+                playerPos,
+                Vector3.up,
+                ascendDescend_Distance,
+                out outObj1) == RaycastHitObjects.BlockInfo &&
             TryGetBlockInfo(outObj1, out BlockInfo firstInfo))
         {
             // Allow Ascend onto stairs and slopes.
-            // Do this before the normal second upward raycast,
-            // because stairs/slopes can hit their own collider and clear the ascend target.
-            if (firstInfo.blockType == BlockType.Stair || firstInfo.blockType == BlockType.Slope)
+            if (firstInfo.blockType == BlockType.Stair ||
+                firstInfo.blockType == BlockType.Slope)
             {
-                EvaluateStandardMovementTarget(moveToBlock_Ascend, outObj1, blockStandingOn);
+                EvaluateStandardMovementTarget(
+                    moveToBlock_Ascend,
+                    outObj1,
+                    blockStandingOn);
+
                 return;
             }
 
-            adjustments = Vector3.zero;
+            // Start above a slab's own collider so the clearance check behaves
+            // the same as it does for a normal block.
+            Vector3 adjustments = firstInfo.blockType == BlockType.Slab
+                ? Vector3.up * 0.25f
+                : Vector3.zero;
 
-            if (firstInfo.blockType == BlockType.Slab)
+            RaycastHitObjects secondHit = PerformMovementRaycast(
+                outObj1.transform.position + adjustments,
+                Vector3.up,
+                1,
+                out outObj2);
+
+            if (secondHit == RaycastHitObjects.None)
             {
-                RaycastHitObjects secondHit = PerformMovementRaycast(outObj1.transform.position + adjustments, Vector3.up, 1, out outObj2);
-
-                if (secondHit == RaycastHitObjects.None)
+                EvaluateStandardMovementTarget(
+                    moveToBlock_Ascend,
+                    outObj1,
+                    blockStandingOn);
+            }
+            else if (secondHit == RaycastHitObjects.BlockInfo &&
+                     TryGetBlockInfo(outObj2, out BlockInfo secondInfo))
+            {
+                // A slab above another slab leaves enough room to ascend.
+                if (firstInfo.blockType == BlockType.Slab &&
+                    secondInfo.blockType == BlockType.Slab)
                 {
-                    EvaluateStandardMovementTarget(moveToBlock_Ascend, outObj1, blockStandingOn);
+                    SetMoveTarget(moveToBlock_Ascend, outObj1);
                 }
-                else if (secondHit == RaycastHitObjects.BlockInfo && TryGetBlockInfo(outObj2, out BlockInfo secondInfo))
+                else if (secondInfo.blockElement == BlockElement.Water)
                 {
-                    if (secondInfo.blockType == BlockType.Slab)
-                    {
-                        SetMoveTarget(moveToBlock_Ascend, outObj1);
-                    }
-                    else
+                    if (IsBlockedDeepWater(outObj1))
                         ClearMoveTarget(moveToBlock_Ascend);
+                    else
+                        SetMoveTarget(moveToBlock_Ascend, outObj1);
                 }
                 else
                 {
@@ -2222,34 +2384,7 @@ public class Movement : Singleton<Movement>
             }
             else
             {
-                RaycastHitObjects secondHit = PerformMovementRaycast(outObj1.transform.position + adjustments, Vector3.up, 1, out outObj2);
-
-                if (secondHit == RaycastHitObjects.None)
-                {
-                    EvaluateStandardMovementTarget(moveToBlock_Ascend, outObj1, blockStandingOn);
-                }
-                else if (secondHit == RaycastHitObjects.BlockInfo && TryGetBlockInfo(outObj2, out BlockInfo secondInfo))
-                {
-                    if (secondInfo.blockElement == BlockElement.Water)
-                    {
-                        if (IsBlockedDeepWater(outObj1))
-                            ClearMoveTarget(moveToBlock_Ascend);
-                        else
-                            SetMoveTarget(moveToBlock_Ascend, outObj1);
-                    }
-                    else if (secondInfo.blockElement == BlockElement.Lava)
-                    {
-                        ClearMoveTarget(moveToBlock_Ascend);
-                    }
-                    else
-                    {
-                        ClearMoveTarget(moveToBlock_Ascend);
-                    }
-                }
-                else
-                {
-                    ClearMoveTarget(moveToBlock_Ascend);
-                }
+                ClearMoveTarget(moveToBlock_Ascend);
             }
         }
         else
@@ -3014,13 +3149,26 @@ public class Movement : Singleton<Movement>
 
     public void RefreshAvailableMovementBlocksSmooth()
     {
-        if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
+        if (isRespawning || isMoving ||
+            movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
             return;
 
         RestoreAllSlopeDisplayOverrides();
         UpdateBlocks();
         ApplySlopeDisplayOverridesToCurrentTargets();
-        SyncDarkenedBlocksToCurrentTargets();
+
+        if (ShouldChainImmediatelyAfterStep())
+        {
+            suppressDarkeningWhileChaining = true;
+            pendingDarkeningRefreshAfterChain = true;
+        }
+        else
+        {
+            suppressDarkeningWhileChaining = false;
+            pendingDarkeningRefreshAfterChain = false;
+            SyncDarkenedBlocksToCurrentTargets();
+        }
+
         Action_UpdatedBlocks?.Invoke();
     }
 
@@ -3036,8 +3184,19 @@ public class Movement : Singleton<Movement>
 
         foreach (var newBlock in newTargets)
         {
-            if (newBlock != null && !currentlyDarkenedBlocks.Contains(newBlock))
-                SetAvailableBlock(newBlock);
+            if (newBlock == null)
+                continue;
+
+            // A movement coroutine can hide a block without clearing it
+            // from currentlyDarkenedBlocks. Check its REAL visual state,
+            // rather than assuming the cached target list means it is shown.
+            if (TryGetBlockInfo(newBlock, out BlockInfo visibleInfo))
+            {
+                if (!visibleInfo.blockIsDark)
+                    visibleInfo.SetDarkenColors();
+                else
+                    visibleInfo.EnsureVisibleStepCostDisplay();
+            }
         }
 
         currentlyDarkenedBlocks.Clear();
@@ -3100,10 +3259,10 @@ public class Movement : Singleton<Movement>
         {
             isSwiftSwim = true;
 
-            CacheStepCostForSwiftSwim();
+            CacheStepCostForSwiftSwim(moveToBlock_SwiftSwimUp.targetBlock);
 
             PerformMovement(moveToBlock_SwiftSwimUp, MovementStates.Moving, GetSwiftSwimMovementSpeed());
-            Action_isSwiftSwim?.Invoke();
+            StartSwiftSwimEffectIfNeeded();
             return true;
         }
 
@@ -3116,10 +3275,10 @@ public class Movement : Singleton<Movement>
         {
             isSwiftSwim = true;
 
-            CacheStepCostForSwiftSwim();
+            CacheStepCostForSwiftSwim(moveToBlock_SwiftSwimDown.targetBlock);
 
             PerformMovement(moveToBlock_SwiftSwimDown, MovementStates.Moving, GetSwiftSwimMovementSpeed());
-            Action_isSwiftSwim?.Invoke();
+            StartSwiftSwimEffectIfNeeded();
             return true;
         }
 
@@ -3598,6 +3757,9 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(MoveOptions canMoveBlock, MovementStates moveState, float movementSpeed, ref bool isMovingFlag)
     {
+        if (isMoving || isRespawning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+            return;
+
         if (canMoveBlock == null || canMoveBlock.targetBlock == null || !TryGetBlockInfo(canMoveBlock.targetBlock, out BlockInfo _) || StatsRoot.stats == null)
             return;
 
@@ -3608,8 +3770,7 @@ public class Movement : Singleton<Movement>
         {
             isMovingFlag = true;
 
-            if (!hasPendingStepCost)
-                CacheStepCostForMove(canMoveBlock.targetBlock);
+            PrepareStepCostForNewMove(canMoveBlock.targetBlock);
 
             ClearFallingCarrierBlock();
             ResetDarkenBlocks();
@@ -3623,6 +3784,9 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(MoveOptions canMoveBlock, MovementStates moveState, float movementSpeed)
     {
+        if (isMoving || isRespawning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+            return;
+
         if (canMoveBlock == null || canMoveBlock.targetBlock == null || !TryGetBlockInfo(canMoveBlock.targetBlock, out BlockInfo _) || StatsRoot.stats == null)
             return;
 
@@ -3634,8 +3798,7 @@ public class Movement : Singleton<Movement>
 
             isMoving = true;
 
-            if (!hasPendingStepCost)
-                CacheStepCostForMove(canMoveBlock.targetBlock);
+            PrepareStepCostForNewMove(canMoveBlock.targetBlock);
 
             ClearFallingCarrierBlock();
             ResetDarkenBlocks();
@@ -3649,6 +3812,9 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(Vector3 targetPos)
     {
+        if (isMoving || isRespawning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+            return;
+
         if (!TryGetStandingInfo(out BlockInfo standingInfo))
             return;
 
@@ -3663,6 +3829,9 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(Vector3 targetPos, float movementSpeed)
     {
+        if (isMoving || isRespawning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+            return;
+
         isMoving = true;
 
         ClearPendingStepCost();
@@ -3675,12 +3844,16 @@ public class Movement : Singleton<Movement>
     private IEnumerator Move(Vector3 endPos, MovementStates moveState, float movementSpeed, MoveOptions moveOptions)
     {
         isMoving = true;
+        lastMovementVisualActivityTime = Time.unscaledTime;
+        int thisMoveSerial = ++movementTransactionSerial;
+        GameObject thisMoveTargetBlock = moveOptions != null ? moveOptions.targetBlock : null;
 
         bool thisMoveWasGrappling =
             isGrapplingHooking ||
             performGrapplingHooking;
 
-        currentMoveTargetBlock = moveOptions != null ? moveOptions.targetBlock : null;
+        currentMoveStartBlock = blockStandingOn;
+        currentMoveTargetBlock = thisMoveTargetBlock;
 
         Action_StepTaken_Early_Invoke();
 
@@ -3696,8 +3869,8 @@ public class Movement : Singleton<Movement>
         else if (isJumping)
             yield return new WaitForSeconds(Anims.abilityChargeTime_Jump);
 
-        if (moveOptions != null && moveOptions.targetBlock != null && moveOptions.targetBlock.GetComponent<Block_Elevator>())
-            yield return ElevatorMovement(moveState, movementSpeed, moveOptions);
+        if (thisMoveTargetBlock != null && thisMoveTargetBlock.GetComponent<Block_Elevator>())
+            yield return ElevatorMovement(moveState, movementSpeed, thisMoveTargetBlock);
         else
             yield return NormalMovement(endPos, moveState, movementSpeed);
 
@@ -3729,13 +3902,31 @@ public class Movement : Singleton<Movement>
 
         PlayerCameraOcclusionController.Instance.CameraZoom(false);
 
+        // Make the completed landing current before cost and root state are
+        // committed, even if Unity has not rendered another Update frame.
+        UpdateBlockStandingOn();
         Action_StepTaken_Invoke();
 
+        // An IceGlide/other late callback can start a NEW move synchronously
+        // from Action_StepTaken. Never clear that new move's target or
+        // continue the previous move's chain after it has already begun.
+        if (movementTransactionSerial != thisMoveSerial)
+        {
+            // Another callback already started a move. Keep the hull effect
+            // only if that new transaction is explicitly a SwiftSwim segment.
+            // The public isSwiftSwim flag now remains true throughout a chain,
+            // so use the new move's committed cost type instead.
+            if (finishedMoveWasSwiftSwim && !pendingStepCostIsSwiftSwim)
+                FinishSwiftSwimEffectIfNeeded();
+            yield break;
+        }
+
         currentMoveTargetBlock = null;
+        currentMoveStartBlock = null;
 
         if (pendingDarkeningRefreshAfterChain &&
             !ShouldChainImmediatelyAfterStep() &&
-            movementStates == MovementStates.Still)
+            movementStates == MovementStates.Still && !isRespawning)
         {
             suppressDarkeningWhileChaining = false;
             pendingDarkeningRefreshAfterChain = false;
@@ -3746,11 +3937,21 @@ public class Movement : Singleton<Movement>
         // If this move was a SwiftSwim move and the player is still holding up/down,
         // immediately start the next SwiftSwim move. This prevents the tiny stop
         // between water blocks in a waterfall.
-        if (finishedMoveWasSwiftSwim &&
-            !CeilingGrab.isCeilingGrabbing &&
-            movementStates == MovementStates.Still)
+        if (finishedMoveWasSwiftSwim)
         {
-            TryContinueHeldSwiftSwimImmediately();
+            // Keep the hull effect on only if this really starts a NEW
+            // SwiftSwim transaction. The callback can reject an input even
+            // when a preview looks valid; do not mistake that for a chain.
+            bool continuedSwiftSwim =
+                !CeilingGrab.isCeilingGrabbing &&
+                movementStates == MovementStates.Still &&
+                TryContinueHeldSwiftSwimImmediately() &&
+                movementTransactionSerial != thisMoveSerial &&
+                isSwiftSwim;
+
+            if (!continuedSwiftSwim)
+                FinishSwiftSwimEffectIfNeeded();
+
             yield break;
         }
 
@@ -3846,12 +4047,12 @@ public class Movement : Singleton<Movement>
         PlayerCameraOcclusionController.Instance.CameraZoom(false);
     }
 
-    IEnumerator ElevatorMovement(MovementStates moveState, float movementSpeed, MoveOptions moveOptions)
+    IEnumerator ElevatorMovement(MovementStates moveState, float movementSpeed, GameObject targetBlock)
     {
         Vector3 rayDir = StandingOffsetDir();
         previousPosition = transform.position;
 
-        Transform targetBlockTransform = moveOptions.targetBlock.transform;
+        Transform targetBlockTransform = targetBlock.transform;
         Vector3 startPos = transform.position;
         Vector3 targetOffset = new Vector3(0f, (rayDir * heightOverBlock).y, 0f);
         Vector3 endPos = targetBlockTransform.position + targetOffset;
@@ -3928,12 +4129,19 @@ public class Movement : Singleton<Movement>
     {
         walkAnimationCheck = false;
 
-        blockMovementInputUntilReleased = false;
+        // For a held-button respawn lock, releasing just ONE of several
+        // pressed keys must not unlock movement for the remaining keys.
+        if (!IsAnyWalkButtonStillHeldOrPressed())
+            blockMovementInputUntilReleased = false;
 
-        suppressDarkeningWhileChaining = false;
+        if (isRespawning)
+            return;
 
-        if (pendingDarkeningRefreshAfterChain && movementStates == MovementStates.Still)
+        if (pendingDarkeningRefreshAfterChain &&
+            !isMoving && movementStates == MovementStates.Still &&
+            !ShouldChainImmediatelyAfterStep())
         {
+            suppressDarkeningWhileChaining = false;
             pendingDarkeningRefreshAfterChain = false;
             RefreshDarkeningNow();
         }
@@ -4665,10 +4873,19 @@ public class Movement : Singleton<Movement>
 
     #region Take A Step
 
+    // One committed destination -> one settled step cost. This method is
+    // invoked once for each completed Action_StepTaken event.
     public void TakeAStep()
     {
-        if (!TryGetStandingInfo(out BlockInfo standingInfo))
+        // Prefer the committed destination over a transient physics raycast.
+        // During ladders and position-only moves there is no target snapshot,
+        // so the normal standing-block detection remains the fallback.
+        BlockInfo standingInfo;
+        if (!TryGetBlockInfo(currentMoveTargetBlock, out standingInfo) &&
+            !TryGetStandingInfo(out standingInfo))
         {
+            ClearPendingStepCost();
+            PublishSettledStep();
             Action_StepTaken_Late_Invoke();
             return;
         }
@@ -4676,40 +4893,31 @@ public class Movement : Singleton<Movement>
         UpdateWaterBlocksForSwiftSwim();
 
         bool standingOnSlope = standingInfo.blockType == BlockType.Slope;
-
-        // Maintain visual / state info for slope travel only
         if (standingOnSlope)
         {
+            // Keep existing free slope traversal, but NEVER carry the
+            // pending cost over to the following movement.
             hasSlopeGlided = true;
             isSlopeGliding = true;
+            ClearPendingStepCost();
         }
         else
         {
             bool useFreeLanding = pendingFreeLandingFromSlope;
-
-            // Consume immediately so it can never leak into the next move
             pendingFreeLandingFromSlope = false;
             slopeLandingIsFree = false;
 
             if (!useFreeLanding)
             {
                 bool standingInUnswimmableWater =
-                    blockStandingOn != null &&
-                    blockStandingOn.GetComponent<BlockInfo>() != null &&
-                    blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water &&
+                    standingInfo.blockElement == BlockElement.Water &&
                     !PlayerHasSwimAbility();
 
-                if (!standingInUnswimmableWater)
+                if (!standingInUnswimmableWater &&
+                    DataManager.Instance.skinsInfo_Store.activeSkinType != SkinType.SourceBlock)
                 {
-                    if (DataManager.Instance.skinsInfo_Store.activeSkinType == SkinType.SourceBlock)
-                    {
-
-                    }
-                    else
-                    {
-                        int stepCost = ConsumePendingStepCost(standingInfo);
-                        StatsRoot.stats.steps_Current -= stepCost;
-                    }
+                    int stepCost = ConsumePendingStepCost(standingInfo);
+                    StatsRoot.stats.steps_Current -= stepCost;
                 }
                 else
                 {
@@ -4724,7 +4932,6 @@ public class Movement : Singleton<Movement>
                 ClearPendingStepCost();
             }
 
-            // Leaving slope context completely once on a non-slope tile
             hasSlopeGlided = false;
             isSlopeGliding = false;
         }
@@ -4732,20 +4939,37 @@ public class Movement : Singleton<Movement>
         if (StatsRoot.stats.steps_Current <= 0)
         {
             StatsRoot.stats.steps_Current = 0;
-
             blockMovementInputUntilReleased = true;
+
+            // Roots and movement previews must see the UPDATED balance.
+            PublishSettledStep();
 
             if (!zeroStepRespawnStarted)
             {
                 zeroStepRespawnStarted = true;
                 HandleZeroStepsAfterLanding();
             }
-
+            else
+            {
+                Action_StepTaken_Late_Invoke();
+            }
             return;
         }
 
+        PublishSettledStep();
         Action_StepTaken_Late_Invoke();
     }
+
+    private void PublishSettledStep()
+    {
+        // Root activation is synchronous here, before any late callback
+        // (such as IceGlide) is allowed to start another move.
+        Action_StepSettledBeforeChaining?.Invoke();
+
+        // Always refresh using the NEW step balance and the final root costs.
+        UpdateAvailableMovementBlocks();
+    }
+
     IEnumerator RespawnPlayerWhenReachingZeroSteps_Delay(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
@@ -5021,21 +5245,59 @@ public class Movement : Singleton<Movement>
 
     public void RespawnPlayer()
     {
-        if (StepsHUD.Instance != null &&
-            StatsRoot != null &&
-            StatsRoot.stats != null)
-        {
-            StepsHUD.Instance.stepCounter = StatsRoot.stats.steps_Current;
-        }
+        // Guard SYNCHRONOUSLY, before starting a coroutine. Multiple input,
+        // SFX, drowning or step callbacks can request respawn in one frame.
+        if (isRespawning)
+            return;
 
-        StartCoroutine(Resetplayer(0.01f));
-    }
-    IEnumerator Resetplayer(float waitTime)
-    {
         isRespawning = true;
 
+        // A respawn interrupts even an unfinished SwiftSwim segment.
+        // Reset the external effect once rather than leaving its hull on.
+        FinishSwiftSwimEffectIfNeeded();
+
+        // Capture the last checkpoint at the instant respawn was requested.
+        // MapManager owns checkpoint updates; Movement must not replace this
+        // with its previousPosition or the most recently stood-on tile.
+        Vector3 checkpointPosition = Map.playerStartPos;
+        Quaternion checkpointRotation = GetRespawnPlayerDirection(0, 180, 0);
+
+        // Cancel any movement, falling/ability and delayed zero-step coroutines
+        // BEFORE the teleport. Otherwise an older Move() can write a more
+        // recent position AFTER Resetplayer has placed us at the checkpoint.
+        ++movementTransactionSerial;
+        StopAllCoroutines();
+        isMoving = false;
+        currentMoveStartBlock = null;
+        currentMoveTargetBlock = null;
+        isDashing = false;
+        isJumping = false;
+        isGrapplingHooking = false;
+        isIceGliding = false;
+        isSwiftSwim = false;
+        performGrapplingHooking = false;
+
+        elevatorBeingFollowed = null;
+        elevatorOffset = Vector3.zero;
+        StopFollowingCubeBlock();
+        ClearFallingCarrierBlock();
+
+        suppressDarkeningWhileChaining = false;
+        pendingDarkeningRefreshAfterChain = false;
+        lastMovementVisualActivityTime = Time.unscaledTime;
+
+        if (StepsHUD.Instance != null && StatsRoot != null && StatsRoot.stats != null)
+            StepsHUD.Instance.stepCounter = StatsRoot.stats.steps_Current;
+
+        StartCoroutine(Resetplayer(0.01f, checkpointPosition, checkpointRotation));
+    }
+
+    private IEnumerator Resetplayer(float waitTime, Vector3 checkpointPosition, Quaternion checkpointRotation)
+    {
         zeroStepRespawnStarted = false;
-        blockMovementInputUntilReleased = false;
+        // If physical movement is still held, do not start another move after
+        // the reset. The input handlers will clear their pressed states below.
+        blockMovementInputUntilReleased = true;
 
         Inputs.forward_isPressed = false;
         Inputs.back_isPressed = false;
@@ -5081,8 +5343,8 @@ public class Movement : Singleton<Movement>
 
         yield return new WaitForSeconds(waitTime);
 
-        transform.position = Map.playerStartPos;
-        PM.playerBody.transform.SetPositionAndRotation(Map.playerStartPos, GetRespawnPlayerDirection(0, 180, 0));
+        transform.position = checkpointPosition;
+        PM.playerBody.transform.SetPositionAndRotation(checkpointPosition, checkpointRotation);
         PM.playerBody.transform.SetLocalPositionAndRotation(
             new Vector3(PM.playerBody.transform.localPosition.x, Player_BodyHeight.Instance.height_Normal, PM.playerBody.transform.localPosition.z),
             PM.playerBody.transform.localRotation);
@@ -5095,33 +5357,33 @@ public class Movement : Singleton<Movement>
 
         StatsRoot.RefillStepsToMax();
         Cam.SetRespawnCameraRotation();
-
         RespawnPlayer_Action();
 
         yield return new WaitForSeconds(waitTime * 30f);
 
-        previousPosition = transform.position;
-
+        // Explicitly enforce the captured checkpoint again, before publishing
+        // respawn completion; no older coroutine can move the root now.
+        transform.position = checkpointPosition;
+        previousPosition = checkpointPosition;
         elevatorBeingFollowed = null;
         elevatorOffset = Vector3.zero;
-        lastFollowedElevatorPosition = transform.position;
+        lastFollowedElevatorPosition = checkpointPosition;
         elevatorRefreshAccumulatedDistance = 0f;
 
         SetMovementState(MovementStates.Still);
-
         RespawnPlayerLate_Action();
-
-        StopAllCoroutines();
 
         isRespawning = false;
         isDrowning = false;
         isSlopeFalling = false;
         pendingSlopeFallAfterUphillAttempt = false;
         isPlayingSlopeFallAnimation = false;
-
         isRespawningFirstTime = true;
 
+        // No StopAllCoroutines here: the preceding cancellation occurred at
+        // respawn entry. Finishing the reset must not cancel a new operation.
         PlayerManager.Instance.UnpauseGame();
+        UpdateAvailableMovementBlocks();
     }
 
     public Quaternion GetRespawnPlayerDirection(int corr_X, int corr_Y, int corr_Z)
