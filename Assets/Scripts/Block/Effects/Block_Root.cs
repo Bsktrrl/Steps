@@ -57,6 +57,11 @@ public class Block_Root : MonoBehaviour
 
     private bool ignoreNextSelfReset;
 
+    // Respawn restoration has priority over physics trigger callbacks.
+    // This guarantees checkpoint spawnDirection is used, even if the
+    // trigger fires before the post-respawn coroutine can run.
+    private bool awaitingRespawnRootActivation;
+
     [Header("Root Obstacle Blocking")]
     [SerializeField]
     private LayerMask rootBlockingCollisionMask =
@@ -96,12 +101,16 @@ public class Block_Root : MonoBehaviour
             return;
 
         UpdateLiveRootContinuation();
+        ReconcileActiveRootCosts();
     }
 
     private void OnEnable()
     {
-        Movement.Action_StepTaken_Early += CheckWhenToResetRootLine;
-        Movement.Action_StepTaken_Late += CheckActivateFromConfirmedStanding;
+        // Both removal and activation are evaluated only after a completed
+        // step, before the next move may begin. Never destroy roots for an
+        // attempted or still-in-flight movement.
+        Movement.Action_StepSettledBeforeChaining += CheckWhenToResetRootLine;
+        Movement.Action_StepSettledBeforeChaining += CheckActivateFromConfirmedStanding;
 
         Movement.Action_RespawnPlayer += ResetOnRespawn;
         Action_StandingOnRootBlock_Early += ResetRootOnly;
@@ -109,13 +118,20 @@ public class Block_Root : MonoBehaviour
 
     private void OnDisable()
     {
-        Movement.Action_StepTaken_Early -= CheckWhenToResetRootLine;
-        Movement.Action_StepTaken_Late -= CheckActivateFromConfirmedStanding;
+        Movement.Action_StepSettledBeforeChaining -= CheckWhenToResetRootLine;
+        Movement.Action_StepSettledBeforeChaining -= CheckActivateFromConfirmedStanding;
 
         Movement.Action_RespawnPlayer -= ResetOnRespawn;
         Action_StandingOnRootBlock_Early -= ResetRootOnly;
 
         StopRootCoroutines();
+
+        // Disabling a source must not strand a cost override on another block.
+        SetBlockMovementCostToDefault();
+        RootFreeCostBlockList.Clear();
+        isActive = false;
+        activatedForCurrentRootStand = false;
+        awaitingRespawnRootActivation = false;
     }
 
 
@@ -189,104 +205,27 @@ public class Block_Root : MonoBehaviour
 
     void QueueRootActivation()
     {
-        if (Movement.Instance == null)
-            return;
-
-        if (Movement.Instance.isRespawning)
+        if (Movement.Instance == null || Movement.Instance.isRespawning ||
+            activatedForCurrentRootStand || awaitingRespawnRootActivation)
             return;
 
         GameObject rootSourceBlock = GetRootSourceBlock();
-
         if (rootSourceBlock == null)
             return;
 
-        bool playerIsStandingOnRootBlock =
-            Movement.Instance.blockStandingOn == rootSourceBlock;
-
-        bool playerIsMovingOntoRootBlock =
-            Movement.Instance.currentMoveTargetBlock == rootSourceBlock;
-
-        // The trigger can overlap before Movement knows the player is targeting/standing on this block.
-        // In that case, let the coroutine wait shortly instead of activating immediately.
-        if (!playerIsStandingOnRootBlock && !playerIsMovingOntoRootBlock && !playerIsInsideRootTrigger)
+        // Other trigger overlaps are not evidence of stepping on this block.
+        // Actual arrivals are also handled by the settled-step event.
+        bool standingHere = Movement.Instance.blockStandingOn == rootSourceBlock;
+        bool targetingHere = Movement.Instance.currentMoveTargetBlock == rootSourceBlock;
+        if (!targetingHere && !standingHere)
             return;
 
-        if (activatedForCurrentRootStand)
+        // Do not re-activate the roots because the departing player still
+        // overlaps the source's collider for the first frame of a new move.
+        if (Movement.Instance.currentMoveTargetBlock != null && !targetingHere)
             return;
 
-        if (rootActivationQueued)
-            return;
-
-        queuedActivationDirection = GetRootDirectionFromCurrentMovement();
-
-        rootActivationQueued = true;
-
-        if (delayedRootActivationCoroutine != null)
-        {
-            StopCoroutine(delayedRootActivationCoroutine);
-            delayedRootActivationCoroutine = null;
-        }
-
-        delayedRootActivationCoroutine = StartCoroutine(ActivateRootWhenPlayerIsOnOrMovingOntoRootBlock());
-    }
-
-    IEnumerator ActivateRootWhenPlayerIsOnOrMovingOntoRootBlock()
-    {
-        GameObject rootSourceBlock = GetRootSourceBlock();
-
-        if (rootSourceBlock == null)
-        {
-            ClearActivationQueue();
-            yield break;
-        }
-
-        // Wait one frame so Movement.currentMoveTargetBlock has time to be assigned.
-        yield return null;
-
-        while (Movement.Instance != null)
-        {
-            if (Movement.Instance.isRespawning)
-            {
-                ClearActivationQueue();
-                yield break;
-            }
-
-            if (activatedForCurrentRootStand)
-            {
-                ClearActivationQueue();
-                yield break;
-            }
-
-            bool playerIsStandingOnRootBlock =
-                Movement.Instance.blockStandingOn == rootSourceBlock;
-
-            bool playerIsMovingOntoRootBlock =
-                Movement.Instance.currentMoveTargetBlock == rootSourceBlock;
-
-            if (playerIsStandingOnRootBlock || playerIsMovingOntoRootBlock)
-            {
-                Vector3 activationDirection = queuedActivationDirection;
-
-                if (activationDirection.sqrMagnitude < 0.001f)
-                    activationDirection = GetRootDirectionFromCurrentMovement();
-
-                ClearActivationQueue();
-
-                ActivateRootOnceForCurrentStand(activationDirection);
-                yield break;
-            }
-
-            // If the player is no longer inside/near the trigger and is not targeting the RootBlock, stop waiting.
-            if (!playerIsInsideRootTrigger)
-            {
-                ClearActivationQueue();
-                yield break;
-            }
-
-            yield return null;
-        }
-
-        ClearActivationQueue();
+        ActivateRootOnceForCurrentStand(GetRootDirectionFromCurrentMovement());
     }
 
     void ClearActivationQueue()
@@ -321,6 +260,13 @@ public class Block_Root : MonoBehaviour
         if (!playerIsStandingOnRootBlock && !playerIsMovingOntoRootBlock)
             return;
 
+        // Cancel any older delayed exit before building a new line.
+        if (delayedRootExitCheckCoroutine != null)
+        {
+            StopCoroutine(delayedRootExitCheckCoroutine);
+            delayedRootExitCheckCoroutine = null;
+        }
+
         // Important: lock this BEFORE invoking the global reset event.
         activatedForCurrentRootStand = true;
 
@@ -334,45 +280,30 @@ public class Block_Root : MonoBehaviour
 
     void CheckActivateFromConfirmedStanding()
     {
-        if (!activateFromConfirmedStanding)
+        if (!activateFromConfirmedStanding || Movement.Instance == null ||
+            Movement.Instance.isRespawning || awaitingRespawnRootActivation)
             return;
 
-        if (confirmedStandingActivationCoroutine != null)
-        {
-            StopCoroutine(confirmedStandingActivationCoroutine);
-            confirmedStandingActivationCoroutine = null;
-        }
-
-        confirmedStandingActivationCoroutine = StartCoroutine(CheckActivateFromConfirmedStanding_Delayed());
-    }
-
-    IEnumerator CheckActivateFromConfirmedStanding_Delayed()
-    {
-        yield return null;
-
-        confirmedStandingActivationCoroutine = null;
-
-        if (Movement.Instance == null)
-            yield break;
-
-        if (Movement.Instance.isRespawning)
-            yield break;
-
         GameObject rootSourceBlock = GetRootSourceBlock();
-
         if (rootSourceBlock == null)
-            yield break;
+            return;
 
-        bool playerIsStandingOnThisRootBlock =
-            Movement.Instance.blockStandingOn == rootSourceBlock;
+        // The completed move's target is authoritative at this point.
+        // It is still set because Movement has not yet returned from the
+        // previous move's step-completion event.
+        GameObject completedTarget = Movement.Instance.currentMoveTargetBlock;
+        bool standingOnThisRoot = completedTarget != null
+            ? completedTarget == rootSourceBlock
+            : Movement.Instance.blockStandingOn == rootSourceBlock;
 
-        if (!playerIsStandingOnThisRootBlock)
+        if (!standingOnThisRoot)
         {
             activatedForCurrentRootStand = false;
-            yield break;
+            return;
         }
 
-        QueueRootActivation();
+        if (!activatedForCurrentRootStand)
+            ActivateRootOnceForCurrentStand(GetRootDirectionFromCurrentMovement());
     }
 
     GameObject GetRootSourceBlock()
@@ -387,8 +318,18 @@ public class Block_Root : MonoBehaviour
         if (rootSourceBlock == null || Movement.Instance == null)
             return Vector3.forward;
 
-        // Best case: player is currently moving onto the RootBlock.
-        // Use the block they are moving FROM.
+        // Frozen origin is reliable even when raycasts switch standing blocks
+        // repeatedly during a fast/animated move.
+        if (Movement.Instance.currentMoveTargetBlock == rootSourceBlock &&
+            Movement.Instance.currentMoveStartBlock != null &&
+            Movement.Instance.currentMoveStartBlock != rootSourceBlock)
+        {
+            return SnapDirection(
+                rootSourceBlock.transform.position -
+                Movement.Instance.currentMoveStartBlock.transform.position);
+        }
+
+        // Fallback for other callers without an active move transaction.
         if (Movement.Instance.currentMoveTargetBlock == rootSourceBlock &&
             Movement.Instance.blockStandingOn != null &&
             Movement.Instance.blockStandingOn != rootSourceBlock)
@@ -509,8 +450,12 @@ public class Block_Root : MonoBehaviour
             delayedRootExitCheckCoroutine = null;
         }
 
-        GameObject blockPlayerStartedOn = Movement.Instance.blockStandingOn;
-        GameObject actualTargetBlock = Movement.Instance.currentMoveTargetBlock;
+        GameObject blockPlayerStartedOn = Movement.Instance.currentMoveStartBlock != null
+            ? Movement.Instance.currentMoveStartBlock
+            : Movement.Instance.blockStandingOn;
+        GameObject actualTargetBlock = Movement.Instance.currentMoveTargetBlock != null
+            ? Movement.Instance.currentMoveTargetBlock
+            : Movement.Instance.blockStandingOn;
 
         bool startedFromRootArea =
             IsBlockRooted(blockPlayerStartedOn) ||
@@ -523,7 +468,23 @@ public class Block_Root : MonoBehaviour
         bool shouldDelayBecausePlayerMayBeFalling =
             ShouldDelayRootResetBecausePlayerMayBeFalling(blockPlayerStartedOn, actualTargetBlock);
 
-        // If the player clearly leaves rooted/root-source area onto a non-rooted block, remove immediately.
+        // When the destination remains rooted, no delayed coroutine is needed.
+        // This avoids an old async check invalidating a later fast turn.
+        if (targetKeepsRoots)
+            return;
+
+        // This is already a completed step. If the player has truly landed
+        // outside the root path, remove it now, including position-only and
+        // ladder transitions with no explicit currentMoveTargetBlock.
+        if (!ShouldBlockKeepRoots(Movement.Instance.blockStandingOn) &&
+            !Movement.Instance.isMoving &&
+            Movement.Instance.GetMovementState() == MovementStates.Still)
+        {
+            DestroyRootFreeCostList();
+            return;
+        }
+
+        // Preserve the delayed path for unusual vertical/falling transitions.
         // But do NOT remove immediately during falling / vertical slope movement, because the target block
         // may not be valid yet or may have a changed Y value.
         if (startedFromRootArea && !targetKeepsRoots && !shouldDelayBecausePlayerMayBeFalling)
@@ -640,6 +601,10 @@ public class Block_Root : MonoBehaviour
         if (ShouldBlockKeepRoots(Movement.Instance.blockStandingOn))
             yield break;
 
+        // A newer move might already be heading back onto this root path.
+        if (ShouldBlockKeepRoots(Movement.Instance.currentMoveTargetBlock))
+            yield break;
+
         DestroyRootFreeCostList();
     }
 
@@ -662,6 +627,26 @@ public class Block_Root : MonoBehaviour
 
     #region BuildRootLine
 
+    // Keep the same checkpoint-to-root orientation mapping as before.
+    // Root propagation goes opposite the checkpoint's spawn-facing direction.
+    private static Vector3 GetCheckpointRootDirection(MovementDirection direction)
+    {
+        switch (direction)
+        {
+            case MovementDirection.None:
+            case MovementDirection.Forward:
+                return -Vector3.forward;
+            case MovementDirection.Backward:
+                return -Vector3.back;
+            case MovementDirection.Left:
+                return -Vector3.left;
+            case MovementDirection.Right:
+                return -Vector3.right;
+            default:
+                return -Vector3.forward;
+        }
+    }
+
     void MakeRootFreeCostList()
     {
         Vector3 lookDir_Temp = playerLookDir;
@@ -672,35 +657,10 @@ public class Block_Root : MonoBehaviour
         lookDir_Temp = SnapDirection(lookDir_Temp);
 
         if (Movement.Instance.isRespawning &&
-            transform.parent.gameObject &&
-            transform.parent.gameObject.GetComponent<Block_Checkpoint>())
+            transform.parent != null &&
+            transform.parent.TryGetComponent(out Block_Checkpoint checkpoint))
         {
-            switch (transform.parent.gameObject.GetComponent<Block_Checkpoint>().spawnDirection)
-            {
-                case MovementDirection.None:
-                    lookDir_Temp = -Vector3.forward;
-                    break;
-
-                case MovementDirection.Forward:
-                    lookDir_Temp = -Vector3.forward;
-                    break;
-
-                case MovementDirection.Backward:
-                    lookDir_Temp = -Vector3.back;
-                    break;
-
-                case MovementDirection.Left:
-                    lookDir_Temp = -Vector3.left;
-                    break;
-
-                case MovementDirection.Right:
-                    lookDir_Temp = -Vector3.right;
-                    break;
-
-                default:
-                    lookDir_Temp = -Vector3.forward;
-                    break;
-            }
+            lookDir_Temp = GetCheckpointRootDirection(checkpoint.spawnDirection);
         }
 
         // Keep playerLookDir as the original direction from the RootBlock.
@@ -1184,6 +1144,21 @@ public class Block_Root : MonoBehaviour
         rootAnimCoroutine = null;
     }
 
+    // A root line's block list is authoritative. Restore ownership if another
+    // temporary effect/reset removed it without removing the actual root line.
+    void ReconcileActiveRootCosts()
+    {
+        if (!isActive || RootFreeCostBlockList.Count == 0) return;
+        for (int i = 0; i < RootFreeCostBlockList.Count; i++)
+        {
+            GameObject block = RootFreeCostBlockList[i].block;
+            if (block == null) continue;
+            BlockInfo info = block.GetComponent<BlockInfo>();
+            if (info != null && !info.HasRootMovementCostSource(this))
+                info.AddRootMovementCostSource(this);
+        }
+    }
+
     void ChangeBlockMovementCost()
     {
         for (int i = 0; i < RootFreeCostBlockList.Count; i++)
@@ -1196,7 +1171,7 @@ public class Block_Root : MonoBehaviour
             if (info == null)
                 continue;
 
-            info.SetTemporaryMovementCostOverride(0);
+            info.AddRootMovementCostSource(this);
         }
     }
 
@@ -1299,7 +1274,7 @@ public class Block_Root : MonoBehaviour
             if (info == null)
                 continue;
 
-            info.ClearTemporaryMovementCostOverride();
+            info.RemoveRootMovementCostSource(this);
         }
     }
 
@@ -2111,6 +2086,7 @@ public class Block_Root : MonoBehaviour
         activatedForCurrentRootStand = false;
         queuedActivationDirection = Vector3.zero;
         playerIsInsideRootTrigger = false;
+        awaitingRespawnRootActivation = true;
 
         DestroyRootFreeCostList();
 
@@ -2119,34 +2095,41 @@ public class Block_Root : MonoBehaviour
 
     IEnumerator ActivateIfStandinOnAfterRespawn()
     {
-        yield return null;
+        // Wait for checkpoint teleport and Movement's respawn lock to end.
+        // Until this point trigger activation is intentionally suspended.
+        while (Movement.Instance != null && Movement.Instance.isRespawning)
+            yield return null;
 
         if (Movement.Instance == null)
+        {
+            awaitingRespawnRootActivation = false;
             yield break;
+        }
+
+        yield return null;
 
         GameObject rootSourceBlock = GetRootSourceBlock();
+        bool standingHere =
+            rootSourceBlock != null &&
+            Movement.Instance.blockStandingOn == rootSourceBlock &&
+            (Movement.Instance.currentMoveTargetBlock == null ||
+             Movement.Instance.currentMoveTargetBlock == rootSourceBlock);
 
-        if (rootSourceBlock == null)
-            yield break;
-
-        if (Movement.Instance.blockStandingOn == rootSourceBlock)
+        if (standingHere)
         {
-            ActivateRootOnceForCurrentStand(GetRootDirectionFromCurrentMovement());
+            // During this coroutine isRespawning is already false. Do not
+            // derive direction from previous movement or camera rotation on
+            // checkpoint respawn: only the Block_Checkpoint's spawnDirection.
+            Vector3 direction = GetRootDirectionFromCurrentMovement();
+            if (rootSourceBlock.TryGetComponent(out Block_Checkpoint checkpoint))
+                direction = GetCheckpointRootDirection(checkpoint.spawnDirection);
+
+            awaitingRespawnRootActivation = false;
+            ActivateRootOnceForCurrentStand(direction);
+        }
+        else
+        {
+            awaitingRespawnRootActivation = false;
         }
     }
-}
-
-[Serializable]
-public class RootBlockLineInfo
-{
-    public GameObject block;
-    public int originalMovemetCost;
-
-    public BlockType blockType;
-    public Vector3 facingDir;
-
-    public bool stopContinuationFromThisBlock;
-
-    public bool triggerTeleportEffectWhenRootActivates;
-    public bool teleportEffectHasTriggered;
 }

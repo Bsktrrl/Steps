@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnvironmentalEffectScript : MonoBehaviour
 {
     ParticleSystem PS;
-    AudioSource source;
+    [SerializeField] AudioSource source;
 
     bool first = true;
 
@@ -21,7 +21,6 @@ public class EnvironmentalEffectScript : MonoBehaviour
     void Start()
     {
         PS = GetComponent<ParticleSystem>();
-        source = GetComponent<AudioSource>();
 
         StartCoroutine(PlayParticles());
     }

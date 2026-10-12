@@ -57,6 +57,7 @@ public class NumberDisplay : MonoBehaviour
     private bool eventsAreSubscribed;
 
     public bool NumberDisplayIsSetup => numberDisplayIsSetup;
+    public bool IsNumberVisible => numberIsVisible && numberMeshRenderer != null && numberMeshRenderer.gameObject.activeInHierarchy;
 
 
     //--------------------

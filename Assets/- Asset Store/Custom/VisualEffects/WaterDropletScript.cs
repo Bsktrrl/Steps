@@ -30,11 +30,11 @@ public class WaterDropletScript : MonoBehaviour
     [Header("Impact Surface")]
     [SerializeField] AudioSurface surfaceType;
 
-    AudioSource source;
+    [SerializeField] AudioSource source;
 
     void Start()
     {
-        source = GetComponent<AudioSource>();
+        //source = GetComponent<AudioSource>();
 
         switch (surfaceType)
         {
