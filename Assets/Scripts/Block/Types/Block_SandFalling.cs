@@ -193,6 +193,11 @@ public class Block_SandFalling : MonoBehaviour
         if (!canFall)
             return;
 
+        // Ignore the stale ceiling block while the player is rotating
+        // out of CeilingGrab.
+        if (Player_CeilingGrab.Instance.isCeilingRotation)
+            return;
+
         if (Movement.Instance.blockStandingOn == gameObject &&
             !isSteppedOn &&
             !Player_CeilingGrab.Instance.isCeilingGrabbing &&

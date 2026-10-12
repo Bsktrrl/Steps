@@ -1451,7 +1451,7 @@ public class Movement : Singleton<Movement>
 
         return info.blockElement == BlockElement.Water ||
                info.blockElement == BlockElement.Lava ||
-               //info.blockElement == BlockElement.Quicksand ||
+               info.blockElement == BlockElement.Quicksand ||
                info.blockElement == BlockElement.SwampWater ||
                info.blockElement == BlockElement.Mud;
     }
