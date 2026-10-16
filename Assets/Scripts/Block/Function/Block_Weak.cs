@@ -19,6 +19,7 @@ public class Block_Weak : MonoBehaviour
     public bool isSteppedOn;
 
     private bool isDissolving;
+    private bool pendingBreakFromJump;
 
 
     //--------------------
@@ -28,6 +29,7 @@ public class Block_Weak : MonoBehaviour
     {
         Movement.Action_isSwitchingBlocks += CheckIfSteppenOn;
         Movement.Action_StepTaken += DisolveBlock;
+        Movement.Action_isJumping += CheckIfJumpingFromBlock;
         Movement.Action_RespawnPlayerEarly += ResetBlock;
     }
 
@@ -35,6 +37,7 @@ public class Block_Weak : MonoBehaviour
     {
         Movement.Action_isSwitchingBlocks -= CheckIfSteppenOn;
         Movement.Action_StepTaken -= DisolveBlock;
+        Movement.Action_isJumping -= CheckIfJumpingFromBlock;
         Movement.Action_RespawnPlayerEarly -= ResetBlock;
     }
 
@@ -55,20 +58,36 @@ public class Block_Weak : MonoBehaviour
                 IceBreakingEffect_Manager.Instance.CrackIce_Start();
             }
 
-            // Do not interrupt ice that is already breaking.
-            if (!isDissolving)
+            // Do not interrupt ice that is already breaking
+            // or waiting for the player's jump to finish.
+            if (!isDissolving && !pendingBreakFromJump)
             {
                 ResetBlock();
             }
         }
     }
 
+    // Remember when the player jumps away from this block.
+    void CheckIfJumpingFromBlock()
+    {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+            return;
+
+        if (Movement.Instance.currentMoveStartBlock == gameObject)
+        {
+            pendingBreakFromJump = true;
+        }
+    }
+
     void DisolveBlock()
     {
-        if (!isSteppedOn || Player_CeilingGrab.Instance.isCeilingGrabbing)
+        if ((!isSteppedOn && !pendingBreakFromJump) ||
+            Player_CeilingGrab.Instance.isCeilingGrabbing)
         {
             return;
         }
+
+        pendingBreakFromJump = false;
 
         StartDissolving();
     }
@@ -112,6 +131,7 @@ public class Block_Weak : MonoBehaviour
 
         isSteppedOn = false;
         isDissolving = false;
+        pendingBreakFromJump = false;
 
         if (!Movement.Instance.isIceGliding)
         {
@@ -125,6 +145,7 @@ public class Block_Weak : MonoBehaviour
 
         isSteppedOn = false;
         isDissolving = false;
+        pendingBreakFromJump = false;
 
         gameObject.SetActive(true);
 

@@ -231,6 +231,9 @@ public class Block_Moveable : MonoBehaviour
     {
         if (isMoving || isDespawned) return;
 
+        // Do not let a push relocate a block during an already-started Dash.
+        if (Movement.Instance != null && Movement.Instance.isDashing) return;
+
         RefreshMovementState();
 
         if (movementDirection == MovementDirection.None) return;
@@ -250,6 +253,9 @@ public class Block_Moveable : MonoBehaviour
         isMoving = true;
         isIceGliding = false;
         movingBlockCount++;
+
+        // Hide invalid dash previews immediately while this block is in motion.
+        Movement.Instance.RefreshAfterMoveableBlockChange();
     }
 
 
@@ -700,7 +706,7 @@ public class Block_Moveable : MonoBehaviour
         canMove = false;
 
         RefreshMovementState();
-        Movement.Instance.RefreshAvailableMovementBlocksSmooth();
+        Movement.Instance.RefreshAfterMoveableBlockChange();
     }
 
     private void ResetBlockPos()
@@ -724,7 +730,7 @@ public class Block_Moveable : MonoBehaviour
 
         canMove = false;
         RefreshMovementState();
-        Movement.Instance.RefreshAvailableMovementBlocksSmooth();
+        Movement.Instance.RefreshAfterMoveableBlockChange();
     }
 
 

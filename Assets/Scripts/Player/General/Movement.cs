@@ -175,6 +175,7 @@ public class Movement : Singleton<Movement>
     private readonly HashSet<GameObject> currentlyDarkenedBlocks = new HashSet<GameObject>();
 
     [SerializeField] private float turnBeforeMoveDelay = 0.12f;
+    [SerializeField] private float dashThroughMoveableTurnDelay = 0.18f;
     private float lastTurnTime = -999f;
     private bool turnedThisFrame = false;
     private Vector3 lastTurnedToDir = Vector3.zero;
@@ -2645,7 +2646,10 @@ public class Movement : Singleton<Movement>
 
     void UpdateDashMovements(MoveOptions moveOption, Vector3 dir)
     {
-        if (!PlayerHasDashAbility() || !TryGetStandingInfo(out BlockInfo standingInfo))
+        // The player cannot start any movement while a crate is travelling.
+        // Clear its cached dash previews too, so an old destination isn't shown.
+        if (Block_Moveable.AnyBlockMoving ||
+            !PlayerHasDashAbility() || !TryGetStandingInfo(out BlockInfo standingInfo))
         {
             ClearMoveTarget(moveOption);
             return;
@@ -2670,6 +2674,12 @@ public class Movement : Singleton<Movement>
             }
             else if (IsBlockedPlayerMoveElement(targetInfo.blockElement))
             {
+                ClearMoveTarget(moveOption);
+            }
+            else if (!HasStandingRoomAboveNormalTarget(outObj3))
+            {
+                // A block sitting on the landing platform occupies the
+                // player's destination even when the supporting tile is valid.
                 ClearMoveTarget(moveOption);
             }
             else if (outObj3 != blockStandingOn)
@@ -3255,6 +3265,12 @@ public class Movement : Singleton<Movement>
         return Time.time - lastTurnTime < turnBeforeMoveDelay;
     }
 
+    private bool ShouldDelayDashThroughMoveable(Vector3 desiredDir)
+    {
+        return desiredDir == lastTurnedToDir &&
+               Time.time - lastTurnTime < dashThroughMoveableTurnDelay;
+    }
+
     private bool DashPassesThroughMoveableBlock(Vector3 dir)
     {
         if (!TryGetStandingInfo(out BlockInfo standingInfo))
@@ -3308,6 +3324,34 @@ public class Movement : Singleton<Movement>
     {
         if (TryGetBlockInfo(obj, out BlockInfo info))
             info.ResetDarkenColor();
+    }
+
+    // Called when a movable block begins or finishes moving.
+    // Unlike player step chaining, an external block relocation must update
+    // both cached movement options AND their displayed highlights immediately.
+    public void RefreshAfterMoveableBlockChange()
+    {
+        Physics.SyncTransforms();
+
+        if (isRespawning || isMoving ||
+            movementStates == MovementStates.Moving ||
+            movementStates == MovementStates.Falling)
+        {
+            UpdateAvailableMovementBlocks();
+            return;
+        }
+
+        RestoreAllSlopeDisplayOverrides();
+        UpdateBlocks();
+        ApplySlopeDisplayOverridesToCurrentTargets();
+
+        suppressDarkeningWhileChaining = false;
+        pendingDarkeningRefreshAfterChain = false;
+        lastMovementVisualActivityTime = Time.unscaledTime;
+
+        SyncDarkenedBlocksToCurrentTargets();
+        EnsureCurrentTargetNumbersVisible();
+        Action_UpdatedBlocks?.Invoke();
     }
 
     public void RefreshAvailableMovementBlocksSmooth()
@@ -3844,9 +3888,14 @@ public class Movement : Singleton<Movement>
             MoveOptions dashOption = GetDashOptionForDirection(localDir);
             Vector3 worldDir = UpdatedDir(localDir);
 
+            // The block may have moved since the cached dash target was made.
+            // Recheck occupancy before committing to a dash destination.
+            Physics.SyncTransforms();
+            UpdateDashMovements(dashOption, worldDir);
+
             bool shouldDelayDash =
                 DashPassesThroughMoveableBlock(worldDir) &&
-                ShouldDelayAbilityMove(worldDir);
+                ShouldDelayDashThroughMoveable(worldDir);
 
             if (HasValidTarget(dashOption) && !shouldDelayDash)
             {
