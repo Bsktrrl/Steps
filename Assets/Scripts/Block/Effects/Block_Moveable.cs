@@ -266,6 +266,10 @@ public class Block_Moveable : MonoBehaviour
         if (Movement.Instance.IsInTurnAbilityDelay(facingTowardBlock))
             return;
 
+        // The starting tile may already be cracked ice. Begin its crack
+        // effect too, so the very first tile receives both stages.
+        CrackWeakIceBelow(savePos);
+
         isMoving = true;
         isIceGliding = false;
         movingBlockCount++;
@@ -300,8 +304,10 @@ public class Block_Moveable : MonoBehaviour
             transform.position = targetPos;
             savePos = targetPos;
 
-            // Break cracked ice underneath the previous position.
+            // Break the cracked ice just left, then play a fresh crack
+            // effect on the tile the block has now reached.
             BreakWeakIceBelow(previousPos);
+            CrackWeakIceBelow(savePos);
 
             // Slopes are deliberately excluded from HasSupportBelow.
             // Recognize the slope at this grid cell BEFORE starting a fall.
@@ -355,6 +361,34 @@ public class Block_Moveable : MonoBehaviour
         }
     }
 
+
+
+    private void CrackWeakIceBelow(Vector3 worldPos)
+    {
+        Vector3 rayOrigin =
+            worldPos + Vector3.up * DOWN_RAY_START_OFFSET;
+
+        RaycastHit[] hits = Physics.RaycastAll(
+            rayOrigin,
+            Vector3.down,
+            DOWN_RAY_DISTANCE
+        );
+
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.collider == null)
+                continue;
+
+            Block_Weak weakBlock =
+                hit.collider.GetComponentInParent<Block_Weak>();
+
+            if (weakBlock != null)
+            {
+                weakBlock.CrackFromMoveableBlock();
+                return;
+            }
+        }
+    }
 
 
     private bool ShouldContinueIceGlide()

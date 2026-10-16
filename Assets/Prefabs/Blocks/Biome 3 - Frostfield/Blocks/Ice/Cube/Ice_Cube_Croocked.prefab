@@ -143,6 +143,17 @@ AudioSource:
   m_CorrespondingSourceObject: {fileID: 1564654783436068336, guid: 12105bd5fd3c459489fb6bc36ed8da06, type: 3}
   m_PrefabInstance: {fileID: 3591409593506410288}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3746643231258099234 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 155936949539148050, guid: 12105bd5fd3c459489fb6bc36ed8da06, type: 3}
+  m_PrefabInstance: {fileID: 3591409593506410288}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347945003810817425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4d0f12c9675fd4ca5ed72ccabe64f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6364208390789273259 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7603494750354618779, guid: 12105bd5fd3c459489fb6bc36ed8da06, type: 3}
@@ -587,6 +598,8 @@ MonoBehaviour:
   newBlock: {fileID: 0}
   IceCracked_Parent: {fileID: 1347945003810817425}
   IceCracked_Parent_InScene: {fileID: 0}
+  moveableIceEffectPrefab: {fileID: 3746643231258099234}
+  moveableEffectLifetime: 2.5
   isSteppedOn: 0
 --- !u!4 &8719305061214501374 stripped
 Transform:
