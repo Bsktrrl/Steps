@@ -1,3 +1,4 @@
+
 using System;
 using UnityEngine;
 
@@ -11,6 +12,10 @@ public class Block_Moveable : MonoBehaviour
     [SerializeField] private bool isMoving;
     [SerializeField] private bool isIceGliding;
 
+    private bool isFalling;
+    private bool isDespawned;
+    private float fallSpeed;
+
     private Vector3 startPos;
     private Vector3 savePos;
 
@@ -21,6 +26,12 @@ public class Block_Moveable : MonoBehaviour
     private const float DOWN_RAY_START_OFFSET = 0.25f;
     private const float DOWN_RAY_DISTANCE = 1f;
     private const float FORWARD_CHECK_DISTANCE = 1f;
+    private const float DESPAWN_Y = -5f;
+
+    private Renderer[] blockRenderers;
+    private Collider[] blockColliders;
+    private bool[] rendererStates;
+    private bool[] colliderStates;
 
     public static int movingBlockCount = 0;
     public static bool AnyBlockMoving => movingBlockCount > 0;
@@ -41,6 +52,12 @@ public class Block_Moveable : MonoBehaviour
     private void Update()
     {
         if (!isMoving) return;
+
+        if (isFalling)
+        {
+            PerformFalling();
+            return;
+        }
 
         float speed = isIceGliding ? 10f : blockInfo.movementSpeed;
         PerformMovement(speed);
@@ -80,7 +97,7 @@ public class Block_Moveable : MonoBehaviour
 
     private void RefreshMovementState()
     {
-        if (isMoving) return;
+        if (isMoving || isDespawned) return;
 
         movementDirection = GetPushDirectionFromPlayer();
         canMove = movementDirection != MovementDirection.None && CanMoveOneStep();
@@ -141,13 +158,12 @@ public class Block_Moveable : MonoBehaviour
         Vector3 moveDir = GetMoveVector();
         if (moveDir == Vector3.zero) return false;
 
-        Vector3 targetPos = savePos + moveDir;
-
         if (HasBlockingObjectInFront(moveDir))
             return false;
 
-        if (!HasSupportBelow(targetPos))
-            return false;
+        // Support is no longer required for a horizontal push.
+        // If the destination has no support, the block will fall
+        // after completing its horizontal movement.
 
         return true;
     }
@@ -198,7 +214,7 @@ public class Block_Moveable : MonoBehaviour
 
     private void ActivateBlockMovement()
     {
-        if (isMoving) return;
+        if (isMoving || isDespawned) return;
 
         RefreshMovementState();
 
@@ -221,6 +237,7 @@ public class Block_Moveable : MonoBehaviour
         movingBlockCount++;
     }
 
+
     private void PerformMovement(float movementSpeed)
     {
         Vector3 moveDir = GetMoveVector();
@@ -240,10 +257,20 @@ public class Block_Moveable : MonoBehaviour
 
         if (Vector3.Distance(transform.position, targetPos) <= SNAP_DISTANCE)
         {
+            // Remember where the block was before moving.
+            Vector3 previousPos = savePos;
+
             transform.position = targetPos;
             savePos = targetPos;
 
-            if (ShouldContinueIceGlide())
+            // Break cracked ice underneath the previous position.
+            BreakWeakIceBelow(previousPos);
+
+            if (!HasSupportBelow(savePos))
+            {
+                StartFalling();
+            }
+            else if (ShouldContinueIceGlide())
             {
                 isMoving = true;
                 isIceGliding = true;
@@ -258,6 +285,35 @@ public class Block_Moveable : MonoBehaviour
         }
     }
 
+    private void BreakWeakIceBelow(Vector3 previousPos)
+    {
+        Vector3 rayOrigin =
+            previousPos + Vector3.up * DOWN_RAY_START_OFFSET;
+
+        RaycastHit[] hits = Physics.RaycastAll(
+            rayOrigin,
+            Vector3.down,
+            DOWN_RAY_DISTANCE
+        );
+
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.collider == null)
+                continue;
+
+            Block_Weak weakBlock =
+                hit.collider.GetComponentInParent<Block_Weak>();
+
+            if (weakBlock != null)
+            {
+                weakBlock.BreakFromMoveableBlock();
+                return;
+            }
+        }
+    }
+
+
+
     private bool ShouldContinueIceGlide()
     {
         Vector3 moveDir = GetMoveVector();
@@ -270,19 +326,224 @@ public class Block_Moveable : MonoBehaviour
 
         Vector3 nextPos = savePos + moveDir;
 
-        // Next step must be valid.
+        // Cannot continue through another block.
         if (HasBlockingObjectInFront(moveDir))
             return false;
 
+        // Allow gliding off an edge.
+        // The block will move one horizontal grid space
+        // and then begin falling.
         if (!HasSupportBelow(nextPos))
-            return false;
+            return true;
 
-        // Only continue gliding if the NEXT tile is also ice.
+        // Otherwise, preserve the original ice-glide rule:
+        // the next supported tile must also be ice.
         if (!IsIceBelow(nextPos))
             return false;
 
         return true;
     }
+
+
+    //--------------------
+    // Falling
+    //--------------------
+
+
+    private void StartFalling()
+    {
+        isFalling = true;
+        isIceGliding = false;
+        fallSpeed = 0f;
+    }
+
+    private void PerformFalling()
+    {
+        // Accelerate downward using Unity gravity.
+        fallSpeed += Mathf.Abs(Physics.gravity.y) * Time.deltaTime;
+
+        float fallDistance = fallSpeed * Time.deltaTime;
+
+        Vector3 currentPos = transform.position;
+        float nextY = currentPos.y - fallDistance;
+
+        // Check for blocks that the falling block could land on
+        // during this frame.
+        //
+        // The additional half-grid distance accounts for the
+        // bottom of the moving block reaching the supporting block.
+        RaycastHit[] hits = Physics.RaycastAll(
+            currentPos,
+            Vector3.down,
+            fallDistance + GRID_SIZE * 0.5f + SNAP_DISTANCE,
+            Physics.DefaultRaycastLayers,
+            QueryTriggerInteraction.Ignore
+        );
+
+        bool foundLanding = false;
+        float landingY = float.NegativeInfinity;
+
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.transform == null)
+                continue;
+
+            // Ignore this block and its child colliders.
+            if (hit.transform == transform ||
+                hit.transform.IsChildOf(transform))
+                continue;
+
+            // Only land on another block.
+            BlockInfo supportBlock =
+                hit.collider.GetComponentInParent<BlockInfo>();
+
+            if (supportBlock == null)
+                continue;
+
+            // The movable block occupies one vertical grid unit.
+            float possibleLandingY =
+                hit.point.y + GRID_SIZE * 0.5f;
+
+            // The supporting surface must be reached during
+            // this frame and must not be below the despawn level.
+            if (possibleLandingY > currentPos.y + SNAP_DISTANCE)
+                continue;
+
+            if (possibleLandingY < nextY - SNAP_DISTANCE)
+                continue;
+
+            if (possibleLandingY < DESPAWN_Y)
+                continue;
+
+            // Choose the highest valid landing surface.
+            if (possibleLandingY > landingY)
+            {
+                landingY = possibleLandingY;
+                foundLanding = true;
+            }
+        }
+
+        if (foundLanding)
+        {
+            transform.position = new Vector3(
+                currentPos.x,
+                landingY,
+                currentPos.z
+            );
+
+            savePos = transform.position;
+
+            LandFromFalling();
+            return;
+        }
+
+        // Continue falling vertically.
+        transform.position = new Vector3(
+            currentPos.x,
+            nextY,
+            currentPos.z
+        );
+
+        // Remove the block if it falls below Y = -5.
+        if (transform.position.y < DESPAWN_Y)
+        {
+            DespawnBlock();
+        }
+    }
+
+    private void LandFromFalling()
+    {
+        isFalling = false;
+        fallSpeed = 0f;
+
+        // Continue moving in the original direction if
+        // the block landed on ice and the glide can continue.
+        if (ShouldContinueIceGlide())
+        {
+            isMoving = true;
+            isIceGliding = true;
+        }
+        else
+        {
+            // Landing on a normal block, or reaching the end
+            // of a valid ice path, stops movement.
+            StopMovement();
+        }
+    }
+
+
+    //--------------------
+    // Despawning
+    //--------------------
+
+
+    private void DespawnBlock()
+    {
+        if (isDespawned)
+            return;
+
+        isDespawned = true;
+        isFalling = false;
+        fallSpeed = 0f;
+
+        // Keep the GameObject active so that its existing
+        // player-respawn event can restore the block.
+        // Hide all renderers and disable all colliders instead.
+        blockRenderers = GetComponentsInChildren<Renderer>(true);
+        blockColliders = GetComponentsInChildren<Collider>(true);
+
+        rendererStates = new bool[blockRenderers.Length];
+        colliderStates = new bool[blockColliders.Length];
+
+        for (int i = 0; i < blockRenderers.Length; i++)
+        {
+            rendererStates[i] = blockRenderers[i].enabled;
+            blockRenderers[i].enabled = false;
+        }
+
+        for (int i = 0; i < blockColliders.Length; i++)
+        {
+            colliderStates[i] = blockColliders[i].enabled;
+            blockColliders[i].enabled = false;
+        }
+
+        StopMovement();
+
+        Movement.Instance.UpdateAvailableMovementBlocks();
+        DisplayButtonMessage();
+    }
+
+    private void RestoreDespawnedBlock()
+    {
+        if (!isDespawned)
+            return;
+
+        // Restore each renderer and collider to the enabled
+        // state it had before the block despawned.
+        if (blockRenderers != null)
+        {
+            for (int i = 0; i < blockRenderers.Length; i++)
+            {
+                if (blockRenderers[i] != null)
+                    blockRenderers[i].enabled = rendererStates[i];
+            }
+        }
+
+        if (blockColliders != null)
+        {
+            for (int i = 0; i < blockColliders.Length; i++)
+            {
+                if (blockColliders[i] != null)
+                    blockColliders[i].enabled = colliderStates[i];
+            }
+        }
+
+        isDespawned = false;
+    }
+
+
+    //--------------------
+
 
     private void StopMovement()
     {
@@ -293,6 +554,8 @@ public class Block_Moveable : MonoBehaviour
 
         isMoving = false;
         isIceGliding = false;
+        isFalling = false;
+        fallSpeed = 0f;
         canMove = false;
 
         RefreshMovementState();
@@ -308,9 +571,14 @@ public class Block_Moveable : MonoBehaviour
 
         isMoving = false;
         isIceGliding = false;
+        isFalling = false;
+        fallSpeed = 0f;
 
         transform.position = startPos;
         savePos = startPos;
+
+        // Restore the block if it previously fell below Y = -5.
+        RestoreDespawnedBlock();
 
         canMove = false;
         RefreshMovementState();

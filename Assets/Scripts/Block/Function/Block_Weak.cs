@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ public class Block_Weak : MonoBehaviour
     [SerializeField] GameObject IceCracked_Parent_InScene;
 
     public bool isSteppedOn;
+
+    private bool isDissolving;
 
 
     //--------------------
@@ -52,17 +55,44 @@ public class Block_Weak : MonoBehaviour
                 IceBreakingEffect_Manager.Instance.CrackIce_Start();
             }
 
-
-            ResetBlock();
+            // Do not interrupt ice that is already breaking.
+            if (!isDissolving)
+            {
+                ResetBlock();
+            }
         }
     }
 
     void DisolveBlock()
     {
-        if (!isSteppedOn || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+        if (!isSteppedOn || Player_CeilingGrab.Instance.isCeilingGrabbing)
+        {
+            return;
+        }
+
+        StartDissolving();
+    }
+
+    // Called when a movable block leaves this cracked ice.
+    public void BreakFromMoveableBlock()
+    {
+        if (!isActiveAndEnabled)
+            return;
+
+        StartDissolving();
+    }
+
+    private void StartDissolving()
+    {
+        // Prevent multiple breaking effects and coroutines.
+        if (isDissolving)
+            return;
+
+        isDissolving = true;
 
         StartCoroutine(WaitBeforeDisolveBlock(0.145f));
     }
+
     IEnumerator WaitBeforeDisolveBlock(float waitTime)
     {
         Vector3 breakPosition = transform.position;
@@ -81,6 +111,7 @@ public class Block_Weak : MonoBehaviour
         gameObject.SetActive(false);
 
         isSteppedOn = false;
+        isDissolving = false;
 
         if (!Movement.Instance.isIceGliding)
         {
@@ -90,7 +121,11 @@ public class Block_Weak : MonoBehaviour
 
     public void ResetBlock()
     {
+        StopAllCoroutines();
+
         isSteppedOn = false;
+        isDissolving = false;
+
         gameObject.SetActive(true);
 
         if (originalBlock != null)
