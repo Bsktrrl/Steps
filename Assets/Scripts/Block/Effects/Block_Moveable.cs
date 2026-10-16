@@ -136,15 +136,31 @@ public class Block_Moveable : MonoBehaviour
         return MovementDirection.None;
     }
 
+
     private bool IsPlayerAdjacent(Vector3 directionToPlayer)
     {
-        if (Physics.Raycast(transform.position, directionToPlayer, out RaycastHit hit, GRID_SIZE, MapManager.Instance.playerExclusive_LayerMask))
-        {
-            return hit.collider != null && hit.collider.gameObject == PlayerManager.Instance.player;
-        }
+        if (PlayerManager.Instance == null ||
+            PlayerManager.Instance.player == null)
+            return false;
 
-        return false;
+        Vector3 expectedPlayerPos =
+            transform.position + directionToPlayer * GRID_SIZE;
+
+        Vector3 actualPlayerPos =
+            PlayerManager.Instance.player.transform.position;
+
+        const float horizontalTolerance = 0.15f;
+        const float verticalTolerance = 0.25f;
+
+        return
+            Mathf.Abs(actualPlayerPos.x - expectedPlayerPos.x)
+                <= horizontalTolerance &&
+            Mathf.Abs(actualPlayerPos.z - expectedPlayerPos.z)
+                <= horizontalTolerance &&
+            Mathf.Abs(actualPlayerPos.y - expectedPlayerPos.y)
+                <= verticalTolerance;
     }
+
 
     private Vector3 GetMoveVector()
     {
