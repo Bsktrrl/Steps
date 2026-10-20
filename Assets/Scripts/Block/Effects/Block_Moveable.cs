@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Block_Moveable : MonoBehaviour
@@ -37,6 +38,17 @@ public class Block_Moveable : MonoBehaviour
     private bool[] rendererStates;
     private bool[] colliderStates;
 
+    // Only the colliders of non-supporting liquids covered by this block
+    // are temporarily disabled. Their original states are restored on exit.
+    private readonly List<Collider> coveredLiquidColliders = new List<Collider>();
+
+    // Keep the logical 1x1x1 block on the grid. Only its visual children
+    // are lowered into quicksand, similarly to the player's body height.
+    private readonly List<Transform> quicksandVisualChildren = new List<Transform>();
+    private readonly List<Vector3> quicksandVisualStartPositions = new List<Vector3>();
+    private int quicksandSinkStage;
+    private Vector3Int? lastQuicksandCell;
+
     public static int movingBlockCount = 0;
     public static bool AnyBlockMoving => movingBlockCount > 0;
 
@@ -50,6 +62,8 @@ public class Block_Moveable : MonoBehaviour
         savePos = transform.position;
         blockInfo = GetComponent<BlockInfo>();
 
+        CacheQuicksandVisualChildren();
+        DisableCoveredLiquidColliders(savePos);
         RefreshMovementState();
     }
 
@@ -69,7 +83,12 @@ public class Block_Moveable : MonoBehaviour
             return;
         }
 
-        float speed = isIceGliding ? 10f : blockInfo.movementSpeed;
+        // Preserve the original ice-glide speed. Ordinary pushes become
+        // 15% slower per quicksand stage, relative to the original speed.
+        // This never writes to BlockInfo.movementSpeed, so reductions cannot stack.
+        float speed = isIceGliding
+            ? 10f
+            : blockInfo.movementSpeed * GetQuicksandMovementSpeedMultiplier();
         PerformMovement(speed);
     }
 
@@ -91,6 +110,8 @@ public class Block_Moveable : MonoBehaviour
 
     private void OnDisable()
     {
+        RestoreCoveredLiquidColliders();
+
         Movement.Action_StepTaken -= RefreshMovementState;
         Movement.Action_BodyRotated -= RefreshMovementState;
         Movement.Action_RespawnPlayer -= ResetBlockPos;
@@ -203,10 +224,35 @@ public class Block_Moveable : MonoBehaviour
     {
         if (Physics.Raycast(transform.position, moveDir, out RaycastHit hit, FORWARD_CHECK_DISTANCE))
         {
-            if (hit.transform != null && hit.transform.GetComponent<BlockInfo>() != null)
+            // Preserve the existing first-hit behavior except where the
+            // first hit is one of the four pass-through liquids.
+            if (!IsPassThroughLiquid(hit.collider.GetComponentInParent<BlockInfo>()))
             {
-                Debug.DrawRay(transform.position, moveDir * FORWARD_CHECK_DISTANCE, Color.red, 0.5f);
-                return true;
+                bool blocked = hit.transform != null &&
+                               hit.transform.GetComponent<BlockInfo>() != null;
+                Debug.DrawRay(transform.position, moveDir * FORWARD_CHECK_DISTANCE,
+                    blocked ? Color.red : Color.green, 0.5f);
+                return blocked;
+            }
+
+            RaycastHit[] hits = Physics.RaycastAll(
+                transform.position, moveDir, FORWARD_CHECK_DISTANCE);
+            Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+            foreach (RaycastHit candidate in hits)
+            {
+                if (candidate.collider == null ||
+                    candidate.transform == transform ||
+                    candidate.transform.IsChildOf(transform))
+                    continue;
+
+                if (IsPassThroughLiquid(candidate.collider.GetComponentInParent<BlockInfo>()))
+                    continue;
+
+                bool blocked = candidate.transform.GetComponent<BlockInfo>() != null;
+                Debug.DrawRay(transform.position, moveDir * FORWARD_CHECK_DISTANCE,
+                    blocked ? Color.red : Color.green, 0.5f);
+                return blocked;
             }
         }
 
@@ -214,21 +260,188 @@ public class Block_Moveable : MonoBehaviour
         return false;
     }
 
-    private bool HasSupportBelow(Vector3 worldPos)
+    // Water, lava, swamp water and mud have no physical support for a
+    // moveable block. Quicksand deliberately does NOT belong to this group.
+    private static bool IsPassThroughLiquid(BlockInfo info)
+    {
+        return info != null &&
+               (info.GetComponent<Block_Water>() != null ||
+                info.GetComponent<Block_Lava>() != null ||
+                info.GetComponent<Block_SwampWater>() != null ||
+                info.GetComponent<Block_Mud>() != null);
+    }
+
+    private BlockInfo GetSupportingBlockBelow(Vector3 worldPos)
     {
         Vector3 rayOrigin = worldPos + Vector3.up * DOWN_RAY_START_OFFSET;
+        if (!Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit firstHit,
+                DOWN_RAY_DISTANCE))
+            return null;
 
-        if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit, DOWN_RAY_DISTANCE))
+        // In ordinary situations, retain the exact first-hit rule.
+        // Only look behind a collision if that collision was liquid.
+        if (!IsPassThroughLiquid(firstHit.collider.GetComponentInParent<BlockInfo>()))
+            return GetValidSupport(firstHit);
+
+        RaycastHit[] hits = Physics.RaycastAll(
+            rayOrigin, Vector3.down, DOWN_RAY_DISTANCE);
+        Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+        foreach (RaycastHit hit in hits)
         {
-            if (hit.transform != null && hit.transform.GetComponent<BlockInfo>() != null && hit.transform.GetComponent<BlockInfo>().blockType != BlockType.Stair && hit.transform.GetComponent<BlockInfo>().blockType != BlockType.Slope)
-            {
-                Debug.DrawRay(rayOrigin, Vector3.down * DOWN_RAY_DISTANCE, Color.green, 0.5f);
-                return true;
-            }
+            if (hit.collider == null ||
+                hit.transform == transform ||
+                hit.transform.IsChildOf(transform))
+                continue;
+
+            if (IsPassThroughLiquid(hit.collider.GetComponentInParent<BlockInfo>()))
+                continue;
+
+            return GetValidSupport(hit);
         }
 
-        Debug.DrawRay(rayOrigin, Vector3.down * DOWN_RAY_DISTANCE, Color.red, 0.5f);
-        return false;
+        return null;
+    }
+
+    private static BlockInfo GetValidSupport(RaycastHit hit)
+    {
+        BlockInfo support = hit.transform.GetComponent<BlockInfo>();
+        if (support == null || support.blockType == BlockType.Stair ||
+            support.blockType == BlockType.Slope)
+            return null;
+
+        return support;
+    }
+
+    private bool HasSupportBelow(Vector3 worldPos)
+    {
+        bool supported = GetSupportingBlockBelow(worldPos) != null;
+        Vector3 rayOrigin = worldPos + Vector3.up * DOWN_RAY_START_OFFSET;
+        Debug.DrawRay(rayOrigin, Vector3.down * DOWN_RAY_DISTANCE,
+            supported ? Color.green : Color.red, 0.5f);
+        return supported;
+    }
+
+    //--------------------
+    // Liquid overlap and quicksand visual stages
+    //--------------------
+
+    private void RestoreCoveredLiquidColliders()
+    {
+        foreach (Collider collider in coveredLiquidColliders)
+        {
+            if (collider != null)
+                collider.enabled = true;
+        }
+
+        coveredLiquidColliders.Clear();
+    }
+
+    private void DisableCoveredLiquidColliders(Vector3 gridPos)
+    {
+        RestoreCoveredLiquidColliders();
+        Physics.SyncTransforms();
+
+        // Only cover liquid blocks occupying the SAME grid cell. Liquids
+        // below the movable block keep their normal player interaction.
+        Vector3Int cell = Vector3Int.RoundToInt(gridPos);
+        Collider[] nearby = Physics.OverlapBox(
+            (Vector3)cell, Vector3.one * 0.35f,
+            Quaternion.identity, ~0,
+            QueryTriggerInteraction.Collide);
+
+        HashSet<BlockInfo> processed = new HashSet<BlockInfo>();
+        foreach (Collider overlap in nearby)
+        {
+            if (overlap == null)
+                continue;
+
+            BlockInfo liquid = overlap.GetComponentInParent<BlockInfo>();
+            if (liquid == null || liquid == blockInfo ||
+                liquid.GridPosition != cell ||
+                !IsPassThroughLiquid(liquid) || !processed.Add(liquid))
+                continue;
+
+            foreach (Collider liquidCollider in liquid.GetComponentsInChildren<Collider>(true))
+            {
+                if (liquidCollider != null && liquidCollider.enabled)
+                {
+                    coveredLiquidColliders.Add(liquidCollider);
+                    liquidCollider.enabled = false;
+                }
+            }
+        }
+    }
+
+    private void CacheQuicksandVisualChildren()
+    {
+        quicksandVisualChildren.Clear();
+        quicksandVisualStartPositions.Clear();
+
+        // The existing BlockInfo expects its mesh renderers on children.
+        // Keep root position, grid checks and root colliders unchanged.
+        foreach (Transform child in transform)
+        {
+            if (child.GetComponentInChildren<Renderer>(true) == null)
+                continue;
+
+            quicksandVisualChildren.Add(child);
+            quicksandVisualStartPositions.Add(child.localPosition);
+        }
+    }
+
+    private void SetQuicksandVisualStage(int stage)
+    {
+        quicksandSinkStage = Mathf.Clamp(stage, 0, 5);
+
+        // Player_BodyHeight uses -0.15 normally and -0.30/-0.42/-0.54/
+        // -0.66/-0.78 for quicksand. These are the corresponding deltas.
+        float sinkOffset = quicksandSinkStage == 0 ? 0f :
+                           -0.15f - 0.12f * (quicksandSinkStage - 1);
+
+        for (int i = 0; i < quicksandVisualChildren.Count; i++)
+        {
+            if (quicksandVisualChildren[i] != null)
+                quicksandVisualChildren[i].localPosition =
+                    quicksandVisualStartPositions[i] + Vector3.up * sinkOffset;
+        }
+    }
+
+    private void RefreshQuicksandStageAtRest()
+    {
+        BlockInfo support = GetSupportingBlockBelow(savePos);
+        if (support == null || support.GetComponent<Block_Quicksand>() == null)
+        {
+            lastQuicksandCell = null;
+            SetQuicksandVisualStage(0);
+            return;
+        }
+
+        Vector3Int currentCell = Vector3Int.RoundToInt(savePos);
+        if (!lastQuicksandCell.HasValue || lastQuicksandCell.Value != currentCell)
+        {
+            lastQuicksandCell = currentCell;
+            SetQuicksandVisualStage(quicksandSinkStage + 1);
+        }
+    }
+
+    private void ResetQuicksandStage()
+    {
+        lastQuicksandCell = null;
+        SetQuicksandVisualStage(0);
+    }
+
+    private float GetQuicksandMovementSpeedMultiplier()
+    {
+        // Stage 0 = 100%, stage 1 = 90%, ..., stage 5 = 50%.
+        // quicksandSinkStage belongs to this block, independent of the player.
+        return 1f - 0.14f * Mathf.Clamp(quicksandSinkStage, 0, 5);
+    }
+
+    private void UpdateRestingSurfaceEffects()
+    {
+        DisableCoveredLiquidColliders(savePos);
+        RefreshQuicksandStageAtRest();
     }
 
     private bool IsIceBelow(Vector3 worldPos)
@@ -303,6 +516,7 @@ public class Block_Moveable : MonoBehaviour
 
             transform.position = targetPos;
             savePos = targetPos;
+            RestoreCoveredLiquidColliders();
 
             // Break the cracked ice just left, then play a fresh crack
             // effect on the tile the block has now reached.
@@ -457,7 +671,8 @@ public class Block_Moveable : MonoBehaviour
                 continue;
 
             BlockInfo info = hit.GetComponentInParent<BlockInfo>();
-            if (info != null && info.GridPosition == expected)
+            if (info != null && info.GridPosition == expected &&
+                !IsPassThroughLiquid(info))
                 return info;
         }
 
@@ -516,6 +731,7 @@ public class Block_Moveable : MonoBehaviour
 
         transform.position = slopeGlideTarget;
         savePos = slopeGlideTarget;
+        RestoreCoveredLiquidColliders();
         isSlopeGliding = false;
 
         // A second downhill slope should continue the same diagonal glide.
@@ -548,6 +764,8 @@ public class Block_Moveable : MonoBehaviour
 
     private void StartFalling()
     {
+        RestoreCoveredLiquidColliders();
+        ResetQuicksandStage();
         isFalling = true;
         isIceGliding = false;
         fallSpeed = 0f;
@@ -593,7 +811,7 @@ public class Block_Moveable : MonoBehaviour
             BlockInfo supportBlock =
                 hit.collider.GetComponentInParent<BlockInfo>();
 
-            if (supportBlock == null)
+            if (supportBlock == null || IsPassThroughLiquid(supportBlock))
                 continue;
 
             // The movable block occupies one vertical grid unit.
@@ -679,6 +897,8 @@ public class Block_Moveable : MonoBehaviour
             return;
 
         isDespawned = true;
+        RestoreCoveredLiquidColliders();
+        ResetQuicksandStage();
         isFalling = false;
         fallSpeed = 0f;
 
@@ -755,6 +975,9 @@ public class Block_Moveable : MonoBehaviour
         fallSpeed = 0f;
         canMove = false;
 
+        if (!isDespawned)
+            UpdateRestingSurfaceEffects();
+
         RefreshMovementState();
         Movement.Instance.RefreshAfterMoveableBlockChange();
     }
@@ -772,6 +995,8 @@ public class Block_Moveable : MonoBehaviour
         isFalling = false;
         fallSpeed = 0f;
 
+        RestoreCoveredLiquidColliders();
+        ResetQuicksandStage();
         transform.position = startPos;
         savePos = startPos;
 

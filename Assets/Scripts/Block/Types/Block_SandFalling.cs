@@ -13,6 +13,9 @@ public class Block_SandFalling : MonoBehaviour
     [SerializeField] bool canFall;
     [SerializeField] bool resettingBlock;
 
+    // Separates the warning stage from a block that is already falling.
+    bool hasStartedFalling;
+
     [Header("Runtime Stats")]
     Vector3 endPos;
 
@@ -35,6 +38,9 @@ public class Block_SandFalling : MonoBehaviour
     {
         //GetLODObjects();
 
+        // The warning meshes return to this rotation when a fall is cancelled.
+        objectInitialRotation = transform.rotation;
+
         CheckIfCanFall();
 
         // Get the lowest fallback position if the block never lands.
@@ -46,17 +52,51 @@ public class Block_SandFalling : MonoBehaviour
         if (!canFall)
             return;
 
-        if (CheckIfReadyToFall())
-        {
-            GetComponent<BlockInfo>().movementState = MovementStates.Falling;
+        Movement movement = Movement.Instance;
 
-            if (gameObject == Movement.Instance.blockStandingOn)
+        // Do not begin a fall while the player is descending through blocks.
+        // If a warning was already running, clear it so a NEW step on this
+        // block is required to start another shake.
+        if (!hasStartedFalling && movement != null && movement.isDescending)
+        {
+            if (isSteppedOn)
+                CancelFallingAttempt();
+
+            return;
+        }
+
+        // An already-falling block also must not continue into the player.
+        // Only interrupt a fall when the player is actually below it in the
+        // same grid column (or actively descending through that column).
+        if (hasStartedFalling &&
+            (IsPlayerBelowBlock() ||
+             (movement != null && movement.isDescending && IsPlayerInSameColumn())))
+        {
+            CancelFallingAttempt(resetFallingPosition: true);
+            return;
+        }
+
+        if (!hasStartedFalling && CheckIfReadyToFall())
+        {
+            // The space underneath may have changed DURING the warning.
+            // Do not use the canFall result calculated in Start().
+            if (IsPlayerBelowBlock() || HasBlockingBlockBelow())
             {
-                Movement.Instance.StartFallingWithBlock();
+                CancelFallingAttempt();
+                return;
             }
 
-            Falling();
+            hasStartedFalling = true;
+            GetComponent<BlockInfo>().movementState = MovementStates.Falling;
+
+            if (gameObject == movement.blockStandingOn)
+            {
+                movement.StartFallingWithBlock();
+            }
         }
+
+        if (hasStartedFalling)
+            Falling();
     }
 
 
@@ -186,6 +226,91 @@ public class Block_SandFalling : MonoBehaviour
 
 
     //--------------------
+    // Safety checks performed immediately before the falling animation starts.
+    //--------------------
+
+    bool HasBlockingBlockBelow()
+    {
+        // Match the existing CheckIfCanFall raycast and Slab exception.
+        bool isStair = GetComponent<BlockInfo>().blockType == BlockType.Stair;
+        Vector3 origin = transform.position +
+                         (isStair ? Vector3.up * 0.5f : Vector3.zero);
+
+        if (!Physics.Raycast(origin, Vector3.down, out RaycastHit belowHit,
+                1f, MapManager.Instance.pickup_LayerMask))
+            return false;
+
+        BlockInfo blockBelow = belowHit.transform.GetComponent<BlockInfo>();
+        if (blockBelow == null)
+            return false;
+
+        // Slabs were already allowed in the original falling rule.
+        return isStair || blockBelow.blockType != BlockType.Slab;
+    }
+
+    bool IsPlayerInSameColumn()
+    {
+        if (PlayerManager.Instance == null ||
+            PlayerManager.Instance.player == null)
+            return false;
+
+        Vector3 playerPos = PlayerManager.Instance.player.transform.position;
+        const float gridTolerance = 0.45f;
+
+        return Mathf.Abs(playerPos.x - transform.position.x) < gridTolerance &&
+               Mathf.Abs(playerPos.z - transform.position.z) < gridTolerance;
+    }
+
+    bool IsPlayerBelowBlock()
+    {
+        if (!IsPlayerInSameColumn())
+            return false;
+
+        float playerY = PlayerManager.Instance.player.transform.position.y;
+        float distanceBelow = transform.position.y - playerY;
+
+        // The player's root is approximately one unit above its support.
+        // Include the possible Descend landing space, but not a player who
+        // is standing ON TOP of this falling block.
+        float checkDepth = Movement.Instance != null
+            ? Movement.Instance.ascendDescend_Distance + 1f
+            : 3f;
+
+        return distanceBelow >= -0.1f && distanceBelow <= checkDepth;
+    }
+
+    void RestoreWarningRotation()
+    {
+        for (int i = 0; i < LOD_ObjectsList.Count; i++)
+        {
+            if (LOD_ObjectsList[i] != null)
+            {
+                LOD_ObjectsList[i].transform.SetPositionAndRotation(
+                    LOD_ObjectsList[i].transform.position,
+                    objectInitialRotation);
+            }
+        }
+    }
+
+    void CancelFallingAttempt(bool resetFallingPosition = false)
+    {
+        // If the block was already in mid-air, return it to its starting
+        // position instead of leaving it suspended in the player's space.
+        if (resetFallingPosition)
+            transform.position = GetComponent<BlockInfo>().startPos;
+
+        hasStartedFalling = false;
+        isSteppedOn = false;
+        waitCounter = 0f;
+        GetComponent<BlockInfo>().movementState = MovementStates.Still;
+        RestoreWarningRotation();
+
+        // Keep canFall unchanged: a later step onto the block is allowed to
+        // trigger the warning again, followed by another fresh safety check.
+    }
+
+
+    //--------------------
 
 
     void CheckIfStandingOn()
@@ -261,6 +386,7 @@ public class Block_SandFalling : MonoBehaviour
 
             HideBlock();
 
+            hasStartedFalling = false;
             isSteppedOn = false;
             waitCounter = 0;
             transform.position = GetComponent<BlockInfo>().startPos;
@@ -333,6 +459,7 @@ public class Block_SandFalling : MonoBehaviour
     {
         GetComponent<BlockInfo>().movementState = MovementStates.Still;
 
+        hasStartedFalling = false;
         isSteppedOn = false;
         canFall = false;
         waitCounter = 0;
@@ -340,12 +467,7 @@ public class Block_SandFalling : MonoBehaviour
         SetFallingSandEnabled(false);
 
         // Remove any remaining rotation from the warning shake.
-        for (int i = 0; i < LOD_ObjectsList.Count; i++)
-        {
-            LOD_ObjectsList[i].transform.SetPositionAndRotation(
-                LOD_ObjectsList[i].transform.position,
-                objectInitialRotation);
-        }
+        RestoreWarningRotation();
     }
 
     void FallingAlertAnimation()
@@ -356,13 +478,7 @@ public class Block_SandFalling : MonoBehaviour
         // When falling, straighten the rotation after the shaking.
         if (waitCounter >= waitTime_BeforeFalling)
         {
-            for (int i = 0; i < LOD_ObjectsList.Count; i++)
-            {
-                LOD_ObjectsList[i].transform.SetPositionAndRotation(
-                    LOD_ObjectsList[i].transform.position,
-                    objectInitialRotation);
-            }
-
+            RestoreWarningRotation();
             return;
         }
 
@@ -404,7 +520,9 @@ public class Block_SandFalling : MonoBehaviour
     {
         resettingBlock = true;
 
+        hasStartedFalling = false;
         isSteppedOn = false;
+        RestoreWarningRotation();
         StopAllCoroutines();
 
         if (GetComponent<BoxCollider>())

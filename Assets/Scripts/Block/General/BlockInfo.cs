@@ -21,6 +21,13 @@ public class BlockInfo : MonoBehaviour
     public int movementCost;
     public float movementSpeed;
 
+    // Movement reads its normal walking speed from the current standing block.
+    // Quicksand alone modifies this value according to the player's counter.
+    // Always calculate from the original Inspector speed (never compound it).
+    private bool controlsQuicksandMovementSpeed;
+    private float originalQuicksandMovementSpeed;
+    private int appliedQuicksandSpeedStage = -1;
+
     public MovementStates movementState;
 
     [Header("StepCost Color")]
@@ -98,6 +105,17 @@ public class BlockInfo : MonoBehaviour
         movementCost_Temp_Base = movementCost;
         movementCost_Temp = movementCost_Temp_Base;
 
+        // Only quicksand blocks participate in the speed adjustment.
+        // Both the block element and its component can identify quicksand.
+        controlsQuicksandMovementSpeed =
+            blockElement == BlockElement.Quicksand ||
+            GetComponent<Block_Quicksand>() != null;
+        if (controlsQuicksandMovementSpeed)
+        {
+            originalQuicksandMovementSpeed = movementSpeed;
+            RefreshQuicksandMovementSpeed();
+        }
+
         SetObjectRenderer();
         SetPropertyBlock();
 
@@ -119,6 +137,31 @@ public class BlockInfo : MonoBehaviour
     private void Update()
     {
         //CheckDarkeningWhenPlayerIsOnElevator();
+
+        // Player_Quicksand updates its counter when a step completes.
+        // Only perform a write when the stage actually changes.
+        if (controlsQuicksandMovementSpeed)
+            RefreshQuicksandMovementSpeed();
+    }
+
+    private void RefreshQuicksandMovementSpeed()
+    {
+        if (!controlsQuicksandMovementSpeed)
+            return;
+
+        int stage = 0;
+        if (Player_Quicksand.Instance != null &&
+            Player_Quicksand.Instance.isInQuicksand)
+        {
+            stage = Mathf.Clamp(Player_Quicksand.Instance.quicksandCounter, 0, 5);
+        }
+
+        if (stage == appliedQuicksandSpeedStage)
+            return;
+
+        // Stage 0 = 100%, stage 1 = 90%, ..., stage 5 = 50%.
+        movementSpeed = originalQuicksandMovementSpeed * (1f - 0.14f * stage);
+        appliedQuicksandSpeedStage = stage;
     }
 
 
@@ -137,6 +180,14 @@ public class BlockInfo : MonoBehaviour
 
     private void OnDisable()
     {
+        // A disabled/re-enabled quicksand block keeps its Inspector speed as
+        // the baseline; reapply the current player stage on the next Update.
+        if (controlsQuicksandMovementSpeed)
+        {
+            movementSpeed = originalQuicksandMovementSpeed;
+            appliedQuicksandSpeedStage = -1;
+        }
+
         Movement.Action_RespawnToSavePos -= ResetDarkenColor;
         Movement.Action_RespawnPlayer -= ResetBlock;
 
