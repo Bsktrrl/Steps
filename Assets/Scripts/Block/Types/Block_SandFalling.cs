@@ -16,6 +16,11 @@ public class Block_SandFalling : MonoBehaviour
     // Separates the warning stage from a block that is already falling.
     bool hasStartedFalling;
 
+    // A moveable block can trigger the same warning as the player.
+    // Keep a separate reference only while the warning/fall is active.
+    Block_Moveable waitingMoveableBlock;
+    Block_Moveable carriedMoveableBlock;
+
     [Header("Runtime Stats")]
     Vector3 endPos;
 
@@ -54,10 +59,12 @@ public class Block_SandFalling : MonoBehaviour
 
         Movement movement = Movement.Instance;
 
-        // Do not begin a fall while the player is descending through blocks.
-        // If a warning was already running, clear it so a NEW step on this
-        // block is required to start another shake.
-        if (!hasStartedFalling && movement != null && movement.isDescending)
+        // Cancel the warning ONLY on the block the player is descending from.
+        // Other falling blocks must keep their own warning/falling behavior.
+        // currentMoveStartBlock is fixed at the start of the movement, unlike
+        // blockStandingOn, which can change while the player descends.
+        if (!hasStartedFalling && movement != null && movement.isDescending &&
+            movement.currentMoveStartBlock == gameObject)
         {
             if (isSteppedOn)
                 CancelFallingAttempt();
@@ -87,6 +94,17 @@ public class Block_SandFalling : MonoBehaviour
             }
 
             hasStartedFalling = true;
+
+            // Carry the moveable block only if it is STILL directly above
+            // when the warning ends. It may have been pushed away meanwhile.
+            if (waitingMoveableBlock != null &&
+                IsMoveableDirectlyAbove(waitingMoveableBlock) &&
+                waitingMoveableBlock.BeginFallingWithSandBlock())
+            {
+                carriedMoveableBlock = waitingMoveableBlock;
+            }
+            waitingMoveableBlock = null;
+
             GetComponent<BlockInfo>().movementState = MovementStates.Falling;
 
             if (gameObject == movement.blockStandingOn)
@@ -117,6 +135,10 @@ public class Block_SandFalling : MonoBehaviour
         Player_CeilingGrab.Action_isCeilingGrabbing_Finished -= CheckIfStandingOn;
         Movement.Action_LandedFromFalling -= CheckIfStandingOn;
         Movement.Action_RespawnPlayerEarly -= ResetBlock;
+
+        // Also release the moveable if this block is disabled externally.
+        ReleaseCarriedMoveableBlock();
+        waitingMoveableBlock = null;
     }
 
 
@@ -226,6 +248,52 @@ public class Block_SandFalling : MonoBehaviour
 
 
     //--------------------
+    // Moveable blocks triggering / riding falling sand
+    //--------------------
+
+    // Called ONLY after a moveable block has completed a push or landing.
+    public void TriggerFromMoveableBlock(Block_Moveable moveable)
+    {
+        if (!canFall || resettingBlock || hasStartedFalling || isSteppedOn ||
+            moveable == null || !IsMoveableDirectlyAbove(moveable))
+            return;
+
+        // Keep the previous safeguard for the player's Descend ability.
+        if (Movement.Instance != null && Movement.Instance.isDescending)
+            return;
+
+        waitingMoveableBlock = moveable;
+        isSteppedOn = true; // Reuse the existing 0.75-second shake and timer.
+    }
+
+    bool IsMoveableDirectlyAbove(Block_Moveable moveable)
+    {
+        if (moveable == null || !moveable.isActiveAndEnabled)
+            return false;
+
+        Vector3 difference = moveable.transform.position - transform.position;
+        const float tolerance = 0.15f;
+        return Mathf.Abs(difference.x) < tolerance &&
+               Mathf.Abs(difference.z) < tolerance &&
+               Mathf.Abs(difference.y - 1f) < tolerance;
+    }
+
+    void MoveCarriedMoveableBlock(Vector3 offset)
+    {
+        if (carriedMoveableBlock != null)
+            carriedMoveableBlock.FollowFallingSandBlock(offset);
+    }
+
+    void ReleaseCarriedMoveableBlock()
+    {
+        if (carriedMoveableBlock != null)
+            carriedMoveableBlock.EndFallingWithSandBlock();
+
+        carriedMoveableBlock = null;
+    }
+
+
+    //--------------------
     // Safety checks performed immediately before the falling animation starts.
     //--------------------
 
@@ -296,8 +364,13 @@ public class Block_SandFalling : MonoBehaviour
     {
         // If the block was already in mid-air, return it to its starting
         // position instead of leaving it suspended in the player's space.
+        Vector3 oldPosition = transform.position;
         if (resetFallingPosition)
             transform.position = GetComponent<BlockInfo>().startPos;
+
+        MoveCarriedMoveableBlock(transform.position - oldPosition);
+        ReleaseCarriedMoveableBlock();
+        waitingMoveableBlock = null;
 
         hasStartedFalling = false;
         isSteppedOn = false;
@@ -328,6 +401,7 @@ public class Block_SandFalling : MonoBehaviour
             !Player_CeilingGrab.Instance.isCeilingGrabbing &&
             Movement.Instance.GetMovementState() != MovementStates.Falling)
         {
+            waitingMoveableBlock = null; // The player is now the trigger.
             isSteppedOn = true;
         }
     }
@@ -367,8 +441,10 @@ public class Block_SandFalling : MonoBehaviour
 
         // Stop on the first block encountered underneath instead of
         // continuing through it.
+        Vector3 oldPosition = transform.position;
         if (TryLandOnBlockBelow(fallDistance))
         {
+            MoveCarriedMoveableBlock(transform.position - oldPosition);
             LandBlock();
             return;
         }
@@ -377,6 +453,7 @@ public class Block_SandFalling : MonoBehaviour
             transform.position,
             endPos,
             fallDistance);
+        MoveCarriedMoveableBlock(transform.position - oldPosition);
 
         // The block still disappears if it falls out of the playable area
         // without finding another block.
@@ -384,6 +461,8 @@ public class Block_SandFalling : MonoBehaviour
         {
             GetComponent<BlockInfo>().movementState = MovementStates.Still;
 
+            ReleaseCarriedMoveableBlock();
+            waitingMoveableBlock = null;
             HideBlock();
 
             hasStartedFalling = false;
@@ -465,6 +544,7 @@ public class Block_SandFalling : MonoBehaviour
         waitCounter = 0;
 
         SetFallingSandEnabled(false);
+        ReleaseCarriedMoveableBlock();
 
         // Remove any remaining rotation from the warning shake.
         RestoreWarningRotation();
@@ -522,6 +602,8 @@ public class Block_SandFalling : MonoBehaviour
 
         hasStartedFalling = false;
         isSteppedOn = false;
+        waitingMoveableBlock = null;
+        ReleaseCarriedMoveableBlock();
         RestoreWarningRotation();
         StopAllCoroutines();
 

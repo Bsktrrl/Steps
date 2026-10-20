@@ -17,6 +17,10 @@ public class Block_Moveable : MonoBehaviour
     private bool isDespawned;
     private float fallSpeed;
 
+    // Separate from normal pushing: the falling sand block carries this
+    // moveable block until it lands, cancels or disappears.
+    private bool isBeingCarriedByFallingSand;
+
     // A slope exit is a distinct diagonal, grid-aligned movement.
     private bool isSlopeGliding;
     private Vector3 slopeGlideTarget;
@@ -70,6 +74,7 @@ public class Block_Moveable : MonoBehaviour
     private void Update()
     {
         if (!isMoving) return;
+        if (isBeingCarriedByFallingSand) return;
 
         if (isFalling)
         {
@@ -111,6 +116,14 @@ public class Block_Moveable : MonoBehaviour
     private void OnDisable()
     {
         RestoreCoveredLiquidColliders();
+
+        if (isBeingCarriedByFallingSand)
+        {
+            isBeingCarriedByFallingSand = false;
+            if (isMoving)
+                movingBlockCount = Mathf.Max(0, movingBlockCount - 1);
+            isMoving = false;
+        }
 
         Movement.Action_StepTaken -= RefreshMovementState;
         Movement.Action_BodyRotated -= RefreshMovementState;
@@ -758,6 +771,50 @@ public class Block_Moveable : MonoBehaviour
 
 
     //--------------------
+    // Riding a falling sand block
+    //--------------------
+
+    // Called by Block_SandFalling once its warning has completed.
+    public bool BeginFallingWithSandBlock()
+    {
+        if (isMoving || isDespawned)
+            return false;
+
+        isBeingCarriedByFallingSand = true;
+        isMoving = true;
+        movingBlockCount++;
+        canMove = false;
+        Movement.Instance.RefreshAfterMoveableBlockChange();
+        return true;
+    }
+
+    public void FollowFallingSandBlock(Vector3 positionDelta)
+    {
+        if (!isBeingCarriedByFallingSand || isDespawned)
+            return;
+
+        transform.position += positionDelta;
+        savePos = transform.position;
+
+        if (transform.position.y < DESPAWN_Y)
+        {
+            isBeingCarriedByFallingSand = false;
+            DespawnBlock();
+        }
+    }
+
+    public void EndFallingWithSandBlock()
+    {
+        if (!isBeingCarriedByFallingSand)
+            return;
+
+        isBeingCarriedByFallingSand = false;
+        // Ending a carried fall must not restart the sand warning.
+        StopMovement(notifyFallingSupport: false);
+    }
+
+
+    //--------------------
     // Falling
     //--------------------
 
@@ -961,7 +1018,7 @@ public class Block_Moveable : MonoBehaviour
     //--------------------
 
 
-    private void StopMovement()
+    private void StopMovement(bool notifyFallingSupport = true)
     {
         if (isMoving)
         {
@@ -976,7 +1033,22 @@ public class Block_Moveable : MonoBehaviour
         canMove = false;
 
         if (!isDespawned)
+        {
             UpdateRestingSurfaceEffects();
+
+            // Let an unblocked sand tile run its existing warning/fall cycle.
+            // Only a completed push or landing triggers this callback.
+            if (notifyFallingSupport)
+            {
+                BlockInfo support = GetSupportingBlockBelow(savePos);
+                if (support != null)
+                {
+                    Block_SandFalling sand = support.GetComponent<Block_SandFalling>();
+                    if (sand != null)
+                        sand.TriggerFromMoveableBlock(this);
+                }
+            }
+        }
 
         RefreshMovementState();
         Movement.Instance.RefreshAfterMoveableBlockChange();
@@ -990,6 +1062,7 @@ public class Block_Moveable : MonoBehaviour
         }
 
         isMoving = false;
+        isBeingCarriedByFallingSand = false;
         isIceGliding = false;
         isSlopeGliding = false;
         isFalling = false;
