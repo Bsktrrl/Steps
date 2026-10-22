@@ -53,6 +53,31 @@ public class Block_Moveable : MonoBehaviour
     private int quicksandSinkStage;
     private Vector3Int? lastQuicksandCell;
 
+    // A moveable block carries the uninterrupted vertical column directly
+    // above it. The blocks remain separate GameObjects and retain their own
+    // original positions for the game's existing respawn system.
+    private readonly List<BlockInfo> carriedPillar = new List<BlockInfo>();
+
+    // A blocked height splits the pillar. The detached upper part remains in
+    // its original column and starts falling AFTER the carrier clears that cell.
+    private sealed class DetachedPillar
+    {
+        public readonly List<BlockInfo> blocks = new List<BlockInfo>();
+        public readonly Dictionary<Renderer, bool> hiddenRenderers =
+            new Dictionary<Renderer, bool>();
+        public readonly Dictionary<Collider, bool> hiddenColliders =
+            new Dictionary<Collider, bool>();
+        public bool readyToFall;
+        public bool hiddenBelowLevel;
+        public float speed;
+    }
+    private readonly List<DetachedPillar> detachedPillars = new List<DetachedPillar>();
+    private Block_Moveable pillarCarrier;
+    private readonly Dictionary<Renderer, bool> hiddenPillarRenderers =
+        new Dictionary<Renderer, bool>();
+    private readonly Dictionary<Collider, bool> hiddenPillarColliders =
+        new Dictionary<Collider, bool>();
+
     public static int movingBlockCount = 0;
     public static bool AnyBlockMoving => movingBlockCount > 0;
 
@@ -73,6 +98,10 @@ public class Block_Moveable : MonoBehaviour
 
     private void Update()
     {
+        // Detached columns fall independently, even if this moveable block
+        // has stopped pushing or is continuing along an ice path.
+        UpdateDetachedPillars();
+
         if (!isMoving) return;
         if (isBeingCarriedByFallingSand) return;
 
@@ -116,6 +145,10 @@ public class Block_Moveable : MonoBehaviour
     private void OnDisable()
     {
         RestoreCoveredLiquidColliders();
+        RestoreHiddenPillar();
+        ReleasePillar(refreshMovement: false);
+        RestoreDetachedPillars();
+        pillarCarrier = null;
 
         if (isBeingCarriedByFallingSand)
         {
@@ -141,7 +174,7 @@ public class Block_Moveable : MonoBehaviour
 
     private void RefreshMovementState()
     {
-        if (isMoving || isDespawned) return;
+        if (isMoving || isDespawned || pillarCarrier != null) return;
 
         movementDirection = GetPushDirectionFromPlayer();
         canMove = movementDirection != MovementDirection.None && CanMoveOneStep();
@@ -221,6 +254,11 @@ public class Block_Moveable : MonoBehaviour
         if (HasBlockingObjectInFront(moveDir))
             return false;
 
+        // The pillar must be available to carry; obstacles at upper heights
+        // will split it instead of preventing the lower block's push.
+        if (!CanMovePillar(moveDir))
+            return false;
+
         // A downward slope may only be entered when its lower exit is free.
         Vector3 nextPos = savePos + moveDir;
         if (IsBlockedDownhillSlope(nextPos, moveDir))
@@ -233,8 +271,36 @@ public class Block_Moveable : MonoBehaviour
         return true;
     }
 
+    // Use the same fence collider/layer detection as Movement's raycast.
+    // Unlike a BlockInfo obstruction, a fence may be a child collider
+    // between two grid cells, so checking only the destination misses it.
+    private bool HasFenceOnPath(Vector3 origin, Vector3 displacement)
+    {
+        float distance = displacement.magnitude;
+        if (distance <= 0.0001f)
+            return false;
+
+        RaycastHit[] hits = Physics.RaycastAll(
+            origin, displacement / distance, distance,
+            MapManager.Instance.pickup_LayerMask);
+
+        foreach (RaycastHit fenceHit in hits)
+        {
+            if (fenceHit.collider != null &&
+                fenceHit.collider.GetComponentInParent<Fence>() != null)
+                return true;
+        }
+
+        return false;
+    }
+
     private bool HasBlockingObjectInFront(Vector3 moveDir)
     {
+        // The normal first-hit check below only recognizes BlockInfo.
+        // Fences have their own component and must also block a push.
+        if (HasFenceOnPath(transform.position, moveDir * FORWARD_CHECK_DISTANCE))
+            return true;
+
         if (Physics.Raycast(transform.position, moveDir, out RaycastHit hit, FORWARD_CHECK_DISTANCE))
         {
             // Preserve the existing first-hit behavior except where the
@@ -271,6 +337,438 @@ public class Block_Moveable : MonoBehaviour
 
         Debug.DrawRay(transform.position, moveDir * FORWARD_CHECK_DISTANCE, Color.green, 0.5f);
         return false;
+    }
+
+    //--------------------
+    // Blocks stacked vertically on a moveable block
+    //--------------------
+
+    private bool TryGetPillarAtRest(List<BlockInfo> pillar)
+    {
+        pillar.Clear();
+        Vector3Int baseCell = Vector3Int.RoundToInt(savePos);
+
+        // A pillar consists ONLY of directly adjacent blocks, with no gaps.
+        // Checking small cell centres avoids picking up neighbouring columns.
+        for (int height = 1; height <= 100; height++)
+        {
+            Vector3Int cell = baseCell + Vector3Int.up * height;
+            Collider[] hits = Physics.OverlapBox(
+                (Vector3)cell, Vector3.one * 0.24f,
+                Quaternion.identity, Physics.DefaultRaycastLayers,
+                QueryTriggerInteraction.Ignore);
+
+            BlockInfo found = null;
+            foreach (Collider hit in hits)
+            {
+                if (hit == null) continue;
+                BlockInfo info = hit.GetComponentInParent<BlockInfo>();
+                if (info == null || info == blockInfo || info.GridPosition != cell)
+                    continue;
+
+                // If liquid and solid share a cell, carry the solid block.
+                if (found == null ||
+                    (IsPassThroughLiquid(found) && !IsPassThroughLiquid(info)))
+                    found = info;
+            }
+
+            if (found == null)
+                break;
+
+            Block_Moveable otherMoveable = found.GetComponent<Block_Moveable>();
+            if (otherMoveable != null &&
+                (otherMoveable.isMoving || otherMoveable.isDespawned ||
+                 otherMoveable.pillarCarrier != null))
+                return false;
+
+            pillar.Add(found);
+        }
+
+        return true;
+    }
+
+    // Find the FIRST (lowest) carried height whose NEXT cell contains a
+    // solid block. Everything at and above that height must be left behind.
+    private int FindLowestBlockedPillarIndex(
+        List<BlockInfo> pillar, Vector3 movementDelta)
+    {
+        for (int index = 0; index < pillar.Count; index++)
+        {
+            BlockInfo carried = pillar[index];
+            if (carried == null) continue;
+
+            // Fences can sit between cells instead of inside the target
+            // cell. Split at the first carried height that crosses one.
+            if (HasFenceOnPath(carried.transform.position, movementDelta))
+                return index;
+
+            Vector3Int destination = Vector3Int.RoundToInt(
+                carried.transform.position + movementDelta);
+
+            Collider[] hits = Physics.OverlapBox(
+                (Vector3)destination, Vector3.one * 0.24f,
+                Quaternion.identity, Physics.DefaultRaycastLayers,
+                QueryTriggerInteraction.Ignore);
+
+            foreach (Collider hit in hits)
+            {
+                if (hit == null) continue;
+                BlockInfo other = hit.GetComponentInParent<BlockInfo>();
+                if (other == null || other == blockInfo ||
+                    pillar.Contains(other) || IsPassThroughLiquid(other))
+                    continue;
+
+                if (other.GridPosition == destination)
+                    return index;
+            }
+        }
+        return -1;
+    }
+
+    private bool CanMovePillar(Vector3 moveDelta)
+    {
+        // Upper collisions now split the pillar, never block its base.
+        if (carriedPillar.Count > 0)
+            return true;
+
+        List<BlockInfo> prospectivePillar = new List<BlockInfo>();
+        return TryGetPillarAtRest(prospectivePillar);
+    }
+
+    private void DetachBlockedPillar(Vector3 movementDelta)
+    {
+        if (carriedPillar.Count == 0)
+            return;
+
+        Physics.SyncTransforms();
+        int firstBlocked = FindLowestBlockedPillarIndex(
+            carriedPillar, movementDelta);
+        if (firstBlocked < 0)
+            return;
+
+        DetachedPillar detached = new DetachedPillar();
+        for (int i = firstBlocked; i < carriedPillar.Count; i++)
+        {
+            BlockInfo member = carriedPillar[i];
+            if (member != null)
+                detached.blocks.Add(member);
+            // Retain pillarCarrier and SandFalling suspension until the
+            // detached column lands. It is no longer in the carried list.
+        }
+        carriedPillar.RemoveRange(firstBlocked,
+            carriedPillar.Count - firstBlocked);
+        detachedPillars.Add(detached);
+    }
+
+    // Arm all newly detached groups only when the base has COMPLETED the
+    // horizontal/diagonal tile, preventing them from landing on it mid-push.
+    private void ArmDetachedPillars()
+    {
+        foreach (DetachedPillar group in detachedPillars)
+            group.readyToFall = true;
+    }
+
+    // The player occupies a grid cell above the block they stand on.
+    // A detached pillar can keep descending until its lowest block reaches
+    // the NEXT cell above the player. This is a temporary stop, not a landing:
+    // the same group resumes falling when the player leaves its column.
+    private bool TryGetPlayerStopHeight(Vector3 bottomPosition, out float stopY)
+    {
+        stopY = float.NegativeInfinity;
+        if (PlayerManager.Instance == null ||
+            PlayerManager.Instance.player == null)
+            return false;
+
+        Vector3 playerPosition = PlayerManager.Instance.player.transform.position;
+
+        // Include the player while moving INTO the cell, not just when their
+        // root has reached its centre. Adjacent full grid cells are unaffected.
+        const float horizontalSafety = 0.95f;
+        if (Mathf.Abs(playerPosition.x - bottomPosition.x) >= horizontalSafety ||
+            Mathf.Abs(playerPosition.z - bottomPosition.z) >= horizontalSafety)
+            return false;
+
+        // Do not treat the player standing ON the detached block as beneath it.
+        if (playerPosition.y >= bottomPosition.y - 0.15f)
+            return false;
+
+        // Movement positions the player's root approximately 0.95 above the
+        // standing block. Round to its logical cell, then leave one full grid
+        // space for the falling block immediately above the player.
+        stopY = Mathf.Round(playerPosition.y / GRID_SIZE) * GRID_SIZE + GRID_SIZE;
+        return true;
+    }
+
+    private void UpdateDetachedPillars()
+    {
+        // These blocks move independently of the carrier. Player movement
+        // options must therefore be rebuilt as their colliders move, including
+        // during a fall, not only after a push or final landing.
+        bool refreshPlayerMovement = false;
+
+        for (int i = detachedPillars.Count - 1; i >= 0; i--)
+        {
+            DetachedPillar group = detachedPillars[i];
+            if (!group.readyToFall || group.hiddenBelowLevel)
+                continue;
+            if (group.blocks.Count == 0 || group.blocks[0] == null)
+            {
+                FinishDetachedPillar(group);
+                detachedPillars.RemoveAt(i);
+                refreshPlayerMovement = true;
+                continue;
+            }
+
+            BlockInfo bottom = group.blocks[0];
+            Collider bottomCollider = bottom.GetComponent<Collider>();
+            if (bottomCollider == null)
+                bottomCollider = bottom.GetComponentInChildren<Collider>();
+            if (bottomCollider == null)
+            {
+                FinishDetachedPillar(group);
+                detachedPillars.RemoveAt(i);
+                refreshPlayerMovement = true;
+                continue;
+            }
+
+            Physics.SyncTransforms();
+            group.speed += Mathf.Abs(Physics.gravity.y) * Time.deltaTime;
+            float distance = group.speed * Time.deltaTime;
+            Vector3 basePosition = bottom.transform.position;
+            Bounds bounds = bottomCollider.bounds;
+            float landingY = float.NegativeInfinity;
+            float castDistance = bounds.extents.y + distance + SNAP_DISTANCE;
+
+            RaycastHit[] hits = Physics.RaycastAll(
+                bounds.center, Vector3.down, castDistance,
+                Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+            foreach (RaycastHit contact in hits)
+            {
+                if (contact.collider == null) continue;
+                BlockInfo support = contact.collider.GetComponentInParent<BlockInfo>();
+                if (support == null || group.blocks.Contains(support) ||
+                    IsPassThroughLiquid(support))
+                    continue;
+
+                // This retains the bottom collider's actual offset from
+                // its root instead of assuming a particular mesh pivot.
+                float candidateY = basePosition.y +
+                    contact.point.y - bounds.min.y;
+                if (candidateY > basePosition.y + SNAP_DISTANCE ||
+                    candidateY < basePosition.y - distance - SNAP_DISTANCE)
+                    continue;
+                if (candidateY > landingY)
+                    landingY = candidateY;
+            }
+
+            float targetY = landingY > float.NegativeInfinity
+                ? landingY : basePosition.y - distance;
+
+            // A player is a TEMPORARY support. Never complete the detached
+            // group's fall on the player; keep the group active so it can drop
+            // the remaining distance after the player moves away.
+            bool stoppedByPlayer = false;
+            if (TryGetPlayerStopHeight(basePosition, out float playerStopY) &&
+                playerStopY >= targetY - SNAP_DISTANCE &&
+                (landingY == float.NegativeInfinity ||
+                 landingY < playerStopY - SNAP_DISTANCE))
+            {
+                targetY = playerStopY;
+                stoppedByPlayer = true;
+                group.speed = 0f;
+            }
+
+            Vector3 delta = Vector3.up * (targetY - basePosition.y);
+            if (delta.sqrMagnitude > 0.0000001f)
+            {
+                foreach (BlockInfo member in group.blocks)
+                    if (member != null) member.transform.position += delta;
+                Physics.SyncTransforms();
+                refreshPlayerMovement = true;
+            }
+
+            if (stoppedByPlayer)
+                continue;
+
+            if (landingY > float.NegativeInfinity)
+            {
+                FinishDetachedPillar(group);
+                detachedPillars.RemoveAt(i);
+                refreshPlayerMovement = true;
+            }
+            else if (bottom.transform.position.y < DESPAWN_Y)
+            {
+                // Preserve the same Y=-5 removal behavior without disabling
+                // the GameObjects (they must remain available for respawn).
+                HideDetachedPillar(group);
+                refreshPlayerMovement = true;
+            }
+        }
+
+        if (refreshPlayerMovement && Movement.Instance != null)
+            Movement.Instance.RefreshAfterMoveableBlockChange();
+    }
+
+    private void FinishDetachedPillar(DetachedPillar group)
+    {
+        Physics.SyncTransforms();
+        foreach (BlockInfo member in group.blocks)
+        {
+            if (member == null) continue;
+            Block_SandFalling sand = member.GetComponent<Block_SandFalling>();
+            if (sand != null) sand.SetCarriedByMoveablePillar(false);
+
+            Block_Moveable moveable = member.GetComponent<Block_Moveable>();
+            if (moveable == null || moveable.pillarCarrier != this) continue;
+            moveable.pillarCarrier = null;
+            moveable.savePos = member.transform.position;
+            if (moveable.isActiveAndEnabled && !moveable.isDespawned)
+            {
+                moveable.UpdateRestingSurfaceEffects();
+                moveable.RefreshMovementState();
+            }
+        }
+    }
+
+    private void HideDetachedPillar(DetachedPillar group)
+    {
+        group.hiddenBelowLevel = true;
+        foreach (BlockInfo member in group.blocks)
+        {
+            if (member == null) continue;
+            foreach (Renderer renderer in member.GetComponentsInChildren<Renderer>(true))
+            {
+                group.hiddenRenderers[renderer] = renderer.enabled;
+                renderer.enabled = false;
+            }
+            foreach (Collider collider in member.GetComponentsInChildren<Collider>(true))
+            {
+                group.hiddenColliders[collider] = collider.enabled;
+                collider.enabled = false;
+            }
+        }
+    }
+
+    private void RestoreDetachedPillars()
+    {
+        foreach (DetachedPillar group in detachedPillars)
+        {
+            foreach (KeyValuePair<Renderer, bool> entry in group.hiddenRenderers)
+                if (entry.Key != null) entry.Key.enabled = entry.Value;
+            foreach (KeyValuePair<Collider, bool> entry in group.hiddenColliders)
+                if (entry.Key != null) entry.Key.enabled = entry.Value;
+            FinishDetachedPillar(group);
+        }
+        detachedPillars.Clear();
+    }
+
+    private bool BeginCarryingPillar()
+    {
+        if (carriedPillar.Count > 0)
+            return true;
+
+        List<BlockInfo> prospectivePillar = new List<BlockInfo>();
+        if (!TryGetPillarAtRest(prospectivePillar))
+            return false;
+
+        foreach (BlockInfo carried in prospectivePillar)
+        {
+            if (carried == null) continue;
+            Block_Moveable otherMoveable = carried.GetComponent<Block_Moveable>();
+            if (otherMoveable != null)
+            {
+                otherMoveable.pillarCarrier = this;
+                otherMoveable.canMove = false;
+                otherMoveable.RestoreCoveredLiquidColliders();
+            }
+            Block_SandFalling sand = carried.GetComponent<Block_SandFalling>();
+            if (sand != null)
+                sand.SetCarriedByMoveablePillar(true);
+
+            carriedPillar.Add(carried);
+        }
+
+        return true;
+    }
+
+    private void MovePillar(Vector3 positionDelta)
+    {
+        if (positionDelta == Vector3.zero || carriedPillar.Count == 0)
+            return;
+
+        foreach (BlockInfo carried in carriedPillar)
+        {
+            if (carried == null) continue;
+            carried.transform.position += positionDelta;
+
+            Block_Moveable otherMoveable = carried.GetComponent<Block_Moveable>();
+            if (otherMoveable != null && otherMoveable.pillarCarrier == this)
+                otherMoveable.savePos = carried.transform.position;
+        }
+
+        // Make the new positions visible to physics queries in this frame.
+        Physics.SyncTransforms();
+    }
+
+    private void ReleasePillar(bool refreshMovement = true)
+    {
+        if (carriedPillar.Count == 0)
+            return;
+
+        Physics.SyncTransforms();
+        foreach (BlockInfo carried in carriedPillar)
+        {
+            if (carried == null) continue;
+            Block_SandFalling sand = carried.GetComponent<Block_SandFalling>();
+            if (sand != null)
+                sand.SetCarriedByMoveablePillar(false);
+
+            Block_Moveable otherMoveable = carried.GetComponent<Block_Moveable>();
+            if (otherMoveable == null || otherMoveable.pillarCarrier != this)
+                continue;
+
+            otherMoveable.pillarCarrier = null;
+            otherMoveable.savePos = otherMoveable.transform.position;
+            if (otherMoveable.isActiveAndEnabled && !isDespawned)
+            {
+                otherMoveable.UpdateRestingSurfaceEffects();
+                if (refreshMovement)
+                    otherMoveable.RefreshMovementState();
+            }
+        }
+
+        carriedPillar.Clear();
+    }
+
+    private void HidePillarForDespawn()
+    {
+        foreach (BlockInfo carried in carriedPillar)
+        {
+            if (carried == null) continue;
+            foreach (Renderer renderer in carried.GetComponentsInChildren<Renderer>(true))
+            {
+                if (renderer == null) continue;
+                hiddenPillarRenderers[renderer] = renderer.enabled;
+                renderer.enabled = false;
+            }
+            foreach (Collider collider in carried.GetComponentsInChildren<Collider>(true))
+            {
+                if (collider == null) continue;
+                hiddenPillarColliders[collider] = collider.enabled;
+                collider.enabled = false;
+            }
+        }
+    }
+
+    private void RestoreHiddenPillar()
+    {
+        foreach (KeyValuePair<Renderer, bool> entry in hiddenPillarRenderers)
+            if (entry.Key != null) entry.Key.enabled = entry.Value;
+        foreach (KeyValuePair<Collider, bool> entry in hiddenPillarColliders)
+            if (entry.Key != null) entry.Key.enabled = entry.Value;
+
+        hiddenPillarRenderers.Clear();
+        hiddenPillarColliders.Clear();
     }
 
     // Water, lava, swamp water and mud have no physical support for a
@@ -471,7 +969,7 @@ public class Block_Moveable : MonoBehaviour
 
     private void ActivateBlockMovement()
     {
-        if (isMoving || isDespawned) return;
+        if (isMoving || isDespawned || pillarCarrier != null) return;
 
         // Do not let a push relocate a block during an already-started Dash.
         if (Movement.Instance != null && Movement.Instance.isDashing) return;
@@ -491,6 +989,9 @@ public class Block_Moveable : MonoBehaviour
 
         if (Movement.Instance.IsInTurnAbilityDelay(facingTowardBlock))
             return;
+
+        if (!BeginCarryingPillar()) return;
+        DetachBlockedPillar(pushDir);
 
         // The starting tile may already be cracked ice. Begin its crack
         // effect too, so the very first tile receives both stages.
@@ -516,19 +1017,29 @@ public class Block_Moveable : MonoBehaviour
 
         Vector3 targetPos = savePos + moveDir;
 
+        // At the beginning of EACH grid step (including ice-glide steps),
+        // separate any upper blocks that would run into a solid wall.
+        if (Vector3.Distance(transform.position, savePos) <= SNAP_DISTANCE)
+            DetachBlockedPillar(moveDir);
+
+        Vector3 positionBeforeMove = transform.position;
         transform.position = Vector3.MoveTowards(
             transform.position,
             targetPos,
             movementSpeed * Time.deltaTime
         );
+        MovePillar(transform.position - positionBeforeMove);
 
         if (Vector3.Distance(transform.position, targetPos) <= SNAP_DISTANCE)
         {
             // Remember where the block was before moving.
             Vector3 previousPos = savePos;
 
+            Vector3 positionBeforeSnap = transform.position;
             transform.position = targetPos;
+            MovePillar(transform.position - positionBeforeSnap);
             savePos = targetPos;
+            ArmDetachedPillars();
             RestoreCoveredLiquidColliders();
 
             // Break the cracked ice just left, then play a fresh crack
@@ -633,6 +1144,8 @@ public class Block_Moveable : MonoBehaviour
         // Cannot continue through another block.
         if (HasBlockingObjectInFront(moveDir))
             return false;
+        if (!CanMovePillar(moveDir))
+            return false;
 
         // An ice glide may enter a downhill slope only when its exit is clear.
         if (IsBlockedDownhillSlope(nextPos, moveDir))
@@ -708,7 +1221,9 @@ public class Block_Moveable : MonoBehaviour
 
         // The downhill finish is one space forward AND one space lower.
         Vector3 exitPosition = blockPosition + moveDir + Vector3.down;
-        return FindBlockAtGridPosition(exitPosition) != null;
+        return HasFenceOnPath(blockPosition, exitPosition - blockPosition) ||
+               FindBlockAtGridPosition(exitPosition) != null ||
+               !CanMovePillar(exitPosition - savePos);
     }
 
     private bool TryStartSlopeGlide(Vector3 blockPosition, Vector3 moveDir)
@@ -717,7 +1232,9 @@ public class Block_Moveable : MonoBehaviour
             return false;
 
         Vector3 exitPosition = blockPosition + moveDir + Vector3.down;
-        if (FindBlockAtGridPosition(exitPosition) != null)
+        if (HasFenceOnPath(blockPosition, exitPosition - blockPosition) ||
+            FindBlockAtGridPosition(exitPosition) != null ||
+            !CanMovePillar(exitPosition - savePos))
         {
             // This is also checked before entering. Do not fall into an
             // occupied exit if another block arrived during the push.
@@ -725,6 +1242,7 @@ public class Block_Moveable : MonoBehaviour
             return true;
         }
 
+        DetachBlockedPillar(exitPosition - savePos);
         slopeGlideTarget = exitPosition;
         isSlopeGliding = true;
         isIceGliding = false;
@@ -733,17 +1251,22 @@ public class Block_Moveable : MonoBehaviour
 
     private void PerformSlopeGlide()
     {
+        Vector3 positionBeforeMove = transform.position;
         transform.position = Vector3.MoveTowards(
             transform.position,
             slopeGlideTarget,
             blockInfo.movementSpeed * Time.deltaTime
         );
+        MovePillar(transform.position - positionBeforeMove);
 
         if (Vector3.Distance(transform.position, slopeGlideTarget) > SNAP_DISTANCE)
             return;
 
+        Vector3 positionBeforeSnap = transform.position;
         transform.position = slopeGlideTarget;
+        MovePillar(transform.position - positionBeforeSnap);
         savePos = slopeGlideTarget;
+        ArmDetachedPillars();
         RestoreCoveredLiquidColliders();
         isSlopeGliding = false;
 
@@ -777,7 +1300,9 @@ public class Block_Moveable : MonoBehaviour
     // Called by Block_SandFalling once its warning has completed.
     public bool BeginFallingWithSandBlock()
     {
-        if (isMoving || isDespawned)
+        if (isMoving || isDespawned || pillarCarrier != null)
+            return false;
+        if (!BeginCarryingPillar())
             return false;
 
         isBeingCarriedByFallingSand = true;
@@ -794,6 +1319,7 @@ public class Block_Moveable : MonoBehaviour
             return;
 
         transform.position += positionDelta;
+        MovePillar(positionDelta);
         savePos = transform.position;
 
         if (transform.position.y < DESPAWN_Y)
@@ -901,6 +1427,7 @@ public class Block_Moveable : MonoBehaviour
                 landingY,
                 currentPos.z
             );
+            MovePillar(transform.position - currentPos);
 
             savePos = transform.position;
 
@@ -914,6 +1441,7 @@ public class Block_Moveable : MonoBehaviour
             nextY,
             currentPos.z
         );
+        MovePillar(transform.position - currentPos);
 
         // Remove the block if it falls below Y = -5.
         if (transform.position.y < DESPAWN_Y)
@@ -954,6 +1482,7 @@ public class Block_Moveable : MonoBehaviour
             return;
 
         isDespawned = true;
+        HidePillarForDespawn();
         RestoreCoveredLiquidColliders();
         ResetQuicksandStage();
         isFalling = false;
@@ -1031,6 +1560,7 @@ public class Block_Moveable : MonoBehaviour
         isFalling = false;
         fallSpeed = 0f;
         canMove = false;
+        ReleasePillar();
 
         if (!isDespawned)
         {
@@ -1056,6 +1586,11 @@ public class Block_Moveable : MonoBehaviour
 
     private void ResetBlockPos()
     {
+        RestoreHiddenPillar();
+        ReleasePillar(refreshMovement: false);
+        RestoreDetachedPillars();
+        pillarCarrier = null;
+
         if (isMoving)
         {
             movingBlockCount = Mathf.Max(0, movingBlockCount - 1);

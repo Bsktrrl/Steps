@@ -16,6 +16,9 @@ public class Block_SandFalling : MonoBehaviour
     // Separates the warning stage from a block that is already falling.
     bool hasStartedFalling;
 
+    // While part of a carried pillar, its own warning and falling logic pause.
+    private bool carriedByMoveablePillar;
+
     // A moveable block can trigger the same warning as the player.
     // Keep a separate reference only while the warning/fall is active.
     Block_Moveable waitingMoveableBlock;
@@ -166,6 +169,13 @@ public class Block_SandFalling : MonoBehaviour
 
     void CheckIfCanFall()
     {
+        if (carriedByMoveablePillar)
+        {
+            canFall = false;
+            SetFallingSandEnabled(false);
+            return;
+        }
+
         // Check if the block has another block above itself.
         if (Physics.Raycast(
                 transform.position,
@@ -250,6 +260,28 @@ public class Block_SandFalling : MonoBehaviour
     //--------------------
     // Moveable blocks triggering / riding falling sand
     //--------------------
+
+    // Called by Block_Moveable for carried columns and detached columns.
+    // Do not change the original canFall conditions permanently: reevaluate
+    // them at the new position when this block is released or has landed.
+    public void SetCarriedByMoveablePillar(bool carried)
+    {
+        if (carriedByMoveablePillar == carried)
+            return;
+
+        carriedByMoveablePillar = carried;
+        if (carried)
+        {
+            if (isSteppedOn && !hasStartedFalling)
+                CancelFallingAttempt();
+            canFall = false;
+            SetFallingSandEnabled(false);
+        }
+        else if (!resettingBlock)
+        {
+            CheckIfCanFall();
+        }
+    }
 
     // Called ONLY after a moveable block has completed a push or landing.
     public void TriggerFromMoveableBlock(Block_Moveable moveable)
@@ -599,6 +631,7 @@ public class Block_SandFalling : MonoBehaviour
     public void ResetBlock()
     {
         resettingBlock = true;
+        carriedByMoveablePillar = false;
 
         hasStartedFalling = false;
         isSteppedOn = false;
