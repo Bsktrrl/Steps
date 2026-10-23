@@ -175,6 +175,7 @@ public class Movement : Singleton<Movement>
     private readonly HashSet<GameObject> currentlyDarkenedBlocks = new HashSet<GameObject>();
 
     [SerializeField] private float turnBeforeMoveDelay = 0.12f;
+    [SerializeField] private float dashThroughMoveableTurnDelay = 0.18f;
     private float lastTurnTime = -999f;
     private bool turnedThisFrame = false;
     private Vector3 lastTurnedToDir = Vector3.zero;
@@ -1331,6 +1332,152 @@ public class Movement : Singleton<Movement>
         return true;
     }
 
+    // Check exact grid occupancy, not the collider shape of the slope.
+    // The solid supporting tile one level BELOW the exit is allowed.
+    private BlockInfo FindSlopeObstructionAtGridCell(Vector3 gridPosition)
+    {
+        Vector3Int cell = Vector3Int.RoundToInt(gridPosition);
+        Collider[] hits = Physics.OverlapBox(
+            (Vector3)cell,
+            Vector3.one * 0.25f,
+            Quaternion.identity,
+            Physics.DefaultRaycastLayers,
+            QueryTriggerInteraction.Ignore
+        );
+
+        foreach (Collider hitCollider in hits)
+        {
+            if (hitCollider == null)
+                continue;
+
+            BlockInfo info = hitCollider.GetComponentInParent<BlockInfo>();
+            if (info != null && info.GridPosition == cell)
+                return info;
+        }
+
+        return null;
+    }
+
+    private Vector3 GetSlopeDownhillDirection(GameObject slope)
+    {
+        Vector3 forward = slope.transform.forward;
+        return new Vector3(Mathf.Round(forward.x), 0f, Mathf.Round(forward.z));
+    }
+
+    private bool IsSlopeExitBlocked(GameObject slope)
+    {
+        if (!TryGetBlockInfo(slope, out BlockInfo info) ||
+            info.blockType != BlockType.Slope)
+            return false;
+
+        Vector3 exitCell = slope.transform.position + GetSlopeDownhillDirection(slope);
+
+        // A fixed cube AT the exit may simply be the next platform,
+        // which the original slope code correctly allows the player to use.
+        // A movable cube at that position occupies the path, however.
+        BlockInfo exitBlock = FindSlopeObstructionAtGridCell(exitCell);
+        if (exitBlock != null && exitBlock.GetComponent<Block_Moveable>() != null)
+            return true;
+
+        // A cube one level above the exit platform blocks headroom.
+        return FindSlopeObstructionAtGridCell(exitCell + Vector3.up) != null;
+    }
+
+    private bool IsJumpableBlockAtSlopeSide(Vector3 gridPosition)
+    {
+        BlockInfo info = FindSlopeObstructionAtGridCell(gridPosition);
+        // Only actual movable obstructions receive the new slope-jump
+        // exception; existing rules for permanent walls remain unchanged.
+        return info != null && info.GetComponent<Block_Moveable>() != null;
+    }
+
+    private bool TrySetBlockedSlopeJump(MoveOptions moveOption, Vector3 dir)
+    {
+        if (!PlayerHasJumpAbility() || CeilingGrab.isCeilingGrabbing || blockStandingOn == null)
+            return false;
+
+        Vector3 direction = new Vector3(Mathf.Round(dir.x), 0f, Mathf.Round(dir.z));
+        GameObject slopeObject = null;
+        Vector3 landingSupportCell;
+        Vector3 obstacleCell;
+
+        if (TryGetStandingInfo(out BlockInfo standingInfo) &&
+            standingInfo.blockType == BlockType.Slope)
+        {
+            slopeObject = blockStandingOn;
+            Vector3 down = GetSlopeDownhillDirection(slopeObject);
+            if (direction != down && direction != -down)
+                return false;
+
+            bool downhill = direction == down;
+            obstacleCell = slopeObject.transform.position + direction +
+                           (downhill ? Vector3.zero : Vector3.up);
+            landingSupportCell = slopeObject.transform.position + direction * 2f +
+                                 (downhill ? Vector3.down : Vector3.up);
+        }
+        else
+        {
+            // Jump across a crate standing on the slope when approaching
+            // from the upper side; it is a two-cell directional jump.
+            Vector3 adjacentCell = blockStandingOn.transform.position + direction;
+            BlockInfo candidate = FindSlopeObstructionAtGridCell(adjacentCell);
+            if (candidate == null || candidate.blockType != BlockType.Slope ||
+                GetSlopeDownhillDirection(candidate.gameObject) != direction)
+                return false;
+
+            slopeObject = candidate.gameObject;
+            obstacleCell = adjacentCell + Vector3.up;
+            landingSupportCell = adjacentCell + direction + Vector3.down;
+
+            // A crate at the LOWER exit also blocks entering the slope.
+            // The usual two-cell jump can land on top of that crate.
+            if (!IsJumpableBlockAtSlopeSide(obstacleCell))
+            {
+                obstacleCell = adjacentCell + direction;
+                landingSupportCell = obstacleCell;
+
+                // The lower exit may be a normal platform with a
+                // movable block ON TOP of it instead.
+                if (!IsJumpableBlockAtSlopeSide(obstacleCell))
+                {
+                    obstacleCell += Vector3.up;
+                    landingSupportCell = obstacleCell;
+                }
+            }
+        }
+
+        if (!IsJumpableBlockAtSlopeSide(obstacleCell))
+            return false;
+
+        BlockInfo landing = FindSlopeObstructionAtGridCell(landingSupportCell);
+        if (landing == null ||
+            IsBlockedPlayerMoveElement(landing.blockElement) ||
+            !HasStandingRoomAboveNormalTarget(landing.gameObject))
+            return false;
+
+        SetMoveTarget(moveOption, landing.gameObject);
+        return true;
+    }
+
+    private bool WantsJumpAgainstSlopeUpperBlock(GameObject slope)
+    {
+        if (!PlayerHasJumpAbility() || slope == null)
+            return false;
+
+        Vector3 uphill = -GetSlopeDownhillDirection(slope);
+        Vector3 obstacleCell = slope.transform.position + uphill + Vector3.up;
+        if (!IsJumpableBlockAtSlopeSide(obstacleCell))
+            return false;
+
+        foreach (Vector3 localDir in LocalDirections)
+        {
+            if (InputPressedForDirection(localDir) && UpdatedDir(localDir) == uphill)
+                return true;
+        }
+
+        return false;
+    }
+
     private void SetNormalMoveTarget(MoveOptions moveOption, GameObject targetBlock)
     {
         if (HasStandingRoomAboveNormalTarget(targetBlock))
@@ -1899,6 +2046,16 @@ public class Movement : Singleton<Movement>
 
             if (dir == slopeForward)
             {
+                // A block occupying the lower exit must stop the automatic
+                // slide. Do not take the old unconditional fall-back route.
+                // Also allow an intended uphill jump over a blocked upper side.
+                if (IsSlopeExitBlocked(blockStandingOn) ||
+                    WantsJumpAgainstSlopeUpperBlock(blockStandingOn))
+                {
+                    ClearMoveTarget(moveOption);
+                    return;
+                }
+
                 if (PerformMovementRaycast(playerPos, slopeForward, 1, out outObj1) == RaycastHitObjects.None &&
                     PerformMovementRaycast(playerPos + (slopeForward / 1.5f), rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo)
                 {
@@ -1985,7 +2142,8 @@ public class Movement : Singleton<Movement>
             else if (targetInfoCube.blockType == BlockType.Stair || targetInfoCube.blockType == BlockType.Slope)
             {
                 if (transform.position.y > outObj2.transform.position.y + 0.5f &&
-                    Vector3.Dot(outObj2.transform.forward, dir.normalized) > 0.5f)
+                    Vector3.Dot(outObj2.transform.forward, dir.normalized) > 0.5f &&
+                    (targetInfoCube.blockType != BlockType.Slope || !IsSlopeExitBlocked(outObj2)))
                 {
                     SetNormalMoveTarget(moveOption, outObj2);
                 }
@@ -2013,7 +2171,8 @@ public class Movement : Singleton<Movement>
                 if (dot > 0.5f)
                     SetNormalMoveTarget(moveOption, outObj1);
                 else if (transform.position.y > outObj1.transform.position.y + 0.5f &&
-                         Vector3.Dot(stairForward, dir.normalized) > 0.5f)
+                         Vector3.Dot(stairForward, dir.normalized) > 0.5f &&
+                         (blockInfo1.blockType != BlockType.Slope || !IsSlopeExitBlocked(outObj1)))
                     SetNormalMoveTarget(moveOption, outObj1);
                 else
                     ClearMoveTarget(moveOption);
@@ -2487,7 +2646,10 @@ public class Movement : Singleton<Movement>
 
     void UpdateDashMovements(MoveOptions moveOption, Vector3 dir)
     {
-        if (!PlayerHasDashAbility() || !TryGetStandingInfo(out BlockInfo standingInfo))
+        // The player cannot start any movement while a crate is travelling.
+        // Clear its cached dash previews too, so an old destination isn't shown.
+        if (Block_Moveable.AnyBlockMoving ||
+            !PlayerHasDashAbility() || !TryGetStandingInfo(out BlockInfo standingInfo))
         {
             ClearMoveTarget(moveOption);
             return;
@@ -2512,6 +2674,12 @@ public class Movement : Singleton<Movement>
             }
             else if (IsBlockedPlayerMoveElement(targetInfo.blockElement))
             {
+                ClearMoveTarget(moveOption);
+            }
+            else if (!HasStandingRoomAboveNormalTarget(outObj3))
+            {
+                // A block sitting on the landing platform occupies the
+                // player's destination even when the supporting tile is valid.
                 ClearMoveTarget(moveOption);
             }
             else if (outObj3 != blockStandingOn)
@@ -2556,6 +2724,11 @@ public class Movement : Singleton<Movement>
             ClearMoveTarget(moveOption);
             return;
         }
+
+        // A crate at either end of a slope disables walking, not Jump.
+        // Keep this exception player-only; movable blocks cannot jump.
+        if (TrySetBlockedSlopeJump(moveOption, dir))
+            return;
 
         GameObject finalTarget = null;
         Vector3 playerPos = PM.player.transform.position;
@@ -3092,6 +3265,12 @@ public class Movement : Singleton<Movement>
         return Time.time - lastTurnTime < turnBeforeMoveDelay;
     }
 
+    private bool ShouldDelayDashThroughMoveable(Vector3 desiredDir)
+    {
+        return desiredDir == lastTurnedToDir &&
+               Time.time - lastTurnTime < dashThroughMoveableTurnDelay;
+    }
+
     private bool DashPassesThroughMoveableBlock(Vector3 dir)
     {
         if (!TryGetStandingInfo(out BlockInfo standingInfo))
@@ -3145,6 +3324,34 @@ public class Movement : Singleton<Movement>
     {
         if (TryGetBlockInfo(obj, out BlockInfo info))
             info.ResetDarkenColor();
+    }
+
+    // Called when a movable block begins or finishes moving.
+    // Unlike player step chaining, an external block relocation must update
+    // both cached movement options AND their displayed highlights immediately.
+    public void RefreshAfterMoveableBlockChange()
+    {
+        Physics.SyncTransforms();
+
+        if (isRespawning || isMoving ||
+            movementStates == MovementStates.Moving ||
+            movementStates == MovementStates.Falling)
+        {
+            UpdateAvailableMovementBlocks();
+            return;
+        }
+
+        RestoreAllSlopeDisplayOverrides();
+        UpdateBlocks();
+        ApplySlopeDisplayOverridesToCurrentTargets();
+
+        suppressDarkeningWhileChaining = false;
+        pendingDarkeningRefreshAfterChain = false;
+        lastMovementVisualActivityTime = Time.unscaledTime;
+
+        SyncDarkenedBlocksToCurrentTargets();
+        EnsureCurrentTargetNumbersVisible();
+        Action_UpdatedBlocks?.Invoke();
     }
 
     public void RefreshAvailableMovementBlocksSmooth()
@@ -3681,9 +3888,14 @@ public class Movement : Singleton<Movement>
             MoveOptions dashOption = GetDashOptionForDirection(localDir);
             Vector3 worldDir = UpdatedDir(localDir);
 
+            // The block may have moved since the cached dash target was made.
+            // Recheck occupancy before committing to a dash destination.
+            Physics.SyncTransforms();
+            UpdateDashMovements(dashOption, worldDir);
+
             bool shouldDelayDash =
                 DashPassesThroughMoveableBlock(worldDir) &&
-                ShouldDelayAbilityMove(worldDir);
+                ShouldDelayDashThroughMoveable(worldDir);
 
             if (HasValidTarget(dashOption) && !shouldDelayDash)
             {

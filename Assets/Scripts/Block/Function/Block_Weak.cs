@@ -15,7 +15,16 @@ public class Block_Weak : MonoBehaviour
     [SerializeField] GameObject IceCracked_Parent;
     [SerializeField] GameObject IceCracked_Parent_InScene;
 
+    // One effect instance per cracked-ice tile, so rapidly gliding blocks
+    // do not restart a shared particle system on every new tile.
+    [SerializeField] private CrackedIceScript moveableIceEffectPrefab;
+    [SerializeField] private float moveableEffectLifetime = 2.5f;
+
     public bool isSteppedOn;
+
+    private bool isDissolving;
+    private bool pendingBreakFromJump;
+    private CrackedIceScript moveableIceEffectInstance;
 
 
     //--------------------
@@ -25,6 +34,7 @@ public class Block_Weak : MonoBehaviour
     {
         Movement.Action_isSwitchingBlocks += CheckIfSteppenOn;
         Movement.Action_StepTaken += DisolveBlock;
+        Movement.Action_isJumping += CheckIfJumpingFromBlock;
         Movement.Action_RespawnPlayerEarly += ResetBlock;
     }
 
@@ -32,6 +42,7 @@ public class Block_Weak : MonoBehaviour
     {
         Movement.Action_isSwitchingBlocks -= CheckIfSteppenOn;
         Movement.Action_StepTaken -= DisolveBlock;
+        Movement.Action_isJumping -= CheckIfJumpingFromBlock;
         Movement.Action_RespawnPlayerEarly -= ResetBlock;
     }
 
@@ -52,23 +63,101 @@ public class Block_Weak : MonoBehaviour
                 IceBreakingEffect_Manager.Instance.CrackIce_Start();
             }
 
+            if (!isDissolving && !pendingBreakFromJump)
+            {
+                ResetBlock();
+            }
+        }
+    }
 
-            ResetBlock();
+    void CheckIfJumpingFromBlock()
+    {
+        if (Player_CeilingGrab.Instance.isCeilingGrabbing)
+            return;
+
+        if (Movement.Instance.currentMoveStartBlock == gameObject)
+        {
+            pendingBreakFromJump = true;
         }
     }
 
     void DisolveBlock()
     {
-        if (!isSteppedOn || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+        if ((!isSteppedOn && !pendingBreakFromJump) ||
+            Player_CeilingGrab.Instance.isCeilingGrabbing)
+        {
+            return;
+        }
 
-        StartCoroutine(WaitBeforeDisolveBlock(0.145f));
+        pendingBreakFromJump = false;
+        StartDissolving(false);
     }
-    IEnumerator WaitBeforeDisolveBlock(float waitTime)
+
+    // Called when a movable block arrives above this cracked-ice tile.
+    public void CrackFromMoveableBlock()
+    {
+        if (!isActiveAndEnabled || isDissolving || moveableIceEffectPrefab == null)
+            return;
+
+        if (moveableIceEffectInstance != null)
+            return;
+
+        moveableIceEffectInstance = Instantiate(
+            moveableIceEffectPrefab,
+            transform.position,
+            transform.rotation
+        );
+
+        moveableIceEffectInstance.Crack();
+    }
+
+    // Called when a movable block leaves this cracked ice.
+    public void BreakFromMoveableBlock()
+    {
+        if (!isActiveAndEnabled)
+            return;
+
+        StartDissolving(true);
+    }
+
+    private void StartDissolving(bool fromMoveableBlock)
+    {
+        if (isDissolving)
+            return;
+
+        isDissolving = true;
+        StartCoroutine(WaitBeforeDisolveBlock(0.145f, fromMoveableBlock));
+    }
+
+    IEnumerator WaitBeforeDisolveBlock(float waitTime, bool fromMoveableBlock)
     {
         Vector3 breakPosition = transform.position;
         Quaternion breakRotation = transform.rotation;
 
-        IceBreakingEffect_Manager.Instance.BreakIce_Start(breakPosition, breakRotation);
+        if (fromMoveableBlock && moveableIceEffectPrefab != null)
+        {
+            // Use this tile's own effect instance instead of reusing the
+            // effect manager's shared instance for consecutive quick steps.
+            if (moveableIceEffectInstance == null)
+            {
+                moveableIceEffectInstance = Instantiate(
+                    moveableIceEffectPrefab,
+                    breakPosition,
+                    breakRotation
+                );
+            }
+
+            moveableIceEffectInstance.Break();
+            Destroy(moveableIceEffectInstance.gameObject,
+                Mathf.Max(0.1f, moveableEffectLifetime));
+            moveableIceEffectInstance = null;
+        }
+        else
+        {
+            // Preserve existing player behavior (and fallback if no
+            // movable-specific effect prefab has been assigned).
+            IceBreakingEffect_Manager.Instance.BreakIce_Start(breakPosition, breakRotation);
+        }
 
         yield return new WaitForSeconds(waitTime);
 
@@ -81,6 +170,8 @@ public class Block_Weak : MonoBehaviour
         gameObject.SetActive(false);
 
         isSteppedOn = false;
+        isDissolving = false;
+        pendingBreakFromJump = false;
 
         if (!Movement.Instance.isIceGliding)
         {
@@ -90,7 +181,19 @@ public class Block_Weak : MonoBehaviour
 
     public void ResetBlock()
     {
+        StopAllCoroutines();
+
         isSteppedOn = false;
+        isDissolving = false;
+        pendingBreakFromJump = false;
+
+        // An effect waiting for its break can be removed on reset.
+        if (moveableIceEffectInstance != null)
+        {
+            Destroy(moveableIceEffectInstance.gameObject);
+            moveableIceEffectInstance = null;
+        }
+
         gameObject.SetActive(true);
 
         if (originalBlock != null)

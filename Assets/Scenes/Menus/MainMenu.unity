@@ -2143,7 +2143,7 @@ PrefabInstance:
     - target: {fileID: 4921006152386638099, guid: c1ddde1789eef7b4287b49e5882e72ff, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 1998793870}
+      objectReference: {fileID: 1407211505}
     - target: {fileID: 4921006152386638099, guid: c1ddde1789eef7b4287b49e5882e72ff, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -6074,7 +6074,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1330780132882266929, guid: c1ddde1789eef7b4287b49e5882e72ff, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1532502734276095383, guid: c1ddde1789eef7b4287b49e5882e72ff, type: 3}
       propertyPath: buttonBack_Sound
@@ -6147,7 +6147,7 @@ PrefabInstance:
     - target: {fileID: 4921006152386638099, guid: c1ddde1789eef7b4287b49e5882e72ff, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 1952893436}
+      objectReference: {fileID: 1998793870}
     - target: {fileID: 5326634095417618646, guid: c1ddde1789eef7b4287b49e5882e72ff, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 4.200012
@@ -16137,6 +16137,7 @@ MonoBehaviour:
       startLanguage_English: 0
       startVolum_Values: 0
       forceIntroSequenceInFirstLevel: 0
+      tutorial_PlayerSpawned: 0
       tutorial_Finished: 0
       pickup_FirstFootprint: 0
       pickup_FirstSkin: 0
@@ -19605,7 +19606,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1330780132882266929, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1585083370071274665, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: german
@@ -19710,7 +19711,7 @@ PrefabInstance:
     - target: {fileID: 4921006152386638099, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 1689483886}
+      objectReference: {fileID: 1869201561}
     - target: {fileID: 4971443300296651654, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: german
       value: "Stream Spire Au\xDFenposten"
@@ -22643,6 +22644,7 @@ MonoBehaviour:
       startLanguage_English: 0
       startVolum_Values: 0
       forceIntroSequenceInFirstLevel: 0
+      tutorial_PlayerSpawned: 0
       tutorial_Finished: 0
       pickup_FirstFootprint: 0
       pickup_FirstSkin: 0
@@ -24373,6 +24375,7 @@ MonoBehaviour:
     startLanguage_English: 0
     startVolum_Values: 0
     forceIntroSequenceInFirstLevel: 0
+    tutorial_PlayerSpawned: 0
     tutorial_Finished: 0
     pickup_FirstFootprint: 0
     pickup_FirstSkin: 0
@@ -27747,10 +27750,10 @@ PrefabInstance:
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelSprite
       value: 
-      objectReference: {fileID: 21300000, guid: dbc7762db1d67c94fbef2022c9c3d728, type: 3}
+      objectReference: {fileID: 21300000, guid: 48d142fef8206924c90bb2492fac2584, type: 3}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelToPlay
-      value: Sandlands_Lv_2
+      value: Sandlands_Lv_1
       objectReference: {fileID: 0}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: regionToPlay
@@ -27810,7 +27813,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1668255464173535912, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: textToDisplay
-      value: 15
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 1865051623872832120, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_Enabled
@@ -27899,11 +27902,11 @@ PrefabInstance:
     - target: {fileID: 4921006152386638099, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 1869201561}
+      objectReference: {fileID: 1385494459}
     - target: {fileID: 4921006152386638099, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 1869201561}
+      objectReference: {fileID: 1930639128}
     - target: {fileID: 4971443300296651654, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: german
       value: Riverroot Hain
@@ -29049,6 +29052,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
+      propertyPath: abilitiesInLevel.DrillHelmet
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -29062,7 +29069,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1330780132882266929, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1585083370071274665, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: german
@@ -29183,7 +29190,7 @@ PrefabInstance:
     - target: {fileID: 4921006152386638099, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 1869201561}
+      objectReference: {fileID: 1385494459}
     - target: {fileID: 4971443300296651654, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: german
       value: Grass Creek Garten
@@ -30447,7 +30454,7 @@ PrefabInstance:
     - target: {fileID: 4921006152386638099, guid: c1ddde1789eef7b4287b49e5882e72ff, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 165018021}
+      objectReference: {fileID: 1407211505}
     - target: {fileID: 4921006152386638099, guid: c1ddde1789eef7b4287b49e5882e72ff, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
