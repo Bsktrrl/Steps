@@ -66,6 +66,8 @@ public class AncientTablet : MonoBehaviour
     }
     IEnumerator RunInterraction_Delay()
     {
+        PlayerManager.Instance.PauseMovement();
+
         ButtonMessageManager.Instance.HideButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Read);
 
 
@@ -116,6 +118,9 @@ public class AncientTablet : MonoBehaviour
 
         tabletIsShowing = false;
         tabletInterractTransitioning = false;
+
+
+        PlayerManager.Instance.UnpauseMovement();
     }
 
 

@@ -27,6 +27,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
     [Header("Game Paused")]
     public bool pauseGame;
+    public bool pauseMovement;
     public bool npcInteraction;
 
     [Header("mainMenu_Name")]
@@ -217,6 +218,15 @@ public class PlayerManager : Singleton<PlayerManager>
     public void UnpauseGame()
     {
         pauseGame = false;
+    }
+
+    public void PauseMovement()
+    {
+        pauseMovement = true;
+    }
+    public void UnpauseMovement()
+    {
+        pauseMovement = false;
     }
 
 
