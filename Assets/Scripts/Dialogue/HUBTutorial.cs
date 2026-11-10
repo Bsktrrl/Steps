@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 
@@ -14,9 +16,17 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
     [Header("Data from Excel")]
     public TutorialData tutorialData = new TutorialData();
-    int startRow = 2;
-    int columns = 13; //Size + 1
-    int currentLanguageAmount = 3;
+    const int columns = 13;
+    const int currentLanguageAmount = 3;
+
+    // Guards against events arriving before Start()/data loading is complete.
+    bool tutorialDatabaseBuilt;
+    bool tutorialSaveStatesReady;
+    bool playerSpawned;
+    bool tutorialStartupQueued;
+    bool tutorialSequenceActive;
+    bool dialogueIsVisible;
+    bool selectingSegment;
 
     [Header("Stepellier Object")]
     [SerializeField] GameObject stepellier_Object;
@@ -46,6 +56,11 @@ public class HUBTutorial : Singleton<HUBTutorial>
         HideArrow();
 
         BuildTutorialTextDatabase();
+        TryStartMovementTutorial();
+        // If save data arrived during OnEnable(), Start() must not re-pause
+        // normal gameplay when no tutorial was launched.
+        if (tutorialSaveStatesReady && !tutorialStartupQueued && !tutorialSequenceActive)
+            PlayerManager.Instance.UnpauseGame();
     }
 
 
@@ -81,25 +96,47 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
     void SetupTutorialSaveStates()
     {
-        //Build SaveStates of TutorialSegements, if there are none yet
-        if (DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets.Count <= 0)
+        if (DataManager.Instance == null)
         {
-            int enumSize = Enum.GetValues(typeof(TutorialParts)).Length;
-
-            for (int i = 1; i < enumSize; i++)
-            {
-                TutorialDataParts tutorialParts = new TutorialDataParts();
-                tutorialParts.tutorialParts = (TutorialParts)i;
-                tutorialParts.isGoneThrough = false;
-
-                DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets.Add(tutorialParts);
-            }
+            Debug.LogError("[HUBTutorial] Cannot initialize tutorial save states: save data is unavailable.", this);
+            return;
         }
 
-        DataPersistanceManager.instance.SaveGame();
+        var states = DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets;
+        if (states == null)
+        {
+            Debug.LogError("[HUBTutorial] tutorialSegmenets is null in the loaded save data.", this);
+            return;
+        }
+
+        bool addedStates = false;
+        foreach (TutorialParts part in Enum.GetValues(typeof(TutorialParts)))
+        {
+            if (part == TutorialParts.None) continue;
+            if (states.Any(state => state != null && state.tutorialParts == part)) continue;
+
+            states.Add(new TutorialDataParts
+            {
+                tutorialParts = part,
+                isGoneThrough = false
+            });
+            addedStates = true;
+        }
+
+        tutorialSaveStatesReady = true;
+        if (addedStates && DataPersistanceManager.instance != null)
+            DataPersistanceManager.instance.SaveGame();
+
+        TryStartMovementTutorial();
     }
     void SetupDialogueRefferences()
     {
+        if (DialogueManager.Instance == null)
+        {
+            Debug.LogError("[HUBTutorial] DialogueManager is not available.", this);
+            return;
+        }
+
         dialogueDisplayCanvas_Parent = DialogueManager.Instance.dialogueCanvas;
         dialogueDisplay_Name = DialogueManager.Instance.nameText;
     }
@@ -112,15 +149,25 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
     public void StartTutorial(TutorialParts tutorialPart)
     {
-        print("10000. ShowDialogueDisplay");
+        if (tutorialSequenceActive) return;
+        if (!tutorialDatabaseBuilt)
+        {
+            Debug.LogError("[HUBTutorial] Tutorial data has not been loaded yet.", this);
+            return;
+        }
+        if (!GetCorrectSegment((int)tutorialPart, tutorialPart)) return;
+
+        tutorialSequenceActive = true;
+        dialogueIsVisible = false;
+        selectingSegment = false;
         PlayerManager.Instance.PauseGame();
-
-        GetCorrectSegment((int)tutorialPart, tutorialPart);
-
         StartCoroutine(StartTutorial_Delay());
     }
+
     public void EndTutorial()
     {
+        if (!tutorialSequenceActive || !dialogueIsVisible) return;
+        dialogueIsVisible = false;
         StartCoroutine(EndTutorial_Delay());
     }
 
@@ -141,168 +188,135 @@ public class HUBTutorial : Singleton<HUBTutorial>
         yield return StartCoroutine(Stepellier_Exit());
     }
 
-    void GetCorrectSegment(int index, TutorialParts tutorialPart)
+    bool GetCorrectSegment(int index, TutorialParts tutorialPart)
     {
-        int tempSegment = -1;
+        int tempSegment = tutorialData.tutorialDataSegment.FindIndex(segment =>
+            segment != null && segment.segmentNumber == index);
 
-        for (int i = 0; i < tutorialData.tutorialDataSegment.Count; i++)
+        if (tempSegment < 0)
         {
-            if (tutorialData.tutorialDataSegment[i].segmentNumber == index)
-            {
-                tempSegment = i;
-                break;
-            }
+            Debug.LogError($"[HUBTutorial] No starting dialogue for {tutorialPart} (Segment={index}). Check the CSV and TutorialParts enum.", this);
+            return false;
         }
 
         currentSegmentShowing = tempSegment;
         currentTutorialPart = tutorialPart;
+        return true;
     }
 
-    void RotateCamera()
+    bool IsCurrentSegmentValid()
     {
-        MoveDirection moveDirection = tutorialData.tutorialDataSegment[currentSegmentShowing].camera_Rotation;
-        Vector3 desiredDirection = Vector3.zero;
-
-        switch (moveDirection)
-        {
-            case MoveDirection.None:
-                desiredDirection = Vector3.zero;
-                break;
-
-            case MoveDirection.Forward:
-                desiredDirection = Vector3.forward;
-                break;
-            case MoveDirection.Backward:
-                desiredDirection = Vector3.back;
-                break;
-            case MoveDirection.Right:
-                desiredDirection = Vector3.right;
-                break;
-            case MoveDirection.Left:
-                desiredDirection = Vector3.left;
-                break;
-        }
-
-        if (desiredDirection == Vector3.zero)
-        {
-            return;
-        }
-
-        CameraRotationState targetState;
-
-        if (desiredDirection == Vector3.forward)
-        {
-            targetState = CameraRotationState.Forward;
-        }
-        else if (desiredDirection == Vector3.back)
-        {
-            targetState = CameraRotationState.Backward;
-        }
-        else if (desiredDirection == Vector3.left)
-        {
-            targetState = CameraRotationState.Left;
-        }
-        else if (desiredDirection == Vector3.right)
-        {
-            targetState = CameraRotationState.Right;
-        }
-        else
-        {
-            return;
-        }
-
-        CameraRotationState currentState = CameraController.Instance.cameraRotationState;
-
-        if (currentState == targetState)
-        {
-            return;
-        }
-
-        // Camera rotation order for +1:
-        // Forward -> Left -> Backward -> Right -> Forward
-        CameraRotationState[] rotationOrder =
-        {
-        CameraRotationState.Forward,
-        CameraRotationState.Left,
-        CameraRotationState.Backward,
-        CameraRotationState.Right
-    };
-
-        int currentIndex = Array.IndexOf(rotationOrder, currentState);
-        int targetIndex = Array.IndexOf(rotationOrder, targetState);
-
-        int positiveSteps = (targetIndex - currentIndex + 4) % 4;
-        int negativeSteps = (currentIndex - targetIndex + 4) % 4;
-
-        // Take the shortest route.
-        if (positiveSteps <= negativeSteps)
-        {
-            for (int i = 0; i < positiveSteps; i++)
-            {
-                // RotateCameraX is +1 when camera motion is Normal.
-                if (DataManager.Instance.settingData_StoreList.currentRevertedCameraMotion
-                    == RevertedCameraMotion.Normal)
-                {
-                    CameraController.Instance.RotateCameraX();
-                }
-                else
-                {
-                    CameraController.Instance.RotateCameraY();
-                }
-            }
-        }
-        else
-        {
-            for (int i = 0; i < negativeSteps; i++)
-            {
-                // RotateCameraY is -1 when camera motion is Normal.
-                if (DataManager.Instance.settingData_StoreList.currentRevertedCameraMotion
-                    == RevertedCameraMotion.Normal)
-                {
-                    CameraController.Instance.RotateCameraY();
-                }
-                else
-                {
-                    CameraController.Instance.RotateCameraX();
-                }
-            }
-        }
+        return tutorialData != null && tutorialData.tutorialDataSegment != null &&
+               currentSegmentShowing >= 0 &&
+               currentSegmentShowing < tutorialData.tutorialDataSegment.Count;
     }
 
+    // Rotate a single step at a time: multiple RotateCameraX/Y calls in
+    // the same frame can be discarded while the camera is already rotating.
     IEnumerator RotateCameraAndWait()
     {
-        // Wait until the camera is allowed to rotate.
-        while (Movement.Instance.GetMovementState() == MovementStates.Moving)
+        if (!IsCurrentSegmentValid()) yield break;
+        if (CameraController.Instance == null || Movement.Instance == null)
         {
-            yield return null;
+            Debug.LogError("[HUBTutorial] CameraController or Movement is missing.", this);
+            yield break;
         }
 
-        // Start the rotation.
-        RotateCamera();
-
-        // Wait until ALL requested camera rotations are complete.
-        while (CameraController.Instance.isRotating)
-        {
+        while (Movement.Instance.GetMovementState() == MovementStates.Moving)
             yield return null;
+
+        while (CameraController.Instance.isRotating)
+            yield return null;
+
+        MoveDirection requested = tutorialData.tutorialDataSegment[currentSegmentShowing].camera_Rotation;
+        CameraRotationState target;
+        switch (requested)
+        {
+            case MoveDirection.Forward: target = CameraRotationState.Forward; break;
+            case MoveDirection.Backward: target = CameraRotationState.Backward; break;
+            case MoveDirection.Left: target = CameraRotationState.Left; break;
+            case MoveDirection.Right: target = CameraRotationState.Right; break;
+            default: yield break; // Blank rotation: do not rotate the camera.
+        }
+
+        // +1: Forward -> Left -> Backward -> Right -> Forward.
+        CameraRotationState[] order =
+        {
+            CameraRotationState.Forward,
+            CameraRotationState.Left,
+            CameraRotationState.Backward,
+            CameraRotationState.Right
+        };
+
+        int from = Array.IndexOf(order, CameraController.Instance.cameraRotationState);
+        int to = Array.IndexOf(order, target);
+        if (from < 0 || to < 0)
+        {
+            Debug.LogWarning("[HUBTutorial] Camera rotation state not present in the known rotation order.", this);
+            yield break;
+        }
+
+        int positiveSteps = (to - from + order.Length) % order.Length;
+        int negativeSteps = (from - to + order.Length) % order.Length;
+        bool positive = positiveSteps <= negativeSteps;
+        int steps = positive ? positiveSteps : negativeSteps;
+
+        for (int i = 0; i < steps; i++)
+        {
+            bool normal = DataManager.Instance.settingData_StoreList.currentRevertedCameraMotion
+                          == RevertedCameraMotion.Normal;
+            if (positive == normal)
+                CameraController.Instance.RotateCameraX();
+            else
+                CameraController.Instance.RotateCameraY();
+
+            // Allow the animation to enter the isRotating state before checking it.
+            yield return null;
+            while (CameraController.Instance.isRotating)
+                yield return null;
         }
     }
-
 
     //-----
 
 
     void SetupTutorial_Movement()
     {
-        //0 is Movement Tutorial
-        if (DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets[0].isGoneThrough) return;
+        playerSpawned = true;
+        TryStartMovementTutorial();
+    }
 
+    void TryStartMovementTutorial()
+    {
+        if (!playerSpawned || !tutorialSaveStatesReady || !tutorialDatabaseBuilt ||
+            tutorialStartupQueued || tutorialSequenceActive)
+            return;
+
+        var states = DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets;
+        TutorialDataParts startState = states.FirstOrDefault(state =>
+            state != null && state.tutorialParts == TutorialParts.Start);
+
+        if (startState == null)
+        {
+            Debug.LogError("[HUBTutorial] TutorialParts.Start is missing from the save states.", this);
+            return;
+        }
+        if (startState.isGoneThrough)
+        {
+            playerSpawned = false;
+            return;
+        }
+
+        playerSpawned = false;
+        tutorialStartupQueued = true;
         PlayerManager.Instance.PauseGame();
         StartCoroutine(SetupTutorial_Movement_Delay(0f));
     }
+
     IEnumerator SetupTutorial_Movement_Delay(float waitTime)
     {
-        yield return new WaitForSeconds(waitTime);
-
+        yield return new WaitForSecondsRealtime(waitTime);
+        tutorialStartupQueued = false;
         StartTutorial(TutorialParts.Start);
     }
     //void SetupTutorial_Respawn()
@@ -322,14 +336,16 @@ public class HUBTutorial : Singleton<HUBTutorial>
     //}
     //IEnumerator SetupTutorial_Respawn_Delay(float waitTime)
     //{
-    //    yield return new WaitForSeconds(waitTime);
+    //    yield return new WaitForSecondsRealtime(waitTime);
 
     //    StartTutorial(TutorialParts.Respawn);
     //}
 
     void UnPauseGame()
     {
-        PlayerManager.Instance.UnpauseGame();
+        // The save-loaded event can fire after a tutorial has already been queued.
+        if (!tutorialStartupQueued && !tutorialSequenceActive)
+            PlayerManager.Instance.UnpauseGame();
     }
 
     #endregion
@@ -350,11 +366,11 @@ public class HUBTutorial : Singleton<HUBTutorial>
     }
     IEnumerator Stepellier_Exit()
     {
-        //Despawn Stepellier
-
         yield return StartCoroutine(DespawnStepellier_Delay(0.2f));
-
-        //yield return PlayerRotateBackToOriginalRotation();
+        tutorialSequenceActive = false;
+        selectingSegment = false;
+        currentSegmentShowing = -1;
+        currentTutorialPart = TutorialParts.None;
     }
 
 
@@ -365,7 +381,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
     {
         stepellier_Animator.SetTrigger(AnimationManager.Instance.effect_Teleport);
 
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSecondsRealtime(waitTime);
 
         stepellier_Object.transform.SetPositionAndRotation(tutorialData.tutorialDataSegment[currentSegmentShowing].stepellier_spawnPos, RotateStepellier());
 
@@ -377,59 +393,59 @@ public class HUBTutorial : Singleton<HUBTutorial>
     {
         stepellier_Animator.SetTrigger(AnimationManager.Instance.effect_Teleport);
 
-        yield return new WaitForSeconds(waitTime / 2);
+        yield return new WaitForSecondsRealtime(waitTime / 2);
 
         SFX_Respawn.Instance.PlayRespawnSound();
 
-        yield return new WaitForSeconds(waitTime / 2);
+        yield return new WaitForSecondsRealtime(waitTime / 2);
 
         HideStepellier();
 
         stepellier_Object.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
 
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSecondsRealtime(waitTime);
 
         Movement.Instance.UpdateAvailableMovementBlocks();
 
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSecondsRealtime(waitTime);
 
         //Save the tutorial State
-        for (int i = 0; i < DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets.Count; i++)
+        var states = DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets;
+        TutorialDataParts completed = states.FirstOrDefault(state =>
+            state != null && state.tutorialParts == currentTutorialPart);
+        if (completed != null)
         {
-            if (DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets[i].tutorialParts == currentTutorialPart)
-            {
-                DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets[i].isGoneThrough = true;
+            completed.isGoneThrough = true;
+            if (DataPersistanceManager.instance != null)
                 DataPersistanceManager.instance.SaveGame();
-
-                break;
-            }
         }
 
         PlayerManager.Instance.UnpauseGame();
 
         Movement.Instance.SetDarkenBlocks();
     }
-    
+
     IEnumerator PlayerReactToStepellierSpawning()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSecondsRealtime(0.1f);
 
         playerRotY_Temp = PlayerManager.Instance.playerBody.transform.eulerAngles.y;
-        Movement.Instance.RotatePlayerBody(RotatePlayer());
+        if (tutorialData.tutorialDataSegment[currentSegmentShowing].player_Rot != MoveDirection.None)
+            Movement.Instance.RotatePlayerBody(RotatePlayer());
 
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSecondsRealtime(0.15f);
 
         yield return PlayerJump();
 
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSecondsRealtime(0.15f);
     }
     IEnumerator PlayerRotateBackToOriginalRotation()
     {
         Movement.Instance.RotatePlayerBody(playerRotY_Temp);
 
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSecondsRealtime(0.25f);
     }
-    
+
     IEnumerator PlayerJump()
     {
         Transform playerTransform = PlayerManager.Instance.playerBody.transform;
@@ -445,7 +461,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
         // Quick surprised jump upward
         while (timer < jumpUpTime)
         {
-            timer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
             float t = timer / jumpUpTime;
 
             playerTransform.position = Vector3.Lerp(startPos, jumpPos, t);
@@ -458,7 +474,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
         // Slightly slower fall back down
         while (timer < jumpDownTime)
         {
-            timer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
             float t = timer / jumpDownTime;
 
             playerTransform.position = Vector3.Lerp(jumpPos, startPos, t);
@@ -522,17 +538,15 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
     void ShowStepellier()
     {
-        for (int i = 0; i < stepellier_MeshObjectList.Count; i++)
-        {
-            stepellier_MeshObjectList[i].SetActive(true);
-        }
+        if (stepellier_MeshObjectList == null) return;
+        foreach (GameObject mesh in stepellier_MeshObjectList)
+            if (mesh != null) mesh.SetActive(true);
     }
     void HideStepellier()
     {
-        for (int i = 0; i < stepellier_MeshObjectList.Count; i++)
-        {
-            stepellier_MeshObjectList[i].SetActive(false);
-        }
+        if (stepellier_MeshObjectList == null) return;
+        foreach (GameObject mesh in stepellier_MeshObjectList)
+            if (mesh != null) mesh.SetActive(false);
     }
 
     #endregion
@@ -545,23 +559,35 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
     IEnumerator ShowDialogueDisplay()
     {
-        yield return new WaitForSeconds(0f);
-
-        SetupStepellierNameText_toDisplay();
-
-        if (!dialogueDisplayCanvas_Parent.activeInHierarchy)
+        if (DialogueManager.Instance == null)
         {
-            dialogueDisplayCanvas_Parent.SetActive(true);
+            Debug.LogError("[HUBTutorial] DialogueManager is unavailable while opening the tutorial.", this);
+            PlayerManager.Instance.UnpauseGame();
+            tutorialSequenceActive = false;
+            yield break;
+        }
+        SetupDialogueRefferences();
+        if (dialogueDisplayCanvas_Parent == null || dialogueDisplay_Name == null ||
+            TypewriterEffect.Instance == null)
+        {
+            Debug.LogError("[HUBTutorial] Dialogue canvas, name text, or TypewriterEffect is missing.", this);
+            PlayerManager.Instance.UnpauseGame();
+            tutorialSequenceActive = false;
+            yield break;
         }
 
-        yield return new WaitForSeconds(0.4f);
+        SetupStepellierNameText_toDisplay();
+        if (!dialogueDisplayCanvas_Parent.activeInHierarchy)
+            dialogueDisplayCanvas_Parent.SetActive(true);
 
+        yield return new WaitForSecondsRealtime(0.4f);
         PlayerManager.Instance.npcInteraction = true;
+        dialogueIsVisible = true;
         yield return StartCoroutine(SelectSegment());
     }
     IEnumerator CloseDialogueDisplay()
     {
-        yield return new WaitForSeconds(0f);
+        yield return new WaitForSecondsRealtime(0f);
 
         if (DialogueManager.Instance.closingMenuAnimatorList.Count > 0)
         {
@@ -571,7 +597,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
             }
         }
 
-        yield return new WaitForSeconds(DialogueManager.Instance.closingMenuDelay);
+        yield return new WaitForSecondsRealtime(DialogueManager.Instance.closingMenuDelay);
 
         dialogueDisplayCanvas_Parent.SetActive(false);
     }
@@ -579,37 +605,57 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
     void StartNewSegment()
     {
+        // The dialogue-next event is global. Ignore presses outside this tutorial.
+        if (!tutorialSequenceActive || !dialogueIsVisible || selectingSegment ||
+            !IsCurrentSegmentValid() || TypewriterEffect.Instance == null)
+            return;
+
         if (TypewriterEffect.Instance.isTyping)
         {
             TypewriterEffect.Instance.SkipTypewriter();
+            return;
         }
-        else if (tutorialData.tutorialDataSegment[currentSegmentShowing].isEnding)
+
+        if (tutorialData.tutorialDataSegment[currentSegmentShowing].isEnding)
         {
             PlayerManager.Instance.npcInteraction = false;
-
             SetupDialogueText_toDisplay("");
             EndTutorial();
+            return;
         }
-        else
-        {
-            currentSegmentShowing++;
 
-            StartCoroutine(SelectSegment());
+        if (currentSegmentShowing + 1 >= tutorialData.tutorialDataSegment.Count)
+        {
+            Debug.LogError("[HUBTutorial] Reached the last CSV dialogue row without an Ending marker.", this);
+            PlayerManager.Instance.npcInteraction = false;
+            EndTutorial();
+            return;
         }
+
+        currentSegmentShowing++;
+        StartCoroutine(SelectSegment());
     }
     IEnumerator SelectSegment()
     {
+        selectingSegment = true;
+        if (!IsCurrentSegmentValid())
+        {
+            Debug.LogError("[HUBTutorial] Invalid current dialogue segment index.", this);
+            selectingSegment = false;
+            yield break;
+        }
         HideArrow();
-
-        // Finish camera rotation before showing the new segment.
         yield return StartCoroutine(RotateCameraAndWait());
 
-        SetupDialogueText_toDisplay(
-            tutorialData.tutorialDataSegment[currentSegmentShowing]
-                .languageDialogueList[
-                    (int)DataManager.Instance.settingData_StoreList.currentLanguage
-                ]
-        );
+        int languageIndex = (int)DataManager.Instance.settingData_StoreList.currentLanguage;
+        var languages = tutorialData.tutorialDataSegment[currentSegmentShowing].languageDialogueList;
+        if (languageIndex < 0 || languageIndex >= languages.Count)
+        {
+            Debug.LogWarning($"[HUBTutorial] Language index {languageIndex} is unavailable, using language 0.", this);
+            languageIndex = 0;
+        }
+        SetupDialogueText_toDisplay(languages[languageIndex]);
+        selectingSegment = false;
     }
 
     void SetupStepellierNameText_toDisplay()
@@ -624,12 +670,15 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
     void ShowArrow()
     {
+        // TypewriterEffect is shared with other NPCs.
+        if (!tutorialSequenceActive || !dialogueIsVisible || DialogueManager.Instance == null) return;
         DialogueManager.Instance.activeNPC = NPCs.Stepellier;
         DialogueManager.Instance.ShowArrow();
     }
     void HideArrow()
     {
-        DialogueManager.Instance.HideArrow();
+        if (DialogueManager.Instance != null)
+            DialogueManager.Instance.HideArrow();
     }
 
     #endregion
@@ -644,188 +693,183 @@ public class HUBTutorial : Singleton<HUBTutorial>
     {
         ReadExcelSheet();
     }
+
     public void ReadExcelSheet()
     {
-        TextAsset activeTutorialDocument = null;
-
-        if (ControllerState.Instance.activeController == InputType.Keyboard)
-            activeTutorialDocument = stepellierTutorialDocument_Keyboard;
-        else if (ControllerState.Instance.activeController == InputType.PlayStation)
-            activeTutorialDocument = stepellierTutorialDocument_PlayStation;
-        else if (ControllerState.Instance.activeController == InputType.Xbox)
-            activeTutorialDocument = stepellierTutorialDocument_xBox;
-
-        if (activeTutorialDocument == null) return;
-
-        // Separate Excel Sheet into a string[] by its ";" and line breaks
-        string[] excelData = activeTutorialDocument.text.Split(new string[] { ";", "\n" }, StringSplitOptions.None);
-
-        // Calculate the size of the Excel table
-        int excelTableSize = (excelData.Length / columns - 1) - 0;
-
-        // Initialize the list
-        tutorialData.tutorialDataSegment = new List<TutorialDataSegment>();
-
-        // Populate the list with default DataObject instances
-        for (int i = 0; i < excelTableSize; i++)
+        tutorialDatabaseBuilt = false;
+        TextAsset document = null;
+        if (ControllerState.Instance == null)
         {
-            TutorialDataSegment tutorialSegment = new TutorialDataSegment();
-
-            for (int j = 0; j < currentLanguageAmount; j++)
-            {
-                tutorialSegment.languageDialogueList.Add(null);
-            }
-
-            tutorialData.tutorialDataSegment.Add(tutorialSegment);
+            Debug.LogError("[HUBTutorial] ControllerState is missing, cannot select the dialogue CSV.", this);
+            return;
         }
 
-        //Fill the new element with data
-        for (int i = 0; i < excelTableSize; i++)
+        switch (ControllerState.Instance.activeController)
         {
-            #region Description
+            case InputType.Keyboard: document = stepellierTutorialDocument_Keyboard; break;
+            case InputType.PlayStation: document = stepellierTutorialDocument_PlayStation; break;
+            case InputType.Xbox: document = stepellierTutorialDocument_xBox; break;
+        }
 
-            if (excelData[columns * (i + startRow - 1) + 0] != "")
-                tutorialData.tutorialDataSegment[i].segmentDescription = excelData[columns * (i + startRow - 1) + 0].Trim();
-            else
-                tutorialData.tutorialDataSegment[i].segmentDescription = "";
+        if (document == null)
+        {
+            Debug.LogError($"[HUBTutorial] Dialogue CSV is not assigned for controller {ControllerState.Instance.activeController}.", this);
+            return;
+        }
 
-            #endregion
+        List<List<string>> rows = ParseSemicolonCsv(document.text);
+        if (rows == null || rows.Count < 2)
+        {
+            Debug.LogError($"[HUBTutorial] Dialogue CSV '{document.name}' has no usable data rows.", this);
+            return;
+        }
 
-            #region Segment
-
-            if (excelData[columns * (i + startRow - 1) + 1] != "")
-                tutorialData.tutorialDataSegment[i].segmentNumber = ParseIntSafe(excelData, columns * (i + startRow - 1) + 1);
-            else
-                tutorialData.tutorialDataSegment[i].segmentNumber = 0;
-
-            #endregion
-
-            #region Is Ending
-
-            if (excelData[columns * (i + startRow - 1) + 2] != "")
-                tutorialData.tutorialDataSegment[i].isEnding = true;
-            else
-                tutorialData.tutorialDataSegment[i].isEnding = false;
-
-            #endregion
-
-            #region Position and Rotation
-
-            //Position X
-            if (excelData[columns * (i + startRow - 1) + 3] != "")
-                tutorialData.tutorialDataSegment[i].stepellier_spawnPos.x = ParseIntSafe(excelData, columns * (i + startRow - 1) + 3);
-            else
-                tutorialData.tutorialDataSegment[i].stepellier_spawnPos.x = 0;
-
-            //Position Y
-            if (excelData[columns * (i + startRow - 1) + 4] != "")
-                tutorialData.tutorialDataSegment[i].stepellier_spawnPos.y = ParseIntSafe(excelData, columns * (i + startRow - 1) + 4);
-            else
-                tutorialData.tutorialDataSegment[i].stepellier_spawnPos.y = 0;
-
-            //Position Z
-            if (excelData[columns * (i + startRow - 1) + 5] != "")
-                tutorialData.tutorialDataSegment[i].stepellier_spawnPos.z = ParseIntSafe(excelData, columns * (i + startRow - 1) + 5);
-            else
-                tutorialData.tutorialDataSegment[i].stepellier_spawnPos.z = 0;
-
-            //Rotation NPC
-            if (excelData[columns * (i + startRow - 1) + 6] != "")
-                tutorialData.tutorialDataSegment[i].stepellier_spawnRot = SetRotationValue(excelData[columns * (i + startRow - 1) + 6].Trim());
-            else
-                tutorialData.tutorialDataSegment[i].stepellier_spawnRot = MoveDirection.None;
-
-            //Rotation Player
-            if (excelData[columns * (i + startRow - 1) + 7] != "")
-                tutorialData.tutorialDataSegment[i].player_Rot = SetRotationValue(excelData[columns * (i + startRow - 1) + 7].Trim());
-            else
-                tutorialData.tutorialDataSegment[i].player_Rot = MoveDirection.None;
-
-            #endregion
-
-            #region Camera Rotation
-
-            if (excelData[columns * (i + startRow - 1) + 8] != "")
-                tutorialData.tutorialDataSegment[i].camera_Rotation = SetRotationValue(excelData[columns * (i + startRow - 1) + 8].Trim());
-            else
-                tutorialData.tutorialDataSegment[i].camera_Rotation = 0;
-
-            #endregion
-
-            #region Talk Animation
-
-            if (excelData[columns * (i + startRow - 1) + 9] != "")
-                tutorialData.tutorialDataSegment[i].talkAnimation = ParseIntSafe(excelData, columns * (i + startRow - 1) + 9);
-            else
-                tutorialData.tutorialDataSegment[i].talkAnimation = 0;
-
-            #endregion
-
-            #region Languages
-
-            for (int j = 0; j < currentLanguageAmount; j++)
+        var segments = new List<TutorialDataSegment>();
+        // Row 0 contains the column headers. All 13 fields must be present.
+        for (int row = 1; row < rows.Count; row++)
+        {
+            List<string> fields = rows[row];
+            if (fields.Count != columns)
             {
-                if (excelData[columns * (i + startRow - 1) + 10 + j] != "")
-                    tutorialData.tutorialDataSegment[i].languageDialogueList[j] = excelData[columns * (i + startRow - 1) + 10 + j].Trim();
+                Debug.LogError($"[HUBTutorial] '{document.name}', CSV row {row + 1}: " +
+                    $"expected {columns} columns, found {fields.Count}. Row skipped.", this);
+                continue;
+            }
+
+            string description = fields[0].Trim();
+            if (string.IsNullOrEmpty(description)) continue;
+
+            var segment = new TutorialDataSegment
+            {
+                segmentDescription = description,
+                segmentNumber = ParseIntField(fields[1], 0, document.name, row + 1, "Segment"),
+                isEnding = !string.IsNullOrWhiteSpace(fields[2]),
+                stepellier_spawnPos = new Vector3(
+                    ParseFloatField(fields[3], document.name, row + 1, "Pos X"),
+                    ParseFloatField(fields[4], document.name, row + 1, "Pos Y"),
+                    ParseFloatField(fields[5], document.name, row + 1, "Pos Z")),
+                stepellier_spawnRot = SetRotationValue(fields[6].Trim()),
+                player_Rot = SetRotationValue(fields[7].Trim()),
+                camera_Rotation = SetRotationValue(fields[8].Trim()),
+                talkAnimation = ParseIntField(fields[9], 0, document.name, row + 1, "TalkAnimation")
+            };
+            for (int language = 0; language < currentLanguageAmount; language++)
+                segment.languageDialogueList.Add(fields[10 + language].Trim());
+
+            segments.Add(segment);
+        }
+
+        if (segments.Count == 0)
+        {
+            Debug.LogError($"[HUBTutorial] No valid dialogue segments in '{document.name}'.", this);
+            return;
+        }
+        if (!segments[segments.Count - 1].isEnding)
+            Debug.LogWarning($"[HUBTutorial] The final dialogue segment in '{document.name}' has no Ending marker.", this);
+
+        tutorialData.tutorialDataSegment = segments;
+        tutorialDatabaseBuilt = true;
+        Debug.Log($"[HUBTutorial] Loaded {segments.Count} dialogue segments from '{document.name}'.", this);
+        TryStartMovementTutorial();
+    }
+
+    // CSV reader that handles ; separators, escaped quotes, and line breaks
+    // INSIDE quoted dialogue fields. String.Split(';', '\n') cannot do this.
+    static List<List<string>> ParseSemicolonCsv(string csv)
+    {
+        var rows = new List<List<string>>();
+        var row = new List<string>();
+        var field = new StringBuilder();
+        bool insideQuotes = false;
+
+        for (int i = 0; i < csv.Length; i++)
+        {
+            char c = csv[i];
+            if (c == '"')
+            {
+                if (insideQuotes && i + 1 < csv.Length && csv[i + 1] == '"')
+                {
+                    field.Append('"');
+                    i++;
+                }
+                else if (insideQuotes)
+                {
+                    insideQuotes = false;
+                }
+                else if (field.Length == 0)
+                {
+                    insideQuotes = true;
+                }
                 else
-                    tutorialData.tutorialDataSegment[i].languageDialogueList[j] = "";
+                {
+                    field.Append(c);
+                }
             }
-
-            #endregion
-
-            CleanTheTextDialogue(i);
+            else if (c == ';' && !insideQuotes)
+            {
+                row.Add(field.ToString());
+                field.Length = 0;
+            }
+            else if ((c == '\r' || c == '\n') && !insideQuotes)
+            {
+                row.Add(field.ToString());
+                field.Length = 0;
+                if (row.Count > 1 || !string.IsNullOrWhiteSpace(row[0]))
+                    rows.Add(row);
+                row = new List<string>();
+                if (c == '\r' && i + 1 < csv.Length && csv[i + 1] == '\n') i++;
+            }
+            else
+            {
+                field.Append(c);
+            }
         }
 
-        //Remove elements that doesn't have a name
-        tutorialData.tutorialDataSegment = tutorialData.tutorialDataSegment.Where(obj => obj != null && !string.IsNullOrEmpty(obj.segmentDescription)).ToList();
+        if (insideQuotes)
+        {
+            Debug.LogError("[HUBTutorial] CSV contains an unclosed quoted field.");
+            return null;
+        }
+
+        if (field.Length > 0 || row.Count > 0)
+        {
+            row.Add(field.ToString());
+            if (row.Count > 1 || !string.IsNullOrWhiteSpace(row[0])) rows.Add(row);
+        }
+        return rows;
     }
-    void CleanTheTextDialogue(int i)
+
+    static int ParseIntField(string input, int fallback, string file, int row, string column)
     {
-        tutorialData.tutorialDataSegment[i].segmentDescription = CleanQuotes(tutorialData.tutorialDataSegment[i].segmentDescription);
+        if (string.IsNullOrWhiteSpace(input)) return fallback;
+        if (int.TryParse(input.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int value))
+            return value;
+        Debug.LogWarning($"[HUBTutorial] '{file}', row {row}, {column}: invalid integer '{input}'.");
+        return fallback;
+    }
 
-        for (int j = 0; j < tutorialData.tutorialDataSegment[i].languageDialogueList.Count; j++)
-        {
-            tutorialData.tutorialDataSegment[i].languageDialogueList[j] = CleanQuotes(tutorialData.tutorialDataSegment[i].languageDialogueList[j]);
-        }
-    }
-    string CleanQuotes(string input)
+    static float ParseFloatField(string input, string file, int row, string column)
     {
-        // Remove enclosing quotes, and replace double double-quotes with a single one
-        if (input == "")
-        {
-            return "";
-        }
-        else if (input == null)
-        {
-            return "";
-        }
-        else if (input.StartsWith("\"") && input.EndsWith("\""))
-        {
-            input = input.Substring(1, input.Length - 2);
-        }
+        if (string.IsNullOrWhiteSpace(input)) return 0f;
+        if (float.TryParse(input.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out float value))
+            return value;
+        Debug.LogWarning($"[HUBTutorial] '{file}', row {row}, {column}: invalid position '{input}'.");
+        return 0f;
+    }
 
-        return input.Replace("\"\"", "\"").Trim();
-    }
-    int ParseIntSafe(string[] data, int index)
-    {
-        if (index >= 0 && index < data.Length && int.TryParse(data[index], out int result))
-            return result;
-        return -1;
-    }
     MoveDirection SetRotationValue(string rotText)
     {
-        if (rotText == "Forward")
-            return MoveDirection.Forward;
-        else if (rotText == "Back")
-            return MoveDirection.Backward;
-        else if (rotText == "Left")
-            return MoveDirection.Left;
-        else if (rotText == "Right")
-            return MoveDirection.Right;
-
-        return MoveDirection.None;
+        switch (rotText)
+        {
+            case "Forward": return MoveDirection.Forward;
+            case "Back": return MoveDirection.Backward;
+            case "Backward": return MoveDirection.Backward;
+            case "Left": return MoveDirection.Left;
+            case "Right": return MoveDirection.Right;
+            default: return MoveDirection.None;
+        }
     }
-    
+
     #endregion
 }
 
