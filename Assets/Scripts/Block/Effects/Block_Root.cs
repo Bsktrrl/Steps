@@ -476,7 +476,8 @@ public class Block_Root : MonoBehaviour
         // This is already a completed step. If the player has truly landed
         // outside the root path, remove it now, including position-only and
         // ladder transitions with no explicit currentMoveTargetBlock.
-        if (!ShouldBlockKeepRoots(Movement.Instance.blockStandingOn) &&
+        if (!shouldDelayBecausePlayerMayBeFalling &&
+            !ShouldBlockKeepRoots(Movement.Instance.blockStandingOn) &&
             !Movement.Instance.isMoving &&
             Movement.Instance.GetMovementState() == MovementStates.Still)
         {
@@ -509,6 +510,12 @@ public class Block_Root : MonoBehaviour
         MovementStates movementState = Movement.Instance.GetMovementState();
 
         if (movementState == MovementStates.Falling)
+            return true;
+
+        // A position-only slope exit can finish in Still before UpdateBlocks
+        // detects the missing ground and switches the player to Falling.
+        // Wait for a confirmed landing before deciding to remove the roots.
+        if (Movement.Instance.blockStandingOn == null)
             return true;
 
         if (Movement.Instance.isMoving || movementState == MovementStates.Moving)
