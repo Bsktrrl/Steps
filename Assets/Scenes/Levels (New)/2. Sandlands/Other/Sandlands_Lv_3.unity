@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.9364733, g: 0.8715566, b: 0.74313945, a: 1}
+  m_IndirectSpecularColor: {r: 0.9363427, g: 0.87133145, b: 0.74296695, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -100062,6 +100062,10 @@ PrefabInstance:
       propertyPath: essenceNo
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: -3444976810871685929, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 316240344482881497, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -100106,13 +100110,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Essence (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1037539106059456836, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
       propertyPath: essenceRequirementsList.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
       propertyPath: essenceRequirementsList.Array.data[0].stepsRequirement
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
       propertyPath: essenceRequirementsList.Array.data[0].needAbility_DrillBoots

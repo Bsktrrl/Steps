@@ -1,22 +1,20 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Interactable_Movement : MonoBehaviour
 {
-    //Floating
+    // Floating
     [Header("Float Behavior")]
     float amplitude; // How high and low the object will float
-    float frequency;   // How fast the object will float
-    
-    //Rotation
+    float frequency; // How fast the object will float
+
+    // Rotation
     [Header("Rotation")]
     float RotationSpeed;
     float Rotation;
 
     Vector3 startPos;
+    Quaternion startRotation;
 
 
     //--------------------
@@ -29,11 +27,15 @@ public class Interactable_Movement : MonoBehaviour
         RotationSpeed = 0.25f;
         Rotation = 0;
 
-        startPos = transform.position;
+        // Use local coordinates so the pickup follows its parent's movement.
+        startPos = transform.localPosition;
+        startRotation = transform.localRotation;
     }
+
     private void Update()
     {
-        gameObject.transform.SetPositionAndRotation(SetPosition(), Quaternion.Euler(0, SetRotation_Y(), 0));
+        transform.localPosition = SetPosition();
+        transform.localRotation = startRotation * Quaternion.Euler(0, SetRotation_Y(), 0);
     }
 
 
@@ -44,8 +46,9 @@ public class Interactable_Movement : MonoBehaviour
     {
         float newPosY = startPos.y + Mathf.Sin(Time.time * frequency) * amplitude;
 
-        return new Vector3(transform.position.x, newPosY, transform.position.z);
+        return new Vector3(startPos.x, newPosY, startPos.z);
     }
+
     float SetRotation_Y()
     {
         Rotation -= RotationSpeed;
