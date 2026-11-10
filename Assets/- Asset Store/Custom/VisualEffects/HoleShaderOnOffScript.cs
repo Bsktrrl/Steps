@@ -24,6 +24,10 @@ public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
     {
         if (cameraObject == null)
             cameraObject = Camera.main;
+
+        // Shader globals can retain values from earlier camera/scene activity.
+        // Start disabled; the normal raycast check will enable the hole if needed.
+        HoleShader_Off();
     }
     private void Update()
     {
@@ -99,8 +103,6 @@ public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
         if (holeShaderIsOn == active)
             return;
 
-        holeShaderIsOn = active;
-
         if (active)
         {
             HoleShader_On();
@@ -119,12 +121,14 @@ public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
     {
         if (FreeCam.Instance._isActive) return;
 
+        holeShaderIsOn = true;
         transitionBool = true;
         Shader.SetGlobalFloat("_HoleShaderEnabled", 1);
         Shader.SetGlobalFloat("_CameraHoleEnabled", 1);
     }
     public void HoleShader_Off()
     {
+        holeShaderIsOn = false;
         transitionBool = false;
         Shader.SetGlobalFloat("_HoleShaderEnabled", 0);
         Shader.SetGlobalFloat("_CameraHoleEnabled", 0);
