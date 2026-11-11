@@ -4922,14 +4922,81 @@ public class Movement : Singleton<Movement>
     bool RotatePlayerBody_Setup()
     {
         turnedThisFrame = false;
+        Vector3 directionToFace = Vector3.zero;
 
-        if (Inputs.forward_isPressed)
+        // Match the same movement priority used by MovementSetup:
+        // ladders, normal walking, dash, then jump.
+        // A pressed direction that cannot move must not override one that can.
+        foreach (Vector3 localDir in LocalDirections)
+        {
+            if (!InputPressedForDirection(localDir)) continue;
+
+            MoveOptions ladder = GetLadderOptionForDirection(localDir);
+            if (ladder == null || !ladder.canMoveTo) continue;
+
+            Vector3 worldDir = UpdatedDir(localDir);
+            if ((ladder.targetBlock != null && CheckLaddersToEnter_Up(worldDir)) ||
+                CheckLaddersToEnter_Down(worldDir))
+            {
+                directionToFace = localDir;
+                break;
+            }
+        }
+
+        if (directionToFace == Vector3.zero && TryGetStandingInfo(out BlockInfo _))
+        {
+            foreach (Vector3 localDir in LocalDirections)
+            {
+                if (InputPressedForDirection(localDir) && HasValidTarget(GetMoveOptionForDirection(localDir)))
+                {
+                    directionToFace = localDir;
+                    break;
+                }
+            }
+        }
+
+        if (directionToFace == Vector3.zero)
+        {
+            foreach (Vector3 localDir in LocalDirections)
+            {
+                if (InputPressedForDirection(localDir) && HasValidTarget(GetDashOptionForDirection(localDir)))
+                {
+                    directionToFace = localDir;
+                    break;
+                }
+            }
+        }
+
+        if (directionToFace == Vector3.zero)
+        {
+            foreach (Vector3 localDir in LocalDirections)
+            {
+                if (InputPressedForDirection(localDir) && HasValidTarget(GetJumpOptionForDirection(localDir)))
+                {
+                    directionToFace = localDir;
+                    break;
+                }
+            }
+        }
+
+        // No available destination: preserve the original ability to turn in place.
+        if (directionToFace == Vector3.zero)
+        {
+            foreach (Vector3 localDir in LocalDirections)
+            {
+                if (!InputPressedForDirection(localDir)) continue;
+                directionToFace = localDir;
+                break;
+            }
+        }
+
+        if (directionToFace == Vector3.forward)
             turnedThisFrame = RotatePlayerBody(0);
-        else if (Inputs.back_isPressed)
+        else if (directionToFace == Vector3.back)
             turnedThisFrame = RotatePlayerBody(180);
-        else if (Inputs.left_isPressed)
+        else if (directionToFace == Vector3.left)
             turnedThisFrame = RotatePlayerBody(-90);
-        else if (Inputs.right_isPressed)
+        else if (directionToFace == Vector3.right)
             turnedThisFrame = RotatePlayerBody(90);
 
         if (turnedThisFrame)
