@@ -25,6 +25,7 @@ public class Interactable_NPC : MonoBehaviour
     public DialogueInfo dialogueInfo = new DialogueInfo();
 
     int segmentIndex = 0;
+    int lastDialogueInputFrame = -1; // Prevent two dialogue actions in the same frame.
 
     [HideInInspector] public bool canInteract;
     [HideInInspector] public bool isInteracting;
@@ -96,7 +97,7 @@ public class Interactable_NPC : MonoBehaviour
         OptionButton.Action_OptionButtonIsPressed -= StartNewDialogueSegment_OptionButton;
 
         DataManager.Action_dataHasLoaded -= SetupNPC;
-        
+
         NPCManager.Action_DialogueIsFinished -= RunHatPopupMessage;
     }
 
@@ -151,7 +152,7 @@ public class Interactable_NPC : MonoBehaviour
             DialogueManager.Instance.currentSegement = tempIndex;
             segmentIndex = tempIndex;
         }
-        
+
         SetupDialogueDisplay(segmentIndex, dialogueInfo.npcName);
     }
 
@@ -442,7 +443,7 @@ public class Interactable_NPC : MonoBehaviour
             HideNPC();
         else if (!needToShow)
             HideNPC();
-        else if(needToShow)
+        else if (needToShow)
             ShowNPC();
         else
             HideNPC();
@@ -795,7 +796,7 @@ public class Interactable_NPC : MonoBehaviour
                     dialogueInfo.dialogueSegments[i].languageOptionList[j + 1].option1_Text = excelData[columns * (i + startRow - 1) + 34 + (totalLanguageElements * j)].Trim();
                 else
                     dialogueInfo.dialogueSegments[i].languageOptionList[j + 1].option1_Text = "";
-                
+
                 //Option 2
                 if (excelData[columns * (i + startRow - 1) + 35 + (totalLanguageElements * j)] != "")
                     dialogueInfo.dialogueSegments[i].languageOptionList[j + 1].option2_Text = excelData[columns * (i + startRow - 1) + 35 + (totalLanguageElements * j)].Trim();
@@ -963,80 +964,74 @@ public class Interactable_NPC : MonoBehaviour
 
     void StartNewDialogueSegment()
     {
-        if (!isInteracting) return;
-        if (TypewriterEffect.Instance.isTyping) return;
+        if (!isInteracting || DialogueManager.Instance.npcObject != this) return;
+        if (!DialogueManager.Instance.CanAdvanceDialogue || TypewriterEffect.Instance.isTyping) return;
+        if (Time.frameCount == lastDialogueInputFrame) return;
 
-        //If current segment is a "lastSegment", end the dialogue
+        // If current segment is a "lastSegment", end the dialogue.
         if (dialogueInfo.dialogueSegments[segmentIndex].lastSegment)
         {
+            lastDialogueInputFrame = Time.frameCount;
             lastSegment = segmentIndex;
             StartCoroutine(TurnNPCAwayFromPlayer());
             StartCoroutine(DialogueManager.Instance.EndDialogue(DialogueManager.Instance.closingMenuDelay));
             print("0.1. ShowHat_Floríel");
-            //print("0. Last Segment: " + segmentIndex);
         }
-
-        //If the next segment doesn't have any options, run the next segment in the list (or mainLink)
-        else if (dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option1_Text == "")
+        // Only advance automatically when no choices are currently visible.
+        else if (!OptionBoxes.Instance.optionButton_1.gameObject.activeInHierarchy)
         {
-            if (!TypewriterEffect.Instance.isTyping)
-            {
-                if (dialogueInfo.dialogueSegments[segmentIndex].mainLink >= 0)
-                {
-                    int tempSegemtnIndex = dialogueInfo.dialogueSegments[segmentIndex].mainLink;
-                    segmentIndex = tempSegemtnIndex;
-                    //print("1. Use MainLink: " + segmentIndex);
-                }
-                else
-                {
-                    segmentIndex++;
-                    //print("2. Increase segmentIndex: " + segmentIndex);
-                }
+            lastDialogueInputFrame = Time.frameCount;
 
-                SetupDialogueDisplay(segmentIndex, dialogueInfo.npcName);
+            if (dialogueInfo.dialogueSegments[segmentIndex].mainLink >= 0)
+            {
+                segmentIndex = dialogueInfo.dialogueSegments[segmentIndex].mainLink;
             }
+            else
+            {
+                segmentIndex++;
+            }
+
+            // Keep arrow and end-of-dialogue logic aligned with the actual segment.
+            DialogueManager.Instance.currentSegement = segmentIndex;
+            SetupDialogueDisplay(segmentIndex, dialogueInfo.npcName);
         }
     }
     public void StartNewDialogueSegment_OptionButton()
     {
-        if (!isInteracting || TypewriterEffect.Instance.isTyping) return;
+        if (!isInteracting || DialogueManager.Instance.npcObject != this) return;
+        if (!DialogueManager.Instance.CanAdvanceDialogue || TypewriterEffect.Instance.isTyping) return;
+        if (Time.frameCount == lastDialogueInputFrame) return;
+        if (!OptionBoxes.Instance.optionButton_1.gameObject.activeInHierarchy) return;
+        if (DialogueManager.Instance.selectedButton < 1 || DialogueManager.Instance.selectedButton > 4) return;
 
-
-        //-----
-
+        lastDialogueInputFrame = Time.frameCount;
 
         LanguageOptions languageOptions = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0];
         int segment = -1;
 
         if (DialogueManager.Instance.selectedButton == 1)
         {
-            //segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option1_Linked - 1;
             segment = ChooseSegment(languageOptions.option1_Linked - 1, languageOptions.option1_AlternativeLinked - 1);
             UpdateEndingValue(characterName, dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option1_StoryValue);
         }
         else if (DialogueManager.Instance.selectedButton == 2)
         {
-            //segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option2_Linked - 1;
             segment = ChooseSegment(languageOptions.option2_Linked - 1, languageOptions.option2_AlternativeLinked - 1);
             UpdateEndingValue(characterName, dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option2_StoryValue);
         }
         else if (DialogueManager.Instance.selectedButton == 3)
         {
-            //segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option3_Linked - 1;
             segment = ChooseSegment(languageOptions.option3_Linked - 1, languageOptions.option3_AlternativeLinked - 1);
             UpdateEndingValue(characterName, dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option3_StoryValue);
         }
         else if (DialogueManager.Instance.selectedButton == 4)
         {
-            //segment = dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option4_Linked - 1;
             segment = ChooseSegment(languageOptions.option4_Linked - 1, languageOptions.option4_AlternativeLinked - 1);
             UpdateEndingValue(characterName, dialogueInfo.dialogueSegments[segmentIndex].languageOptionList[0].option4_StoryValue);
         }
 
         segmentIndex = segment;
         DialogueManager.Instance.currentSegement = segmentIndex;
-
-        //print("DialogueSegment: Button: " + (DialogueManager.Instance.selectedButton - 1) + " | Index: " + segmentIndex + " | Segment: " + segment);
 
         SetupDialogueDisplay(segment, dialogueInfo.npcName);
     }
@@ -1177,6 +1172,14 @@ public class Interactable_NPC : MonoBehaviour
 
     void SetupDialogueDisplay(int index, NPCs npc)
     {
+        if (index < 0)
+        {
+            Debug.LogError($"Invalid dialogue segment index {index} for NPC {characterName}. Ending dialogue safely.");
+            StartCoroutine(TurnNPCAwayFromPlayer());
+            StartCoroutine(DialogueManager.Instance.EndDialogue(DialogueManager.Instance.closingMenuDelay));
+            return;
+        }
+
         NPCManager.Instance.UpdateStatsGathered(index, dialogueInfo);
 
         //Text
@@ -1218,7 +1221,7 @@ public class Interactable_NPC : MonoBehaviour
         {
             animationCount = 0;
             StartCoroutine(RunAnimations(index));
-        } 
+        }
     }
     void SetupDialogue(DialogueSegment dialogueSegment)
     {

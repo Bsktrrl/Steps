@@ -37,6 +37,8 @@ public class DialogueManager : Singleton<DialogueManager>
     public float closingMenuDelay = 0.5f;
 
     bool isFirstTimeDialogue;
+    public bool CanAdvanceDialogue { get; private set; }
+    bool isEndingDialogue;
 
     NPCManager nPCManager;
 
@@ -73,6 +75,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public void SetupDialogueSegment_toDisplay(NPCs npc, string dialogueText, LanguageOptions languageSection)
     {
+        CanAdvanceDialogue = false; // Do not accept input until this line has finished appearing.
         OptionBoxes.Instance.HideOptions();
         HideArrow();
 
@@ -102,9 +105,9 @@ public class DialogueManager : Singleton<DialogueManager>
     }
     void ShowDialogueText(NPCs npc, string dialogueText, LanguageOptions languageSection)
     {
-        SetupDialogueText_toDisplay(dialogueText);
-
+        // Prepare options first: an empty dialogue line can finish typing immediately.
         OptionBoxes.Instance.SetupOptions(npc, languageSection.option1_Text, languageSection.option2_Text, languageSection.option3_Text, languageSection.option4_Text);
+        SetupDialogueText_toDisplay(dialogueText);
     }
     void SetupNPCNameText_toDisplay(string _name)
     {
@@ -117,6 +120,8 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public void StartDialogue()
     {
+        CanAdvanceDialogue = false;
+        isEndingDialogue = false;
         npcObject.isInteracting = true;
 
         PlayerManager.Instance.npcInteraction = true;
@@ -127,6 +132,10 @@ public class DialogueManager : Singleton<DialogueManager>
     }
     public IEnumerator EndDialogue(float waitTime)
     {
+        if (isEndingDialogue) yield break; // Only one closing coroutine can run.
+        isEndingDialogue = true;
+        CanAdvanceDialogue = false;
+
         if (closingMenuAnimatorList.Count > 0)
         {
             for (int i = 0; i < closingMenuAnimatorList.Count; i++)
@@ -151,7 +160,7 @@ public class DialogueManager : Singleton<DialogueManager>
         {
             nPCManager.SetDialogueFinished(npcObject.characterName, npcObject.levelNumber);
         }
-        
+
         //Reset Stats
         npcObject = null;
         activeNPC = NPCs.None;
@@ -159,14 +168,20 @@ public class DialogueManager : Singleton<DialogueManager>
         currentSegement = 0;
 
         PlayerManager.Instance.npcInteraction = false;
+        isEndingDialogue = false;
     }
 
     void SetupArrow()
     {
+        if (isEndingDialogue || npcObject == null) return;
+
         if (OptionBoxes.Instance.optionButton_1.gameObject.activeInHierarchy || (currentSegement >= segmentTotal) || npcObject.dialogueInfo.dialogueSegments[currentSegement].lastSegment)
             HideArrow();
         else
             ShowArrow();
+
+        // The typewriter and option visibility are now both finished.
+        CanAdvanceDialogue = true;
     }
     public void ShowArrow()
     {
