@@ -129,6 +129,10 @@ public class DialogueManager : Singleton<DialogueManager>
         SelectColor(nameBoxImage, ColorVariants.Normal);
 
         dialogueCanvas.SetActive(true);
+
+        // The Talk prompt may have been shown again during the opening transition.
+        if (ButtonMessageManager.Instance != null)
+            ButtonMessageManager.Instance.HideButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Talk);
     }
     public IEnumerator EndDialogue(float waitTime)
     {
