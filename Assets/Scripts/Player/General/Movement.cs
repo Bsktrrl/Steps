@@ -1802,7 +1802,7 @@ public class Movement : Singleton<Movement>
 
     private void EnsureCurrentTargetNumbersVisible()
     {
-        if (isMoving || movementStates == MovementStates.Moving ||
+        if (HideNumbersForInitialSpawn() || isMoving || movementStates == MovementStates.Moving ||
             movementStates == MovementStates.Falling || isRespawning)
             return;
 
@@ -3287,9 +3287,18 @@ public class Movement : Singleton<Movement>
 
     #region SetBlocks
 
+    // During the very first spawn, movement targets may already be calculated,
+    // but their number previews should remain hidden until the spawn has finished.
+    private bool HideNumbersForInitialSpawn()
+    {
+        return DataManager.Instance != null &&
+               DataManager.Instance.oneTimeRunData_Store != null &&
+               !DataManager.Instance.oneTimeRunData_Store.tutorial_PlayerSpawned;
+    }
+
     public void SetDarkenBlocks()
     {
-        if (PlayerSpawnScript.Instance.playerIsSpawning || LoadingIcon.Instance.blackscreenIsFading) return;
+        if (HideNumbersForInitialSpawn() || PlayerSpawnScript.Instance.playerIsSpawning || LoadingIcon.Instance.blackscreenIsFading) return;
 
         if (isMoving || movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
             return;
@@ -3381,6 +3390,15 @@ public class Movement : Singleton<Movement>
 
     void SyncDarkenedBlocksToCurrentTargets()
     {
+        if (HideNumbersForInitialSpawn())
+        {
+            ResetDarkenBlocks();
+            foreach (GameObject block in currentlyDarkenedBlocks)
+                if (block != null) ResetAvailableBlock(block);
+            currentlyDarkenedBlocks.Clear();
+            return;
+        }
+
         HashSet<GameObject> newTargets = BuildCurrentTargetSet();
 
         foreach (var oldBlock in currentlyDarkenedBlocks)
@@ -5435,7 +5453,7 @@ public class Movement : Singleton<Movement>
     IEnumerator StartDrowning()
     {
         isDrowning = true;
-        PlayerManager.Instance.PauseGame();
+        PlayerManager.Instance.PauseMovement();
 
         yield return new WaitForSeconds(0.15f);
 
@@ -5451,7 +5469,7 @@ public class Movement : Singleton<Movement>
             yield break;
 
         isSlopeFalling = true;
-        PlayerManager.Instance.PauseGame();
+        PlayerManager.Instance.PauseMovement();
 
         //yield return new WaitForSeconds(0.1f);
 
@@ -5459,7 +5477,7 @@ public class Movement : Singleton<Movement>
 
         yield return new WaitForSeconds(2f);
 
-        PlayerManager.Instance.UnpauseGame();
+        PlayerManager.Instance.UnpauseMovement();
         isSlopeFalling = false;
     }
     IEnumerator StartSlopeFalling_MoveOption(MoveOptions moveOption, float movementSpeed)
@@ -5662,6 +5680,7 @@ public class Movement : Singleton<Movement>
         // No StopAllCoroutines here: the preceding cancellation occurred at
         // respawn entry. Finishing the reset must not cancel a new operation.
         PlayerManager.Instance.UnpauseGame();
+        PlayerManager.Instance.UnpauseMovement();
         UpdateAvailableMovementBlocks();
     }
 
