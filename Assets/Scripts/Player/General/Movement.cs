@@ -1379,8 +1379,9 @@ public class Movement : Singleton<Movement>
         if (exitBlock != null && exitBlock.GetComponent<Block_Moveable>() != null)
             return true;
 
-        // A cube one level above the exit platform blocks headroom.
-        return FindSlopeObstructionAtGridCell(exitCell + Vector3.up) != null;
+        // A block one cell downhill and one cell above the slope does not
+        // block the downhill glide. Keep the lower exit obstruction check above.
+        return false;
     }
 
     private bool IsJumpableBlockAtSlopeSide(Vector3 gridPosition)
