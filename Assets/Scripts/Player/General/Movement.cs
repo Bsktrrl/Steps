@@ -211,6 +211,9 @@ public class Movement : Singleton<Movement>
     [SerializeField] private GameObject fallingCarrierBlock;
 
     [SerializeField] private bool pendingFreeLandingFromSlope;
+    // Snapshot the free downhill landing for the active movement transaction.
+    // Temporary ground-raycast misses must not turn it into a paid step.
+    private bool activeMoveFreeSlopeLanding;
 
     [Header("Pending Step Cost")]
     [SerializeField] private bool hasPendingStepCost;
@@ -725,11 +728,14 @@ public class Movement : Singleton<Movement>
 
     private bool ShouldChainImmediatelyAfterStep()
     {
-        // Walking chain:
-        // Suppress visuals if the player is holding a horizontal movement key
-        // and there is actually another ground move ready.
-        if (IsAnyWalkButtonStillHeldOrPressed() && HasAnyImmediateGroundMoveFromCurrentState())
-            return true;
+        // Suppress previews only when the HELD direction has a valid next
+        // move, not merely because some other adjacent block is available.
+        foreach (Vector3 localDir in LocalDirections)
+        {
+            if (InputHeldOrPressedForDirection(localDir) &&
+                HasValidTarget(GetMoveOptionForDirection(localDir)))
+                return true;
+        }
 
         // SwiftSwim chain:
         // Suppress visuals if the player is holding up/down and there is another
@@ -1873,8 +1879,10 @@ public class Movement : Singleton<Movement>
 
             FindLadderExitBlock();
         }
-        else
+        else if (!isMoving || !activeMoveFreeSlopeLanding)
         {
+            // The player can briefly be over empty space while gliding from
+            // a slope. Do not cancel that committed free landing mid-move.
             StartFallingWithNoBlock();
         }
 
@@ -4085,6 +4093,7 @@ public class Movement : Singleton<Movement>
 
         currentMoveStartBlock = blockStandingOn;
         currentMoveTargetBlock = thisMoveTargetBlock;
+        activeMoveFreeSlopeLanding = pendingFreeLandingFromSlope;
 
         Action_StepTaken_Early_Invoke();
 
@@ -5182,6 +5191,7 @@ public class Movement : Singleton<Movement>
         if (!TryGetBlockInfo(currentMoveTargetBlock, out standingInfo) &&
             !TryGetStandingInfo(out standingInfo))
         {
+            activeMoveFreeSlopeLanding = false;
             ClearPendingStepCost();
             PublishSettledStep();
             Action_StepTaken_Late_Invoke();
@@ -5189,6 +5199,9 @@ public class Movement : Singleton<Movement>
         }
 
         UpdateWaterBlocksForSwiftSwim();
+
+        bool freeLandingForThisMove = activeMoveFreeSlopeLanding;
+        activeMoveFreeSlopeLanding = false;
 
         bool standingOnSlope = standingInfo.blockType == BlockType.Slope;
         if (standingOnSlope)
@@ -5201,7 +5214,17 @@ public class Movement : Singleton<Movement>
         }
         else
         {
-            bool useFreeLanding = pendingFreeLandingFromSlope;
+            // A downhill glide into quicksand must be free even if the
+            // temporary slope flag was cleared by an earlier physics update.
+            bool downhillSlopeToQuicksand =
+                TryGetBlockInfo(currentMoveStartBlock, out BlockInfo startInfo) &&
+                startInfo.blockType == BlockType.Slope &&
+                standingInfo.GetComponent<Block_Quicksand>() != null &&
+                Vector3.Dot(
+                    standingInfo.transform.position - currentMoveStartBlock.transform.position,
+                    GetSlopeDownhillDirection(currentMoveStartBlock)) > 0.5f;
+
+            bool useFreeLanding = pendingFreeLandingFromSlope || freeLandingForThisMove || downhillSlopeToQuicksand;
             pendingFreeLandingFromSlope = false;
             slopeLandingIsFree = false;
 
@@ -5566,6 +5589,7 @@ public class Movement : Singleton<Movement>
         ++movementTransactionSerial;
         StopAllCoroutines();
         isMoving = false;
+        activeMoveFreeSlopeLanding = false;
         currentMoveStartBlock = null;
         currentMoveTargetBlock = null;
         isDashing = false;
