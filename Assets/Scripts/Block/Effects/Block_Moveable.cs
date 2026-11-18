@@ -53,6 +53,11 @@ public class Block_Moveable : MonoBehaviour
     private int quicksandSinkStage;
     private Vector3Int? lastQuicksandCell;
 
+    // Match the base block's visual sinking on any blocks stacked above it.
+    // Keep their root/grid positions untouched, just like the base block.
+    private readonly Dictionary<Transform, Vector3> quicksandPillarVisualStartPositions =
+        new Dictionary<Transform, Vector3>();
+
     // A moveable block carries the uninterrupted vertical column directly
     // above it. The blocks remain separate GameObjects and retain their own
     // original positions for the game's existing respawn system.
@@ -144,6 +149,7 @@ public class Block_Moveable : MonoBehaviour
 
     private void OnDisable()
     {
+        RestoreQuicksandPillarVisuals();
         RestoreCoveredLiquidColliders();
         RestoreHiddenPillar();
         ReleasePillar(refreshMovement: false);
@@ -354,7 +360,9 @@ public class Block_Moveable : MonoBehaviour
         {
             Vector3Int cell = baseCell + Vector3Int.up * height;
             Collider[] hits = Physics.OverlapBox(
-                (Vector3)cell, Vector3.one * 0.24f,
+                (Vector3)cell,
+                // Sunk pillar meshes/colliders may sit below their logical cell.
+                new Vector3(0.24f, quicksandSinkStage > 0 ? 0.85f : 0.24f, 0.24f),
                 Quaternion.identity, Physics.DefaultRaycastLayers,
                 QueryTriggerInteraction.Ignore);
 
@@ -901,6 +909,45 @@ public class Block_Moveable : MonoBehaviour
         }
     }
 
+    private void RestoreQuicksandPillarVisuals()
+    {
+        foreach (KeyValuePair<Transform, Vector3> entry in quicksandPillarVisualStartPositions)
+        {
+            if (entry.Key != null)
+                entry.Key.localPosition = entry.Value;
+        }
+
+        quicksandPillarVisualStartPositions.Clear();
+    }
+
+    private void UpdateQuicksandPillarVisuals(float sinkOffset)
+    {
+        // Restore the previous offset before applying the new one, so it never stacks.
+        RestoreQuicksandPillarVisuals();
+        if (Mathf.Approximately(sinkOffset, 0f))
+            return;
+
+        Physics.SyncTransforms();
+        List<BlockInfo> pillar = new List<BlockInfo>();
+        if (!TryGetPillarAtRest(pillar))
+            return;
+
+        foreach (BlockInfo carried in pillar)
+        {
+            if (carried == null) continue;
+            foreach (Transform child in carried.transform)
+            {
+                if (child.GetComponentInChildren<Renderer>(true) == null)
+                    continue;
+
+                quicksandPillarVisualStartPositions[child] = child.localPosition;
+                child.localPosition += Vector3.up * sinkOffset;
+            }
+        }
+
+        Physics.SyncTransforms();
+    }
+
     private void SetQuicksandVisualStage(int stage)
     {
         quicksandSinkStage = Mathf.Clamp(stage, 0, 5);
@@ -916,6 +963,8 @@ public class Block_Moveable : MonoBehaviour
                 quicksandVisualChildren[i].localPosition =
                     quicksandVisualStartPositions[i] + Vector3.up * sinkOffset;
         }
+
+        UpdateQuicksandPillarVisuals(sinkOffset);
     }
 
     private void RefreshQuicksandStageAtRest()

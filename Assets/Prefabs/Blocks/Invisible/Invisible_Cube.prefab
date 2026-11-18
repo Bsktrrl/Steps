@@ -9,12 +9,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 100000, guid: 349a7aace0278ff4fb02f193b080e594, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 349a7aace0278ff4fb02f193b080e594, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 100002, guid: 349a7aace0278ff4fb02f193b080e594, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 349a7aace0278ff4fb02f193b080e594, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 349a7aace0278ff4fb02f193b080e594, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: 349a7aace0278ff4fb02f193b080e594, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -23,6 +35,10 @@ PrefabInstance:
     - target: {fileID: 100006, guid: 349a7aace0278ff4fb02f193b080e594, type: 3}
       propertyPath: m_Name
       value: Invisible_Cube
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 349a7aace0278ff4fb02f193b080e594, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 100006, guid: 349a7aace0278ff4fb02f193b080e594, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -123,6 +139,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100006, guid: 349a7aace0278ff4fb02f193b080e594, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3110095711647343295}
+    - targetCorrespondingSourceObject: {fileID: 100006, guid: 349a7aace0278ff4fb02f193b080e594, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2862797588484464997}
   m_SourcePrefab: {fileID: 100100000, guid: 349a7aace0278ff4fb02f193b080e594, type: 3}
 --- !u!1 &224524606976783137 stripped
 GameObject:
@@ -192,6 +211,11 @@ MonoBehaviour:
   blockType: 1
   blockElement: 0
   movementCost_Temp: 0
+  movementCost_Temp_Base: 0
+  movementCost_OverrideActive: 0
+  movementCost_OverrideValue: 0
+  movementCost_DisplayOverrideActive: 0
+  movementCost_DisplayOverrideValue: 0
   movementCost: 1
   movementSpeed: 5
   movementState: 0
@@ -213,7 +237,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d6482193b68bb44ae0a6fe8d5d253c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectVisualParent: {fileID: 0}
   removeDuplicatesInEditor: 1
   effectBlock_SpawnPoint_isAdded: 0
   effectBlock_Teleporter_isAdded: 0
@@ -229,5 +252,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2a8dfece72ecda4787365e763d976d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2862797588484464997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 224524606976783137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da6a707a33e89284ea3da75bb5dfe26f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

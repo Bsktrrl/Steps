@@ -12,6 +12,9 @@ public class TabletManager : Singleton<TabletManager>
     public TextAsset tabletTextDocument;
     public TabletData tabletData = new TabletData();
 
+    [Header("HUD Parent")]
+    public GameObject hud_Parent;
+
     int startRow = 2;
     int columns = 4; //Size + 1
 
@@ -23,6 +26,7 @@ public class TabletManager : Singleton<TabletManager>
     public float fadeDuration = 0.25f;
 
     private Coroutine fadeCoroutine;
+    private Coroutine fadeCoroutine_HUD;
 
     int currentLanguageAmount = 3;
 
@@ -54,6 +58,20 @@ public class TabletManager : Singleton<TabletManager>
             StopCoroutine(fadeCoroutine);
 
         fadeCoroutine = StartCoroutine(FadeUI(parentObj, 0f, false));
+    }
+    public void ShowHUDUI(GameObject HUD_Object)
+    {
+        if (fadeCoroutine_HUD != null)
+            StopCoroutine(fadeCoroutine_HUD);
+
+        fadeCoroutine_HUD = StartCoroutine(FadeUI(HUD_Object, 1f, true));
+    }
+    public void HideHUDUI(GameObject HUD_Object)
+    {
+        if (fadeCoroutine_HUD != null)
+            StopCoroutine(fadeCoroutine_HUD);
+
+        fadeCoroutine_HUD = StartCoroutine(FadeUI(HUD_Object, 0f, false));
     }
 
     private IEnumerator FadeUI(GameObject parentObj, float targetAlpha, bool show)
@@ -94,7 +112,11 @@ public class TabletManager : Singleton<TabletManager>
         {
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
-            parentObj.SetActive(false);
+
+            // Keep the HUD active while hidden.
+            // Only deactivate the Tablet UI.
+            if (parentObj != hud_Parent)
+                parentObj.SetActive(false);
         }
 
         fadeCoroutine = null;

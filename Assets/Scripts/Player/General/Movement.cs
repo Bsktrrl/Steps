@@ -211,6 +211,9 @@ public class Movement : Singleton<Movement>
     [SerializeField] private GameObject fallingCarrierBlock;
 
     [SerializeField] private bool pendingFreeLandingFromSlope;
+    // Snapshot the free downhill landing for the active movement transaction.
+    // Temporary ground-raycast misses must not turn it into a paid step.
+    private bool activeMoveFreeSlopeLanding;
 
     [Header("Pending Step Cost")]
     [SerializeField] private bool hasPendingStepCost;
@@ -725,11 +728,14 @@ public class Movement : Singleton<Movement>
 
     private bool ShouldChainImmediatelyAfterStep()
     {
-        // Walking chain:
-        // Suppress visuals if the player is holding a horizontal movement key
-        // and there is actually another ground move ready.
-        if (IsAnyWalkButtonStillHeldOrPressed() && HasAnyImmediateGroundMoveFromCurrentState())
-            return true;
+        // Suppress previews only when the HELD direction has a valid next
+        // move, not merely because some other adjacent block is available.
+        foreach (Vector3 localDir in LocalDirections)
+        {
+            if (InputHeldOrPressedForDirection(localDir) &&
+                HasValidTarget(GetMoveOptionForDirection(localDir)))
+                return true;
+        }
 
         // SwiftSwim chain:
         // Suppress visuals if the player is holding up/down and there is another
@@ -1379,8 +1385,9 @@ public class Movement : Singleton<Movement>
         if (exitBlock != null && exitBlock.GetComponent<Block_Moveable>() != null)
             return true;
 
-        // A cube one level above the exit platform blocks headroom.
-        return FindSlopeObstructionAtGridCell(exitCell + Vector3.up) != null;
+        // A block one cell downhill and one cell above the slope does not
+        // block the downhill glide. Keep the lower exit obstruction check above.
+        return false;
     }
 
     private bool IsJumpableBlockAtSlopeSide(Vector3 gridPosition)
@@ -1802,7 +1809,7 @@ public class Movement : Singleton<Movement>
 
     private void EnsureCurrentTargetNumbersVisible()
     {
-        if (isMoving || movementStates == MovementStates.Moving ||
+        if (HideNumbersForInitialSpawn() || isMoving || movementStates == MovementStates.Moving ||
             movementStates == MovementStates.Falling || isRespawning)
             return;
 
@@ -1872,8 +1879,10 @@ public class Movement : Singleton<Movement>
 
             FindLadderExitBlock();
         }
-        else
+        else if (!isMoving || !activeMoveFreeSlopeLanding)
         {
+            // The player can briefly be over empty space while gliding from
+            // a slope. Do not cancel that committed free landing mid-move.
             StartFallingWithNoBlock();
         }
 
@@ -3287,9 +3296,18 @@ public class Movement : Singleton<Movement>
 
     #region SetBlocks
 
+    // During the very first spawn, movement targets may already be calculated,
+    // but their number previews should remain hidden until the spawn has finished.
+    private bool HideNumbersForInitialSpawn()
+    {
+        return DataManager.Instance != null &&
+               DataManager.Instance.oneTimeRunData_Store != null &&
+               !DataManager.Instance.oneTimeRunData_Store.tutorial_PlayerSpawned;
+    }
+
     public void SetDarkenBlocks()
     {
-        if (PlayerSpawnScript.Instance.playerIsSpawning || LoadingIcon.Instance.blackscreenIsFading) return;
+        if (HideNumbersForInitialSpawn() || PlayerSpawnScript.Instance.playerIsSpawning || LoadingIcon.Instance.blackscreenIsFading) return;
 
         if (isMoving || movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
             return;
@@ -3381,6 +3399,15 @@ public class Movement : Singleton<Movement>
 
     void SyncDarkenedBlocksToCurrentTargets()
     {
+        if (HideNumbersForInitialSpawn())
+        {
+            ResetDarkenBlocks();
+            foreach (GameObject block in currentlyDarkenedBlocks)
+                if (block != null) ResetAvailableBlock(block);
+            currentlyDarkenedBlocks.Clear();
+            return;
+        }
+
         HashSet<GameObject> newTargets = BuildCurrentTargetSet();
 
         foreach (var oldBlock in currentlyDarkenedBlocks)
@@ -4066,6 +4093,7 @@ public class Movement : Singleton<Movement>
 
         currentMoveStartBlock = blockStandingOn;
         currentMoveTargetBlock = thisMoveTargetBlock;
+        activeMoveFreeSlopeLanding = pendingFreeLandingFromSlope;
 
         Action_StepTaken_Early_Invoke();
 
@@ -4922,14 +4950,81 @@ public class Movement : Singleton<Movement>
     bool RotatePlayerBody_Setup()
     {
         turnedThisFrame = false;
+        Vector3 directionToFace = Vector3.zero;
 
-        if (Inputs.forward_isPressed)
+        // Match the same movement priority used by MovementSetup:
+        // ladders, normal walking, dash, then jump.
+        // A pressed direction that cannot move must not override one that can.
+        foreach (Vector3 localDir in LocalDirections)
+        {
+            if (!InputPressedForDirection(localDir)) continue;
+
+            MoveOptions ladder = GetLadderOptionForDirection(localDir);
+            if (ladder == null || !ladder.canMoveTo) continue;
+
+            Vector3 worldDir = UpdatedDir(localDir);
+            if ((ladder.targetBlock != null && CheckLaddersToEnter_Up(worldDir)) ||
+                CheckLaddersToEnter_Down(worldDir))
+            {
+                directionToFace = localDir;
+                break;
+            }
+        }
+
+        if (directionToFace == Vector3.zero && TryGetStandingInfo(out BlockInfo _))
+        {
+            foreach (Vector3 localDir in LocalDirections)
+            {
+                if (InputPressedForDirection(localDir) && HasValidTarget(GetMoveOptionForDirection(localDir)))
+                {
+                    directionToFace = localDir;
+                    break;
+                }
+            }
+        }
+
+        if (directionToFace == Vector3.zero)
+        {
+            foreach (Vector3 localDir in LocalDirections)
+            {
+                if (InputPressedForDirection(localDir) && HasValidTarget(GetDashOptionForDirection(localDir)))
+                {
+                    directionToFace = localDir;
+                    break;
+                }
+            }
+        }
+
+        if (directionToFace == Vector3.zero)
+        {
+            foreach (Vector3 localDir in LocalDirections)
+            {
+                if (InputPressedForDirection(localDir) && HasValidTarget(GetJumpOptionForDirection(localDir)))
+                {
+                    directionToFace = localDir;
+                    break;
+                }
+            }
+        }
+
+        // No available destination: preserve the original ability to turn in place.
+        if (directionToFace == Vector3.zero)
+        {
+            foreach (Vector3 localDir in LocalDirections)
+            {
+                if (!InputPressedForDirection(localDir)) continue;
+                directionToFace = localDir;
+                break;
+            }
+        }
+
+        if (directionToFace == Vector3.forward)
             turnedThisFrame = RotatePlayerBody(0);
-        else if (Inputs.back_isPressed)
+        else if (directionToFace == Vector3.back)
             turnedThisFrame = RotatePlayerBody(180);
-        else if (Inputs.left_isPressed)
+        else if (directionToFace == Vector3.left)
             turnedThisFrame = RotatePlayerBody(-90);
-        else if (Inputs.right_isPressed)
+        else if (directionToFace == Vector3.right)
             turnedThisFrame = RotatePlayerBody(90);
 
         if (turnedThisFrame)
@@ -5096,6 +5191,7 @@ public class Movement : Singleton<Movement>
         if (!TryGetBlockInfo(currentMoveTargetBlock, out standingInfo) &&
             !TryGetStandingInfo(out standingInfo))
         {
+            activeMoveFreeSlopeLanding = false;
             ClearPendingStepCost();
             PublishSettledStep();
             Action_StepTaken_Late_Invoke();
@@ -5103,6 +5199,9 @@ public class Movement : Singleton<Movement>
         }
 
         UpdateWaterBlocksForSwiftSwim();
+
+        bool freeLandingForThisMove = activeMoveFreeSlopeLanding;
+        activeMoveFreeSlopeLanding = false;
 
         bool standingOnSlope = standingInfo.blockType == BlockType.Slope;
         if (standingOnSlope)
@@ -5115,7 +5214,17 @@ public class Movement : Singleton<Movement>
         }
         else
         {
-            bool useFreeLanding = pendingFreeLandingFromSlope;
+            // A downhill glide into quicksand must be free even if the
+            // temporary slope flag was cleared by an earlier physics update.
+            bool downhillSlopeToQuicksand =
+                TryGetBlockInfo(currentMoveStartBlock, out BlockInfo startInfo) &&
+                startInfo.blockType == BlockType.Slope &&
+                standingInfo.GetComponent<Block_Quicksand>() != null &&
+                Vector3.Dot(
+                    standingInfo.transform.position - currentMoveStartBlock.transform.position,
+                    GetSlopeDownhillDirection(currentMoveStartBlock)) > 0.5f;
+
+            bool useFreeLanding = pendingFreeLandingFromSlope || freeLandingForThisMove || downhillSlopeToQuicksand;
             pendingFreeLandingFromSlope = false;
             slopeLandingIsFree = false;
 
@@ -5368,7 +5477,7 @@ public class Movement : Singleton<Movement>
     IEnumerator StartDrowning()
     {
         isDrowning = true;
-        PlayerManager.Instance.PauseGame();
+        PlayerManager.Instance.PauseMovement();
 
         yield return new WaitForSeconds(0.15f);
 
@@ -5384,7 +5493,7 @@ public class Movement : Singleton<Movement>
             yield break;
 
         isSlopeFalling = true;
-        PlayerManager.Instance.PauseGame();
+        PlayerManager.Instance.PauseMovement();
 
         //yield return new WaitForSeconds(0.1f);
 
@@ -5392,7 +5501,7 @@ public class Movement : Singleton<Movement>
 
         yield return new WaitForSeconds(2f);
 
-        PlayerManager.Instance.UnpauseGame();
+        PlayerManager.Instance.UnpauseMovement();
         isSlopeFalling = false;
     }
     IEnumerator StartSlopeFalling_MoveOption(MoveOptions moveOption, float movementSpeed)
@@ -5480,6 +5589,7 @@ public class Movement : Singleton<Movement>
         ++movementTransactionSerial;
         StopAllCoroutines();
         isMoving = false;
+        activeMoveFreeSlopeLanding = false;
         currentMoveStartBlock = null;
         currentMoveTargetBlock = null;
         isDashing = false;
@@ -5595,6 +5705,7 @@ public class Movement : Singleton<Movement>
         // No StopAllCoroutines here: the preceding cancellation occurred at
         // respawn entry. Finishing the reset must not cancel a new operation.
         PlayerManager.Instance.UnpauseGame();
+        PlayerManager.Instance.UnpauseMovement();
         UpdateAvailableMovementBlocks();
     }
 

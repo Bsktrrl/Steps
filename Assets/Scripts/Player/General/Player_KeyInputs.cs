@@ -123,7 +123,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
             StartCoroutine(TutorialMovement_Delay());
         }
 
-        if (!ButtonChecks_Movement()) { return; }
+        if (!ButtonChecks_Movement()) return; 
+        if (PlayerManager.Instance.pauseMovement) return;
 
         forward_isPressed = true;
         Action_WalkButton_isPressed?.Invoke();
@@ -131,6 +132,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     void OnForward_Hold()
     {
         if (!ButtonChecks_Movement()) return;
+        if (PlayerManager.Instance.pauseMovement) return;
 
         if (!Tutorial.Instance.tutorial_isRunning && Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
             forward_isHold = true;
@@ -159,6 +161,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         }
 
         if (!ButtonChecks_Movement()) { return; }
+        if (PlayerManager.Instance.pauseMovement) return;
 
         back_isPressed = true;
         Action_WalkButton_isPressed?.Invoke();
@@ -166,6 +169,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     void OnBackward_Hold()
     {
         if (!ButtonChecks_Movement()) { return; }
+        if (PlayerManager.Instance.pauseMovement) return;
 
         if (!Tutorial.Instance.tutorial_isRunning && Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
             back_isHold = true;
@@ -194,6 +198,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         }
 
         if (!ButtonChecks_Movement()) { return; }
+        if (PlayerManager.Instance.pauseMovement) return;
 
         left_isPressed = true;
         Action_WalkButton_isPressed?.Invoke();
@@ -201,6 +206,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     void OnLeft_Hold()
     {
         if (!ButtonChecks_Movement()) { return; }
+        if (PlayerManager.Instance.pauseMovement) return;
 
         if (!Tutorial.Instance.tutorial_isRunning && Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
             left_isHold = true;
@@ -229,6 +235,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         }
 
         if (!ButtonChecks_Movement()) { return; }
+        if (PlayerManager.Instance.pauseMovement) return;
 
         right_isPressed = true;
         Action_WalkButton_isPressed?.Invoke();
@@ -236,6 +243,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     void OnRight_Hold()
     {
         if (!ButtonChecks_Movement()) { return; }
+        if (PlayerManager.Instance.pauseMovement) return;
 
         if (!Tutorial.Instance.tutorial_isRunning && Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
             right_isHold = true;
@@ -260,6 +268,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (freeCam_isPressed) return;
 
         if (!ButtonChecks_Movement() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+        if (PlayerManager.Instance.pauseMovement) return;
 
         if (Movement.Instance.isGrapplingHooking) return;
         if (Movement.Instance.isJumping) return;
@@ -279,6 +288,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     void OnAbilityUp_Up()
     {
         if (!ButtonChecks_Movement()) { return; }
+        if (PlayerManager.Instance.pauseMovement) return;
         if (freeCam_isPressed) return;
 
         up_isPressed = false;
@@ -290,6 +300,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (freeCam_isPressed) return;
 
         if (!ButtonChecks_Movement() || Player_CeilingGrab.Instance.isCeilingGrabbing) { return; }
+        if (PlayerManager.Instance.pauseMovement) return;
 
         if (Movement.Instance.isGrapplingHooking) return;
         if (Movement.Instance.isJumping) return;
@@ -309,6 +320,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     void OnAbilityDown_Up()
     {
         if (!ButtonChecks_Movement()) { return; }
+        if (PlayerManager.Instance.pauseMovement) return;
         if (freeCam_isPressed) return;
 
         down_isPressed = false;
@@ -321,6 +333,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         if (!ButtonChecks_Other()) { return; }
         if (Movement.Instance.movementStates == MovementStates.Falling) { return; }
+
+        if (PlayerManager.Instance.pauseMovement) return;
 
         if (Movement.Instance.isGrapplingHooking) return;
         if (Movement.Instance.isJumping) return;
@@ -345,6 +359,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Other() || Player_CeilingGrab.Instance.isCeilingGrabbing) return;
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) return;
 
+        if (PlayerManager.Instance.pauseMovement) return;
+
         if (Movement.Instance.isJumping) return;
         if (Movement.Instance.isDashing) return;
         if (Movement.Instance.isSwiftSwim) return;
@@ -367,6 +383,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) return;
 
         grapplingHook_isPressed = false;
+
+        if (PlayerManager.Instance.pauseMovement) return;
 
         if (!ButtonChecks_Other_MinusGrapplingHook()) { return; }
 

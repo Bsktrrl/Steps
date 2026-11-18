@@ -196,8 +196,6 @@ public class OptionBoxes : Singleton<OptionBoxes>
             optionButton_1.navigation = nav1;
         }
 
-        //Set the first selected button for controller input
-        EventSystem.current.SetSelectedGameObject(optionButton_1.gameObject);
     }
 
 
@@ -214,6 +212,15 @@ public class OptionBoxes : Singleton<OptionBoxes>
         SetupOptionVisibility(optionButton_3, optionButtonText_3_Passive.text);
         SetupOptionVisibility(optionButton_4, optionButtonText_4_Active.text);
         SetupOptionVisibility(optionButton_4, optionButtonText_4_Passive.text);
+
+        // Select the first option only after the buttons are visible.
+        if (optionButton_1.gameObject.activeInHierarchy && EventSystem.current != null)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(optionButton_1.gameObject);
+            // OnSelect may run before OptionButton.Start() has assigned optionNumber.
+            DialogueManager.Instance.selectedButton = 1;
+        }
     }
     void SetupOptionVisibility(Button button, string option)
     {

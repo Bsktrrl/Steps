@@ -66,11 +66,15 @@ public class AncientTablet : MonoBehaviour
     }
     IEnumerator RunInterraction_Delay()
     {
+        PlayerManager.Instance.PauseMovement();
+
         ButtonMessageManager.Instance.HideButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Read);
 
 
         RenderHiderOnContact.Instance.FreeCamOn();
         HoleShaderOnOffScript.Instance.HoleShader_Off();
+
+        TabletManager.Instance.HideHUDUI(TabletManager.Instance.hud_Parent);
 
         //Change camera
         CameraController.Instance.CM_Other = tabletVirtualCamera;
@@ -104,6 +108,8 @@ public class AncientTablet : MonoBehaviour
         CameraController.Instance.CM_Other = null;
         yield return StartCoroutine(CameraController.Instance.StartVirtualCameraBlend_Out(CameraController.Instance.CM_Other));
 
+        TabletManager.Instance.ShowHUDUI(TabletManager.Instance.hud_Parent);
+
         RenderHiderOnContact.Instance.FreeCamOff();
         HoleShaderOnOffScript.Instance.HoleShader_On();
 
@@ -112,6 +118,9 @@ public class AncientTablet : MonoBehaviour
 
         tabletIsShowing = false;
         tabletInterractTransitioning = false;
+
+
+        PlayerManager.Instance.UnpauseMovement();
     }
 
 
