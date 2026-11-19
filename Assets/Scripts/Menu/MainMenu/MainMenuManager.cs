@@ -102,6 +102,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
     {
         // Resolve the HUB return before opening any menu or restoring selection.
         bool returningFromHUB = MapManager.ConsumeHUBReturn();
+        string exitedLevelScene = PlayerManager.ConsumeExitedLevelScene(out bool selectNextLevel);
         if (returningFromHUB)
         {
             DataManager.Instance.menuState_Store = MenuState.Overworld_Menu;
@@ -119,11 +120,11 @@ public class MainMenuManager : Singleton<MainMenuManager>
         MenusOnMenuState();
 
         if (overworldMenu_Parent.activeInHierarchy)
-            StartCoroutine(RestoreOverworldSelection(menuState, returningFromHUB));
+            StartCoroutine(RestoreOverworldSelection(menuState, returningFromHUB, exitedLevelScene, selectNextLevel));
 
     }
 
-    IEnumerator RestoreOverworldSelection(MenuState loadedMenu, bool returningFromHUB)
+    IEnumerator RestoreOverworldSelection(MenuState loadedMenu, bool returningFromHUB, string exitedLevelScene, bool selectNextLevel)
     {
         // Other data-loaded listeners and newly enabled menus must finish first.
         yield return null;
@@ -133,7 +134,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
             yield break;
 
         if (OverWorldManager.Instance != null)
-            OverWorldManager.Instance.RestoreMenuSelectionAfterLoad(returningFromHUB);
+            OverWorldManager.Instance.RestoreMenuSelectionAfterLoad(returningFromHUB, exitedLevelScene, selectNextLevel);
 
         if (returningFromHUB)
             DataPersistanceManager.instance.SaveGame();

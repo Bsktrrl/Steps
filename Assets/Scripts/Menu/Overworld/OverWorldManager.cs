@@ -135,7 +135,7 @@ public class OverWorldManager : Singleton<OverWorldManager>
         RestoreMenuSelectionAfterLoad(false);
     }
 
-    public void RestoreMenuSelectionAfterLoad(bool returningFromHUB)
+    public void RestoreMenuSelectionAfterLoad(bool returningFromHUB, string exitedLevelScene = null, bool selectNextLevel = false)
     {
         MainMenuManager menu = MainMenuManager.Instance;
         if (menu == null || !menu.overworldMenu_Parent.activeInHierarchy)
@@ -182,11 +182,36 @@ public class OverWorldManager : Singleton<OverWorldManager>
         if (!panel) return;
         if (panelBackground) panelBackground.SetActive(true);
         panel.SetActive(true);
-        SetSelected(panel);
+        SetSelected(panel, exitedLevelScene, selectNextLevel);
     }
 
-    void SetSelected(GameObject obj)
+    void SetSelected(GameObject obj, string exitedLevelScene, bool selectNextLevel)
     {
+        if (!string.IsNullOrEmpty(exitedLevelScene))
+        {
+            foreach (LoadLevel level in obj.GetComponentsInChildren<LoadLevel>())
+            {
+                if (level.levelToPlay == exitedLevelScene && IsSelectableInMenu(level.gameObject, obj))
+                {
+                    GameObject selectedLevel = level.gameObject;
+                    if (selectNextLevel)
+                    {
+                        Transform siblings = level.transform.parent;
+                        int nextIndex = level.transform.GetSiblingIndex() + 1;
+                        if (nextIndex < siblings.childCount)
+                        {
+                            GameObject nextLevel = siblings.GetChild(nextIndex).gameObject;
+                            if (nextLevel.GetComponent<LoadLevel>() && IsSelectableInMenu(nextLevel, obj))
+                                selectedLevel = nextLevel;
+                        }
+                    }
+
+                    SetRestoredSelection(selectedLevel);
+                    return;
+                }
+            }
+        }
+
         // LevelState.First starts at 1; the first level button is child 0.
         int index = (int)levelState - 1;
         GameObject selected = index >= 0 && index < obj.transform.childCount

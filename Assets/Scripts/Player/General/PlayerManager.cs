@@ -233,10 +233,50 @@ public class PlayerManager : Singleton<PlayerManager>
     //--------------------
 
 
+    private static string exitedLevelScene;
+    private static bool selectNextLevelOnReturn;
+
+    public static string ConsumeExitedLevelScene(out bool selectNextLevel)
+    {
+        string sceneName = exitedLevelScene;
+        selectNextLevel = selectNextLevelOnReturn;
+        exitedLevelScene = null;
+        selectNextLevelOnReturn = false;
+        return sceneName;
+    }
+
     public void QuitLevel()
+    {
+        ReturnToLevelMenu(false);
+    }
+
+    public void CompleteLevelAndLeave()
+    {
+        MapStatsGathered.Instance.CompleteLevel();
+
+        switch (MapManager.Instance.levelName)
+        {
+            case LevelNames.Rivergreen_Lv5:
+            case LevelNames.Sandlands_Lv5:
+            case LevelNames.Frostfield_Lv5:
+            case LevelNames.Firevein_Lv5:
+            case LevelNames.Witchmire_Lv5:
+            case LevelNames.Metalworks_Lv5:
+                StartCoroutine(LoadSceneCoroutine(nameof(LevelNames.HUB)));
+                break;
+
+            default:
+                ReturnToLevelMenu(true);
+                break;
+        }
+    }
+
+    private void ReturnToLevelMenu(bool selectNextLevel)
     {
         if (!string.IsNullOrEmpty(mainMenu_Name))
         {
+            exitedLevelScene = SceneManager.GetActiveScene().name;
+            selectNextLevelOnReturn = selectNextLevel;
             StartCoroutine(LoadSceneCoroutine(mainMenu_Name));
         }
     }
