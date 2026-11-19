@@ -5,7 +5,6 @@
 Demo:
 1. Tutorial-level:
 	- Fikse opp/forbedre levelet
-	- Fikse slik at å gå ut av levelet fører til region-delen av hovedmenyen
 
 
 3. Level Starting-cutscene:
@@ -43,6 +42,8 @@ Demo:
 	- Legge til tilbake-pil i menyen
 	- Space-knappen må kunne trykkes som "confirm" i menyer
 	- Legge til støtte for datamus i alle menyer
+		- Fikse bugen som gjør at øverste knapp alltid er selected og blir rosa
+	- Endre level-bilder i level-select-menyen
 
 
 10. Settings:
@@ -68,6 +69,10 @@ Demo:
 
 14. Pickups:
 - Når spilleren når 0 steg mens den plukker opp en pickup (som ikke er på et checkpoint), så må animasjonen spilles først og så respawne etterpå. Mens spilleren plukker opp og animasjonen går, så kan spilleren ikke gå i menyen, eller bevege seg, men kunne rotere kameraet.
+
+
+15. NPC-animationer:
+	- Legge til animasjoner for NPC'er i verden, basert på valg i historien
 
 
 15. Mindre bugs:
