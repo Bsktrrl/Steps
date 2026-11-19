@@ -289,6 +289,9 @@ public class Movement : Singleton<Movement>
             StartCoroutine(StartDrowning());
         }
 
+        if (isDrowning)
+            return;
+
         switch (GetMovementState())
         {
             case MovementStates.Moving:
@@ -1703,7 +1706,7 @@ public class Movement : Singleton<Movement>
         if (!TryGetStandingInfo(out BlockInfo standingInfo))
             return false;
 
-        if (standingInfo.blockElement != BlockElement.Water)
+        if (standingInfo.blockElement != BlockElement.Water || !PlayerHasSwimAbility())
             return false;
 
         // Only use this smoother chaining in water columns.
@@ -1748,7 +1751,7 @@ public class Movement : Singleton<Movement>
 
     private void PerformVerticalAbilityMovement(MoveOptions option, MovementStates moveState, float movementSpeed)
     {
-        if (isMoving || isRespawning || isMovingOnLadder_Up || isMovingOnLadder_Down || !HasValidTarget(option))
+        if (isMoving || isRespawning || isDrowning || isMovingOnLadder_Up || isMovingOnLadder_Down || !HasValidTarget(option))
             return;
 
         isMoving = true;
@@ -3996,7 +3999,7 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(MoveOptions canMoveBlock, MovementStates moveState, float movementSpeed, ref bool isMovingFlag)
     {
-        if (isMoving || isRespawning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+        if (isMoving || isRespawning || isDrowning || isMovingOnLadder_Up || isMovingOnLadder_Down)
             return;
 
         if (canMoveBlock == null || canMoveBlock.targetBlock == null || !TryGetBlockInfo(canMoveBlock.targetBlock, out BlockInfo _) || StatsRoot.stats == null)
@@ -4023,7 +4026,7 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(MoveOptions canMoveBlock, MovementStates moveState, float movementSpeed)
     {
-        if (isMoving || isRespawning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+        if (isMoving || isRespawning || isDrowning || isMovingOnLadder_Up || isMovingOnLadder_Down)
             return;
 
         if (canMoveBlock == null || canMoveBlock.targetBlock == null || !TryGetBlockInfo(canMoveBlock.targetBlock, out BlockInfo _) || StatsRoot.stats == null)
@@ -4051,7 +4054,7 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(Vector3 targetPos)
     {
-        if (isMoving || isRespawning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+        if (isMoving || isRespawning || isDrowning || isMovingOnLadder_Up || isMovingOnLadder_Down)
             return;
 
         if (!TryGetStandingInfo(out BlockInfo standingInfo))
@@ -4068,7 +4071,7 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(Vector3 targetPos, float movementSpeed)
     {
-        if (isMoving || isRespawning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+        if (isMoving || isRespawning || isDrowning || isMovingOnLadder_Up || isMovingOnLadder_Down)
             return;
 
         isMoving = true;
@@ -5479,6 +5482,13 @@ public class Movement : Singleton<Movement>
         isDrowning = true;
         PlayerManager.Instance.PauseMovement();
 
+        if (Inputs.grapplingHook_isPressed ||
+            (Player_GraplingHook.Instance != null && Player_GraplingHook.Instance.isGrapplingHooking))
+        {
+            Inputs.grapplingHook_isPressed = false;
+            ResetGrapplingHookMovementState();
+        }
+
         yield return new WaitForSeconds(0.15f);
 
         Player_Animations.Instance.Trigger_DrowningAnimation();
@@ -5695,6 +5705,11 @@ public class Movement : Singleton<Movement>
         SetMovementState(MovementStates.Still);
         RespawnPlayerLate_Action();
 
+        bool keepPauseMenuOpen = isDrowning &&
+            PauseMenuManager.Instance != null &&
+            PauseMenuManager.Instance.pauseMenu_MainMenu_Parent != null &&
+            PauseMenuManager.Instance.pauseMenu_MainMenu_Parent.activeInHierarchy;
+
         isRespawning = false;
         isDrowning = false;
         isSlopeFalling = false;
@@ -5704,7 +5719,11 @@ public class Movement : Singleton<Movement>
 
         // No StopAllCoroutines here: the preceding cancellation occurred at
         // respawn entry. Finishing the reset must not cancel a new operation.
-        PlayerManager.Instance.UnpauseGame();
+        if (keepPauseMenuOpen)
+            PlayerManager.Instance.PauseGame();
+        else
+            PlayerManager.Instance.UnpauseGame();
+
         PlayerManager.Instance.UnpauseMovement();
         UpdateAvailableMovementBlocks();
     }
