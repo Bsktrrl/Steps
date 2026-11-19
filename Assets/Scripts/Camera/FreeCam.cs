@@ -168,13 +168,34 @@ public class FreeCam : Singleton<FreeCam>
     {
         Player_KeyInputs.Action_FreeCamIsActive += StartFreeCam;
         Player_KeyInputs.Action_FreeCamIsPassive += EndFreeCam;
+        Movement.Action_RespawnPlayerEarly += ResetForRespawn;
     }
 
     private void OnDisable()
     {
         Player_KeyInputs.Action_FreeCamIsActive -= StartFreeCam;
         Player_KeyInputs.Action_FreeCamIsPassive -= EndFreeCam;
+        Movement.Action_RespawnPlayerEarly -= ResetForRespawn;
 
+        StopAndRestoreFreeCam();
+    }
+
+    private void ResetForRespawn()
+    {
+        if (!_isActive && !_cameraDetached) return;
+
+        Player_KeyInputs.Instance.freeCam_isPressed = false;
+        StopAndRestoreFreeCam();
+
+        if (_brain)
+            _brain.ResetState();
+
+        RenderHiderOnContact.Instance.FreeCamOff();
+        HoleShaderOnOffScript.Instance.HoleShader_On();
+    }
+
+    private void StopAndRestoreFreeCam()
+    {
         StopAllCoroutines();
         _enterCueRoutine = null;
         _returnRoutine = null;

@@ -5747,10 +5747,8 @@ public class Movement : Singleton<Movement>
         SetMovementState(MovementStates.Still);
         RespawnPlayerLate_Action();
 
-        bool keepPauseMenuOpen = isDrowning &&
-            PauseMenuManager.Instance != null &&
-            PauseMenuManager.Instance.pauseMenu_MainMenu_Parent != null &&
-            PauseMenuManager.Instance.pauseMenu_MainMenu_Parent.activeInHierarchy;
+        bool keepPauseMenuOpen = PauseMenuManager.Instance != null &&
+            PauseMenuManager.Instance.isActive;
 
         isRespawning = false;
         isDrowning = false;
