@@ -275,6 +275,12 @@ public class Movement : Singleton<Movement>
         if (isRespawning)
             return;
 
+        bool gameplayInputLocked = Map.GameplayInputLocked;
+        // Allow a step already in progress to settle, but do not start another.
+        if (gameplayInputLocked && movementStates != MovementStates.Moving &&
+            movementStates != MovementStates.Falling)
+            return;
+
         if (Tutorial.Instance.tutorial_isRunning && Inputs.tutorialMovementBlocker)
             return;
 
@@ -305,17 +311,21 @@ public class Movement : Singleton<Movement>
                 if (IsFallingWithCarrierBlockActive())
                 {
                     UpdateBlocks();
-                    MovementSetup_FallingWithCarrierBlock();
+                    if (!gameplayInputLocked)
+                        MovementSetup_FallingWithCarrierBlock();
                 }
                 break;
 
             default:
-                if (!Tutorial.Instance.tutorial_isRunning && PM.pauseGame)
+                if (gameplayInputLocked || (!Tutorial.Instance.tutorial_isRunning && PM.pauseGame))
                     return;
 
                 MovementSetup();
                 break;
         }
+
+        if (gameplayInputLocked)
+            return;
 
         if (!Block_Moveable.AnyBlockMoving &&
             Inputs.grapplingHook_isPressed &&
@@ -1529,6 +1539,9 @@ public class Movement : Singleton<Movement>
 
     private bool TryContinueHeldSwiftSwimImmediately()
     {
+        if (Map.GameplayInputLocked)
+            return false;
+
         if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
             return false;
 
@@ -1697,6 +1710,9 @@ public class Movement : Singleton<Movement>
 
     private bool TryContinueHeldHorizontalWaterMovementImmediately()
     {
+        if (Map.GameplayInputLocked)
+            return false;
+
         if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
             return false;
 
@@ -2051,6 +2067,9 @@ public class Movement : Singleton<Movement>
 
         if (standingInfo.blockType == BlockType.Slope)
         {
+            if (Map.GameplayInputLocked)
+                return;
+
             if (slopeAutoExitInProgress && blockStandingOn == slopeAutoExitSourceBlock)
                 return;
 
@@ -2995,7 +3014,7 @@ public class Movement : Singleton<Movement>
     {
         yield return new WaitForSeconds(Anims.abilityChargeTime_GrapplingHook);
 
-        if (!Inputs.grapplingHook_isPressed)
+        if (!Inputs.grapplingHook_isPressed || Map.GameplayInputLocked)
             yield break;
 
         Player_GraplingHook.Instance.isGrapplingHooking = true;
@@ -3151,6 +3170,19 @@ public class Movement : Singleton<Movement>
 
             grapplingObjects.RemoveAt(i);
         }
+    }
+
+    public void CancelCutsceneGrapplingTarget()
+    {
+        // Never interrupt a grapple already moving the player to its target.
+        if (!performGrapplingHooking && !isGrapplingHooking &&
+            (Inputs.grapplingHook_isPressed || grapplingTargetHasBeenSet ||
+             (Player_GraplingHook.Instance != null && Player_GraplingHook.Instance.isGrapplingHooking)))
+        {
+            ResetGrapplingHookMovementState();
+        }
+
+        walkAnimationCheck = false;
     }
 
     private void ResetGrapplingHookMovementState()
@@ -4526,6 +4558,9 @@ public class Movement : Singleton<Movement>
 
     public void IceGlideMovement(bool canIceGlide)
     {
+        if (Map.GameplayInputLocked)
+            return;
+
         if (!TryGetStandingInfo(out BlockInfo standingInfo))
             return;
 
@@ -5693,7 +5728,12 @@ public class Movement : Singleton<Movement>
 
         yield return new WaitForSeconds(waitTime * 30f);
 
-        // Explicitly enforce the captured checkpoint again, before publishing
+        // PlayerManager selects the HUB spawn point after save data is loaded.
+        // The initial respawn may have captured the old position before that.
+        if (!isRespawningFirstTime && Map.levelName == LevelNames.HUB)
+            checkpointPosition = Map.playerStartPos;
+
+        // Explicitly enforce the checkpoint again, before publishing
         // respawn completion; no older coroutine can move the root now.
         transform.position = checkpointPosition;
         previousPosition = checkpointPosition;

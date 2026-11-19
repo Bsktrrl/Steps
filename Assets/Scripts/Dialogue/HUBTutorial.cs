@@ -27,6 +27,15 @@ public class HUBTutorial : Singleton<HUBTutorial>
     bool tutorialSequenceActive;
     bool dialogueIsVisible;
     bool selectingSegment;
+    bool initialPlayerSpawnCompleted;
+
+    // Independent of pauseGame, which can be changed by camera/respawn scripts.
+    public bool GameplayInputLocked => !tutorialSaveStatesReady ||
+        !initialPlayerSpawnCompleted || playerSpawned ||
+        tutorialStartupQueued || tutorialSequenceActive;
+
+    public bool DialogueCameraAllowed => tutorialSequenceActive &&
+        dialogueIsVisible && !selectingSegment;
 
     [Header("Stepellier Object")]
     [SerializeField] GameObject stepellier_Object;
@@ -59,7 +68,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
         TryStartMovementTutorial();
         // If save data arrived during OnEnable(), Start() must not re-pause
         // normal gameplay when no tutorial was launched.
-        if (tutorialSaveStatesReady && !tutorialStartupQueued && !tutorialSequenceActive)
+        if (!GameplayInputLocked)
             PlayerManager.Instance.UnpauseGame();
     }
 
@@ -123,6 +132,11 @@ public class HUBTutorial : Singleton<HUBTutorial>
             addedStates = true;
         }
 
+        // On a returning save, the first spawn animation has already completed.
+        // Do not re-read this flag during a later save-loaded notification.
+        if (!tutorialSaveStatesReady && DataManager.Instance.oneTimeRunData_Store.tutorial_PlayerSpawned)
+            initialPlayerSpawnCompleted = true;
+
         tutorialSaveStatesReady = true;
         if (addedStates && DataPersistanceManager.instance != null)
             DataPersistanceManager.instance.SaveGame();
@@ -150,6 +164,9 @@ public class HUBTutorial : Singleton<HUBTutorial>
     public void StartTutorial(TutorialParts tutorialPart)
     {
         if (tutorialSequenceActive) return;
+        if (tutorialPart != TutorialParts.Start &&
+            (!tutorialSaveStatesReady || !initialPlayerSpawnCompleted || playerSpawned || tutorialStartupQueued))
+            return;
         if (!tutorialDatabaseBuilt)
         {
             Debug.LogError("[HUBTutorial] Tutorial data has not been loaded yet.", this);
@@ -161,6 +178,8 @@ public class HUBTutorial : Singleton<HUBTutorial>
         dialogueIsVisible = false;
         selectingSegment = false;
         PlayerManager.Instance.PauseGame();
+        if (Player_KeyInputs.Instance != null)
+            Player_KeyInputs.Instance.ClearCutsceneInput();
         StartCoroutine(StartTutorial_Delay());
     }
 
@@ -222,7 +241,10 @@ public class HUBTutorial : Singleton<HUBTutorial>
             yield break;
         }
 
-        while (Movement.Instance.GetMovementState() == MovementStates.Moving)
+        // Finish the step that entered the trigger, including ability charge time.
+        while (Movement.Instance.isMoving ||
+               Movement.Instance.GetMovementState() == MovementStates.Moving ||
+               Movement.Instance.GetMovementState() == MovementStates.Falling)
             yield return null;
 
         while (CameraController.Instance.isRotating)
@@ -282,6 +304,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
 
     void SetupTutorial_Movement()
     {
+        initialPlayerSpawnCompleted = true;
         playerSpawned = true;
         TryStartMovementTutorial();
     }
@@ -304,6 +327,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
         if (startState.isGoneThrough)
         {
             playerSpawned = false;
+            UnPauseGame();
             return;
         }
 
@@ -318,6 +342,9 @@ public class HUBTutorial : Singleton<HUBTutorial>
         yield return new WaitForSecondsRealtime(waitTime);
         tutorialStartupQueued = false;
         StartTutorial(TutorialParts.Start);
+        // A missing starting CSV segment must not leave gameplay paused.
+        if (!tutorialSequenceActive)
+            UnPauseGame();
     }
     //void SetupTutorial_Respawn()
     //{
@@ -344,7 +371,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
     void UnPauseGame()
     {
         // The save-loaded event can fire after a tutorial has already been queued.
-        if (!tutorialStartupQueued && !tutorialSequenceActive)
+        if (!GameplayInputLocked)
             PlayerManager.Instance.UnpauseGame();
     }
 
@@ -371,6 +398,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
         selectingSegment = false;
         currentSegmentShowing = -1;
         currentTutorialPart = TutorialParts.None;
+        PlayerManager.Instance.UnpauseGame();
     }
 
 
@@ -419,8 +447,6 @@ public class HUBTutorial : Singleton<HUBTutorial>
             if (DataPersistanceManager.instance != null)
                 DataPersistanceManager.instance.SaveGame();
         }
-
-        PlayerManager.Instance.UnpauseGame();
 
         Movement.Instance.SetDarkenBlocks();
     }

@@ -8,10 +8,7 @@ Demo:
 	- Spilleren kan bevege seg på starten av hver Tutorial-cutscene
 	- Fikse opp/forbedre levelet
 	- Å gå ut av levelet fører til region-delen av hovedmenyen
-
-
-2. Water:
-	- Spilleren kan bevege seg samtidig som den drukner
+	- Når levelet er fullført, så må man starte ved det siste checkpointet
 
 
 3. Level Starting-cutscene:
@@ -72,7 +69,11 @@ Demo:
 	- Legge til en knapp som lar spilleren resete levelet (starte fra første checkpoint), slik at spillere som sitter fast, kan starte levelet på nytt om de ønsker det
 
 
-14. Mindre bugs:
+14. Pickups:
+- Når spilleren når 0 steg mens den plukker opp en pickup (som ikke er på et checkpoint), så må animasjonen spilles først og så respawne etterpå. Mens spilleren plukker opp og animasjonen går, så kan spilleren ikke gå i menyen, eller bevege seg, men kunne rotere kameraet.
+
+
+15. Mindre bugs:
 	- Tallene slutter å dukke opp (kanskje når man ikke kan gå i vann, og etter å forlate RootBlock)
 	- FreeCam kan ikke være plassert på spilleren mens den er aktiv, da det beveger seg på Elevators
 	- Flytte lyd-targeten til FreeCam mens man er i freecam, og ikke spilleren

@@ -44,6 +44,13 @@ public class MapManager : Singleton<MapManager>
     public bool introSequence_Finished;
     public bool haveIntroSequence = true;
 
+    // The map intro and the first HUB spawn/dialogue are separate sequences.
+    public bool IntroInputLocked => introSequence || !introSequence_Finished;
+
+    public bool GameplayInputLocked => IntroInputLocked ||
+        (levelName == LevelNames.HUB && HUBTutorial.Instance != null &&
+         HUBTutorial.Instance.GameplayInputLocked);
+
     private Coroutine blackScreenFadeRoutine;
 
 
@@ -57,6 +64,10 @@ public class MapManager : Singleton<MapManager>
 
         if (canvas)
             canvas.SetActive(true);
+
+        // Lock input before instantiating the player and enabling its controls.
+        if (haveIntroSequence)
+            introSequence = true;
 
         SpawnPlayerObject();
 
@@ -137,7 +148,7 @@ public class MapManager : Singleton<MapManager>
         Action_SpawnedPlayerObject?.Invoke(SpawnedPlayer);
         Action_PlayerObject_IsSpawned?.Invoke();
     }
-    
+
 
     public void SetAbilities()
     {
