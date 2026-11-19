@@ -237,6 +237,15 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
         }
     }
 
+    public static void PressSettingsArrow(SettingState state, bool left)
+    {
+        SettingsManager.Instance.settingState = state;
+        if (left)
+            Action_MenuSettingsNavigationLeft_isPressed?.Invoke();
+        else
+            Action_MenuSettingsNavigationRight_isPressed?.Invoke();
+    }
+
     bool IsSettingsCategorySelected()
     {
         return optionsManager &&

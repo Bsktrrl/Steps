@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class StepsDisplay : Singleton<StepsDisplay>
+public class StepsDisplay : MonoBehaviour
 {
     [Header("Parents")]
     [SerializeField] GameObject footsteps_Parent;
@@ -90,10 +90,10 @@ public class StepsDisplay : Singleton<StepsDisplay>
     {
         SetStepsDisplayBase();
 
-        if (ShouldShowFootprints())
+        if (ShouldShowFootprints() && TryGetComponent(out StepsHUD hud))
         {
             // Scene start should fill one-by-one, like respawn.
-            StepsHUD.Instance.UpdateStepsDisplay_Respawn();
+            hud.UpdateStepsDisplay_Respawn();
         }
 
         if (introCanvasGroup != null)
@@ -104,66 +104,22 @@ public class StepsDisplay : Singleton<StepsDisplay>
     {
         SetStepsDisplayBase();
 
-        if (ShouldShowFootprints())
+        if (ShouldShowFootprints() && TryGetComponent(out StepsHUD hud))
         {
             // Settings change should snap to current state.
-            // No counting, no one-by-one refill.
-            StepsHUD.Instance.RefreshAllFootprintsImmediate(false);
+            hud.RefreshAllFootprintsImmediate(false);
         }
-    }
-
-    void HideAllMenus()
-    {
-        stepDisplay_Steps.SetActive(false);
-        stepDisplay_Number.SetActive(false);
-        stepDisplay_NumbersSteps.SetActive(false);
-
-        footsteps_Parent.SetActive(false);
-    }
-
-    private void RefreshFootprintsNowAndNextFrame()
-    {
-        if (StepsHUD.Instance == null)
-            return;
-
-        StepsHUD.Instance.RefreshAllFootprintsImmediate(false);
-        StartCoroutine(RefreshFootprintsNextFrame());
-    }
-
-    private IEnumerator RefreshFootprintsNextFrame()
-    {
-        yield return null;
-
-        if (StepsHUD.Instance != null)
-            StepsHUD.Instance.RefreshAllFootprintsImmediate(false);
     }
 
     #region Helpers
 
     void SetStepsDisplayBase()
     {
-        HideAllMenus();
-
-        switch (DataManager.Instance.settingData_StoreList.currentStepDisplay)
-        {
-            case StepDisplay.Steps:
-                stepDisplay_Steps.SetActive(true);
-                footsteps_Parent.SetActive(true);
-                break;
-
-            case StepDisplay.Number:
-                stepDisplay_Number.SetActive(true);
-                break;
-
-            case StepDisplay.NumberSteps:
-                stepDisplay_NumbersSteps.SetActive(true);
-                footsteps_Parent.SetActive(true);
-                break;
-
-            case StepDisplay.None:
-                HideAllMenus();
-                break;
-        }
+        StepDisplay display = DataManager.Instance.settingData_StoreList.currentStepDisplay;
+        if (stepDisplay_Steps) stepDisplay_Steps.SetActive(display == StepDisplay.Steps);
+        if (stepDisplay_Number) stepDisplay_Number.SetActive(display == StepDisplay.Number);
+        if (stepDisplay_NumbersSteps) stepDisplay_NumbersSteps.SetActive(display == StepDisplay.NumberSteps);
+        if (footsteps_Parent) footsteps_Parent.SetActive(ShouldShowFootprints());
     }
 
     bool ShouldShowFootprints()

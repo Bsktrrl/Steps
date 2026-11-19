@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class MenuCategorySelected : MonoBehaviour
+public class MenuCategorySelected : MonoBehaviour, IPointerDownHandler
 {
     [Header("SettingState to activate")]
     public SettingState settingState;
@@ -23,6 +23,13 @@ public class MenuCategorySelected : MonoBehaviour
     void OnEnable()
     {
         StartCoroutine(WatchSelection());
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left &&
+            ActionButtonsManager.CanSelectWithMouse(GetComponent<Button>()))
+            eventData.selectedObject = gameObject;
     }
 
 

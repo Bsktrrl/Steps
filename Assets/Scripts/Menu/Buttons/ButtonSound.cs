@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ButtonSound : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
+public class ButtonSound : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
     public static event Action Action_FirstButtonMuted_On;
     public static event Action Action_FirstButtonMuted_Off;
@@ -91,19 +91,9 @@ public class ButtonSound : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     //--------------------
 
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        TryHighlight();
-    }
-
     public void OnSelect(BaseEventData eventData)
     {
         TryHighlight();
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        isHighlighted = false;
     }
 
     public void OnDeselect(BaseEventData eventData)

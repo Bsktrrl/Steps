@@ -16,6 +16,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     [Header("Player Model")]
     [SerializeField] GameObject playerDisplayObject;
+    [SerializeField] RawImage previewImage;
 
     [Header("Colors")]
     public Sprite sprite_Inactive;
@@ -142,6 +143,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     private const float PreviewRotationSpeed = 110f;
     private InputAction previewRotation;
     private Transform previewCamera;
+    private RenderTexture previewTexture;
     private Vector3 previewCameraStartPosition;
     private Quaternion previewCameraStartRotation;
     private GameObject visibleSkin;
@@ -188,6 +190,15 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
             Camera camera = playerDisplayObject.transform.parent.GetComponentInChildren<Camera>();
             if (camera)
             {
+                if (previewImage && camera.targetTexture)
+                {
+                    if (!previewTexture)
+                        previewTexture = Instantiate(camera.targetTexture);
+
+                    camera.targetTexture = previewTexture;
+                    previewImage.texture = previewTexture;
+                }
+
                 previewCamera = camera.transform;
                 previewCameraStartPosition = previewCamera.localPosition;
                 previewCameraStartRotation = previewCamera.localRotation;
@@ -220,6 +231,8 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     private void OnDestroy()
     {
         previewRotation?.Dispose();
+        if (previewTexture)
+            Destroy(previewTexture);
     }
 
     //--------------------

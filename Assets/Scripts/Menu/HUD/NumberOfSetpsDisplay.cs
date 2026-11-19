@@ -18,6 +18,8 @@ public class NumberOfSetpsDisplay : MonoBehaviour
     private Coroutine updateFootprintCoroutine;
 
     private bool hasInitializedThisScene;
+    private StepsDisplay stepsDisplay;
+    private StepsHUD stepsHUD;
 
 
     //--------------------
@@ -25,6 +27,10 @@ public class NumberOfSetpsDisplay : MonoBehaviour
 
     private void OnEnable()
     {
+        stepsDisplay = GetComponentInParent<StepsDisplay>(true);
+        if (!stepsDisplay || !stepsDisplay.TryGetComponent(out stepsHUD))
+            return;
+
         Action_Run_FirstTime += Update_FirstTime;
 
         Interactable_Pickup.Action_PickupGot += UpdateNumbersDisplay;
@@ -87,7 +93,7 @@ public class NumberOfSetpsDisplay : MonoBehaviour
     void FirstTimeUpdate()
     {
         StopRunningNumberCoroutine();
-        updateFootprintCoroutine = StartCoroutine(UpdateFootprintDelay_FirstTime(StepsHUD.Instance.StepsDisplay_CheckpointTime, StepsHUD.Instance.footprint_SpawnTime));
+        updateFootprintCoroutine = StartCoroutine(UpdateFootprintDelay_FirstTime(stepsHUD.StepsDisplay_CheckpointTime, stepsHUD.footprint_SpawnTime));
     }
 
     IEnumerator UpdateFootprintDelay_FirstTime(float startDelay, float waitTime)
@@ -126,7 +132,7 @@ public class NumberOfSetpsDisplay : MonoBehaviour
 
     void UpdateNumbersDisplay()
     {
-        if (PlayerStats.Instance == null || PlayerStats.Instance.stats == null || StepsDisplay.Instance == null)
+        if (PlayerStats.Instance == null || PlayerStats.Instance.stats == null || stepsDisplay == null)
             return;
 
         // Do not let normal walking updates override the delayed checkpoint update.
@@ -146,17 +152,17 @@ public class NumberOfSetpsDisplay : MonoBehaviour
 
     int GetCurrentNumberDisplay()
     {
-        if (number_Current.sprite == StepsDisplay.Instance.number_0) return 0;
-        if (number_Current.sprite == StepsDisplay.Instance.number_1) return 1;
-        if (number_Current.sprite == StepsDisplay.Instance.number_2) return 2;
-        if (number_Current.sprite == StepsDisplay.Instance.number_3) return 3;
-        if (number_Current.sprite == StepsDisplay.Instance.number_4) return 4;
-        if (number_Current.sprite == StepsDisplay.Instance.number_5) return 5;
-        if (number_Current.sprite == StepsDisplay.Instance.number_6) return 6;
-        if (number_Current.sprite == StepsDisplay.Instance.number_7) return 7;
-        if (number_Current.sprite == StepsDisplay.Instance.number_8) return 8;
-        if (number_Current.sprite == StepsDisplay.Instance.number_9) return 9;
-        if (number_Current.sprite == StepsDisplay.Instance.number_10) return 10;
+        if (number_Current.sprite == stepsDisplay.number_0) return 0;
+        if (number_Current.sprite == stepsDisplay.number_1) return 1;
+        if (number_Current.sprite == stepsDisplay.number_2) return 2;
+        if (number_Current.sprite == stepsDisplay.number_3) return 3;
+        if (number_Current.sprite == stepsDisplay.number_4) return 4;
+        if (number_Current.sprite == stepsDisplay.number_5) return 5;
+        if (number_Current.sprite == stepsDisplay.number_6) return 6;
+        if (number_Current.sprite == stepsDisplay.number_7) return 7;
+        if (number_Current.sprite == stepsDisplay.number_8) return 8;
+        if (number_Current.sprite == stepsDisplay.number_9) return 9;
+        if (number_Current.sprite == stepsDisplay.number_10) return 10;
 
         return 0;
     }
@@ -169,20 +175,20 @@ public class NumberOfSetpsDisplay : MonoBehaviour
     {
         StopRunningNumberCoroutine();
 
-        updateFootprintCoroutine = StartCoroutine(UpdateNumberDelay_Respawn(StepsHUD.Instance.StepsDisplay_RespawnTime,StepsHUD.Instance.footprint_SpawnTime));
+        updateFootprintCoroutine = StartCoroutine(UpdateNumberDelay_Respawn(stepsHUD.StepsDisplay_RespawnTime, stepsHUD.footprint_SpawnTime));
     }
 
     public void UpdateNumberDisplay_Checkpoint()
     {
         StopRunningNumberCoroutine();
-        updateFootprintCoroutine = StartCoroutine(UpdateNumberDelay_Checkpoint(StepsHUD.Instance.StepsDisplay_CheckpointTime));
+        updateFootprintCoroutine = StartCoroutine(UpdateNumberDelay_Checkpoint(stepsHUD.StepsDisplay_CheckpointTime));
     }
 
     IEnumerator UpdateNumberDelay_Respawn(float startDelay, float waitTime)
     {
-        yield return new WaitForSeconds(startDelay + StepsHUD.Instance.footprint_SpawnTime + 0.15f);
+        yield return new WaitForSeconds(startDelay + stepsHUD.footprint_SpawnTime + 0.15f);
 
-        int startValue = Mathf.Clamp(StepsHUD.Instance.stepCounter, 0, PlayerStats.Instance.stats.steps_Max);
+        int startValue = Mathf.Clamp(stepsHUD.stepCounter, 0, PlayerStats.Instance.stats.steps_Max);
         int maxValue = PlayerStats.Instance.stats.steps_Max;
 
         SetNumbersInstant(startValue, maxValue);
@@ -247,18 +253,18 @@ public class NumberOfSetpsDisplay : MonoBehaviour
     {
         switch (value)
         {
-            case 0: return StepsDisplay.Instance.number_0;
-            case 1: return StepsDisplay.Instance.number_1;
-            case 2: return StepsDisplay.Instance.number_2;
-            case 3: return StepsDisplay.Instance.number_3;
-            case 4: return StepsDisplay.Instance.number_4;
-            case 5: return StepsDisplay.Instance.number_5;
-            case 6: return StepsDisplay.Instance.number_6;
-            case 7: return StepsDisplay.Instance.number_7;
-            case 8: return StepsDisplay.Instance.number_8;
-            case 9: return StepsDisplay.Instance.number_9;
-            case 10: return StepsDisplay.Instance.number_10;
-            default: return StepsDisplay.Instance.number_0;
+            case 0: return stepsDisplay.number_0;
+            case 1: return stepsDisplay.number_1;
+            case 2: return stepsDisplay.number_2;
+            case 3: return stepsDisplay.number_3;
+            case 4: return stepsDisplay.number_4;
+            case 5: return stepsDisplay.number_5;
+            case 6: return stepsDisplay.number_6;
+            case 7: return stepsDisplay.number_7;
+            case 8: return stepsDisplay.number_8;
+            case 9: return stepsDisplay.number_9;
+            case 10: return stepsDisplay.number_10;
+            default: return stepsDisplay.number_0;
         }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, ISelectHandler, IDeselectHandler
+public class SkinWardrobeButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
     public static event Action Action_ButtonIsPressed;
 
@@ -415,24 +415,6 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
 
 
     #region When Button is Selected
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        // Highlighted
-        UpdateButtonDisplay();
-    }
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        // Normal (mouse left)
-    }
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        // Pressed
-    }
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        // Released (back to Highlighted if still hovered)
-        UpdateButtonDisplay();
-    }
     public void OnSelect(BaseEventData eventData)
     {
         // Selected (keyboard/controller)

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class LevelSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, ISelectHandler, IDeselectHandler
+public class LevelSelectButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
     [Header("Button")]
     [SerializeField] Button obj_Button;
@@ -57,26 +57,6 @@ public class LevelSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     //--------------------
 
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        RefreshSelectionVisual();
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        RefreshSelectionVisual();
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-
-    }
-
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        RefreshSelectionVisual();
-    }
 
     public void OnSelect(BaseEventData eventData)
     {

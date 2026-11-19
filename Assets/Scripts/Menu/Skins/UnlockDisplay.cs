@@ -212,58 +212,95 @@ public class UnlockDisplay : MonoBehaviour
 
     string UnavailableMessage(RegionName region, string level)
     {
-        switch (region)
-        {
-            case RegionName.None:
-                if (level == "0")
-                {
-                    return "";
-                }
-                else if (level == "1")
-                {
-                    return
-                    DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_1 + " " +
-                    DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_HUB + " " +
-                    DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_2;
-                }
-                else if (level == "2")
-                {
-                    return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_UnlockAllSkins;
-                }
-                return "";
-            case RegionName.Rivergreen:
-                return
-           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_1 + " " +
-           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Water + " Lv." + level + " " +
-           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_2;
-            case RegionName.Sandlands:
-                return
-           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_1 + " " +
-           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Sand + " Lv." + level + " " +
-           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_2;
-            case RegionName.Frostfields:
-                return
-           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_1 + " " +
-           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Ice + " Lv." + level + " " +
-           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_2;
-            case RegionName.Firevein:
-                return
-           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_1 + " " +
-           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Lava + " Lv." + level + " " +
-           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_2;
-            case RegionName.Witchmire:
-                return
-           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_1 + " " +
-           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Swamp + " Lv." + level + " " +
-           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_2;
-            case RegionName.Metalworks:
-                return
-           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_1 + " " +
-           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Metal + " Lv." + level + " " +
-           DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_SkinUnavailable_2;
+        var data = DataManager.Instance;
+        int language = (int)data.settingData_StoreList.currentLanguage;
+        var translations = data.game_TextDatabase_Store.gameText_LanguageList;
+        var text = translations[language];
 
-            default:
-                return "";
+        if (region == RegionName.None && level == "2")
+            return text.WardrobeMenu_Message_UnlockAllSkins;
+
+        string levelName;
+        if ((region == RegionName.None && level == "1") || region == RegionName.HUB)
+        {
+            levelName = text.name_Region_HUB;
         }
+        else if (int.TryParse(level, out int number))
+        {
+            levelName = GetWardrobeLevelName(text, region, number);
+            if (string.IsNullOrWhiteSpace(levelName))
+                levelName = GetWardrobeLevelName(translations[(int)Languages.English], region, number);
+        }
+        else
+        {
+            return "";
+        }
+
+        if (string.IsNullOrWhiteSpace(levelName))
+            return "";
+
+        return $"{text.WardrobeMenu_Message_SkinUnavailable_1} {levelName} {text.WardrobeMenu_Message_SkinUnavailable_2}";
+    }
+
+    private static string GetWardrobeLevelName(Game_TextDatabase_Language text, RegionName region, int number)
+    {
+        return region switch
+        {
+            RegionName.Rivergreen => number switch
+            {
+                1 => text.name_Region_Water_Lv1,
+                2 => text.name_Region_Water_Lv2,
+                3 => text.name_Region_Water_Lv3,
+                4 => text.name_Region_Water_Lv4,
+                5 => text.name_Region_Water_Lv5,
+                _ => null
+            },
+            RegionName.Sandlands => number switch
+            {
+                1 => text.name_Region_Sand_Lv1,
+                2 => text.name_Region_Sand_Lv2,
+                3 => text.name_Region_Sand_Lv3,
+                4 => text.name_Region_Sand_Lv4,
+                5 => text.name_Region_Sand_Lv5,
+                _ => null
+            },
+            RegionName.Frostfields => number switch
+            {
+                1 => text.name_Region_Ice_Lv1,
+                2 => text.name_Region_Ice_Lv2,
+                3 => text.name_Region_Ice_Lv3,
+                4 => text.name_Region_Ice_Lv4,
+                5 => text.name_Region_Ice_Lv5,
+                _ => null
+            },
+            RegionName.Firevein => number switch
+            {
+                1 => text.name_Region_Lava_Lv1,
+                2 => text.name_Region_Lava_Lv2,
+                3 => text.name_Region_Lava_Lv3,
+                4 => text.name_Region_Lava_Lv4,
+                5 => text.name_Region_Lava_Lv5,
+                _ => null
+            },
+            RegionName.Witchmire => number switch
+            {
+                1 => text.name_Region_Swamp_Lv1,
+                2 => text.name_Region_Swamp_Lv2,
+                3 => text.name_Region_Swamp_Lv3,
+                4 => text.name_Region_Swamp_Lv4,
+                5 => text.name_Region_Swamp_Lv5,
+                _ => null
+            },
+            RegionName.Metalworks => number switch
+            {
+                1 => text.name_Region_Metal_Lv1,
+                2 => text.name_Region_Metal_Lv2,
+                3 => text.name_Region_Metal_Lv3,
+                4 => text.name_Region_Metal_Lv4,
+                5 => text.name_Region_Metal_Lv5,
+                _ => null
+            },
+            _ => null
+        };
     }
 }
