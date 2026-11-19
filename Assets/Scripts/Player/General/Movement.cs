@@ -4380,6 +4380,11 @@ public class Movement : Singleton<Movement>
 
     void MovingAnimation(MoveOptions canMoveBlock)
     {
+        // Ascend and Descend already play their own animation. Leave the
+        // walking trigger available for the first step after landing.
+        if (isAscending || isDescending)
+            return;
+
         if (canMoveBlock == null || canMoveBlock.targetBlock == null || !TryGetBlockInfo(canMoveBlock.targetBlock, out BlockInfo targetInfo))
             return;
 
