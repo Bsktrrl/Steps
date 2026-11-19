@@ -31,6 +31,11 @@ public class StepsDisplay : Singleton<StepsDisplay>
     public Sprite number_9;
     public Sprite number_10;
 
+    private const float IntroFadeDuration = 0.35f;
+    private CanvasGroup introCanvasGroup;
+    private float introVisibleAlpha;
+    private bool introBlocksRaycasts;
+
 
     //--------------------
 
@@ -51,6 +56,36 @@ public class StepsDisplay : Singleton<StepsDisplay>
     //--------------------
 
 
+    public void HideForIntro()
+    {
+        if (introCanvasGroup != null)
+            return;
+
+        if (!TryGetComponent(out introCanvasGroup))
+            introCanvasGroup = gameObject.AddComponent<CanvasGroup>();
+
+        introVisibleAlpha = introCanvasGroup.alpha;
+        introBlocksRaycasts = introCanvasGroup.blocksRaycasts;
+        introCanvasGroup.alpha = 0f;
+        introCanvasGroup.blocksRaycasts = false;
+    }
+
+    private IEnumerator FadeInAfterIntro()
+    {
+        float elapsed = 0f;
+        while (elapsed < IntroFadeDuration)
+        {
+            yield return null;
+
+            elapsed += Time.deltaTime;
+            introCanvasGroup.alpha = Mathf.SmoothStep(0f, introVisibleAlpha, elapsed / IntroFadeDuration);
+        }
+
+        introCanvasGroup.alpha = introVisibleAlpha;
+        introCanvasGroup.blocksRaycasts = introBlocksRaycasts;
+        introCanvasGroup = null;
+    }
+
     void SetStepsDisplay_FromSceneStart()
     {
         SetStepsDisplayBase();
@@ -60,6 +95,9 @@ public class StepsDisplay : Singleton<StepsDisplay>
             // Scene start should fill one-by-one, like respawn.
             StepsHUD.Instance.UpdateStepsDisplay_Respawn();
         }
+
+        if (introCanvasGroup != null)
+            StartCoroutine(FadeInAfterIntro());
     }
 
     void SetStepsDisplay_FromSettings()

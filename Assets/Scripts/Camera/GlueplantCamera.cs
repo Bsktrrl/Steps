@@ -176,6 +176,14 @@ public class GlueplantCamera : Singleton<GlueplantCamera>
         if (travelRoutine != null)
             StopCoroutine(travelRoutine);
 
+        GameObject player = MapManager.SpawnedPlayer;
+        if (player != null)
+        {
+            StepsDisplay stepsDisplay = player.GetComponentInChildren<StepsDisplay>();
+            if (stepsDisplay != null)
+                stepsDisplay.HideForIntro();
+        }
+
         travelRoutine = StartCoroutine(Co_RunCameraTravel(waitTimer));
     }
 
