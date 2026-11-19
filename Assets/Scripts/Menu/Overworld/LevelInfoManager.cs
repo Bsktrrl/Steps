@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class LevelInfoManager : Singleton<LevelInfoManager>
 {
+    private static readonly Color AcquiredAbilityColor = new Color32(181, 147, 213, 255);
+
     [Header("LevelDisplay")]
     [SerializeField] GameObject levelDisplay_Parent;
     [SerializeField] TextMeshProUGUI levelName;
@@ -132,6 +134,7 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
         if (activeLevelObject.GetComponent<LoadLevel>())
         {
             bool foundLevel = false;
+            AbilitiesGot collectedAbilities = null;
 
             //Get Level Image
             if (activeLevelObject.GetComponent<LoadLevel>().levelSprite)
@@ -254,6 +257,7 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
                         }
                         StepsMax_Aquired.text = stepsCounter + " / 3";
 
+                        collectedAbilities = menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].abilitiesGotInLevel;
                         foundLevel = true;
 
                         //Set Progress Bars
@@ -279,39 +283,7 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
             //Get Skin Type to get in the Level
             skinImage.sprite = SelectSpriteForLevel(activeLevelObject.GetComponent<LoadLevel>().skinTypeInLevel);
 
-            //Get Abilities to get in the Level
-            ability_Swimming.SetActive(false);
-            ability_SwiftSwim.SetActive(false);
-            ability_Flippers.SetActive(false);
-
-            ability_Ascend.SetActive(false);
-            ability_Descend.SetActive(false);
-
-            ability_Dash.SetActive(false);
-            ability_Jumping.SetActive(false);
-            ability_GrapplingHook.SetActive(false);
-            ability_CeilingGrab.SetActive(false);
-
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.Snorkel)
-                ability_Swimming.SetActive(true);
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.Flippers)
-                ability_SwiftSwim.SetActive(true);
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.OxygenTank)
-                ability_Flippers.SetActive(true);
-
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.DrillHelmet)
-                ability_Ascend.SetActive(true);
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.DrillBoots)
-                ability_Descend.SetActive(true);
-
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.HandDrill)
-                ability_Dash.SetActive(true);
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.SpringShoes)
-                ability_Jumping.SetActive(true);
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.GrapplingHook)
-                ability_GrapplingHook.SetActive(true);
-            if (activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel.ClimingGloves)
-                ability_CeilingGrab.SetActive(true);
+            ShowLevelAbilities(activeLevelObject.GetComponent<LoadLevel>().abilitiesInLevel, collectedAbilities);
 
             if (!foundLevel)
             {
@@ -328,6 +300,33 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
 
         levelDisplay_Parent.SetActive(false);
         return;
+    }
+
+    private void ShowLevelAbilities(AbilitiesGot available, AbilitiesGot collected)
+    {
+        var permanent = DataManager.Instance.playerStats_Store?.abilitiesGot_Permanent;
+
+        SetIcon(ability_Swimming, Abilities.Snorkel);
+        SetIcon(ability_SwiftSwim, Abilities.Flippers);
+        SetIcon(ability_Flippers, Abilities.OxygenTank);
+        SetIcon(ability_Ascend, Abilities.DrillHelmet);
+        SetIcon(ability_Descend, Abilities.DrillBoots);
+        SetIcon(ability_Dash, Abilities.HandDrill);
+        SetIcon(ability_Jumping, Abilities.SpringShoes);
+        SetIcon(ability_GrapplingHook, Abilities.GrapplingHook);
+        SetIcon(ability_CeilingGrab, Abilities.ClimingGloves);
+
+        void SetIcon(GameObject icon, Abilities ability)
+        {
+            bool isAvailable = available?.HasAbility(ability) == true;
+            icon.SetActive(isAvailable);
+
+            if (isAvailable && icon.TryGetComponent(out Image image))
+            {
+                bool acquired = collected?.HasAbility(ability) == true || permanent?.HasAbility(ability) == true;
+                image.color = acquired ? AcquiredAbilityColor : Color.white;
+            }
+        }
     }
 
     void SetupDefaultLevelDisplay()
