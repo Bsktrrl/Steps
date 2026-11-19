@@ -633,7 +633,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
             grapplingHook_isPressed = false;
         }
 
-        if (pauseMenuManager && pauseMenuManager.pauseMenu_MainMenu_Parent.activeInHierarchy) return;
+        if (pauseMenuManager && pauseMenuManager.isActive) return;
 
 
         if (freeCam_isPressed)
@@ -731,8 +731,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (GameplayInputLocked) return;
         if (!Run_StayingPopupDisplayExit()) return;
 
-        if (!ButtonChecks_Other()) { return; }
-
         Key_Quit();
     }
 
@@ -769,7 +767,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         return true;
     }
-    bool ButtonChecks_Other()
+    bool ButtonChecks_Other(bool allowFreeCamPause = false)
     {
         if (GameplayInputLocked) return false;
         if (Movement.Instance != null && Movement.Instance.isRespawning) return false;
@@ -779,11 +777,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
 
         if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
-        if (PlayerManager.Instance.pauseGame) { return false; }
+        if (PlayerManager.Instance.pauseGame && !allowFreeCamPause) { return false; }
         if (PlayerManager.Instance.npcInteraction) { return false; }
         if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
-        if (Tutorial.Instance.tutorial_isRunning) { return false; }
+        if (Tutorial.Instance.tutorial_isRunning && !allowFreeCamPause) { return false; }
         if (PopUpManager.Instance.ability_Active) { return false; }
         if (PopUpManager.Instance.oneTimer_Active) { return false; }
         if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
@@ -853,7 +851,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     public void Key_Quit()
     {
-        if (!ButtonChecks_Other()) { return; }
+        if (pauseMenuManager && pauseMenuManager.isActive) return;
+        if (!ButtonChecks_Other(allowFreeCamPause: freeCam_isPressed)) return;
 
         RememberCurrentlySelectedUIElement.Instance.currentSelectedUIElement = PauseMenuManager.Instance.pauseMenu_StartButton;
         PlayerManager.Instance.pauseGame = true;

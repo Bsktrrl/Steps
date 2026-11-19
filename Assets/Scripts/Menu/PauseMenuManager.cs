@@ -163,7 +163,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         pauseMenu_Parent.SetActive(false);
         isVisible = false;
         isActive = false;
-        PlayerManager.Instance.UnpauseGame();
+        PlayerManager.Instance.pauseGame = Player_KeyInputs.Instance.freeCam_isPressed;
     }
     IEnumerator CheckPauseMenu()
     {

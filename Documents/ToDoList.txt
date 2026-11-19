@@ -11,10 +11,6 @@ Demo:
 	- Fikse slik at kamera-banen er bra i alle levels
 
 
-6. Tablets:
-	- Fikse slik at tablets ikke endrer freeCam end-pos
-
-
 7. Metalworks:
 	- Lage resten av levelet
 	- Starte dialog i HUB'en etter at Lv.5's er ferdig, før man skal gå til Metalworks
@@ -44,7 +40,7 @@ Demo:
 
 11. FreeCam
 	- Lage en ny freeCam
-	- Gjøre slik at Pause-menyen kan åpne s i freeCam
+	- Gjøre slik at Pause-menyen kan åpnes i freeCam
 	- Legge til en visuell bit som viser spilleren at den er i FreeCam
 	- Reset FreeCam når spilleren reseter
 
@@ -68,13 +64,6 @@ Demo:
 
 15. Mindre bugs:
 	- Tallene slutter å dukke opp (kanskje når man ikke kan gå i vann, og etter å forlate RootBlock)
-	- FreeCam kan ikke være plassert på spilleren mens den er aktiv, da det beveger seg på Elevators
-	- Flytte lyd-targeten til FreeCam mens man er i freecam, og ikke spilleren
-	- MainMenu PinkButton:
-		- Siden Rivergreen-knappen i Overworld er "first", så vil den aktiveres, og ikke den som skal aktiveres, hvis man har gått inn i et level som ikke er Rivergreen, gått tilbake til menyen og så tilbake til RegionSelect i Overworld.
-			- Mulig fix: Sett "First" for disse knappene (spesifikt), basert på saveState av region man har vært sist innom
-		- La neste tilgjengelige level være highlighted hvis spilleren klarer et level
-		- La valgt level være highlighted hvis spilleren går ut av et level
 	- Få ladders og pickups til å bli usynlige når blokkene blir det, så ikke de står mellom kameraet og spilleren
 	- Endre tekst i tutorial til Ikoner for keyboard-tekstene, så det ikke blir kode for rosa tekst i dialog-teksten
 

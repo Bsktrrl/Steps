@@ -36,6 +36,5 @@ public class PauseMenu_BackToGame_Button : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
 
         PauseMenuManager.Instance.ClosePauseMenu();
-        PlayerManager.Instance.pauseGame = false;
     }
 }

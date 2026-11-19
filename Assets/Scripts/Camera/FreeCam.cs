@@ -186,6 +186,15 @@ public class FreeCam : Singleton<FreeCam>
     {
         if (!_isActive || CM_FreeCam == null) return;
 
+        if (PauseMenuManager.Instance.isActive)
+        {
+            StopEnterCue();
+            _currentVelocity = Vector3.zero;
+            _glideTimer = 0f;
+            _smoothedMouseDelta = Vector2.zero;
+            return;
+        }
+
         float dt = useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
         if (dt <= 0f) return;
 
