@@ -185,13 +185,11 @@ public class FreeCam : Singleton<FreeCam>
         if (!_isActive && !_cameraDetached) return;
 
         Player_KeyInputs.Instance.freeCam_isPressed = false;
-        StopAndRestoreFreeCam();
+        var playerCamera = CameraController.Instance.CM_Player;
+        if (playerCamera)
+            _cmPlayer = playerCamera;
 
-        if (_brain)
-            _brain.ResetState();
-
-        RenderHiderOnContact.Instance.FreeCamOff();
-        HoleShaderOnOffScript.Instance.HoleShader_On();
+        EndFreeCam();
     }
 
     private void StopAndRestoreFreeCam()
@@ -837,9 +835,6 @@ public class FreeCam : Singleton<FreeCam>
         _moveAxis = Vector2.zero;
         _lookAxis = Vector2.zero;
         _currentVelocity = Vector3.zero;
-
-        int playerVal = GetPriorityValue(_cmPlayer);
-        SetPriorityValue(CM_FreeCam, playerVal + freeCamPriorityBoost);
 
         Vector3 startPos = CM_FreeCam.transform.position;
         Quaternion startRot = CM_FreeCam.transform.rotation;
