@@ -13,6 +13,16 @@ public class MapManager : Singleton<MapManager>
     public static event Action Action_PlayerObject_IsSpawned;
     public static GameObject SpawnedPlayer { get; private set; }
 
+    // Remember a HUB visit across the return to the main menu.
+    private static bool returnFromHUB;
+
+    public static bool ConsumeHUBReturn()
+    {
+        bool result = returnFromHUB;
+        returnFromHUB = false;
+        return result;
+    }
+
     [Header("Player")]
     [SerializeField] GameObject playerObject;
     GameObject playerObjectInScene;
@@ -59,6 +69,8 @@ public class MapManager : Singleton<MapManager>
 
     private void Awake()
     {
+        returnFromHUB = levelName == LevelNames.HUB;
+
         if (blackScreen)
             blackScreen.SetActive(true);
 

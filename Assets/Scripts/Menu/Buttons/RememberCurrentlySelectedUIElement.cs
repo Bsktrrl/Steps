@@ -21,6 +21,13 @@ public class RememberCurrentlySelectedUIElement : Singleton<RememberCurrentlySel
     {
         if (!eventSystem) { return; }
 
+        // Forget buttons that belonged to a menu which is now closed.
+        if (!IsSelectionAvailable(currentSelectedUIElement))
+            currentSelectedUIElement = null;
+
+        if (eventSystem.currentSelectedGameObject && !IsSelectionAvailable(eventSystem.currentSelectedGameObject))
+            eventSystem.SetSelectedGameObject(null);
+
         //If changing SelectedElement
         if (eventSystem.currentSelectedGameObject && currentSelectedUIElement != eventSystem.currentSelectedGameObject)
         {
@@ -35,10 +42,15 @@ public class RememberCurrentlySelectedUIElement : Singleton<RememberCurrentlySel
         }
 
         //If no SelectedElement
-        if (!eventSystem.currentSelectedGameObject && currentSelectedUIElement)
+        if (!eventSystem.currentSelectedGameObject && IsSelectionAvailable(currentSelectedUIElement))
         {
             eventSystem.SetSelectedGameObject(currentSelectedUIElement);
         }
+    }
+
+    bool IsSelectionAvailable(GameObject obj)
+    {
+        return obj && obj.activeInHierarchy;
     }
 
 
