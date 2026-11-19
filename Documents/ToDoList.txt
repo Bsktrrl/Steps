@@ -15,13 +15,14 @@ Demo:
 8. Hint-system:
 	- Legge til hint-system i levels
    		- Lage en List<GameObject> av rekkefølgen til de unlike checkpointsa, og bestemme hva som må inkluderes for at neste checkpoint skal hintes til
+		- Hint-knappen må kunne fungere uansett når knappen trykkes, slik at spilleren også kan se hint i FreeCam-modus
 
 
 9. Menyer:
 	- Legge til Info-meny
-   	- Legge til Statistikk-tab
-   	- Legge til Control-tab
-   	- Legge til Tablet-tab
+   		- Legge til Statistikk-tab
+   		- Legge til Control-tab
+   		- Legge til Tablet-tab
 	- Legge til tilbake-pil i menyen
 	- Legge til støtte for datamus i alle menyer
 		- Alltid ha siste selected knapp som active, også hvis man hoverer med mus, deselecter med mus, og starter med knapper igjen.
@@ -30,11 +31,7 @@ Demo:
 
 10. Settings:
 	- FreeCam Speed & rotation sensetivity (Move Speed & MouseSensitivity/StickSensitivity)
-	- Legge til en setting som lar spilleren toggle on/off InterractableMessages som abilities eller guider
-
-
-11. FreeCam
-	- Lage en ny freeCam
+	- Legge til en setting som lar spilleren toggle on/off InterractableMessages som abilities eller andre guider
 
 
 13. "Reset Level"-knapp i Pausemenyen

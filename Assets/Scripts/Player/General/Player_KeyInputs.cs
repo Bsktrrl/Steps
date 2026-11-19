@@ -60,8 +60,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     PauseMenuManager pauseMenuManager;
 
-    private Vector2 _lastMousePos;
-
     public bool tutorialMovementBlocker;
 
     private bool GameplayInputLocked => MapManager.Instance == null ||
@@ -108,18 +106,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     private void Update()
     {
-        //if (!freeCam_isPressed) return;
-
-        //var pad = Gamepad.current;
-        //if (pad == null) return;
-
-        //// Only poll sticks if FreeCam is set to controller mode
-        //if (FreeCam.Instance.CurrentInputType == InputType.Keyboard)
-        //    return;
-
-        //FreeCam.Instance.SetMoveAxis(pad.leftStick.ReadValue());
-        //FreeCam.Instance.RotateFromStick(pad.rightStick.ReadValue());
-
         if (freeCam_isPressed)
         {
             mapStatsGathered.levelStats.freeCamTimer += Time.deltaTime;
@@ -478,22 +464,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         MapStatsGathered.Instance.levelStats.cameraRotationTaken++;
         CameraController.Instance.RotateCameraX();
     }
-    void OnCameraRotateX_Down()
-    {
-        //FreeCam Movement
-        if (freeCam_isPressed)
-        {
-            FreeCam.Instance.SetMoveDirection(Vector3.down, true);
-        }
-    }
-    void OnCameraRotateX_Up()
-    {
-        //FreeCam Movement
-        if (freeCam_isPressed)
-        {
-            FreeCam.Instance.SetMoveDirection(Vector3.down, false);
-        }
-    }
     void OnCameraRotateY()
     {
         if (GameplayInputLocked && !DialogueCameraAllowed) return;
@@ -512,16 +482,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         MapStatsGathered.Instance.levelStats.cameraRotationTaken++;
         CameraController.Instance.RotateCameraY();
     }
-    void OnCameraRotateY_Down()
-    {
-        if (GameplayInputLocked) return;
-        FreeCam.Instance.SetMoveDirection(Vector3.up, true);
-    }
-    void OnCameraRotateY_Up()
-    {
-        FreeCam.Instance.SetMoveDirection(Vector3.up, false);
-    }
-
     bool ButtonChecks_CameraRotation()
     {
         bool dialogueCameraAllowed = DialogueCameraAllowed;
@@ -663,69 +623,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
             Action_FreeCamIsActive?.Invoke();
         }
     }
-
-    void OnMouse_Down()
-    {
-        _lastMousePos = Input.mousePosition;
-        //FreeCam.Instance.BeginMouseLook();
-    }
-    void OnMouse_Up()
-    {
-        //FreeCam.Instance.EndMouseLook();
-    }
-
-    void OnFreeCam_Move(InputValue value)
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetMoveAxis(value.Get<Vector2>());
-    }
-    void OnFreeCam_Look(InputValue value)
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetLookAxis(value.Get<Vector2>());
-    }
-
-    void OnForward_FreeCam_Down()
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetMoveDirection(Vector3.forward, true);
-    }
-    void OnForward_FreeCam_Up()
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetMoveDirection(Vector3.forward, false);
-    }
-    void OnBackward_FreeCam_Down()
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetMoveDirection(Vector3.back, true);
-    }
-    void OnBackward_FreeCam_Up()
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetMoveDirection(Vector3.back, false);
-    }
-    void OnLeft_FreeCam_Down()
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetMoveDirection(Vector3.left, true);
-    }
-    void OnLeft_FreeCam_Up()
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetMoveDirection(Vector3.left, false);
-    }
-    void OnRight_FreeCam_Down()
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetMoveDirection(Vector3.right, true);
-    }
-    void OnRight_FreeCam_Up()
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetMoveDirection(Vector3.right, false);
-    }
-
 
     //--------------------
 

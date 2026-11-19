@@ -18757,23 +18757,21 @@ MonoBehaviour:
   freeCamUI: {fileID: 8458266128198401019}
   toggleFreeCamGameObject: 0
   freeCamPriorityBoost: 10
-  moveSpeed: 10
+  moveSpeed: 6
   moveInLookDirection: 1
-  acceleration: 12
-  deceleration: 18
+  acceleration: 16
+  deceleration: 28
   useUnscaledTime: 1
-  boostMultiplier: 3
-  boostResponse: 12
-  glideTime: 0.12
-  glideDamping: 14
-  inputEpsilon: 0.001
+  boostMultiplier: 2.5
   allowScrollSpeedAdjust: 1
   scrollSpeedStep: 0.75
   minMoveSpeed: 1
-  maxMoveSpeed: 30
-  collisionProbeDistance: 2
+  maxMoveSpeed: 20
   collisionProbeRadius: 0.2
-  collisionStopOffset: 0.02
+  collisionStopOffset: 0.03
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 4294967291
   ignoreTriggers: 1
   usePassThroughMarker: 1
   returnDuration: 0.35
@@ -18827,21 +18825,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  inputType: 0
   mouseSensitivity: 0.15
   stickSensitivity: 120
+  stickLookResponse: 22
+  stickLookExponent: 1.6
   invertY: 0
-  pitchMin: -85
-  pitchMax: 85
-  smoothMouseLook: 1
-  mouseSmoothing: 20
-  lookStickDeadzone: 0.12
-  moveStickDeadzone: 0.18
-  slideAlongSurfaces: 1
-  slideIterations: 100
-  skinWidth: 0.01
-  sweepPadding: 0.02
-  touchSlideStep: 1
+  lookStickDeadzone: 0.15
+  moveStickDeadzone: 0.15
   freeCamForwardPush: 1.4
   _isActive: 0
 --- !u!1 &3728129297529229334
