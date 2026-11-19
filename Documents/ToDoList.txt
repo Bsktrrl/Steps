@@ -1,173 +1,151 @@
 ----- NEXT ON THE LIST -----
 --- DON'T PLACE NPC'S NEXT TO THE PLAYER --- (then everything will be fine)
 
-Juni:
-0.0. Bugs:
 
-4. Movement Bug:
-- Gjøre slik at alt som skal oppdateres blir oppdatert før spilleren kan bevege seg videre (eller før man beveger seg videre om man holder inne movement-knapper)
-	- Dobbeltsjekke Water og SwiftSwim
-	- Dobbeltsjekke RootBlcoks, og at de forsvinner med en gang spilleren går vekk fra blokken, når den ikke er på en blokk med røtter (Eks. stiger som ikke leder til en blokk med røtter)
-
-
-FallingSandBlock:
-- Hvis man hopper av en blokk som skal falle, hvis man hopper over en slope, så blir spilleren dratt nedover slopen etter å ha landet på blokken
-
-Landelyd etter falling:
-- Lyd fra blokken en lander på må spilles av når spilleren lander etter å ha falt
+Demo:
+1. Tutorial-level:
+	- FreeCam kan trykkes inn før Tutorialen begynner
+	- Spilleren kan bevege seg på starten av hver Tutorial-cutscene
+	- Fikse opp/forbedre levelet
+	- Å gå ut av levelet fører til region-delen av hovedmenyen
 
 
-Info-meny
-- Legge til tab for stats
-- Legge til tab for leste tablets dikt
+2. Water:
+	- Spilleren kan bevege seg samtidig som den drukner
+
+
+3. Level Starting-cutscene:
+	- Footprints og Abilities UI vises mens glueplant-cutscenes spiller
+	- Fikse slik at kamera-banen er bra i alle levels
+
+
+4. RootBlock Respawn bug:
+	- Reset rootBlock direction til riktig, etter at man går ned fra en stige
+
+
+5. CeilingGrab etter falling:
+	- Fikse at CeilingGrab kan utføres etter at man faller etter å ha gått vekk fra CeilingGrab
+
+
+6. Tablets:
+	- Fikse slik at tablets ikke endrer freeCam end-pos
+
+
+7. Metalworks:
+	- Lage resten av levelet
+	- Sende spilleren til HUB etter at Lv.5's er ferdige, for en liten dialog der spilleren kan gå til Metalworks gjennom HUB'en
+
+
+8. Hint-system:
+	- Legge til hint-system i levels
+   		- Lage en List<GameObject> av rekkefølgen til de unlike checkpointsa, og bestemme hva som må inkluderes for at neste checkpoint skal hintes til
+
+
+9. Menyer:
+	- Legge til Info-meny
+   	- Legge til Statistikk-tab
+   	- Legge til Control-tab
+   	- Legge til Tablet-tab
+	- Legge til tilbake-pil i menyen
+	- Space-knappen må kunne trykkes som "confirm" i menyer
+	- Legge til støtte for datamus i alle menyer
+
+
+10. Settings:
+	- FreeCam Speed & rotation sensetivity (Move Speed & MouseSensitivity/StickSensitivity)
+	- Legge til en setting som lar spilleren toggle on/off InterractableMessages som abilities eller guider
+
+
+11. FreeCam
+	- Lage en ny freeCam
+	- Gjøre slik at Pause-menyen kan åpne s i freeCam
+	- Legge til en visuell bit som viser spilleren at den er i FreeCam
+
+
+12. Wardrobe:
+	- Må kunne rotere spillerObjektet (med høyre joystick)
+	- Fikse lag i wardrobe-menyen
+
+
+13. "Reset Level"-knapp i Pausemenyen
+	- Legge til en knapp som lar spilleren resete levelet (starte fra første checkpoint), slik at spillere som sitter fast, kan starte levelet på nytt om de ønsker det
+
+
+14. Mindre bugs:
+	- Tallene slutter å dukke opp (kanskje når man ikke kan gå i vann, og etter å forlate RootBlock)
+	- FreeCam kan ikke være plassert på spilleren mens den er aktiv, da det beveger seg på Elevators
+	- Flytte lyd-targeten til FreeCam mens man er i freecam, og ikke spilleren
+	- MainMenu PinkButton:
+		- Siden Rivergreen-knappen i Overworld er "first", så vil den aktiveres, og ikke den som skal aktiveres, hvis man har gått inn i et level som ikke er Rivergreen, gått tilbake til menyen og så tilbake til RegionSelect i Overworld.
+			- Mulig fix: Sett "First" for disse knappene (spesifikt), basert på saveState av region man har vært sist innom
+		- La neste tilgjengelige level være highlighted hvis spilleren klarer et level
+		- La valgt level være highlighted hvis spilleren går ut av et level
+	- Få ladders og pickups til å bli usynlige når blokkene blir det, så ikke de står mellom kameraet og spilleren
+	- Endre tekst i tutorial til Ikoner for keyboard-tekstene, så det ikke blir kode for rosa tekst i dialog-teksten
 
 
 
 
 --------------------
+--- OTHER FIXES
+--------------------
 
 
 
 
-- PauseMeny:
-	- Må kunne entres via FreeCam
+FallingSandBlock:
+	- Hvis man hopper av en blokk som skal falle, hvis man hopper over en slope, så blir spilleren dratt nedover slopen etter å ha landet på blokken
 
 
-- FreeCam følger ElevatorBlocks:
-	- Koble fra FreeCam fra spilleren når den er i freeCam-modus, så kameraet ikke følger med ElevatorBlocks
-	- Flytte lyd-targeten til freeCam nå man er i freeCam, og ikke spilleren
-
-
-37. RootBlockNumbers: Pil på rootblock
-- Legge til en pil i den retningen som spilleren kan gå inn på den på, istedenfor tall (eventuelt ha tallet litt mindre i midten av pilen?)
-
-
-
-
-
-
-
-
-- CeilingGrab: 
+CeilingGrab: 
 	- Kan ikke gjøres fra start eller rett etter respawn. 
 	- Kan gjøres etter at man har falt, men det ikke er en blokk over, så spilleren står bare i løse luften.
 
 
-- Kamera: 
-	- Bør kunne roteres underveis i Slope_X_Animasjonen
-
-- GrapplingHook: 
+GrapplingHook: 
 	- Endre visuals med nye effekter
 
-- MainMenu PinkButton:
-	- Siden Rivergreen-knappen i Overworld er "first", så vil den aktiveres, og ikke den som skal aktiveres, hvis man har gått inn i et level som ikke er Rivergreen, gått tilbake til menyen og så tilbake til RegionSelect i Overworld.
-		- Mulig fix: Sett "First" for disse knappene (spesifikt), basert på saveState av region man har vært sist innom
-	- La neste tilgjengelige level være highlighted hvis spilleren klarer et level
-	- La valgt level være highlighted hvis spilleren går ut av et level
+Looking-kamera:
+	- Gjøre om joystick til å snu kameraet litt rundt spilleren
+		- Lage en variant for rundt spilleren (til vurdering)
+		- Lage en variant for rundt seg selv (til vurdering)
+	- Gjøre kompatibel for både kontroll og datamus
+
+NewGame Language SettingsBug:
+	- Gjøre slik at også "language"-posten i "Settings" er satt til Engelsk bilde på starten (første gang man går inn)
 
 
+Triggers for innganger/utganger
+	- Lag triggers som settes ved huleinngangen for å endre state på om man er ute eller inne
 
-1.0. Lage levels:
-- Lage Tutorial level
-	- Lage funksjonalitet for Tutorial-levelet i OverworldMenyen
-	- Gjøre slik at man kan velge og kjøre Tutorial-levelet fra OverworldMenyen
+Torches/Braziers/Candles:
+	- Lage prefabs for disse
+	- Legge til light settings og 3D-lyd på disse
 
-
-3.0. CameraBlockRender
-- Få ladders og pickups til å bli usynlige når blokkene blir det, så ikke de står mellom kameraet og spilleren
-
-
-4.0. Looking-kamera:
-- Gjøre om joystick til å snu kameraet litt rundt spilleren
-	- Lage en variant for rundt spilleren (til vurdering)
-	- Lage en variant for rundt seg selv (til vurdering)
-- Gjøre kompatibel for både kontroll og datamus
+Walking Animation Bug:
+	- The player isn't performing walking animation after Ascending/Descending/SwiftSwim (when moving away from the block landed on)
 
 
+ColdWater:
+	- ColdWater isn't treating the camera the same way as Water. It may have something to do with the Haze particle
+
+CeilingGrabRotation:
+	- When doing CeilingGrabRotation back to the noraml camera, the camrea is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
 
 
---- OTHER FIXES
+AbilityButton Display (New System):
+	- Use the new button icons and stepellierFont for NPC-interaction and when Abilities can be used
+		- Make it compatible with PlayStation, Xbox and Keyboard
+		- Make it compatible with all languages
+
+FreeCam:
+	- Kan toggle Numbers on/off på alle blokker i levelet (bare blokker som er øverst og ikke har noen andre blokker over dem)
+
+Overworld:
+	- Vurdere å legge inn en %-bar under navnet for å vise progress med tall også
+
+Switches:
+	- Make interactable Wall-switch
 
 
-
-
-
-
-
-15. Settings: FreeCam Speed & rotation sensetivity (Move Speed & MouseSensitivity/StickSensitivity)
-
-
-42. Settings: Legge til en setting som lar spilleren toggle on/off InterractableMessages som abilities eller guider
-
-43. PlayerSpawn-InEffect: Legge til en animasjon på starten av første level man spiller - Tutorial-levelet (legge inn saveState slik at den ikke dukker opp igjen etter første gang)
-
-46: NewGame Language SettingsBug: Gjøre slik at også "language"-posten i "Settings" er satt til Engelsk bilde på starten (første gang man går inn)
-
-49. Droplets funksjonalitet og lyd
-- Lag gameobject som skal spawne inn droplets fra tak
-
-50. Triggers for innganger/utganger
-- Lag triggers som settes ved huleinngangen for å endre state på om man er ute eller inne
-
-51. Torches/Braziers/Candles:
-- Lage prefabs for disse
-- Legge til light settings og 3D-lyd på disse
-
-52. Hint-system:
-- Lage en feature i Settings som gir spilleren hint om hvilket checkpoint den skal gå til neste.
-	- Lage en List<GameObject> av rekkefølgen til de unlike checkpointsa, og bestemme hva som må inkluderes for at neste checkpoint skal hintes til
-
-
-
---- OTHER BUGS & FIXES
-
-
-
-2. The player isn't performing walking animation after Ascending/Descending/SwiftSwim (when moving away from the block landed on)
-
-
-3. ColdWater isn't treating the camera the same way as Water. It may have something to do with the Haze particle
-
-4. When doing CeilingGrabRotation back to the noraml camera, the camrea is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
-
-10. Sound
-- Fix ice glide audio bug
-
-12. AbilityButton Display (New System):
-- Use the new button icons and stepellierFont for NPC-interaction and when Abilities can be used
-	- Make it compatible with PlayStation, Xbox and Keyboard
-	- Make it compatible with all languages
-
-
-
---- BUGS FROM TESTBONANZA (september)
-
-
-
-1. Fences on fallingBlocks (sand) immobilizes movement
-
-2. Falling block let the player move down edges when respawned
-
-5. Move the asset displayed on the EffectBlocks (Checkpoints & Teleporters) on top of the snow on SnowBlocks
-
-6. Skins-objects in levels make cameras zoom (in and out, based on the rotation of the skin)
-
-
-
------ LATER
-
-
-
-19. Wardrobe: Må kunne rotere spillerObjektet (med høyre joystick)
-
-14. FreeCam: Kan toggle Numbers on/off på alle blokker i levelet (bare blokker som er øverst og ikke har noen andre blokker over dem)
-
-25. Overworld: Vurdere å legge inn en %-bar under navnet for å vise progress med tall også
-
-51. Legg til Keybind i Controls-menyen av spillet
-
-55. Switches: Make interactable Wall-switch
-
-56. "Reset Level"-knapp i Pausemenyen
-- Legge til en knapp som lar spilleren resete levelet (starte fra første checkpoint), slik at spillere som sitter fast, kan starte levelet på nytt om de ønsker det
 
