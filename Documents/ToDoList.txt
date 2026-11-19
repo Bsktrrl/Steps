@@ -83,29 +83,26 @@ CeilingGrab:
 GrapplingHook: 
 	- Endre visuals med nye effekter
 
+
 Looking-kamera:
 	- Gjøre om joystick til å snu kameraet litt rundt spilleren
 		- Lage en variant for rundt spilleren (til vurdering)
 		- Lage en variant for rundt seg selv (til vurdering)
 	- Gjøre kompatibel for både kontroll og datamus
 
-NewGame Language SettingsBug:
-	- Gjøre slik at også "language"-posten i "Settings" er satt til Engelsk bilde på starten (første gang man går inn)
-
 
 Triggers for innganger/utganger
 	- Lag triggers som settes ved huleinngangen for å endre state på om man er ute eller inne
+
 
 Torches/Braziers/Candles:
 	- Lage prefabs for disse
 	- Legge til light settings og 3D-lyd på disse
 
-Walking Animation Bug:
-	- The player isn't performing walking animation after Ascending/Descending/SwiftSwim (when moving away from the block landed on)
-
 
 ColdWater:
 	- ColdWater isn't treating the camera the same way as Water. It may have something to do with the Haze particle
+
 
 CeilingGrabRotation:
 	- When doing CeilingGrabRotation back to the noraml camera, the camrea is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
@@ -116,11 +113,14 @@ AbilityButton Display (New System):
 		- Make it compatible with PlayStation, Xbox and Keyboard
 		- Make it compatible with all languages
 
+
 FreeCam:
 	- Kan toggle Numbers on/off på alle blokker i levelet (bare blokker som er øverst og ikke har noen andre blokker over dem)
 
+
 Overworld:
 	- Vurdere å legge inn en %-bar under navnet for å vise progress med tall også
+
 
 Switches:
 	- Make interactable Wall-switch

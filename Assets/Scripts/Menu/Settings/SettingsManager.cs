@@ -615,6 +615,7 @@ public class SettingsManager : Singleton<SettingsManager>
 
     public void Action_SetNewLanguage_isActive()
     {
+        ChangeFlagImage();
         Action_SetNewLanguage?.Invoke();
     }
 
@@ -794,7 +795,7 @@ public class SettingData
 {
     //General
     [Header("General")]
-    public Languages currentLanguage;
+    public Languages currentLanguage = Languages.English;
     public TextSpeed currentTextSpeed;
     public StepDisplay currentStepDisplay;
     public CameraMotion currentCameraMotion;
