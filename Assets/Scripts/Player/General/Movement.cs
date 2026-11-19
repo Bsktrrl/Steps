@@ -124,6 +124,7 @@ public class Movement : Singleton<Movement>
     public Vector3 ladderEndPos_Down;
     public bool isMovingOnLadder_Up;
     public bool isMovingOnLadder_Down;
+    public bool IsClimbingLadder => isMovingOnLadder_Up || isMovingOnLadder_Down;
     public Vector3 LadderExitDirection { get; private set; }
 
     Vector3 ladderClimbPos_Start;
@@ -375,7 +376,7 @@ public class Movement : Singleton<Movement>
         Action_StepTaken_Late += RunIceGliding;
         Action_StepTaken_Late += CheckIfSwimming;
 
-        CameraController.Action_RotateCamera_End += UpdateBlocks;
+        CameraController.Action_RotateCamera_End += UpdateBlocksAfterCameraRotation;
 
         Player_KeyInputs.Action_WalkButton_isReleased += WalkButtonIsReleased;
 
@@ -404,7 +405,7 @@ public class Movement : Singleton<Movement>
         Action_StepTaken_Late -= RunIceGliding;
         Action_StepTaken_Late -= CheckIfSwimming;
 
-        CameraController.Action_RotateCamera_End -= UpdateBlocks;
+        CameraController.Action_RotateCamera_End -= UpdateBlocksAfterCameraRotation;
 
         Player_KeyInputs.Action_WalkButton_isReleased -= WalkButtonIsReleased;
 
@@ -1879,6 +1880,12 @@ public class Movement : Singleton<Movement>
         EnsureCurrentTargetNumbersVisible();
     }
 
+    private void UpdateBlocksAfterCameraRotation()
+    {
+        if (!IsClimbingLadder)
+            UpdateBlocks();
+    }
+
     public void UpdateBlocks()
     {
         isUpdatingDarkenBlocks = true;
@@ -1908,7 +1915,6 @@ public class Movement : Singleton<Movement>
         }
 
         isUpdatingDarkenBlocks = false;
-        Cam.isRotating = false;
     }
 
     public void UpdateBlockStandingOn()
@@ -4819,7 +4825,7 @@ public class Movement : Singleton<Movement>
 
         isMovingOnLadder_Up = false;
         movementStates = MovementStates.Still;
-        PM.pauseGame = false;
+        PM.pauseGame = Cam.isRotating || Anims.IsPickupAnimationPending;
 
         FindLadderExitBlock();
         CompleteLadderStep(dir);
@@ -4932,7 +4938,7 @@ public class Movement : Singleton<Movement>
         }
 
         isMovingOnLadder_Down = false;
-        PM.pauseGame = false;
+        PM.pauseGame = Cam.isRotating || Anims.IsPickupAnimationPending;
 
         if (fallFromLadderEnd)
         {

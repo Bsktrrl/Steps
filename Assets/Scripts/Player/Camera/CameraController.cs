@@ -90,7 +90,7 @@ public class CameraController : Singleton<CameraController>
     {
         if (isCeilingRotating) { return; }
         if (Player_Interact.Instance.isInteracting) { return; }
-        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving && !Movement.Instance.IsClimbingLadder) return;
 
         int rotationDirection = 0;
 
@@ -110,7 +110,7 @@ public class CameraController : Singleton<CameraController>
     {
         if (isCeilingRotating) { return; }
         if (Player_Interact.Instance.isInteracting) { return; }
-        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving && !Movement.Instance.IsClimbingLadder) return;
 
         int rotationDirection = 0;
 
@@ -232,7 +232,8 @@ public class CameraController : Singleton<CameraController>
 
         yield return new WaitForSeconds(waitDelay);
 
-        if (!Player_Animations.Instance.IsPickupAnimationPending && !PopUpManager.Instance.ability_Active)
+        if (!Movement.Instance.IsClimbingLadder &&
+            !Player_Animations.Instance.IsPickupAnimationPending && !PopUpManager.Instance.ability_Active)
             PlayerManager.Instance.UnpauseGame();
         isRotating = false;
 
