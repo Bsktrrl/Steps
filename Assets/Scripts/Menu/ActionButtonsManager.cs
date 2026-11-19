@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 public class ActionButtonsManager : Singleton<ActionButtonsManager>
 {
@@ -29,8 +30,26 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
     {
         playerControls = new PlayerControls();
         mainMenuManager = FindObjectOfType<MainMenuManager>();
+
+        if (eventSystem && eventSystem.TryGetComponent(out InputSystemUIInputModule inputModule))
+        {
+            InputAction submit = inputModule.submit?.action;
+            if (submit != null)
+                AddSpaceSubmitBinding(submit);
+        }
     }
 
+    private static void AddSpaceSubmitBinding(InputAction submit)
+    {
+        const string spacePath = "<Keyboard>/space";
+        foreach (InputBinding binding in submit.bindings)
+        {
+            if (binding.path == spacePath)
+                return;
+        }
+
+        submit.AddBinding(spacePath, groups: "Keyboard&Mouse");
+    }
 
     //--------------------
 
