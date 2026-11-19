@@ -1692,6 +1692,16 @@ public class Movement : Singleton<Movement>
         return false;
     }
 
+    public bool IsInWaterfall()
+    {
+        if (HasWaterDirectlyAbove(blockStandingOn))
+            return true;
+
+        // The standing-block ray can miss between stacked blocks during a SwiftSwim move.
+        return isSwiftSwim && (HasWaterDirectlyAbove(currentMoveStartBlock) ||
+                               HasWaterDirectlyAbove(currentMoveTargetBlock));
+    }
+
     private bool HasWaterDirectlyAbove(GameObject block)
     {
         return block != null &&

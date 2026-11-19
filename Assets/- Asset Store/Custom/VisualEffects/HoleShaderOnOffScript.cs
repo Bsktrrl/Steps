@@ -88,14 +88,9 @@ public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
             }
         }
 
-        if (foundBlockInfo)
-        {
-            SetHoleShaderState(true);
-        }
-        else
-        {
-            SetHoleShaderState(false);
-        }
+        // A ray starting inside a water collider cannot hit that collider.
+        SetHoleShaderState(foundBlockInfo ||
+            (!PlayerManager.Instance.npcInteraction && Movement.Instance.IsInWaterfall()));
     }
 
     private void SetHoleShaderState(bool active)
