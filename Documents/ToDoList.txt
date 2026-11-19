@@ -30,6 +30,7 @@ Demo:
 	- Legge til støtte for datamus i alle menyer
 		- Alltid ha siste selected knapp som active, også hvis man hoverer med mus, deselecter med mus, og starter med knapper igjen.
 	- Endre level-bilder i level-select-menyen
+	- Fikse slik at hvis det er en kontroller konnektet, så sloss ikke den og keyboard om movement i UI menyer, slik at når en knapp presses ned, så skjer det ikke noe. Det oppleves hakkete
 
 
 10. Settings:
@@ -40,6 +41,7 @@ Demo:
 11. FreeCam
 	- Lage en ny freeCam
 	- Legge til en visuell bit som viser spilleren at den er i FreeCam
+		- Lag en Parent med et bilde under og la AI fade denne parenten ut og inn når spilleren entrer/avslutter FreeCam mode
 
 
 12. Wardrobe:
@@ -55,7 +57,7 @@ Demo:
 	- Legge til animasjoner for NPC'er i verden, basert på valg i historien
 
 16. SwiftSwim:
-- HUllShader får det til å se ut som det blnker når spilleren går opp og ned i vann. Den burde være slått på så lenge spilleren er inne i vannblokker eller i blokker med vann rett over seg
+- HUllShader får det til å se ut som det blnker når spilleren går opp og ned i vann, når movementknapp holdes inne. Den burde være slått på så lenge spilleren er inne i vannblokker eller i blokker med vann rett over seg
 
 
 16. Mindre bugs:

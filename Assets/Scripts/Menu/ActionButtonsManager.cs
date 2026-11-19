@@ -16,6 +16,11 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
     [Header("Input System")]
     PlayerControls playerControls;
     MainMenuManager mainMenuManager;
+    private InputSystemUIInputModule uiInputModule;
+    private InputActionAsset navigationActions;
+    private InputActionReference originalMove;
+    private InputActionReference menuMove;
+    private int rightStickBindingIndex;
 
 
     //--------------------
@@ -36,7 +41,61 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
             InputAction submit = inputModule.submit?.action;
             if (submit != null)
                 AddSpaceSubmitBinding(submit);
+
+            uiInputModule = inputModule;
+            InstallMenuNavigation();
+            SetWardrobePreviewActive(FindObjectOfType<SkinWardrobeManager>() != null);
         }
+    }
+
+    private void OnEnable()
+    {
+        SkinWardrobeManager.PreviewVisibilityChanged += SetWardrobePreviewActive;
+    }
+
+    private void OnDisable()
+    {
+        SkinWardrobeManager.PreviewVisibilityChanged -= SetWardrobePreviewActive;
+    }
+
+    private void OnDestroy()
+    {
+        if (uiInputModule && uiInputModule.move == menuMove)
+            uiInputModule.move = originalMove;
+        if (menuMove) Destroy(menuMove);
+        if (navigationActions) Destroy(navigationActions);
+    }
+
+    private void InstallMenuNavigation()
+    {
+        navigationActions = ScriptableObject.CreateInstance<InputActionAsset>();
+        InputActionMap ui = navigationActions.AddActionMap("Menu Navigation");
+        InputAction move = ui.AddAction("Move", InputActionType.Value, expectedControlLayout: "Vector2");
+        move.AddCompositeBinding("2DVector")
+            .With("Up", "<Keyboard>/w").With("Up", "<Keyboard>/upArrow")
+            .With("Down", "<Keyboard>/s").With("Down", "<Keyboard>/downArrow")
+            .With("Left", "<Keyboard>/a").With("Left", "<Keyboard>/leftArrow")
+            .With("Right", "<Keyboard>/d").With("Right", "<Keyboard>/rightArrow");
+        move.AddBinding("<Gamepad>/dpad");
+        move.AddBinding("<Gamepad>/leftStick", processors: "stickDeadzone(min=0.25)");
+        move.AddBinding("<Joystick>/stick", processors: "stickDeadzone(min=0.25)");
+        rightStickBindingIndex = move.bindings.Count;
+        move.AddBinding("<Gamepad>/rightStick", processors: "stickDeadzone(min=0.25)");
+
+        originalMove = uiInputModule.move;
+        menuMove = InputActionReference.Create(move);
+        uiInputModule.move = menuMove;
+    }
+
+    private void SetWardrobePreviewActive(bool active)
+    {
+        if (!menuMove) return;
+
+        // An empty override disables this binding while the stick controls the preview.
+        if (active)
+            menuMove.action.ApplyBindingOverride(rightStickBindingIndex, string.Empty);
+        else
+            menuMove.action.RemoveBindingOverride(rightStickBindingIndex);
     }
 
     private static void AddSpaceSubmitBinding(InputAction submit)

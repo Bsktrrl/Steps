@@ -96,12 +96,13 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     void HandleLeftInput()
     {
         bool leftIsPressed = leftAction != null && leftAction.IsPressed();
+        bool leftPressedThisFrame = leftAction != null && leftAction.WasPressedThisFrame();
 
-        if (leftIsPressed)
+        if (leftIsPressed || leftPressedThisFrame)
         {
-            if (!leftWasPressed)
+            if (!leftWasPressed || leftPressedThisFrame)
             {
-                leftWasPressed = true;
+                leftWasPressed = leftIsPressed;
                 leftHoldTimer = 0f;
                 leftHoldStarted = false;
 
@@ -121,12 +122,13 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     void HandleRightInput()
     {
         bool rightIsPressed = rightAction != null && rightAction.IsPressed();
+        bool rightPressedThisFrame = rightAction != null && rightAction.WasPressedThisFrame();
 
-        if (rightIsPressed)
+        if (rightIsPressed || rightPressedThisFrame)
         {
-            if (!rightWasPressed)
+            if (!rightWasPressed || rightPressedThisFrame)
             {
-                rightWasPressed = true;
+                rightWasPressed = rightIsPressed;
                 rightHoldTimer = 0f;
                 rightHoldStarted = false;
 
