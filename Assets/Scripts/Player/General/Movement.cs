@@ -124,6 +124,7 @@ public class Movement : Singleton<Movement>
     public Vector3 ladderEndPos_Down;
     public bool isMovingOnLadder_Up;
     public bool isMovingOnLadder_Down;
+    public Vector3 LadderExitDirection { get; private set; }
 
     Vector3 ladderClimbPos_Start;
     Vector3 ladderClimbPos_End;
@@ -4820,7 +4821,7 @@ public class Movement : Singleton<Movement>
         PM.pauseGame = false;
 
         FindLadderExitBlock();
-        Action_StepTaken_Invoke();
+        CompleteLadderStep(dir);
     }
 
     IEnumerator PerformLadderMovement_Down(
@@ -4923,18 +4924,6 @@ public class Movement : Singleton<Movement>
 
         ResetLadderTargets();
 
-        // Preserve the existing Root-block behaviour.
-        if (exitBlockDown != null &&
-            exitBlockDown.GetComponent<BlockInfo>() &&
-            exitBlockDown
-                .GetComponent<BlockInfo>()
-                .blockElement == BlockElement.Root &&
-            exitBlockDown.GetComponentInChildren<Block_Root>())
-        {
-            exitBlockDown
-                .GetComponentInChildren<Block_Root>()
-                .ActivateRoots();
-        }
 
         if (!fallFromLadderEnd)
         {
@@ -4965,7 +4954,20 @@ public class Movement : Singleton<Movement>
         movementStates = MovementStates.Still;
 
         FindLadderExitBlock();
-        Action_StepTaken_Invoke();
+        CompleteLadderStep(-targetPosObj.transform.forward);
+    }
+
+    private void CompleteLadderStep(Vector3 exitDirection)
+    {
+        LadderExitDirection = exitDirection;
+        try
+        {
+            Action_StepTaken_Invoke();
+        }
+        finally
+        {
+            LadderExitDirection = Vector3.zero;
+        }
     }
 
     void ResetLadderTargets()

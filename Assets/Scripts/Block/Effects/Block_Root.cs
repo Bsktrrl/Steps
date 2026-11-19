@@ -206,6 +206,7 @@ public class Block_Root : MonoBehaviour
     void QueueRootActivation()
     {
         if (Movement.Instance == null || Movement.Instance.isRespawning ||
+            Movement.Instance.isMovingOnLadder_Up || Movement.Instance.isMovingOnLadder_Down ||
             activatedForCurrentRootStand || awaitingRespawnRootActivation)
             return;
 
@@ -336,6 +337,14 @@ public class Block_Root : MonoBehaviour
         {
             Vector3 dir = rootSourceBlock.transform.position - Movement.Instance.blockStandingOn.transform.position;
             return SnapDirection(dir);
+        }
+
+        // A ladder landing has no normal move origin. Use its exit heading
+        // before falling back to the previous standing block.
+        if (Movement.Instance.currentMoveTargetBlock == null &&
+            Movement.Instance.LadderExitDirection != Vector3.zero)
+        {
+            return SnapDirection(Movement.Instance.LadderExitDirection);
         }
 
         // After landing: use previous standing block.

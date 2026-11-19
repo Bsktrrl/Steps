@@ -129,11 +129,16 @@ public class FreeCam : Singleton<FreeCam>
     [Header("FreeCamForwardPush")]
     [SerializeField] private float freeCamForwardPush = 1.4f;
 
-    private PrioritySettings _playerBasePriority;
     private PrioritySettings _freeBasePriority;
-    private bool _basePrioritiesCached;
+    private bool _cameraDetached;
+    private TransformHome _cameraHome;
+    private TransformHome _listenerHome;
+    private Transform _listener;
+    private Pose _listenerEntryStart;
+    private float _listenerEntryProgress;
 
     private CinemachineCamera _cmPlayer;
+    private CinemachineBrain _brain;
     public bool _isActive;
     private Coroutine _returnRoutine;
     private Coroutine _enterCueRoutine;
@@ -169,6 +174,12 @@ public class FreeCam : Singleton<FreeCam>
     {
         Player_KeyInputs.Action_FreeCamIsActive -= StartFreeCam;
         Player_KeyInputs.Action_FreeCamIsPassive -= EndFreeCam;
+
+        StopAllCoroutines();
+        _enterCueRoutine = null;
+        _returnRoutine = null;
+        _isActive = false;
+        RestoreCameraHierarchy();
     }
 
     private void Update()
@@ -180,6 +191,16 @@ public class FreeCam : Singleton<FreeCam>
 
         TickMovement(dt);
         TickRotation(dt);
+
+        if (_listener && _listenerEntryProgress < 1f)
+        {
+            _listenerEntryProgress = Mathf.Clamp01(_listenerEntryProgress + dt / Mathf.Max(0.0001f, returnDuration));
+            Transform cameraTransform = CM_FreeCam.transform;
+            BlendListener(
+                _listenerEntryStart,
+                new Pose(cameraTransform.position, cameraTransform.rotation),
+                Mathf.SmoothStep(0f, 1f, _listenerEntryProgress));
+        }
     }
 
     // ====================
@@ -261,34 +282,33 @@ public class FreeCam : Singleton<FreeCam>
         if (_isActive) return;
         if (CM_FreeCam == null) return;
 
-        _cmPlayer = CameraController.Instance != null ? CameraController.Instance.CM_Player : null;
+        CameraController controller = CameraController.Instance;
+        if (!controller) return;
 
-        CacheBasePrioritiesOnce();
+        _cmPlayer = controller.cameraState == CameraState.CeilingCam && controller.CM_Player_CeilingGrab
+            ? controller.CM_Player_CeilingGrab
+            : controller.CM_Player;
+        if (_cmPlayer == null) return;
+        _brain = controller.CM_Brain;
 
-        bool cancelledReturn = false;
-
+        bool resuming = _returnRoutine != null;
         if (_returnRoutine != null)
         {
             StopCoroutine(_returnRoutine);
             _returnRoutine = null;
-            cancelledReturn = true;
         }
 
-        if (_enterCueRoutine != null)
-        {
-            StopCoroutine(_enterCueRoutine);
-            _enterCueRoutine = null;
-        }
-
-        if (cancelledReturn)
-            RestoreBasePriorities();
-
-        if (_cmPlayer == null) return;
+        StopEnterCue();
+        DetachCamera();
+        _listenerEntryProgress = 0f;
+        if (_listener)
+            _listenerEntryStart = new Pose(_listener.position, _listener.rotation);
 
         CM_FreeCam.Follow = null;
         CM_FreeCam.LookAt = null;
 
-        CM_FreeCam.transform.SetPositionAndRotation(_cmPlayer.transform.position, _cmPlayer.transform.rotation);
+        if (!resuming)
+            MatchPlayerCamera();
 
         Vector3 e = CM_FreeCam.transform.rotation.eulerAngles;
         _yaw = e.y;
@@ -316,7 +336,11 @@ public class FreeCam : Singleton<FreeCam>
         _lastNonZeroDesired = Vector3.zero;
         _smoothedMouseDelta = Vector2.zero;
 
-        _enterCueRoutine = StartCoroutine(EnterFreeCamCue());
+        if (!resuming)
+            _enterCueRoutine = StartCoroutine(EnterFreeCamCue());
+
+        if (_listener)
+            _listener.SetPositionAndRotation(_listenerEntryStart.position, _listenerEntryStart.rotation);
 
         RenderHiderOnContact.Instance.FreeCamOn();
         HoleShaderOnOffScript.Instance.HoleShader_Off();
@@ -324,20 +348,27 @@ public class FreeCam : Singleton<FreeCam>
 
     private void EndFreeCam()
     {
-        if (!_isActive || CM_FreeCam == null) return;
+        if (!_isActive) return;
 
-        _cmPlayer = CameraController.Instance != null ? CameraController.Instance.CM_Player : _cmPlayer;
-        if (_cmPlayer == null)
-        {
-            _isActive = false;
-            return;
-        }
-
+        StopEnterCue();
         RenderHiderOnContact.Instance.FreeCamOff();
         HoleShaderOnOffScript.Instance.HoleShader_On();
 
-        if (_returnRoutine != null) StopCoroutine(_returnRoutine);
+        _isActive = false;
+        if (CM_FreeCam == null || _cmPlayer == null)
+        {
+            RestoreCameraHierarchy();
+            return;
+        }
+
         _returnRoutine = StartCoroutine(ReturnToPlayerThenSwitch());
+    }
+
+    private void StopEnterCue()
+    {
+        if (_enterCueRoutine == null) return;
+        StopCoroutine(_enterCueRoutine);
+        _enterCueRoutine = null;
     }
 
     // ====================
@@ -719,30 +750,59 @@ public class FreeCam : Singleton<FreeCam>
         _enterCueRoutine = null;
     }
 
-    private void CacheBasePrioritiesOnce()
+    private void DetachCamera()
     {
-        if (_basePrioritiesCached) return;
-        if (CM_FreeCam == null) return;
+        if (_cameraDetached) return;
 
-        _cmPlayer = CameraController.Instance != null ? CameraController.Instance.CM_Player : _cmPlayer;
-        if (_cmPlayer == null) return;
-
-        _playerBasePriority = _cmPlayer.Priority;
+        Transform cameraTransform = CM_FreeCam.transform;
+        _cameraHome = new TransformHome(cameraTransform);
         _freeBasePriority = CM_FreeCam.Priority;
-        _basePrioritiesCached = true;
+        _cameraDetached = true;
+        cameraTransform.SetParent(null, true);
+
+        AudioListener listener = PlayerManager.Instance.GetComponentInChildren<AudioListener>();
+        if (listener)
+        {
+            _listener = listener.transform;
+            _listenerHome = new TransformHome(_listener);
+            _listener.SetParent(cameraTransform, true);
+        }
     }
 
-    private void RestoreBasePriorities()
+    private void RestoreCameraHierarchy()
     {
-        if (!_basePrioritiesCached) return;
-        if (CM_FreeCam != null) CM_FreeCam.Priority = _freeBasePriority;
-        if (_cmPlayer != null) _cmPlayer.Priority = _playerBasePriority;
+        if (!_cameraDetached) return;
+        _cameraDetached = false;
+
+        _listenerHome.Restore();
+        _listener = null;
+        _cameraHome.Restore();
+        _listenerHome = default;
+        _cameraHome = default;
+
+        if (CM_FreeCam)
+        {
+            CM_FreeCam.Priority = _freeBasePriority;
+            if (toggleFreeCamGameObject)
+                CM_FreeCam.gameObject.SetActive(false);
+        }
+    }
+
+    private void MatchPlayerCamera()
+    {
+        var state = _cmPlayer.State;
+        CM_FreeCam.transform.SetPositionAndRotation(state.GetFinalPosition(), state.GetFinalOrientation());
+    }
+
+    private void BlendListener(Pose start, Pose target, float progress)
+    {
+        _listener.SetPositionAndRotation(
+            Vector3.Lerp(start.position, target.position, progress),
+            Quaternion.Slerp(start.rotation, target.rotation, progress));
     }
 
     private IEnumerator ReturnToPlayerThenSwitch()
     {
-        _isActive = false;
-
         _digitalInputSum = Vector3.zero;
         _moveAxis = Vector2.zero;
         _lookAxis = Vector2.zero;
@@ -753,14 +813,12 @@ public class FreeCam : Singleton<FreeCam>
 
         Vector3 startPos = CM_FreeCam.transform.position;
         Quaternion startRot = CM_FreeCam.transform.rotation;
-
-        Vector3 targetPos = _cmPlayer.transform.position;
-        Quaternion targetRot = _cmPlayer.transform.rotation;
+        Pose listenerStart = _listener ? new Pose(_listener.position, _listener.rotation) : default;
 
         float dur = Mathf.Max(0.0001f, returnDuration);
         float t = 0f;
 
-        while (t < dur)
+        while (t < dur && CM_FreeCam && _cmPlayer)
         {
             float dt = useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
             t += dt;
@@ -768,22 +826,74 @@ public class FreeCam : Singleton<FreeCam>
             float u = Mathf.Clamp01(t / dur);
             float eased = (returnEase != null) ? returnEase.Evaluate(u) : u;
 
+            var playerState = _cmPlayer.State;
             CM_FreeCam.transform.SetPositionAndRotation(
-                Vector3.LerpUnclamped(startPos, targetPos, eased),
-                Quaternion.SlerpUnclamped(startRot, targetRot, eased)
+                Vector3.LerpUnclamped(startPos, playerState.GetFinalPosition(), eased),
+                Quaternion.SlerpUnclamped(startRot, playerState.GetFinalOrientation(), eased)
             );
+            if (_listener)
+                BlendListener(listenerStart, _listenerHome.GetWorldPose(), eased);
 
             yield return null;
         }
 
-        CM_FreeCam.transform.SetPositionAndRotation(targetPos, targetRot);
+        if (CM_FreeCam && _cmPlayer)
+        {
+            MatchPlayerCamera();
+            if (_listener)
+                BlendListener(listenerStart, _listenerHome.GetWorldPose(), 1f);
+            CM_FreeCam.Priority = _freeBasePriority;
+            _cmPlayer.Prioritize();
 
-        RestoreBasePriorities();
+            // Keep the outgoing camera at the player until Cinemachine stops sampling it.
+            yield return null;
+            while (CM_FreeCam && _cmPlayer && _brain && _brain.isActiveAndEnabled && _brain.IsLiveInBlend(CM_FreeCam))
+            {
+                MatchPlayerCamera();
+                if (_listener)
+                    BlendListener(listenerStart, _listenerHome.GetWorldPose(), 1f);
+                yield return null;
+            }
+        }
 
-        if (toggleFreeCamGameObject)
-            CM_FreeCam.gameObject.SetActive(false);
-
+        RestoreCameraHierarchy();
         _returnRoutine = null;
+    }
+
+    private readonly struct TransformHome
+    {
+        private readonly Transform _transform;
+        private readonly Transform _parent;
+        private readonly int _siblingIndex;
+        private readonly Vector3 _localPosition;
+        private readonly Quaternion _localRotation;
+        private readonly Vector3 _localScale;
+
+        public TransformHome(Transform target)
+        {
+            _transform = target;
+            _parent = target.parent;
+            _siblingIndex = target.GetSiblingIndex();
+            _localPosition = target.localPosition;
+            _localRotation = target.localRotation;
+            _localScale = target.localScale;
+        }
+
+        public void Restore()
+        {
+            if (!_transform) return;
+            _transform.SetParent(_parent, false);
+            _transform.SetSiblingIndex(_siblingIndex);
+            _transform.SetLocalPositionAndRotation(_localPosition, _localRotation);
+            _transform.localScale = _localScale;
+        }
+
+        public Pose GetWorldPose()
+        {
+            return _parent
+                ? new Pose(_parent.TransformPoint(_localPosition), _parent.rotation * _localRotation)
+                : new Pose(_localPosition, _localRotation);
+        }
     }
 
     // ====================
