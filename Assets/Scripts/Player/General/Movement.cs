@@ -276,7 +276,8 @@ public class Movement : Singleton<Movement>
         if (isRespawning)
             return;
 
-        bool gameplayInputLocked = Map.GameplayInputLocked;
+        bool gameplayInputLocked = Map.GameplayInputLocked ||
+            Anims.IsPickupAnimationPending || zeroStepRespawnStarted;
         // Allow a step already in progress to settle, but do not start another.
         if (gameplayInputLocked && movementStates != MovementStates.Moving &&
             movementStates != MovementStates.Falling)
@@ -3838,7 +3839,7 @@ public class Movement : Singleton<Movement>
 
     void MovementSetup()
     {
-        if (isMoving) return;
+        if (isMoving || Anims.IsPickupAnimationPending || zeroStepRespawnStarted) return;
         if (Block_Moveable.AnyBlockMoving) return;
 
         if (ShouldBlockMovementInputBecauseOfZeroSteps())
@@ -4559,7 +4560,7 @@ public class Movement : Singleton<Movement>
 
     public void IceGlideMovement(bool canIceGlide)
     {
-        if (Map.GameplayInputLocked)
+        if (Map.GameplayInputLocked || Anims.IsPickupAnimationPending || zeroStepRespawnStarted)
             return;
 
         if (!TryGetStandingInfo(out BlockInfo standingInfo))
@@ -5331,15 +5332,6 @@ public class Movement : Singleton<Movement>
         UpdateAvailableMovementBlocks();
     }
 
-    IEnumerator RespawnPlayerWhenReachingZeroSteps_Delay(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
-
-        RespawnPlayer();
-
-        Action_StepTaken_Late_Invoke();
-    }
-
     private void HandleZeroStepsAfterLanding()
     {
         Action_StepTaken_Late_Invoke();
@@ -5361,24 +5353,7 @@ public class Movement : Singleton<Movement>
             return;
         }
 
-        Interactable_Pickup pickup = GetPickupOnStandingBlock();
-
-        if (pickup != null && !pickup.goal)
-        {
-            if (pickup.abilityReceived != Abilities.None)
-            {
-                StartCoroutine(RespawnAfterAbilityPopupHasClosed(zeroStepRespawnDelay + abilityRespawnExtraDelay));
-                return;
-            }
-
-            if (IsRespawnDelayingItemPickup(pickup))
-            {
-                StartCoroutine(RespawnAfterPickupHasFinished(Mathf.Max(0f, zeroStepRespawnDelay - pickupRespawnDelayReduction)));
-                return;
-            }
-        }
-
-        StartCoroutine(RespawnPlayerWhenReachingZeroSteps_Delay(zeroStepRespawnDelay));
+        StartCoroutine(ResolveZeroStepsAfterPickup(GetPickupOnStandingBlock()));
     }
     private bool IsRespawnDelayingItemPickup(Interactable_Pickup pickup)
     {
@@ -5389,23 +5364,32 @@ public class Movement : Singleton<Movement>
                pickup.itemReceived == Items.Footprint ||
                pickup.itemReceived == Items.Skin;
     }
-    private IEnumerator RespawnAfterAbilityPopupHasClosed(float waitTimeAfterPopupClosed)
+    private IEnumerator ResolveZeroStepsAfterPickup(Interactable_Pickup pickup)
     {
+        // Let the landing's physics trigger start the pickup even if the
+        // step event ran before the trigger callback.
+        yield return new WaitForFixedUpdate();
         yield return null;
 
-        while (PopUpManager.Instance != null &&
-               !PopUpManager.Instance.ability_Active)
+        float delay = zeroStepRespawnDelay;
+        if (PopUpManager.Instance.ability_Active || (pickup != null && pickup.abilityReceived != Abilities.None))
+            delay += abilityRespawnExtraDelay;
+        else if (Anims.IsPickupAnimationPending || IsRespawnDelayingItemPickup(pickup))
+            delay = Mathf.Max(0f, delay - pickupRespawnDelayReduction);
+
+        while (Anims.IsPickupAnimationPending || PopUpManager.Instance.ability_Active || delay > 0f)
         {
             yield return null;
+            if (!Anims.IsPickupAnimationPending && !PopUpManager.Instance.ability_Active)
+                delay -= Time.deltaTime;
         }
 
-        while (PopUpManager.Instance != null &&
-               PopUpManager.Instance.ability_Active)
+        if (StatsRoot.stats.steps_Current > 0 || IsStandingOnCheckpoint() || IsStandingOnGoal())
         {
-            yield return null;
+            zeroStepRespawnStarted = false;
+            blockMovementInputUntilReleased = false;
+            yield break;
         }
-
-        yield return new WaitForSeconds(waitTimeAfterPopupClosed);
 
         RespawnPlayer();
     }
@@ -5443,32 +5427,6 @@ public class Movement : Singleton<Movement>
         }
 
         return null;
-    }
-    private IEnumerator RespawnAfterPickupHasFinished(float waitTimeAfterPickup)
-    {
-        bool pickupFinished = false;
-
-        void OnPickupFinished()
-        {
-            pickupFinished = true;
-        }
-
-        Action_PickupAnimation_Complete += OnPickupFinished;
-
-        float timer = 0f;
-        float maxWaitTime = 2.5f;
-
-        while (!pickupFinished && timer < maxWaitTime)
-        {
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-        Action_PickupAnimation_Complete -= OnPickupFinished;
-
-        yield return new WaitForSeconds(waitTimeAfterPickup);
-
-        RespawnPlayer();
     }
     private Interactable_Pickup GetPickupOnStandingBlock()
     {
