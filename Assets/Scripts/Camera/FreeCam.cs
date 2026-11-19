@@ -7,6 +7,9 @@ public class FreeCam : Singleton<FreeCam>
 {
     [Header("References")]
     [SerializeField] public CinemachineCamera CM_FreeCam;
+    [SerializeField] private CanvasGroup freeCamUI;
+
+    private const float UIFadeDuration = 0.25f;
 
     [Header("Switching")]
     [Tooltip("If true, the FreeCam GameObject will be enabled/disabled when entering/exiting.")]
@@ -178,6 +181,12 @@ public class FreeCam : Singleton<FreeCam>
         Movement.Action_RespawnPlayerEarly -= ResetForRespawn;
 
         StopAndRestoreFreeCam();
+
+        if (freeCamUI)
+        {
+            freeCamUI.alpha = 0f;
+            freeCamUI.gameObject.SetActive(false);
+        }
     }
 
     private void ResetForRespawn()
@@ -203,6 +212,7 @@ public class FreeCam : Singleton<FreeCam>
 
     private void Update()
     {
+        UpdateUIFade();
         if (!_isActive || CM_FreeCam == null) return;
 
         if (PauseMenuManager.Instance.isActive)
@@ -229,6 +239,18 @@ public class FreeCam : Singleton<FreeCam>
                 new Pose(cameraTransform.position, cameraTransform.rotation),
                 Mathf.SmoothStep(0f, 1f, _listenerEntryProgress));
         }
+    }
+
+    private void UpdateUIFade()
+    {
+        if (!freeCamUI || !freeCamUI.gameObject.activeSelf) return;
+
+        float targetAlpha = _isActive ? 1f : 0f;
+        if (freeCamUI.alpha != targetAlpha)
+            freeCamUI.alpha = Mathf.MoveTowards(freeCamUI.alpha, targetAlpha, Time.unscaledDeltaTime / UIFadeDuration);
+
+        if (!_isActive && freeCamUI.alpha == 0f)
+            freeCamUI.gameObject.SetActive(false);
     }
 
     // ====================
@@ -350,6 +372,7 @@ public class FreeCam : Singleton<FreeCam>
         SetPriorityValue(CM_FreeCam, playerVal + freeCamPriorityBoost);
 
         _isActive = true;
+        if (freeCamUI) freeCamUI.gameObject.SetActive(true);
         
         // reset inputs/state
         _digitalInputSum = Vector3.zero;
@@ -364,8 +387,7 @@ public class FreeCam : Singleton<FreeCam>
         _lastNonZeroDesired = Vector3.zero;
         _smoothedMouseDelta = Vector2.zero;
 
-        if (!resuming)
-            _enterCueRoutine = StartCoroutine(EnterFreeCamCue());
+        _enterCueRoutine = StartCoroutine(EnterFreeCamCue());
 
         if (_listener)
             _listener.SetPositionAndRotation(_listenerEntryStart.position, _listenerEntryStart.rotation);
