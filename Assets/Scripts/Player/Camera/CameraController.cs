@@ -232,7 +232,8 @@ public class CameraController : Singleton<CameraController>
 
         yield return new WaitForSeconds(waitDelay);
 
-        PlayerManager.Instance.UnpauseGame();
+        if (!Player_Animations.Instance.IsPickupAnimationPending && !PopUpManager.Instance.ability_Active)
+            PlayerManager.Instance.UnpauseGame();
         isRotating = false;
 
         Movement.Instance.previousPosition = transform.position;

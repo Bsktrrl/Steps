@@ -463,7 +463,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     void OnCameraRotateX()
     {
         if (GameplayInputLocked && !DialogueCameraAllowed) return;
-        if (!Run_StayingPopupDisplayExit()) return;
+        if (!Player_Animations.Instance.IsPickupAnimationPending && !Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         if (!DialogueCameraAllowed)
@@ -497,7 +497,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     void OnCameraRotateY()
     {
         if (GameplayInputLocked && !DialogueCameraAllowed) return;
-        if (!Run_StayingPopupDisplayExit()) return;
+        if (!Player_Animations.Instance.IsPickupAnimationPending && !Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         if (!DialogueCameraAllowed)
@@ -525,8 +525,10 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     bool ButtonChecks_CameraRotation()
     {
         bool dialogueCameraAllowed = DialogueCameraAllowed;
+        bool pickupAnimationPending = Player_Animations.Instance.IsPickupAnimationPending;
         if (GameplayInputLocked && !dialogueCameraAllowed) return false;
         if (!Run_IntroSequance()) return false;
+        if (Movement.Instance.isRespawning || (pauseMenuManager && pauseMenuManager.isActive)) return false;
 
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
         if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
@@ -535,7 +537,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         // IMPORTANT:
         // Stepellier dialogue allows normal camera rotation, not gameplay input.
-        if (PlayerManager.Instance.pauseGame && !CameraController.Instance.isRotating && !dialogueCameraAllowed) { return false; }
+        if (PlayerManager.Instance.pauseGame && !CameraController.Instance.isRotating &&
+            !dialogueCameraAllowed && !pickupAnimationPending) return false;
 
         if (PlayerManager.Instance.npcInteraction && !dialogueCameraAllowed) { return false; }
 
@@ -545,9 +548,9 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         if (Player_Interact.Instance.isInteracting) { return false; }
         if (Tutorial.Instance.tutorial_isRunning && !dialogueCameraAllowed) { return false; }
-        if (PopUpManager.Instance.ability_Active) { return false; }
+        if (PopUpManager.Instance.ability_Active && !pickupAnimationPending) return false;
         if (PopUpManager.Instance.oneTimer_Active) { return false; }
-        if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
+        if (PopUpManager.Instance.ability_CanBeClosed && !pickupAnimationPending) return false;
         if (MapManager.Instance.introSequence) { return false; }
 
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
