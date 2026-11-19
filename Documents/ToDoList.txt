@@ -55,8 +55,11 @@ Demo:
 15. NPC-animationer:
 	- Legge til animasjoner for NPC'er i verden, basert på valg i historien
 
+16. SwiftSwim:
+- HUllShader får det til å se ut som det blnker når spilleren går opp og ned i vann. Den burde være slått på så lenge spilleren er inne i vannblokker eller i blokker med vann rett over seg
 
-15. Mindre bugs:
+
+16. Mindre bugs:
 	- Tallene slutter å dukke opp (kanskje når man ikke kan gå i vann, og etter å forlate RootBlock)
 	- Få ladders og pickups til å bli usynlige når blokkene blir det, så ikke de står mellom kameraet og spilleren
 	- Endre tekst i tutorial til Ikoner for keyboard-tekstene, så det ikke blir kode for rosa tekst i dialog-teksten
@@ -73,11 +76,6 @@ Demo:
 
 FallingSandBlock:
 	- Hvis man hopper av en blokk som skal falle, hvis man hopper over en slope, så blir spilleren dratt nedover slopen etter å ha landet på blokken
-
-
-CeilingGrab: 
-	- Kan ikke gjøres fra start eller rett etter respawn. 
-	- Kan gjøres etter at man har falt, men det ikke er en blokk over, så spilleren står bare i løse luften.
 
 
 GrapplingHook: 

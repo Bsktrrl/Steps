@@ -744,26 +744,26 @@ public class Movement : Singleton<Movement>
 
     private bool ShouldChainImmediatelyAfterStep()
     {
+        if (isRespawning || isDrowning || IsClimbingLadder || zeroStepRespawnStarted ||
+            Anims.IsPickupAnimationPending || Map.GameplayInputLocked || Block_Moveable.AnyBlockMoving ||
+            (Tutorial.Instance.tutorial_isRunning ? Inputs.tutorialMovementBlocker : PM.pauseGame))
+            return false;
+
         // Suppress previews only when the HELD direction has a valid next
         // move, not merely because some other adjacent block is available.
         foreach (Vector3 localDir in LocalDirections)
         {
-            if (InputHeldOrPressedForDirection(localDir) &&
-                HasValidTarget(GetMoveOptionForDirection(localDir)))
+            MoveOptions option = GetMoveOptionForDirection(localDir);
+            if (InputPressedForDirection(localDir) && HasValidTarget(option) && CanAfford(option.targetBlock))
                 return true;
         }
 
         // SwiftSwim chain:
         // Suppress visuals if the player is holding up/down and there is another
         // SwiftSwim water block ready.
-        if (!CeilingGrab.isCeilingGrabbing &&
-            IsAnySwiftSwimButtonStillPressed() &&
-            HasAnyImmediateSwiftSwimMoveFromCurrentState())
-        {
-            return true;
-        }
-
-        return false;
+        return !CeilingGrab.isCeilingGrabbing &&
+            ((Inputs.up_isPressed && HasValidTarget(moveToBlock_SwiftSwimUp)) ||
+             (Inputs.down_isPressed && HasValidTarget(moveToBlock_SwiftSwimDown)));
     }
 
     private void RefreshDarkeningNow()
@@ -1509,17 +1509,6 @@ public class Movement : Singleton<Movement>
             ClearMoveTarget(moveOption);
     }
 
-    private bool IsAnySwiftSwimButtonStillPressed()
-    {
-        return Inputs.up_isPressed || Inputs.down_isPressed;
-    }
-
-    private bool HasAnyImmediateSwiftSwimMoveFromCurrentState()
-    {
-        return HasValidTarget(moveToBlock_SwiftSwimUp) ||
-               HasValidTarget(moveToBlock_SwiftSwimDown);
-    }
-
     private bool ShouldChainSwiftSwimImmediatelyAfterStep()
     {
         if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
@@ -1883,7 +1872,7 @@ public class Movement : Singleton<Movement>
     private void UpdateBlocksAfterCameraRotation()
     {
         if (!IsClimbingLadder)
-            UpdateBlocks();
+            UpdateAvailableMovementBlocks();
     }
 
     public void UpdateBlocks()

@@ -403,8 +403,7 @@ public class Block_Root : MonoBehaviour
 
         MakeRootFreeCostList();
 
-        Movement.Instance.UpdateBlocks();
-        Movement.Instance.SetDarkenBlocks();
+        Movement.Instance.UpdateAvailableMovementBlocks();
 
         Action_StandingOnRootBlock?.Invoke();
     }
@@ -433,12 +432,6 @@ public class Block_Root : MonoBehaviour
         RootFreeCostBlockList.Clear();
         finishedCheckingForBlocks = false;
 
-        if (Movement.Instance != null)
-        {
-            Movement.Instance.ResetDarkenBlocks_External();
-            Movement.Instance.UpdateBlocks();
-            Movement.Instance.SetDarkenBlocks();
-        }
     }
 
 
@@ -1238,9 +1231,7 @@ public class Block_Root : MonoBehaviour
 
         if (Movement.Instance != null)
         {
-            Movement.Instance.ResetDarkenBlocks_External();
-            Movement.Instance.UpdateBlocks();
-            Movement.Instance.SetDarkenBlocks();
+            Movement.Instance.UpdateAvailableMovementBlocks();
         }
     }
 
@@ -1404,8 +1395,7 @@ public class Block_Root : MonoBehaviour
 
         if (Movement.Instance != null)
         {
-            Movement.Instance.UpdateBlocks();
-            Movement.Instance.SetDarkenBlocks();
+            Movement.Instance.UpdateAvailableMovementBlocks();
         }
     }
 
@@ -1523,8 +1513,7 @@ public class Block_Root : MonoBehaviour
 
             if (Movement.Instance != null)
             {
-                Movement.Instance.UpdateBlocks();
-                Movement.Instance.SetDarkenBlocks();
+                Movement.Instance.UpdateAvailableMovementBlocks();
             }
 
             addedCount += addedRootCount;
