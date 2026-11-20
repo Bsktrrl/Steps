@@ -104,6 +104,10 @@ public class MainMenuManager : Singleton<MainMenuManager>
             DataManager.Instance.menuState_Store = MenuState.Overworld_Menu;
             DataManager.Instance.overWorldStates_StoreList = new OverWorldStates();
         }
+        else if (!string.IsNullOrEmpty(exitedLevelScene))
+        {
+            SetLevelMenuForReturn(exitedLevelScene);
+        }
 
         menuState = DataManager.Instance.menuState_Store;
 
@@ -118,6 +122,24 @@ public class MainMenuManager : Singleton<MainMenuManager>
         if (overworldMenu_Parent.activeInHierarchy)
             StartCoroutine(RestoreOverworldSelection(menuState, returningFromHUB, exitedLevelScene, selectNextLevel));
 
+    }
+
+    void SetLevelMenuForReturn(string sceneName)
+    {
+        if (!levelSelectMenu) return;
+
+        // Resolve the destination from the level button even if the saved menu is stale.
+        foreach (LoadLevel level in levelSelectMenu.GetComponentsInChildren<LoadLevel>(true))
+        {
+            if (level.levelToPlay != sceneName)
+                continue;
+
+            MenuState returnMenu = ExitMapMenuReference.GetMenuStateForRegion(level.regionToPlay);
+            if (returnMenu != MenuState.None)
+                DataManager.Instance.menuState_Store = returnMenu;
+
+            return;
+        }
     }
 
     IEnumerator RestoreOverworldSelection(MenuState loadedMenu, bool returningFromHUB, string exitedLevelScene, bool selectNextLevel)
