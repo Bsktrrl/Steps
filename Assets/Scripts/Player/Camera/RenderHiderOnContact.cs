@@ -306,6 +306,11 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
                 if (rend == null)
                     continue;
 
+                // Let the hint fade independently of the checkpoint's visibility.
+                var hint = rend.GetComponentInParent<HintObject>();
+                if (hint && hint.hintObject && rend.transform.IsChildOf(hint.hintObject.transform))
+                    continue;
+
                 _seenThisFrame.Add(rend);
                 _lastSeenTime[rend] = Time.unscaledTime;
 
