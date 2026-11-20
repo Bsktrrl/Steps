@@ -244,8 +244,8 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Info_Header_Statistics, 173);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Info_Header_Tablets, 174);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Info_Controls_Text, 175);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Info_Stats_Text, 176);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_5, 177);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Info_StatsLeft_Text, 176);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Info_StatsRight_Text, 177);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_6, 178);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_7, 179);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_8, 180);
@@ -848,8 +848,8 @@ public class Game_TextDatabase_Language
     public string options_Info_Header_Statistics;
     public string options_Info_Header_Tablets;
     public string options_Info_Controls_Text;
-    public string options_Info_Stats_Text;
-    public string options_Blank_5;
+    public string options_Info_StatsLeft_Text;
+    public string options_Info_StatsRight_Text;
     public string options_Blank_6;
     public string options_Blank_7;
     public string options_Blank_8;
@@ -1390,8 +1390,8 @@ public enum Text_Database_Enum
     [InspectorName("Options Menu / Info / Statistics")] options_Info_Header_Statistics,
     [InspectorName("Options Menu / Info / Tablets")] options_Info_Header_Tablets,
     [InspectorName("Options Menu / Info / Controls Text")] options_Info_Controls_Text,
-    [InspectorName("Options Menu / Info / Stats Text")] options_Info_Stats_Text,
-    [InspectorName("Options Menu / Blank / 5")] options_Blank_5,
+    [InspectorName("Options Menu / Info / Stats Text Left")] options_Info_StatsLeft_Text,
+    [InspectorName("Options Menu / Info / Stats Text Right")] options_Info_StatsRight_Text,
     [InspectorName("Options Menu / Blank / 6")] options_Blank_6,
     [InspectorName("Options Menu / Blank / 7")] options_Blank_7,
     [InspectorName("Options Menu / Blank / 8")] options_Blank_8,

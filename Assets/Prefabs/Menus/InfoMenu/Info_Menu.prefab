@@ -947,7 +947,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4259354577112215085}
   m_Layer: 5
-  m_Name: General_List
+  m_Name: Controls_List
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1137,7 +1137,7 @@ GameObject:
   - component: {fileID: 2821194620885233009}
   - component: {fileID: 5150034440086473456}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Stats LeftSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1190,77 +1190,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Completion
-
-    Playtime
-
-    Total sessions
-
-    Longest Session
-
-    Average
-    Level Time
-
-    Time standing still
-
-    Levels Completed
-
-    Regions Completed
-
-    Steps
-    Taken
-
-    Steps Wasted
-
-    Steps Replenished
-
-    Out of Steps
-
-    Average
-    Steps Per Level
-
-    Respawns Taken
-
-    Essence Picked Up
-
-    Skins found
-
-    Skins
-    Bought
-
-    Tablets red
-
-    Abilities Performed
-
-    Total Jumps
-
-    Total
-    Grapples
-
-    Total Hand Drills
-
-    Total Drill Helmet
-
-    Total Drill Boots
-
-    Total
-    Swim Distance
-
-    Total Climb Distance
-
-    Levels Replayed
-
-    Fastest level
-    completion
-
-    Slowest level completion
-
-    Hint Used
-
-    Time in FreeCam
-
-    Dialogue
-    interractions'
+  m_text: "<size=120%><u>General</u>\r\n<size=100%>Progress: \r\nPlaytime: \r\nSessions:
+    \r\nLongest session: \r\n\r\n<size=120%><u>Steps</u>\r\n<size=100%>Steps taken:
+    \r\nSteps replenished: \r\nSteps emptied: \r\nAverage steps per level: \r\n\r\n<size=120%><u>Interactables</u>\r\n<size=100%>Essence
+    gathered: \r\nSkins found: \r\nSkins bought: \r\nTablets red: \r\nDialogue interactions: "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dfbdd2096e005a447b83ba15e4de6767, type: 2}
   m_sharedMaterial: {fileID: 6701643693541814340, guid: dfbdd2096e005a447b83ba15e4de6767, type: 2}
@@ -1287,8 +1220,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70.1
-  m_fontSizeBase: 70.1
+  m_fontSize: 55
+  m_fontSizeBase: 55
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3448,7 +3381,7 @@ GameObject:
   - component: {fileID: 1414731210821721555}
   - component: {fileID: 7920898612329539464}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Stats RightSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3501,18 +3434,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Completion
-
-    Time Played
-
-    Levels Completed
-
-    Steps Taken
-
-    Essence
-    Picked Up
-
-'
+  m_text: "<size=120%><u>Levels</u>\r\n<size=100%>Regions completed: \r\nLevels completed:
+    \r\nLevels replayed: \r\nFastest level completion: \r\nSlowest level completion:
+    \r\nAverage level completion: \r\nRespawns: \r\nTime standing still: \r\nTime
+    in free camera: \r\nHints used: \r\n\r\n<size=120%><u>Abilities</u>\r\n<size=100%>Abilities
+    Performed: \r\nJumps: \r\nGrapples: \r\nHand Drills: \r\nDrill Helmet: \r\nDrill
+    Boots: \r\nSwim Distance: \r\nClimb Distance: "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dfbdd2096e005a447b83ba15e4de6767, type: 2}
   m_sharedMaterial: {fileID: 6701643693541814340, guid: dfbdd2096e005a447b83ba15e4de6767, type: 2}
@@ -3539,12 +3466,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70.1
-  m_fontSizeBase: 70.1
+  m_fontSize: 55
+  m_fontSizeBase: 55
   m_fontWeight: 400
   m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMin: 40
+  m_fontSizeMax: 60
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -3593,7 +3520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05b6c2085c53ed74e88dde152f971388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textToDisplay: 159
+  textToDisplay: 160
   textToDisplay_additional: 0
 --- !u!1 &4018029413727737923
 GameObject:
@@ -3605,7 +3532,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8600495028481392236}
   m_Layer: 5
-  m_Name: General_List
+  m_Name: Statistics_List
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5466,7 +5393,7 @@ GameObject:
   m_Component:
   - component: {fileID: 36236989353140699}
   m_Layer: 5
-  m_Name: General_List
+  m_Name: Tablet_List
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6938,7 +6865,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4347909238563063204
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7268,13 +7195,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5684111738570980469}
+  - component: {fileID: 8784596949284142767}
   m_Layer: 5
   m_Name: Statistics_Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5684111738570980469
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7295,6 +7223,20 @@ RectTransform:
   m_AnchoredPosition: {x: 672, y: 1.9733887}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8784596949284142767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8512084761911580146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57c36f22315cbad4496d927b2dd2c904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats_LeftSide: {fileID: 2821194620885233009}
+  stats_RightSide: {fileID: 1414731210821721555}
 --- !u!1 &8536036177704509163
 GameObject:
   m_ObjectHideFlags: 0
@@ -7760,7 +7702,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5272100099813316952
 RectTransform:
   m_ObjectHideFlags: 0

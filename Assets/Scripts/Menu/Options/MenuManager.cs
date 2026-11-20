@@ -97,6 +97,7 @@ public class MenuManager : Singleton<MenuManager>
     {
         if (!infoManager) return;
 
+        Player_Statistics_Manager.Active?.FlushStatistics();
         ChangeMenuCategory(MenuCategories.Info_Controls);
         infoManager.SelectFirstTab();
     }
