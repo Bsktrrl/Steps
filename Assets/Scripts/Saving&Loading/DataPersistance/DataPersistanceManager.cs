@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -47,11 +46,7 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
     public void NewGame()
     {
-        GameData oldData = new GameData();
-
-        if (gameData != null)
-            oldData = gameData;
-
+        GameData oldData = gameData ?? new GameData();
 
         this.gameData = new GameData(); // create fresh data
 
@@ -132,8 +127,20 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
     List<IDataPersistance> FindAllDataPersistenceObjects()
     {
-        IEnumerable<IDataPersistance> dataPersistanceObjects = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistance>();
+        var persistenceObjects = new List<IDataPersistance>();
+        foreach (MonoBehaviour behaviour in FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None))
+        {
+            if (behaviour is IDataPersistance persistence)
+                persistenceObjects.Add(persistence);
+        }
 
-        return new List<IDataPersistance>(dataPersistanceObjects);
+        // Keep the previous callback order by sorting only the components that take part.
+        if (persistenceObjects.Count > 1)
+        {
+            persistenceObjects.Sort((first, second) =>
+                ((MonoBehaviour)first).GetInstanceID().CompareTo(((MonoBehaviour)second).GetInstanceID()));
+        }
+
+        return persistenceObjects;
     }
 }

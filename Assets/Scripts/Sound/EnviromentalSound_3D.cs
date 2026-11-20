@@ -41,6 +41,7 @@ public class EnviromentalSound_3D : Singleton<EnviromentalSound_3D>
 
     private readonly Dictionary<SoundObjectType, SoundChannelSettings> channelLookup = new Dictionary<SoundObjectType, SoundChannelSettings>();
     private readonly Dictionary<SoundObjectType, ChannelRuntime> runtimeLookup = new Dictionary<SoundObjectType, ChannelRuntime>();
+    private readonly Dictionary<SoundObjectType, ScanAggregate> scanAggregates = new Dictionary<SoundObjectType, ScanAggregate>();
 
     private Collider[] overlapBuffer;
     private float maxSearchRadius = 0f;
@@ -292,7 +293,7 @@ public class EnviromentalSound_3D : Singleton<EnviromentalSound_3D>
             return;
         }
 
-        Dictionary<SoundObjectType, ScanAggregate> aggregates = new Dictionary<SoundObjectType, ScanAggregate>();
+        scanAggregates.Clear();
 
         int hitCount = Physics.OverlapSphereNonAlloc(
             smoothedListenerPosition,
@@ -325,7 +326,7 @@ public class EnviromentalSound_3D : Singleton<EnviromentalSound_3D>
             float weight = EvaluateDistanceCurve(channel, normalizedDistance);
 
             ScanAggregate aggregate;
-            if (!aggregates.TryGetValue(soundObject.soundObjectType, out aggregate))
+            if (!scanAggregates.TryGetValue(soundObject.soundObjectType, out aggregate))
             {
                 aggregate = new ScanAggregate
                 {
@@ -350,7 +351,7 @@ public class EnviromentalSound_3D : Singleton<EnviromentalSound_3D>
             }
 
             aggregate.found = true;
-            aggregates[soundObject.soundObjectType] = aggregate;
+            scanAggregates[soundObject.soundObjectType] = aggregate;
         }
 
         foreach (var pair in channelLookup)
@@ -359,7 +360,7 @@ public class EnviromentalSound_3D : Singleton<EnviromentalSound_3D>
             SoundChannelSettings channel = pair.Value;
             ChannelRuntime runtime = runtimeLookup[type];
 
-            if (aggregates.TryGetValue(type, out ScanAggregate aggregate) && aggregate.found)
+            if (scanAggregates.TryGetValue(type, out ScanAggregate aggregate) && aggregate.found)
             {
                 float normalizedNearestDistance = Mathf.Clamp01(
                     aggregate.nearestDistance / Mathf.Max(0.001f, channel.searchRadius)

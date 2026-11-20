@@ -140,6 +140,7 @@ public class Movement : Singleton<Movement>
     private float elevatorRefreshAccumulatedDistance = 0f;
 
     RaycastHit hit;
+    private readonly Collider[] movementOverlapHits = new Collider[16];
 
     public bool isJumping;
     public bool isGrapplingHooking;
@@ -175,6 +176,8 @@ public class Movement : Singleton<Movement>
     public bool isRespawningFirstTime;
 
     private readonly HashSet<GameObject> currentlyDarkenedBlocks = new HashSet<GameObject>();
+    private Action<MoveOptions> setMoveVisual;
+    private Action<MoveOptions> resetMoveVisual;
 
     [SerializeField] private float turnBeforeMoveDelay = 0.12f;
     [SerializeField] private float dashThroughMoveableTurnDelay = 0.18f;
@@ -1283,6 +1286,23 @@ public class Movement : Singleton<Movement>
         swiftSwimPreviewOverrideBlocks.Clear();
     }
 
+    private Collider[] GetMovementOverlapHits(Vector3 center, Vector3 halfExtents, out int hitCount)
+    {
+        int layerMask = Map.player_LayerMask;
+        hitCount = Physics.OverlapBoxNonAlloc(
+            center, halfExtents, movementOverlapHits, Quaternion.identity,
+            layerMask, QueryTriggerInteraction.Ignore);
+
+        if (hitCount < movementOverlapHits.Length)
+            return movementOverlapHits;
+
+        // Use all hits when the buffer might have been truncated.
+        Collider[] hits = Physics.OverlapBox(
+            center, halfExtents, Quaternion.identity, layerMask, QueryTriggerInteraction.Ignore);
+        hitCount = hits.Length;
+        return hits;
+    }
+
     private bool HasStandingRoomAboveNormalTarget(GameObject targetBlock)
     {
         if (targetBlock == null)
@@ -1309,16 +1329,10 @@ public class Movement : Singleton<Movement>
         // not neighboring blocks.
         Vector3 halfExtents = new Vector3(0.22f, 0.45f, 0.22f);
 
-        Collider[] hits = Physics.OverlapBox(
-            checkCenter,
-            halfExtents,
-            Quaternion.identity,
-            Map.player_LayerMask,
-            QueryTriggerInteraction.Ignore
-        );
-
-        foreach (Collider hitCollider in hits)
+        Collider[] hits = GetMovementOverlapHits(checkCenter, halfExtents, out int hitCount);
+        for (int i = 0; i < hitCount; i++)
         {
+            Collider hitCollider = hits[i];
             if (hitCollider == null)
                 continue;
 
@@ -2362,16 +2376,15 @@ public class Movement : Singleton<Movement>
                     {
                         Bounds waterBounds = waterCollider.bounds;
 
-                        Collider[] overlappingWaterSpaceHits = Physics.OverlapBox(
+                        Collider[] overlappingWaterSpaceHits = GetMovementOverlapHits(
                             waterBounds.center,
                             waterBounds.extents + new Vector3(0.02f, 0.02f, 0.02f),
-                            Quaternion.identity,
-                            Map.player_LayerMask,
-                            QueryTriggerInteraction.Ignore
+                            out int waterSpaceHitCount
                         );
 
-                        foreach (Collider hitCollider in overlappingWaterSpaceHits)
+                        for (int i = 0; i < waterSpaceHitCount; i++)
                         {
+                            Collider hitCollider = overlappingWaterSpaceHits[i];
                             if (hitCollider == null)
                                 continue;
 
@@ -3357,12 +3370,12 @@ public class Movement : Singleton<Movement>
         if (suppressDarkeningWhileChaining)
             return;
 
-        ForEachDarkenMoveOptions(SetMoveVisual);
+        ForEachDarkenMoveOptions(setMoveVisual ??= SetMoveVisual);
     }
 
     void ResetDarkenBlocks()
     {
-        ForEachAllMoveOptions(ResetMoveVisual);
+        ForEachAllMoveOptions(resetMoveVisual ??= ResetMoveVisual);
     }
     public void ResetDarkenBlocks_External()
     {

@@ -22,6 +22,8 @@ public class Player_Statistics_Manager : MonoBehaviour
     private Movement movement;
     private FreeCam freeCam;
     private PauseMenuManager pauseMenu;
+    private readonly int[] collectiblePointsByLevel = new int[(int)LevelNames.HUB + 1];
+    private readonly Dictionary<string, LevelNames> levelNamesByMapName = new Dictionary<string, LevelNames>();
 
     private int pendingSteps;
     private int pendingStepsReplenished;
@@ -339,7 +341,7 @@ public class Player_Statistics_Manager : MonoBehaviour
         if (!data)
             return;
 
-        var levelCollectibles = new Dictionary<LevelNames, int>();
+        Array.Clear(collectiblePointsByLevel, 0, collectiblePointsByLevel.Length);
         var savedMaps = data.mapInfo_StoreList?.map_SaveInfo_List;
         if (savedMaps != null)
         {
@@ -348,23 +350,52 @@ public class Player_Statistics_Manager : MonoBehaviour
                 if (savedMap == null || !TryGetLevel(savedMap.mapName, out LevelNames level))
                     continue;
 
-                int points = Mathf.Min(10, savedMap.essenceList?.Count(essence => essence != null && essence.isTaken) ?? 0)
-                    + Mathf.Min(3, savedMap.maxStepList?.Count(footprint => footprint != null && footprint.isTaken) ?? 0)
-                    + (savedMap.levelSkin?.isTaken == true ? 1 : 0);
-
-                levelCollectibles.TryGetValue(level, out int previousPoints);
-                levelCollectibles[level] = Mathf.Max(previousPoints, points);
+                int index = (int)level;
+                collectiblePointsByLevel[index] = Mathf.Max(collectiblePointsByLevel[index], GetCollectiblePoints(savedMap));
             }
         }
 
         int progressPoints = Statistics.completedLevels.Count + Mathf.Min(32, Statistics.pickup_SkinsBought);
-        foreach (int points in levelCollectibles.Values)
+        foreach (int points in collectiblePointsByLevel)
             progressPoints += points;
 
-        foreach (string dialogue in GetFinishedDialogues(data.charatersData_Store, includeStepellier: false))
+        foreach (var _ in GetFinishedDialogues(data.charatersData_Store, includeStepellier: false))
             progressPoints++;
 
         Statistics.progress = 100f * Mathf.Min(progressPoints, GameProgressTotal) / GameProgressTotal;
+    }
+
+    private static int GetCollectiblePoints(Map_SaveInfo savedMap)
+    {
+        int essencePoints = 0;
+        if (savedMap.essenceList != null)
+        {
+            foreach (EssenceInfo essence in savedMap.essenceList)
+            {
+                if (essence?.isTaken != true)
+                    continue;
+
+                essencePoints++;
+                if (essencePoints == 10)
+                    break;
+            }
+        }
+
+        int footprintPoints = 0;
+        if (savedMap.maxStepList != null)
+        {
+            foreach (MaxStepInfo footprint in savedMap.maxStepList)
+            {
+                if (footprint?.isTaken != true)
+                    continue;
+
+                footprintPoints++;
+                if (footprintPoints == 3)
+                    break;
+            }
+        }
+
+        return essencePoints + footprintPoints + (savedMap.levelSkin?.isTaken == true ? 1 : 0);
     }
 
     private void ImportExistingProgress()
@@ -423,16 +454,16 @@ public class Player_Statistics_Manager : MonoBehaviour
             }
         }
 
-        foreach (string dialogue in GetFinishedDialogues(data.charatersData_Store, includeStepellier: true))
+        foreach (var (npc, levelNumber) in GetFinishedDialogues(data.charatersData_Store, includeStepellier: true))
         {
-            if (AddUnique(statistics.dialoguesStarted, dialogue))
+            if (AddUnique(statistics.dialoguesStarted, DialogueKey(npc, levelNumber)))
                 AddDialogueInterracted(1);
         }
 
         statistics.initialized = true;
     }
 
-    private static IEnumerable<string> GetFinishedDialogues(CharatersData characters, bool includeStepellier)
+    private static IEnumerable<(NPCs npc, int levelNumber)> GetFinishedDialogues(CharatersData characters, bool includeStepellier)
     {
         if (characters == null)
             yield break;
@@ -453,20 +484,27 @@ public class Player_Statistics_Manager : MonoBehaviour
             if (dialogue == null)
                 continue;
 
-            if (dialogue.level_1_DialogueFinished) yield return DialogueKey(npc, 1);
-            if (dialogue.level_2_DialogueFinished) yield return DialogueKey(npc, 2);
-            if (dialogue.level_3_DialogueFinished) yield return DialogueKey(npc, 3);
-            if (dialogue.level_4_DialogueFinished) yield return DialogueKey(npc, 4);
-            if (dialogue.level_5_DialogueFinished) yield return DialogueKey(npc, 5);
+            if (dialogue.level_1_DialogueFinished) yield return (npc, 1);
+            if (dialogue.level_2_DialogueFinished) yield return (npc, 2);
+            if (dialogue.level_3_DialogueFinished) yield return (npc, 3);
+            if (dialogue.level_4_DialogueFinished) yield return (npc, 4);
+            if (dialogue.level_5_DialogueFinished) yield return (npc, 5);
         }
     }
 
     private static string DialogueKey(NPCs npc, int levelNumber) => npc + "/" + levelNumber;
 
-    private static bool TryGetLevel(string mapName, out LevelNames level)
+    private bool TryGetLevel(string mapName, out LevelNames level)
     {
-        return Enum.TryParse(mapName?.Replace("_Lv_", "_Lv"), out level) &&
-               level >= LevelNames.Rivergreen_Lv1 && level <= LevelNames.HUB;
+        if (mapName != null && levelNamesByMapName.TryGetValue(mapName, out level))
+            return true;
+
+        if (!Enum.TryParse(mapName?.Replace("_Lv_", "_Lv"), out level) ||
+            level < LevelNames.Rivergreen_Lv1 || level > LevelNames.HUB)
+            return false;
+
+        levelNamesByMapName.Add(mapName, level);
+        return true;
     }
 
     private static bool IsRegionFinale(LevelNames level) =>

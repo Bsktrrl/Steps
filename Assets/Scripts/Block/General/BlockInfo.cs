@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class BlockInfo : MonoBehaviour
 {
+    private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
+
     [Header("Stats")]
     public BlockType blockType;
     public BlockElement blockElement;
@@ -204,11 +206,13 @@ public class BlockInfo : MonoBehaviour
     void SetObjectRenderer()
     {
         //Set objectRenderers
-        for (int i = 0; i < transform.childCount; i++)
+        Transform blockTransform = transform;
+        int childCount = blockTransform.childCount;
+        for (int i = 0; i < childCount; i++)
         {
-            if (transform.GetChild(i).GetComponent<MeshRenderer>())
+            if (blockTransform.GetChild(i).TryGetComponent(out MeshRenderer childRenderer))
             {
-                objectRenderers.Add(transform.GetChild(i).GetComponent<MeshRenderer>());
+                objectRenderers.Add(childRenderer);
             }
         }
     }
@@ -285,10 +289,10 @@ public class BlockInfo : MonoBehaviour
 
         ResetTemporaryMovementCostModifiers();
 
+        Color restoredColor = ResetBlockColorTint();
         for (int i = 0; i < propertyBlocks.Count; i++)
         {
-            Color restoredColor = ResetBlockColorTint();
-            propertyBlocks[i].SetColor("_BaseColor", restoredColor);
+            propertyBlocks[i].SetColor(BaseColorId, restoredColor);
             objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
         }
 
@@ -329,13 +333,13 @@ public class BlockInfo : MonoBehaviour
         for (int i = 0; i < propertyBlocks.Count; i++)
         {
             Color finalColor = GetBlockColorTint();
-            propertyBlocks[i].SetColor("_BaseColor", finalColor);
+            propertyBlocks[i].SetColor(BaseColorId, finalColor);
             objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
         }
 
-        if (GetComponent<Block_Snow>())
+        if (TryGetComponent(out Block_Snow snow))
         {
-            GetComponent<Block_Snow>().ChangeStepCounterPosition();
+            snow.ChangeStepCounterPosition();
         }
 
         if (numberDisplay && finishedSetup)

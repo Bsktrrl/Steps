@@ -131,42 +131,41 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
     void LoadDataIntoProject(GameData gameData)
     {
-        SaveLoad_MapInfo tempMapInfo = FindObjectOfType<SaveLoad_MapInfo>();
+        SaveLoad_MapInfo tempMapInfo = FindAnyObjectByType<SaveLoad_MapInfo>();
         if (tempMapInfo)
         {
             SaveLoad_MapInfo.Instance.LoadData();
             print("1. MapInfo has Loaded");
         }
 
-        SaveLoad_PlayerStats tempPlayerStat = FindObjectOfType<SaveLoad_PlayerStats>();
+        SaveLoad_PlayerStats tempPlayerStat = FindAnyObjectByType<SaveLoad_PlayerStats>();
         if (tempPlayerStat)
         {
             SaveLoad_PlayerStats.Instance.LoadData();
             print("2. PlayerStat has Loaded");
         }
 
-        OverWorldManager tempOverworld = FindObjectOfType<OverWorldManager>();
+        OverWorldManager tempOverworld = FindAnyObjectByType<OverWorldManager>();
         if (tempOverworld)
         {
             OverWorldManager.Instance.LoadUIElementState_IfExitsFromALevel();
             print("3. UIElementState has Loaded");
         }
 
-        SettingsManager tempSettingData = FindObjectOfType<SettingsManager>();
         if (tempOverworld)
         {
             SettingsManager.Instance.LoadData();
             print("4. SettingData has Loaded");
         }
 
-        NPCManager tempNPCManager = FindObjectOfType<NPCManager>();
+        NPCManager tempNPCManager = FindAnyObjectByType<NPCManager>();
         if (tempNPCManager)
         {
             NPCManager.Instance.LoadData();
             print("5. NPCManager has Loaded");
         }
 
-        SkinsManager tempSkinsManager = FindObjectOfType<SkinsManager>();
+        SkinsManager tempSkinsManager = FindAnyObjectByType<SkinsManager>();
         if (tempSkinsManager)
         {
             SkinsManager.Instance.LoadData();

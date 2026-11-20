@@ -32,6 +32,7 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
     CinemachineCamera _cmCam;
     CinemachineThirdPersonFollow _tpf;
     float _currentDistance;
+    private readonly RigSettings _blendedRig = new RigSettings();
 
     [SerializeField, Range(0f, 1f)]
     float _modeBlend = 0f;
@@ -375,10 +376,8 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
     }
     RigSettings BuildBlendedRigForFrame(float blend01)
     {
-        // We create a temporary RigSettings with values interpolated
-        // between normalRig (0) and ceilingGrabRig (1).
-
-        RigSettings outRig = new RigSettings();
+        // Reuse the working rig while reading the current settings each frame.
+        RigSettings outRig = _blendedRig;
 
         // Far rig
         outRig.farCameraDistance = Mathf.Lerp(normalRig.farCameraDistance, ceilingGrabRig.farCameraDistance, blend01);

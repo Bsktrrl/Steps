@@ -9,14 +9,15 @@ public class SaveLoad_MapInfo : Singleton<SaveLoad_MapInfo>
     public void LoadData()
     {
         //Don't save MapInfo if not in a level
-        if (FindObjectOfType<MainMenuManager>()) return;
+        if (FindAnyObjectByType<MainMenuManager>()) return;
 
         var list = DataManager.Instance.mapInfo_StoreList?.map_SaveInfo_List;
         if (list != null)
         {
+            string sceneName = SceneManager.GetActiveScene().name;
             foreach (var mapInfo in list)
             {
-                if (mapInfo.mapName == SceneManager.GetActiveScene().name)
+                if (mapInfo.mapName == sceneName)
                 {
                     MapManager.Instance.mapInfo_ToSave = mapInfo;
                     MapManager.Instance.mapInfo_ToSave.CorrectingMapObjects();
@@ -30,22 +31,21 @@ public class SaveLoad_MapInfo : Singleton<SaveLoad_MapInfo>
     public void SaveGame()
     {
         //Don't save MapInfo if not in a level
-        MainMenuManager mainMenuManager = FindObjectOfType<MainMenuManager>();
+        MainMenuManager mainMenuManager = FindAnyObjectByType<MainMenuManager>();
         if (mainMenuManager) { return; }
 
-        if (DataManager.Instance.mapInfo_StoreList != null)
+        var savedMaps = DataManager.Instance.mapInfo_StoreList?.map_SaveInfo_List;
+        if (savedMaps != null && savedMaps.Count > 0)
         {
-            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List != null)
+            Map_SaveInfo currentMap = MapManager.Instance.mapInfo_ToSave;
+            for (int i = 0; i < savedMaps.Count; i++)
             {
-                for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count; i++)
+                if (savedMaps[i].mapName == currentMap.mapName)
                 {
-                    if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName == MapManager.Instance.mapInfo_ToSave.mapName)
-                    {
-                        DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i] = MapManager.Instance.mapInfo_ToSave;
-                        DataPersistanceManager.instance.SaveGame();
+                    savedMaps[i] = currentMap;
+                    DataPersistanceManager.instance.SaveGame();
 
-                        return;
-                    }
+                    return;
                 }
             }
         }
@@ -72,17 +72,13 @@ public class SaveLoad_MapInfo : Singleton<SaveLoad_MapInfo>
 
     public Map_SaveInfo GetMapInfo(string mapName)
     {
-        if (DataManager.Instance.mapInfo_StoreList != null)
+        var savedMaps = DataManager.Instance.mapInfo_StoreList?.map_SaveInfo_List;
+        if (savedMaps != null)
         {
-            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List != null)
+            foreach (Map_SaveInfo savedMap in savedMaps)
             {
-                for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count; i++)
-                {
-                    if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName == mapName)
-                    {
-                        return DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i];
-                    }
-                }
+                if (savedMap.mapName == mapName)
+                    return savedMap;
             }
         }
 
