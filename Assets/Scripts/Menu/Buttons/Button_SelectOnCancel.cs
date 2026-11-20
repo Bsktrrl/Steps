@@ -12,6 +12,7 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
 
     [Header("Select On Cancel")]
     [SerializeField] Button selectOnCancel;
+    [SerializeField] Button_ToPress transitionOnCancel;
 
     [Header("Menus SetActive")]
     [SerializeField] GameObject menuToOpen;
@@ -74,6 +75,13 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
             return;
         }
 
+        if (transitionOnCancel)
+        {
+            Action_BackButton_IsPressed?.Invoke();
+            transitionOnCancel.StartMenuTransition();
+            return;
+        }
+
         if (selectOnCancel == null)
         {
             Debug.Log("No place to jump? ", this);
@@ -129,7 +137,13 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
         MenuManager.Instance.currentMenuCategorySelected = currentMenuCategoryToSelect;
 
         //Make sure that mainMenu isn't tried accessed during gameplay
-        if (menuState_ToSelect != MenuState.Pause_Menu_Main && menuState_ToSelect != MenuState.Pause_Menu_Options)
+        if (menuState_ToSelect is MenuState.Pause_Menu_Main or MenuState.Pause_Menu_Options or
+            MenuState.Pause_Menu_Skins or MenuState.Pause_Menu_Info)
+        {
+            if (pauseMenuManager)
+                pauseMenuManager.menuState = menuState_ToSelect;
+        }
+        else
         {
             MainMenuManager.Instance.menuState = menuState_ToSelect;
             OverWorldManager.Instance.regionState = regionState_ToSelect;

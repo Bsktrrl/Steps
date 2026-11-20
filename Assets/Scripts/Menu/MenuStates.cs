@@ -34,6 +34,9 @@ public class MenuStates : Singleton<MenuStates>
             case MenuState.Options_Menu:
                 MainMenuManager.Instance.menuState = MenuState.Options_Menu;
                 break;
+            case MenuState.Info_Menu:
+                MainMenuManager.Instance.menuState = MenuState.Info_Menu;
+                break;
 
             case MenuState.Overworld_Menu:
                 MainMenuManager.Instance.menuState = MenuState.Overworld_Menu;
@@ -132,4 +135,7 @@ public enum MenuState
     RegionMenu_Swamp,
     RegionMenu_Metal,
     RegionMenu_HUB,
+
+    Info_Menu,
+    Pause_Menu_Info,
 }

@@ -11,6 +11,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
     public GameObject overworldMenu_Parent;
     public GameObject optionsMenu_Parent;
     public GameObject skinsMenu_Parent;
+    public GameObject infoMenu_Parent;
 
     public GameObject newGameWarningMessage_Parent;
 
@@ -183,6 +184,9 @@ public class MainMenuManager : Singleton<MainMenuManager>
             case MenuState.Options_Menu:
                 Menu_Options();
                 break;
+            case MenuState.Info_Menu:
+                Menu_Info();
+                break;
             case MenuState.Biome_Menu:
                 Menu_Biome();
                 break;
@@ -328,6 +332,19 @@ public class MainMenuManager : Singleton<MainMenuManager>
         optionsMenu_Parent.SetActive(true);
     }
 
+    void Menu_Info()
+    {
+        if (!infoMenu_Parent)
+        {
+            Menu_Main();
+            return;
+        }
+
+        HideAllMenus();
+        infoMenu_Parent.SetActive(true);
+        MenuManager.Instance.OpenInfoMenu();
+    }
+
     void Menu_Biome()
     {
         overworldMenu_Parent.SetActive(true);
@@ -409,6 +426,13 @@ public class MainMenuManager : Singleton<MainMenuManager>
             skinsMenu_Parent.SetActive(false);
         if (optionsMenu_Parent)
             optionsMenu_Parent.SetActive(false);
+        if (infoMenu_Parent && infoMenu_Parent.activeSelf)
+        {
+            infoMenu_Parent.SetActive(false);
+            var menuManager = FindAnyObjectByType<MenuManager>();
+            if (menuManager)
+                menuManager.CloseInfoMenu();
+        }
         if (newGameWarningMessage_Parent)
             newGameWarningMessage_Parent.SetActive(false);
 

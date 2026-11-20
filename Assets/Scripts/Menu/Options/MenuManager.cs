@@ -27,12 +27,18 @@ public class MenuManager : Singleton<MenuManager>
     [Header("Skin Buttons")]
     public GameObject wardrobe_StartButton;
 
+    [Header("Info Menu")]
+    [SerializeField] InfoManager infoManager;
+
 
     //--------------------
 
 
     public void ChangeMenuCategory(MenuCategories category)
     {
+        if (IsInfoCategory(category) && currentMenuCategorySelected == category)
+            return;
+
         HideAllMenus();
 
         switch (category)
@@ -59,6 +65,16 @@ public class MenuManager : Singleton<MenuManager>
                 wardrobeMenuParent.SetActive(true);
                 break;
 
+            case MenuCategories.Info_Controls:
+            case MenuCategories.Info_Stats:
+            case MenuCategories.Info_Tablet:
+                if (infoManager)
+                {
+                    currentMenuCategorySelected = category;
+                    infoManager.ShowPanel(category);
+                }
+                break;
+
             default:
                 break;
         }
@@ -72,8 +88,30 @@ public class MenuManager : Singleton<MenuManager>
 
         wardrobeMenuParent.SetActive(false);
 
+        CloseInfoMenu();
+
         //MainMenuManager.Instance.newGameWarningMessage_Parent.SetActive(false);
     }
+
+    internal void OpenInfoMenu()
+    {
+        if (!infoManager) return;
+
+        ChangeMenuCategory(MenuCategories.Info_Controls);
+        infoManager.SelectFirstTab();
+    }
+
+    internal void CloseInfoMenu()
+    {
+        if (!IsInfoCategory(currentMenuCategorySelected)) return;
+
+        currentMenuCategorySelected = MenuCategories.None;
+        if (infoManager)
+            infoManager.ShowPanel(MenuCategories.None);
+    }
+
+    static bool IsInfoCategory(MenuCategories category) =>
+        category is MenuCategories.Info_Controls or MenuCategories.Info_Stats or MenuCategories.Info_Tablet;
 }
 
 public enum MenuCategories
@@ -87,7 +125,12 @@ public enum MenuCategories
     Audio,
 
     //Skins
-    Wardrobe
+    Wardrobe,
+
+    //Info
+    Info_Controls,
+    Info_Stats,
+    Info_Tablet
 }
 
 public enum CategoryState

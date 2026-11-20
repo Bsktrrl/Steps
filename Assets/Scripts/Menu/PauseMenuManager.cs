@@ -19,8 +19,12 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     public GameObject pauseMenu_MainMenu_Parent;
     public GameObject pauseMenu_Skins_Parent;
     public GameObject pauseMenu_Options_Parent;
+    public GameObject pauseMenu_Info_Parent;
 
     public GameObject pauseMenu_StartButton;
+
+    [Header("Menu State")]
+    public MenuState menuState;
 
     [Header("LevelDisplay")]
     public GameObject levelDisplay_Parent;
@@ -143,8 +147,8 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
         SetLevelInfo();
 
+        ShowPausePage(MenuState.Pause_Menu_Main);
         pauseMenu_Parent.SetActive(true);
-        pauseMenu_MainMenu_Parent.SetActive(true);
 
         isActive = true;
 
@@ -161,10 +165,30 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         //print("8. pauseMenuManager = true");
 
         pauseMenu_Parent.SetActive(false);
+        ShowPausePage(MenuState.None);
         isVisible = false;
         isActive = false;
         PlayerManager.Instance.pauseGame = Player_KeyInputs.Instance.freeCam_isPressed;
     }
+
+    internal void ShowPausePage(MenuState state)
+    {
+        if (menuState == MenuState.Pause_Menu_Info && state != MenuState.Pause_Menu_Info)
+            MenuManager.Instance.CloseInfoMenu();
+
+        menuState = state;
+        pauseMenu_MainMenu_Parent.SetActive(state == MenuState.Pause_Menu_Main);
+        pauseMenu_Skins_Parent.SetActive(state == MenuState.Pause_Menu_Skins);
+        pauseMenu_Options_Parent.SetActive(state == MenuState.Pause_Menu_Options);
+
+        if (pauseMenu_Info_Parent)
+        {
+            pauseMenu_Info_Parent.SetActive(state == MenuState.Pause_Menu_Info);
+            if (state == MenuState.Pause_Menu_Info)
+                MenuManager.Instance.OpenInfoMenu();
+        }
+    }
+
     IEnumerator CheckPauseMenu()
     {
         ////Set the first selected button for controller input

@@ -63,7 +63,11 @@ public class Button_ToPress : MonoBehaviour
     void JumpToElement()
     {
         Action_ButtonIsPressed?.Invoke();
+        StartMenuTransition();
+    }
 
+    internal void StartMenuTransition()
+    {
         //PauseMenu
         if (ActionButtonsManager.Instance.eventSystem == null)
         {
@@ -126,22 +130,22 @@ public class Button_ToPress : MonoBehaviour
                 break;
 
             case MenuState.Pause_Menu_Main:
-                HideAllPauseMenus();
-                PauseMenuManager.Instance.pauseMenu_MainMenu_Parent.SetActive(true);
+                PauseMenuManager.Instance.ShowPausePage(newMenuState);
                 break;
             case MenuState.Pause_Menu_Skins:
-                HideAllPauseMenus();
-                PauseMenuManager.Instance.pauseMenu_Skins_Parent.SetActive(true);
+                PauseMenuManager.Instance.ShowPausePage(newMenuState);
                 EventSystem.current.SetSelectedGameObject(MenuManager.Instance.wardrobe_StartButton);
                 MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Wardrobe;
                 MenuManager.Instance.ChangeMenuCategory(MenuCategories.Wardrobe);
                 break;
             case MenuState.Pause_Menu_Options:
-                HideAllPauseMenus();
-                PauseMenuManager.Instance.pauseMenu_Options_Parent.SetActive(true);
+                PauseMenuManager.Instance.ShowPausePage(newMenuState);
                 EventSystem.current.SetSelectedGameObject(MenuManager.Instance.settingsMenuButton);
                 MenuManager.Instance.currentMenuCategorySelected = MenuCategories.Settings;
                 MenuManager.Instance.ChangeMenuCategory(MenuCategories.Settings);
+                break;
+            case MenuState.Pause_Menu_Info:
+                PauseMenuManager.Instance.ShowPausePage(newMenuState);
                 break;
 
             case MenuState.NewGameWarningMessage:
@@ -185,16 +189,10 @@ public class Button_ToPress : MonoBehaviour
                 break;
         }
 
-        if (uiElementToSelect.gameObject)
+        if (uiElementToSelect)
         {
             ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(uiElementToSelect.gameObject);
         }
     }
 
-    void HideAllPauseMenus()
-    {
-        PauseMenuManager.Instance.pauseMenu_MainMenu_Parent.SetActive(false);
-        PauseMenuManager.Instance.pauseMenu_Skins_Parent.SetActive(false);
-        PauseMenuManager.Instance.pauseMenu_Options_Parent.SetActive(false);
-    }
 }
