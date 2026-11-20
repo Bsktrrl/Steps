@@ -58,6 +58,7 @@ public class HintManager : MonoBehaviour
 
         SetOpacity(0f);
         activeEffect.SetActive(true);
+        Player_Statistics_Manager.Active?.RecordHint();
         hintRoutine = StartCoroutine(PlayHint());
     }
 

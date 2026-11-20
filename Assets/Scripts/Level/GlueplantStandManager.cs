@@ -90,6 +90,7 @@ public class GlueplantStandManager : Singleton<GlueplantStandManager>
 
     void StartExitingGame()
     {
+        Player_Statistics_Manager.Active?.RecordLevelCompletion();
         PlayerManager.Instance.PauseGame();
 
         StartCoroutine(GlueplantExitLevel(1.5f));

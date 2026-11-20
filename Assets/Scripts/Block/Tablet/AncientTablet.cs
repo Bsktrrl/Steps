@@ -86,6 +86,7 @@ public class AncientTablet : MonoBehaviour
             TabletManager.Instance.tabletUI_Text.text = TabletManager.Instance.tabletData.tabletDataSegment[0].languageDialogueList[(int)DataManager.Instance.settingData_StoreList.currentLanguage];
 
         TabletManager.Instance.ShowTabletUI(TabletManager.Instance.tabletUI_Parent);
+        Player_Statistics_Manager.Active?.RecordTabletRead(textEntryNumber, transform.position);
 
         yield return new WaitForSeconds(TabletManager.Instance.fadeDuration);
         tabletIsShowing = true;

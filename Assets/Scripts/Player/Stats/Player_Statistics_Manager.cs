@@ -1,162 +1,579 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 public class Player_Statistics_Manager : MonoBehaviour
 {
-    //This script should run once each time the player enters the Statistics menu so the data is fully updated
-    //Run this once when ending the game, so all data gets updated correctly
-    //Also use the functions in this script to update different part of the project, where they should update, so the saveData is always up to date
-    //Run this update when a level exites also, so the data isn't lost
+    private const int GameProgressTotal = 31 * 15 + 32 + 30; //31 levels with 15 progress tings in it, 32 skins to buy, 30 NPC interractions
 
-    public void SaveStatistics()
+    public static Player_Statistics_Manager Active { get; private set; }
+    public PlayerStatistics Statistics => data ? data.playerStatistics_Store : null;
+
+    private static bool sessionCounted;
+    private static double sessionStartedAt;
+    private static double lastPlayTimeUpdate;
+
+    private DataManager data;
+    private MapManager map;
+    private PlayerManager player;
+    private Movement movement;
+    private FreeCam freeCam;
+    private PauseMenuManager pauseMenu;
+
+    private int pendingSteps;
+    private int pendingStepsReplenished;
+    private int pendingRespawns;
+    private float pendingStandingTime;
+
+    // A save drains the pending counters. These totals belong to the whole attempt.
+    private int attemptSteps;
+    private float attemptTime;
+    private float attemptFreeCamTime;
+    private bool attemptCompleted;
+    private bool attemptClosed;
+
+    private bool IsTrackingLevel => data && map && !attemptClosed;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetSessionTracking()
     {
-        //Save the updated statistics to the DataManager
+        Active = null;
+        sessionCounted = false;
+        sessionStartedAt = Time.realtimeSinceStartupAsDouble;
+        lastPlayTimeUpdate = sessionStartedAt;
     }
 
+    private void OnEnable()
+    {
+        Active = this;
+        Movement.Action_StepTaken += RecordStep;
+        Movement.Action_isJumping += RecordJump;
+        Movement.Action_isDashing += RecordHandDrill;
+        Movement.Action_isAscending += RecordDrillHelmet;
+        Movement.Action_isDescending += RecordDrillBoots;
+        Movement.Action_isSwiftSwim += RecordAbility;
+        Player_CeilingGrab.Action_isCeilingGrabbing += RecordAbility;
+        Interactable_Pickup.Action_EssencePickupGot += RecordEssence;
+        SkinWardrobeButton.Action_BuySkin += RecordSkinBought;
+    }
 
-    //--------------------
+    private void OnDisable()
+    {
+        if (Active == this)
+            Active = null;
 
+        Movement.Action_StepTaken -= RecordStep;
+        Movement.Action_isJumping -= RecordJump;
+        Movement.Action_isDashing -= RecordHandDrill;
+        Movement.Action_isAscending -= RecordDrillHelmet;
+        Movement.Action_isDescending -= RecordDrillBoots;
+        Movement.Action_isSwiftSwim -= RecordAbility;
+        Player_CeilingGrab.Action_isCeilingGrabbing -= RecordAbility;
+        Interactable_Pickup.Action_EssencePickupGot -= RecordEssence;
+        SkinWardrobeButton.Action_BuySkin -= RecordSkinBought;
+    }
+
+    internal void BeginTracking(DataManager loadedData)
+    {
+        data = loadedData;
+        ImportExistingProgress();
+
+        if (!sessionCounted)
+        {
+            AddSessions();
+            sessionCounted = true;
+        }
+
+        // Reloading save data in the same scene does not start a second attempt.
+        if (map)
+            return;
+
+        map = FindAnyObjectByType<MapManager>();
+        if (!map || map.gameObject.scene != gameObject.scene)
+        {
+            map = null;
+            return;
+        }
+
+        GameObject spawnedPlayer = MapManager.SpawnedPlayer;
+        if (spawnedPlayer)
+        {
+            player = spawnedPlayer.GetComponent<PlayerManager>();
+            movement = spawnedPlayer.GetComponentInChildren<Movement>();
+            freeCam = spawnedPlayer.GetComponentInChildren<FreeCam>();
+        }
+
+        pauseMenu = FindAnyObjectByType<PauseMenuManager>();
+
+        string levelKey = map.levelName == LevelNames.None ? map.gameObject.scene.name : map.levelName.ToString();
+        if (!AddUnique(Statistics.visitedLevels, levelKey))
+            AddLevelsReplayed(1);
+    }
+
+    internal void ResetForNewGame()
+    {
+        if (data)
+            Statistics.initialized = true;
+
+        sessionStartedAt = Time.realtimeSinceStartupAsDouble;
+        lastPlayTimeUpdate = sessionStartedAt;
+        pendingSteps = 0;
+        pendingStepsReplenished = 0;
+        pendingRespawns = 0;
+        pendingStandingTime = 0f;
+        attemptSteps = 0;
+        attemptTime = 0f;
+        attemptFreeCamTime = 0f;
+        attemptCompleted = false;
+        attemptClosed = false;
+    }
+
+    private void LateUpdate()
+    {
+        if (!IsTrackingLevel || attemptCompleted || !player || !movement ||
+            !data.dataHasLoaded_Check || map.IntroInputLocked || !movement.isRespawningFirstTime ||
+            (pauseMenu && pauseMenu.isActive))
+            return;
+
+        float elapsed = Time.deltaTime;
+        attemptTime += elapsed;
+
+        if (freeCam && freeCam._isActive)
+            attemptFreeCamTime += elapsed;
+        else if (!player.pauseGame && !player.pauseMovement && !player.npcInteraction &&
+                 !movement.isRespawning && !movement.isMoving && !movement.IsClimbingLadder &&
+                 movement.GetMovementState() == MovementStates.Still)
+            pendingStandingTime += elapsed;
+    }
+
+    // Call this when the Statistics menu opens, before populating its labels.
+    public void SaveStatistics()
+    {
+        if (!data)
+            return;
+
+        if (DataPersistanceManager.instance)
+            DataPersistanceManager.instance.SaveGame();
+        else
+            FlushStatistics();
+    }
+
+    internal void FlushStatistics()
+    {
+        if (!data)
+            return;
+
+        double now = Time.realtimeSinceStartupAsDouble;
+        AddPlayTime((float)(now - lastPlayTimeUpdate));
+        lastPlayTimeUpdate = now;
+        AddLongestSession();
+
+        AddStepsTaken(pendingSteps);
+        AddStepsReplenished(pendingStepsReplenished);
+        AddRespawns(pendingRespawns);
+        AddTimeStandingStill(pendingStandingTime);
+
+        pendingSteps = 0;
+        pendingStepsReplenished = 0;
+        pendingRespawns = 0;
+        pendingStandingTime = 0f;
+        CheckProgress();
+    }
+
+    internal void FinishLevelAttempt()
+    {
+        if (!IsTrackingLevel)
+            return;
+
+        AddAverageStepsPerLevel(attemptSteps);
+        attemptClosed = true;
+    }
+
+    internal void SaveLevelExit()
+    {
+        FinishLevelAttempt();
+        SaveStatistics();
+    }
+
+    internal void RecordLevelCompletion()
+    {
+        if (!IsTrackingLevel || attemptCompleted)
+            return;
+
+        attemptCompleted = true;
+        LevelNames level = map.levelName;
+        if (level != LevelNames.None && AddUnique(Statistics.completedLevels, level))
+        {
+            AddLevelsComplete(1);
+            if (IsRegionFinale(level))
+                AddRegionsComplete(1);
+        }
+
+        string levelName = map.mapInfo_ToSave?.mapNameDisplay?.mapNameDisplay_english;
+        if (string.IsNullOrWhiteSpace(levelName))
+            levelName = map.gameObject.scene.name;
+
+        AddFastestLevelCOmpletion(levelName, attemptTime);
+        AddSlowestLevelCOmpletion(levelName, attemptTime);
+        AddAverageLevelCompletionTime(attemptTime);
+        AddTimeInFreeCam(attemptFreeCamTime);
+    }
+
+    private void RecordStep()
+    {
+        if (!IsTrackingLevel || !movement || !movement.isRespawningFirstTime)
+            return;
+
+        pendingSteps++;
+        attemptSteps++;
+    }
+
+    internal void RecordStepRefill(int restored)
+    {
+        if (IsTrackingLevel && movement && movement.isRespawningFirstTime && restored > 0)
+            pendingStepsReplenished += restored;
+    }
+
+    internal void RecordRespawn(bool stepsExhausted)
+    {
+        if (!IsTrackingLevel)
+            return;
+
+        pendingRespawns++;
+        if (stepsExhausted)
+            AddStepsEmptied(1);
+    }
+
+    internal void RecordTravel(int spaces, bool inWater, bool ceilingClimbing)
+    {
+        if (!IsTrackingLevel || spaces <= 0)
+            return;
+
+        if (inWater)
+            AddAbilitiesPerformed_SwimDistance(spaces);
+        if (ceilingClimbing)
+            AddAbilitiesPerformed_CeilingClimb(spaces);
+    }
+
+    internal void RecordHint()
+    {
+        if (IsTrackingLevel)
+            AddHintsUsed(1);
+    }
+
+    private void RecordAbility()
+    {
+        if (IsTrackingLevel)
+            AddAbilitiesPerformed(1);
+    }
+
+    private void RecordJump()
+    {
+        if (IsTrackingLevel)
+            AddAbilitiesPerformed_Jump(1);
+    }
+
+    internal void RecordGrapplingHook()
+    {
+        if (IsTrackingLevel)
+            AddAbilitiesPerformed_GrapplingHook(1);
+    }
+
+    private void RecordHandDrill()
+    {
+        if (IsTrackingLevel)
+            AddAbilitiesPerformed_HandDrill(1);
+    }
+
+    private void RecordDrillHelmet()
+    {
+        if (IsTrackingLevel)
+            AddAbilitiesPerformed_DrillHelmet(1);
+    }
+
+    private void RecordDrillBoots()
+    {
+        if (IsTrackingLevel)
+            AddAbilitiesPerformed_DrillBoots(1);
+    }
+
+    private void RecordEssence()
+    {
+        if (IsTrackingLevel)
+            AddPickupEssence(1);
+    }
+
+    internal void RecordSkinFound()
+    {
+        if (IsTrackingLevel)
+            AddPickupSkin(1);
+    }
+
+    private void RecordSkinBought()
+    {
+        if (data)
+            AddSkinBought(1);
+    }
+
+    internal void RecordTabletRead(int textEntry, Vector3 position)
+    {
+        if (!IsTrackingLevel)
+            return;
+
+        string key = map.gameObject.scene.name + "/" + textEntry + "/" + position.ToString("F3", CultureInfo.InvariantCulture);
+        if (AddUnique(Statistics.tabletsRead, key))
+            AddTabletRed(1);
+    }
+
+    internal void RecordDialogueStarted(NPCs npc, int levelNumber)
+    {
+        if (IsTrackingLevel && npc != NPCs.None && AddUnique(Statistics.dialoguesStarted, DialogueKey(npc, levelNumber)))
+            AddDialogueInterracted(1);
+    }
 
     public void CheckProgress()
     {
-        //One level have 15 tings to add to the progress 1 finish, 3 footprints, 1 skin and 10 essenceCubes
-        //The game have 31 levels
+        if (!data)
+            return;
 
-        //Also count 1 for each skin bought in the game (32 skins)
+        var levelCollectibles = new Dictionary<LevelNames, int>();
+        var savedMaps = data.mapInfo_StoreList?.map_SaveInfo_List;
+        if (savedMaps != null)
+        {
+            foreach (Map_SaveInfo savedMap in savedMaps)
+            {
+                if (savedMap == null || !TryGetLevel(savedMap.mapName, out LevelNames level))
+                    continue;
 
-        //Also count for all NPC dialogues (1 dialogue per level in 25 levels, then Larry in 5 Metalworks levels
+                int points = Mathf.Min(10, savedMap.essenceList?.Count(essence => essence != null && essence.isTaken) ?? 0)
+                    + Mathf.Min(3, savedMap.maxStepList?.Count(footprint => footprint != null && footprint.isTaken) ?? 0)
+                    + (savedMap.levelSkin?.isTaken == true ? 1 : 0);
 
-        //Add all this together, and make a percentage float to send to save
+                levelCollectibles.TryGetValue(level, out int previousPoints);
+                levelCollectibles[level] = Mathf.Max(previousPoints, points);
+            }
+        }
+
+        int progressPoints = Statistics.completedLevels.Count + Mathf.Min(32, Statistics.pickup_SkinsBought);
+        foreach (int points in levelCollectibles.Values)
+            progressPoints += points;
+
+        foreach (string dialogue in GetFinishedDialogues(data.charatersData_Store, includeStepellier: false))
+            progressPoints++;
+
+        Statistics.progress = 100f * Mathf.Min(progressPoints, GameProgressTotal) / GameProgressTotal;
     }
 
-    public void AddPlayTime(float time)
+    private void ImportExistingProgress()
     {
-        //Check the play time since last checkup here or since startup of the game and add it to the saveData. Reset counter to 0 again so it starts counting from 0, so when adding onto the data, it is added correctly
+        PlayerStatistics statistics = Statistics;
+        statistics.visitedLevels ??= new List<string>();
+        statistics.completedLevels ??= new List<LevelNames>();
+        statistics.tabletsRead ??= new List<string>();
+        statistics.dialoguesStarted ??= new List<string>();
+
+        if (statistics.initialized)
+            return;
+
+        // Recover counts that older saves already record elsewhere.
+        var savedMaps = data.mapInfo_StoreList?.map_SaveInfo_List;
+        if (savedMaps != null)
+        {
+            foreach (Map_SaveInfo savedMap in savedMaps)
+            {
+                if (savedMap == null || string.IsNullOrEmpty(savedMap.mapName))
+                    continue;
+
+                if (!TryGetLevel(savedMap.mapName, out LevelNames level))
+                {
+                    AddUnique(statistics.visitedLevels, savedMap.mapName);
+                    continue;
+                }
+
+                if (!AddUnique(statistics.visitedLevels, level.ToString()))
+                    continue;
+
+                if (savedMap.isCompleted && AddUnique(statistics.completedLevels, level))
+                {
+                    AddLevelsComplete(1);
+                    if (IsRegionFinale(level))
+                        AddRegionsComplete(1);
+                }
+
+                AddPickupEssence(savedMap.essenceList?.Count(essence => essence != null && essence.isTaken) ?? 0);
+                if (savedMap.levelSkin?.isTaken == true)
+                    AddPickupSkin(1);
+            }
+        }
+
+        SkinsWardrobeInfo wardrobe = data.skinsInfo_Store?.skinWardrobeInfo;
+        if (wardrobe != null)
+        {
+            foreach (FieldInfo field in typeof(SkinsWardrobeInfo).GetFields())
+            {
+                if (field.FieldType != typeof(WardrobeSkinState) || field.Name == nameof(SkinsWardrobeInfo.skin_Default))
+                    continue;
+
+                var state = (WardrobeSkinState)field.GetValue(wardrobe);
+                if (state == WardrobeSkinState.Bought || state == WardrobeSkinState.Selected)
+                    AddSkinBought(1);
+            }
+        }
+
+        foreach (string dialogue in GetFinishedDialogues(data.charatersData_Store, includeStepellier: true))
+        {
+            if (AddUnique(statistics.dialoguesStarted, dialogue))
+                AddDialogueInterracted(1);
+        }
+
+        statistics.initialized = true;
     }
 
-    public void AddSessions()
+    private static IEnumerable<string> GetFinishedDialogues(CharatersData characters, bool includeStepellier)
     {
-        //Run when the game starts to add 1 to the session counter
+        if (characters == null)
+            yield break;
+
+        (NPCs npc, NPCData dialogue)[] characterData =
+        {
+            (NPCs.Floriel, characters.floriel_Data),
+            (NPCs.Granith, characters.granith_Data),
+            (NPCs.Archie, characters.archie_Data),
+            (NPCs.Aisa, characters.aisa_Data),
+            (NPCs.Mossy, characters.mossy_Data),
+            (NPCs.Larry, characters.larry_Data),
+            (NPCs.Stepellier, includeStepellier ? characters.stepellier_Data : null),
+        };
+
+        foreach (var (npc, dialogue) in characterData)
+        {
+            if (dialogue == null)
+                continue;
+
+            if (dialogue.level_1_DialogueFinished) yield return DialogueKey(npc, 1);
+            if (dialogue.level_2_DialogueFinished) yield return DialogueKey(npc, 2);
+            if (dialogue.level_3_DialogueFinished) yield return DialogueKey(npc, 3);
+            if (dialogue.level_4_DialogueFinished) yield return DialogueKey(npc, 4);
+            if (dialogue.level_5_DialogueFinished) yield return DialogueKey(npc, 5);
+        }
     }
+
+    private static string DialogueKey(NPCs npc, int levelNumber) => npc + "/" + levelNumber;
+
+    private static bool TryGetLevel(string mapName, out LevelNames level)
+    {
+        return Enum.TryParse(mapName?.Replace("_Lv_", "_Lv"), out level) &&
+               level >= LevelNames.Rivergreen_Lv1 && level <= LevelNames.HUB;
+    }
+
+    private static bool IsRegionFinale(LevelNames level) =>
+        level == LevelNames.Rivergreen_Lv5 || level == LevelNames.Sandlands_Lv5 ||
+        level == LevelNames.Frostfield_Lv5 || level == LevelNames.Firevein_Lv5 ||
+        level == LevelNames.Witchmire_Lv5 || level == LevelNames.Metalworks_Lv5;
+
+    private static bool AddUnique<T>(List<T> entries, T value)
+    {
+        if (entries.Contains(value))
+            return false;
+
+        entries.Add(value);
+        return true;
+    }
+
+    public void AddPlayTime(float time) => Statistics.playTime += time;
+    public void AddSessions() => Statistics.sessions++;
     public void AddLongestSession()
     {
-        //Run when the game ends to compare if this session has been the longest.
-        //If the menu opens and this is currently the longest session, update the data to the time of this session at the time of opening the menu
+        float elapsed = (float)(Time.realtimeSinceStartupAsDouble - sessionStartedAt);
+        Statistics.longestSession = Mathf.Max(Statistics.longestSession, elapsed);
     }
-    public void AddStepsTaken(int steps)
-    {
-        //Add the Steps Counter from this session from all leveles. Reset the counter to 0 again, so the next import is correct.
-    }
-    public void AddStepsReplenished(int steps)
-    {
-        //Add the Steps Replenished from this session from all leveles. Each time steps are refilled, this counts how many are filled (excluded the ones that is already filled)
-    }
-    public void AddStepsEmptied(int steps)
-    {
-        //Add the Steps Emptied from this session from all leveles. The counter moves up each time the player must respawn due to having 0 steps, not by reaching 0 steps when walking onto a checkpoint, since it is not respawning
-    }
-    public void AddRegionsComplete(int regions)
-    {
-        //Add when the last level of a region (Lv.5) is completed
-    }
-    public void AddLevelsComplete(int levels)
-    {
-        //Add when a level that has not yet been completed, is completed
-    }
-    public void AddLevelsReplayed(int levels)
-    {
-        //Add when a level that has been entered before is entered again. Don't count for the first time entering a level, but all other thimes from the second and onward
-    }
+
+    public void AddStepsTaken(int steps) => Statistics.stepsTaken += steps;
+    public void AddStepsReplenished(int steps) => Statistics.stepsReplenished += steps;
+    public void AddStepsEmptied(int steps) => Statistics.stepsEmptied += steps;
+    public void AddRegionsComplete(int regions) => Statistics.regionsCompleted += regions;
+    public void AddLevelsComplete(int levels) => Statistics.levelsCompleted += levels;
+    public void AddLevelsReplayed(int levels) => Statistics.levelsReplayed += levels;
 
     public void AddFastestLevelCOmpletion(string name, float time)
     {
-        //Add when a level is completed as the fastest time compared to the stored value. Include the name of the level and the time (number) then completed. A level can be completed several times.
+        if (Statistics.levelCompletionSamples == 0 || time < Statistics.fastestLevelCompletion_Time)
+        {
+            Statistics.fastestLevelCompletion_Name = name;
+            Statistics.fastestLevelCompletion_Time = time;
+        }
     }
+
     public void AddSlowestLevelCOmpletion(string name, float time)
     {
-        //Add when a level is completed as the slowest time compared to the stored value. Include the name of the level and the time (number) then completed. A level can be completed several times.
+        if (Statistics.levelCompletionSamples == 0 || time > Statistics.slowestLevelCompletion_Time)
+        {
+            Statistics.slowestLevelCompletion_Name = name;
+            Statistics.slowestLevelCompletion_Time = time;
+        }
     }
+
     public void AddAverageLevelCompletionTime(float time)
     {
-        //Add the time used when completing a level to a total level time counter List and find the average based on the amount of entries in the list
+        Statistics.levelCompletionTimeTotal += time;
+        Statistics.levelCompletionSamples++;
+        Statistics.averageLevelCompletionTime = (float)(Statistics.levelCompletionTimeTotal / Statistics.levelCompletionSamples);
     }
-    public void AddRespawns(int respawn)
-    {
-        //Add the respawn counter at this time. Reset the counter to 0 after adding, to add correctly next time
-    }
-    public void AddTimeStandingStill(float time)
-    {
-        //Each time the player is standing still, count the time. Add the time to a total. Then reset this counter, to add correctly next time
-    }
+
+    public void AddRespawns(int respawns) => Statistics.respawnsTaken += respawns;
+    public void AddTimeStandingStill(float time) => Statistics.timeStandingStill += time;
+    public void AddTimeInFreeCam(float time) => Statistics.TimeInFreeCam += time;
+    public void AddHintsUsed(int hints) => Statistics.hintsUsed += hints;
+
     public void AddAverageStepsPerLevel(int steps)
     {
-        //Add the stepcount after exiting or completing a level to a total steps counter List and find the average based on the amount of entries in the list
-    }
-    public void AddTimeInFreeCam(float time)
-    {
-        //Add the time used in freeCam when completing a level to a total freeCam time counter total
-    }
-    public void AddHintsUsed(int hints)
-    {
-        //When getting a hint, add +1 to the total hint counter in save
+        Statistics.levelStepsTotal += steps;
+        Statistics.levelStepsSamples++;
+        Statistics.averageStepsPerLevel = (float)Statistics.levelStepsTotal / Statistics.levelStepsSamples;
     }
 
+    public void AddAbilitiesPerformed(int abilities) => Statistics.abilitiesPerformed += abilities;
 
-    public void AddAbilitiesPerformed(int abilites)
+    public void AddAbilitiesPerformed_Jump(int uses)
     {
-        //When performing an ability, add +1 to the total ability counter in save
-    }
-    public void AddAbilitiesPerformed_Jump(int jump)
-    {
-        //When performing a jump, add +1 to the total jump counter in save
-    }
-    public void AddAbilitiesPerformed_GrapplingHook(int grapplingHook)
-    {
-        //When performing grapplingHook ability, add +1 to the total grapplingHook counter in save
-    }
-    public void AddAbilitiesPerformed_HandDrill(int handDrill)
-    {
-        //When performing a handDrill ability, add +1 to the total handDrill counter in save
-    }
-    public void AddAbilitiesPerformed_DrillHelmet(int drillHelmet)
-    {
-        //When performing a derillHelmet ability, add +1 to the total derillHelmet counter in save
-    }
-    public void AddAbilitiesPerformed_DrillBoots(int drillBoots)
-    {
-        //When performing a drillBoots ability, add +1 to the total drillBoots counter in save
-    }
-    public void AddAbilitiesPerformed_SwimDistance(int swim)
-    {
-        //When moving 1 space in water, add +1 to the total swimDistance counter in save
-    }
-    public void AddAbilitiesPerformed_CeilingClimb(int climb)
-    {
-        //When moving 1 space with the ceilingGrab ability, add +1 to the total ceilingGrab counter in save
+        Statistics.ability_Jump_Performed += uses;
+        AddAbilitiesPerformed(uses);
     }
 
-    public void AddPickupEssence(int essence)
+    public void AddAbilitiesPerformed_GrapplingHook(int uses)
     {
-        //When picking up an essence, add +1 to the essence counter in save
+        Statistics.ability_GrapplingHook_Performed += uses;
+        AddAbilitiesPerformed(uses);
     }
-    public void AddPickupSkin(int skin)
+
+    public void AddAbilitiesPerformed_HandDrill(int uses)
     {
-        //When picking up a skin, add +1 to the skin counter in save
+        Statistics.ability_HandDrill_Performed += uses;
+        AddAbilitiesPerformed(uses);
     }
-    public void AddSkinBought(int skinBought)
+
+    public void AddAbilitiesPerformed_DrillHelmet(int uses)
     {
-        //When buying a skin, add +1 to the skinBought counter in save
+        Statistics.ability_DrillHelmet_Performed += uses;
+        AddAbilitiesPerformed(uses);
     }
-    public void AddTabletRed(int tablet)
+
+    public void AddAbilitiesPerformed_DrillBoots(int uses)
     {
-        //When reading a specific tablet for the first time, add +1 to the tablet counter in save
+        Statistics.ability_DrillBoots_Performed += uses;
+        AddAbilitiesPerformed(uses);
     }
-    public void AddDialogueInterracted(int dialogue)
-    {
-        //When interracting with an NPC for the first time in a level by pressing "talk"-button, add +1 to the NCPDialogue counter in save
-    }
+
+    public void AddAbilitiesPerformed_SwimDistance(int spaces) => Statistics.ability_SwimDistance_Performed += spaces;
+    public void AddAbilitiesPerformed_CeilingClimb(int spaces) => Statistics.ability_CeilingClimbDisatnace_Performed += spaces;
+    public void AddPickupEssence(int essence) => Statistics.pickup_EssencePickedUp += essence;
+    public void AddPickupSkin(int skin) => Statistics.pickup_SkinsFound += skin;
+    public void AddSkinBought(int skins) => Statistics.pickup_SkinsBought += skins;
+    public void AddTabletRed(int tablets) => Statistics.pickup_TabletsRed += tablets;
+    public void AddDialogueInterracted(int dialogues) => Statistics.pickup_DialoguesInterracted += dialogues;
 }
 
 [Serializable]
@@ -174,9 +591,9 @@ public class PlayerStatistics
     public int regionsCompleted;
     public int levelsCompleted;
     public int levelsReplayed;
-    public float fastestLevelCompletion_Name;
+    public string fastestLevelCompletion_Name;
     public float fastestLevelCompletion_Time;
-    public float slowestLevelCompletion_Name;
+    public string slowestLevelCompletion_Name;
     public float slowestLevelCompletion_Time;
     public int respawnsTaken;
     public float averageLevelCompletionTime;
@@ -199,4 +616,14 @@ public class PlayerStatistics
     public int pickup_SkinsBought;
     public int pickup_TabletsRed;
     public int pickup_DialoguesInterracted;
+
+    public bool initialized;
+    public List<string> visitedLevels = new List<string>();
+    public List<LevelNames> completedLevels = new List<LevelNames>();
+    public List<string> tabletsRead = new List<string>();
+    public List<string> dialoguesStarted = new List<string>();
+    public double levelCompletionTimeTotal;
+    public int levelCompletionSamples;
+    public long levelStepsTotal;
+    public int levelStepsSamples;
 }

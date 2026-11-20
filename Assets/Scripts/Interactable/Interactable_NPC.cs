@@ -115,6 +115,7 @@ public class Interactable_NPC : MonoBehaviour
     }
     void StartNPCDialogue()
     {
+        Player_Statistics_Manager.Active?.RecordDialogueStarted(characterName, levelNumber);
         StartCoroutine(StartNPCDialogueCoroutine());
 
         Action_TalkTo_NPC?.Invoke();

@@ -236,11 +236,16 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public void QuitLevel()
     {
+        if (!string.IsNullOrEmpty(mainMenu_Name))
+            Player_Statistics_Manager.Active?.SaveLevelExit();
+
         ReturnToLevelMenu(false);
     }
 
     public void CompleteLevelAndLeave()
     {
+        Player_Statistics_Manager.Active?.RecordLevelCompletion();
+        Player_Statistics_Manager.Active?.SaveLevelExit();
         MapStatsGathered.Instance.CompleteLevel();
 
         switch (MapManager.Instance.levelName)

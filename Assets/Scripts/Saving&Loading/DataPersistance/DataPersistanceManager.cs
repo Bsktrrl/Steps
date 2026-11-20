@@ -57,12 +57,13 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
         // Clear the DataManager's stores explicitly
         DataManager.Instance.Load_NewGame_Data(oldData, this.gameData);
+        Player_Statistics_Manager.Active?.ResetForNewGame();
 
         //Persist through newGame
         this.gameData.settingData_SaveList = DataManager.Instance.settingData_StoreList;
 
         // Save the new clean data
-        SaveGame();
+        SaveGame(updateStatistics: false);
 
         Action_NewGame?.Invoke();
     }
@@ -86,6 +87,14 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
     }
     public void SaveGame()
     {
+        SaveGame(updateStatistics: true);
+    }
+
+    private void SaveGame(bool updateStatistics)
+    {
+        if (updateStatistics)
+            Player_Statistics_Manager.Active?.FlushStatistics();
+
         //Pass the data to other scripts so thay can update it
         foreach (IDataPersistance dataPersistanceObj in dataPersistanceObjects)
         {
@@ -102,6 +111,8 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
     private void OnApplicationQuit()
     {
+        Player_Statistics_Manager.Active?.FinishLevelAttempt();
+
         //Make it so that the playerStatsData are reset on next game played
         if (FindObjectOfType<MapStatsGathered>())
             MapStatsGathered.Instance.ExitLevel();

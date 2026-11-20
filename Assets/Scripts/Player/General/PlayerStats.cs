@@ -51,6 +51,19 @@ public class PlayerStats : Singleton<PlayerStats>
         stats.steps_Max = 7 + counter;
         stats.steps_Current = stats.steps_Max;
     }
+
+    public void RestoreMissingSteps()
+    {
+        SetReplenishedSteps(stats.steps_Max);
+    }
+
+    public void SetReplenishedSteps(int newBalance)
+    {
+        int restored = Mathf.Max(0, newBalance - Mathf.Max(0, stats.steps_Current));
+        stats.steps_Current = newBalance;
+        Player_Statistics_Manager.Active?.RecordStepRefill(restored);
+    }
+
     void ResetActiveAbilities()
     {
         if (PlayerManager.Instance.player)

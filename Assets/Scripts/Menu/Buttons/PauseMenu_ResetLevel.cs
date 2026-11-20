@@ -48,6 +48,8 @@ public class PauseMenu_ResetLevel : MonoBehaviour
 
         yield return map.StartFadeInBlackScreen();
 
+        Player_Statistics_Manager.Active?.SaveLevelExit();
+
         GameObject player = MapManager.SpawnedPlayer;
         if (player)
         {

@@ -84,6 +84,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     public void LoadData(GameData gameData)
     {
         GetSavedDataFromFile(gameData);
+        Player_Statistics_Manager.Active?.BeginTracking(this);
         LoadDataIntoProject(gameData);
 
         StartCoroutine(LoadingDelay(0.01f));
@@ -125,7 +126,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
         this.permanentAbilitiesReceived_Store = gameData.permanentAbilitiesReceived_Save;
 
-        this.playerStatistics_Store = gameData.playerStatistics_Save;
+        this.playerStatistics_Store = gameData.playerStatistics_Save ?? new PlayerStatistics();
     }
 
     void LoadDataIntoProject(GameData gameData)
