@@ -130,6 +130,16 @@ public class FreeCam : Singleton<FreeCam>
         EndFreeCam();
     }
 
+    internal void PrepareForLevelReload()
+    {
+        if (!_isActive && !_cameraDetached) return;
+
+        StopAndRestoreFreeCam();
+        Player_KeyInputs inputs = GetComponentInParent<Player_KeyInputs>();
+        if (inputs)
+            inputs.freeCam_isPressed = false;
+    }
+
     private void StopAndRestoreFreeCam()
     {
         StopAllCoroutines();

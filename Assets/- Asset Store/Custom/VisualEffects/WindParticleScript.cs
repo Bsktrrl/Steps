@@ -8,8 +8,12 @@ public class WindParticleScript : MonoBehaviour
 
     void Update()
     {
-        partPos = Camera.main.transform.position + Camera.main.transform.forward * 10;
-        partPos.y -= (partPos.y - Camera.main.transform.position.y) * 0.25f;
+        Camera camera = Camera.main;
+        if (!camera) return;
+
+        Transform view = camera.transform;
+        partPos = view.position + view.forward * 10;
+        partPos.y -= (partPos.y - view.position.y) * 0.25f;
         transform.position = partPos;
     }
 }

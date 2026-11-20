@@ -266,8 +266,14 @@ public class MapManager : Singleton<MapManager>
     }
     public void FadeInBlackScreen()
     {
+        StartFadeInBlackScreen();
+    }
+
+    internal Coroutine StartFadeInBlackScreen()
+    {
         StopBlackScreenFadeRoutine();
         blackScreenFadeRoutine = StartCoroutine(FadeInBlackScreenCoroutine());
+        return blackScreenFadeRoutine;
     }
 
     public IEnumerator FadeInBlackScreenCoroutine()
