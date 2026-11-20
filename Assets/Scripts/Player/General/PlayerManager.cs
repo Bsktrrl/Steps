@@ -93,39 +93,28 @@ public class PlayerManager : Singleton<PlayerManager>
 
     void SetNewPlayerPosition()
     {
-        StartCoroutine(SetNewPlayerPosition_Delay(0.1f));
+        if (player)
+            StartCoroutine(SetNewPlayerPosition_Delay(0.1f));
     }
     IEnumerator SetNewPlayerPosition_Delay(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
 
-        Vector3 newPlayerPosition = Vector3.zero;
+        MapManager map = FindAnyObjectByType<MapManager>();
+        if (!map || map.gameObject.scene != gameObject.scene || map.levelName != LevelNames.HUB)
+            yield break;
 
-        //Spawn player at a different point if in HUB and haven't gone through the Tutorial yet
-        if (MapManager.Instance.levelName == LevelNames.HUB && !DataManager.Instance.oneTimeRunData_Store.glueplantHUB_PickedUp)
-        {
-            newPlayerPosition = HUD_Map.Instance.playerStartPosition_Beginning.pos;
+        HUD_Map hud = HUD_Map.Instance;
+        var spawn = DataManager.Instance.oneTimeRunData_Store.glueplantHUB_PickedUp
+            ? hud.playerStartPosition_Later
+            : hud.playerStartPosition_Beginning;
 
-            MapManager.Instance.playerStartRot = HUD_Map.Instance.playerStartPosition_Beginning.rot;
-            CameraController.Instance.SetRespawnCameraRotation();
+        map.playerStartRot = spawn.rot;
+        CameraController.Instance.SetRespawnCameraRotation();
+        Movement.Instance.RotatePlayerBody(180);
 
-            Movement.Instance.RotatePlayerBody(180);
-
-            gameObject.transform.position = newPlayerPosition;
-            MapManager.Instance.playerStartPos = newPlayerPosition;
-        }
-        else if (MapManager.Instance.levelName == LevelNames.HUB && DataManager.Instance.oneTimeRunData_Store.glueplantHUB_PickedUp)
-        {
-            newPlayerPosition = HUD_Map.Instance.playerStartPosition_Later.pos;
-
-            MapManager.Instance.playerStartRot = HUD_Map.Instance.playerStartPosition_Later.rot;
-            CameraController.Instance.SetRespawnCameraRotation();
-
-            Movement.Instance.RotatePlayerBody(180);
-
-            gameObject.transform.position = newPlayerPosition;
-            MapManager.Instance.playerStartPos = newPlayerPosition;
-        }
+        transform.position = spawn.pos;
+        map.playerStartPos = spawn.pos;
     }
 
 

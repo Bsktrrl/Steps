@@ -49,6 +49,7 @@ GameObject:
   - component: {fileID: 7404543377278903886}
   - component: {fileID: 7791777982888954600}
   - component: {fileID: 1265659579347570928}
+  - component: {fileID: 776856641060507216}
   m_Layer: 0
   m_Name: MapInfo
   m_TagString: Untagged
@@ -159,6 +160,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa5a991ebcf30ee4691b2650683fbec1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStartPosition_Beginning:
+    pos: {x: 0, y: 0, z: 0}
+    rot: 0
+  playerStartPosition_Later:
+    pos: {x: 0, y: 0, z: 0}
+    rot: 0
 --- !u!114 &5161795108974153893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1929,6 +1936,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textToDisplay: 0
   textToDisplay_additional: 0
+--- !u!114 &776856641060507216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4454345480955054035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde3f4c26b54e6e45a30430d2128e011, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6092086702894969785
 GameObject:
   m_ObjectHideFlags: 0

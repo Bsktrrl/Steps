@@ -227,11 +227,11 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.mainMenu_Button_Quit:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].mainMenu_Button_Quit;
                 break;
-            case Text_Database_Enum.mainMenu_Button_6:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].mainMenu_Button_6;
+            case Text_Database_Enum.mainMenu_LoadGame:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].mainMenu_LoadGame;
                 break;
-            case Text_Database_Enum.mainMenu_Button_7:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].mainMenu_Button_7;
+            case Text_Database_Enum.mainMenu_Info:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].mainMenu_Info;
                 break;
             case Text_Database_Enum.mainMenu_Button_8:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].mainMenu_Button_8;
@@ -563,20 +563,20 @@ public class TMPro_TextDisplay : MonoBehaviour
             #endregion
 
             #region Blank
-            case Text_Database_Enum.options_Header_Blank:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Header_Blank;
+            case Text_Database_Enum.options_Info_Header_Controls:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Info_Header_Controls;
                 break;
-            case Text_Database_Enum.options_Blank_1:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Blank_1;
+            case Text_Database_Enum.options_Info_Header_Statistics:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Info_Header_Statistics;
                 break;
-            case Text_Database_Enum.options_Blank_2:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Blank_2;
+            case Text_Database_Enum.options_Info_Header_Tablets:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Info_Header_Tablets;
                 break;
-            case Text_Database_Enum.options_Blank_3:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Blank_3;
+            case Text_Database_Enum.options_Info_Controls_Text:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Info_Controls_Text;
                 break;
-            case Text_Database_Enum.options_Blank_4:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Blank_4;
+            case Text_Database_Enum.options_Info_Stats_Text:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Info_Stats_Text;
                 break;
             case Text_Database_Enum.options_Blank_5:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Blank_5;
@@ -698,8 +698,8 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.pauseMenu_Button_ExitLevel:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_ExitLevel;
                 break;
-            case Text_Database_Enum.pauseMenu_Button_3:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_3;
+            case Text_Database_Enum.pauseMenu_ResetLevel:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_ResetLevel;
                 break;
             case Text_Database_Enum.pauseMenu_Button_4:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_4;
@@ -1641,10 +1641,10 @@ public class TMPro_TextDisplay : MonoBehaviour
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].mainMenu_Button_Options;
             case Text_Database_Enum.mainMenu_Button_Quit:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].mainMenu_Button_Quit;
-            case Text_Database_Enum.mainMenu_Button_6:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].mainMenu_Button_6;
-            case Text_Database_Enum.mainMenu_Button_7:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].mainMenu_Button_7;
+            case Text_Database_Enum.mainMenu_LoadGame:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].mainMenu_LoadGame;
+            case Text_Database_Enum.mainMenu_Info:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].mainMenu_Info;
             case Text_Database_Enum.mainMenu_Button_8:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].mainMenu_Button_8;
             case Text_Database_Enum.mainMenu_Button_9:
@@ -1871,16 +1871,16 @@ public class TMPro_TextDisplay : MonoBehaviour
             #endregion
 
             #region Blank
-            case Text_Database_Enum.options_Header_Blank:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Header_Blank;
-            case Text_Database_Enum.options_Blank_1:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Blank_1;
-            case Text_Database_Enum.options_Blank_2:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Blank_2;
-            case Text_Database_Enum.options_Blank_3:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Blank_3;
-            case Text_Database_Enum.options_Blank_4:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Blank_4;
+            case Text_Database_Enum.options_Info_Header_Controls:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Info_Header_Controls;
+            case Text_Database_Enum.options_Info_Header_Statistics:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Info_Header_Statistics;
+            case Text_Database_Enum.options_Info_Header_Tablets:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Info_Header_Tablets;
+            case Text_Database_Enum.options_Info_Controls_Text:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Info_Controls_Text;
+            case Text_Database_Enum.options_Info_Stats_Text:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Info_Stats_Text;
             case Text_Database_Enum.options_Blank_5:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Blank_5;
             case Text_Database_Enum.options_Blank_6:
@@ -1963,8 +1963,8 @@ public class TMPro_TextDisplay : MonoBehaviour
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_BackToGame;
             case Text_Database_Enum.pauseMenu_Button_ExitLevel:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_ExitLevel;
-            case Text_Database_Enum.pauseMenu_Button_3:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_3;
+            case Text_Database_Enum.pauseMenu_ResetLevel:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_ResetLevel;
             case Text_Database_Enum.pauseMenu_Button_4:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].pauseMenu_Button_4;
             case Text_Database_Enum.pauseMenu_Button_5:

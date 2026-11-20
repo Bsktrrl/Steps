@@ -119,8 +119,8 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_Wardrobe, 59);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_Options, 60);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_Quit, 61);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_6, 62);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_7, 63);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_LoadGame, 62);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Info, 63);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_8, 64);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_9, 65);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_10, 66);
@@ -243,11 +243,11 @@ public class TextData : MonoBehaviour
             #endregion
 
             #region Blank
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Header_Blank, 172);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_1, 173);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_2, 174);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_3, 175);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_4, 176);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Info_Header_Controls, 172);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Info_Header_Statistics, 173);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Info_Header_Tablets, 174);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Info_Controls_Text, 175);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Info_Stats_Text, 176);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_5, 177);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_6, 178);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_7, 179);
@@ -292,7 +292,7 @@ public class TextData : MonoBehaviour
             #region Pause Menu
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_BackToGame, 217);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_ExitLevel, 218);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_3, 219);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_ResetLevel, 219);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_4, 220);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_5, 221);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_6, 222);
@@ -684,8 +684,8 @@ public class Game_TextDatabase_Language
     public string mainMenu_Button_Wardrobe;
     public string mainMenu_Button_Options;
     public string mainMenu_Button_Quit;
-    public string mainMenu_Button_6;
-    public string mainMenu_Button_7;
+    public string mainMenu_LoadGame;
+    public string mainMenu_Info;
     public string mainMenu_Button_8;
     public string mainMenu_Button_9;
     public string mainMenu_Button_10;
@@ -805,11 +805,11 @@ public class Game_TextDatabase_Language
     public string options_Audio_20;
     #endregion
     #region Blank
-    public string options_Header_Blank;
-    public string options_Blank_1;
-    public string options_Blank_2;
-    public string options_Blank_3;
-    public string options_Blank_4;
+    public string options_Info_Header_Controls;
+    public string options_Info_Header_Statistics;
+    public string options_Info_Header_Tablets;
+    public string options_Info_Controls_Text;
+    public string options_Info_Stats_Text;
     public string options_Blank_5;
     public string options_Blank_6;
     public string options_Blank_7;
@@ -854,7 +854,7 @@ public class Game_TextDatabase_Language
     #region Pause Menu
     public string pauseMenu_Button_BackToGame;
     public string pauseMenu_Button_ExitLevel;
-    public string pauseMenu_Button_3;
+    public string pauseMenu_ResetLevel;
     public string pauseMenu_Button_4;
     public string pauseMenu_Button_5;
     public string pauseMenu_Button_6;
@@ -1226,8 +1226,8 @@ public enum Text_Database_Enum
     [InspectorName("Main Menu Buttons / Wardrobe")] mainMenu_Button_Wardrobe,
     [InspectorName("Main Menu Buttons / Options")] mainMenu_Button_Options,
     [InspectorName("Main Menu Buttons / Quit")] mainMenu_Button_Quit,
-    [InspectorName("Main Menu Buttons / 6")] mainMenu_Button_6,
-    [InspectorName("Main Menu Buttons / 7")] mainMenu_Button_7,
+    [InspectorName("Main Menu Buttons / Load Game")] mainMenu_LoadGame,
+    [InspectorName("Main Menu Buttons / Info")] mainMenu_Info,
     [InspectorName("Main Menu Buttons / 8")] mainMenu_Button_8,
     [InspectorName("Main Menu Buttons / 9")] mainMenu_Button_9,
     [InspectorName("Main Menu Buttons / 10")] mainMenu_Button_10,
@@ -1347,11 +1347,11 @@ public enum Text_Database_Enum
     [InspectorName("Options Menu / Audio / 20")] options_Audio_20,
     #endregion
     #region Blank
-    [InspectorName("Options Menu / Blank / Header / Header")] options_Header_Blank,
-    [InspectorName("Options Menu / Blank / 1")] options_Blank_1,
-    [InspectorName("Options Menu / Blank / 2")] options_Blank_2,
-    [InspectorName("Options Menu / Blank / 3")] options_Blank_3,
-    [InspectorName("Options Menu / Blank / 4")] options_Blank_4,
+    [InspectorName("Options Menu / Info / Controls")] options_Info_Header_Controls,
+    [InspectorName("Options Menu / Info / Statistics")] options_Info_Header_Statistics,
+    [InspectorName("Options Menu / Info / Tablets")] options_Info_Header_Tablets,
+    [InspectorName("Options Menu / Info / Controls Text")] options_Info_Controls_Text,
+    [InspectorName("Options Menu / Info / Stats Text")] options_Info_Stats_Text,
     [InspectorName("Options Menu / Blank / 5")] options_Blank_5,
     [InspectorName("Options Menu / Blank / 6")] options_Blank_6,
     [InspectorName("Options Menu / Blank / 7")] options_Blank_7,
@@ -1396,7 +1396,7 @@ public enum Text_Database_Enum
     #region Pause Menu
     [InspectorName("Pause Menu / Back To Game")] pauseMenu_Button_BackToGame,
     [InspectorName("Pause Menu / Exit Level")] pauseMenu_Button_ExitLevel,
-    [InspectorName("Pause Menu / Button 3")] pauseMenu_Button_3,
+    [InspectorName("Pause Menu / Button ResetLevel")] pauseMenu_ResetLevel,
     [InspectorName("Pause Menu / Button 4")] pauseMenu_Button_4,
     [InspectorName("Pause Menu / Button 5")] pauseMenu_Button_5,
     [InspectorName("Pause Menu / Button 6")] pauseMenu_Button_6,

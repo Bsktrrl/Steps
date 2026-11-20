@@ -494,6 +494,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press(behavior=1)"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HintButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""25046d7d-c0bf-4832-b4d3-90fcf57b0519"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1860,6 +1869,39 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Right_FreeCam_Down"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5a8166fa-2dca-4bf0-a7a7-53df48e340ed"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HintButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1d8036fb-d925-45b0-bac8-888a423239a8"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HintButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0936372d-9a74-43ad-8194-3ccf284aa1fa"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HintButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1920,6 +1962,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerMovement_Left_FreeCam_Up = m_PlayerMovement.FindAction("Left_FreeCam_Up", throwIfNotFound: true);
         m_PlayerMovement_Right_FreeCam_Down = m_PlayerMovement.FindAction("Right_FreeCam_Down", throwIfNotFound: true);
         m_PlayerMovement_Right_FreeCam_Up = m_PlayerMovement.FindAction("Right_FreeCam_Up", throwIfNotFound: true);
+        m_PlayerMovement_HintButton = m_PlayerMovement.FindAction("HintButton", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -2033,6 +2076,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_Left_FreeCam_Up;
     private readonly InputAction m_PlayerMovement_Right_FreeCam_Down;
     private readonly InputAction m_PlayerMovement_Right_FreeCam_Up;
+    private readonly InputAction m_PlayerMovement_HintButton;
     public struct PlayerMovementActions
     {
         private @PlayerControls m_Wrapper;
@@ -2089,6 +2133,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Left_FreeCam_Up => m_Wrapper.m_PlayerMovement_Left_FreeCam_Up;
         public InputAction @Right_FreeCam_Down => m_Wrapper.m_PlayerMovement_Right_FreeCam_Down;
         public InputAction @Right_FreeCam_Up => m_Wrapper.m_PlayerMovement_Right_FreeCam_Up;
+        public InputAction @HintButton => m_Wrapper.m_PlayerMovement_HintButton;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2254,6 +2299,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Right_FreeCam_Up.started += instance.OnRight_FreeCam_Up;
             @Right_FreeCam_Up.performed += instance.OnRight_FreeCam_Up;
             @Right_FreeCam_Up.canceled += instance.OnRight_FreeCam_Up;
+            @HintButton.started += instance.OnHintButton;
+            @HintButton.performed += instance.OnHintButton;
+            @HintButton.canceled += instance.OnHintButton;
         }
 
         private void UnregisterCallbacks(IPlayerMovementActions instance)
@@ -2414,6 +2462,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Right_FreeCam_Up.started -= instance.OnRight_FreeCam_Up;
             @Right_FreeCam_Up.performed -= instance.OnRight_FreeCam_Up;
             @Right_FreeCam_Up.canceled -= instance.OnRight_FreeCam_Up;
+            @HintButton.started -= instance.OnHintButton;
+            @HintButton.performed -= instance.OnHintButton;
+            @HintButton.canceled -= instance.OnHintButton;
         }
 
         public void RemoveCallbacks(IPlayerMovementActions instance)
@@ -2485,5 +2536,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnLeft_FreeCam_Up(InputAction.CallbackContext context);
         void OnRight_FreeCam_Down(InputAction.CallbackContext context);
         void OnRight_FreeCam_Up(InputAction.CallbackContext context);
+        void OnHintButton(InputAction.CallbackContext context);
     }
 }
