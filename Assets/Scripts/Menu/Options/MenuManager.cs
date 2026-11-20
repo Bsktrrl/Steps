@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class MenuManager : Singleton<MenuManager>
 {
@@ -110,6 +112,57 @@ public class MenuManager : Singleton<MenuManager>
         if (infoManager)
             infoManager.ShowPanel(MenuCategories.None);
     }
+
+    internal void ShiftTab(EventSystem eventSystem, bool left)
+    {
+        bool inInfoMenu = IsInfoCategory(currentMenuCategorySelected);
+        if (!IsTabInMenu(currentMenuCategorySelected, inInfoMenu))
+            return;
+
+        GameObject firstTab = inInfoMenu
+            ? (infoManager ? infoManager.FirstTab : null)
+            : settingsMenuButton;
+        if (!firstTab || !firstTab.activeInHierarchy)
+            return;
+
+        Transform tabBar = firstTab.transform.parent;
+        GameObject selected = eventSystem.currentSelectedGameObject;
+        int startIndex = firstTab.transform.GetSiblingIndex();
+        for (int i = 0; i < tabBar.childCount; i++)
+        {
+            Transform tab = tabBar.GetChild(i);
+            if (!tab.TryGetComponent(out OptionCategoryButton category) ||
+                !IsTabInMenu(category.optionCategory, inInfoMenu))
+                continue;
+
+            if (tab.gameObject == selected)
+            {
+                startIndex = i;
+                break;
+            }
+
+            if (category.optionCategory == currentMenuCategorySelected)
+                startIndex = i;
+        }
+
+        int direction = left ? -1 : 1;
+        int tabCount = tabBar.childCount;
+        for (int offset = 1; offset < tabCount; offset++)
+        {
+            Transform tab = tabBar.GetChild((startIndex + direction * offset + tabCount) % tabCount);
+            if (tab.TryGetComponent(out OptionCategoryButton category) &&
+                IsTabInMenu(category.optionCategory, inInfoMenu) &&
+                tab.TryGetComponent(out Button button) && button.IsActive() && button.IsInteractable())
+            {
+                eventSystem.SetSelectedGameObject(tab.gameObject);
+                return;
+            }
+        }
+    }
+
+    static bool IsTabInMenu(MenuCategories category, bool info) => info
+        ? IsInfoCategory(category)
+        : category is MenuCategories.Settings or MenuCategories.Controls or MenuCategories.Video or MenuCategories.Audio;
 
     static bool IsInfoCategory(MenuCategories category) =>
         category is MenuCategories.Info_Controls or MenuCategories.Info_Stats or MenuCategories.Info_Tablet;

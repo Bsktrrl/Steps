@@ -11,6 +11,8 @@ public class InfoManager : MonoBehaviour
     [Header("First Tab")]
     [SerializeField] GameObject controlsTab;
 
+    internal GameObject FirstTab => controlsTab;
+
     internal void ShowPanel(MenuCategories category)
     {
         controlsPanel.SetActive(category == MenuCategories.Info_Controls);

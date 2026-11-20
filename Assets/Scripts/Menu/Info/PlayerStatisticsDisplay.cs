@@ -1,3 +1,5 @@
+using System;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 
@@ -6,66 +8,128 @@ public class PlayerStatisticsDisplay : MonoBehaviour
     public TextMeshProUGUI stats_LeftSide;
     public TextMeshProUGUI stats_RightSide;
 
+    private void OnEnable()
+    {
+        DataManager.Action_dataHasLoaded += Refresh;
+        SettingsManager.Action_SetNewLanguage += Refresh;
+        Refresh();
+    }
+
+    private void OnDisable()
+    {
+        DataManager.Action_dataHasLoaded -= Refresh;
+        SettingsManager.Action_SetNewLanguage -= Refresh;
+    }
+
+    private void Refresh()
+    {
+        SetupStatsDisplayLeft();
+        SetupStatsDisplayRight();
+    }
+
     public void SetupStatsDisplayLeft()
     {
-        //Fill the stats_LeftSide with text, using the text from textData.options_Info_StatsLeft_Text
+        if (!stats_LeftSide || !TryGetDisplayData(out var stats, out var text, out var culture))
+            return;
 
-        //Format the text to become in this format:
-        //        "<size=120%><u>General</u>
-        //< size = 100 %> Progress: 
-        //Playtime:
-        //    Sessions:
-        //        Longest session: 
-
-        //< size = 120 %>< u > Steps </ u >
-        //< size = 100 %> Steps taken:
-        //        Steps replenished: 
-        //Steps emptied: 
-        //Average steps per level: 
-
-        //< size = 120 %>< u > Interactables </ u >
-        //< size = 100 %> Essence gathered:
-        //        Skins found: 
-        //Skins bought: 
-        //Tablets red: 
-        //Dialogue interactions: "
-
-        //Add one line at the time to the text, and after each ": " insert the value for that entry.
-        //Insert all time values as Hours:Minute.
-        //Insert averages with 2 decimals.
-        //Insert all int as on number with no decimals
-        //Insert Progress with % after and 0 decimals.
+        // Values follow the order of the left column in GameTextDatabase.
+        stats_LeftSide.text = BuildColumn(text.options_Info_StatsLeft_Text, new[]
+        {
+            stats.progress.ToString("F0", culture) + "%",
+            FormatDuration(stats.playTime),
+            stats.sessions.ToString(culture),
+            FormatDuration(stats.longestSession),
+            stats.stepsTaken.ToString(culture),
+            stats.stepsReplenished.ToString(culture),
+            stats.stepsEmptied.ToString(culture),
+            stats.averageStepsPerLevel.ToString("F0", culture),
+            stats.pickup_EssencePickedUp.ToString(culture),
+            stats.pickup_SkinsFound.ToString(culture),
+            stats.pickup_SkinsBought.ToString(culture),
+            stats.pickup_TabletsRed.ToString(culture),
+            stats.pickup_DialoguesInterracted.ToString(culture)
+        });
     }
+
     public void SetupStatsDisplayRight()
     {
-        //Fill the stats_RightSide with text textData.options_Info_StatsRight_Text
+        if (!stats_RightSide || !TryGetDisplayData(out var stats, out var text, out var culture))
+            return;
 
-        //Format the text to become in this format:
-        //"<size=120%><u>Levels</u>
-        //< size = 100 %> Regions completed:
-        //        Levels completed: 
-        //Levels revisited: 
-        //Fastest level completion:
-        //        Slowest level completion:
-        //        Average level completion:
-        //    Respawns:
-        //        Time standing still:
-        //        Time in free camera: 
-        //Hints used: 
+        // Values follow the order of the right column in GameTextDatabase.
+        stats_RightSide.text = BuildColumn(text.options_Info_StatsRight_Text, new[]
+        {
+            stats.regionsCompleted.ToString(culture),
+            stats.levelsCompleted.ToString(culture),
+            stats.levelsReplayed.ToString(culture),
+            FormatDuration(stats.fastestLevelCompletion_Time),
+            FormatDuration(stats.slowestLevelCompletion_Time),
+            FormatDuration(stats.averageLevelCompletionTime),
+            stats.respawnsTaken.ToString(culture),
+            FormatDuration(stats.timeStandingStill),
+            FormatDuration(stats.TimeInFreeCam),
+            stats.hintsUsed.ToString(culture),
+            stats.abilitiesPerformed.ToString(culture),
+            stats.ability_Jump_Performed.ToString(culture),
+            stats.ability_GrapplingHook_Performed.ToString(culture),
+            stats.ability_HandDrill_Performed.ToString(culture),
+            stats.ability_DrillHelmet_Performed.ToString(culture),
+            stats.ability_DrillBoots_Performed.ToString(culture),
+            stats.ability_SwimDistance_Performed.ToString(culture),
+            stats.ability_CeilingClimbDisatnace_Performed.ToString(culture)
+        });
+    }
 
-        //< size = 120 %>< u > Abilities </ u >
-        //< size = 100 %> Abilities Performed:
-        //    Jumps:
-        //    Grapples:
-        //        Hand Drills: 
-        //Drill Helmet: 
-        //Drill Boots: 
-        //Swim Distance: 
-        //Climb Distance: "
+    private static bool TryGetDisplayData(
+        out PlayerStatistics stats, out Game_TextDatabase_Language text, out CultureInfo culture)
+    {
+        stats = null;
+        text = null;
+        culture = CultureInfo.InvariantCulture;
 
-        //Add one line at the time to the text, and after each ": " insert the value for that entry.
-        //Insert all time values as Hours:Minute.
-        //Insert averages with 2 decimals.
-        //Insert all int as on number with no decimals
+        var data = FindAnyObjectByType<DataManager>();
+        if (!data || data.settingData_StoreList == null)
+            return false;
+
+        var localizedTexts = data.game_TextDatabase_Store?.gameText_LanguageList;
+        int languageIndex = (int)data.settingData_StoreList.currentLanguage;
+        if (localizedTexts == null || languageIndex < 0 || languageIndex >= localizedTexts.Count)
+            return false;
+
+        stats = data.playerStatistics_Store;
+        text = localizedTexts[languageIndex];
+        if (languageIndex == (int)Languages.Norwegian)
+            culture = CultureInfo.GetCultureInfo("nb-NO");
+
+        return stats != null && text != null;
+    }
+
+    private static string BuildColumn(string template, string[] values)
+    {
+        if (string.IsNullOrEmpty(template))
+            return string.Empty;
+
+        var lines = template.Replace("\r\n", "\n").Replace('\r', '\n').Split('\n');
+        int valueIndex = 0;
+
+        for (int i = 0; i < lines.Length; i++)
+        {
+            var label = lines[i].TrimEnd();
+            if (!label.EndsWith(":"))
+                continue;
+
+            if (valueIndex == values.Length)
+                return template;
+
+            lines[i] = label + " " + values[valueIndex++];
+        }
+
+        return valueIndex == values.Length ? string.Join("\n", lines) : template;
+    }
+
+    private static string FormatDuration(float seconds)
+    {
+        long totalMinutes = (long)(seconds / 60d);
+        return FormattableString.Invariant($"{totalMinutes / 60}:{totalMinutes % 60:D0}");
     }
 }
