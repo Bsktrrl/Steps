@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 public class TextData : MonoBehaviour
@@ -40,11 +41,7 @@ public class TextData : MonoBehaviour
         //-----
 
 
-        //Separate Excel Sheet into a string[] by its ";"
-        string[] excelData = game_TextDatabase_Sheet.text.Split(new string[] { ";", "\n" }, StringSplitOptions.None);
-
-        // Calculate the size of the Excel table
-        int excelTableSize = (excelData.Length / columns - 1) - 1;
+        string[] excelData = ParseSpreadsheetCells(game_TextDatabase_Sheet.text);
 
         //Fill the new element with data
         for (int j = 0; j < columns - 1; j++)
@@ -600,6 +597,48 @@ public class TextData : MonoBehaviour
         DataManager.Instance.game_TextDatabase_Store = game_TextDatabase;
     }
 
+
+    static string[] ParseSpreadsheetCells(string text)
+    {
+        var cells = new List<string>();
+        var cell = new StringBuilder();
+        bool quoted = false;
+
+        for (int i = 0; i < text.Length; i++)
+        {
+            char character = text[i];
+            if (quoted)
+            {
+                if (character != '"')
+                    cell.Append(character);
+                else if (i + 1 < text.Length && text[i + 1] == '"')
+                {
+                    cell.Append('"');
+                    i++;
+                }
+                else
+                    quoted = false;
+            }
+            else if (character == '"' && cell.Length == 0)
+            {
+                quoted = true;
+            }
+            else if (character == ';' || character == '\n' || character == '\r')
+            {
+                cells.Add(cell.ToString());
+                cell.Clear();
+                if (character == '\r' && i + 1 < text.Length && text[i + 1] == '\n')
+                    i++;
+            }
+            else
+            {
+                cell.Append(character);
+            }
+        }
+
+        cells.Add(cell.ToString());
+        return cells.ToArray();
+    }
 
     void SetTextData(string[] excelData, int j, ref string languageVersion, int no)
     {
