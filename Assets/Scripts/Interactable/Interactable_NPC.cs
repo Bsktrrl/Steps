@@ -123,7 +123,7 @@ public class Interactable_NPC : MonoBehaviour
     IEnumerator StartNPCDialogueCoroutine()
     {
         PlayerManager.Instance.npcInteraction = true;
-        ButtonMessageManager.Instance.HideButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Talk);
+        ButtonMessageManager.Instance.HideInteractionPrompts();
 
         yield return StartCoroutine(TurnNPCTowardsPlayer());
 

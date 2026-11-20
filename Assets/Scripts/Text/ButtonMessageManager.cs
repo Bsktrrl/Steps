@@ -9,13 +9,18 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
     [Header("Button Messages")]
     public ButtonMessageList buttonMessages;
 
+    private PlayerManager playerManager;
+    private AncientTablet activeTablet;
 
+    private bool InteractionPromptsSuppressed =>
+        activeTablet || (playerManager && playerManager.npcInteraction);
 
     //--------------------
 
 
     private void OnEnable()
     {
+        playerManager = GetComponentInParent<PlayerManager>();
         DataManager.Action_dataHasLoaded += UpdateButtonMessages;
         SettingsManager.Action_SetNewLanguage += UpdateButtonMessages;
     }
@@ -82,11 +87,49 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
 
     public void ShowButtonMessage(ButtonMessage _buttonMessage)
     {
+        if (InteractionPromptsSuppressed &&
+            (_buttonMessage == buttonMessages.buttonMessage_Read || _buttonMessage == buttonMessages.buttonMessage_Talk))
+            return;
+
         _buttonMessage.buttonMessage_Parent.SetActive(true);
     }
     public void HideButtonMessage(ButtonMessage _buttonMessage)
     {
-        _buttonMessage.buttonMessage_Parent.SetActive(false);
+        if (_buttonMessage?.buttonMessage_Parent)
+            _buttonMessage.buttonMessage_Parent.SetActive(false);
+    }
+
+    internal void HideInteractionPrompts()
+    {
+        HideButtonMessage(buttonMessages.buttonMessage_Read);
+        HideButtonMessage(buttonMessages.buttonMessage_Talk);
+    }
+
+    internal void BeginTabletInteraction(AncientTablet tablet)
+    {
+        activeTablet = tablet;
+        HideInteractionPrompts();
+    }
+
+    internal void EndTabletInteraction(AncientTablet tablet)
+    {
+        if (activeTablet == tablet)
+            activeTablet = null;
+    }
+
+    internal void RefreshReadPrompt(GameObject lookedAtObject)
+    {
+        ButtonMessage readPrompt = buttonMessages.buttonMessage_Read;
+        if (InteractionPromptsSuppressed ||
+            !lookedAtObject || !lookedAtObject.TryGetComponent(out BlockInfo blockInfo) ||
+            blockInfo.blockElement != BlockElement.Tablet)
+        {
+            HideButtonMessage(readPrompt);
+            return;
+        }
+
+        SetButtonMessage(readPrompt);
+        ShowButtonMessage(readPrompt);
     }
 }
 
