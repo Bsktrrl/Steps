@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, ISelectHandler, IDeselectHandler
+public class SkinWardrobeButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
     public static event Action Action_ButtonIsPressed;
 
@@ -44,10 +44,6 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
     {
         //Player_Animations = FindAnyObjectByType<Player_Animations>();
     }
-    private void Update()
-    {
-        UpdateDefaultSkinButtonDisplay();
-    }
     private void OnEnable()
     {
         StartCoroutine(IsHighlighted_Delay());
@@ -69,22 +65,20 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         // subscribe + init
         Action_SelectSkin += DeselectThisSkinButton;
         Action_SelectHat += DeselectThisHatButton;
-        Action_BuySkin += UpdateIfSkinIsAvailable;
-        Action_BuySkin += UpdateButtonDisplay;
+        if (skinType == SkinType.Default)
+            Action_SkinIsSelected += UpdateDefaultSkinButtonDisplay;
 
-        UpdateIfSkinIsAvailable();
         CheckIfSkinIsFound();
         UpdateSkinButtonDisplay();
         UpdateHatButtonDisplay();
-        UpdateIfDefaultSkin();
+        UpdateDefaultSkinButtonDisplay();
     }
 
     private void OnDisable()
     {
         Action_SelectSkin -= DeselectThisSkinButton;
         Action_SelectHat -= DeselectThisHatButton;
-        Action_BuySkin -= UpdateIfSkinIsAvailable;
-        Action_BuySkin -= UpdateButtonDisplay;
+        Action_SkinIsSelected -= UpdateDefaultSkinButtonDisplay;
     }
 
     IEnumerator IsHighlighted_Delay()
@@ -124,13 +118,9 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             switch (tempState)
             {
                 case WardrobeSkinState.Hidden:
-                    //If inactive, stay inactive
-                    WardrobeSounds(ButtonSoundStates.ButtonCannot);
-                    break;
                 case WardrobeSkinState.LevelIsVisited:
-                    //Nothing is happening if only the level is visited, but player don't have enough essence
                     WardrobeSounds(ButtonSoundStates.ButtonCannot);
-                    break;
+                    return;
                 case WardrobeSkinState.Available:
                     //Check condition to see if button is bought
                     if (skinType == SkinType.SourceBlock)
@@ -149,6 +139,7 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
                         else
                         {
                             WardrobeSounds(ButtonSoundStates.ButtonCannot);
+                            return;
                         }
                     }
 
@@ -166,6 +157,7 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
                     else
                     {
                         WardrobeSounds(ButtonSoundStates.ButtonCannot);
+                        return;
                     }
                     break;
                 case WardrobeSkinState.Bought:
@@ -220,9 +212,8 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             switch (tempHat)
             {
                 case WardrobeHatState.Hidden:
-                    //If inactive, stay inactive
                     WardrobeSounds(ButtonSoundStates.ButtonCannot);
-                    break;
+                    return;
                 case WardrobeHatState.Available:
                     //Check condition to see if button is selected
 
@@ -266,7 +257,6 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         SkinsManager.Instance.SaveData();
 
         Action_SkinIsSelected?.Invoke();
-        print("----. Action_SkinIsSelected");
     }
 
 
@@ -371,38 +361,6 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             }
         }
     }
-    public void UpdateIfSkinIsAvailable()
-    {
-        if (skinWardrobeManager.GetSkinSaveData(GetRegionNumber(region), level) == WardrobeSkinState.LevelIsVisited && PlayerStats.Instance.stats.itemsGot.essence_Current >= 10)
-        {
-            //skinWardrobeManager.SetSkinSaveData(GetRegionNumber(region), level, WardrobeSkinState.Available);
-        }
-        else if (skinWardrobeManager.GetSkinSaveData(GetRegionNumber(region), level) == WardrobeSkinState.Available && PlayerStats.Instance.stats.itemsGot.essence_Current < 10)
-        {
-            //skinWardrobeManager.SetSkinSaveData(GetRegionNumber(region), level, WardrobeSkinState.LevelIsVisited);
-        }
-    }
-
-
-    //--------------------
-
-
-    public void UpdateIfDefaultSkin()
-    {
-        if (skinWardrobeManager)
-        {
-            WardrobeSkinState skinState = skinWardrobeManager.GetSkinSaveData(0, 0);
-
-            if (skinType == SkinType.Default && skinState == WardrobeSkinState.Selected)
-            {
-                WardrobeButton_isPressed();
-
-                UpdateSkinButtonDisplay();
-            }
-        }
-    }
-
-
     //--------------------
 
 
@@ -457,24 +415,6 @@ public class SkinWardrobeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
 
 
     #region When Button is Selected
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        // Highlighted
-        UpdateButtonDisplay();
-    }
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        // Normal (mouse left)
-    }
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        // Pressed
-    }
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        // Released (back to Highlighted if still hovered)
-        UpdateButtonDisplay();
-    }
     public void OnSelect(BaseEventData eventData)
     {
         // Selected (keyboard/controller)

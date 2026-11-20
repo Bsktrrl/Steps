@@ -159,9 +159,7 @@ public class Interactable_Pickup : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        MapStatsGathered.Instance.CompleteLevel();
-
-        PlayerManager.Instance.player.GetComponent<PlayerManager>().QuitLevel();
+        PlayerManager.Instance.player.GetComponent<PlayerManager>().CompleteLevelAndLeave();
     }
 
 

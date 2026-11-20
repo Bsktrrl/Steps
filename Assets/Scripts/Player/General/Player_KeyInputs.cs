@@ -60,9 +60,31 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     PauseMenuManager pauseMenuManager;
 
-    private Vector2 _lastMousePos;
-
     public bool tutorialMovementBlocker;
+
+    private bool GameplayInputLocked => MapManager.Instance == null ||
+        MapManager.Instance.GameplayInputLocked;
+
+    private bool DialogueCameraAllowed => MapManager.Instance != null &&
+        !MapManager.Instance.IntroInputLocked &&
+        MapManager.Instance.levelName == LevelNames.HUB &&
+        HUBTutorial.Instance != null && HUBTutorial.Instance.DialogueCameraAllowed;
+
+    public void ClearCutsceneInput()
+    {
+        if (Movement.Instance != null)
+            Movement.Instance.CancelCutsceneGrapplingTarget();
+
+        forward_isPressed = back_isPressed = left_isPressed = right_isPressed = false;
+        forward_isHold = back_isHold = left_isHold = right_isHold = false;
+        up_isPressed = down_isPressed = grapplingHook_isPressed = false;
+
+        if (respawn_isPressed)
+        {
+            respawn_isPressed = false;
+            Action_RespawnCanceled?.Invoke();
+        }
+    }
 
 
 
@@ -84,18 +106,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     private void Update()
     {
-        //if (!freeCam_isPressed) return;
-
-        //var pad = Gamepad.current;
-        //if (pad == null) return;
-
-        //// Only poll sticks if FreeCam is set to controller mode
-        //if (FreeCam.Instance.CurrentInputType == InputType.Keyboard)
-        //    return;
-
-        //FreeCam.Instance.SetMoveAxis(pad.leftStick.ReadValue());
-        //FreeCam.Instance.RotateFromStick(pad.rightStick.ReadValue());
-
         if (freeCam_isPressed)
         {
             mapStatsGathered.levelStats.freeCamTimer += Time.deltaTime;
@@ -112,6 +122,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnForward_Down()
     {
+        if (GameplayInputLocked) return;
         if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
@@ -123,7 +134,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
             StartCoroutine(TutorialMovement_Delay());
         }
 
-        if (!ButtonChecks_Movement()) return; 
+        if (!ButtonChecks_Movement()) return;
         if (PlayerManager.Instance.pauseMovement) return;
 
         forward_isPressed = true;
@@ -149,6 +160,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnBackward_Down()
     {
+        if (GameplayInputLocked) return;
         if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
@@ -186,6 +198,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnLeft_Down()
     {
+        if (GameplayInputLocked) return;
         if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
@@ -223,6 +236,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnRight_Down()
     {
+        if (GameplayInputLocked) return;
         if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
@@ -264,6 +278,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnAbilityUp_Down()
     {
+        if (GameplayInputLocked) return;
         if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
@@ -287,15 +302,12 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnAbilityUp_Up()
     {
-        if (!ButtonChecks_Movement()) { return; }
-        if (PlayerManager.Instance.pauseMovement) return;
-        if (freeCam_isPressed) return;
-
         up_isPressed = false;
     }
 
     void OnAbilityDown_Down()
     {
+        if (GameplayInputLocked) return;
         if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
@@ -319,15 +331,12 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnAbilityDown_Up()
     {
-        if (!ButtonChecks_Movement()) { return; }
-        if (PlayerManager.Instance.pauseMovement) return;
-        if (freeCam_isPressed) return;
-
         down_isPressed = false;
     }
 
     void OnAbilityLeft()
     {
+        if (GameplayInputLocked) return;
         if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
@@ -353,6 +362,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnAbilityRight_DownPress()
     {
+        if (GameplayInputLocked) return;
         if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
@@ -377,6 +387,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnAbilityRight_RelesePress()
     {
+        if (GameplayInputLocked)
+        {
+            grapplingHook_isPressed = false;
+            return;
+        }
         if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
@@ -417,6 +432,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnInteractButton_Pressed()
     {
+        if (GameplayInputLocked) return;
         if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
@@ -432,11 +448,15 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnCameraRotateX()
     {
-        if (!Run_StayingPopupDisplayExit()) return;
+        if (GameplayInputLocked && !DialogueCameraAllowed) return;
+        if (!Player_Animations.Instance.IsPickupAnimationPending && !Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
-        Run_CameraRotation_Tutorial(true);
-        Run_DemoMessage_Tutorial_End();
+        if (!DialogueCameraAllowed)
+        {
+            Run_CameraRotation_Tutorial(true);
+            Run_DemoMessage_Tutorial_End();
+        }
 
         if (!ButtonChecks_CameraRotation()) { return; }
         if (Movement.Instance.isUpdatingDarkenBlocks) { return; }
@@ -444,29 +464,17 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         MapStatsGathered.Instance.levelStats.cameraRotationTaken++;
         CameraController.Instance.RotateCameraX();
     }
-    void OnCameraRotateX_Down()
-    {
-        //FreeCam Movement
-        if (freeCam_isPressed)
-        {
-            FreeCam.Instance.SetMoveDirection(Vector3.down, true);
-        }
-    }
-    void OnCameraRotateX_Up()
-    {
-        //FreeCam Movement
-        if (freeCam_isPressed)
-        {
-            FreeCam.Instance.SetMoveDirection(Vector3.down, false);
-        }
-    }
     void OnCameraRotateY()
     {
-        if (!Run_StayingPopupDisplayExit()) return;
+        if (GameplayInputLocked && !DialogueCameraAllowed) return;
+        if (!Player_Animations.Instance.IsPickupAnimationPending && !Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
-        Run_CameraRotation_Tutorial(false);
-        Run_DemoMessage_Tutorial_End();
+        if (!DialogueCameraAllowed)
+        {
+            Run_CameraRotation_Tutorial(false);
+            Run_DemoMessage_Tutorial_End();
+        }
 
         if (!ButtonChecks_CameraRotation()) { return; }
         if (Movement.Instance.isUpdatingDarkenBlocks) { return; }
@@ -474,39 +482,36 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         MapStatsGathered.Instance.levelStats.cameraRotationTaken++;
         CameraController.Instance.RotateCameraY();
     }
-    void OnCameraRotateY_Down()
-    {
-        FreeCam.Instance.SetMoveDirection(Vector3.up, true);
-    }
-    void OnCameraRotateY_Up()
-    {
-        FreeCam.Instance.SetMoveDirection(Vector3.up, false);
-    }
-
     bool ButtonChecks_CameraRotation()
     {
+        bool dialogueCameraAllowed = DialogueCameraAllowed;
+        bool pickupAnimationPending = Player_Animations.Instance.IsPickupAnimationPending;
+        bool climbingLadder = Movement.Instance.IsClimbingLadder;
+        if (GameplayInputLocked && !dialogueCameraAllowed) return false;
         if (!Run_IntroSequance()) return false;
+        if (Movement.Instance.isRespawning || (pauseMenuManager && pauseMenuManager.isActive)) return false;
 
-        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return false; }
+        if (Movement.Instance.GetMovementState() == MovementStates.Moving && !climbingLadder) return false;
         if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
 
         if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
 
         // IMPORTANT:
-        // Allow input during pause ONLY if the camera is currently rotating.
-        if (PlayerManager.Instance.pauseGame && !CameraController.Instance.isRotating) { return false; }
+        // Stepellier dialogue allows normal camera rotation, not gameplay input.
+        if (PlayerManager.Instance.pauseGame && !CameraController.Instance.isRotating &&
+            !dialogueCameraAllowed && !pickupAnimationPending && !climbingLadder) return false;
 
-        if (PlayerManager.Instance.npcInteraction) { return false; }
+        if (PlayerManager.Instance.npcInteraction && !dialogueCameraAllowed) { return false; }
 
         // IMPORTANT:
         // Do NOT block when camera is rotating, because that is exactly when we want buffering/reversing.
         // if (CameraController.Instance.isRotating) { return false; }
 
         if (Player_Interact.Instance.isInteracting) { return false; }
-        if (Tutorial.Instance.tutorial_isRunning) { return false; }
-        if (PopUpManager.Instance.ability_Active) { return false; }
+        if (Tutorial.Instance.tutorial_isRunning && !dialogueCameraAllowed) { return false; }
+        if (PopUpManager.Instance.ability_Active && !pickupAnimationPending) return false;
         if (PopUpManager.Instance.oneTimer_Active) { return false; }
-        if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
+        if (PopUpManager.Instance.ability_CanBeClosed && !pickupAnimationPending) return false;
         if (MapManager.Instance.introSequence) { return false; }
 
         if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
@@ -536,6 +541,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnRespawn_In()
     {
+        if (GameplayInputLocked) return;
         if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
@@ -560,6 +566,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnFreeCam()
     {
+        if (GameplayInputLocked) return;
         if (!Run_StayingPopupDisplayExit()) return;
         if (Tutorial.Instance.state_Movement || Tutorial.Instance.state_CameraRotation || Tutorial.Instance.state_Respawn) return;
         if (PopUpManager.Instance.ability_Active || PopUpManager.Instance.oneTimer_Active || PopUpManager.Instance.ability_CanBeClosed) return;
@@ -590,7 +597,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
             grapplingHook_isPressed = false;
         }
 
-        if (pauseMenuManager && pauseMenuManager.pauseMenu_MainMenu_Parent.activeInHierarchy) return;
+        if (pauseMenuManager && pauseMenuManager.isActive) return;
 
 
         if (freeCam_isPressed)
@@ -617,83 +624,20 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         }
     }
 
-    void OnMouse_Down()
-    {
-        _lastMousePos = Input.mousePosition;
-        //FreeCam.Instance.BeginMouseLook();
-    }
-    void OnMouse_Up()
-    {
-        //FreeCam.Instance.EndMouseLook();
-    }
-
-    void OnFreeCam_Move(InputValue value)
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetMoveAxis(value.Get<Vector2>());
-    }
-    void OnFreeCam_Look(InputValue value)
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetLookAxis(value.Get<Vector2>());
-    }
-
-    void OnForward_FreeCam_Down()
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetMoveDirection(Vector3.forward, true);
-    }
-    void OnForward_FreeCam_Up()
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetMoveDirection(Vector3.forward, false);
-    }
-    void OnBackward_FreeCam_Down()
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetMoveDirection(Vector3.back, true);
-    }
-    void OnBackward_FreeCam_Up()
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetMoveDirection(Vector3.back, false);
-    }
-    void OnLeft_FreeCam_Down()
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetMoveDirection(Vector3.left, true);
-    }
-    void OnLeft_FreeCam_Up()
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetMoveDirection(Vector3.left, false);
-    }
-    void OnRight_FreeCam_Down()
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetMoveDirection(Vector3.right, true);
-    }
-    void OnRight_FreeCam_Up()
-    {
-        if (!freeCam_isPressed) return;
-        FreeCam.Instance.SetMoveDirection(Vector3.right, false);
-    }
-
-
     //--------------------
 
 
     void OnQuit()
     {
+        if (GameplayInputLocked) return;
         if (!Run_StayingPopupDisplayExit()) return;
-
-        if (!ButtonChecks_Other()) { return; }
 
         Key_Quit();
     }
 
     bool ButtonChecks_Movement()
     {
+        if (GameplayInputLocked) return false;
         if (Movement.Instance != null && Movement.Instance.isRespawning) return false;
         if (!Run_IntroSequance()) return false;
 
@@ -724,8 +668,9 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         return true;
     }
-    bool ButtonChecks_Other()
+    bool ButtonChecks_Other(bool allowFreeCamPause = false)
     {
+        if (GameplayInputLocked) return false;
         if (Movement.Instance != null && Movement.Instance.isRespawning) return false;
         if (!Run_IntroSequance()) return false;
 
@@ -733,11 +678,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
 
         if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
-        if (PlayerManager.Instance.pauseGame) { return false; }
+        if (PlayerManager.Instance.pauseGame && !allowFreeCamPause) { return false; }
         if (PlayerManager.Instance.npcInteraction) { return false; }
         if (CameraController.Instance.isRotating) { return false; }
         if (Player_Interact.Instance.isInteracting) { return false; }
-        if (Tutorial.Instance.tutorial_isRunning) { return false; }
+        if (Tutorial.Instance.tutorial_isRunning && !allowFreeCamPause) { return false; }
         if (PopUpManager.Instance.ability_Active) { return false; }
         if (PopUpManager.Instance.oneTimer_Active) { return false; }
         if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
@@ -761,6 +706,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     bool ButtonChecks_Other_MinusGrapplingHook()
     {
+        if (GameplayInputLocked) return false;
         if (Movement.Instance != null && Movement.Instance.isRespawning) return false;
         if (!Run_IntroSequance()) return false;
 
@@ -782,6 +728,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     bool ButtonChecks_Abilities()
     {
+        if (GameplayInputLocked) return false;
         if (Movement.Instance != null && Movement.Instance.isRespawning) return false;
         if (!Run_IntroSequance()) return false;
 
@@ -805,7 +752,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     public void Key_Quit()
     {
-        if (!ButtonChecks_Other()) { return; }
+        if (pauseMenuManager && pauseMenuManager.isActive) return;
+        if (!ButtonChecks_Other(allowFreeCamPause: freeCam_isPressed)) return;
 
         RememberCurrentlySelectedUIElement.Instance.currentSelectedUIElement = PauseMenuManager.Instance.pauseMenu_StartButton;
         PlayerManager.Instance.pauseGame = true;

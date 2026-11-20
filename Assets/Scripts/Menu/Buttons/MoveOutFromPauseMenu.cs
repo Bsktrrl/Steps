@@ -76,6 +76,5 @@ public class MoveOutFromPauseMenu : MonoBehaviour
 
 
         PauseMenuManager.Instance.ClosePauseMenu();
-        PlayerManager.Instance.pauseGame = false;
     }
 }

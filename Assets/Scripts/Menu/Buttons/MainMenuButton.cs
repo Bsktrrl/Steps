@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MainMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, ISelectHandler, IDeselectHandler
+public class MainMenuButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
     [SerializeField] Button obj_Button;
     [SerializeField] GameObject obj_Passive;
@@ -64,34 +64,6 @@ public class MainMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     //--------------------
 
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        // Highlighted
-        SetActive();
-        //Debug.Log("Highlighted");
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        // Normal (mouse left)
-        SetPassive();
-        //Debug.Log("Normal");
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        // Pressed
-
-        //Debug.Log("Pressed");
-    }
-
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        // Released (back to Highlighted if still hovered)
-        SetActive();
-        //Debug.Log("Pointer Up");
-    }
-
     public void OnSelect(BaseEventData eventData)
     {
         // Selected (keyboard/controller)
@@ -111,6 +83,12 @@ public class MainMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void SetActive()
     {
+        if (!EventSystem.current || EventSystem.current.currentSelectedGameObject != gameObject)
+        {
+            SetPassive();
+            return;
+        }
+
         obj_Passive.SetActive(false);
         obj_Active.SetActive(true);
     }

@@ -47,7 +47,7 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 
     void UpdateRaycastCeiling()
     {
-        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.ClimingGloves && !PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimingGloves) { return; }
+        if (!HasClimbingGloves()) return;
 
         RaycastCeiling();
         //CeilingGrab();
@@ -59,10 +59,6 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
     }
     public void CeilingGrab()
     {
-        // Allow pressing the same button again to EXIT ceiling grab.
-        // Only require canCeilingGrab when ENTERING ceiling grab.
-        if (!isCeilingGrabbing && !canCeilingGrab) return;
-
         if (CameraController.Instance.isRotating) return;
         if (CameraController.Instance.isCeilingRotating) return;
         if (Player_Interact.Instance.isInteracting) return;
@@ -71,19 +67,43 @@ public class Player_CeilingGrab : Singleton<Player_CeilingGrab>
 
         // Prevent exiting CeilingGrab while inside a waterfall:
         // player is under a WaterBlock and also has a WaterBlock below.
-        if (IsTryingToExitCeilingGrab() && IsInCeilingGrabWaterfall())
+        bool exiting = IsTryingToExitCeilingGrab();
+        if (exiting ? IsInCeilingGrabWaterfall() : !CanEnterCeilingGrab())
             return;
 
         Action_CeilingGrab_isPressed?.Invoke();
-        StartCoroutine(RunCeilingGrab());
+        StartCoroutine(RunCeilingGrab(exiting));
     }
-    IEnumerator RunCeilingGrab()
+
+    private bool HasClimbingGloves()
+    {
+        var stats = PlayerStats.Instance.stats;
+        return stats.abilitiesGot_Temporary.ClimingGloves || stats.abilitiesGot_Permanent.ClimingGloves;
+    }
+
+    private bool CanEnterCeilingGrab()
+    {
+        if (!HasClimbingGloves() || Movement.Instance.GetMovementState() != MovementStates.Still)
+            return false;
+
+        RaycastCeiling();
+        return canCeilingGrab;
+    }
+
+    IEnumerator RunCeilingGrab(bool exiting)
     {
         Player_Animations.Instance.Trigger_CeilingGrabAnimation();
         yield return new WaitForSeconds(Player_Animations.Instance.abilityChargeTime_CeilingGrab);
 
+        // The player or ceiling may have moved during the charge.
+        if (isCeilingRotation || exiting != IsTryingToExitCeilingGrab())
+            yield break;
+
         if (CameraController.Instance.cameraState == CameraState.GameplayCam)
         {
+            if (!CanEnterCeilingGrab())
+                yield break;
+
             isCeilingGrabbing = true;
             Movement.Instance.heightOverBlock = Movement.Instance.heightOverBlock;
 

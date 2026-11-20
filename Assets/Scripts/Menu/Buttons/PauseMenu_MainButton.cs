@@ -5,35 +5,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class PauseMenu_MainButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, ISelectHandler, IDeselectHandler
+public class PauseMenu_MainButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
     public static event Action Action_ButtonIsSelected;
 
 
     //--------------------
 
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        SetActiveMainButton();
-        Action_ButtonIsSelected_IsSet();
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-
-    }
-
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        SetActiveMainButton();
-        Action_ButtonIsSelected_IsSet();
-    }
 
     public void OnSelect(BaseEventData eventData)
     {

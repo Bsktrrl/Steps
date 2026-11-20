@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class LevelSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, ISelectHandler, IDeselectHandler
+public class LevelSelectButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
     [Header("Button")]
     [SerializeField] Button obj_Button;
@@ -16,6 +16,7 @@ public class LevelSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
     [SerializeField] GameObject obj_CannotBePlayed_Passive;
 
     [Header("Is First Level")]
+    // Retain the existing Inspector setting, but do not use it as a visual selection state.
     [SerializeField] bool isFirstSelected;
 
     int coditionsCounter;
@@ -32,45 +33,30 @@ public class LevelSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         menuLevelInfo = FindAnyObjectByType<MenuLevelInfo>();
 
-        if (isFirstSelected)
-        {
-            SetActive();
-        }
-        else
-        {
-            SetPassive();
-        }
+        RefreshSelectionVisual();
     }
 
     private void OnEnable()
     {
-        if (!isFirstSelected)
+        RefreshSelectionVisual();
+    }
+
+    bool IsCurrentlySelected()
+    {
+        return EventSystem.current != null && EventSystem.current.currentSelectedGameObject == gameObject;
+    }
+
+    void RefreshSelectionVisual()
+    {
+        if (IsCurrentlySelected())
+            SetActive();
+        else
             SetPassive();
     }
 
 
     //--------------------
 
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        SetActive();
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        SetPassive();
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-
-    }
-
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        SetActive();
-    }
 
     public void OnSelect(BaseEventData eventData)
     {
@@ -144,6 +130,13 @@ public class LevelSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void SetActive()
     {
+        // A button may only display the active state when it actually has UI focus.
+        if (!IsCurrentlySelected())
+        {
+            SetPassive();
+            return;
+        }
+
         //print("1. SetActive: " + gameObject.name);
 
         //Can be played, and is selected
@@ -179,7 +172,7 @@ public class LevelSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
             obj_CannotBePlayed_Passive.SetActive(false);
         }
 
-        //Can NOT be played, and is NOT selected
+        //Can NOT be played, but is NOT selected
         else
         {
             obj_CanBePlayed_Active.SetActive(false);

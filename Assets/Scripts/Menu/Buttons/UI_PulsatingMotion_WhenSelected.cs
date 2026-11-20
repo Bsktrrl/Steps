@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, ISelectHandler, IDeselectHandler
+public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
     [Header("Sprites (Optional)")]
     public Image backgroundImage;
@@ -62,14 +62,8 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
 
     private void OnEnable()
     {
-        if (isStartButton)
-        {
-            isActive = true;
-        }
-        else
-        {
-            isActive = false;
-        }
+        isActive = EventSystem.current && EventSystem.current.currentSelectedGameObject == gameObject;
+        performed_SetPassive = false;
     }
     private void OnDisable()
     {
@@ -83,7 +77,7 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
 
     public void EnableStartButton()
     {
-        if (isStartButton)
+        if (isStartButton && EventSystem.current && EventSystem.current.currentSelectedGameObject == gameObject)
         {
             isActive = true;
         }
@@ -93,30 +87,6 @@ public class UI_PulsatingMotion_WhenSelected : MonoBehaviour, IPointerEnterHandl
     //--------------------
 
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        // Highlighted
-        isActive = true;
-        //print("1. OnPointerEnter - true: " + gameObject.name);
-    }
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        // Normal (mouse left)
-        isActive = false;
-        //print("2. OnPointerExit - false: " + gameObject.name);
-    }
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        // Pressed
-        isActive = true;
-        //print("3. OnPointerDown - true: " + gameObject.name);
-    }
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        // Released (back to Highlighted if still hovered)
-        isActive = false;
-        //print("4. OnPointerUp - false: " + gameObject.name);
-    }
     public void OnSelect(BaseEventData eventData)
     {
         // Selected (keyboard/controller)

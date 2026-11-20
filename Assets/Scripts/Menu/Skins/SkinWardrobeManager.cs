@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
@@ -15,6 +16,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     [Header("Player Model")]
     [SerializeField] GameObject playerDisplayObject;
+    [SerializeField] RawImage previewImage;
 
     [Header("Colors")]
     public Sprite sprite_Inactive;
@@ -136,7 +138,18 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     #endregion
 
-    Movement movement;
+    public static event Action<bool> PreviewVisibilityChanged;
+
+    private const float PreviewRotationSpeed = 110f;
+    private InputAction previewRotation;
+    private Transform previewCamera;
+    private RenderTexture previewTexture;
+    private Vector3 previewCameraStartPosition;
+    private Quaternion previewCameraStartRotation;
+    private GameObject visibleSkin;
+    private GameObject visibleHat;
+    private bool initializedSkinPreview;
+    private bool initializedHatPreview;
 
     public SkinType selectedSkinType;
     public HatType selectedHatType;
@@ -146,15 +159,14 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     //--------------------
 
 
-    private void Start()
-    {
-        movement = FindObjectOfType<Movement>();
-        selectedSkinType = SkinType.Default;
-    }
-
     private void Update()
     {
-        //Hat_HatUpdate();
+        if (!previewCamera || previewRotation == null) return;
+
+        float direction = previewRotation.ReadValue<float>();
+        if (!Mathf.Approximately(direction, 0f))
+            previewCamera.RotateAround(playerDisplayObject.transform.position, Vector3.up,
+                direction * PreviewRotationSpeed * Time.unscaledDeltaTime);
     }
 
     private void OnEnable()
@@ -162,7 +174,6 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
         UpdateStartButton();
         UpdateEssenceDisplay();
 
-        UpdatePlayerBodyDisplay();
         UpdatePlayerHatDisplay();
 
         UpdateWardrobe_IfSourceBlockIsPickedUp();
@@ -173,12 +184,56 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
         }
 
         DataManager.Action_dataHasLoaded += UpdateStartButton;
+
+        if (playerDisplayObject && playerDisplayObject.transform.parent)
+        {
+            Camera camera = playerDisplayObject.transform.parent.GetComponentInChildren<Camera>();
+            if (camera)
+            {
+                if (previewImage && camera.targetTexture)
+                {
+                    if (!previewTexture)
+                        previewTexture = Instantiate(camera.targetTexture);
+
+                    camera.targetTexture = previewTexture;
+                    previewImage.texture = previewTexture;
+                }
+
+                previewCamera = camera.transform;
+                previewCameraStartPosition = previewCamera.localPosition;
+                previewCameraStartRotation = previewCamera.localRotation;
+            }
+        }
+
+        if (previewRotation == null)
+        {
+            previewRotation = new InputAction("Rotate Wardrobe Preview", InputActionType.Value, expectedControlType: "Axis");
+            previewRotation.AddCompositeBinding("1DAxis")
+                .With("Negative", "<Keyboard>/q")
+                .With("Positive", "<Keyboard>/e");
+            previewRotation.AddBinding("<Gamepad>/rightStick/x", processors: "axisDeadzone(min=0.25)");
+        }
+        previewRotation.Enable();
+        PreviewVisibilityChanged?.Invoke(true);
     }
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= UpdateStartButton;
+        previewRotation?.Disable();
+        if (previewCamera)
+        {
+            previewCamera.SetLocalPositionAndRotation(previewCameraStartPosition, previewCameraStartRotation);
+            previewCamera = null;
+        }
+        PreviewVisibilityChanged?.Invoke(false);
     }
 
+    private void OnDestroy()
+    {
+        previewRotation?.Dispose();
+        if (previewTexture)
+            Destroy(previewTexture);
+    }
 
     //--------------------
 
@@ -359,22 +414,23 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     public void UpdatePlayerBodyDisplay()
     {
-        //print("1. UpdatePlayerBodyDisplay: " + DataManager.Instance.skinsInfo_Store.activeSkinType);
+        GameObject skin = GetTempSkinSelectedObject();
+        SetPreviewSkin(skin == skin_Default && selectedSkinType != SkinType.Default ? null : skin);
+        Hat_HatUpdate();
+    }
 
-        HideAllSkins();
-
-        GameObject tempObj = GetTempSkinSelectedObject();
-
-        if (tempObj != null)
-            tempObj.SetActive(true);
-
-        if (selectedSkinType != SkinType.Default /*&& selectedSkinType != SkinType.None*/ /*DataManager.Instance.skinsInfo_Store.activeSkinType != SkinType.Default && DataManager.Instance.skinsInfo_Store.activeSkinType != SkinType.None*/)
+    private void SetPreviewSkin(GameObject skin)
+    {
+        if (!initializedSkinPreview)
         {
-            if (skin_Default)
-                skin_Default.SetActive(false);
+            HideAllSkins();
+            initializedSkinPreview = true;
         }
 
-        Hat_HatUpdate();
+        if (visibleSkin == skin) return;
+        if (visibleSkin) visibleSkin.SetActive(false);
+        visibleSkin = skin;
+        if (visibleSkin) visibleSkin.SetActive(true);
     }
     void HideAllSkins()
     {
@@ -457,36 +513,31 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     }
     public void UpdatePlayerHatDisplay()
     {
-        HideAllSkins();
-        HideAllHats();
-
-        //Skin
-        Skin_HatUpdate();
-
-        //Hat
+        selectedSkin = GetEquippedSkinSelectedObject();
+        SetPreviewSkin(selectedSkin);
         Hat_HatUpdate();
     }
-    void Skin_HatUpdate()
-    {
-        GameObject tempSkinObj = GetEquippedSkinSelectedObject();
 
-        if (tempSkinObj != null)
-        {
-            tempSkinObj.SetActive(true);
-        }
-    }
     public void Hat_HatUpdate()
     {
-        GameObject tempHatObj = GetHatSelectedObject();
-
-        if (tempHatObj != null)
+        if (!initializedHatPreview)
         {
-            MoveHatObjectsToSelectedSkin();
-            tempHatObj.SetActive(true);
+            HideAllHats();
+            initializedHatPreview = true;
         }
+
+        GameObject hat = GetHatSelectedObject();
+        if (hat)
+            MoveHatObjectsToSelectedSkin();
+
+        if (visibleHat == hat) return;
+        if (visibleHat) visibleHat.SetActive(false);
+        visibleHat = hat;
+        if (visibleHat) visibleHat.SetActive(true);
     }
     public void HideAllHats()
     {
+        visibleHat = null;
         if (hat_Floriel)
             hat_Floriel.SetActive(false);
         if (hat_Granith)
@@ -1413,9 +1464,12 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
 
     public void MoveHatObjectsToSelectedSkin()
     {
-        if (selectedSkin)
+        if (selectedSkin && hat_Parent)
         {
-            hat_Parent.transform.SetParent(selectedSkin.transform.Find("Armature_Player/Root"), true);
+            Transform root = selectedSkin.transform.Find("Armature_Player/Root");
+            if (hat_Parent.transform.parent == root) return;
+
+            hat_Parent.transform.SetParent(root, true);
             hat_Parent.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
         }
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class PauseMenu_AbilityButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, ISelectHandler, IDeselectHandler
+public class PauseMenu_AbilityButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
     public static event Action Action_AbilityButtonIsSelected;
 
@@ -18,30 +18,6 @@ public class PauseMenu_AbilityButton : MonoBehaviour, IPointerEnterHandler, IPoi
     //--------------------
 
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        ShowAbilityDisplay();
-        SetActiveAbilityButton();
-        Action_AbilityButtonIsSelected_IsSet();
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        HideAbilityDisplay();
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        HideAbilityDisplay();
-    }
-
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        ShowAbilityDisplay();
-        SetActiveAbilityButton();
-        Action_AbilityButtonIsSelected_IsSet();
-    }
-
     public void OnSelect(BaseEventData eventData)
     {
         ShowAbilityDisplay();
@@ -50,6 +26,11 @@ public class PauseMenu_AbilityButton : MonoBehaviour, IPointerEnterHandler, IPoi
     }
 
     public void OnDeselect(BaseEventData eventData)
+    {
+        HideAbilityDisplay();
+    }
+
+    private void OnDisable()
     {
         HideAbilityDisplay();
     }

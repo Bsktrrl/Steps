@@ -124,6 +124,8 @@ public class Movement : Singleton<Movement>
     public Vector3 ladderEndPos_Down;
     public bool isMovingOnLadder_Up;
     public bool isMovingOnLadder_Down;
+    public bool IsClimbingLadder => isMovingOnLadder_Up || isMovingOnLadder_Down;
+    public Vector3 LadderExitDirection { get; private set; }
 
     Vector3 ladderClimbPos_Start;
     Vector3 ladderClimbPos_End;
@@ -275,6 +277,13 @@ public class Movement : Singleton<Movement>
         if (isRespawning)
             return;
 
+        bool gameplayInputLocked = Map.GameplayInputLocked ||
+            Anims.IsPickupAnimationPending || zeroStepRespawnStarted;
+        // Allow a step already in progress to settle, but do not start another.
+        if (gameplayInputLocked && movementStates != MovementStates.Moving &&
+            movementStates != MovementStates.Falling)
+            return;
+
         if (Tutorial.Instance.tutorial_isRunning && Inputs.tutorialMovementBlocker)
             return;
 
@@ -289,6 +298,9 @@ public class Movement : Singleton<Movement>
             StartCoroutine(StartDrowning());
         }
 
+        if (isDrowning)
+            return;
+
         switch (GetMovementState())
         {
             case MovementStates.Moving:
@@ -302,17 +314,21 @@ public class Movement : Singleton<Movement>
                 if (IsFallingWithCarrierBlockActive())
                 {
                     UpdateBlocks();
-                    MovementSetup_FallingWithCarrierBlock();
+                    if (!gameplayInputLocked)
+                        MovementSetup_FallingWithCarrierBlock();
                 }
                 break;
 
             default:
-                if (!Tutorial.Instance.tutorial_isRunning && PM.pauseGame)
+                if (gameplayInputLocked || (!Tutorial.Instance.tutorial_isRunning && PM.pauseGame))
                     return;
 
                 MovementSetup();
                 break;
         }
+
+        if (gameplayInputLocked)
+            return;
 
         if (!Block_Moveable.AnyBlockMoving &&
             Inputs.grapplingHook_isPressed &&
@@ -360,7 +376,7 @@ public class Movement : Singleton<Movement>
         Action_StepTaken_Late += RunIceGliding;
         Action_StepTaken_Late += CheckIfSwimming;
 
-        CameraController.Action_RotateCamera_End += UpdateBlocks;
+        CameraController.Action_RotateCamera_End += UpdateBlocksAfterCameraRotation;
 
         Player_KeyInputs.Action_WalkButton_isReleased += WalkButtonIsReleased;
 
@@ -389,7 +405,7 @@ public class Movement : Singleton<Movement>
         Action_StepTaken_Late -= RunIceGliding;
         Action_StepTaken_Late -= CheckIfSwimming;
 
-        CameraController.Action_RotateCamera_End -= UpdateBlocks;
+        CameraController.Action_RotateCamera_End -= UpdateBlocksAfterCameraRotation;
 
         Player_KeyInputs.Action_WalkButton_isReleased -= WalkButtonIsReleased;
 
@@ -728,26 +744,26 @@ public class Movement : Singleton<Movement>
 
     private bool ShouldChainImmediatelyAfterStep()
     {
+        if (isRespawning || isDrowning || IsClimbingLadder || zeroStepRespawnStarted ||
+            Anims.IsPickupAnimationPending || Map.GameplayInputLocked || Block_Moveable.AnyBlockMoving ||
+            (Tutorial.Instance.tutorial_isRunning ? Inputs.tutorialMovementBlocker : PM.pauseGame))
+            return false;
+
         // Suppress previews only when the HELD direction has a valid next
         // move, not merely because some other adjacent block is available.
         foreach (Vector3 localDir in LocalDirections)
         {
-            if (InputHeldOrPressedForDirection(localDir) &&
-                HasValidTarget(GetMoveOptionForDirection(localDir)))
+            MoveOptions option = GetMoveOptionForDirection(localDir);
+            if (InputPressedForDirection(localDir) && HasValidTarget(option) && CanAfford(option.targetBlock))
                 return true;
         }
 
         // SwiftSwim chain:
         // Suppress visuals if the player is holding up/down and there is another
         // SwiftSwim water block ready.
-        if (!CeilingGrab.isCeilingGrabbing &&
-            IsAnySwiftSwimButtonStillPressed() &&
-            HasAnyImmediateSwiftSwimMoveFromCurrentState())
-        {
-            return true;
-        }
-
-        return false;
+        return !CeilingGrab.isCeilingGrabbing &&
+            ((Inputs.up_isPressed && HasValidTarget(moveToBlock_SwiftSwimUp)) ||
+             (Inputs.down_isPressed && HasValidTarget(moveToBlock_SwiftSwimDown)));
     }
 
     private void RefreshDarkeningNow()
@@ -1493,17 +1509,6 @@ public class Movement : Singleton<Movement>
             ClearMoveTarget(moveOption);
     }
 
-    private bool IsAnySwiftSwimButtonStillPressed()
-    {
-        return Inputs.up_isPressed || Inputs.down_isPressed;
-    }
-
-    private bool HasAnyImmediateSwiftSwimMoveFromCurrentState()
-    {
-        return HasValidTarget(moveToBlock_SwiftSwimUp) ||
-               HasValidTarget(moveToBlock_SwiftSwimDown);
-    }
-
     private bool ShouldChainSwiftSwimImmediatelyAfterStep()
     {
         if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
@@ -1526,6 +1531,9 @@ public class Movement : Singleton<Movement>
 
     private bool TryContinueHeldSwiftSwimImmediately()
     {
+        if (Map.GameplayInputLocked)
+            return false;
+
         if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
             return false;
 
@@ -1684,6 +1692,16 @@ public class Movement : Singleton<Movement>
         return false;
     }
 
+    public bool IsInWaterfall()
+    {
+        if (HasWaterDirectlyAbove(blockStandingOn))
+            return true;
+
+        // The standing-block ray can miss between stacked blocks during a SwiftSwim move.
+        return isSwiftSwim && (HasWaterDirectlyAbove(currentMoveStartBlock) ||
+                               HasWaterDirectlyAbove(currentMoveTargetBlock));
+    }
+
     private bool HasWaterDirectlyAbove(GameObject block)
     {
         return block != null &&
@@ -1694,6 +1712,9 @@ public class Movement : Singleton<Movement>
 
     private bool TryContinueHeldHorizontalWaterMovementImmediately()
     {
+        if (Map.GameplayInputLocked)
+            return false;
+
         if (movementStates == MovementStates.Moving || movementStates == MovementStates.Falling)
             return false;
 
@@ -1703,7 +1724,7 @@ public class Movement : Singleton<Movement>
         if (!TryGetStandingInfo(out BlockInfo standingInfo))
             return false;
 
-        if (standingInfo.blockElement != BlockElement.Water)
+        if (standingInfo.blockElement != BlockElement.Water || !PlayerHasSwimAbility())
             return false;
 
         // Only use this smoother chaining in water columns.
@@ -1748,7 +1769,7 @@ public class Movement : Singleton<Movement>
 
     private void PerformVerticalAbilityMovement(MoveOptions option, MovementStates moveState, float movementSpeed)
     {
-        if (isMoving || isRespawning || isMovingOnLadder_Up || isMovingOnLadder_Down || !HasValidTarget(option))
+        if (isMoving || isRespawning || isDrowning || isMovingOnLadder_Up || isMovingOnLadder_Down || !HasValidTarget(option))
             return;
 
         isMoving = true;
@@ -1858,6 +1879,12 @@ public class Movement : Singleton<Movement>
         EnsureCurrentTargetNumbersVisible();
     }
 
+    private void UpdateBlocksAfterCameraRotation()
+    {
+        if (!IsClimbingLadder)
+            UpdateAvailableMovementBlocks();
+    }
+
     public void UpdateBlocks()
     {
         isUpdatingDarkenBlocks = true;
@@ -1887,7 +1914,6 @@ public class Movement : Singleton<Movement>
         }
 
         isUpdatingDarkenBlocks = false;
-        Cam.isRotating = false;
     }
 
     public void UpdateBlockStandingOn()
@@ -2048,6 +2074,9 @@ public class Movement : Singleton<Movement>
 
         if (standingInfo.blockType == BlockType.Slope)
         {
+            if (Map.GameplayInputLocked)
+                return;
+
             if (slopeAutoExitInProgress && blockStandingOn == slopeAutoExitSourceBlock)
                 return;
 
@@ -2992,7 +3021,7 @@ public class Movement : Singleton<Movement>
     {
         yield return new WaitForSeconds(Anims.abilityChargeTime_GrapplingHook);
 
-        if (!Inputs.grapplingHook_isPressed)
+        if (!Inputs.grapplingHook_isPressed || Map.GameplayInputLocked)
             yield break;
 
         Player_GraplingHook.Instance.isGrapplingHooking = true;
@@ -3148,6 +3177,19 @@ public class Movement : Singleton<Movement>
 
             grapplingObjects.RemoveAt(i);
         }
+    }
+
+    public void CancelCutsceneGrapplingTarget()
+    {
+        // Never interrupt a grapple already moving the player to its target.
+        if (!performGrapplingHooking && !isGrapplingHooking &&
+            (Inputs.grapplingHook_isPressed || grapplingTargetHasBeenSet ||
+             (Player_GraplingHook.Instance != null && Player_GraplingHook.Instance.isGrapplingHooking)))
+        {
+            ResetGrapplingHookMovementState();
+        }
+
+        walkAnimationCheck = false;
     }
 
     private void ResetGrapplingHookMovementState()
@@ -3802,7 +3844,7 @@ public class Movement : Singleton<Movement>
 
     void MovementSetup()
     {
-        if (isMoving) return;
+        if (isMoving || Anims.IsPickupAnimationPending || zeroStepRespawnStarted) return;
         if (Block_Moveable.AnyBlockMoving) return;
 
         if (ShouldBlockMovementInputBecauseOfZeroSteps())
@@ -3996,7 +4038,7 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(MoveOptions canMoveBlock, MovementStates moveState, float movementSpeed, ref bool isMovingFlag)
     {
-        if (isMoving || isRespawning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+        if (isMoving || isRespawning || isDrowning || isMovingOnLadder_Up || isMovingOnLadder_Down)
             return;
 
         if (canMoveBlock == null || canMoveBlock.targetBlock == null || !TryGetBlockInfo(canMoveBlock.targetBlock, out BlockInfo _) || StatsRoot.stats == null)
@@ -4023,7 +4065,7 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(MoveOptions canMoveBlock, MovementStates moveState, float movementSpeed)
     {
-        if (isMoving || isRespawning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+        if (isMoving || isRespawning || isDrowning || isMovingOnLadder_Up || isMovingOnLadder_Down)
             return;
 
         if (canMoveBlock == null || canMoveBlock.targetBlock == null || !TryGetBlockInfo(canMoveBlock.targetBlock, out BlockInfo _) || StatsRoot.stats == null)
@@ -4051,7 +4093,7 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(Vector3 targetPos)
     {
-        if (isMoving || isRespawning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+        if (isMoving || isRespawning || isDrowning || isMovingOnLadder_Up || isMovingOnLadder_Down)
             return;
 
         if (!TryGetStandingInfo(out BlockInfo standingInfo))
@@ -4068,7 +4110,7 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(Vector3 targetPos, float movementSpeed)
     {
-        if (isMoving || isRespawning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+        if (isMoving || isRespawning || isDrowning || isMovingOnLadder_Up || isMovingOnLadder_Down)
             return;
 
         isMoving = true;
@@ -4337,6 +4379,11 @@ public class Movement : Singleton<Movement>
 
     void MovingAnimation(MoveOptions canMoveBlock)
     {
+        // Ascend and Descend already play their own animation. Leave the
+        // walking trigger available for the first step after landing.
+        if (isAscending || isDescending)
+            return;
+
         if (canMoveBlock == null || canMoveBlock.targetBlock == null || !TryGetBlockInfo(canMoveBlock.targetBlock, out BlockInfo targetInfo))
             return;
 
@@ -4523,6 +4570,9 @@ public class Movement : Singleton<Movement>
 
     public void IceGlideMovement(bool canIceGlide)
     {
+        if (Map.GameplayInputLocked || Anims.IsPickupAnimationPending || zeroStepRespawnStarted)
+            return;
+
         if (!TryGetStandingInfo(out BlockInfo standingInfo))
             return;
 
@@ -4779,10 +4829,10 @@ public class Movement : Singleton<Movement>
 
         isMovingOnLadder_Up = false;
         movementStates = MovementStates.Still;
-        PM.pauseGame = false;
+        PM.pauseGame = Cam.isRotating || Anims.IsPickupAnimationPending;
 
         FindLadderExitBlock();
-        Action_StepTaken_Invoke();
+        CompleteLadderStep(dir);
     }
 
     IEnumerator PerformLadderMovement_Down(
@@ -4885,18 +4935,6 @@ public class Movement : Singleton<Movement>
 
         ResetLadderTargets();
 
-        // Preserve the existing Root-block behaviour.
-        if (exitBlockDown != null &&
-            exitBlockDown.GetComponent<BlockInfo>() &&
-            exitBlockDown
-                .GetComponent<BlockInfo>()
-                .blockElement == BlockElement.Root &&
-            exitBlockDown.GetComponentInChildren<Block_Root>())
-        {
-            exitBlockDown
-                .GetComponentInChildren<Block_Root>()
-                .ActivateRoots();
-        }
 
         if (!fallFromLadderEnd)
         {
@@ -4904,7 +4942,7 @@ public class Movement : Singleton<Movement>
         }
 
         isMovingOnLadder_Down = false;
-        PM.pauseGame = false;
+        PM.pauseGame = Cam.isRotating || Anims.IsPickupAnimationPending;
 
         if (fallFromLadderEnd)
         {
@@ -4927,7 +4965,20 @@ public class Movement : Singleton<Movement>
         movementStates = MovementStates.Still;
 
         FindLadderExitBlock();
-        Action_StepTaken_Invoke();
+        CompleteLadderStep(-targetPosObj.transform.forward);
+    }
+
+    private void CompleteLadderStep(Vector3 exitDirection)
+    {
+        LadderExitDirection = exitDirection;
+        try
+        {
+            Action_StepTaken_Invoke();
+        }
+        finally
+        {
+            LadderExitDirection = Vector3.zero;
+        }
     }
 
     void ResetLadderTargets()
@@ -5291,15 +5342,6 @@ public class Movement : Singleton<Movement>
         UpdateAvailableMovementBlocks();
     }
 
-    IEnumerator RespawnPlayerWhenReachingZeroSteps_Delay(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
-
-        RespawnPlayer();
-
-        Action_StepTaken_Late_Invoke();
-    }
-
     private void HandleZeroStepsAfterLanding()
     {
         Action_StepTaken_Late_Invoke();
@@ -5321,24 +5363,7 @@ public class Movement : Singleton<Movement>
             return;
         }
 
-        Interactable_Pickup pickup = GetPickupOnStandingBlock();
-
-        if (pickup != null && !pickup.goal)
-        {
-            if (pickup.abilityReceived != Abilities.None)
-            {
-                StartCoroutine(RespawnAfterAbilityPopupHasClosed(zeroStepRespawnDelay + abilityRespawnExtraDelay));
-                return;
-            }
-
-            if (IsRespawnDelayingItemPickup(pickup))
-            {
-                StartCoroutine(RespawnAfterPickupHasFinished(Mathf.Max(0f, zeroStepRespawnDelay - pickupRespawnDelayReduction)));
-                return;
-            }
-        }
-
-        StartCoroutine(RespawnPlayerWhenReachingZeroSteps_Delay(zeroStepRespawnDelay));
+        StartCoroutine(ResolveZeroStepsAfterPickup(GetPickupOnStandingBlock()));
     }
     private bool IsRespawnDelayingItemPickup(Interactable_Pickup pickup)
     {
@@ -5349,23 +5374,32 @@ public class Movement : Singleton<Movement>
                pickup.itemReceived == Items.Footprint ||
                pickup.itemReceived == Items.Skin;
     }
-    private IEnumerator RespawnAfterAbilityPopupHasClosed(float waitTimeAfterPopupClosed)
+    private IEnumerator ResolveZeroStepsAfterPickup(Interactable_Pickup pickup)
     {
+        // Let the landing's physics trigger start the pickup even if the
+        // step event ran before the trigger callback.
+        yield return new WaitForFixedUpdate();
         yield return null;
 
-        while (PopUpManager.Instance != null &&
-               !PopUpManager.Instance.ability_Active)
+        float delay = zeroStepRespawnDelay;
+        if (PopUpManager.Instance.ability_Active || (pickup != null && pickup.abilityReceived != Abilities.None))
+            delay += abilityRespawnExtraDelay;
+        else if (Anims.IsPickupAnimationPending || IsRespawnDelayingItemPickup(pickup))
+            delay = Mathf.Max(0f, delay - pickupRespawnDelayReduction);
+
+        while (Anims.IsPickupAnimationPending || PopUpManager.Instance.ability_Active || delay > 0f)
         {
             yield return null;
+            if (!Anims.IsPickupAnimationPending && !PopUpManager.Instance.ability_Active)
+                delay -= Time.deltaTime;
         }
 
-        while (PopUpManager.Instance != null &&
-               PopUpManager.Instance.ability_Active)
+        if (StatsRoot.stats.steps_Current > 0 || IsStandingOnCheckpoint() || IsStandingOnGoal())
         {
-            yield return null;
+            zeroStepRespawnStarted = false;
+            blockMovementInputUntilReleased = false;
+            yield break;
         }
-
-        yield return new WaitForSeconds(waitTimeAfterPopupClosed);
 
         RespawnPlayer();
     }
@@ -5403,32 +5437,6 @@ public class Movement : Singleton<Movement>
         }
 
         return null;
-    }
-    private IEnumerator RespawnAfterPickupHasFinished(float waitTimeAfterPickup)
-    {
-        bool pickupFinished = false;
-
-        void OnPickupFinished()
-        {
-            pickupFinished = true;
-        }
-
-        Action_PickupAnimation_Complete += OnPickupFinished;
-
-        float timer = 0f;
-        float maxWaitTime = 2.5f;
-
-        while (!pickupFinished && timer < maxWaitTime)
-        {
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-        Action_PickupAnimation_Complete -= OnPickupFinished;
-
-        yield return new WaitForSeconds(waitTimeAfterPickup);
-
-        RespawnPlayer();
     }
     private Interactable_Pickup GetPickupOnStandingBlock()
     {
@@ -5478,6 +5486,13 @@ public class Movement : Singleton<Movement>
     {
         isDrowning = true;
         PlayerManager.Instance.PauseMovement();
+
+        if (Inputs.grapplingHook_isPressed ||
+            (Player_GraplingHook.Instance != null && Player_GraplingHook.Instance.isGrapplingHooking))
+        {
+            Inputs.grapplingHook_isPressed = false;
+            ResetGrapplingHookMovementState();
+        }
 
         yield return new WaitForSeconds(0.15f);
 
@@ -5683,7 +5698,12 @@ public class Movement : Singleton<Movement>
 
         yield return new WaitForSeconds(waitTime * 30f);
 
-        // Explicitly enforce the captured checkpoint again, before publishing
+        // PlayerManager selects the HUB spawn point after save data is loaded.
+        // The initial respawn may have captured the old position before that.
+        if (!isRespawningFirstTime && Map.levelName == LevelNames.HUB)
+            checkpointPosition = Map.playerStartPos;
+
+        // Explicitly enforce the checkpoint again, before publishing
         // respawn completion; no older coroutine can move the root now.
         transform.position = checkpointPosition;
         previousPosition = checkpointPosition;
@@ -5695,6 +5715,9 @@ public class Movement : Singleton<Movement>
         SetMovementState(MovementStates.Still);
         RespawnPlayerLate_Action();
 
+        bool keepPauseMenuOpen = PauseMenuManager.Instance != null &&
+            PauseMenuManager.Instance.isActive;
+
         isRespawning = false;
         isDrowning = false;
         isSlopeFalling = false;
@@ -5704,7 +5727,11 @@ public class Movement : Singleton<Movement>
 
         // No StopAllCoroutines here: the preceding cancellation occurred at
         // respawn entry. Finishing the reset must not cancel a new operation.
-        PlayerManager.Instance.UnpauseGame();
+        if (keepPauseMenuOpen)
+            PlayerManager.Instance.PauseGame();
+        else
+            PlayerManager.Instance.UnpauseGame();
+
         PlayerManager.Instance.UnpauseMovement();
         UpdateAvailableMovementBlocks();
     }

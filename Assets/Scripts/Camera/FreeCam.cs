@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,6 +7,9 @@ public class FreeCam : Singleton<FreeCam>
 {
     [Header("References")]
     [SerializeField] public CinemachineCamera CM_FreeCam;
+    [SerializeField] private CanvasGroup freeCamUI;
+
+    private const float UIFadeDuration = 0.25f;
 
     [Header("Switching")]
     [Tooltip("If true, the FreeCam GameObject will be enabled/disabled when entering/exiting.")]
@@ -15,59 +18,28 @@ public class FreeCam : Singleton<FreeCam>
     [Tooltip("Extra priority added to FreeCam while active (higher wins).")]
     [SerializeField] private int freeCamPriorityBoost = 10;
 
-    [Header("Movement")]
-    [Tooltip("Units per second.")]
-    [SerializeField] private float moveSpeed = 6f;
-
-    [Tooltip("If true, forward/back/strafe move in the camera's look direction (flycam style). If false, movement is flattened to world up.")]
-    [SerializeField] private bool moveInLookDirection = true;
-
-    [Tooltip("How quickly the camera accelerates towards target speed (bigger = snappier).")]
-    [SerializeField] private float acceleration = 18f;
-
-    [Tooltip("How quickly the camera slows down when input stops (bigger = snappier).")]
-    [SerializeField] private float deceleration = 26f;
-
-    [Tooltip("If true, uses unscaled time (recommended if you pause with Time.timeScale = 0).")]
+    [Header("Flight")]
+    [Min(0.1f)] public float moveSpeed = 6f;
+    public bool moveInLookDirection = true;
+    [Tooltip("Higher values make the camera reach its desired velocity sooner.")]
+    [Min(0.1f)] public float acceleration = 16f;
+    [Tooltip("Higher values make the camera stop sooner when input is released.")]
+    [Min(0.1f)] public float deceleration = 28f;
+    [Min(1f)] public float boostMultiplier = 2.5f;
     [SerializeField] private bool useUnscaledTime = true;
 
-    [Header("Polish (Editor-like Feel)")]
-    [Tooltip("Extra multiplier when sprint/boost is held.")]
-    [SerializeField] private float boostMultiplier = 3.0f;
+    [Header("Scroll Speed")]
+    public bool allowScrollSpeedAdjust = true;
+    [Min(0f)] public float scrollSpeedStep = 0.75f;
+    [Min(0.1f)] public float minMoveSpeed = 1f;
+    [Min(0.1f)] public float maxMoveSpeed = 20f;
 
-    [Tooltip("How quickly boost turns on/off (bigger = snappier).")]
-    [SerializeField] private float boostResponse = 12f;
-
-    [Tooltip("Extra glide time after releasing input (seconds). 0 = none.")]
-    [SerializeField] private float glideTime = 0.12f;
-
-    [Tooltip("How strongly the glide is damped. Higher = stops sooner.")]
-    [SerializeField] private float glideDamping = 14f;
-
-    [Tooltip("Minimum input magnitude before movement is considered active.")]
-    [SerializeField] private float inputEpsilon = 0.001f;
-
-    [Header("Optional: Scroll speed adjust (like Scene View)")]
-    [SerializeField] private bool allowScrollSpeedAdjust = true;
-    [SerializeField] private float scrollSpeedStep = 0.75f;
-    [SerializeField] private float minMoveSpeed = 1f;
-    [SerializeField] private float maxMoveSpeed = 30f;
-
-    [Header("Collision")]
-    [Tooltip("How far ahead to probe for obstacles when moving.")]
-    [SerializeField] private float collisionProbeDistance = 2f;
-
-    [Tooltip("Radius for the sphere cast used to stop at walls.")]
-    [SerializeField] private float collisionProbeRadius = 0.2f;
-
-    [Tooltip("Small offset so we stop slightly before the hit surface.")]
-    [SerializeField] private float collisionStopOffset = 0.02f;
-
-    [Tooltip("Ignore trigger colliders.")]
+    [Header("Flight Collision")]
+    [Min(0.01f)] public float collisionProbeRadius = 0.2f;
+    [Min(0f)] public float collisionStopOffset = 0.03f;
+    [SerializeField] private LayerMask obstacleLayers = Physics.DefaultRaycastLayers;
     [SerializeField] private bool ignoreTriggers = true;
-
-    [Header("Pass-through")]
-    [Tooltip("Add FreeCamPassThrough to prefab roots you want to allow passing through.")]
+    [Tooltip("Allow flight through objects marked with FreeCamPassThrough.")]
     [SerializeField] private bool usePassThroughMarker = true;
 
     [Header("Return Pan (EndFreeCam)")]
@@ -82,78 +54,43 @@ public class FreeCam : Singleton<FreeCam>
     [SerializeField] private float enterFadeDuration = 0.03f;
     [SerializeField] private AnimationCurve enterFadeEase = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
-    [Header("Rotation")]
-    [SerializeField] private InputType inputType = InputType.Keyboard;
-    public InputType CurrentInputType => inputType;
-
-    [Tooltip("Degrees per pixel (mouse).")]
-    [SerializeField] private float mouseSensitivity = 0.15f;
-
+    [Header("Flight Look")]
+    [Tooltip("Degrees per pixel of mouse movement.")]
+    [Min(0f)] public float mouseSensitivity = 0.15f;
     [Tooltip("Degrees per second at full stick deflection.")]
-    [SerializeField] private float stickSensitivity = 120f;
-
-    [SerializeField] private bool invertY = false;
-
-    [Tooltip("Clamp vertical rotation (pitch).")]
-    [SerializeField] private float pitchMin = -85f;
-    [SerializeField] private float pitchMax = 85f;
-
-    [Header("Mouse smoothing (less stiff look)")]
-    [SerializeField] private bool smoothMouseLook = true;
-
-    [Tooltip("How quickly mouse delta is smoothed (bigger = less smoothing).")]
-    [SerializeField] private float mouseSmoothing = 20f;
-
-    [Header("Deadzones")]
-    [Tooltip("Right stick deadzone.")]
-    [SerializeField] private float lookStickDeadzone = 0.12f;
-
-    [Tooltip("Left stick deadzone.")]
-    [SerializeField] private float moveStickDeadzone = 0.18f;
-
-    [Header("Collision Sliding (Glide)")]
-    [SerializeField] private bool slideAlongSurfaces = true;
-
-    [Tooltip("How many slide attempts per frame. 2–3 is usually enough.")]
-    [SerializeField] private int slideIterations = 100;
-
-    [Tooltip("Small distance kept from surfaces to avoid sticking/jitter.")]
-    [SerializeField] private float skinWidth = 0.01f;
-
-    [Tooltip("Extra distance added to the sweep so we detect contact reliably at high speed.")]
-    [SerializeField] private float sweepPadding = 0.02f;
-
-    [Tooltip("Tiny step along the slide direction when touching a surface. Helps avoid 'glued' feeling.")]
-    [SerializeField] private float touchSlideStep = 1f;
+    [Min(0f)] public float stickSensitivity = 120f;
+    [Min(0.1f)] public float stickLookResponse = 22f;
+    [Tooltip("Higher values give finer control near the center of the look stick.")]
+    [Min(1f)] public float stickLookExponent = 1.6f;
+    public bool invertY;
+    [Range(0f, 0.9f)] public float lookStickDeadzone = 0.15f;
+    [Range(0f, 0.9f)] public float moveStickDeadzone = 0.15f;
 
     [Header("FreeCamForwardPush")]
     [SerializeField] private float freeCamForwardPush = 1.4f;
 
-    private PrioritySettings _playerBasePriority;
     private PrioritySettings _freeBasePriority;
-    private bool _basePrioritiesCached;
+    private bool _cameraDetached;
+    private TransformHome _cameraHome;
+    private TransformHome _listenerHome;
+    private Transform _listener;
+    private Pose _listenerEntryStart;
+    private float _listenerEntryProgress;
 
     private CinemachineCamera _cmPlayer;
+    private CinemachineBrain _brain;
     public bool _isActive;
     private Coroutine _returnRoutine;
     private Coroutine _enterCueRoutine;
 
-    // Movement state
-    private Vector3 _currentVelocity;     // world-space velocity (smoothed)
-    private Vector3 _digitalInputSum;     // keyboard button movement (WASD-like)
-    private Vector2 _moveAxis;            // controller move axis (left stick)
-
-    // Polish movement state
-    private float _boostTarget01;
-    private float _boostHeld01;
-    private float _glideTimer;
-    private Vector3 _lastNonZeroDesired;
-
-    // Rotation state
-    private Vector2 _lookAxis;            // controller look axis (right stick)
+    private const float PitchLimit = 85f;
+    private const float ContactTolerance = 0.001f;
+    private const float MinimumFlightDistance = 0.00001f;
+    private const int SlideIterations = 4;
+    private Vector3 _currentVelocity;
+    private Vector2 _stickLookRate;
     private float _yaw;
     private float _pitch;
-    private Vector2 _smoothedMouseDelta;
 
     // Cached hits
     private static readonly RaycastHit[] _hitsCache = new RaycastHit[16];
@@ -163,93 +100,86 @@ public class FreeCam : Singleton<FreeCam>
     {
         Player_KeyInputs.Action_FreeCamIsActive += StartFreeCam;
         Player_KeyInputs.Action_FreeCamIsPassive += EndFreeCam;
+        Movement.Action_RespawnPlayerEarly += ResetForRespawn;
     }
 
     private void OnDisable()
     {
         Player_KeyInputs.Action_FreeCamIsActive -= StartFreeCam;
         Player_KeyInputs.Action_FreeCamIsPassive -= EndFreeCam;
+        Movement.Action_RespawnPlayerEarly -= ResetForRespawn;
+
+        StopAndRestoreFreeCam();
+
+        if (freeCamUI)
+        {
+            freeCamUI.alpha = 0f;
+            freeCamUI.gameObject.SetActive(false);
+        }
+    }
+
+    private void ResetForRespawn()
+    {
+        if (!_isActive && !_cameraDetached) return;
+
+        Player_KeyInputs.Instance.freeCam_isPressed = false;
+        var playerCamera = CameraController.Instance.CM_Player;
+        if (playerCamera)
+            _cmPlayer = playerCamera;
+
+        EndFreeCam();
+    }
+
+    private void StopAndRestoreFreeCam()
+    {
+        StopAllCoroutines();
+        _enterCueRoutine = null;
+        _returnRoutine = null;
+        _isActive = false;
+        RestoreCameraHierarchy();
     }
 
     private void Update()
     {
+        UpdateUIFade();
         if (!_isActive || CM_FreeCam == null) return;
+
+        if (PauseMenuManager.Instance.isActive)
+        {
+            StopEnterCue();
+            ResetFlight();
+            return;
+        }
 
         float dt = useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
         if (dt <= 0f) return;
 
-        TickMovement(dt);
-        TickRotation(dt);
+        if (!Application.isFocused)
+            ResetFlight();
+        else if (_enterCueRoutine == null)
+            TickFlight(dt);
+
+        if (_listener && _listenerEntryProgress < 1f)
+        {
+            _listenerEntryProgress = Mathf.Clamp01(_listenerEntryProgress + dt / Mathf.Max(0.0001f, returnDuration));
+            Transform cameraTransform = CM_FreeCam.transform;
+            BlendListener(
+                _listenerEntryStart,
+                new Pose(cameraTransform.position, cameraTransform.rotation),
+                Mathf.SmoothStep(0f, 1f, _listenerEntryProgress));
+        }
     }
 
-    // ====================
-    // INPUT API (called by your input system)
-    // ====================
-
-    /// <summary>
-    /// Digital movement (keyboard-style). Call on press/release.
-    /// Use: Forward(0,0,1) Back(0,0,-1) Right(1,0,0) Left(-1,0,0) Up(0,1,0) Down(0,-1,0)
-    /// </summary>
-    public void SetMoveDirection(Vector3 localAxisDirection, bool pressed)
+    private void UpdateUIFade()
     {
-        localAxisDirection = new Vector3(
-            Mathf.Clamp(localAxisDirection.x, -1f, 1f),
-            Mathf.Clamp(localAxisDirection.y, -1f, 1f),
-            Mathf.Clamp(localAxisDirection.z, -1f, 1f)
-        );
+        if (!freeCamUI || !freeCamUI.gameObject.activeSelf) return;
 
-        if (pressed) _digitalInputSum += localAxisDirection;
-        else _digitalInputSum -= localAxisDirection;
+        float targetAlpha = _isActive ? 1f : 0f;
+        if (freeCamUI.alpha != targetAlpha)
+            freeCamUI.alpha = Mathf.MoveTowards(freeCamUI.alpha, targetAlpha, Time.unscaledDeltaTime / UIFadeDuration);
 
-        _digitalInputSum = new Vector3(
-            Mathf.Clamp(_digitalInputSum.x, -1f, 1f),
-            Mathf.Clamp(_digitalInputSum.y, -1f, 1f),
-            Mathf.Clamp(_digitalInputSum.z, -1f, 1f)
-        );
-    }
-
-    /// <summary>
-    /// Analog movement axis (left stick). Provide (-1..1, -1..1).
-    /// IMPORTANT: Call on performed AND canceled so it returns to zero.
-    /// </summary>
-    public void SetMoveAxis(Vector2 axis)
-    {
-        if (!_isActive) return;
-
-        if (axis.magnitude < moveStickDeadzone) axis = Vector2.zero;
-        _moveAxis = Vector2.ClampMagnitude(axis, 1f);
-    }
-
-    /// <summary>
-    /// Analog look axis (right stick). Provide (-1..1, -1..1).
-    /// IMPORTANT: Call on performed AND canceled so it returns to zero.
-    /// </summary>
-    public void SetLookAxis(Vector2 axis)
-    {
-        if (!_isActive) return;
-
-        if (axis.magnitude < lookStickDeadzone) axis = Vector2.zero;
-        _lookAxis = Vector2.ClampMagnitude(axis, 1f);
-    }
-
-    /// <summary>
-    /// Hold-to-boost (Shift / trigger). Call on press/release.
-    /// </summary>
-    public void SetBoost(bool held)
-    {
-        _boostTarget01 = held ? 1f : 0f;
-    }
-
-    /// <summary>
-    /// Optional: call with mouse scroll delta (or let FreeCam read it internally).
-    /// Positive scroll increases speed.
-    /// </summary>
-    public void AddSpeedScroll(float scrollY)
-    {
-        if (!allowScrollSpeedAdjust) return;
-        if (Mathf.Abs(scrollY) < 0.01f) return;
-
-        moveSpeed = Mathf.Clamp(moveSpeed + Mathf.Sign(scrollY) * scrollSpeedStep, minMoveSpeed, maxMoveSpeed);
+        if (!_isActive && freeCamUI.alpha == 0f)
+            freeCamUI.gameObject.SetActive(false);
     }
 
     // ====================
@@ -261,39 +191,37 @@ public class FreeCam : Singleton<FreeCam>
         if (_isActive) return;
         if (CM_FreeCam == null) return;
 
-        _cmPlayer = CameraController.Instance != null ? CameraController.Instance.CM_Player : null;
+        CameraController controller = CameraController.Instance;
+        if (!controller) return;
 
-        CacheBasePrioritiesOnce();
+        _cmPlayer = controller.cameraState == CameraState.CeilingCam && controller.CM_Player_CeilingGrab
+            ? controller.CM_Player_CeilingGrab
+            : controller.CM_Player;
+        if (_cmPlayer == null) return;
+        _brain = controller.CM_Brain;
 
-        bool cancelledReturn = false;
-
+        bool resuming = _returnRoutine != null;
         if (_returnRoutine != null)
         {
             StopCoroutine(_returnRoutine);
             _returnRoutine = null;
-            cancelledReturn = true;
         }
 
-        if (_enterCueRoutine != null)
-        {
-            StopCoroutine(_enterCueRoutine);
-            _enterCueRoutine = null;
-        }
-
-        if (cancelledReturn)
-            RestoreBasePriorities();
-
-        if (_cmPlayer == null) return;
+        StopEnterCue();
+        DetachCamera();
+        _listenerEntryProgress = 0f;
+        if (_listener)
+            _listenerEntryStart = new Pose(_listener.position, _listener.rotation);
 
         CM_FreeCam.Follow = null;
         CM_FreeCam.LookAt = null;
 
-        CM_FreeCam.transform.SetPositionAndRotation(_cmPlayer.transform.position, _cmPlayer.transform.rotation);
+        if (!resuming)
+            MatchPlayerCamera();
 
         Vector3 e = CM_FreeCam.transform.rotation.eulerAngles;
         _yaw = e.y;
-        float ex = e.x; if (ex > 180f) ex -= 360f;
-        _pitch = Mathf.Clamp(ex, pitchMin, pitchMax);
+        _pitch = Mathf.Clamp(Mathf.DeltaAngle(0f, e.x), -PitchLimit, PitchLimit);
 
         if (toggleFreeCamGameObject)
             CM_FreeCam.gameObject.SetActive(true);
@@ -302,21 +230,13 @@ public class FreeCam : Singleton<FreeCam>
         SetPriorityValue(CM_FreeCam, playerVal + freeCamPriorityBoost);
 
         _isActive = true;
+        if (freeCamUI) freeCamUI.gameObject.SetActive(true);
         
-        // reset inputs/state
-        _digitalInputSum = Vector3.zero;
-        _moveAxis = Vector2.zero;
-        _lookAxis = Vector2.zero;
-        _currentVelocity = Vector3.zero;
-
-        // polish reset
-        _boostTarget01 = 0f;
-        _boostHeld01 = 0f;
-        _glideTimer = 0f;
-        _lastNonZeroDesired = Vector3.zero;
-        _smoothedMouseDelta = Vector2.zero;
-
+        ResetFlight();
         _enterCueRoutine = StartCoroutine(EnterFreeCamCue());
+
+        if (_listener)
+            _listener.SetPositionAndRotation(_listenerEntryStart.position, _listenerEntryStart.rotation);
 
         RenderHiderOnContact.Instance.FreeCamOn();
         HoleShaderOnOffScript.Instance.HoleShader_Off();
@@ -324,334 +244,191 @@ public class FreeCam : Singleton<FreeCam>
 
     private void EndFreeCam()
     {
-        if (!_isActive || CM_FreeCam == null) return;
+        if (!_isActive) return;
 
-        _cmPlayer = CameraController.Instance != null ? CameraController.Instance.CM_Player : _cmPlayer;
-        if (_cmPlayer == null)
-        {
-            _isActive = false;
-            return;
-        }
-
+        StopEnterCue();
         RenderHiderOnContact.Instance.FreeCamOff();
         HoleShaderOnOffScript.Instance.HoleShader_On();
 
-        if (_returnRoutine != null) StopCoroutine(_returnRoutine);
+        _isActive = false;
+        if (CM_FreeCam == null || _cmPlayer == null)
+        {
+            RestoreCameraHierarchy();
+            return;
+        }
+
         _returnRoutine = StartCoroutine(ReturnToPlayerThenSwitch());
     }
 
-    // ====================
-    // TICK: MOVEMENT / ROTATION
-    // ====================
-
-    private void TickMovement(float dt)
+    private void StopEnterCue()
     {
-        // Optional: Scene-view style scroll speed adjust
-        if (allowScrollSpeedAdjust && inputType == InputType.Keyboard)
-        {
-            float scrollY = Mouse.current?.scroll.ReadValue().y ?? 0f;
-            if (Mathf.Abs(scrollY) > 0.01f)
-                moveSpeed = Mathf.Clamp(moveSpeed + Mathf.Sign(scrollY) * scrollSpeedStep, minMoveSpeed, maxMoveSpeed);
-        }
-
-        // Smooth boost in/out
-        float boostT = 1f - Mathf.Exp(-boostResponse * dt);
-        _boostHeld01 = Mathf.Lerp(_boostHeld01, _boostTarget01, boostT);
-
-        float speed = moveSpeed * Mathf.Lerp(1f, boostMultiplier, _boostHeld01);
-
-        // combine digital + analog (analog uses x=strafe, y=forward)
-        Vector3 analogLocal = new Vector3(_moveAxis.x, 0f, _moveAxis.y);
-        Vector3 local = _digitalInputSum + analogLocal;
-        local = Vector3.ClampMagnitude(local, 1f);
-
-        Vector3 desiredWorldVelocity = Vector3.zero;
-        bool hasMoveInput = local.sqrMagnitude > inputEpsilon * inputEpsilon;
-
-        if (hasMoveInput)
-        {
-            local = local.normalized;
-            Transform t = CM_FreeCam.transform;
-
-            Vector3 forward, right;
-
-            if (moveInLookDirection)
-            {
-                forward = t.forward;
-                right = t.right;
-            }
-            else
-            {
-                forward = Vector3.ProjectOnPlane(t.forward, Vector3.up).normalized;
-                right = Vector3.ProjectOnPlane(t.right, Vector3.up).normalized;
-
-                if (forward.sqrMagnitude < 0.0001f)
-                {
-                    Quaternion yawOnly = Quaternion.Euler(0f, _yaw, 0f);
-                    forward = yawOnly * Vector3.forward;
-                    right = yawOnly * Vector3.right;
-                }
-            }
-
-            Vector3 worldDir =
-                (right * local.x) +
-                (Vector3.up * local.y) +
-                (forward * local.z);
-
-            if (worldDir.sqrMagnitude > 0.0001f)
-            {
-                desiredWorldVelocity = worldDir.normalized * speed;
-                _lastNonZeroDesired = desiredWorldVelocity;
-                _glideTimer = glideTime; // refresh glide while holding input
-            }
-        }
-        else
-        {
-            // glide tail after releasing input (editor-like "coast")
-            if (_glideTimer > 0f && glideTime > 0f)
-            {
-                _glideTimer -= dt;
-
-                float u = Mathf.Clamp01(_glideTimer / Mathf.Max(0.0001f, glideTime));
-                desiredWorldVelocity = _lastNonZeroDesired * u;
-
-                desiredWorldVelocity = Vector3.Lerp(desiredWorldVelocity, Vector3.zero, 1f - Mathf.Exp(-glideDamping * dt));
-            }
-            else
-            {
-                desiredWorldVelocity = Vector3.zero;
-            }
-        }
-
-        float rate = (desiredWorldVelocity.sqrMagnitude > 0.0001f) ? acceleration : deceleration;
-        _currentVelocity = Vector3.Lerp(_currentVelocity, desiredWorldVelocity, 1f - Mathf.Exp(-rate * dt));
-
-        Vector3 delta = _currentVelocity * dt;
-        if (delta.sqrMagnitude < 0.0000001f) return;
-
-        Vector3 newPos = ComputeGlideMovement(CM_FreeCam.transform.position, delta);
-        CM_FreeCam.transform.position = newPos;
-    }
-
-    private void TickRotation(float dt)
-    {
-        // Mouse look (Keyboard mode)
-        if (inputType == InputType.Keyboard)
-        {
-            Vector2 raw = Mouse.current?.delta.ReadValue() ?? Vector2.zero;
-
-            if (smoothMouseLook)
-            {
-                float t = 1f - Mathf.Exp(-mouseSmoothing * dt);
-                _smoothedMouseDelta = Vector2.Lerp(_smoothedMouseDelta, raw, t);
-            }
-            else
-            {
-                _smoothedMouseDelta = raw;
-            }
-
-            if (_smoothedMouseDelta != Vector2.zero)
-            {
-                float ySign = invertY ? 1f : -1f;
-
-                _yaw += _smoothedMouseDelta.x * mouseSensitivity;
-                _pitch += _smoothedMouseDelta.y * mouseSensitivity * ySign;
-
-                ApplyFreeCamRotation();
-            }
-        }
-
-        // Controller look
-        if (_lookAxis != Vector2.zero)
-        {
-            float ySign = invertY ? 1f : -1f;
-
-            _yaw += _lookAxis.x * stickSensitivity * dt;
-            _pitch += _lookAxis.y * stickSensitivity * dt * ySign;
-
-            ApplyFreeCamRotation();
-        }
-    }
-
-    private void ApplyFreeCamRotation()
-    {
-        _pitch = Mathf.Clamp(_pitch, pitchMin, pitchMax);
-
-        Quaternion yawRot = Quaternion.AngleAxis(_yaw, Vector3.up);
-        Quaternion pitchRot = Quaternion.AngleAxis(_pitch, Vector3.right);
-        CM_FreeCam.transform.rotation = yawRot * pitchRot;
+        if (_enterCueRoutine == null) return;
+        StopCoroutine(_enterCueRoutine);
+        _enterCueRoutine = null;
     }
 
     // ====================
-    // COLLISION (GLIDE / SLIDE)
+    // FLIGHT
     // ====================
 
-    private Vector3 ComputeGlideMovement(Vector3 startPos, Vector3 delta)
+    private void ResetFlight()
     {
-        if (!slideAlongSurfaces)
-            return ComputeBlockedMovement_StopOnly(startPos, delta);
-
-        if (collisionProbeRadius <= 0f)
-            return startPos + delta;
-
-        Vector3 pos = startPos;
-
-        float remainingDist = delta.magnitude;
-        if (remainingDist < 0.00001f) return pos;
-
-        Vector3 dir = delta / remainingDist;
-
-        int iters = Mathf.Clamp(slideIterations, 1, 6);
-
-        float stopOffset = Mathf.Max(skinWidth, collisionStopOffset);
-        float stepWhenTouching = Mathf.Max(0.001f, touchSlideStep);
-
-        for (int iter = 0; iter < iters; iter++)
-        {
-            if (remainingDist < 0.00001f) break;
-
-            float sweep = remainingDist + stopOffset + sweepPadding;
-
-            int hitCount = Physics.SphereCastNonAlloc(
-                pos,
-                collisionProbeRadius,
-                dir,
-                _hitsCache,
-                sweep,
-                Physics.DefaultRaycastLayers,
-                ignoreTriggers ? QueryTriggerInteraction.Ignore : QueryTriggerInteraction.Collide
-            );
-
-            if (hitCount <= 0)
-            {
-                pos += dir * remainingDist;
-                break;
-            }
-
-            int best = -1;
-            float closest = float.PositiveInfinity;
-
-            for (int i = 0; i < hitCount; i++)
-            {
-                Collider col = _hitsCache[i].collider;
-                if (!col) continue;
-
-                if (usePassThroughMarker && col.GetComponentInParent<FreeCamPassThrough>() != null)
-                    continue;
-
-                if (col.transform.IsChildOf(transform))
-                    continue;
-
-                float d = _hitsCache[i].distance;
-                if (d < closest)
-                {
-                    closest = d;
-                    best = i;
-                }
-            }
-
-            if (best < 0)
-            {
-                pos += dir * remainingDist;
-                break;
-            }
-
-            RaycastHit hit = _hitsCache[best];
-
-            float moveTo = Mathf.Clamp(closest - stopOffset, 0f, remainingDist);
-
-            Vector3 slideDir = Vector3.ProjectOnPlane(dir, hit.normal);
-            if (slideDir.sqrMagnitude < 0.0000001f)
-                break;
-
-            slideDir.Normalize();
-
-            if (moveTo <= 0.0005f)
-            {
-                float step = Mathf.Min(remainingDist, stepWhenTouching);
-
-                int microHits = Physics.SphereCastNonAlloc(
-                    pos,
-                    collisionProbeRadius,
-                    slideDir,
-                    _hitsCache,
-                    step + stopOffset,
-                    Physics.DefaultRaycastLayers,
-                    ignoreTriggers ? QueryTriggerInteraction.Ignore : QueryTriggerInteraction.Collide
-                );
-
-                if (microHits > 0)
-                    break;
-
-                pos += slideDir * step;
-                remainingDist -= step;
-                dir = slideDir;
-                continue;
-            }
-
-            pos += dir * moveTo;
-            remainingDist -= moveTo;
-            dir = slideDir;
-        }
-
-        return pos;
+        _currentVelocity = Vector3.zero;
+        _stickLookRate = Vector2.zero;
     }
 
-    private Vector3 ComputeBlockedMovement_StopOnly(Vector3 currentPos, Vector3 delta)
+    private void TickFlight(float dt)
     {
-        float maxProbe = Mathf.Max(0f, collisionProbeDistance);
-        if (maxProbe <= 0f || collisionProbeRadius <= 0f)
-            return currentPos + delta;
+        var keyboard = Keyboard.current;
+        var mouse = Mouse.current;
+        var gamepad = Gamepad.current;
 
-        float moveDist = delta.magnitude;
-        if (moveDist < 0.00001f) return currentPos;
+        if (allowScrollSpeedAdjust && mouse != null)
+        {
+            float scroll = mouse.scroll.ReadValue().y;
+            if (scroll != 0f)
+                moveSpeed = Mathf.Clamp(moveSpeed + Mathf.Sign(scroll) * scrollSpeedStep,
+                    minMoveSpeed, Mathf.Max(minMoveSpeed, maxMoveSpeed));
+        }
 
-        Vector3 dir = delta / moveDist;
+        Transform cameraTransform = CM_FreeCam.transform;
+        TickLook(cameraTransform, mouse, gamepad, dt);
 
-        float probeDist = Mathf.Min(maxProbe, moveDist);
+        Vector2 planar = keyboard == null ? Vector2.zero : new Vector2(
+            Axis(keyboard.aKey.isPressed, keyboard.dKey.isPressed),
+            Axis(keyboard.sKey.isPressed, keyboard.wKey.isPressed));
+        bool down = keyboard != null && keyboard.qKey.isPressed;
+        bool up = keyboard != null && keyboard.eKey.isPressed;
+        bool boost = keyboard != null && keyboard.shiftKey.isPressed;
 
-        int hitCount = Physics.SphereCastNonAlloc(
-            currentPos,
-            collisionProbeRadius,
-            dir,
-            _hitsCache,
-            probeDist,
-            Physics.DefaultRaycastLayers,
-            ignoreTriggers ? QueryTriggerInteraction.Ignore : QueryTriggerInteraction.Collide
-        );
+        if (gamepad != null)
+        {
+            Vector2 padMove = gamepad.dpad.ReadValue();
+            Vector2 stickMove = ApplyStickDeadzone(gamepad.leftStick.ReadUnprocessedValue(), moveStickDeadzone);
+            if (planar == Vector2.zero)
+                planar = padMove != Vector2.zero ? padMove : stickMove;
 
-        if (hitCount <= 0)
-            return currentPos + delta;
+            down |= gamepad.leftShoulder.isPressed;
+            up |= gamepad.rightShoulder.isPressed;
+            boost |= gamepad.leftStickButton.isPressed;
+        }
 
+        planar = Vector2.ClampMagnitude(planar, 1f);
+        Quaternion heading = Quaternion.Euler(0f, _yaw, 0f);
+        Vector3 forward = moveInLookDirection ? cameraTransform.forward : heading * Vector3.forward;
+        Vector3 input = (heading * Vector3.right) * planar.x + forward * planar.y + Vector3.up * Axis(down, up);
+        float speed = Mathf.Max(0f, moveSpeed) * (boost ? Mathf.Max(1f, boostMultiplier) : 1f);
+        Vector3 desiredVelocity = Vector3.ClampMagnitude(input, 1f) * speed;
+        bool braking = desiredVelocity == Vector3.zero;
+        float response = Mathf.Max(0.1f, braking ? deceleration : acceleration);
+        float blend = 1f - Mathf.Exp(-response * dt);
+        Vector3 velocityDifference = _currentVelocity - desiredVelocity;
+
+        // Integrate the acceleration curve over this frame so distance is consistent across frame rates.
+        Vector3 displacement = desiredVelocity * dt + velocityDifference * (blend / response);
+        _currentVelocity -= velocityDifference * blend;
+        if (braking && _currentVelocity.sqrMagnitude < 0.0001f)
+            _currentVelocity = Vector3.zero;
+
+        if (displacement.sqrMagnitude >= MinimumFlightDistance * MinimumFlightDistance)
+            cameraTransform.position = SweepFlight(cameraTransform.position, displacement);
+    }
+
+    private void TickLook(Transform cameraTransform, Mouse mouse, Gamepad gamepad, float dt)
+    {
+        Vector2 mouseAngle = mouse == null ? Vector2.zero : mouse.delta.ReadValue() * mouseSensitivity;
+        Vector2 stick = gamepad == null ? Vector2.zero :
+            ApplyStickDeadzone(gamepad.rightStick.ReadUnprocessedValue(), lookStickDeadzone);
+        float magnitude = stick.magnitude;
+        Vector2 desiredRate = magnitude > 0f
+            ? stick * (Mathf.Pow(magnitude, Mathf.Max(1f, stickLookExponent) - 1f) * stickSensitivity)
+            : Vector2.zero;
+
+        float response = Mathf.Max(0.1f, stickLookResponse);
+        float blend = 1f - Mathf.Exp(-response * dt);
+        Vector2 rateDifference = _stickLookRate - desiredRate;
+        Vector2 angle = mouseAngle + desiredRate * dt + rateDifference * (blend / response);
+        _stickLookRate -= rateDifference * blend;
+        if (desiredRate == Vector2.zero && _stickLookRate.sqrMagnitude < 0.01f)
+            _stickLookRate = Vector2.zero;
+
+        if (angle == Vector2.zero) return;
+
+        _yaw = Mathf.Repeat(_yaw + angle.x, 360f);
+        _pitch = Mathf.Clamp(_pitch + (invertY ? angle.y : -angle.y), -PitchLimit, PitchLimit);
+        cameraTransform.rotation = Quaternion.Euler(_pitch, _yaw, 0f);
+    }
+
+    private static float Axis(bool negative, bool positive) => (positive ? 1f : 0f) - (negative ? 1f : 0f);
+
+    private static Vector2 ApplyStickDeadzone(Vector2 input, float deadzone)
+    {
+        float magnitude = input.magnitude;
+        deadzone = Mathf.Clamp(deadzone, 0f, 0.99f);
+        if (magnitude <= deadzone) return Vector2.zero;
+
+        return (input / magnitude) * Mathf.InverseLerp(deadzone, 1f, magnitude);
+    }
+
+    private Vector3 SweepFlight(Vector3 position, Vector3 remaining)
+    {
+        for (int slide = 0; slide < SlideIterations; slide++)
+        {
+            float distance = remaining.magnitude;
+            if (distance < MinimumFlightDistance) break;
+
+            Vector3 direction = remaining / distance;
+            if (!FindFlightHit(position, direction, distance, out RaycastHit hit))
+                return position + remaining;
+
+            float travel = Mathf.Max(0f, hit.distance - ContactTolerance);
+            position += direction * travel;
+            remaining -= direction * travel;
+
+            remaining = Vector3.ProjectOnPlane(remaining, hit.normal);
+            float inwardSpeed = Vector3.Dot(_currentVelocity, hit.normal);
+            if (inwardSpeed < 0f)
+                _currentVelocity -= hit.normal * inwardSpeed;
+        }
+
+        return position;
+    }
+
+    private bool FindFlightHit(Vector3 position, Vector3 direction, float distance, out RaycastHit nearest)
+    {
+        var triggers = ignoreTriggers ? QueryTriggerInteraction.Ignore : QueryTriggerInteraction.Collide;
+        RaycastHit[] hits = _hitsCache;
+        int count = Physics.SphereCastNonAlloc(position, FlightRadius, direction, hits, distance, obstacleLayers, triggers);
+
+        // NonAlloc results are unordered. A full buffer may omit the closest blocking hit.
+        if (count == hits.Length)
+        {
+            hits = Physics.SphereCastAll(position, FlightRadius, direction, distance, obstacleLayers, triggers);
+            count = hits.Length;
+        }
+
+        nearest = default;
         float closest = float.PositiveInfinity;
-        bool foundBlocking = false;
-
-        for (int i = 0; i < hitCount; i++)
+        for (int i = 0; i < count; i++)
         {
-            Collider col = _hitsCache[i].collider;
-            if (!col) continue;
-
-            if (usePassThroughMarker && col.GetComponentInParent<FreeCamPassThrough>() != null)
+            RaycastHit hit = hits[i];
+            if (hit.distance >= closest || !IsBlockingCollider(hit.collider) ||
+                Vector3.Dot(direction, hit.normal) >= -0.0001f)
                 continue;
 
-            if (col.transform.IsChildOf(transform))
-                continue;
-
-            float d = _hitsCache[i].distance;
-            if (d < closest)
-            {
-                closest = d;
-                foundBlocking = true;
-            }
+            closest = hit.distance;
+            nearest = hit;
         }
 
-        if (!foundBlocking)
-            return currentPos + delta;
+        return nearest.collider != null;
+    }
 
-        float allowed = Mathf.Max(0f, closest - collisionStopOffset);
-        float finalDist = Mathf.Min(moveDist, allowed);
+    private float FlightRadius => Mathf.Max(0.01f, collisionProbeRadius) + Mathf.Max(0f, collisionStopOffset);
 
-        return currentPos + dir * finalDist;
+    private bool IsBlockingCollider(Collider collider)
+    {
+        return collider && !collider.transform.IsChildOf(transform) &&
+               (!usePassThroughMarker || !collider.GetComponentInParent<FreeCamPassThrough>());
     }
 
     // ====================
@@ -665,9 +442,9 @@ public class FreeCam : Singleton<FreeCam>
 
         int overlapCount = Physics.OverlapSphereNonAlloc(
             pos,
-            Mathf.Max(0.001f, collisionProbeRadius),
+            FlightRadius,
             _overlapCache,
-            Physics.DefaultRaycastLayers,
+            obstacleLayers,
             ignoreTriggers ? QueryTriggerInteraction.Ignore : QueryTriggerInteraction.Collide
         );
 
@@ -676,13 +453,7 @@ public class FreeCam : Singleton<FreeCam>
         for (int i = 0; i < overlapCount; i++)
         {
             Collider col = _overlapCache[i];
-            if (!col) continue;
-
-            if (usePassThroughMarker && col.GetComponentInParent<FreeCamPassThrough>() != null)
-                continue;
-
-            if (col.transform.IsChildOf(transform))
-                continue;
+            if (!IsBlockingCollider(col)) continue;
 
             overlappingBlocking = true;
             break;
@@ -691,14 +462,18 @@ public class FreeCam : Singleton<FreeCam>
         if (overlappingBlocking)
         {
             CM_FreeCam.transform.position += fwd * freeCamForwardPush;
+            yield return null;
             _enterCueRoutine = null;
 
             yield break;
         }
 
         Vector3 startPos = CM_FreeCam.transform.position;
-        Quaternion rot = CM_FreeCam.transform.rotation;
-        Vector3 targetPos = startPos - (rot * Vector3.forward * enterFadeDistance);
+        float pullback = enterFadeDistance;
+        // Start manual flight on the clear side of any wall behind the player camera.
+        if (pullback > 0f && FindFlightHit(startPos, -fwd, pullback, out RaycastHit hit))
+            pullback = Mathf.Max(0f, hit.distance - ContactTolerance);
+        Vector3 targetPos = startPos - fwd * pullback;
 
         float t = 0f;
         float dur = Mathf.Max(0.0001f, enterFadeDuration);
@@ -719,48 +494,69 @@ public class FreeCam : Singleton<FreeCam>
         _enterCueRoutine = null;
     }
 
-    private void CacheBasePrioritiesOnce()
+    private void DetachCamera()
     {
-        if (_basePrioritiesCached) return;
-        if (CM_FreeCam == null) return;
+        if (_cameraDetached) return;
 
-        _cmPlayer = CameraController.Instance != null ? CameraController.Instance.CM_Player : _cmPlayer;
-        if (_cmPlayer == null) return;
-
-        _playerBasePriority = _cmPlayer.Priority;
+        Transform cameraTransform = CM_FreeCam.transform;
+        _cameraHome = new TransformHome(cameraTransform);
         _freeBasePriority = CM_FreeCam.Priority;
-        _basePrioritiesCached = true;
+        _cameraDetached = true;
+        cameraTransform.SetParent(null, true);
+
+        AudioListener listener = PlayerManager.Instance.GetComponentInChildren<AudioListener>();
+        if (listener)
+        {
+            _listener = listener.transform;
+            _listenerHome = new TransformHome(_listener);
+            _listener.SetParent(cameraTransform, true);
+        }
     }
 
-    private void RestoreBasePriorities()
+    private void RestoreCameraHierarchy()
     {
-        if (!_basePrioritiesCached) return;
-        if (CM_FreeCam != null) CM_FreeCam.Priority = _freeBasePriority;
-        if (_cmPlayer != null) _cmPlayer.Priority = _playerBasePriority;
+        if (!_cameraDetached) return;
+        _cameraDetached = false;
+
+        _listenerHome.Restore();
+        _listener = null;
+        _cameraHome.Restore();
+        _listenerHome = default;
+        _cameraHome = default;
+
+        if (CM_FreeCam)
+        {
+            CM_FreeCam.Priority = _freeBasePriority;
+            if (toggleFreeCamGameObject)
+                CM_FreeCam.gameObject.SetActive(false);
+        }
+    }
+
+    private void MatchPlayerCamera()
+    {
+        var state = _cmPlayer.State;
+        CM_FreeCam.transform.SetPositionAndRotation(state.GetFinalPosition(), state.GetFinalOrientation());
+    }
+
+    private void BlendListener(Pose start, Pose target, float progress)
+    {
+        _listener.SetPositionAndRotation(
+            Vector3.Lerp(start.position, target.position, progress),
+            Quaternion.Slerp(start.rotation, target.rotation, progress));
     }
 
     private IEnumerator ReturnToPlayerThenSwitch()
     {
-        _isActive = false;
-
-        _digitalInputSum = Vector3.zero;
-        _moveAxis = Vector2.zero;
-        _lookAxis = Vector2.zero;
-        _currentVelocity = Vector3.zero;
-
-        int playerVal = GetPriorityValue(_cmPlayer);
-        SetPriorityValue(CM_FreeCam, playerVal + freeCamPriorityBoost);
+        ResetFlight();
 
         Vector3 startPos = CM_FreeCam.transform.position;
         Quaternion startRot = CM_FreeCam.transform.rotation;
-
-        Vector3 targetPos = _cmPlayer.transform.position;
-        Quaternion targetRot = _cmPlayer.transform.rotation;
+        Pose listenerStart = _listener ? new Pose(_listener.position, _listener.rotation) : default;
 
         float dur = Mathf.Max(0.0001f, returnDuration);
         float t = 0f;
 
-        while (t < dur)
+        while (t < dur && CM_FreeCam && _cmPlayer)
         {
             float dt = useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
             t += dt;
@@ -768,22 +564,74 @@ public class FreeCam : Singleton<FreeCam>
             float u = Mathf.Clamp01(t / dur);
             float eased = (returnEase != null) ? returnEase.Evaluate(u) : u;
 
+            var playerState = _cmPlayer.State;
             CM_FreeCam.transform.SetPositionAndRotation(
-                Vector3.LerpUnclamped(startPos, targetPos, eased),
-                Quaternion.SlerpUnclamped(startRot, targetRot, eased)
+                Vector3.LerpUnclamped(startPos, playerState.GetFinalPosition(), eased),
+                Quaternion.SlerpUnclamped(startRot, playerState.GetFinalOrientation(), eased)
             );
+            if (_listener)
+                BlendListener(listenerStart, _listenerHome.GetWorldPose(), eased);
 
             yield return null;
         }
 
-        CM_FreeCam.transform.SetPositionAndRotation(targetPos, targetRot);
+        if (CM_FreeCam && _cmPlayer)
+        {
+            MatchPlayerCamera();
+            if (_listener)
+                BlendListener(listenerStart, _listenerHome.GetWorldPose(), 1f);
+            CM_FreeCam.Priority = _freeBasePriority;
+            _cmPlayer.Prioritize();
 
-        RestoreBasePriorities();
+            // Keep the outgoing camera at the player until Cinemachine stops sampling it.
+            yield return null;
+            while (CM_FreeCam && _cmPlayer && _brain && _brain.isActiveAndEnabled && _brain.IsLiveInBlend(CM_FreeCam))
+            {
+                MatchPlayerCamera();
+                if (_listener)
+                    BlendListener(listenerStart, _listenerHome.GetWorldPose(), 1f);
+                yield return null;
+            }
+        }
 
-        if (toggleFreeCamGameObject)
-            CM_FreeCam.gameObject.SetActive(false);
-
+        RestoreCameraHierarchy();
         _returnRoutine = null;
+    }
+
+    private readonly struct TransformHome
+    {
+        private readonly Transform _transform;
+        private readonly Transform _parent;
+        private readonly int _siblingIndex;
+        private readonly Vector3 _localPosition;
+        private readonly Quaternion _localRotation;
+        private readonly Vector3 _localScale;
+
+        public TransformHome(Transform target)
+        {
+            _transform = target;
+            _parent = target.parent;
+            _siblingIndex = target.GetSiblingIndex();
+            _localPosition = target.localPosition;
+            _localRotation = target.localRotation;
+            _localScale = target.localScale;
+        }
+
+        public void Restore()
+        {
+            if (!_transform) return;
+            _transform.SetParent(_parent, false);
+            _transform.SetSiblingIndex(_siblingIndex);
+            _transform.SetLocalPositionAndRotation(_localPosition, _localRotation);
+            _transform.localScale = _localScale;
+        }
+
+        public Pose GetWorldPose()
+        {
+            return _parent
+                ? new Pose(_parent.TransformPoint(_localPosition), _parent.rotation * _localRotation)
+                : new Pose(_localPosition, _localRotation);
+        }
     }
 
     // ====================

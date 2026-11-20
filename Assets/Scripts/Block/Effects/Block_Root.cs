@@ -206,6 +206,7 @@ public class Block_Root : MonoBehaviour
     void QueueRootActivation()
     {
         if (Movement.Instance == null || Movement.Instance.isRespawning ||
+            Movement.Instance.isMovingOnLadder_Up || Movement.Instance.isMovingOnLadder_Down ||
             activatedForCurrentRootStand || awaitingRespawnRootActivation)
             return;
 
@@ -338,6 +339,14 @@ public class Block_Root : MonoBehaviour
             return SnapDirection(dir);
         }
 
+        // A ladder landing has no normal move origin. Use its exit heading
+        // before falling back to the previous standing block.
+        if (Movement.Instance.currentMoveTargetBlock == null &&
+            Movement.Instance.LadderExitDirection != Vector3.zero)
+        {
+            return SnapDirection(Movement.Instance.LadderExitDirection);
+        }
+
         // After landing: use previous standing block.
         if (Movement.Instance.blockStandingOn == rootSourceBlock &&
             Movement.Instance.blockStandingOn_Previous != null &&
@@ -394,8 +403,7 @@ public class Block_Root : MonoBehaviour
 
         MakeRootFreeCostList();
 
-        Movement.Instance.UpdateBlocks();
-        Movement.Instance.SetDarkenBlocks();
+        Movement.Instance.UpdateAvailableMovementBlocks();
 
         Action_StandingOnRootBlock?.Invoke();
     }
@@ -424,12 +432,6 @@ public class Block_Root : MonoBehaviour
         RootFreeCostBlockList.Clear();
         finishedCheckingForBlocks = false;
 
-        if (Movement.Instance != null)
-        {
-            Movement.Instance.ResetDarkenBlocks_External();
-            Movement.Instance.UpdateBlocks();
-            Movement.Instance.SetDarkenBlocks();
-        }
     }
 
 
@@ -1229,9 +1231,7 @@ public class Block_Root : MonoBehaviour
 
         if (Movement.Instance != null)
         {
-            Movement.Instance.ResetDarkenBlocks_External();
-            Movement.Instance.UpdateBlocks();
-            Movement.Instance.SetDarkenBlocks();
+            Movement.Instance.UpdateAvailableMovementBlocks();
         }
     }
 
@@ -1395,8 +1395,7 @@ public class Block_Root : MonoBehaviour
 
         if (Movement.Instance != null)
         {
-            Movement.Instance.UpdateBlocks();
-            Movement.Instance.SetDarkenBlocks();
+            Movement.Instance.UpdateAvailableMovementBlocks();
         }
     }
 
@@ -1514,8 +1513,7 @@ public class Block_Root : MonoBehaviour
 
             if (Movement.Instance != null)
             {
-                Movement.Instance.UpdateBlocks();
-                Movement.Instance.SetDarkenBlocks();
+                Movement.Instance.UpdateAvailableMovementBlocks();
             }
 
             addedCount += addedRootCount;

@@ -105,8 +105,8 @@ public class AncientTablet : MonoBehaviour
         TabletManager.Instance.HideTabletUI(TabletManager.Instance.tabletUI_Parent);
         yield return new WaitForSeconds(TabletManager.Instance.fadeDuration);
 
+        yield return StartCoroutine(CameraController.Instance.StartVirtualCameraBlend_Out(tabletVirtualCamera));
         CameraController.Instance.CM_Other = null;
-        yield return StartCoroutine(CameraController.Instance.StartVirtualCameraBlend_Out(CameraController.Instance.CM_Other));
 
         TabletManager.Instance.ShowHUDUI(TabletManager.Instance.hud_Parent);
 

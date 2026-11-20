@@ -23,6 +23,7 @@ public class Player_Animations : Singleton<Player_Animations>
 
     private bool isPlayingPickupAnimation;
     private Coroutine pickupCoroutine;
+    public bool IsPickupAnimationPending => pickupCoroutine != null;
 
     private Coroutine walkGlideDelayCoroutine;
     [SerializeField] private bool suppressWalkGlideUntilWalkInputReleased;
@@ -160,6 +161,11 @@ public class Player_Animations : Singleton<Player_Animations>
 
     public void ResetAnimations()
     {
+        if (pickupCoroutine != null)
+            StopCoroutine(pickupCoroutine);
+        pickupCoroutine = null;
+        isPlayingPickupAnimation = false;
+
         blockWalkGlideAfterVerticalAbility = false;
 
         Set_SwimAnimation(false);
@@ -457,8 +463,16 @@ public class Player_Animations : Singleton<Player_Animations>
         yield return new WaitForSeconds(duration);
 
         isPlayingPickupAnimation = false;
-        PlayerManager.Instance.UnpauseGame();
         pickupCoroutine = null;
+
+        if (!Movement.Instance.isRespawning &&
+            !CameraController.Instance.isRotating &&
+            !PopUpManager.Instance.ability_Active &&
+            !PauseMenuManager.Instance.isActive &&
+            !Player_KeyInputs.Instance.freeCam_isPressed)
+        {
+            PlayerManager.Instance.UnpauseGame();
+        }
     }
 
     public void Trigger_PickupSmallAnimation()

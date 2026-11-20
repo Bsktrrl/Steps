@@ -75,4 +75,21 @@ public class AbilitiesGot
     public bool GrapplingHook;
 
     public bool ClimingGloves;
+
+    public bool HasAbility(Abilities ability)
+    {
+        return ability switch
+        {
+            Abilities.Snorkel => Snorkel,
+            Abilities.Flippers => Flippers,
+            Abilities.OxygenTank => OxygenTank,
+            Abilities.DrillHelmet => DrillHelmet,
+            Abilities.DrillBoots => DrillBoots,
+            Abilities.HandDrill => HandDrill,
+            Abilities.SpringShoes => SpringShoes,
+            Abilities.GrapplingHook => GrapplingHook,
+            Abilities.ClimingGloves => ClimingGloves,
+            _ => false
+        };
+    }
 }

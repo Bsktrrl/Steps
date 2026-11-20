@@ -61,8 +61,11 @@ public class StepsHUD : Singleton<StepsHUD>
     //--------------------
 
 
+    private StepsDisplay stepsDisplay;
+
     private void Awake()
     {
+        stepsDisplay = GetComponent<StepsDisplay>();
         CacheReferences();
 
         if (!frameGlow_Steps)
@@ -118,7 +121,7 @@ public class StepsHUD : Singleton<StepsHUD>
     {
         return PlayerStats.Instance != null &&
                PlayerStats.Instance.stats != null &&
-               StepsDisplay.Instance != null;
+               stepsDisplay != null;
     }
 
     private bool IsValidIndex(int index)
@@ -138,15 +141,15 @@ public class StepsHUD : Singleton<StepsHUD>
     private Sprite GetUsedSprite(int index)
     {
         return IsExtraFootstep(index)
-            ? StepsDisplay.Instance.extraFootstep_Used
-            : StepsDisplay.Instance.normalFootstep_Used;
+            ? stepsDisplay.extraFootstep_Used
+            : stepsDisplay.normalFootstep_Used;
     }
 
     private Sprite GetActiveSprite(int index)
     {
         return IsExtraFootstep(index)
-            ? StepsDisplay.Instance.extraFootstep_Active
-            : StepsDisplay.Instance.normalFootstep_Active;
+            ? stepsDisplay.extraFootstep_Active
+            : stepsDisplay.normalFootstep_Active;
     }
 
     private bool IsStandingOnMushroomCircle()
@@ -219,7 +222,7 @@ public class StepsHUD : Singleton<StepsHUD>
         if (_animators[index] != null)
             _animators[index].ForceSetHidden();
         else
-            ApplyDirectVisual(index, StepsDisplay.Instance.extraFootstep_Passive, deactivateEndScale, false);
+            ApplyDirectVisual(index, stepsDisplay.extraFootstep_Passive, deactivateEndScale, false);
     }
 
     private void ApplyUsedState(int index, bool allowAnimations)
@@ -321,7 +324,7 @@ public class StepsHUD : Singleton<StepsHUD>
             else
             {
                 if (_images[i] != null &&
-                    _images[i].sprite == StepsDisplay.Instance.extraFootstep_Passive &&
+                    _images[i].sprite == stepsDisplay.extraFootstep_Passive &&
                     PlayerStats.Instance.stats.steps_Current < i + 1)
                 {
                     FillFootstep(i);
@@ -379,7 +382,7 @@ public class StepsHUD : Singleton<StepsHUD>
 
         overlay.fillAmount = 1f;
 
-        baseImage.sprite = StepsDisplay.Instance.extraFootstep_Used;
+        baseImage.sprite = stepsDisplay.extraFootstep_Used;
         overlay.gameObject.SetActive(false);
 
         _runningFill[index] = null;

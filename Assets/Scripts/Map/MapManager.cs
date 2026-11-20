@@ -13,6 +13,16 @@ public class MapManager : Singleton<MapManager>
     public static event Action Action_PlayerObject_IsSpawned;
     public static GameObject SpawnedPlayer { get; private set; }
 
+    // Remember a HUB visit across the return to the main menu.
+    private static bool returnFromHUB;
+
+    public static bool ConsumeHUBReturn()
+    {
+        bool result = returnFromHUB;
+        returnFromHUB = false;
+        return result;
+    }
+
     [Header("Player")]
     [SerializeField] GameObject playerObject;
     GameObject playerObjectInScene;
@@ -44,6 +54,13 @@ public class MapManager : Singleton<MapManager>
     public bool introSequence_Finished;
     public bool haveIntroSequence = true;
 
+    // The map intro and the first HUB spawn/dialogue are separate sequences.
+    public bool IntroInputLocked => introSequence || !introSequence_Finished;
+
+    public bool GameplayInputLocked => IntroInputLocked ||
+        (levelName == LevelNames.HUB && HUBTutorial.Instance != null &&
+         HUBTutorial.Instance.GameplayInputLocked);
+
     private Coroutine blackScreenFadeRoutine;
 
 
@@ -52,11 +69,17 @@ public class MapManager : Singleton<MapManager>
 
     private void Awake()
     {
+        returnFromHUB = levelName == LevelNames.HUB;
+
         if (blackScreen)
             blackScreen.SetActive(true);
 
         if (canvas)
             canvas.SetActive(true);
+
+        // Lock input before instantiating the player and enabling its controls.
+        if (haveIntroSequence)
+            introSequence = true;
 
         SpawnPlayerObject();
 
@@ -137,7 +160,7 @@ public class MapManager : Singleton<MapManager>
         Action_SpawnedPlayerObject?.Invoke(SpawnedPlayer);
         Action_PlayerObject_IsSpawned?.Invoke();
     }
-    
+
 
     public void SetAbilities()
     {

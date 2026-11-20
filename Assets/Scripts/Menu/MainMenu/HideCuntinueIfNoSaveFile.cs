@@ -55,10 +55,12 @@ public class HideCuntinueIfNoSaveFile : Singleton<HideCuntinueIfNoSaveFile>
         SetNavigation(newGameButton, continueButton.GetComponent<Button>(), null);
         SetNavigation(exitButton, null, continueButton.GetComponent<Button>());
 
-        eventSystem.SetSelectedGameObject(continueButton);
         SetFirstSelected_NewGame(continueButton.GetComponent<MainMenuButton>(), newGameButton.gameObject.GetComponent<MainMenuButton>());
 
         continueButton.SetActive(true);
+
+        // Do not take selection from the region or level menu.
+        SelectMainMenuButton(continueButton, true);
     }
     void ShowContinueButton()
     {
@@ -77,6 +79,7 @@ public class HideCuntinueIfNoSaveFile : Singleton<HideCuntinueIfNoSaveFile>
         SetFirstSelected_NewGame(continueButton.GetComponent<MainMenuButton>(), newGameButton.gameObject.GetComponent<MainMenuButton>());
 
         continueButton.SetActive(true);
+        SelectMainMenuButton(continueButton, false);
     }
     void HideContinueButton()
     {
@@ -127,18 +130,32 @@ public class HideCuntinueIfNoSaveFile : Singleton<HideCuntinueIfNoSaveFile>
 
     void SetFirstSelected(MainMenuButton setTrue, MainMenuButton setFalse)
     {
-        eventSystem.SetSelectedGameObject(setTrue.gameObject);
-        eventSystem.firstSelectedGameObject = setTrue.gameObject;
-
         setTrue.isFirstSelected = true;
         setFalse.isFirstSelected = false;
+
+        SelectMainMenuButton(setTrue.gameObject, true);
     }
     void SetFirstSelected_NewGame(MainMenuButton setTrue, MainMenuButton setFalse)
     {
-        //eventSystem.SetSelectedGameObject(setTrue.gameObject);
-        eventSystem.firstSelectedGameObject = setTrue.gameObject;
-
         setTrue.isFirstSelected = true;
         setFalse.isFirstSelected = false;
+
+        SelectMainMenuButton(setTrue.gameObject, false);
+    }
+
+    void SelectMainMenuButton(GameObject button, bool selectNow)
+    {
+        if (!MainMenuManager.Instance || !MainMenuManager.Instance.mainMenu_Parent.activeInHierarchy)
+            return;
+        if (!button || !button.activeInHierarchy)
+            return;
+
+        if (!eventSystem)
+            eventSystem = FindObjectOfType<EventSystem>();
+        if (!eventSystem) return;
+
+        eventSystem.firstSelectedGameObject = button;
+        if (selectNow)
+            eventSystem.SetSelectedGameObject(button);
     }
 }

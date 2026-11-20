@@ -118,9 +118,7 @@ public class GlueplantStandManager : Singleton<GlueplantStandManager>
 
         yield return new WaitForSeconds(1f);
 
-        MapStatsGathered.Instance.CompleteLevel();
-
-        PlayerManager.Instance.player.GetComponent<PlayerManager>().QuitLevel();
+        PlayerManager.Instance.player.GetComponent<PlayerManager>().CompleteLevelAndLeave();
     }
     void PlayPickupSound()
     {

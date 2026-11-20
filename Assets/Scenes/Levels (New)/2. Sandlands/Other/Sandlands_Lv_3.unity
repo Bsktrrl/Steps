@@ -83059,8 +83059,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 1200405977}
     m_Modifications:
     - target: {fileID: -5338122090643280796, guid: de856b78193b9b3439e5196b77217a1f, type: 3}
-      propertyPath: travelPosList.Array.size
+      propertyPath: lockInitialFacing
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5338122090643280796, guid: de856b78193b9b3439e5196b77217a1f, type: 3}
+      propertyPath: travelPosList.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5338122090643280796, guid: de856b78193b9b3439e5196b77217a1f, type: 3}
       propertyPath: travelPosList.Array.data[0].x

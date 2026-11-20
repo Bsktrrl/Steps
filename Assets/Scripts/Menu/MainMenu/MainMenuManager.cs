@@ -55,10 +55,6 @@ public class MainMenuManager : Singleton<MainMenuManager>
     }
     private void Start()
     {
-        // Lock the cursor to the center of the screen, and hide it
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
         if (DataManager.Instance.menuState_Store == MenuState.None)
         {
             menuState = MenuState.Main_Menu;
@@ -100,9 +96,44 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     void SetMenu()
     {
+        // Resolve the HUB return before opening any menu or restoring selection.
+        bool returningFromHUB = MapManager.ConsumeHUBReturn();
+        string exitedLevelScene = PlayerManager.ConsumeExitedLevelScene(out bool selectNextLevel);
+        if (returningFromHUB)
+        {
+            DataManager.Instance.menuState_Store = MenuState.Overworld_Menu;
+            DataManager.Instance.overWorldStates_StoreList = new OverWorldStates();
+        }
+
         menuState = DataManager.Instance.menuState_Store;
 
+        if (returningFromHUB && OverWorldManager.Instance != null)
+        {
+            OverWorldManager.Instance.regionState = RegionState.None;
+            OverWorldManager.Instance.levelState = LevelState.None;
+        }
+
         MenusOnMenuState();
+
+        if (overworldMenu_Parent.activeInHierarchy)
+            StartCoroutine(RestoreOverworldSelection(menuState, returningFromHUB, exitedLevelScene, selectNextLevel));
+
+    }
+
+    IEnumerator RestoreOverworldSelection(MenuState loadedMenu, bool returningFromHUB, string exitedLevelScene, bool selectNextLevel)
+    {
+        // Other data-loaded listeners and newly enabled menus must finish first.
+        yield return null;
+        yield return new WaitForEndOfFrame();
+
+        if (menuState != loadedMenu || !overworldMenu_Parent.activeInHierarchy)
+            yield break;
+
+        if (OverWorldManager.Instance != null)
+            OverWorldManager.Instance.RestoreMenuSelectionAfterLoad(returningFromHUB, exitedLevelScene, selectNextLevel);
+
+        if (returningFromHUB)
+            DataPersistanceManager.instance.SaveGame();
     }
 
 
@@ -256,20 +287,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
         //Open the OverworldMenu
         overworldMenu_Parent.SetActive(true);
 
-        if (DataManager.Instance.menuState_Store == MenuState.RegionMenu_HUB
-            || DataManager.Instance.menuState_Store == MenuState.RegionMenu_Water
-            || DataManager.Instance.menuState_Store == MenuState.RegionMenu_Sand
-            || DataManager.Instance.menuState_Store == MenuState.RegionMenu_Ice
-            || DataManager.Instance.menuState_Store == MenuState.RegionMenu_Lava
-            || DataManager.Instance.menuState_Store == MenuState.RegionMenu_Swamp
-            || DataManager.Instance.menuState_Store == MenuState.RegionMenu_Metal)
-        {
-            levelSelectMenu.SetActive(true);
-        }
-        else
-        {
-            regionSelectMenu.SetActive(true);
-        }
+        regionSelectMenu.SetActive(true);
     }
     void Menu_Skins()
     {

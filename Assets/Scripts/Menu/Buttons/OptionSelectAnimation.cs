@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class OptionSelectAnimation : MonoBehaviour
+public class OptionSelectAnimation : MonoBehaviour, IPointerDownHandler
 {
     public static event Action Action_ButtonIsPressed;
 
@@ -13,6 +15,8 @@ public class OptionSelectAnimation : MonoBehaviour
 
     [Header("Active Parent")]
     [SerializeField] GameObject parent;
+
+    public Button SelectionButton => parent ? parent.GetComponent<Button>() : null;
 
     [Header("Pulsating")]
     [SerializeField] Vector3 maxScale = new Vector3(0.2f, 0.2f, 0.2f);
@@ -74,6 +78,22 @@ public class OptionSelectAnimation : MonoBehaviour
         Menu_KeyInputs.Action_MenuSettingsNavigationRight_isPressed -= ButtonPressAnimation_Right;
     }
 
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (eventData.button != PointerEventData.InputButton.Left || !GetComponent<Button>().IsInteractable()) return;
+
+        Button row = SelectionButton;
+        if (ActionButtonsManager.CanSelectWithMouse(row))
+            eventData.selectedObject = row.gameObject;
+    }
+
+    public void Click()
+    {
+        if (!parent || !parent.TryGetComponent(out MenuCategorySelected row)) return;
+
+        Menu_KeyInputs.PressSettingsArrow(row.settingState, isLeftArrow);
+    }
+
 
     //--------------------
 
@@ -108,7 +128,7 @@ public class OptionSelectAnimation : MonoBehaviour
         float u = Mathf.Clamp01(counter / duration);   // 0..1
         float t = Mathf.Sin(u * Mathf.PI);             // 0..1..0 (single pulse)
 
-        t = TightenEdges(t, edgeTightness);            // optional ìless dwellî
+        t = TightenEdges(t, edgeTightness);            // optional ‚Äúless dwell‚Äù
 
         rt.localScale = Vector3.LerpUnclamped(startScale, startScale + maxScale, t);
     }
