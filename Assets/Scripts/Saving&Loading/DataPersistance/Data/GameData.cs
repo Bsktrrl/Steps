@@ -53,6 +53,9 @@ public class GameData
     //PlayerStatsData
     /*[HideInInspector]*/ public PermanentAbilitiesReceived permanentAbilitiesReceived_Save = new PermanentAbilitiesReceived();
 
+    //PlayerStatsData
+    /*[HideInInspector]*/public PlayerStatistics playerStatistics_Save = new PlayerStatistics();
+
 
     //--------------------
 
@@ -76,6 +79,8 @@ public class GameData
         switchesData_Save = new SwitchesData();
 
         permanentAbilitiesReceived_Save = new PermanentAbilitiesReceived();
+
+        playerStatistics_Save = new PlayerStatistics();
 
         //game_TextDatabase_Save = new Game_TextDatabase();
     }

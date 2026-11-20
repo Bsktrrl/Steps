@@ -71,6 +71,9 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     //PlayerStatsData
     /*[HideInInspector]*/ public PermanentAbilitiesReceived permanentAbilitiesReceived_Store = new PermanentAbilitiesReceived();
 
+    //PlayerStatsData
+    /*[HideInInspector]*/ public PlayerStatistics playerStatistics_Store = new PlayerStatistics();
+
 
     #endregion
 
@@ -121,6 +124,8 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.switchesData_Store = gameData.switchesData_Save;
 
         this.permanentAbilitiesReceived_Store = gameData.permanentAbilitiesReceived_Save;
+
+        this.playerStatistics_Store = gameData.playerStatistics_Save;
     }
 
     void LoadDataIntoProject(GameData gameData)
@@ -193,6 +198,8 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         gameData.switchesData_Save = this.switchesData_Store;
 
         gameData.permanentAbilitiesReceived_Save = this.permanentAbilitiesReceived_Store;
+
+        gameData.playerStatistics_Save = this.playerStatistics_Store;
     }
 
     public void Load_NewGame_Data(GameData oldData, GameData newData)
@@ -218,6 +225,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.switchesData_Store = newData.switchesData_Save;
 
         this.permanentAbilitiesReceived_Store = newData.permanentAbilitiesReceived_Save;
+        this.playerStatistics_Store = newData.playerStatistics_Save;
 
 
         //Persist through newGame
@@ -254,3 +262,4 @@ public class OneTimeRunData
     //Skin
     /*[HideInInspector]*/public List<TutorialDataParts> tutorialSegmenets = new List<TutorialDataParts>();
 }
+
