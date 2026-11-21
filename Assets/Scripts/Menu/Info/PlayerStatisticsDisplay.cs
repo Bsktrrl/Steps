@@ -129,7 +129,10 @@ public class PlayerStatisticsDisplay : MonoBehaviour
 
     private static string FormatDuration(float seconds)
     {
-        long totalMinutes = (long)(seconds / 60d);
-        return FormattableString.Invariant($"{totalMinutes / 60}:{totalMinutes % 60:D0}");
+        long totalSeconds = (long)seconds;
+        long hours = totalSeconds / 3600;
+        long minutes = totalSeconds / 60 % 60;
+        long remainingSeconds = totalSeconds % 60;
+        return FormattableString.Invariant($"{hours:D2}:{minutes:D2}:{remainingSeconds:D2}");
     }
 }
