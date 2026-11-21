@@ -38,7 +38,7 @@ public class MenuManager : Singleton<MenuManager>
 
     public void ChangeMenuCategory(MenuCategories category)
     {
-        if (IsInfoCategory(category) && currentMenuCategorySelected == category)
+        if (currentMenuCategorySelected == category && IsCategoryOpen(category))
             return;
 
         HideAllMenus();
@@ -166,6 +166,15 @@ public class MenuManager : Singleton<MenuManager>
 
     static bool IsInfoCategory(MenuCategories category) =>
         category is MenuCategories.Info_Controls or MenuCategories.Info_Stats or MenuCategories.Info_Tablet;
+
+    bool IsCategoryOpen(MenuCategories category) => category switch
+    {
+        MenuCategories.Settings => settingsMenuParent.activeInHierarchy,
+        MenuCategories.Controls => controlsMenuParent.activeInHierarchy,
+        MenuCategories.Video => videoMenuParent.activeInHierarchy,
+        MenuCategories.Audio => audioMenuParent.activeInHierarchy,
+        _ => IsInfoCategory(category)
+    };
 }
 
 public enum MenuCategories

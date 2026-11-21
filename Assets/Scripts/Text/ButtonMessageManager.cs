@@ -7,6 +7,7 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
 {
 
     [Header("Button Messages")]
+    [SerializeField] private GameObject buttonMessage_Parent;
     public ButtonMessageList buttonMessages;
 
     private PlayerManager playerManager;
@@ -23,11 +24,15 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
         playerManager = GetComponentInParent<PlayerManager>();
         DataManager.Action_dataHasLoaded += UpdateButtonMessages;
         SettingsManager.Action_SetNewLanguage += UpdateButtonMessages;
+        PauseMenuManager.Action_openPauseMenu += HidePromptsForPause;
+        PauseMenuManager.Action_closePauseMenu += RestorePromptsAfterPause;
     }
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= UpdateButtonMessages;
         SettingsManager.Action_SetNewLanguage -= UpdateButtonMessages;
+        PauseMenuManager.Action_openPauseMenu -= HidePromptsForPause;
+        PauseMenuManager.Action_closePauseMenu -= RestorePromptsAfterPause;
     }
 
 
@@ -103,6 +108,22 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
     {
         HideButtonMessage(buttonMessages.buttonMessage_Read);
         HideButtonMessage(buttonMessages.buttonMessage_Talk);
+    }
+
+    private void HidePromptsForPause()
+    {
+        if (buttonMessage_Parent)
+            buttonMessage_Parent.SetActive(false);
+    }
+
+    private void RestorePromptsAfterPause()
+    {
+        if (!buttonMessage_Parent)
+            return;
+
+        if (playerManager)
+            RefreshReadPrompt(playerManager.block_LookingAt_Horizontal);
+        buttonMessage_Parent.SetActive(true);
     }
 
     internal void BeginTabletInteraction(AncientTablet tablet)

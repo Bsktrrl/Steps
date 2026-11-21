@@ -190,6 +190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 8020856767785456079}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 8512084761911580146}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -1476,6 +1477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 8020856767785456079}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 8512084761911580146}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -2501,6 +2503,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 8020856767785456079}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 8512084761911580146}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -2653,9 +2656,9 @@ MonoBehaviour:
   m_Navigation:
     m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 5450941424353462912}
+    m_SelectOnUp: {fileID: 2332681185061700468}
     m_SelectOnDown: {fileID: 3121054258895573891}
-    m_SelectOnLeft: {fileID: 2332681185061700468}
+    m_SelectOnLeft: {fileID: 904724876879392810}
     m_SelectOnRight: {fileID: 904724876879392810}
   m_Transition: 1
   m_Colors:
@@ -2695,6 +2698,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 0}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 0}
   menuToClose: {fileID: 9197591149830024487}
   menuState_ToSelect: 1
@@ -4462,6 +4466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 0}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 0}
   menuToClose: {fileID: 9197591149830024487}
   menuState_ToSelect: 1
@@ -4769,6 +4774,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 8020856767785456079}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 8512084761911580146}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -5058,6 +5064,7 @@ GameObject:
   - component: {fileID: 2351840242640053980}
   - component: {fileID: 2288766883445336086}
   - component: {fileID: 6325894412379178317}
+  - component: {fileID: 5867053103968549271}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -5156,6 +5163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   newMenuState: 1
   uiElementToSelect: {fileID: 0}
+  tabletMenuToUnlock: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
   closingMenuAnimatorList:
@@ -5196,6 +5204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 0}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 0}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -5238,6 +5247,31 @@ MonoBehaviour:
   isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 2
   buttonBack_Sound: 2
+--- !u!114 &5867053103968549271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4813638500736966501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4561c5983df24fbfb05aa40c26605197, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tabLinks:
+  - category: 1
+    tab: {fileID: 220225984855704253}
+    upTarget: {fileID: 5450941424353462912}
+  - category: 2
+    tab: {fileID: 8020856767785456079}
+    upTarget: {fileID: 1524856916968082814}
+  - category: 3
+    tab: {fileID: 2835692938558688182}
+    upTarget: {fileID: 0}
+  - category: 4
+    tab: {fileID: 904724876879392810}
+    upTarget: {fileID: 2903074614170641174}
 --- !u!1 &4890943105164052786
 GameObject:
   m_ObjectHideFlags: 0
@@ -5428,6 +5462,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 8020856767785456079}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 8512084761911580146}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -5547,6 +5582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 0}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 0}
   menuToClose: {fileID: 9197591149830024487}
   menuState_ToSelect: 1
@@ -7101,6 +7137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 8020856767785456079}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 8512084761911580146}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -7329,10 +7366,10 @@ MonoBehaviour:
   m_Navigation:
     m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 2903074614170641174}
+    m_SelectOnUp: {fileID: 2332681185061700468}
     m_SelectOnDown: {fileID: 203861068485283502}
     m_SelectOnLeft: {fileID: 220225984855704253}
-    m_SelectOnRight: {fileID: 2332681185061700468}
+    m_SelectOnRight: {fileID: 220225984855704253}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -7371,6 +7408,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 0}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 0}
   menuToClose: {fileID: 9197591149830024487}
   menuState_ToSelect: 1
@@ -7562,6 +7600,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   newMenuState: 0
   uiElementToSelect: {fileID: 0}
+  tabletMenuToUnlock: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
   closingMenuAnimatorList: []
@@ -7578,6 +7617,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 8020856767785456079}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 8512084761911580146}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -7718,6 +7758,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 8020856767785456079}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 8512084761911580146}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -8701,6 +8742,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 8020856767785456079}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 8512084761911580146}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0

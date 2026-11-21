@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class ActionButtonsManager : Singleton<ActionButtonsManager>
 {
+    internal static event System.Action<Button> MouseHoverUpdated;
+
     [Header("Event System")]
     public EventSystem eventSystem;
 
@@ -78,20 +80,24 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
             Cursor.visible = false;
         }
 
-        // A stationary mouse must not take focus back from keyboard/controller navigation.
-        if (!moved || clicked || mouse.leftButton.isPressed || mouse.leftButton.wasReleasedThisFrame ||
+        bool released = mouse.leftButton.wasReleasedThisFrame;
+        if ((!moved && !clicked && !released) ||
             !uiInputModule || !uiInputModule.isActiveAndEnabled || eventSystem.currentInputModule != uiInputModule)
             return;
 
         RaycastResult hit = uiInputModule.GetLastRaycastResult(mouse.deviceId);
-        if (!(hit.module is GraphicRaycaster) || !hit.gameObject) return;
-
-        var target = hit.gameObject.GetComponentInParent<Button>();
+        Button target = hit.module is GraphicRaycaster && hit.gameObject
+            ? hit.gameObject.GetComponentInParent<Button>()
+            : null;
         if (target && target.TryGetComponent(out OptionSelectAnimation arrow))
             target = arrow.SelectionButton;
 
-        if (CanSelectWithMouse(target) && eventSystem.currentSelectedGameObject != target.gameObject)
+        // A stationary mouse must not take focus back from keyboard/controller navigation.
+        if (moved && !clicked && !mouse.leftButton.isPressed && !released &&
+            CanSelectWithMouse(target) && eventSystem.currentSelectedGameObject != target.gameObject)
             eventSystem.SetSelectedGameObject(target.gameObject);
+
+        MouseHoverUpdated?.Invoke(target);
     }
 
     internal static bool CanSelectWithMouse(Button button)

@@ -169,6 +169,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         isVisible = false;
         isActive = false;
         PlayerManager.Instance.pauseGame = Player_KeyInputs.Instance.freeCam_isPressed;
+        Action_closePauseMenu_Action();
     }
 
     internal void ShowPausePage(MenuState state)
