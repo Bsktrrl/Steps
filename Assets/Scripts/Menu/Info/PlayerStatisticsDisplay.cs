@@ -35,7 +35,7 @@ public class PlayerStatisticsDisplay : MonoBehaviour
         // Values follow the order of the left column in GameTextDatabase.
         stats_LeftSide.text = BuildColumn(text.options_Info_StatsLeft_Text, new[]
         {
-            stats.progress.ToString("F0", culture) + "%",
+            Mathf.FloorToInt(stats.progress).ToString(culture) + "%",
             FormatDuration(stats.playTime),
             stats.sessions.ToString(culture),
             FormatDuration(stats.longestSession),

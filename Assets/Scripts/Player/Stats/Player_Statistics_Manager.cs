@@ -7,7 +7,20 @@ using UnityEngine;
 
 public class Player_Statistics_Manager : MonoBehaviour
 {
-    private const int GameProgressTotal = 31 * 15 + 32 + 30; //31 levels with 15 progress tings in it, 32 skins to buy, 30 NPC interractions
+    private const int LevelCount = (int)LevelNames.HUB;
+    private const int RegionLevelCount = LevelCount - 1;
+    private const int FootprintsPerLevel = 3;
+    private const int EssencePerLevel = 10;
+    private const int CollectibleSkinCount = LevelCount + 1;
+    // Each level has one Glueplant and one tablet. Every collectible skin has a pickup and a purchase.
+    private const int GameProgressTotal = LevelCount * (1 + FootprintsPerLevel + EssencePerLevel + 1) +
+                                          CollectibleSkinCount * 2 + RegionLevelCount;
+
+    private static readonly FieldInfo[] CollectibleSkinFields = typeof(SkinsWardrobeInfo)
+        .GetFields(BindingFlags.Public | BindingFlags.Instance)
+        .Where(field => field.FieldType == typeof(WardrobeSkinState) &&
+                        field.Name != nameof(SkinsWardrobeInfo.skin_Default))
+        .ToArray();
 
     public static Player_Statistics_Manager Active { get; private set; }
     public PlayerStatistics Statistics => data ? data.playerStatistics_Store : null;
@@ -22,7 +35,7 @@ public class Player_Statistics_Manager : MonoBehaviour
     private Movement movement;
     private FreeCam freeCam;
     private PauseMenuManager pauseMenu;
-    private readonly int[] collectiblePointsByLevel = new int[(int)LevelNames.HUB + 1];
+    private readonly LevelProgress[] progressByLevel = new LevelProgress[LevelCount + 1];
     private readonly Dictionary<string, LevelNames> levelNamesByMapName = new Dictionary<string, LevelNames>();
 
     private int pendingSteps;
@@ -36,6 +49,16 @@ public class Player_Statistics_Manager : MonoBehaviour
     private float attemptFreeCamTime;
     private bool attemptCompleted;
     private bool attemptClosed;
+
+    private struct LevelProgress
+    {
+        public int footprints;
+        public int essence;
+        public bool glueplantCollected;
+        public bool tabletRead;
+
+        public int Points => footprints + essence + (glueplantCollected ? 1 : 0) + (tabletRead ? 1 : 0);
+    }
 
     private bool IsTrackingLevel => data && map && !attemptClosed;
 
@@ -82,6 +105,7 @@ public class Player_Statistics_Manager : MonoBehaviour
     {
         data = loadedData;
         ImportExistingProgress();
+        CheckProgress();
 
         if (!sessionCounted)
         {
@@ -326,8 +350,11 @@ public class Player_Statistics_Manager : MonoBehaviour
             return;
 
         string key = map.gameObject.scene.name + "/" + textEntry + "/" + position.ToString("F3", CultureInfo.InvariantCulture);
-        if (AddUnique(Statistics.tabletsRead, key))
-            AddTabletRed(1);
+        if (!AddUnique(Statistics.tabletsRead, key))
+            return;
+
+        AddTabletRed(1);
+        SaveStatistics();
     }
 
     internal void RecordDialogueStarted(NPCs npc, int levelNumber)
@@ -341,7 +368,7 @@ public class Player_Statistics_Manager : MonoBehaviour
         if (!data)
             return;
 
-        Array.Clear(collectiblePointsByLevel, 0, collectiblePointsByLevel.Length);
+        Array.Clear(progressByLevel, 0, progressByLevel.Length);
         var savedMaps = data.mapInfo_StoreList?.map_SaveInfo_List;
         if (savedMaps != null)
         {
@@ -350,52 +377,50 @@ public class Player_Statistics_Manager : MonoBehaviour
                 if (savedMap == null || !TryGetLevel(savedMap.mapName, out LevelNames level))
                     continue;
 
-                int index = (int)level;
-                collectiblePointsByLevel[index] = Mathf.Max(collectiblePointsByLevel[index], GetCollectiblePoints(savedMap));
+                ref LevelProgress progress = ref progressByLevel[(int)level];
+                progress.glueplantCollected |= savedMap.isCompleted;
+                int footprints = savedMap.maxStepList?.Count(footprint => footprint?.isTaken == true) ?? 0;
+                int essence = savedMap.essenceList?.Count(pickup => pickup?.isTaken == true) ?? 0;
+                progress.footprints = Mathf.Max(progress.footprints, Mathf.Min(footprints, FootprintsPerLevel));
+                progress.essence = Mathf.Max(progress.essence, Mathf.Min(essence, EssencePerLevel));
             }
         }
 
-        int progressPoints = Statistics.completedLevels.Count + Mathf.Min(32, Statistics.pickup_SkinsBought);
-        foreach (int points in collectiblePointsByLevel)
-            progressPoints += points;
+        foreach (string tabletKey in Statistics.tabletsRead)
+        {
+            // Tablet history stores the scene before the text entry and position.
+            int separator = tabletKey?.IndexOf('/') ?? -1;
+            if (separator > 0 && TryGetLevel(tabletKey.Substring(0, separator), out LevelNames level))
+                progressByLevel[(int)level].tabletRead = true;
+        }
+
+        int progressPoints = GetSkinProgress(data.skinsInfo_Store?.skinWardrobeInfo);
+        foreach (LevelProgress progress in progressByLevel)
+            progressPoints += progress.Points;
 
         foreach (var _ in GetFinishedDialogues(data.charatersData_Store, includeStepellier: false))
             progressPoints++;
 
-        Statistics.progress = 100f * Mathf.Min(progressPoints, GameProgressTotal) / GameProgressTotal;
+        Statistics.progress = 100f * progressPoints / GameProgressTotal;
     }
 
-    private static int GetCollectiblePoints(Map_SaveInfo savedMap)
+    private static int GetSkinProgress(SkinsWardrobeInfo wardrobe)
     {
-        int essencePoints = 0;
-        if (savedMap.essenceList != null)
-        {
-            foreach (EssenceInfo essence in savedMap.essenceList)
-            {
-                if (essence?.isTaken != true)
-                    continue;
+        if (wardrobe == null)
+            return 0;
 
-                essencePoints++;
-                if (essencePoints == 10)
-                    break;
-            }
+        int skinsFound = 0;
+        int skinsBought = 0;
+        foreach (FieldInfo field in CollectibleSkinFields)
+        {
+            var state = (WardrobeSkinState)field.GetValue(wardrobe);
+            if (state is WardrobeSkinState.Available or WardrobeSkinState.Bought or WardrobeSkinState.Selected)
+                skinsFound++;
+            if (state is WardrobeSkinState.Bought or WardrobeSkinState.Selected)
+                skinsBought++;
         }
 
-        int footprintPoints = 0;
-        if (savedMap.maxStepList != null)
-        {
-            foreach (MaxStepInfo footprint in savedMap.maxStepList)
-            {
-                if (footprint?.isTaken != true)
-                    continue;
-
-                footprintPoints++;
-                if (footprintPoints == 3)
-                    break;
-            }
-        }
-
-        return essencePoints + footprintPoints + (savedMap.levelSkin?.isTaken == true ? 1 : 0);
+        return Mathf.Min(skinsFound, CollectibleSkinCount) + Mathf.Min(skinsBought, CollectibleSkinCount);
     }
 
     private void ImportExistingProgress()
@@ -443,11 +468,8 @@ public class Player_Statistics_Manager : MonoBehaviour
         SkinsWardrobeInfo wardrobe = data.skinsInfo_Store?.skinWardrobeInfo;
         if (wardrobe != null)
         {
-            foreach (FieldInfo field in typeof(SkinsWardrobeInfo).GetFields())
+            foreach (FieldInfo field in CollectibleSkinFields)
             {
-                if (field.FieldType != typeof(WardrobeSkinState) || field.Name == nameof(SkinsWardrobeInfo.skin_Default))
-                    continue;
-
                 var state = (WardrobeSkinState)field.GetValue(wardrobe);
                 if (state == WardrobeSkinState.Bought || state == WardrobeSkinState.Selected)
                     AddSkinBought(1);
