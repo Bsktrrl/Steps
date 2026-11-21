@@ -10,6 +10,8 @@ public class FreeCam : Singleton<FreeCam>
     [SerializeField] private CanvasGroup freeCamUI;
 
     private const float UIFadeDuration = 0.25f;
+    private static readonly float[] SpeedMultipliers = { 0.5f, 0.75f, 1f, 1.5f, 2f };
+    private static readonly float[] LookMultipliers = { 0.5f, 0.75f, 1f, 1.25f, 1.5f };
 
     [Header("Switching")]
     [Tooltip("If true, the FreeCam GameObject will be enabled/disabled when entering/exiting.")]
@@ -89,6 +91,9 @@ public class FreeCam : Singleton<FreeCam>
     private const int SlideIterations = 4;
     private Vector3 _currentVelocity;
     private Vector2 _stickLookRate;
+    private int _flightSpeedLevel;
+    private float _flightSpeed;
+    private float _lookMultiplier = 1f;
     private float _yaw;
     private float _pitch;
 
@@ -101,6 +106,7 @@ public class FreeCam : Singleton<FreeCam>
         Player_KeyInputs.Action_FreeCamIsActive += StartFreeCam;
         Player_KeyInputs.Action_FreeCamIsPassive += EndFreeCam;
         Movement.Action_RespawnPlayerEarly += ResetForRespawn;
+        SettingsManager.Action_SetNewFreeCamSettings += ApplyFlightSettings;
     }
 
     private void OnDisable()
@@ -108,6 +114,7 @@ public class FreeCam : Singleton<FreeCam>
         Player_KeyInputs.Action_FreeCamIsActive -= StartFreeCam;
         Player_KeyInputs.Action_FreeCamIsPassive -= EndFreeCam;
         Movement.Action_RespawnPlayerEarly -= ResetForRespawn;
+        SettingsManager.Action_SetNewFreeCamSettings -= ApplyFlightSettings;
 
         StopAndRestoreFreeCam();
 
@@ -209,6 +216,7 @@ public class FreeCam : Singleton<FreeCam>
             : controller.CM_Player;
         if (_cmPlayer == null) return;
         _brain = controller.CM_Brain;
+        ApplyFlightSettings();
 
         bool resuming = _returnRoutine != null;
         if (_returnRoutine != null)
@@ -297,7 +305,7 @@ public class FreeCam : Singleton<FreeCam>
         {
             float scroll = mouse.scroll.ReadValue().y;
             if (scroll != 0f)
-                moveSpeed = Mathf.Clamp(moveSpeed + Mathf.Sign(scroll) * scrollSpeedStep,
+                _flightSpeed = Mathf.Clamp(_flightSpeed + Mathf.Sign(scroll) * scrollSpeedStep,
                     minMoveSpeed, Mathf.Max(minMoveSpeed, maxMoveSpeed));
         }
 
@@ -327,7 +335,7 @@ public class FreeCam : Singleton<FreeCam>
         Quaternion heading = Quaternion.Euler(0f, _yaw, 0f);
         Vector3 forward = moveInLookDirection ? cameraTransform.forward : heading * Vector3.forward;
         Vector3 input = (heading * Vector3.right) * planar.x + forward * planar.y + Vector3.up * Axis(down, up);
-        float speed = Mathf.Max(0f, moveSpeed) * (boost ? Mathf.Max(1f, boostMultiplier) : 1f);
+        float speed = Mathf.Max(0f, _flightSpeed) * (boost ? Mathf.Max(1f, boostMultiplier) : 1f);
         Vector3 desiredVelocity = Vector3.ClampMagnitude(input, 1f) * speed;
         bool braking = desiredVelocity == Vector3.zero;
         float response = Mathf.Max(0.1f, braking ? deceleration : acceleration);
@@ -346,12 +354,12 @@ public class FreeCam : Singleton<FreeCam>
 
     private void TickLook(Transform cameraTransform, Mouse mouse, Gamepad gamepad, float dt)
     {
-        Vector2 mouseAngle = mouse == null ? Vector2.zero : mouse.delta.ReadValue() * mouseSensitivity;
+        Vector2 mouseAngle = mouse == null ? Vector2.zero : mouse.delta.ReadValue() * (mouseSensitivity * _lookMultiplier);
         Vector2 stick = gamepad == null ? Vector2.zero :
             ApplyStickDeadzone(gamepad.rightStick.ReadUnprocessedValue(), lookStickDeadzone);
         float magnitude = stick.magnitude;
         Vector2 desiredRate = magnitude > 0f
-            ? stick * (Mathf.Pow(magnitude, Mathf.Max(1f, stickLookExponent) - 1f) * stickSensitivity)
+            ? stick * (Mathf.Pow(magnitude, Mathf.Max(1f, stickLookExponent) - 1f) * stickSensitivity * _lookMultiplier)
             : Vector2.zero;
 
         float response = Mathf.Max(0.1f, stickLookResponse);
@@ -367,6 +375,20 @@ public class FreeCam : Singleton<FreeCam>
         _yaw = Mathf.Repeat(_yaw + angle.x, 360f);
         _pitch = Mathf.Clamp(_pitch + (invertY ? angle.y : -angle.y), -PitchLimit, PitchLimit);
         cameraTransform.rotation = Quaternion.Euler(_pitch, _yaw, 0f);
+    }
+
+    private void ApplyFlightSettings()
+    {
+        SettingData settings = DataManager.Instance.settingData_StoreList;
+        int speedLevel = SettingData.NormalizeFreeCamLevel(settings?.currentFreeCamSpeed ?? 0);
+        if (_flightSpeedLevel != speedLevel)
+        {
+            _flightSpeedLevel = speedLevel;
+            _flightSpeed = moveSpeed * SpeedMultipliers[speedLevel - 1];
+        }
+
+        int lookLevel = SettingData.NormalizeFreeCamLevel(settings?.currentFreeCamSensitivity ?? 0);
+        _lookMultiplier = LookMultipliers[lookLevel - 1];
     }
 
     private static float Axis(bool negative, bool positive) => (positive ? 1f : 0f) - (negative ? 1f : 0f);

@@ -115,7 +115,9 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.mapNameDisplay_Store = gameData.mapNameDisplay_Save;
         this.charatersData_Store = gameData.charatersData_Save;
         this.skinsInfo_Store = gameData.skinsInfo_Save;
-        this.game_TextDatabase_Store = gameData.game_TextDatabase_Save;
+        // TextData can already have loaded the current spreadsheet in the main menu.
+        if ((game_TextDatabase_Store?.gameText_LanguageList?.Count ?? 0) == 0)
+            this.game_TextDatabase_Store = gameData.game_TextDatabase_Save;
 
         this.playerStatsData_Store = gameData.PlayerStatsData_Save;
 

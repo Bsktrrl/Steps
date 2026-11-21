@@ -146,9 +146,9 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_SmoothCameraRotation, 87);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_RevertedCameraRotation, 88);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_SkipLevelIntro, 89);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_7, 90);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_8, 91);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_9, 92);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_FreeCamSpeed, 90);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_FreeCamSensitivity, 91);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_GuidePopups, 92);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_10, 93);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_11, 94);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_12, 95);
@@ -754,9 +754,9 @@ public class Game_TextDatabase_Language
     public string options_Settings_SmoothCameraRotation;
     public string options_Settings_RevertedCameraRotation;
     public string options_Settings_SkipLevelIntro;
-    public string options_Settings_7;
-    public string options_Settings_8;
-    public string options_Settings_9;
+    public string options_Settings_FreeCamSpeed;
+    public string options_Settings_FreeCamSensitivity;
+    public string options_Settings_GuidePopups;
     public string options_Settings_10;
     public string options_Settings_11;
     public string options_Settings_12;
@@ -1296,9 +1296,9 @@ public enum Text_Database_Enum
     [InspectorName("Options Menu / Settings / Smooth Camera Rotation")] options_Settings_SmoothCameraRotation,
     [InspectorName("Options Menu / Settings / Reverted Camera Rotation")] options_Settings_RevertedCameraRotation,
     [InspectorName("Options Menu / Settings / Skip Level Intro")] options_Settings_SkipLevelIntro,
-    [InspectorName("Options Menu / Settings / 7")] options_Settings_7,
-    [InspectorName("Options Menu / Settings / 8")] options_Settings_8,
-    [InspectorName("Options Menu / Settings / 9")] options_Settings_9,
+    [InspectorName("Options Menu / Settings / FreeCam Speed")] options_Settings_FreeCamSpeed,
+    [InspectorName("Options Menu / Settings / FreeCam Sensitivity")] options_Settings_FreeCamSensitivity,
+    [InspectorName("Options Menu / Settings / Guide Popups")] options_Settings_GuidePopups,
     [InspectorName("Options Menu / Settings / 10")] options_Settings_10,
     [InspectorName("Options Menu / Settings / 11")] options_Settings_11,
     [InspectorName("Options Menu / Settings / 12")] options_Settings_12,

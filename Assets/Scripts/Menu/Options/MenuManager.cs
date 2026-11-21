@@ -246,6 +246,9 @@ public enum SettingState
     Audio_UI,
     Audio_Dialogue,
 
+    Settings_FreeCamSpeed,
+    Settings_FreeCamSensitivity,
+    Settings_GuidePopups,
 }
 public enum Languages
 {

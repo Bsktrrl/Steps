@@ -305,14 +305,14 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.options_Settings_SkipLevelIntro:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Settings_SkipLevelIntro;
                 break;
-            case Text_Database_Enum.options_Settings_7:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Settings_7;
+            case Text_Database_Enum.options_Settings_FreeCamSpeed:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Settings_FreeCamSpeed;
                 break;
-            case Text_Database_Enum.options_Settings_8:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Settings_8;
+            case Text_Database_Enum.options_Settings_FreeCamSensitivity:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Settings_FreeCamSensitivity;
                 break;
-            case Text_Database_Enum.options_Settings_9:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Settings_9;
+            case Text_Database_Enum.options_Settings_GuidePopups:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Settings_GuidePopups;
                 break;
             case Text_Database_Enum.options_Settings_10:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Settings_10;
@@ -1695,12 +1695,12 @@ public class TMPro_TextDisplay : MonoBehaviour
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Settings_RevertedCameraRotation;
             case Text_Database_Enum.options_Settings_SkipLevelIntro:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Settings_SkipLevelIntro;
-            case Text_Database_Enum.options_Settings_7:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Settings_7;
-            case Text_Database_Enum.options_Settings_8:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Settings_8;
-            case Text_Database_Enum.options_Settings_9:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Settings_9;
+            case Text_Database_Enum.options_Settings_FreeCamSpeed:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Settings_FreeCamSpeed;
+            case Text_Database_Enum.options_Settings_FreeCamSensitivity:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Settings_FreeCamSensitivity;
+            case Text_Database_Enum.options_Settings_GuidePopups:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Settings_GuidePopups;
             case Text_Database_Enum.options_Settings_10:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].options_Settings_10;
             case Text_Database_Enum.options_Settings_11:

@@ -13,6 +13,7 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
     [Header("Select On Cancel")]
     [SerializeField] Button selectOnCancel;
     [SerializeField] Button_ToPress transitionOnCancel;
+    [SerializeField] bool selectLocallyOnCancel;
 
     [Header("Menus SetActive")]
     [SerializeField] GameObject menuToOpen;
@@ -75,6 +76,7 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
     internal void SetLocalCancelSelection(Button target, Action beforeSelection)
     {
         selectOnCancel = target;
+        selectLocallyOnCancel = true;
         beforeLocalCancelSelection = beforeSelection;
     }
 
@@ -87,13 +89,13 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
             return;
         }
 
-        if (beforeLocalCancelSelection != null)
+        if (selectLocallyOnCancel)
         {
             if (!selectOnCancel || !selectOnCancel.IsActive())
                 return;
 
             Action_BackButton_IsPressed?.Invoke();
-            beforeLocalCancelSelection();
+            beforeLocalCancelSelection?.Invoke();
             // The new selection may run its Update later in the same frame.
             if (selectOnCancel.TryGetComponent(out CancelPauseMenuByButtonPress targetCancel))
                 targetCancel.ignoreCancelFrame = Time.frameCount;

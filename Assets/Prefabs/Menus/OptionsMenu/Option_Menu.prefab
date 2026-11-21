@@ -1106,6 +1106,9 @@ RectTransform:
   - {fileID: 6525452934886185104}
   - {fileID: 7186325223467197355}
   - {fileID: 5950899193875677660}
+  - {fileID: 6288721734912100976}
+  - {fileID: 6288721734912100979}
+  - {fileID: 6288721734912100978}
   m_Father: {fileID: 4347909238563063204}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1134,7 +1137,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 1508, y: 139}
-  m_Spacing: {x: 0, y: 40}
+  m_Spacing: {x: 0, y: 30}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!1 &1550737849099204469
@@ -5262,7 +5265,7 @@ MonoBehaviour:
   tabLinks:
   - category: 1
     tab: {fileID: 220225984855704253}
-    upTarget: {fileID: 5450941424353462912}
+    upTarget: {fileID: 5653831763976536366}
   - category: 2
     tab: {fileID: 8020856767785456079}
     upTarget: {fileID: 1524856916968082814}
@@ -13522,7 +13525,7 @@ PrefabInstance:
     - target: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 220225984855704253}
+      objectReference: {fileID: 5653831763976536364}
     - target: {fileID: 4211847776252968579, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
       propertyPath: german
       value: "Level-Einf\xFChrung \xFCberspringen"
@@ -13605,3 +13608,282 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3370613068825369065, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
   m_PrefabInstance: {fileID: 8958510629094578229}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8755232572169442201
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4259354577112215085}
+    m_Modifications:
+    - target: {fileID: 1130200383022329103, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Name
+      value: FreeCamSpeedDisplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 1349986145264159525, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: buttonBack_Sound
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Sprite
+      value:
+      objectReference: {fileID: 21300000, guid: f36ca2897647b52459cfbdb52ad86975, type: 3}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value:
+      objectReference: {fileID: 5450941424353462912}
+    - target: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value:
+      objectReference: {fileID: 5653831763976536367}
+    - target: {fileID: 4369454770211543016, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: settingState
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774837796865197810, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Name
+      value: General_FreeCamSpeed
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591524291464599560, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_text
+      value: FreeCam Speed
+      objectReference: {fileID: 0}
+    - target: {fileID: 7003876538357929609, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: textToDisplay
+      value: 73
+      objectReference: {fileID: 0}
+    - target: {fileID: 8643375156603559578, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: selectOnCancel
+      value:
+      objectReference: {fileID: 220225984855704253}
+    - target: {fileID: 8643375156603559578, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: selectLocallyOnCancel
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 4211847776252968579, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+--- !u!224 &6288721734912100976 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3370613068825369065, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+  m_PrefabInstance: {fileID: 8755232572169442201}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5653831763976536364 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+  m_PrefabInstance: {fileID: 8755232572169442201}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+--- !u!114 &6227564972117171337 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+  m_PrefabInstance: {fileID: 8755232572169442201}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+--- !u!1001 &8755232572169442202
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4259354577112215085}
+    m_Modifications:
+    - target: {fileID: 1130200383022329103, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Name
+      value: FreeCamSensitivityDisplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 1349986145264159525, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: buttonBack_Sound
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Sprite
+      value:
+      objectReference: {fileID: 21300000, guid: f36ca2897647b52459cfbdb52ad86975, type: 3}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value:
+      objectReference: {fileID: 5653831763976536364}
+    - target: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value:
+      objectReference: {fileID: 5653831763976536366}
+    - target: {fileID: 4369454770211543016, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: settingState
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774837796865197810, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Name
+      value: General_FreeCamSensitivity
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591524291464599560, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_text
+      value: FreeCam Sensitivity
+      objectReference: {fileID: 0}
+    - target: {fileID: 7003876538357929609, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: textToDisplay
+      value: 74
+      objectReference: {fileID: 0}
+    - target: {fileID: 8643375156603559578, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: selectOnCancel
+      value:
+      objectReference: {fileID: 220225984855704253}
+    - target: {fileID: 8643375156603559578, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: selectLocallyOnCancel
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 4211847776252968579, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+--- !u!224 &6288721734912100979 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3370613068825369065, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+  m_PrefabInstance: {fileID: 8755232572169442202}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5653831763976536367 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+  m_PrefabInstance: {fileID: 8755232572169442202}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+--- !u!114 &6227564972117171338 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+  m_PrefabInstance: {fileID: 8755232572169442202}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+--- !u!1001 &8755232572169442203
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4259354577112215085}
+    m_Modifications:
+    - target: {fileID: 1130200383022329103, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Name
+      value: GuidePopupsDisplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 1349986145264159525, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: buttonBack_Sound
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Sprite
+      value:
+      objectReference: {fileID: 21300000, guid: 9caaef16fb54ec84280b27894fb8983b, type: 3}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value:
+      objectReference: {fileID: 5653831763976536367}
+    - target: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value:
+      objectReference: {fileID: 220225984855704253}
+    - target: {fileID: 4369454770211543016, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: settingState
+      value: 27
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774837796865197810, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Name
+      value: General_GuidePopups
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591524291464599560, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_text
+      value: Guide Popups
+      objectReference: {fileID: 0}
+    - target: {fileID: 7003876538357929609, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: textToDisplay
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8643375156603559578, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: selectOnCancel
+      value:
+      objectReference: {fileID: 220225984855704253}
+    - target: {fileID: 8643375156603559578, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: selectLocallyOnCancel
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 4211847776252968579, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+--- !u!224 &6288721734912100978 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3370613068825369065, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+  m_PrefabInstance: {fileID: 8755232572169442203}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5653831763976536366 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+  m_PrefabInstance: {fileID: 8755232572169442203}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+--- !u!114 &6227564972117171339 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+  m_PrefabInstance: {fileID: 8755232572169442203}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
