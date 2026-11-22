@@ -68,6 +68,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6319680801911520035, guid: 3724cb7be26b3344dbafa91dd9789d63, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -81,6 +85,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5607910448600395393, guid: 3724cb7be26b3344dbafa91dd9789d63, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6192881805503088418}
+    - targetCorrespondingSourceObject: {fileID: 5607910448600395393, guid: 3724cb7be26b3344dbafa91dd9789d63, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7222579433155409845}
     - targetCorrespondingSourceObject: {fileID: 4504549826540792595, guid: 3724cb7be26b3344dbafa91dd9789d63, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1252596288205536191}
@@ -94,6 +101,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1149337193688921168}
   m_SourcePrefab: {fileID: 100100000, guid: 3724cb7be26b3344dbafa91dd9789d63, type: 3}
+--- !u!1 &10308802244369789 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6319680801911520035, guid: 3724cb7be26b3344dbafa91dd9789d63, type: 3}
+  m_PrefabInstance: {fileID: 6309714574985619038}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &223495371550348413 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6091848721831342627, guid: 3724cb7be26b3344dbafa91dd9789d63, type: 3}
@@ -130,6 +142,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+--- !u!114 &7222579433155409845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892592863294277855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 403699b401ad3954b9d7a48aeed5e529, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hintObject: {fileID: 10308802244369789}
 --- !u!1 &7571672246630845773 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4504549826540792595, guid: 3724cb7be26b3344dbafa91dd9789d63, type: 3}

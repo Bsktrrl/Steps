@@ -34,16 +34,10 @@ public class RegionLocked : MonoBehaviour
 
     void CanPlayDisplay()
     {
-        if (CheckIfCanBePlayed())
-        {
-            padlock.SetActive(false);
-            regionIsLocked = false;
-        }
-        else
-        {
-            padlock.SetActive(true);
-            regionIsLocked = true;
-        }
+        bool isLocked = !CheckIfCanBePlayed();
+        if (padlock.activeSelf != isLocked)
+            padlock.SetActive(isLocked);
+        regionIsLocked = isLocked;
     }
 
     public bool CheckIfCanBePlayed()
@@ -65,19 +59,21 @@ public class RegionLocked : MonoBehaviour
                         //print("5. Error: " + levelToPlay);
                         if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List != null)
                         {
-                            //print("6. Error: " + levelToPlay);
+                            if (levelsToBeFinished.Count == 0)
+                                return true;
+
                             foreach (Map_SaveInfo mapInfo in menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List)
                             {
-                                //print("7. Error: " + levelToPlay);
+                                if (!mapInfo.isCompleted)
+                                    continue;
+
                                 for (int i = 0; i < levelsToBeFinished.Count; i++)
                                 {
-                                    if (mapInfo.mapName == levelsToBeFinished[i].GetComponent<LoadLevel>().levelToPlay)
+                                    LoadLevel requiredLevel = levelsToBeFinished[i].GetComponent<LoadLevel>();
+                                    if (mapInfo.mapName == requiredLevel.levelToPlay)
                                     {
-                                        if (mapInfo.isCompleted)
-                                        {
-                                            levelsToBeFinished[i].GetComponent<LoadLevel>().isCompleted = true;
-                                            counter++;
-                                        }
+                                        requiredLevel.isCompleted = true;
+                                        counter++;
                                     }
                                 }
                             }

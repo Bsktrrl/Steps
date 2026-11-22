@@ -11,6 +11,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
     public GameObject overworldMenu_Parent;
     public GameObject optionsMenu_Parent;
     public GameObject skinsMenu_Parent;
+    public GameObject infoMenu_Parent;
 
     public GameObject newGameWarningMessage_Parent;
 
@@ -104,6 +105,10 @@ public class MainMenuManager : Singleton<MainMenuManager>
             DataManager.Instance.menuState_Store = MenuState.Overworld_Menu;
             DataManager.Instance.overWorldStates_StoreList = new OverWorldStates();
         }
+        else if (!string.IsNullOrEmpty(exitedLevelScene))
+        {
+            SetLevelMenuForReturn(exitedLevelScene);
+        }
 
         menuState = DataManager.Instance.menuState_Store;
 
@@ -118,6 +123,24 @@ public class MainMenuManager : Singleton<MainMenuManager>
         if (overworldMenu_Parent.activeInHierarchy)
             StartCoroutine(RestoreOverworldSelection(menuState, returningFromHUB, exitedLevelScene, selectNextLevel));
 
+    }
+
+    void SetLevelMenuForReturn(string sceneName)
+    {
+        if (!levelSelectMenu) return;
+
+        // Resolve the destination from the level button even if the saved menu is stale.
+        foreach (LoadLevel level in levelSelectMenu.GetComponentsInChildren<LoadLevel>(true))
+        {
+            if (level.levelToPlay != sceneName)
+                continue;
+
+            MenuState returnMenu = ExitMapMenuReference.GetMenuStateForRegion(level.regionToPlay);
+            if (returnMenu != MenuState.None)
+                DataManager.Instance.menuState_Store = returnMenu;
+
+            return;
+        }
     }
 
     IEnumerator RestoreOverworldSelection(MenuState loadedMenu, bool returningFromHUB, string exitedLevelScene, bool selectNextLevel)
@@ -160,6 +183,9 @@ public class MainMenuManager : Singleton<MainMenuManager>
                 break;
             case MenuState.Options_Menu:
                 Menu_Options();
+                break;
+            case MenuState.Info_Menu:
+                Menu_Info();
                 break;
             case MenuState.Biome_Menu:
                 Menu_Biome();
@@ -306,6 +332,19 @@ public class MainMenuManager : Singleton<MainMenuManager>
         optionsMenu_Parent.SetActive(true);
     }
 
+    void Menu_Info()
+    {
+        if (!infoMenu_Parent)
+        {
+            Menu_Main();
+            return;
+        }
+
+        HideAllMenus();
+        infoMenu_Parent.SetActive(true);
+        MenuManager.Instance.OpenInfoMenu();
+    }
+
     void Menu_Biome()
     {
         overworldMenu_Parent.SetActive(true);
@@ -387,6 +426,13 @@ public class MainMenuManager : Singleton<MainMenuManager>
             skinsMenu_Parent.SetActive(false);
         if (optionsMenu_Parent)
             optionsMenu_Parent.SetActive(false);
+        if (infoMenu_Parent && infoMenu_Parent.activeSelf)
+        {
+            infoMenu_Parent.SetActive(false);
+            var menuManager = FindAnyObjectByType<MenuManager>();
+            if (menuManager)
+                menuManager.CloseInfoMenu();
+        }
         if (newGameWarningMessage_Parent)
             newGameWarningMessage_Parent.SetActive(false);
 

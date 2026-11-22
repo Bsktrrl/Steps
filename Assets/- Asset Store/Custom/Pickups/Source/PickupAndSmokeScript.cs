@@ -39,16 +39,17 @@ public class PickupAndSmokeScript : MonoBehaviour
 
     void Update()
     {
-        if(shineHor != null && shineHor.activeInHierarchy)
+        Camera camera = Camera.main;
+        if (camera && shineHor != null && shineHor.activeInHierarchy)
         {
-            shineHor.transform.LookAt(Camera.main.transform);
+            shineHor.transform.LookAt(camera.transform);
             shineHor.transform.localEulerAngles += new Vector3(90, Mathf.Sin(Time.time * 2) * shineHorSize.x * 100, 0);
             shineHor.transform.localScale = shineHorSize + Vector3.one * Mathf.Sin(Time.time * 3) * shineHorSize.x / 10;
         }
 
-        if(shineDia != null && shineDia.activeInHierarchy)
+        if (camera && shineDia != null && shineDia.activeInHierarchy)
         {
-            shineDia.transform.LookAt(Camera.main.transform);
+            shineDia.transform.LookAt(camera.transform);
             shineDia.transform.localEulerAngles += new Vector3(90, Mathf.Sin(Time.time * 2 + Mathf.PI) * shineDiaSize.x * 100, 0);
             shineDia.transform.localScale = shineDiaSize + Vector3.one * Mathf.Sin(Time.time * 3 + Mathf.PI) * shineDiaSize.x / 10;
         }

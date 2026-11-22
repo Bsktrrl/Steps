@@ -48,7 +48,6 @@ public class MapManager : Singleton<MapManager>
     public float fadeDuration_Out = 0.25f;
 
     [SerializeField] BlockInfo[] blockInfoList;
-    Interactable_Pickup[] pickupInfoList;
 
     public bool introSequence;
     public bool introSequence_Finished;
@@ -95,7 +94,6 @@ public class MapManager : Singleton<MapManager>
     private void Start()
     {
         blockInfoList = FindObjectsOfType<BlockInfo>();
-        pickupInfoList = FindObjectsOfType<Interactable_Pickup>();
 
         PlayerManager.Instance.PauseGame();
     }
@@ -191,16 +189,17 @@ public class MapManager : Singleton<MapManager>
     {
         foreach (BlockInfo block in blockInfoList)
         {
-            if (block.gameObject)
+            GameObject blockObject = block.gameObject;
+            if (blockObject)
             {
-                if (!block.gameObject.activeInHierarchy)
+                if (!blockObject.activeInHierarchy)
                 {
-                    block.gameObject.SetActive(true);
+                    blockObject.SetActive(true);
                 }
 
-                if (block.gameObject.GetComponent<Block_Falling>())
+                if (blockObject.TryGetComponent(out Block_Falling fallingBlock))
                 {
-                    block.gameObject.GetComponent<Block_Falling>().ResetBlock();
+                    fallingBlock.ResetBlock();
                 }
             }
         }
@@ -266,8 +265,14 @@ public class MapManager : Singleton<MapManager>
     }
     public void FadeInBlackScreen()
     {
+        StartFadeInBlackScreen();
+    }
+
+    internal Coroutine StartFadeInBlackScreen()
+    {
         StopBlackScreenFadeRoutine();
         blackScreenFadeRoutine = StartCoroutine(FadeInBlackScreenCoroutine());
+        return blackScreenFadeRoutine;
     }
 
     public IEnumerator FadeInBlackScreenCoroutine()

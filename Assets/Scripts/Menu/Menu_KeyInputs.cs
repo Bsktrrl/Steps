@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
@@ -26,6 +27,11 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
 
     InputAction leftAction;
     InputAction rightAction;
+    InputAction shiftLeftAction;
+    InputAction shiftRightAction;
+
+    MenuCategorySelected shiftLeftRow;
+    MenuCategorySelected shiftRightRow;
 
     bool leftWasPressed;
     bool rightWasPressed;
@@ -52,6 +58,8 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
         {
             leftAction = playerInput.actions.FindAction("MenuNavigation_Left");
             rightAction = playerInput.actions.FindAction("MenuNavigation_Right");
+            shiftLeftAction = playerInput.actions.FindAction("OptionsMenuShift_Left");
+            shiftRightAction = playerInput.actions.FindAction("OptionsMenuShift_Right");
         }
     }
 
@@ -95,8 +103,11 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
 
     void HandleLeftInput()
     {
-        bool leftIsPressed = leftAction != null && leftAction.IsPressed();
-        bool leftPressedThisFrame = leftAction != null && leftAction.WasPressedThisFrame();
+        bool shiftPressedThisFrame = HandleMenuShift(shiftLeftAction, true, ref shiftLeftRow);
+        bool leftIsPressed = (leftAction != null && leftAction.IsPressed()) ||
+                             (shiftLeftRow && shiftLeftAction.IsPressed());
+        bool leftPressedThisFrame = (leftAction != null && leftAction.WasPressedThisFrame()) ||
+                                    shiftPressedThisFrame;
 
         if (leftIsPressed || leftPressedThisFrame)
         {
@@ -121,8 +132,11 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
 
     void HandleRightInput()
     {
-        bool rightIsPressed = rightAction != null && rightAction.IsPressed();
-        bool rightPressedThisFrame = rightAction != null && rightAction.WasPressedThisFrame();
+        bool shiftPressedThisFrame = HandleMenuShift(shiftRightAction, false, ref shiftRightRow);
+        bool rightIsPressed = (rightAction != null && rightAction.IsPressed()) ||
+                              (shiftRightRow && shiftRightAction.IsPressed());
+        bool rightPressedThisFrame = (rightAction != null && rightAction.WasPressedThisFrame()) ||
+                                     shiftPressedThisFrame;
 
         if (rightIsPressed || rightPressedThisFrame)
         {
@@ -145,6 +159,41 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
         }
     }
 
+
+    //--------------------
+
+    bool HandleMenuShift(InputAction action, bool left, ref MenuCategorySelected heldRow)
+    {
+        var eventSystem = EventSystem.current;
+        if (action == null || !eventSystem || !optionsManager ||
+            (!action.IsPressed() && !action.WasPressedThisFrame()))
+        {
+            heldRow = null;
+            return false;
+        }
+
+        GameObject selected = eventSystem.currentSelectedGameObject;
+        if (!action.WasPressedThisFrame())
+        {
+            if (heldRow && heldRow.gameObject != selected)
+                heldRow = null;
+            return false;
+        }
+
+        heldRow = null;
+        GameObject panel = optionsManager.currentMenuCategorySelected switch
+        {
+            MenuCategories.Settings => optionsManager.settingsMenuParent,
+            MenuCategories.Audio => optionsManager.audioMenuParent,
+            _ => null
+        };
+        if (panel && selected && selected.activeInHierarchy && selected.transform.IsChildOf(panel.transform) &&
+            selected.TryGetComponent(out heldRow))
+            return true;
+
+        optionsManager.ShiftTab(eventSystem, left);
+        return false;
+    }
 
     //--------------------
 
@@ -223,7 +272,11 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
 
     void InvokeMenuNavigationLeft()
     {
-        if (IsSettingsCategorySelected())
+        if (shiftLeftRow)
+        {
+            PressSettingsArrow(shiftLeftRow.settingState, true);
+        }
+        else if (IsSettingsCategorySelected())
         {
             Action_MenuSettingsNavigationLeft_isPressed?.Invoke();
         }
@@ -231,7 +284,11 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
 
     void InvokeMenuNavigationRight()
     {
-        if (IsSettingsCategorySelected())
+        if (shiftRightRow)
+        {
+            PressSettingsArrow(shiftRightRow.settingState, false);
+        }
+        else if (IsSettingsCategorySelected())
         {
             Action_MenuSettingsNavigationRight_isPressed?.Invoke();
         }

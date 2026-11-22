@@ -71,6 +71,9 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     //PlayerStatsData
     /*[HideInInspector]*/ public PermanentAbilitiesReceived permanentAbilitiesReceived_Store = new PermanentAbilitiesReceived();
 
+    //PlayerStatsData
+    /*[HideInInspector]*/ public PlayerStatistics playerStatistics_Store = new PlayerStatistics();
+
 
     #endregion
 
@@ -81,6 +84,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     public void LoadData(GameData gameData)
     {
         GetSavedDataFromFile(gameData);
+        Player_Statistics_Manager.Active?.BeginTracking(this);
         LoadDataIntoProject(gameData);
 
         StartCoroutine(LoadingDelay(0.01f));
@@ -111,7 +115,9 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.mapNameDisplay_Store = gameData.mapNameDisplay_Save;
         this.charatersData_Store = gameData.charatersData_Save;
         this.skinsInfo_Store = gameData.skinsInfo_Save;
-        this.game_TextDatabase_Store = gameData.game_TextDatabase_Save;
+        // TextData can already have loaded the current spreadsheet in the main menu.
+        if ((game_TextDatabase_Store?.gameText_LanguageList?.Count ?? 0) == 0)
+            this.game_TextDatabase_Store = gameData.game_TextDatabase_Save;
 
         this.playerStatsData_Store = gameData.PlayerStatsData_Save;
 
@@ -121,46 +127,47 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.switchesData_Store = gameData.switchesData_Save;
 
         this.permanentAbilitiesReceived_Store = gameData.permanentAbilitiesReceived_Save;
+
+        this.playerStatistics_Store = gameData.playerStatistics_Save ?? new PlayerStatistics();
     }
 
     void LoadDataIntoProject(GameData gameData)
     {
-        SaveLoad_MapInfo tempMapInfo = FindObjectOfType<SaveLoad_MapInfo>();
+        SaveLoad_MapInfo tempMapInfo = FindAnyObjectByType<SaveLoad_MapInfo>();
         if (tempMapInfo)
         {
             SaveLoad_MapInfo.Instance.LoadData();
             print("1. MapInfo has Loaded");
         }
 
-        SaveLoad_PlayerStats tempPlayerStat = FindObjectOfType<SaveLoad_PlayerStats>();
+        SaveLoad_PlayerStats tempPlayerStat = FindAnyObjectByType<SaveLoad_PlayerStats>();
         if (tempPlayerStat)
         {
             SaveLoad_PlayerStats.Instance.LoadData();
             print("2. PlayerStat has Loaded");
         }
 
-        OverWorldManager tempOverworld = FindObjectOfType<OverWorldManager>();
+        OverWorldManager tempOverworld = FindAnyObjectByType<OverWorldManager>();
         if (tempOverworld)
         {
             OverWorldManager.Instance.LoadUIElementState_IfExitsFromALevel();
             print("3. UIElementState has Loaded");
         }
 
-        SettingsManager tempSettingData = FindObjectOfType<SettingsManager>();
         if (tempOverworld)
         {
             SettingsManager.Instance.LoadData();
             print("4. SettingData has Loaded");
         }
 
-        NPCManager tempNPCManager = FindObjectOfType<NPCManager>();
+        NPCManager tempNPCManager = FindAnyObjectByType<NPCManager>();
         if (tempNPCManager)
         {
             NPCManager.Instance.LoadData();
             print("5. NPCManager has Loaded");
         }
 
-        SkinsManager tempSkinsManager = FindObjectOfType<SkinsManager>();
+        SkinsManager tempSkinsManager = FindAnyObjectByType<SkinsManager>();
         if (tempSkinsManager)
         {
             SkinsManager.Instance.LoadData();
@@ -193,6 +200,8 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         gameData.switchesData_Save = this.switchesData_Store;
 
         gameData.permanentAbilitiesReceived_Save = this.permanentAbilitiesReceived_Store;
+
+        gameData.playerStatistics_Save = this.playerStatistics_Store;
     }
 
     public void Load_NewGame_Data(GameData oldData, GameData newData)
@@ -218,10 +227,12 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.switchesData_Store = newData.switchesData_Save;
 
         this.permanentAbilitiesReceived_Store = newData.permanentAbilitiesReceived_Save;
+        this.playerStatistics_Store = newData.playerStatistics_Save;
 
 
         //Persist through newGame
         this.settingData_StoreList = oldData.settingData_SaveList;
+        this.settingData_StoreList.currentSkipIntro = newData.settingData_SaveList.currentSkipIntro;
         this.oneTimeRunData_Store.startVolum_Values = oldData.oneTimeRunData_Save.startVolum_Values;
     }
 }
@@ -254,3 +265,4 @@ public class OneTimeRunData
     //Skin
     /*[HideInInspector]*/public List<TutorialDataParts> tutorialSegmenets = new List<TutorialDataParts>();
 }
+

@@ -73,8 +73,8 @@ public class LoadLevel : MonoBehaviour
             yield return StartCoroutine(mainMenuManager.PlayFadeInAndWait(0.92f));
         }
 
-        if (GetComponent<LevelInfo>())
-            GetComponent<LevelInfo>().SaveNameDisplay();
+        if (TryGetComponent(out LevelInfo levelInfo))
+            levelInfo.SaveNameDisplay();
 
         SessionStatsGathered.Instance.SaveSessionStats();
 
@@ -142,11 +142,12 @@ public class LoadLevel : MonoBehaviour
                                 //print("7. Error: " + levelToPlay);
                                 for (int i = 0; i < levelsToBeFinished.Count; i++)
                                 {
-                                    if (mapInfo.mapName == levelsToBeFinished[i].GetComponent<LoadLevel>().levelToPlay)
+                                    LoadLevel requiredLevel = levelsToBeFinished[i].GetComponent<LoadLevel>();
+                                    if (mapInfo.mapName == requiredLevel.levelToPlay)
                                     {
                                         if (mapInfo.isCompleted)
                                         {
-                                            levelsToBeFinished[i].GetComponent<LoadLevel>().isCompleted = true;
+                                            requiredLevel.isCompleted = true;
                                             counter++;
 
                                             Action_LevelIsComplete?.Invoke();

@@ -12,6 +12,7 @@ public class SettingsManager : Singleton<SettingsManager>
     public static event Action Action_SetNewCameraMotion;
     public static event Action Action_SetNewRevertedCameraMotion;
     public static event Action Action_SetNewSkipIntro;
+    public static event Action Action_SetNewFreeCamSettings;
 
     public GameObject settingsMenuParent;
     public SettingData settingsData;
@@ -32,11 +33,12 @@ public class SettingsManager : Singleton<SettingsManager>
     [SerializeField] Sprite flag_Japan_Sprite;
     [SerializeField] Sprite flag_Korea_Sprite;
 
-    [Header("TextSpeed")]
+    private static readonly TextSpeed[] TextSpeedChoices =
+        { TextSpeed.Slow, TextSpeed.Medium, TextSpeed.Fast, TextSpeed.Faster, TextSpeed.Fastest };
+
+    [Header("Text Speed (1 to 5)")]
     [SerializeField] Image textSpeedImage;
-    [SerializeField] Sprite textSpeed_Slow_Sprite;
-    [SerializeField] Sprite textSpeed_Medium_Sprite;
-    [SerializeField] Sprite textSpeed_Fast_Sprite;
+    [SerializeField] Sprite[] textSpeedSprites = new Sprite[5];
 
     [Header("StepsDisplay")]
     [SerializeField] Image stepsDisplayImage;
@@ -59,6 +61,18 @@ public class SettingsManager : Singleton<SettingsManager>
     [SerializeField] Image skipIntroImage;
     [SerializeField] Sprite skipIntro_YES_Sprite;
     [SerializeField] Sprite skipIntro_NO_Sprite;
+
+    [Header("FreeCam Speed (1 to 5)")]
+    [SerializeField] Image freeCamSpeedImage;
+    [SerializeField] Sprite[] freeCamSpeedSprites = new Sprite[SettingData.FreeCamLevelCount];
+
+    [Header("FreeCam Sensitivity (1 to 5)")]
+    [SerializeField] Image freeCamSensitivityImage;
+    [SerializeField] Sprite[] freeCamSensitivitySprites = new Sprite[SettingData.FreeCamLevelCount];
+
+    [Header("Guide Popups (On, Off)")]
+    [SerializeField] Image guidePopupsImage;
+    [SerializeField] Sprite[] guidePopupsSprites = new Sprite[2];
 
     #endregion
 
@@ -88,6 +102,7 @@ public class SettingsManager : Singleton<SettingsManager>
     private void OnEnable()
     {
         DataManager.Action_dataHasLoaded += LoadData;
+        DataPersistanceManager.Action_NewGame += LoadData;
 
         Menu_KeyInputs.Action_MenuSettingsNavigationLeft_isPressed += PerformButtonAction_Left;
         Menu_KeyInputs.Action_MenuSettingsNavigationRight_isPressed += PerformButtonAction_Right;
@@ -95,6 +110,7 @@ public class SettingsManager : Singleton<SettingsManager>
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= LoadData;
+        DataPersistanceManager.Action_NewGame -= LoadData;
 
         Menu_KeyInputs.Action_MenuSettingsNavigationLeft_isPressed -= PerformButtonAction_Left;
         Menu_KeyInputs.Action_MenuSettingsNavigationRight_isPressed -= PerformButtonAction_Right;
@@ -114,6 +130,11 @@ public class SettingsManager : Singleton<SettingsManager>
             settingsData.currentCameraMotion = DataManager.Instance.settingData_StoreList.currentCameraMotion;
             settingsData.currentRevertedCameraMotion = DataManager.Instance.settingData_StoreList.currentRevertedCameraMotion;
             settingsData.currentSkipIntro = DataManager.Instance.settingData_StoreList.currentSkipIntro;
+            settingsData.currentFreeCamSpeed = SettingData.NormalizeFreeCamLevel(
+                DataManager.Instance.settingData_StoreList.currentFreeCamSpeed, SettingData.DefaultFreeCamSpeed);
+            settingsData.currentFreeCamSensitivity = SettingData.NormalizeFreeCamLevel(
+                DataManager.Instance.settingData_StoreList.currentFreeCamSensitivity, SettingData.DefaultFreeCamSensitivity);
+            settingsData.disableGuidePopups = DataManager.Instance.settingData_StoreList.disableGuidePopups;
         }
 
         ChangeFlagImage();
@@ -122,6 +143,7 @@ public class SettingsManager : Singleton<SettingsManager>
         ChangeCameraMotionImage();
         ChangeRevertedCameraMotionImage();
         ChangeSkipIntroImage();
+        ChangeAdditionalSettingsImages();
     }
     public void SaveData()
     {
@@ -131,6 +153,9 @@ public class SettingsManager : Singleton<SettingsManager>
         DataManager.Instance.settingData_StoreList.currentCameraMotion = settingsData.currentCameraMotion;
         DataManager.Instance.settingData_StoreList.currentRevertedCameraMotion = settingsData.currentRevertedCameraMotion;
         DataManager.Instance.settingData_StoreList.currentSkipIntro = settingsData.currentSkipIntro;
+        DataManager.Instance.settingData_StoreList.currentFreeCamSpeed = settingsData.currentFreeCamSpeed;
+        DataManager.Instance.settingData_StoreList.currentFreeCamSensitivity = settingsData.currentFreeCamSensitivity;
+        DataManager.Instance.settingData_StoreList.disableGuidePopups = settingsData.disableGuidePopups;
 
         DataPersistanceManager.instance.SaveGame();
     }
@@ -169,6 +194,8 @@ public class SettingsManager : Singleton<SettingsManager>
             RevertedCameraMotion_LeftButton_isPressed();
         else if (settingState == SettingState.Settings_SkipLevelIntro)
             SkipIntro_LeftButton_isPressed();
+        else if (settingState is SettingState.Settings_FreeCamSpeed or SettingState.Settings_FreeCamSensitivity or SettingState.Settings_GuidePopups)
+            ChangeAdditionalGeneralSetting(-1);
 
         else if (settingState == SettingState.Audio_Master)
             Audio_Master_LeftButton_isPressed();
@@ -197,6 +224,8 @@ public class SettingsManager : Singleton<SettingsManager>
             RevertedCameraMotion_RightButton_isPressed();
         else if (settingState == SettingState.Settings_SkipLevelIntro)
             SkipIntro_RightButton_isPressed();
+        else if (settingState is SettingState.Settings_FreeCamSpeed or SettingState.Settings_FreeCamSensitivity or SettingState.Settings_GuidePopups)
+            ChangeAdditionalGeneralSetting(1);
 
         else if (settingState == SettingState.Audio_Master)
             Audio_Master_RightButton_isPressed();
@@ -308,44 +337,17 @@ public class SettingsManager : Singleton<SettingsManager>
 
     public void TextSpeed_RightButton_isPressed()
     {
-        switch (settingsData.currentTextSpeed)
-        {
-            case TextSpeed.Slow:
-                settingsData.currentTextSpeed = TextSpeed.Medium;
-                break;
-            case TextSpeed.Medium:
-                settingsData.currentTextSpeed = TextSpeed.Fast;
-                break;
-            case TextSpeed.Fast:
-                settingsData.currentTextSpeed = TextSpeed.Slow;
-                break;
-
-            default:
-                break;
-        }
-
-        ChangeTextSpeedImage();
-        SaveData();
-
-        Action_SetNewTextSpeed?.Invoke();
+        StepTextSpeed(1);
     }
     public void TextSpeed_LeftButton_isPressed()
     {
-        switch (settingsData.currentTextSpeed)
-        {
-            case TextSpeed.Slow:
-                settingsData.currentTextSpeed = TextSpeed.Fast;
-                break;
-            case TextSpeed.Medium:
-                settingsData.currentTextSpeed = TextSpeed.Slow;
-                break;
-            case TextSpeed.Fast:
-                settingsData.currentTextSpeed = TextSpeed.Medium;
-                break;
-
-            default:
-                break;
-        }
+        StepTextSpeed(-1);
+    }
+    void StepTextSpeed(int direction)
+    {
+        int count = TextSpeedChoices.Length;
+        int index = (GetTextSpeedIndex() + direction + count) % count;
+        settingsData.currentTextSpeed = TextSpeedChoices[index];
 
         ChangeTextSpeedImage();
         SaveData();
@@ -354,21 +356,12 @@ public class SettingsManager : Singleton<SettingsManager>
     }
     void ChangeTextSpeedImage()
     {
-        switch (settingsData.currentTextSpeed)
-        {
-            case TextSpeed.Slow:
-                textSpeedImage.sprite = textSpeed_Slow_Sprite;
-                break;
-            case TextSpeed.Medium:
-                textSpeedImage.sprite = textSpeed_Medium_Sprite;
-                break;
-            case TextSpeed.Fast:
-                textSpeedImage.sprite = textSpeed_Fast_Sprite;
-                break;
-
-            default:
-                break;
-        }
+        SetChoiceImage(textSpeedImage, textSpeedSprites, GetTextSpeedIndex());
+    }
+    int GetTextSpeedIndex()
+    {
+        int index = Array.IndexOf(TextSpeedChoices, settingsData.currentTextSpeed);
+        return index >= 0 ? index : 1;
     }
 
     public void StepDisplay_RightButton_isPressed()
@@ -619,6 +612,46 @@ public class SettingsManager : Singleton<SettingsManager>
         Action_SetNewLanguage?.Invoke();
     }
 
+    void ChangeAdditionalGeneralSetting(int direction)
+    {
+        switch (settingState)
+        {
+            case SettingState.Settings_FreeCamSpeed:
+                settingsData.currentFreeCamSpeed = StepFreeCamLevel(settingsData.currentFreeCamSpeed, direction, SettingData.DefaultFreeCamSpeed);
+                break;
+            case SettingState.Settings_FreeCamSensitivity:
+                settingsData.currentFreeCamSensitivity = StepFreeCamLevel(settingsData.currentFreeCamSensitivity, direction, SettingData.DefaultFreeCamSensitivity);
+                break;
+            case SettingState.Settings_GuidePopups:
+                settingsData.disableGuidePopups = !settingsData.disableGuidePopups;
+                break;
+        }
+
+        ChangeAdditionalSettingsImages();
+        SaveData();
+        if (settingState != SettingState.Settings_GuidePopups)
+            Action_SetNewFreeCamSettings?.Invoke();
+    }
+
+    static int StepFreeCamLevel(int level, int direction, int defaultLevel)
+    {
+        int index = SettingData.NormalizeFreeCamLevel(level, defaultLevel) - 1;
+        return (index + direction + SettingData.FreeCamLevelCount) % SettingData.FreeCamLevelCount + 1;
+    }
+
+    void ChangeAdditionalSettingsImages()
+    {
+        SetChoiceImage(freeCamSpeedImage, freeCamSpeedSprites, settingsData.currentFreeCamSpeed - 1);
+        SetChoiceImage(freeCamSensitivityImage, freeCamSensitivitySprites, settingsData.currentFreeCamSensitivity - 1);
+        SetChoiceImage(guidePopupsImage, guidePopupsSprites, settingsData.disableGuidePopups ? 1 : 0);
+    }
+
+    static void SetChoiceImage(Image image, Sprite[] sprites, int index)
+    {
+        if (image)
+            image.sprite = sprites != null && index >= 0 && index < sprites.Length ? sprites[index] : null;
+    }
+
     #endregion
 
     #region Audio SettingsButtonPress
@@ -793,14 +826,21 @@ public class SettingsManager : Singleton<SettingsManager>
 [Serializable]
 public class SettingData
 {
+    internal const int FreeCamLevelCount = 5;
+    internal const int DefaultFreeCamSpeed = 4;
+    internal const int DefaultFreeCamSensitivity = 2;
+
     //General
     [Header("General")]
     public Languages currentLanguage = Languages.English;
-    public TextSpeed currentTextSpeed;
+    public TextSpeed currentTextSpeed = TextSpeed.Medium;
     public StepDisplay currentStepDisplay;
     public CameraMotion currentCameraMotion;
     public RevertedCameraMotion currentRevertedCameraMotion;
-    public SkipIntro currentSkipIntro;
+    public SkipIntro currentSkipIntro = SkipIntro.No;
+    public int currentFreeCamSpeed = DefaultFreeCamSpeed;
+    public int currentFreeCamSensitivity = DefaultFreeCamSensitivity;
+    public bool disableGuidePopups;
 
     //Audio
     [Header("Volume Parameters")]
@@ -811,4 +851,7 @@ public class SettingData
     public AudioVolumStates volume_Player;
     public AudioVolumStates volume_UI;
     public AudioVolumStates volume_Dialogue;
+
+    internal static int NormalizeFreeCamLevel(int level, int defaultLevel) =>
+        level >= 1 && level <= FreeCamLevelCount ? level : defaultLevel;
 }

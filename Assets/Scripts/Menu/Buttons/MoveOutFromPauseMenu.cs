@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MoveOutFromPauseMenu : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class MoveOutFromPauseMenu : MonoBehaviour
     float closingMenuDelay = 0.2f;
 
     bool firstTimeEnter;
+    PauseMenuManager pauseMenu;
+    ActionButtonsManager buttons;
 
 
     //--------------------
@@ -19,18 +22,27 @@ public class MoveOutFromPauseMenu : MonoBehaviour
 
     void Update()
     {
-        if (PauseMenuManager.Instance.pauseMenu_Parent.activeInHierarchy && ActionButtonsManager.Instance.eventSystem != null 
-            && ActionButtonsManager.Instance.cancel_Button.action.WasPressedThisFrame() && ActionButtonsManager.Instance.eventSystem.currentSelectedGameObject == gameObject
-            && !firstTimeEnter)
-        {
-            //SelectCancelTarget();
-
-            StartCoroutine(CloseMenuDelay(closingMenuDelay));
-        }
-        else
+        if (firstTimeEnter)
         {
             firstTimeEnter = false;
+            return;
         }
+
+        EventSystem eventSystem = EventSystem.current;
+        if (!eventSystem || !eventSystem.isActiveAndEnabled || eventSystem.currentSelectedGameObject != gameObject)
+            return;
+
+        if (!pauseMenu)
+            pauseMenu = FindAnyObjectByType<PauseMenuManager>();
+        if (!IsPauseMenuOpen())
+            return;
+
+        if (!buttons)
+            buttons = FindAnyObjectByType<ActionButtonsManager>();
+        if (!buttons || !buttons.cancel_Button || buttons.cancel_Button.action?.WasPressedThisFrame() != true)
+            return;
+
+        StartCoroutine(CloseMenuDelay(closingMenuDelay));
     }
 
     private void OnEnable()
@@ -46,35 +58,23 @@ public class MoveOutFromPauseMenu : MonoBehaviour
     {
         for (int i = 0; i < closingPauseMenuAnimatorList.Count; i++)
         {
-            closingPauseMenuAnimatorList[i].SetTrigger("Close");
+            if (closingPauseMenuAnimatorList[i])
+                closingPauseMenuAnimatorList[i].SetTrigger("Close");
         }
 
         Action_MoveOutFromPauseMenu?.Invoke();
 
         yield return new WaitForSeconds(waitTime);
 
-        SelectCancelTarget();
+        EventSystem eventSystem = EventSystem.current;
+        if (!eventSystem || !eventSystem.isActiveAndEnabled || !IsPauseMenuOpen() || !pauseMenu.isVisible)
+            yield break;
+
+        PlayerManager player = FindAnyObjectByType<PlayerManager>();
+        if (player && player.pauseGame)
+            pauseMenu.ClosePauseMenu();
     }
 
-    void SelectCancelTarget()
-    {
-        //Debug.Log("1. SelectCancelTarget Pressed");
-
-        if (ActionButtonsManager.Instance.eventSystem == null)
-        {
-            Debug.Log("This item has no EventSystem referenced yet.");
-            return;
-        }
-
-        if (!PauseMenuManager.Instance.pauseMenu_Parent.activeInHierarchy) { return; }
-        if (!PauseMenuManager.Instance.isVisible) { return; }
-        if (!PlayerManager.Instance.pauseGame) { return; }
-
-        //Debug.Log("2. SelectCancelTarget Pressed");
-
-        //-----
-
-
-        PauseMenuManager.Instance.ClosePauseMenu();
-    }
+    bool IsPauseMenuOpen() =>
+        pauseMenu && pauseMenu.isActive && pauseMenu.pauseMenu_Parent && pauseMenu.pauseMenu_Parent.activeInHierarchy;
 }

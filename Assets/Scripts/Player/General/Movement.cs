@@ -140,6 +140,7 @@ public class Movement : Singleton<Movement>
     private float elevatorRefreshAccumulatedDistance = 0f;
 
     RaycastHit hit;
+    private readonly Collider[] movementOverlapHits = new Collider[16];
 
     public bool isJumping;
     public bool isGrapplingHooking;
@@ -175,6 +176,8 @@ public class Movement : Singleton<Movement>
     public bool isRespawningFirstTime;
 
     private readonly HashSet<GameObject> currentlyDarkenedBlocks = new HashSet<GameObject>();
+    private Action<MoveOptions> setMoveVisual;
+    private Action<MoveOptions> resetMoveVisual;
 
     [SerializeField] private float turnBeforeMoveDelay = 0.12f;
     [SerializeField] private float dashThroughMoveableTurnDelay = 0.18f;
@@ -640,7 +643,7 @@ public class Movement : Singleton<Movement>
 
         if (!CanAfford(option.targetBlock))
         {
-            RespawnPlayer();
+            RespawnAfterUnaffordableMove();
             return true;
         }
 
@@ -1283,6 +1286,23 @@ public class Movement : Singleton<Movement>
         swiftSwimPreviewOverrideBlocks.Clear();
     }
 
+    private Collider[] GetMovementOverlapHits(Vector3 center, Vector3 halfExtents, out int hitCount)
+    {
+        int layerMask = Map.player_LayerMask;
+        hitCount = Physics.OverlapBoxNonAlloc(
+            center, halfExtents, movementOverlapHits, Quaternion.identity,
+            layerMask, QueryTriggerInteraction.Ignore);
+
+        if (hitCount < movementOverlapHits.Length)
+            return movementOverlapHits;
+
+        // Use all hits when the buffer might have been truncated.
+        Collider[] hits = Physics.OverlapBox(
+            center, halfExtents, Quaternion.identity, layerMask, QueryTriggerInteraction.Ignore);
+        hitCount = hits.Length;
+        return hits;
+    }
+
     private bool HasStandingRoomAboveNormalTarget(GameObject targetBlock)
     {
         if (targetBlock == null)
@@ -1309,16 +1329,10 @@ public class Movement : Singleton<Movement>
         // not neighboring blocks.
         Vector3 halfExtents = new Vector3(0.22f, 0.45f, 0.22f);
 
-        Collider[] hits = Physics.OverlapBox(
-            checkCenter,
-            halfExtents,
-            Quaternion.identity,
-            Map.player_LayerMask,
-            QueryTriggerInteraction.Ignore
-        );
-
-        foreach (Collider hitCollider in hits)
+        Collider[] hits = GetMovementOverlapHits(checkCenter, halfExtents, out int hitCount);
+        for (int i = 0; i < hitCount; i++)
         {
+            Collider hitCollider = hits[i];
             if (hitCollider == null)
                 continue;
 
@@ -2362,16 +2376,15 @@ public class Movement : Singleton<Movement>
                     {
                         Bounds waterBounds = waterCollider.bounds;
 
-                        Collider[] overlappingWaterSpaceHits = Physics.OverlapBox(
+                        Collider[] overlappingWaterSpaceHits = GetMovementOverlapHits(
                             waterBounds.center,
                             waterBounds.extents + new Vector3(0.02f, 0.02f, 0.02f),
-                            Quaternion.identity,
-                            Map.player_LayerMask,
-                            QueryTriggerInteraction.Ignore
+                            out int waterSpaceHitCount
                         );
 
-                        foreach (Collider hitCollider in overlappingWaterSpaceHits)
+                        for (int i = 0; i < waterSpaceHitCount; i++)
                         {
+                            Collider hitCollider = overlappingWaterSpaceHits[i];
                             if (hitCollider == null)
                                 continue;
 
@@ -3225,7 +3238,7 @@ public class Movement : Singleton<Movement>
         {
             if (StatsRoot.stats.steps_Current < 0)
             {
-                RespawnPlayer();
+                RespawnPlayer(stepsExhausted: true);
                 return;
             }
 
@@ -3357,12 +3370,12 @@ public class Movement : Singleton<Movement>
         if (suppressDarkeningWhileChaining)
             return;
 
-        ForEachDarkenMoveOptions(SetMoveVisual);
+        ForEachDarkenMoveOptions(setMoveVisual ??= SetMoveVisual);
     }
 
     void ResetDarkenBlocks()
     {
-        ForEachAllMoveOptions(ResetMoveVisual);
+        ForEachAllMoveOptions(resetMoveVisual ??= ResetMoveVisual);
     }
     public void ResetDarkenBlocks_External()
     {
@@ -3651,7 +3664,7 @@ public class Movement : Singleton<Movement>
 
         if (!CanAfford(moveToBlock_GrapplingHook.targetBlock))
         {
-            RespawnPlayer();
+            RespawnAfterUnaffordableMove();
             return;
         }
 
@@ -3716,6 +3729,7 @@ public class Movement : Singleton<Movement>
 
         MapStatsGathered.Instance.levelStats
             .ability_GrapplingHook++;
+        Player_Statistics_Manager.Active?.RecordGrapplingHook();
 
         if (TryGetBlockInfo(
                 moveToBlock_GrapplingHook.targetBlock,
@@ -3751,7 +3765,7 @@ public class Movement : Singleton<Movement>
 
         if (!CanAfford(moveToBlock_Ascend.targetBlock))
         {
-            RespawnPlayer();
+            RespawnAfterUnaffordableMove();
             return false;
         }
 
@@ -3779,7 +3793,7 @@ public class Movement : Singleton<Movement>
 
         if (!CanAfford(moveToBlock_Descend.targetBlock))
         {
-            RespawnPlayer();
+            RespawnAfterUnaffordableMove();
             return false;
         }
 
@@ -4059,7 +4073,7 @@ public class Movement : Singleton<Movement>
         }
         else
         {
-            RespawnPlayer();
+            RespawnAfterUnaffordableMove();
         }
     }
 
@@ -4087,7 +4101,7 @@ public class Movement : Singleton<Movement>
         }
         else
         {
-            RespawnPlayer();
+            RespawnAfterUnaffordableMove();
         }
     }
 
@@ -4136,6 +4150,10 @@ public class Movement : Singleton<Movement>
         currentMoveStartBlock = blockStandingOn;
         currentMoveTargetBlock = thisMoveTargetBlock;
         activeMoveFreeSlopeLanding = pendingFreeLandingFromSlope;
+        Vector3 travelStart = transform.position;
+        bool wasCeilingClimbing = CeilingGrab.isCeilingGrabbing;
+        bool startedInWater = IsWater(blockStandingOn);
+        bool wasSwiftSwimSegment = pendingStepCostIsSwiftSwim;
 
         Action_StepTaken_Early_Invoke();
 
@@ -4187,6 +4205,20 @@ public class Movement : Singleton<Movement>
         // Make the completed landing current before cost and root state are
         // committed, even if Unity has not rendered another Update frame.
         UpdateBlockStandingOn();
+
+        bool swam = !wasCeilingClimbing && PlayerHasSwimAbility() &&
+                    (IsWater(blockStandingOn) || wasSwiftSwimSegment);
+        bool ceilingClimbed = wasCeilingClimbing && CeilingGrab.isCeilingGrabbing;
+        if (swam || ceilingClimbed)
+        {
+            Vector3 distance = transform.position - travelStart;
+            int spaces = Mathf.RoundToInt(Mathf.Max(Mathf.Abs(distance.x), Mathf.Max(Mathf.Abs(distance.z), Mathf.Abs(distance.y))));
+            if (swam && !startedInWater && !wasSwiftSwimSegment)
+                spaces = Mathf.Min(spaces, 1);
+
+            Player_Statistics_Manager.Active?.RecordTravel(spaces, swam, ceilingClimbed);
+        }
+
         Action_StepTaken_Invoke();
 
         // An IceGlide/other late callback can start a NEW move synchronously
@@ -4777,7 +4809,7 @@ public class Movement : Singleton<Movement>
             targetPosObj.GetComponent<Block_Ladder>().exitBlock_Up &&
             !CanAfford(targetPosObj.GetComponent<Block_Ladder>().exitBlock_Up))
         {
-            RespawnPlayer();
+            RespawnAfterUnaffordableMove();
             yield break;
         }
 
@@ -4858,7 +4890,7 @@ public class Movement : Singleton<Movement>
         if (exitBlockDown != null &&
             !CanAfford(exitBlockDown))
         {
-            RespawnPlayer();
+            RespawnAfterUnaffordableMove();
             yield break;
         }
 
@@ -5401,7 +5433,7 @@ public class Movement : Singleton<Movement>
             yield break;
         }
 
-        RespawnPlayer();
+        RespawnPlayer(stepsExhausted: true);
     }
     private bool IsStandingOnCheckpoint()
     {
@@ -5414,7 +5446,7 @@ public class Movement : Singleton<Movement>
         if (StatsRoot.stats == null)
             return;
 
-        StatsRoot.stats.steps_Current = StatsRoot.stats.steps_Max;
+        StatsRoot.RestoreMissingSteps();
 
         if (StepsHUD.Instance != null)
             StepsHUD.Instance.stepCounter = StatsRoot.stats.steps_Current;
@@ -5579,7 +5611,17 @@ public class Movement : Singleton<Movement>
         }
     }
 
+    private void RespawnAfterUnaffordableMove()
+    {
+        RespawnPlayer(stepsExhausted: StatsRoot.stats.steps_Current <= 0);
+    }
+
     public void RespawnPlayer()
+    {
+        RespawnPlayer(stepsExhausted: false);
+    }
+
+    private void RespawnPlayer(bool stepsExhausted)
     {
         // Guard SYNCHRONOUSLY, before starting a coroutine. Multiple input,
         // SFX, drowning or step callbacks can request respawn in one frame.
@@ -5587,6 +5629,9 @@ public class Movement : Singleton<Movement>
             return;
 
         isRespawning = true;
+
+        if (isRespawningFirstTime)
+            Player_Statistics_Manager.Active?.RecordRespawn(stepsExhausted);
 
         // A respawn interrupts even an unfinished SwiftSwim segment.
         // Reset the external effect once rather than leaving its hull on.
@@ -5692,7 +5737,9 @@ public class Movement : Singleton<Movement>
 
         yield return new WaitForSeconds(waitTime);
 
+        int stepsBeforeRefill = Mathf.Max(0, StatsRoot.stats.steps_Current);
         StatsRoot.RefillStepsToMax();
+        Player_Statistics_Manager.Active?.RecordStepRefill(StatsRoot.stats.steps_Current - stepsBeforeRefill);
         Cam.SetRespawnCameraRotation();
         RespawnPlayer_Action();
 

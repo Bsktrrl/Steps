@@ -12,6 +12,8 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
 
     [Header("Select On Cancel")]
     [SerializeField] Button selectOnCancel;
+    [SerializeField] Button_ToPress transitionOnCancel;
+    [SerializeField] bool selectLocallyOnCancel;
 
     [Header("Menus SetActive")]
     [SerializeField] GameObject menuToOpen;
@@ -34,6 +36,9 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
     [SerializeField] Animator closingMenuAnimator;
     float closingMenuDelay = 0.2f;
 
+    Action beforeLocalCancelSelection;
+    int ignoreCancelFrame = -1;
+
 
     //--------------------
 
@@ -52,6 +57,9 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
 
     void Update()
     {
+        if (ignoreCancelFrame == Time.frameCount)
+            return;
+
         if (ActionButtonsManager.Instance.cancel_Button.action.WasPressedThisFrame() && /*RememberCurrentlySelectedUIElement.Instance.currentSelectedUIElement == gameObject*/ ActionButtonsManager.Instance.eventSystem.currentSelectedGameObject == gameObject
             /*&& !PauseMenuManager.Instance.pauseMenu_Parent*/)
         {
@@ -65,12 +73,40 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
     //--------------------
 
 
+    internal void SetLocalCancelSelection(Button target, Action beforeSelection)
+    {
+        selectOnCancel = target;
+        selectLocallyOnCancel = true;
+        beforeLocalCancelSelection = beforeSelection;
+    }
+
     private void SelectCancelTarget()
     {
         if (ActionButtonsManager.Instance.eventSystem == null)
         {
             Debug.Log("This item has no EventSystem referenced yet.");
 
+            return;
+        }
+
+        if (selectLocallyOnCancel)
+        {
+            if (!selectOnCancel || !selectOnCancel.IsActive())
+                return;
+
+            Action_BackButton_IsPressed?.Invoke();
+            beforeLocalCancelSelection?.Invoke();
+            // The new selection may run its Update later in the same frame.
+            if (selectOnCancel.TryGetComponent(out CancelPauseMenuByButtonPress targetCancel))
+                targetCancel.ignoreCancelFrame = Time.frameCount;
+            ActionButtonsManager.Instance.eventSystem.SetSelectedGameObject(selectOnCancel.gameObject);
+            return;
+        }
+
+        if (transitionOnCancel)
+        {
+            Action_BackButton_IsPressed?.Invoke();
+            transitionOnCancel.StartMenuTransition();
             return;
         }
 
@@ -129,7 +165,13 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
         MenuManager.Instance.currentMenuCategorySelected = currentMenuCategoryToSelect;
 
         //Make sure that mainMenu isn't tried accessed during gameplay
-        if (menuState_ToSelect != MenuState.Pause_Menu_Main && menuState_ToSelect != MenuState.Pause_Menu_Options)
+        if (menuState_ToSelect is MenuState.Pause_Menu_Main or MenuState.Pause_Menu_Options or
+            MenuState.Pause_Menu_Skins or MenuState.Pause_Menu_Info)
+        {
+            if (pauseMenuManager)
+                pauseMenuManager.menuState = menuState_ToSelect;
+        }
+        else
         {
             MainMenuManager.Instance.menuState = menuState_ToSelect;
             OverWorldManager.Instance.regionState = regionState_ToSelect;

@@ -624,6 +624,21 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         }
     }
 
+    void OnHintButton()
+    {
+        print("1. OnHintButton");
+
+        if (!mapManager || mapManager.GameplayInputLocked || (pauseMenuManager && pauseMenuManager.isActive))
+            return;
+
+        print("2. OnHintButton");
+        if (mapManager.TryGetComponent(out HintManager hints))
+        {
+            print("3. OnHintButton");
+            hints.PerformHint();
+        }
+    }
+
     //--------------------
 
 

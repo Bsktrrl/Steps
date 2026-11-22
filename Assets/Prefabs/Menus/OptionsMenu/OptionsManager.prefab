@@ -51,7 +51,16 @@ MonoBehaviour:
     currentStepDisplay: 0
     currentCameraMotion: 0
     currentRevertedCameraMotion: 0
-    currentSkipIntro: 0
+    currentSkipIntro: 1
+    currentFreeCamSpeed: 4
+    currentFreeCamSensitivity: 2
+    disableGuidePopups: 0
+    volume_Master: 0
+    volume_3DEnviroment: 0
+    volume_Weather: 0
+    volume_Player: 0
+    volume_UI: 0
+    volume_Dialogue: 0
   settingState: 0
   activeSettingSegmentColor: {r: 0.78946245, g: 0.9056604, b: 0.9056604, a: 1}
   flagImage: {fileID: 0}
@@ -62,9 +71,12 @@ MonoBehaviour:
   flag_Japan_Sprite: {fileID: 21300000, guid: 0f9dd4673bf9904408ad95bce0e5623f, type: 3}
   flag_Korea_Sprite: {fileID: 21300000, guid: 9aa97252151189b49a27b957219a4a38, type: 3}
   textSpeedImage: {fileID: 0}
-  textSpeed_Slow_Sprite: {fileID: 21300000, guid: e2ef8e251eab9c44584042c7ee282170, type: 3}
-  textSpeed_Medium_Sprite: {fileID: 21300000, guid: 483a1c9bd29b15f48ab6a146c3077b54, type: 3}
-  textSpeed_Fast_Sprite: {fileID: 21300000, guid: 1eac4d71f6c63e04c8fd04d1608f2855, type: 3}
+  textSpeedSprites:
+  - {fileID: 21300000, guid: 1c3acdf3d64cbf9498be1376fd01f532, type: 3}
+  - {fileID: 21300000, guid: c093d7225022410438692ea40ccece65, type: 3}
+  - {fileID: 21300000, guid: 2f949fe2d0828474db6a0a9ff65da1f0, type: 3}
+  - {fileID: 21300000, guid: 9f8485952e559df45a4c2d78151a672e, type: 3}
+  - {fileID: 21300000, guid: 43a995067ff60a4459758eb6188e4995, type: 3}
   stepsDisplayImage: {fileID: 0}
   stepsDisplay_Icon_Sprite: {fileID: 21300000, guid: 95d75b9dc9cd3474e8ea9704b2d59178, type: 3}
   stepsDisplay_Number_Sprite: {fileID: 21300000, guid: 56b8ef98a0620c54aaf7d0d911c77c9c, type: 3}
@@ -79,3 +91,27 @@ MonoBehaviour:
   skipIntroImage: {fileID: 0}
   skipIntro_YES_Sprite: {fileID: 21300000, guid: 9caaef16fb54ec84280b27894fb8983b, type: 3}
   skipIntro_NO_Sprite: {fileID: 21300000, guid: a9c5aedd8b5ddd647b083e972bde4dfa, type: 3}
+  freeCamSpeedImage: {fileID: 0}
+  freeCamSpeedSprites:
+  - {fileID: 21300000, guid: 1c3acdf3d64cbf9498be1376fd01f532, type: 3}
+  - {fileID: 21300000, guid: c093d7225022410438692ea40ccece65, type: 3}
+  - {fileID: 21300000, guid: 2f949fe2d0828474db6a0a9ff65da1f0, type: 3}
+  - {fileID: 21300000, guid: 9f8485952e559df45a4c2d78151a672e, type: 3}
+  - {fileID: 21300000, guid: 43a995067ff60a4459758eb6188e4995, type: 3}
+  freeCamSensitivityImage: {fileID: 0}
+  freeCamSensitivitySprites:
+  - {fileID: 21300000, guid: 1c3acdf3d64cbf9498be1376fd01f532, type: 3}
+  - {fileID: 21300000, guid: c093d7225022410438692ea40ccece65, type: 3}
+  - {fileID: 21300000, guid: 2f949fe2d0828474db6a0a9ff65da1f0, type: 3}
+  - {fileID: 21300000, guid: 9f8485952e559df45a4c2d78151a672e, type: 3}
+  - {fileID: 21300000, guid: 43a995067ff60a4459758eb6188e4995, type: 3}
+  guidePopupsImage: {fileID: 0}
+  guidePopupsSprites:
+  - {fileID: 21300000, guid: a9c5aedd8b5ddd647b083e972bde4dfa, type: 3}
+  - {fileID: 21300000, guid: 9caaef16fb54ec84280b27894fb8983b, type: 3}
+  marker_MasterVolume: {fileID: 0}
+  marker_EnviromentVolume: {fileID: 0}
+  marker_WeatherVolume: {fileID: 0}
+  marker_PlayerVolume: {fileID: 0}
+  marker_UIVolume: {fileID: 0}
+  marker_DialogueVolume: {fileID: 0}

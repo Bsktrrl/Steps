@@ -41,7 +41,7 @@ public class Block_Checkpoint : MonoBehaviour
 
             EffectManager.Instance.PerformCheckpointEffect();
 
-            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current = PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max;
+            PlayerStats.Instance.RestoreMissingSteps();
             StartCoroutine(ResetSteps(0.01f));
         }
     }
@@ -50,7 +50,7 @@ public class Block_Checkpoint : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
 
-        PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current = PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max;
+        PlayerStats.Instance.RestoreMissingSteps();
 
         Action_CheckPointEntered?.Invoke();
     }

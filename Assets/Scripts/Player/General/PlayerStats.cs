@@ -10,16 +10,8 @@ public class PlayerStats : Singleton<PlayerStats>
 
     public Stats stats = new Stats();
 
-    MainMenuManager MainMenuManager;
-
-
     //--------------------
 
-
-    private void Start()
-    {
-        MainMenuManager = FindObjectOfType<MainMenuManager>();
-    }
 
     private void OnEnable()
     {
@@ -39,31 +31,39 @@ public class PlayerStats : Singleton<PlayerStats>
 
     public void RefillStepsToMax()
     {
-        StepsHUD.Instance.stepCounter = stats.steps_Current;
+        MapManager map = FindAnyObjectByType<MapManager>();
+        if (!map || map.gameObject.scene != gameObject.scene) return;
 
-        MapManager mapManagerIsActive = FindObjectOfType<MapManager>();
-        if (!mapManagerIsActive) { return; }
+        StepsHUD.Instance.stepCounter = stats.steps_Current;
 
         int counter = 0;
 
         //Add steps gotten from active level
-        if (MapManager.Instance.mapInfo_ToSave != null)
+        if (map.mapInfo_ToSave?.maxStepList != null)
         {
-            if (MapManager.Instance.mapInfo_ToSave.maxStepList != null)
+            foreach (var footprint in map.mapInfo_ToSave.maxStepList)
             {
-                for (int i = 0; i < MapManager.Instance.mapInfo_ToSave.maxStepList.Count; i++)
-                {
-                    if (MapManager.Instance.mapInfo_ToSave.maxStepList[i].isTaken)
-                    {
-                        counter++;
-                    }
-                }
+                if (footprint.isTaken)
+                    counter++;
             }
         }
 
         stats.steps_Max = 7 + counter;
         stats.steps_Current = stats.steps_Max;
     }
+
+    public void RestoreMissingSteps()
+    {
+        SetReplenishedSteps(stats.steps_Max);
+    }
+
+    public void SetReplenishedSteps(int newBalance)
+    {
+        int restored = Mathf.Max(0, newBalance - Mathf.Max(0, stats.steps_Current));
+        stats.steps_Current = newBalance;
+        Player_Statistics_Manager.Active?.RecordStepRefill(restored);
+    }
+
     void ResetActiveAbilities()
     {
         if (PlayerManager.Instance.player)
@@ -82,24 +82,15 @@ public class PlayerStats : Singleton<PlayerStats>
             }
         }
     }
-    void CheckForTemporaryAbilitiesInLevel()
-    {
-        if (MainMenuManager) return;
-
-        MapManager.Instance.SetAbilities();
-
-        //if (!MapManager.Instance.introSequence)
-        //    Player_AbilityButtonDisplay.Instance.UpdateDisplay();
-
-        Action_UpdateAbilityDisplay?.Invoke();
-    }
     void UpdateActiveAbilities()
     {
-        ResetActiveAbilities();
-        CheckForTemporaryAbilitiesInLevel();
+        // The main menu loads saved stats too, but has no gameplay map or player.
+        MapManager map = FindAnyObjectByType<MapManager>();
+        if (!map || map.gameObject.scene != gameObject.scene) return;
 
-        MapManager mapManagerIsActive = FindObjectOfType<MapManager>();
-        if (!mapManagerIsActive) {  return; }
+        ResetActiveAbilities();
+        map.SetAbilities();
+        Action_UpdateAbilityDisplay?.Invoke();
     }
 
 

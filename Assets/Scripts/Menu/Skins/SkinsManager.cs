@@ -35,14 +35,10 @@ public class SkinsManager : Singleton<SkinsManager>
     {
         if (pauseMenuManager && SkinWardrobeCostManager)
         {
-            if (SkinWardrobeCostManager.GetComponent<SkinWardrobeManager>().wardrobeParent.activeInHierarchy)
-            {
-                PauseMenuManager.Instance.levelDisplay_Parent.SetActive(false);
-            }
-            else
-            {
-                PauseMenuManager.Instance.levelDisplay_Parent.SetActive(true);
-            }
+            bool showLevelDisplay = !SkinWardrobeCostManager.wardrobeParent.activeInHierarchy;
+            GameObject levelDisplay = PauseMenuManager.Instance.levelDisplay_Parent;
+            if (levelDisplay.activeSelf != showLevelDisplay)
+                levelDisplay.SetActive(showLevelDisplay);
         }
     }
 

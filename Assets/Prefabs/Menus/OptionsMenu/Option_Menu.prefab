@@ -190,6 +190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 8020856767785456079}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 8512084761911580146}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -1105,6 +1106,9 @@ RectTransform:
   - {fileID: 6525452934886185104}
   - {fileID: 7186325223467197355}
   - {fileID: 5950899193875677660}
+  - {fileID: 6288721734912100976}
+  - {fileID: 6288721734912100979}
+  - {fileID: 6288721734912100978}
   m_Father: {fileID: 4347909238563063204}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1133,7 +1137,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 1508, y: 139}
-  m_Spacing: {x: 0, y: 40}
+  m_Spacing: {x: 0, y: 30}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!1 &1550737849099204469
@@ -1476,6 +1480,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 8020856767785456079}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 8512084761911580146}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -2501,6 +2506,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 8020856767785456079}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 8512084761911580146}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -2653,9 +2659,9 @@ MonoBehaviour:
   m_Navigation:
     m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 5450941424353462912}
+    m_SelectOnUp: {fileID: 2332681185061700468}
     m_SelectOnDown: {fileID: 3121054258895573891}
-    m_SelectOnLeft: {fileID: 2332681185061700468}
+    m_SelectOnLeft: {fileID: 904724876879392810}
     m_SelectOnRight: {fileID: 904724876879392810}
   m_Transition: 1
   m_Colors:
@@ -2695,6 +2701,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 0}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 0}
   menuToClose: {fileID: 9197591149830024487}
   menuState_ToSelect: 1
@@ -4462,6 +4469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 0}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 0}
   menuToClose: {fileID: 9197591149830024487}
   menuState_ToSelect: 1
@@ -4769,6 +4777,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 8020856767785456079}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 8512084761911580146}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -5058,6 +5067,7 @@ GameObject:
   - component: {fileID: 2351840242640053980}
   - component: {fileID: 2288766883445336086}
   - component: {fileID: 6325894412379178317}
+  - component: {fileID: 5867053103968549271}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -5156,6 +5166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   newMenuState: 1
   uiElementToSelect: {fileID: 0}
+  tabletMenuToUnlock: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
   closingMenuAnimatorList:
@@ -5196,6 +5207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 0}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 0}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -5238,6 +5250,31 @@ MonoBehaviour:
   isBackButtonAndInSameMenu: 0
   buttonPress_Sound: 2
   buttonBack_Sound: 2
+--- !u!114 &5867053103968549271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4813638500736966501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4561c5983df24fbfb05aa40c26605197, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tabLinks:
+  - category: 1
+    tab: {fileID: 220225984855704253}
+    upTarget: {fileID: 5653831763976536366}
+  - category: 2
+    tab: {fileID: 8020856767785456079}
+    upTarget: {fileID: 1524856916968082814}
+  - category: 3
+    tab: {fileID: 2835692938558688182}
+    upTarget: {fileID: 0}
+  - category: 4
+    tab: {fileID: 904724876879392810}
+    upTarget: {fileID: 2903074614170641174}
 --- !u!1 &4890943105164052786
 GameObject:
   m_ObjectHideFlags: 0
@@ -5428,6 +5465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 8020856767785456079}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 8512084761911580146}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -5547,6 +5585,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 0}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 0}
   menuToClose: {fileID: 9197591149830024487}
   menuState_ToSelect: 1
@@ -7101,6 +7140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 8020856767785456079}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 8512084761911580146}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -7329,10 +7369,10 @@ MonoBehaviour:
   m_Navigation:
     m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 2903074614170641174}
+    m_SelectOnUp: {fileID: 2332681185061700468}
     m_SelectOnDown: {fileID: 203861068485283502}
     m_SelectOnLeft: {fileID: 220225984855704253}
-    m_SelectOnRight: {fileID: 2332681185061700468}
+    m_SelectOnRight: {fileID: 220225984855704253}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -7371,6 +7411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 0}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 0}
   menuToClose: {fileID: 9197591149830024487}
   menuState_ToSelect: 1
@@ -7562,6 +7603,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   newMenuState: 0
   uiElementToSelect: {fileID: 0}
+  tabletMenuToUnlock: {fileID: 0}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
   closingMenuAnimatorList: []
@@ -7578,6 +7620,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 8020856767785456079}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 8512084761911580146}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -7718,6 +7761,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 8020856767785456079}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 8512084761911580146}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -8701,6 +8745,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 8020856767785456079}
+  transitionOnCancel: {fileID: 0}
   menuToOpen: {fileID: 8512084761911580146}
   menuToClose: {fileID: 0}
   menuState_ToSelect: 0
@@ -11699,6 +11744,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Sprite
+      value:
+      objectReference: {fileID: 21300000, guid: c093d7225022410438692ea40ccece65, type: 3}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
@@ -13473,6 +13530,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Sprite
+      value:
+      objectReference: {fileID: 21300000, guid: a9c5aedd8b5ddd647b083e972bde4dfa, type: 3}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
@@ -13480,7 +13549,7 @@ PrefabInstance:
     - target: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 220225984855704253}
+      objectReference: {fileID: 5653831763976536364}
     - target: {fileID: 4211847776252968579, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
       propertyPath: german
       value: "Level-Einf\xFChrung \xFCberspringen"
@@ -13563,3 +13632,282 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3370613068825369065, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
   m_PrefabInstance: {fileID: 8958510629094578229}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8755232572169442201
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4259354577112215085}
+    m_Modifications:
+    - target: {fileID: 1130200383022329103, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Name
+      value: FreeCamSpeedDisplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 1349986145264159525, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: buttonBack_Sound
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Sprite
+      value:
+      objectReference: {fileID: 21300000, guid: 9f8485952e559df45a4c2d78151a672e, type: 3}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value:
+      objectReference: {fileID: 5450941424353462912}
+    - target: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value:
+      objectReference: {fileID: 5653831763976536367}
+    - target: {fileID: 4369454770211543016, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: settingState
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774837796865197810, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Name
+      value: General_FreeCamSpeed
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591524291464599560, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_text
+      value: FreeCam Speed
+      objectReference: {fileID: 0}
+    - target: {fileID: 7003876538357929609, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: textToDisplay
+      value: 73
+      objectReference: {fileID: 0}
+    - target: {fileID: 8643375156603559578, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: selectOnCancel
+      value:
+      objectReference: {fileID: 220225984855704253}
+    - target: {fileID: 8643375156603559578, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: selectLocallyOnCancel
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 4211847776252968579, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+--- !u!224 &6288721734912100976 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3370613068825369065, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+  m_PrefabInstance: {fileID: 8755232572169442201}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5653831763976536364 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+  m_PrefabInstance: {fileID: 8755232572169442201}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+--- !u!114 &6227564972117171337 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+  m_PrefabInstance: {fileID: 8755232572169442201}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+--- !u!1001 &8755232572169442202
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4259354577112215085}
+    m_Modifications:
+    - target: {fileID: 1130200383022329103, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Name
+      value: FreeCamSensitivityDisplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 1349986145264159525, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: buttonBack_Sound
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Sprite
+      value:
+      objectReference: {fileID: 21300000, guid: c093d7225022410438692ea40ccece65, type: 3}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value:
+      objectReference: {fileID: 5653831763976536364}
+    - target: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value:
+      objectReference: {fileID: 5653831763976536366}
+    - target: {fileID: 4369454770211543016, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: settingState
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774837796865197810, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Name
+      value: General_FreeCamSensitivity
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591524291464599560, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_text
+      value: FreeCam Sensitivity
+      objectReference: {fileID: 0}
+    - target: {fileID: 7003876538357929609, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: textToDisplay
+      value: 74
+      objectReference: {fileID: 0}
+    - target: {fileID: 8643375156603559578, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: selectOnCancel
+      value:
+      objectReference: {fileID: 220225984855704253}
+    - target: {fileID: 8643375156603559578, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: selectLocallyOnCancel
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 4211847776252968579, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+--- !u!224 &6288721734912100979 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3370613068825369065, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+  m_PrefabInstance: {fileID: 8755232572169442202}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5653831763976536367 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+  m_PrefabInstance: {fileID: 8755232572169442202}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+--- !u!114 &6227564972117171338 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+  m_PrefabInstance: {fileID: 8755232572169442202}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+--- !u!1001 &8755232572169442203
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4259354577112215085}
+    m_Modifications:
+    - target: {fileID: 1130200383022329103, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Name
+      value: GuidePopupsDisplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 1349986145264159525, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: buttonBack_Sound
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Sprite
+      value:
+      objectReference: {fileID: 21300000, guid: a9c5aedd8b5ddd647b083e972bde4dfa, type: 3}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value:
+      objectReference: {fileID: 5653831763976536367}
+    - target: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value:
+      objectReference: {fileID: 220225984855704253}
+    - target: {fileID: 4369454770211543016, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: settingState
+      value: 27
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774837796865197810, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_Name
+      value: General_GuidePopups
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591524291464599560, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: m_text
+      value: Guide Popups
+      objectReference: {fileID: 0}
+    - target: {fileID: 7003876538357929609, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: textToDisplay
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8643375156603559578, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: selectOnCancel
+      value:
+      objectReference: {fileID: 220225984855704253}
+    - target: {fileID: 8643375156603559578, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+      propertyPath: selectLocallyOnCancel
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 4211847776252968579, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+--- !u!224 &6288721734912100978 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3370613068825369065, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+  m_PrefabInstance: {fileID: 8755232572169442203}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5653831763976536366 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4032594872085156533, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+  m_PrefabInstance: {fileID: 8755232572169442203}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+--- !u!114 &6227564972117171339 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3453158085854711568, guid: bb7300a7ba15e034c8a843a3824b5e7b, type: 3}
+  m_PrefabInstance: {fileID: 8755232572169442203}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:

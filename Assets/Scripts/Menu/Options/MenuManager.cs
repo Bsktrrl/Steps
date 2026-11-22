@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class MenuManager : Singleton<MenuManager>
 {
@@ -27,12 +29,18 @@ public class MenuManager : Singleton<MenuManager>
     [Header("Skin Buttons")]
     public GameObject wardrobe_StartButton;
 
+    [Header("Info Menu")]
+    [SerializeField] InfoManager infoManager;
+
 
     //--------------------
 
 
     public void ChangeMenuCategory(MenuCategories category)
     {
+        if (currentMenuCategorySelected == category && IsCategoryOpen(category))
+            return;
+
         HideAllMenus();
 
         switch (category)
@@ -59,6 +67,16 @@ public class MenuManager : Singleton<MenuManager>
                 wardrobeMenuParent.SetActive(true);
                 break;
 
+            case MenuCategories.Info_Controls:
+            case MenuCategories.Info_Stats:
+            case MenuCategories.Info_Tablet:
+                if (infoManager)
+                {
+                    currentMenuCategorySelected = category;
+                    infoManager.ShowPanel(category);
+                }
+                break;
+
             default:
                 break;
         }
@@ -72,8 +90,91 @@ public class MenuManager : Singleton<MenuManager>
 
         wardrobeMenuParent.SetActive(false);
 
+        CloseInfoMenu();
+
         //MainMenuManager.Instance.newGameWarningMessage_Parent.SetActive(false);
     }
+
+    internal void OpenInfoMenu()
+    {
+        if (!infoManager) return;
+
+        Player_Statistics_Manager.Active?.FlushStatistics();
+        ChangeMenuCategory(MenuCategories.Info_Controls);
+        infoManager.SelectFirstTab();
+    }
+
+    internal void CloseInfoMenu()
+    {
+        if (!IsInfoCategory(currentMenuCategorySelected)) return;
+
+        currentMenuCategorySelected = MenuCategories.None;
+        if (infoManager)
+            infoManager.ShowPanel(MenuCategories.None);
+    }
+
+    internal void ShiftTab(EventSystem eventSystem, bool left)
+    {
+        bool inInfoMenu = IsInfoCategory(currentMenuCategorySelected);
+        if (!IsTabInMenu(currentMenuCategorySelected, inInfoMenu))
+            return;
+
+        GameObject firstTab = inInfoMenu
+            ? (infoManager ? infoManager.FirstTab : null)
+            : settingsMenuButton;
+        if (!firstTab || !firstTab.activeInHierarchy)
+            return;
+
+        Transform tabBar = firstTab.transform.parent;
+        GameObject selected = eventSystem.currentSelectedGameObject;
+        int startIndex = firstTab.transform.GetSiblingIndex();
+        for (int i = 0; i < tabBar.childCount; i++)
+        {
+            Transform tab = tabBar.GetChild(i);
+            if (!tab.TryGetComponent(out OptionCategoryButton category) ||
+                !IsTabInMenu(category.optionCategory, inInfoMenu))
+                continue;
+
+            if (tab.gameObject == selected)
+            {
+                startIndex = i;
+                break;
+            }
+
+            if (category.optionCategory == currentMenuCategorySelected)
+                startIndex = i;
+        }
+
+        int direction = left ? -1 : 1;
+        int tabCount = tabBar.childCount;
+        for (int offset = 1; offset < tabCount; offset++)
+        {
+            Transform tab = tabBar.GetChild((startIndex + direction * offset + tabCount) % tabCount);
+            if (tab.TryGetComponent(out OptionCategoryButton category) &&
+                IsTabInMenu(category.optionCategory, inInfoMenu) &&
+                tab.TryGetComponent(out Button button) && button.IsActive() && button.IsInteractable())
+            {
+                eventSystem.SetSelectedGameObject(tab.gameObject);
+                return;
+            }
+        }
+    }
+
+    static bool IsTabInMenu(MenuCategories category, bool info) => info
+        ? IsInfoCategory(category)
+        : category is MenuCategories.Settings or MenuCategories.Controls or MenuCategories.Video or MenuCategories.Audio;
+
+    static bool IsInfoCategory(MenuCategories category) =>
+        category is MenuCategories.Info_Controls or MenuCategories.Info_Stats or MenuCategories.Info_Tablet;
+
+    bool IsCategoryOpen(MenuCategories category) => category switch
+    {
+        MenuCategories.Settings => settingsMenuParent.activeInHierarchy,
+        MenuCategories.Controls => controlsMenuParent.activeInHierarchy,
+        MenuCategories.Video => videoMenuParent.activeInHierarchy,
+        MenuCategories.Audio => audioMenuParent.activeInHierarchy,
+        _ => IsInfoCategory(category)
+    };
 }
 
 public enum MenuCategories
@@ -87,7 +188,12 @@ public enum MenuCategories
     Audio,
 
     //Skins
-    Wardrobe
+    Wardrobe,
+
+    //Info
+    Info_Controls,
+    Info_Stats,
+    Info_Tablet
 }
 
 public enum CategoryState
@@ -140,6 +246,9 @@ public enum SettingState
     Audio_UI,
     Audio_Dialogue,
 
+    Settings_FreeCamSpeed,
+    Settings_FreeCamSensitivity,
+    Settings_GuidePopups,
 }
 public enum Languages
 {
@@ -154,7 +263,9 @@ public enum TextSpeed
 {
     Medium,
     Fast,
-    Slow
+    Slow,
+    Faster,
+    Fastest
 }
 public enum StepDisplay
 {

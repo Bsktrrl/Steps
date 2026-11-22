@@ -152,82 +152,73 @@ public class OverWorldManager : Singleton<OverWorldManager>
             regionState = returningFromHUB || saved == null ? RegionState.None : saved.regionState;
             CheckStates();
 
-            GameObject selected = returningFromHUB ? null : GetCurrentSelection(menu.regionSelectMenu);
-            if (!selected)
-                selected = GetFirstButton(menu.regionSelectMenu, regionSelect_FirstButton);
-
-            SetRestoredSelection(selected);
+            SetRestoredSelection(GetRegionSelection(menu.regionSelectMenu, returningFromHUB));
             return;
         }
 
         if (!menu.levelSelectMenu.activeInHierarchy)
             return;
 
-        GameObject panel;
-        switch (menu.menuState)
-        {
-            case MenuState.RegionMenu_HUB: regionState = RegionState.HUB; panel = levelPanel_HUB; break;
-            case MenuState.RegionMenu_Water: regionState = RegionState.Rivergreen; panel = levelPanel_Rivergreen; break;
-            case MenuState.RegionMenu_Sand: regionState = RegionState.Sandlands; panel = levelPanel_Sandlands; break;
-            case MenuState.RegionMenu_Ice: regionState = RegionState.Frostfields; panel = levelPanel_Frostfield; break;
-            case MenuState.RegionMenu_Lava: regionState = RegionState.Firevein; panel = levelPanel_Firevein; break;
-            case MenuState.RegionMenu_Swamp: regionState = RegionState.Witchmire; panel = levelPanel_Witchmire; break;
-            case MenuState.RegionMenu_Metal: regionState = RegionState.Metalworks; panel = levelPanel_Metalworks; break;
-            default: return;
-        }
+        GameObject panel = GetLevelPanel(menu.menuState, out RegionState panelRegion);
+        if (!panel) return;
 
+        regionState = panelRegion;
         levelState = saved != null && saved.regionState == regionState ? saved.levelState : LevelState.None;
         CheckStates();
 
-        if (!panel) return;
         if (panelBackground) panelBackground.SetActive(true);
         panel.SetActive(true);
         SetSelected(panel, exitedLevelScene, selectNextLevel);
     }
 
-    void SetSelected(GameObject obj, string exitedLevelScene, bool selectNextLevel)
+    GameObject GetLevelPanel(MenuState menuState, out RegionState region)
     {
-        if (!string.IsNullOrEmpty(exitedLevelScene))
+        switch (menuState)
         {
-            foreach (LoadLevel level in obj.GetComponentsInChildren<LoadLevel>())
-            {
-                if (level.levelToPlay == exitedLevelScene && IsSelectableInMenu(level.gameObject, obj))
-                {
-                    GameObject selectedLevel = level.gameObject;
-                    if (selectNextLevel)
-                    {
-                        Transform siblings = level.transform.parent;
-                        int nextIndex = level.transform.GetSiblingIndex() + 1;
-                        if (nextIndex < siblings.childCount)
-                        {
-                            GameObject nextLevel = siblings.GetChild(nextIndex).gameObject;
-                            if (nextLevel.GetComponent<LoadLevel>() && IsSelectableInMenu(nextLevel, obj))
-                                selectedLevel = nextLevel;
-                        }
-                    }
-
-                    SetRestoredSelection(selectedLevel);
-                    return;
-                }
-            }
+            case MenuState.RegionMenu_HUB: region = RegionState.HUB; return levelPanel_HUB;
+            case MenuState.RegionMenu_Water: region = RegionState.Rivergreen; return levelPanel_Rivergreen;
+            case MenuState.RegionMenu_Sand: region = RegionState.Sandlands; return levelPanel_Sandlands;
+            case MenuState.RegionMenu_Ice: region = RegionState.Frostfields; return levelPanel_Frostfield;
+            case MenuState.RegionMenu_Lava: region = RegionState.Firevein; return levelPanel_Firevein;
+            case MenuState.RegionMenu_Swamp: region = RegionState.Witchmire; return levelPanel_Witchmire;
+            case MenuState.RegionMenu_Metal: region = RegionState.Metalworks; return levelPanel_Metalworks;
+            default: region = RegionState.None; return null;
         }
-
-        // LevelState.First starts at 1; the first level button is child 0.
-        int index = (int)levelState - 1;
-        GameObject selected = index >= 0 && index < obj.transform.childCount
-            ? obj.transform.GetChild(index).gameObject : null;
-
-        if (!IsSelectableInMenu(selected, obj))
-            selected = GetFirstButton(obj, null);
-
-        SetRestoredSelection(selected);
     }
 
-    GameObject GetCurrentSelection(GameObject menu)
+    void SetSelected(GameObject panel, string exitedLevelScene, bool selectNextLevel)
     {
-        var eventSystem = ActionButtonsManager.Instance.eventSystem;
-        GameObject selected = eventSystem.currentSelectedGameObject;
-        return IsSelectableInMenu(selected, menu) ? selected : null;
+        // The menu also contains Back and layout objects. The LevelButton stores the level order.
+        LevelButton[] levels = panel.GetComponentsInChildren<LevelButton>(true);
+        LevelButton selected = string.IsNullOrEmpty(exitedLevelScene) ? null :
+            System.Array.Find(levels, level => level.TryGetComponent(out LoadLevel loader) &&
+                                                loader.levelToPlay == exitedLevelScene);
+
+        if (selected && selectNextLevel && selected.State >= LevelState.First)
+        {
+            LevelButton next = FindSelectableLevel(levels, panel, selected.State + 1);
+            if (next)
+                selected = next;
+        }
+
+        if (!selected || !IsSelectableInMenu(selected.gameObject, panel))
+            selected = FindSelectableLevel(levels, panel, levelState);
+
+        if (!selected)
+            selected = FindSelectableLevel(levels, panel, LevelState.First);
+
+        if (!selected)
+            selected = System.Array.Find(levels, level => IsSelectableInMenu(level.gameObject, panel));
+
+        SetRestoredSelection(selected ? selected.gameObject : null);
+    }
+
+    LevelButton FindSelectableLevel(LevelButton[] levels, GameObject panel, LevelState state)
+    {
+        if (state == LevelState.None)
+            return null;
+
+        return System.Array.Find(levels, level => level.State == state && IsSelectableInMenu(level.gameObject, panel));
     }
 
     bool IsSelectableInMenu(GameObject obj, GameObject menu)
@@ -239,36 +230,36 @@ public class OverWorldManager : Singleton<OverWorldManager>
         return selectable && selectable.isActiveAndEnabled && selectable.IsInteractable();
     }
 
-    GameObject GetFirstButton(GameObject menu, GameObject preferred)
+    GameObject GetRegionSelection(GameObject menu, bool returningFromHUB)
     {
-        if (IsSelectableInMenu(preferred, menu))
-            return preferred;
-
-        foreach (MainMenuButton button in menu.GetComponentsInChildren<MainMenuButton>())
+        if (!returningFromHUB)
         {
-            if (button.isFirstSelected && IsSelectableInMenu(button.gameObject, menu))
-                return button.gameObject;
+            GameObject selected = ActionButtonsManager.Instance.eventSystem.currentSelectedGameObject;
+            if (IsSelectableRegionButton(selected, menu))
+                return selected;
         }
 
-        foreach (RegionButton button in menu.GetComponentsInChildren<RegionButton>())
-        {
-            if (IsSelectableInMenu(button.gameObject, menu))
-                return button.gameObject;
-        }
+        if (IsSelectableRegionButton(regionSelect_FirstButton, menu))
+            return regionSelect_FirstButton;
 
-        foreach (Button button in menu.GetComponentsInChildren<Button>())
+        foreach (Button_ToPress button in menu.GetComponentsInChildren<Button_ToPress>())
         {
-            if (IsSelectableInMenu(button.gameObject, menu))
+            if (IsSelectableRegionButton(button.gameObject, menu))
                 return button.gameObject;
         }
 
         return null;
     }
 
+    bool IsSelectableRegionButton(GameObject obj, GameObject menu)
+    {
+        return IsSelectableInMenu(obj, menu) &&
+               obj.TryGetComponent(out Button_ToPress button) &&
+               GetLevelPanel(button.newMenuState, out _) != null;
+    }
+
     void SetRestoredSelection(GameObject selected)
     {
-        if (!selected) return;
-
         var eventSystem = ActionButtonsManager.Instance.eventSystem;
         if (eventSystem.currentSelectedGameObject != selected)
             eventSystem.SetSelectedGameObject(selected);
@@ -276,9 +267,17 @@ public class OverWorldManager : Singleton<OverWorldManager>
         var remembered = RememberCurrentlySelectedUIElement.Instance;
         remembered.currentSelectedUIElement = selected;
 
-        RegionButton regionButton = selected.GetComponent<RegionButton>();
-        if (regionButton)
+        if (!selected) return;
+
+        if (selected.TryGetComponent(out LevelButton levelButton))
+        {
+            if (levelState != levelButton.State)
+                ChangeStates(regionState, levelButton.State);
+        }
+        else if (selected.TryGetComponent(out RegionButton regionButton))
+        {
             ChangeStates(regionButton.regionState, LevelState.None);
+        }
 
         remembered.Action_ChangedSelectedUIElement_Invoke();
     }

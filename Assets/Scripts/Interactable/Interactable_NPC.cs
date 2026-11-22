@@ -115,6 +115,7 @@ public class Interactable_NPC : MonoBehaviour
     }
     void StartNPCDialogue()
     {
+        Player_Statistics_Manager.Active?.RecordDialogueStarted(characterName, levelNumber);
         StartCoroutine(StartNPCDialogueCoroutine());
 
         Action_TalkTo_NPC?.Invoke();
@@ -122,7 +123,7 @@ public class Interactable_NPC : MonoBehaviour
     IEnumerator StartNPCDialogueCoroutine()
     {
         PlayerManager.Instance.npcInteraction = true;
-        ButtonMessageManager.Instance.HideButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Talk);
+        ButtonMessageManager.Instance.HideInteractionPrompts();
 
         yield return StartCoroutine(TurnNPCTowardsPlayer());
 

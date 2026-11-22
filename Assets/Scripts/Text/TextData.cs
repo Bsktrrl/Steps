@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 public class TextData : MonoBehaviour
@@ -40,11 +41,7 @@ public class TextData : MonoBehaviour
         //-----
 
 
-        //Separate Excel Sheet into a string[] by its ";"
-        string[] excelData = game_TextDatabase_Sheet.text.Split(new string[] { ";", "\n" }, StringSplitOptions.None);
-
-        // Calculate the size of the Excel table
-        int excelTableSize = (excelData.Length / columns - 1) - 1;
+        string[] excelData = ParseSpreadsheetCells(game_TextDatabase_Sheet.text);
 
         //Fill the new element with data
         for (int j = 0; j < columns - 1; j++)
@@ -119,8 +116,8 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_Wardrobe, 59);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_Options, 60);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_Quit, 61);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_6, 62);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_7, 63);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_LoadGame, 62);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Info, 63);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_8, 64);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_9, 65);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].mainMenu_Button_10, 66);
@@ -149,9 +146,9 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_SmoothCameraRotation, 87);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_RevertedCameraRotation, 88);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_SkipLevelIntro, 89);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_7, 90);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_8, 91);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_9, 92);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_FreeCamSpeed, 90);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_FreeCamSensitivity, 91);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_GuidePopups, 92);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_10, 93);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_11, 94);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Settings_12, 95);
@@ -243,12 +240,12 @@ public class TextData : MonoBehaviour
             #endregion
 
             #region Blank
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Header_Blank, 172);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_1, 173);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_2, 174);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_3, 175);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_4, 176);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_5, 177);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Info_Header_Controls, 172);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Info_Header_Statistics, 173);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Info_Header_Tablets, 174);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Info_Controls_Text, 175);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Info_StatsLeft_Text, 176);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Info_StatsRight_Text, 177);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_6, 178);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_7, 179);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].options_Blank_8, 180);
@@ -292,7 +289,7 @@ public class TextData : MonoBehaviour
             #region Pause Menu
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_BackToGame, 217);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_ExitLevel, 218);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_3, 219);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_ResetLevel, 219);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_4, 220);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_5, 221);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].pauseMenu_Button_6, 222);
@@ -601,6 +598,48 @@ public class TextData : MonoBehaviour
     }
 
 
+    static string[] ParseSpreadsheetCells(string text)
+    {
+        var cells = new List<string>();
+        var cell = new StringBuilder();
+        bool quoted = false;
+
+        for (int i = 0; i < text.Length; i++)
+        {
+            char character = text[i];
+            if (quoted)
+            {
+                if (character != '"')
+                    cell.Append(character);
+                else if (i + 1 < text.Length && text[i + 1] == '"')
+                {
+                    cell.Append('"');
+                    i++;
+                }
+                else
+                    quoted = false;
+            }
+            else if (character == '"' && cell.Length == 0)
+            {
+                quoted = true;
+            }
+            else if (character == ';' || character == '\n' || character == '\r')
+            {
+                cells.Add(cell.ToString());
+                cell.Clear();
+                if (character == '\r' && i + 1 < text.Length && text[i + 1] == '\n')
+                    i++;
+            }
+            else
+            {
+                cell.Append(character);
+            }
+        }
+
+        cells.Add(cell.ToString());
+        return cells.ToArray();
+    }
+
     void SetTextData(string[] excelData, int j, ref string languageVersion, int no)
     {
         if (excelData[(columns * no) + ((startRow - 1) * columns) + 1 + j] != "")
@@ -684,8 +723,8 @@ public class Game_TextDatabase_Language
     public string mainMenu_Button_Wardrobe;
     public string mainMenu_Button_Options;
     public string mainMenu_Button_Quit;
-    public string mainMenu_Button_6;
-    public string mainMenu_Button_7;
+    public string mainMenu_LoadGame;
+    public string mainMenu_Info;
     public string mainMenu_Button_8;
     public string mainMenu_Button_9;
     public string mainMenu_Button_10;
@@ -715,9 +754,9 @@ public class Game_TextDatabase_Language
     public string options_Settings_SmoothCameraRotation;
     public string options_Settings_RevertedCameraRotation;
     public string options_Settings_SkipLevelIntro;
-    public string options_Settings_7;
-    public string options_Settings_8;
-    public string options_Settings_9;
+    public string options_Settings_FreeCamSpeed;
+    public string options_Settings_FreeCamSensitivity;
+    public string options_Settings_GuidePopups;
     public string options_Settings_10;
     public string options_Settings_11;
     public string options_Settings_12;
@@ -805,12 +844,12 @@ public class Game_TextDatabase_Language
     public string options_Audio_20;
     #endregion
     #region Blank
-    public string options_Header_Blank;
-    public string options_Blank_1;
-    public string options_Blank_2;
-    public string options_Blank_3;
-    public string options_Blank_4;
-    public string options_Blank_5;
+    public string options_Info_Header_Controls;
+    public string options_Info_Header_Statistics;
+    public string options_Info_Header_Tablets;
+    public string options_Info_Controls_Text;
+    public string options_Info_StatsLeft_Text;
+    public string options_Info_StatsRight_Text;
     public string options_Blank_6;
     public string options_Blank_7;
     public string options_Blank_8;
@@ -854,7 +893,7 @@ public class Game_TextDatabase_Language
     #region Pause Menu
     public string pauseMenu_Button_BackToGame;
     public string pauseMenu_Button_ExitLevel;
-    public string pauseMenu_Button_3;
+    public string pauseMenu_ResetLevel;
     public string pauseMenu_Button_4;
     public string pauseMenu_Button_5;
     public string pauseMenu_Button_6;
@@ -1226,8 +1265,8 @@ public enum Text_Database_Enum
     [InspectorName("Main Menu Buttons / Wardrobe")] mainMenu_Button_Wardrobe,
     [InspectorName("Main Menu Buttons / Options")] mainMenu_Button_Options,
     [InspectorName("Main Menu Buttons / Quit")] mainMenu_Button_Quit,
-    [InspectorName("Main Menu Buttons / 6")] mainMenu_Button_6,
-    [InspectorName("Main Menu Buttons / 7")] mainMenu_Button_7,
+    [InspectorName("Main Menu Buttons / Load Game")] mainMenu_LoadGame,
+    [InspectorName("Main Menu Buttons / Info")] mainMenu_Info,
     [InspectorName("Main Menu Buttons / 8")] mainMenu_Button_8,
     [InspectorName("Main Menu Buttons / 9")] mainMenu_Button_9,
     [InspectorName("Main Menu Buttons / 10")] mainMenu_Button_10,
@@ -1257,9 +1296,9 @@ public enum Text_Database_Enum
     [InspectorName("Options Menu / Settings / Smooth Camera Rotation")] options_Settings_SmoothCameraRotation,
     [InspectorName("Options Menu / Settings / Reverted Camera Rotation")] options_Settings_RevertedCameraRotation,
     [InspectorName("Options Menu / Settings / Skip Level Intro")] options_Settings_SkipLevelIntro,
-    [InspectorName("Options Menu / Settings / 7")] options_Settings_7,
-    [InspectorName("Options Menu / Settings / 8")] options_Settings_8,
-    [InspectorName("Options Menu / Settings / 9")] options_Settings_9,
+    [InspectorName("Options Menu / Settings / FreeCam Speed")] options_Settings_FreeCamSpeed,
+    [InspectorName("Options Menu / Settings / FreeCam Sensitivity")] options_Settings_FreeCamSensitivity,
+    [InspectorName("Options Menu / Settings / Guide Popups")] options_Settings_GuidePopups,
     [InspectorName("Options Menu / Settings / 10")] options_Settings_10,
     [InspectorName("Options Menu / Settings / 11")] options_Settings_11,
     [InspectorName("Options Menu / Settings / 12")] options_Settings_12,
@@ -1347,12 +1386,12 @@ public enum Text_Database_Enum
     [InspectorName("Options Menu / Audio / 20")] options_Audio_20,
     #endregion
     #region Blank
-    [InspectorName("Options Menu / Blank / Header / Header")] options_Header_Blank,
-    [InspectorName("Options Menu / Blank / 1")] options_Blank_1,
-    [InspectorName("Options Menu / Blank / 2")] options_Blank_2,
-    [InspectorName("Options Menu / Blank / 3")] options_Blank_3,
-    [InspectorName("Options Menu / Blank / 4")] options_Blank_4,
-    [InspectorName("Options Menu / Blank / 5")] options_Blank_5,
+    [InspectorName("Options Menu / Info / Controls")] options_Info_Header_Controls,
+    [InspectorName("Options Menu / Info / Statistics")] options_Info_Header_Statistics,
+    [InspectorName("Options Menu / Info / Tablets")] options_Info_Header_Tablets,
+    [InspectorName("Options Menu / Info / Controls Text")] options_Info_Controls_Text,
+    [InspectorName("Options Menu / Info / Stats Text Left")] options_Info_StatsLeft_Text,
+    [InspectorName("Options Menu / Info / Stats Text Right")] options_Info_StatsRight_Text,
     [InspectorName("Options Menu / Blank / 6")] options_Blank_6,
     [InspectorName("Options Menu / Blank / 7")] options_Blank_7,
     [InspectorName("Options Menu / Blank / 8")] options_Blank_8,
@@ -1396,7 +1435,7 @@ public enum Text_Database_Enum
     #region Pause Menu
     [InspectorName("Pause Menu / Back To Game")] pauseMenu_Button_BackToGame,
     [InspectorName("Pause Menu / Exit Level")] pauseMenu_Button_ExitLevel,
-    [InspectorName("Pause Menu / Button 3")] pauseMenu_Button_3,
+    [InspectorName("Pause Menu / Button ResetLevel")] pauseMenu_ResetLevel,
     [InspectorName("Pause Menu / Button 4")] pauseMenu_Button_4,
     [InspectorName("Pause Menu / Button 5")] pauseMenu_Button_5,
     [InspectorName("Pause Menu / Button 6")] pauseMenu_Button_6,

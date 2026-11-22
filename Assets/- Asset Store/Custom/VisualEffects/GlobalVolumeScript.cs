@@ -41,20 +41,24 @@ public class GlobalVolumeScript : MonoBehaviour
         }
 
         //Depth of Field
+        Camera camera = Camera.main;
+        if (!camera) return;
+
+        Transform view = camera.transform;
         RaycastHit hit;
 
-        blurDirection = Camera.main.transform.forward;
-        blurDirection = Vector3.RotateTowards(blurDirection, -Camera.main.transform.up, 0.1f, 0f);
+        blurDirection = view.forward;
+        blurDirection = Vector3.RotateTowards(blurDirection, -view.up, 0.1f, 0f);
 
-        conversionCalculation = conversionValue / (Camera.main.fieldOfView / 58);
+        conversionCalculation = conversionValue / (camera.fieldOfView / 58);
 
-        if (Physics.SphereCast(Camera.main.transform.position, sphereCastRadius, blurDirection, out hit, directionDistance, LayerMask.GetMask("Player")))
+        if (Physics.SphereCast(view.position, sphereCastRadius, blurDirection, out hit, directionDistance, LayerMask.GetMask("Player")))
         {
-            blurDistance = Mathf.Lerp(Shader.GetGlobalFloat("_BlurDistance"), Vector3.Distance(Camera.main.transform.position, hit.point) / conversionCalculation, blurSpeed * Time.deltaTime);
+            blurDistance = Mathf.Lerp(Shader.GetGlobalFloat("_BlurDistance"), Vector3.Distance(view.position, hit.point) / conversionCalculation, blurSpeed * Time.deltaTime);
         }
-        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit))
+        else if (Physics.Raycast(view.position, view.forward, out hit))
         {
-            blurDistance = Mathf.Lerp(Shader.GetGlobalFloat("_BlurDistance"), Vector3.Distance(Camera.main.transform.position, hit.point) / conversionCalculation, blurSpeed * Time.deltaTime);
+            blurDistance = Mathf.Lerp(Shader.GetGlobalFloat("_BlurDistance"), Vector3.Distance(view.position, hit.point) / conversionCalculation, blurSpeed * Time.deltaTime);
         }
 
         blurDistance = Mathf.Clamp(blurDistance, 1, 100);

@@ -75,21 +75,29 @@ public class LevelSelectButton : MonoBehaviour, ISelectHandler, IDeselectHandler
     public bool CheckButtonStatus()
     {
         coditionsCounter = 0;
+        TryGetComponent(out LoadLevel loadLevel);
 
         //If there isn't any requirements to play the level
-        if ((GetComponent<LoadLevel>() && GetComponent<LoadLevel>().levelsToBeFinished.Count <= 0) || (menuLevelInfo && menuLevelInfo.mapInfo_ToSave == null)) return true;
+        if ((loadLevel && loadLevel.levelsToBeFinished.Count <= 0) || (menuLevelInfo && menuLevelInfo.mapInfo_ToSave == null)) return true;
         if (menuLevelInfo == null || menuLevelInfo.mapInfo_ToSave == null || menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List == null) return true;
 
         //If there are requirements to play the level
-        if (GetComponent<LoadLevel>())
+        if (loadLevel)
         {
-            for (int i = 0; i < GetComponent<LoadLevel>().levelsToBeFinished.Count; i++)
+            var savedMaps = menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List;
+            if (savedMaps.Count == 0)
+                return false;
+
+            var requiredLevels = loadLevel.levelsToBeFinished;
+            for (int i = 0; i < requiredLevels.Count; i++)
             {
-                for (int j = 0; j < menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List.Count; j++)
+                string requiredLevelName = requiredLevels[i].GetComponent<LoadLevel>().levelToPlay;
+                for (int j = 0; j < savedMaps.Count; j++)
                 {
-                    if (GetComponent<LoadLevel>().levelsToBeFinished[i].GetComponent<LoadLevel>().levelToPlay == menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[j].mapName)
+                    Map_SaveInfo savedMap = savedMaps[j];
+                    if (requiredLevelName == savedMap.mapName)
                     {
-                        if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[j].isCompleted)
+                        if (savedMap.isCompleted)
                         {
                             coditionsCounter++;
                         }
@@ -98,7 +106,7 @@ public class LevelSelectButton : MonoBehaviour, ISelectHandler, IDeselectHandler
             }
 
 
-            if (coditionsCounter >= GetComponent<LoadLevel>().levelsToBeFinished.Count)
+            if (coditionsCounter >= requiredLevels.Count)
             {
                 return true;
             }
@@ -107,9 +115,9 @@ public class LevelSelectButton : MonoBehaviour, ISelectHandler, IDeselectHandler
                 return false;
             }
         }
-        else if (GetComponent<RegionLocked>())
+        else if (TryGetComponent(out RegionLocked regionLocked))
         {
-            if (GetComponent<RegionLocked>().CheckIfCanBePlayed())
+            if (regionLocked.CheckIfCanBePlayed())
             {
                 return true;
             }
