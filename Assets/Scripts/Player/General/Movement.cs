@@ -323,7 +323,7 @@ public class Movement : Singleton<Movement>
                 break;
 
             default:
-                if (gameplayInputLocked || (!Tutorial.Instance.tutorial_isRunning && PM.pauseGame))
+                if (gameplayInputLocked || (!Tutorial.Instance.tutorial_isRunning && (PM.pauseGame || Cam.isRotating)))
                     return;
 
                 MovementSetup();
@@ -1895,7 +1895,7 @@ public class Movement : Singleton<Movement>
 
     private void UpdateBlocksAfterCameraRotation()
     {
-        if (!IsClimbingLadder)
+        if (!IsClimbingLadder && !isMoving)
             UpdateAvailableMovementBlocks();
     }
 

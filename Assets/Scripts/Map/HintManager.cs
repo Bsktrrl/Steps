@@ -19,12 +19,13 @@ public class HintManager : MonoBehaviour
     float currentOpacity;
     bool fadeOutRequested;
     bool restartRequested;
+    bool goalReached;
 
     public bool CheckIfHint() => FindHintEffect(FindMatchingSetup()) != null;
 
     public void PerformHint()
     {
-        if (!isActiveAndEnabled) return;
+        if (!isActiveAndEnabled || goalReached) return;
 
         print("4. OnHintButton");
 
@@ -170,12 +171,14 @@ public class HintManager : MonoBehaviour
     {
         Interactable_Pickup.Action_AbilityPickupGot += OnProgressPickup;
         Interactable_Pickup.Action_FootprintPickupGot += OnProgressPickup;
+        Interactable_Pickup.Action_goalReached_Early += OnGoalReached;
     }
 
     void OnDisable()
     {
         Interactable_Pickup.Action_AbilityPickupGot -= OnProgressPickup;
         Interactable_Pickup.Action_FootprintPickupGot -= OnProgressPickup;
+        Interactable_Pickup.Action_goalReached_Early -= OnGoalReached;
         StopHint();
     }
 
@@ -183,6 +186,13 @@ public class HintManager : MonoBehaviour
     {
         if (activeEffect && !fadeOutRequested && FindMatchingSetup() != activeSetup)
             fadeOutRequested = true;
+    }
+
+    void OnGoalReached()
+    {
+        goalReached = true;
+        restartRequested = false;
+        fadeOutRequested = true;
     }
 
     void StopHint()

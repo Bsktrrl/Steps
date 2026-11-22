@@ -32,6 +32,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     [Header("Input System")]
     public PlayerControls playerControls;
+    InputAction[] movementPressActions;
     MapManager mapManager;
     MapStatsGathered mapStatsGathered;
 
@@ -61,6 +62,22 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     PauseMenuManager pauseMenuManager;
 
     public bool tutorialMovementBlocker;
+
+    internal bool IsMovementInputHeld
+    {
+        get
+        {
+            if (movementPressActions == null)
+                return forward_isPressed || back_isPressed || left_isPressed || right_isPressed ||
+                    up_isPressed || down_isPressed || grapplingHook_isPressed;
+
+            foreach (InputAction action in movementPressActions)
+                if (action?.IsPressed() == true)
+                    return true;
+
+            return false;
+        }
+    }
 
     private bool GameplayInputLocked => MapManager.Instance == null ||
         MapManager.Instance.GameplayInputLocked;
@@ -98,6 +115,23 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         playerControls = new PlayerControls();
         mapManager = FindObjectOfType<MapManager>();
+
+        // Use the live actions because gameplay can clear its movement flags while a button is held.
+        if (TryGetComponent(out PlayerInput playerInput) &&
+            playerInput.actions?.FindActionMap("PlayerMovement") is InputActionMap movement)
+        {
+            movementPressActions = new[]
+            {
+                movement.FindAction("Forward_Down"),
+                movement.FindAction("Backward_Down"),
+                movement.FindAction("Left_Down"),
+                movement.FindAction("Right_Down"),
+                movement.FindAction("AbilityUp_Down"),
+                movement.FindAction("AbilityDown_Down"),
+                movement.FindAction("AbilityLeft"),
+                movement.FindAction("AbilityRight_DownPress")
+            };
+        }
 
         if (PlayerManager.Instance.playerBody.transform.GetComponentInChildren<Animator>())
         {
@@ -491,7 +525,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!Run_IntroSequance()) return false;
         if (Movement.Instance.isRespawning || (pauseMenuManager && pauseMenuManager.isActive)) return false;
 
-        if (Movement.Instance.GetMovementState() == MovementStates.Moving && !climbingLadder) return false;
+        if (CameraController.Instance.IsMovementBlockingRotation) return false;
         if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
 
         if (Player_CeilingGrab.Instance.isCeilingRotation) { return false; }
