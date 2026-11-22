@@ -19,14 +19,14 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
     [Header("Input System")]
     PlayerControls playerControls;
     MainMenuManager mainMenuManager;
+    PauseMenuManager pauseMenuManager;
     private InputSystemUIInputModule uiInputModule;
     private InputActionAsset navigationActions;
     private InputActionReference originalMove;
     private InputActionReference menuMove;
     private int rightStickBindingIndex;
-    private const float CursorIdleSeconds = 3f;
     private Vector2 lastMousePosition;
-    private float lastMouseActivity;
+    private static bool menuCursorRequested;
 
 
     //--------------------
@@ -37,15 +37,24 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
         eventSystem = FindObjectOfType<EventSystem>();
     }
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetCursorInput()
+    {
+        menuCursorRequested = false;
+    }
+
     private void Start()
     {
         playerControls = new PlayerControls();
         mainMenuManager = FindObjectOfType<MainMenuManager>();
+        pauseMenuManager = FindAnyObjectByType<PauseMenuManager>();
+
+        if (!mainMenuManager)
+            ResetCursorInput();
 
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = mainMenuManager && Mouse.current != null;
         lastMousePosition = Mouse.current?.position.ReadValue() ?? Vector2.zero;
-        lastMouseActivity = Time.unscaledTime;
+        UpdateCursorVisibility(Mouse.current);
 
         if (eventSystem && eventSystem.TryGetComponent(out InputSystemUIInputModule inputModule))
         {
@@ -62,6 +71,7 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
     private void LateUpdate()
     {
         Mouse mouse = Mouse.current;
+        UpdateCursorVisibility(mouse);
         if (mouse == null || !Application.isFocused) return;
 
         Vector2 position = mouse.position.ReadValue();
@@ -69,16 +79,6 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
         lastMousePosition = position;
         bool clicked = mouse.leftButton.wasPressedThisFrame || mouse.rightButton.wasPressedThisFrame ||
                        mouse.middleButton.wasPressedThisFrame;
-
-        if (moved || clicked || mouse.scroll.ReadValue() != Vector2.zero)
-        {
-            lastMouseActivity = Time.unscaledTime;
-            Cursor.visible = true;
-        }
-        else if (Time.unscaledTime - lastMouseActivity >= CursorIdleSeconds)
-        {
-            Cursor.visible = false;
-        }
 
         bool released = mouse.leftButton.wasReleasedThisFrame;
         if ((!moved && !clicked && !released) ||
@@ -100,6 +100,24 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
         MouseHoverUpdated?.Invoke(target);
     }
 
+    private bool IsMenuOpen => mainMenuManager || (pauseMenuManager && pauseMenuManager.isActive);
+
+    private void UpdateCursorVisibility(Mouse mouse)
+    {
+        bool visible = mouse != null && Application.isFocused && IsMenuOpen &&
+            (!ControllerState.HasConnectedController || menuCursorRequested);
+        if (Cursor.visible != visible)
+            Cursor.visible = visible;
+    }
+
+    private void OnMenuInputUsed(InputDevice device)
+    {
+        if (device is Gamepad || device is Joystick)
+            menuCursorRequested = false;
+        else if (device is Keyboard || (device is Mouse && IsMenuOpen))
+            menuCursorRequested = true;
+    }
+
     internal static bool CanSelectWithMouse(Button button)
     {
         // Settings rows are already keyboard destinations. Their child arrows perform the edit.
@@ -109,11 +127,13 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
 
     private void OnEnable()
     {
+        ControllerState.MenuInputUsed += OnMenuInputUsed;
         SkinWardrobeManager.PreviewVisibilityChanged += SetWardrobePreviewActive;
     }
 
     private void OnDisable()
     {
+        ControllerState.MenuInputUsed -= OnMenuInputUsed;
         SkinWardrobeManager.PreviewVisibilityChanged -= SetWardrobePreviewActive;
     }
 

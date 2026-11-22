@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.DualShock;
@@ -9,6 +8,9 @@ using UnityEngine.InputSystem.Controls;
 
 public class ControllerState : Singleton<ControllerState>
 {
+    internal static event Action<InputDevice> MenuInputUsed;
+    internal static bool HasConnectedController => Gamepad.all.Count > 0 || Joystick.all.Count > 0;
+
     public InputType activeController { get; private set; } = InputType.Keyboard;
 
 
@@ -35,46 +37,57 @@ public class ControllerState : Singleton<ControllerState>
 
     private void OnInputEvent(InputEventPtr eventPtr, InputDevice device)
     {
+        if (eventPtr.type != StateEvent.Type && eventPtr.type != DeltaStateEvent.Type)
+            return;
+
         if (device is Gamepad gamepad)
         {
-            if (!GamepadHasRealInput(gamepad))
+            if (!GamepadHasRealInput(eventPtr, gamepad))
                 return;
 
             RefreshFromConnectedDevices();
+            MenuInputUsed?.Invoke(gamepad);
+            return;
+        }
+
+        if (device is Joystick joystick)
+        {
+            if (HasNewButtonPress(eventPtr, joystick) || HasDirectionInput(eventPtr, joystick.stick, 0.0625f))
+                MenuInputUsed?.Invoke(joystick);
             return;
         }
 
         if (device is Keyboard keyboard)
         {
-            if (!KeyboardHasRealInput(keyboard))
+            if (!HasNewButtonPress(eventPtr, keyboard))
                 return;
 
             SetInput(InputType.Keyboard);
+            MenuInputUsed?.Invoke(keyboard);
             return;
         }
 
         if (device is Mouse mouse)
         {
-            if (!MouseHasRealInput(mouse))
-                return;
+            if (mouse.delta.ReadValueFromEvent(eventPtr) != Vector2.zero ||
+                (mouse.position.ReadValueFromEvent(eventPtr, out Vector2 position) &&
+                 position != mouse.position.ReadValue()))
+                MenuInputUsed?.Invoke(mouse);
 
-            SetInput(InputType.Keyboard);
-            return;
+            if (HasNewButtonPress(eventPtr, mouse) || mouse.scroll.ReadValueFromEvent(eventPtr).sqrMagnitude > 0.01f)
+                SetInput(InputType.Keyboard);
         }
     }
 
     private void OnDeviceChange(InputDevice device, InputDeviceChange change)
     {
-        if (device is Gamepad)
-        {
-            if (change == InputDeviceChange.Added ||
-                change == InputDeviceChange.Removed ||
-                change == InputDeviceChange.Disconnected ||
-                change == InputDeviceChange.Reconnected)
-            {
-                RefreshFromConnectedDevices();
-            }
-        }
+        bool connected = change is InputDeviceChange.Added or InputDeviceChange.Reconnected;
+        bool disconnected = change is InputDeviceChange.Removed or InputDeviceChange.Disconnected;
+        if (device is Gamepad && (connected || disconnected))
+            RefreshFromConnectedDevices();
+
+        if (connected && (device is Gamepad || device is Joystick))
+            MenuInputUsed?.Invoke(device);
     }
 
 
@@ -192,54 +205,33 @@ public class ControllerState : Singleton<ControllerState>
                description.Contains("xinput") ||
                description.Contains("xbox");
     }
-    private bool GamepadHasRealInput(Gamepad gamepad)
+    private static bool GamepadHasRealInput(InputEventPtr eventPtr, Gamepad gamepad)
     {
-        if (gamepad == null)
-            return false;
-
-        if (gamepad.buttonSouth.isPressed ||
-            gamepad.buttonNorth.isPressed ||
-            gamepad.buttonEast.isPressed ||
-            gamepad.buttonWest.isPressed ||
-            gamepad.leftShoulder.isPressed ||
-            gamepad.rightShoulder.isPressed ||
-            gamepad.leftTrigger.ReadValue() > 0.2f ||
-            gamepad.rightTrigger.ReadValue() > 0.2f ||
-            gamepad.startButton.isPressed ||
-            gamepad.selectButton.isPressed ||
-            gamepad.dpad.ReadValue().sqrMagnitude > 0.1f ||
-            gamepad.leftStick.ReadValue().sqrMagnitude > 0.25f ||
-            gamepad.rightStick.ReadValue().sqrMagnitude > 0.25f)
-        {
-            return true;
-        }
-
-        return false;
+        return HasNewButtonPress(eventPtr, gamepad) ||
+               (gamepad.leftTrigger.ReadValue() <= 0.2f && gamepad.leftTrigger.ReadValueFromEvent(eventPtr) > 0.2f) ||
+               (gamepad.rightTrigger.ReadValue() <= 0.2f && gamepad.rightTrigger.ReadValueFromEvent(eventPtr) > 0.2f) ||
+               HasDirectionInput(eventPtr, gamepad.dpad, 0.1f) ||
+               HasDirectionInput(eventPtr, gamepad.leftStick, 0.0625f) ||
+               HasDirectionInput(eventPtr, gamepad.rightStick, 0.0625f);
     }
-    private bool KeyboardHasRealInput(Keyboard keyboard)
-    {
-        if (keyboard == null)
-            return false;
 
-        foreach (KeyControl key in keyboard.allKeys)
-        {
-            if (key.isPressed)
+    private static bool HasNewButtonPress(InputEventPtr eventPtr, InputDevice device)
+    {
+        foreach (InputControl control in eventPtr.EnumerateChangedControls(device))
+            if (control is ButtonControl button && !button.isPressed &&
+                button.ReadValueFromEvent(eventPtr) >= button.pressPointOrDefault)
                 return true;
-        }
 
         return false;
     }
-    private bool MouseHasRealInput(Mouse mouse)
+
+    private static bool HasDirectionInput(InputEventPtr eventPtr, Vector2Control control, float threshold)
     {
-        if (mouse == null)
+        if (!control.ReadValueFromEvent(eventPtr, out Vector2 value) || value.sqrMagnitude <= threshold)
             return false;
 
-        return mouse.leftButton.isPressed ||
-               mouse.rightButton.isPressed ||
-               mouse.middleButton.isPressed ||
-               mouse.forwardButton.isPressed ||
-               mouse.backButton.isPressed ||
-               mouse.scroll.ReadValue().sqrMagnitude > 0.01f;
+        Vector2 previous = control.ReadValue();
+        return previous.sqrMagnitude <= threshold || (value - previous).sqrMagnitude > 0.01f;
     }
 }
 
