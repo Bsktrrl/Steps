@@ -63,7 +63,7 @@ Button - Wardrobe;Garderobe;Wardrobe;
 Button - Options;Alternativer;Options;
 Button - Quit;Avslutt;Quit;
 Button - Load Game;Last inn spill;Load Game;
--;;;
+Button - Info;Info;Info;
 -;;;
 -;;;
 -;;;
@@ -86,13 +86,13 @@ Options Menu;;;
 Header - Settings;Instillinger;Settings;
 Settings - Language;Språk;Language;
 Settings - Text Speed;Teksthastighet;Text Speed;
-Settings - Step Display;Steg-visning;Step Display;
+Settings - Step Display;Steg HUD;Step Display;
 Settings - Smooth Camera Rotation;Bevegelig Kamerarotasjon;Smooth Camera Rotation;
 Settings - Reverted Camera Rotation;Motsatt Kamerarotasjon;Reverted Camera Rotation;
-Settings - Skip Level Intro;Dropp Level Intro;Skip Level Intro;
-Settings - ;;;
-Settings - ;;;
-Settings - ;;;
+Settings - Skip Level Intro;Level Intro;Level Intro;
+Settings - FreeCam - Speed;Oversiktskamera-hastighet;FreeCam Speed;
+Settings - FreeCam - Sensitivity;Oversiktskamera-sensitivitet;FreeCam Sensitivity;
+Settings - GuideOff;Hjelpebokser;Guide Popups;
 Settings - ;;;
 Settings - ;;;
 Settings - ;;;
@@ -172,12 +172,114 @@ Audio - ;;;
 Audio - ;;;
 Audio - ;;;
 Audio - ;;;
-Header -;;;
--;;;
--;;;
--;;;
--;;;
--;;;
+Header - Controls;Knapper;Controls;
+Header - Stats;Statistikk;Statistics;
+Header - Tablet;Steintavler;Stone Tablets;
+Controls - Text;"<size=110%><u>Generelt</u><size=100%>
+Bevegelse
+Kamerarotasjon
+Tilbakestill
+Pausemeny
+Oversiktskamera
+Hint
+<size=88%>
+<size=110%><u>Ferdigheter</u><size=100%>
+Borehjelm
+Borestøvler
+Svømme Opp
+Svømme Ned
+Klatrehansker
+Kastekrok";"<size=110%><u>General</u><size=100%>
+Movement
+Camera Rotation
+Respawn
+Pause Menu
+Free Camera
+Hint
+<size=88%>
+<size=110%><u>Abilities</u><size=100%>
+Drill Helmet
+Drill Boots
+Swift Swim Up
+Swift Swim Down
+Climbing Gloves
+Grappling Hook";
+Stats - Text Left;"<size=120%><u>Generelt</u>
+<size=100%>Progresjon: 
+Spilletid: 
+Økter: 
+Lengste økt: 
+
+<size=120%><u>Steg</u>
+<size=100%>Steg gått: 
+Steg fått tilbake: 
+Steg nådd null: 
+Gjennomsnittlig steg per level: 
+
+<size=120%><u>Objekter</u>
+<size=100%>Essens samlet: 
+Drakter funnet: 
+Drakter kjøpt: 
+Steintavler lest: 
+Dialoginteraksjoner: ";"<size=120%><u>General</u>
+<size=100%>Progress: 
+Playtime: 
+Sessions: 
+Longest session: 
+
+<size=120%><u>Steps</u>
+<size=100%>Steps taken: 
+Steps replenished: 
+Steps emptied: 
+Average steps per level: 
+
+<size=120%><u>Interactables</u>
+<size=100%>Essence gathered: 
+Skins found: 
+Skins bought: 
+Tablets red: 
+Dialogue interactions: ";
+Stats - Text Right;"<size=120%><u>Levler</u>
+<size=100%>Regioner fullført: 
+Levler fullført: 
+Levler besøkt på nytt: 
+Raskeste level fullført: 
+Tregeste level fullført: 
+Gjennomsnittlig fullført level: 
+Tilbakestilling: 
+Tid stått stille: 
+Tid i oversiktskamera: 
+Hint brukt: 
+
+<size=120%><u>Ferdigheter</u>
+<size=100%>Ferdigheter utført: 
+Hopping: 
+Kastekrok: 
+Håndbor: 
+Borehjelm:
+Borestøvler:
+Distanse svømmet: 
+Distanse klatret: ";"<size=120%><u>Levels</u>
+<size=100%>Regions completed: 
+Levels completed: 
+Levels revisited: 
+Fastest level completion: 
+Slowest level completion: 
+Average level completion: 
+Respawns: 
+Time standing still: 
+Time in free camera: 
+Hints used: 
+
+<size=120%><u>Abilities</u>
+<size=100%>Abilities Performed: 
+Jumps: 
+Grapples: 
+Hand Drills: 
+Drill Helmet: 
+Drill Boots: 
+Swim Distance: 
+Climb Distance: ";
 -;;;
 -;;;
 -;;;
@@ -219,7 +321,7 @@ Overworld Menu;;;
 Pause Menu;;;
 Button - Back To Game;Tilbake Til Spillet;Back To Game;
 Button - Exit Level;Avslutt Level;Exit Level;
--;;;
+Button - Reset Level;Start Level På Nytt;Reset Level;
 -;;;
 -;;;
 -;;;
@@ -363,33 +465,33 @@ Message - FreeCam (Part 2) - xBox;Trykk  <sprite=29>  <sprite=30>  <sprite=31>  
 Message - Demo - Keyboard;Merk:<br>Enkelte <color=#B593D5>Essens</color>-samleobjekter krever at ferdigheter låses opp permanent ved å fullføre <color=#B593D5>alle leveler</color> i denne demoen.;Note:<br>Some <color=#B593D5>Essence</color> pickups can’t be reached until you unlock permanent abilities by completing <color=#B593D5>all levels</color> in this demo.;
 Message - Demo - PlayStation;Merk:<br>Enkelte <color=#B593D5>Essens</color>-samleobjekter krever at ferdigheter låses opp permanent ved å fullføre <color=#B593D5>alle leveler</color> i denne demoen.;Note:<br>Some <color=#B593D5>Essence</color> pickups can’t be reached until you unlock permanent abilities by completing <color=#B593D5>all levels</color> in this demo.;
 Message - Demo - xBox;Merk:<br>Enkelte <color=#B593D5>Essens</color>-samleobjekter krever at ferdigheter låses opp permanent ved å fullføre <color=#B593D5>alle leveler</color> i denne demoen.;Note:<br>Some <color=#B593D5>Essence</color> pickups can’t be reached until you unlock permanent abilities by completing <color=#B593D5>all levels</color> in this demo.;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
 ;;;
 Interractable Buttons;;;
 Message - Talk - Keyboard;Snakk;Talk;
@@ -434,39 +536,39 @@ Message - Push - xBox;Dytt;Push;
 Message - Rad Tablet - Keyboard;Les;Read;
 Message - Rad Tablet - Play Station;Les;Read;
 Message - Rad Tablet - xBox;Les;Read;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
-#NAVN?;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
+-;;;
 ;;;
 Finish Regions Messages;;;
 Message - Finished Region - Water 1;Du har fullført;You have completed the;

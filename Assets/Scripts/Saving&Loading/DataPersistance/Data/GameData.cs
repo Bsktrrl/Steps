@@ -53,30 +53,15 @@ public class GameData
     //PlayerStatsData
     /*[HideInInspector]*/ public PermanentAbilitiesReceived permanentAbilitiesReceived_Save = new PermanentAbilitiesReceived();
 
+    //PlayerStatsData
+    /*[HideInInspector]*/public PlayerStatistics playerStatistics_Save = new PlayerStatistics();
+
 
     //--------------------
 
 
     public GameData()
     {
-        //Input Everything to clear up the file
-
         menuState_Save = MenuState.None;
-        playerStats_Save = new Stats();
-        mapInfo_SaveList = new Map_SaveInfoList();
-        overWorldStates_SaveList = new OverWorldStates();
-        charatersData_Save = new CharatersData();
-        skinsInfo_Save = new SkinInfo();
-
-        PlayerStatsData_Save = new PlayerStatsData();
-
-        oneTimeRunData_Save = new OneTimeRunData();
-
-        glueplantStandStats_Save = new GlueplantStandStats();
-        switchesData_Save = new SwitchesData();
-
-        permanentAbilitiesReceived_Save = new PermanentAbilitiesReceived();
-
-        //game_TextDatabase_Save = new Game_TextDatabase();
     }
 }

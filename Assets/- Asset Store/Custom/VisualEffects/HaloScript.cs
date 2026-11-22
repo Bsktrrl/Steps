@@ -13,28 +13,22 @@ public class HaloScript : MonoBehaviour
 
     void Update()
     {
-        if (ignoreOpaques)
-        {
-            CalculateSize();
-        }
+        Camera camera = Camera.main;
+        if (!camera) return;
+
+        Vector3 toCamera = camera.transform.position - transform.position;
+        float distance = toCamera.magnitude;
+        if (!ignoreOpaques && Physics.Raycast(transform.position, toCamera, distance))
+            size = 0f;
         else
-        {
-            if (Physics.Raycast(transform.position, Camera.main.transform.position - transform.position, Vector3.Distance(transform.position, Camera.main.transform.position)))
-            {
-                size = 0f;
-            }
-            else
-            {
-                CalculateSize();
-            }
-        }
+            CalculateSize(distance);
 
         transform.localScale = Vector3.one * Mathf.Lerp(transform.localScale.x, size, speed * Time.deltaTime);
     }
 
-    void CalculateSize()
+    void CalculateSize(float distance)
     {
-        size = Vector3.Distance(transform.position, Camera.main.transform.position) / 2;
+        size = distance / 2;
         size = Mathf.Max(size, minDistance) / minDistance;
         size *= scale;
         size = Mathf.Max(size, scale);

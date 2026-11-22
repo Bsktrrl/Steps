@@ -100,16 +100,7 @@ public class ControllerState : Singleton<ControllerState>
             }
         }
 
-        for (int i = 0; i < Gamepad.all.Count; i++)
-        {
-            if (IsXboxGamepad(Gamepad.all[i]))
-            {
-                SetInput(InputType.Xbox);
-                return;
-            }
-        }
-
-        // Unknown gamepad fallback.
+        // Every other connected gamepad uses the Xbox display.
         SetInput(InputType.Xbox);
     }
 
@@ -151,13 +142,13 @@ public class ControllerState : Singleton<ControllerState>
         if (gamepad == null)
             return false;
 
+        if (gamepad is DualShockGamepad)
+            return true;
+
         string layout = gamepad.layout.ToLower();
         string name = gamepad.name.ToLower();
         string displayName = gamepad.displayName.ToLower();
         string description = gamepad.description.ToString().ToLower();
-
-        if (gamepad is DualShockGamepad)
-            return true;
 
         return layout.Contains("dualshock") ||
                layout.Contains("dualsense") ||

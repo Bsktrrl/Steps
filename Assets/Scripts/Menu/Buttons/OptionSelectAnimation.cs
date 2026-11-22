@@ -83,7 +83,11 @@ public class OptionSelectAnimation : MonoBehaviour, IPointerDownHandler
         if (eventData.button != PointerEventData.InputButton.Left || !GetComponent<Button>().IsInteractable()) return;
 
         Button row = SelectionButton;
-        if (ActionButtonsManager.CanSelectWithMouse(row))
+        if (!ActionButtonsManager.CanSelectWithMouse(row)) return;
+
+        if (row.TryGetComponent(out ButtonSound sound))
+            sound.SelectWithoutNavigationSound(eventData);
+        else
             eventData.selectedObject = row.gameObject;
     }
 

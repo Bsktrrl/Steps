@@ -148,7 +148,10 @@ public class PopUpManager : Singleton<PopUpManager>
     {
         if (!DataManager.Instance.oneTimeRunData_Store.pickup_FirstFootprint)
         {
-            ShowOneTimerPopup(footprint_Parent, footprint_Children);
+            if (GuidePopupsEnabled)
+                ShowOneTimerPopup(footprint_Parent, footprint_Children);
+            else
+                StartCoroutine(FootprintRoutine());
 
             DataManager.Instance.oneTimeRunData_Store.pickup_FirstFootprint = true;
             DataPersistanceManager.instance.SaveGame();
@@ -171,8 +174,12 @@ public class PopUpManager : Singleton<PopUpManager>
 
     public void ShowAbilityPopup(Abilities ability)
     {
-        StartCoroutine(ShowAbilityPopup_Routine(ability, 0.5f));
+        if (GuidePopupsEnabled)
+            StartCoroutine(ShowAbilityPopup_Routine(ability, 0.5f));
     }
+
+    private static bool GuidePopupsEnabled => DataManager.Instance.settingData_StoreList?.disableGuidePopups != true;
+
     IEnumerator ShowAbilityPopup_Routine(Abilities ability, float waitTime)
     {
         ability_Active = true;

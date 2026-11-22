@@ -349,17 +349,13 @@ public class SkinWardrobeButton : MonoBehaviour, ISelectHandler, IDeselectHandle
 
     public void UpdateDefaultSkinButtonDisplay()
     {
-        if (skinType == SkinType.Default && skinWardrobeManager)
-        {
-            if (DataManager.Instance.skinsInfo_Store.activeSkinType == SkinType.Default)
-            {
-                backgroundImage.sprite = skinWardrobeManager.sprite_Selected;
-            }
-            else
-            {
-                backgroundImage.sprite = skinWardrobeManager.sprite_Bought;
-            }
-        }
+        if (skinType != SkinType.Default || !skinWardrobeManager || !backgroundImage) return;
+
+        // New saves store None, which the player uses as the Default skin.
+        SkinType activeSkin = DataManager.Instance.skinsInfo_Store.activeSkinType;
+        backgroundImage.sprite = activeSkin is SkinType.None or SkinType.Default
+            ? skinWardrobeManager.sprite_Selected
+            : skinWardrobeManager.sprite_Bought;
     }
     //--------------------
 

@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
-using System.Linq;
 
 public class TabletManager : Singleton<TabletManager>
 {
@@ -14,9 +12,6 @@ public class TabletManager : Singleton<TabletManager>
 
     [Header("HUD Parent")]
     public GameObject hud_Parent;
-
-    int startRow = 2;
-    int columns = 4; //Size + 1
 
     [Header("Tablet UI")]
     public GameObject tabletUI_Parent;
@@ -28,9 +23,6 @@ public class TabletManager : Singleton<TabletManager>
     private Coroutine fadeCoroutine;
     private Coroutine fadeCoroutine_HUD;
 
-    int currentLanguageAmount = 3;
-
-
     //--------------------
 
 
@@ -38,7 +30,7 @@ public class TabletManager : Singleton<TabletManager>
     {
         tabletUI_Parent.SetActive(false);
 
-        BuildTabletTextDatabase();
+        ReadExcelSheet();
     }
 
 
@@ -126,92 +118,41 @@ public class TabletManager : Singleton<TabletManager>
     //--------------------
 
 
-    void BuildTabletTextDatabase()
-    {
-        ReadExcelSheet();
-    }
     public void ReadExcelSheet()
     {
-        if (tabletTextDocument == null) return;
-
-        //Separate Excel Sheet into a string[] by its ";"
-        string[] excelData = tabletTextDocument.text.Split(new string[] { ";", "\n" }, StringSplitOptions.None);
-
-        // Calculate the size of the Excel table
-        int excelTableSize = (excelData.Length / columns - 1) - 0;
-
-        // Initialize the list
-        tabletData.tabletDataSegment = new List<TabletDataSegment>();
-
-        // Populate the list with default DataObject instances
-        for (int i = 0; i < excelTableSize; i++)
-        {
-            TabletDataSegment tabletSegment = new TabletDataSegment();
-
-            for (int j = 0; j < currentLanguageAmount; j++)
-            {
-                tabletSegment.languageDialogueList.Add(null);
-            }
-
-            tabletData.tabletDataSegment.Add(tabletSegment);
-        }
-
-        //Fill the new element with data
-        for (int i = 0; i < excelTableSize; i++)
-        {
-            #region Description
-
-            //Segment Description
-            if (excelData[columns * (i + startRow - 1) + 0] != "")
-                tabletData.tabletDataSegment[i].segmentDescription = excelData[columns * (i + startRow - 1) + 0].Trim();
-            else
-                tabletData.tabletDataSegment[i].segmentDescription = "";
-
-            #endregion
-
-            #region Languages
-
-            for (int j = 0; j < currentLanguageAmount; j++)
-            {
-                if (excelData[columns * (i + startRow - 1) + 1 + j] != "")
-                    tabletData.tabletDataSegment[i].languageDialogueList[j] = excelData[columns * (i + startRow - 1) + 1 + j].Trim();
-                else
-                    tabletData.tabletDataSegment[i].languageDialogueList[j] = "";
-            }
-
-            #endregion
-
-            CleanTheTextDialogue(i);
-        }
-
-        //Remove elements that doesn't have a name
-        tabletData.tabletDataSegment = tabletData.tabletDataSegment.Where(obj => obj != null && !string.IsNullOrEmpty(obj.segmentDescription)).ToList();
+        if (tabletTextDocument)
+            tabletData = ReadTabletData(tabletTextDocument);
     }
-    void CleanTheTextDialogue(int i)
-    {
-        tabletData.tabletDataSegment[i].segmentDescription = CleanQuotes(tabletData.tabletDataSegment[i].segmentDescription);
 
-        for (int j = 0; j < tabletData.tabletDataSegment[i].languageDialogueList.Count; j++)
-        {
-            tabletData.tabletDataSegment[i].languageDialogueList[j] = CleanQuotes(tabletData.tabletDataSegment[i].languageDialogueList[j]);
-        }
-    }
-    string CleanQuotes(string input)
+    internal static TabletData ReadTabletData(TextAsset document)
     {
-        // Remove enclosing quotes, and replace double double-quotes with a single one
-        if (input == "")
+        var data = new TabletData();
+        if (!document)
+            return data;
+
+        const int languageCount = 3;
+        string[] rows = document.text.Split('\n');
+        for (int i = 1; i < rows.Length; i++)
         {
-            return "";
+            string[] cells = rows[i].Split(';');
+            string description = CleanQuotes(cells[0]);
+            if (description.Length == 0)
+                continue;
+
+            var entry = new TabletDataSegment { segmentDescription = description };
+            for (int language = 1; language <= languageCount; language++)
+                entry.languageDialogueList.Add(language < cells.Length ? CleanQuotes(cells[language]) : string.Empty);
+            data.tabletDataSegment.Add(entry);
         }
-        else if (input == null)
-        {
-            return "";
-        }
-        else if (input.StartsWith("\"") && input.EndsWith("\""))
-        {
+
+        return data;
+    }
+
+    private static string CleanQuotes(string input)
+    {
+        input = input.Trim();
+        if (input.Length >= 2 && input[0] == '"' && input[input.Length - 1] == '"')
             input = input.Substring(1, input.Length - 2);
-        }
-
         return input.Replace("\"\"", "\"").Trim();
     }
 }

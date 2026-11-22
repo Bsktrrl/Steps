@@ -130,9 +130,8 @@ public class DialogueManager : Singleton<DialogueManager>
 
         dialogueCanvas.SetActive(true);
 
-        // The Talk prompt may have been shown again during the opening transition.
         if (ButtonMessageManager.Instance != null)
-            ButtonMessageManager.Instance.HideButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Talk);
+            ButtonMessageManager.Instance.HideInteractionPrompts();
     }
     public IEnumerator EndDialogue(float waitTime)
     {
@@ -156,10 +155,6 @@ public class DialogueManager : Singleton<DialogueManager>
 
         yield return StartCoroutine(CameraController.Instance.StartVirtualCameraBlend_Out(CameraController.Instance.CM_Other));
 
-        ButtonMessageManager.Instance.SetButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Talk);
-        ButtonMessageManager.Instance.ShowButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Talk);
-
-
         if (nPCManager && npcObject != null)
         {
             nPCManager.SetDialogueFinished(npcObject.characterName, npcObject.levelNumber);
@@ -171,8 +166,12 @@ public class DialogueManager : Singleton<DialogueManager>
         segmentTotal = 0;
         currentSegement = 0;
 
-        PlayerManager.Instance.npcInteraction = false;
+        PlayerManager playerManager = PlayerManager.Instance;
+        playerManager.npcInteraction = false;
         isEndingDialogue = false;
+
+        // Talk returns through the NPC trigger once range and facing are checked again.
+        ButtonMessageManager.Instance.RefreshReadPrompt(playerManager.block_LookingAt_Horizontal);
     }
 
     void SetupArrow()

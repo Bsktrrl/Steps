@@ -34,7 +34,8 @@ public class Block_MushroomCircle : MonoBehaviour
     {
         if (Movement.Instance.blockStandingOn == gameObject)
         {
-            PlayerStats.Instance.stats.steps_Current += 1;
+            PlayerStats playerStats = PlayerStats.Instance;
+            playerStats.SetReplenishedSteps(playerStats.stats.steps_Current + 1);
             Action_MushroomCircleEntered?.Invoke();
         }
     }

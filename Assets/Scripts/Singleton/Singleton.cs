@@ -38,15 +38,10 @@ public class Singleton<T> : MonoBehaviour where T : Component
 
     static void SetupInstance()
     {
-        instance = (T)FindObjectOfType(typeof(T));
-
-        if (instance == null)
-        {
-            GameObject obj = new GameObject();
-            obj.name = typeof(T).Name;
-            instance = obj.AddComponent<T>();
-            //DontDestroyOnLoad(obj);
-        }
+        GameObject obj = new GameObject();
+        obj.name = typeof(T).Name;
+        instance = obj.AddComponent<T>();
+        //DontDestroyOnLoad(obj);
     }
 
     void RemoveDuplicates()

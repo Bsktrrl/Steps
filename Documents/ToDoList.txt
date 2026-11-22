@@ -12,16 +12,8 @@ Demo:
 	- Starte dialog i HUB'en etter at Lv.5's er ferdig, før man skal gå til Metalworks
 
 
-8. Hint-system:
-	- Legge til hint-system i levels
-   		- Lage en List<GameObject> av rekkefølgen til de unlike checkpointsa, og bestemme hva som må inkluderes for at neste checkpoint skal hintes til
-		- Hint-knappen må kunne fungere uansett når knappen trykkes, slik at spilleren også kan se hint i FreeCam-modus
-
-
 9. Menyer:
 	- Legge til Info-meny
-   		- Legge til Statistikk-tab
-   		- Legge til Control-tab
    		- Legge til Tablet-tab
 	- Endre level-bilder i level-select-menyen
 
@@ -29,10 +21,6 @@ Demo:
 10. Settings:
 	- FreeCam Speed & rotation sensetivity (Move Speed & MouseSensitivity/StickSensitivity)
 	- Legge til en setting som lar spilleren toggle on/off InterractableMessages som abilities eller andre guider
-
-
-13. "Reset Level"-knapp i Pausemenyen
-	- Legge til en knapp som lar spilleren resete levelet (starte fra første checkpoint), slik at spillere som sitter fast, kan starte levelet på nytt om de ønsker det
 
 
 15. NPC-animasjoner:
@@ -82,20 +70,6 @@ ColdWater:
 
 CeilingGrabRotation:
 	- When doing CeilingGrabRotation back to the noraml camera, the camrea is buggy when there is more ceilingBlocks in front/over the player and the camera is looking at the player front
-
-
-AbilityButton Display (New System):
-	- Use the new button icons and stepellierFont for NPC-interaction and when Abilities can be used
-		- Make it compatible with PlayStation, Xbox and Keyboard
-		- Make it compatible with all languages
-
-
-FreeCam:
-	- Kan toggle Numbers on/off på alle blokker i levelet (bare blokker som er øverst og ikke har noen andre blokker over dem)
-
-
-Overworld:
-	- Vurdere å legge inn en %-bar under navnet for å vise progress med tall også
 
 
 Switches:

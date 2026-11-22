@@ -76,6 +76,9 @@ public class Interactable_Pickup : MonoBehaviour
             GetItems();
             GetAbility();
 
+            if (goal)
+                Player_Statistics_Manager.Active?.RecordLevelCompletion();
+
             PlayerManager.Instance.SavePlayerStats();
             MapManager.Instance.SaveMapInfo();
 
@@ -220,6 +223,7 @@ public class Interactable_Pickup : MonoBehaviour
                             MapStatsGathered.Instance.UpdateSkinPickedUp_Stats(GetComponent<PickupData>().skinNo);
 
                             UpdateSkinTaken();
+                            Player_Statistics_Manager.Active?.RecordSkinFound();
                             break;
                         case Items.Footprint:
                             PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max += 1 /*itemReceived.amount*/;

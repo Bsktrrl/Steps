@@ -7,6 +7,8 @@ public class LevelButton : MonoBehaviour
     [SerializeField] Button button;
     [SerializeField] LevelState levelState;
 
+    internal LevelState State => levelState;
+
     private void Update()
     {
         if (EventSystem.current && EventSystem.current.currentSelectedGameObject == gameObject)

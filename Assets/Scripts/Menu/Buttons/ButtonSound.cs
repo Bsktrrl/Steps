@@ -101,6 +101,12 @@ public class ButtonSound : MonoBehaviour, ISelectHandler, IDeselectHandler
         isHighlighted = false;
     }
 
+    internal void SelectWithoutNavigationSound(BaseEventData eventData)
+    {
+        isHighlighted = true;
+        eventData.selectedObject = gameObject;
+    }
+
 
     //--------------------
 
@@ -122,6 +128,11 @@ public class ButtonSound : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     public void TryButtonPressSound()
     {
+        TryButtonPressSound(buttonPress_Sound);
+    }
+
+    internal void TryButtonPressSound(ButtonSoundStates sound)
+    {
         if (isStart)
         {
             isHighlighted = true;
@@ -130,7 +141,7 @@ public class ButtonSound : MonoBehaviour, ISelectHandler, IDeselectHandler
 
         if (!isHighlighted) return;
 
-        switch (buttonPress_Sound)
+        switch (sound)
         {
             case ButtonSoundStates.None:
                 break;

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class NumberDisplay : MonoBehaviour
 {
+    private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
+
     BlockInfo blockInfo;
     CameraController cameraController;
 
@@ -452,7 +454,7 @@ public class NumberDisplay : MonoBehaviour
         for (int i = 0; i < propertyBlocks.Count; i++)
         {
             // Set the original color in the MaterialPropertyBlock
-            propertyBlocks[i].SetColor("_BaseColor", movementCostColor);
+            propertyBlocks[i].SetColor(BaseColorId, movementCostColor);
 
             // Apply the MaterialPropertyBlock to the renderer
             objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);

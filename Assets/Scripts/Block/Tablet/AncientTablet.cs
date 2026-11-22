@@ -15,6 +15,7 @@ public class AncientTablet : MonoBehaviour
 
     bool tabletInterractTransitioning;
     bool tabletIsShowing;
+    ButtonMessageManager interactionPrompts;
 
 
     //--------------------
@@ -31,6 +32,9 @@ public class AncientTablet : MonoBehaviour
 
     private void OnDisable()
     {
+        if (interactionPrompts)
+            interactionPrompts.EndTabletInteraction(this);
+
         Player_KeyInputs.Action_InteractButton_isPressed -= Interraction;
 
         Movement.Action_StepTaken_Late -= DisplayButtonMessageDelayed;
@@ -60,6 +64,8 @@ public class AncientTablet : MonoBehaviour
             print("Tablet - RunInterraction");
 
             tabletInterractTransitioning = true;
+            interactionPrompts = ButtonMessageManager.Instance;
+            interactionPrompts.BeginTabletInteraction(this);
 
             StartCoroutine(RunInterraction_Delay());
         }
@@ -67,9 +73,6 @@ public class AncientTablet : MonoBehaviour
     IEnumerator RunInterraction_Delay()
     {
         PlayerManager.Instance.PauseMovement();
-
-        ButtonMessageManager.Instance.HideButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Read);
-
 
         RenderHiderOnContact.Instance.FreeCamOn();
         HoleShaderOnOffScript.Instance.HoleShader_Off();
@@ -86,6 +89,7 @@ public class AncientTablet : MonoBehaviour
             TabletManager.Instance.tabletUI_Text.text = TabletManager.Instance.tabletData.tabletDataSegment[0].languageDialogueList[(int)DataManager.Instance.settingData_StoreList.currentLanguage];
 
         TabletManager.Instance.ShowTabletUI(TabletManager.Instance.tabletUI_Parent);
+        Player_Statistics_Manager.Active?.RecordTabletRead(textEntryNumber, transform.position);
 
         yield return new WaitForSeconds(TabletManager.Instance.fadeDuration);
         tabletIsShowing = true;
@@ -113,14 +117,13 @@ public class AncientTablet : MonoBehaviour
         RenderHiderOnContact.Instance.FreeCamOff();
         HoleShaderOnOffScript.Instance.HoleShader_On();
 
-        ButtonMessageManager.Instance.SetButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Read);
-        ButtonMessageManager.Instance.ShowButtonMessage(ButtonMessageManager.Instance.buttonMessages.buttonMessage_Read);
-
         tabletIsShowing = false;
         tabletInterractTransitioning = false;
 
-
         PlayerManager.Instance.UnpauseMovement();
+        interactionPrompts.EndTabletInteraction(this);
+        interactionPrompts = null;
+        DisplayButtonMessage();
     }
 
 
@@ -139,33 +142,6 @@ public class AncientTablet : MonoBehaviour
     }
     void DisplayButtonMessage()
     {
-        GameObject lookedAtObject = PlayerManager.Instance.block_LookingAt_Horizontal;
-
-        if (lookedAtObject == null)
-        {
-            ButtonMessageManager.Instance.HideButtonMessage(
-                ButtonMessageManager.Instance.buttonMessages.buttonMessage_Read
-            );
-            return;
-        }
-
-        BlockInfo blockInfo = lookedAtObject.GetComponent<BlockInfo>();
-
-        if (blockInfo == null || blockInfo.blockElement != BlockElement.Tablet)
-        {
-            ButtonMessageManager.Instance.HideButtonMessage(
-                ButtonMessageManager.Instance.buttonMessages.buttonMessage_Read
-            );
-            return;
-        }
-
-        //If not blocked, show message
-        ButtonMessageManager.Instance.SetButtonMessage(
-                ButtonMessageManager.Instance.buttonMessages.buttonMessage_Read
-            );
-
-        ButtonMessageManager.Instance.ShowButtonMessage(
-            ButtonMessageManager.Instance.buttonMessages.buttonMessage_Read
-        );
+        ButtonMessageManager.Instance.RefreshReadPrompt(PlayerManager.Instance.block_LookingAt_Horizontal);
     }
 }

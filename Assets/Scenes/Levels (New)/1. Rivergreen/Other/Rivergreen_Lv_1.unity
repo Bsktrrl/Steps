@@ -16719,6 +16719,42 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 776856641060507216, guid: abcd84855173f5b41b1f1359f4c3446f, type: 3}
+      propertyPath: HintSetups_List.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 776856641060507216, guid: abcd84855173f5b41b1f1359f4c3446f, type: 3}
+      propertyPath: HintSetups_List.Array.data[0].maxStepsGot
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 776856641060507216, guid: abcd84855173f5b41b1f1359f4c3446f, type: 3}
+      propertyPath: HintSetups_List.Array.data[1].maxStepsGot
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 776856641060507216, guid: abcd84855173f5b41b1f1359f4c3446f, type: 3}
+      propertyPath: HintSetups_List.Array.data[2].maxStepsGot
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 776856641060507216, guid: abcd84855173f5b41b1f1359f4c3446f, type: 3}
+      propertyPath: HintSetups_List.Array.data[3].maxStepsGot
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 776856641060507216, guid: abcd84855173f5b41b1f1359f4c3446f, type: 3}
+      propertyPath: HintSetups_List.Array.data[0].checkpointToLighten
+      value: 
+      objectReference: {fileID: 168048511}
+    - target: {fileID: 776856641060507216, guid: abcd84855173f5b41b1f1359f4c3446f, type: 3}
+      propertyPath: HintSetups_List.Array.data[1].checkpointToLighten
+      value: 
+      objectReference: {fileID: 730963194}
+    - target: {fileID: 776856641060507216, guid: abcd84855173f5b41b1f1359f4c3446f, type: 3}
+      propertyPath: HintSetups_List.Array.data[2].checkpointToLighten
+      value: 
+      objectReference: {fileID: 642552968}
+    - target: {fileID: 776856641060507216, guid: abcd84855173f5b41b1f1359f4c3446f, type: 3}
+      propertyPath: HintSetups_List.Array.data[3].checkpointToLighten
+      value: 
+      objectReference: {fileID: 1695266097}
     - target: {fileID: 1265659579347570928, guid: abcd84855173f5b41b1f1359f4c3446f, type: 3}
       propertyPath: textToDisplay
       value: 8
@@ -28121,6 +28157,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 642552967}
     m_Modifications:
+    - target: {fileID: 10308802244369789, guid: 2eaa6e385a851644098a60910fb60595, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 223495371550348413, guid: 2eaa6e385a851644098a60910fb60595, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -37396,6 +37436,11 @@ PrefabInstance:
 --- !u!4 &1695266096 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3179926939056463300, guid: 25a22e45425f1104fab8a92919136df3, type: 3}
+  m_PrefabInstance: {fileID: 1695266095}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1695266097 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2640890401965602390, guid: 25a22e45425f1104fab8a92919136df3, type: 3}
   m_PrefabInstance: {fileID: 1695266095}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1697546575

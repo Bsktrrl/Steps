@@ -21,14 +21,18 @@ public class BlockPosManager : Singleton<BlockPosManager>
 
     void BuildDictionary()
     {
-        positionToGameObjectMap = new Dictionary<Vector3, GameObject>();
+        BlockInfo[] blocks = FindObjectsOfType<BlockInfo>();
+        positionToGameObjectMap = new Dictionary<Vector3, GameObject>(blocks.Length);
 
         //Populate the dictionary with all BlockInfo' positions
-        foreach (BlockInfo obj in FindObjectsOfType<BlockInfo>())
+        foreach (BlockInfo obj in blocks)
         {
-            if (!positionToGameObjectMap.ContainsKey(obj.gameObject.transform.position) && !obj.gameObject.GetComponent<Block_Elevator>() && !obj.gameObject.GetComponent<Block_Elevator_StepOn>())
+            Vector3 position = obj.transform.position;
+            if (!positionToGameObjectMap.ContainsKey(position) &&
+                !obj.TryGetComponent<Block_Elevator>(out _) &&
+                !obj.TryGetComponent<Block_Elevator_StepOn>(out _))
             {
-                positionToGameObjectMap.Add(obj.gameObject.transform.position, obj.gameObject);
+                positionToGameObjectMap.Add(position, obj.gameObject);
             }
         }
     }
@@ -37,49 +41,22 @@ public class BlockPosManager : Singleton<BlockPosManager>
     {
         //print("2. Search for Objects");
 
-        // Fast lookup in the dictionary
+        // Prefer the exact position before considering half-height offsets.
         if (positionToGameObjectMap.TryGetValue(targetPosition, out GameObject foundObject1))
-        {
-            //if (foundObject1.GetComponent<BlockInfo>().blockType == BlockType.HalfSlab)
-            //{
-            //    //return foundObject6;
-            //    print("HalfSlab");
-            //    return null;
-            //}
-            //else
-            //{
-            //    return foundObject1;
-            //}
-
             return foundObject1;
+
+        if (positionToGameObjectMap.TryGetValue(targetPosition + (Vector3.down * 0.5f), out GameObject lowerBlock))
+        {
+            BlockType blockType = lowerBlock.GetComponent<BlockInfo>().blockType;
+            if (blockType == BlockType.Stair || blockType == BlockType.Slope)
+                return lowerBlock;
         }
 
-        else if (positionToGameObjectMap.TryGetValue(targetPosition + (Vector3.down * 0.5f), out GameObject foundObject2) && foundObject2.GetComponent<BlockInfo>().blockType == BlockType.Stair)
+        if (positionToGameObjectMap.TryGetValue(targetPosition + (Vector3.up * 0.5f), out GameObject upperBlock))
         {
-            return foundObject2;
-        }
-        else if (positionToGameObjectMap.TryGetValue(targetPosition + (Vector3.down * 0.5f), out GameObject foundObject3) && foundObject3.GetComponent<BlockInfo>().blockType == BlockType.Slope)
-        {
-            return foundObject3;
-        }
-
-        else if (positionToGameObjectMap.TryGetValue(targetPosition + (Vector3.up * 0.5f), out GameObject foundObject4) && searchingObj.GetComponent<BlockInfo>().blockType == BlockType.Stair)
-        {
-            return foundObject4;
-        }
-        else if (positionToGameObjectMap.TryGetValue(targetPosition + (Vector3.up * 0.5f), out GameObject foundObject5) && searchingObj.GetComponent<BlockInfo>().blockType == BlockType.Slope)
-        {
-            return foundObject5;
-        }
-
-        else
-        {
-            //print("Did NOT Find" + targetPosition + " | Name: " + searchingObj + " | Pos: " + searchingObj.transform.position + " | LocalPos: " + searchingObj.transform.localPosition);
-
-            if (targetPosition == new Vector3(-5, 0, -13))
-            {
-                //print("Did NOT Find" + targetPosition);
-            }
+            BlockType blockType = searchingObj.GetComponent<BlockInfo>().blockType;
+            if (blockType == BlockType.Stair || blockType == BlockType.Slope)
+                return upperBlock;
         }
 
         return null;

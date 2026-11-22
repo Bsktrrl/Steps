@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -47,22 +46,20 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
     public void NewGame()
     {
-        GameData oldData = new GameData();
-
-        if (gameData != null)
-            oldData = gameData;
-
+        GameData oldData = gameData ?? new GameData();
 
         this.gameData = new GameData(); // create fresh data
 
         // Clear the DataManager's stores explicitly
-        DataManager.Instance.Load_NewGame_Data(oldData, this.gameData);
+        DataManager data = DataManager.Instance;
+        data.Load_NewGame_Data(oldData, this.gameData);
+        Player_Statistics_Manager.Active?.ResetForNewGame(data);
 
         //Persist through newGame
         this.gameData.settingData_SaveList = DataManager.Instance.settingData_StoreList;
 
         // Save the new clean data
-        SaveGame();
+        SaveGame(updateStatistics: false);
 
         Action_NewGame?.Invoke();
     }
@@ -86,6 +83,14 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
     }
     public void SaveGame()
     {
+        SaveGame(updateStatistics: true);
+    }
+
+    private void SaveGame(bool updateStatistics)
+    {
+        if (updateStatistics)
+            Player_Statistics_Manager.Active?.FlushStatistics();
+
         //Pass the data to other scripts so thay can update it
         foreach (IDataPersistance dataPersistanceObj in dataPersistanceObjects)
         {
@@ -102,6 +107,8 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
     private void OnApplicationQuit()
     {
+        Player_Statistics_Manager.Active?.FinishLevelAttempt();
+
         //Make it so that the playerStatsData are reset on next game played
         if (FindObjectOfType<MapStatsGathered>())
             MapStatsGathered.Instance.ExitLevel();
@@ -121,8 +128,20 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
     List<IDataPersistance> FindAllDataPersistenceObjects()
     {
-        IEnumerable<IDataPersistance> dataPersistanceObjects = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistance>();
+        var persistenceObjects = new List<IDataPersistance>();
+        foreach (MonoBehaviour behaviour in FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None))
+        {
+            if (behaviour is IDataPersistance persistence)
+                persistenceObjects.Add(persistence);
+        }
 
-        return new List<IDataPersistance>(dataPersistanceObjects);
+        // Keep the previous callback order by sorting only the components that take part.
+        if (persistenceObjects.Count > 1)
+        {
+            persistenceObjects.Sort((first, second) =>
+                ((MonoBehaviour)first).GetInstanceID().CompareTo(((MonoBehaviour)second).GetInstanceID()));
+        }
+
+        return persistenceObjects;
     }
 }

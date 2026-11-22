@@ -57,6 +57,8 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
     private readonly HashSet<Renderer> _seenThisFrame = new HashSet<Renderer>();
     private readonly Dictionary<Renderer, ShadowCastingMode> _originalCasting = new Dictionary<Renderer, ShadowCastingMode>();
     private static readonly List<Renderer> _toRestoreBuffer = new List<Renderer>(64);
+    private readonly Collider[] _cellHits = new Collider[16];
+    private readonly List<Renderer> _cellRenderers = new List<Renderer>(8);
 
     private readonly List<Vector3> _debugCellCenters = new List<Vector3>(32);
     private Vector3 _debugFrontOrigin;
@@ -216,13 +218,14 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
             return;
         }
 
-        if (hit.collider == null)
+        Collider hitCollider = hit.collider;
+        if (hitCollider == null)
         {
             RestoreNoLongerSeen();
             return;
         }
 
-        GameObject hitObject = hit.collider.gameObject;
+        GameObject hitObject = hitCollider.gameObject;
 
         if (((1 << hitObject.layer) & ignoreLayers.value) != 0)
         {
@@ -236,7 +239,7 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
         // Hide only the grid block that actually obstructs the camera.
         // Do not hide a rectangular area of neighbouring blocks.
         Vector3 obstructingCell =
-            SnapToGrid(hit.collider.bounds.center);
+            SnapToGrid(hitCollider.bounds.center);
 
         _debugCellCenters.Add(obstructingCell);
 
@@ -274,15 +277,26 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
 
     void HideBlockAtCell(Vector3 cellCenter)
     {
-        Collider[] hits = Physics.OverlapBox(
+        Collider[] hits = _cellHits;
+        int hitCount = Physics.OverlapBoxNonAlloc(
             cellCenter,
             cellCheckExtents,
+            hits,
             Quaternion.identity,
             hideableLayers,
             QueryTriggerInteraction.Ignore
         );
 
-        for (int i = 0; i < hits.Length; i++)
+        // A full buffer may have missed colliders in this cell.
+        if (hitCount == hits.Length)
+        {
+            hits = Physics.OverlapBox(
+                cellCenter, cellCheckExtents, Quaternion.identity,
+                hideableLayers, QueryTriggerInteraction.Ignore);
+            hitCount = hits.Length;
+        }
+
+        for (int i = 0; i < hitCount; i++)
         {
             Collider col = hits[i];
 
@@ -294,16 +308,18 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
             if (((1 << go.layer) & ignoreLayers.value) != 0)
                 continue;
 
-            Renderer[] renderers =
-                go.GetComponentsInChildren<Renderer>(
-                    includeInactive: false
-                );
+            go.GetComponentsInChildren(false, _cellRenderers);
 
-            for (int r = 0; r < renderers.Length; r++)
+            for (int r = 0; r < _cellRenderers.Count; r++)
             {
-                Renderer rend = renderers[r];
+                Renderer rend = _cellRenderers[r];
 
                 if (rend == null)
+                    continue;
+
+                // Let the hint fade independently of the checkpoint's visibility.
+                var hint = rend.GetComponentInParent<HintObject>();
+                if (hint && hint.hintObject && rend.transform.IsChildOf(hint.hintObject.transform))
                     continue;
 
                 _seenThisFrame.Add(rend);
@@ -324,6 +340,8 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
                 _currentlyHidden.Add(rend);
             }
         }
+
+        _cellRenderers.Clear();
     }
 
     void RestoreNoLongerSeen()

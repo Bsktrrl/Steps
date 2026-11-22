@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoadingIcon : Singleton<LoadingIcon>
@@ -16,7 +14,15 @@ public class LoadingIcon : Singleton<LoadingIcon>
     public float amplitude = 20f;  // How far up/down (in pixels)
     public float frequency = 3f;   // Speed of the movement
 
-    Vector3 startPos;
+    private const float MaxAnimationFrameTime = 1f / 20f;
+    private static float animationPhase;
+    private static int lastAnimationFrame = -1;
+    private static LoadingIcon lastAnimatedIcon;
+    private static Sprite lastSprite;
+
+    private RectTransform iconRect;
+    private Image iconImage;
+    private Vector2 startPos;
 
     [Header("Sprites")]
     [SerializeField] Sprite sprite_Default;
@@ -65,21 +71,37 @@ public class LoadingIcon : Singleton<LoadingIcon>
     //--------------------
 
 
-    void Start()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetAnimation()
     {
-        loadingIcon.SetActive(false);
-
-        // Save the original position
-        startPos = loadingIcon.GetComponent<RectTransform>().anchoredPosition;
+        animationPhase = 0f;
+        lastAnimationFrame = -1;
+        lastAnimatedIcon = null;
+        lastSprite = null;
     }
 
-    void Update()
+    private void LateUpdate()
     {
-        // Move up and down using a sine wave
-        float newY = startPos.y + Mathf.Sin(Time.time * frequency) * amplitude;
-        loadingIcon.GetComponent<RectTransform>().anchoredPosition = new Vector3(startPos.x, newY, startPos.z);
+        if (!iconRect || !loadingIcon.activeInHierarchy) return;
+
+        int frame = Time.frameCount;
+        // Start each scene at the last displayed position. Skip time spent
+        // waiting on scene activation instead of jumping ahead in the bob.
+        if (lastAnimatedIcon == this && lastAnimationFrame == frame - 1)
+        {
+            float elapsed = Mathf.Min(Time.unscaledDeltaTime, MaxAnimationFrameTime);
+            animationPhase = Mathf.Repeat(animationPhase + elapsed * frequency, 2f * Mathf.PI);
+        }
+
+        lastAnimatedIcon = this;
+        lastAnimationFrame = frame;
+        PositionIcon();
     }
 
+    private void PositionIcon()
+    {
+        iconRect.anchoredPosition = startPos + Vector2.up * (Mathf.Sin(animationPhase) * amplitude);
+    }
 
     //--------------------
 
@@ -90,6 +112,21 @@ public class LoadingIcon : Singleton<LoadingIcon>
         SkinWardrobeButton.Action_SkinIsSelected += LoadingSpriteInGame;
 
         blackscreenIsFading = true;
+
+        if (!loadingIcon) return;
+        if (!iconRect)
+        {
+            iconRect = loadingIcon.GetComponent<RectTransform>();
+            iconImage = loadingIcon.GetComponent<Image>();
+            startPos = iconRect.anchoredPosition;
+        }
+
+        PositionIcon();
+        DataManager data = FindAnyObjectByType<DataManager>();
+        Sprite sprite = data && data.gameObject.scene == gameObject.scene && data.dataHasLoaded_Check
+            ? SetLoadingSprite()
+            : lastSprite ? lastSprite : sprite_Default;
+        ShowSprite(sprite);
     }
     private void OnDisable()
     {
@@ -106,24 +143,26 @@ public class LoadingIcon : Singleton<LoadingIcon>
 
     void LoadingSprite()
     {
-        loadingIcon.GetComponent<Image>().sprite = SetLoadingSprite();
+        ShowSprite(SetLoadingSprite());
+    }
+
+    private void ShowSprite(Sprite sprite)
+    {
+        if (!iconImage) return;
+
+        iconImage.sprite = sprite;
+        lastSprite = sprite;
         loadingIcon.SetActive(true);
     }
     void LoadingSpriteInGame()
     {
-        print("0000. LoadingSpriteInGame_Delay");
-
         StartCoroutine(LoadingSpriteInGame_Delay(0.25f));
     }
     IEnumerator LoadingSpriteInGame_Delay(float waitTime)
     {
-        print("1000. LoadingSpriteInGame_Delay");
-
         yield return new WaitForSeconds(waitTime);
 
-        loadingIcon.SetActive(true);
-        loadingIcon.GetComponent<Image>().sprite = SetLoadingSprite();
-        print("2000. LoadingSpriteInGame_Delay");
+        LoadingSprite();
     }
     Sprite SetLoadingSprite()
     {

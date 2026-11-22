@@ -25,37 +25,25 @@ public class ExitMapMenuReference : MonoBehaviour
 
     void SetMenuState()
     {
-        switch (levelRegion)
-        {
-            case regions.None:
-                break;
-
-            case regions.HUB:
-                DataManager.Instance.menuState_Store = MenuState.RegionMenu_HUB;
-                break;
-            case regions.Rivergreen:
-                DataManager.Instance.menuState_Store = MenuState.RegionMenu_Water;
-                break;
-            case regions.Sandlands:
-                DataManager.Instance.menuState_Store = MenuState.RegionMenu_Sand;
-                break;
-            case regions.Frostfield:
-                DataManager.Instance.menuState_Store = MenuState.RegionMenu_Ice;
-                break;
-            case regions.Firevein:
-                DataManager.Instance.menuState_Store = MenuState.RegionMenu_Lava;
-                break;
-            case regions.Witchmire:
-                DataManager.Instance.menuState_Store = MenuState.RegionMenu_Swamp;
-                break;
-            case regions.Metalworks:
-                DataManager.Instance.menuState_Store = MenuState.RegionMenu_Metal;
-                break;
-
-            default:
-                break;
-        }
+        MenuState returnMenu = GetMenuStateForRegion(levelRegion);
+        if (returnMenu != MenuState.None)
+            DataManager.Instance.menuState_Store = returnMenu;
 
         DataPersistanceManager.instance.SaveGame();
+    }
+
+    internal static MenuState GetMenuStateForRegion(regions region)
+    {
+        switch (region)
+        {
+            case regions.HUB: return MenuState.RegionMenu_HUB;
+            case regions.Rivergreen: return MenuState.RegionMenu_Water;
+            case regions.Sandlands: return MenuState.RegionMenu_Sand;
+            case regions.Frostfield: return MenuState.RegionMenu_Ice;
+            case regions.Firevein: return MenuState.RegionMenu_Lava;
+            case regions.Witchmire: return MenuState.RegionMenu_Swamp;
+            case regions.Metalworks: return MenuState.RegionMenu_Metal;
+            default: return MenuState.None;
+        }
     }
 }
