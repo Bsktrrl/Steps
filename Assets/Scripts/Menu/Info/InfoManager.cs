@@ -15,6 +15,9 @@ public class InfoManager : MonoBehaviour
 
     internal void ShowPanel(MenuCategories category)
     {
+        if (category == MenuCategories.Info_Stats)
+            Player_Statistics_Manager.Active?.FlushStatistics();
+
         controlsPanel.SetActive(category == MenuCategories.Info_Controls);
         statsPanel.SetActive(category == MenuCategories.Info_Stats);
         tabletPanel.SetActive(category == MenuCategories.Info_Tablet);

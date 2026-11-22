@@ -80,6 +80,7 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
 
         charCounter = 0;
         charSafetyCounter = 0;
+        double nextCharacterTime = Time.timeAsDouble;
         while (charCounter <= fullText.Length)
         {
             if (skipRequested && charSafetyCounter <= 1)
@@ -100,18 +101,21 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
 
                 PlayTypingSound(currentChar);
 
-                // Delay rules
-                if (IsLongerPauseChar(currentChar))
+                TextSpeed speed = SettingsManager.Instance.settingsData.currentTextSpeed;
+                float delay = IsLongerPauseChar(currentChar) ? GetSentenceSpeed(speed)
+                    : IsSmallerPauseChar(currentChar) ? GetCommaSpeed(speed) : GetTextSpeed(speed);
+
+                if (speed is TextSpeed.Faster or TextSpeed.Fastest)
                 {
-                    yield return new WaitForSeconds(GetSentenceSpeed()); // Delay after every .
-                }
-                else if (IsSmallerPauseChar(currentChar))
-                {
-                    yield return new WaitForSeconds(GetCommaSpeed());
+                    // Keep fractional frame time so settings 4 and 5 can exceed one character per frame.
+                    nextCharacterTime += delay * GetFastDelayScale(speed);
+                    while (Time.timeAsDouble < nextCharacterTime)
+                        yield return null;
                 }
                 else
                 {
-                    yield return new WaitForSeconds(GetTextSpeed());
+                    yield return new WaitForSeconds(delay);
+                    nextCharacterTime = Time.timeAsDouble;
                 }
             }
 
@@ -149,45 +153,59 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
         return c == ',' || c == ':' || c == ';' || c == '-' || c == '#' || c == '=' || c == '+' || c == '@';
     }
 
-    float GetTextSpeed()
+    float GetFastDelayScale(TextSpeed speed)
     {
-        switch (SettingsManager.Instance.settingsData.currentTextSpeed)
+        float fastRate = 1f / fastText;
+        float step = fastRate - 1f / mediumText;
+        int extraSteps = speed == TextSpeed.Faster ? 1 : 2;
+        return fastRate / (fastRate + step * extraSteps);
+    }
+
+    float GetTextSpeed(TextSpeed speed)
+    {
+        switch (speed)
         {
             case TextSpeed.Slow:
                 return slowText;
             case TextSpeed.Medium:
                 return mediumText;
             case TextSpeed.Fast:
+            case TextSpeed.Faster:
+            case TextSpeed.Fastest:
                 return fastText;
 
             default:
                 return mediumText;
         }
     }
-    float GetSentenceSpeed()
+    float GetSentenceSpeed(TextSpeed speed)
     {
-        switch (SettingsManager.Instance.settingsData.currentTextSpeed)
+        switch (speed)
         {
             case TextSpeed.Slow:
                 return slowSentence;
             case TextSpeed.Medium:
                 return mediumSentence;
             case TextSpeed.Fast:
+            case TextSpeed.Faster:
+            case TextSpeed.Fastest:
                 return fastSentence;
 
             default:
                 return mediumSentence;
         }
     }
-    float GetCommaSpeed()
+    float GetCommaSpeed(TextSpeed speed)
     {
-        switch (SettingsManager.Instance.settingsData.currentTextSpeed)
+        switch (speed)
         {
             case TextSpeed.Slow:
                 return slowComma;
             case TextSpeed.Medium:
                 return mediumComma;
             case TextSpeed.Fast:
+            case TextSpeed.Faster:
+            case TextSpeed.Fastest:
                 return fastComma;
 
             default:

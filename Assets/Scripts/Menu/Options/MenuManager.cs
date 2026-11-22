@@ -263,7 +263,9 @@ public enum TextSpeed
 {
     Medium,
     Fast,
-    Slow
+    Slow,
+    Faster,
+    Fastest
 }
 public enum StepDisplay
 {

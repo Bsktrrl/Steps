@@ -139,10 +139,12 @@ public class Player_Statistics_Manager : MonoBehaviour
             AddLevelsReplayed(1);
     }
 
-    internal void ResetForNewGame()
+    internal void ResetForNewGame(DataManager loadedData)
     {
-        if (data)
-            Statistics.initialized = true;
+        data = loadedData;
+        Statistics.initialized = true;
+        Statistics.sessions = 1;
+        sessionCounted = true;
 
         sessionStartedAt = Time.realtimeSinceStartupAsDouble;
         lastPlayTimeUpdate = sessionStartedAt;

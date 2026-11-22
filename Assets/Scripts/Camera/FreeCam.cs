@@ -380,14 +380,14 @@ public class FreeCam : Singleton<FreeCam>
     private void ApplyFlightSettings()
     {
         SettingData settings = DataManager.Instance.settingData_StoreList;
-        int speedLevel = SettingData.NormalizeFreeCamLevel(settings?.currentFreeCamSpeed ?? 0);
+        int speedLevel = SettingData.NormalizeFreeCamLevel(settings?.currentFreeCamSpeed ?? 0, SettingData.DefaultFreeCamSpeed);
         if (_flightSpeedLevel != speedLevel)
         {
             _flightSpeedLevel = speedLevel;
             _flightSpeed = moveSpeed * SpeedMultipliers[speedLevel - 1];
         }
 
-        int lookLevel = SettingData.NormalizeFreeCamLevel(settings?.currentFreeCamSensitivity ?? 0);
+        int lookLevel = SettingData.NormalizeFreeCamLevel(settings?.currentFreeCamSensitivity ?? 0, SettingData.DefaultFreeCamSensitivity);
         _lookMultiplier = LookMultipliers[lookLevel - 1];
     }
 
