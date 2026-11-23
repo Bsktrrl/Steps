@@ -11,6 +11,8 @@ public class UnlockDisplay : MonoBehaviour
     [SerializeField] GameObject levelReached_obj;
     [SerializeField] GameObject canNotUnlock_obj;
     [SerializeField] GameObject canUnlock_obj;
+    [SerializeField] TextMeshProUGUI canUnlockCost;
+    [SerializeField] TextMeshProUGUI cannotUnlockCost;
     [SerializeField] GameObject canEquip_obj;
     [SerializeField] GameObject isEquipped_obj;
     [SerializeField] GameObject unlockAllOtherSkins_obj;
@@ -61,8 +63,9 @@ public class UnlockDisplay : MonoBehaviour
         _currentPulsingImageRt = levelReached_obj.GetComponentInChildren<Image>().rectTransform;
     }
 
-    public void SetDisplay_CanNotUnlock()
+    public void SetDisplay_CanNotUnlock(int cost)
     {
+        cannotUnlockCost.SetText("{0}", cost);
         CopyPulseScaleTo(canNotUnlock_obj);
 
         canNotUnlock_obj.SetActive(true);
@@ -77,8 +80,9 @@ public class UnlockDisplay : MonoBehaviour
         _currentPulsingImageRt = canNotUnlock_obj.GetComponentInChildren<Image>().rectTransform;
     }
 
-    public void SetDisplay_CanUnlock()
+    public void SetDisplay_CanUnlock(int cost)
     {
+        canUnlockCost.SetText("{0}", cost);
         CopyPulseScaleTo(canUnlock_obj);
 
         canUnlock_obj.SetActive(true);
