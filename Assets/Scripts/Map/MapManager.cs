@@ -162,27 +162,17 @@ public class MapManager : Singleton<MapManager>
 
     public void SetAbilities()
     {
-        if (mapInfo_ToSave.abilitiesGotInLevel.Snorkel)
-            PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel = true;
-        if (mapInfo_ToSave.abilitiesGotInLevel.Flippers)
-            PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers = true;
-        if (mapInfo_ToSave.abilitiesGotInLevel.OxygenTank)
-            PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank = true;
+        if (!SpawnedPlayer || SpawnedPlayer.scene != gameObject.scene ||
+            !SpawnedPlayer.TryGetComponent(out PlayerStats playerStats) || playerStats.stats == null || mapInfo_ToSave == null)
+            return;
 
-        if (mapInfo_ToSave.abilitiesGotInLevel.DrillHelmet)
-            PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillHelmet = true;
-        if (mapInfo_ToSave.abilitiesGotInLevel.DrillBoots)
-            PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillBoots = true;
+        AbilitiesGot levelAbilities = mapInfo_ToSave.abilitiesGotInLevel ??= new AbilitiesGot();
+        GivePlayerTempAbilities startupGrants = GetComponentInChildren<GivePlayerTempAbilities>();
+        if (startupGrants && startupGrants.isActiveAndEnabled)
+            startupGrants.ApplyTo(levelAbilities);
 
-        if (mapInfo_ToSave.abilitiesGotInLevel.SpringShoes)
-            PlayerStats.Instance.stats.abilitiesGot_Temporary.SpringShoes = true;
-        if (mapInfo_ToSave.abilitiesGotInLevel.HandDrill)
-            PlayerStats.Instance.stats.abilitiesGot_Temporary.HandDrill = true;
-
-        if (mapInfo_ToSave.abilitiesGotInLevel.GrapplingHook)
-            PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook = true;
-        if (mapInfo_ToSave.abilitiesGotInLevel.ClimingGloves)
-            PlayerStats.Instance.stats.abilitiesGot_Temporary.ClimingGloves = true;
+        // Keep the live stats separate from the map record and drop grants from the previous level.
+        playerStats.stats.abilitiesGot_Temporary = levelAbilities.Copy();
     }
 
     public void ShowHiddenObjects()

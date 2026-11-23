@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
@@ -6,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class PlayerStats : Singleton<PlayerStats>
 {
-    public static event Action Action_UpdateAbilityDisplay;
-
     public Stats stats = new Stats();
 
     //--------------------
@@ -16,13 +13,11 @@ public class PlayerStats : Singleton<PlayerStats>
     private void OnEnable()
     {
         DataManager.Action_dataHasLoaded += RefillStepsToMax;
-        DataManager.Action_dataHasLoaded += UpdateActiveAbilities;
     }
 
     private void OnDisable()
     {
         DataManager.Action_dataHasLoaded -= RefillStepsToMax;
-        DataManager.Action_dataHasLoaded -= UpdateActiveAbilities;
     }
 
 
@@ -63,39 +58,6 @@ public class PlayerStats : Singleton<PlayerStats>
         stats.steps_Current = newBalance;
         Player_Statistics_Manager.Active?.RecordStepRefill(restored);
     }
-
-    void ResetActiveAbilities()
-    {
-        if (PlayerManager.Instance.player)
-        {
-            if (PlayerManager.Instance.player.GetComponent<PlayerStats>())
-            {
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Snorkel = false;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers = false;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.OxygenTank = false;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SpringShoes = false;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.GrapplingHook = false;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.ClimingGloves = false;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.HandDrill = false;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.DrillHelmet = false;
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.DrillBoots = false;
-            }
-        }
-    }
-    void UpdateActiveAbilities()
-    {
-        // The main menu loads saved stats too, but has no gameplay map or player.
-        MapManager map = FindAnyObjectByType<MapManager>();
-        if (!map || map.gameObject.scene != gameObject.scene) return;
-
-        ResetActiveAbilities();
-        map.SetAbilities();
-        Action_UpdateAbilityDisplay?.Invoke();
-    }
-
-
-    //--------------------
-
 
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {

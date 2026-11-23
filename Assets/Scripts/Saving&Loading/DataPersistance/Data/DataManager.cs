@@ -156,6 +156,11 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
             print("2. PlayerStat has Loaded");
         }
 
+        // Restore the level's abilities before the startup notifications read player stats.
+        MapManager map = FindAnyObjectByType<MapManager>();
+        if (map && map.gameObject.scene == SceneManager.GetActiveScene())
+            map.SetAbilities();
+
         OverWorldManager tempOverworld = FindAnyObjectByType<OverWorldManager>();
         if (tempOverworld)
         {
