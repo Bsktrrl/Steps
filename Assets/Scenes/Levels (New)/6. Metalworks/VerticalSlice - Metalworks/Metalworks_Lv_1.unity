@@ -18641,6 +18641,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3307415265672207810, guid: 6f285c2eb5c1b8241b6dae2bec92b792, type: 3}
+      propertyPath: abilityNo
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8403929505673581865, guid: 6f285c2eb5c1b8241b6dae2bec92b792, type: 3}
       propertyPath: m_Name
       value: Ability_OxygenTank
@@ -18648,10 +18652,6 @@ PrefabInstance:
     - target: {fileID: 8403929505673581865, guid: 6f285c2eb5c1b8241b6dae2bec92b792, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3307415265672207810, guid: 6f285c2eb5c1b8241b6dae2bec92b792, type: 3}
-      propertyPath: abilityNo
-      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20532,7 +20532,11 @@ PrefabInstance:
       value: Essence (9)
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_GrapplingHook
+      propertyPath: essenceRequirementsList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_GrapplingHook
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -50849,16 +50853,12 @@ PrefabInstance:
       value: Essence (3)
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_HandDrill
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_SpringShoes
+      propertyPath: essenceRequirementsList.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_ClimbingGloves
-      value: 0
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_SpringShoes
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -57297,10 +57297,6 @@ PrefabInstance:
     - target: {fileID: 929025259188696139, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
       propertyPath: m_Name
       value: Essence (7)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_ClimbingGloves
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -73168,6 +73164,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 718877154}
     m_Modifications:
+    - target: {fileID: -2148155435120778207, guid: bcc814ed47c33a44698449e96ee8d2e1, type: 3}
+      propertyPath: abilityNo
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2075026558160065999, guid: bcc814ed47c33a44698449e96ee8d2e1, type: 3}
       propertyPath: m_Name
       value: Ability_ClimbingGloves
@@ -73211,10 +73211,6 @@ PrefabInstance:
     - target: {fileID: 5039272898580951034, guid: bcc814ed47c33a44698449e96ee8d2e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -2148155435120778207, guid: bcc814ed47c33a44698449e96ee8d2e1, type: 3}
-      propertyPath: abilityNo
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -84142,6 +84138,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5555461294840576939, guid: 2a3d7c928ef1f4944ac21fa91a5537f5, type: 3}
+      propertyPath: abilityNo
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4276009764995770311, guid: 2a3d7c928ef1f4944ac21fa91a5537f5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1
@@ -84189,10 +84189,6 @@ PrefabInstance:
     - target: {fileID: 7094173887816457714, guid: 2a3d7c928ef1f4944ac21fa91a5537f5, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -5555461294840576939, guid: 2a3d7c928ef1f4944ac21fa91a5537f5, type: 3}
-      propertyPath: abilityNo
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -91235,11 +91231,15 @@ PrefabInstance:
       value: Essence
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_SpringShoes
+      propertyPath: essenceRequirementsList.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_ClimbingGloves
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_SpringShoes
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_ClimbingGloves
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -94809,11 +94809,15 @@ PrefabInstance:
       value: Essence (6)
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_HandDrill
+      propertyPath: essenceRequirementsList.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_GrapplingHook
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_HandDrill
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_GrapplingHook
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -96202,12 +96206,12 @@ PrefabInstance:
       value: Essence (2)
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_DrillHelmet
+      propertyPath: essenceRequirementsList.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_ClimbingGloves
-      value: 0
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_DrillHelmet
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -98875,7 +98879,11 @@ PrefabInstance:
       value: Essence (5)
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_DrillBoots
+      propertyPath: essenceRequirementsList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_DrillBoots
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -104496,7 +104504,11 @@ PrefabInstance:
       value: Essence (1)
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_ClimbingGloves
+      propertyPath: essenceRequirementsList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_ClimbingGloves
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

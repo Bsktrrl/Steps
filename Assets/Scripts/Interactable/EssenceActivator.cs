@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EssenceActivator : MonoBehaviour
 {
-    [Header("Abilities Needed to Aquire Essence")]
+    [Header("Essence Glow and Idle Sound Requirements")]
     [SerializeField] List<EssenceRequirements> essenceRequirementsList = new List<EssenceRequirements>();
 
     [Header("MeshRenderer")]
@@ -28,13 +28,13 @@ public class EssenceActivator : MonoBehaviour
 
     private void OnEnable()
     {
-        DataManager.Action_dataHasLoaded += SetMaterial;
+        DataManager.Action_dataHasLoaded += RefreshAfterLoad;
         Interactable_Pickup.Action_AbilityPickupGot += SetMaterial;
         Interactable_Pickup.Action_FootprintPickupGot += SetMaterial;
     }
     private void OnDisable()
     {
-        DataManager.Action_dataHasLoaded -= SetMaterial;
+        DataManager.Action_dataHasLoaded -= RefreshAfterLoad;
         Interactable_Pickup.Action_AbilityPickupGot -= SetMaterial;
         Interactable_Pickup.Action_FootprintPickupGot -= SetMaterial;
     }
@@ -43,73 +43,77 @@ public class EssenceActivator : MonoBehaviour
     //--------------------
 
 
-    void SetMaterial()
+
+    void RefreshAfterLoad()
     {
-        if (CheckIfActive())
-        {
-            meshRenderer.material = material_Active;
-            obj_ShineHor.SetActive(true);
-            obj_ShineDia.SetActive(true);
-
-            idleSound.Play();
-        }
-        else
-        {
-            meshRenderer.material = material_Unactive;
-            obj_ShineHor.SetActive(false);
-            obj_ShineDia.SetActive(false);
-
-            idleSound.Stop();
-        }
+        StartCoroutine(RefreshAfterPlayerSetup());
     }
 
-
-    //--------------------
-
-
-    bool CheckIfActive()
+    IEnumerator RefreshAfterPlayerSetup()
     {
-        if (essenceRequirementsList.Count <= 0) return true;
+        // The other load listeners restore the current level's maximum steps.
+        yield return null;
+        SetMaterial();
+    }
+
+    void SetMaterial()
+    {
+        GameObject player = MapManager.SpawnedPlayer;
+        Stats stats = player && player.scene == gameObject.scene && player.TryGetComponent(out PlayerStats playerStats)
+            ? playerStats.stats
+            : null;
+        bool showActiveEffects = ShouldShowActiveEffects(stats);
+
+        if (meshRenderer)
+            meshRenderer.material = showActiveEffects ? material_Active : material_Unactive;
+        if (obj_ShineHor)
+            obj_ShineHor.SetActive(showActiveEffects);
+        if (obj_ShineDia)
+            obj_ShineDia.SetActive(showActiveEffects);
+
+        if (!idleSound)
+            return;
+        if (showActiveEffects && !idleSound.isPlaying)
+            idleSound.Play();
+        else if (!showActiveEffects && idleSound.isPlaying)
+            idleSound.Stop();
+    }
+
+    bool ShouldShowActiveEffects(Stats stats)
+    {
+        // An unconfigured cube always shows its active effects.
+        if (essenceRequirementsList == null || essenceRequirementsList.Count == 0)
+            return true;
+        if (stats == null)
+            return false;
 
         foreach (EssenceRequirements requirements in essenceRequirementsList)
         {
-            if (RequirementsAreMet(requirements))
+            if (requirements != null && RequirementsAreMet(requirements, stats))
                 return true;
         }
 
         return false;
     }
 
-    bool RequirementsAreMet(EssenceRequirements requirements)
+    static bool RequirementsAreMet(EssenceRequirements requirements, Stats stats)
     {
-        //Check Steps Requirement
-        if (PlayerStats.Instance.stats.steps_Max < requirements.stepsRequirement) return false;
-
-        //Check Abilities Requirement
-        if (requirements.needAbility_Snorkel && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel, PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel)) return false;
-
-        if (requirements.needAbility_OxygenTank && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank, PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank)) return false;
-
-        if (requirements.needAbility_Flipper && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers, PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers)) return false;
-
-        if (requirements.needAbility_DrillHelmet && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillHelmet, PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillHelmet)) return false;
-
-        if (requirements.needAbility_DrillBoots && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillBoots, PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillBoots)) return false;
-
-        if (requirements.needAbility_HandDrill && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.HandDrill, PlayerStats.Instance.stats.abilitiesGot_Permanent.HandDrill)) return false;
-
-        if (requirements.needAbility_GrapplingHook && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook, PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook)) return false;
-
-        if (requirements.needAbility_SpringShoes && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.SpringShoes, PlayerStats.Instance.stats.abilitiesGot_Permanent.SpringShoes)) return false;
-
-        if (requirements.needAbility_ClimbingGloves && !HasAbility(PlayerStats.Instance.stats.abilitiesGot_Temporary.ClimingGloves, PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimingGloves)) return false;
-
-        return true;
+        return stats.steps_Max >= requirements.stepsRequirement &&
+               (!requirements.needAbility_Snorkel || HasAbility(stats, Abilities.Snorkel)) &&
+               (!requirements.needAbility_OxygenTank || HasAbility(stats, Abilities.OxygenTank)) &&
+               (!requirements.needAbility_Flipper || HasAbility(stats, Abilities.Flippers)) &&
+               (!requirements.needAbility_DrillHelmet || HasAbility(stats, Abilities.DrillHelmet)) &&
+               (!requirements.needAbility_DrillBoots || HasAbility(stats, Abilities.DrillBoots)) &&
+               (!requirements.needAbility_HandDrill || HasAbility(stats, Abilities.HandDrill)) &&
+               (!requirements.needAbility_GrapplingHook || HasAbility(stats, Abilities.GrapplingHook)) &&
+               (!requirements.needAbility_SpringShoes || HasAbility(stats, Abilities.SpringShoes)) &&
+               (!requirements.needAbility_ClimbingGloves || HasAbility(stats, Abilities.ClimingGloves));
     }
 
-    bool HasAbility(bool temporaryAbility, bool permanentAbility)
+    static bool HasAbility(Stats stats, Abilities ability)
     {
-        return temporaryAbility || permanentAbility;
+        return stats.abilitiesGot_Temporary?.HasAbility(ability) == true ||
+               stats.abilitiesGot_Permanent?.HasAbility(ability) == true;
     }
 }
 

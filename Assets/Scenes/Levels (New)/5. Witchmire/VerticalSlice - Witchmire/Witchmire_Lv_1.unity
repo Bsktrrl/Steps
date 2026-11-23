@@ -10542,10 +10542,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Essence (9)
       objectReference: {fileID: 0}
-    - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_GrapplingHook
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -26993,7 +26989,11 @@ PrefabInstance:
       value: Essence (3)
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_HandDrill
+      propertyPath: essenceRequirementsList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_HandDrill
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -29528,16 +29528,16 @@ PrefabInstance:
       value: Essence (7)
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_DrillBoots
+      propertyPath: essenceRequirementsList.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_SpringShoes
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_DrillBoots
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_GrapplingHook
-      value: 0
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_SpringShoes
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -50102,19 +50102,15 @@ PrefabInstance:
       value: Essence (2)
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_HandDrill
+      propertyPath: essenceRequirementsList.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_DrillBoots
-      value: 0
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_HandDrill
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_SpringShoes
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_GrapplingHook
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_GrapplingHook
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -51839,11 +51835,11 @@ PrefabInstance:
       value: Essence (5)
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_HandDrill
-      value: 0
+      propertyPath: essenceRequirementsList.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_GrapplingHook
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_GrapplingHook
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -55262,7 +55258,11 @@ PrefabInstance:
       value: Essence (1)
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_SpringShoes
+      propertyPath: essenceRequirementsList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_SpringShoes
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -60900,15 +60900,19 @@ PrefabInstance:
       value: Essence (4)
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_DrillBoots
+      propertyPath: essenceRequirementsList.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_SpringShoes
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_DrillBoots
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_GrapplingHook
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_SpringShoes
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_GrapplingHook
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -65850,7 +65854,11 @@ PrefabInstance:
       value: Essence (8)
       objectReference: {fileID: 0}
     - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
-      propertyPath: needAbility_HandDrill
+      propertyPath: essenceRequirementsList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383728726188619971, guid: 92a9232b74e7dfa44b82ff5bf6e14485, type: 3}
+      propertyPath: essenceRequirementsList.Array.data[0].needAbility_HandDrill
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
