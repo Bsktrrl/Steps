@@ -67,6 +67,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     [Header("Skin Sprites")]
     #region Sprites
     public Sprite sprite_PauseMenu_HUB;
+    public Sprite sprite_PauseMenu_HUB_SourceBlock;
 
     public Sprite sprite_PauseMenu_Rivergreen_Lv1;
     public Sprite sprite_PauseMenu_Rivergreen_Lv2;
@@ -349,12 +350,8 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         Essence_Aquired.text = essenceCounter + " / 10";
 
         //Skin aquired
-        int skinCounter = 0;
-        if (mapInfo.levelSkin.isTaken)
-        {
-            skinCounter++;
-        }
-        Skin_Aquired.text = skinCounter + " / 1";
+        int skinCounter = mapInfo.CountSkinsTaken();
+        Skin_Aquired.text = skinCounter + " / " + mapInfo.SkinPickupTotal;
 
         //StepMax aquired
         int stepsCounter = 0;
@@ -412,6 +409,9 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
             case SkinType.Quartz:
                 return sprite_PauseMenu_HUB;
+
+            case SkinType.SourceBlock:
+                return sprite_PauseMenu_HUB_SourceBlock;
 
             case SkinType.Rivergreen_Lv1:
                 return sprite_PauseMenu_Rivergreen_Lv1;
@@ -492,13 +492,11 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
             SetProgressBar(glueplant_FillImage, 0f, 1);
 
         SetProgressBar(essence_FillImage, essenceCounter, 10);
-        SetProgressBar(skin_FillImage, skinCounter, 1);
+        SetProgressBar(skin_FillImage, skinCounter, mapInfo.SkinPickupTotal);
         SetProgressBar(footprint_FillImage, stepsCounter, 3);
 
-        if (mapInfo.isCompleted)
-            SetProgressBar(levelName_FillImage, 1f + essenceCounter + skinCounter + stepsCounter, 15);
-        else
-            SetProgressBar(levelName_FillImage, 0f + essenceCounter + skinCounter + stepsCounter, 15);
+        float glueplantCounter = mapInfo.isCompleted ? 1f : 0f;
+        SetProgressBar(levelName_FillImage, glueplantCounter + essenceCounter + skinCounter + stepsCounter, 14 + mapInfo.SkinPickupTotal);
     }
     void SetProgressBar(Image fillImage, float current, float max)
     {

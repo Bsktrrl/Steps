@@ -165,7 +165,7 @@ public class PopUpManager : Singleton<PopUpManager>
     {
         StartCoroutine(EssenceRoutine());
     }
-    void ShowSkinPopup()
+    void ShowSkinPopup(SkinType skin)
     {
         StartCoroutine(SkinRoutine());
     }

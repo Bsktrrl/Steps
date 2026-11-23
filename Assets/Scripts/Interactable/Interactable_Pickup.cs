@@ -1,15 +1,13 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Interactable_Pickup : MonoBehaviour
 {
     public static event Action Action_PickupGot;
     public static event Action Action_EssencePickupGot;
     public static event Action Action_FootprintPickupGot;
-    public static event Action Action_SkinPickupGot;
+    public static event Action<SkinType> Action_SkinPickupGot;
     public static event Action Action_AbilityPickupGot;
 
     public static event Action Action_SnorkelGot;
@@ -20,7 +18,6 @@ public class Interactable_Pickup : MonoBehaviour
     public static event Action Action_goalReached;
 
     MapManager mapManager;
-    MapStatsGathered mapStatsGathered;
 
     [Header("Object Type")]
     public SkinType skinReceived;
@@ -30,36 +27,27 @@ public class Interactable_Pickup : MonoBehaviour
     public bool goal;
     public GlueplantType glueplantType;
 
+    internal bool IsNumberedPickup => !goal && (itemReceived != Items.None || abilityReceived != Abilities.None);
+
     [Header("Glueplant Versions")]
     [SerializeField] GameObject glueplant;
     [SerializeField] GameObject glueplantPicked;
-
-    Vector3 startPos;
-    RaycastHit hit;
-
 
     //--------------------
 
 
     private void Start()
     {
-        startPos = transform.position;
-
         mapManager = FindObjectOfType<MapManager>();
-        mapStatsGathered = FindObjectOfType<MapStatsGathered>();
     }
 
     private void OnEnable()
     {
-        PlayerStats.Action_UpdateAbilityDisplay += HideAbility;
         DataManager.Action_dataHasLoaded += HideGlueplant;
-        DataManager.Action_dataHasLoaded += HideSkin;
     }
     private void OnDisable()
     {
-        PlayerStats.Action_UpdateAbilityDisplay -= HideAbility;
         DataManager.Action_dataHasLoaded -= HideGlueplant;
-        DataManager.Action_dataHasLoaded -= HideSkin;
     }
 
 
@@ -73,14 +61,10 @@ public class Interactable_Pickup : MonoBehaviour
             //PlayerManager.Instance.PauseGame();
             //print("Pickup entered");
 
-            GetItems();
-            GetAbility();
+            if (!TryCollectPickup())
+                return;
 
-            if (goal)
-                Player_Statistics_Manager.Active?.RecordLevelCompletion();
-
-            PlayerManager.Instance.SavePlayerStats();
-            MapManager.Instance.SaveMapInfo();
+            mapManager.SaveMapInfo();
 
             if (goal)
             {
@@ -174,161 +158,72 @@ public class Interactable_Pickup : MonoBehaviour
         gameObject.gameObject.SetActive(true);
     }
 
-    public void GetItems()
+
+    bool TryCollectPickup()
     {
-        if (PlayerManager.Instance.player)
+        if (!mapManager || mapManager.mapInfo_ToSave == null)
+            return false;
+
+        Map_SaveInfo mapInfo = mapManager.mapInfo_ToSave;
+        if (goal)
         {
-            if (PlayerManager.Instance.player.GetComponent<PlayerStats>())
-            {
-                if (PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot != null)
-                {
-                    switch (itemReceived)
-                    {
-                        case Items.None:
-                            break;
-
-                        case Items.Essence:
-                            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.essence_Max += 1;
-                            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.essence_Current += 1;
-
-                            MapStatsGathered.Instance.UpdateEssencePickedUp_Stats(GetComponent<PickupData>().essenceNo);
-
-                            //Get essence number
-                            for (int i = 0; i < MapManager.Instance.mapInfo_ToSave.essenceList.Count; i++)
-                            {
-                                if (Vector3.Distance(MapManager.Instance.mapInfo_ToSave.essenceList[i].pos, PlayerManager.Instance.player.transform.position) <= 0.5f)
-                                {
-                                    break;
-                                }
-                            }
-
-                            //Check if all essence are collected
-                            int isTaken = 0;
-                            for (int i = 0; i < MapManager.Instance.mapInfo_ToSave.essenceList.Count; i++)
-                            {
-                                if (MapManager.Instance.mapInfo_ToSave.essenceList[i].isTaken)
-                                {
-                                    isTaken += 1;
-                                    break;
-                                }
-                            }
-                            if (isTaken >= 10)
-                            {
-
-                            }
-                            break;
-                        case Items.Skin:
-                            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.itemsGot.skin += 1 /*itemReceived.amount*/;
-
-                            MapStatsGathered.Instance.UpdateSkinPickedUp_Stats(GetComponent<PickupData>().skinNo);
-
-                            UpdateSkinTaken();
-                            Player_Statistics_Manager.Active?.RecordSkinFound();
-                            break;
-                        case Items.Footprint:
-                            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Max += 1 /*itemReceived.amount*/;
-                            PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.steps_Current += 1 /*itemReceived.amount*/;
-
-                            MapStatsGathered.Instance.UpdateFootprintPickedUp_Stats(GetComponent<PickupData>().footprintNo);
-
-                            break;
-
-                        default:
-                            break;
-                    }
-
-                    MarkedAsTaken();
-                    Action_PickupGot_isActive();
-                }
-            }
+            mapInfo.isCompleted = true;
+            Action_PickupGot_isActive();
+            Player_Statistics_Manager.Active?.RecordLevelCompletion();
+            DataManager.Instance.playerStats_Store = PlayerStats.Instance.stats;
+            return true;
         }
-    }
-    void MarkedAsTaken()
-    {
-        for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count; i++)
+
+        GameObject player = PlayerManager.Instance.player;
+        if (!player || !player.TryGetComponent(out PlayerStats playerStats) || playerStats.stats?.itemsGot == null ||
+            !TryGetComponent(out PickupData pickupData))
+            return false;
+
+        Stats stats = playerStats.stats;
+        int pickupNo = pickupData.GetPickupNumber(itemReceived);
+        if (!mapInfo.TryMarkPickupTaken(this, pickupNo))
+            return false;
+
+        // Store the reward and the collected pickup together when the map is saved.
+        DataManager.Instance.playerStats_Store = stats;
+        switch (itemReceived)
         {
-            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName == SceneManager.GetActiveScene().name)
-            {
-                switch (itemReceived)
-                {
-                    case Items.None:
-                        break;
-
-                    case Items.Essence:
-                        for (int j = 0; j < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].essenceList.Count; j++)
-                        {
-                            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].essenceList[j].pos.x == gameObject.transform.position.x
-                                && DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].essenceList[j].pos.z == gameObject.transform.position.z)
-                            {
-                                DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].essenceList[j].isTaken = true;
-                                Action_EssencePickupGot_isActive();
-
-                                //print("0. Pickup got: Essence");
-
-                                return;
-                            }
-                        }
-                        break;
-
-                    case Items.Skin:
-                        if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].levelSkin.pos.x == gameObject.transform.position.x
-                                && DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].levelSkin.pos.z == gameObject.transform.position.z)
-                        {
-                            DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].levelSkin.isTaken = true;
-                            Action_SkinPickupGot_isActive();
-
-                            //print("0. Pickup got: Skin");
-                            return;
-                        }
-                        break;
-
-                    case Items.Footprint:
-                        for (int j = 0; j < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].maxStepList.Count; j++)
-                        {
-                            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].maxStepList[j].pos.x == gameObject.transform.position.x
-                                && DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].maxStepList[j].pos.z == gameObject.transform.position.z)
-                            {
-                                DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].maxStepList[j].isTaken = true;
-                                Action_FootprintPickupGot_isActive();
-
-                                //print("0. Pickup got: MaxStep");
-                                return;
-                            }
-                        }
-                        break;
-
-                    default:
-                        break;
-                }
-
-                //PlayPickupSound();
-
-                //If it's a goal
-                if (goal)
-                {
-                    DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].isCompleted = true;
-                }
-            }
-        }
-    }
-    void UpdateSkinTaken()
-    {
-        SkinType tempType = SkinType.None;
-
-        for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count; i++)
-        {
-            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName == mapManager.mapInfo_ToSave.mapName)
-            {
-                tempType = mapManager.mapInfo_ToSave.skintype;
-
-                if (mapManager.mapInfo_ToSave.skintype_2 == SkinType.SourceBlock && skinReceived == SkinType.SourceBlock)
-                {
-                    tempType = SkinType.SourceBlock;
-                }
-
+            case Items.Essence:
+                stats.itemsGot.essence_Max++;
+                stats.itemsGot.essence_Current++;
+                MapStatsGathered.Instance.UpdateEssencePickedUp_Stats(pickupNo);
+                Action_EssencePickupGot_isActive();
                 break;
-            }
+            case Items.Footprint:
+                stats.steps_Max++;
+                stats.steps_Current++;
+                MapStatsGathered.Instance.UpdateFootprintPickedUp_Stats(pickupNo);
+                Action_FootprintPickupGot_isActive();
+                break;
+            case Items.Skin:
+                stats.itemsGot.skin++;
+                MapStatsGathered.Instance.UpdateSkinPickedUp_Stats(pickupNo);
+                SkinType skin = UpdateSkinTaken();
+                Player_Statistics_Manager.Active?.RecordSkinFound();
+                Action_SkinPickupGot?.Invoke(skin);
+                break;
+            case Items.None:
+                GetAbility(stats.abilitiesGot_Temporary, mapInfo.abilitiesGotInLevel, pickupNo);
+                break;
         }
+
+        Action_PickupGot_isActive();
+        if (abilityReceived != Abilities.None)
+            Movement.Instance.UpdateLookDir();
+        return true;
+    }
+
+    SkinType UpdateSkinTaken()
+    {
+        Map_SaveInfo mapInfo = mapManager.mapInfo_ToSave;
+        SkinType tempType = mapInfo.skintype;
+        if (mapInfo.skintype_2 == SkinType.SourceBlock && skinReceived == SkinType.SourceBlock)
+            tempType = SkinType.SourceBlock;
 
         switch (tempType)
         {
@@ -446,113 +341,66 @@ public class Interactable_Pickup : MonoBehaviour
                 break;
         }
 
-        SkinsManager.Instance.SaveData();
+
+        return tempType;
     }
-    
-    public void GetAbility()
+
+    void GetAbility(AbilitiesGot temporaryAbilities, AbilitiesGot levelAbilities, int pickupNo)
     {
         switch (abilityReceived)
         {
-            case Abilities.None:
-                break;
-
             case Abilities.Snorkel:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Snorkel = true;
-                MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
-                Action_AbilityPickupGot_isActive();
-                mapManager.mapInfo_ToSave.abilitiesGotInLevel.Snorkel = true;
+                temporaryAbilities.Snorkel = levelAbilities.Snorkel = true;
+                break;
+            case Abilities.Flippers:
+                temporaryAbilities.Flippers = levelAbilities.Flippers = true;
+                break;
+            case Abilities.OxygenTank:
+                temporaryAbilities.OxygenTank = levelAbilities.OxygenTank = true;
+                break;
+            case Abilities.SpringShoes:
+                temporaryAbilities.SpringShoes = levelAbilities.SpringShoes = true;
+                break;
+            case Abilities.GrapplingHook:
+                temporaryAbilities.GrapplingHook = levelAbilities.GrapplingHook = true;
+                break;
+            case Abilities.ClimingGloves:
+                temporaryAbilities.ClimingGloves = levelAbilities.ClimingGloves = true;
+                break;
+            case Abilities.HandDrill:
+                temporaryAbilities.HandDrill = levelAbilities.HandDrill = true;
+                break;
+            case Abilities.DrillHelmet:
+                temporaryAbilities.DrillHelmet = levelAbilities.DrillHelmet = true;
+                break;
+            case Abilities.DrillBoots:
+                temporaryAbilities.DrillBoots = levelAbilities.DrillBoots = true;
+                break;
+            default:
+                return;
+        }
+
+        MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(pickupNo);
+        Action_AbilityPickupGot_isActive();
+        switch (abilityReceived)
+        {
+            case Abilities.Snorkel:
                 Action_SnorkelGot?.Invoke();
                 break;
             case Abilities.Flippers:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.Flippers = true;
-                MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
-                Action_AbilityPickupGot_isActive();
-                mapManager.mapInfo_ToSave.abilitiesGotInLevel.Flippers = true;
                 Action_FlippersGot?.Invoke();
                 break;
-            case Abilities.OxygenTank:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.OxygenTank = true;
-                MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
-                Action_AbilityPickupGot_isActive();
-                mapManager.mapInfo_ToSave.abilitiesGotInLevel.OxygenTank = true;
-                break;
             case Abilities.SpringShoes:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.SpringShoes = true;
-                MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
-                Action_AbilityPickupGot_isActive();
                 Action_JumpingGot?.Invoke();
-                mapManager.mapInfo_ToSave.abilitiesGotInLevel.SpringShoes = true;
-                break;
-            case Abilities.GrapplingHook:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.GrapplingHook = true;
-                MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
-                Action_AbilityPickupGot_isActive();
-                mapManager.mapInfo_ToSave.abilitiesGotInLevel.GrapplingHook = true;
-                break;
-            case Abilities.ClimingGloves:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.ClimingGloves = true;
-                MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
-                Action_AbilityPickupGot_isActive();
-                mapManager.mapInfo_ToSave.abilitiesGotInLevel.ClimingGloves = true;
-                break;
-            case Abilities.HandDrill:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.HandDrill = true;
-                MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
-                Action_AbilityPickupGot_isActive();
-                mapManager.mapInfo_ToSave.abilitiesGotInLevel.HandDrill = true;
-                break;
-            case Abilities.DrillHelmet:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.DrillHelmet = true;
-                MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
-                Action_AbilityPickupGot_isActive();
-                mapManager.mapInfo_ToSave.abilitiesGotInLevel.DrillHelmet = true;
-                break;
-            case Abilities.DrillBoots:
-                PlayerManager.Instance.player.GetComponent<PlayerStats>().stats.abilitiesGot_Temporary.DrillBoots = true;
-                MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(GetComponent<PickupData>().abilityNo);
-                Action_AbilityPickupGot_isActive();
-                mapManager.mapInfo_ToSave.abilitiesGotInLevel.DrillBoots = true;
-                break;
-
-            default:
                 break;
         }
 
-        //PlayPickupSound();
-
-        mapManager.SaveMapInfo();
-
-        if (abilityReceived != Abilities.None)
-        {
-            PopUpManager.Instance.ShowAbilityPopup(abilityReceived);
-
-            Action_PickupGot_isActive();
-
-            Movement.Instance.UpdateLookDir();
-        }
+        PopUpManager.Instance.ShowAbilityPopup(abilityReceived);
     }
 
 
     //--------------------
 
-
-    void HideAbility()
-    {
-        if ((PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel && abilityReceived == Abilities.Snorkel)
-            || (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers && abilityReceived == Abilities.Flippers)
-            || (PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank && abilityReceived == Abilities.OxygenTank)
-
-            || (PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillHelmet && abilityReceived == Abilities.DrillHelmet)
-            || (PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillBoots && abilityReceived == Abilities.DrillBoots)
-
-            || (PlayerStats.Instance.stats.abilitiesGot_Temporary.SpringShoes && abilityReceived == Abilities.SpringShoes)
-            || (PlayerStats.Instance.stats.abilitiesGot_Temporary.HandDrill && abilityReceived == Abilities.HandDrill)
-
-            || (PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && abilityReceived == Abilities.GrapplingHook)
-            || (PlayerStats.Instance.stats.abilitiesGot_Temporary.ClimingGloves && abilityReceived == Abilities.ClimingGloves))
-
-            gameObject.SetActive(false);
-    }
     void HideGlueplant()
     {
         if (goal)
@@ -575,23 +423,6 @@ public class Interactable_Pickup : MonoBehaviour
                 glueplant.SetActive(true);
                 glueplantPicked.SetActive(false);
             }
-        }
-    }
-    void HideSkin()
-    {
-        if ((DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_SourceBlock == WardrobeSkinState.Available
-            || DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_SourceBlock == WardrobeSkinState.Bought
-            || DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_SourceBlock == WardrobeSkinState.Selected)
-            && skinReceived == SkinType.SourceBlock)
-        {
-            gameObject.SetActive(false);
-        }
-        else if ((DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_Quartz == WardrobeSkinState.Available
-            || DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_Quartz == WardrobeSkinState.Bought
-            || DataManager.Instance.skinsInfo_Store.skinWardrobeInfo.skin_Default_Quartz == WardrobeSkinState.Selected)
-            && skinReceived == SkinType.Quartz)
-        {
-            gameObject.SetActive(false);
         }
     }
 
@@ -625,10 +456,6 @@ public class Interactable_Pickup : MonoBehaviour
     public void Action_FootprintPickupGot_isActive()
     {
         Action_FootprintPickupGot?.Invoke();
-    }
-    public void Action_SkinPickupGot_isActive()
-    {
-        Action_SkinPickupGot?.Invoke();
     }
     public void Action_AbilityPickupGot_isActive()
     {

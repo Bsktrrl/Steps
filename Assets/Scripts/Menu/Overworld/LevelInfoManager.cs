@@ -239,12 +239,9 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
                         Essence_Aquired.text = essenceCounter + " / 10";
 
                         //Skin aquired
-                        float skinCounter = 0;
-                        if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].levelSkin.isTaken)
-                        {
-                            skinCounter++;
-                        }
-                        Skin_Aquired.text = skinCounter + " / 1";
+                        Map_SaveInfo map = menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i];
+                        int skinCounter = map.CountSkinsTaken();
+                        Skin_Aquired.text = skinCounter + " / " + map.SkinPickupTotal;
 
                         //StepMax aquired
                         float stepsCounter = 0;
@@ -501,32 +498,33 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
         }
         
         SetProgressBar(essence_FillImage, essenceCounter, 10);
-        SetProgressBar(skin_FillImage, skinCounter, 1);
+        int skinTotal = index < 0 ? 1 : menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[index].SkinPickupTotal;
+        SetProgressBar(skin_FillImage, skinCounter, skinTotal);
         SetProgressBar(footprint_FillImage, stepsCounter, 3);
 
         //Max Progress
         if (index < 0)
         {
             if (OverWorldManager.Instance.regionState == RegionState.Metalworks)
-                SetProgressBar(levelName_FillImage, 0f + glueplantCounter + essenceCounter + skinCounter + stepsCounter, 18);
+                SetProgressBar(levelName_FillImage, 0f + glueplantCounter + essenceCounter + skinCounter + stepsCounter, 17 + skinTotal);
             else
-                SetProgressBar(levelName_FillImage, 0f + glueplantCounter + essenceCounter + skinCounter + stepsCounter, 15);
+                SetProgressBar(levelName_FillImage, 0f + glueplantCounter + essenceCounter + skinCounter + stepsCounter, 14 + skinTotal);
         }
         else
         {
             if (OverWorldManager.Instance.regionState == RegionState.Metalworks)
             {
                 if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[index].isCompleted)
-                    SetProgressBar(levelName_FillImage, 1f + glueplantCounter + essenceCounter + skinCounter + stepsCounter, 18);
+                    SetProgressBar(levelName_FillImage, 1f + glueplantCounter + essenceCounter + skinCounter + stepsCounter, 17 + skinTotal);
                 else
-                    SetProgressBar(levelName_FillImage, 0f + glueplantCounter + essenceCounter + skinCounter + stepsCounter, 18);
+                    SetProgressBar(levelName_FillImage, 0f + glueplantCounter + essenceCounter + skinCounter + stepsCounter, 17 + skinTotal);
             }
             else
             {
                 if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[index].isCompleted)
-                    SetProgressBar(levelName_FillImage, 1f + glueplantCounter + essenceCounter + skinCounter + stepsCounter, 15);
+                    SetProgressBar(levelName_FillImage, 1f + glueplantCounter + essenceCounter + skinCounter + stepsCounter, 14 + skinTotal);
                 else
-                    SetProgressBar(levelName_FillImage, 0f + glueplantCounter + essenceCounter + skinCounter + stepsCounter, 15);
+                    SetProgressBar(levelName_FillImage, 0f + glueplantCounter + essenceCounter + skinCounter + stepsCounter, 14 + skinTotal);
             }
         }
     }

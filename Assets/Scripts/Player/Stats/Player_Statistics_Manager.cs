@@ -462,8 +462,7 @@ public class Player_Statistics_Manager : MonoBehaviour
                 }
 
                 AddPickupEssence(savedMap.essenceList?.Count(essence => essence != null && essence.isTaken) ?? 0);
-                if (savedMap.levelSkin?.isTaken == true)
-                    AddPickupSkin(1);
+                AddPickupSkin(savedMap.CountSkinsTaken());
             }
         }
 

@@ -29,6 +29,7 @@ public class ItemsCollectedMessage : MonoBehaviour
     bool readyEssanceMessage;
     bool readyStepUpMessage;
     bool readySkinMessage;
+    SkinType collectedSkin;
 
 
 
@@ -64,8 +65,9 @@ public class ItemsCollectedMessage : MonoBehaviour
     {
         readyStepUpMessage = true;
     }
-    void ReadySkinMessage()
+    void ReadySkinMessage(SkinType skin)
     {
+        collectedSkin = skin;
         readySkinMessage = true;
     }
 
@@ -113,10 +115,9 @@ public class ItemsCollectedMessage : MonoBehaviour
     }
     void ShowSkinMessage()
     {
-        int skinCount = MapManager.Instance.mapInfo_ToSave.levelSkin.isTaken ? 1 : 0;
-
-        skinGetMessage_Image.sprite = PauseMenuManager.Instance.SelectSpriteForLevel(MapManager.Instance.mapInfo_ToSave.skintype);
-        skinGetMessage_Text.SetText("{0} / {1}", skinCount, 1);
+        Map_SaveInfo map = MapManager.Instance.mapInfo_ToSave;
+        skinGetMessage_Image.sprite = PauseMenuManager.Instance.SelectSpriteForLevel(collectedSkin);
+        skinGetMessage_Text.SetText("{0} / {1}", map.CountSkinsTaken(), map.SkinPickupTotal);
         DisplayEffect(skinGetMessage_Parent);
     }
 

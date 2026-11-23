@@ -71,7 +71,7 @@ public class EffectManager : Singleton<EffectManager>
 
         Interactable_Pickup.Action_EssencePickupGot += PerformPickupEffect;
         Interactable_Pickup.Action_FootprintPickupGot += PerformPickupEffect;
-        Interactable_Pickup.Action_SkinPickupGot += PerformPickupEffect;
+        Interactable_Pickup.Action_SkinPickupGot += PerformSkinPickupEffect;
         Interactable_Pickup.Action_AbilityPickupGot += PerformPickupEffect;
 
         Player_KeyInputs.Action_RespawnHold += StartRespawn;
@@ -93,7 +93,7 @@ public class EffectManager : Singleton<EffectManager>
 
         Interactable_Pickup.Action_EssencePickupGot -= PerformPickupEffect;
         Interactable_Pickup.Action_FootprintPickupGot -= PerformPickupEffect;
-        Interactable_Pickup.Action_SkinPickupGot -= PerformPickupEffect;
+        Interactable_Pickup.Action_SkinPickupGot -= PerformSkinPickupEffect;
         Interactable_Pickup.Action_AbilityPickupGot -= PerformPickupEffect;
 
         Player_KeyInputs.Action_RespawnHold -= StartRespawn;
@@ -363,6 +363,8 @@ public class EffectManager : Singleton<EffectManager>
     {
         StartCoroutine(Effect_Delay(hitEffect_Dash_Object, DescendEffect_Delay));
     }
+
+    void PerformSkinPickupEffect(SkinType skin) => PerformPickupEffect();
 
     public void PerformPickupEffect()
     {
