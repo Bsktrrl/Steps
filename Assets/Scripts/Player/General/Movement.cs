@@ -113,6 +113,8 @@ public class Movement : Singleton<Movement>
 
     public bool performGrapplingHooking;
     public bool grapplingTargetHasBeenSet;
+    private Coroutine grapplingChargeRoutine;
+    private Vector3 grapplingAimDirection;
     public bool grapplingTowardsStair;
     public List<GameObject> grapplingObjects = new List<GameObject>();
 
@@ -338,8 +340,7 @@ public class Movement : Singleton<Movement>
             !grapplingTargetHasBeenSet &&
             !CeilingGrab.isCeilingGrabbing)
         {
-            UpdateGrapplingHookMovement(moveToBlock_GrapplingHook, lookDir);
-            grapplingTargetHasBeenSet = true;
+            StartGrapplingCharge();
         }
 
         CancelSlopeIfFalling();
@@ -367,7 +368,6 @@ public class Movement : Singleton<Movement>
         Action_RespawnPlayerLate += UpdateAvailableMovementBlocks;
         Action_LandedFromFalling += UpdateAvailableMovementBlocks;
 
-        Action_RespawnPlayerEarly += RespawnUnderGrappling;
 
         Action_BodyRotated += UpdateLookDir;
         Action_BodyRotated += RefreshAvailableMovementBlocksSmooth;
@@ -396,7 +396,6 @@ public class Movement : Singleton<Movement>
         Action_RespawnPlayerLate -= UpdateAvailableMovementBlocks;
         Action_LandedFromFalling -= UpdateAvailableMovementBlocks;
 
-        Action_RespawnPlayerEarly -= RespawnUnderGrappling;
 
         Action_BodyRotated -= UpdateLookDir;
         Action_BodyRotated -= RefreshAvailableMovementBlocksSmooth;
@@ -3019,131 +3018,114 @@ public class Movement : Singleton<Movement>
         return false;
     }
 
-    public void UpdateGrapplingHookMovement(MoveOptions moveOption, Vector3 dir)
+
+    void StartGrapplingCharge()
     {
-        if (!PlayerHasGrapplingHookAbility())
+        if (!CanResolveGrapplingCharge())
         {
-            ClearMoveTarget(moveOption);
+            CancelGrapplingCharge();
             return;
         }
 
-        StartCoroutine(Delay_UpdateGrapplingHookMovement(moveOption, dir));
+        grapplingTargetHasBeenSet = true;
+        grapplingChargeRoutine = StartCoroutine(ResolveGrapplingCharge());
     }
 
-    IEnumerator Delay_UpdateGrapplingHookMovement(MoveOptions moveOption, Vector3 dir)
+    bool CanResolveGrapplingCharge()
+    {
+        return !Map.GameplayInputLocked && !PM.pauseGame && !PM.pauseMovement && !PM.npcInteraction &&
+               !Cam.isRotating && !isMoving && !isRespawning && !isDrowning && !zeroStepRespawnStarted &&
+               !isMovingOnLadder_Up && !isMovingOnLadder_Down && !CeilingGrab.isCeilingGrabbing &&
+               !Anims.IsPickupAnimationPending && PlayerHasGrapplingHookAbility();
+    }
+
+    IEnumerator ResolveGrapplingCharge()
     {
         yield return new WaitForSeconds(Anims.abilityChargeTime_GrapplingHook);
+        grapplingChargeRoutine = null;
 
-        if (!Inputs.grapplingHook_isPressed || Map.GameplayInputLocked)
+        if (!Inputs.grapplingHook_isPressed || !CanResolveGrapplingCharge())
+        {
+            CancelGrapplingCharge();
+            yield break;
+        }
+
+        // Use the current facing when the charge resolves, then keep it for this shot.
+        grapplingAimDirection = lookDir.normalized;
+        MoveOptions moveOption = moveToBlock_GrapplingHook;
+        if (moveOption == null || !TryFindGrapplingTarget(grapplingAimDirection, out BlockInfo target, out Vector3 contactPoint))
             yield break;
 
-        Player_GraplingHook.Instance.isGrapplingHooking = true;
-        Player_GraplingHook.Instance.EndLineRenderer();
+        Player_GraplingHook hook = Player_GraplingHook.Instance;
+        hook.isGrapplingHooking = true;
+        hook.endPoint = contactPoint - grapplingAimDirection * 0.05f;
+        SetMoveTarget(moveOption, target.gameObject);
+        grapplingTowardsStair = target.blockType == BlockType.Stair || target.blockType == BlockType.Slope;
 
-        Vector3 playerPos = transform.position;
+        hook.redDotSceneObject.transform.SetPositionAndRotation(hook.endPoint, Quaternion.LookRotation(grapplingAimDirection));
+        hook.hitEffect.transform.SetPositionAndRotation(hook.endPoint, Quaternion.Euler(-90, 0, 0));
+        hook.hitEffect.GetComponentInChildren<HitParticleScript>().particle.Play();
+        hook.redDotSceneObject.SetActive(true);
+        hook.RunLineReader();
 
-        RaycastHit[] hits = Physics.RaycastAll(
-            playerPos,
-            dir,
-            grapplingLength,
-            Map.player_LayerMask,
-            QueryTriggerInteraction.Ignore
-        );
+        Action_isGrapplingHooking_RollBack?.Invoke();
+        UpdateBlocksOnTheGrapplingWay(moveOption);
+    }
 
+    bool TryFindGrapplingTarget(Vector3 direction, out BlockInfo target, out Vector3 contactPoint)
+    {
+        RaycastHit[] hits = Physics.RaycastAll(transform.position, direction, grapplingLength,
+            Map.player_LayerMask, QueryTriggerInteraction.Ignore);
         Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
-        GameObject targetObj = null;
-        Vector3 contactPoint = Vector3.zero;
-
-        foreach (RaycastHit localHit in hits)
+        foreach (RaycastHit hit in hits)
         {
-            if (localHit.transform == null)
+            if (!hit.collider)
                 continue;
 
-            if (!localHit.transform.TryGetComponent(out BlockInfo hitInfo))
+            BlockInfo block = hit.collider.GetComponentInParent<BlockInfo>();
+            if (!block || IsLiquidGrapplingBlock(block))
                 continue;
 
-            // Ignore liquid blocks and keep searching forward.
-            if (IsLiquidGrapplingBlock(hitInfo))
-                continue;
-
-            targetObj = localHit.transform.gameObject;
-            contactPoint = localHit.point;
-            break;
+            target = block;
+            contactPoint = hit.point;
+            return Vector3.Distance(transform.position, block.transform.position) > 1.1f;
         }
 
-        if (targetObj != null)
-        {
-            Player_GraplingHook.Instance.endPoint = contactPoint + (-dir * 0.05f);
-
-            SetMoveTarget(moveOption, targetObj);
-
-            if (TryGetBlockInfo(moveOption.targetBlock, out BlockInfo targetInfo) &&
-                (targetInfo.blockType == BlockType.Stair || targetInfo.blockType == BlockType.Slope))
-            {
-                grapplingTowardsStair = true;
-            }
-            else
-            {
-                grapplingTowardsStair = false;
-            }
-
-            Vector3 toPlayer = (transform.position - moveToBlock_GrapplingHook.targetBlock.transform.position).normalized;
-            bool stairIsFacingPlayer =
-                TryGetBlockInfo(moveToBlock_GrapplingHook.targetBlock, out BlockInfo grapplingInfo) &&
-                (grapplingInfo.blockType == BlockType.Stair || grapplingInfo.blockType == BlockType.Slope) &&
-                Vector3.Dot(moveToBlock_GrapplingHook.targetBlock.transform.forward, toPlayer) > 0.5f;
-
-            Player_GraplingHook.Instance.redDotSceneObject.transform.SetPositionAndRotation(Player_GraplingHook.Instance.endPoint, Quaternion.LookRotation(dir));
-
-            Player_GraplingHook.Instance.hitEffect.transform.SetPositionAndRotation(
-                Player_GraplingHook.Instance.redDotSceneObject.transform.position,
-                Quaternion.Euler(-90, 0, 0));
-
-            Player_GraplingHook.Instance.hitEffect.GetComponentInChildren<HitParticleScript>().particle.Play();
-
-            Player_GraplingHook.Instance.redDotSceneObject.SetActive(true);
-            Player_GraplingHook.Instance.RunLineReader();
-
-            Action_isGrapplingHooking_RollBack?.Invoke();
-
-            UpdateBlocksOnTheGrapplingWay(moveOption);
-        }
-        else
-        {
-            Player_GraplingHook.Instance.EndLineRenderer();
-            Player_GraplingHook.Instance.endPoint = Vector3.zero;
-            Player_GraplingHook.Instance.redDotSceneObject.SetActive(false);
-            ClearMoveTarget(moveOption);
-        }
+        target = null;
+        contactPoint = Vector3.zero;
+        return false;
     }
 
     public void UpdateGrapplingHookMovement_Release()
     {
-        if (moveToBlock_GrapplingHook.targetBlock != null && moveToBlock_GrapplingHook.canMoveTo)
+        MoveOptions aim = moveToBlock_GrapplingHook;
+        if (!Inputs.grapplingHook_isPressed)
+            return;
+
+        // Release may launch only the target already shown to the player.
+        if (!CanResolveGrapplingCharge() || aim == null || !aim.canMoveTo || !aim.targetBlock ||
+            !TryFindGrapplingTarget(grapplingAimDirection, out BlockInfo currentTarget, out _) ||
+            currentTarget.gameObject != aim.targetBlock)
         {
-            if (Vector3.Distance(transform.position, moveToBlock_GrapplingHook.targetBlock.transform.position) > 1.1f)
-            {
-                Action_isGrapplingHooking_SendPlayer?.Invoke();
-
-                tempGrapplingTaregtPos = moveToBlock_GrapplingHook.targetBlock.transform.position;
-                performGrapplingHooking = true;
-                RunGrapplingHook();
-
-                Player_GraplingHook.Instance.isGrapplingHooking = false;
-                grapplingTargetHasBeenSet = false;
-
-                ResetBlocksOnTheGrapplingWay();
-                return;
-            }
+            CancelGrapplingCharge();
+            return;
         }
 
-        ClearMoveTarget(moveToBlock_GrapplingHook);
+        if (!CanAfford(aim.targetBlock))
+        {
+            CancelGrapplingCharge();
+            RespawnAfterUnaffordableMove();
+            return;
+        }
 
-        Player_GraplingHook.Instance.redDotSceneObject.SetActive(false);
-        Player_GraplingHook.Instance.EndLineRenderer();
-        Player_GraplingHook.Instance.isGrapplingHooking = false;
-        grapplingTargetHasBeenSet = false;
+        Inputs.grapplingHook_isPressed = false;
+        tempGrapplingTaregtPos = aim.targetBlock.transform.position;
+        performGrapplingHooking = true;
+        Action_isGrapplingHooking_SendPlayer?.Invoke();
+        RunGrapplingHook(grapplingAimDirection);
+        ClearGrapplingAim();
+        Action_isGrapplingHooking_Finished?.Invoke();
     }
 
     void UpdateBlocksOnTheGrapplingWay(MoveOptions moveOption)
@@ -3192,40 +3174,58 @@ public class Movement : Singleton<Movement>
         }
     }
 
+
     public void CancelCutsceneGrapplingTarget()
     {
-        // Never interrupt a grapple already moving the player to its target.
-        if (!performGrapplingHooking && !isGrapplingHooking &&
-            (Inputs.grapplingHook_isPressed || grapplingTargetHasBeenSet ||
-             (Player_GraplingHook.Instance != null && Player_GraplingHook.Instance.isGrapplingHooking)))
-        {
-            ResetGrapplingHookMovementState();
-        }
-
+        CancelGrapplingCharge();
         walkAnimationCheck = false;
     }
 
-    private void ResetGrapplingHookMovementState()
+    internal void CancelGrapplingCharge()
     {
+        // Competing input can clear the aim, but cannot interrupt travel.
+        if (performGrapplingHooking || isGrapplingHooking ||
+            (!Inputs.grapplingHook_isPressed && !grapplingTargetHasBeenSet))
+            return;
+
+        ResetGrapplingHookMovementState();
+    }
+
+    private void ClearGrapplingAim()
+    {
+        if (grapplingChargeRoutine != null)
+        {
+            StopCoroutine(grapplingChargeRoutine);
+            grapplingChargeRoutine = null;
+        }
+
         ResetBlocksOnTheGrapplingWay();
         ResetMoveVisual(moveToBlock_GrapplingHook);
         ClearMoveTarget(moveToBlock_GrapplingHook);
 
         grapplingTargetHasBeenSet = false;
+        grapplingAimDirection = Vector3.zero;
+
+        Player_GraplingHook hook = Player_GraplingHook.Instance;
+        if (hook)
+        {
+            hook.isGrapplingHooking = false;
+            hook.endPoint = Vector3.zero;
+            hook.EndLineRenderer();
+        }
+    }
+
+    private void ResetGrapplingHookMovementState()
+    {
+        bool wasCharging = Inputs.grapplingHook_isPressed || grapplingTargetHasBeenSet;
+        Inputs.grapplingHook_isPressed = false;
         grapplingTowardsStair = false;
         performGrapplingHooking = false;
         isGrapplingHooking = false;
+        ClearGrapplingAim();
 
-        if (Player_GraplingHook.Instance != null)
-        {
-            Player_GraplingHook.Instance.isGrapplingHooking = false;
-            Player_GraplingHook.Instance.endPoint = Vector3.zero;
-
-            if (Player_GraplingHook.Instance.redDotSceneObject != null)
-                Player_GraplingHook.Instance.redDotSceneObject.SetActive(false);
-
-            Player_GraplingHook.Instance.EndLineRenderer();
-        }
+        if (wasCharging)
+            Action_isGrapplingHooking_Finished?.Invoke();
     }
 
     void UpdateStepsAmonutWhenGrapplingMoving()
@@ -3246,16 +3246,6 @@ public class Movement : Singleton<Movement>
             StepsHUD.Instance.UpdateStepsDisplay_Walking();
         }
     }
-
-    void RespawnUnderGrappling()
-    {
-        grapplingTowardsStair = false;
-        performGrapplingHooking = false;
-        grapplingTargetHasBeenSet = false;
-        ResetBlocksOnTheGrapplingWay();
-    }
-
-
 
     #endregion
 
@@ -3654,26 +3644,11 @@ public class Movement : Singleton<Movement>
         return originalTarget;
     }
 
-    void RunGrapplingHook()
+    void RunGrapplingHook(Vector3 direction)
     {
-        if (!moveToBlock_GrapplingHook.canMoveTo ||
-            moveToBlock_GrapplingHook.targetBlock == null)
-        {
-            return;
-        }
-
-        if (!CanAfford(moveToBlock_GrapplingHook.targetBlock))
-        {
-            RespawnAfterUnaffordableMove();
-            return;
-        }
-
         isGrapplingHooking = true;
 
-        if (Inputs.grapplingHook_isPressed)
-            Anims.Trigger_GrapplingHookAnimation();
-        else
-            Anims.Trigger_GrapplingHookDraggingAnimation();
+        Anims.Trigger_GrapplingHookDraggingAnimation();
 
         Vector3 grappleMovementTarget;
 
@@ -3697,16 +3672,16 @@ public class Movement : Singleton<Movement>
             {
                 grappleMovementTarget =
                     moveToBlock_GrapplingHook.targetBlock.transform.position -
-                    lookDir.normalized +
+                    direction.normalized +
                     Vector3.down +
                     (Vector3.up * 0.95f) +
-                    lookDir;
+                    direction;
             }
             else
             {
                 grappleMovementTarget =
                     moveToBlock_GrapplingHook.targetBlock.transform.position -
-                    lookDir.normalized +
+                    direction.normalized +
                     Vector3.down +
                     (Vector3.up * 0.5f);
             }
@@ -3715,7 +3690,7 @@ public class Movement : Singleton<Movement>
         {
             grappleMovementTarget =
                 moveToBlock_GrapplingHook.targetBlock.transform.position -
-                lookDir.normalized +
+                direction.normalized +
                 Vector3.down;
         }
 
@@ -3730,16 +3705,6 @@ public class Movement : Singleton<Movement>
         MapStatsGathered.Instance.levelStats
             .ability_GrapplingHook++;
         Player_Statistics_Manager.Active?.RecordGrapplingHook();
-
-        if (TryGetBlockInfo(
-                moveToBlock_GrapplingHook.targetBlock,
-                out BlockInfo targetInfo))
-        {
-            targetInfo.ResetDarkenColor();
-        }
-
-        ClearMoveTarget(moveToBlock_GrapplingHook);
-        Player_GraplingHook.Instance.EndLineRenderer();
     }
 
     void CheckAscend()
@@ -5519,12 +5484,7 @@ public class Movement : Singleton<Movement>
         isDrowning = true;
         PlayerManager.Instance.PauseMovement();
 
-        if (Inputs.grapplingHook_isPressed ||
-            (Player_GraplingHook.Instance != null && Player_GraplingHook.Instance.isGrapplingHooking))
-        {
-            Inputs.grapplingHook_isPressed = false;
-            ResetGrapplingHookMovementState();
-        }
+        ResetGrapplingHookMovementState();
 
         yield return new WaitForSeconds(0.15f);
 
@@ -5687,8 +5647,6 @@ public class Movement : Singleton<Movement>
         Inputs.right_isPressed = false;
         Inputs.up_isPressed = false;
         Inputs.down_isPressed = false;
-        Inputs.grapplingHook_isPressed = false;
-
         pendingFreeLandingFromSlope = false;
         ClearPendingStepCost();
         ClearAllSwiftSwimPreviewCosts();
@@ -5907,11 +5865,6 @@ public class Movement : Singleton<Movement>
     public void Action_isGrapplingHooking_Invoke()
     {
         Action_isGrapplingHooking?.Invoke();
-    }
-
-    public void Action_isGrapplingHooking_Finished_Invoke()
-    {
-        Action_isGrapplingHooking_Finished?.Invoke();
     }
 
     public void Action_PickupAnimation_Complete_Invoke()

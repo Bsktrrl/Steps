@@ -396,6 +396,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnAbilityRight_DownPress()
     {
+        if (grapplingHook_isPressed) return;
         if (GameplayInputLocked) return;
         if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
@@ -421,25 +422,18 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnAbilityRight_RelesePress()
     {
-        if (GameplayInputLocked)
+        if (!grapplingHook_isPressed)
+            return;
+
+        Movement movement = Movement.Instance;
+        if (GameplayInputLocked || !Run_StayingPopupDisplayExit() || freeCam_isPressed ||
+            PlayerManager.Instance.pauseMovement || !ButtonChecks_Other_MinusGrapplingHook())
         {
-            grapplingHook_isPressed = false;
+            movement.CancelGrapplingCharge();
             return;
         }
-        if (!Run_StayingPopupDisplayExit()) return;
-        if (freeCam_isPressed) return;
 
-        if (!PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook) return;
-
-        grapplingHook_isPressed = false;
-
-        if (PlayerManager.Instance.pauseMovement) return;
-
-        if (!ButtonChecks_Other_MinusGrapplingHook()) { return; }
-
-        Movement.Instance.UpdateGrapplingHookMovement_Release();
-
-        Movement.Instance.Action_isGrapplingHooking_Finished_Invoke();
+        movement.UpdateGrapplingHookMovement_Release();
     }
 
 
@@ -548,23 +542,12 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (PopUpManager.Instance.ability_CanBeClosed && !pickupAnimationPending) return false;
         if (MapManager.Instance.introSequence) { return false; }
 
-        if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
+        if (Movement.Instance.isGrapplingHooking) { return false; }
 
         // Prevent camera rotation while actual pause menu is open.
         if (pauseMenuManager && pauseMenuManager.pauseMenu_MainMenu_Parent.activeInHierarchy) { return false; }
 
-        if (grapplingHook_isPressed)
-        {
-            Movement.Instance.moveToBlock_GrapplingHook.canMoveTo = false;
-
-            if (Movement.Instance.moveToBlock_GrapplingHook != null &&
-                Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>())
-            {
-                Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-            }
-
-            grapplingHook_isPressed = false;
-        }
+        Movement.Instance.CancelGrapplingCharge();
 
         return true;
     }
@@ -617,19 +600,9 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (PopUpManager.Instance.ability_CanBeClosed) return;
         if (MapManager.Instance.introSequence) return;
 
-        if (Player_GraplingHook.Instance.isGrapplingHooking) return;
+        if (Movement.Instance.isGrapplingHooking) return;
 
-        if (grapplingHook_isPressed)
-        {
-            Movement.Instance.moveToBlock_GrapplingHook.canMoveTo = false;
-
-            if (Movement.Instance.moveToBlock_GrapplingHook != null && Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>())
-            {
-                Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-            }
-
-            grapplingHook_isPressed = false;
-        }
+        Movement.Instance.CancelGrapplingCharge();
 
         if (pauseMenuManager && pauseMenuManager.isActive) return;
 
@@ -687,7 +660,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     bool ButtonChecks_Movement()
     {
         if (GameplayInputLocked) return false;
-        if (Movement.Instance != null && Movement.Instance.isRespawning) return false;
+        if (Movement.Instance != null && (Movement.Instance.isRespawning || Movement.Instance.isGrapplingHooking)) return false;
         if (!Run_IntroSequance()) return false;
 
         if (Movement.Instance.GetMovementState() == MovementStates.Ability) { return false; }
@@ -703,17 +676,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
         if (MapManager.Instance.introSequence) { return false; }
 
-        if (grapplingHook_isPressed)
-        {
-            Movement.Instance.moveToBlock_GrapplingHook.canMoveTo = false;
-
-            if (Movement.Instance.moveToBlock_GrapplingHook != null && Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>())
-            {
-                Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-            }
-
-            grapplingHook_isPressed = false;
-        }
+        Movement.Instance.CancelGrapplingCharge();
 
         return true;
     }
@@ -737,19 +700,9 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (PopUpManager.Instance.ability_CanBeClosed) { return false; }
         if (MapManager.Instance.introSequence) { return false; }
 
-        if (Player_GraplingHook.Instance.isGrapplingHooking) { return false; }
+        if (Movement.Instance.isGrapplingHooking) { return false; }
 
-        if (grapplingHook_isPressed)
-        {
-            Movement.Instance.moveToBlock_GrapplingHook.canMoveTo = false;
-
-            if (Movement.Instance.moveToBlock_GrapplingHook != null && Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>())
-            {
-                Movement.Instance.moveToBlock_GrapplingHook.targetBlock.GetComponent<BlockInfo>().ResetDarkenColor();
-            }
-
-            grapplingHook_isPressed = false;
-        }
+        Movement.Instance.CancelGrapplingCharge();
 
         return true;
     }

@@ -67,7 +67,7 @@ public class EffectManager : Singleton<EffectManager>
         Movement.Action_isSwiftSwim += Set_isSwiftSwim;
         Movement.Action_isAscending += Set_isAscending;
         Movement.Action_isDescending += Set_isDescending;
-        Movement.Action_isGrapplingHooking += Set_isGrapplingHooking;
+        Movement.Action_isGrapplingHooking_SendPlayer += Set_isGrapplingHooking;
 
         Interactable_Pickup.Action_EssencePickupGot += PerformPickupEffect;
         Interactable_Pickup.Action_FootprintPickupGot += PerformPickupEffect;
@@ -89,7 +89,7 @@ public class EffectManager : Singleton<EffectManager>
         Movement.Action_isSwiftSwim -= Set_isSwiftSwim;
         Movement.Action_isAscending -= Set_isAscending;
         Movement.Action_isDescending -= Set_isDescending;
-        Movement.Action_isGrapplingHooking -= Set_isGrapplingHooking;
+        Movement.Action_isGrapplingHooking_SendPlayer -= Set_isGrapplingHooking;
 
         Interactable_Pickup.Action_EssencePickupGot -= PerformPickupEffect;
         Interactable_Pickup.Action_FootprintPickupGot -= PerformPickupEffect;
@@ -216,8 +216,6 @@ public class EffectManager : Singleton<EffectManager>
         }
         else if (isGrapplingHooking)
         {
-            Movement.Instance.Action_isGrapplingHooking_Finished_Invoke();
-
             isGrapplingHooking = false;
             GrapplingHook_HitGorund_Effect();
         }
@@ -343,6 +341,7 @@ public class EffectManager : Singleton<EffectManager>
 
     public void PerformCheckpointEffect()
     {
+        isGrapplingHooking = false;
         if (startStep)
         {
             effect_Checkpoint_Object.GetComponent<StepParticleScript>().Perform_CheckpointEffect();
