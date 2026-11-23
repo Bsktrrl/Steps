@@ -150,7 +150,6 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
             //Glueplant aquired
             glueplantImage.sprite = SelectGlueplantForLevel(activeLevelObject.GetComponent<LoadLevel>().regionToPlay, activeLevelObject.GetComponent<LoadLevel>().levelToPlay);
 
-            int glueplantPlacedCounter = 0;
 
             if (menuLevelInfo && menuLevelInfo.mapInfo_ToSave != null && menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List.Count > 0)
             {
@@ -158,74 +157,11 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
                 {
                     if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].mapName == activeLevelObject.GetComponent<LoadLevel>().levelToPlay)
                     {
-                        if (activeLevelObject.GetComponent<LoadLevel>().regionToPlay == regions.Metalworks)
-                        {
-                            switch (activeLevelObject.GetComponent<LoadLevel>().levelToPlay)
-                            {
-                                case "Metalworks_Lv_1":
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Rivergreen.stand_1_isTaken)
-                                        glueplantPlacedCounter++;
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Rivergreen.stand_2_isTaken)
-                                        glueplantPlacedCounter++;
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Rivergreen.stand_3_isTaken)
-                                        glueplantPlacedCounter++;
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Rivergreen.stand_4_isTaken)
-                                        glueplantPlacedCounter++;
-                                    break;
-                                case "Metalworks_Lv_2":
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Sandlands.stand_1_isTaken)
-                                        glueplantPlacedCounter++;
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Sandlands.stand_2_isTaken)
-                                        glueplantPlacedCounter++;
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Sandlands.stand_3_isTaken)
-                                        glueplantPlacedCounter++;
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Sandlands.stand_4_isTaken)
-                                        glueplantPlacedCounter++;
-                                    break;
-                                case "Metalworks_Lv_3":
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Frostfield.stand_1_isTaken)
-                                        glueplantPlacedCounter++;
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Frostfield.stand_2_isTaken)
-                                        glueplantPlacedCounter++;
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Frostfield.stand_3_isTaken)
-                                        glueplantPlacedCounter++;
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Frostfield.stand_4_isTaken)
-                                        glueplantPlacedCounter++;
-                                    break;
-                                case "Metalworks_Lv_4":
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Firevein.stand_1_isTaken)
-                                        glueplantPlacedCounter++;
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Firevein.stand_2_isTaken)
-                                        glueplantPlacedCounter++;
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Firevein.stand_3_isTaken)
-                                        glueplantPlacedCounter++;
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Firevein.stand_4_isTaken)
-                                        glueplantPlacedCounter++;
-                                    break;
-                                case "Metalworks_Lv_5":
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Witchmire.stand_1_isTaken)
-                                        glueplantPlacedCounter++;
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Witchmire.stand_2_isTaken)
-                                        glueplantPlacedCounter++;
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Witchmire.stand_3_isTaken)
-                                        glueplantPlacedCounter++;
-                                    if (DataManager.Instance.glueplantStandStats_Store.standStats_Witchmire.stand_4_isTaken)
-                                        glueplantPlacedCounter++;
-                                    break;
-
-                                default:
-                                    break;
-                            }
-
-                            glueplant_Aquired.text = glueplantPlacedCounter + " / 4";
-                        }
-                        else
-                        {
-                            if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].isCompleted)
-                                glueplant_Aquired.text = "1 / 1";
-                            else
-                                glueplant_Aquired.text = "0 / 1";
-                        }
+                        Map_SaveInfo map = menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i];
+                        StandStats stands = DataManager.Instance.glueplantStandStats_Store?.GetForLevel(map.mapName);
+                        int glueplantPlacedCounter = stands?.CountTaken ?? (map.isCompleted ? 1 : 0);
+                        int glueplantTotal = GetGlueplantTotal();
+                        glueplant_Aquired.text = glueplantPlacedCounter + " / " + glueplantTotal;
 
                         //Essence aquired
                         float essenceCounter = 0;
@@ -239,7 +175,6 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
                         Essence_Aquired.text = essenceCounter + " / 10";
 
                         //Skin aquired
-                        Map_SaveInfo map = menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i];
                         int skinCounter = map.CountSkinsTaken();
                         Skin_Aquired.text = skinCounter + " / " + map.SkinPickupTotal;
 
@@ -257,20 +192,7 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
                         collectedAbilities = menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].abilitiesGotInLevel;
                         foundLevel = true;
 
-                        //Set Progress Bars
-                        if (OverWorldManager.Instance.regionState == RegionState.Metalworks)
-                        {
-                            UpdateProgressBars(i, glueplantPlacedCounter, essenceCounter, skinCounter, stepsCounter);
-                        }
-                        else
-                        {
-                            if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[i].isCompleted)
-                                glueplantPlacedCounter = 1;
-                            else
-                                glueplantPlacedCounter = 0;
-
-                            UpdateProgressBars(i, glueplantPlacedCounter, essenceCounter, skinCounter, stepsCounter);
-                        }
+                        UpdateProgressBars(i, glueplantPlacedCounter, essenceCounter, skinCounter, stepsCounter);
 
                         break;
                     }
@@ -329,10 +251,7 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
     void SetupDefaultLevelDisplay()
     {
         //Glueplant aquired
-        if (OverWorldManager.Instance.regionState == RegionState.Metalworks)
-            glueplant_Aquired.text = "0 / 4";
-        else
-            glueplant_Aquired.text = "0 / 1";
+        glueplant_Aquired.text = "0 / " + GetGlueplantTotal();
 
         //Essence aquired
         Essence_Aquired.text = "0 / 10";
@@ -479,54 +398,17 @@ public class LevelInfoManager : Singleton<LevelInfoManager>
         }
     }
 
+    int GetGlueplantTotal() => OverWorldManager.Instance.regionState == RegionState.Metalworks ? StandStats.StandsPerLevel : 1;
+
     void UpdateProgressBars(int index, float glueplantCounter, float essenceCounter, float skinCounter, float stepsCounter)
     {
-        //Glueplant
-        if (index < 0)
-        {
-            if (OverWorldManager.Instance.regionState == RegionState.Metalworks)
-                SetProgressBar(glueplant_FillImage, glueplantCounter, 4);
-            else
-                SetProgressBar(glueplant_FillImage, glueplantCounter, 1);
-        }
-        else
-        {
-            if (OverWorldManager.Instance.regionState == RegionState.Metalworks)
-                SetProgressBar(glueplant_FillImage, glueplantCounter, 4);
-            else
-                SetProgressBar(glueplant_FillImage, glueplantCounter, 1);
-        }
-        
-        SetProgressBar(essence_FillImage, essenceCounter, 10);
+        int glueplantTotal = GetGlueplantTotal();
         int skinTotal = index < 0 ? 1 : menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[index].SkinPickupTotal;
+        SetProgressBar(glueplant_FillImage, glueplantCounter, glueplantTotal);
+        SetProgressBar(essence_FillImage, essenceCounter, 10);
         SetProgressBar(skin_FillImage, skinCounter, skinTotal);
         SetProgressBar(footprint_FillImage, stepsCounter, 3);
-
-        //Max Progress
-        if (index < 0)
-        {
-            if (OverWorldManager.Instance.regionState == RegionState.Metalworks)
-                SetProgressBar(levelName_FillImage, 0f + glueplantCounter + essenceCounter + skinCounter + stepsCounter, 17 + skinTotal);
-            else
-                SetProgressBar(levelName_FillImage, 0f + glueplantCounter + essenceCounter + skinCounter + stepsCounter, 14 + skinTotal);
-        }
-        else
-        {
-            if (OverWorldManager.Instance.regionState == RegionState.Metalworks)
-            {
-                if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[index].isCompleted)
-                    SetProgressBar(levelName_FillImage, 1f + glueplantCounter + essenceCounter + skinCounter + stepsCounter, 17 + skinTotal);
-                else
-                    SetProgressBar(levelName_FillImage, 0f + glueplantCounter + essenceCounter + skinCounter + stepsCounter, 17 + skinTotal);
-            }
-            else
-            {
-                if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List[index].isCompleted)
-                    SetProgressBar(levelName_FillImage, 1f + glueplantCounter + essenceCounter + skinCounter + stepsCounter, 14 + skinTotal);
-                else
-                    SetProgressBar(levelName_FillImage, 0f + glueplantCounter + essenceCounter + skinCounter + stepsCounter, 14 + skinTotal);
-            }
-        }
+        SetProgressBar(levelName_FillImage, glueplantCounter + essenceCounter + skinCounter + stepsCounter, 13 + glueplantTotal + skinTotal);
     }
     void SetProgressBar(Image fillImage, float current, float max)
     {

@@ -12,8 +12,10 @@ public class Player_Statistics_Manager : MonoBehaviour
     private const int FootprintsPerLevel = 3;
     private const int EssencePerLevel = 10;
     private const int CollectibleSkinCount = LevelCount + 1;
-    // Each level has one Glueplant and one tablet. Every collectible skin has a pickup and a purchase.
-    private const int GameProgressTotal = LevelCount * (1 + FootprintsPerLevel + EssencePerLevel + 1) +
+    private const int GlueplantGoalCount = LevelCount - GlueplantStandStats.MetalworksLevelCount;
+    private const int GlueplantPlacementCount = GlueplantStandStats.MetalworksLevelCount * StandStats.StandsPerLevel;
+    private const int GameProgressTotal = LevelCount * (FootprintsPerLevel + EssencePerLevel + 1) +
+                                          GlueplantGoalCount + GlueplantPlacementCount +
                                           CollectibleSkinCount * 2 + RegionLevelCount;
 
     private static readonly FieldInfo[] CollectibleSkinFields = typeof(SkinsWardrobeInfo)
@@ -380,7 +382,8 @@ public class Player_Statistics_Manager : MonoBehaviour
                     continue;
 
                 ref LevelProgress progress = ref progressByLevel[(int)level];
-                progress.glueplantCollected |= savedMap.isCompleted;
+                if (!GlueplantStandStats.IsMetalworks(level))
+                    progress.glueplantCollected |= savedMap.isCompleted;
                 int footprints = savedMap.maxStepList?.Count(footprint => footprint?.isTaken == true) ?? 0;
                 int essence = savedMap.essenceList?.Count(pickup => pickup?.isTaken == true) ?? 0;
                 progress.footprints = Mathf.Max(progress.footprints, Mathf.Min(footprints, FootprintsPerLevel));
@@ -399,6 +402,13 @@ public class Player_Statistics_Manager : MonoBehaviour
         int progressPoints = GetSkinProgress(data.skinsInfo_Store?.skinWardrobeInfo);
         foreach (LevelProgress progress in progressByLevel)
             progressPoints += progress.Points;
+
+        GlueplantStandStats stands = data.glueplantStandStats_Store;
+        if (stands != null)
+        {
+            for (LevelNames level = LevelNames.Metalworks_Lv1; level <= LevelNames.Metalworks_Lv5; level++)
+                progressPoints += stands.GetForLevel(level).CountTaken;
+        }
 
         foreach (var _ in GetFinishedDialogues(data.charatersData_Store, includeStepellier: false))
             progressPoints++;

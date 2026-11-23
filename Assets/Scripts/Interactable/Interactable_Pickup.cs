@@ -39,6 +39,10 @@ public class Interactable_Pickup : MonoBehaviour
     private void Start()
     {
         mapManager = FindObjectOfType<MapManager>();
+        // The level can still use the old goal object to host its intro camera.
+        if (goal && mapManager && GlueplantStandStats.IsMetalworks(mapManager.levelName) &&
+            TryGetComponent(out Collider goalCollider))
+            goalCollider.enabled = false;
     }
 
     private void OnEnable()
@@ -167,6 +171,9 @@ public class Interactable_Pickup : MonoBehaviour
         Map_SaveInfo mapInfo = mapManager.mapInfo_ToSave;
         if (goal)
         {
+            if (GlueplantStandStats.IsMetalworks(mapManager.levelName))
+                return false;
+
             mapInfo.isCompleted = true;
             Action_PickupGot_isActive();
             Player_Statistics_Manager.Active?.RecordLevelCompletion();

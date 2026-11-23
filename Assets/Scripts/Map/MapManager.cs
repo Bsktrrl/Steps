@@ -212,7 +212,20 @@ public class MapManager : Singleton<MapManager>
     public void FadeOutBlackScreen()
     {
         StopBlackScreenFadeRoutine();
-        blackScreenFadeRoutine = StartCoroutine(FadeOutCoroutine());
+        bool standLevelWithoutGoalCamera = GlueplantStandStats.IsMetalworks(levelName) &&
+                                           !FindAnyObjectByType<GlueplantCamera>();
+        blackScreenFadeRoutine = StartCoroutine(standLevelWithoutGoalCamera
+            ? FadeOutStandLevelWithoutGoalCamera()
+            : FadeOutCoroutine());
+    }
+
+    private IEnumerator FadeOutStandLevelWithoutGoalCamera()
+    {
+        yield return FadeOutCoroutine();
+        blackScreenFadeRoutine = null;
+        introSequence_Finished = true;
+        introSequence = false;
+        Action_EndIntroSequence_Invoke();
     }
 
     private IEnumerator FadeOutCoroutine()

@@ -123,7 +123,16 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
         this.oneTimeRunData_Store = gameData.oneTimeRunData_Save;
 
-        this.glueplantStandStats_Store = gameData.glueplantStandStats_Save;
+        this.glueplantStandStats_Store = gameData.glueplantStandStats_Save ?? new GlueplantStandStats();
+        // Earlier saves can have all four stands filled without the level completion flag.
+        if (mapInfo_StoreList?.map_SaveInfo_List != null)
+        {
+            foreach (Map_SaveInfo savedMap in mapInfo_StoreList.map_SaveInfo_List)
+            {
+                if (savedMap != null && glueplantStandStats_Store.GetForLevel(savedMap.mapName)?.CountTaken == StandStats.StandsPerLevel)
+                    savedMap.isCompleted = true;
+            }
+        }
         this.switchesData_Store = gameData.switchesData_Save;
 
         this.permanentAbilitiesReceived_Store = gameData.permanentAbilitiesReceived_Save;

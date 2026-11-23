@@ -333,10 +333,11 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
                 break;
         }
 
-        if (mapInfo.isCompleted)
-            glueplant_Aquired.text = "1 / 1";
-        else
-            glueplant_Aquired.text = "0 / 1";
+        LevelNames level = MapManager.Instance.levelName;
+        StandStats stands = DataManager.Instance.glueplantStandStats_Store?.GetForLevel(level);
+        int glueplantTotal = GlueplantStandStats.IsMetalworks(level) ? StandStats.StandsPerLevel : 1;
+        int glueplantCounter = stands?.CountTaken ?? (mapInfo.isCompleted ? 1 : 0);
+        glueplant_Aquired.text = glueplantCounter + " / " + glueplantTotal;
 
         //Essence aquired
         int essenceCounter = 0;
@@ -364,7 +365,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         }
         StepsMax_Aquired.text = stepsCounter + " / 3";
 
-        UpdateProgressBars(mapInfo, essenceCounter, skinCounter, stepsCounter);
+        UpdateProgressBars(glueplantCounter, glueplantTotal, essenceCounter, skinCounter, mapInfo.SkinPickupTotal, stepsCounter);
 
         //Get Abilities to get in the Level
         ability_Swimming.SetActive(false);
@@ -484,19 +485,13 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         }
     }
 
-    void UpdateProgressBars(Map_SaveInfo mapInfo, float essenceCounter, float skinCounter, float stepsCounter)
+    void UpdateProgressBars(int glueplantCounter, int glueplantTotal, float essenceCounter, float skinCounter, int skinTotal, float stepsCounter)
     {
-        if (mapInfo.isCompleted)
-            SetProgressBar(glueplant_FillImage, 1f, 1);
-        else
-            SetProgressBar(glueplant_FillImage, 0f, 1);
-
+        SetProgressBar(glueplant_FillImage, glueplantCounter, glueplantTotal);
         SetProgressBar(essence_FillImage, essenceCounter, 10);
-        SetProgressBar(skin_FillImage, skinCounter, mapInfo.SkinPickupTotal);
+        SetProgressBar(skin_FillImage, skinCounter, skinTotal);
         SetProgressBar(footprint_FillImage, stepsCounter, 3);
-
-        float glueplantCounter = mapInfo.isCompleted ? 1f : 0f;
-        SetProgressBar(levelName_FillImage, glueplantCounter + essenceCounter + skinCounter + stepsCounter, 14 + mapInfo.SkinPickupTotal);
+        SetProgressBar(levelName_FillImage, glueplantCounter + essenceCounter + skinCounter + stepsCounter, 13 + glueplantTotal + skinTotal);
     }
     void SetProgressBar(Image fillImage, float current, float max)
     {

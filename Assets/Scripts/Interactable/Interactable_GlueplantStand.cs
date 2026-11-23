@@ -1,7 +1,6 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Interactable_GlueplantStand : MonoBehaviour
@@ -49,221 +48,50 @@ public class Interactable_GlueplantStand : MonoBehaviour
     //--------------------
 
 
+
     void LoadGame()
     {
-        StandStats stats = GetStandStats(glueplantType);
-
-        if (stats == null)
-            return;
-
-        if (IsStandTaken(stats, standNumber))
-            PlaceGlueplant();
+        GameObject glueplant = GetGlueplant();
+        if (glueplant)
+            glueplant.SetActive(GetStandStats()?.IsTaken(standNumber) == true);
+        DisplayButtonMessageDelayed();
     }
 
-    StandStats GetStandStats(GlueplantType type)
+    StandStats GetStandStats()
     {
-        GlueplantStandStats store = DataManager.Instance.glueplantStandStats_Store;
-
-        switch (type)
-        {
-            case GlueplantType.Rivergreen:
-                return store.standStats_Rivergreen;
-
-            case GlueplantType.Sandlands:
-                return store.standStats_Sandlands;
-
-            case GlueplantType.Frostfield:
-                return store.standStats_Frostfield;
-
-            case GlueplantType.Firevein:
-                return store.standStats_Firevein;
-
-            case GlueplantType.Witchmire:
-                return store.standStats_Witchmire;
-
-            default:
-                return null;
-        }
+        return DataManager.Instance.glueplantStandStats_Store?.GetForLevel(MapManager.Instance.levelName);
     }
-    bool IsStandTaken(StandStats stats, int standNumber)
+
+    GameObject GetGlueplant()
     {
-        switch (standNumber)
+        return glueplantType switch
         {
-            case 1:
-                return stats.stand_1_isTaken;
-
-            case 2:
-                return stats.stand_2_isTaken;
-
-            case 3:
-                return stats.stand_3_isTaken;
-
-            case 4:
-                return stats.stand_4_isTaken;
-
-            default:
-                return false;
-        }
+            GlueplantType.Rivergreen => glueplant_Rivergreen,
+            GlueplantType.Sandlands => glueplant_Sandlands,
+            GlueplantType.Frostfield => glueplant_Frostfield,
+            GlueplantType.Firevein => glueplant_Firevein,
+            GlueplantType.Witchmire => glueplant_Witchmire,
+            _ => null
+        };
     }
 
-
-    //--------------------
-
+    bool CanPlaceGlueplant()
+    {
+        return StandStats.IsValidStandNumber(standNumber) && GetGlueplant() &&
+               GetStandStats()?.IsTaken(standNumber) == false;
+    }
 
     void RunInterraction()
     {
-        if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject)
-        {
-            GlueplantStandManager.Instance.playerPlacingGlueplant = true;
-            PlaceGlueplant();
-        }
-        //Check conditions for being able to interract
+        if (PlayerManager.Instance.block_LookingAt_Horizontal != gameObject || !CanPlaceGlueplant())
+            return;
 
-        //Place Glueplant if conditions is met
-    }
-    void PlaceGlueplant()
-    {
-        switch (glueplantType)
-        {
-            case GlueplantType.Rivergreen:
-                glueplant_Rivergreen.SetActive(true);
-                break;
-            case GlueplantType.Sandlands:
-                glueplant_Sandlands.SetActive(true);
-                break;
-            case GlueplantType.Frostfield:
-                glueplant_Frostfield.SetActive(true);
-                break;
-            case GlueplantType.Firevein:
-                glueplant_Firevein.SetActive(true);
-                break;
-            case GlueplantType.Witchmire:
-                glueplant_Witchmire.SetActive(true);
-                break;
+        if (!GlueplantStandManager.Instance.TryPlaceGlueplant(standNumber))
+            return;
 
-            default:
-                break;
-        }
-
-        UpdateSaveState();
-
+        GetGlueplant().SetActive(true);
         Action_Glueplant_isPlaced?.Invoke();
     }
-    void UpdateSaveState()
-    {
-        switch (glueplantType)
-        {
-            case GlueplantType.Rivergreen:
-                switch (standNumber)
-                {
-                    case 1:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Rivergreen.stand_1_isTaken = true;
-                        break;
-                    case 2:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Rivergreen.stand_2_isTaken = true;
-                        break;
-                    case 3:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Rivergreen.stand_3_isTaken = true;
-                        break;
-                    case 4:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Rivergreen.stand_4_isTaken = true;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case GlueplantType.Sandlands:
-                switch (standNumber)
-                {
-                    case 1:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Sandlands.stand_1_isTaken = true;
-                        break;
-                    case 2:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Sandlands.stand_2_isTaken = true;
-                        break;
-                    case 3:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Sandlands.stand_3_isTaken = true;
-                        break;
-                    case 4:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Sandlands.stand_4_isTaken = true;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case GlueplantType.Frostfield:
-                switch (standNumber)
-                {
-                    case 1:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Frostfield.stand_1_isTaken = true;
-                        break;
-                    case 2:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Frostfield.stand_2_isTaken = true;
-                        break;
-                    case 3:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Frostfield.stand_3_isTaken = true;
-                        break;
-                    case 4:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Frostfield.stand_4_isTaken = true;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case GlueplantType.Firevein:
-                switch (standNumber)
-                {
-                    case 1:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Firevein.stand_1_isTaken = true;
-                        break;
-                    case 2:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Firevein.stand_2_isTaken = true;
-                        break;
-                    case 3:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Firevein.stand_3_isTaken = true;
-                        break;
-                    case 4:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Firevein.stand_4_isTaken = true;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case GlueplantType.Witchmire:
-                switch (standNumber)
-                {
-                    case 1:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Witchmire.stand_1_isTaken = true;
-                        break;
-                    case 2:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Witchmire.stand_2_isTaken = true;
-                        break;
-                    case 3:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Witchmire.stand_3_isTaken = true;
-                        break;
-                    case 4:
-                        DataManager.Instance.glueplantStandStats_Store.standStats_Witchmire.stand_4_isTaken = true;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-
-            default:
-                break;
-        }
-
-        DataPersistanceManager.instance.SaveGame();
-
-        StartCoroutine(CheckPlacedGlueplant_Delay());
-    }
-    IEnumerator CheckPlacedGlueplant_Delay()
-    {
-        yield return new WaitForEndOfFrame();
-
-        GlueplantStandManager.Instance.playerPlacingGlueplant = false;
-    }
-
 
     //--------------------
 
@@ -308,19 +136,7 @@ public class Interactable_GlueplantStand : MonoBehaviour
             return;
         }
 
-        StandStats stats = GetStandStats(glueplantType);
-
-        if (stats == null)
-        {
-            ButtonMessageManager.Instance.HideButtonMessage(
-                ButtonMessageManager.Instance.buttonMessages.buttonMessage_PlaceGlueplant
-            );
-
-            Debug.LogWarning($"No StandStats found for {glueplantType} on {gameObject.name}");
-            return;
-        }
-
-        if (IsStandTaken(stats, standNumber))
+        if (!CanPlaceGlueplant())
         {
             ButtonMessageManager.Instance.HideButtonMessage(
                 ButtonMessageManager.Instance.buttonMessages.buttonMessage_PlaceGlueplant
@@ -339,14 +155,40 @@ public class Interactable_GlueplantStand : MonoBehaviour
     }
 }
 
+
 [Serializable]
 public class GlueplantStandStats
 {
-    public StandStats standStats_Rivergreen;
-    public StandStats standStats_Sandlands;
-    public StandStats standStats_Frostfield;
-    public StandStats standStats_Firevein;
-    public StandStats standStats_Witchmire;
+    public StandStats standStats_Rivergreen = new StandStats();
+    public StandStats standStats_Sandlands = new StandStats();
+    public StandStats standStats_Frostfield = new StandStats();
+    public StandStats standStats_Firevein = new StandStats();
+    public StandStats standStats_Witchmire = new StandStats();
+
+    internal const int MetalworksLevelCount = (int)LevelNames.Metalworks_Lv5 - (int)LevelNames.Metalworks_Lv1 + 1;
+
+    internal static bool IsMetalworks(LevelNames level) =>
+        level >= LevelNames.Metalworks_Lv1 && level <= LevelNames.Metalworks_Lv5;
+
+    internal StandStats GetForLevel(string sceneName)
+    {
+        return Enum.TryParse(sceneName?.Replace("_Lv_", "_Lv"), out LevelNames level)
+            ? GetForLevel(level)
+            : null;
+    }
+
+    internal StandStats GetForLevel(LevelNames level)
+    {
+        return level switch
+        {
+            LevelNames.Metalworks_Lv1 => standStats_Rivergreen ??= new StandStats(),
+            LevelNames.Metalworks_Lv2 => standStats_Sandlands ??= new StandStats(),
+            LevelNames.Metalworks_Lv3 => standStats_Frostfield ??= new StandStats(),
+            LevelNames.Metalworks_Lv4 => standStats_Firevein ??= new StandStats(),
+            LevelNames.Metalworks_Lv5 => standStats_Witchmire ??= new StandStats(),
+            _ => null
+        };
+    }
 }
 
 [Serializable]
@@ -356,6 +198,41 @@ public class StandStats
     public bool stand_2_isTaken;
     public bool stand_3_isTaken;
     public bool stand_4_isTaken;
+
+    internal const int StandsPerLevel = 4;
+
+    internal int CountTaken => (stand_1_isTaken ? 1 : 0) + (stand_2_isTaken ? 1 : 0) +
+                               (stand_3_isTaken ? 1 : 0) + (stand_4_isTaken ? 1 : 0);
+
+    internal static bool IsValidStandNumber(int number) => number >= 1 && number <= StandsPerLevel;
+
+    internal bool IsTaken(int number)
+    {
+        return number switch
+        {
+            1 => stand_1_isTaken,
+            2 => stand_2_isTaken,
+            3 => stand_3_isTaken,
+            4 => stand_4_isTaken,
+            _ => false
+        };
+    }
+
+    internal bool TryPlace(int number)
+    {
+        if (!IsValidStandNumber(number) || IsTaken(number))
+            return false;
+
+        switch (number)
+        {
+            case 1: stand_1_isTaken = true; break;
+            case 2: stand_2_isTaken = true; break;
+            case 3: stand_3_isTaken = true; break;
+            case 4: stand_4_isTaken = true; break;
+        }
+
+        return true;
+    }
 }
 
 public enum GlueplantType
