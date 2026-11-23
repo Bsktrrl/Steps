@@ -49,6 +49,7 @@ public class LevelInfo : MonoBehaviour
     {
         print("1. SaveNameDisplay");
         MapNameDisplay mapNameDisplay = new MapNameDisplay();
+        mapNameDisplay.sceneName = GetComponent<LoadLevel>().levelToPlay;
 
         mapNameDisplay.mapNameDisplay_norwegian = norwegian_MapNameDisplay;
         mapNameDisplay.mapNameDisplay_english = english_MapNameDisplay;

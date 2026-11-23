@@ -272,7 +272,14 @@ public class Movement : Singleton<Movement>
         lastFollowedElevatorPosition = transform.position;
         elevatorRefreshAccumulatedDistance = 0f;
 
-        RespawnPlayer();
+        if (DataManager.Instance.dataHasLoaded_Check)
+            InitializeAtCheckpoint();
+    }
+
+    private void InitializeAtCheckpoint()
+    {
+        if (!isRespawningFirstTime)
+            RespawnPlayer();
     }
 
     private void Update()
@@ -363,6 +370,7 @@ public class Movement : Singleton<Movement>
 
     private void OnEnable()
     {
+        DataManager.Action_dataHasLoaded += InitializeAtCheckpoint;
         // Cost is finalized inside TakeAStep BEFORE movement previews and
         // late auto-chaining are processed (see PublishSettledStep).
         Action_RespawnPlayerLate += UpdateAvailableMovementBlocks;
@@ -393,6 +401,7 @@ public class Movement : Singleton<Movement>
 
     private void OnDisable()
     {
+        DataManager.Action_dataHasLoaded -= InitializeAtCheckpoint;
         Action_RespawnPlayerLate -= UpdateAvailableMovementBlocks;
         Action_LandedFromFalling -= UpdateAvailableMovementBlocks;
 
@@ -3345,7 +3354,7 @@ public class Movement : Singleton<Movement>
     // but their number previews should remain hidden until the spawn has finished.
     private bool HideNumbersForInitialSpawn()
     {
-        return DataManager.Instance != null &&
+        return Map.levelName == LevelNames.HUB && DataManager.Instance != null &&
                DataManager.Instance.oneTimeRunData_Store != null &&
                !DataManager.Instance.oneTimeRunData_Store.tutorial_PlayerSpawned;
     }
@@ -5691,7 +5700,9 @@ public class Movement : Singleton<Movement>
 
         CeilingGrab.ResetCeilingGrab();
 
-        SFX_Respawn.Instance.PlayRespawnSound();
+        // The first reset places the player at the starting checkpoint during scene load.
+        if (isRespawningFirstTime)
+            SFX_Respawn.Instance.PlayRespawnSound();
 
         yield return new WaitForSeconds(waitTime);
 

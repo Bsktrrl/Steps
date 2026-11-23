@@ -231,9 +231,9 @@ public class UnlockDisplay : MonoBehaviour
         }
         else if (int.TryParse(level, out int number))
         {
-            levelName = GetWardrobeLevelName(text, region, number);
+            levelName = text.GetLevelName(region, number);
             if (string.IsNullOrWhiteSpace(levelName))
-                levelName = GetWardrobeLevelName(translations[(int)Languages.English], region, number);
+                levelName = translations[(int)Languages.English].GetLevelName(region, number);
         }
         else
         {
@@ -244,67 +244,5 @@ public class UnlockDisplay : MonoBehaviour
             return "";
 
         return $"{text.WardrobeMenu_Message_SkinUnavailable_1} {levelName} {text.WardrobeMenu_Message_SkinUnavailable_2}";
-    }
-
-    private static string GetWardrobeLevelName(Game_TextDatabase_Language text, RegionName region, int number)
-    {
-        return region switch
-        {
-            RegionName.Rivergreen => number switch
-            {
-                1 => text.name_Region_Water_Lv1,
-                2 => text.name_Region_Water_Lv2,
-                3 => text.name_Region_Water_Lv3,
-                4 => text.name_Region_Water_Lv4,
-                5 => text.name_Region_Water_Lv5,
-                _ => null
-            },
-            RegionName.Sandlands => number switch
-            {
-                1 => text.name_Region_Sand_Lv1,
-                2 => text.name_Region_Sand_Lv2,
-                3 => text.name_Region_Sand_Lv3,
-                4 => text.name_Region_Sand_Lv4,
-                5 => text.name_Region_Sand_Lv5,
-                _ => null
-            },
-            RegionName.Frostfields => number switch
-            {
-                1 => text.name_Region_Ice_Lv1,
-                2 => text.name_Region_Ice_Lv2,
-                3 => text.name_Region_Ice_Lv3,
-                4 => text.name_Region_Ice_Lv4,
-                5 => text.name_Region_Ice_Lv5,
-                _ => null
-            },
-            RegionName.Firevein => number switch
-            {
-                1 => text.name_Region_Lava_Lv1,
-                2 => text.name_Region_Lava_Lv2,
-                3 => text.name_Region_Lava_Lv3,
-                4 => text.name_Region_Lava_Lv4,
-                5 => text.name_Region_Lava_Lv5,
-                _ => null
-            },
-            RegionName.Witchmire => number switch
-            {
-                1 => text.name_Region_Swamp_Lv1,
-                2 => text.name_Region_Swamp_Lv2,
-                3 => text.name_Region_Swamp_Lv3,
-                4 => text.name_Region_Swamp_Lv4,
-                5 => text.name_Region_Swamp_Lv5,
-                _ => null
-            },
-            RegionName.Metalworks => number switch
-            {
-                1 => text.name_Region_Metal_Lv1,
-                2 => text.name_Region_Metal_Lv2,
-                3 => text.name_Region_Metal_Lv3,
-                4 => text.name_Region_Metal_Lv4,
-                5 => text.name_Region_Metal_Lv5,
-                _ => null
-            },
-            _ => null
-        };
     }
 }

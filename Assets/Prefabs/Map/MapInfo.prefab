@@ -50,6 +50,7 @@ GameObject:
   - component: {fileID: 7791777982888954600}
   - component: {fileID: 1265659579347570928}
   - component: {fileID: 776856641060507216}
+  - component: {fileID: 2390012763478491251}
   m_Layer: 0
   m_Name: MapInfo
   m_TagString: Untagged
@@ -148,6 +149,21 @@ MonoBehaviour:
   introSequence: 0
   introSequence_Finished: 0
   haveIntroSequence: 1
+--- !u!114 &2390012763478491251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4454345480955054035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b29dee52b36c17439bd403da51bbc6d, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  game_TextDatabase_Sheet: {fileID: 4900000, guid: 6eef0e8d73e3af849b6f20af5499eaaa, type: 3}
+  game_TextDatabase:
+    gameText_LanguageList: []
 --- !u!114 &2025580462952245226
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -84,6 +84,10 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     public void LoadData(GameData gameData)
     {
         GetSavedDataFromFile(gameData);
+        var textData = FindAnyObjectByType<TextData>();
+        if (textData && textData.gameObject.scene == gameObject.scene)
+            textData.ReadExcelSheet();
+
         Player_Statistics_Manager.Active?.BeginTracking(this);
         LoadDataIntoProject(gameData);
 

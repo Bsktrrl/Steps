@@ -11,6 +11,7 @@ public class TextData : MonoBehaviour
 
     int startRow = 3;
     int columns = 4; //Size + 1
+    bool hasReadSheet;
 
     [Header("Text Database")]
     public Game_TextDatabase game_TextDatabase = new Game_TextDatabase();
@@ -30,6 +31,15 @@ public class TextData : MonoBehaviour
 
     public void ReadExcelSheet()
     {
+        if (!game_TextDatabase_Sheet)
+            return;
+        if (hasReadSheet)
+        {
+            DataManager.Instance.game_TextDatabase_Store = game_TextDatabase;
+            return;
+        }
+
+        game_TextDatabase.gameText_LanguageList.Clear();
         for (int i = 0; i < columns - 1; i++)
         {
             Game_TextDatabase_Language gameText_LanguageList_Temp = new Game_TextDatabase_Language();
@@ -595,6 +605,7 @@ public class TextData : MonoBehaviour
 
         //Input data into DataManager for easy access thoughout the game
         DataManager.Instance.game_TextDatabase_Store = game_TextDatabase;
+        hasReadSheet = true;
     }
 
 
@@ -653,10 +664,91 @@ public class TextData : MonoBehaviour
 public class Game_TextDatabase
 {
     public List<Game_TextDatabase_Language> gameText_LanguageList = new List<Game_TextDatabase_Language>();
+
+    internal string GetLevelName(LevelNames level, Languages language)
+    {
+        int index = (int)language;
+        if (gameText_LanguageList == null || index < 0 || index >= gameText_LanguageList.Count || gameText_LanguageList[index] == null)
+            return null;
+
+        Game_TextDatabase_Language names = gameText_LanguageList[index];
+        if (level == LevelNames.HUB)
+            return names.name_Region_HUB;
+        if (level < LevelNames.Rivergreen_Lv1 || level > LevelNames.Metalworks_Lv5)
+            return null;
+
+        const int levelsPerRegion = (int)LevelNames.Rivergreen_Lv5 - (int)LevelNames.Rivergreen_Lv1 + 1;
+        int levelOffset = (int)level - (int)LevelNames.Rivergreen_Lv1;
+        RegionName region = (RegionName)((int)RegionName.Rivergreen + levelOffset / levelsPerRegion);
+        return names.GetLevelName(region, levelOffset % levelsPerRegion + 1);
+    }
 }
 [Serializable]
 public class Game_TextDatabase_Language
 {
+    internal string GetLevelName(RegionName region, int number)
+    {
+        return region switch
+        {
+            RegionName.HUB => name_Region_HUB,
+            RegionName.Rivergreen => number switch
+            {
+                1 => name_Region_Water_Lv1,
+                2 => name_Region_Water_Lv2,
+                3 => name_Region_Water_Lv3,
+                4 => name_Region_Water_Lv4,
+                5 => name_Region_Water_Lv5,
+                _ => null
+            },
+            RegionName.Sandlands => number switch
+            {
+                1 => name_Region_Sand_Lv1,
+                2 => name_Region_Sand_Lv2,
+                3 => name_Region_Sand_Lv3,
+                4 => name_Region_Sand_Lv4,
+                5 => name_Region_Sand_Lv5,
+                _ => null
+            },
+            RegionName.Frostfields => number switch
+            {
+                1 => name_Region_Ice_Lv1,
+                2 => name_Region_Ice_Lv2,
+                3 => name_Region_Ice_Lv3,
+                4 => name_Region_Ice_Lv4,
+                5 => name_Region_Ice_Lv5,
+                _ => null
+            },
+            RegionName.Firevein => number switch
+            {
+                1 => name_Region_Lava_Lv1,
+                2 => name_Region_Lava_Lv2,
+                3 => name_Region_Lava_Lv3,
+                4 => name_Region_Lava_Lv4,
+                5 => name_Region_Lava_Lv5,
+                _ => null
+            },
+            RegionName.Witchmire => number switch
+            {
+                1 => name_Region_Swamp_Lv1,
+                2 => name_Region_Swamp_Lv2,
+                3 => name_Region_Swamp_Lv3,
+                4 => name_Region_Swamp_Lv4,
+                5 => name_Region_Swamp_Lv5,
+                _ => null
+            },
+            RegionName.Metalworks => number switch
+            {
+                1 => name_Region_Metal_Lv1,
+                2 => name_Region_Metal_Lv2,
+                3 => name_Region_Metal_Lv3,
+                4 => name_Region_Metal_Lv4,
+                5 => name_Region_Metal_Lv5,
+                _ => null
+            },
+            _ => null
+        };
+    }
+
     #region Region Names
     public string name_Region_Water;
     public string name_Region_Sand;

@@ -166,6 +166,7 @@ public class PickupSaveInfo
 [Serializable]
 public class MapNameDisplay
 {
+    public string sceneName;
     public string mapNameDisplay_norwegian;
     public string mapNameDisplay_english;
     public string mapNameDisplay_german;
