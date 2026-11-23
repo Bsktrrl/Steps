@@ -470,6 +470,7 @@ public class Player_Animations : Singleton<Player_Animations>
         if (!Movement.Instance.isRespawning &&
             !CameraController.Instance.isRotating &&
             !PopUpManager.Instance.ability_Active &&
+            !PopUpManager.Instance.oneTimer_Active &&
             !PauseMenuManager.Instance.isActive &&
             !Player_KeyInputs.Instance.freeCam_isPressed)
         {

@@ -236,7 +236,8 @@ public class MapManager : Singleton<MapManager>
         if (introCamera && introCamera.gameObject.scene != gameObject.scene)
             introCamera = null;
 
-        bool playIntro = DataManager.Instance.settingData_StoreList?.currentSkipIntro == SkipIntro.No;
+        bool playIntro = levelName != LevelNames.HUB &&
+            DataManager.Instance.settingData_StoreList?.currentSkipIntro == SkipIntro.No;
         introSequence = playIntro && introCamera && introCamera.TryStartTravel(SpawnedPlayer);
         if (introSequence)
             Action_StartIntroSequence?.Invoke();
