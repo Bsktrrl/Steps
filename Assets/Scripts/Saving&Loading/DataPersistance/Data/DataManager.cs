@@ -204,36 +204,41 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         gameData.playerStatistics_Save = this.playerStatistics_Store;
     }
 
-    public void Load_NewGame_Data(GameData oldData, GameData newData)
+    internal GameData CreateNewGameData(bool hasStartedNewGame)
     {
-        //Files to delete upon newGame
-        this.menuState_Store = newData.menuState_Save;
-        this.playerStats_Store = newData.playerStats_Save;
-        this.mapInfo_StoreList = newData.mapInfo_SaveList;
-        this.overWorldStates_StoreList = newData.overWorldStates_SaveList;
-        this.settingData_StoreList = newData.settingData_SaveList;
-        this.mapNameDisplay_Store = newData.mapNameDisplay_Save;
-        this.charatersData_Store = newData.charatersData_Save;
-        this.skinsInfo_Store = newData.skinsInfo_Save;
+        var newData = new GameData
+        {
+            haveStartedNewGame_Save = hasStartedNewGame,
+            game_TextDatabase_Save = game_TextDatabase_Store
+        };
 
-        this.oneTimeRunData_Store = gameData.oneTimeRunData_Save;
+        if (hasStartedNewGame)
+        {
+            // Copy settings before resetting the intro so a failed write leaves live settings intact.
+            if (settingData_StoreList != null)
+            {
+                var settings = JsonUtility.FromJson<SettingData>(JsonUtility.ToJson(settingData_StoreList));
+                settings.currentSkipIntro = newData.settingData_SaveList.currentSkipIntro;
+                newData.settingData_SaveList = settings;
+            }
 
-        this.haveStartedNewGame_Store = newData.haveStartedNewGame_Save;
+            newData.oneTimeRunData_Save.startVolum_Values = oneTimeRunData_Store?.startVolum_Values == true;
+        }
 
-        this.playerStatsData_Store = newData.PlayerStatsData_Save;
-        this.playerStatsData_Store.sessionStats.session_No = 1;
+        newData.PlayerStatsData_Save.sessionStats.session_No = 1;
+        newData.playerStatistics_Save.initialized = true;
+        newData.playerStatistics_Save.sessions = 1;
+        newData.skinsInfo_Save.skinWardrobeInfo = new SkinsWardrobeInfo { skin_Default = WardrobeSkinState.Selected };
+        newData.skinsInfo_Save.skinHatInfo = new SkinsHatInfo();
+        return newData;
+    }
 
-        this.glueplantStandStats_Store = newData.glueplantStandStats_Save;
-        this.switchesData_Store = newData.switchesData_Save;
-
-        this.permanentAbilitiesReceived_Store = newData.permanentAbilitiesReceived_Save;
-        this.playerStatistics_Store = newData.playerStatistics_Save;
-
-
-        //Persist through newGame
-        this.settingData_StoreList = oldData.settingData_SaveList;
-        this.settingData_StoreList.currentSkipIntro = newData.settingData_SaveList.currentSkipIntro;
-        this.oneTimeRunData_Store.startVolum_Values = oldData.oneTimeRunData_Save.startVolum_Values;
+    internal void ApplyNewGameData(GameData newData)
+    {
+        GetSavedDataFromFile(newData);
+        PlayerStats playerStats = FindAnyObjectByType<PlayerStats>();
+        if (playerStats)
+            playerStats.stats = playerStats_Store;
     }
 }
 

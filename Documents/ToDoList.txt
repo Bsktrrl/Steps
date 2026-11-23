@@ -23,7 +23,52 @@ Demo:
 17. Små-bugs:
 	- Endre tekst i tutorial til Ikoner for keyboard-tekstene, så det ikke blir kode for rosa tekst i dialog-teksten
 
-  
+
+18. Bugs to check:
+- 1. SaveState, og NewGame
+- 2. EssenceCubes må lagres basert på index og level, ikke posisjon
+- 3. Falling sand can stay gone after respawn
+- 5. Frostfield and Witchmire can award each other’s permanent abilities - swap them
+- 7. Cancelling a Grappling Hook charge can throw an exception
+- 8. Level startup can simulate an ability pickup on an empty grant list
+- 10. Level Intro can override a level’s setup or leave controls locked
+- 12. FreeCam time is discarded when an attempt ends without reaching the goal
+- 13. Held movement can resume behind the first-footprint guide
+- 14. FreeCam can leave a movement key stuck in gameplay state.
+- 15. Entering FreeCam can push the camera into or through geometry
+- 16. Tablet reading and camera controls can overlap
+- 17. Linked teleporters can receive the wrong color
+- 18. Swim highlights can be stale after a fall
+- 19. Camera rig Inspector values are overwritten at runtime
+- 20. Interaction prompts show the opposite controller’s icon
+- 21. Horizontal navigation can change the last selected setting
+- 22. A hidden cursor can still take menu focus on the controller’s frame
+- 23. Rapid pickups can cut off newer notices. Each pickup starts its own display timer
+- 24. The Source Block Wardrobe message targets the wrong panel
+- 26. The typewriter processes markup as dialogue
+- 27. One action can trigger several full saves.
+- 28. One action can trigger several full saves.
+- 29. The default renderer does expensive work every frame
+- 30. The custom renderer has no cleanup for its render textures
+- 31. Camera collision can run many physics queries per frame
+- 32. Falling and movable terrain can create allocation and physics spikes together
+- 33. Ordinary walking recreates the Grappling Hook marker
+- 34. Water and other blocks do work far from the player
+- 35. Tree branches accumulate respawn listeners across scenes
+- 36. Reopening panels accumulates localization callbacks
+- 37. NPC triggers repeatedly toggle colliders and compete for the Talk prompt
+- 38. Dense areas can exceed the environmental audio scan capacity
+- 39. Several idle checks run continuously
+- 44. A missing scene singleton can create an invalid replacement
+- 45. Optional playtest telemetry can lose or repeat session data
+
+
+
+
+
+
+
+
 
 
 --------------------

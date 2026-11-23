@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class DataPersistanceManager : Singleton<DataPersistanceManager>
 {
@@ -15,6 +12,8 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
     public GameData gameData;
     List<IDataPersistance> dataPersistanceObjects;
     FileDataHandler dataHandler;
+    bool savingEnabled;
+    bool canReplaceSave;
 
     public static DataPersistanceManager instance { get; private set; }
 
@@ -44,61 +43,66 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
     //--------------------
 
 
-    public void NewGame()
+    public bool NewGame()
     {
-        GameData oldData = gameData ?? new GameData();
+        if (!savingEnabled)
+            return false;
 
-        this.gameData = new GameData(); // create fresh data
-
-        // Clear the DataManager's stores explicitly
         DataManager data = DataManager.Instance;
-        data.Load_NewGame_Data(oldData, this.gameData);
+        GameData newData = data.CreateNewGameData(hasStartedNewGame: true);
+        if (!WriteSave(newData))
+            return false;
+
+        gameData = newData;
+        data.ApplyNewGameData(newData);
         Player_Statistics_Manager.Active?.ResetForNewGame(data);
-
-        //Persist through newGame
-        this.gameData.settingData_SaveList = DataManager.Instance.settingData_StoreList;
-
-        // Save the new clean data
-        SaveGame(updateStatistics: false);
-
         Action_NewGame?.Invoke();
+        return true;
     }
+
     public void LoadGame()
     {
-        //Load any saved data from a file using the "data handler"
-        this.gameData = dataHandler.Load();
+        savingEnabled = false;
+        SaveLoadResult result = dataHandler.Load(out gameData);
+        canReplaceSave = result == SaveLoadResult.Loaded;
 
-        //If no data can be loaded, initialize to a new data
-        if (this.gameData == null)
+        if (result != SaveLoadResult.Loaded)
         {
-            print("No data was found. Initializing data to defaults");
-            NewGame();
+            // Keep the menu usable while writes are blocked after a failed read.
+            DataManager data = DataManager.Instance;
+            gameData = data.CreateNewGameData(hasStartedNewGame: false);
+            data.ApplyNewGameData(gameData);
+            Player_Statistics_Manager.Active?.ResetForNewGame(data);
         }
 
-        //Push the loaded data to all other scripts that need it
         foreach (IDataPersistance dataPersistanceObj in dataPersistanceObjects)
-        {
             dataPersistanceObj.LoadData(gameData);
-        }
+
+        savingEnabled = result != SaveLoadResult.Failed;
+        if (result == SaveLoadResult.Missing)
+            WriteSave(gameData);
     }
+
     public void SaveGame()
     {
-        SaveGame(updateStatistics: true);
+        if (!savingEnabled)
+            return;
+
+        Player_Statistics_Manager.Active?.FlushStatistics();
+
+        foreach (IDataPersistance dataPersistanceObj in dataPersistanceObjects)
+            dataPersistanceObj.SaveData(ref gameData);
+
+        WriteSave(gameData);
     }
 
-    private void SaveGame(bool updateStatistics)
+    private bool WriteSave(GameData data)
     {
-        if (updateStatistics)
-            Player_Statistics_Manager.Active?.FlushStatistics();
+        if (!dataHandler.Save(data, replaceExisting: canReplaceSave))
+            return false;
 
-        //Pass the data to other scripts so thay can update it
-        foreach (IDataPersistance dataPersistanceObj in dataPersistanceObjects)
-        {
-            dataPersistanceObj.SaveData(ref gameData);
-        }
-
-        //Save that data to a file using the "data handler"
-        dataHandler.Save(gameData);
+        canReplaceSave = true;
+        return true;
     }
 
 
@@ -107,6 +111,9 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
     private void OnApplicationQuit()
     {
+        if (!savingEnabled)
+            return;
+
         Player_Statistics_Manager.Active?.FinishLevelAttempt();
 
         //Make it so that the playerStatsData are reset on next game played
