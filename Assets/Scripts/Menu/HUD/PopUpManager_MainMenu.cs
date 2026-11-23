@@ -34,15 +34,21 @@ public class PopUpManager_MainMenu : Singleton<PopUpManager_MainMenu>
 
     //Keep track of running fades so we can stop/replace them per parent
     private readonly Dictionary<GameObject, Coroutine> _runningFades = new();
+    private readonly Queue<string> permanentAbilityMessages = new();
+    private Coroutine permanentAbilityRoutine;
 
 
     //--------------------
 
 
-    public void ShowPermanentAbilityPopup(string _text)
+    public void ShowPermanentAbilityPopup(string message)
     {
+        permanentAbilityMessages.Enqueue(message);
+        if (permanentAbilityRoutine != null)
+            return;
+
         inputModule.enabled = false;
-        StartCoroutine(PermanentAbilityRoutine(_text));
+        permanentAbilityRoutine = StartCoroutine(PermanentAbilityRoutine());
     }
 
 
@@ -85,16 +91,21 @@ public class PopUpManager_MainMenu : Singleton<PopUpManager_MainMenu>
     //--------------------
 
 
-    IEnumerator PermanentAbilityRoutine(string _text)
+    IEnumerator PermanentAbilityRoutine()
     {
         yield return null;
+        popup_PermanentAbilities_Text.text = permanentAbilityMessages.Dequeue();
         ShowDisplay(popup_Parent, popup_PermanentAbilities_Parent);
 
-        popup_PermanentAbilities_Text.text = _text;
-
         yield return new WaitForSeconds(message_Duration);
+        while (permanentAbilityMessages.Count > 0)
+        {
+            popup_PermanentAbilities_Text.text = permanentAbilityMessages.Dequeue();
+            yield return new WaitForSeconds(message_Duration);
+        }
 
         HideDisplay(popup_Parent, popup_PermanentAbilities_Parent);
+        permanentAbilityRoutine = null;
     }
 
 
