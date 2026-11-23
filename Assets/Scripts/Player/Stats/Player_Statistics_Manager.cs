@@ -44,11 +44,11 @@ public class Player_Statistics_Manager : MonoBehaviour
     private int pendingStepsReplenished;
     private int pendingRespawns;
     private float pendingStandingTime;
+    private float pendingFreeCamTime;
 
     // A save drains the pending counters. These totals belong to the whole attempt.
     private int attemptSteps;
     private float attemptTime;
-    private float attemptFreeCamTime;
     private bool attemptCompleted;
     private bool attemptClosed;
 
@@ -154,9 +154,9 @@ public class Player_Statistics_Manager : MonoBehaviour
         pendingStepsReplenished = 0;
         pendingRespawns = 0;
         pendingStandingTime = 0f;
+        pendingFreeCamTime = 0f;
         attemptSteps = 0;
         attemptTime = 0f;
-        attemptFreeCamTime = 0f;
         attemptCompleted = false;
         attemptClosed = false;
     }
@@ -172,7 +172,7 @@ public class Player_Statistics_Manager : MonoBehaviour
         attemptTime += elapsed;
 
         if (freeCam && freeCam._isActive)
-            attemptFreeCamTime += elapsed;
+            pendingFreeCamTime += elapsed;
         else if (!player.pauseGame && !player.pauseMovement && !player.npcInteraction &&
                  !movement.isRespawning && !movement.isMoving && !movement.IsClimbingLadder &&
                  movement.GetMovementState() == MovementStates.Still)
@@ -205,11 +205,13 @@ public class Player_Statistics_Manager : MonoBehaviour
         AddStepsReplenished(pendingStepsReplenished);
         AddRespawns(pendingRespawns);
         AddTimeStandingStill(pendingStandingTime);
+        AddTimeInFreeCam(pendingFreeCamTime);
 
         pendingSteps = 0;
         pendingStepsReplenished = 0;
         pendingRespawns = 0;
         pendingStandingTime = 0f;
+        pendingFreeCamTime = 0f;
         CheckProgress();
     }
 
@@ -249,7 +251,6 @@ public class Player_Statistics_Manager : MonoBehaviour
         AddFastestLevelCOmpletion(levelName, attemptTime);
         AddSlowestLevelCOmpletion(levelName, attemptTime);
         AddAverageLevelCompletionTime(attemptTime);
-        AddTimeInFreeCam(attemptFreeCamTime);
     }
 
     private void RecordStep()

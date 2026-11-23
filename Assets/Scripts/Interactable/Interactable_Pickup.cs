@@ -171,7 +171,7 @@ public class Interactable_Pickup : MonoBehaviour
         Map_SaveInfo mapInfo = mapManager.mapInfo_ToSave;
         if (goal)
         {
-            if (GlueplantStandStats.IsMetalworks(mapManager.levelName))
+            if (GlueplantStandStats.IsMetalworks(mapManager.levelName) || !mapManager.TryBeginLevelCompletion())
                 return false;
 
             mapInfo.isCompleted = true;

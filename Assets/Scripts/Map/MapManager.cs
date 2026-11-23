@@ -55,9 +55,20 @@ public class MapManager : Singleton<MapManager>
     // The map intro and the first HUB spawn/dialogue are separate sequences.
     public bool IntroInputLocked => introSequence || !introSequence_Finished;
 
-    public bool GameplayInputLocked => IntroInputLocked ||
+    internal bool IsCompletingLevel { get; private set; }
+
+    public bool GameplayInputLocked => IntroInputLocked || IsCompletingLevel ||
         (levelName == LevelNames.HUB && HUBTutorial.Instance != null &&
          HUBTutorial.Instance.GameplayInputLocked);
+
+    internal bool TryBeginLevelCompletion()
+    {
+        if (IsCompletingLevel)
+            return false;
+
+        IsCompletingLevel = true;
+        return true;
+    }
 
     private Coroutine blackScreenFadeRoutine;
 

@@ -8,10 +8,10 @@ public class GlueplantStandManager : Singleton<GlueplantStandManager>
     {
         MapManager map = MapManager.Instance;
         StandStats stats = DataManager.Instance.glueplantStandStats_Store?.GetForLevel(map.levelName);
-        if (map.mapInfo_ToSave == null || stats?.TryPlace(standNumber) != true)
+        if (map.IsCompletingLevel || map.mapInfo_ToSave == null || stats?.TryPlace(standNumber) != true)
             return false;
 
-        bool completed = stats.CountTaken == StandStats.StandsPerLevel;
+        bool completed = stats.CountTaken == StandStats.StandsPerLevel && map.TryBeginLevelCompletion();
         if (completed)
         {
             map.mapInfo_ToSave.isCompleted = true;
