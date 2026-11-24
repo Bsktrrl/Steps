@@ -89,6 +89,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     public void ClearCutsceneInput()
     {
+        ClearMovementInput();
+    }
+
+    private void ClearMovementInput()
+    {
         if (Movement.Instance != null)
             Movement.Instance.CancelCutsceneGrapplingTarget();
 
@@ -176,7 +181,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnForward_Hold()
     {
-        if (!ButtonChecks_Movement()) return;
+        if (!forward_isPressed || !ButtonChecks_Movement()) return;
         if (PlayerManager.Instance.pauseMovement) return;
 
         if (!Tutorial.Instance.tutorial_isRunning && Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
@@ -184,12 +189,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnForward_Up()
     {
-        if (freeCam_isPressed) return;
-
         forward_isPressed = false;
         forward_isHold = false;
 
-        Action_WalkButton_isReleased?.Invoke();
+        if (!freeCam_isPressed)
+            Action_WalkButton_isReleased?.Invoke();
     }
 
     void OnBackward_Down()
@@ -214,7 +218,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnBackward_Hold()
     {
-        if (!ButtonChecks_Movement()) { return; }
+        if (!back_isPressed || !ButtonChecks_Movement()) return;
         if (PlayerManager.Instance.pauseMovement) return;
 
         if (!Tutorial.Instance.tutorial_isRunning && Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
@@ -222,12 +226,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnBackward_Up()
     {
-        if (freeCam_isPressed) return;
-
         back_isPressed = false;
         back_isHold = false;
 
-        Action_WalkButton_isReleased?.Invoke();
+        if (!freeCam_isPressed)
+            Action_WalkButton_isReleased?.Invoke();
     }
 
     void OnLeft_Down()
@@ -252,7 +255,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnLeft_Hold()
     {
-        if (!ButtonChecks_Movement()) { return; }
+        if (!left_isPressed || !ButtonChecks_Movement()) return;
         if (PlayerManager.Instance.pauseMovement) return;
 
         if (!Tutorial.Instance.tutorial_isRunning && Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
@@ -260,12 +263,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnLeft_Up()
     {
-        if (freeCam_isPressed) return;
-
         left_isPressed = false;
         left_isHold = false;
 
-        Action_WalkButton_isReleased?.Invoke();
+        if (!freeCam_isPressed)
+            Action_WalkButton_isReleased?.Invoke();
     }
 
     void OnRight_Down()
@@ -290,7 +292,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnRight_Hold()
     {
-        if (!ButtonChecks_Movement()) { return; }
+        if (!right_isPressed || !ButtonChecks_Movement()) return;
         if (PlayerManager.Instance.pauseMovement) return;
 
         if (!Tutorial.Instance.tutorial_isRunning && Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>() && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement != BlockElement.Ice)
@@ -298,12 +300,11 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnRight_Up()
     {
-        if (freeCam_isPressed) return;
-
         right_isPressed = false;
         right_isHold = false;
 
-        Action_WalkButton_isReleased?.Invoke();
+        if (!freeCam_isPressed)
+            Action_WalkButton_isReleased?.Invoke();
     }
 
 
@@ -602,8 +603,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
         if (Movement.Instance.isGrapplingHooking) return;
 
-        Movement.Instance.CancelGrapplingCharge();
-
         if (pauseMenuManager && pauseMenuManager.isActive) return;
 
 
@@ -624,6 +623,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
             freeCam_isPressed = true;
             PlayerManager.Instance.PauseGame();
+            ClearMovementInput();
 
             Run_FreeCam_1_Tutorial_End();
 

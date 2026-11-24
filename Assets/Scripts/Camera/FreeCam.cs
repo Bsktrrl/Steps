@@ -52,9 +52,8 @@ public class FreeCam : Singleton<FreeCam>
     [SerializeField] private AnimationCurve returnEase = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
     [Header("FreeCam Enter Cue")]
-    [SerializeField] private float enterFadeDistance = 1f;
-    [SerializeField] private float enterFadeDuration = 0.03f;
-    [SerializeField] private AnimationCurve enterFadeEase = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    [Min(0f)] [SerializeField] private float enterFadeDistance = 1f;
+    [Min(0.0001f)] [SerializeField] private float enterFadeDuration = 0.4f;
 
     [Header("Flight Look")]
     [Tooltip("Degrees per pixel of mouse movement.")]
@@ -84,6 +83,10 @@ public class FreeCam : Singleton<FreeCam>
     public bool _isActive;
     private Coroutine _returnRoutine;
     private Coroutine _enterCueRoutine;
+    private Vector3? _entryCueTarget;
+
+    private float EntryCueSpeed => Mathf.Max(MinimumFlightDistance, enterFadeDistance) /
+        Mathf.Max(0.0001f, enterFadeDuration);
 
     private const float PitchLimit = 85f;
     private const float ContactTolerance = 0.001f;
@@ -134,6 +137,7 @@ public class FreeCam : Singleton<FreeCam>
         if (playerCamera)
             _cmPlayer = playerCamera;
 
+        _entryCueTarget = null;
         EndFreeCam();
     }
 
@@ -152,6 +156,7 @@ public class FreeCam : Singleton<FreeCam>
         StopAllCoroutines();
         _enterCueRoutine = null;
         _returnRoutine = null;
+        _entryCueTarget = null;
         _isActive = false;
         RestoreCameraHierarchy();
     }
@@ -235,7 +240,10 @@ public class FreeCam : Singleton<FreeCam>
         CM_FreeCam.LookAt = null;
 
         if (!resuming)
+        {
+            _entryCueTarget = null;
             MatchPlayerCamera();
+        }
 
         Vector3 e = CM_FreeCam.transform.rotation.eulerAngles;
         _yaw = e.y;
@@ -251,7 +259,8 @@ public class FreeCam : Singleton<FreeCam>
         if (freeCamUI) freeCamUI.gameObject.SetActive(true);
         
         ResetFlight();
-        _enterCueRoutine = StartCoroutine(EnterFreeCamCue());
+        if (!resuming || _entryCueTarget.HasValue)
+            _enterCueRoutine = StartCoroutine(EnterFreeCamCue());
 
         if (_listener)
             _listener.SetPositionAndRotation(_listenerEntryStart.position, _listenerEntryStart.rotation);
@@ -349,7 +358,12 @@ public class FreeCam : Singleton<FreeCam>
             _currentVelocity = Vector3.zero;
 
         if (displacement.sqrMagnitude >= MinimumFlightDistance * MinimumFlightDistance)
-            cameraTransform.position = SweepFlight(cameraTransform.position, displacement);
+        {
+            Vector3 position = cameraTransform.position;
+            cameraTransform.position = SweepFlight(position, displacement);
+            if (cameraTransform.position != position)
+                _entryCueTarget = null;
+        }
     }
 
     private void TickLook(Transform cameraTransform, Mouse mouse, Gamepad gamepad, float dt)
@@ -372,6 +386,7 @@ public class FreeCam : Singleton<FreeCam>
 
         if (angle == Vector2.zero) return;
 
+        _entryCueTarget = null;
         _yaw = Mathf.Repeat(_yaw + angle.x, 360f);
         _pitch = Mathf.Clamp(_pitch + (invertY ? angle.y : -angle.y), -PitchLimit, PitchLimit);
         cameraTransform.rotation = Quaternion.Euler(_pitch, _yaw, 0f);
@@ -493,6 +508,7 @@ public class FreeCam : Singleton<FreeCam>
 
         if (overlappingBlocking)
         {
+            _entryCueTarget = null;
             CM_FreeCam.transform.position += fwd * freeCamForwardPush;
             yield return null;
             _enterCueRoutine = null;
@@ -500,25 +516,23 @@ public class FreeCam : Singleton<FreeCam>
             yield break;
         }
 
-        Vector3 startPos = CM_FreeCam.transform.position;
-        float pullback = enterFadeDistance;
+        // Reuse the original destination if the player interrupted the short return.
+        Vector3 targetPos = _entryCueTarget ?? pos - fwd * Mathf.Max(0f, enterFadeDistance);
+        Vector3 offset = targetPos - pos;
+        float distance = offset.magnitude;
         // Start manual flight on the clear side of any wall behind the player camera.
-        if (pullback > 0f && FindFlightHit(startPos, -fwd, pullback, out RaycastHit hit))
-            pullback = Mathf.Max(0f, hit.distance - ContactTolerance);
-        Vector3 targetPos = startPos - fwd * pullback;
+        if (distance > MinimumFlightDistance && FindFlightHit(pos, offset / distance, distance, out RaycastHit hit))
+            targetPos = pos + (offset / distance) * Mathf.Max(0f, hit.distance - ContactTolerance);
 
-        float t = 0f;
-        float dur = Mathf.Max(0.0001f, enterFadeDuration);
+        _entryCueTarget = targetPos;
+        Transform cameraTransform = CM_FreeCam.transform;
+        float speed = EntryCueSpeed;
+        yield return null;
 
-        while (t < dur)
+        while (cameraTransform.position != targetPos)
         {
             float dt = useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
-            t += dt;
-
-            float u = Mathf.Clamp01(t / dur);
-            float eased = enterFadeEase != null ? enterFadeEase.Evaluate(u) : u;
-
-            CM_FreeCam.transform.position = Vector3.LerpUnclamped(startPos, targetPos, eased);
+            cameraTransform.position = Vector3.MoveTowards(cameraTransform.position, targetPos, speed * dt);
             yield return null;
         }
 
@@ -549,6 +563,7 @@ public class FreeCam : Singleton<FreeCam>
     {
         if (!_cameraDetached) return;
         _cameraDetached = false;
+        _entryCueTarget = null;
 
         _listenerHome.Restore();
         _listener = null;
@@ -585,8 +600,16 @@ public class FreeCam : Singleton<FreeCam>
         Quaternion startRot = CM_FreeCam.transform.rotation;
         Pose listenerStart = _listener ? new Pose(_listener.position, _listener.rotation) : default;
 
-        float dur = Mathf.Max(0.0001f, returnDuration);
+        float distance = Vector3.Distance(startPos, _cmPlayer.State.GetFinalPosition());
+        bool reverseEntryCue = _entryCueTarget.HasValue && distance <= enterFadeDistance + ContactTolerance;
+        if (!reverseEntryCue)
+            _entryCueTarget = null;
+
+        float dur = reverseEntryCue ? distance / EntryCueSpeed : Mathf.Max(0.0001f, returnDuration);
         float t = 0f;
+
+        if (reverseEntryCue)
+            yield return null;
 
         while (t < dur && CM_FreeCam && _cmPlayer)
         {
@@ -598,7 +621,7 @@ public class FreeCam : Singleton<FreeCam>
 
             var playerState = _cmPlayer.State;
             CM_FreeCam.transform.SetPositionAndRotation(
-                Vector3.LerpUnclamped(startPos, playerState.GetFinalPosition(), eased),
+                Vector3.LerpUnclamped(startPos, playerState.GetFinalPosition(), reverseEntryCue ? u : eased),
                 Quaternion.SlerpUnclamped(startRot, playerState.GetFinalOrientation(), eased)
             );
             if (_listener)
