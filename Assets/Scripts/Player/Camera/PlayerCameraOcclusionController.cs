@@ -40,10 +40,20 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
     public float modeSwitchLerpSpeed = 3f;
 
     [Header("NORMAL CAMERA SETTINGS")]
-    public RigSettings normalRig = new RigSettings();
+    public RigSettings normalRig = new RigSettings
+    {
+        nearShoulderY_Wall = 1.65f,
+        nearShoulderZ_Wall = 0.21f
+    };
 
     [Header("CEILING GRAB CAMERA SETTINGS")]
-    public RigSettings ceilingGrabRig = new RigSettings();
+    public RigSettings ceilingGrabRig = new RigSettings
+    {
+        farVerticalArmLength = -1.35f,
+        nearShoulderY_Clear = 0.85f,
+        nearShoulderY_Wall = 1f,
+        nearShoulderZ_Wall = 0.21f
+    };
 
 
     //--------------------
@@ -62,9 +72,6 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
 
         // start using the normal far distance so there's no pop on frame 1
         _currentDistance = normalRig.farCameraDistance;
-
-        SetupNormalCameraValues();
-        SetupCeilingGrabCameraValues();
 
         ApplyRigInstant(normalRig);
     }
@@ -93,55 +100,6 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
         EvaluateRigAndApply(blendedRig, useCeilingGrabRules);
     }
 
-
-
-    //-------------------------
-
-
-    void SetupNormalCameraValues()
-    {
-        normalRig.farCameraDistance = 4f;
-        normalRig.farShoulderOffset = new Vector3(0f, 0f, -0.5f);
-        normalRig.farVerticalArmLength = 2.77f;
-
-        normalRig.nearCameraDistance = 1.5f;
-        normalRig.nearShoulderOffset = new Vector3(0f, 1.65f, -0.2f);
-        normalRig.nearVerticalArmLength = -1.2f;
-
-        normalRig.ceilingCheckDistance = 0.5f;
-        normalRig.wallCheckDistance = 0.55f;
-
-        normalRig.nearShoulderY_Ceiling = 1.5f;
-        normalRig.nearShoulderY_Clear = 1.45f;
-
-        normalRig.nearShoulderY_Wall = 1.5f; //1.17f
-        normalRig.nearShoulderY_NoWall = 1.65f;
-
-        normalRig.nearShoulderZ_Wall = 0.21f; //-0.24f
-        normalRig.nearShoulderZ_NoWall = -0.2f;
-    }
-    void SetupCeilingGrabCameraValues()
-    {
-        ceilingGrabRig.farCameraDistance = 4f;
-        ceilingGrabRig.farShoulderOffset = new Vector3(0f, 0f, -0.5f);
-        ceilingGrabRig.farVerticalArmLength = -1.35f;
-
-        ceilingGrabRig.nearCameraDistance = 1.5f;
-        ceilingGrabRig.nearShoulderOffset = new Vector3(0f, 1.65f, -0.2f);
-        ceilingGrabRig.nearVerticalArmLength = -1.2f;
-
-        ceilingGrabRig.ceilingCheckDistance = 0.5f;
-        ceilingGrabRig.wallCheckDistance = 0.55f;
-
-        ceilingGrabRig.nearShoulderY_Ceiling = 1.5f;
-        ceilingGrabRig.nearShoulderY_Clear = 1.05f; //0.85f
-
-        ceilingGrabRig.nearShoulderY_Wall = 1.17f; //1f
-        ceilingGrabRig.nearShoulderY_NoWall = 1.65f;
-
-        ceilingGrabRig.nearShoulderZ_Wall = -0.22f; //-0.05f //-0.35 //-0.45
-        ceilingGrabRig.nearShoulderZ_NoWall = -0.2f;
-    }
 
 
     //-------------------------
