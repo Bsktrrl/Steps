@@ -28,7 +28,8 @@ public class TabletManager : Singleton<TabletManager>
 
     private void Start()
     {
-        tabletUI_Parent.SetActive(false);
+        if (tabletUI_Parent)
+            tabletUI_Parent.SetActive(false);
 
         ReadExcelSheet();
     }
@@ -37,47 +38,39 @@ public class TabletManager : Singleton<TabletManager>
     //--------------------
 
 
-    public void ShowTabletUI(GameObject parentObj)
-    {
-        if (fadeCoroutine != null)
-            StopCoroutine(fadeCoroutine);
+    public void ShowTabletUI(GameObject parentObj) => StartFade(parentObj, show: true, isHud: false);
+    public void HideTabletUI(GameObject parentObj) => StartFade(parentObj, show: false, isHud: false);
+    public void ShowHUDUI(GameObject parentObj) => StartFade(parentObj, show: true, isHud: true);
+    public void HideHUDUI(GameObject parentObj) => StartFade(parentObj, show: false, isHud: true);
 
-        fadeCoroutine = StartCoroutine(FadeUI(parentObj, 1f, true));
-    }
-    public void HideTabletUI(GameObject parentObj)
+    private void StartFade(GameObject parentObj, bool show, bool isHud)
     {
-        if (fadeCoroutine != null)
-            StopCoroutine(fadeCoroutine);
+        ref Coroutine routine = ref (isHud ? ref fadeCoroutine_HUD : ref fadeCoroutine);
+        StopFade(ref routine);
+        if (!parentObj)
+            return;
 
-        fadeCoroutine = StartCoroutine(FadeUI(parentObj, 0f, false));
-    }
-    public void ShowHUDUI(GameObject HUD_Object)
-    {
-        if (fadeCoroutine_HUD != null)
-            StopCoroutine(fadeCoroutine_HUD);
-
-        fadeCoroutine_HUD = StartCoroutine(FadeUI(HUD_Object, 1f, true));
-    }
-    public void HideHUDUI(GameObject HUD_Object)
-    {
-        if (fadeCoroutine_HUD != null)
-            StopCoroutine(fadeCoroutine_HUD);
-
-        fadeCoroutine_HUD = StartCoroutine(FadeUI(HUD_Object, 0f, false));
+        CanvasGroup canvasGroup = GetCanvasGroup(parentObj);
+        if (fadeDuration <= 0f)
+            SetFadeEndpoint(canvasGroup, show, isHud);
+        else
+            routine = StartCoroutine(FadeUI(canvasGroup, show, isHud));
     }
 
-    private IEnumerator FadeUI(GameObject parentObj, float targetAlpha, bool show)
+    private void StopFade(ref Coroutine routine)
     {
-        CanvasGroup canvasGroup = parentObj.GetComponent<CanvasGroup>();
+        if (routine != null)
+            StopCoroutine(routine);
+        routine = null;
+    }
 
-        if (canvasGroup == null)
-        {
-            canvasGroup = parentObj.AddComponent<CanvasGroup>();
-        }
+    private IEnumerator FadeUI(CanvasGroup canvasGroup, bool show, bool isHud)
+    {
+        float targetAlpha = show ? 1f : 0f;
 
         if (show)
         {
-            parentObj.SetActive(true);
+            canvasGroup.gameObject.SetActive(true);
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
         }
@@ -85,7 +78,7 @@ public class TabletManager : Singleton<TabletManager>
         float startAlpha = canvasGroup.alpha;
         float elapsedTime = 0f;
 
-        while (elapsedTime < fadeDuration)
+        while (canvasGroup && elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
 
@@ -98,20 +91,56 @@ public class TabletManager : Singleton<TabletManager>
             yield return null;
         }
 
-        canvasGroup.alpha = targetAlpha;
+        if (canvasGroup)
+            SetFadeEndpoint(canvasGroup, show, isHud);
+        if (isHud)
+            fadeCoroutine_HUD = null;
+        else
+            fadeCoroutine = null;
+    }
 
-        if (!show)
-        {
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
+    internal void RestoreGameplayUI()
+    {
+        StopFade(ref fadeCoroutine);
+        StopFade(ref fadeCoroutine_HUD);
+        if (tabletUI_Parent)
+            SetFadeEndpoint(GetCanvasGroup(tabletUI_Parent), show: false, isHud: false);
+        if (hud_Parent)
+            SetFadeEndpoint(GetCanvasGroup(hud_Parent), show: true, isHud: true);
+    }
 
-            // Keep the HUD active while hidden.
-            // Only deactivate the Tablet UI.
-            if (parentObj != hud_Parent)
-                parentObj.SetActive(false);
-        }
+    private static CanvasGroup GetCanvasGroup(GameObject parentObj)
+    {
+        return parentObj.TryGetComponent(out CanvasGroup group) ? group : parentObj.AddComponent<CanvasGroup>();
+    }
 
-        fadeCoroutine = null;
+    private static void SetFadeEndpoint(CanvasGroup group, bool show, bool isHud)
+    {
+        group.alpha = show ? 1f : 0f;
+        group.interactable = show;
+        group.blocksRaycasts = show;
+        if (show || !isHud)
+            group.gameObject.SetActive(show);
+    }
+
+    internal bool TryGetReadText(int entry, out string text)
+    {
+        text = null;
+        var segments = tabletData?.tabletDataSegment;
+        if (segments == null || segments.Count == 0)
+            return false;
+
+        var translations = segments[entry >= 0 && entry < segments.Count ? entry : 0]?.languageDialogueList;
+        if (translations == null || translations.Count == 0)
+            return false;
+
+        int english = (int)Languages.English;
+        int language = (int)(DataManager.Instance.settingData_StoreList?.currentLanguage ?? Languages.English);
+        if (language >= 0 && language < translations.Count)
+            text = translations[language];
+        if (string.IsNullOrWhiteSpace(text) && english < translations.Count)
+            text = translations[english];
+        return true;
     }
 
 

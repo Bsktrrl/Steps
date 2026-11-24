@@ -78,6 +78,7 @@ public class FreeCam : Singleton<FreeCam>
     private CinemachineCamera _cmPlayer;
     private CinemachineBrain _brain;
     public bool _isActive;
+    internal bool IsReturningToPlayer => _returnRoutine != null;
     private Coroutine _returnRoutine;
     private Coroutine _enterCueRoutine;
     private Vector3? _entryCueTarget;

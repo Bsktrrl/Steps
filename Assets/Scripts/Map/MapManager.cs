@@ -57,7 +57,7 @@ public class MapManager : Singleton<MapManager>
 
     internal bool IsCompletingLevel { get; private set; }
 
-    public bool GameplayInputLocked => IntroInputLocked || IsCompletingLevel ||
+    public bool GameplayInputLocked => IntroInputLocked || IsCompletingLevel || AncientTablet.ActiveTablet ||
         (levelName == LevelNames.HUB && HUBTutorial.Instance != null &&
          HUBTutorial.Instance.GameplayInputLocked);
 

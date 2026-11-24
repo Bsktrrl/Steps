@@ -14,6 +14,7 @@ public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
     public float PlayerBody_offset;
 
     private bool holeShaderIsOn;
+    private FreeCam freeCam;
     bool transitionBool;
 
 
@@ -29,9 +30,15 @@ public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
         // Start disabled; the normal raycast check will enable the hole if needed.
         HoleShader_Off();
     }
+
+    private void Start()
+    {
+        freeCam = FindAnyObjectByType<FreeCam>();
+    }
+
     private void Update()
     {
-        if (checkEveryFrame && !GlueplantCamera.IsTraveling)
+        if (checkEveryFrame && !GlueplantCamera.IsTraveling && !AncientTablet.ActiveTablet)
         {
             CheckForBlockInfoBetweenPlayerAndCamera();
         }
@@ -114,7 +121,7 @@ public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
 
     public void HoleShader_On()
     {
-        if (FreeCam.Instance._isActive) return;
+        if (AncientTablet.ActiveTablet || (freeCam && freeCam._isActive)) return;
 
         holeShaderIsOn = true;
         transitionBool = true;

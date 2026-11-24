@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using Unity.Cinemachine;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class AncientTablet : MonoBehaviour
@@ -13,9 +10,18 @@ public class AncientTablet : MonoBehaviour
     [Header("Tablet Camera")]
     [SerializeField] CinemachineCamera tabletVirtualCamera;
 
-    bool tabletInterractTransitioning;
+    internal static AncientTablet ActiveTablet { get; private set; }
+
     bool tabletIsShowing;
+    PlayerManager player;
+    TabletManager tabletManager;
+    CameraController cameraController;
+    PrioritySettings playerCameraPriority;
+    PrioritySettings tabletCameraPriority;
+    float previousBlendTime;
     ButtonMessageManager interactionPrompts;
+    RenderHiderOnContact renderHider;
+    HoleShaderOnOffScript holeShader;
 
 
     //--------------------
@@ -23,107 +29,154 @@ public class AncientTablet : MonoBehaviour
 
     private void OnEnable()
     {
-        Player_KeyInputs.Action_InteractButton_isPressed += Interraction;
-
         Movement.Action_StepTaken_Late += DisplayButtonMessageDelayed;
         Movement.Action_BodyRotated += DisplayButtonMessageDelayed;
         Movement.Action_RespawnPlayerLate += DisplayButtonMessageDelayed;
+        Movement.Action_RespawnPlayerEarly += InterruptInteraction;
     }
 
     private void OnDisable()
     {
-        if (interactionPrompts)
-            interactionPrompts.EndTabletInteraction(this);
-
-        Player_KeyInputs.Action_InteractButton_isPressed -= Interraction;
-
         Movement.Action_StepTaken_Late -= DisplayButtonMessageDelayed;
         Movement.Action_BodyRotated -= DisplayButtonMessageDelayed;
         Movement.Action_RespawnPlayerLate -= DisplayButtonMessageDelayed;
+        Movement.Action_RespawnPlayerEarly -= InterruptInteraction;
+
+        StopAllCoroutines();
+        if (ActiveTablet == this)
+            ReleaseInteraction(interrupted: true);
     }
 
 
     //--------------------
 
 
-    void Interraction()
+    internal void TryOpen(Player_KeyInputs inputs)
     {
-        if (tabletInterractTransitioning) return;
+        if (!isActiveAndEnabled || ActiveTablet || !tabletVirtualCamera || !tabletVirtualCamera.isActiveAndEnabled)
+            return;
 
-        if (tabletIsShowing)
-            EndInterraction();
-        else
-            RunInterraction();
-    }
+        Movement movement = Movement.Instance;
+        if (movement.GetMovementState() != MovementStates.Still || movement.IsClimbingLadder ||
+            Player_Animations.Instance.IsPickupAnimationPending || Player_Interact.Instance.isInteracting)
+            return;
 
+        player = PlayerManager.Instance;
+        var freeCam = player.GetComponentInChildren<FreeCam>();
+        var respawn = player.GetComponentInChildren<SFX_Respawn>();
+        if (player.pauseMovement || player.npcInteraction || (freeCam && (freeCam._isActive || freeCam.IsReturningToPlayer)) ||
+            (respawn && respawn.isRespawning))
+            return;
 
-    void RunInterraction()
-    {
-        if (PlayerManager.Instance.block_LookingAt_Horizontal == gameObject)
-        {
-            print("Tablet - RunInterraction");
+        cameraController = CameraController.Instance;
+        tabletManager = FindAnyObjectByType<TabletManager>();
+        if (!cameraController.CM_Player || !cameraController.CM_Brain || cameraController.isCeilingRotating ||
+            !tabletManager || !tabletManager.tabletUI_Parent || !tabletManager.tabletUI_Text ||
+            !tabletManager.TryGetReadText(textEntryNumber, out string text))
+            return;
 
-            tabletInterractTransitioning = true;
-            interactionPrompts = ButtonMessageManager.Instance;
+        playerCameraPriority = cameraController.CM_Player.Priority;
+        tabletCameraPriority = tabletVirtualCamera.Priority;
+        previousBlendTime = cameraController.CM_Brain.DefaultBlend.Time;
+        interactionPrompts = FindAnyObjectByType<ButtonMessageManager>();
+        renderHider = FindAnyObjectByType<RenderHiderOnContact>();
+        holeShader = FindAnyObjectByType<HoleShaderOnOffScript>();
+
+        ActiveTablet = this;
+        player.PauseMovement();
+        inputs.ClearCutsceneInput();
+        if (interactionPrompts)
             interactionPrompts.BeginTabletInteraction(this);
 
-            StartCoroutine(RunInterraction_Delay());
-        }
+        StartCoroutine(OpenTablet(text));
     }
-    IEnumerator RunInterraction_Delay()
+
+    IEnumerator OpenTablet(string text)
     {
-        PlayerManager.Instance.PauseMovement();
+        if (renderHider)
+            renderHider.FreeCamOn();
+        if (holeShader)
+            holeShader.HoleShader_Off();
 
-        RenderHiderOnContact.Instance.FreeCamOn();
-        HoleShaderOnOffScript.Instance.HoleShader_Off();
+        tabletManager.HideHUDUI(tabletManager.hud_Parent);
+        yield return cameraController.StartVirtualCameraBlend_In(tabletVirtualCamera);
 
-        TabletManager.Instance.HideHUDUI(TabletManager.Instance.hud_Parent);
+        if (!tabletManager || !tabletManager.tabletUI_Text || !tabletManager.tabletUI_Parent)
+        {
+            ReleaseInteraction(interrupted: true);
+            yield break;
+        }
 
-        //Change camera
-        CameraController.Instance.CM_Other = tabletVirtualCamera;
-        yield return StartCoroutine(CameraController.Instance.StartVirtualCameraBlend_In(CameraController.Instance.CM_Other));
-
-        if (textEntryNumber < TabletManager.Instance.tabletData.tabletDataSegment.Count)
-            TabletManager.Instance.tabletUI_Text.text = TabletManager.Instance.tabletData.tabletDataSegment[textEntryNumber].languageDialogueList[(int)DataManager.Instance.settingData_StoreList.currentLanguage];
-        else
-            TabletManager.Instance.tabletUI_Text.text = TabletManager.Instance.tabletData.tabletDataSegment[0].languageDialogueList[(int)DataManager.Instance.settingData_StoreList.currentLanguage];
-
-        TabletManager.Instance.ShowTabletUI(TabletManager.Instance.tabletUI_Parent);
+        tabletManager.tabletUI_Text.text = text;
+        tabletManager.ShowTabletUI(tabletManager.tabletUI_Parent);
         Player_Statistics_Manager.Active?.RecordTabletRead(textEntryNumber, transform.position);
 
-        yield return new WaitForSeconds(TabletManager.Instance.fadeDuration);
+        yield return new WaitForSeconds(tabletManager.fadeDuration);
         tabletIsShowing = true;
-        tabletInterractTransitioning = false;
     }
 
-    void EndInterraction()
+    internal void CloseIfReady()
     {
-        print("Tablet - EndInterraction");
-
-        tabletInterractTransitioning = true;
-
-        StartCoroutine(EndInterraction_Delay());
-    }
-    IEnumerator EndInterraction_Delay()
-    {
-        TabletManager.Instance.HideTabletUI(TabletManager.Instance.tabletUI_Parent);
-        yield return new WaitForSeconds(TabletManager.Instance.fadeDuration);
-
-        yield return StartCoroutine(CameraController.Instance.StartVirtualCameraBlend_Out(tabletVirtualCamera));
-        CameraController.Instance.CM_Other = null;
-
-        TabletManager.Instance.ShowHUDUI(TabletManager.Instance.hud_Parent);
-
-        RenderHiderOnContact.Instance.FreeCamOff();
-        HoleShaderOnOffScript.Instance.HoleShader_On();
+        if (ActiveTablet != this || !tabletIsShowing)
+            return;
 
         tabletIsShowing = false;
-        tabletInterractTransitioning = false;
+        StartCoroutine(CloseTablet());
+    }
 
-        PlayerManager.Instance.UnpauseMovement();
-        interactionPrompts.EndTabletInteraction(this);
-        interactionPrompts = null;
+    IEnumerator CloseTablet()
+    {
+        if (!tabletManager)
+        {
+            ReleaseInteraction(interrupted: true);
+            yield break;
+        }
+
+        tabletManager.HideTabletUI(tabletManager.tabletUI_Parent);
+        yield return new WaitForSeconds(tabletManager.fadeDuration);
+        yield return cameraController.StartVirtualCameraBlend_Out(tabletVirtualCamera);
+
+        if (tabletManager)
+            tabletManager.ShowHUDUI(tabletManager.hud_Parent);
+        ReleaseInteraction(interrupted: false);
         DisplayButtonMessage();
+    }
+
+    void InterruptInteraction()
+    {
+        if (ActiveTablet != this)
+            return;
+
+        StopAllCoroutines();
+        ReleaseInteraction(interrupted: true);
+    }
+
+    void ReleaseInteraction(bool interrupted)
+    {
+        if (interrupted && tabletManager)
+            tabletManager.RestoreGameplayUI();
+
+        if (tabletVirtualCamera)
+            tabletVirtualCamera.Priority = tabletCameraPriority;
+        if (cameraController)
+        {
+            if (cameraController.CM_Player)
+            {
+                cameraController.CM_Player.Priority = playerCameraPriority;
+                cameraController.CM_Player.Prioritize();
+            }
+            if (cameraController.CM_Brain)
+                cameraController.CM_Brain.DefaultBlend.Time = previousBlendTime;
+        }
+
+        tabletIsShowing = false;
+        ActiveTablet = null;
+        if (renderHider)
+            renderHider.FreeCamOff();
+        if (player)
+            player.UnpauseMovement();
+        if (interactionPrompts)
+            interactionPrompts.EndTabletInteraction(this);
     }
 
 

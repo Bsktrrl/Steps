@@ -82,7 +82,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     private bool GameplayInputLocked => MapManager.Instance == null ||
         MapManager.Instance.GameplayInputLocked;
 
-    private bool DialogueCameraAllowed => MapManager.Instance != null &&
+    private bool DialogueCameraAllowed => !AncientTablet.ActiveTablet && MapManager.Instance != null &&
         !MapManager.Instance.IntroInputLocked &&
         MapManager.Instance.levelName == LevelNames.HUB &&
         HUBTutorial.Instance != null && HUBTutorial.Instance.DialogueCameraAllowed;
@@ -461,12 +461,26 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnInteractButton_Pressed()
     {
+        AncientTablet openTablet = AncientTablet.ActiveTablet;
+        if (openTablet)
+        {
+            openTablet.CloseIfReady();
+            return;
+        }
+
         if (GameplayInputLocked) return;
         if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
         if (!ButtonChecks_Movement()) { return; }
         if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
+
+        GameObject lookedAt = PlayerManager.Instance.block_LookingAt_Horizontal;
+        if (lookedAt && lookedAt.TryGetComponent(out AncientTablet tablet))
+        {
+            tablet.TryOpen(this);
+            return;
+        }
 
         Action_InteractButton_isPressed?.Invoke();
     }
@@ -572,7 +586,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnRespawn_Out()
     {
-        if (freeCam_isPressed) return;
+        if (AncientTablet.ActiveTablet || freeCam_isPressed) return;
 
         respawn_isPressed = false;
         Action_RespawnCanceled?.Invoke();
