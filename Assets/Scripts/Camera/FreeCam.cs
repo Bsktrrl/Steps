@@ -67,9 +67,6 @@ public class FreeCam : Singleton<FreeCam>
     [Range(0f, 0.9f)] public float lookStickDeadzone = 0.15f;
     [Range(0f, 0.9f)] public float moveStickDeadzone = 0.15f;
 
-    [Header("FreeCamForwardPush")]
-    [SerializeField] private float freeCamForwardPush = 1.4f;
-
     private PrioritySettings _freeBasePriority;
     private bool _cameraDetached;
     private TransformHome _cameraHome;
@@ -91,6 +88,7 @@ public class FreeCam : Singleton<FreeCam>
     private const float PitchLimit = 85f;
     private const float ContactTolerance = 0.001f;
     private const float MinimumFlightDistance = 0.00001f;
+    private const float EntryRecoveryDistanceReduction = 0.3f;
     private const int SlideIterations = 4;
     private Vector3 _currentVelocity;
     private Vector2 _stickLookRate;
@@ -103,6 +101,10 @@ public class FreeCam : Singleton<FreeCam>
     // Cached hits
     private static readonly RaycastHit[] _hitsCache = new RaycastHit[16];
     private static readonly Collider[] _overlapCache = new Collider[16];
+    private static readonly Vector3[] PlayerClearanceDirections =
+    {
+        Vector3.up, Vector3.down, Vector3.right, Vector3.left, Vector3.forward, Vector3.back
+    };
 
     private void OnEnable()
     {
@@ -259,7 +261,7 @@ public class FreeCam : Singleton<FreeCam>
         if (freeCamUI) freeCamUI.gameObject.SetActive(true);
         
         ResetFlight();
-        if (!resuming || _entryCueTarget.HasValue)
+        if (!resuming || _entryCueTarget.HasValue || HasBlockingOverlap(CM_FreeCam.transform.position))
             _enterCueRoutine = StartCoroutine(EnterFreeCamCue());
 
         if (_listener)
@@ -443,14 +445,13 @@ public class FreeCam : Singleton<FreeCam>
 
     private bool FindFlightHit(Vector3 position, Vector3 direction, float distance, out RaycastHit nearest)
     {
-        var triggers = ignoreTriggers ? QueryTriggerInteraction.Ignore : QueryTriggerInteraction.Collide;
         RaycastHit[] hits = _hitsCache;
-        int count = Physics.SphereCastNonAlloc(position, FlightRadius, direction, hits, distance, obstacleLayers, triggers);
+        int count = Physics.SphereCastNonAlloc(position, FlightRadius, direction, hits, distance, obstacleLayers, FlightTriggers);
 
         // NonAlloc results are unordered. A full buffer may omit the closest blocking hit.
         if (count == hits.Length)
         {
-            hits = Physics.SphereCastAll(position, FlightRadius, direction, distance, obstacleLayers, triggers);
+            hits = Physics.SphereCastAll(position, FlightRadius, direction, distance, obstacleLayers, FlightTriggers);
             count = hits.Length;
         }
 
@@ -463,6 +464,11 @@ public class FreeCam : Singleton<FreeCam>
                 Vector3.Dot(direction, hit.normal) >= -0.0001f)
                 continue;
 
+            // A sphere cast that starts overlapped reports a zero-distance hit with no usable surface normal.
+            if (hit.distance == 0f && TryGetFlightPenetration(position, hit.collider, out Vector3 away, out _) &&
+                Vector3.Dot(direction, away) > 0.0001f)
+                continue;
+
             closest = hit.distance;
             nearest = hit;
         }
@@ -471,11 +477,94 @@ public class FreeCam : Singleton<FreeCam>
     }
 
     private float FlightRadius => Mathf.Max(0.01f, collisionProbeRadius) + Mathf.Max(0f, collisionStopOffset);
+    private QueryTriggerInteraction FlightTriggers => ignoreTriggers ? QueryTriggerInteraction.Ignore : QueryTriggerInteraction.Collide;
 
     private bool IsBlockingCollider(Collider collider)
     {
         return collider && !collider.transform.IsChildOf(transform) &&
                (!usePassThroughMarker || !collider.GetComponentInParent<FreeCamPassThrough>());
+    }
+
+    private bool TryGetFlightPenetration(Vector3 position, Collider obstacle, out Vector3 away, out float depth)
+    {
+        // Only a convex obstacle has a separating plane we can safely move away from.
+        if (obstacle is MeshCollider { convex: false })
+        {
+            away = default;
+            depth = 0f;
+            return false;
+        }
+
+        SphereCollider probe = RuntimeUtility.GetScratchCollider();
+        probe.radius = FlightRadius;
+        return Physics.ComputePenetration(probe, position, Quaternion.identity,
+            obstacle, obstacle.transform.position, obstacle.transform.rotation, out away, out depth);
+    }
+
+    private bool HasBlockingOverlap(Vector3 position)
+    {
+        Collider[] overlaps = _overlapCache;
+        int count = Physics.OverlapSphereNonAlloc(position, FlightRadius, overlaps, obstacleLayers, FlightTriggers);
+        if (count == overlaps.Length)
+        {
+            overlaps = Physics.OverlapSphere(position, FlightRadius, obstacleLayers, FlightTriggers);
+            count = overlaps.Length;
+        }
+
+        for (int i = 0; i < count; i++)
+            if (IsBlockingCollider(overlaps[i]))
+                return true;
+        return false;
+    }
+
+    private Vector3 GetClearEntryPosition(Vector3 position)
+    {
+        // Start on the player's side. The nearest surface normal from inside the wall
+        // can point away from the player, and a cast starting there can miss the wall.
+        Transform followTarget = _cmPlayer.Follow;
+        if (followTarget && TryGetPlayerSideEntryPosition(followTarget.position, position, out Vector3 target))
+            return target;
+
+        PlayerManager player = PlayerManager.Instance;
+        GameObject body = player.playerBody;
+        if (body && TryGetPlayerSideEntryPosition(body.transform.position, position, out target))
+            return target;
+
+        Vector3 playerPosition = player.transform.position;
+        if (TryGetPlayerSideEntryPosition(playerPosition, position, out target))
+            return target;
+
+        // The pivot can be close to the floor or ceiling even when there is room beside it.
+        float offset = FlightRadius + ContactTolerance;
+        foreach (Vector3 direction in PlayerClearanceDirections)
+        {
+            if (TryGetPlayerSideEntryPosition(playerPosition + direction * offset, position, out target))
+                return target;
+        }
+
+        return position;
+    }
+
+    private bool TryGetPlayerSideEntryPosition(Vector3 anchor, Vector3 cameraPosition, out Vector3 target)
+    {
+        target = anchor;
+        if (HasBlockingOverlap(anchor))
+            return false;
+
+        Vector3 offset = cameraPosition - anchor;
+        float distance = offset.magnitude;
+        if (distance > MinimumFlightDistance)
+        {
+            Vector3 direction = offset / distance;
+            if (FindFlightHit(anchor, direction, distance, out RaycastHit hit))
+            {
+                Vector3 candidate = anchor + direction * Mathf.Max(0f, hit.distance - ContactTolerance);
+                if (!HasBlockingOverlap(candidate))
+                    target = candidate;
+            }
+        }
+
+        return true;
     }
 
     // ====================
@@ -484,48 +573,28 @@ public class FreeCam : Singleton<FreeCam>
 
     private IEnumerator EnterFreeCamCue()
     {
-        Vector3 pos = CM_FreeCam.transform.position;
-        Vector3 fwd = CM_FreeCam.transform.forward;
+        Transform cameraTransform = CM_FreeCam.transform;
+        Vector3 pos = cameraTransform.position;
+        Vector3 targetPos;
 
-        int overlapCount = Physics.OverlapSphereNonAlloc(
-            pos,
-            FlightRadius,
-            _overlapCache,
-            obstacleLayers,
-            ignoreTriggers ? QueryTriggerInteraction.Ignore : QueryTriggerInteraction.Collide
-        );
-
-        bool overlappingBlocking = false;
-
-        for (int i = 0; i < overlapCount; i++)
-        {
-            Collider col = _overlapCache[i];
-            if (!IsBlockingCollider(col)) continue;
-
-            overlappingBlocking = true;
-            break;
-        }
-
-        if (overlappingBlocking)
+        if (HasBlockingOverlap(pos))
         {
             _entryCueTarget = null;
-            CM_FreeCam.transform.position += fwd * freeCamForwardPush;
-            yield return null;
-            _enterCueRoutine = null;
+            targetPos = Vector3.MoveTowards(GetClearEntryPosition(pos), pos, EntryRecoveryDistanceReduction);
+        }
+        else
+        {
+            // Reuse the original destination if the player interrupted the short return.
+            targetPos = _entryCueTarget ?? pos - cameraTransform.forward * Mathf.Max(0f, enterFadeDistance);
+            Vector3 offset = targetPos - pos;
+            float distance = offset.magnitude;
+            // Start manual flight on the clear side of any wall behind the player camera.
+            if (distance > MinimumFlightDistance && FindFlightHit(pos, offset / distance, distance, out RaycastHit hit))
+                targetPos = pos + (offset / distance) * Mathf.Max(0f, hit.distance - ContactTolerance);
 
-            yield break;
+            _entryCueTarget = targetPos;
         }
 
-        // Reuse the original destination if the player interrupted the short return.
-        Vector3 targetPos = _entryCueTarget ?? pos - fwd * Mathf.Max(0f, enterFadeDistance);
-        Vector3 offset = targetPos - pos;
-        float distance = offset.magnitude;
-        // Start manual flight on the clear side of any wall behind the player camera.
-        if (distance > MinimumFlightDistance && FindFlightHit(pos, offset / distance, distance, out RaycastHit hit))
-            targetPos = pos + (offset / distance) * Mathf.Max(0f, hit.distance - ContactTolerance);
-
-        _entryCueTarget = targetPos;
-        Transform cameraTransform = CM_FreeCam.transform;
         float speed = EntryCueSpeed;
         yield return null;
 
