@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 [ExecuteAlways]
 public class Block_Teleport : MonoBehaviour
@@ -14,21 +13,22 @@ public class Block_Teleport : MonoBehaviour
     GameObject newLandingSpot_Temp;
     public Color teleport_Color;
     Color teleport_Color_Temp;
-
-    EffectBlockManager effectBlockManager;
+    Color localTintAtLastSync;
+    Color sharedTint;
+    bool colorsInitialized;
+    BlockInfo blockInfo;
 
     [Header("Material Rendering")]
     [SerializeField] List<MeshRenderer> objectRenderers = new List<MeshRenderer>();
-    [HideInInspector] public List<MaterialPropertyBlock> propertyBlocks = new List<MaterialPropertyBlock>();
+    readonly List<MeshRenderer> foundRenderers = new List<MeshRenderer>();
+    MaterialPropertyBlock propertyBlock;
+    bool renderersDirty = true;
+    static readonly int PortalColor = Shader.PropertyToID("_PortalColor");
+    static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
 
 
     //--------------------
 
-
-    private void Awake()
-    {
-        effectBlockManager = FindObjectOfType<EffectBlockManager>();
-    }
 
     private void Start()
     {
@@ -46,6 +46,7 @@ public class Block_Teleport : MonoBehaviour
 
     private void OnEnable()
     {
+        renderersDirty = true;
         Movement.Action_StepTaken += TeleportPlayer;
         Action_StartTeleport += StartTeleport_Action;
         Action_EndTeleport += EndTeleport_Action;
@@ -66,100 +67,87 @@ public class Block_Teleport : MonoBehaviour
 
     public void SetupTeleporter()
     {
-        SetObjectRendererRecursively(transform);
-        SetPropertyBlock();
-
-        SetIconColor(gameObject, teleport_Color);
+        renderersDirty = true;
+        SetTeleportLinkColors();
     }
 
-
-    //--------------------
-
-
-    void SetObjectRendererRecursively(Transform parent)
+    private void OnTransformChildrenChanged()
     {
-        if (objectRenderers.Count > 0) { return; }
+        renderersDirty = true;
+    }
 
-        foreach (Transform child in parent)
+    private void OnValidate()
+    {
+        renderersDirty = true;
+    }
+
+    Color LocalTint
+    {
+        get
         {
-            //Check if this child has the component
-            GameObject block = child.gameObject;
-
-            if (block != null)
-            {
-                if (block.GetComponent<EffectBlock_Reference>())
-                {
-                    objectRenderers.Add(block.GetComponent<MeshRenderer>());
-                }
-            }
-
-            //Recurse into this child
-            SetObjectRendererRecursively(child);
+            if (!blockInfo)
+                TryGetComponent(out blockInfo);
+            return blockInfo ? blockInfo.stepCostText_Color : Color.white;
         }
     }
-    void SetPropertyBlock()
-    {
-        // Initialize property blocks and get original colors
-        for (int i = 0; i < objectRenderers.Count; i++)
-        {
-            MaterialPropertyBlock block = new MaterialPropertyBlock();
-            objectRenderers[i].GetPropertyBlock(block);
-            propertyBlocks.Add(block);
-        }
-    }
-
-
-    //--------------------
-
 
     void SetTeleportLinkColors()
     {
-        if (newLandingSpot)
+        Color localTint = LocalTint;
+        bool linkChanged = newLandingSpot_Temp != newLandingSpot;
+        if (colorsInitialized && !linkChanged && teleport_Color_Temp == teleport_Color && localTintAtLastSync == localTint)
         {
-            //Check if Teleporter has been linked
-            if (newLandingSpot_Temp != newLandingSpot)
-            {
-                newLandingSpot_Temp = newLandingSpot;
-
-                if (newLandingSpot.GetComponent<Block_Teleport>())
-                {
-                    newLandingSpot.GetComponent<Block_Teleport>().newLandingSpot = gameObject;
-                    newLandingSpot.GetComponent<Block_Teleport>().teleport_Color = teleport_Color;
-
-                    SetIconColor(newLandingSpot, teleport_Color);
-                }
-            }
-
-            //Check if teleportImageColor has changed
-            if (teleport_Color_Temp != teleport_Color)
-            {
-                teleport_Color_Temp = teleport_Color;
-
-                if (newLandingSpot.GetComponent<Block_Teleport>())
-                {
-                    newLandingSpot.GetComponent<Block_Teleport>().teleport_Color = teleport_Color;
-
-                    SetIconColor(newLandingSpot, teleport_Color);
-                }
-            }
+            if (renderersDirty)
+                ApplyIconColors();
+            return;
         }
-        else
+
+        SyncIconColors(teleport_Color, localTint);
+        if (newLandingSpot && newLandingSpot != gameObject && newLandingSpot.TryGetComponent(out Block_Teleport linked))
         {
-            SetIconColor(gameObject, teleport_Color);
+            if (linkChanged)
+                linked.newLandingSpot = gameObject;
+            if (linked.newLandingSpot == gameObject)
+                linked.SyncIconColors(teleport_Color, localTint);
         }
     }
-    void SetIconColor(GameObject obj, Color color)
+
+    void SyncIconColors(Color color, Color tint)
     {
-        if (!obj.GetComponent<Block_Teleport>()) { return; }
+        newLandingSpot_Temp = newLandingSpot;
+        teleport_Color_Temp = teleport_Color = color;
+        localTintAtLastSync = LocalTint;
+        sharedTint = tint;
+        colorsInitialized = true;
+        ApplyIconColors();
+    }
 
-        for (int i = 0; i < obj.GetComponent<Block_Teleport>().propertyBlocks.Count; i++)
+    void ApplyIconColors()
+    {
+        if (renderersDirty)
         {
-            // Set the original color in the MaterialPropertyBlock
-            obj.GetComponent<Block_Teleport>().propertyBlocks[i].SetColor("_PortalColor", color);
-            obj.GetComponent<Block_Teleport>().propertyBlocks[i].SetColor("_BaseColor", GetComponent<BlockInfo>().stepCostText_Color);
+            foundRenderers.Clear();
+            foreach (MeshRenderer renderer in objectRenderers)
+                if (renderer)
+                    foundRenderers.Add(renderer);
 
-            // Apply the MaterialPropertyBlock to the renderer
-            obj.GetComponent<Block_Teleport>().objectRenderers[i].SetPropertyBlock(propertyBlocks[i]);
+            if (foundRenderers.Count == 0)
+                foreach (var marker in GetComponentsInChildren<EffectBlock_Reference>(true))
+                    if (marker.TryGetComponent(out MeshRenderer renderer))
+                        foundRenderers.Add(renderer);
+
+            renderersDirty = false;
+        }
+
+        propertyBlock ??= new MaterialPropertyBlock();
+        foreach (MeshRenderer renderer in foundRenderers)
+        {
+            if (!renderer) continue;
+
+            renderer.GetPropertyBlock(propertyBlock);
+            propertyBlock.SetColor(PortalColor, teleport_Color);
+            propertyBlock.SetColor(BaseColor, sharedTint);
+            renderer.SetPropertyBlock(propertyBlock);
         }
     }
 
