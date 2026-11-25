@@ -190,7 +190,7 @@ public class Block_Teleport : MonoBehaviour
         //PlayerManager.Instance.isTransportingPlayer = false;
         PlayerManager.Instance.pauseGame = false;
 
-        PlayerStats.Instance.stats.steps_Current = stepTemp - gameObject.GetComponent<Block_Teleport>().newLandingSpot.GetComponent<BlockInfo>().movementCost;
+        PlayerStats.Instance.stats.steps_Current = stepTemp - newLandingSpot.GetComponent<BlockInfo>().GetBaseMovementCostForPlayer();
 
         yield return new WaitForSeconds(0.15f);
 

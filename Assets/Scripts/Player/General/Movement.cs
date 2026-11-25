@@ -1579,7 +1579,7 @@ public class Movement : Singleton<Movement>
             StatsRoot.stats.abilitiesGot_Permanent.Flippers;
 
         if (hasFlippers && TryGetStandingInfo(out BlockInfo standingInfo))
-            return Mathf.Max(0.01f, standingInfo.movementSpeed - 1.5f);
+            return Mathf.Max(0.01f, standingInfo.GetMovementSpeed() - 1.5f);
 
         return 2f;
     }
@@ -1765,7 +1765,7 @@ public class Movement : Singleton<Movement>
             if (!HasWaterDirectlyAbove(moveOption.targetBlock))
                 continue;
 
-            PerformMovement(moveOption, MovementStates.Moving, standingInfo.movementSpeed);
+            PerformMovement(moveOption, MovementStates.Moving, standingInfo.GetMovementSpeed());
             return true;
         }
 
@@ -2135,11 +2135,11 @@ public class Movement : Singleton<Movement>
 
                     if (pendingSlopeFallAfterUphillAttempt && !isPlayingSlopeFallAnimation)
                     {
-                        StartCoroutine(StartSlopeFalling_MoveOption(moveOption, standingInfo.movementSpeed));
+                        StartCoroutine(StartSlopeFalling_MoveOption(moveOption, standingInfo.GetMovementSpeed()));
                     }
                     else if (!isPlayingSlopeFallAnimation)
                     {
-                        PerformMovement(moveOption, MovementStates.Moving, standingInfo.movementSpeed);
+                        PerformMovement(moveOption, MovementStates.Moving, standingInfo.GetMovementSpeed());
                     }
                 }
                 else
@@ -2158,7 +2158,7 @@ public class Movement : Singleton<Movement>
 
                     if (pendingSlopeFallAfterUphillAttempt && !isPlayingSlopeFallAnimation)
                     {
-                        StartCoroutine(StartSlopeFalling_Position(fallbackTarget, standingInfo.movementSpeed));
+                        StartCoroutine(StartSlopeFalling_Position(fallbackTarget, standingInfo.GetMovementSpeed()));
                     }
                     else if (!isPlayingSlopeFallAnimation)
                     {
@@ -3931,7 +3931,7 @@ public class Movement : Singleton<Movement>
                 return true;
             }
 
-            PerformMovement(moveOption, MovementStates.Moving, standingInfo.movementSpeed);
+            PerformMovement(moveOption, MovementStates.Moving, standingInfo.GetMovementSpeed());
             return true;
         }
 
@@ -4097,7 +4097,7 @@ public class Movement : Singleton<Movement>
 
         ClearFallingCarrierBlock();
         ResetDarkenBlocks();
-        StartCoroutine(Move(targetPos, MovementStates.Moving, standingInfo.movementSpeed, null));
+        StartCoroutine(Move(targetPos, MovementStates.Moving, standingInfo.GetMovementSpeed(), null));
     }
 
     public void PerformMovement(Vector3 targetPos, float movementSpeed)
@@ -4670,7 +4670,7 @@ public class Movement : Singleton<Movement>
         }
 
         lastIceGlideDirection = movementDir;
-        PerformMovement(moveOption, MovementStates.Moving, standingInfo.movementSpeed);
+        PerformMovement(moveOption, MovementStates.Moving, standingInfo.GetMovementSpeed());
         previousPosition = transform.position;
     }
 

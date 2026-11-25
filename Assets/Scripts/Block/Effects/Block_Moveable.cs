@@ -125,10 +125,10 @@ public class Block_Moveable : MonoBehaviour
 
         // Preserve the original ice-glide speed. Ordinary pushes become
         // 15% slower per quicksand stage, relative to the original speed.
-        // This never writes to BlockInfo.movementSpeed, so reductions cannot stack.
+        // The terrain adjustment does not modify the block's baseline speed.
         float speed = isIceGliding
             ? 10f
-            : blockInfo.movementSpeed * GetQuicksandMovementSpeedMultiplier();
+            : blockInfo.GetMovementSpeed() * GetQuicksandMovementSpeedMultiplier();
         PerformMovement(speed);
     }
 
@@ -1319,7 +1319,7 @@ public class Block_Moveable : MonoBehaviour
         transform.position = Vector3.MoveTowards(
             transform.position,
             slopeGlideTarget,
-            blockInfo.movementSpeed * Time.deltaTime
+            blockInfo.GetMovementSpeed() * Time.deltaTime
         );
         MovePillar(transform.position - positionBeforeMove);
 
