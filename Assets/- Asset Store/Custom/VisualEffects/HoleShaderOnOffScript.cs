@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
@@ -15,6 +13,7 @@ public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
 
     private bool holeShaderIsOn;
     private FreeCam freeCam;
+    private RaycastHit[] obstacleHits = new RaycastHit[16];
     bool transitionBool;
 
 
@@ -38,7 +37,8 @@ public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
 
     private void Update()
     {
-        if (checkEveryFrame && !GlueplantCamera.IsTraveling && !AncientTablet.ActiveTablet)
+        if (checkEveryFrame && !GlueplantCamera.IsTraveling && !AncientTablet.ActiveTablet &&
+            !(freeCam && freeCam._isActive))
         {
             CheckForBlockInfoBetweenPlayerAndCamera();
         }
@@ -74,30 +74,30 @@ public class HoleShaderOnOffScript : Singleton<HoleShaderOnOffScript>
 
         direction.Normalize();
 
-        bool foundBlockInfo = false;
-
-        RaycastHit[] hits = Physics.RaycastAll(
-            playerPosition,
-            direction,
-            distance,
-            obstacleLayers,
-            QueryTriggerInteraction.Ignore
-        );
-
-        foreach (RaycastHit hit in hits)
-        {
-            BlockInfo blockInfo = hit.collider.GetComponentInParent<BlockInfo>();
-
-            if (blockInfo != null)
-            {
-                foundBlockInfo = true;
-                break;
-            }
-        }
-
         // A ray starting inside a water collider cannot hit that collider.
-        SetHoleShaderState(foundBlockInfo ||
+        SetHoleShaderState(HasBlockBetweenPlayerAndCamera(playerPosition, direction, distance) ||
             (!PlayerManager.Instance.npcInteraction && Movement.Instance.IsInWaterfall()));
+    }
+
+    private bool HasBlockBetweenPlayerAndCamera(Vector3 origin, Vector3 direction, float distance)
+    {
+        while (true)
+        {
+            int hitCount = Physics.RaycastNonAlloc(
+                origin, direction, obstacleHits, distance, obstacleLayers, QueryTriggerInteraction.Ignore);
+
+            for (int i = 0; i < hitCount; i++)
+            {
+                if (obstacleHits[i].collider.GetComponentInParent<BlockInfo>() != null)
+                    return true;
+            }
+
+            if (hitCount < obstacleHits.Length)
+                return false;
+
+            // A full buffer can omit hits, including a block behind other colliders.
+            Array.Resize(ref obstacleHits, obstacleHits.Length * 2);
+        }
     }
 
     private void SetHoleShaderState(bool active)

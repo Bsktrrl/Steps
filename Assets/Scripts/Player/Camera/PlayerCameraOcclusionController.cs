@@ -109,20 +109,24 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
     {
         const float collisionEnterSpeed = 30f;
 
+        followTarget.GetPositionAndRotation(out Vector3 targetPosition, out Quaternion targetRotation);
+        Pose targetPose = new Pose(targetPosition, targetRotation);
+        float effectiveRadius = Mathf.Max(cameraCollisionRadius, 0.12f);
         Vector3 baseNearShoulder = rig.nearShoulderOffset;
 
         Vector3 predictedNearCamPosWorld = GetCameraWorldPosFromRig(
-            followTarget,
+            targetPose,
             baseNearShoulder,
             rig.nearVerticalArmLength,
             rig.nearCameraDistance
         );
 
-        bool hasCeilingLikeSurface =
-            CheckCeilingLikeSurface(rig, ceilingGrabActive);
+        Vector3 upOrDown = ceilingGrabActive ? Vector3.down : Vector3.up;
+        bool hasCeilingLikeSurface = RaycastSkippingTarget(
+            targetPosition, upOrDown, rig.ceilingCheckDistance, obstructionLayers, out _);
 
         bool hasSideWall =
-            HasSideWall(predictedNearCamPosWorld, rig);
+            HasSideWall(targetPosition, predictedNearCamPosWorld, rig.wallCheckDistance);
 
         Vector3 adjustedNearShoulder = ChooseShoulderForThisFrame(
             rig,
@@ -133,11 +137,8 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
 
         if (debugDraw)
         {
-            Vector3 upOrDown =
-                ceilingGrabActive ? Vector3.down : Vector3.up;
-
             Debug.DrawRay(
-                followTarget.position,
+                targetPosition,
                 upOrDown * rig.ceilingCheckDistance,
                 hasCeilingLikeSurface ? Color.red : Color.green
             );
@@ -145,7 +146,10 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
 
         float allowedDistanceLOS = ComputeAllowedDistance(
             rig,
-            adjustedNearShoulder
+            adjustedNearShoulder,
+            targetPose,
+            effectiveRadius,
+            out float clearRigT
         );
 
         // Retract quickly when encountering a wall, but return using the
@@ -193,11 +197,16 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
             t
         );
 
-        blendedDistance = ResolveSideCollision(
-            blendedDistance,
-            blendedShoulder,
-            blendedArm
-        );
+        // A clear search cast at this exact pose already covered the final
+        // path when its safety buffer was nonnegative.
+        bool finalPathAlreadyClear = t == clearRigT && wallBuffer >= 0f;
+        if (!finalPathAlreadyClear)
+        {
+            Vector3 cameraPosition = GetCameraWorldPosFromRig(
+                targetPose, blendedShoulder, blendedArm, blendedDistance);
+            blendedDistance = ResolveSideCollision(
+                blendedDistance, targetPosition, cameraPosition, effectiveRadius);
+        }
 
         float applySpeed =
             blendedDistance < _tpf.CameraDistance
@@ -224,18 +233,8 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
     }
 
 
-    bool CheckCeilingLikeSurface(RigSettings rig, bool ceilingGrabActive)
+    bool HasSideWall(Vector3 origin, Vector3 desiredCamPos, float wallCheckDistance)
     {
-        // Normal mode: "ceiling" is above; ceilingGrab: "ceiling" is below world-up
-        Vector3 dir = ceilingGrabActive ? Vector3.down : Vector3.up;
-
-        bool hit = RaycastSkippingTarget(followTarget.position, dir, rig.ceilingCheckDistance, obstructionLayers, out _);
-
-        return hit;
-    }
-    bool HasSideWall(Vector3 desiredCamPos, RigSettings rig)
-    {
-        Vector3 origin = followTarget.position;
         Vector3 dir = desiredCamPos - origin;
 
         // Only check horizontally
@@ -245,7 +244,7 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
             return false;
 
         dir /= dist;
-        float checkDist = Mathf.Min(dist, rig.wallCheckDistance);
+        float checkDist = Mathf.Min(dist, wallCheckDistance);
 
         bool hit = RaycastSkippingTarget(origin, dir, checkDist, obstructionLayers, out _);
 
@@ -321,7 +320,7 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
         adjusted.z = finalZ;
         return adjusted;
     }
-    Vector3 GetCameraWorldPosFromRig(Transform pivot, Vector3 shoulderOffset, float armLen, float camDistance)
+    static Vector3 GetCameraWorldPosFromRig(Pose pivot, Vector3 shoulderOffset, float armLen, float camDistance)
     {
         Vector3 targetPos = pivot.position;
         Quaternion targetRot = pivot.rotation;
@@ -369,7 +368,10 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
 
     float ComputeAllowedDistance(
         RigSettings rig,
-        Vector3 adjustedNearShoulder)
+        Vector3 adjustedNearShoulder,
+        Pose targetPose,
+        float effectiveRadius,
+        out float clearRigT)
     {
         // ShoulderOffset, VerticalArmLength and CameraDistance all change
         // together. A hit along the far rig's diagonal therefore cannot be
@@ -384,6 +386,7 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
         float farthestClearT = 0f;
         float blockedTAbove = 1f;
         bool foundClearRig = false;
+        clearRigT = -1f;
 
         // Search from far to near. This makes the resting result prefer the
         // greatest usable distance, including in non-trivial indoor spaces.
@@ -391,7 +394,7 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
         {
             float t = i / (float)outwardSearchSteps;
 
-            if (IsRigPositionClear(rig, adjustedNearShoulder, t))
+            if (IsRigPositionClear(rig, adjustedNearShoulder, targetPose, effectiveRadius, t))
             {
                 farthestClearT = t;
                 blockedTAbove = Mathf.Min(
@@ -421,7 +424,7 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
             {
                 float testT = (clearT + blockedT) * 0.5f;
 
-                if (IsRigPositionClear(rig, adjustedNearShoulder, testT))
+                if (IsRigPositionClear(rig, adjustedNearShoulder, targetPose, effectiveRadius, testT))
                     clearT = testT;
                 else
                     blockedT = testT;
@@ -430,6 +433,7 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
             farthestClearT = clearT;
         }
 
+        clearRigT = farthestClearT;
         float allowedDistance = Mathf.Lerp(
             rig.nearCameraDistance,
             rig.farCameraDistance,
@@ -446,6 +450,8 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
     bool IsRigPositionClear(
         RigSettings rig,
         Vector3 adjustedNearShoulder,
+        Pose targetPose,
+        float effectiveRadius,
         float t)
     {
         float candidateDistance = Mathf.Lerp(
@@ -466,26 +472,20 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
             t
         );
 
-        Vector3 targetPos = followTarget.position;
         Vector3 candidateCamPos = GetCameraWorldPosFromRig(
-            followTarget,
+            targetPose,
             candidateShoulder,
             candidateArm,
             candidateDistance
         );
 
-        Vector3 direction = candidateCamPos - targetPos;
+        Vector3 direction = candidateCamPos - targetPose.position;
         float pathDistance = direction.magnitude;
 
         if (pathDistance < 0.0001f)
             return true;
 
         direction /= pathDistance;
-
-        float effectiveRadius = Mathf.Max(
-            cameraCollisionRadius,
-            0.12f
-        );
 
         // Leave the same safety margin used by the original obstruction
         // calculation, without incorrectly projecting the hit afterward.
@@ -495,7 +495,7 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
         );
 
         return !SphereCastSkippingBlockInfo(
-            targetPos,
+            targetPose.position,
             effectiveRadius,
             direction,
             checkedDistance,
@@ -505,24 +505,11 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
     }
 
     float ResolveSideCollision(
-    float desiredDistance,
-    Vector3 shoulderOffset,
-    float armLen)
+        float desiredDistance,
+        Vector3 targetPos,
+        Vector3 desiredCamPos,
+        float effectiveRadius)
     {
-        Transform pivot = followTarget;
-
-        Vector3 targetPos = pivot.position;
-        Quaternion targetRot = pivot.rotation;
-
-        Vector3 worldShoulderPos =
-            targetPos + targetRot * shoulderOffset;
-
-        Vector3 worldHandPos =
-            worldShoulderPos + Vector3.up * armLen;
-
-        Vector3 desiredCamPos =
-            worldHandPos - pivot.forward * desiredDistance;
-
         Vector3 direction = desiredCamPos - targetPos;
         float pathDistance = direction.magnitude;
 
@@ -530,11 +517,6 @@ public class PlayerCameraOcclusionController : Singleton<PlayerCameraOcclusionCo
             return desiredDistance;
 
         direction /= pathDistance;
-
-        float effectiveRadius = Mathf.Max(
-            cameraCollisionRadius,
-            0.12f
-        );
 
         if (SphereCastSkippingBlockInfo(targetPos, effectiveRadius, direction, pathDistance, obstructionLayers, out RaycastHit hit))
         {
