@@ -33,6 +33,7 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     struct HorizontalHold
     {
         public MenuCategorySelected row;
+        public DataPersistanceManager persistence;
         public float elapsed;
         public bool repeating;
     }
@@ -65,20 +66,30 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     {
         EventSystem eventSystem = EventSystem.current;
         if (!eventSystem || !optionsManager)
+        {
+            EndSettingsHold(ref leftHold);
+            EndSettingsHold(ref rightHold);
             return;
+        }
 
         bool shiftLeft = shiftLeftAction?.WasPressedThisFrame() == true;
         if (shiftLeft || shiftRightAction?.WasPressedThisFrame() == true)
         {
             optionsManager.ShiftTab(eventSystem, shiftLeft);
-            leftHold = default;
-            rightHold = default;
+            EndSettingsHold(ref leftHold);
+            EndSettingsHold(ref rightHold);
             return;
         }
 
         GameObject selected = eventSystem.currentSelectedGameObject;
         HandleSettingsArrow(leftAction, selected, true, ref leftHold);
         HandleSettingsArrow(rightAction, selected, false, ref rightHold);
+    }
+
+    private void OnDisable()
+    {
+        EndSettingsHold(ref leftHold);
+        EndSettingsHold(ref rightHold);
     }
 
 
@@ -119,20 +130,25 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
             optionsManager.currentMenuCategorySelected is not (MenuCategories.Settings or MenuCategories.Audio) ||
             !optionsManager.TryGetSelectedOptionRow(selected, out MenuCategorySelected row))
         {
-            hold = default;
+            EndSettingsHold(ref hold);
             return;
         }
 
         if (action.WasPressedThisFrame())
         {
-            hold = new HorizontalHold { row = row };
+            EndSettingsHold(ref hold);
+            hold = new HorizontalHold { row = row, persistence = DataPersistanceManager.instance };
+            if (hold.persistence)
+                hold.persistence.BeginSettingsAdjustment();
             PressSettingsArrow(row.settingState, left);
+            if (!action.IsPressed())
+                EndSettingsHold(ref hold);
             return;
         }
 
         if (hold.row != row || !action.IsPressed())
         {
-            hold = default;
+            EndSettingsHold(ref hold);
             return;
         }
 
@@ -143,6 +159,13 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
         hold.elapsed = 0f;
         hold.repeating = true;
         PressSettingsArrow(row.settingState, left);
+    }
+
+    static void EndSettingsHold(ref HorizontalHold hold)
+    {
+        if (hold.persistence)
+            hold.persistence.EndSettingsAdjustment();
+        hold = default;
     }
 
     public static void PressSettingsArrow(SettingState state, bool left)

@@ -18,6 +18,8 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
     bool canReplaceSave;
     bool savePending;
     bool isSaving;
+    int settingsAdjustments;
+    bool settingsSavePending;
 
     public static DataPersistanceManager instance { get; private set; }
 
@@ -105,6 +107,29 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
             savePending = true;
     }
 
+    internal void BeginSettingsAdjustment() => settingsAdjustments++;
+
+    internal void EndSettingsAdjustment()
+    {
+        if (settingsAdjustments == 0)
+            return;
+
+        settingsAdjustments--;
+        if (settingsAdjustments == 0 && settingsSavePending)
+            SaveGame();
+    }
+
+    internal void SaveSettings()
+    {
+        if (!savingEnabled)
+            return;
+
+        if (settingsAdjustments > 0)
+            settingsSavePending = true;
+        else
+            SaveGame();
+    }
+
     internal void SaveGameImmediately()
     {
         SaveGame();
@@ -138,6 +163,7 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
         if (!dataHandler.Save(data, replaceExisting: canReplaceSave))
             return false;
 
+        settingsSavePending = false;
         canReplaceSave = true;
         return true;
     }

@@ -39,12 +39,10 @@ public class AudioSettingsManager : Singleton<AudioSettingsManager>
 
     private void OnEnable()
     {
-        DataManager.Action_dataHasLoaded += SetVolume_FirstTime;
         DataManager.Action_dataHasLoaded += LoadAudioSettings;
     }
     private void OnDisable()
     {
-        DataManager.Action_dataHasLoaded -= SetVolume_FirstTime;
         DataManager.Action_dataHasLoaded -= LoadAudioSettings;
     }
 
@@ -52,53 +50,32 @@ public class AudioSettingsManager : Singleton<AudioSettingsManager>
     //--------------------
 
 
-    void SaveAudioSettings()
-    {
-        DataPersistanceManager.instance.SaveGame();
-    }
     void LoadAudioSettings()
     {
-        AudioVolumStates savedMasterVolume = DataManager.Instance.settingData_StoreList.volume_Master;
-
-        if (!masterVolume_ShouldFadeUpAfterSceneLoad)
+        DataManager data = DataManager.Instance;
+        SettingData settings = data.settingData_StoreList;
+        if (!data.oneTimeRunData_Store.startVolum_Values)
         {
-            SetMixerVolume(volumeParameter_Master, SetVolumeFromSettings(savedMasterVolume));
+            settings.volume_Master = AudioVolumStates._100_percent;
+            settings.volume_3DEnviroment = AudioVolumStates._50_percent;
+            settings.volume_Weather = AudioVolumStates._50_percent;
+            settings.volume_Player = AudioVolumStates._50_percent;
+            settings.volume_UI = AudioVolumStates._50_percent;
+            settings.volume_Dialogue = AudioVolumStates._50_percent;
+            data.oneTimeRunData_Store.startVolum_Values = true;
+            DataPersistanceManager.instance.SaveGame();
         }
-        else
-        {
-            SetMasteVolum_Fade(0f);
-        }
 
-        SettingsManager.Instance.SetVolumeMarker(
-            SettingsManager.Instance.marker_MasterVolume,
-            savedMasterVolume
-        );
+        SettingsManager menu = SettingsManager.Instance;
+        if (!masterVolume_FadeValueStored)
+            SetMasteVolum_Fade(masterVolume_ShouldFadeUpAfterSceneLoad ? 0f : SetVolumeFromSettings(settings.volume_Master));
+        menu.SetVolumeMarker(menu.marker_MasterVolume, settings.volume_Master);
 
-        Set_Enviroment_GroupVolume(DataManager.Instance.settingData_StoreList.volume_3DEnviroment);
-        Set_Weather_GroupVolume(DataManager.Instance.settingData_StoreList.volume_Weather);
-        Set_Player_GroupVolume(DataManager.Instance.settingData_StoreList.volume_Player);
-        Set_UI_GroupVolume(DataManager.Instance.settingData_StoreList.volume_UI);
-        Set_Dialogue_GroupVolume(DataManager.Instance.settingData_StoreList.volume_Dialogue);
-    }
-
-    //--------------------
-
-
-    void SetVolume_FirstTime()
-    {
-        if (!DataManager.Instance.oneTimeRunData_Store.startVolum_Values)
-        {
-            SetMasterVolume_Function(AudioVolumStates._100_percent);
-
-            SetEnviromentGroupVolume_Function(AudioVolumStates._50_percent);
-            SetWeatherGroupVolume_Function(AudioVolumStates._50_percent);
-            SetPlayerGroupVolume_Function(AudioVolumStates._50_percent);
-            SetUIGroupVolume_Function(AudioVolumStates._50_percent);
-            SetDialogueGroupVolume_Function(AudioVolumStates._50_percent);
-
-            DataManager.Instance.oneTimeRunData_Store.startVolum_Values = true;
-            SaveAudioSettings();
-        }
+        ApplyVolume(volumeParameter_Group_3DEnviroment, settings.volume_3DEnviroment, menu.marker_EnviromentVolume);
+        ApplyVolume(volumeParameter_Group_Weather, settings.volume_Weather, menu.marker_WeatherVolume);
+        ApplyVolume(volumeParameter_Group_Player, settings.volume_Player, menu.marker_PlayerVolume);
+        ApplyVolume(volumeParameter_Group_UI, settings.volume_UI, menu.marker_UIVolume);
+        ApplyVolume(volumeParameter_Group_Dialogue, settings.volume_Dialogue, menu.marker_DialogueVolume);
     }
 
 
@@ -140,91 +117,59 @@ public class AudioSettingsManager : Singleton<AudioSettingsManager>
 
     public void Set_Master_Volume(AudioVolumStates volumeSettings)
     {
-        if (DataManager.Instance.oneTimeRunData_Store.startVolum_Values)
-            SetMasterVolume_Function(volumeSettings);
-    }
-    void SetMasterVolume_Function(AudioVolumStates volumeSettings)
-    {
-        SetMixerVolume(volumeParameter_Master, SetVolumeFromSettings(volumeSettings));
-        DataManager.Instance.settingData_StoreList.volume_Master = volumeSettings;
-        SettingsManager.Instance.SetVolumeMarker(SettingsManager.Instance.marker_MasterVolume, DataManager.Instance.settingData_StoreList.volume_Master);
-
-        SaveAudioSettings();
+        ChangeVolume(ref DataManager.Instance.settingData_StoreList.volume_Master, volumeSettings,
+            volumeParameter_Master, SettingsManager.Instance.marker_MasterVolume);
     }
 
 
     public void Set_Enviroment_GroupVolume(AudioVolumStates volumeSettings)
     {
-        if (DataManager.Instance.oneTimeRunData_Store.startVolum_Values)
-            SetEnviromentGroupVolume_Function(volumeSettings);
-    }
-    void SetEnviromentGroupVolume_Function(AudioVolumStates volumeSettings)
-    {
-        SetMixerVolume(volumeParameter_Group_3DEnviroment, SetVolumeFromSettings(volumeSettings));
-        DataManager.Instance.settingData_StoreList.volume_3DEnviroment = volumeSettings;
-        SettingsManager.Instance.SetVolumeMarker(SettingsManager.Instance.marker_EnviromentVolume, DataManager.Instance.settingData_StoreList.volume_3DEnviroment);
-
-        SaveAudioSettings();
+        ChangeVolume(ref DataManager.Instance.settingData_StoreList.volume_3DEnviroment, volumeSettings,
+            volumeParameter_Group_3DEnviroment, SettingsManager.Instance.marker_EnviromentVolume);
     }
 
 
     public void Set_Weather_GroupVolume(AudioVolumStates volumeSettings)
     {
-        if (DataManager.Instance.oneTimeRunData_Store.startVolum_Values)
-            SetWeatherGroupVolume_Function(volumeSettings);
-    }
-    void SetWeatherGroupVolume_Function(AudioVolumStates volumeSettings)
-    {
-        SetMixerVolume(volumeParameter_Group_Weather, SetVolumeFromSettings(volumeSettings));
-        DataManager.Instance.settingData_StoreList.volume_Weather = volumeSettings;
-        SettingsManager.Instance.SetVolumeMarker(SettingsManager.Instance.marker_WeatherVolume, DataManager.Instance.settingData_StoreList.volume_Weather);
-
-        SaveAudioSettings();
+        ChangeVolume(ref DataManager.Instance.settingData_StoreList.volume_Weather, volumeSettings,
+            volumeParameter_Group_Weather, SettingsManager.Instance.marker_WeatherVolume);
     }
 
 
     public void Set_Player_GroupVolume(AudioVolumStates volumeSettings)
     {
-        if (DataManager.Instance.oneTimeRunData_Store.startVolum_Values)
-            SetPlayerGroupVolume_Function(volumeSettings);
-    }
-    void SetPlayerGroupVolume_Function(AudioVolumStates volumeSettings)
-    {
-        SetMixerVolume(volumeParameter_Group_Player, SetVolumeFromSettings(volumeSettings));
-        DataManager.Instance.settingData_StoreList.volume_Player = volumeSettings;
-        SettingsManager.Instance.SetVolumeMarker(SettingsManager.Instance.marker_PlayerVolume, DataManager.Instance.settingData_StoreList.volume_Player);
-
-        SaveAudioSettings();
+        ChangeVolume(ref DataManager.Instance.settingData_StoreList.volume_Player, volumeSettings,
+            volumeParameter_Group_Player, SettingsManager.Instance.marker_PlayerVolume);
     }
 
 
     public void Set_UI_GroupVolume(AudioVolumStates volumeSettings)
     {
-        if (DataManager.Instance.oneTimeRunData_Store.startVolum_Values)
-            SetUIGroupVolume_Function(volumeSettings);
-    }
-    void SetUIGroupVolume_Function(AudioVolumStates volumeSettings)
-    {
-        SetMixerVolume(volumeParameter_Group_UI, SetVolumeFromSettings(volumeSettings));
-        DataManager.Instance.settingData_StoreList.volume_UI = volumeSettings;
-        SettingsManager.Instance.SetVolumeMarker(SettingsManager.Instance.marker_UIVolume, DataManager.Instance.settingData_StoreList.volume_UI);
-
-        SaveAudioSettings();
+        ChangeVolume(ref DataManager.Instance.settingData_StoreList.volume_UI, volumeSettings,
+            volumeParameter_Group_UI, SettingsManager.Instance.marker_UIVolume);
     }
 
 
     public void Set_Dialogue_GroupVolume(AudioVolumStates volumeSettings)
     {
-        if (DataManager.Instance.oneTimeRunData_Store.startVolum_Values)
-            SetDialogueGroupVolume_Function(volumeSettings);
+        ChangeVolume(ref DataManager.Instance.settingData_StoreList.volume_Dialogue, volumeSettings,
+            volumeParameter_Group_Dialogue, SettingsManager.Instance.marker_DialogueVolume);
     }
-    void SetDialogueGroupVolume_Function(AudioVolumStates volumeSettings)
-    {
-        SetMixerVolume(volumeParameter_Group_Dialogue, SetVolumeFromSettings(volumeSettings));
-        DataManager.Instance.settingData_StoreList.volume_Dialogue = volumeSettings;
-        SettingsManager.Instance.SetVolumeMarker(SettingsManager.Instance.marker_DialogueVolume, DataManager.Instance.settingData_StoreList.volume_Dialogue);
 
-        SaveAudioSettings();
+    void ChangeVolume(ref AudioVolumStates storedVolume, AudioVolumStates volume, string parameter, GameObject marker)
+    {
+        if (!DataManager.Instance.oneTimeRunData_Store.startVolum_Values || storedVolume == volume)
+            return;
+
+        storedVolume = volume;
+        ApplyVolume(parameter, volume, marker);
+        DataPersistanceManager.instance.SaveSettings();
+    }
+
+    void ApplyVolume(string parameter, AudioVolumStates volume, GameObject marker)
+    {
+        SetMixerVolume(parameter, SetVolumeFromSettings(volume));
+        SettingsManager.Instance.SetVolumeMarker(marker, volume);
     }
 
 
