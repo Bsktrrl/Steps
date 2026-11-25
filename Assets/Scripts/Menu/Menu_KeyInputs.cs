@@ -30,17 +30,15 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     InputAction shiftLeftAction;
     InputAction shiftRightAction;
 
-    MenuCategorySelected shiftLeftRow;
-    MenuCategorySelected shiftRightRow;
+    struct HorizontalHold
+    {
+        public MenuCategorySelected row;
+        public float elapsed;
+        public bool repeating;
+    }
 
-    bool leftWasPressed;
-    bool rightWasPressed;
-
-    float leftHoldTimer;
-    float rightHoldTimer;
-
-    bool leftHoldStarted;
-    bool rightHoldStarted;
+    HorizontalHold leftHold;
+    HorizontalHold rightHold;
 
 
     //--------------------
@@ -65,8 +63,22 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
 
     private void Update()
     {
-        HandleLeftInput();
-        HandleRightInput();
+        EventSystem eventSystem = EventSystem.current;
+        if (!eventSystem || !optionsManager)
+            return;
+
+        bool shiftLeft = shiftLeftAction?.WasPressedThisFrame() == true;
+        if (shiftLeft || shiftRightAction?.WasPressedThisFrame() == true)
+        {
+            optionsManager.ShiftTab(eventSystem, shiftLeft);
+            leftHold = default;
+            rightHold = default;
+            return;
+        }
+
+        GameObject selected = eventSystem.currentSelectedGameObject;
+        HandleSettingsArrow(leftAction, selected, true, ref leftHold);
+        HandleSettingsArrow(rightAction, selected, false, ref rightHold);
     }
 
 
@@ -101,197 +113,36 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
     //--------------------
 
 
-    void HandleLeftInput()
+    void HandleSettingsArrow(InputAction action, GameObject selected, bool left, ref HorizontalHold hold)
     {
-        bool shiftPressedThisFrame = HandleMenuShift(shiftLeftAction, true, ref shiftLeftRow);
-        bool leftIsPressed = (leftAction != null && leftAction.IsPressed()) ||
-                             (shiftLeftRow && shiftLeftAction.IsPressed());
-        bool leftPressedThisFrame = (leftAction != null && leftAction.WasPressedThisFrame()) ||
-                                    shiftPressedThisFrame;
-
-        if (leftIsPressed || leftPressedThisFrame)
+        if (action == null ||
+            optionsManager.currentMenuCategorySelected is not (MenuCategories.Settings or MenuCategories.Audio) ||
+            !optionsManager.TryGetSelectedOptionRow(selected, out MenuCategorySelected row))
         {
-            if (!leftWasPressed || leftPressedThisFrame)
-            {
-                leftWasPressed = leftIsPressed;
-                leftHoldTimer = 0f;
-                leftHoldStarted = false;
-
-                InvokeMenuNavigationLeft();
-            }
-            else
-            {
-                HandleLeftHold();
-            }
-        }
-        else
-        {
-            ResetLeftHold();
-        }
-    }
-
-    void HandleRightInput()
-    {
-        bool shiftPressedThisFrame = HandleMenuShift(shiftRightAction, false, ref shiftRightRow);
-        bool rightIsPressed = (rightAction != null && rightAction.IsPressed()) ||
-                              (shiftRightRow && shiftRightAction.IsPressed());
-        bool rightPressedThisFrame = (rightAction != null && rightAction.WasPressedThisFrame()) ||
-                                     shiftPressedThisFrame;
-
-        if (rightIsPressed || rightPressedThisFrame)
-        {
-            if (!rightWasPressed || rightPressedThisFrame)
-            {
-                rightWasPressed = rightIsPressed;
-                rightHoldTimer = 0f;
-                rightHoldStarted = false;
-
-                InvokeMenuNavigationRight();
-            }
-            else
-            {
-                HandleRightHold();
-            }
-        }
-        else
-        {
-            ResetRightHold();
-        }
-    }
-
-
-    //--------------------
-
-    bool HandleMenuShift(InputAction action, bool left, ref MenuCategorySelected heldRow)
-    {
-        var eventSystem = EventSystem.current;
-        if (action == null || !eventSystem || !optionsManager ||
-            (!action.IsPressed() && !action.WasPressedThisFrame()))
-        {
-            heldRow = null;
-            return false;
+            hold = default;
+            return;
         }
 
-        GameObject selected = eventSystem.currentSelectedGameObject;
-        if (!action.WasPressedThisFrame())
+        if (action.WasPressedThisFrame())
         {
-            if (heldRow && heldRow.gameObject != selected)
-                heldRow = null;
-            return false;
+            hold = new HorizontalHold { row = row };
+            PressSettingsArrow(row.settingState, left);
+            return;
         }
 
-        heldRow = null;
-        GameObject panel = optionsManager.currentMenuCategorySelected switch
+        if (hold.row != row || !action.IsPressed())
         {
-            MenuCategories.Settings => optionsManager.settingsMenuParent,
-            MenuCategories.Audio => optionsManager.audioMenuParent,
-            _ => null
-        };
-        if (panel && selected && selected.activeInHierarchy && selected.transform.IsChildOf(panel.transform) &&
-            selected.TryGetComponent(out heldRow))
-            return true;
-
-        optionsManager.ShiftTab(eventSystem, left);
-        return false;
-    }
-
-    //--------------------
-
-
-    void HandleLeftHold()
-    {
-        leftHoldTimer += Time.unscaledDeltaTime;
-
-        if (!leftHoldStarted)
-        {
-            if (leftHoldTimer >= holdDelay)
-            {
-                leftHoldStarted = true;
-                leftHoldTimer = 0f;
-
-                InvokeMenuNavigationLeft();
-            }
+            hold = default;
+            return;
         }
-        else
-        {
-            if (leftHoldTimer >= holdRepeatRate)
-            {
-                leftHoldTimer = 0f;
 
-                InvokeMenuNavigationLeft();
-            }
-        }
-    }
+        hold.elapsed += Time.unscaledDeltaTime;
+        if (hold.elapsed < (hold.repeating ? holdRepeatRate : holdDelay))
+            return;
 
-    void HandleRightHold()
-    {
-        rightHoldTimer += Time.unscaledDeltaTime;
-
-        if (!rightHoldStarted)
-        {
-            if (rightHoldTimer >= holdDelay)
-            {
-                rightHoldStarted = true;
-                rightHoldTimer = 0f;
-
-                InvokeMenuNavigationRight();
-            }
-        }
-        else
-        {
-            if (rightHoldTimer >= holdRepeatRate)
-            {
-                rightHoldTimer = 0f;
-
-                InvokeMenuNavigationRight();
-            }
-        }
-    }
-
-
-    //--------------------
-
-
-    void ResetLeftHold()
-    {
-        leftWasPressed = false;
-        leftHoldTimer = 0f;
-        leftHoldStarted = false;
-    }
-
-    void ResetRightHold()
-    {
-        rightWasPressed = false;
-        rightHoldTimer = 0f;
-        rightHoldStarted = false;
-    }
-
-
-    //--------------------
-
-
-    void InvokeMenuNavigationLeft()
-    {
-        if (shiftLeftRow)
-        {
-            PressSettingsArrow(shiftLeftRow.settingState, true);
-        }
-        else if (IsSettingsCategorySelected())
-        {
-            Action_MenuSettingsNavigationLeft_isPressed?.Invoke();
-        }
-    }
-
-    void InvokeMenuNavigationRight()
-    {
-        if (shiftRightRow)
-        {
-            PressSettingsArrow(shiftRightRow.settingState, false);
-        }
-        else if (IsSettingsCategorySelected())
-        {
-            Action_MenuSettingsNavigationRight_isPressed?.Invoke();
-        }
+        hold.elapsed = 0f;
+        hold.repeating = true;
+        PressSettingsArrow(row.settingState, left);
     }
 
     public static void PressSettingsArrow(SettingState state, bool left)
@@ -303,14 +154,4 @@ public class Menu_KeyInputs : Singleton<Menu_KeyInputs>
             Action_MenuSettingsNavigationRight_isPressed?.Invoke();
     }
 
-    bool IsSettingsCategorySelected()
-    {
-        return optionsManager &&
-        (
-            optionsManager.currentMenuCategorySelected == MenuCategories.Settings ||
-            optionsManager.currentMenuCategorySelected == MenuCategories.Controls ||
-            optionsManager.currentMenuCategorySelected == MenuCategories.Video ||
-            optionsManager.currentMenuCategorySelected == MenuCategories.Audio
-        );
-    }
 }

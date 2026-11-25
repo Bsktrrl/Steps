@@ -39,12 +39,6 @@ public class TabletButton : MonoBehaviour, ISelectHandler, IDeselectHandler
         background.sprite = highlighted ? highlightedSprite : normalSprite;
     }
 
-    internal void PlayLockSound(bool locked)
-    {
-        GetComponent<ButtonSound>().TryButtonPressSound(
-            locked ? ButtonSoundStates.ButtonEquip_On : ButtonSoundStates.ButtonEquip_Off);
-    }
-
     public void OnSelect(BaseEventData eventData)
     {
         if (menu)

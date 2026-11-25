@@ -14,7 +14,6 @@ public class Button_ToPress : MonoBehaviour
 
     [Header("Setup")]
     public Selectable uiElementToSelect;
-    [SerializeField] TabletMenuManager tabletMenuToUnlock;
 
     [Header("Visualization")]
     [SerializeField] bool showVisualization;
@@ -69,9 +68,6 @@ public class Button_ToPress : MonoBehaviour
 
     internal void StartMenuTransition()
     {
-        if (tabletMenuToUnlock && tabletMenuToUnlock.TryUnlockTablet())
-            return;
-
         //PauseMenu
         if (ActionButtonsManager.Instance.eventSystem == null)
         {
