@@ -129,7 +129,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         if ((game_TextDatabase_Store?.gameText_LanguageList?.Count ?? 0) == 0)
             this.game_TextDatabase_Store = gameData.game_TextDatabase_Save ?? new Game_TextDatabase();
 
-        this.playerStatsData_Store = gameData.PlayerStatsData_Save;
+        this.playerStatsData_Store = gameData.PlayerStatsData_Save ?? new PlayerStatsData();
 
         this.oneTimeRunData_Store = gameData.oneTimeRunData_Save;
 
@@ -167,7 +167,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         }
 
         // Restore the level's abilities before the startup notifications read player stats.
-        MapManager map = FindAnyObjectByType<MapManager>();
+        MapManager map = MapManager.Instance;
         if (map && map.gameObject.scene == SceneManager.GetActiveScene())
             map.SetAbilities();
 

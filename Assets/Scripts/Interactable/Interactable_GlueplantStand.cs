@@ -59,7 +59,8 @@ public class Interactable_GlueplantStand : MonoBehaviour
 
     StandStats GetStandStats()
     {
-        return DataManager.Instance.glueplantStandStats_Store?.GetForLevel(MapManager.Instance.levelName);
+        var map = MapManager.Instance;
+        return map ? DataManager.Instance.glueplantStandStats_Store?.GetForLevel(map.levelName) : null;
     }
 
     GameObject GetGlueplant()
@@ -108,6 +109,9 @@ public class Interactable_GlueplantStand : MonoBehaviour
     }
     void DisplayButtonMessage()
     {
+        if (!MapManager.Instance)
+            return;
+
         GameObject lookedAtObject = PlayerManager.Instance.block_LookingAt_Horizontal;
 
         if (lookedAtObject == null)

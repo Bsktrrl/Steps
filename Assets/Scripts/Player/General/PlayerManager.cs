@@ -100,7 +100,7 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         yield return new WaitForSeconds(waitTime);
 
-        MapManager map = FindAnyObjectByType<MapManager>();
+        MapManager map = MapManager.Instance;
         if (!map || map.gameObject.scene != gameObject.scene || map.levelName != LevelNames.HUB)
             yield break;
 

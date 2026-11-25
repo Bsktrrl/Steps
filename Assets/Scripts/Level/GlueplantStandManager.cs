@@ -7,8 +7,11 @@ public class GlueplantStandManager : Singleton<GlueplantStandManager>
     internal bool TryPlaceGlueplant(int standNumber)
     {
         MapManager map = MapManager.Instance;
+        if (!map || map.IsCompletingLevel || map.mapInfo_ToSave == null)
+            return false;
+
         StandStats stats = DataManager.Instance.glueplantStandStats_Store?.GetForLevel(map.levelName);
-        if (map.IsCompletingLevel || map.mapInfo_ToSave == null || stats?.TryPlace(standNumber) != true)
+        if (stats?.TryPlace(standNumber) != true)
             return false;
 
         bool completed = stats.CountTaken == StandStats.StandsPerLevel && map.TryBeginLevelCompletion();

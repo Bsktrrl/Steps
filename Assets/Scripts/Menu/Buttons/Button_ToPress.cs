@@ -115,8 +115,11 @@ public class Button_ToPress : MonoBehaviour
                 break;
 
             case MenuState.Main_Menu:
+                var mainMenu = MainMenuManager.Instance;
+                if (!mainMenu)
+                    break;
                 MenuManager.Instance.HideAllMenus();
-                MainMenuManager.Instance.mainMenu_Parent.SetActive(true);
+                mainMenu.mainMenu_Parent.SetActive(true);
                 break;
             case MenuState.Skin_Menu:
                 EventSystem.current.SetSelectedGameObject(MenuManager.Instance.wardrobe_StartButton);
@@ -149,10 +152,10 @@ public class Button_ToPress : MonoBehaviour
                 break;
 
             case MenuState.NewGameWarningMessage:
-                MainMenuManager.Instance.newGameWarningMessage_Parent.SetActive(true);
-                break;
             case MenuState.NewGameWarningMessage_No:
-                MainMenuManager.Instance.newGameWarningMessage_Parent.SetActive(false);
+                var warningMenu = MainMenuManager.Instance;
+                if (warningMenu)
+                    warningMenu.newGameWarningMessage_Parent.SetActive(newMenuState == MenuState.NewGameWarningMessage);
                 break;
 
             case MenuState.RegionMenu_HUB:

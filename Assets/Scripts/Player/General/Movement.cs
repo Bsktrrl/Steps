@@ -279,7 +279,7 @@ public class Movement : Singleton<Movement>
 
     private void InitializeAtCheckpoint()
     {
-        if (!isRespawningFirstTime)
+        if (Map && !isRespawningFirstTime)
             RespawnPlayer();
     }
 
@@ -287,10 +287,11 @@ public class Movement : Singleton<Movement>
     {
         // Never let the old tile, an elevator follow, a falling update, or
         // another movement system overwrite a checkpoint teleport mid-respawn.
-        if (isRespawning)
+        var map = Map;
+        if (isRespawning || !map)
             return;
 
-        bool gameplayInputLocked = Map.GameplayInputLocked ||
+        bool gameplayInputLocked = map.GameplayInputLocked ||
             Anims.IsPickupAnimationPending || zeroStepRespawnStarted;
         // Allow a step already in progress to settle, but do not start another.
         if (gameplayInputLocked && movementStates != MovementStates.Moving &&
@@ -5622,7 +5623,8 @@ public class Movement : Singleton<Movement>
     {
         // Guard SYNCHRONOUSLY, before starting a coroutine. Multiple input,
         // SFX, drowning or step callbacks can request respawn in one frame.
-        if (isRespawning)
+        var map = Map;
+        if (isRespawning || !map)
             return;
 
         isRespawning = true;
@@ -5637,7 +5639,7 @@ public class Movement : Singleton<Movement>
         // Capture the last checkpoint at the instant respawn was requested.
         // MapManager owns checkpoint updates; Movement must not replace this
         // with its previousPosition or the most recently stood-on tile.
-        Vector3 checkpointPosition = Map.playerStartPos;
+        Vector3 checkpointPosition = map.playerStartPos;
         Quaternion checkpointRotation = GetRespawnPlayerDirection(0, 180, 0);
 
         // Cancel any movement, falling/ability and delayed zero-step coroutines

@@ -181,7 +181,7 @@ public class Block_Moveable : MonoBehaviour
 
     private void RefreshMovementState()
     {
-        if (isMoving || isDespawned || pillarCarrier != null) return;
+        if (!MapManager.Instance || isMoving || isDespawned || pillarCarrier != null) return;
 
         movementDirection = GetPushDirectionFromPlayer();
         canMove = movementDirection != MovementDirection.None && CanMoveOneStep();

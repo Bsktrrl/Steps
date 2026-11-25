@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,9 +21,17 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
     bool isSaving;
     int settingsAdjustments;
     bool settingsSavePending;
+    private static bool quitPrepared;
+    private bool waitingForQuitReports;
+    private double quitReportDeadline;
 
     public static DataPersistanceManager instance { get; private set; }
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetQuitState()
+    {
+        quitPrepared = false;
+    }
 
     //--------------------
 
@@ -41,16 +50,30 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
     {
         this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
         dataManager = FindAnyObjectByType<DataManager>();
-        map = FindAnyObjectByType<MapManager>();
+        map = MapManager.Instance;
         this.dataPersistanceObjects = FindAllDataPersistenceObjects();
 
         LoadGame();
     }
 
+    private void OnEnable()
+    {
+        Application.wantsToQuit += HandleQuitRequest;
+    }
+
+    private void OnDisable()
+    {
+        Application.wantsToQuit -= HandleQuitRequest;
+        FinishQuitAfterReports();
+    }
+
     private void LateUpdate()
     {
+        if (waitingForQuitReports && Time.realtimeSinceStartupAsDouble >= quitReportDeadline)
+            FinishQuitAfterReports();
+
         // Startup listeners finish populating the data, and a goal saves as part of its scene exit.
-        if ((dataManager && !dataManager.dataHasLoaded_Check) || (map && map.IsCompletingLevel))
+        if (quitPrepared || (dataManager && !dataManager.dataHasLoaded_Check) || (map && map.IsCompletingLevel))
             return;
 
         FlushPendingSave();
@@ -62,7 +85,7 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
     public bool NewGame()
     {
-        if (!savingEnabled)
+        if (quitPrepared || !savingEnabled)
             return false;
 
         DataManager data = DataManager.Instance;
@@ -132,14 +155,17 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
     internal void SaveGameImmediately()
     {
+        if (quitPrepared)
+            return;
+
         SaveGame();
         FlushPendingSave();
     }
 
-    private void FlushPendingSave()
+    private bool FlushPendingSave()
     {
         if (!savingEnabled || !savePending || isSaving)
-            return;
+            return false;
 
         savePending = false;
         isSaving = true;
@@ -150,7 +176,7 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
             foreach (IDataPersistance dataPersistanceObj in dataPersistanceObjects)
                 dataPersistanceObj.SaveData(ref gameData);
 
-            WriteSave(gameData);
+            return WriteSave(gameData);
         }
         finally
         {
@@ -172,28 +198,121 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
     //--------------------
 
 
+    private bool HandleQuitRequest()
+    {
+        if (Application.isEditor)
+            return true;
+
+        if (quitPrepared)
+            return !waitingForQuitReports;
+
+        var feedback = GetEnabledFeedback();
+        bool saved = PrepareQuit(queueSessionReport: feedback != null);
+        if (!saved || !feedback)
+            return true;
+
+        waitingForQuitReports = true;
+        quitReportDeadline = Time.realtimeSinceStartupAsDouble + FeedbackForm.RequestTimeoutSeconds;
+        StartCoroutine(SubmitReportsAndQuit(feedback, dataManager.playerStatsData_Store.pendingSessionReports));
+        return false;
+    }
+
     private void OnApplicationQuit()
     {
-        if (!savingEnabled)
+        if (!quitPrepared)
+            PrepareQuit(queueSessionReport: GetEnabledFeedback() != null);
+    }
+
+    private static FeedbackForm GetEnabledFeedback()
+    {
+        var collection = FindAnyObjectByType<PlayerDataManager>();
+        if (!collection || !collection.isActiveAndEnabled || !collection.collectData)
+            return null;
+
+        var feedback = FindAnyObjectByType<FeedbackForm>();
+        return feedback && feedback.isActiveAndEnabled ? feedback : null;
+    }
+
+    private bool PrepareQuit(bool queueSessionReport)
+    {
+        if (quitPrepared || !savingEnabled || !dataManager)
+            return false;
+
+        quitPrepared = true;
+        var statistics = Player_Statistics_Manager.Active;
+        var levelStats = map ? FindAnyObjectByType<MapStatsGathered>() : null;
+        if (levelStats)
+        {
+            if (map.IsCompletingLevel)
+            {
+                statistics?.RecordLevelCompletion();
+                levelStats.CompleteLevel();
+            }
+            else
+            {
+                levelStats.ExitLevel();
+            }
+        }
+        statistics?.FinishLevelAttempt();
+
+        var session = FindAnyObjectByType<SessionStatsGathered>();
+        if (session)
+            session.StoreSessionStats();
+
+        var storedStats = dataManager.playerStatsData_Store;
+        var completedSession = storedStats.sessionStats ?? new Session_Stats();
+        completedSession.session_No = Mathf.Max(1, completedSession.session_No);
+        if (queueSessionReport)
+        {
+            storedStats.pendingSessionReports ??= new List<Session_Stats>();
+            storedStats.pendingSessionReports.Add(completedSession);
+        }
+
+        storedStats.sessionStats = new Session_Stats { session_No = completedSession.session_No + 1 };
+        dataManager.menuState_Store = MenuState.Main_Menu;
+        SaveGame();
+        return FlushPendingSave();
+    }
+
+    private IEnumerator SubmitReportsAndQuit(FeedbackForm feedback, List<Session_Stats> reports)
+    {
+        yield return null;
+
+        try
+        {
+            while (feedback && reports.Count > 0 && Time.realtimeSinceStartupAsDouble < quitReportDeadline)
+            {
+                Session_Stats report = reports[0];
+                bool delivered = false;
+                yield return feedback.SubmitSessionReport(report, quitReportDeadline, success => delivered = success);
+                if (!delivered)
+                    break;
+
+                reports.RemoveAt(0);
+                // Persist the acknowledgement without adding the network wait to play time.
+                if (!WriteSave(gameData))
+                {
+                    reports.Insert(0, report);
+                    break;
+                }
+            }
+
+            while (feedback && feedback.HasActiveRequests && Time.realtimeSinceStartupAsDouble < quitReportDeadline)
+                yield return null;
+        }
+        finally
+        {
+            FinishQuitAfterReports();
+        }
+    }
+
+    private void FinishQuitAfterReports()
+    {
+        if (!waitingForQuitReports)
             return;
 
-        Player_Statistics_Manager.Active?.FinishLevelAttempt();
-
-        //Make it so that the playerStatsData are reset on next game played
-        if (FindObjectOfType<MapStatsGathered>())
-            MapStatsGathered.Instance.ExitLevel();
-
-        //PlayerStats Data
-        if (FindObjectOfType<FeedbackForm>())
-            FeedbackForm.Instance.SubmitFeedback_Session();
-        if (FindObjectOfType<SessionStatsGathered>())
-            SessionStatsGathered.Instance.ResetSessionStats();
-
-        DataManager.Instance.playerStatsData_Store.sessionStats.session_No += 1;
-
-        //Save the variables
-        DataManager.Instance.menuState_Store = MenuState.Main_Menu;
-        SaveGameImmediately();
+        waitingForQuitReports = false;
+        Application.Quit();
     }
 
     List<IDataPersistance> FindAllDataPersistenceObjects()

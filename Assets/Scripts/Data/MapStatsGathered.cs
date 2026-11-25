@@ -9,6 +9,7 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
     float realTime = 0;
 
     PauseMenuManager pauseMenuManager;
+    private bool attemptEnded;
 
     //--------------------
 
@@ -23,7 +24,7 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
     }
     void UpdateAllTimers_Level()
     {
-        if (PauseMenuManager.Instance.isActive) return;
+        if (attemptEnded || !MapManager.Instance || (pauseMenuManager && pauseMenuManager.isActive)) return;
 
         realTime = Time.deltaTime;
 
@@ -102,6 +103,10 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
 
     void UpdateLevelStats()
     {
+        var map = MapManager.Instance;
+        if (!map)
+            return;
+
         levelStats.timeUsed = 0;
         levelStats.stepsTaken = 0;
         levelStats.respawnTaken = 0;
@@ -120,7 +125,7 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
         levelStats.ability_Jump = 0;
         levelStats.ability_CeilingGrab = 0;
 
-        Level_Stats levelStats_DataManger = GetLevelData(MapManager.Instance.levelName);
+        Level_Stats levelStats_DataManger = GetLevelData(map.levelName);
 
         if (levelStats_DataManger == null) return;
 
@@ -472,6 +477,10 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
 
     public void ExitLevel()
     {
+        if (attemptEnded || !MapManager.Instance)
+            return;
+
+        attemptEnded = true;
         levelStats.quitTimer = levelStats.timeUsed;
 
         SessionStatsGathered.Instance.sessionStats.totalLevelExited += 1;
@@ -481,6 +490,10 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
     }
     public void CompleteLevel()
     {
+        if (attemptEnded || !MapManager.Instance)
+            return;
+
+        attemptEnded = true;
         levelStats.goalReachedTimer = levelStats.timeUsed;
 
         SessionStatsGathered.Instance.sessionStats.totalLevelsCleared += 1;

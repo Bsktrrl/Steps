@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MapManager : Singleton<MapManager>
+public class MapManager : Singleton<MapManager>, ISceneSingleton
 {
     public static event Action Action_StartIntroSequence;
     public static event Action Action_EndIntroSequence;
@@ -78,6 +78,20 @@ public class MapManager : Singleton<MapManager>
 
     private void Awake()
     {
+        if (!playerObject || !playerObject.TryGetComponent(out Movement playerMovement))
+        {
+            Debug.LogWarning($"MapManager in '{gameObject.scene.name}' needs a player prefab with Movement on its root.", this);
+            enabled = false;
+            return;
+        }
+
+        if (!RegisterSceneInstance())
+        {
+            Debug.LogWarning($"Duplicate MapManager in '{gameObject.scene.name}' was disabled.", this);
+            enabled = false;
+            return;
+        }
+
         returnFromHUB = levelName == LevelNames.HUB;
 
         if (blackScreen)
@@ -90,7 +104,7 @@ public class MapManager : Singleton<MapManager>
         introSequence = false;
         introSequence_Finished = false;
 
-        SpawnPlayerObject();
+        SpawnPlayerObject(playerMovement.heightOverBlock);
 
         pickup_LayerMask = ~pickup_LayerMask; //Corrects the error that resulted in all raycasts to only focus on the pickups instead of the other way around
     }
@@ -98,7 +112,8 @@ public class MapManager : Singleton<MapManager>
     {
         blockInfoList = FindObjectsOfType<BlockInfo>();
 
-        PlayerManager.Instance.PauseGame();
+        if (playerObjectInScene && playerObjectInScene.TryGetComponent(out PlayerManager player))
+            player.PauseGame();
     }
 
     private void OnEnable()
@@ -117,6 +132,14 @@ public class MapManager : Singleton<MapManager>
         DataManager.Action_dataHasLoaded -= SaveMapInfo;
         DataManager.Action_dataHasLoaded -= InputLevelNameDisplay;
         DataManager.Action_dataHasLoaded -= FadeOutBlackScreen;
+    }
+
+    private void OnDestroy()
+    {
+        if (ReferenceEquals(SpawnedPlayer, playerObjectInScene))
+            SpawnedPlayer = null;
+
+        UnregisterSceneInstance();
     }
 
 
@@ -161,15 +184,16 @@ public class MapManager : Singleton<MapManager>
     //--------------------
 
 
-    void SpawnPlayerObject()
+    void SpawnPlayerObject(float heightOverBlock)
     {
-        var playerObjectInScene = Instantiate(playerObject);
+        playerObjectInScene = Instantiate(playerObject);
 
-        playerStartPos = playerStartPos + new Vector3(0, -1 + Movement.Instance.heightOverBlock, 0);
+        playerStartPos += new Vector3(0, -1 + heightOverBlock, 0);
 
         playerObjectInScene.transform.position = playerStartPos;
 
-        playerObjectInScene.transform.parent = playerObject_Parent.transform;
+        if (playerObject_Parent)
+            playerObjectInScene.transform.SetParent(playerObject_Parent.transform);
 
         SpawnedPlayer = playerObjectInScene;
 

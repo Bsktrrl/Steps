@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainMenuManager : Singleton<MainMenuManager>
+public class MainMenuManager : Singleton<MainMenuManager>, ISceneSingleton
 {
     [Header("MenusOnMenuState")]
     public GameObject mainMenu_Parent;
@@ -45,6 +45,13 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     private void Awake()
     {
+        if (!RegisterSceneInstance())
+        {
+            Debug.LogWarning($"Duplicate MainMenuManager in '{gameObject.scene.name}' was disabled.", this);
+            enabled = false;
+            return;
+        }
+
         if (blackScreen != null)
         {
             blackScreenImage = blackScreen.GetComponent<Image>();
@@ -84,6 +91,11 @@ public class MainMenuManager : Singleton<MainMenuManager>
         DataManager.Action_dataHasLoaded -= SetMenu;
         DataManager.Action_dataHasLoaded -= FadeOutBlackScreen;
         DataManager.Action_dataHasLoaded -= SetStartingLanguage;
+    }
+
+    private void OnDestroy()
+    {
+        UnregisterSceneInstance();
     }
 
 

@@ -181,7 +181,8 @@ public class Block_SandFalling : MonoBehaviour
 
     void CheckIfCanFall()
     {
-        if (carriedByMoveablePillar)
+        var map = MapManager.Instance;
+        if (!map || carriedByMoveablePillar)
         {
             canFall = false;
             SetFallingSandEnabled(false);
@@ -194,7 +195,7 @@ public class Block_SandFalling : MonoBehaviour
                 Vector3.up,
                 out hit,
                 1,
-                MapManager.Instance.pickup_LayerMask))
+                map.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
@@ -212,7 +213,7 @@ public class Block_SandFalling : MonoBehaviour
                     Vector3.down,
                     out hit,
                     1,
-                    MapManager.Instance.pickup_LayerMask))
+                    map.pickup_LayerMask))
             {
                 if (hit.transform.gameObject.GetComponent<BlockInfo>())
                 {
@@ -229,7 +230,7 @@ public class Block_SandFalling : MonoBehaviour
                     Vector3.down,
                     out hit,
                     1,
-                    MapManager.Instance.pickup_LayerMask))
+                    map.pickup_LayerMask))
             {
                 BlockInfo blockBelow =
                     hit.transform.gameObject.GetComponent<BlockInfo>();

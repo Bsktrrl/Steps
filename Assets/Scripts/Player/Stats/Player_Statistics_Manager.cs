@@ -119,7 +119,7 @@ public class Player_Statistics_Manager : MonoBehaviour
         if (map)
             return;
 
-        map = FindAnyObjectByType<MapManager>();
+        map = MapManager.Instance;
         if (!map || map.gameObject.scene != gameObject.scene)
         {
             map = null;

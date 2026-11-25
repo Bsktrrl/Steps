@@ -45,10 +45,11 @@ public class Light_GlueplantChange : MonoBehaviour
 
     bool CheckIfGlueplantPickedUp()
     {
-        if (glueplantStand_number == null || glueplantStand_number.Count == 0)
+        var map = MapManager.Instance;
+        if (!map || glueplantStand_number == null || glueplantStand_number.Count == 0)
             return false;
 
-        StandStats stats = DataManager.Instance.glueplantStandStats_Store?.GetForLevel(MapManager.Instance.levelName);
+        StandStats stats = DataManager.Instance.glueplantStandStats_Store?.GetForLevel(map.levelName);
         return stats != null && glueplantStand_number.TrueForAll(stats.IsTaken);
     }
 
