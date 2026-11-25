@@ -482,6 +482,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
             return;
         }
 
+        ButtonMessageManager.Instance.RefreshTalkTarget();
         Action_InteractButton_isPressed?.Invoke();
     }
 
