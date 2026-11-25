@@ -12,8 +12,12 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
     public GameData gameData;
     List<IDataPersistance> dataPersistanceObjects;
     FileDataHandler dataHandler;
+    DataManager dataManager;
+    MapManager map;
     bool savingEnabled;
     bool canReplaceSave;
+    bool savePending;
+    bool isSaving;
 
     public static DataPersistanceManager instance { get; private set; }
 
@@ -34,9 +38,20 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
     private void Start()
     {
         this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
+        dataManager = FindAnyObjectByType<DataManager>();
+        map = FindAnyObjectByType<MapManager>();
         this.dataPersistanceObjects = FindAllDataPersistenceObjects();
 
         LoadGame();
+    }
+
+    private void LateUpdate()
+    {
+        // Startup listeners finish populating the data, and a goal saves as part of its scene exit.
+        if ((dataManager && !dataManager.dataHasLoaded_Check) || (map && map.IsCompletingLevel))
+            return;
+
+        FlushPendingSave();
     }
 
 
@@ -53,6 +68,7 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
         if (!WriteSave(newData))
             return false;
 
+        savePending = false;
         gameData = newData;
         data.ApplyNewGameData(newData);
         Player_Statistics_Manager.Active?.ResetForNewGame(data);
@@ -80,20 +96,41 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
         savingEnabled = result != SaveLoadResult.Failed;
         if (result == SaveLoadResult.Missing)
-            WriteSave(gameData);
+            SaveGame();
     }
 
     public void SaveGame()
     {
-        if (!savingEnabled)
+        if (savingEnabled)
+            savePending = true;
+    }
+
+    internal void SaveGameImmediately()
+    {
+        SaveGame();
+        FlushPendingSave();
+    }
+
+    private void FlushPendingSave()
+    {
+        if (!savingEnabled || !savePending || isSaving)
             return;
 
-        Player_Statistics_Manager.Active?.FlushStatistics();
+        savePending = false;
+        isSaving = true;
+        try
+        {
+            Player_Statistics_Manager.Active?.FlushStatistics();
 
-        foreach (IDataPersistance dataPersistanceObj in dataPersistanceObjects)
-            dataPersistanceObj.SaveData(ref gameData);
+            foreach (IDataPersistance dataPersistanceObj in dataPersistanceObjects)
+                dataPersistanceObj.SaveData(ref gameData);
 
-        WriteSave(gameData);
+            WriteSave(gameData);
+        }
+        finally
+        {
+            isSaving = false;
+        }
     }
 
     private bool WriteSave(GameData data)
@@ -130,7 +167,7 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
         //Save the variables
         DataManager.Instance.menuState_Store = MenuState.Main_Menu;
-        SaveGame();
+        SaveGameImmediately();
     }
 
     List<IDataPersistance> FindAllDataPersistenceObjects()

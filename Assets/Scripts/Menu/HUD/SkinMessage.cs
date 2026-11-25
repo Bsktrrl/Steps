@@ -39,7 +39,10 @@ public class SkinMessage : MonoBehaviour
                 + "</color> "
                 + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].pickup_Message_Skin_First;
 
-        DataManager.Instance.oneTimeRunData_Store.pickup_FirstSkin = true;
-        DataPersistanceManager.Instance.SaveGame();
+        if (!DataManager.Instance.oneTimeRunData_Store.pickup_FirstSkin)
+        {
+            DataManager.Instance.oneTimeRunData_Store.pickup_FirstSkin = true;
+            DataPersistanceManager.instance.SaveGame();
+        }
     }
 }

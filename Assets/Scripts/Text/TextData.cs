@@ -9,9 +9,12 @@ public class TextData : MonoBehaviour
     [Header("Stats from Excel")]
     [SerializeField] TextAsset game_TextDatabase_Sheet;
 
-    int startRow = 3;
-    int columns = 4; //Size + 1
-    bool hasReadSheet;
+    const int startRow = 3;
+    const int columns = 4; //Size + 1
+    static TextAsset cachedSheet;
+    static Game_TextDatabase cachedDatabase;
+
+    internal bool HasSource => game_TextDatabase_Sheet;
 
     [Header("Text Database")]
     public Game_TextDatabase game_TextDatabase = new Game_TextDatabase();
@@ -33,13 +36,24 @@ public class TextData : MonoBehaviour
     {
         if (!game_TextDatabase_Sheet)
             return;
-        if (hasReadSheet)
-        {
-            DataManager.Instance.game_TextDatabase_Store = game_TextDatabase;
-            return;
-        }
 
-        game_TextDatabase.gameText_LanguageList.Clear();
+        game_TextDatabase = ReadDatabase(game_TextDatabase_Sheet);
+        DataManager.Instance.game_TextDatabase_Store = game_TextDatabase;
+    }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void ResetDatabaseCache()
+    {
+        cachedSheet = null;
+        cachedDatabase = null;
+    }
+
+    internal static Game_TextDatabase ReadDatabase(TextAsset sheet)
+    {
+        if (cachedSheet == sheet && cachedDatabase != null)
+            return cachedDatabase;
+
+        var game_TextDatabase = new Game_TextDatabase();
         for (int i = 0; i < columns - 1; i++)
         {
             Game_TextDatabase_Language gameText_LanguageList_Temp = new Game_TextDatabase_Language();
@@ -51,7 +65,7 @@ public class TextData : MonoBehaviour
         //-----
 
 
-        string[] excelData = ParseSpreadsheetCells(game_TextDatabase_Sheet.text);
+        string[] excelData = ParseSpreadsheetCells(sheet.text);
 
         //Fill the new element with data
         for (int j = 0; j < columns - 1; j++)
@@ -603,9 +617,9 @@ public class TextData : MonoBehaviour
         //Remove elements that doesn't have a name
         //game_TextDatabase.gameText_LanguageList = game_TextDatabase.gameText_LanguageList.Where(obj => obj != null && !string.IsNullOrEmpty(obj.name_Region_Water)).ToList();
 
-        //Input data into DataManager for easy access thoughout the game
-        DataManager.Instance.game_TextDatabase_Store = game_TextDatabase;
-        hasReadSheet = true;
+        cachedSheet = sheet;
+        cachedDatabase = game_TextDatabase;
+        return game_TextDatabase;
     }
 
 
@@ -651,7 +665,7 @@ public class TextData : MonoBehaviour
         return cells.ToArray();
     }
 
-    void SetTextData(string[] excelData, int j, ref string languageVersion, int no)
+    static void SetTextData(string[] excelData, int j, ref string languageVersion, int no)
     {
         if (excelData[(columns * no) + ((startRow - 1) * columns) + 1 + j] != "")
             languageVersion = excelData[(columns * no) + ((startRow - 1) * columns) + 1 + j].Trim();

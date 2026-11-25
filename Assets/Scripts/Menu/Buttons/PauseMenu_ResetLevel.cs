@@ -48,7 +48,7 @@ public class PauseMenu_ResetLevel : MonoBehaviour
 
         yield return map.StartFadeInBlackScreen();
 
-        Player_Statistics_Manager.Active?.SaveLevelExit();
+        Player_Statistics_Manager.Active?.FinishLevelAttempt();
 
         GameObject player = MapManager.SpawnedPlayer;
         if (player)
@@ -57,6 +57,9 @@ public class PauseMenu_ResetLevel : MonoBehaviour
             if (freeCam)
                 freeCam.PrepareForLevelReload();
         }
+
+        if (DataPersistanceManager.instance)
+            DataPersistanceManager.instance.SaveGameImmediately();
 
 #if UNITY_EDITOR
         if (scene.buildIndex < 0)

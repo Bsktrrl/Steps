@@ -95,7 +95,7 @@ public class FileDataHandler
             if (data?.playerStats_Save == null || data.mapInfo_SaveList == null)
                 throw new InvalidDataException("Required save data is missing.");
 
-            string dataToStore = JsonUtility.ToJson(data, true);
+            string dataToStore = JsonUtility.ToJson(data);
             if (string.IsNullOrEmpty(dataToStore))
                 throw new InvalidDataException("Save data could not be serialized.");
 

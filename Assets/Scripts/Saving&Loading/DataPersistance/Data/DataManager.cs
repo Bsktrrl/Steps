@@ -58,6 +58,8 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
     //Text Database
     /*[HideInInspector]*/public Game_TextDatabase game_TextDatabase_Store = new Game_TextDatabase();
+    [SerializeField] TextAsset localizationSource;
+    bool localizationFromAsset;
 
     //PlayerStatsData
     /*[HideInInspector]*/ public PlayerStatsData playerStatsData_Store = new PlayerStatsData();
@@ -85,8 +87,12 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     {
         GetSavedDataFromFile(gameData);
         var textData = FindAnyObjectByType<TextData>();
-        if (textData && textData.gameObject.scene == gameObject.scene)
+        bool hasSceneText = textData && textData.gameObject.scene == gameObject.scene && textData.HasSource;
+        localizationFromAsset = hasSceneText || localizationSource;
+        if (hasSceneText)
             textData.ReadExcelSheet();
+        else if (localizationSource)
+            game_TextDatabase_Store = TextData.ReadDatabase(localizationSource);
 
         Player_Statistics_Manager.Active?.BeginTracking(this);
         LoadDataIntoProject(gameData);
@@ -119,9 +125,9 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.mapNameDisplay_Store = gameData.mapNameDisplay_Save;
         this.charatersData_Store = gameData.charatersData_Save;
         this.skinsInfo_Store = gameData.skinsInfo_Save;
-        // TextData can already have loaded the current spreadsheet in the main menu.
+        // Older saves can still provide text in a scene without a packaged source.
         if ((game_TextDatabase_Store?.gameText_LanguageList?.Count ?? 0) == 0)
-            this.game_TextDatabase_Store = gameData.game_TextDatabase_Save;
+            this.game_TextDatabase_Store = gameData.game_TextDatabase_Save ?? new Game_TextDatabase();
 
         this.playerStatsData_Store = gameData.PlayerStatsData_Save;
 
@@ -206,7 +212,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         gameData.charatersData_Save = this.charatersData_Store;
         gameData.settingData_SaveList = this.settingData_StoreList;
         gameData.skinsInfo_Save = this.skinsInfo_Store;
-        gameData.game_TextDatabase_Save = this.game_TextDatabase_Store;
+        gameData.game_TextDatabase_Save = localizationFromAsset ? null : game_TextDatabase_Store;
 
         gameData.PlayerStatsData_Save = this.playerStatsData_Store;
 
@@ -227,7 +233,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         var newData = new GameData
         {
             haveStartedNewGame_Save = hasStartedNewGame,
-            game_TextDatabase_Save = game_TextDatabase_Store
+            game_TextDatabase_Save = localizationFromAsset ? null : game_TextDatabase_Store
         };
 
         if (hasStartedNewGame)

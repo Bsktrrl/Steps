@@ -68,19 +68,15 @@ public class Interactable_Pickup : MonoBehaviour
             if (!TryCollectPickup())
                 return;
 
+            // Save the HUB spawn change with the completed map and the pickup reward.
+            if (goal && glueplantType == GlueplantType.HUB)
+                DataManager.Instance.oneTimeRunData_Store.glueplantHUB_PickedUp = true;
+
             mapManager.SaveMapInfo();
 
             if (goal)
             {
                 PlayerManager.Instance.PauseGame();
-
-                //If glueplant is from HUB, update spawnPoint in HUB-level
-                if (glueplantType == GlueplantType.HUB)
-                {
-                    DataManager.Instance.oneTimeRunData_Store.glueplantHUB_PickedUp = true;
-                    DataPersistanceManager.instance.SaveGame();
-                }
-
                 StartCoroutine(GlueplantExitLevel(1.5f));
             }
             else

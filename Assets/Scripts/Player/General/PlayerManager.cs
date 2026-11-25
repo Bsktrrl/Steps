@@ -237,7 +237,7 @@ public class PlayerManager : Singleton<PlayerManager>
     public void QuitLevel()
     {
         if (!string.IsNullOrEmpty(mainMenu_Name))
-            Player_Statistics_Manager.Active?.SaveLevelExit();
+            Player_Statistics_Manager.Active?.FinishLevelAttempt();
 
         ReturnToLevelMenu(false);
     }
@@ -245,7 +245,7 @@ public class PlayerManager : Singleton<PlayerManager>
     public void CompleteLevelAndLeave()
     {
         Player_Statistics_Manager.Active?.RecordLevelCompletion();
-        Player_Statistics_Manager.Active?.SaveLevelExit();
+        Player_Statistics_Manager.Active?.FinishLevelAttempt();
         MapStatsGathered.Instance.CompleteLevel();
 
         switch (MapManager.Instance.levelName)
@@ -277,6 +277,8 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {
+        if (DataPersistanceManager.instance)
+            DataPersistanceManager.instance.SaveGameImmediately();
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
         while (!operation.isDone)
         {

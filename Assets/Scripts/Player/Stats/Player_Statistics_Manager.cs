@@ -224,12 +224,6 @@ public class Player_Statistics_Manager : MonoBehaviour
         attemptClosed = true;
     }
 
-    internal void SaveLevelExit()
-    {
-        FinishLevelAttempt();
-        SaveStatistics();
-    }
-
     internal void RecordLevelCompletion()
     {
         if (!IsTrackingLevel || attemptCompleted)

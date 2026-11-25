@@ -256,7 +256,7 @@ public class SessionStatsGathered : Singleton<SessionStatsGathered>
 
         DataPersistanceManager.instance.SaveGame();
     }
-    public void SaveSessionStats()
+    internal void StoreSessionStats()
     {
         DataManager.Instance.playerStatsData_Store.sessionStats.totalTimeUsed += sessionStats.totalTimeUsed;
 
@@ -314,7 +314,5 @@ public class SessionStatsGathered : Singleton<SessionStatsGathered>
         DataManager.Instance.playerStatsData_Store.sessionStats.totalStepsTaken += sessionStats.totalStepsTaken;
         DataManager.Instance.playerStatsData_Store.sessionStats.totalRespawnTaken += sessionStats.totalRespawnTaken;
         DataManager.Instance.playerStatsData_Store.sessionStats.totalCameraRotationTaken += sessionStats.totalCameraRotationTaken;
-
-        DataPersistanceManager.instance.SaveGame();
     }
 }

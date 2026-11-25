@@ -74,9 +74,9 @@ public class LoadLevel : MonoBehaviour
         }
 
         if (TryGetComponent(out LevelInfo levelInfo))
-            levelInfo.SaveNameDisplay();
+            levelInfo.StoreNameDisplay();
 
-        SessionStatsGathered.Instance.SaveSessionStats();
+        SessionStatsGathered.Instance.StoreSessionStats();
 
         if (RememberCurrentlySelectedUIElement.Instance != null && OverWorldManager.Instance != null)
         {
@@ -86,6 +86,7 @@ public class LoadLevel : MonoBehaviour
             );
         }
 
+        DataPersistanceManager.instance.SaveGameImmediately();
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
 
         while (!operation.isDone)
