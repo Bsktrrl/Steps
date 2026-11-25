@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class TMPro_TextDisplay : MonoBehaviour
 {
@@ -10,27 +7,27 @@ public class TMPro_TextDisplay : MonoBehaviour
 
     [SerializeField] bool textToDisplay_additional;
 
+    private bool hasStarted;
+
 
     //--------------------
 
 
     private void Start()
     {
+        hasStarted = true;
         DisplayText();
     }
 
     private void OnEnable()
     {
         SettingsManager.Action_SetNewLanguage += DisplayText;
-        SceneManager.activeSceneChanged += HandleSceneChanged;
-    }
-    private void OnDestroy()
-    {
-        SettingsManager.Action_SetNewLanguage -= DisplayText;
-        SceneManager.activeSceneChanged -= HandleSceneChanged;
+
+        if (hasStarted)
+            DisplayText();
     }
 
-    private void HandleSceneChanged(Scene oldScene, Scene newScene)
+    private void OnDisable()
     {
         SettingsManager.Action_SetNewLanguage -= DisplayText;
     }
