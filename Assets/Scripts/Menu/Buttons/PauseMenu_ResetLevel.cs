@@ -17,12 +17,16 @@ public class PauseMenu_ResetLevel : MonoBehaviour
         if (!map || map.gameObject.scene != scene || !CanReload(scene))
             return;
 
+        DataPersistanceManager persistence = DataPersistanceManager.instance;
+        if (persistence && !persistence.TryBeginSceneChange())
+            return;
+
         isResetting = true;
         if (TryGetComponent(out ButtonSound sound))
             sound.TryButtonPressSound();
 
         // The map stays active while the pause menu is transitioning.
-        map.StartCoroutine(ReloadLevel(map, scene));
+        map.StartCoroutine(ReloadLevel(map, scene, persistence));
     }
 
     private static bool CanReload(Scene scene)
@@ -37,18 +41,20 @@ public class PauseMenu_ResetLevel : MonoBehaviour
 #endif
     }
 
-    private static IEnumerator ReloadLevel(MapManager map, Scene scene)
+    private static IEnumerator ReloadLevel(MapManager map, Scene scene, DataPersistanceManager persistence)
     {
+        yield return map.StartFadeInBlackScreen();
+
+        Player_Statistics_Manager.Active?.FinishLevelAttempt();
+        if (persistence)
+            yield return persistence.SaveBeforeSceneChange();
+
         EventSystem eventSystem = EventSystem.current;
         if (eventSystem)
         {
             eventSystem.SetSelectedGameObject(null);
             eventSystem.enabled = false;
         }
-
-        yield return map.StartFadeInBlackScreen();
-
-        Player_Statistics_Manager.Active?.FinishLevelAttempt();
 
         GameObject player = MapManager.SpawnedPlayer;
         if (player)
@@ -57,9 +63,6 @@ public class PauseMenu_ResetLevel : MonoBehaviour
             if (freeCam)
                 freeCam.PrepareForLevelReload();
         }
-
-        if (DataPersistanceManager.instance)
-            DataPersistanceManager.instance.SaveGameImmediately();
 
 #if UNITY_EDITOR
         if (scene.buildIndex < 0)

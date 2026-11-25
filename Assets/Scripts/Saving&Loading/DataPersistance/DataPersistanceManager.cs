@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class DataPersistanceManager : Singleton<DataPersistanceManager>
 {
     public static event Action Action_NewGame;
+    private const float AutomaticSaveRetryDelay = 5f;
 
     [Header("File Storage Config")]
     public string fileName;
@@ -19,19 +21,21 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
     bool canReplaceSave;
     bool savePending;
     bool isSaving;
+    bool loadFailed;
+    float nextAutomaticSaveTime;
     int settingsAdjustments;
     bool settingsSavePending;
-    private static bool quitPrepared;
+    private SaveRecoveryDialog saveDialog;
+    private bool sceneChangePending;
+    private bool quitPrepared;
+    private bool quitSaveSucceeded;
     private bool waitingForQuitReports;
     private double quitReportDeadline;
 
     public static DataPersistanceManager instance { get; private set; }
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void ResetQuitState()
-    {
-        quitPrepared = false;
-    }
+    internal static bool SaveDialogOpen => instance && instance.saveDialog && instance.saveDialog.isActiveAndEnabled;
+    internal static bool GameplayInputBlocked =>
+        instance && (instance.sceneChangePending || instance.quitPrepared || SaveDialogOpen);
 
     //--------------------
 
@@ -64,7 +68,17 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
     private void OnDisable()
     {
         Application.wantsToQuit -= HandleQuitRequest;
+        if (saveDialog)
+            saveDialog.Dismiss();
         FinishQuitAfterReports();
+    }
+
+    private void OnDestroy()
+    {
+        if (saveDialog)
+            Destroy(saveDialog.gameObject);
+        if (instance == this)
+            instance = null;
     }
 
     private void LateUpdate()
@@ -73,7 +87,9 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
             FinishQuitAfterReports();
 
         // Startup listeners finish populating the data, and a goal saves as part of its scene exit.
-        if (quitPrepared || (dataManager && !dataManager.dataHasLoaded_Check) || (map && map.IsCompletingLevel))
+        if (quitPrepared || sceneChangePending || SaveDialogOpen ||
+            Time.unscaledTime < nextAutomaticSaveTime ||
+            (dataManager && !dataManager.dataHasLoaded_Check) || (map && map.IsCompletingLevel))
             return;
 
         FlushPendingSave();
@@ -83,11 +99,32 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
     //--------------------
 
 
-    public bool NewGame()
+    internal void RequestNewGame(Action onSaved)
     {
-        if (quitPrepared || !savingEnabled)
-            return false;
+        if (!savingEnabled || quitPrepared || sceneChangePending || SaveDialogOpen)
+            return;
 
+        bool TryStartNewGame()
+        {
+            if (!TrySaveNewGame())
+                return false;
+
+            if (saveDialog)
+                saveDialog.Dismiss();
+            onSaved();
+            return true;
+        }
+
+        if (!TryStartNewGame())
+        {
+            GetSaveDialog().Show("Could not start a new game",
+                "Check that the save folder is writable and has free space. Retry, or cancel to return to the menu.",
+                () => TryStartNewGame(), "Cancel", () => saveDialog.Dismiss(restoreSelection: true));
+        }
+    }
+
+    private bool TrySaveNewGame()
+    {
         DataManager data = DataManager.Instance;
         GameData newData = data.CreateNewGameData(hasStartedNewGame: true);
         if (!WriteSave(newData))
@@ -101,15 +138,29 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
         return true;
     }
 
-    public void LoadGame()
+    private void LoadGame()
     {
         savingEnabled = false;
-        SaveLoadResult result = dataHandler.Load(out gameData);
+        SaveLoadResult result = dataHandler.Load(out GameData loadedData);
+        // Once a read fails, a missing file on retry may mean the storage is still unavailable.
+        if (result == SaveLoadResult.Failed || (loadFailed && result == SaveLoadResult.Missing))
+        {
+            loadFailed = true;
+            GetSaveDialog().Show("Could not read your save",
+                "Check that the save file is accessible or restore a working copy, then choose Retry.",
+                LoadGame, "Quit", Application.isEditor ? null : () => Application.Quit());
+            return;
+        }
+
+        loadFailed = false;
+        if (saveDialog)
+            saveDialog.Dismiss();
+
+        gameData = loadedData;
         canReplaceSave = result == SaveLoadResult.Loaded;
 
-        if (result != SaveLoadResult.Loaded)
+        if (result == SaveLoadResult.Missing)
         {
-            // Keep the menu usable while writes are blocked after a failed read.
             DataManager data = DataManager.Instance;
             gameData = data.CreateNewGameData(hasStartedNewGame: false);
             data.ApplyNewGameData(gameData);
@@ -119,7 +170,7 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
         foreach (IDataPersistance dataPersistanceObj in dataPersistanceObjects)
             dataPersistanceObj.LoadData(gameData);
 
-        savingEnabled = result != SaveLoadResult.Failed;
+        savingEnabled = true;
         if (result == SaveLoadResult.Missing)
             SaveGame();
     }
@@ -153,13 +204,36 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
             SaveGame();
     }
 
-    internal void SaveGameImmediately()
+    internal bool TryBeginSceneChange()
     {
-        if (quitPrepared)
-            return;
+        if (!savingEnabled || sceneChangePending || quitPrepared || SaveDialogOpen)
+            return false;
 
+        sceneChangePending = true;
+        EventSystem system = EventSystem.current;
+        if (system)
+            system.SetSelectedGameObject(null);
+        return true;
+    }
+
+    // The caller owns the transition from the start of its fade until scene unload.
+    internal IEnumerator SaveBeforeSceneChange()
+    {
         SaveGame();
-        FlushPendingSave();
+        if (FlushPendingSave())
+            yield break;
+
+        bool retry = false;
+        ShowWriteFailure(() => retry = true);
+        do
+        {
+            while (!retry)
+                yield return null;
+
+            retry = false;
+        } while (!FlushPendingSave());
+
+        saveDialog.Dismiss();
     }
 
     private bool FlushPendingSave()
@@ -169,6 +243,7 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
         savePending = false;
         isSaving = true;
+        bool saved = false;
         try
         {
             Player_Statistics_Manager.Active?.FlushStatistics();
@@ -176,10 +251,22 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
             foreach (IDataPersistance dataPersistanceObj in dataPersistanceObjects)
                 dataPersistanceObj.SaveData(ref gameData);
 
-            return WriteSave(gameData);
+            saved = WriteSave(gameData);
+            return saved;
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning("Could not prepare the save.\n" + e, this);
+            return false;
         }
         finally
         {
+            if (!saved)
+            {
+                savePending = true;
+                nextAutomaticSaveTime = Time.unscaledTime + AutomaticSaveRetryDelay;
+            }
+
             isSaving = false;
         }
     }
@@ -191,36 +278,78 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
 
         settingsSavePending = false;
         canReplaceSave = true;
+        nextAutomaticSaveTime = 0f;
         return true;
     }
 
+    private SaveRecoveryDialog GetSaveDialog()
+    {
+        if (!saveDialog)
+            saveDialog = SaveRecoveryDialog.Create(gameObject.scene);
 
-    //--------------------
+        return saveDialog;
+    }
 
+    private void ShowWriteFailure(Action retry)
+    {
+        GetSaveDialog().Show("Could not save your progress",
+            "Your progress is still in memory. Check that the save folder is writable and has free space, then choose Retry.",
+            retry);
+    }
 
     private bool HandleQuitRequest()
     {
-        if (Application.isEditor)
+        // An unreadable save can be left untouched by closing the game.
+        if (Application.isEditor || instance != this || !savingEnabled || !dataManager)
             return true;
 
-        if (quitPrepared)
+        if (quitSaveSucceeded)
             return !waitingForQuitReports;
 
+        if (quitPrepared || sceneChangePending || SaveDialogOpen)
+            return false;
+
         var feedback = GetEnabledFeedback();
-        bool saved = PrepareQuit(queueSessionReport: feedback != null);
-        if (!saved || !feedback)
+        PrepareQuit(queueSessionReport: feedback != null);
+        if (TrySaveForQuit(feedback))
+            return !waitingForQuitReports;
+
+        ShowWriteFailure(() =>
+        {
+            if (!TrySaveForQuit(feedback))
+                return;
+
+            saveDialog.Dismiss();
+            if (!waitingForQuitReports)
+                Application.Quit();
+        });
+        return false;
+    }
+
+    private bool TrySaveForQuit(FeedbackForm feedback)
+    {
+        if (!FlushPendingSave())
+            return false;
+
+        quitSaveSucceeded = true;
+        if (!feedback)
             return true;
 
         waitingForQuitReports = true;
         quitReportDeadline = Time.realtimeSinceStartupAsDouble + FeedbackForm.RequestTimeoutSeconds;
         StartCoroutine(SubmitReportsAndQuit(feedback, dataManager.playerStatsData_Store.pendingSessionReports));
-        return false;
+        return true;
     }
 
     private void OnApplicationQuit()
     {
+        if (instance != this || !savingEnabled || !dataManager || quitSaveSucceeded)
+            return;
+
         if (!quitPrepared)
             PrepareQuit(queueSessionReport: GetEnabledFeedback() != null);
+
+        FlushPendingSave();
     }
 
     private static FeedbackForm GetEnabledFeedback()
@@ -233,11 +362,8 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
         return feedback && feedback.isActiveAndEnabled ? feedback : null;
     }
 
-    private bool PrepareQuit(bool queueSessionReport)
+    private void PrepareQuit(bool queueSessionReport)
     {
-        if (quitPrepared || !savingEnabled || !dataManager)
-            return false;
-
         quitPrepared = true;
         var statistics = Player_Statistics_Manager.Active;
         var levelStats = map ? FindAnyObjectByType<MapStatsGathered>() : null;
@@ -271,7 +397,6 @@ public class DataPersistanceManager : Singleton<DataPersistanceManager>
         storedStats.sessionStats = new Session_Stats { session_No = completedSession.session_No + 1 };
         dataManager.menuState_Store = MenuState.Main_Menu;
         SaveGame();
-        return FlushPendingSave();
     }
 
     private IEnumerator SubmitReportsAndQuit(FeedbackForm feedback, List<Session_Stats> reports)

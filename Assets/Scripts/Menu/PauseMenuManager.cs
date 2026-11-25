@@ -161,6 +161,9 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
     public void ClosePauseMenu()
     {
+        if (DataPersistanceManager.GameplayInputBlocked)
+            return;
+
         ////Set the first selected button for controller input
         //EventSystem.current.SetSelectedGameObject(pauseMenu_StartButton);
         //print("8. pauseMenuManager = true");

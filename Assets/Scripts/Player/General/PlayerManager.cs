@@ -244,8 +244,17 @@ public class PlayerManager : Singleton<PlayerManager>
         ReturnToLevelMenu(false);
     }
 
+    internal bool TryBeginLevelExit()
+    {
+        return !string.IsNullOrEmpty(mainMenu_Name) && Application.CanStreamedLevelBeLoaded(mainMenu_Name) &&
+            TryBeginSceneChange();
+    }
+
     public void CompleteLevelAndLeave()
     {
+        if (!TryBeginSceneChange())
+            return;
+
         Player_Statistics_Manager.Active?.RecordLevelCompletion();
         Player_Statistics_Manager.Active?.FinishLevelAttempt();
         MapStatsGathered.Instance.CompleteLevel();
@@ -279,14 +288,22 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {
-        if (DataPersistanceManager.instance)
-            DataPersistanceManager.instance.SaveGameImmediately();
+        DataPersistanceManager persistence = DataPersistanceManager.instance;
+        if (persistence)
+            yield return persistence.SaveBeforeSceneChange();
+
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
         while (!operation.isDone)
         {
             Debug.Log($"Loading progress: {operation.progress * 100}%");
             yield return null;
         }
+    }
+
+    private static bool TryBeginSceneChange()
+    {
+        DataPersistanceManager persistence = DataPersistanceManager.instance;
+        return !persistence || persistence.TryBeginSceneChange();
     }
 }
 

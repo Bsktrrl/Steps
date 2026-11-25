@@ -35,9 +35,6 @@ public class LoadLevel : MonoBehaviour
     MainMenuManager mainMenuManager;
     MenuLevelInfo menuLevelInfo;
 
-    private bool _isLoading;
-
-
     //--------------------
 
     private void Awake()
@@ -54,23 +51,21 @@ public class LoadLevel : MonoBehaviour
     {
         ResolveReferences();
 
-        if (_isLoading) return;
         if (!CheckIfCanBePlayed()) return;
         if (string.IsNullOrEmpty(levelToPlay)) return;
 
-        StartCoroutine(LoadSceneCoroutine(levelToPlay));
+        DataPersistanceManager persistence = DataPersistanceManager.instance;
+        if (!persistence || !Application.CanStreamedLevelBeLoaded(levelToPlay) || !persistence.TryBeginSceneChange())
+            return;
+
+        persistence.StartCoroutine(LoadSceneCoroutine(levelToPlay, persistence));
     }
 
-    private IEnumerator LoadSceneCoroutine(string sceneName)
+    private IEnumerator LoadSceneCoroutine(string sceneName, DataPersistanceManager persistence)
     {
-        ResolveReferences();
-
-        if (_isLoading) yield break;
-        _isLoading = true;
-
         if (mainMenuManager != null)
         {
-            yield return StartCoroutine(mainMenuManager.PlayFadeInAndWait(0.92f));
+            yield return mainMenuManager.PlayFadeInAndWait(0.92f);
         }
 
         if (TryGetComponent(out LevelInfo levelInfo))
@@ -80,13 +75,15 @@ public class LoadLevel : MonoBehaviour
 
         if (RememberCurrentlySelectedUIElement.Instance != null && OverWorldManager.Instance != null)
         {
+            OverWorldManager overworld = OverWorldManager.Instance;
+            LevelState enteredLevel = TryGetComponent(out LevelButton levelButton) ? levelButton.State : overworld.levelState;
             RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(
-                OverWorldManager.Instance.regionState,
-                OverWorldManager.Instance.levelState
+                overworld.regionState,
+                enteredLevel
             );
         }
 
-        DataPersistanceManager.instance.SaveGameImmediately();
+        yield return persistence.SaveBeforeSceneChange();
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
 
         while (!operation.isDone)

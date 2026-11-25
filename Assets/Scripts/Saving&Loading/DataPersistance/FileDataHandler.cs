@@ -53,7 +53,7 @@ public class FileDataHandler
         }
         catch (Exception e)
         {
-            Debug.LogError("Could not load the save. Saving is disabled for this session.\n" + fullPath + "\n" + e);
+            Debug.LogWarning("Could not read the save.\n" + fullPath + "\n" + e);
             return SaveLoadResult.Failed;
         }
     }
@@ -119,7 +119,7 @@ public class FileDataHandler
         }
         catch (Exception e)
         {
-            Debug.LogError("Could not write the save.\n" + fullPath + "\n" + e);
+            Debug.LogWarning("Could not write the save.\n" + fullPath + "\n" + e);
             return false;
         }
         finally

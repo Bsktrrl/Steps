@@ -169,7 +169,7 @@ public class FreeCam : Singleton<FreeCam>
         UpdateUIFade();
         if (!_isActive || CM_FreeCam == null) return;
 
-        if (PauseMenuManager.Instance.isActive)
+        if (PauseMenuManager.Instance.isActive || DataPersistanceManager.GameplayInputBlocked)
         {
             StopEnterCue();
             ResetFlight();

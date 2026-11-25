@@ -83,7 +83,8 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
         bool moved = position != lastMousePosition || mouse.delta.ReadValue() != Vector2.zero;
         lastMousePosition = position;
         // Consume the pointer position even when controller input wins this frame.
-        if (controllerNavigating || !cursorVisible)
+        if (controllerNavigating || !cursorVisible ||
+            (DataPersistanceManager.GameplayInputBlocked && !DataPersistanceManager.SaveDialogOpen))
             return;
 
         bool clicked = mouse.leftButton.wasPressedThisFrame || mouse.rightButton.wasPressedThisFrame ||
@@ -109,7 +110,8 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
         MouseHoverUpdated?.Invoke(target);
     }
 
-    private bool IsMenuOpen => mainMenuManager || (pauseMenuManager && pauseMenuManager.isActive);
+    private bool IsMenuOpen => DataPersistanceManager.SaveDialogOpen || mainMenuManager ||
+        (pauseMenuManager && pauseMenuManager.isActive);
 
     private bool HasHeldControllerNavigation()
     {

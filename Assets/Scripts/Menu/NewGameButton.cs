@@ -24,9 +24,13 @@ public class NewGameButton : MonoBehaviour
 
     public void NewGameButton_isPressed()
     {
-        if (!DataPersistanceManager.instance.NewGame())
-            return;
+        DataPersistanceManager persistence = DataPersistanceManager.instance;
+        if (persistence)
+            persistence.RequestNewGame(OnNewGameSaved);
+    }
 
+    private void OnNewGameSaved()
+    {
         if (menuLevelInfo && menuLevelInfo.mapInfo_ToSave != null)
         {
             menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List.Clear();

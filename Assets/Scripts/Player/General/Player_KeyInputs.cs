@@ -82,7 +82,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     private bool GameplayInputLocked => MapManager.Instance == null ||
         MapManager.Instance.GameplayInputLocked;
 
-    private bool DialogueCameraAllowed => !AncientTablet.ActiveTablet && MapManager.Instance != null &&
+    private bool DialogueCameraAllowed => !DataPersistanceManager.GameplayInputBlocked &&
+        !AncientTablet.ActiveTablet && MapManager.Instance != null &&
         !MapManager.Instance.IntroInputLocked &&
         MapManager.Instance.levelName == LevelNames.HUB &&
         HUBTutorial.Instance != null && HUBTutorial.Instance.DialogueCameraAllowed;
@@ -443,6 +444,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
 
     void OnDialogueSkip_Pressed()
     {
+        if (DataPersistanceManager.GameplayInputBlocked) return;
         if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
@@ -452,6 +454,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnDialogueNext_Pressed()
     {
+        if (DataPersistanceManager.GameplayInputBlocked) return;
         if (!Run_StayingPopupDisplayExit()) return;
         if (freeCam_isPressed) return;
 
@@ -461,6 +464,8 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     }
     void OnInteractButton_Pressed()
     {
+        if (DataPersistanceManager.GameplayInputBlocked) return;
+
         AncientTablet openTablet = AncientTablet.ActiveTablet;
         if (openTablet)
         {
