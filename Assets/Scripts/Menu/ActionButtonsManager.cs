@@ -27,6 +27,7 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
     private int rightStickBindingIndex;
     private Vector2 lastMousePosition;
     private static bool menuCursorRequested;
+    private int controllerInputFrame = -1;
 
 
     //--------------------
@@ -71,12 +72,20 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
     private void LateUpdate()
     {
         Mouse mouse = Mouse.current;
-        UpdateCursorVisibility(mouse);
+        bool controllerNavigating = controllerInputFrame == Time.frameCount || HasHeldControllerNavigation();
+        if (controllerNavigating)
+            menuCursorRequested = false;
+
+        bool cursorVisible = UpdateCursorVisibility(mouse);
         if (mouse == null || !Application.isFocused) return;
 
         Vector2 position = mouse.position.ReadValue();
         bool moved = position != lastMousePosition || mouse.delta.ReadValue() != Vector2.zero;
         lastMousePosition = position;
+        // Consume the pointer position even when controller input wins this frame.
+        if (controllerNavigating || !cursorVisible)
+            return;
+
         bool clicked = mouse.leftButton.wasPressedThisFrame || mouse.rightButton.wasPressedThisFrame ||
                        mouse.middleButton.wasPressedThisFrame;
 
@@ -102,19 +111,34 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
 
     private bool IsMenuOpen => mainMenuManager || (pauseMenuManager && pauseMenuManager.isActive);
 
-    private void UpdateCursorVisibility(Mouse mouse)
+    private bool HasHeldControllerNavigation()
+    {
+        if (!IsMenuOpen || !eventSystem || !uiInputModule || !uiInputModule.isActiveAndEnabled ||
+            eventSystem.currentInputModule != uiInputModule || !menuMove)
+            return false;
+
+        // The UI module can repeat navigation during a hold without a fresh input event.
+        InputAction move = menuMove.action;
+        return move?.activeControl?.device is Gamepad or Joystick && move.ReadValue<Vector2>() != Vector2.zero;
+    }
+
+    private bool UpdateCursorVisibility(Mouse mouse)
     {
         bool visible = mouse != null && Application.isFocused && IsMenuOpen &&
             (!ControllerState.HasConnectedController || menuCursorRequested);
         if (Cursor.visible != visible)
             Cursor.visible = visible;
+        return visible;
     }
 
     private void OnMenuInputUsed(InputDevice device)
     {
         if (device is Gamepad || device is Joystick)
+        {
+            controllerInputFrame = Time.frameCount;
             menuCursorRequested = false;
-        else if (device is Keyboard || (device is Mouse && IsMenuOpen))
+        }
+        else if (controllerInputFrame != Time.frameCount && (device is Keyboard || (device is Mouse && IsMenuOpen)))
             menuCursorRequested = true;
     }
 
