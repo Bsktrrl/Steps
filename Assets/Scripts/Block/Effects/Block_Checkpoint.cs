@@ -34,16 +34,28 @@ public class Block_Checkpoint : MonoBehaviour
     {
         if (Movement.Instance.blockStandingOn == gameObject)
         {
-            StepsHUD.Instance.stepCounter = PlayerStats.Instance.stats.steps_Current;
-
-            MapManager.Instance.playerStartPos = Movement.Instance.blockStandingOn.transform.position + (Vector3.up * Movement.Instance.heightOverBlock);
-            MapManager.Instance.playerStartRot = spawnDirection;
-
-            EffectManager.Instance.PerformCheckpointEffect();
-
-            PlayerStats.Instance.RestoreMissingSteps();
+            ActivateCheckpoint(playLandingEffect: true);
             StartCoroutine(ResetSteps(0.01f));
         }
+    }
+
+    internal void ActivateDuringGrapple()
+    {
+        ActivateCheckpoint(playLandingEffect: false);
+        // Subsequent blocks can spend steps immediately, so refill only once.
+        Action_CheckPointEntered?.Invoke();
+    }
+
+    private void ActivateCheckpoint(bool playLandingEffect)
+    {
+        StepsHUD.Instance.stepCounter = PlayerStats.Instance.stats.steps_Current;
+        MapManager.Instance.playerStartPos = transform.position + Vector3.up * Movement.Instance.heightOverBlock;
+        MapManager.Instance.playerStartRot = spawnDirection;
+
+        if (playLandingEffect)
+            EffectManager.Instance.PerformCheckpointEffect();
+
+        PlayerStats.Instance.RestoreMissingSteps();
     }
 
     IEnumerator ResetSteps(float waitTime)

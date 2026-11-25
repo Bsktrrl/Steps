@@ -39,18 +39,15 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
     private void Start()
     {
         SetupLine();
-
-        redDotSceneObject.SetActive(false);
     }
     private void OnEnable()
     {
-        Movement.Action_StepTaken += ResetGrapplingHook;
         Movement.Action_RespawnPlayerEarly += ResetGrapplingHook;
     }
     private void OnDisable()
     {
-        Movement.Action_StepTaken -= ResetGrapplingHook;
         Movement.Action_RespawnPlayerEarly -= ResetGrapplingHook;
+        ResetGrapplingHook();
     }
 
 
@@ -76,10 +73,16 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
         //Beam End
         lineRenderer.SetPosition(1, redDotSceneObject.transform.position);
 
+        // If a step happens while the aim is visible, clear it as before.
+        Movement.Action_StepTaken -= ResetGrapplingHook;
+        Movement.Action_StepTaken += ResetGrapplingHook;
+
         Action_GrapplingHook_Hit?.Invoke();
     }
     public void EndLineRenderer()
     {
+        Movement.Action_StepTaken -= ResetGrapplingHook;
+
         if (lineRenderer && lineRenderer.positionCount >= 2)
         {
             lineRenderer.SetPosition(0, transform.position);

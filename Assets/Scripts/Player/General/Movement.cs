@@ -384,7 +384,7 @@ public class Movement : Singleton<Movement>
         Action_RespawnPlayerEarly += ResetDarkenBlocks;
         Action_StepTaken += TakeAStep;
 
-        Action_isSwitchingBlocks += UpdateStepsAmonutWhenGrapplingMoving;
+        Action_isSwitchingBlocks += UpdateStepsWhenGrappling;
         Action_StepTaken_Late += RunIceGliding;
         Action_StepTaken_Late += CheckIfSwimming;
 
@@ -413,7 +413,7 @@ public class Movement : Singleton<Movement>
         Action_RespawnPlayerEarly -= ResetDarkenBlocks;
         Action_StepTaken -= TakeAStep;
 
-        Action_isSwitchingBlocks -= UpdateStepsAmonutWhenGrapplingMoving;
+        Action_isSwitchingBlocks -= UpdateStepsWhenGrappling;
         Action_StepTaken_Late -= RunIceGliding;
         Action_StepTaken_Late -= CheckIfSwimming;
 
@@ -3221,6 +3221,7 @@ public class Movement : Singleton<Movement>
         bool wasCharging = Inputs.grapplingHook_isPressed || grapplingTargetHasBeenSet;
         Inputs.grapplingHook_isPressed = false;
         grapplingTowardsStair = false;
+        grappleLandingBlock = null;
         performGrapplingHooking = false;
         isGrapplingHooking = false;
         ClearGrapplingAim();
@@ -3229,23 +3230,33 @@ public class Movement : Singleton<Movement>
             Action_isGrapplingHooking_Finished?.Invoke();
     }
 
-    void UpdateStepsAmonutWhenGrapplingMoving()
+    void UpdateStepsWhenGrappling()
     {
-        if (performGrapplingHooking &&
-            blockStandingOn != null &&
-            ((grapplingTowardsStair && Vector3.Distance(transform.position, tempGrapplingTaregtPos) > 1.5f) ||
-             (!grapplingTowardsStair && Vector3.Distance(blockStandingOn.transform.position, tempGrapplingTaregtPos) > 1.5f)) &&
-            TryGetStandingInfo(out BlockInfo standingInfo))
+        if (!performGrapplingHooking || !TryGetStandingInfo(out BlockInfo standingInfo))
+            return;
+
+        bool crossedCheckpoint = standingInfo.TryGetComponent(out Block_Checkpoint checkpoint) &&
+                                 checkpoint.isActiveAndEnabled;
+        // The destination still uses the regular landing sequence.
+        if (crossedCheckpoint && blockStandingOn == grappleLandingBlock)
+            return;
+
+        Vector3 costPosition = grapplingTowardsStair ? transform.position : blockStandingOn.transform.position;
+        if (Vector3.Distance(costPosition, tempGrapplingTaregtPos) > 1.5f)
         {
-            if (StatsRoot.stats.steps_Current < 0)
+            if (StatsRoot.stats.steps_Current < 0 && !crossedCheckpoint)
             {
                 RespawnPlayer(stepsExhausted: true);
                 return;
             }
 
             StatsRoot.stats.steps_Current -= standingInfo.GetMovementCost_ForPlayerMove();
-            StepsHUD.Instance.UpdateStepsDisplay_Walking();
+            if (!crossedCheckpoint)
+                StepsHUD.Instance.UpdateStepsDisplay_Walking();
         }
+
+        if (crossedCheckpoint)
+            checkpoint.ActivateDuringGrapple();
     }
 
     #endregion
@@ -3566,6 +3577,7 @@ public class Movement : Singleton<Movement>
     }
 
     private GameObject grappleHeightOffsetLandingBlock;
+    private GameObject grappleLandingBlock;
 
     private Vector3 CorrectGrappleTargetForHeightOffset(Vector3 originalTarget)
     {
@@ -4265,6 +4277,13 @@ public class Movement : Singleton<Movement>
 
         movementStates = moveState;
 
+        if (performGrapplingHooking)
+        {
+            grappleLandingBlock = grappleHeightOffsetLandingBlock;
+            if (grappleLandingBlock == null)
+                TryGetBlockUnder(fixedEndPos, Vector3.down, 1.25f, out grappleLandingBlock);
+        }
+
         float elapsed = 0f;
         float duration = MovementDuration(startPos, fixedEndPos, movementSpeed);
 
@@ -4277,7 +4296,23 @@ public class Movement : Singleton<Movement>
                 ? GetMoveTargetPosForBlock(dynamicTargetBlock)
                 : fixedEndPos;
 
-            transform.position = Vector3.Lerp(startPos, currentEndPos, t);
+            Vector3 nextPosition = Vector3.Lerp(startPos, currentEndPos, t);
+            if (performGrapplingHooking)
+            {
+                // Check intermediate tiles in order if one frame travels far
+                // enough to skip a block in the regular standing-block check.
+                Vector3 frameStart = transform.position;
+                int segments = Mathf.CeilToInt(Vector3.Distance(frameStart, nextPosition) / 0.5f);
+                for (int i = 1; i < segments; i++)
+                {
+                    transform.position = Vector3.Lerp(frameStart, nextPosition, i / (float)segments);
+                    UpdateBlockStandingOn();
+                    if (isRespawning)
+                        yield break;
+                }
+            }
+
+            transform.position = nextPosition;
 
             yield return null;
         }
@@ -4321,6 +4356,7 @@ public class Movement : Singleton<Movement>
 
         movementStates = MovementStates.Still;
         performGrapplingHooking = false;
+        grappleLandingBlock = null;
 
         isAscending = false;
         isDescending = false;

@@ -207,8 +207,9 @@ public class NumberOfSetpsDisplay : MonoBehaviour
     {
         yield return new WaitForSeconds(startDelay + 0.25f);
 
-        // Checkpoint should jump directly to max, not count upward.
-        SetNumbersInstant(PlayerStats.Instance.stats.steps_Max, PlayerStats.Instance.stats.steps_Max);
+        // A grapple can spend part of the refill before this animation finishes.
+        var stats = PlayerStats.Instance.stats;
+        SetNumbersInstant(stats.steps_Current, stats.steps_Max);
 
         updateFootprintCoroutine = null;
     }
