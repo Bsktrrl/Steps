@@ -42,6 +42,12 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
     {
         Player_KeyInputs.Action_dialogueNextButton_isPressed -= SkipTypewriter;
         Player_KeyInputs.Action_dialogueButton_isPressed -= SkipTypewriter;
+
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+        typingCoroutine = null;
+        skipRequested = false;
+        isTyping = false;
     }
 
 
@@ -50,15 +56,28 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
 
     public void ShowText(string text)
     {
-        //print("1. ShowText");
-        fullText = text;
-
         if (typingCoroutine != null)
-        {
             StopCoroutine(typingCoroutine);
+
+        typingCoroutine = null;
+        skipRequested = false;
+        isTyping = true;
+        fullText = text ?? string.Empty;
+        charCounter = 0;
+        charSafetyCounter = 0;
+
+        // Give TMP the complete line so formatting and sprite tags stay intact during the reveal.
+        dialogueText.maxVisibleCharacters = 0;
+        dialogueText.text = fullText;
+        dialogueText.ForceMeshUpdate(ignoreActiveState: true);
+        maxCharCounter = dialogueText.textInfo.characterCount;
+
+        if (maxCharCounter == 0)
+        {
+            FinishTyping();
+            return;
         }
 
-        skipRequested = false;
         typingCoroutine = StartCoroutine(TypeText());
     }
     public void SkipTypewriter()
@@ -74,63 +93,64 @@ public class TypewriterEffect : Singleton<TypewriterEffect>
 
     IEnumerator TypeText()
     {
-        isTyping = true;
-        dialogueText.text = "";
-        maxCharCounter = fullText.Length;
-
-        charCounter = 0;
-        charSafetyCounter = 0;
         double nextCharacterTime = Time.timeAsDouble;
-        while (charCounter <= fullText.Length)
+        while (charCounter < maxCharCounter)
         {
-            if (skipRequested && charSafetyCounter <= 1)
+            if (skipRequested)
             {
+                if (charSafetyCounter >= 2)
+                    break;
                 skipRequested = false;
             }
-            else if (skipRequested && charSafetyCounter > 1)
-            {
-                //print("111. skipRequested");
-                dialogueText.text = fullText;
-                break;
-            }
 
-            if (charCounter < fullText.Length)
-            {
-                char currentChar = fullText[charCounter];
-                dialogueText.text = fullText.Substring(0, charCounter + 1);
+            TMP_CharacterInfo element = dialogueText.textInfo.characterInfo[charCounter];
+            dialogueText.maxVisibleCharacters = ++charCounter;
+            bool isSprite = element.elementType == TMP_TextElementType.Sprite;
+            // TMP can turn tags such as <br> into layout characters. Reveal them without a typing beat.
+            if (!isSprite && element.stringLength > 1 && element.index >= 0 &&
+                element.index < fullText.Length && fullText[element.index] == '<')
+                continue;
 
+            char currentChar = element.character;
+            if (!isSprite)
                 PlayTypingSound(currentChar);
 
-                TextSpeed speed = SettingsManager.Instance.settingsData.currentTextSpeed;
-                float delay = IsLongerPauseChar(currentChar) ? GetSentenceSpeed(speed)
-                    : IsSmallerPauseChar(currentChar) ? GetCommaSpeed(speed) : GetTextSpeed(speed);
-
-                if (speed is TextSpeed.Faster or TextSpeed.Fastest)
-                {
-                    // Keep fractional frame time so settings 4 and 5 can exceed one character per frame.
-                    nextCharacterTime += delay * GetFastDelayScale(speed);
-                    while (Time.timeAsDouble < nextCharacterTime)
-                        yield return null;
-                }
-                else
-                {
-                    yield return new WaitForSeconds(delay);
-                    nextCharacterTime = Time.timeAsDouble;
-                }
-            }
-
-            charCounter++;
             charSafetyCounter++;
+            TextSpeed speed = SettingsManager.Instance.settingsData.currentTextSpeed;
+            float delay = !isSprite && IsLongerPauseChar(currentChar) ? GetSentenceSpeed(speed)
+                : !isSprite && IsSmallerPauseChar(currentChar) ? GetCommaSpeed(speed) : GetTextSpeed(speed);
+
+            if (speed is TextSpeed.Faster or TextSpeed.Fastest)
+            {
+                // Keep fractional frame time so settings 4 and 5 can exceed one character per frame.
+                nextCharacterTime += delay * GetFastDelayScale(speed);
+                while (Time.timeAsDouble < nextCharacterTime)
+                    yield return null;
+            }
+            else
+            {
+                yield return new WaitForSeconds(delay);
+                nextCharacterTime = Time.timeAsDouble;
+            }
         }
 
+        // A line made only of layout elements needs to yield before its coroutine can finish.
+        if (charSafetyCounter == 0)
+            yield return null;
+
+        FinishTyping();
+    }
+
+    void FinishTyping()
+    {
+        dialogueText.maxVisibleCharacters = int.MaxValue;
         OptionBoxes.Instance.ShowHideOptions();
 
         skipRequested = false;
         typingCoroutine = null;
         isTyping = false;
 
-        fullText = "";
-        //charCounter = 0;
+        fullText = string.Empty;
 
         Action_Typewriting_Finished?.Invoke();
     }
