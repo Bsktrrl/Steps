@@ -175,10 +175,11 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
         InputActionMap ui = navigationActions.AddActionMap("Menu Navigation");
         InputAction move = ui.AddAction("Move", InputActionType.Value, expectedControlLayout: "Vector2");
         move.AddCompositeBinding("2DVector")
-            .With("Up", "<Keyboard>/w").With("Up", "<Keyboard>/upArrow")
-            .With("Down", "<Keyboard>/s").With("Down", "<Keyboard>/downArrow")
-            .With("Left", "<Keyboard>/a").With("Left", "<Keyboard>/leftArrow")
-            .With("Right", "<Keyboard>/d").With("Right", "<Keyboard>/rightArrow");
+            .With("Up", "<Keyboard>/w").With("Down", "<Keyboard>/s")
+            .With("Left", "<Keyboard>/a").With("Right", "<Keyboard>/d");
+        move.AddCompositeBinding("2DVector")
+            .With("Up", "<Keyboard>/upArrow").With("Down", "<Keyboard>/downArrow")
+            .With("Left", "<Keyboard>/leftArrow").With("Right", "<Keyboard>/rightArrow");
         move.AddBinding("<Gamepad>/dpad");
         move.AddBinding("<Gamepad>/leftStick", processors: "stickDeadzone(min=0.25)");
         move.AddBinding("<Joystick>/stick", processors: "stickDeadzone(min=0.25)");
