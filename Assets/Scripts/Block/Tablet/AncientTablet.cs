@@ -30,6 +30,7 @@ public class AncientTablet : MonoBehaviour
     private void OnEnable()
     {
         Movement.Action_StepTaken_Late += DisplayButtonMessageDelayed;
+        Movement.Action_HasLandedFromFalling += DisplayButtonMessageDelayed;
         Movement.Action_BodyRotated += DisplayButtonMessageDelayed;
         Movement.Action_RespawnPlayerLate += DisplayButtonMessageDelayed;
         Movement.Action_RespawnPlayerEarly += InterruptInteraction;
@@ -38,6 +39,7 @@ public class AncientTablet : MonoBehaviour
     private void OnDisable()
     {
         Movement.Action_StepTaken_Late -= DisplayButtonMessageDelayed;
+        Movement.Action_HasLandedFromFalling -= DisplayButtonMessageDelayed;
         Movement.Action_BodyRotated -= DisplayButtonMessageDelayed;
         Movement.Action_RespawnPlayerLate -= DisplayButtonMessageDelayed;
         Movement.Action_RespawnPlayerEarly -= InterruptInteraction;

@@ -28,6 +28,7 @@ public class Interactable_GlueplantStand : MonoBehaviour
         Player_KeyInputs.Action_InteractButton_isPressed += RunInterraction;
 
         Movement.Action_StepTaken_Late += DisplayButtonMessageDelayed;
+        Movement.Action_HasLandedFromFalling += DisplayButtonMessageDelayed;
         Movement.Action_BodyRotated += DisplayButtonMessageDelayed;
         Movement.Action_RespawnPlayerLate += DisplayButtonMessageDelayed;
         Action_Glueplant_isPlaced += DisplayButtonMessageDelayed;
@@ -39,6 +40,7 @@ public class Interactable_GlueplantStand : MonoBehaviour
         Player_KeyInputs.Action_InteractButton_isPressed -= RunInterraction;
 
         Movement.Action_StepTaken_Late -= DisplayButtonMessageDelayed;
+        Movement.Action_HasLandedFromFalling -= DisplayButtonMessageDelayed;
         Movement.Action_BodyRotated -= DisplayButtonMessageDelayed;
         Movement.Action_RespawnPlayerLate -= DisplayButtonMessageDelayed;
         Action_Glueplant_isPlaced -= DisplayButtonMessageDelayed;

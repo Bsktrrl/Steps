@@ -69,9 +69,9 @@ public class Interactable_NPC_ColliderTrigger : MonoBehaviour
             return null;
 
         Vector3 origin = player.player.transform.position;
-        Vector3 facing = movement.lookDir;
+        Vector3 facing = player.playerBody.transform.forward;
         facing.y = 0f;
-        facing.Normalize();
+        facing = RoundTo45Degrees(facing);
         if (facing == Vector3.zero)
             return null;
 

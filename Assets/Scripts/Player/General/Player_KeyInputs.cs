@@ -473,7 +473,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (freeCam_isPressed) return;
 
         if (!ButtonChecks_Movement()) { return; }
-        if (Movement.Instance.GetMovementState() == MovementStates.Moving) { return; }
+        if (Movement.Instance.GetMovementState() is MovementStates.Moving or MovementStates.Falling) { return; }
 
         GameObject lookedAt = PlayerManager.Instance.block_LookingAt_Horizontal;
         if (lookedAt && lookedAt.TryGetComponent(out AncientTablet tablet))

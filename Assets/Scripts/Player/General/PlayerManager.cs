@@ -58,6 +58,7 @@ public class PlayerManager : Singleton<PlayerManager>
         DataManager.Action_dataHasLoaded += SetNewPlayerPosition;
         Movement.Action_StepTaken += StepsOnFallableBlock;
         Movement.Action_StepTaken += BlockLookingAt;
+        Movement.Action_HasLandedFromFalling += BlockLookingAt;
         Movement.Action_BodyRotated += BlockLookingAt;
 
         Block_Moveable.Action_ObjectHasBeenPushed += BlockLookingAt;
@@ -69,6 +70,7 @@ public class PlayerManager : Singleton<PlayerManager>
         DataManager.Action_dataHasLoaded -= SetNewPlayerPosition;
         Movement.Action_StepTaken -= StepsOnFallableBlock;
         Movement.Action_StepTaken -= BlockLookingAt;
+        Movement.Action_HasLandedFromFalling -= BlockLookingAt;
         Movement.Action_BodyRotated -= BlockLookingAt;
 
         Block_Moveable.Action_ObjectHasBeenPushed -= BlockLookingAt;

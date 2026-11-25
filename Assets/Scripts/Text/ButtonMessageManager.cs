@@ -30,6 +30,7 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
         playerManager = GetComponentInParent<PlayerManager>();
         DataManager.Action_dataHasLoaded += UpdateButtonMessages;
         SettingsManager.Action_SetNewLanguage += UpdateButtonMessages;
+        Movement.Action_HasLandedFromFalling += RefreshTalkTarget;
         PauseMenuManager.Action_openPauseMenu += HidePromptsForPause;
         PauseMenuManager.Action_closePauseMenu += RestorePromptsAfterPause;
     }
@@ -37,6 +38,7 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
     {
         DataManager.Action_dataHasLoaded -= UpdateButtonMessages;
         SettingsManager.Action_SetNewLanguage -= UpdateButtonMessages;
+        Movement.Action_HasLandedFromFalling -= RefreshTalkTarget;
         PauseMenuManager.Action_openPauseMenu -= HidePromptsForPause;
         PauseMenuManager.Action_closePauseMenu -= RestorePromptsAfterPause;
         SetTalkTarget(null);
@@ -73,7 +75,8 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
 
         var movement = Movement.Instance;
         var ceilingGrab = Player_CeilingGrab.Instance;
-        SetTalkTarget(movement.isRespawning || ceilingGrab.isCeilingGrabbing || ceilingGrab.isCeilingRotation
+        SetTalkTarget(movement.isRespawning || movement.GetMovementState() == MovementStates.Falling ||
+                      ceilingGrab.isCeilingGrabbing || ceilingGrab.isCeilingRotation
             ? null
             : Interactable_NPC_ColliderTrigger.FindTalkTarget(playerManager, movement, talkTarget));
     }
