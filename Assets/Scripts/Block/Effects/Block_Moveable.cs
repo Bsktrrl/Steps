@@ -16,6 +16,7 @@ public class Block_Moveable : MonoBehaviour
     private bool isFalling;
     private bool isDespawned;
     private float fallSpeed;
+    private RaycastHit[] terrainHits;
 
     // Separate from normal pushing: the falling sand block carries this
     // moveable block until it lands, cancels or disappears.
@@ -286,12 +287,14 @@ public class Block_Moveable : MonoBehaviour
         if (distance <= 0.0001f)
             return false;
 
-        RaycastHit[] hits = Physics.RaycastAll(
+        int hitCount = TerrainRaycasts.Cast(
             origin, displacement / distance, distance,
-            MapManager.Instance.pickup_LayerMask);
+            MapManager.Instance.pickup_LayerMask, QueryTriggerInteraction.UseGlobal,
+            ref terrainHits);
 
-        foreach (RaycastHit fenceHit in hits)
+        for (int i = 0; i < hitCount; i++)
         {
+            RaycastHit fenceHit = terrainHits[i];
             if (fenceHit.collider != null &&
                 fenceHit.collider.GetComponentInParent<Fence>() != null)
                 return true;
@@ -513,6 +516,7 @@ public class Block_Moveable : MonoBehaviour
         // options must therefore be rebuilt as their colliders move, including
         // during a fall, not only after a push or final landing.
         bool refreshPlayerMovement = false;
+        bool transformsSynced = false;
 
         for (int i = detachedPillars.Count - 1; i >= 0; i--)
         {
@@ -522,6 +526,7 @@ public class Block_Moveable : MonoBehaviour
             if (group.blocks.Count == 0 || group.blocks[0] == null)
             {
                 FinishDetachedPillar(group);
+                transformsSynced = false;
                 detachedPillars.RemoveAt(i);
                 refreshPlayerMovement = true;
                 continue;
@@ -534,12 +539,17 @@ public class Block_Moveable : MonoBehaviour
             if (bottomCollider == null)
             {
                 FinishDetachedPillar(group);
+                transformsSynced = false;
                 detachedPillars.RemoveAt(i);
                 refreshPlayerMovement = true;
                 continue;
             }
 
-            Physics.SyncTransforms();
+            if (!transformsSynced)
+            {
+                Physics.SyncTransforms();
+                transformsSynced = true;
+            }
             group.speed += Mathf.Abs(Physics.gravity.y) * Time.deltaTime;
             float distance = group.speed * Time.deltaTime;
             Vector3 basePosition = bottom.transform.position;
@@ -547,11 +557,12 @@ public class Block_Moveable : MonoBehaviour
             float landingY = float.NegativeInfinity;
             float castDistance = bounds.extents.y + distance + SNAP_DISTANCE;
 
-            RaycastHit[] hits = Physics.RaycastAll(
+            int hitCount = TerrainRaycasts.Cast(
                 bounds.center, Vector3.down, castDistance,
-                Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
-            foreach (RaycastHit contact in hits)
+                Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore, ref terrainHits);
+            for (int hitIndex = 0; hitIndex < hitCount; hitIndex++)
             {
+                RaycastHit contact = terrainHits[hitIndex];
                 if (contact.collider == null) continue;
                 BlockInfo support = contact.collider.GetComponentInParent<BlockInfo>();
                 if (support == null || group.blocks.Contains(support) ||
@@ -600,7 +611,9 @@ public class Block_Moveable : MonoBehaviour
 
             if (landingY > float.NegativeInfinity)
             {
-                FinishDetachedPillar(group);
+                // The scan or the position write already synchronized this group.
+                FinishDetachedPillar(group, transformsSynced: true);
+                transformsSynced = false;
                 detachedPillars.RemoveAt(i);
                 refreshPlayerMovement = true;
             }
@@ -609,6 +622,7 @@ public class Block_Moveable : MonoBehaviour
                 // Preserve the same Y=-5 removal behavior without disabling
                 // the GameObjects (they must remain available for respawn).
                 HideDetachedPillar(group);
+                transformsSynced = false;
                 refreshPlayerMovement = true;
             }
         }
@@ -617,9 +631,10 @@ public class Block_Moveable : MonoBehaviour
             Movement.Instance.RefreshAfterMoveableBlockChange();
     }
 
-    private void FinishDetachedPillar(DetachedPillar group)
+    private void FinishDetachedPillar(DetachedPillar group, bool transformsSynced = false)
     {
-        Physics.SyncTransforms();
+        if (!transformsSynced)
+            Physics.SyncTransforms();
         foreach (BlockInfo member in group.blocks)
         {
             if (member == null) continue;
@@ -1418,19 +1433,21 @@ public class Block_Moveable : MonoBehaviour
         //
         // The additional half-grid distance accounts for the
         // bottom of the moving block reaching the supporting block.
-        RaycastHit[] hits = Physics.RaycastAll(
+        int hitCount = TerrainRaycasts.Cast(
             currentPos,
             Vector3.down,
             fallDistance + GRID_SIZE * 0.5f + SNAP_DISTANCE,
             Physics.DefaultRaycastLayers,
-            QueryTriggerInteraction.Ignore
+            QueryTriggerInteraction.Ignore,
+            ref terrainHits
         );
 
         bool foundLanding = false;
         float landingY = float.NegativeInfinity;
 
-        foreach (RaycastHit hit in hits)
+        for (int i = 0; i < hitCount; i++)
         {
+            RaycastHit hit = terrainHits[i];
             if (hit.transform == null)
                 continue;
 

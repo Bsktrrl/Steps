@@ -143,6 +143,7 @@ public class Movement : Singleton<Movement>
 
     RaycastHit hit;
     private readonly Collider[] movementOverlapHits = new Collider[16];
+    private RaycastHit[] carrierLandingHits;
 
     public bool isJumping;
     public bool isGrapplingHooking;
@@ -1030,57 +1031,43 @@ public class Movement : Singleton<Movement>
 
     private bool TryGetLandingBlockWhileFollowingCarrier(out GameObject landingBlock)
     {
-        landingBlock = null;
+        return TryGetCarrierLandingBlock(0.05f, heightOverBlock + 0.4f, out landingBlock);
+    }
 
-        Vector3 origin = transform.position + (Vector3.up * 0.05f);
-        RaycastHit[] hits = Physics.RaycastAll(
-            origin,
-            Vector3.down,
-            heightOverBlock + 0.4f,
-            Map.player_LayerMask,
-            QueryTriggerInteraction.Ignore);
+    private bool TryGetPotentialLandingBlockBelowCarrier(out GameObject landingBlock)
+    {
+        return TryGetCarrierLandingBlock(0.1f, 3f, out landingBlock);
+    }
 
-        float closestDistance = float.MaxValue;
+    private bool TryGetCarrierLandingBlock(float originOffset, float distance, out GameObject landingBlock)
+    {
+        Vector3 origin = transform.position + Vector3.up * originOffset;
+        int layers = Map.player_LayerMask;
+        int hitCount = TerrainRaycasts.Cast(
+            origin, Vector3.down, distance, layers, QueryTriggerInteraction.Ignore, ref carrierLandingHits);
+        landingBlock = FindClosestCarrierLanding(carrierLandingHits, hitCount, out bool hasTie);
 
-        foreach (var h in hits)
+        // The two raycast APIs can enumerate equal-distance hits differently.
+        // Keep the existing choice when separate blocks share the nearest surface.
+        if (hasTie)
         {
-            GameObject obj = h.transform.gameObject;
-
-            if (!obj.TryGetComponent(out BlockInfo info))
-                continue;
-
-            if (obj == fallingCarrierBlock)
-                continue;
-
-            if (info.movementState == MovementStates.Falling)
-                continue;
-
-            if (h.distance < closestDistance)
-            {
-                closestDistance = h.distance;
-                landingBlock = obj;
-            }
+            RaycastHit[] hits = Physics.RaycastAll(
+                origin, Vector3.down, distance, layers, QueryTriggerInteraction.Ignore);
+            landingBlock = FindClosestCarrierLanding(hits, hits.Length, out _);
         }
 
         return landingBlock != null;
     }
 
-    private bool TryGetPotentialLandingBlockBelowCarrier(out GameObject landingBlock)
+    private GameObject FindClosestCarrierLanding(RaycastHit[] hits, int hitCount, out bool hasTie)
     {
-        landingBlock = null;
-
-        Vector3 origin = transform.position + (Vector3.up * 0.1f);
-        RaycastHit[] hits = Physics.RaycastAll(
-            origin,
-            Vector3.down,
-            3f,
-            Map.player_LayerMask,
-            QueryTriggerInteraction.Ignore);
-
+        GameObject landingBlock = null;
         float closestDistance = float.MaxValue;
+        hasTie = false;
 
-        foreach (RaycastHit h in hits)
+        for (int i = 0; i < hitCount; i++)
         {
+            RaycastHit h = hits[i];
             GameObject obj = h.transform.gameObject;
 
             if (!obj.TryGetComponent(out BlockInfo info))
@@ -1096,10 +1083,15 @@ public class Movement : Singleton<Movement>
             {
                 closestDistance = h.distance;
                 landingBlock = obj;
+                hasTie = false;
+            }
+            else if (h.distance == closestDistance && obj != landingBlock)
+            {
+                hasTie = true;
             }
         }
 
-        return landingBlock != null;
+        return landingBlock;
     }
 
     private bool CarrierHasReachedLandingHeight(GameObject landingBlock)

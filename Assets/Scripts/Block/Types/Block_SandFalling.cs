@@ -38,6 +38,7 @@ public class Block_SandFalling : MonoBehaviour
     [SerializeField] GameObject sandBlockAsset;
 
     RaycastHit hit;
+    private RaycastHit[] fallingHits;
 
 
     //--------------------
@@ -530,19 +531,21 @@ public class Block_SandFalling : MonoBehaviour
         float rayDistance =
             fallingBounds.extents.y + fallDistance + skinWidth;
 
-        RaycastHit[] hits = Physics.RaycastAll(
+        int hitCount = TerrainRaycasts.Cast(
             fallingBounds.center,
             Vector3.down,
             rayDistance,
             MapManager.Instance.pickup_LayerMask,
-            QueryTriggerInteraction.Ignore);
+            QueryTriggerInteraction.Ignore,
+            ref fallingHits);
 
         RaycastHit closestHit = new RaycastHit();
         bool blockFound = false;
         float closestDistance = float.MaxValue;
 
-        foreach (RaycastHit currentHit in hits)
+        for (int i = 0; i < hitCount; i++)
         {
+            RaycastHit currentHit = fallingHits[i];
             BlockInfo hitBlock =
                 currentHit.collider.GetComponentInParent<BlockInfo>();
 
@@ -570,7 +573,7 @@ public class Block_SandFalling : MonoBehaviour
         // Place the bottom of this block directly on the top surface
         // of the block it landed on.
         float landingAdjustment =
-            closestHit.point.y - fallingCollider.bounds.min.y;
+            closestHit.point.y - fallingBounds.min.y;
 
         transform.position += Vector3.up * landingAdjustment;
 
