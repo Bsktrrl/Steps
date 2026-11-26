@@ -62,6 +62,9 @@ public class Movement : Singleton<Movement>
     float grapplingLength = 5f;
     public Vector3 savePos;
 
+    private const float StandingBlockProbeDistance = 1.25f;
+    private const float StandingBlockProbeOffset = 0.05f;
+
     [Header("BlockIsStandingOn")]
     public Vector3 lookingDirection;
     public Vector3 lookingDirection_Old;
@@ -322,8 +325,9 @@ public class Movement : Singleton<Movement>
                 break;
 
             case MovementStates.Falling:
-                UpdateBlockStandingOn();
-                PlayerIsFalling();
+                float fallDistance = Mathf.Max(0f, fallSpeed * Time.deltaTime);
+                bool reachesLanding = UpdateBlockStandingOn(fallDistance);
+                PlayerIsFalling(fallDistance, reachesLanding);
 
                 if (IsFallingWithCarrierBlockActive())
                 {
@@ -1933,6 +1937,11 @@ public class Movement : Singleton<Movement>
 
     public void UpdateBlockStandingOn()
     {
+        UpdateBlockStandingOn(0f);
+    }
+
+    private bool UpdateBlockStandingOn(float fallDistance)
+    {
         GameObject prev = blockStandingOn;
         Vector3 playerPos = PM.player.transform.position;
         Vector3 rayDir = CeilingGrab.isCeilingGrabbing ? Vector3.up : Vector3.down;
@@ -1951,17 +1960,35 @@ public class Movement : Singleton<Movement>
             if (prev != blockStandingOn)
                 Action_isSwitchingBlocks_Invoke();
 
-            return;
+            return false;
         }
         else if (isFallingWithCarrierBlock)
         {
             ClearFallingCarrierBlock();
         }
 
-        if (TryGetBlockUnder(playerPos, rayDir, 1.25f, out GameObject obj))
-            blockStandingOn = obj;
-        else
-            blockStandingOn = null;
+        bool reachesLanding = false;
+        blockStandingOn = null;
+        if (TryGetBlockUnder(playerPos, rayDir, StandingBlockProbeDistance + fallDistance,
+                out GameObject obj, out float hitDistance))
+        {
+            // The extra range detects blocks reached during this frame's fall.
+            // Only publish a distant block once the player can actually land on it.
+            reachesLanding = fallDistance > 0f &&
+                (playerPos.y - fallDistance <= obj.transform.position.y + heightOverBlock ||
+                 hitDistance <= fallDistance + StandingBlockProbeOffset);
+
+            if (fallDistance > 0f && !reachesLanding && hitDistance > StandingBlockProbeDistance)
+            {
+                Player_BodyHeight bodyHeight = Player_BodyHeight.Instance;
+                float targetBodyY = bodyHeight.GetLocalYForHeight(bodyHeight.GetHeightOnBlock(obj, this));
+                float bodyHeightChange = targetBodyY - PM.playerBody.transform.localPosition.y;
+                reachesLanding = playerPos.y - fallDistance <= obj.transform.position.y + heightOverBlock + bodyHeightChange;
+            }
+
+            if (hitDistance <= StandingBlockProbeDistance || reachesLanding)
+                blockStandingOn = obj;
+        }
 
         if (blockStandingOn_Previous != blockStandingOn && !CeilingGrab.isCeilingGrabbing)
             blockStandingOn_Previous = prev;
@@ -1980,22 +2007,26 @@ public class Movement : Singleton<Movement>
                 slopeAutoExitSourceBlock = null;
             }
         }
+
+        return reachesLanding;
     }
 
-    bool TryGetBlockUnder(Vector3 origin, Vector3 dir, float distance, out GameObject block)
+    bool TryGetBlockUnder(Vector3 origin, Vector3 dir, float distance, out GameObject block, out float hitDistance)
     {
-        origin += dir * -0.05f;
+        origin -= dir * StandingBlockProbeOffset;
 
         if (Physics.Raycast(origin, dir, out RaycastHit localHit, distance, Map.player_LayerMask, QueryTriggerInteraction.Ignore))
         {
             if (localHit.transform.TryGetComponent(out BlockInfo _))
             {
                 block = localHit.transform.gameObject;
+                hitDistance = localHit.distance;
                 return true;
             }
         }
 
         block = null;
+        hitDistance = 0f;
         return false;
     }
 
@@ -4282,7 +4313,7 @@ public class Movement : Singleton<Movement>
         {
             grappleLandingBlock = grappleHeightOffsetLandingBlock;
             if (grappleLandingBlock == null)
-                TryGetBlockUnder(fixedEndPos, Vector3.down, 1.25f, out grappleLandingBlock);
+                TryGetBlockUnder(fixedEndPos, Vector3.down, StandingBlockProbeDistance, out grappleLandingBlock, out _);
         }
 
         float elapsed = 0f;
@@ -4512,7 +4543,7 @@ public class Movement : Singleton<Movement>
         }
     }
 
-    void PlayerIsFalling()
+    void PlayerIsFalling(float fallDistance, bool reachesLanding)
     {
         if (IsFallingWithCarrierBlockActive())
         {
@@ -4527,13 +4558,12 @@ public class Movement : Singleton<Movement>
                     ClearFallingCarrierBlock();
                     blockStandingOn = landingBlock;
 
-                    transform.position = new Vector3(
+                    Vector3 landingPosition = new Vector3(
                         transform.position.x,
                         landedY,
                         transform.position.z);
 
-                    EndFalling();
-                    UpdateAvailableMovementBlocks();
+                    TryAdvanceFallLanding(landingPosition, fallDistance, reachesLanding: true);
                     return;
                 }
 
@@ -4555,25 +4585,43 @@ public class Movement : Singleton<Movement>
 
         if (blockStandingOn != null)
         {
-            if (Vector3.Distance(blockStandingOn.transform.position, transform.position) < heightOverBlock + 0.1f)
-            {
-                transform.position = blockStandingOn.transform.position + (Vector3.up * heightOverBlock);
-                EndFalling();
-                UpdateAvailableMovementBlocks();
-            }
-            else
-            {
-                transform.SetPositionAndRotation(
-                    new Vector3(transform.position.x, transform.position.y - (fallSpeed * Time.deltaTime), transform.position.z),
-                    transform.rotation);
-            }
+            Vector3 landingPosition = blockStandingOn.transform.position + Vector3.up * heightOverBlock;
+            if (TryAdvanceFallLanding(landingPosition, fallDistance, reachesLanding))
+                return;
         }
-        else
+
+        transform.position += Vector3.down * fallDistance;
+    }
+
+    private bool TryAdvanceFallLanding(Vector3 landingPosition, float fallDistance, bool reachesLanding)
+    {
+        Player_BodyHeight bodyHeight = Player_BodyHeight.Instance;
+        float targetHeight = bodyHeight.GetHeightOnBlock(blockStandingOn, this);
+        float bodyHeightChange = bodyHeight.GetLocalYForHeight(targetHeight) - PM.playerBody.transform.localPosition.y;
+        bool changesBodyHeight = !Mathf.Approximately(bodyHeightChange, 0f);
+
+        if (!changesBodyHeight && !reachesLanding &&
+            Vector3.Distance(blockStandingOn.transform.position, transform.position) >= heightOverBlock + 0.1f)
+            return false;
+
+        // Advance the root and the body offset together so the visible body
+        // travels the same distance it would during the rest of the fall.
+        float remainingDrop = transform.position.y - landingPosition.y - bodyHeightChange;
+        if (changesBodyHeight && remainingDrop > fallDistance)
         {
-            transform.SetPositionAndRotation(
-                new Vector3(transform.position.x, transform.position.y - (fallSpeed * Time.deltaTime), transform.position.z),
-                transform.rotation);
+            float progress = fallDistance / remainingDrop;
+            Vector3 position = transform.position;
+            position.y = Mathf.Lerp(position.y, landingPosition.y, progress);
+            transform.position = position;
+            bodyHeight.ApplyPlayerBodyHeight(targetHeight, progress);
+            return true;
         }
+
+        transform.position = landingPosition;
+        bodyHeight.ApplyPlayerBodyHeight(targetHeight);
+        EndFalling();
+        UpdateAvailableMovementBlocks();
+        return true;
     }
 
     void EndFalling()
