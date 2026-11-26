@@ -45,6 +45,8 @@ public class Movement : Singleton<Movement>
     public static event Action Action_isGrapplingHooking_SendPlayer;
     public static event Action Action_isGrapplingHooking_RollBack;
 
+    public static event Action Action_isDrowning;
+
     #endregion
 
     #region Variables
@@ -5608,6 +5610,8 @@ public class Movement : Singleton<Movement>
 
     IEnumerator StartDrowning()
     {
+        Action_isDrowning?.Invoke();
+
         isDrowning = true;
         PlayerManager.Instance.PauseMovement();
 

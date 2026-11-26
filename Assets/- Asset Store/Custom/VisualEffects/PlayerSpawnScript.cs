@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 
 public class PlayerSpawnScript : Singleton<PlayerSpawnScript>
 {
+    public static event Action Action_HubSpawnStarted;
     public static event Action Action_PlayerHasSpawned;
 
     public bool playerIsSpawning;
@@ -122,6 +123,7 @@ public class PlayerSpawnScript : Singleton<PlayerSpawnScript>
 
         playerBody.transform.localScale = Vector3.zero;
         PS1.Play();
+        Action_HubSpawnStarted?.Invoke();
 
         yield return new WaitForSeconds(5);
         PlayerManager.Instance.PauseGame();
