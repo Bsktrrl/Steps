@@ -4876,36 +4876,17 @@ public class Movement : Singleton<Movement>
         Vector3 endPosition = targetPosObj.transform.position + (Vector3.up * heightOverBlock);
 
         float ladderClimbDuration = Vector3.Distance(startPosition, endPosition) * 0.4f;
-        float elapsedTime = 0f;
+        yield return MoveAlongLadder(endPosition, ladderClimbDuration);
 
-        while (elapsedTime < ladderClimbDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            float progress = elapsedTime / ladderClimbDuration;
-            transform.position = Vector3.Lerp(startPosition, endPosition, progress);
-            yield return null;
-        }
-
-        transform.position = endPosition;
-
-        if (PerformMovementRaycast(transform.position + dir, Vector3.down, 1, out GameObject outObj1) == RaycastHitObjects.BlockInfo)
-            endPosition = outObj1.transform.position + (Vector3.up * heightOverBlock);
+        if (PerformMovementRaycast(transform.position + dir, Vector3.down, 1, out GameObject landingBlock) == RaycastHitObjects.BlockInfo)
+            endPosition = landingBlock.transform.position + (Vector3.up * heightOverBlock);
         else
-            endPosition = startPosition + dir;
-
-        startPosition = transform.position;
-        ladderClimbDuration = 0.4f;
-        elapsedTime = 0f;
-
-        while (elapsedTime < ladderClimbDuration)
         {
-            elapsedTime += Time.deltaTime;
-            float progress = elapsedTime / ladderClimbDuration;
-            transform.position = Vector3.Lerp(startPosition, endPosition, progress);
-            yield return null;
+            endPosition = startPosition + dir;
+            TryGetBlockUnder(endPosition, Vector3.down, StandingBlockProbeDistance, out landingBlock, out _);
         }
 
-        transform.position = endPosition;
+        yield return MoveAlongLadder(endPosition, 0.4f, landingBlock);
 
         ResetLadderTargets();
         UpdateAvailableMovementBlocks();
@@ -4961,60 +4942,11 @@ public class Movement : Singleton<Movement>
             PM.playerBody.transform.localPosition,
             Quaternion.Euler(0, targetY, 0));
 
-        Vector3 startPosition =
-            transform.position;
+        yield return MoveAlongLadder(transform.position + dir, 0.4f);
 
-        Vector3 endPosition =
-            startPosition + dir;
-
-        float ladderClimbDuration = 0.4f;
-        float elapsedTime = 0f;
-
-        while (elapsedTime < ladderClimbDuration)
-        {
-            elapsedTime += Time.deltaTime;
-
-            float progress =
-                elapsedTime / ladderClimbDuration;
-
-            transform.position =
-                Vector3.Lerp(
-                    startPosition,
-                    endPosition,
-                    progress);
-
-            yield return null;
-        }
-
-        transform.position = endPosition;
-
-        startPosition = transform.position;
-        endPosition = targetPosObj.transform.position;
-
-        ladderClimbDuration =
-            Vector3.Distance(
-                startPosition,
-                endPosition) * 0.4f;
-
-        elapsedTime = 0f;
-
-        while (elapsedTime < ladderClimbDuration)
-        {
-            elapsedTime += Time.deltaTime;
-
-            float progress =
-                elapsedTime / ladderClimbDuration;
-
-            transform.position =
-                Vector3.Lerp(
-                    startPosition,
-                    endPosition,
-                    progress);
-
-            yield return null;
-        }
-
-        transform.position = endPosition;
+        Vector3 endPosition = targetPosObj.transform.position;
+        float ladderClimbDuration = Vector3.Distance(transform.position, endPosition) * 0.4f;
+        yield return MoveAlongLadder(endPosition, ladderClimbDuration, exitBlockDown, blendAtEnd: true);
 
         ResetLadderTargets();
 
@@ -5049,6 +4981,33 @@ public class Movement : Singleton<Movement>
 
         FindLadderExitBlock();
         CompleteLadderStep(-targetPosObj.transform.forward);
+    }
+
+    private IEnumerator MoveAlongLadder(Vector3 endPosition, float duration,
+        GameObject landingBlock = null, bool blendAtEnd = false)
+    {
+        Vector3 startPosition = transform.position;
+        Player_BodyHeight bodyHeight = Player_BodyHeight.Instance;
+        float startHeight = PM.playerBody.transform.localPosition.y * bodyHeight.GetLocalYForHeight(1f);
+        float blendDuration = Mathf.Min(duration, 0.4f);
+        float blendStart = blendAtEnd ? duration - blendDuration : 0f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            transform.position = Vector3.Lerp(startPosition, endPosition, elapsed / duration);
+            if (elapsed >= blendStart)
+            {
+                float heightProgress = (elapsed - blendStart) / blendDuration;
+                float targetHeight = bodyHeight.GetHeightOnBlock(landingBlock, this);
+                bodyHeight.ApplyPlayerBodyHeight(Mathf.Lerp(startHeight, targetHeight, heightProgress));
+            }
+            yield return null;
+        }
+
+        transform.position = endPosition;
+        bodyHeight.ApplyPlayerBodyHeight(bodyHeight.GetHeightOnBlock(landingBlock, this));
     }
 
     private void CompleteLadderStep(Vector3 exitDirection)
@@ -5696,6 +5655,8 @@ public class Movement : Singleton<Movement>
         ++movementTransactionSerial;
         StopAllCoroutines();
         isMoving = false;
+        isMovingOnLadder_Up = false;
+        isMovingOnLadder_Down = false;
         activeMoveFreeSlopeLanding = false;
         currentMoveStartBlock = null;
         currentMoveTargetBlock = null;

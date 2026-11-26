@@ -60,8 +60,8 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
             return height_Normal;
         }
 
-        // Movement controls the body height until the fall has finished.
-        if (movement.GetMovementState() == MovementStates.Falling)
+        // These moves apply the height as part of their own motion.
+        if (movement.IsClimbingLadder || movement.GetMovementState() == MovementStates.Falling)
             return PlayerManager.Instance.playerBody.transform.localPosition.y;
 
         return ApplyPlayerBodyHeight(GetHeightOnBlock(movement.blockStandingOn, movement));
