@@ -42,14 +42,25 @@ public class TMPro_TextDisplay : MonoBehaviour
         ShowText(textToDisplay);
     }
 
+    private static bool TryGetLanguageIndex(out int languageIndex)
+    {
+        var data = DataManager.Instance;
+        var languages = data.game_TextDatabase_Store?.gameText_LanguageList;
+        languageIndex = (int)(data.settingData_StoreList?.currentLanguage ?? Languages.English);
+
+        if (languages == null || languages.Count == 0)
+            return false;
+
+        if (languageIndex < 0 || languageIndex >= languages.Count)
+            languageIndex = (int)Languages.English;
+
+        return languageIndex < languages.Count;
+    }
+
     public void ShowText(Text_Database_Enum _textToDisplay)
     {
         if (!GetComponent<TextMeshProUGUI>()) return;
-        if (DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList.Count <= 0) return;
-
-        int languageTemp = 0;
-        if (DataManager.Instance.settingData_StoreList.currentLanguage > 0)
-            languageTemp = (int)DataManager.Instance.settingData_StoreList.currentLanguage;
+        if (!TryGetLanguageIndex(out int languageTemp)) return;
 
         switch (_textToDisplay)
         {
@@ -1510,9 +1521,7 @@ public class TMPro_TextDisplay : MonoBehaviour
     }
     public string GetText()
     {
-        int languageTemp = 1;
-        if (DataManager.Instance.settingData_StoreList.currentLanguage > 0)
-            languageTemp = (int)DataManager.Instance.settingData_StoreList.currentLanguage;
+        if (!TryGetLanguageIndex(out int languageTemp)) return "";
 
         switch (textToDisplay)
         {
