@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -47,17 +46,13 @@ public class Block_Teleport : MonoBehaviour
     private void OnEnable()
     {
         renderersDirty = true;
-        Movement.Action_StepTaken += TeleportPlayer;
-        Action_StartTeleport += StartTeleport_Action;
-        Action_EndTeleport += EndTeleport_Action;
+        Movement.Action_StepTaken_Late += TeleportPlayer;
         Movement.Action_LandedFromFalling += TeleportPlayer;
     }
 
     private void OnDisable()
     {
-        Movement.Action_StepTaken -= TeleportPlayer;
-        Action_StartTeleport -= StartTeleport_Action;
-        Action_EndTeleport -= EndTeleport_Action;
+        Movement.Action_StepTaken_Late -= TeleportPlayer;
         Movement.Action_LandedFromFalling -= TeleportPlayer;
     }
 
@@ -157,51 +152,20 @@ public class Block_Teleport : MonoBehaviour
 
     void TeleportPlayer()
     {
-        if (Movement.Instance.blockStandingOn == gameObject && newLandingSpot)
-        {
-            Vector3 movementDelta = transform.position - Movement.Instance.previousPosition;
-            Vector3 horizontalDirection = new Vector3(movementDelta.x, 0, movementDelta.z);
-            Movement.Instance.teleportMovementDir = Movement.Instance.GetMovingDirection(horizontalDirection);
-
-            StartCoroutine(TeleportWait(0.005f));
-        }
+        Movement movement = Movement.ExistingInstance;
+        if (movement && movement.blockStandingOn == gameObject && newLandingSpot && newLandingSpot != gameObject &&
+            newLandingSpot.TryGetComponent(out BlockInfo destination))
+            movement.TryStartTeleport(destination, transform.position, PlayTeleportEffects, NotifyTeleportEnded);
     }
 
-    IEnumerator TeleportWait(float waitTime)
+    void PlayTeleportEffects()
     {
-        int stepTemp = PlayerStats.Instance.stats.steps_Current;
-
-        //PlayerManager.Instance.isTransportingPlayer = true;
-        PlayerManager.Instance.pauseGame = true;
-        Movement.Instance.SetMovementState(MovementStates.Moving);
-
         Action_StartTeleport?.Invoke();
-
         ActivatePortalsEffect();
-        Player_Animations.Instance.Trigger_TeleportAnimation();
-        yield return new WaitForSeconds(Player_Animations.Instance.effectChargeTime_Pickup_Teleport);
-
-        Vector3 newPos = gameObject.GetComponent<Block_Teleport>().newLandingSpot.transform.position;
-        PlayerManager.Instance.player.transform.position = new Vector3(newPos.x, newPos.y + PlayerManager.Instance.player.GetComponent<Movement>().heightOverBlock, newPos.z);
-
-        yield return new WaitForSeconds(waitTime);
-
-        Movement.Instance.SetMovementState(MovementStates.Still);
-        //PlayerManager.Instance.isTransportingPlayer = false;
-        PlayerManager.Instance.pauseGame = false;
-
-        PlayerStats.Instance.stats.steps_Current = stepTemp - newLandingSpot.GetComponent<BlockInfo>().GetBaseMovementCostForPlayer();
-
-        yield return new WaitForSeconds(0.15f);
-
-        Movement.Instance.UpdateBlockStandingOn();
-
-        Movement.Instance.Action_StepTaken_Invoke();
-        
-        Action_EndTeleport?.Invoke();
-
-        Movement.Instance.IceGlideMovement(true);
     }
+
+    static void NotifyTeleportEnded() => Action_EndTeleport?.Invoke();
+
     public void ActivatePortalsEffect()
     {
         if (GetComponentInChildren<PortalScript>())
@@ -221,12 +185,4 @@ public class Block_Teleport : MonoBehaviour
         // call that same sound method here too.
     }
 
-    void StartTeleport_Action()
-    {
-        Movement.Action_StepTaken -= TeleportPlayer;
-    }
-    void EndTeleport_Action()
-    {
-        Movement.Action_StepTaken += TeleportPlayer;
-    }
 }

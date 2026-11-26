@@ -75,7 +75,7 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
 
         var movement = Movement.Instance;
         var ceilingGrab = Player_CeilingGrab.Instance;
-        SetTalkTarget(movement.isRespawning || movement.GetMovementState() == MovementStates.Falling ||
+        SetTalkTarget(movement.isRespawning || movement.IsTeleporting || movement.GetMovementState() == MovementStates.Falling ||
                       ceilingGrab.isCeilingGrabbing || ceilingGrab.isCeilingRotation
             ? null
             : Interactable_NPC_ColliderTrigger.FindTalkTarget(playerManager, movement, talkTarget));

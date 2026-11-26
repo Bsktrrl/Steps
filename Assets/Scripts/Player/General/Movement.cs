@@ -123,6 +123,8 @@ public class Movement : Singleton<Movement>
 
     public Vector3 previousPosition;
     public Vector3 teleportMovementDir;
+    internal bool IsTeleporting { get; private set; }
+    private Coroutine teleportRoutine;
 
     [Header("Ladder")]
     public Vector3 ladderEndPos_Up;
@@ -291,7 +293,7 @@ public class Movement : Singleton<Movement>
         // Never let the old tile, an elevator follow, a falling update, or
         // another movement system overwrite a checkpoint teleport mid-respawn.
         var map = Map;
-        if (isRespawning || !map)
+        if (isRespawning || IsTeleporting || !map)
             return;
 
         bool gameplayInputLocked = map.GameplayInputLocked ||
@@ -407,6 +409,15 @@ public class Movement : Singleton<Movement>
 
     private void OnDisable()
     {
+        if (teleportRoutine != null)
+        {
+            StopCoroutine(teleportRoutine);
+            teleportRoutine = null;
+            IsTeleporting = false;
+            SetMovementState(MovementStates.Still);
+            ClearPendingStepCost();
+        }
+
         DataManager.Action_dataHasLoaded -= InitializeAtCheckpoint;
         Action_RespawnPlayerLate -= UpdateAvailableMovementBlocks;
         Action_LandedFromFalling -= UpdateAvailableMovementBlocks;
@@ -4062,7 +4073,7 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(MoveOptions canMoveBlock, MovementStates moveState, float movementSpeed, ref bool isMovingFlag)
     {
-        if (isMoving || isRespawning || isDrowning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+        if (isMoving || IsTeleporting || isRespawning || isDrowning || IsClimbingLadder)
             return;
 
         if (canMoveBlock == null || canMoveBlock.targetBlock == null || !TryGetBlockInfo(canMoveBlock.targetBlock, out BlockInfo _) || StatsRoot.stats == null)
@@ -4089,7 +4100,7 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(MoveOptions canMoveBlock, MovementStates moveState, float movementSpeed)
     {
-        if (isMoving || isRespawning || isDrowning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+        if (isMoving || IsTeleporting || isRespawning || isDrowning || IsClimbingLadder)
             return;
 
         if (canMoveBlock == null || canMoveBlock.targetBlock == null || !TryGetBlockInfo(canMoveBlock.targetBlock, out BlockInfo _) || StatsRoot.stats == null)
@@ -4117,7 +4128,7 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(Vector3 targetPos)
     {
-        if (isMoving || isRespawning || isDrowning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+        if (isMoving || IsTeleporting || isRespawning || isDrowning || IsClimbingLadder)
             return;
 
         if (!TryGetStandingInfo(out BlockInfo standingInfo))
@@ -4134,7 +4145,7 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(Vector3 targetPos, float movementSpeed)
     {
-        if (isMoving || isRespawning || isDrowning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+        if (isMoving || IsTeleporting || isRespawning || isDrowning || IsClimbingLadder)
             return;
 
         isMoving = true;
@@ -4640,6 +4651,66 @@ public class Movement : Singleton<Movement>
     {
         yield return new WaitForSeconds(0.02f);
         UpdateAvailableMovementBlocks();
+    }
+
+    #endregion
+
+    #region Teleporting
+
+    internal void TryStartTeleport(BlockInfo destination, Vector3 entryPosition, Action playEffects, Action onEnded)
+    {
+        if (IsTeleporting || !destination || !destination.gameObject.activeInHierarchy || !Map || Map.GameplayInputLocked ||
+            isMoving || isRespawning || isDrowning || IsClimbingLadder || zeroStepRespawnStarted ||
+            movementStates != MovementStates.Still)
+            return;
+
+        IsTeleporting = true;
+        teleportMovementDir = GetMovingDirection(entryPosition - previousPosition);
+        StopFollowingElevator();
+        StopFollowingCubeBlock();
+        SetMovementState(MovementStates.Moving);
+        teleportRoutine = StartCoroutine(TeleportTo(destination, playEffects, onEnded));
+    }
+
+    private IEnumerator TeleportTo(BlockInfo destination, Action playEffects, Action onEnded)
+    {
+        playEffects();
+        Anims.Trigger_TeleportAnimation();
+        yield return new WaitForSeconds(Anims.effectChargeTime_Pickup_Teleport);
+
+        if (!destination || !destination.gameObject.activeInHierarchy)
+        {
+            SetMovementState(MovementStates.Still);
+            IsTeleporting = false;
+            teleportRoutine = null;
+            onEnded();
+            yield break;
+        }
+
+        // Commit this landing through the normal step event with a fresh cost
+        // snapshot. The entry step has already been settled.
+        GameObject target = destination.gameObject;
+        currentMoveStartBlock = null;
+        currentMoveTargetBlock = null;
+        activeMoveFreeSlopeLanding = false;
+        ClearSlopeFreeLandingState();
+        CacheStepCostForMove(target);
+
+        transform.position = destination.transform.position + Vector3.up * heightOverBlock;
+        yield return new WaitForSeconds(0.155f);
+
+        UpdateBlockStandingOn();
+        if (blockStandingOn != target)
+            ClearPendingStepCost();
+
+        SetMovementState(MovementStates.Still);
+        Action_StepTaken_Invoke();
+        onEnded();
+
+        IsTeleporting = false;
+        teleportRoutine = null;
+        if (!isRespawning && !PM.pauseGame && !PM.pauseMovement && movementStates == MovementStates.Still)
+            IceGlideMovement(true);
     }
 
     #endregion
@@ -5654,6 +5725,8 @@ public class Movement : Singleton<Movement>
         // recent position AFTER Resetplayer has placed us at the checkpoint.
         ++movementTransactionSerial;
         StopAllCoroutines();
+        teleportRoutine = null;
+        IsTeleporting = false;
         isMoving = false;
         isMovingOnLadder_Up = false;
         isMovingOnLadder_Down = false;
