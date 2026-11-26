@@ -11,10 +11,14 @@ public class GlueplantStandManager : Singleton<GlueplantStandManager>
             return false;
 
         StandStats stats = DataManager.Instance.glueplantStandStats_Store?.GetForLevel(map.levelName);
-        if (stats?.TryPlace(standNumber) != true)
+        if (stats == null || !StandStats.IsValidStandNumber(standNumber) || stats.IsTaken(standNumber))
             return false;
 
-        bool completed = stats.CountTaken == StandStats.StandsPerLevel && map.TryBeginLevelCompletion();
+        bool completed = stats.CountTaken == StandStats.StandsPerLevel - 1;
+        if (completed && !map.TryBeginLevelCompletion())
+            return false;
+
+        stats.TryPlace(standNumber);
         if (completed)
         {
             map.mapInfo_ToSave.isCompleted = true;
@@ -26,7 +30,7 @@ public class GlueplantStandManager : Singleton<GlueplantStandManager>
         if (completed)
         {
             PlayerManager.Instance.PauseGame();
-            StartCoroutine(GlueplantExitLevel(1.5f));
+            map.StartCoroutine(GlueplantExitLevel(1.5f));
         }
 
         return true;
@@ -55,7 +59,7 @@ public class GlueplantStandManager : Singleton<GlueplantStandManager>
 
         yield return new WaitForSeconds(1f);
 
-        PlayerManager.Instance.player.GetComponent<PlayerManager>().CompleteLevelAndLeave();
+        PlayerManager.Instance.FinishLevelExit();
     }
     void PlayPickupSound()
     {

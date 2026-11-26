@@ -390,7 +390,7 @@ public class BlockInfo : MonoBehaviour
         int modifier = 0;
 
         // Mud increases cost by +1
-        if (Player_Mud.Instance != null && Player_Mud.Instance.isInMud)
+        if (Player_Mud.ExistingInstance?.isInMud == true)
         {
             modifier += 1;
         }
@@ -418,11 +418,9 @@ public class BlockInfo : MonoBehaviour
 
         // Quicksand uses the quicksand counter as the actual step cost,
         // not only as the displayed number.
-        if (quicksand &&
-            Player_Quicksand.Instance != null &&
-            Player_Quicksand.Instance.isInQuicksand)
+        if (quicksand && Player_Quicksand.ExistingInstance is { isInQuicksand: true } playerQuicksand)
         {
-            return Player_Quicksand.Instance.quicksandCounter;
+            return playerQuicksand.quicksandCounter;
         }
 
         if (blockElement == BlockElement.Water && PlayerHasFlippers())
@@ -431,8 +429,7 @@ public class BlockInfo : MonoBehaviour
         }
 
         // SwampWater makes reachable adjacent blocks cost 0.
-        if (Player_SwampWater.Instance != null &&
-            Player_SwampWater.Instance.isInSwampWater)
+        if (Player_SwampWater.ExistingInstance?.isInSwampWater == true)
         {
             return 0;
         }
@@ -533,7 +530,7 @@ public class BlockInfo : MonoBehaviour
 
     bool PlayerHasFlippers()
     {
-        var stats = PlayerStats.Instance?.stats;
+        var stats = PlayerStats.ExistingInstance?.stats;
         return stats?.abilitiesGot_Temporary?.Flippers == true ||
                stats?.abilitiesGot_Permanent?.Flippers == true;
     }

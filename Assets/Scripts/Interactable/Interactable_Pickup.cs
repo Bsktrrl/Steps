@@ -77,7 +77,7 @@ public class Interactable_Pickup : MonoBehaviour
             if (goal)
             {
                 PlayerManager.Instance.PauseGame();
-                StartCoroutine(GlueplantExitLevel(1.5f));
+                mapManager.StartCoroutine(GlueplantExitLevel(1.5f));
             }
             else
             {
@@ -146,7 +146,7 @@ public class Interactable_Pickup : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        PlayerManager.Instance.player.GetComponent<PlayerManager>().CompleteLevelAndLeave();
+        PlayerManager.Instance.FinishLevelExit();
     }
 
 

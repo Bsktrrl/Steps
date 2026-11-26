@@ -242,6 +242,8 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private static string exitedLevelScene;
     private static bool selectNextLevelOnReturn;
+    private string pendingLevelExitScene;
+    private bool pendingLevelExitIsCompletion;
 
     public static string ConsumeExitedLevelScene(out bool selectNextLevel)
     {
@@ -252,28 +254,46 @@ public class PlayerManager : Singleton<PlayerManager>
         return sceneName;
     }
 
-    public void QuitLevel()
+    internal bool TryBeginLevelExit(bool completed = false)
     {
-        if (!string.IsNullOrEmpty(mainMenu_Name))
-            Player_Statistics_Manager.Active?.FinishLevelAttempt();
+        string sceneName = GetLevelExitScene(completed);
+        DataPersistanceManager persistence = DataPersistanceManager.instance;
+        if (!persistence || string.IsNullOrEmpty(sceneName) ||
+            !Application.CanStreamedLevelBeLoaded(sceneName) || !persistence.TryBeginSceneChange())
+            return false;
 
-        ReturnToLevelMenu(false);
+        pendingLevelExitScene = sceneName;
+        pendingLevelExitIsCompletion = completed;
+        return true;
     }
 
-    internal bool TryBeginLevelExit()
+    internal void FinishLevelExit()
     {
-        return !string.IsNullOrEmpty(mainMenu_Name) && Application.CanStreamedLevelBeLoaded(mainMenu_Name) &&
-            TryBeginSceneChange();
-    }
-
-    public void CompleteLevelAndLeave()
-    {
-        if (!TryBeginSceneChange())
+        if (string.IsNullOrEmpty(pendingLevelExitScene))
             return;
 
-        Player_Statistics_Manager.Active?.RecordLevelCompletion();
+        string sceneName = pendingLevelExitScene;
+        pendingLevelExitScene = null;
+        if (pendingLevelExitIsCompletion)
+            Player_Statistics_Manager.Active?.RecordLevelCompletion();
+
         Player_Statistics_Manager.Active?.FinishLevelAttempt();
-        MapStatsGathered.Instance.CompleteLevel();
+        if (pendingLevelExitIsCompletion)
+            MapStatsGathered.Instance.CompleteLevel();
+
+        if (sceneName == mainMenu_Name)
+        {
+            exitedLevelScene = SceneManager.GetActiveScene().name;
+            selectNextLevelOnReturn = pendingLevelExitIsCompletion;
+        }
+
+        StartCoroutine(LoadSceneCoroutine(sceneName));
+    }
+
+    private string GetLevelExitScene(bool completed)
+    {
+        if (!completed)
+            return mainMenu_Name;
 
         switch (MapManager.Instance.levelName)
         {
@@ -283,30 +303,17 @@ public class PlayerManager : Singleton<PlayerManager>
             case LevelNames.Firevein_Lv5:
             case LevelNames.Witchmire_Lv5:
             case LevelNames.Metalworks_Lv5:
-                StartCoroutine(LoadSceneCoroutine(nameof(LevelNames.HUB)));
-                break;
+                return nameof(LevelNames.HUB);
 
             default:
-                ReturnToLevelMenu(true);
-                break;
-        }
-    }
-
-    private void ReturnToLevelMenu(bool selectNextLevel)
-    {
-        if (!string.IsNullOrEmpty(mainMenu_Name))
-        {
-            exitedLevelScene = SceneManager.GetActiveScene().name;
-            selectNextLevelOnReturn = selectNextLevel;
-            StartCoroutine(LoadSceneCoroutine(mainMenu_Name));
+                return mainMenu_Name;
         }
     }
 
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {
         DataPersistanceManager persistence = DataPersistanceManager.instance;
-        if (persistence)
-            yield return persistence.SaveBeforeSceneChange();
+        yield return persistence.SaveBeforeSceneChange();
 
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
         while (!operation.isDone)
@@ -316,11 +323,6 @@ public class PlayerManager : Singleton<PlayerManager>
         }
     }
 
-    private static bool TryBeginSceneChange()
-    {
-        DataPersistanceManager persistence = DataPersistanceManager.instance;
-        return !persistence || persistence.TryBeginSceneChange();
-    }
 }
 
 [Serializable]

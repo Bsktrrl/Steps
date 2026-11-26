@@ -49,6 +49,9 @@ public class LoadLevel : MonoBehaviour
 
     public void LoadLevelScene()
     {
+        if (DataPersistanceManager.GameplayInputBlocked)
+            return;
+
         ResolveReferences();
 
         if (!CheckIfCanBePlayed()) return;

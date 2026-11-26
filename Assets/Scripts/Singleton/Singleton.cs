@@ -7,6 +7,10 @@ public class Singleton<T> : MonoBehaviour where T : Component
 {
     private static readonly bool sceneOwned = typeof(ISceneSingleton).IsAssignableFrom(typeof(T));
     private static T instance;
+
+    // Read scene state without creating a replacement during teardown.
+    internal static T ExistingInstance => instance && instance.gameObject.activeInHierarchy ? instance : null;
+
     public static T Instance
     {
         get

@@ -64,7 +64,8 @@ public class MapManager : Singleton<MapManager>, ISceneSingleton
 
     internal bool TryBeginLevelCompletion()
     {
-        if (IsCompletingLevel)
+        if (IsCompletingLevel || !SpawnedPlayer ||
+            !SpawnedPlayer.TryGetComponent(out PlayerManager player) || !player.TryBeginLevelExit(completed: true))
             return false;
 
         IsCompletingLevel = true;

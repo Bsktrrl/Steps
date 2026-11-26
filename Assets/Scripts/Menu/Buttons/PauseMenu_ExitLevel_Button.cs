@@ -27,13 +27,13 @@ public class PauseMenu_ExitLevel_Button : MonoBehaviour
 
     IEnumerator ExitLevelCoroutine(PlayerManager player)
     {
-        yield return mapManager.FadeInBlackScreenCoroutine();
+        yield return mapManager.StartFadeInBlackScreen();
 
         MapStatsGathered.Instance.ExitLevel();
 
         yield return new WaitForSecondsRealtime(1f);
 
-        player.QuitLevel();
+        player.FinishLevelExit();
 
         yield return null;
     }

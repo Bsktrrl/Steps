@@ -491,6 +491,9 @@ public class MainMenuManager : Singleton<MainMenuManager>, ISceneSingleton
     }
     public void QuitButton_isPressed()
     {
+        if (DataPersistanceManager.GameplayInputBlocked)
+            return;
+
         print("Quit Game");
 
         RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(RegionState.None, LevelState.None);

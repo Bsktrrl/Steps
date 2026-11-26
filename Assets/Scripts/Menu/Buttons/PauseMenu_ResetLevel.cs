@@ -5,23 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu_ResetLevel : MonoBehaviour
 {
-    private bool isResetting;
-
     public void ResetLevel()
     {
-        if (isResetting)
-            return;
-
         Scene scene = gameObject.scene;
         MapManager map = FindAnyObjectByType<MapManager>();
         if (!map || map.gameObject.scene != scene || !CanReload(scene))
             return;
 
         DataPersistanceManager persistence = DataPersistanceManager.instance;
-        if (persistence && !persistence.TryBeginSceneChange())
+        if (!persistence || !persistence.TryBeginSceneChange())
             return;
 
-        isResetting = true;
         if (TryGetComponent(out ButtonSound sound))
             sound.TryButtonPressSound();
 
@@ -46,8 +40,7 @@ public class PauseMenu_ResetLevel : MonoBehaviour
         yield return map.StartFadeInBlackScreen();
 
         Player_Statistics_Manager.Active?.FinishLevelAttempt();
-        if (persistence)
-            yield return persistence.SaveBeforeSceneChange();
+        yield return persistence.SaveBeforeSceneChange();
 
         EventSystem eventSystem = EventSystem.current;
         if (eventSystem)
