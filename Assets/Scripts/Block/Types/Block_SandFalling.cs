@@ -189,6 +189,14 @@ public class Block_SandFalling : MonoBehaviour
             return;
         }
 
+        BlockType blockType = GetComponent<BlockInfo>().blockType;
+        if (blockType == BlockType.Slab)
+        {
+            canFall = true;
+            SetFallingSandEnabled(true);
+            return;
+        }
+
         // Check if the block has another block above itself.
         if (Physics.Raycast(
                 transform.position,
@@ -206,7 +214,7 @@ public class Block_SandFalling : MonoBehaviour
         }
 
         // Check if the block has another block under itself.
-        if (GetComponent<BlockInfo>().blockType == BlockType.Stair)
+        if (blockType == BlockType.Stair)
         {
             if (Physics.Raycast(
                     transform.position + (Vector3.up * 0.5f),
@@ -344,8 +352,12 @@ public class Block_SandFalling : MonoBehaviour
 
     bool HasBlockingBlockBelow()
     {
+        BlockType blockType = GetComponent<BlockInfo>().blockType;
+        if (blockType == BlockType.Slab)
+            return false;
+
         // Match the existing CheckIfCanFall raycast and Slab exception.
-        bool isStair = GetComponent<BlockInfo>().blockType == BlockType.Stair;
+        bool isStair = blockType == BlockType.Stair;
         Vector3 origin = transform.position +
                          (isStair ? Vector3.up * 0.5f : Vector3.zero);
 
