@@ -105,7 +105,6 @@ public class Movement : Singleton<Movement>
 
     public MoveOptions moveToBlock_GrapplingHook;
     public MoveOptions moveToCeilingGrabbing;
-    public Vector3 tempGrapplingTaregtPos;
 
     public MoveOptions moveToLadder_Forward;
     public MoveOptions moveToLadder_Back;
@@ -391,7 +390,6 @@ public class Movement : Singleton<Movement>
         Action_RespawnPlayerEarly += ResetDarkenBlocks;
         Action_StepTaken += TakeAStep;
 
-        Action_isSwitchingBlocks += UpdateStepsWhenGrappling;
         Action_StepTaken_Late += RunIceGliding;
         Action_StepTaken_Late += CheckIfSwimming;
 
@@ -429,7 +427,6 @@ public class Movement : Singleton<Movement>
         Action_RespawnPlayerEarly -= ResetDarkenBlocks;
         Action_StepTaken -= TakeAStep;
 
-        Action_isSwitchingBlocks -= UpdateStepsWhenGrappling;
         Action_StepTaken_Late -= RunIceGliding;
         Action_StepTaken_Late -= CheckIfSwimming;
 
@@ -3156,15 +3153,11 @@ public class Movement : Singleton<Movement>
             return;
         }
 
-        if (!CanAfford(aim.targetBlock))
-        {
-            CancelGrapplingCharge();
-            RespawnAfterUnaffordableMove();
-            return;
-        }
-
         Inputs.grapplingHook_isPressed = false;
-        tempGrapplingTaregtPos = aim.targetBlock.transform.position;
+        grappleTraversedBlocks.Clear();
+        if (blockStandingOn)
+            grappleTraversedBlocks.Add(blockStandingOn);
+
         performGrapplingHooking = true;
         Action_isGrapplingHooking_SendPlayer?.Invoke();
         RunGrapplingHook(grapplingAimDirection);
@@ -3265,6 +3258,9 @@ public class Movement : Singleton<Movement>
         Inputs.grapplingHook_isPressed = false;
         grapplingTowardsStair = false;
         grappleLandingBlock = null;
+        grappleHeightOffsetLandingBlock = null;
+        prepaidGrappleLandingBlock = null;
+        grappleTraversedBlocks.Clear();
         performGrapplingHooking = false;
         isGrapplingHooking = false;
         ClearGrapplingAim();
@@ -3273,33 +3269,31 @@ public class Movement : Singleton<Movement>
             Action_isGrapplingHooking_Finished?.Invoke();
     }
 
-    void UpdateStepsWhenGrappling()
+    private bool TrySpendGrappleTravelSteps()
     {
-        if (!performGrapplingHooking || !TryGetStandingInfo(out BlockInfo standingInfo))
-            return;
-
-        bool crossedCheckpoint = standingInfo.TryGetComponent(out Block_Checkpoint checkpoint) &&
-                                 checkpoint.isActiveAndEnabled;
         // The destination still uses the regular landing sequence.
-        if (crossedCheckpoint && blockStandingOn == grappleLandingBlock)
-            return;
+        if (!TryGetStandingInfo(out BlockInfo standingInfo) || blockStandingOn == grappleLandingBlock ||
+            !grappleTraversedBlocks.Add(blockStandingOn))
+            return true;
 
-        Vector3 costPosition = grapplingTowardsStair ? transform.position : blockStandingOn.transform.position;
-        if (Vector3.Distance(costPosition, tempGrapplingTaregtPos) > 1.5f)
+        var stats = StatsRoot.stats;
+        bool unlimitedSteps = DataManager.Instance.skinsInfo_Store.activeSkinType == SkinType.SourceBlock;
+        int cost = unlimitedSteps ? 0 : standingInfo.GetMovementCost_ForPlayerMove();
+        stats.steps_Current = Mathf.Max(0, stats.steps_Current - cost);
+
+        if (standingInfo.TryGetComponent(out Block_Checkpoint checkpoint) && checkpoint.isActiveAndEnabled)
         {
-            if (StatsRoot.stats.steps_Current < 0 && !crossedCheckpoint)
-            {
-                RespawnPlayer(stepsExhausted: true);
-                return;
-            }
-
-            StatsRoot.stats.steps_Current -= standingInfo.GetMovementCost_ForPlayerMove();
-            if (!crossedCheckpoint)
-                StepsHUD.Instance.UpdateStepsDisplay_Walking();
+            checkpoint.ActivateDuringGrapple();
+            return true;
         }
 
-        if (crossedCheckpoint)
-            checkpoint.ActivateDuringGrapple();
+        StepsHUD.Instance.UpdateStepsDisplay_Walking();
+        if (stats.steps_Current > 0 || unlimitedSteps)
+            return true;
+
+        transform.position = GetMoveTargetPosForBlock(blockStandingOn);
+        RespawnPlayer(stepsExhausted: true);
+        return false;
     }
 
     #endregion
@@ -3621,6 +3615,8 @@ public class Movement : Singleton<Movement>
 
     private GameObject grappleHeightOffsetLandingBlock;
     private GameObject grappleLandingBlock;
+    private GameObject prepaidGrappleLandingBlock;
+    private readonly HashSet<GameObject> grappleTraversedBlocks = new();
 
     private Vector3 CorrectGrappleTargetForHeightOffset(Vector3 originalTarget)
     {
@@ -4195,6 +4191,9 @@ public class Movement : Singleton<Movement>
         else
             yield return NormalMovement(endPos, moveState, movementSpeed);
 
+        if (movementTransactionSerial != thisMoveSerial)
+            yield break;
+
         bool finishedMoveWasSwiftSwim = isSwiftSwim;
 
         isMoving = false;
@@ -4226,6 +4225,13 @@ public class Movement : Singleton<Movement>
         // Make the completed landing current before cost and root state are
         // committed, even if Unity has not rendered another Update frame.
         UpdateBlockStandingOn();
+
+        if (thisMoveWasGrappling)
+        {
+            // A changed landing surface can be a tile already charged in transit.
+            prepaidGrappleLandingBlock = grappleTraversedBlocks.Contains(blockStandingOn) ? blockStandingOn : null;
+            grappleTraversedBlocks.Clear();
+        }
 
         bool swam = !wasCeilingClimbing && PlayerHasSwimAbility() &&
                     (IsWater(blockStandingOn) || wasSwiftSwimSegment);
@@ -4342,15 +4348,16 @@ public class Movement : Singleton<Movement>
             Vector3 nextPosition = Vector3.Lerp(startPos, currentEndPos, t);
             if (performGrapplingHooking)
             {
-                // Check intermediate tiles in order if one frame travels far
-                // enough to skip a block in the regular standing-block check.
+                // Sample the real route in order, even if a long frame crosses
+                // several tiles. Leave the final point to the normal step event.
                 Vector3 frameStart = transform.position;
-                int segments = Mathf.CeilToInt(Vector3.Distance(frameStart, nextPosition) / 0.5f);
-                for (int i = 1; i < segments; i++)
+                int segments = Mathf.Max(1, Mathf.CeilToInt(Vector3.Distance(frameStart, nextPosition) / 0.5f));
+                int lastSample = t < 1f ? segments : segments - 1;
+                for (int i = 1; i <= lastSample; i++)
                 {
                     transform.position = Vector3.Lerp(frameStart, nextPosition, i / (float)segments);
                     UpdateBlockStandingOn();
-                    if (isRespawning)
+                    if (isRespawning || !TrySpendGrappleTravelSteps())
                         yield break;
                 }
             }
@@ -5348,6 +5355,9 @@ public class Movement : Singleton<Movement>
     // invoked once for each completed Action_StepTaken event.
     public void TakeAStep()
     {
+        GameObject prepaidLanding = prepaidGrappleLandingBlock;
+        prepaidGrappleLandingBlock = null;
+
         // Prefer the committed destination over a transient physics raycast.
         // During ladders and position-only moves there is no target snapshot,
         // so the normal standing-block detection remains the fallback.
@@ -5388,7 +5398,8 @@ public class Movement : Singleton<Movement>
                     standingInfo.transform.position - currentMoveStartBlock.transform.position,
                     GetSlopeDownhillDirection(currentMoveStartBlock)) > 0.5f;
 
-            bool useFreeLanding = pendingFreeLandingFromSlope || freeLandingForThisMove || downhillSlopeToQuicksand;
+            bool useFreeLanding = pendingFreeLandingFromSlope || freeLandingForThisMove || downhillSlopeToQuicksand ||
+                standingInfo.gameObject == prepaidLanding;
             pendingFreeLandingFromSlope = false;
             slopeLandingIsFree = false;
 
