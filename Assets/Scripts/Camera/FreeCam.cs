@@ -8,6 +8,9 @@ public class FreeCam : Singleton<FreeCam>
     [Header("References")]
     [SerializeField] public CinemachineCamera CM_FreeCam;
     [SerializeField] private CanvasGroup freeCamUI;
+    [SerializeField] private GameObject keyboardControlsText;
+    [SerializeField] private GameObject playStationControlsText;
+    [SerializeField] private GameObject xboxControlsText;
 
     private const float UIFadeDuration = 0.25f;
     private static readonly float[] SpeedMultipliers = { 0.5f, 0.75f, 1f, 1.5f, 2f };
@@ -113,6 +116,7 @@ public class FreeCam : Singleton<FreeCam>
         Player_KeyInputs.Action_FreeCamIsPassive += EndFreeCam;
         Movement.Action_RespawnPlayerEarly += ResetForRespawn;
         SettingsManager.Action_SetNewFreeCamSettings += ApplyFlightSettings;
+        ControllerState.ActiveInputChanged += UpdateControlsText;
     }
 
     private void OnDisable()
@@ -121,6 +125,7 @@ public class FreeCam : Singleton<FreeCam>
         Player_KeyInputs.Action_FreeCamIsPassive -= EndFreeCam;
         Movement.Action_RespawnPlayerEarly -= ResetForRespawn;
         SettingsManager.Action_SetNewFreeCamSettings -= ApplyFlightSettings;
+        ControllerState.ActiveInputChanged -= UpdateControlsText;
 
         StopAndRestoreFreeCam();
 
@@ -207,6 +212,13 @@ public class FreeCam : Singleton<FreeCam>
             freeCamUI.gameObject.SetActive(false);
     }
 
+    private void UpdateControlsText(InputType input)
+    {
+        if (keyboardControlsText) keyboardControlsText.SetActive(input == InputType.Keyboard);
+        if (playStationControlsText) playStationControlsText.SetActive(input == InputType.PlayStation);
+        if (xboxControlsText) xboxControlsText.SetActive(input == InputType.Xbox);
+    }
+
     // ====================
     // MODE SWITCH
     // ====================
@@ -259,7 +271,11 @@ public class FreeCam : Singleton<FreeCam>
         SetPriorityValue(CM_FreeCam, playerVal + freeCamPriorityBoost);
 
         _isActive = true;
-        if (freeCamUI) freeCamUI.gameObject.SetActive(true);
+        if (freeCamUI)
+        {
+            UpdateControlsText(ControllerState.Instance.activeController);
+            freeCamUI.gameObject.SetActive(true);
+        }
         
         ResetFlight();
         if (!resuming || _entryCueTarget.HasValue || HasBlockingOverlap(CM_FreeCam.transform.position))

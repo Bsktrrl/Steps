@@ -19646,6 +19646,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CM_FreeCam: {fileID: 8727301439873084190}
   freeCamUI: {fileID: 8458266128198401019}
+  keyboardControlsText: {fileID: 9138812658276902802}
+  playStationControlsText: {fileID: 6773322323397380186}
+  xboxControlsText: {fileID: 8697867452703942916}
   toggleFreeCamGameObject: 0
   freeCamPriorityBoost: 10
   moveSpeed: 6
@@ -44942,7 +44945,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8148208275601750640
 RectTransform:
   m_ObjectHideFlags: 0
@@ -44975,7 +44978,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8458266128198401018}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -49658,7 +49661,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -75, y: 92}
-  m_SizeDelta: {x: 900, y: 50}
+  m_SizeDelta: {x: 1200, y: 50}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &8312068903193505862
 CanvasRenderer:
@@ -51592,7 +51595,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -75, y: 92}
-  m_SizeDelta: {x: 900, y: 50}
+  m_SizeDelta: {x: 1200, y: 50}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &5829867159410391154
 CanvasRenderer:

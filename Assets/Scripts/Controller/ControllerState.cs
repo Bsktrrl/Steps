@@ -9,6 +9,7 @@ using UnityEngine.InputSystem.Controls;
 public class ControllerState : Singleton<ControllerState>
 {
     internal static event Action<InputDevice> MenuInputUsed;
+    internal static event Action<InputType> ActiveInputChanged;
     internal static bool HasConnectedController => Gamepad.all.Count > 0 || Joystick.all.Count > 0;
 
     public InputType activeController { get; private set; } = InputType.Keyboard;
@@ -146,6 +147,7 @@ public class ControllerState : Singleton<ControllerState>
             return;
 
         activeController = type;
+        ActiveInputChanged?.Invoke(type);
 
         Debug.Log("Active controller changed to: " + activeController);
     }
