@@ -2256,6 +2256,22 @@ public class Movement : Singleton<Movement>
 
         if (outObj1 != null && TryGetBlockInfo(outObj1, out BlockInfo blockInfo1))
         {
+            // A settled sand slab can cut across the normal horizontal ray.
+            // Allow the step up from the level of its supporting block.
+            if (!CeilingGrab.isCeilingGrabbing && blockInfo1.blockType == BlockType.Slab &&
+                outObj1.TryGetComponent(out Block_SandFalling sandSlab) && sandSlab.LandedSlabSupport &&
+                Mathf.Abs(sandSlab.LandedSlabSupport.transform.position.y - standingInfo.transform.position.y) <= 0.05f)
+            {
+                Vector3 clearanceOrigin = playerPos;
+                clearanceOrigin.y = Mathf.Max(playerPos.y, outObj1.transform.position.y + heightOverBlock);
+                if (PerformMovementRaycast(clearanceOrigin, dir, 1f, out _) == RaycastHitObjects.None)
+                    EvaluateStandardMovementTarget(moveOption, outObj1, blockStandingOn);
+                else
+                    ClearMoveTarget(moveOption);
+
+                return;
+            }
+
             if (blockInfo1.blockType == BlockType.Stair || blockInfo1.blockType == BlockType.Slope)
             {
                 Vector3 stairForward = outObj1.transform.forward;

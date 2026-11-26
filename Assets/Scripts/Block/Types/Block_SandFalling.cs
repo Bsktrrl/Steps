@@ -16,6 +16,7 @@ public class Block_SandFalling : MonoBehaviour
     // Separates the warning stage from a block that is already falling.
     bool hasStartedFalling;
     bool fellOutOfLevel;
+    internal BlockInfo LandedSlabSupport { get; private set; }
 
     // While part of a carried pillar, its own warning and falling logic pause.
     private bool carriedByMoveablePillar;
@@ -108,6 +109,7 @@ public class Block_SandFalling : MonoBehaviour
             }
 
             hasStartedFalling = true;
+            LandedSlabSupport = null;
 
             // Carry the moveable block only if it is STILL directly above
             // when the warning ends. It may have been pushed away meanwhile.
@@ -499,10 +501,10 @@ public class Block_SandFalling : MonoBehaviour
         // Stop on the first block encountered underneath instead of
         // continuing through it.
         Vector3 oldPosition = transform.position;
-        if (TryLandOnBlockBelow(fallDistance))
+        if (TryLandOnBlockBelow(fallDistance, out BlockInfo support))
         {
             MoveCarriedMoveableBlock(transform.position - oldPosition);
-            LandBlock();
+            LandBlock(support);
             return;
         }
 
@@ -529,8 +531,9 @@ public class Block_SandFalling : MonoBehaviour
         }
     }
 
-    bool TryLandOnBlockBelow(float fallDistance)
+    bool TryLandOnBlockBelow(float fallDistance, out BlockInfo support)
     {
+        support = null;
         Collider fallingCollider = GetComponent<Collider>();
 
         if (fallingCollider == null)
@@ -553,7 +556,6 @@ public class Block_SandFalling : MonoBehaviour
             ref fallingHits);
 
         RaycastHit closestHit = new RaycastHit();
-        bool blockFound = false;
         float closestDistance = float.MaxValue;
 
         for (int i = 0; i < hitCount; i++)
@@ -576,11 +578,11 @@ public class Block_SandFalling : MonoBehaviour
             {
                 closestDistance = currentHit.distance;
                 closestHit = currentHit;
-                blockFound = true;
+                support = hitBlock;
             }
         }
 
-        if (!blockFound)
+        if (!support)
             return false;
 
         // Place the bottom of this block directly on the top surface
@@ -593,9 +595,12 @@ public class Block_SandFalling : MonoBehaviour
         return true;
     }
 
-    void LandBlock()
+    void LandBlock(BlockInfo support)
     {
-        GetComponent<BlockInfo>().movementState = MovementStates.Still;
+        BlockInfo info = GetComponent<BlockInfo>();
+        info.movementState = MovementStates.Still;
+        if (info.blockType == BlockType.Slab)
+            LandedSlabSupport = support;
 
         hasStartedFalling = false;
         isSteppedOn = false;
@@ -607,6 +612,14 @@ public class Block_SandFalling : MonoBehaviour
 
         // Remove any remaining rotation from the warning shake.
         RestoreWarningRotation();
+
+        Movement movement = Movement.ExistingInstance;
+        if (LandedSlabSupport && movement &&
+            (movement.transform.position - transform.position).sqrMagnitude <= 4f)
+        {
+            Physics.SyncTransforms();
+            movement.RefreshAvailableMovementBlocksSmooth();
+        }
     }
 
     void FallingAlertAnimation()
@@ -666,6 +679,7 @@ public class Block_SandFalling : MonoBehaviour
     {
         resettingBlock = true;
         fellOutOfLevel = false;
+        LandedSlabSupport = null;
         carriedByMoveablePillar = false;
 
         hasStartedFalling = false;
