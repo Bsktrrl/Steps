@@ -2290,6 +2290,12 @@ public class Movement : Singleton<Movement>
                 return;
             }
 
+            if (CanStepUpFromSupportedSlab(standingInfo, blockInfo1, playerPos, dir))
+            {
+                EvaluateStandardMovementTarget(moveOption, outObj1, blockStandingOn);
+                return;
+            }
+
             if (PerformMovementRaycast(playerPos + dir, rayDir, 1, out outObj2) == RaycastHitObjects.BlockInfo &&
                 TryGetBlockInfo(outObj2, out BlockInfo blockInfo2))
             {
@@ -2316,6 +2322,34 @@ public class Movement : Singleton<Movement>
         }
 
         ClearMoveTarget(moveOption);
+    }
+
+    private bool CanStepUpFromSupportedSlab(BlockInfo slab, BlockInfo target, Vector3 playerPos, Vector3 dir)
+    {
+        if (slab.blockType != BlockType.Slab || slab.movementState == MovementStates.Falling ||
+            CeilingGrab.isCeilingGrabbing ||
+            (target.blockType != BlockType.Cube && target.blockType != BlockType.Slab) ||
+            !slab.TryGetComponent(out Collider slabCollider) ||
+            !target.TryGetComponent(out Collider targetCollider))
+            return false;
+
+        Bounds slabBounds = slabCollider.bounds;
+        float rise = targetCollider.bounds.max.y - slabBounds.max.y;
+        // Raised slabs have a slightly higher surface than cubes on the same grid level.
+        float tolerance = target.blockType == BlockType.Slab ? StandingBlockProbeOffset + 0.1f : StandingBlockProbeOffset;
+        if (rise <= 0f || rise > slabBounds.size.y + tolerance)
+            return false;
+
+        // Probe just below the slab's bottom so a floating slab cannot serve as a step.
+        if (!Physics.Raycast(slabBounds.center, Vector3.down, out RaycastHit supportHit,
+                slabBounds.extents.y + StandingBlockProbeOffset, Map.player_LayerMask, QueryTriggerInteraction.Ignore) ||
+            !supportHit.collider.TryGetComponent(out BlockInfo support) || support == slab)
+            return false;
+
+        Vector3 raisedPlayerPos = playerPos;
+        raisedPlayerPos.y = GetMoveTargetPosForBlock(target.gameObject).y;
+        return PerformMovementRaycast(playerPos, Vector3.up, Mathf.Max(0f, raisedPlayerPos.y - playerPos.y), out _) == RaycastHitObjects.None &&
+               PerformMovementRaycast(raisedPlayerPos, dir, 1f, out _) == RaycastHitObjects.None;
     }
 
     private void EvaluateStandardMovementTarget(MoveOptions moveOption, GameObject target, GameObject currentStandingBlock)
