@@ -324,10 +324,33 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8242889968876768273, guid: b101e78a7e80cf14aaa98435167bf9c1, type: 3}
       insertIndex: -1
       addedObject: {fileID: -8955756703059863285}
+    - targetCorrespondingSourceObject: {fileID: 8242889968876768273, guid: b101e78a7e80cf14aaa98435167bf9c1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1162264021320512806}
   m_SourcePrefab: {fileID: 100100000, guid: b101e78a7e80cf14aaa98435167bf9c1, type: 3}
+--- !u!23 &1028483885357766232 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3973290276033232671, guid: b101e78a7e80cf14aaa98435167bf9c1, type: 3}
+  m_PrefabInstance: {fileID: 4136027192520862023}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &1532235768274849793 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3181096601752205638, guid: b101e78a7e80cf14aaa98435167bf9c1, type: 3}
+  m_PrefabInstance: {fileID: 4136027192520862023}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2339296457524489737 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1806162710813755214, guid: b101e78a7e80cf14aaa98435167bf9c1, type: 3}
+  m_PrefabInstance: {fileID: 4136027192520862023}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3357999883818594225 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1728289115545306870, guid: b101e78a7e80cf14aaa98435167bf9c1, type: 3}
+  m_PrefabInstance: {fileID: 4136027192520862023}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4773702820688367542 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8888284586449495793, guid: b101e78a7e80cf14aaa98435167bf9c1, type: 3}
   m_PrefabInstance: {fileID: 4136027192520862023}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &5405091480371471702 stripped
@@ -426,3 +449,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textEntryNumber: 0
   tabletVirtualCamera: {fileID: 5476618486043137328}
+--- !u!114 &1162264021320512806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5405091480371471702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96d8d580a662ab249bdde53063eb7dfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tabletRequirementsList: []
+  meshRenderer:
+  - {fileID: 1028483885357766232}
+  - {fileID: 1532235768274849793}
+  - {fileID: 2339296457524489737}
+  material_Unactive: {fileID: 2100000, guid: 52aaaf22da829c94b8db0d72bd30a688, type: 2}
+  material_Active: {fileID: 2100000, guid: 6d33dedcf93266a42b719ccebb837517, type: 2}
+  material_Text_Unactive: {fileID: 2100000, guid: f744df959e4956e479b50878a13098cd, type: 2}
+  material_Text_Active: {fileID: 2100000, guid: 7ba08310a34da7c479da83a5becd193b, type: 2}
+  obj_ShineHor: {fileID: 8509815987410166686}
+  obj_ShineDia: {fileID: 4773702820688367542}
+--- !u!1 &8509815987410166686 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5728277858691451609, guid: b101e78a7e80cf14aaa98435167bf9c1, type: 3}
+  m_PrefabInstance: {fileID: 4136027192520862023}
+  m_PrefabAsset: {fileID: 0}
