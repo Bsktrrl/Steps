@@ -268,7 +268,7 @@ public class Block_Moveable : MonoBehaviour
 
         // A downward slope may only be entered when its lower exit is free.
         Vector3 nextPos = savePos + moveDir;
-        if (IsBlockedDownhillSlope(nextPos, moveDir))
+        if (IsBlockedDownhillSlope(nextPos))
             return false;
 
         // Support is no longer required for a horizontal push.
@@ -1113,7 +1113,7 @@ public class Block_Moveable : MonoBehaviour
 
             // Slopes are deliberately excluded from HasSupportBelow.
             // Recognize the slope at this grid cell BEFORE starting a fall.
-            if (TryStartSlopeGlide(savePos, moveDir))
+            if (TryStartSlopeGlide(savePos))
             {
                 // The block will glide diagonally down the slope.
             }
@@ -1212,7 +1212,7 @@ public class Block_Moveable : MonoBehaviour
             return false;
 
         // An ice glide may enter a downhill slope only when its exit is clear.
-        if (IsBlockedDownhillSlope(nextPos, moveDir))
+        if (IsBlockedDownhillSlope(nextPos))
             return false;
 
         // Allow gliding off an edge.
@@ -1244,7 +1244,7 @@ public class Block_Moveable : MonoBehaviour
         );
     }
 
-    private BlockInfo FindBlockAtGridPosition(Vector3 worldPos)
+    private BlockInfo FindBlockAtGridPosition(Vector3 worldPos, BlockInfo ignoredSupport = null)
     {
         Vector3Int expected = Vector3Int.RoundToInt(worldPos);
         Collider[] hits = Physics.OverlapBox(
@@ -1261,7 +1261,7 @@ public class Block_Moveable : MonoBehaviour
                 continue;
 
             BlockInfo info = hit.GetComponentInParent<BlockInfo>();
-            if (info != null && info.GridPosition == expected &&
+            if (info != null && info != ignoredSupport && info.GridPosition == expected &&
                 !IsPassThroughLiquid(info))
                 return info;
         }
@@ -1269,36 +1269,74 @@ public class Block_Moveable : MonoBehaviour
         return null;
     }
 
-    private bool TryGetDownhillSlope(Vector3 blockPosition, Vector3 moveDir, out BlockInfo slope)
+    private bool TryGetSlopeBelow(Vector3 blockPosition, out BlockInfo slope)
     {
-        // The block is one grid cell ABOVE the slope it is crossing.
-        slope = FindBlockAtGridPosition(blockPosition + Vector3.down);
-        return slope != null &&
-               slope.blockType == BlockType.Slope &&
-               GetSlopeDownhill(slope.transform.forward) == moveDir;
-    }
+        // The slope's collider can support this cell even when its pivot is
+        // half a unit off the main grid. Prefer it over a cube at the same surface.
+        Vector3Int cell = Vector3Int.RoundToInt(blockPosition);
+        Vector3 origin = blockPosition + Vector3.up * DOWN_RAY_START_OFFSET;
+        int hitCount = TerrainRaycasts.Cast(origin, Vector3.down, DOWN_RAY_DISTANCE + SNAP_DISTANCE,
+            Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore, ref terrainHits);
+        float nearestSurface = float.PositiveInfinity;
+        float nearestSlope = float.PositiveInfinity;
+        BlockInfo nearestBlock = null;
+        slope = null;
 
-    private bool IsBlockedDownhillSlope(Vector3 blockPosition, Vector3 moveDir)
-    {
-        if (!TryGetDownhillSlope(blockPosition, moveDir, out BlockInfo slope))
+        for (int i = 0; i < hitCount; i++)
+        {
+            RaycastHit hit = terrainHits[i];
+            if (!hit.collider || hit.transform.IsChildOf(transform))
+                continue;
+
+            BlockInfo support = hit.collider.GetComponentInParent<BlockInfo>();
+            if (!support || IsPassThroughLiquid(support))
+                continue;
+
+            if (hit.distance < nearestSurface)
+            {
+                nearestSurface = hit.distance;
+                nearestBlock = support;
+            }
+
+            if (support.blockType != BlockType.Slope || hit.distance >= nearestSlope)
+                continue;
+
+            Vector3Int slopeCell = support.GridPosition;
+            if (slopeCell.x == cell.x && slopeCell.z == cell.z)
+            {
+                nearestSlope = hit.distance;
+                slope = support;
+            }
+        }
+
+        if (!slope || nearestSlope > nearestSurface + GRID_SIZE * 0.5f + SNAP_DISTANCE)
             return false;
 
-        // The downhill finish is one space forward AND one space lower.
-        Vector3 exitPosition = blockPosition + moveDir + Vector3.down;
-        return HasFenceOnPath(blockPosition, exitPosition - blockPosition) ||
-               FindBlockAtGridPosition(exitPosition) != null ||
-               !CanMovePillar(exitPosition - savePos);
+        // A lower cube in the same column can overlap the slope's collider.
+        return nearestSlope <= nearestSurface + SNAP_DISTANCE ||
+               (nearestBlock.GridPosition.x == cell.x && nearestBlock.GridPosition.z == cell.z &&
+                nearestBlock.transform.position.y < slope.transform.position.y - SNAP_DISTANCE);
     }
 
-    private bool TryStartSlopeGlide(Vector3 blockPosition, Vector3 moveDir)
+    private bool IsBlockedDownhillSlope(Vector3 blockPosition)
     {
-        if (!TryGetDownhillSlope(blockPosition, moveDir, out BlockInfo slope))
+        if (!TryGetSlopeBelow(blockPosition, out BlockInfo slope))
             return false;
 
-        Vector3 exitPosition = blockPosition + moveDir + Vector3.down;
-        if (HasFenceOnPath(blockPosition, exitPosition - blockPosition) ||
-            FindBlockAtGridPosition(exitPosition) != null ||
-            !CanMovePillar(exitPosition - savePos))
+        Vector3 direction = GetSlopeDownhill(slope.transform.forward);
+        return direction != Vector3.zero && !TryGetClearSlopeExit(blockPosition, direction, slope, out _);
+    }
+
+    private bool TryStartSlopeGlide(Vector3 blockPosition, BlockInfo landingSupport = null)
+    {
+        BlockInfo slope = landingSupport;
+        if ((!slope || slope.blockType != BlockType.Slope) && !TryGetSlopeBelow(blockPosition, out slope))
+            return false;
+
+        Vector3 moveDir = GetSlopeDownhill(slope.transform.forward);
+        if (moveDir == Vector3.zero)
+            return false;
+        if (!TryGetClearSlopeExit(blockPosition, moveDir, slope, out Vector3 exitPosition))
         {
             // This is also checked before entering. Do not fall into an
             // occupied exit if another block arrived during the push.
@@ -1307,10 +1345,51 @@ public class Block_Moveable : MonoBehaviour
         }
 
         DetachBlockedPillar(exitPosition - savePos);
+        // Keep the downhill heading if the block continues onto ice.
+        movementDirection = moveDir.z != 0f
+            ? (moveDir.z > 0f ? MovementDirection.Backward : MovementDirection.Forward)
+            : (moveDir.x > 0f ? MovementDirection.Left : MovementDirection.Right);
         slopeGlideTarget = exitPosition;
         isSlopeGliding = true;
         isIceGliding = false;
         return true;
+    }
+
+    private bool TryGetClearSlopeExit(Vector3 blockPosition, Vector3 moveDir, BlockInfo slope, out Vector3 exitPosition)
+    {
+        exitPosition = blockPosition + moveDir + Vector3.down;
+        Vector3 gridExit = exitPosition;
+
+        // A slope and the floor at its foot can sit on different half-unit
+        // offsets. Use the floor's surface before checking the exit cell.
+        float halfBlock = GRID_SIZE * 0.5f;
+        Vector3 origin = gridExit + Vector3.up * (GRID_SIZE + SNAP_DISTANCE);
+        int hitCount = TerrainRaycasts.Cast(origin, Vector3.down, GRID_SIZE + halfBlock + 2f * SNAP_DISTANCE,
+            Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore, ref terrainHits);
+        BlockInfo floor = null;
+        for (int i = 0; i < hitCount; i++)
+        {
+            RaycastHit hit = terrainHits[i];
+            if (!hit.collider || hit.transform.IsChildOf(transform))
+                continue;
+
+            BlockInfo support = GetValidSupport(hit);
+            float landingY = hit.point.y + halfBlock;
+            if (!support || IsPassThroughLiquid(support) ||
+                support.transform.position.y >= slope.transform.position.y - SNAP_DISTANCE ||
+                landingY < gridExit.y - SNAP_DISTANCE ||
+                landingY > blockPosition.y + SNAP_DISTANCE ||
+                (floor && landingY <= exitPosition.y))
+                continue;
+
+            floor = support;
+            exitPosition.y = landingY;
+        }
+
+        return !HasFenceOnPath(blockPosition, exitPosition - blockPosition) &&
+               FindBlockAtGridPosition(gridExit, floor) == null &&
+               (exitPosition.y == gridExit.y || FindBlockAtGridPosition(exitPosition, floor) == null) &&
+               CanMovePillar(exitPosition - savePos);
     }
 
     private void PerformSlopeGlide()
@@ -1336,7 +1415,7 @@ public class Block_Moveable : MonoBehaviour
 
         // A second downhill slope should continue the same diagonal glide.
         // Otherwise reuse the existing falling/ice/standing rules.
-        if (TryStartSlopeGlide(savePos, GetMoveVector()))
+        if (TryStartSlopeGlide(savePos))
         {
             // A connected downhill slope has taken over movement.
         }
@@ -1442,7 +1521,7 @@ public class Block_Moveable : MonoBehaviour
             ref terrainHits
         );
 
-        bool foundLanding = false;
+        BlockInfo landingSupport = null;
         float landingY = float.NegativeInfinity;
 
         for (int i = 0; i < hitCount; i++)
@@ -1482,11 +1561,11 @@ public class Block_Moveable : MonoBehaviour
             if (possibleLandingY > landingY)
             {
                 landingY = possibleLandingY;
-                foundLanding = true;
+                landingSupport = supportBlock;
             }
         }
 
-        if (foundLanding)
+        if (landingSupport)
         {
             transform.position = new Vector3(
                 currentPos.x,
@@ -1497,7 +1576,7 @@ public class Block_Moveable : MonoBehaviour
 
             savePos = transform.position;
 
-            LandFromFalling();
+            LandFromFalling(landingSupport);
             return;
         }
 
@@ -1516,10 +1595,13 @@ public class Block_Moveable : MonoBehaviour
         }
     }
 
-    private void LandFromFalling()
+    private void LandFromFalling(BlockInfo landingSupport)
     {
         isFalling = false;
         fallSpeed = 0f;
+
+        if (TryStartSlopeGlide(savePos, landingSupport))
+            return;
 
         // Continue moving in the original direction if
         // the block landed on ice and the glide can continue.
