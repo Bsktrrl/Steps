@@ -100,7 +100,7 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
                 2 => height_QuickSand_2,
                 3 => height_QuickSand_3,
                 4 => height_QuickSand_4,
-                5 => height_QuickSand_5,
+                >= 5 => height_QuickSand_5,
                 _ => height_Normal
             };
         }
