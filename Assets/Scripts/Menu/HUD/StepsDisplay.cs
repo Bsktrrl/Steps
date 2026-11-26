@@ -40,6 +40,17 @@ public class StepsDisplay : MonoBehaviour
     //--------------------
 
 
+    private void Awake()
+    {
+        if (!TryGetComponent(out introCanvasGroup))
+            introCanvasGroup = gameObject.AddComponent<CanvasGroup>();
+
+        introVisibleAlpha = introCanvasGroup.alpha;
+        introBlocksRaycasts = introCanvasGroup.blocksRaycasts;
+        introCanvasGroup.alpha = 0f;
+        introCanvasGroup.blocksRaycasts = false;
+    }
+
     private void OnEnable()
     {
         MapManager.Action_EndIntroSequence += SetStepsDisplay_FromSceneStart;
@@ -55,20 +66,6 @@ public class StepsDisplay : MonoBehaviour
 
     //--------------------
 
-
-    public void HideForIntro()
-    {
-        if (introCanvasGroup != null)
-            return;
-
-        if (!TryGetComponent(out introCanvasGroup))
-            introCanvasGroup = gameObject.AddComponent<CanvasGroup>();
-
-        introVisibleAlpha = introCanvasGroup.alpha;
-        introBlocksRaycasts = introCanvasGroup.blocksRaycasts;
-        introCanvasGroup.alpha = 0f;
-        introCanvasGroup.blocksRaycasts = false;
-    }
 
     private IEnumerator FadeInAfterIntro()
     {

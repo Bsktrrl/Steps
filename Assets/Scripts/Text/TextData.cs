@@ -540,9 +540,9 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Read_Keyboard, 431);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Read_PlayStation, 432);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Read_xBox, 433);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_15_Keyboard, 434);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_15_PlayStation, 435);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_15_xBox, 436);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_exitFreecam_Keyboard, 434);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_exitFreecam_PlayStation, 435);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_exitFreecam_xBox, 436);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_16_Keyboard, 437);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_16_PlayStation, 438);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_16_xBox, 439);
@@ -1226,9 +1226,9 @@ public class Game_TextDatabase_Language
     public string interractableButton_Message_Read_Keyboard;
     public string interractableButton_Message_Read_PlayStation;
     public string interractableButton_Message_Read_xBox;
-    public string interractableButton_Message_15_Keyboard;
-    public string interractableButton_Message_15_PlayStation;
-    public string interractableButton_Message_15_xBox;
+    public string interractableButton_Message_exitFreecam_Keyboard;
+    public string interractableButton_Message_exitFreecam_PlayStation;
+    public string interractableButton_Message_exitFreecam_xBox;
     public string interractableButton_Message_16_Keyboard;
     public string interractableButton_Message_16_PlayStation;
     public string interractableButton_Message_16_xBox;
@@ -1768,9 +1768,9 @@ public enum Text_Database_Enum
     [InspectorName("InterractableButton Message / Read")] interractableButton_Message_Read_Keyboard,
     [InspectorName("InterractableButton Message / Read")] interractableButton_Message_Read_PlayStation,
     [InspectorName("InterractableButton Message / Read")] interractableButton_Message_Read_xBox,
-    [InspectorName("InterractableButton Message / 15")] interractableButton_Message_15_Keyboard,
-    [InspectorName("InterractableButton Message / 15")] interractableButton_Message_15_PlayStation,
-    [InspectorName("InterractableButton Message / 15")] interractableButton_Message_15_xBox,
+    [InspectorName("InterractableButton Message / Exit FreeCam - Keyboard")] interractableButton_Message_exitFreecam_Keyboard,
+    [InspectorName("InterractableButton Message / Exit FreeCam - playStation")] interractableButton_Message_exitFreecam_PlayStation,
+    [InspectorName("InterractableButton Message / Exit FreeCam - xBox")] interractableButton_Message_exitFreecam_xBox,
     [InspectorName("InterractableButton Message / 16")] interractableButton_Message_16_Keyboard,
     [InspectorName("InterractableButton Message / 16")] interractableButton_Message_16_PlayStation,
     [InspectorName("InterractableButton Message / 16")] interractableButton_Message_16_xBox,

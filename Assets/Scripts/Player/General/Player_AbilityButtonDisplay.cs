@@ -21,6 +21,7 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
 
     bool swimHighlighted;
     bool freeSwimHighlighted;
+    private CanvasGroup abilityVisibility;
 
 
     //--------------------
@@ -34,6 +35,7 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
     private void OnEnable()
     {
         MapManager.Action_EndIntroSequence += UpdateDisplay;
+        SettingsManager.Action_SetNewStepDisplay += ApplyStepsDisplaySetting;
 
         //if (MapManager.Instance.haveIntroSequence)
         //    MapManager.Action_EndIntroSequence += UpdateDisplay;
@@ -68,6 +70,7 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
     private void OnDisable()
     {
         MapManager.Action_EndIntroSequence -= UpdateDisplay;
+        SettingsManager.Action_SetNewStepDisplay -= ApplyStepsDisplaySetting;
 
         //if (MapManager.Instance.haveIntroSequence)
         //    MapManager.Action_EndIntroSequence -= UpdateDisplay;
@@ -157,6 +160,7 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
     {
         if (abilityParent)
         {
+            ApplyStepsDisplaySetting();
             abilityParent.SetActive(true);
 
             if (!abilityParent.activeInHierarchy) return;
@@ -168,6 +172,19 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
             StartCoroutine(UpdateDisplay_Delay(0.4f));
         }
     }
+
+    private void ApplyStepsDisplaySetting()
+    {
+        if (!abilityParent) return;
+
+        if (!abilityVisibility && !abilityParent.TryGetComponent(out abilityVisibility))
+            abilityVisibility = abilityParent.AddComponent<CanvasGroup>();
+
+        bool showAbilities = DataManager.Instance.settingData_StoreList?.currentStepDisplay != StepDisplay.None;
+        abilityVisibility.alpha = showAbilities ? 1f : 0f;
+        abilityVisibility.blocksRaycasts = showAbilities;
+    }
+
     IEnumerator UpdateDisplay_Delay(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);

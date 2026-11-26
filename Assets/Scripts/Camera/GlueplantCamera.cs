@@ -128,7 +128,6 @@ public class GlueplantCamera : Singleton<GlueplantCamera>
         SetPriority(CM_Player, playerPriorityDuringTravel);
         CM_Glueplant.Prioritize();
 
-        player.GetComponentInChildren<StepsDisplay>()?.HideForIntro();
         var holeShader = FindAnyObjectByType<HoleShaderOnOffScript>();
         if (holeShader)
             holeShader.HoleShader_Off();

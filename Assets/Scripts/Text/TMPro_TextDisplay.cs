@@ -1333,14 +1333,14 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.interractableButton_Message_Read_xBox:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Read_xBox;
                 break;
-            case Text_Database_Enum.interractableButton_Message_15_Keyboard:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_15_Keyboard;
+            case Text_Database_Enum.interractableButton_Message_exitFreecam_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_exitFreecam_Keyboard;
                 break;
-            case Text_Database_Enum.interractableButton_Message_15_PlayStation:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_15_PlayStation;
+            case Text_Database_Enum.interractableButton_Message_exitFreecam_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_exitFreecam_PlayStation;
                 break;
-            case Text_Database_Enum.interractableButton_Message_15_xBox:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_15_xBox;
+            case Text_Database_Enum.interractableButton_Message_exitFreecam_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_exitFreecam_xBox;
                 break;
             case Text_Database_Enum.interractableButton_Message_16_Keyboard:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_16_Keyboard;
@@ -2451,14 +2451,14 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.interractableButton_Message_Read_xBox:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Read_xBox;
 
-            case Text_Database_Enum.interractableButton_Message_15_Keyboard:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_15_Keyboard;
+            case Text_Database_Enum.interractableButton_Message_exitFreecam_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_exitFreecam_Keyboard;
 
-            case Text_Database_Enum.interractableButton_Message_15_PlayStation:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_15_PlayStation;
+            case Text_Database_Enum.interractableButton_Message_exitFreecam_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_exitFreecam_PlayStation;
 
-            case Text_Database_Enum.interractableButton_Message_15_xBox:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_15_xBox;
+            case Text_Database_Enum.interractableButton_Message_exitFreecam_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_exitFreecam_xBox;
 
             case Text_Database_Enum.interractableButton_Message_16_Keyboard:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_16_Keyboard;
