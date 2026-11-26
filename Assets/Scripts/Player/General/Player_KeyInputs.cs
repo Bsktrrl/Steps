@@ -480,7 +480,7 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_Movement()) { return; }
         if (Movement.Instance.GetMovementState() is MovementStates.Moving or MovementStates.Falling) { return; }
 
-        GameObject lookedAt = PlayerManager.Instance.block_LookingAt_Horizontal;
+        GameObject lookedAt = PlayerManager.Instance.RefreshHorizontalLookTarget();
         if (lookedAt && lookedAt.TryGetComponent(out AncientTablet tablet))
         {
             tablet.TryOpen(this);

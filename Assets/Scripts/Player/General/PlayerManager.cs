@@ -23,7 +23,6 @@ public class PlayerManager : Singleton<PlayerManager>
     //public Vector3 lookingDirection;
     public GameObject block_LookingAt_Horizontal;
     public GameObject block_LookingAt_Vertical;
-    RaycastHit hit;
 
     [Header("Game Paused")]
     public bool pauseGame;
@@ -60,6 +59,8 @@ public class PlayerManager : Singleton<PlayerManager>
         Movement.Action_StepTaken += BlockLookingAt;
         Movement.Action_HasLandedFromFalling += BlockLookingAt;
         Movement.Action_BodyRotated += BlockLookingAt;
+        Movement.Action_RespawnPlayerEarly += ClearInteractionTargetForRespawn;
+        Movement.Action_RespawnPlayerLate += BlockLookingAt;
 
         Block_Moveable.Action_ObjectHasBeenPushed += BlockLookingAt;
     }
@@ -72,6 +73,8 @@ public class PlayerManager : Singleton<PlayerManager>
         Movement.Action_StepTaken -= BlockLookingAt;
         Movement.Action_HasLandedFromFalling -= BlockLookingAt;
         Movement.Action_BodyRotated -= BlockLookingAt;
+        Movement.Action_RespawnPlayerEarly -= ClearInteractionTargetForRespawn;
+        Movement.Action_RespawnPlayerLate -= BlockLookingAt;
 
         Block_Moveable.Action_ObjectHasBeenPushed -= BlockLookingAt;
     }
@@ -158,32 +161,45 @@ public class PlayerManager : Singleton<PlayerManager>
     //--------------------
 
 
-    void BlockLookingAt()
-    {
-        Vector3 origin = playerBody.transform.position;
-        Vector3 direction = playerBody.transform.forward;
+    void BlockLookingAt() => RefreshHorizontalLookTarget();
 
-        if (Physics.Raycast(origin + (Vector3.up * 0.25f), direction, out hit, 1.1f))
+    internal GameObject RefreshHorizontalLookTarget()
+    {
+        if (playerBody &&
+            Physics.Raycast(playerBody.transform.position + Vector3.up * 0.25f,
+                playerBody.transform.forward, out RaycastHit hit, 1.1f) &&
+            hit.collider.TryGetComponent<BlockInfo>(out _))
         {
-            if (hit.collider.TryGetComponent<BlockInfo>(out _))
+            GameObject target = hit.collider.gameObject;
+            if (block_LookingAt_Horizontal != target)
             {
-                if (block_LookingAt_Horizontal != hit.collider.gameObject)
-                {
-                    block_LookingAt_Horizontal = hit.collider.gameObject;
-                    Action_UpdatedLookingAtHorizontal?.Invoke();
-                }
-            }
-            else
-            {
-                block_LookingAt_Horizontal = null;
+                block_LookingAt_Horizontal = target;
                 Action_UpdatedLookingAtHorizontal?.Invoke();
             }
+
+            return target;
         }
-        else
-        {
-            block_LookingAt_Horizontal = null;
-            Action_UpdatedLookingAtHorizontal?.Invoke();
-        }
+
+        ClearHorizontalLookTarget();
+        return null;
+    }
+
+    void ClearHorizontalLookTarget()
+    {
+        block_LookingAt_Horizontal = null;
+        Action_UpdatedLookingAtHorizontal?.Invoke();
+    }
+
+    void ClearInteractionTargetForRespawn()
+    {
+        ClearHorizontalLookTarget();
+
+        ButtonMessageManager prompts = GetComponentInChildren<ButtonMessageManager>();
+        if (!prompts)
+            return;
+
+        prompts.HideButtonMessage(prompts.buttonMessages?.buttonMessage_Read);
+        prompts.HideButtonMessage(prompts.buttonMessages?.buttonMessage_PlaceGlueplant);
     }
 
 
