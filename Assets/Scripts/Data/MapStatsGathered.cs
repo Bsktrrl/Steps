@@ -9,6 +9,7 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
     float realTime = 0;
 
     PauseMenuManager pauseMenuManager;
+    private bool attemptEnded;
 
     //--------------------
 
@@ -23,7 +24,7 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
     }
     void UpdateAllTimers_Level()
     {
-        if (PauseMenuManager.Instance.isActive) return;
+        if (attemptEnded || !MapManager.Instance || (pauseMenuManager && pauseMenuManager.isActive)) return;
 
         realTime = Time.deltaTime;
 
@@ -102,6 +103,10 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
 
     void UpdateLevelStats()
     {
+        var map = MapManager.Instance;
+        if (!map)
+            return;
+
         levelStats.timeUsed = 0;
         levelStats.stepsTaken = 0;
         levelStats.respawnTaken = 0;
@@ -120,7 +125,7 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
         levelStats.ability_Jump = 0;
         levelStats.ability_CeilingGrab = 0;
 
-        Level_Stats levelStats_DataManger = GetLevelData(MapManager.Instance.levelName);
+        Level_Stats levelStats_DataManger = GetLevelData(map.levelName);
 
         if (levelStats_DataManger == null) return;
 
@@ -472,6 +477,10 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
 
     public void ExitLevel()
     {
+        if (attemptEnded || !MapManager.Instance)
+            return;
+
+        attemptEnded = true;
         levelStats.quitTimer = levelStats.timeUsed;
 
         SessionStatsGathered.Instance.sessionStats.totalLevelExited += 1;
@@ -481,6 +490,10 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
     }
     public void CompleteLevel()
     {
+        if (attemptEnded || !MapManager.Instance)
+            return;
+
+        attemptEnded = true;
         levelStats.goalReachedTimer = levelStats.timeUsed;
 
         SessionStatsGathered.Instance.sessionStats.totalLevelsCleared += 1;
@@ -497,157 +510,127 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
 
             case LevelNames.Rivergreen_Lv1:
                 DataManager.Instance.playerStatsData_Store.rivergreenLv1_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Rivergreen_Lv1();
                 break;
             case LevelNames.Rivergreen_Lv2:
                 DataManager.Instance.playerStatsData_Store.rivergreenLv2_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Rivergreen_Lv2();
                 break;
             case LevelNames.Rivergreen_Lv3:
                 DataManager.Instance.playerStatsData_Store.rivergreenLv3_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Rivergreen_Lv3();
                 break;
             case LevelNames.Rivergreen_Lv4:
                 DataManager.Instance.playerStatsData_Store.rivergreenLv4_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Rivergreen_Lv4();
                 break;
             case LevelNames.Rivergreen_Lv5:
                 DataManager.Instance.playerStatsData_Store.rivergreenLv5_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Rivergreen_Lv5();
                 break;
 
             case LevelNames.Sandlands_Lv1:
                 DataManager.Instance.playerStatsData_Store.sandlandsLv1_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Sandlands_Lv1();
                 break;
             case LevelNames.Sandlands_Lv2:
                 DataManager.Instance.playerStatsData_Store.sandlandsLv2_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Sandlands_Lv2();
                 break;
             case LevelNames.Sandlands_Lv3:
                 DataManager.Instance.playerStatsData_Store.sandlandsLv3_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Sandlands_Lv3();
                 break;
             case LevelNames.Sandlands_Lv4:
                 DataManager.Instance.playerStatsData_Store.sandlandsLv4_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Sandlands_Lv4();
                 break;
             case LevelNames.Sandlands_Lv5:
                 DataManager.Instance.playerStatsData_Store.sandlandsLv5_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Sandlands_Lv5();
                 break;
 
             case LevelNames.Frostfield_Lv1:
                 DataManager.Instance.playerStatsData_Store.frostfieldLv1_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Frostfield_Lv1();
                 break;
             case LevelNames.Frostfield_Lv2:
                 DataManager.Instance.playerStatsData_Store.frostfieldLv2_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Frostfield_Lv2();
                 break;
             case LevelNames.Frostfield_Lv3:
                 DataManager.Instance.playerStatsData_Store.frostfieldLv3_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Frostfield_Lv3();
                 break;
             case LevelNames.Frostfield_Lv4:
                 DataManager.Instance.playerStatsData_Store.frostfieldLv4_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Frostfield_Lv4();
                 break;
             case LevelNames.Frostfield_Lv5:
                 DataManager.Instance.playerStatsData_Store.frostfieldLv5_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Frostfield_Lv5();
                 break;
 
             case LevelNames.Firevein_Lv1:
                 DataManager.Instance.playerStatsData_Store.fireveinLv1_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Firevein_Lv1();
                 break;
             case LevelNames.Firevein_Lv2:
                 DataManager.Instance.playerStatsData_Store.fireveinLv2_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Firevein_Lv2();
                 break;
             case LevelNames.Firevein_Lv3:
                 DataManager.Instance.playerStatsData_Store.fireveinLv3_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Firevein_Lv3();
                 break;
             case LevelNames.Firevein_Lv4:
                 DataManager.Instance.playerStatsData_Store.fireveinLv4_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Firevein_Lv4();
                 break;
             case LevelNames.Firevein_Lv5:
                 DataManager.Instance.playerStatsData_Store.fireveinLv5_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Firevein_Lv5();
                 break;
 
             case LevelNames.Witchmire_Lv1:
                 DataManager.Instance.playerStatsData_Store.witchmireLv1_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Witchmire_Lv1();
                 break;
             case LevelNames.Witchmire_Lv2:
                 DataManager.Instance.playerStatsData_Store.witchmireLv2_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Witchmire_Lv2();
                 break;
             case LevelNames.Witchmire_Lv3:
                 DataManager.Instance.playerStatsData_Store.witchmireLv3_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Witchmire_Lv3();
                 break;
             case LevelNames.Witchmire_Lv4:
                 DataManager.Instance.playerStatsData_Store.witchmireLv4_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Witchmire_Lv4();
                 break;
             case LevelNames.Witchmire_Lv5:
                 DataManager.Instance.playerStatsData_Store.witchmireLv5_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Witchmire_Lv5();
                 break;
 
             case LevelNames.Metalworks_Lv1:
                 DataManager.Instance.playerStatsData_Store.metalworksLv1_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Metalworks_Lv1();
                 break;
             case LevelNames.Metalworks_Lv2:
                 DataManager.Instance.playerStatsData_Store.metalworksLv2_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Metalworks_Lv2();
                 break;
             case LevelNames.Metalworks_Lv3:
                 DataManager.Instance.playerStatsData_Store.metalworksLv3_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Metalworks_Lv3();
                 break;
             case LevelNames.Metalworks_Lv4:
                 DataManager.Instance.playerStatsData_Store.metalworksLv4_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Metalworks_Lv4();
                 break;
             case LevelNames.Metalworks_Lv5:
                 DataManager.Instance.playerStatsData_Store.metalworksLv5_Stats = levelStats;
-                DataPersistanceManager.instance.SaveGame();
                 FeedbackForm.Instance.SubmitFeedback_Metalworks_Lv5();
                 break;
 
@@ -665,6 +648,6 @@ public class MapStatsGathered : Singleton<MapStatsGathered>
         SessionStatsGathered.Instance.sessionStats.totalTimeUsed_InLevels += levelStats.timeUsed;
         SessionStatsGathered.Instance.sessionStats.totalTimeUsed_InFreeCam += levelStats.freeCamTimer;
 
-        SessionStatsGathered.Instance.SaveSessionStats();
+        SessionStatsGathered.Instance.StoreSessionStats();
     }
 }

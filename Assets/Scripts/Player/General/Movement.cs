@@ -45,6 +45,8 @@ public class Movement : Singleton<Movement>
     public static event Action Action_isGrapplingHooking_SendPlayer;
     public static event Action Action_isGrapplingHooking_RollBack;
 
+    public static event Action Action_isDrowning;
+
     #endregion
 
     #region Variables
@@ -61,6 +63,9 @@ public class Movement : Singleton<Movement>
     public float ascendDescend_Distance = 2f;
     float grapplingLength = 5f;
     public Vector3 savePos;
+
+    private const float StandingBlockProbeDistance = 1.25f;
+    private const float StandingBlockProbeOffset = 0.05f;
 
     [Header("BlockIsStandingOn")]
     public Vector3 lookingDirection;
@@ -102,7 +107,6 @@ public class Movement : Singleton<Movement>
 
     public MoveOptions moveToBlock_GrapplingHook;
     public MoveOptions moveToCeilingGrabbing;
-    public Vector3 tempGrapplingTaregtPos;
 
     public MoveOptions moveToLadder_Forward;
     public MoveOptions moveToLadder_Back;
@@ -113,11 +117,15 @@ public class Movement : Singleton<Movement>
 
     public bool performGrapplingHooking;
     public bool grapplingTargetHasBeenSet;
+    private Coroutine grapplingChargeRoutine;
+    private Vector3 grapplingAimDirection;
     public bool grapplingTowardsStair;
     public List<GameObject> grapplingObjects = new List<GameObject>();
 
     public Vector3 previousPosition;
     public Vector3 teleportMovementDir;
+    internal bool IsTeleporting { get; private set; }
+    private Coroutine teleportRoutine;
 
     [Header("Ladder")]
     public Vector3 ladderEndPos_Up;
@@ -141,6 +149,7 @@ public class Movement : Singleton<Movement>
 
     RaycastHit hit;
     private readonly Collider[] movementOverlapHits = new Collider[16];
+    private RaycastHit[] carrierLandingHits;
 
     public bool isJumping;
     public bool isGrapplingHooking;
@@ -270,17 +279,25 @@ public class Movement : Singleton<Movement>
         lastFollowedElevatorPosition = transform.position;
         elevatorRefreshAccumulatedDistance = 0f;
 
-        RespawnPlayer();
+        if (DataManager.Instance.dataHasLoaded_Check)
+            InitializeAtCheckpoint();
+    }
+
+    private void InitializeAtCheckpoint()
+    {
+        if (Map && !isRespawningFirstTime)
+            RespawnPlayer();
     }
 
     private void Update()
     {
         // Never let the old tile, an elevator follow, a falling update, or
         // another movement system overwrite a checkpoint teleport mid-respawn.
-        if (isRespawning)
+        var map = Map;
+        if (isRespawning || IsTeleporting || !map)
             return;
 
-        bool gameplayInputLocked = Map.GameplayInputLocked ||
+        bool gameplayInputLocked = map.GameplayInputLocked ||
             Anims.IsPickupAnimationPending || zeroStepRespawnStarted;
         // Allow a step already in progress to settle, but do not start another.
         if (gameplayInputLocked && movementStates != MovementStates.Moving &&
@@ -311,8 +328,9 @@ public class Movement : Singleton<Movement>
                 break;
 
             case MovementStates.Falling:
-                UpdateBlockStandingOn();
-                PlayerIsFalling();
+                float fallDistance = Mathf.Max(0f, fallSpeed * Time.deltaTime);
+                bool reachesLanding = UpdateBlockStandingOn(fallDistance);
+                PlayerIsFalling(fallDistance, reachesLanding);
 
                 if (IsFallingWithCarrierBlockActive())
                 {
@@ -323,7 +341,7 @@ public class Movement : Singleton<Movement>
                 break;
 
             default:
-                if (gameplayInputLocked || (!Tutorial.Instance.tutorial_isRunning && PM.pauseGame))
+                if (gameplayInputLocked || (!Tutorial.Instance.tutorial_isRunning && (PM.pauseGame || Cam.isRotating)))
                     return;
 
                 MovementSetup();
@@ -338,8 +356,7 @@ public class Movement : Singleton<Movement>
             !grapplingTargetHasBeenSet &&
             !CeilingGrab.isCeilingGrabbing)
         {
-            UpdateGrapplingHookMovement(moveToBlock_GrapplingHook, lookDir);
-            grapplingTargetHasBeenSet = true;
+            StartGrapplingCharge();
         }
 
         CancelSlopeIfFalling();
@@ -362,12 +379,12 @@ public class Movement : Singleton<Movement>
 
     private void OnEnable()
     {
+        DataManager.Action_dataHasLoaded += InitializeAtCheckpoint;
         // Cost is finalized inside TakeAStep BEFORE movement previews and
         // late auto-chaining are processed (see PublishSettledStep).
         Action_RespawnPlayerLate += UpdateAvailableMovementBlocks;
         Action_LandedFromFalling += UpdateAvailableMovementBlocks;
 
-        Action_RespawnPlayerEarly += RespawnUnderGrappling;
 
         Action_BodyRotated += UpdateLookDir;
         Action_BodyRotated += RefreshAvailableMovementBlocksSmooth;
@@ -375,7 +392,6 @@ public class Movement : Singleton<Movement>
         Action_RespawnPlayerEarly += ResetDarkenBlocks;
         Action_StepTaken += TakeAStep;
 
-        Action_isSwitchingBlocks += UpdateStepsAmonutWhenGrapplingMoving;
         Action_StepTaken_Late += RunIceGliding;
         Action_StepTaken_Late += CheckIfSwimming;
 
@@ -393,10 +409,19 @@ public class Movement : Singleton<Movement>
 
     private void OnDisable()
     {
+        if (teleportRoutine != null)
+        {
+            StopCoroutine(teleportRoutine);
+            teleportRoutine = null;
+            IsTeleporting = false;
+            SetMovementState(MovementStates.Still);
+            ClearPendingStepCost();
+        }
+
+        DataManager.Action_dataHasLoaded -= InitializeAtCheckpoint;
         Action_RespawnPlayerLate -= UpdateAvailableMovementBlocks;
         Action_LandedFromFalling -= UpdateAvailableMovementBlocks;
 
-        Action_RespawnPlayerEarly -= RespawnUnderGrappling;
 
         Action_BodyRotated -= UpdateLookDir;
         Action_BodyRotated -= RefreshAvailableMovementBlocksSmooth;
@@ -404,7 +429,6 @@ public class Movement : Singleton<Movement>
         Action_RespawnPlayerEarly -= ResetDarkenBlocks;
         Action_StepTaken -= TakeAStep;
 
-        Action_isSwitchingBlocks -= UpdateStepsAmonutWhenGrapplingMoving;
         Action_StepTaken_Late -= RunIceGliding;
         Action_StepTaken_Late -= CheckIfSwimming;
 
@@ -1022,57 +1046,43 @@ public class Movement : Singleton<Movement>
 
     private bool TryGetLandingBlockWhileFollowingCarrier(out GameObject landingBlock)
     {
-        landingBlock = null;
+        return TryGetCarrierLandingBlock(0.05f, heightOverBlock + 0.4f, out landingBlock);
+    }
 
-        Vector3 origin = transform.position + (Vector3.up * 0.05f);
-        RaycastHit[] hits = Physics.RaycastAll(
-            origin,
-            Vector3.down,
-            heightOverBlock + 0.4f,
-            Map.player_LayerMask,
-            QueryTriggerInteraction.Ignore);
+    private bool TryGetPotentialLandingBlockBelowCarrier(out GameObject landingBlock)
+    {
+        return TryGetCarrierLandingBlock(0.1f, 3f, out landingBlock);
+    }
 
-        float closestDistance = float.MaxValue;
+    private bool TryGetCarrierLandingBlock(float originOffset, float distance, out GameObject landingBlock)
+    {
+        Vector3 origin = transform.position + Vector3.up * originOffset;
+        int layers = Map.player_LayerMask;
+        int hitCount = TerrainRaycasts.Cast(
+            origin, Vector3.down, distance, layers, QueryTriggerInteraction.Ignore, ref carrierLandingHits);
+        landingBlock = FindClosestCarrierLanding(carrierLandingHits, hitCount, out bool hasTie);
 
-        foreach (var h in hits)
+        // The two raycast APIs can enumerate equal-distance hits differently.
+        // Keep the existing choice when separate blocks share the nearest surface.
+        if (hasTie)
         {
-            GameObject obj = h.transform.gameObject;
-
-            if (!obj.TryGetComponent(out BlockInfo info))
-                continue;
-
-            if (obj == fallingCarrierBlock)
-                continue;
-
-            if (info.movementState == MovementStates.Falling)
-                continue;
-
-            if (h.distance < closestDistance)
-            {
-                closestDistance = h.distance;
-                landingBlock = obj;
-            }
+            RaycastHit[] hits = Physics.RaycastAll(
+                origin, Vector3.down, distance, layers, QueryTriggerInteraction.Ignore);
+            landingBlock = FindClosestCarrierLanding(hits, hits.Length, out _);
         }
 
         return landingBlock != null;
     }
 
-    private bool TryGetPotentialLandingBlockBelowCarrier(out GameObject landingBlock)
+    private GameObject FindClosestCarrierLanding(RaycastHit[] hits, int hitCount, out bool hasTie)
     {
-        landingBlock = null;
-
-        Vector3 origin = transform.position + (Vector3.up * 0.1f);
-        RaycastHit[] hits = Physics.RaycastAll(
-            origin,
-            Vector3.down,
-            3f,
-            Map.player_LayerMask,
-            QueryTriggerInteraction.Ignore);
-
+        GameObject landingBlock = null;
         float closestDistance = float.MaxValue;
+        hasTie = false;
 
-        foreach (RaycastHit h in hits)
+        for (int i = 0; i < hitCount; i++)
         {
+            RaycastHit h = hits[i];
             GameObject obj = h.transform.gameObject;
 
             if (!obj.TryGetComponent(out BlockInfo info))
@@ -1088,10 +1098,15 @@ public class Movement : Singleton<Movement>
             {
                 closestDistance = h.distance;
                 landingBlock = obj;
+                hasTie = false;
+            }
+            else if (h.distance == closestDistance && obj != landingBlock)
+            {
+                hasTie = true;
             }
         }
 
-        return landingBlock != null;
+        return landingBlock;
     }
 
     private bool CarrierHasReachedLandingHeight(GameObject landingBlock)
@@ -1579,7 +1594,7 @@ public class Movement : Singleton<Movement>
             StatsRoot.stats.abilitiesGot_Permanent.Flippers;
 
         if (hasFlippers && TryGetStandingInfo(out BlockInfo standingInfo))
-            return Mathf.Max(0.01f, standingInfo.movementSpeed - 1.5f);
+            return Mathf.Max(0.01f, standingInfo.GetMovementSpeed() - 1.5f);
 
         return 2f;
     }
@@ -1765,7 +1780,7 @@ public class Movement : Singleton<Movement>
             if (!HasWaterDirectlyAbove(moveOption.targetBlock))
                 continue;
 
-            PerformMovement(moveOption, MovementStates.Moving, standingInfo.movementSpeed);
+            PerformMovement(moveOption, MovementStates.Moving, standingInfo.GetMovementSpeed());
             return true;
         }
 
@@ -1895,7 +1910,7 @@ public class Movement : Singleton<Movement>
 
     private void UpdateBlocksAfterCameraRotation()
     {
-        if (!IsClimbingLadder)
+        if (!IsClimbingLadder && !isMoving)
             UpdateAvailableMovementBlocks();
     }
 
@@ -1932,6 +1947,11 @@ public class Movement : Singleton<Movement>
 
     public void UpdateBlockStandingOn()
     {
+        UpdateBlockStandingOn(0f);
+    }
+
+    private bool UpdateBlockStandingOn(float fallDistance)
+    {
         GameObject prev = blockStandingOn;
         Vector3 playerPos = PM.player.transform.position;
         Vector3 rayDir = CeilingGrab.isCeilingGrabbing ? Vector3.up : Vector3.down;
@@ -1950,17 +1970,35 @@ public class Movement : Singleton<Movement>
             if (prev != blockStandingOn)
                 Action_isSwitchingBlocks_Invoke();
 
-            return;
+            return false;
         }
         else if (isFallingWithCarrierBlock)
         {
             ClearFallingCarrierBlock();
         }
 
-        if (TryGetBlockUnder(playerPos, rayDir, 1.25f, out GameObject obj))
-            blockStandingOn = obj;
-        else
-            blockStandingOn = null;
+        bool reachesLanding = false;
+        blockStandingOn = null;
+        if (TryGetBlockUnder(playerPos, rayDir, StandingBlockProbeDistance + fallDistance,
+                out GameObject obj, out float hitDistance))
+        {
+            // The extra range detects blocks reached during this frame's fall.
+            // Only publish a distant block once the player can actually land on it.
+            reachesLanding = fallDistance > 0f &&
+                (playerPos.y - fallDistance <= obj.transform.position.y + heightOverBlock ||
+                 hitDistance <= fallDistance + StandingBlockProbeOffset);
+
+            if (fallDistance > 0f && !reachesLanding && hitDistance > StandingBlockProbeDistance)
+            {
+                Player_BodyHeight bodyHeight = Player_BodyHeight.Instance;
+                float targetBodyY = bodyHeight.GetLocalYForHeight(bodyHeight.GetHeightOnBlock(obj, this));
+                float bodyHeightChange = targetBodyY - PM.playerBody.transform.localPosition.y;
+                reachesLanding = playerPos.y - fallDistance <= obj.transform.position.y + heightOverBlock + bodyHeightChange;
+            }
+
+            if (hitDistance <= StandingBlockProbeDistance || reachesLanding)
+                blockStandingOn = obj;
+        }
 
         if (blockStandingOn_Previous != blockStandingOn && !CeilingGrab.isCeilingGrabbing)
             blockStandingOn_Previous = prev;
@@ -1979,22 +2017,26 @@ public class Movement : Singleton<Movement>
                 slopeAutoExitSourceBlock = null;
             }
         }
+
+        return reachesLanding;
     }
 
-    bool TryGetBlockUnder(Vector3 origin, Vector3 dir, float distance, out GameObject block)
+    bool TryGetBlockUnder(Vector3 origin, Vector3 dir, float distance, out GameObject block, out float hitDistance)
     {
-        origin += dir * -0.05f;
+        origin -= dir * StandingBlockProbeOffset;
 
         if (Physics.Raycast(origin, dir, out RaycastHit localHit, distance, Map.player_LayerMask, QueryTriggerInteraction.Ignore))
         {
             if (localHit.transform.TryGetComponent(out BlockInfo _))
             {
                 block = localHit.transform.gameObject;
+                hitDistance = localHit.distance;
                 return true;
             }
         }
 
         block = null;
+        hitDistance = 0f;
         return false;
     }
 
@@ -2135,11 +2177,11 @@ public class Movement : Singleton<Movement>
 
                     if (pendingSlopeFallAfterUphillAttempt && !isPlayingSlopeFallAnimation)
                     {
-                        StartCoroutine(StartSlopeFalling_MoveOption(moveOption, standingInfo.movementSpeed));
+                        StartCoroutine(StartSlopeFalling_MoveOption(moveOption, standingInfo.GetMovementSpeed()));
                     }
                     else if (!isPlayingSlopeFallAnimation)
                     {
-                        PerformMovement(moveOption, MovementStates.Moving, standingInfo.movementSpeed);
+                        PerformMovement(moveOption, MovementStates.Moving, standingInfo.GetMovementSpeed());
                     }
                 }
                 else
@@ -2158,7 +2200,7 @@ public class Movement : Singleton<Movement>
 
                     if (pendingSlopeFallAfterUphillAttempt && !isPlayingSlopeFallAnimation)
                     {
-                        StartCoroutine(StartSlopeFalling_Position(fallbackTarget, standingInfo.movementSpeed));
+                        StartCoroutine(StartSlopeFalling_Position(fallbackTarget, standingInfo.GetMovementSpeed()));
                     }
                     else if (!isPlayingSlopeFallAnimation)
                     {
@@ -3019,131 +3061,110 @@ public class Movement : Singleton<Movement>
         return false;
     }
 
-    public void UpdateGrapplingHookMovement(MoveOptions moveOption, Vector3 dir)
+
+    void StartGrapplingCharge()
     {
-        if (!PlayerHasGrapplingHookAbility())
+        if (!CanResolveGrapplingCharge())
         {
-            ClearMoveTarget(moveOption);
+            CancelGrapplingCharge();
             return;
         }
 
-        StartCoroutine(Delay_UpdateGrapplingHookMovement(moveOption, dir));
+        grapplingTargetHasBeenSet = true;
+        grapplingChargeRoutine = StartCoroutine(ResolveGrapplingCharge());
     }
 
-    IEnumerator Delay_UpdateGrapplingHookMovement(MoveOptions moveOption, Vector3 dir)
+    bool CanResolveGrapplingCharge()
+    {
+        return !Map.GameplayInputLocked && !PM.pauseGame && !PM.pauseMovement && !PM.npcInteraction &&
+               !Cam.isRotating && !isMoving && !isRespawning && !isDrowning && !zeroStepRespawnStarted &&
+               !isMovingOnLadder_Up && !isMovingOnLadder_Down && !CeilingGrab.isCeilingGrabbing &&
+               !Anims.IsPickupAnimationPending && PlayerHasGrapplingHookAbility();
+    }
+
+    IEnumerator ResolveGrapplingCharge()
     {
         yield return new WaitForSeconds(Anims.abilityChargeTime_GrapplingHook);
+        grapplingChargeRoutine = null;
 
-        if (!Inputs.grapplingHook_isPressed || Map.GameplayInputLocked)
+        if (!Inputs.grapplingHook_isPressed || !CanResolveGrapplingCharge())
+        {
+            CancelGrapplingCharge();
+            yield break;
+        }
+
+        // Use the current facing when the charge resolves, then keep it for this shot.
+        grapplingAimDirection = lookDir.normalized;
+        MoveOptions moveOption = moveToBlock_GrapplingHook;
+        if (moveOption == null || !TryFindGrapplingTarget(grapplingAimDirection, out BlockInfo target, out Vector3 contactPoint))
             yield break;
 
-        Player_GraplingHook.Instance.isGrapplingHooking = true;
-        Player_GraplingHook.Instance.EndLineRenderer();
+        Player_GraplingHook hook = Player_GraplingHook.Instance;
+        hook.isGrapplingHooking = true;
+        hook.endPoint = contactPoint - grapplingAimDirection * 0.05f;
+        SetMoveTarget(moveOption, target.gameObject);
+        grapplingTowardsStair = target.blockType == BlockType.Stair || target.blockType == BlockType.Slope;
 
-        Vector3 playerPos = transform.position;
+        hook.redDotSceneObject.transform.SetPositionAndRotation(hook.endPoint, Quaternion.LookRotation(grapplingAimDirection));
+        hook.hitEffect.transform.SetPositionAndRotation(hook.endPoint, Quaternion.Euler(-90, 0, 0));
+        hook.hitEffect.GetComponentInChildren<HitParticleScript>().particle.Play();
+        hook.redDotSceneObject.SetActive(true);
+        hook.RunLineReader();
 
-        RaycastHit[] hits = Physics.RaycastAll(
-            playerPos,
-            dir,
-            grapplingLength,
-            Map.player_LayerMask,
-            QueryTriggerInteraction.Ignore
-        );
+        Action_isGrapplingHooking_RollBack?.Invoke();
+        UpdateBlocksOnTheGrapplingWay(moveOption);
+    }
 
+    bool TryFindGrapplingTarget(Vector3 direction, out BlockInfo target, out Vector3 contactPoint)
+    {
+        RaycastHit[] hits = Physics.RaycastAll(transform.position, direction, grapplingLength,
+            Map.player_LayerMask, QueryTriggerInteraction.Ignore);
         Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
-        GameObject targetObj = null;
-        Vector3 contactPoint = Vector3.zero;
-
-        foreach (RaycastHit localHit in hits)
+        foreach (RaycastHit hit in hits)
         {
-            if (localHit.transform == null)
+            if (!hit.collider)
                 continue;
 
-            if (!localHit.transform.TryGetComponent(out BlockInfo hitInfo))
+            BlockInfo block = hit.collider.GetComponentInParent<BlockInfo>();
+            if (!block || IsLiquidGrapplingBlock(block))
                 continue;
 
-            // Ignore liquid blocks and keep searching forward.
-            if (IsLiquidGrapplingBlock(hitInfo))
-                continue;
-
-            targetObj = localHit.transform.gameObject;
-            contactPoint = localHit.point;
-            break;
+            target = block;
+            contactPoint = hit.point;
+            return Vector3.Distance(transform.position, block.transform.position) > 1.1f;
         }
 
-        if (targetObj != null)
-        {
-            Player_GraplingHook.Instance.endPoint = contactPoint + (-dir * 0.05f);
-
-            SetMoveTarget(moveOption, targetObj);
-
-            if (TryGetBlockInfo(moveOption.targetBlock, out BlockInfo targetInfo) &&
-                (targetInfo.blockType == BlockType.Stair || targetInfo.blockType == BlockType.Slope))
-            {
-                grapplingTowardsStair = true;
-            }
-            else
-            {
-                grapplingTowardsStair = false;
-            }
-
-            Vector3 toPlayer = (transform.position - moveToBlock_GrapplingHook.targetBlock.transform.position).normalized;
-            bool stairIsFacingPlayer =
-                TryGetBlockInfo(moveToBlock_GrapplingHook.targetBlock, out BlockInfo grapplingInfo) &&
-                (grapplingInfo.blockType == BlockType.Stair || grapplingInfo.blockType == BlockType.Slope) &&
-                Vector3.Dot(moveToBlock_GrapplingHook.targetBlock.transform.forward, toPlayer) > 0.5f;
-
-            Player_GraplingHook.Instance.redDotSceneObject.transform.SetPositionAndRotation(Player_GraplingHook.Instance.endPoint, Quaternion.LookRotation(dir));
-
-            Player_GraplingHook.Instance.hitEffect.transform.SetPositionAndRotation(
-                Player_GraplingHook.Instance.redDotSceneObject.transform.position,
-                Quaternion.Euler(-90, 0, 0));
-
-            Player_GraplingHook.Instance.hitEffect.GetComponentInChildren<HitParticleScript>().particle.Play();
-
-            Player_GraplingHook.Instance.redDotSceneObject.SetActive(true);
-            Player_GraplingHook.Instance.RunLineReader();
-
-            Action_isGrapplingHooking_RollBack?.Invoke();
-
-            UpdateBlocksOnTheGrapplingWay(moveOption);
-        }
-        else
-        {
-            Player_GraplingHook.Instance.EndLineRenderer();
-            Player_GraplingHook.Instance.endPoint = Vector3.zero;
-            Player_GraplingHook.Instance.redDotSceneObject.SetActive(false);
-            ClearMoveTarget(moveOption);
-        }
+        target = null;
+        contactPoint = Vector3.zero;
+        return false;
     }
 
     public void UpdateGrapplingHookMovement_Release()
     {
-        if (moveToBlock_GrapplingHook.targetBlock != null && moveToBlock_GrapplingHook.canMoveTo)
+        MoveOptions aim = moveToBlock_GrapplingHook;
+        if (!Inputs.grapplingHook_isPressed)
+            return;
+
+        // Release may launch only the target already shown to the player.
+        if (!CanResolveGrapplingCharge() || aim == null || !aim.canMoveTo || !aim.targetBlock ||
+            !TryFindGrapplingTarget(grapplingAimDirection, out BlockInfo currentTarget, out _) ||
+            currentTarget.gameObject != aim.targetBlock)
         {
-            if (Vector3.Distance(transform.position, moveToBlock_GrapplingHook.targetBlock.transform.position) > 1.1f)
-            {
-                Action_isGrapplingHooking_SendPlayer?.Invoke();
-
-                tempGrapplingTaregtPos = moveToBlock_GrapplingHook.targetBlock.transform.position;
-                performGrapplingHooking = true;
-                RunGrapplingHook();
-
-                Player_GraplingHook.Instance.isGrapplingHooking = false;
-                grapplingTargetHasBeenSet = false;
-
-                ResetBlocksOnTheGrapplingWay();
-                return;
-            }
+            CancelGrapplingCharge();
+            return;
         }
 
-        ClearMoveTarget(moveToBlock_GrapplingHook);
+        Inputs.grapplingHook_isPressed = false;
+        grappleTraversedBlocks.Clear();
+        if (blockStandingOn)
+            grappleTraversedBlocks.Add(blockStandingOn);
 
-        Player_GraplingHook.Instance.redDotSceneObject.SetActive(false);
-        Player_GraplingHook.Instance.EndLineRenderer();
-        Player_GraplingHook.Instance.isGrapplingHooking = false;
-        grapplingTargetHasBeenSet = false;
+        performGrapplingHooking = true;
+        Action_isGrapplingHooking_SendPlayer?.Invoke();
+        RunGrapplingHook(grapplingAimDirection);
+        ClearGrapplingAim();
+        Action_isGrapplingHooking_Finished?.Invoke();
     }
 
     void UpdateBlocksOnTheGrapplingWay(MoveOptions moveOption)
@@ -3192,70 +3213,90 @@ public class Movement : Singleton<Movement>
         }
     }
 
+
     public void CancelCutsceneGrapplingTarget()
     {
-        // Never interrupt a grapple already moving the player to its target.
-        if (!performGrapplingHooking && !isGrapplingHooking &&
-            (Inputs.grapplingHook_isPressed || grapplingTargetHasBeenSet ||
-             (Player_GraplingHook.Instance != null && Player_GraplingHook.Instance.isGrapplingHooking)))
-        {
-            ResetGrapplingHookMovementState();
-        }
-
+        CancelGrapplingCharge();
         walkAnimationCheck = false;
     }
 
-    private void ResetGrapplingHookMovementState()
+    internal void CancelGrapplingCharge()
     {
+        // Competing input can clear the aim, but cannot interrupt travel.
+        if (performGrapplingHooking || isGrapplingHooking ||
+            (!Inputs.grapplingHook_isPressed && !grapplingTargetHasBeenSet))
+            return;
+
+        ResetGrapplingHookMovementState();
+    }
+
+    private void ClearGrapplingAim()
+    {
+        if (grapplingChargeRoutine != null)
+        {
+            StopCoroutine(grapplingChargeRoutine);
+            grapplingChargeRoutine = null;
+        }
+
         ResetBlocksOnTheGrapplingWay();
         ResetMoveVisual(moveToBlock_GrapplingHook);
         ClearMoveTarget(moveToBlock_GrapplingHook);
 
         grapplingTargetHasBeenSet = false;
+        grapplingAimDirection = Vector3.zero;
+
+        Player_GraplingHook hook = Player_GraplingHook.Instance;
+        if (hook)
+        {
+            hook.isGrapplingHooking = false;
+            hook.endPoint = Vector3.zero;
+            hook.EndLineRenderer();
+        }
+    }
+
+    private void ResetGrapplingHookMovementState()
+    {
+        bool wasCharging = Inputs.grapplingHook_isPressed || grapplingTargetHasBeenSet;
+        Inputs.grapplingHook_isPressed = false;
         grapplingTowardsStair = false;
+        grappleLandingBlock = null;
+        grappleHeightOffsetLandingBlock = null;
+        prepaidGrappleLandingBlock = null;
+        grappleTraversedBlocks.Clear();
         performGrapplingHooking = false;
         isGrapplingHooking = false;
+        ClearGrapplingAim();
 
-        if (Player_GraplingHook.Instance != null)
-        {
-            Player_GraplingHook.Instance.isGrapplingHooking = false;
-            Player_GraplingHook.Instance.endPoint = Vector3.zero;
-
-            if (Player_GraplingHook.Instance.redDotSceneObject != null)
-                Player_GraplingHook.Instance.redDotSceneObject.SetActive(false);
-
-            Player_GraplingHook.Instance.EndLineRenderer();
-        }
+        if (wasCharging)
+            Action_isGrapplingHooking_Finished?.Invoke();
     }
 
-    void UpdateStepsAmonutWhenGrapplingMoving()
+    private bool TrySpendGrappleTravelSteps()
     {
-        if (performGrapplingHooking &&
-            blockStandingOn != null &&
-            ((grapplingTowardsStair && Vector3.Distance(transform.position, tempGrapplingTaregtPos) > 1.5f) ||
-             (!grapplingTowardsStair && Vector3.Distance(blockStandingOn.transform.position, tempGrapplingTaregtPos) > 1.5f)) &&
-            TryGetStandingInfo(out BlockInfo standingInfo))
+        // The destination still uses the regular landing sequence.
+        if (!TryGetStandingInfo(out BlockInfo standingInfo) || blockStandingOn == grappleLandingBlock ||
+            !grappleTraversedBlocks.Add(blockStandingOn))
+            return true;
+
+        var stats = StatsRoot.stats;
+        bool unlimitedSteps = DataManager.Instance.skinsInfo_Store.activeSkinType == SkinType.SourceBlock;
+        int cost = unlimitedSteps ? 0 : standingInfo.GetMovementCost_ForPlayerMove();
+        stats.steps_Current = Mathf.Max(0, stats.steps_Current - cost);
+
+        if (standingInfo.TryGetComponent(out Block_Checkpoint checkpoint) && checkpoint.isActiveAndEnabled)
         {
-            if (StatsRoot.stats.steps_Current < 0)
-            {
-                RespawnPlayer(stepsExhausted: true);
-                return;
-            }
-
-            StatsRoot.stats.steps_Current -= standingInfo.GetMovementCost_ForPlayerMove();
-            StepsHUD.Instance.UpdateStepsDisplay_Walking();
+            checkpoint.ActivateDuringGrapple();
+            return true;
         }
+
+        StepsHUD.Instance.UpdateStepsDisplay_Walking();
+        if (stats.steps_Current > 0 || unlimitedSteps)
+            return true;
+
+        transform.position = GetMoveTargetPosForBlock(blockStandingOn);
+        RespawnPlayer(stepsExhausted: true);
+        return false;
     }
-
-    void RespawnUnderGrappling()
-    {
-        grapplingTowardsStair = false;
-        performGrapplingHooking = false;
-        grapplingTargetHasBeenSet = false;
-        ResetBlocksOnTheGrapplingWay();
-    }
-
-
 
     #endregion
 
@@ -3355,7 +3396,7 @@ public class Movement : Singleton<Movement>
     // but their number previews should remain hidden until the spawn has finished.
     private bool HideNumbersForInitialSpawn()
     {
-        return DataManager.Instance != null &&
+        return Map.levelName == LevelNames.HUB && DataManager.Instance != null &&
                DataManager.Instance.oneTimeRunData_Store != null &&
                !DataManager.Instance.oneTimeRunData_Store.tutorial_PlayerSpawned;
     }
@@ -3575,6 +3616,9 @@ public class Movement : Singleton<Movement>
     }
 
     private GameObject grappleHeightOffsetLandingBlock;
+    private GameObject grappleLandingBlock;
+    private GameObject prepaidGrappleLandingBlock;
+    private readonly HashSet<GameObject> grappleTraversedBlocks = new();
 
     private Vector3 CorrectGrappleTargetForHeightOffset(Vector3 originalTarget)
     {
@@ -3654,26 +3698,11 @@ public class Movement : Singleton<Movement>
         return originalTarget;
     }
 
-    void RunGrapplingHook()
+    void RunGrapplingHook(Vector3 direction)
     {
-        if (!moveToBlock_GrapplingHook.canMoveTo ||
-            moveToBlock_GrapplingHook.targetBlock == null)
-        {
-            return;
-        }
-
-        if (!CanAfford(moveToBlock_GrapplingHook.targetBlock))
-        {
-            RespawnAfterUnaffordableMove();
-            return;
-        }
-
         isGrapplingHooking = true;
 
-        if (Inputs.grapplingHook_isPressed)
-            Anims.Trigger_GrapplingHookAnimation();
-        else
-            Anims.Trigger_GrapplingHookDraggingAnimation();
+        Anims.Trigger_GrapplingHookDraggingAnimation();
 
         Vector3 grappleMovementTarget;
 
@@ -3697,16 +3726,16 @@ public class Movement : Singleton<Movement>
             {
                 grappleMovementTarget =
                     moveToBlock_GrapplingHook.targetBlock.transform.position -
-                    lookDir.normalized +
+                    direction.normalized +
                     Vector3.down +
                     (Vector3.up * 0.95f) +
-                    lookDir;
+                    direction;
             }
             else
             {
                 grappleMovementTarget =
                     moveToBlock_GrapplingHook.targetBlock.transform.position -
-                    lookDir.normalized +
+                    direction.normalized +
                     Vector3.down +
                     (Vector3.up * 0.5f);
             }
@@ -3715,7 +3744,7 @@ public class Movement : Singleton<Movement>
         {
             grappleMovementTarget =
                 moveToBlock_GrapplingHook.targetBlock.transform.position -
-                lookDir.normalized +
+                direction.normalized +
                 Vector3.down;
         }
 
@@ -3730,16 +3759,6 @@ public class Movement : Singleton<Movement>
         MapStatsGathered.Instance.levelStats
             .ability_GrapplingHook++;
         Player_Statistics_Manager.Active?.RecordGrapplingHook();
-
-        if (TryGetBlockInfo(
-                moveToBlock_GrapplingHook.targetBlock,
-                out BlockInfo targetInfo))
-        {
-            targetInfo.ResetDarkenColor();
-        }
-
-        ClearMoveTarget(moveToBlock_GrapplingHook);
-        Player_GraplingHook.Instance.EndLineRenderer();
     }
 
     void CheckAscend()
@@ -3953,7 +3972,7 @@ public class Movement : Singleton<Movement>
                 return true;
             }
 
-            PerformMovement(moveOption, MovementStates.Moving, standingInfo.movementSpeed);
+            PerformMovement(moveOption, MovementStates.Moving, standingInfo.GetMovementSpeed());
             return true;
         }
 
@@ -4052,7 +4071,7 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(MoveOptions canMoveBlock, MovementStates moveState, float movementSpeed, ref bool isMovingFlag)
     {
-        if (isMoving || isRespawning || isDrowning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+        if (isMoving || IsTeleporting || isRespawning || isDrowning || IsClimbingLadder)
             return;
 
         if (canMoveBlock == null || canMoveBlock.targetBlock == null || !TryGetBlockInfo(canMoveBlock.targetBlock, out BlockInfo _) || StatsRoot.stats == null)
@@ -4079,7 +4098,7 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(MoveOptions canMoveBlock, MovementStates moveState, float movementSpeed)
     {
-        if (isMoving || isRespawning || isDrowning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+        if (isMoving || IsTeleporting || isRespawning || isDrowning || IsClimbingLadder)
             return;
 
         if (canMoveBlock == null || canMoveBlock.targetBlock == null || !TryGetBlockInfo(canMoveBlock.targetBlock, out BlockInfo _) || StatsRoot.stats == null)
@@ -4107,7 +4126,7 @@ public class Movement : Singleton<Movement>
 
     public void PerformMovement(Vector3 targetPos)
     {
-        if (isMoving || isRespawning || isDrowning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+        if (isMoving || IsTeleporting || isRespawning || isDrowning || IsClimbingLadder)
             return;
 
         if (!TryGetStandingInfo(out BlockInfo standingInfo))
@@ -4119,12 +4138,12 @@ public class Movement : Singleton<Movement>
 
         ClearFallingCarrierBlock();
         ResetDarkenBlocks();
-        StartCoroutine(Move(targetPos, MovementStates.Moving, standingInfo.movementSpeed, null));
+        StartCoroutine(Move(targetPos, MovementStates.Moving, standingInfo.GetMovementSpeed(), null));
     }
 
     public void PerformMovement(Vector3 targetPos, float movementSpeed)
     {
-        if (isMoving || isRespawning || isDrowning || isMovingOnLadder_Up || isMovingOnLadder_Down)
+        if (isMoving || IsTeleporting || isRespawning || isDrowning || IsClimbingLadder)
             return;
 
         isMoving = true;
@@ -4174,6 +4193,9 @@ public class Movement : Singleton<Movement>
         else
             yield return NormalMovement(endPos, moveState, movementSpeed);
 
+        if (movementTransactionSerial != thisMoveSerial)
+            yield break;
+
         bool finishedMoveWasSwiftSwim = isSwiftSwim;
 
         isMoving = false;
@@ -4205,6 +4227,13 @@ public class Movement : Singleton<Movement>
         // Make the completed landing current before cost and root state are
         // committed, even if Unity has not rendered another Update frame.
         UpdateBlockStandingOn();
+
+        if (thisMoveWasGrappling)
+        {
+            // A changed landing surface can be a tile already charged in transit.
+            prepaidGrappleLandingBlock = grappleTraversedBlocks.Contains(blockStandingOn) ? blockStandingOn : null;
+            grappleTraversedBlocks.Clear();
+        }
 
         bool swam = !wasCeilingClimbing && PlayerHasSwimAbility() &&
                     (IsWater(blockStandingOn) || wasSwiftSwimSegment);
@@ -4299,6 +4328,13 @@ public class Movement : Singleton<Movement>
 
         movementStates = moveState;
 
+        if (performGrapplingHooking)
+        {
+            grappleLandingBlock = grappleHeightOffsetLandingBlock;
+            if (grappleLandingBlock == null)
+                TryGetBlockUnder(fixedEndPos, Vector3.down, StandingBlockProbeDistance, out grappleLandingBlock, out _);
+        }
+
         float elapsed = 0f;
         float duration = MovementDuration(startPos, fixedEndPos, movementSpeed);
 
@@ -4311,7 +4347,24 @@ public class Movement : Singleton<Movement>
                 ? GetMoveTargetPosForBlock(dynamicTargetBlock)
                 : fixedEndPos;
 
-            transform.position = Vector3.Lerp(startPos, currentEndPos, t);
+            Vector3 nextPosition = Vector3.Lerp(startPos, currentEndPos, t);
+            if (performGrapplingHooking)
+            {
+                // Sample the real route in order, even if a long frame crosses
+                // several tiles. Leave the final point to the normal step event.
+                Vector3 frameStart = transform.position;
+                int segments = Mathf.Max(1, Mathf.CeilToInt(Vector3.Distance(frameStart, nextPosition) / 0.5f));
+                int lastSample = t < 1f ? segments : segments - 1;
+                for (int i = 1; i <= lastSample; i++)
+                {
+                    transform.position = Vector3.Lerp(frameStart, nextPosition, i / (float)segments);
+                    UpdateBlockStandingOn();
+                    if (isRespawning || !TrySpendGrappleTravelSteps())
+                        yield break;
+                }
+            }
+
+            transform.position = nextPosition;
 
             yield return null;
         }
@@ -4355,6 +4408,7 @@ public class Movement : Singleton<Movement>
 
         movementStates = MovementStates.Still;
         performGrapplingHooking = false;
+        grappleLandingBlock = null;
 
         isAscending = false;
         isDescending = false;
@@ -4509,7 +4563,7 @@ public class Movement : Singleton<Movement>
         }
     }
 
-    void PlayerIsFalling()
+    void PlayerIsFalling(float fallDistance, bool reachesLanding)
     {
         if (IsFallingWithCarrierBlockActive())
         {
@@ -4524,13 +4578,12 @@ public class Movement : Singleton<Movement>
                     ClearFallingCarrierBlock();
                     blockStandingOn = landingBlock;
 
-                    transform.position = new Vector3(
+                    Vector3 landingPosition = new Vector3(
                         transform.position.x,
                         landedY,
                         transform.position.z);
 
-                    EndFalling();
-                    UpdateAvailableMovementBlocks();
+                    TryAdvanceFallLanding(landingPosition, fallDistance, reachesLanding: true);
                     return;
                 }
 
@@ -4552,25 +4605,43 @@ public class Movement : Singleton<Movement>
 
         if (blockStandingOn != null)
         {
-            if (Vector3.Distance(blockStandingOn.transform.position, transform.position) < heightOverBlock + 0.1f)
-            {
-                transform.position = blockStandingOn.transform.position + (Vector3.up * heightOverBlock);
-                EndFalling();
-                UpdateAvailableMovementBlocks();
-            }
-            else
-            {
-                transform.SetPositionAndRotation(
-                    new Vector3(transform.position.x, transform.position.y - (fallSpeed * Time.deltaTime), transform.position.z),
-                    transform.rotation);
-            }
+            Vector3 landingPosition = blockStandingOn.transform.position + Vector3.up * heightOverBlock;
+            if (TryAdvanceFallLanding(landingPosition, fallDistance, reachesLanding))
+                return;
         }
-        else
+
+        transform.position += Vector3.down * fallDistance;
+    }
+
+    private bool TryAdvanceFallLanding(Vector3 landingPosition, float fallDistance, bool reachesLanding)
+    {
+        Player_BodyHeight bodyHeight = Player_BodyHeight.Instance;
+        float targetHeight = bodyHeight.GetHeightOnBlock(blockStandingOn, this);
+        float bodyHeightChange = bodyHeight.GetLocalYForHeight(targetHeight) - PM.playerBody.transform.localPosition.y;
+        bool changesBodyHeight = !Mathf.Approximately(bodyHeightChange, 0f);
+
+        if (!changesBodyHeight && !reachesLanding &&
+            Vector3.Distance(blockStandingOn.transform.position, transform.position) >= heightOverBlock + 0.1f)
+            return false;
+
+        // Advance the root and the body offset together so the visible body
+        // travels the same distance it would during the rest of the fall.
+        float remainingDrop = transform.position.y - landingPosition.y - bodyHeightChange;
+        if (changesBodyHeight && remainingDrop > fallDistance)
         {
-            transform.SetPositionAndRotation(
-                new Vector3(transform.position.x, transform.position.y - (fallSpeed * Time.deltaTime), transform.position.z),
-                transform.rotation);
+            float progress = fallDistance / remainingDrop;
+            Vector3 position = transform.position;
+            position.y = Mathf.Lerp(position.y, landingPosition.y, progress);
+            transform.position = position;
+            bodyHeight.ApplyPlayerBodyHeight(targetHeight, progress);
+            return true;
         }
+
+        transform.position = landingPosition;
+        bodyHeight.ApplyPlayerBodyHeight(targetHeight);
+        EndFalling();
+        UpdateAvailableMovementBlocks();
+        return true;
     }
 
     void EndFalling()
@@ -4589,6 +4660,66 @@ public class Movement : Singleton<Movement>
     {
         yield return new WaitForSeconds(0.02f);
         UpdateAvailableMovementBlocks();
+    }
+
+    #endregion
+
+    #region Teleporting
+
+    internal void TryStartTeleport(BlockInfo destination, Vector3 entryPosition, Action playEffects, Action onEnded)
+    {
+        if (IsTeleporting || !destination || !destination.gameObject.activeInHierarchy || !Map || Map.GameplayInputLocked ||
+            isMoving || isRespawning || isDrowning || IsClimbingLadder || zeroStepRespawnStarted ||
+            movementStates != MovementStates.Still)
+            return;
+
+        IsTeleporting = true;
+        teleportMovementDir = GetMovingDirection(entryPosition - previousPosition);
+        StopFollowingElevator();
+        StopFollowingCubeBlock();
+        SetMovementState(MovementStates.Moving);
+        teleportRoutine = StartCoroutine(TeleportTo(destination, playEffects, onEnded));
+    }
+
+    private IEnumerator TeleportTo(BlockInfo destination, Action playEffects, Action onEnded)
+    {
+        playEffects();
+        Anims.Trigger_TeleportAnimation();
+        yield return new WaitForSeconds(Anims.effectChargeTime_Pickup_Teleport);
+
+        if (!destination || !destination.gameObject.activeInHierarchy)
+        {
+            SetMovementState(MovementStates.Still);
+            IsTeleporting = false;
+            teleportRoutine = null;
+            onEnded();
+            yield break;
+        }
+
+        // Commit this landing through the normal step event with a fresh cost
+        // snapshot. The entry step has already been settled.
+        GameObject target = destination.gameObject;
+        currentMoveStartBlock = null;
+        currentMoveTargetBlock = null;
+        activeMoveFreeSlopeLanding = false;
+        ClearSlopeFreeLandingState();
+        CacheStepCostForMove(target);
+
+        transform.position = destination.transform.position + Vector3.up * heightOverBlock;
+        yield return new WaitForSeconds(0.155f);
+
+        UpdateBlockStandingOn();
+        if (blockStandingOn != target)
+            ClearPendingStepCost();
+
+        SetMovementState(MovementStates.Still);
+        Action_StepTaken_Invoke();
+        onEnded();
+
+        IsTeleporting = false;
+        teleportRoutine = null;
+        if (!isRespawning && !PM.pauseGame && !PM.pauseMovement && movementStates == MovementStates.Still)
+            IceGlideMovement(true);
     }
 
     #endregion
@@ -4668,7 +4799,7 @@ public class Movement : Singleton<Movement>
         }
 
         lastIceGlideDirection = movementDir;
-        PerformMovement(moveOption, MovementStates.Moving, standingInfo.movementSpeed);
+        PerformMovement(moveOption, MovementStates.Moving, standingInfo.GetMovementSpeed());
         previousPosition = transform.position;
     }
 
@@ -4825,36 +4956,17 @@ public class Movement : Singleton<Movement>
         Vector3 endPosition = targetPosObj.transform.position + (Vector3.up * heightOverBlock);
 
         float ladderClimbDuration = Vector3.Distance(startPosition, endPosition) * 0.4f;
-        float elapsedTime = 0f;
+        yield return MoveAlongLadder(endPosition, ladderClimbDuration);
 
-        while (elapsedTime < ladderClimbDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            float progress = elapsedTime / ladderClimbDuration;
-            transform.position = Vector3.Lerp(startPosition, endPosition, progress);
-            yield return null;
-        }
-
-        transform.position = endPosition;
-
-        if (PerformMovementRaycast(transform.position + dir, Vector3.down, 1, out GameObject outObj1) == RaycastHitObjects.BlockInfo)
-            endPosition = outObj1.transform.position + (Vector3.up * heightOverBlock);
+        if (PerformMovementRaycast(transform.position + dir, Vector3.down, 1, out GameObject landingBlock) == RaycastHitObjects.BlockInfo)
+            endPosition = landingBlock.transform.position + (Vector3.up * heightOverBlock);
         else
-            endPosition = startPosition + dir;
-
-        startPosition = transform.position;
-        ladderClimbDuration = 0.4f;
-        elapsedTime = 0f;
-
-        while (elapsedTime < ladderClimbDuration)
         {
-            elapsedTime += Time.deltaTime;
-            float progress = elapsedTime / ladderClimbDuration;
-            transform.position = Vector3.Lerp(startPosition, endPosition, progress);
-            yield return null;
+            endPosition = startPosition + dir;
+            TryGetBlockUnder(endPosition, Vector3.down, StandingBlockProbeDistance, out landingBlock, out _);
         }
 
-        transform.position = endPosition;
+        yield return MoveAlongLadder(endPosition, 0.4f, landingBlock);
 
         ResetLadderTargets();
         UpdateAvailableMovementBlocks();
@@ -4910,60 +5022,11 @@ public class Movement : Singleton<Movement>
             PM.playerBody.transform.localPosition,
             Quaternion.Euler(0, targetY, 0));
 
-        Vector3 startPosition =
-            transform.position;
+        yield return MoveAlongLadder(transform.position + dir, 0.4f);
 
-        Vector3 endPosition =
-            startPosition + dir;
-
-        float ladderClimbDuration = 0.4f;
-        float elapsedTime = 0f;
-
-        while (elapsedTime < ladderClimbDuration)
-        {
-            elapsedTime += Time.deltaTime;
-
-            float progress =
-                elapsedTime / ladderClimbDuration;
-
-            transform.position =
-                Vector3.Lerp(
-                    startPosition,
-                    endPosition,
-                    progress);
-
-            yield return null;
-        }
-
-        transform.position = endPosition;
-
-        startPosition = transform.position;
-        endPosition = targetPosObj.transform.position;
-
-        ladderClimbDuration =
-            Vector3.Distance(
-                startPosition,
-                endPosition) * 0.4f;
-
-        elapsedTime = 0f;
-
-        while (elapsedTime < ladderClimbDuration)
-        {
-            elapsedTime += Time.deltaTime;
-
-            float progress =
-                elapsedTime / ladderClimbDuration;
-
-            transform.position =
-                Vector3.Lerp(
-                    startPosition,
-                    endPosition,
-                    progress);
-
-            yield return null;
-        }
-
-        transform.position = endPosition;
+        Vector3 endPosition = targetPosObj.transform.position;
+        float ladderClimbDuration = Vector3.Distance(transform.position, endPosition) * 0.4f;
+        yield return MoveAlongLadder(endPosition, ladderClimbDuration, exitBlockDown, blendAtEnd: true);
 
         ResetLadderTargets();
 
@@ -4998,6 +5061,33 @@ public class Movement : Singleton<Movement>
 
         FindLadderExitBlock();
         CompleteLadderStep(-targetPosObj.transform.forward);
+    }
+
+    private IEnumerator MoveAlongLadder(Vector3 endPosition, float duration,
+        GameObject landingBlock = null, bool blendAtEnd = false)
+    {
+        Vector3 startPosition = transform.position;
+        Player_BodyHeight bodyHeight = Player_BodyHeight.Instance;
+        float startHeight = PM.playerBody.transform.localPosition.y * bodyHeight.GetLocalYForHeight(1f);
+        float blendDuration = Mathf.Min(duration, 0.4f);
+        float blendStart = blendAtEnd ? duration - blendDuration : 0f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            transform.position = Vector3.Lerp(startPosition, endPosition, elapsed / duration);
+            if (elapsed >= blendStart)
+            {
+                float heightProgress = (elapsed - blendStart) / blendDuration;
+                float targetHeight = bodyHeight.GetHeightOnBlock(landingBlock, this);
+                bodyHeight.ApplyPlayerBodyHeight(Mathf.Lerp(startHeight, targetHeight, heightProgress));
+            }
+            yield return null;
+        }
+
+        transform.position = endPosition;
+        bodyHeight.ApplyPlayerBodyHeight(bodyHeight.GetHeightOnBlock(landingBlock, this));
     }
 
     private void CompleteLadderStep(Vector3 exitDirection)
@@ -5267,6 +5357,9 @@ public class Movement : Singleton<Movement>
     // invoked once for each completed Action_StepTaken event.
     public void TakeAStep()
     {
+        GameObject prepaidLanding = prepaidGrappleLandingBlock;
+        prepaidGrappleLandingBlock = null;
+
         // Prefer the committed destination over a transient physics raycast.
         // During ladders and position-only moves there is no target snapshot,
         // so the normal standing-block detection remains the fallback.
@@ -5307,7 +5400,8 @@ public class Movement : Singleton<Movement>
                     standingInfo.transform.position - currentMoveStartBlock.transform.position,
                     GetSlopeDownhillDirection(currentMoveStartBlock)) > 0.5f;
 
-            bool useFreeLanding = pendingFreeLandingFromSlope || freeLandingForThisMove || downhillSlopeToQuicksand;
+            bool useFreeLanding = pendingFreeLandingFromSlope || freeLandingForThisMove || downhillSlopeToQuicksand ||
+                standingInfo.gameObject == prepaidLanding;
             pendingFreeLandingFromSlope = false;
             slopeLandingIsFree = false;
 
@@ -5516,15 +5610,12 @@ public class Movement : Singleton<Movement>
 
     IEnumerator StartDrowning()
     {
+        Action_isDrowning?.Invoke();
+
         isDrowning = true;
         PlayerManager.Instance.PauseMovement();
 
-        if (Inputs.grapplingHook_isPressed ||
-            (Player_GraplingHook.Instance != null && Player_GraplingHook.Instance.isGrapplingHooking))
-        {
-            Inputs.grapplingHook_isPressed = false;
-            ResetGrapplingHookMovementState();
-        }
+        ResetGrapplingHookMovementState();
 
         yield return new WaitForSeconds(0.15f);
 
@@ -5625,7 +5716,8 @@ public class Movement : Singleton<Movement>
     {
         // Guard SYNCHRONOUSLY, before starting a coroutine. Multiple input,
         // SFX, drowning or step callbacks can request respawn in one frame.
-        if (isRespawning)
+        var map = Map;
+        if (isRespawning || !map)
             return;
 
         isRespawning = true;
@@ -5640,7 +5732,7 @@ public class Movement : Singleton<Movement>
         // Capture the last checkpoint at the instant respawn was requested.
         // MapManager owns checkpoint updates; Movement must not replace this
         // with its previousPosition or the most recently stood-on tile.
-        Vector3 checkpointPosition = Map.playerStartPos;
+        Vector3 checkpointPosition = map.playerStartPos;
         Quaternion checkpointRotation = GetRespawnPlayerDirection(0, 180, 0);
 
         // Cancel any movement, falling/ability and delayed zero-step coroutines
@@ -5648,7 +5740,11 @@ public class Movement : Singleton<Movement>
         // recent position AFTER Resetplayer has placed us at the checkpoint.
         ++movementTransactionSerial;
         StopAllCoroutines();
+        teleportRoutine = null;
+        IsTeleporting = false;
         isMoving = false;
+        isMovingOnLadder_Up = false;
+        isMovingOnLadder_Down = false;
         activeMoveFreeSlopeLanding = false;
         currentMoveStartBlock = null;
         currentMoveTargetBlock = null;
@@ -5687,8 +5783,6 @@ public class Movement : Singleton<Movement>
         Inputs.right_isPressed = false;
         Inputs.up_isPressed = false;
         Inputs.down_isPressed = false;
-        Inputs.grapplingHook_isPressed = false;
-
         pendingFreeLandingFromSlope = false;
         ClearPendingStepCost();
         ClearAllSwiftSwimPreviewCosts();
@@ -5733,7 +5827,9 @@ public class Movement : Singleton<Movement>
 
         CeilingGrab.ResetCeilingGrab();
 
-        SFX_Respawn.Instance.PlayRespawnSound();
+        // The first reset places the player at the starting checkpoint during scene load.
+        if (isRespawningFirstTime)
+            SFX_Respawn.Instance.PlayRespawnSound();
 
         yield return new WaitForSeconds(waitTime);
 
@@ -5907,11 +6003,6 @@ public class Movement : Singleton<Movement>
     public void Action_isGrapplingHooking_Invoke()
     {
         Action_isGrapplingHooking?.Invoke();
-    }
-
-    public void Action_isGrapplingHooking_Finished_Invoke()
-    {
-        Action_isGrapplingHooking_Finished?.Invoke();
     }
 
     public void Action_PickupAnimation_Complete_Invoke()

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,71 +22,52 @@ public class RegionLocked : MonoBehaviour
     {
         menuLevelInfo = FindObjectOfType<MenuLevelInfo>();
     }
-    private void Update()
+    private void OnEnable()
     {
-        CanPlayDisplay();
+        MenuLevelInfo.menuLevelInfo_hasLoaded += RefreshLock;
+        NewGameButton.Action_PressNewGameButton += RefreshLock;
+        RefreshLock();
+    }
+
+    private void OnDisable()
+    {
+        MenuLevelInfo.menuLevelInfo_hasLoaded -= RefreshLock;
+        NewGameButton.Action_PressNewGameButton -= RefreshLock;
     }
 
 
     //--------------------
 
 
-    void CanPlayDisplay()
+    void RefreshLock()
     {
-        bool isLocked = !CheckIfCanBePlayed();
-        if (padlock.activeSelf != isLocked)
-            padlock.SetActive(isLocked);
-        regionIsLocked = isLocked;
+        regionIsLocked = !CheckIfCanBePlayed();
+        if (padlock && padlock.activeSelf != regionIsLocked)
+            padlock.SetActive(regionIsLocked);
     }
 
     public bool CheckIfCanBePlayed()
     {
-        //print("1. Error: " + levelToPlay);
-        if (PlayerStats.Instance.stats != null)
+        var savedMaps = menuLevelInfo ? menuLevelInfo.mapInfo_ToSave?.map_SaveInfo_List : null;
+        if (savedMaps == null || levelsToBeFinished == null || PlayerStats.Instance.stats?.itemsGot == null)
+            return false;
+
+        int completed = 0;
+        foreach (GameObject level in levelsToBeFinished)
         {
-            //print("2. Error: " + levelToPlay);
-            if (PlayerStats.Instance.stats != null)
+            if (!level || !level.TryGetComponent(out LoadLevel requiredLevel))
+                continue;
+
+            foreach (Map_SaveInfo mapInfo in savedMaps)
             {
-                //print("3. Error: " + levelToPlay);
-                if (PlayerStats.Instance.stats.itemsGot != null)
-                {
-                    //print("4. Error: " + levelToPlay);
-                    int counter = 0;
+                if (mapInfo == null || !mapInfo.isCompleted || mapInfo.mapName != requiredLevel.levelToPlay)
+                    continue;
 
-                    if (menuLevelInfo && menuLevelInfo.mapInfo_ToSave != null)
-                    {
-                        //print("5. Error: " + levelToPlay);
-                        if (menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List != null)
-                        {
-                            if (levelsToBeFinished.Count == 0)
-                                return true;
-
-                            foreach (Map_SaveInfo mapInfo in menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List)
-                            {
-                                if (!mapInfo.isCompleted)
-                                    continue;
-
-                                for (int i = 0; i < levelsToBeFinished.Count; i++)
-                                {
-                                    LoadLevel requiredLevel = levelsToBeFinished[i].GetComponent<LoadLevel>();
-                                    if (mapInfo.mapName == requiredLevel.levelToPlay)
-                                    {
-                                        requiredLevel.isCompleted = true;
-                                        counter++;
-                                    }
-                                }
-                            }
-
-                            if (counter >= levelsToBeFinished.Count)
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                }
+                requiredLevel.isCompleted = true;
+                completed++;
             }
         }
 
-        return false;
+        return completed >= levelsToBeFinished.Count;
     }
 }

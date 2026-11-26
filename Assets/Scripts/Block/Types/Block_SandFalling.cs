@@ -15,6 +15,7 @@ public class Block_SandFalling : MonoBehaviour
 
     // Separates the warning stage from a block that is already falling.
     bool hasStartedFalling;
+    bool fellOutOfLevel;
 
     // While part of a carried pillar, its own warning and falling logic pause.
     private bool carriedByMoveablePillar;
@@ -37,22 +38,32 @@ public class Block_SandFalling : MonoBehaviour
     [SerializeField] GameObject sandBlockAsset;
 
     RaycastHit hit;
+    private RaycastHit[] fallingHits;
 
 
     //--------------------
 
 
-    private void Start()
+    private void Awake()
     {
-        //GetLODObjects();
-
         // The warning meshes return to this rotation when a fall is cancelled.
         objectInitialRotation = transform.rotation;
 
-        CheckIfCanFall();
-
         // Get the lowest fallback position if the block never lands.
         endPos = transform.position + (Vector3.down * 15);
+
+        Movement.Action_RespawnPlayerEarly += ResetOnRespawn;
+    }
+
+    private void Start()
+    {
+        if (!resettingBlock)
+            CheckIfCanFall();
+    }
+
+    private void OnDestroy()
+    {
+        Movement.Action_RespawnPlayerEarly -= ResetOnRespawn;
     }
 
     private void Update()
@@ -129,7 +140,8 @@ public class Block_SandFalling : MonoBehaviour
         Movement.Action_StepTaken += CheckIfStandingOn;
         Player_CeilingGrab.Action_isCeilingGrabbing_Finished += CheckIfStandingOn;
         Movement.Action_LandedFromFalling += CheckIfStandingOn;
-        Movement.Action_RespawnPlayerEarly += ResetBlock;
+        if (resettingBlock)
+            StartCoroutine(ResetBlockWaiting(0.1f));
     }
 
     private void OnDisable()
@@ -137,7 +149,7 @@ public class Block_SandFalling : MonoBehaviour
         Movement.Action_StepTaken -= CheckIfStandingOn;
         Player_CeilingGrab.Action_isCeilingGrabbing_Finished -= CheckIfStandingOn;
         Movement.Action_LandedFromFalling -= CheckIfStandingOn;
-        Movement.Action_RespawnPlayerEarly -= ResetBlock;
+        StopAllCoroutines();
 
         // Also release the moveable if this block is disabled externally.
         ReleaseCarriedMoveableBlock();
@@ -169,7 +181,8 @@ public class Block_SandFalling : MonoBehaviour
 
     void CheckIfCanFall()
     {
-        if (carriedByMoveablePillar)
+        var map = MapManager.Instance;
+        if (!map || carriedByMoveablePillar)
         {
             canFall = false;
             SetFallingSandEnabled(false);
@@ -182,7 +195,7 @@ public class Block_SandFalling : MonoBehaviour
                 Vector3.up,
                 out hit,
                 1,
-                MapManager.Instance.pickup_LayerMask))
+                map.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
@@ -200,7 +213,7 @@ public class Block_SandFalling : MonoBehaviour
                     Vector3.down,
                     out hit,
                     1,
-                    MapManager.Instance.pickup_LayerMask))
+                    map.pickup_LayerMask))
             {
                 if (hit.transform.gameObject.GetComponent<BlockInfo>())
                 {
@@ -217,7 +230,7 @@ public class Block_SandFalling : MonoBehaviour
                     Vector3.down,
                     out hit,
                     1,
-                    MapManager.Instance.pickup_LayerMask))
+                    map.pickup_LayerMask))
             {
                 BlockInfo blockBelow =
                     hit.transform.gameObject.GetComponent<BlockInfo>();
@@ -495,12 +508,12 @@ public class Block_SandFalling : MonoBehaviour
 
             ReleaseCarriedMoveableBlock();
             waitingMoveableBlock = null;
-            HideBlock();
-
             hasStartedFalling = false;
             isSteppedOn = false;
             waitCounter = 0;
             transform.position = GetComponent<BlockInfo>().startPos;
+            fellOutOfLevel = true;
+            HideBlock();
         }
     }
 
@@ -519,19 +532,21 @@ public class Block_SandFalling : MonoBehaviour
         float rayDistance =
             fallingBounds.extents.y + fallDistance + skinWidth;
 
-        RaycastHit[] hits = Physics.RaycastAll(
+        int hitCount = TerrainRaycasts.Cast(
             fallingBounds.center,
             Vector3.down,
             rayDistance,
             MapManager.Instance.pickup_LayerMask,
-            QueryTriggerInteraction.Ignore);
+            QueryTriggerInteraction.Ignore,
+            ref fallingHits);
 
         RaycastHit closestHit = new RaycastHit();
         bool blockFound = false;
         float closestDistance = float.MaxValue;
 
-        foreach (RaycastHit currentHit in hits)
+        for (int i = 0; i < hitCount; i++)
         {
+            RaycastHit currentHit = fallingHits[i];
             BlockInfo hitBlock =
                 currentHit.collider.GetComponentInParent<BlockInfo>();
 
@@ -559,7 +574,7 @@ public class Block_SandFalling : MonoBehaviour
         // Place the bottom of this block directly on the top surface
         // of the block it landed on.
         float landingAdjustment =
-            closestHit.point.y - fallingCollider.bounds.min.y;
+            closestHit.point.y - fallingBounds.min.y;
 
         transform.position += Vector3.up * landingAdjustment;
 
@@ -628,9 +643,17 @@ public class Block_SandFalling : MonoBehaviour
     //--------------------
 
 
+    void ResetOnRespawn()
+    {
+        // A vanished sand block must still reset while its GameObject is inactive.
+        if (isActiveAndEnabled || fellOutOfLevel)
+            ResetBlock();
+    }
+
     public void ResetBlock()
     {
         resettingBlock = true;
+        fellOutOfLevel = false;
         carriedByMoveablePillar = false;
 
         hasStartedFalling = false;
@@ -650,9 +673,10 @@ public class Block_SandFalling : MonoBehaviour
         waitCounter = 0;
         transform.position = GetComponent<BlockInfo>().startPos;
 
-        StartCoroutine(ResetBlockWaiting(0.1f));
-
-        ShowBlock();
+        if (isActiveAndEnabled)
+            StartCoroutine(ResetBlockWaiting(0.1f));
+        else
+            ShowBlock(); // OnEnable starts the reset wait once the block is active.
     }
 
     IEnumerator ResetBlockWaiting(float waitTime)

@@ -21,16 +21,9 @@ public class Block_Mud : MonoBehaviour
 
     void SteppingOnMud()
     {
-        if (Movement.Instance.blockStandingOn)
-        {
-            if (Movement.Instance.blockStandingOn.GetComponent<Block_Mud>())
-            {
-                Player_Mud.Instance.isInMud = true;
-            }
-            else
-            {
-                Player_Mud.Instance.isInMud = false;
-            }
-        }
+        Player_Mud playerMud = Player_Mud.ExistingInstance;
+        Movement movement = Movement.ExistingInstance;
+        if (playerMud && movement && movement.blockStandingOn)
+            playerMud.isInMud = movement.blockStandingOn.TryGetComponent<Block_Mud>(out _);
     }
 }

@@ -102,100 +102,92 @@ public class GlueplantCamera : Singleton<GlueplantCamera>
     [SerializeField] private bool lockInitialFacing = false;
 
 
-    public bool camera_isTraveling;
+    public static bool IsTraveling => travelingCamera;
+    internal bool IsTravelingThisIntro => travelingCamera && travelingCamera == this;
+
+    private static GlueplantCamera travelingCamera;
     private Coroutine travelRoutine;
-
-
-    //--------------------
-
-
-    private void OnEnable()
-    {
-        MapManager.Action_SpawnedPlayerObject += OnPlayerSpawned;
-
-        //Player_AbilityButtonDisplay.Instance.HideDisplay();
-
-        if (MapManager.SpawnedPlayer != null)
-            OnPlayerSpawned(MapManager.SpawnedPlayer);
-    }
 
     private void OnDisable()
     {
-        MapManager.Action_SpawnedPlayerObject -= OnPlayerSpawned;
-    }
-
-
-    //--------------------
-
-
-    private void OnPlayerSpawned(GameObject playerGO)
-    {
-        StartCoroutine(OnPlayerSpawned_Delay(0.05f));
-    }
-    IEnumerator OnPlayerSpawned_Delay(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
-
-        if (GetComponent<Interactable_Pickup>() && (GetComponent<Interactable_Pickup>().glueplantType == GlueplantType.HUB) || GetComponent<Interactable_Pickup>().glueplantType == GlueplantType.Metalworks)
-        {
-            yield return new WaitForSeconds(MapManager.Instance.fadeDuration_In + 0.1f);
-
-            if (CM_Player == null)
-                CM_Player = CameraController.Instance.CM_Player;
-            FinishTravel();
-        }
-        else if (MapManager.Instance.haveIntroSequence && DataManager.Instance.settingData_StoreList.currentSkipIntro == SkipIntro.No)
-        {
-            CM_Player = CameraController.Instance.CM_Player;
-
-            SetPriority(CM_Glueplant, glueplantPriorityDuringTravel);
-            SetPriority(CM_Player, playerPriorityDuringTravel);
-            CM_Glueplant.Prioritize();
-
-            RunCameraTravel();
-        }
-        else
-        {
-            yield return new WaitForSeconds(MapManager.Instance.fadeDuration_In + 0.1f);
-
-            if (CM_Player == null)
-                CM_Player = CameraController.Instance.CM_Player;
-            FinishTravel();
-        }
-    }
-
-    public void RunCameraTravel()
-    {
-        if (camera_isTraveling || CM_Glueplant == null) return;
-
-        if (CM_Player == null)
-            CM_Player = CameraController.Instance.CM_Player;
-
-        if (CM_Player == null) return;
-
         if (travelRoutine != null)
             StopCoroutine(travelRoutine);
 
-        GameObject player = MapManager.SpawnedPlayer;
-        if (player != null)
-        {
-            StepsDisplay stepsDisplay = player.GetComponentInChildren<StepsDisplay>();
-            if (stepsDisplay != null)
-                stepsDisplay.HideForIntro();
-        }
-
-        travelRoutine = StartCoroutine(Co_RunCameraTravel(waitTimer));
+        FinishTravel();
     }
 
+    internal bool TryStartTravel(GameObject player)
+    {
+        if (!isActiveAndEnabled || !player || player.scene != gameObject.scene || IsTraveling ||
+            travelSpeed <= 0f || float.IsInfinity(waitTimer) ||
+            float.IsNaN(travelSpeed) || float.IsInfinity(travelSpeed) || !ResolvePlayerCamera() || !HasTravelCameras())
+            return false;
 
-    //--------------------
+        travelingCamera = this;
+        SetPriority(CM_Glueplant, glueplantPriorityDuringTravel);
+        SetPriority(CM_Player, playerPriorityDuringTravel);
+        CM_Glueplant.Prioritize();
 
+        var holeShader = FindAnyObjectByType<HoleShaderOnOffScript>();
+        if (holeShader)
+            holeShader.HoleShader_Off();
+
+        travelRoutine = StartCoroutine(TravelUntilFinished());
+        return true;
+    }
+
+    bool ResolvePlayerCamera()
+    {
+        if (!CM_Player || !CM_Player.isActiveAndEnabled)
+        {
+            var controller = FindAnyObjectByType<CameraController>();
+            CM_Player = controller && controller.gameObject.scene == gameObject.scene ? controller.CM_Player : null;
+        }
+
+        return CM_Player && CM_Player.isActiveAndEnabled;
+    }
+
+    bool HasTravelCameras() => CM_Player && CM_Player.isActiveAndEnabled &&
+        CM_Glueplant && CM_Glueplant.isActiveAndEnabled && CM_Player != CM_Glueplant;
+
+    internal void UsePlayerView()
+    {
+        if (CM_Glueplant != CM_Player)
+            SetPriority(CM_Glueplant, playerPriorityDuringTravel);
+
+        if (ResolvePlayerCamera())
+        {
+            SetPriority(CM_Player, glueplantPriorityDuringTravel);
+            CM_Player.Prioritize();
+        }
+    }
+
+    IEnumerator TravelUntilFinished()
+    {
+        IEnumerator travel = Co_RunCameraTravel(waitTimer);
+        try
+        {
+            while (HasTravelCameras() && travel.MoveNext())
+                yield return travel.Current;
+        }
+        finally
+        {
+            FinishTravel();
+        }
+    }
+
+    void FinishTravel()
+    {
+        travelRoutine = null;
+        if (!IsTravelingThisIntro)
+            return;
+
+        travelingCamera = null;
+        UsePlayerView();
+    }
 
     private IEnumerator Co_RunCameraTravel(float waitTime)
     {
-        camera_isTraveling = true;
-        HoleShaderOnOffScript.Instance.HoleShader_Off();
-
         if (waitTime > 0f)
             yield return new WaitForSeconds(waitTime);
 
@@ -230,9 +222,10 @@ public class GlueplantCamera : Singleton<GlueplantCamera>
         Vector3 endPos = CM_Player.transform.position;
         Quaternion endRot = CM_Player.transform.rotation;
 
-        List<Vector3> controlPoints = new List<Vector3>(travelPosList.Count + 2);
+        List<Vector3> controlPoints = new List<Vector3>((travelPosList?.Count ?? 0) + 2);
         controlPoints.Add(startPos);
-        controlPoints.AddRange(travelPosList);
+        if (travelPosList != null)
+            controlPoints.AddRange(travelPosList);
         controlPoints.Add(endPos);
 
         controlPoints = RemoveNearDuplicates(controlPoints, minPointSeparation);
@@ -241,7 +234,6 @@ public class GlueplantCamera : Singleton<GlueplantCamera>
         {
             CM_Glueplant.transform.SetPositionAndRotation(endPos, endRot);
             CM_Player.transform.SetPositionAndRotation(endPos, endRot);
-            FinishTravel();
             yield break;
         }
 
@@ -269,7 +261,6 @@ public class GlueplantCamera : Singleton<GlueplantCamera>
         {
             CM_Glueplant.transform.SetPositionAndRotation(endPos, endRot);
             CM_Player.transform.SetPositionAndRotation(endPos, endRot);
-            FinishTravel();
             yield break;
         }
 
@@ -410,24 +401,6 @@ public class GlueplantCamera : Singleton<GlueplantCamera>
         CM_Player.transform.SetPositionAndRotation(endPos, endRot);
 
         yield return new WaitForSeconds(0.25f);
-
-        FinishTravel();
-    }
-
-    private void FinishTravel()
-    {
-        camera_isTraveling = false;
-        travelRoutine = null;
-        HoleShaderOnOffScript.Instance.HoleShader_On();
-
-        SetPriority(CM_Player, glueplantPriorityDuringTravel);
-        SetPriority(CM_Glueplant, playerPriorityDuringTravel);
-        CM_Player.Prioritize();
-
-        MapManager.Instance.introSequence_Finished = true;
-        MapManager.Instance.introSequence = false;
-
-        MapManager.Instance.Action_EndIntroSequence_Invoke();
     }
 
     private static void SetPriority(CinemachineCamera cam, int value)

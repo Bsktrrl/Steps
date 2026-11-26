@@ -21,16 +21,9 @@ public class Block_SwampWater : MonoBehaviour
 
     void SteppingOnSwampWater()
     {
-        if (Movement.Instance.blockStandingOn)
-        {
-            if (Movement.Instance.blockStandingOn.GetComponent<Block_SwampWater>())
-            {
-                Player_SwampWater.Instance.isInSwampWater = true;
-            }
-            else
-            {
-                Player_SwampWater.Instance.isInSwampWater = false;
-            }
-        }
+        Player_SwampWater playerSwampWater = Player_SwampWater.ExistingInstance;
+        Movement movement = Movement.ExistingInstance;
+        if (playerSwampWater && movement && movement.blockStandingOn)
+            playerSwampWater.isInSwampWater = movement.blockStandingOn.TryGetComponent<Block_SwampWater>(out _);
     }
 }

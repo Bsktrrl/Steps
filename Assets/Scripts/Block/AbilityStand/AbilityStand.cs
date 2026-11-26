@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class AbilityStand : MonoBehaviour
 {
@@ -22,6 +21,7 @@ public class AbilityStand : MonoBehaviour
     //--------------------
 
 
+    /* HUB ability stand test shortcuts.
     private void Update()
     {
         if (!Input.GetKey(KeyCode.G))
@@ -92,6 +92,7 @@ public class AbilityStand : MonoBehaviour
             SetAbilityVisibility();
         }
     }
+    */
 
 
     //--------------------

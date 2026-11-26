@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class TMPro_TextDisplay : MonoBehaviour
 {
@@ -10,27 +7,27 @@ public class TMPro_TextDisplay : MonoBehaviour
 
     [SerializeField] bool textToDisplay_additional;
 
+    private bool hasStarted;
+
 
     //--------------------
 
 
     private void Start()
     {
+        hasStarted = true;
         DisplayText();
     }
 
     private void OnEnable()
     {
         SettingsManager.Action_SetNewLanguage += DisplayText;
-        SceneManager.activeSceneChanged += HandleSceneChanged;
-    }
-    private void OnDestroy()
-    {
-        SettingsManager.Action_SetNewLanguage -= DisplayText;
-        SceneManager.activeSceneChanged -= HandleSceneChanged;
+
+        if (hasStarted)
+            DisplayText();
     }
 
-    private void HandleSceneChanged(Scene oldScene, Scene newScene)
+    private void OnDisable()
     {
         SettingsManager.Action_SetNewLanguage -= DisplayText;
     }
@@ -45,14 +42,25 @@ public class TMPro_TextDisplay : MonoBehaviour
         ShowText(textToDisplay);
     }
 
+    private static bool TryGetLanguageIndex(out int languageIndex)
+    {
+        var data = DataManager.Instance;
+        var languages = data.game_TextDatabase_Store?.gameText_LanguageList;
+        languageIndex = (int)(data.settingData_StoreList?.currentLanguage ?? Languages.English);
+
+        if (languages == null || languages.Count == 0)
+            return false;
+
+        if (languageIndex < 0 || languageIndex >= languages.Count)
+            languageIndex = (int)Languages.English;
+
+        return languageIndex < languages.Count;
+    }
+
     public void ShowText(Text_Database_Enum _textToDisplay)
     {
         if (!GetComponent<TextMeshProUGUI>()) return;
-        if (DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList.Count <= 0) return;
-
-        int languageTemp = 0;
-        if (DataManager.Instance.settingData_StoreList.currentLanguage > 0)
-            languageTemp = (int)DataManager.Instance.settingData_StoreList.currentLanguage;
+        if (!TryGetLanguageIndex(out int languageTemp)) return;
 
         switch (_textToDisplay)
         {
@@ -1325,14 +1333,14 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.interractableButton_Message_Read_xBox:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Read_xBox;
                 break;
-            case Text_Database_Enum.interractableButton_Message_15_Keyboard:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_15_Keyboard;
+            case Text_Database_Enum.interractableButton_Message_exitFreecam_Keyboard:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_exitFreecam_Keyboard;
                 break;
-            case Text_Database_Enum.interractableButton_Message_15_PlayStation:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_15_PlayStation;
+            case Text_Database_Enum.interractableButton_Message_exitFreecam_PlayStation:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_exitFreecam_PlayStation;
                 break;
-            case Text_Database_Enum.interractableButton_Message_15_xBox:
-                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_15_xBox;
+            case Text_Database_Enum.interractableButton_Message_exitFreecam_xBox:
+                GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_exitFreecam_xBox;
                 break;
             case Text_Database_Enum.interractableButton_Message_16_Keyboard:
                 GetComponent<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_16_Keyboard;
@@ -1513,9 +1521,7 @@ public class TMPro_TextDisplay : MonoBehaviour
     }
     public string GetText()
     {
-        int languageTemp = 1;
-        if (DataManager.Instance.settingData_StoreList.currentLanguage > 0)
-            languageTemp = (int)DataManager.Instance.settingData_StoreList.currentLanguage;
+        if (!TryGetLanguageIndex(out int languageTemp)) return "";
 
         switch (textToDisplay)
         {
@@ -2445,14 +2451,14 @@ public class TMPro_TextDisplay : MonoBehaviour
             case Text_Database_Enum.interractableButton_Message_Read_xBox:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_Read_xBox;
 
-            case Text_Database_Enum.interractableButton_Message_15_Keyboard:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_15_Keyboard;
+            case Text_Database_Enum.interractableButton_Message_exitFreecam_Keyboard:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_exitFreecam_Keyboard;
 
-            case Text_Database_Enum.interractableButton_Message_15_PlayStation:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_15_PlayStation;
+            case Text_Database_Enum.interractableButton_Message_exitFreecam_PlayStation:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_exitFreecam_PlayStation;
 
-            case Text_Database_Enum.interractableButton_Message_15_xBox:
-                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_15_xBox;
+            case Text_Database_Enum.interractableButton_Message_exitFreecam_xBox:
+                return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_exitFreecam_xBox;
 
             case Text_Database_Enum.interractableButton_Message_16_Keyboard:
                 return DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[languageTemp].interractableButton_Message_16_Keyboard;

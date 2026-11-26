@@ -26,9 +26,15 @@ public class FallingSandScript : MonoBehaviour
     //--------------------
 
 
-    void Start()
+    void Awake()
     {
         anim = GetComponent<Animator>();
+    }
+
+    void OnEnable()
+    {
+        if (!anim)
+            return;
 
         isShaking = true;
 
@@ -38,7 +44,8 @@ public class FallingSandScript : MonoBehaviour
     private void OnDisable()
     {
         isShaking = false;
-        anim.SetBool("Shaking", false);
+        if (anim)
+            anim.SetBool("Shaking", false);
 
         StopAllCoroutines();
     }

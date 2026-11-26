@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class HintManager : MonoBehaviour
 {
+    [Tooltip("On a completed level replay, the last entry is used as the goal hint.")]
     public List<HintSetup> HintSetups_List = new List<HintSetup>();
 
     [Min(0f)] public float hintDuration = 4f;
@@ -19,12 +20,13 @@ public class HintManager : MonoBehaviour
     float currentOpacity;
     bool fadeOutRequested;
     bool restartRequested;
+    bool goalReached;
 
     public bool CheckIfHint() => FindHintEffect(FindMatchingSetup()) != null;
 
     public void PerformHint()
     {
-        if (!isActiveAndEnabled) return;
+        if (!isActiveAndEnabled || goalReached) return;
 
         print("4. OnHintButton");
 
@@ -64,13 +66,16 @@ public class HintManager : MonoBehaviour
 
     HintSetup FindMatchingSetup()
     {
-        if (!TryGetComponent<MapManager>(out _) || HintSetups_List == null)
+        if (HintSetups_List == null || HintSetups_List.Count == 0 || !TryGetComponent(out MapManager map))
             return null;
 
         var player = MapManager.SpawnedPlayer;
         if (!player || player.scene != gameObject.scene || !player.TryGetComponent(out PlayerStats playerStats) ||
             playerStats.stats == null)
             return null;
+
+        if (map.mapInfo_ToSave?.isCompleted == true)
+            return HintSetups_List[HintSetups_List.Count - 1];
 
         Stats stats = playerStats.stats;
         var ownedAbilities = new HashSet<Abilities>();
@@ -170,12 +175,14 @@ public class HintManager : MonoBehaviour
     {
         Interactable_Pickup.Action_AbilityPickupGot += OnProgressPickup;
         Interactable_Pickup.Action_FootprintPickupGot += OnProgressPickup;
+        Interactable_Pickup.Action_goalReached_Early += OnGoalReached;
     }
 
     void OnDisable()
     {
         Interactable_Pickup.Action_AbilityPickupGot -= OnProgressPickup;
         Interactable_Pickup.Action_FootprintPickupGot -= OnProgressPickup;
+        Interactable_Pickup.Action_goalReached_Early -= OnGoalReached;
         StopHint();
     }
 
@@ -183,6 +190,13 @@ public class HintManager : MonoBehaviour
     {
         if (activeEffect && !fadeOutRequested && FindMatchingSetup() != activeSetup)
             fadeOutRequested = true;
+    }
+
+    void OnGoalReached()
+    {
+        goalReached = true;
+        restartRequested = false;
+        fadeOutRequested = true;
     }
 
     void StopHint()

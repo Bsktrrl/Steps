@@ -19,7 +19,7 @@ public class RememberCurrentlySelectedUIElement : Singleton<RememberCurrentlySel
 
     private void Update()
     {
-        if (!eventSystem) { return; }
+        if (!eventSystem || DataPersistanceManager.GameplayInputBlocked) { return; }
 
         // Forget buttons that belonged to a menu which is now closed.
         if (!IsSelectionAvailable(currentSelectedUIElement))

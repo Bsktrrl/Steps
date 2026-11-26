@@ -18,37 +18,42 @@ public class LevelInfo : MonoBehaviour
 
     private void Start()
     {
-        SaveLevelInfoData();
+        if (DataManager.Instance.dataHasLoaded_Check)
+            SaveLevelInfoData();
     }
 
+    private void OnEnable() => DataManager.Action_dataHasLoaded += SaveLevelInfoData;
+    private void OnDisable() => DataManager.Action_dataHasLoaded -= SaveLevelInfoData;
 
     //--------------------
 
 
     void SaveLevelInfoData()
     {
-        for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count; i++)
+        string sceneName = GetComponent<LoadLevel>().levelToPlay;
+        foreach (Map_SaveInfo map in DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List)
         {
-            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName == GetComponent<LoadLevel>().levelToPlay)
-            {
-                DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapNameDisplay.mapNameDisplay_norwegian = norwegian_MapNameDisplay;
-                DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapNameDisplay.mapNameDisplay_english = english_MapNameDisplay;
-                DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapNameDisplay.mapNameDisplay_german = german_MapNameDisplay;
-                //DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapNameDisplay.mapNameDisplay_chinese = chinese_MapNameDisplay;
-                //DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapNameDisplay.mapNameDisplay_japanese = japanese_MapNameDisplay;
-                //DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapNameDisplay.mapNameDisplay_korean = korean_MapNameDisplay;
+            if (map?.mapName != sceneName)
+                continue;
 
-                break;
-            }
+            MapNameDisplay display = map.mapNameDisplay ??= new MapNameDisplay();
+            if (display.mapNameDisplay_norwegian == norwegian_MapNameDisplay &&
+                display.mapNameDisplay_english == english_MapNameDisplay &&
+                display.mapNameDisplay_german == german_MapNameDisplay)
+                return;
+
+            display.mapNameDisplay_norwegian = norwegian_MapNameDisplay;
+            display.mapNameDisplay_english = english_MapNameDisplay;
+            display.mapNameDisplay_german = german_MapNameDisplay;
+            DataPersistanceManager.instance.SaveGame();
+            return;
         }
-
-        DataPersistanceManager.instance.SaveGame();
     }
 
-    public void SaveNameDisplay()
+    internal void StoreNameDisplay()
     {
-        print("1. SaveNameDisplay");
         MapNameDisplay mapNameDisplay = new MapNameDisplay();
+        mapNameDisplay.sceneName = GetComponent<LoadLevel>().levelToPlay;
 
         mapNameDisplay.mapNameDisplay_norwegian = norwegian_MapNameDisplay;
         mapNameDisplay.mapNameDisplay_english = english_MapNameDisplay;
@@ -58,8 +63,6 @@ public class LevelInfo : MonoBehaviour
         //mapNameDisplay.mapNameDisplay_korean = korean_MapNameDisplay;
         
         DataManager.Instance.mapNameDisplay_Store = mapNameDisplay;
-
-        DataPersistanceManager.instance.SaveGame();
     }
 
 

@@ -86,6 +86,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
         TypewriterEffect.Action_Typewriting_Finished += ShowArrow;
 
         PlayerSpawnScript.Action_PlayerHasSpawned += SetupTutorial_Movement;
+        MapManager.Action_EndIntroSequence += TryStartMovementTutorial;
         //Movement.Action_RespawnPlayerLate += SetupTutorial_Respawn;
         DataManager.Action_dataHasLoaded += UnPauseGame;
     }
@@ -99,6 +100,7 @@ public class HUBTutorial : Singleton<HUBTutorial>
         TypewriterEffect.Action_Typewriting_Finished -= ShowArrow;
 
         PlayerSpawnScript.Action_PlayerHasSpawned -= SetupTutorial_Movement;
+        MapManager.Action_EndIntroSequence -= TryStartMovementTutorial;
         //Movement.Action_RespawnPlayerLate -= SetupTutorial_Respawn;
         DataManager.Action_dataHasLoaded -= UnPauseGame;
     }
@@ -313,6 +315,10 @@ public class HUBTutorial : Singleton<HUBTutorial>
     {
         if (!playerSpawned || !tutorialSaveStatesReady || !tutorialDatabaseBuilt ||
             tutorialStartupQueued || tutorialSequenceActive)
+            return;
+
+        MapManager map = FindAnyObjectByType<MapManager>();
+        if (map && map.gameObject.scene == gameObject.scene && map.IntroInputLocked)
             return;
 
         var states = DataManager.Instance.oneTimeRunData_Store.tutorialSegmenets;

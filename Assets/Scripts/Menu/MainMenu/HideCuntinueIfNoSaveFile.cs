@@ -64,9 +64,6 @@ public class HideCuntinueIfNoSaveFile : Singleton<HideCuntinueIfNoSaveFile>
     }
     void ShowContinueButton()
     {
-        DataManager.Instance.haveStartedNewGame_Store = true;
-        DataPersistanceManager.instance.SaveGame();
-
         StartCoroutine(ShowContinueButton_Delay(0.2f));
     }
     IEnumerator ShowContinueButton_Delay(float waitTime)

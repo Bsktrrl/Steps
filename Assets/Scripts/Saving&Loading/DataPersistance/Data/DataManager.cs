@@ -58,6 +58,8 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
 
     //Text Database
     /*[HideInInspector]*/public Game_TextDatabase game_TextDatabase_Store = new Game_TextDatabase();
+    [SerializeField] TextAsset localizationSource;
+    bool localizationFromAsset;
 
     //PlayerStatsData
     /*[HideInInspector]*/ public PlayerStatsData playerStatsData_Store = new PlayerStatsData();
@@ -84,6 +86,14 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
     public void LoadData(GameData gameData)
     {
         GetSavedDataFromFile(gameData);
+        var textData = FindAnyObjectByType<TextData>();
+        bool hasSceneText = textData && textData.gameObject.scene == gameObject.scene && textData.HasSource;
+        localizationFromAsset = hasSceneText || localizationSource;
+        if (hasSceneText)
+            textData.ReadExcelSheet();
+        else if (localizationSource)
+            game_TextDatabase_Store = TextData.ReadDatabase(localizationSource);
+
         Player_Statistics_Manager.Active?.BeginTracking(this);
         LoadDataIntoProject(gameData);
 
@@ -115,15 +125,24 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         this.mapNameDisplay_Store = gameData.mapNameDisplay_Save;
         this.charatersData_Store = gameData.charatersData_Save;
         this.skinsInfo_Store = gameData.skinsInfo_Save;
-        // TextData can already have loaded the current spreadsheet in the main menu.
+        // Older saves can still provide text in a scene without a packaged source.
         if ((game_TextDatabase_Store?.gameText_LanguageList?.Count ?? 0) == 0)
-            this.game_TextDatabase_Store = gameData.game_TextDatabase_Save;
+            this.game_TextDatabase_Store = gameData.game_TextDatabase_Save ?? new Game_TextDatabase();
 
-        this.playerStatsData_Store = gameData.PlayerStatsData_Save;
+        this.playerStatsData_Store = gameData.PlayerStatsData_Save ?? new PlayerStatsData();
 
         this.oneTimeRunData_Store = gameData.oneTimeRunData_Save;
 
-        this.glueplantStandStats_Store = gameData.glueplantStandStats_Save;
+        this.glueplantStandStats_Store = gameData.glueplantStandStats_Save ?? new GlueplantStandStats();
+        // Earlier saves can have all four stands filled without the level completion flag.
+        if (mapInfo_StoreList?.map_SaveInfo_List != null)
+        {
+            foreach (Map_SaveInfo savedMap in mapInfo_StoreList.map_SaveInfo_List)
+            {
+                if (savedMap != null && glueplantStandStats_Store.GetForLevel(savedMap.mapName)?.CountTaken == StandStats.StandsPerLevel)
+                    savedMap.isCompleted = true;
+            }
+        }
         this.switchesData_Store = gameData.switchesData_Save;
 
         this.permanentAbilitiesReceived_Store = gameData.permanentAbilitiesReceived_Save;
@@ -146,6 +165,11 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
             SaveLoad_PlayerStats.Instance.LoadData();
             print("2. PlayerStat has Loaded");
         }
+
+        // Restore the level's abilities before the startup notifications read player stats.
+        MapManager map = MapManager.Instance;
+        if (map && map.gameObject.scene == SceneManager.GetActiveScene())
+            map.SetAbilities();
 
         OverWorldManager tempOverworld = FindAnyObjectByType<OverWorldManager>();
         if (tempOverworld)
@@ -188,7 +212,7 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         gameData.charatersData_Save = this.charatersData_Store;
         gameData.settingData_SaveList = this.settingData_StoreList;
         gameData.skinsInfo_Save = this.skinsInfo_Store;
-        gameData.game_TextDatabase_Save = this.game_TextDatabase_Store;
+        gameData.game_TextDatabase_Save = localizationFromAsset ? null : game_TextDatabase_Store;
 
         gameData.PlayerStatsData_Save = this.playerStatsData_Store;
 
@@ -204,36 +228,41 @@ public class DataManager : Singleton<DataManager>, IDataPersistance
         gameData.playerStatistics_Save = this.playerStatistics_Store;
     }
 
-    public void Load_NewGame_Data(GameData oldData, GameData newData)
+    internal GameData CreateNewGameData(bool hasStartedNewGame)
     {
-        //Files to delete upon newGame
-        this.menuState_Store = newData.menuState_Save;
-        this.playerStats_Store = newData.playerStats_Save;
-        this.mapInfo_StoreList = newData.mapInfo_SaveList;
-        this.overWorldStates_StoreList = newData.overWorldStates_SaveList;
-        this.settingData_StoreList = newData.settingData_SaveList;
-        this.mapNameDisplay_Store = newData.mapNameDisplay_Save;
-        this.charatersData_Store = newData.charatersData_Save;
-        this.skinsInfo_Store = newData.skinsInfo_Save;
+        var newData = new GameData
+        {
+            haveStartedNewGame_Save = hasStartedNewGame,
+            game_TextDatabase_Save = localizationFromAsset ? null : game_TextDatabase_Store
+        };
 
-        this.oneTimeRunData_Store = gameData.oneTimeRunData_Save;
+        if (hasStartedNewGame)
+        {
+            // Copy settings before resetting the intro so a failed write leaves live settings intact.
+            if (settingData_StoreList != null)
+            {
+                var settings = JsonUtility.FromJson<SettingData>(JsonUtility.ToJson(settingData_StoreList));
+                settings.currentSkipIntro = newData.settingData_SaveList.currentSkipIntro;
+                newData.settingData_SaveList = settings;
+            }
 
-        this.haveStartedNewGame_Store = newData.haveStartedNewGame_Save;
+            newData.oneTimeRunData_Save.startVolum_Values = oneTimeRunData_Store?.startVolum_Values == true;
+        }
 
-        this.playerStatsData_Store = newData.PlayerStatsData_Save;
-        this.playerStatsData_Store.sessionStats.session_No = 1;
+        newData.PlayerStatsData_Save.sessionStats.session_No = 1;
+        newData.playerStatistics_Save.initialized = true;
+        newData.playerStatistics_Save.sessions = 1;
+        newData.skinsInfo_Save.skinWardrobeInfo = new SkinsWardrobeInfo { skin_Default = WardrobeSkinState.Selected };
+        newData.skinsInfo_Save.skinHatInfo = new SkinsHatInfo();
+        return newData;
+    }
 
-        this.glueplantStandStats_Store = newData.glueplantStandStats_Save;
-        this.switchesData_Store = newData.switchesData_Save;
-
-        this.permanentAbilitiesReceived_Store = newData.permanentAbilitiesReceived_Save;
-        this.playerStatistics_Store = newData.playerStatistics_Save;
-
-
-        //Persist through newGame
-        this.settingData_StoreList = oldData.settingData_SaveList;
-        this.settingData_StoreList.currentSkipIntro = newData.settingData_SaveList.currentSkipIntro;
-        this.oneTimeRunData_Store.startVolum_Values = oldData.oneTimeRunData_Save.startVolum_Values;
+    internal void ApplyNewGameData(GameData newData)
+    {
+        GetSavedDataFromFile(newData);
+        PlayerStats playerStats = FindAnyObjectByType<PlayerStats>();
+        if (playerStats)
+            playerStats.stats = playerStats_Store;
     }
 }
 

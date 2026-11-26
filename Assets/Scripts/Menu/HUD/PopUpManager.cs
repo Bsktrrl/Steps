@@ -112,6 +112,9 @@ public class PopUpManager : Singleton<PopUpManager>
 
     // Keep track of running fades so we can stop/replace them per parent
     private readonly Dictionary<GameObject, Coroutine> _runningFades = new();
+    private (GameObject Panel, List<GameObject> Children, float Duration) pendingPickup;
+    private GameObject activePickupPanel;
+    private Coroutine pickupNotifications;
 
 
     //--------------------
@@ -134,6 +137,18 @@ public class PopUpManager : Singleton<PopUpManager>
         Interactable_Pickup.Action_FootprintPickupGot -= ShowFootprintPopup;
         Interactable_Pickup.Action_EssencePickupGot -= ShowEssencePopup;
         Interactable_Pickup.Action_SkinPickupGot -= ShowSkinPopup;
+
+        if (pickupNotifications != null)
+            StopCoroutine(pickupNotifications);
+        pickupNotifications = null;
+        pendingPickup = default;
+
+        if (activePickupPanel)
+        {
+            StopFadeIfRunning(activePickupPanel);
+            activePickupPanel.SetActive(false);
+        }
+        activePickupPanel = null;
     }
 
 
@@ -151,23 +166,23 @@ public class PopUpManager : Singleton<PopUpManager>
             if (GuidePopupsEnabled)
                 ShowOneTimerPopup(footprint_Parent, footprint_Children);
             else
-                StartCoroutine(FootprintRoutine());
+                ShowPickupNotification(popup_Footprint_Parent, popup_Footprint_Children, 1.5f);
 
             DataManager.Instance.oneTimeRunData_Store.pickup_FirstFootprint = true;
             DataPersistanceManager.instance.SaveGame();
         }
         else
         {
-            StartCoroutine(FootprintRoutine());
+            ShowPickupNotification(popup_Footprint_Parent, popup_Footprint_Children, 1.5f);
         }
     }
     void ShowEssencePopup()
     {
-        StartCoroutine(EssenceRoutine());
+        ShowPickupNotification(popup_Essence_Parent, popup_Essence_Children, 1.5f);
     }
-    void ShowSkinPopup()
+    void ShowSkinPopup(SkinType skin)
     {
-        StartCoroutine(SkinRoutine());
+        ShowPickupNotification(popup_Skin_Parent, popup_Skin_Children, 3f);
     }
 
     //-----
@@ -325,29 +340,40 @@ public class PopUpManager : Singleton<PopUpManager>
 
         HideDisplay(popupManager, popup_LevelName_Parent, popup_LevelName_Children);
     }
-    IEnumerator FootprintRoutine()
+    private void ShowPickupNotification(GameObject panel, List<GameObject> children, float durationMultiplier)
     {
-        ShowDisplay(popupManager, popup_Footprint_Parent, popup_Footprint_Children);
+        if (!panel)
+            return;
 
-        yield return new WaitForSeconds(pickupMessageDuration * 1.5f);
-
-        HideDisplay(popupManager, popup_Footprint_Parent, popup_Footprint_Children);
+        pendingPickup = (panel, children, pickupMessageDuration * durationMultiplier);
+        if (pickupNotifications == null)
+            pickupNotifications = StartCoroutine(RunPickupNotifications());
     }
-    IEnumerator EssenceRoutine()
+
+    private IEnumerator RunPickupNotifications()
     {
-        ShowDisplay(popupManager,popup_Essence_Parent, popup_Essence_Children);
+        while (pendingPickup.Panel)
+        {
+            var notification = pendingPickup;
+            pendingPickup = default;
+            activePickupPanel = notification.Panel;
+            ShowDisplay(popupManager, activePickupPanel, notification.Children);
 
-        yield return new WaitForSeconds(pickupMessageDuration * 1.5f);
+            float remaining = notification.Duration;
+            do
+            {
+                yield return null;
+                remaining -= Time.deltaTime;
+            } while (!pendingPickup.Panel && remaining > 0f);
 
-        HideDisplay(popupManager, popup_Essence_Parent, popup_Essence_Children);
-    }
-    IEnumerator SkinRoutine()
-    {
-        ShowDisplay(popupManager, popup_Skin_Parent, popup_Skin_Children);
+            Coroutine fadeOut = StartFadeOut(activePickupPanel);
+            if (fadeOut != null)
+                yield return fadeOut;
 
-        yield return new WaitForSeconds(pickupMessageDuration * 3f);
+            activePickupPanel = null;
+        }
 
-        HideDisplay(popupManager, popup_Skin_Parent, popup_Skin_Children);
+        pickupNotifications = null;
     }
 
 
@@ -431,17 +457,24 @@ public class PopUpManager : Singleton<PopUpManager>
     }
     public void HideDisplay(GameObject popupParent, GameObject categoryParent, List<GameObject> controllerVersions_Child)
     {
-        if (categoryParent == null) return;
+        StartFadeOut(categoryParent);
+    }
+
+    private Coroutine StartFadeOut(GameObject categoryParent)
+    {
+        if (categoryParent == null) return null;
 
         StopFadeIfRunning(categoryParent);
 
-        if (!categoryParent.activeInHierarchy) return;
+        if (!categoryParent.activeInHierarchy) return null;
 
         var cg = GetOrAddCanvasGroup(categoryParent);
         cg.interactable = false;
         cg.blocksRaycasts = false;
 
-        _runningFades[categoryParent] = StartCoroutine(FadeUI(categoryParent, cg.alpha, 0f, fadeDuration_Out, disableParentAtEnd: true));
+        Coroutine fadeOut = StartCoroutine(FadeUI(categoryParent, cg.alpha, 0f, fadeDuration_Out, disableParentAtEnd: true));
+        _runningFades[categoryParent] = fadeOut;
+        return fadeOut;
     }
 
     void StopFadeIfRunning(GameObject parent)

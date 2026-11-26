@@ -14,6 +14,9 @@ public class FeedbackForm : Singleton<FeedbackForm>
     [SerializeField] PlayerStatsData playerStatsData = new PlayerStatsData();
 
     List<LevelField_Path> levelField_PathsList = new List<LevelField_Path>();
+    internal const double RequestTimeoutSeconds = 5d;
+    private int activeRequests;
+    internal bool HasActiveRequests => activeRequests > 0;
 
 
     //--------------------
@@ -1377,14 +1380,6 @@ public class FeedbackForm : Singleton<FeedbackForm>
 
 
     #region Submit Feedback
-    public void SubmitFeedback_Session()
-    {
-        if (!PlayerDataManager.Instance.collectData) return;
-
-        UpdatePlayerFeedbackSave_Session(DataManager.Instance.playerStatsData_Store.sessionStats, ref playerStatsData.sessionStats);
-        StartCoroutine(AddSessionField());
-    }
-
     public void SubmitFeedback_Rivergreen_Lv1()
     {
         if (!PlayerDataManager.Instance.collectData) return;
@@ -1606,59 +1601,6 @@ public class FeedbackForm : Singleton<FeedbackForm>
     //--------------------
 
 
-    void UpdatePlayerFeedbackSave_Session(Session_Stats levelStats_DataManager, ref Session_Stats levelStats)
-    {
-        levelStats.session_No = levelStats_DataManager.session_No;
-        levelStats.totalTimeUsed = levelStats_DataManager.totalTimeUsed;
-
-        levelStats.totalTimeUsed_Menus = levelStats_DataManager.totalTimeUsed_Menus;
-        levelStats.totalTimeUsed_MainMenu = levelStats_DataManager.totalTimeUsed_MainMenu;
-        levelStats.totalTimeUsed_OverworldMenu = levelStats_DataManager.totalTimeUsed_OverworldMenu;
-        levelStats.totalTimeUsed_WardrobeMenu = levelStats_DataManager.totalTimeUsed_WardrobeMenu;
-        levelStats.totalTimeUsed_OptionsMenu = levelStats_DataManager.totalTimeUsed_OptionsMenu;
-        levelStats.totalTimeUsed_InPauseMenu = levelStats_DataManager.totalTimeUsed_InPauseMenu;
-        levelStats.totalTimeUsed_InLevels = levelStats_DataManager.totalTimeUsed_InLevels;
-        levelStats.totalTimeUsed_InFreeCam = levelStats_DataManager.totalTimeUsed_InFreeCam;
-
-        levelStats.totalLevelsVisited = levelStats_DataManager.totalLevelsVisited;
-        levelStats.totalLevelExited = levelStats_DataManager.totalLevelExited;
-        levelStats.totalLevelsCleared = levelStats_DataManager.totalLevelsCleared;
-        levelStats.totalStepsTaken = levelStats_DataManager.totalStepsTaken;
-        levelStats.totalRespawnTaken = levelStats_DataManager.totalRespawnTaken;
-        levelStats.totalCameraRotationTaken = levelStats_DataManager.totalCameraRotationTaken;
-        
-        levelStats.totalTimeEquippedInLevels_Default = levelStats_DataManager.totalTimeEquippedInLevels_Default;
-        levelStats.totalTimeEquippedInLevels_RivergreenLv1 = levelStats_DataManager.totalTimeEquippedInLevels_RivergreenLv1;
-        levelStats.totalTimeEquippedInLevels_RivergreenLv2 = levelStats_DataManager.totalTimeEquippedInLevels_RivergreenLv2;
-        levelStats.totalTimeEquippedInLevels_RivergreenLv3 = levelStats_DataManager.totalTimeEquippedInLevels_RivergreenLv3;
-        levelStats.totalTimeEquippedInLevels_RivergreenLv4 = levelStats_DataManager.totalTimeEquippedInLevels_RivergreenLv4;
-        levelStats.totalTimeEquippedInLevels_RivergreenLv5 = levelStats_DataManager.totalTimeEquippedInLevels_RivergreenLv5;
-        levelStats.totalTimeEquippedInLevels_SandlandsLv1 = levelStats_DataManager.totalTimeEquippedInLevels_SandlandsLv1;
-        levelStats.totalTimeEquippedInLevels_SandlandsLv2 = levelStats_DataManager.totalTimeEquippedInLevels_SandlandsLv2;
-        levelStats.totalTimeEquippedInLevels_SandlandsLv3 = levelStats_DataManager.totalTimeEquippedInLevels_SandlandsLv3;
-        levelStats.totalTimeEquippedInLevels_SandlandsLv4 = levelStats_DataManager.totalTimeEquippedInLevels_SandlandsLv4;
-        levelStats.totalTimeEquippedInLevels_SandlandsLv5 = levelStats_DataManager.totalTimeEquippedInLevels_SandlandsLv5;
-        levelStats.totalTimeEquippedInLevels_FrostfieldLv1 = levelStats_DataManager.totalTimeEquippedInLevels_FrostfieldLv1;
-        levelStats.totalTimeEquippedInLevels_FrostfieldLv2 = levelStats_DataManager.totalTimeEquippedInLevels_FrostfieldLv2;
-        levelStats.totalTimeEquippedInLevels_FrostfieldLv3 = levelStats_DataManager.totalTimeEquippedInLevels_FrostfieldLv3;
-        levelStats.totalTimeEquippedInLevels_FrostfieldLv4 = levelStats_DataManager.totalTimeEquippedInLevels_FrostfieldLv4;
-        levelStats.totalTimeEquippedInLevels_FrostfieldLv5 = levelStats_DataManager.totalTimeEquippedInLevels_FrostfieldLv5;
-        levelStats.totalTimeEquippedInLevels_FireveinLv1 = levelStats_DataManager.totalTimeEquippedInLevels_FireveinLv1;
-        levelStats.totalTimeEquippedInLevels_FireveinLv2 = levelStats_DataManager.totalTimeEquippedInLevels_FireveinLv2;
-        levelStats.totalTimeEquippedInLevels_FireveinLv3 = levelStats_DataManager.totalTimeEquippedInLevels_FireveinLv3;
-        levelStats.totalTimeEquippedInLevels_FireveinLv4 = levelStats_DataManager.totalTimeEquippedInLevels_FireveinLv4;
-        levelStats.totalTimeEquippedInLevels_FireveinLv5 = levelStats_DataManager.totalTimeEquippedInLevels_FireveinLv5;
-        levelStats.totalTimeEquippedInLevels_WitchmireLv1 = levelStats_DataManager.totalTimeEquippedInLevels_WitchmireLv1;
-        levelStats.totalTimeEquippedInLevels_WitchmireLv2 = levelStats_DataManager.totalTimeEquippedInLevels_WitchmireLv2;
-        levelStats.totalTimeEquippedInLevels_WitchmireLv3 = levelStats_DataManager.totalTimeEquippedInLevels_WitchmireLv3;
-        levelStats.totalTimeEquippedInLevels_WitchmireLv4 = levelStats_DataManager.totalTimeEquippedInLevels_WitchmireLv4;
-        levelStats.totalTimeEquippedInLevels_WitchmireLv5 = levelStats_DataManager.totalTimeEquippedInLevels_WitchmireLv5;
-        levelStats.totalTimeEquippedInLevels_MetalworksLv1 = levelStats_DataManager.totalTimeEquippedInLevels_MetalworksLv1;
-        levelStats.totalTimeEquippedInLevels_MetalworksLv2 = levelStats_DataManager.totalTimeEquippedInLevels_MetalworksLv2;
-        levelStats.totalTimeEquippedInLevels_MetalworksLv3 = levelStats_DataManager.totalTimeEquippedInLevels_MetalworksLv3;
-        levelStats.totalTimeEquippedInLevels_MetalworksLv4 = levelStats_DataManager.totalTimeEquippedInLevels_MetalworksLv4;
-        levelStats.totalTimeEquippedInLevels_MetalworksLv5 = levelStats_DataManager.totalTimeEquippedInLevels_MetalworksLv5;
-    }
     void UpdatePlayerFeedbackSave_Level(Level_Stats levelStats_DataManager, ref Level_Stats levelStats)
     {
         levelStats.timeUsed = levelStats_DataManager.timeUsed;
@@ -1724,132 +1666,119 @@ public class FeedbackForm : Singleton<FeedbackForm>
     //--------------------
 
 
-    IEnumerator AddSessionField()
+    internal IEnumerator SubmitSessionReport(Session_Stats stats, double deadline, Action<bool> onComplete)
     {
         WWWForm form = new WWWForm();
 
         //General
-        if (playerStatsData.sessionStats.session_No > 0)
-            form.AddField("entry.1252827554", playerStatsData.sessionStats.session_No.ToString());
-        if (playerStatsData.sessionStats.totalTimeUsed > 0)
-            form.AddField("entry.240663572", playerStatsData.sessionStats.totalTimeUsed.ToString("F2"));
+        if (stats.session_No > 0)
+            form.AddField("entry.1252827554", stats.session_No.ToString());
+        if (stats.totalTimeUsed > 0)
+            form.AddField("entry.240663572", stats.totalTimeUsed.ToString("F2"));
 
         //Time
-        if (playerStatsData.sessionStats.totalTimeUsed_Menus > 0)
-            form.AddField("entry.1416356909", playerStatsData.sessionStats.totalTimeUsed_Menus.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeUsed_MainMenu > 0)
-            form.AddField("entry.1534190894", playerStatsData.sessionStats.totalTimeUsed_MainMenu.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeUsed_OverworldMenu > 0)
-            form.AddField("entry.272428771", playerStatsData.sessionStats.totalTimeUsed_OverworldMenu.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeUsed_WardrobeMenu > 0)
-            form.AddField("entry.3208872", playerStatsData.sessionStats.totalTimeUsed_WardrobeMenu.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeUsed_OptionsMenu > 0)
-            form.AddField("entry.873769790", playerStatsData.sessionStats.totalTimeUsed_OptionsMenu.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeUsed_InLevels > 0)
-            form.AddField("entry.1186270066", playerStatsData.sessionStats.totalTimeUsed_InLevels.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeUsed_InPauseMenu > 0)
-            form.AddField("entry.1243543042", playerStatsData.sessionStats.totalTimeUsed_InPauseMenu.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeUsed_InFreeCam > 0)
-            form.AddField("entry.725598216", playerStatsData.sessionStats.totalTimeUsed_InFreeCam.ToString("F2"));
+        if (stats.totalTimeUsed_Menus > 0)
+            form.AddField("entry.1416356909", stats.totalTimeUsed_Menus.ToString("F2"));
+        if (stats.totalTimeUsed_MainMenu > 0)
+            form.AddField("entry.1534190894", stats.totalTimeUsed_MainMenu.ToString("F2"));
+        if (stats.totalTimeUsed_OverworldMenu > 0)
+            form.AddField("entry.272428771", stats.totalTimeUsed_OverworldMenu.ToString("F2"));
+        if (stats.totalTimeUsed_WardrobeMenu > 0)
+            form.AddField("entry.3208872", stats.totalTimeUsed_WardrobeMenu.ToString("F2"));
+        if (stats.totalTimeUsed_OptionsMenu > 0)
+            form.AddField("entry.873769790", stats.totalTimeUsed_OptionsMenu.ToString("F2"));
+        if (stats.totalTimeUsed_InLevels > 0)
+            form.AddField("entry.1186270066", stats.totalTimeUsed_InLevels.ToString("F2"));
+        if (stats.totalTimeUsed_InPauseMenu > 0)
+            form.AddField("entry.1243543042", stats.totalTimeUsed_InPauseMenu.ToString("F2"));
+        if (stats.totalTimeUsed_InFreeCam > 0)
+            form.AddField("entry.725598216", stats.totalTimeUsed_InFreeCam.ToString("F2"));
 
         //Counts
-        if (playerStatsData.sessionStats.totalLevelsVisited > 0)
-            form.AddField("entry.1362508840", playerStatsData.sessionStats.totalLevelsVisited.ToString());
-        if (playerStatsData.sessionStats.totalLevelExited > 0)
-            form.AddField("entry.1284439705", playerStatsData.sessionStats.totalLevelExited.ToString());
-        if (playerStatsData.sessionStats.totalLevelsCleared > 0)
-            form.AddField("entry.1709317079", playerStatsData.sessionStats.totalLevelsCleared.ToString());
-        if (playerStatsData.sessionStats.totalStepsTaken > 0)
-            form.AddField("entry.525598876", playerStatsData.sessionStats.totalStepsTaken.ToString());
-        if (playerStatsData.sessionStats.totalRespawnTaken > 0)
-            form.AddField("entry.219862598", playerStatsData.sessionStats.totalRespawnTaken.ToString());
-        if (playerStatsData.sessionStats.totalCameraRotationTaken > 0)
-            form.AddField("entry.1285447355", playerStatsData.sessionStats.totalCameraRotationTaken.ToString());
+        if (stats.totalLevelsVisited > 0)
+            form.AddField("entry.1362508840", stats.totalLevelsVisited.ToString());
+        if (stats.totalLevelExited > 0)
+            form.AddField("entry.1284439705", stats.totalLevelExited.ToString());
+        if (stats.totalLevelsCleared > 0)
+            form.AddField("entry.1709317079", stats.totalLevelsCleared.ToString());
+        if (stats.totalStepsTaken > 0)
+            form.AddField("entry.525598876", stats.totalStepsTaken.ToString());
+        if (stats.totalRespawnTaken > 0)
+            form.AddField("entry.219862598", stats.totalRespawnTaken.ToString());
+        if (stats.totalCameraRotationTaken > 0)
+            form.AddField("entry.1285447355", stats.totalCameraRotationTaken.ToString());
 
         //Wardrobe
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_Default > 0)
-            form.AddField("entry.1206439869", playerStatsData.sessionStats.totalTimeEquippedInLevels_Default.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_Default > 0)
+            form.AddField("entry.1206439869", stats.totalTimeEquippedInLevels_Default.ToString("F2"));
 
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_RivergreenLv1 > 0)
-            form.AddField("entry.1343052800", playerStatsData.sessionStats.totalTimeEquippedInLevels_RivergreenLv1.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_RivergreenLv2 > 0)
-            form.AddField("entry.458440323", playerStatsData.sessionStats.totalTimeEquippedInLevels_RivergreenLv2.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_RivergreenLv3 > 0)
-            form.AddField("entry.1037629915", playerStatsData.sessionStats.totalTimeEquippedInLevels_RivergreenLv3.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_RivergreenLv4 > 0)
-            form.AddField("entry.932052857", playerStatsData.sessionStats.totalTimeEquippedInLevels_RivergreenLv4.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_RivergreenLv5 > 0)
-            form.AddField("entry.1721013310", playerStatsData.sessionStats.totalTimeEquippedInLevels_RivergreenLv5.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_RivergreenLv1 > 0)
+            form.AddField("entry.1343052800", stats.totalTimeEquippedInLevels_RivergreenLv1.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_RivergreenLv2 > 0)
+            form.AddField("entry.458440323", stats.totalTimeEquippedInLevels_RivergreenLv2.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_RivergreenLv3 > 0)
+            form.AddField("entry.1037629915", stats.totalTimeEquippedInLevels_RivergreenLv3.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_RivergreenLv4 > 0)
+            form.AddField("entry.932052857", stats.totalTimeEquippedInLevels_RivergreenLv4.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_RivergreenLv5 > 0)
+            form.AddField("entry.1721013310", stats.totalTimeEquippedInLevels_RivergreenLv5.ToString("F2"));
 
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_SandlandsLv1 > 0)
-            form.AddField("entry.1949758081", playerStatsData.sessionStats.totalTimeEquippedInLevels_SandlandsLv1.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_SandlandsLv2 > 0)
-            form.AddField("entry.191480969", playerStatsData.sessionStats.totalTimeEquippedInLevels_SandlandsLv2.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_SandlandsLv3 > 0)
-            form.AddField("entry.625830122", playerStatsData.sessionStats.totalTimeEquippedInLevels_SandlandsLv3.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_SandlandsLv4 > 0)
-            form.AddField("entry.874509393", playerStatsData.sessionStats.totalTimeEquippedInLevels_SandlandsLv4.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_SandlandsLv5 > 0)
-            form.AddField("entry.1854135177", playerStatsData.sessionStats.totalTimeEquippedInLevels_SandlandsLv5.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_SandlandsLv1 > 0)
+            form.AddField("entry.1949758081", stats.totalTimeEquippedInLevels_SandlandsLv1.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_SandlandsLv2 > 0)
+            form.AddField("entry.191480969", stats.totalTimeEquippedInLevels_SandlandsLv2.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_SandlandsLv3 > 0)
+            form.AddField("entry.625830122", stats.totalTimeEquippedInLevels_SandlandsLv3.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_SandlandsLv4 > 0)
+            form.AddField("entry.874509393", stats.totalTimeEquippedInLevels_SandlandsLv4.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_SandlandsLv5 > 0)
+            form.AddField("entry.1854135177", stats.totalTimeEquippedInLevels_SandlandsLv5.ToString("F2"));
 
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_FrostfieldLv1 > 0)
-            form.AddField("entry.1347517780", playerStatsData.sessionStats.totalTimeEquippedInLevels_FrostfieldLv1.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_FrostfieldLv2 > 0)
-            form.AddField("entry.1939783691", playerStatsData.sessionStats.totalTimeEquippedInLevels_FrostfieldLv2.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_FrostfieldLv3 > 0)
-            form.AddField("entry.1107810740", playerStatsData.sessionStats.totalTimeEquippedInLevels_FrostfieldLv3.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_FrostfieldLv4 > 0)
-            form.AddField("entry.1727229317", playerStatsData.sessionStats.totalTimeEquippedInLevels_FrostfieldLv4.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_FrostfieldLv5 > 0)
-            form.AddField("entry.606740502", playerStatsData.sessionStats.totalTimeEquippedInLevels_FrostfieldLv5.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_FrostfieldLv1 > 0)
+            form.AddField("entry.1347517780", stats.totalTimeEquippedInLevels_FrostfieldLv1.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_FrostfieldLv2 > 0)
+            form.AddField("entry.1939783691", stats.totalTimeEquippedInLevels_FrostfieldLv2.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_FrostfieldLv3 > 0)
+            form.AddField("entry.1107810740", stats.totalTimeEquippedInLevels_FrostfieldLv3.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_FrostfieldLv4 > 0)
+            form.AddField("entry.1727229317", stats.totalTimeEquippedInLevels_FrostfieldLv4.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_FrostfieldLv5 > 0)
+            form.AddField("entry.606740502", stats.totalTimeEquippedInLevels_FrostfieldLv5.ToString("F2"));
 
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_FireveinLv1 > 0)
-            form.AddField("entry.1090823188", playerStatsData.sessionStats.totalTimeEquippedInLevels_FireveinLv1.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_FireveinLv2 > 0)
-            form.AddField("entry.2049915036", playerStatsData.sessionStats.totalTimeEquippedInLevels_FireveinLv2.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_FireveinLv3 > 0)
-            form.AddField("entry.514067095", playerStatsData.sessionStats.totalTimeEquippedInLevels_FireveinLv3.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_FireveinLv4 > 0)
-            form.AddField("entry.102125640", playerStatsData.sessionStats.totalTimeEquippedInLevels_FireveinLv4.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_FireveinLv5 > 0)
-            form.AddField("entry.805850594", playerStatsData.sessionStats.totalTimeEquippedInLevels_FireveinLv5.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_FireveinLv1 > 0)
+            form.AddField("entry.1090823188", stats.totalTimeEquippedInLevels_FireveinLv1.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_FireveinLv2 > 0)
+            form.AddField("entry.2049915036", stats.totalTimeEquippedInLevels_FireveinLv2.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_FireveinLv3 > 0)
+            form.AddField("entry.514067095", stats.totalTimeEquippedInLevels_FireveinLv3.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_FireveinLv4 > 0)
+            form.AddField("entry.102125640", stats.totalTimeEquippedInLevels_FireveinLv4.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_FireveinLv5 > 0)
+            form.AddField("entry.805850594", stats.totalTimeEquippedInLevels_FireveinLv5.ToString("F2"));
 
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_WitchmireLv1 > 0)
-            form.AddField("entry.1027326274", playerStatsData.sessionStats.totalTimeEquippedInLevels_WitchmireLv1.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_WitchmireLv2 > 0)
-            form.AddField("entry.607439042", playerStatsData.sessionStats.totalTimeEquippedInLevels_WitchmireLv2.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_WitchmireLv3 > 0)
-            form.AddField("entry.1553823692", playerStatsData.sessionStats.totalTimeEquippedInLevels_WitchmireLv3.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_WitchmireLv4 > 0)
-            form.AddField("entry.1671659912", playerStatsData.sessionStats.totalTimeEquippedInLevels_WitchmireLv4.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_WitchmireLv5 > 0)
-            form.AddField("entry.1261180017", playerStatsData.sessionStats.totalTimeEquippedInLevels_WitchmireLv5.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_WitchmireLv1 > 0)
+            form.AddField("entry.1027326274", stats.totalTimeEquippedInLevels_WitchmireLv1.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_WitchmireLv2 > 0)
+            form.AddField("entry.607439042", stats.totalTimeEquippedInLevels_WitchmireLv2.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_WitchmireLv3 > 0)
+            form.AddField("entry.1553823692", stats.totalTimeEquippedInLevels_WitchmireLv3.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_WitchmireLv4 > 0)
+            form.AddField("entry.1671659912", stats.totalTimeEquippedInLevels_WitchmireLv4.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_WitchmireLv5 > 0)
+            form.AddField("entry.1261180017", stats.totalTimeEquippedInLevels_WitchmireLv5.ToString("F2"));
 
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_MetalworksLv1 > 0)
-            form.AddField("entry.1409198516", playerStatsData.sessionStats.totalTimeEquippedInLevels_MetalworksLv1.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_MetalworksLv2 > 0)
-            form.AddField("entry.1029303544", playerStatsData.sessionStats.totalTimeEquippedInLevels_MetalworksLv2.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_MetalworksLv3 > 0)
-            form.AddField("entry.25719402", playerStatsData.sessionStats.totalTimeEquippedInLevels_MetalworksLv3.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_MetalworksLv4 > 0)
-            form.AddField("entry.763513455", playerStatsData.sessionStats.totalTimeEquippedInLevels_MetalworksLv4.ToString("F2"));
-        if (playerStatsData.sessionStats.totalTimeEquippedInLevels_MetalworksLv5 > 0)
-            form.AddField("entry.1183476573", playerStatsData.sessionStats.totalTimeEquippedInLevels_MetalworksLv5.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_MetalworksLv1 > 0)
+            form.AddField("entry.1409198516", stats.totalTimeEquippedInLevels_MetalworksLv1.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_MetalworksLv2 > 0)
+            form.AddField("entry.1029303544", stats.totalTimeEquippedInLevels_MetalworksLv2.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_MetalworksLv3 > 0)
+            form.AddField("entry.25719402", stats.totalTimeEquippedInLevels_MetalworksLv3.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_MetalworksLv4 > 0)
+            form.AddField("entry.763513455", stats.totalTimeEquippedInLevels_MetalworksLv4.ToString("F2"));
+        if (stats.totalTimeEquippedInLevels_MetalworksLv5 > 0)
+            form.AddField("entry.1183476573", stats.totalTimeEquippedInLevels_MetalworksLv5.ToString("F2"));
 
-        using (UnityWebRequest www = UnityWebRequest.Post(formURL, form))
-        {
-            yield return www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.Success)
-            {
-                //Debug.Log("Feedback submitted successfully");
-
-            }
-            else
-            {
-                //Debug.Log("Error in feedback submission: " + www.error);
-            }
-        }
+        yield return SendForm(form, deadline, onComplete);
     }
     IEnumerator Level_Feedback(Level_Stats levelStats, LevelField_Path levelField_Path)
     {
@@ -1928,20 +1857,37 @@ public class FeedbackForm : Singleton<FeedbackForm>
         if (levelStats.talkTo_NPC > 0)
             form.AddField(levelField_Path.path_TalkToNPC, levelStats.talkTo_NPC.ToString());
 
-        using (UnityWebRequest www = UnityWebRequest.Post(formURL, form))
+        yield return SendForm(form, double.PositiveInfinity);
+    }
+
+    private IEnumerator SendForm(WWWForm form, double deadline, Action<bool> onComplete = null)
+    {
+        if (Time.realtimeSinceStartupAsDouble >= deadline)
         {
-            yield return www.SendWebRequest();
+            onComplete?.Invoke(false);
+            yield break;
+        }
 
-            if (www.result == UnityWebRequest.Result.Success)
-            {
-                //Debug.Log("Feedback submitted successfully");
+        activeRequests++;
+        try
+        {
+            using var request = UnityWebRequest.Post(formURL, form);
+            var operation = request.SendWebRequest();
+            while (!operation.isDone && Time.realtimeSinceStartupAsDouble < deadline)
+                yield return null;
 
-                //ResetLevelStats(levelStats);
-            }
-            else
+            if (!operation.isDone)
             {
-                //Debug.Log("Error in feedback submission: " + www.error);
+                request.Abort();
+                onComplete?.Invoke(false);
+                yield break;
             }
+
+            onComplete?.Invoke(request.result == UnityWebRequest.Result.Success);
+        }
+        finally
+        {
+            activeRequests--;
         }
     }
 }
@@ -1998,6 +1944,7 @@ public class LevelField_Path
 public class PlayerStatsData
 {
     public Session_Stats sessionStats = new Session_Stats();
+    [HideInInspector] public List<Session_Stats> pendingSessionReports = new List<Session_Stats>();
 
     public Level_Stats rivergreenLv1_Stats = new Level_Stats();
     public Level_Stats rivergreenLv2_Stats = new Level_Stats();

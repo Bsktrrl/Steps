@@ -274,6 +274,10 @@ public class NumberDisplay : MonoBehaviour
 
     public void ShowNumber()
     {
+        // Root cleanup can refresh costs after the display or player has been deactivated.
+        if (!gameObject.activeInHierarchy || !Movement.ExistingInstance)
+            return;
+
         SetupNumberDisplay();
 
         if (!numberDisplayIsSetup || blockInfo == null || cachedParent == null)

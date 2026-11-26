@@ -20,7 +20,7 @@ public class BranchOptions : MonoBehaviour
     {
         Interactable_Pickup.Action_JumpingGot -= SetColliders;
         DataManager.Action_dataHasLoaded -= SetColliders;
-        Movement.Action_RespawnPlayer += SetColliders;
+        Movement.Action_RespawnPlayer -= SetColliders;
     }
 
 

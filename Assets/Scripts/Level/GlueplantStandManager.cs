@@ -4,96 +4,36 @@ using UnityEngine;
 
 public class GlueplantStandManager : Singleton<GlueplantStandManager>
 {
-    [SerializeField] RegionState regionState;
-
-    public bool playerPlacingGlueplant;
-
-
-    //--------------------
-
-
-    private void OnEnable()
+    internal bool TryPlaceGlueplant(int standNumber)
     {
-        Interactable_GlueplantStand.Action_Glueplant_isPlaced += CheckIfLevelIsComplete;
-    }
-    private void OnDisable()
-    {
-        Interactable_GlueplantStand.Action_Glueplant_isPlaced -= CheckIfLevelIsComplete;
-    }
+        MapManager map = MapManager.Instance;
+        if (!map || map.IsCompletingLevel || map.mapInfo_ToSave == null)
+            return false;
 
+        StandStats stats = DataManager.Instance.glueplantStandStats_Store?.GetForLevel(map.levelName);
+        if (stats == null || !StandStats.IsValidStandNumber(standNumber) || stats.IsTaken(standNumber))
+            return false;
 
-    //--------------------
+        bool completed = stats.CountTaken == StandStats.StandsPerLevel - 1;
+        if (completed && !map.TryBeginLevelCompletion())
+            return false;
 
-
-    void CheckIfLevelIsComplete()
-    {
-        if (!playerPlacingGlueplant) return;
-
-        switch (regionState)
+        stats.TryPlace(standNumber);
+        if (completed)
         {
-            case RegionState.None:
-                break;
-
-            case RegionState.Rivergreen:
-                if (DataManager.Instance.glueplantStandStats_Store.standStats_Rivergreen.stand_1_isTaken
-                    && DataManager.Instance.glueplantStandStats_Store.standStats_Rivergreen.stand_2_isTaken
-                    && DataManager.Instance.glueplantStandStats_Store.standStats_Rivergreen.stand_3_isTaken
-                    && DataManager.Instance.glueplantStandStats_Store.standStats_Rivergreen.stand_4_isTaken)
-                {
-                    StartExitingGame();
-                }
-                break;
-            case RegionState.Sandlands:
-                if (DataManager.Instance.glueplantStandStats_Store.standStats_Sandlands.stand_1_isTaken
-                    && DataManager.Instance.glueplantStandStats_Store.standStats_Sandlands.stand_2_isTaken
-                    && DataManager.Instance.glueplantStandStats_Store.standStats_Sandlands.stand_3_isTaken
-                    && DataManager.Instance.glueplantStandStats_Store.standStats_Sandlands.stand_4_isTaken)
-                {
-                    StartExitingGame();
-                }
-                break;
-            case RegionState.Frostfields:
-                if (DataManager.Instance.glueplantStandStats_Store.standStats_Frostfield.stand_1_isTaken
-                    && DataManager.Instance.glueplantStandStats_Store.standStats_Frostfield.stand_2_isTaken
-                    && DataManager.Instance.glueplantStandStats_Store.standStats_Frostfield.stand_3_isTaken
-                    && DataManager.Instance.glueplantStandStats_Store.standStats_Frostfield.stand_4_isTaken)
-                {
-                    StartExitingGame();
-                }
-                break;
-            case RegionState.Firevein:
-                if (DataManager.Instance.glueplantStandStats_Store.standStats_Firevein.stand_1_isTaken
-                    && DataManager.Instance.glueplantStandStats_Store.standStats_Firevein.stand_2_isTaken
-                    && DataManager.Instance.glueplantStandStats_Store.standStats_Firevein.stand_3_isTaken
-                    && DataManager.Instance.glueplantStandStats_Store.standStats_Firevein.stand_4_isTaken)
-                {
-                    StartExitingGame();
-                }
-                break;
-            case RegionState.Witchmire:
-                if (DataManager.Instance.glueplantStandStats_Store.standStats_Witchmire.stand_1_isTaken
-                    && DataManager.Instance.glueplantStandStats_Store.standStats_Witchmire.stand_2_isTaken
-                    && DataManager.Instance.glueplantStandStats_Store.standStats_Witchmire.stand_3_isTaken
-                    && DataManager.Instance.glueplantStandStats_Store.standStats_Witchmire.stand_4_isTaken)
-                {
-                    StartExitingGame();
-                }
-                break;
-
-            case RegionState.Metalworks:
-                break;
-
-            default:
-                break;
+            map.mapInfo_ToSave.isCompleted = true;
+            Player_Statistics_Manager.Active?.RecordLevelCompletion();
         }
-    }
 
-    void StartExitingGame()
-    {
-        Player_Statistics_Manager.Active?.RecordLevelCompletion();
-        PlayerManager.Instance.PauseGame();
+        map.SaveMapInfo();
 
-        StartCoroutine(GlueplantExitLevel(1.5f));
+        if (completed)
+        {
+            PlayerManager.Instance.PauseGame();
+            map.StartCoroutine(GlueplantExitLevel(1.5f));
+        }
+
+        return true;
     }
 
     IEnumerator GlueplantExitLevel(float waitTime)
@@ -119,7 +59,7 @@ public class GlueplantStandManager : Singleton<GlueplantStandManager>
 
         yield return new WaitForSeconds(1f);
 
-        PlayerManager.Instance.player.GetComponent<PlayerManager>().CompleteLevelAndLeave();
+        PlayerManager.Instance.FinishLevelExit();
     }
     void PlayPickupSound()
     {

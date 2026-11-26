@@ -21,7 +21,6 @@ public class TabletMenuManager : MonoBehaviour
     DataManager data;
     TabletButton focusedTablet;
     TabletButton previewTablet;
-    TabletButton lockedTablet;
 
     private void Awake()
     {
@@ -58,7 +57,6 @@ public class TabletMenuManager : MonoBehaviour
         SettingsManager.Action_SetNewLanguage -= RefreshText;
         ActionButtonsManager.MouseHoverUpdated -= UpdateMousePreview;
         focusedTablet = null;
-        lockedTablet = null;
         previewTablet = null;
     }
 
@@ -89,9 +87,6 @@ public class TabletMenuManager : MonoBehaviour
             if (tablet)
                 tablet.SetRead(readEntries.Contains(tablet.TextEntry), unreadAlpha);
         }
-
-        if (lockedTablet && !lockedTablet.IsRead)
-            lockedTablet = null;
 
         foreach (TabletButton tablet in tabletButtons)
             UpdateHighlight(tablet);
@@ -127,44 +122,24 @@ public class TabletMenuManager : MonoBehaviour
             return;
 
         previewTablet = tablet;
-        if (!lockedTablet)
-            RefreshText();
+        RefreshText();
     }
 
     internal void PressTablet(TabletButton tablet)
     {
-        TabletButton previousLock = lockedTablet;
-        lockedTablet = previousLock == tablet ? null : tablet;
         if (focusedTablet == tablet)
-            previewTablet = tablet;
-        UpdateHighlight(previousLock);
-        UpdateHighlight(tablet);
-        RefreshText();
-        tablet.PlayLockSound(lockedTablet == tablet);
+            SetPreview(tablet);
     }
 
     internal void CancelTabletSelection()
     {
         SetPreview(null);
-        TryUnlockTablet();
-    }
-
-    internal bool TryUnlockTablet()
-    {
-        if (!isActiveAndEnabled || !lockedTablet)
-            return false;
-
-        TabletButton previouslyLocked = lockedTablet;
-        lockedTablet = null;
-        UpdateHighlight(previouslyLocked);
-        RefreshText();
-        return true;
     }
 
     private void UpdateHighlight(TabletButton tablet)
     {
         if (tablet)
-            tablet.SetHighlighted(tablet == focusedTablet || tablet == lockedTablet);
+            tablet.SetHighlighted(tablet == focusedTablet);
     }
 
     private void RefreshText()
@@ -172,7 +147,7 @@ public class TabletMenuManager : MonoBehaviour
         if (!tabletDisplayText)
             return;
 
-        TabletButton tablet = lockedTablet ? lockedTablet : previewTablet;
+        TabletButton tablet = previewTablet;
         int entry = tablet && tablet.IsRead ? tablet.TextEntry : -1;
         if (entry < 0 || entry >= tabletData.tabletDataSegment.Count)
         {

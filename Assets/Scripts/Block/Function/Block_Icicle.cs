@@ -108,7 +108,8 @@ public class Block_Icicle : MonoBehaviour
 
     void GetEndPos()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, raycastDistance_Down + 1, MapManager.Instance.pickup_LayerMask))
+        var map = MapManager.Instance;
+        if (map && Physics.Raycast(transform.position, Vector3.down, out hit, raycastDistance_Down + 1, map.pickup_LayerMask))
         {
             if (hit.transform.gameObject.GetComponent<BlockInfo>())
             {
@@ -124,6 +125,10 @@ public class Block_Icicle : MonoBehaviour
 
     bool CheckIfReadyToFall()
     {
+        var map = MapManager.Instance;
+        if (!map)
+            return false;
+
         if (resettingBlock)
         {
             hasFallen = false;
@@ -144,7 +149,7 @@ public class Block_Icicle : MonoBehaviour
         }
         else
         {
-            if (Physics.Raycast(transform.position, Vector3.down, out hit, raycastDistance_Down, MapManager.Instance.pickup_LayerMask))
+            if (Physics.Raycast(transform.position, Vector3.down, out hit, raycastDistance_Down, map.pickup_LayerMask))
             {
                 if (hit.transform.gameObject.CompareTag("Player"))
                 {

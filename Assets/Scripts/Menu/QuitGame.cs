@@ -9,6 +9,9 @@ public class QuitGame : MonoBehaviour
 
     public void QuitGameFunction()
     {
+        if (DataPersistanceManager.GameplayInputBlocked)
+            return;
+
         Action_QuitGame?.Invoke();
         Application.Quit();
     }

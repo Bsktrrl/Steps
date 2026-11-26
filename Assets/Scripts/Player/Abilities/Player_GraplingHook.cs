@@ -39,18 +39,15 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
     private void Start()
     {
         SetupLine();
-
-        redDotSceneObject.SetActive(false);
     }
     private void OnEnable()
     {
-        Movement.Action_StepTaken += ResetGrapplingHook;
         Movement.Action_RespawnPlayerEarly += ResetGrapplingHook;
     }
     private void OnDisable()
     {
-        Movement.Action_StepTaken -= ResetGrapplingHook;
         Movement.Action_RespawnPlayerEarly -= ResetGrapplingHook;
+        ResetGrapplingHook();
     }
 
 
@@ -65,13 +62,6 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
         lineRenderer.positionCount = 2;
         EndLineRenderer();
     }
-    void RemoveLine()
-    {
-        if (redDotSceneObject)
-            DestroyImmediate(redDotSceneObject);
-
-        endPoint = Vector3.zero;
-    }
 
     public void RunLineReader()
     {
@@ -83,22 +73,28 @@ public class Player_GraplingHook : Singleton<Player_GraplingHook>
         //Beam End
         lineRenderer.SetPosition(1, redDotSceneObject.transform.position);
 
+        // If a step happens while the aim is visible, clear it as before.
+        Movement.Action_StepTaken -= ResetGrapplingHook;
+        Movement.Action_StepTaken += ResetGrapplingHook;
+
         Action_GrapplingHook_Hit?.Invoke();
     }
     public void EndLineRenderer()
     {
-        //Beam Start
-        lineRenderer.SetPosition(0, transform.position);
+        Movement.Action_StepTaken -= ResetGrapplingHook;
 
-        //Beam End
-        lineRenderer.SetPosition(1, transform.position);
+        if (lineRenderer && lineRenderer.positionCount >= 2)
+        {
+            lineRenderer.SetPosition(0, transform.position);
+            lineRenderer.SetPosition(1, transform.position);
+        }
 
         if (redDotSceneObject)
             redDotSceneObject.SetActive(false);
     }
     public void ResetGrapplingHook()
     {
-        RemoveLine();
-        SetupLine();
+        endPoint = Vector3.zero;
+        EndLineRenderer();
     }
 }

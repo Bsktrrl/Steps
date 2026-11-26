@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class ActivatePermanentAbilities : Singleton<ActivatePermanentAbilities>
@@ -46,111 +44,52 @@ public class ActivatePermanentAbilities : Singleton<ActivatePermanentAbilities>
     //--------------------
 
 
+
     void CheckIfAbilityShouldUpdate()
     {
-        //print("0. CheckIfAbilityShouldUpdate");
-        //Rivergreen
-        for (int i = 0; i < DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count; i++)
-        {
-            if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].mapName == rivergreenStats.levelToPlay && DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List[i].isCompleted && (!PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel && !PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers && !PlayerStats.Instance.stats.abilitiesGot_Permanent.OxygenTank))
-            {
-                string tempText =
-                    DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Water1
-                    + " <color=#B593D5>"
-                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Water
-                    + "</color> "
-                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Water2;
+        DataManager data = DataManager.Instance;
+        int language = (int)data.settingData_StoreList.currentLanguage;
+        var languages = data.game_TextDatabase_Store?.gameText_LanguageList;
+        var text = languages != null && language >= 0 && language < languages.Count ? languages[language] : null;
 
-                PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup(tempText);
-
-                ActivateAbilities(rivergreenStats, abilityToGetInRivergreenList);
-                SaveAbilityData(Abilities.Snorkel);
-                SaveAbilityData(Abilities.Flippers);
-                SaveAbilityData(Abilities.OxygenTank);
-            }
-
-            //Sandlands
-            if (sandlandsStats.isCompleted && (!PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillHelmet && !PlayerStats.Instance.stats.abilitiesGot_Permanent.DrillBoots))
-            {
-                string tempText =
-                    DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Sand1
-                    + " <color=#B593D5>"
-                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Sand
-                    + "</color> "
-                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Sand2;
-
-                PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup(tempText);
-
-                ActivateAbilities(sandlandsStats, abilityToGetInSandlandsList);
-                SaveAbilityData(Abilities.DrillHelmet);
-                SaveAbilityData(Abilities.DrillBoots);
-            }
-
-            //Frostfield
-            if (frostfieldStats.isCompleted && !PlayerStats.Instance.stats.abilitiesGot_Permanent.SpringShoes)
-            {
-                string tempText =
-                    DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Ice1
-                    + " <color=#B593D5>"
-                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Ice
-                    + "</color> "
-                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Ice2;
-
-                PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup(tempText);
-
-                ActivateAbilities(frostfieldStats, abilityToGetInFrostfieldList);
-                SaveAbilityData(Abilities.SpringShoes);
-            }
-
-            //Firevein
-            if (fireveinStats.isCompleted && !PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook)
-            {
-                string tempText =
-                    DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Lava1
-                    + " <color=#B593D5>"
-                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Lava
-                    + "</color> "
-                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Lava2;
-
-                PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup(tempText);
-
-                ActivateAbilities(fireveinStats, abilityToGetInFireveinList);
-                SaveAbilityData(Abilities.GrapplingHook);
-            }
-
-            //Witchmire
-            if (witchmireStats.isCompleted && !PlayerStats.Instance.stats.abilitiesGot_Permanent.HandDrill)
-            {
-                string tempText =
-                    DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Swamp1
-                    + " <color=#B593D5>"
-                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Swamp
-                    + "</color> "
-                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Swamp2;
-
-                PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup(tempText);
-
-                ActivateAbilities(witchmireStats, abilityToGetInWitchmireList);
-                SaveAbilityData(Abilities.HandDrill);
-            }
-
-            //Metalwork
-            if (metalworksStats.isCompleted && !PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimingGloves)
-            {
-                string tempText =
-                    DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Metal1
-                    + " <color=#B593D5>"
-                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].name_Region_Metal
-                    + "</color> "
-                    + DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].finishedRegion_Message_Metal2;
-
-                PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup(tempText);
-
-                ActivateAbilities(metalworksStats, abilityToGetInMetalworksList);
-                SaveAbilityData(Abilities.ClimingGloves);
-            }
-        }
+        ActivateAbilities(rivergreenStats, abilityToGetInRivergreenList,
+            text?.finishedRegion_Message_Water1, text?.name_Region_Water, text?.finishedRegion_Message_Water2);
+        ActivateAbilities(sandlandsStats, abilityToGetInSandlandsList,
+            text?.finishedRegion_Message_Sand1, text?.name_Region_Sand, text?.finishedRegion_Message_Sand2);
+        ActivateAbilities(frostfieldStats, abilityToGetInFrostfieldList,
+            text?.finishedRegion_Message_Ice1, text?.name_Region_Ice, text?.finishedRegion_Message_Ice2);
+        ActivateAbilities(fireveinStats, abilityToGetInFireveinList,
+            text?.finishedRegion_Message_Lava1, text?.name_Region_Lava, text?.finishedRegion_Message_Lava2);
+        ActivateAbilities(witchmireStats, abilityToGetInWitchmireList,
+            text?.finishedRegion_Message_Swamp1, text?.name_Region_Swamp, text?.finishedRegion_Message_Swamp2);
+        ActivateAbilities(metalworksStats, abilityToGetInMetalworksList,
+            text?.finishedRegion_Message_Metal1, text?.name_Region_Metal, text?.finishedRegion_Message_Metal2);
     }
+
+    void ActivateAbilities(LoadLevel finale, List<Abilities> rewards, string messageStart, string regionName, string messageEnd)
+    {
+        if (!finale || SaveLoad_MapInfo.Instance.GetMapInfo(finale.levelToPlay)?.isCompleted != true)
+            return;
+
+        AbilitiesGot permanent = DataManager.Instance.playerStats_Store.abilitiesGot_Permanent;
+        bool unlocked = false;
+        foreach (Abilities ability in rewards)
+        {
+            if (ability == Abilities.None || permanent.HasAbility(ability))
+                continue;
+
+            SaveAbilityData(ability);
+            unlocked = true;
+        }
+
+        if (!unlocked)
+            return;
+
+        DataPersistanceManager.instance.SaveGame();
+        if (!string.IsNullOrEmpty(regionName))
+            PopUpManager_MainMenu.Instance.ShowPermanentAbilityPopup($"{messageStart} <color=#B593D5>{regionName}</color> {messageEnd}");
+    }
+
     void SaveAbilityData(Abilities ability)
     {
         switch (ability)
@@ -197,23 +136,6 @@ public class ActivatePermanentAbilities : Singleton<ActivatePermanentAbilities>
 
             default:
                 break;
-        }
-        
-        DataPersistanceManager.instance.SaveGame();
-    }
-
-
-    //--------------------
-
-
-    void ActivateAbilities(LoadLevel levelStats, List<Abilities> abilityList)
-    {
-        if (levelStats.isCompleted)
-        {
-            for (int i = 0; i < abilityList.Count; i++)
-            {
-                SaveAbilityData(abilityList[i]);
-            }
         }
     }
 }

@@ -21,23 +21,6 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
     [Header("Other")]
     RaycastHit hit;
 
-    bool movementButtonIsPressed;
-
-
-    //--------------------
-
-
-    private void Start()
-    {
-        //block_hasBeenDarkened = false;
-    }
-    private void Update()
-    {
-        RemoveDarkenBlockWhenKeyPressed();
-        //SetMoveDirections();
-    }
-
-
     //--------------------
 
 
@@ -174,34 +157,4 @@ public class Player_DarkenBlock : Singleton<Player_DarkenBlock>
     //}
 
 
-    //--------------------
-
-    void RemoveDarkenBlockWhenKeyPressed()
-    {
-        if (Player_KeyInputs.Instance.forward_isPressed
-            || Player_KeyInputs.Instance.back_isPressed
-            || Player_KeyInputs.Instance.left_isPressed
-            || Player_KeyInputs.Instance.right_isPressed
-            || Player_KeyInputs.Instance.up_isPressed
-            || Player_KeyInputs.Instance.down_isPressed)
-        {
-            if (Movement.Instance.GetMovementState() == MovementStates.Moving)
-            {
-                movementButtonIsPressed = true;
-            }
-        }
-
-        if (!Player_KeyInputs.Instance.forward_isPressed
-            && !Player_KeyInputs.Instance.back_isPressed
-            && !Player_KeyInputs.Instance.left_isPressed
-            && !Player_KeyInputs.Instance.right_isPressed
-            && !Player_KeyInputs.Instance.up_isPressed
-            && !Player_KeyInputs.Instance.down_isPressed)
-        {
-            if (Movement.Instance.GetMovementState() == MovementStates.Still)
-            {
-                movementButtonIsPressed = false;
-            }
-        }
-    }
 }

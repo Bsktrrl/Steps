@@ -23,7 +23,6 @@ public class PlayerManager : Singleton<PlayerManager>
     //public Vector3 lookingDirection;
     public GameObject block_LookingAt_Horizontal;
     public GameObject block_LookingAt_Vertical;
-    RaycastHit hit;
 
     [Header("Game Paused")]
     public bool pauseGame;
@@ -58,7 +57,10 @@ public class PlayerManager : Singleton<PlayerManager>
         DataManager.Action_dataHasLoaded += SetNewPlayerPosition;
         Movement.Action_StepTaken += StepsOnFallableBlock;
         Movement.Action_StepTaken += BlockLookingAt;
+        Movement.Action_HasLandedFromFalling += BlockLookingAt;
         Movement.Action_BodyRotated += BlockLookingAt;
+        Movement.Action_RespawnPlayerEarly += ClearInteractionTargetForRespawn;
+        Movement.Action_RespawnPlayerLate += BlockLookingAt;
 
         Block_Moveable.Action_ObjectHasBeenPushed += BlockLookingAt;
     }
@@ -69,7 +71,10 @@ public class PlayerManager : Singleton<PlayerManager>
         DataManager.Action_dataHasLoaded -= SetNewPlayerPosition;
         Movement.Action_StepTaken -= StepsOnFallableBlock;
         Movement.Action_StepTaken -= BlockLookingAt;
+        Movement.Action_HasLandedFromFalling -= BlockLookingAt;
         Movement.Action_BodyRotated -= BlockLookingAt;
+        Movement.Action_RespawnPlayerEarly -= ClearInteractionTargetForRespawn;
+        Movement.Action_RespawnPlayerLate -= BlockLookingAt;
 
         Block_Moveable.Action_ObjectHasBeenPushed -= BlockLookingAt;
     }
@@ -100,7 +105,7 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         yield return new WaitForSeconds(waitTime);
 
-        MapManager map = FindAnyObjectByType<MapManager>();
+        MapManager map = MapManager.Instance;
         if (!map || map.gameObject.scene != gameObject.scene || map.levelName != LevelNames.HUB)
             yield break;
 
@@ -156,32 +161,45 @@ public class PlayerManager : Singleton<PlayerManager>
     //--------------------
 
 
-    void BlockLookingAt()
-    {
-        Vector3 origin = playerBody.transform.position;
-        Vector3 direction = playerBody.transform.forward;
+    void BlockLookingAt() => RefreshHorizontalLookTarget();
 
-        if (Physics.Raycast(origin + (Vector3.up * 0.25f), direction, out hit, 1.1f))
+    internal GameObject RefreshHorizontalLookTarget()
+    {
+        if (playerBody &&
+            Physics.Raycast(playerBody.transform.position + Vector3.up * 0.25f,
+                playerBody.transform.forward, out RaycastHit hit, 1.1f) &&
+            hit.collider.TryGetComponent<BlockInfo>(out _))
         {
-            if (hit.collider.TryGetComponent<BlockInfo>(out _))
+            GameObject target = hit.collider.gameObject;
+            if (block_LookingAt_Horizontal != target)
             {
-                if (block_LookingAt_Horizontal != hit.collider.gameObject)
-                {
-                    block_LookingAt_Horizontal = hit.collider.gameObject;
-                    Action_UpdatedLookingAtHorizontal?.Invoke();
-                }
-            }
-            else
-            {
-                block_LookingAt_Horizontal = null;
+                block_LookingAt_Horizontal = target;
                 Action_UpdatedLookingAtHorizontal?.Invoke();
             }
+
+            return target;
         }
-        else
-        {
-            block_LookingAt_Horizontal = null;
-            Action_UpdatedLookingAtHorizontal?.Invoke();
-        }
+
+        ClearHorizontalLookTarget();
+        return null;
+    }
+
+    void ClearHorizontalLookTarget()
+    {
+        block_LookingAt_Horizontal = null;
+        Action_UpdatedLookingAtHorizontal?.Invoke();
+    }
+
+    void ClearInteractionTargetForRespawn()
+    {
+        ClearHorizontalLookTarget();
+
+        ButtonMessageManager prompts = GetComponentInChildren<ButtonMessageManager>();
+        if (!prompts)
+            return;
+
+        prompts.HideButtonMessage(prompts.buttonMessages?.buttonMessage_Read);
+        prompts.HideButtonMessage(prompts.buttonMessages?.buttonMessage_PlaceGlueplant);
     }
 
 
@@ -224,6 +242,8 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private static string exitedLevelScene;
     private static bool selectNextLevelOnReturn;
+    private string pendingLevelExitScene;
+    private bool pendingLevelExitIsCompletion;
 
     public static string ConsumeExitedLevelScene(out bool selectNextLevel)
     {
@@ -234,19 +254,46 @@ public class PlayerManager : Singleton<PlayerManager>
         return sceneName;
     }
 
-    public void QuitLevel()
+    internal bool TryBeginLevelExit(bool completed = false)
     {
-        if (!string.IsNullOrEmpty(mainMenu_Name))
-            Player_Statistics_Manager.Active?.SaveLevelExit();
+        string sceneName = GetLevelExitScene(completed);
+        DataPersistanceManager persistence = DataPersistanceManager.instance;
+        if (!persistence || string.IsNullOrEmpty(sceneName) ||
+            !Application.CanStreamedLevelBeLoaded(sceneName) || !persistence.TryBeginSceneChange())
+            return false;
 
-        ReturnToLevelMenu(false);
+        pendingLevelExitScene = sceneName;
+        pendingLevelExitIsCompletion = completed;
+        return true;
     }
 
-    public void CompleteLevelAndLeave()
+    internal void FinishLevelExit()
     {
-        Player_Statistics_Manager.Active?.RecordLevelCompletion();
-        Player_Statistics_Manager.Active?.SaveLevelExit();
-        MapStatsGathered.Instance.CompleteLevel();
+        if (string.IsNullOrEmpty(pendingLevelExitScene))
+            return;
+
+        string sceneName = pendingLevelExitScene;
+        pendingLevelExitScene = null;
+        if (pendingLevelExitIsCompletion)
+            Player_Statistics_Manager.Active?.RecordLevelCompletion();
+
+        Player_Statistics_Manager.Active?.FinishLevelAttempt();
+        if (pendingLevelExitIsCompletion)
+            MapStatsGathered.Instance.CompleteLevel();
+
+        if (sceneName == mainMenu_Name)
+        {
+            exitedLevelScene = SceneManager.GetActiveScene().name;
+            selectNextLevelOnReturn = pendingLevelExitIsCompletion;
+        }
+
+        StartCoroutine(LoadSceneCoroutine(sceneName));
+    }
+
+    private string GetLevelExitScene(bool completed)
+    {
+        if (!completed)
+            return mainMenu_Name;
 
         switch (MapManager.Instance.levelName)
         {
@@ -256,27 +303,18 @@ public class PlayerManager : Singleton<PlayerManager>
             case LevelNames.Firevein_Lv5:
             case LevelNames.Witchmire_Lv5:
             case LevelNames.Metalworks_Lv5:
-                StartCoroutine(LoadSceneCoroutine(nameof(LevelNames.HUB)));
-                break;
+                return nameof(LevelNames.HUB);
 
             default:
-                ReturnToLevelMenu(true);
-                break;
-        }
-    }
-
-    private void ReturnToLevelMenu(bool selectNextLevel)
-    {
-        if (!string.IsNullOrEmpty(mainMenu_Name))
-        {
-            exitedLevelScene = SceneManager.GetActiveScene().name;
-            selectNextLevelOnReturn = selectNextLevel;
-            StartCoroutine(LoadSceneCoroutine(mainMenu_Name));
+                return mainMenu_Name;
         }
     }
 
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {
+        DataPersistanceManager persistence = DataPersistanceManager.instance;
+        yield return persistence.SaveBeforeSceneChange();
+
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
         while (!operation.isDone)
         {
@@ -284,6 +322,7 @@ public class PlayerManager : Singleton<PlayerManager>
             yield return null;
         }
     }
+
 }
 
 [Serializable]

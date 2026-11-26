@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -25,9 +24,8 @@ public class OptionSelectAnimation : MonoBehaviour, IPointerDownHandler
     [SerializeField, Range(0.2f, 3f)] float edgeTightness = 0.9f;
 
     RectTransform rt;
-
-    bool buttonPressAnimation;
-    float counter = 0;
+    UI_PulsatingMotion_WhenSelected parentSelection;
+    Coroutine pressAnimation;
 
 
     //--------------------
@@ -36,31 +34,8 @@ public class OptionSelectAnimation : MonoBehaviour, IPointerDownHandler
     private void Awake()
     {
         rt = (RectTransform)transform;
-    }
-
-    private void Update()
-    {
-        if (buttonPressAnimation)
-        {
-            counter += Time.unscaledDeltaTime;
-
-            float duration = 1f / (2f * pulseSpeed);
-
-            if (counter >= duration)
-            {
-                buttonPressAnimation = false;
-                counter = 0f;
-                rt.localScale = startScale;
-            }
-            else
-            {
-                ButtonPressAnimation(duration);
-            }
-        }
-        else
-        {
-            rt.localScale = startScale;
-        }
+        if (parent)
+            parent.TryGetComponent(out parentSelection);
     }
 
 
@@ -69,6 +44,7 @@ public class OptionSelectAnimation : MonoBehaviour, IPointerDownHandler
 
     private void OnEnable()
     {
+        rt.localScale = startScale;
         Menu_KeyInputs.Action_MenuSettingsNavigationLeft_isPressed += ButtonPressAnimation_Left;
         Menu_KeyInputs.Action_MenuSettingsNavigationRight_isPressed += ButtonPressAnimation_Right;
     }
@@ -76,6 +52,7 @@ public class OptionSelectAnimation : MonoBehaviour, IPointerDownHandler
     {
         Menu_KeyInputs.Action_MenuSettingsNavigationLeft_isPressed -= ButtonPressAnimation_Left;
         Menu_KeyInputs.Action_MenuSettingsNavigationRight_isPressed -= ButtonPressAnimation_Right;
+        StopPressAnimation();
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -104,37 +81,52 @@ public class OptionSelectAnimation : MonoBehaviour, IPointerDownHandler
 
     void ButtonPressAnimation_Left()
     {
-        if (isLeftArrow && parent.GetComponent<UI_PulsatingMotion_WhenSelected>() && parent.GetComponent<UI_PulsatingMotion_WhenSelected>().isActive)
-        {
-            counter = 0;
-            rt.localScale = Vector2.one;
-
-            buttonPressAnimation = true;
-
-            Action_ButtonIsPressed?.Invoke();
-        }
+        if (isLeftArrow && parentSelection && parentSelection.isActive)
+            StartPressAnimation();
     }
     void ButtonPressAnimation_Right()
     {
-        if (isRightArrow && parent.GetComponent<UI_PulsatingMotion_WhenSelected>() && parent.GetComponent<UI_PulsatingMotion_WhenSelected>().isActive)
-        {
-            counter = 0;
-            rt.localScale = Vector2.one;
-
-            buttonPressAnimation = true;
-
-            Action_ButtonIsPressed?.Invoke();
-        }
+        if (isRightArrow && parentSelection && parentSelection.isActive)
+            StartPressAnimation();
     }
 
-    void ButtonPressAnimation(float duration)
+    private void StartPressAnimation()
     {
-        float u = Mathf.Clamp01(counter / duration);   // 0..1
-        float t = Mathf.Sin(u * Mathf.PI);             // 0..1..0 (single pulse)
+        StopPressAnimation();
+        rt.localScale = startScale;
+        pressAnimation = StartCoroutine(AnimatePress());
+        Action_ButtonIsPressed?.Invoke();
+    }
 
-        t = TightenEdges(t, edgeTightness);            // optional “less dwell”
+    private void StopPressAnimation()
+    {
+        if (pressAnimation == null)
+            return;
 
-        rt.localScale = Vector3.LerpUnclamped(startScale, startScale + maxScale, t);
+        StopCoroutine(pressAnimation);
+        pressAnimation = null;
+    }
+
+    private IEnumerator AnimatePress()
+    {
+        float elapsed = 0f;
+
+        while (true)
+        {
+            yield return null;
+
+            elapsed += Time.unscaledDeltaTime;
+            float duration = 1f / (2f * pulseSpeed);
+            if (elapsed >= duration)
+                break;
+
+            float t = Mathf.Sin(Mathf.Clamp01(elapsed / duration) * Mathf.PI);
+            t = TightenEdges(t, edgeTightness);
+            rt.localScale = Vector3.LerpUnclamped(startScale, startScale + maxScale, t);
+        }
+
+        rt.localScale = startScale;
+        pressAnimation = null;
     }
     static float TightenEdges(float t, float k)
     {
