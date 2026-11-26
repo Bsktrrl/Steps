@@ -126,7 +126,7 @@ public class Player_Animations : Singleton<Player_Animations>
         SFX_Respawn.Action_RespawnPlayerAnimation += Trigger_RespawnAnimation_ButtonHold;
 
         Interactable_Pickup.Action_EssencePickupGot += PickUpAnimation_Small;
-        Interactable_Pickup.Action_SkinPickupGot += PickUpAnimation_Small;
+        Interactable_Pickup.Action_SkinPickupGot += PickUpSkinAnimation;
         Interactable_Pickup.Action_FootprintPickupGot += PickUpAnimation_Big;
         Interactable_Pickup.Action_AbilityPickupGot += PickUpAnimation_Big;
     }
@@ -143,7 +143,7 @@ public class Player_Animations : Singleton<Player_Animations>
         SFX_Respawn.Action_RespawnPlayerAnimation -= Trigger_RespawnAnimation_ButtonHold;
 
         Interactable_Pickup.Action_EssencePickupGot -= PickUpAnimation_Small;
-        Interactable_Pickup.Action_SkinPickupGot -= PickUpAnimation_Small;
+        Interactable_Pickup.Action_SkinPickupGot -= PickUpSkinAnimation;
         Interactable_Pickup.Action_FootprintPickupGot -= PickUpAnimation_Big;
         Interactable_Pickup.Action_AbilityPickupGot -= PickUpAnimation_Big;
     }
@@ -399,6 +399,8 @@ public class Player_Animations : Singleton<Player_Animations>
     //--------------------
 
 
+    void PickUpSkinAnimation(SkinType skin) => PickUpAnimation_Small();
+
     public void PickUpAnimation_Small()
     {
         StartPickupAnimation(AnimationManager.Instance.effect_PickupSmall, effectChargeTime_Pickup_Small);
@@ -468,6 +470,7 @@ public class Player_Animations : Singleton<Player_Animations>
         if (!Movement.Instance.isRespawning &&
             !CameraController.Instance.isRotating &&
             !PopUpManager.Instance.ability_Active &&
+            !PopUpManager.Instance.oneTimer_Active &&
             !PauseMenuManager.Instance.isActive &&
             !Player_KeyInputs.Instance.freeCam_isPressed)
         {

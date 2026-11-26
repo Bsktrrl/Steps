@@ -45,113 +45,13 @@ public class Light_GlueplantChange : MonoBehaviour
 
     bool CheckIfGlueplantPickedUp()
     {
-        if (glueplantStand_number == null || glueplantStand_number.Count == 0)
+        var map = MapManager.Instance;
+        if (!map || glueplantStand_number == null || glueplantStand_number.Count == 0)
             return false;
 
-        foreach (int standNumber in glueplantStand_number)
-        {
-            bool standIsTaken = false;
-
-            switch (glueplantType)
-            {
-                case GlueplantType.Rivergreen:
-                    switch (standNumber)
-                    {
-                        case 1:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Rivergreen.stand_1_isTaken;
-                            break;
-                        case 2:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Rivergreen.stand_2_isTaken;
-                            break;
-                        case 3:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Rivergreen.stand_3_isTaken;
-                            break;
-                        case 4:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Rivergreen.stand_4_isTaken;
-                            break;
-                    }
-                    break;
-
-                case GlueplantType.Sandlands:
-                    switch (standNumber)
-                    {
-                        case 1:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Sandlands.stand_1_isTaken;
-                            break;
-                        case 2:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Sandlands.stand_2_isTaken;
-                            break;
-                        case 3:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Sandlands.stand_3_isTaken;
-                            break;
-                        case 4:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Sandlands.stand_4_isTaken;
-                            break;
-                    }
-                    break;
-
-                case GlueplantType.Frostfield:
-                    switch (standNumber)
-                    {
-                        case 1:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Frostfield.stand_1_isTaken;
-                            break;
-                        case 2:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Frostfield.stand_2_isTaken;
-                            break;
-                        case 3:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Frostfield.stand_3_isTaken;
-                            break;
-                        case 4:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Frostfield.stand_4_isTaken;
-                            break;
-                    }
-                    break;
-
-                case GlueplantType.Firevein:
-                    switch (standNumber)
-                    {
-                        case 1:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Firevein.stand_1_isTaken;
-                            break;
-                        case 2:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Firevein.stand_2_isTaken;
-                            break;
-                        case 3:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Firevein.stand_3_isTaken;
-                            break;
-                        case 4:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Firevein.stand_4_isTaken;
-                            break;
-                    }
-                    break;
-
-                case GlueplantType.Witchmire:
-                    switch (standNumber)
-                    {
-                        case 1:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Witchmire.stand_1_isTaken;
-                            break;
-                        case 2:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Witchmire.stand_2_isTaken;
-                            break;
-                        case 3:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Witchmire.stand_3_isTaken;
-                            break;
-                        case 4:
-                            standIsTaken = DataManager.Instance.glueplantStandStats_Store.standStats_Witchmire.stand_4_isTaken;
-                            break;
-                    }
-                    break;
-            }
-
-            if (!standIsTaken)
-                return false;
-        }
-
-        return true;
+        StandStats stats = DataManager.Instance.glueplantStandStats_Store?.GetForLevel(map.levelName);
+        return stats != null && glueplantStand_number.TrueForAll(stats.IsTaken);
     }
-
 
     //--------------------
 

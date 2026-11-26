@@ -11,6 +11,8 @@ public class UnlockDisplay : MonoBehaviour
     [SerializeField] GameObject levelReached_obj;
     [SerializeField] GameObject canNotUnlock_obj;
     [SerializeField] GameObject canUnlock_obj;
+    [SerializeField] TextMeshProUGUI canUnlockCost;
+    [SerializeField] TextMeshProUGUI cannotUnlockCost;
     [SerializeField] GameObject canEquip_obj;
     [SerializeField] GameObject isEquipped_obj;
     [SerializeField] GameObject unlockAllOtherSkins_obj;
@@ -27,7 +29,7 @@ public class UnlockDisplay : MonoBehaviour
 
     public void SetDisplay_Unavailable(RegionName region, string level)
     {
-        unavailable_obj.GetComponentInChildren<TextMeshProUGUI>().text = UnavailableMessage(region, level);
+        unavailable_obj.GetComponentInChildren<TextMeshProUGUI>(true).text = UnavailableMessage(region, level);
 
         CopyPulseScaleTo(unavailable_obj);
 
@@ -39,13 +41,11 @@ public class UnlockDisplay : MonoBehaviour
         isEquipped_obj.SetActive(false);
         unlockAllOtherSkins_obj.SetActive(false);
         finishQuestline_obj.SetActive(false);
-
-        _currentPulsingImageRt = unavailable_obj.GetComponentInChildren<Image>().rectTransform;
     }
 
     public void SetDisplay_LevelReached(RegionName region, string level)
     {
-        levelReached_obj.GetComponentInChildren<TextMeshProUGUI>().text = UnavailableMessage(region, level);
+        levelReached_obj.GetComponentInChildren<TextMeshProUGUI>(true).text = UnavailableMessage(region, level);
 
         CopyPulseScaleTo(levelReached_obj);
 
@@ -57,12 +57,11 @@ public class UnlockDisplay : MonoBehaviour
         isEquipped_obj.SetActive(false);
         unlockAllOtherSkins_obj.SetActive(false);
         finishQuestline_obj.SetActive(false);
-
-        _currentPulsingImageRt = levelReached_obj.GetComponentInChildren<Image>().rectTransform;
     }
 
-    public void SetDisplay_CanNotUnlock()
+    public void SetDisplay_CanNotUnlock(int cost)
     {
+        cannotUnlockCost.SetText("{0}", cost);
         CopyPulseScaleTo(canNotUnlock_obj);
 
         canNotUnlock_obj.SetActive(true);
@@ -73,12 +72,11 @@ public class UnlockDisplay : MonoBehaviour
         isEquipped_obj.SetActive(false);
         unlockAllOtherSkins_obj.SetActive(false);
         finishQuestline_obj.SetActive(false);
-
-        _currentPulsingImageRt = canNotUnlock_obj.GetComponentInChildren<Image>().rectTransform;
     }
 
-    public void SetDisplay_CanUnlock()
+    public void SetDisplay_CanUnlock(int cost)
     {
+        canUnlockCost.SetText("{0}", cost);
         CopyPulseScaleTo(canUnlock_obj);
 
         canUnlock_obj.SetActive(true);
@@ -89,8 +87,6 @@ public class UnlockDisplay : MonoBehaviour
         isEquipped_obj.SetActive(false);
         unlockAllOtherSkins_obj.SetActive(false);
         finishQuestline_obj.SetActive(false);
-
-        _currentPulsingImageRt = canUnlock_obj.GetComponentInChildren<Image>().rectTransform;
     }
 
     public void SetDisplay_CanEquip()
@@ -105,8 +101,6 @@ public class UnlockDisplay : MonoBehaviour
         isEquipped_obj.SetActive(false);
         unlockAllOtherSkins_obj.SetActive(false);
         finishQuestline_obj.SetActive(false);
-
-        _currentPulsingImageRt = canEquip_obj.GetComponentInChildren<Image>().rectTransform;
     }
 
     public void SetDisplay_IsEquipped()
@@ -121,13 +115,11 @@ public class UnlockDisplay : MonoBehaviour
         canEquip_obj.SetActive(false);
         unlockAllOtherSkins_obj.SetActive(false);
         finishQuestline_obj.SetActive(false);
-
-        _currentPulsingImageRt = isEquipped_obj.GetComponentInChildren<Image>().rectTransform;
     }
 
     public void SetDisplay_UnlockAllOtherSkins()
     {
-        CopyPulseScaleTo(isEquipped_obj);
+        CopyPulseScaleTo(unlockAllOtherSkins_obj);
 
         unlockAllOtherSkins_obj.SetActive(true);
         isEquipped_obj.SetActive(false);
@@ -137,8 +129,6 @@ public class UnlockDisplay : MonoBehaviour
         canUnlock_obj.SetActive(false);
         canEquip_obj.SetActive(false);
         finishQuestline_obj.SetActive(false);
-
-        _currentPulsingImageRt = isEquipped_obj.GetComponentInChildren<Image>().rectTransform;
     }
 
     public void SetDisplay_FinishQuestline(HatType hatType)
@@ -173,7 +163,7 @@ public class UnlockDisplay : MonoBehaviour
                 break;
         }
 
-        finishQuestline_obj.GetComponentInChildren<TextMeshProUGUI>().text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_Headgear_Unavailable + " " + npcName;
+        finishQuestline_obj.GetComponentInChildren<TextMeshProUGUI>(true).text = DataManager.Instance.game_TextDatabase_Store.gameText_LanguageList[(int)DataManager.Instance.settingData_StoreList.currentLanguage].WardrobeMenu_Message_Headgear_Unavailable + " " + npcName;
 
         CopyPulseScaleTo(finishQuestline_obj);
 
@@ -184,21 +174,18 @@ public class UnlockDisplay : MonoBehaviour
         canUnlock_obj.SetActive(false);
         canEquip_obj.SetActive(false);
         isEquipped_obj.SetActive(false);
-
-        _currentPulsingImageRt = finishQuestline_obj.GetComponentInChildren<Image>().rectTransform;
+        unlockAllOtherSkins_obj.SetActive(false);
     }
 
     void CopyPulseScaleTo(GameObject nextObj)
     {
-        if (nextObj)
-        {
-            var nextRt = nextObj.GetComponentInChildren<Image>().rectTransform;
+        Image image = nextObj.GetComponentInChildren<Image>(true);
+        if (!image)
+            return;
 
-            if (_currentPulsingImageRt != null)
-                nextRt.localScale = _currentPulsingImageRt.localScale;
-            else
-                nextRt.localScale = Vector3.one; // first time fallback
-        }
+        RectTransform nextRt = image.rectTransform;
+        nextRt.localScale = _currentPulsingImageRt ? _currentPulsingImageRt.localScale : Vector3.one;
+        _currentPulsingImageRt = nextRt;
     }
 
     public void SetSelectedBlockName(string name)
@@ -227,9 +214,9 @@ public class UnlockDisplay : MonoBehaviour
         }
         else if (int.TryParse(level, out int number))
         {
-            levelName = GetWardrobeLevelName(text, region, number);
+            levelName = text.GetLevelName(region, number);
             if (string.IsNullOrWhiteSpace(levelName))
-                levelName = GetWardrobeLevelName(translations[(int)Languages.English], region, number);
+                levelName = translations[(int)Languages.English].GetLevelName(region, number);
         }
         else
         {
@@ -240,67 +227,5 @@ public class UnlockDisplay : MonoBehaviour
             return "";
 
         return $"{text.WardrobeMenu_Message_SkinUnavailable_1} {levelName} {text.WardrobeMenu_Message_SkinUnavailable_2}";
-    }
-
-    private static string GetWardrobeLevelName(Game_TextDatabase_Language text, RegionName region, int number)
-    {
-        return region switch
-        {
-            RegionName.Rivergreen => number switch
-            {
-                1 => text.name_Region_Water_Lv1,
-                2 => text.name_Region_Water_Lv2,
-                3 => text.name_Region_Water_Lv3,
-                4 => text.name_Region_Water_Lv4,
-                5 => text.name_Region_Water_Lv5,
-                _ => null
-            },
-            RegionName.Sandlands => number switch
-            {
-                1 => text.name_Region_Sand_Lv1,
-                2 => text.name_Region_Sand_Lv2,
-                3 => text.name_Region_Sand_Lv3,
-                4 => text.name_Region_Sand_Lv4,
-                5 => text.name_Region_Sand_Lv5,
-                _ => null
-            },
-            RegionName.Frostfields => number switch
-            {
-                1 => text.name_Region_Ice_Lv1,
-                2 => text.name_Region_Ice_Lv2,
-                3 => text.name_Region_Ice_Lv3,
-                4 => text.name_Region_Ice_Lv4,
-                5 => text.name_Region_Ice_Lv5,
-                _ => null
-            },
-            RegionName.Firevein => number switch
-            {
-                1 => text.name_Region_Lava_Lv1,
-                2 => text.name_Region_Lava_Lv2,
-                3 => text.name_Region_Lava_Lv3,
-                4 => text.name_Region_Lava_Lv4,
-                5 => text.name_Region_Lava_Lv5,
-                _ => null
-            },
-            RegionName.Witchmire => number switch
-            {
-                1 => text.name_Region_Swamp_Lv1,
-                2 => text.name_Region_Swamp_Lv2,
-                3 => text.name_Region_Swamp_Lv3,
-                4 => text.name_Region_Swamp_Lv4,
-                5 => text.name_Region_Swamp_Lv5,
-                _ => null
-            },
-            RegionName.Metalworks => number switch
-            {
-                1 => text.name_Region_Metal_Lv1,
-                2 => text.name_Region_Metal_Lv2,
-                3 => text.name_Region_Metal_Lv3,
-                4 => text.name_Region_Metal_Lv4,
-                5 => text.name_Region_Metal_Lv5,
-                _ => null
-            },
-            _ => null
-        };
     }
 }

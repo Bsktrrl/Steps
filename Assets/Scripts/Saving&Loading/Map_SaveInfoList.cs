@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class Map_SaveInfoList
@@ -28,9 +29,10 @@ public class Map_SaveInfo
     public bool isCompleted;
 
     [Header("Collectables")]
-    public List<EssenceInfo> essenceList = new List<EssenceInfo>();
-    public LevelSkinsInfo levelSkin = new LevelSkinsInfo();
-    public List<MaxStepInfo> maxStepList = new List<MaxStepInfo>();
+    public List<PickupSaveInfo> essenceList = new List<PickupSaveInfo>();
+    public List<PickupSaveInfo> skinList = new List<PickupSaveInfo>();
+    public List<PickupSaveInfo> maxStepList = new List<PickupSaveInfo>();
+    public List<PickupSaveInfo> abilityPickupList = new List<PickupSaveInfo>();
 
     [Header("Skin available")]
     public SkinType skintype;
@@ -38,7 +40,7 @@ public class Map_SaveInfo
 
     [Header("Abilities available")]
     public AbilitiesGot abilitiesInLevel;
-    public AbilitiesGot abilitiesGotInLevel;
+    public AbilitiesGot abilitiesGotInLevel = new AbilitiesGot();
 
 
     //--------------------
@@ -48,7 +50,7 @@ public class Map_SaveInfo
     public void SetupMap()
     {
         SetMapName();
-        AddInteractableInfo();
+        CorrectingMapObjects();
 
         Action_SetupMap_hasLoaded?.Invoke();
     }
@@ -56,143 +58,115 @@ public class Map_SaveInfo
     {
         mapName = SceneManager.GetActiveScene().name;
     }
-    void AddInteractableInfo()
-    {
-        //Find all objects in the scene with a Interactable_GetItem script attached
-        Interactable_Pickup[] objectsWithScript = UnityEngine.Object.FindObjectsOfType<Interactable_Pickup>();
-
-        //Add all coins to the list
-        foreach (Interactable_Pickup obj in objectsWithScript)
-        {
-            if (obj.itemReceived == Items.Essence /*&& obj.itemReceived.amount > 0*/)
-            {
-                EssenceInfo essenceInfo = new EssenceInfo();
-                essenceInfo.essenceObj = obj.gameObject;
-                essenceInfo.pos = obj.gameObject.transform.position;
-                essenceInfo.isTaken = false;
-
-                essenceList.Add(essenceInfo);
-            }
-            else if (obj.itemReceived == Items.Skin /*&& obj.itemReceived.amount > 0*/)
-            {
-                LevelSkinsInfo skinInfo = new LevelSkinsInfo();
-                skinInfo.skinObj = obj.gameObject;
-                skinInfo.pos = obj.gameObject.transform.position;
-                skinInfo.isTaken = false;
-
-                levelSkin = skinInfo;
-            }
-            else if (obj.itemReceived == Items.Footprint /*&& obj.itemReceived.amount > 0*/)
-            {
-                MaxStepInfo maxStepInfo = new MaxStepInfo();
-                maxStepInfo.maxStepObj = obj.gameObject;
-                maxStepInfo.pos = obj.gameObject.transform.position;
-                maxStepInfo.isTaken = false;
-
-                maxStepList.Add(maxStepInfo);
-            }
-        }
-    }
-
-
-    //-----
-
 
     public void CorrectingMapObjects()
     {
-        //Find all objects in the scene with a Interactable_GetItem script attached
-        Map_SaveInfo mapSaveInfo = MapManager.Instance.mapInfo_ToSave;
-        Interactable_Pickup[] pickUpList = UnityEngine.Object.FindObjectsOfType<Interactable_Pickup>();
+        essenceList ??= new List<PickupSaveInfo>();
+        skinList ??= new List<PickupSaveInfo>();
+        maxStepList ??= new List<PickupSaveInfo>();
+        abilityPickupList ??= new List<PickupSaveInfo>();
 
-        //Coin Pickups
-        for (int i = 0; i < mapSaveInfo.essenceList.Count; i++)
+        var pickupsByNumber = new Dictionary<(Items item, int number), Interactable_Pickup>();
+        var duplicateNumbers = new HashSet<(Items item, int number)>();
+        Scene scene = SceneManager.GetActiveScene();
+        // Some pickups start inactive and can be enabled later in the level.
+        foreach (Interactable_Pickup pickup in UnityEngine.Object.FindObjectsOfType<Interactable_Pickup>(true))
         {
-            if (mapSaveInfo.essenceList[i].isTaken)
-            {
-                foreach (Interactable_Pickup pickup in pickUpList)
-                {
-                    if (pickup.itemReceived == Items.Essence)
-                    {
-                        if (mapSaveInfo.essenceList[i].pos.x == pickup.gameObject.transform.position.x
-                        && mapSaveInfo.essenceList[i].pos.z == pickup.gameObject.transform.position.z)
-                        {
-                            pickup.gameObject.SetActive(false);
+            if (pickup.gameObject.scene != scene || !pickup.IsNumberedPickup)
+                continue;
 
-                            break;
-                        }
-                    }
-                }
+            Items item = pickup.itemReceived;
+            string kind = item == Items.None ? "Ability" : item.ToString();
+            int number = pickup.TryGetComponent(out PickupData pickupData) ? pickupData.GetPickupNumber(item) : 0;
+            if (number <= 0)
+            {
+                Debug.LogWarning($"{kind} pickups need a positive pickup number.", pickup);
+                continue;
             }
+
+            var key = (item, number);
+            if (!pickupsByNumber.TryAdd(key, pickup) && duplicateNumbers.Add(key))
+                Debug.LogWarning($"{kind} pickup number {key.Item2} is used more than once in {mapName}. Assign a unique number to each pickup of this kind.", pickup);
         }
 
-        //Skins Pickups
-        if (mapSaveInfo.levelSkin.isTaken)
+        foreach (var pair in pickupsByNumber)
         {
-            foreach (Interactable_Pickup pickup in pickUpList)
-            {
-                if (pickup.itemReceived == Items.Skin)
-                {
-                    if (mapSaveInfo.levelSkin.pos.x == pickup.gameObject.transform.position.x
-                    && mapSaveInfo.levelSkin.pos.z == pickup.gameObject.transform.position.z)
-                    {
-                        pickup.gameObject.SetActive(false);
+            if (duplicateNumbers.Contains(pair.Key))
+                continue;
 
-                        break;
-                    }
-                }
+            var (item, number) = pair.Key;
+            List<PickupSaveInfo> entries = GetPickups(item);
+            PickupSaveInfo entry = entries.Find(saved => saved != null && saved.pickupNo == number);
+            if (entry == null)
+            {
+                entry = new PickupSaveInfo { pickupNo = number };
+                entries.Add(entry);
             }
+
+            if (entry.isTaken)
+                pair.Value.gameObject.SetActive(false);
         }
 
-        //MaxSteps Pickups
-        for (int i = 0; i < mapSaveInfo.maxStepList.Count; i++)
-        {
-            if (mapSaveInfo.maxStepList[i].isTaken)
-            {
-                foreach (Interactable_Pickup pickup in pickUpList)
-                {
-                    if (pickup.itemReceived == Items.Footprint)
-                    {
-                        if (mapSaveInfo.maxStepList[i].pos.x == pickup.gameObject.transform.position.x
-                        && mapSaveInfo.maxStepList[i].pos.z == pickup.gameObject.transform.position.z)
-                        {
-                            pickup.gameObject.SetActive(false);
+        registeredPickups = pickupsByNumber;
+        foreach (var key in duplicateNumbers)
+            registeredPickups.Remove(key);
+    }
 
-                            break;
-                        }
-                    }
-                }
+    [NonSerialized] Dictionary<(Items item, int number), Interactable_Pickup> registeredPickups;
+
+    List<PickupSaveInfo> GetPickups(Items item)
+    {
+        return item switch
+        {
+            Items.Essence => essenceList,
+            Items.Footprint => maxStepList,
+            Items.Skin => skinList,
+            _ => abilityPickupList
+        };
+    }
+
+    internal bool TryMarkPickupTaken(Interactable_Pickup pickup, int number)
+    {
+        var key = (pickup.itemReceived, number);
+        if (registeredPickups == null || !registeredPickups.TryGetValue(key, out Interactable_Pickup registered) || registered != pickup)
+            return false;
+
+        PickupSaveInfo entry = GetPickups(key.itemReceived).Find(saved => saved != null && saved.pickupNo == number);
+        if (entry == null || entry.isTaken)
+            return false;
+
+        entry.isTaken = true;
+        return true;
+    }
+
+    public int SkinPickupTotal => Mathf.Max(1, skinList?.Count ?? 0);
+
+    public int CountSkinsTaken()
+    {
+        int count = 0;
+        if (skinList != null)
+        {
+            foreach (PickupSaveInfo skin in skinList)
+            {
+                if (skin?.isTaken == true)
+                    count++;
             }
         }
+        return count;
     }
 }
 
 [Serializable]
-public class EssenceInfo
+public class PickupSaveInfo
 {
-    public GameObject essenceObj;
-    public Vector3 pos;
-    public bool isTaken;
-}
-
-[Serializable]
-public class LevelSkinsInfo
-{
-    public GameObject skinObj;
-    public Vector3 pos;
-    public bool isTaken;
-}
-
-[Serializable]
-public class MaxStepInfo
-{
-    public GameObject maxStepObj;
-    public Vector3 pos;
+    [FormerlySerializedAs("essenceNo")] public int pickupNo;
     public bool isTaken;
 }
 
 [Serializable]
 public class MapNameDisplay
 {
+    public string sceneName;
     public string mapNameDisplay_norwegian;
     public string mapNameDisplay_english;
     public string mapNameDisplay_german;

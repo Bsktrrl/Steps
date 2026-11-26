@@ -1,14 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+// These managers need scene references and register themselves during Awake.
+public interface ISceneSingleton { }
 
 public class Singleton<T> : MonoBehaviour where T : Component
 {
+    private static readonly bool sceneOwned = typeof(ISceneSingleton).IsAssignableFrom(typeof(T));
     private static T instance;
+
+    // Read scene state without creating a replacement during teardown.
+    internal static T ExistingInstance => instance && instance.gameObject.activeInHierarchy ? instance : null;
+
     public static T Instance
     {
         get
         {
+            if (sceneOwned)
+                return instance && instance is Behaviour behaviour && behaviour.isActiveAndEnabled ? instance : null;
+
             if (instance == null)
             {
                 instance = (T)FindObjectOfType(typeof(T));
@@ -30,6 +39,21 @@ public class Singleton<T> : MonoBehaviour where T : Component
     private void Awake()
     {
         RemoveDuplicates();
+    }
+
+    protected bool RegisterSceneInstance()
+    {
+        if (instance && instance != this && instance.gameObject.scene == gameObject.scene)
+            return false;
+
+        instance = this as T;
+        return true;
+    }
+
+    protected void UnregisterSceneInstance()
+    {
+        if (ReferenceEquals(instance, this))
+            instance = null;
     }
 
 

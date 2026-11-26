@@ -14,7 +14,8 @@ public class MenuStates : Singleton<MenuStates>
 
     public void ChangeMenuState(MenuState state)
     {
-        if (FindObjectOfType<MapManager>())
+        MainMenuManager menu = MainMenuManager.Instance;
+        if (!menu || MapManager.Instance)
         {
             return;
         }
@@ -22,37 +23,37 @@ public class MenuStates : Singleton<MenuStates>
         switch (state)
         {
             case MenuState.None:
-                MainMenuManager.Instance.menuState = MenuState.None;
+                menu.menuState = MenuState.None;
                 break;
 
             case MenuState.Main_Menu:
-                MainMenuManager.Instance.menuState = MenuState.Main_Menu;
+                menu.menuState = MenuState.Main_Menu;
                 break;
             case MenuState.Skin_Menu:
-                MainMenuManager.Instance.menuState = MenuState.Skin_Menu;
+                menu.menuState = MenuState.Skin_Menu;
                 break;
             case MenuState.Options_Menu:
-                MainMenuManager.Instance.menuState = MenuState.Options_Menu;
+                menu.menuState = MenuState.Options_Menu;
                 break;
             case MenuState.Info_Menu:
-                MainMenuManager.Instance.menuState = MenuState.Info_Menu;
+                menu.menuState = MenuState.Info_Menu;
                 break;
 
             case MenuState.Overworld_Menu:
-                MainMenuManager.Instance.menuState = MenuState.Overworld_Menu;
+                menu.menuState = MenuState.Overworld_Menu;
                 break;
             case MenuState.Biome_Menu:
-                MainMenuManager.Instance.menuState = MenuState.Biome_Menu;
+                menu.menuState = MenuState.Biome_Menu;
                 break;
 
             case MenuState.Pause_Menu_Main:
-                MainMenuManager.Instance.menuState = MenuState.Pause_Menu_Main;
+                menu.menuState = MenuState.Pause_Menu_Main;
                 break;
             case MenuState.Pause_Menu_Skins:
-                MainMenuManager.Instance.menuState = MenuState.Pause_Menu_Skins;
+                menu.menuState = MenuState.Pause_Menu_Skins;
                 break;
             case MenuState.Pause_Menu_Options:
-                MainMenuManager.Instance.menuState = MenuState.Pause_Menu_Options;
+                menu.menuState = MenuState.Pause_Menu_Options;
                 break;
 
             case MenuState.NewGameWarningMessage:
@@ -64,25 +65,25 @@ public class MenuStates : Singleton<MenuStates>
 
 
             case MenuState.RegionMenu_HUB:
-                MainMenuManager.Instance.menuState = MenuState.RegionMenu_HUB;
+                menu.menuState = MenuState.RegionMenu_HUB;
                 break;
             case MenuState.RegionMenu_Water:
-                MainMenuManager.Instance.menuState = MenuState.RegionMenu_Water;
+                menu.menuState = MenuState.RegionMenu_Water;
                 break;
             case MenuState.RegionMenu_Sand:
-                MainMenuManager.Instance.menuState = MenuState.RegionMenu_Sand;
+                menu.menuState = MenuState.RegionMenu_Sand;
                 break;
             case MenuState.RegionMenu_Ice:
-                MainMenuManager.Instance.menuState = MenuState.RegionMenu_Ice;
+                menu.menuState = MenuState.RegionMenu_Ice;
                 break;
             case MenuState.RegionMenu_Lava:
-                MainMenuManager.Instance.menuState = MenuState.RegionMenu_Lava;
+                menu.menuState = MenuState.RegionMenu_Lava;
                 break;
             case MenuState.RegionMenu_Swamp:
-                MainMenuManager.Instance.menuState = MenuState.RegionMenu_Swamp;
+                menu.menuState = MenuState.RegionMenu_Swamp;
                 break;
             case MenuState.RegionMenu_Metal:
-                MainMenuManager.Instance.menuState = MenuState.RegionMenu_Metal;
+                menu.menuState = MenuState.RegionMenu_Metal;
                 break;
 
             default:

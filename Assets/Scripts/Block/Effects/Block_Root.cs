@@ -908,13 +908,6 @@ public class Block_Root : MonoBehaviour
 
         rootBlockLineInfo.teleportEffectHasTriggered = false;
 
-        Block_Water water = rootBlockLineInfo.block.GetComponent<Block_Water>();
-
-        if (water)
-        {
-            water.hasRoots = true;
-        }
-
         RootFreeCostBlockList.Add(rootBlockLineInfo);
 
         return true;
@@ -1270,11 +1263,6 @@ public class Block_Root : MonoBehaviour
 
             if (block == null)
                 continue;
-
-            if (block.GetComponent<Block_Water>())
-            {
-                block.GetComponent<Block_Water>().hasRoots = false;
-            }
 
             BlockInfo info = block.GetComponent<BlockInfo>();
 

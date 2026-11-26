@@ -1,9 +1,5 @@
 using System;
 using UnityEngine;
-using System.IO;
-using UnityEngine.SceneManagement;
-using UnityEngine.Playables;
-using UnityEditor;
 
 public class NewGameButton : MonoBehaviour
 {
@@ -28,16 +24,13 @@ public class NewGameButton : MonoBehaviour
 
     public void NewGameButton_isPressed()
     {
-        string path = Path.Combine(Application.persistentDataPath, DataPersistanceManager.instance.fileName);
+        DataPersistanceManager persistence = DataPersistanceManager.instance;
+        if (persistence)
+            persistence.RequestNewGame(OnNewGameSaved);
+    }
 
-        if (File.Exists(path))
-        {
-            File.Delete(path);
-            Debug.Log("Save file deleted");
-        }
-
-        DataPersistanceManager.instance.NewGame();
-
+    private void OnNewGameSaved()
+    {
         if (menuLevelInfo && menuLevelInfo.mapInfo_ToSave != null)
         {
             menuLevelInfo.mapInfo_ToSave.map_SaveInfo_List.Clear();

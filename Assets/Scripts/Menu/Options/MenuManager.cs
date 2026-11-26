@@ -113,6 +113,22 @@ public class MenuManager : Singleton<MenuManager>
             infoManager.ShowPanel(MenuCategories.None);
     }
 
+    internal bool TryGetSelectedOptionRow(GameObject selected, out MenuCategorySelected row)
+    {
+        row = null;
+        GameObject panel = currentMenuCategorySelected switch
+        {
+            MenuCategories.Settings => settingsMenuParent,
+            MenuCategories.Controls => controlsMenuParent,
+            MenuCategories.Video => videoMenuParent,
+            MenuCategories.Audio => audioMenuParent,
+            _ => null
+        };
+
+        return panel && selected && selected.activeInHierarchy && selected.transform.IsChildOf(panel.transform) &&
+            selected.TryGetComponent(out row) && row.isActiveAndEnabled;
+    }
+
     internal void ShiftTab(EventSystem eventSystem, bool left)
     {
         bool inInfoMenu = IsInfoCategory(currentMenuCategorySelected);
@@ -127,6 +143,7 @@ public class MenuManager : Singleton<MenuManager>
 
         Transform tabBar = firstTab.transform.parent;
         GameObject selected = eventSystem.currentSelectedGameObject;
+        bool selectFirstRow = !inInfoMenu && TryGetSelectedOptionRow(selected, out _);
         int startIndex = firstTab.transform.GetSiblingIndex();
         for (int i = 0; i < tabBar.childCount; i++)
         {
@@ -154,6 +171,17 @@ public class MenuManager : Singleton<MenuManager>
                 IsTabInMenu(category.optionCategory, inInfoMenu) &&
                 tab.TryGetComponent(out Button button) && button.IsActive() && button.IsInteractable())
             {
+                if (selectFirstRow)
+                {
+                    ChangeMenuCategory(category.optionCategory);
+                    Selectable firstRow = button.navigation.selectOnDown;
+                    if (firstRow && TryGetSelectedOptionRow(firstRow.gameObject, out _))
+                    {
+                        ButtonSound.SelectWithNavigationSound(eventSystem, firstRow.gameObject);
+                        return;
+                    }
+                }
+
                 eventSystem.SetSelectedGameObject(tab.gameObject);
                 return;
             }

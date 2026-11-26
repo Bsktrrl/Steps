@@ -122,43 +122,22 @@ public class SkinWardrobeButton : MonoBehaviour, ISelectHandler, IDeselectHandle
                     WardrobeSounds(ButtonSoundStates.ButtonCannot);
                     return;
                 case WardrobeSkinState.Available:
-                    //Check condition to see if button is bought
-                    if (skinType == SkinType.SourceBlock)
-                    {
-                        if (CheckIfAllSkinsIsBought() && PlayerStats.Instance.stats.itemsGot.essence_Current >= skinWardrobeManager.skinCost)
-                        {
-                            PlayerStats.Instance.stats.itemsGot.essence_Current -= skinWardrobeManager.skinCost;
-                            skinWardrobeManager.UpdateEssenceDisplay();
-
-                            skinWardrobeManager.SetSkinSaveData(GetRegionNumber(region), level, WardrobeSkinState.Bought);
-
-                            WardrobeSounds(ButtonSoundStates.ButtonBuy);
-
-                            Action_BuySkin?.Invoke();
-                        }
-                        else
-                        {
-                            WardrobeSounds(ButtonSoundStates.ButtonCannot);
-                            return;
-                        }
-                    }
-
-                    else if (PlayerStats.Instance.stats.itemsGot.essence_Current >= skinWardrobeManager.skinCost)
-                    {
-                        PlayerStats.Instance.stats.itemsGot.essence_Current -= skinWardrobeManager.skinCost;
-                        skinWardrobeManager.UpdateEssenceDisplay();
-
-                        skinWardrobeManager.SetSkinSaveData(GetRegionNumber(region), level, WardrobeSkinState.Bought);
-
-                        WardrobeSounds(ButtonSoundStates.ButtonBuy);
-
-                        Action_BuySkin?.Invoke();
-                    }
-                    else
+                    int cost = SkinCost;
+                    if (!CanBuySkin(cost))
                     {
                         WardrobeSounds(ButtonSoundStates.ButtonCannot);
                         return;
                     }
+
+                    if (cost > 0)
+                    {
+                        PlayerStats.Instance.stats.itemsGot.essence_Current -= cost;
+                        skinWardrobeManager.UpdateEssenceDisplay();
+                    }
+
+                    skinWardrobeManager.SetSkinSaveData(GetRegionNumber(region), level, WardrobeSkinState.Bought);
+                    WardrobeSounds(ButtonSoundStates.ButtonBuy);
+                    Action_BuySkin?.Invoke();
                     break;
                 case WardrobeSkinState.Bought:
                     //Check condition to see if button is selected
@@ -454,27 +433,13 @@ public class SkinWardrobeButton : MonoBehaviour, ISelectHandler, IDeselectHandle
                     skinWardrobeManager.HideAllHats();
                     break;
                 case WardrobeSkinState.Available:
-                    if (skinType == SkinType.SourceBlock)
-                    {
-                        if (CheckIfAllSkinsIsBought())
-                        {
-                            if (PlayerStats.Instance.stats.itemsGot.essence_Current >= 10)
-                                unlockDisplay.SetDisplay_CanUnlock();
-                            else
-                                unlockDisplay.SetDisplay_CanNotUnlock();
-                        }
-                        else
-                        {
-                            unlockDisplay.SetDisplay_UnlockAllOtherSkins();
-                        }
-                    }
+                    int cost = SkinCost;
+                    if (CanBuySkin(cost))
+                        unlockDisplay.SetDisplay_CanUnlock(cost);
+                    else if (skinType == SkinType.SourceBlock)
+                        unlockDisplay.SetDisplay_UnlockAllOtherSkins();
                     else
-                    {
-                        if (PlayerStats.Instance.stats.itemsGot.essence_Current >= 10)
-                            unlockDisplay.SetDisplay_CanUnlock();
-                        else
-                            unlockDisplay.SetDisplay_CanNotUnlock();
-                    }
+                        unlockDisplay.SetDisplay_CanNotUnlock(cost);
 
                     unlockDisplay.SetSelectedBlockName(SkinsOverview.Instance.GetSkinName(skinType));
 
@@ -559,6 +524,15 @@ public class SkinWardrobeButton : MonoBehaviour, ISelectHandler, IDeselectHandle
                     break;
             }
         }
+    }
+
+    int SkinCost => skinType == SkinType.SourceBlock ? 0 : skinWardrobeManager.skinCost;
+
+    bool CanBuySkin(int cost)
+    {
+        return skinType == SkinType.SourceBlock
+            ? CheckIfAllSkinsIsBought()
+            : PlayerStats.Instance.stats.itemsGot.essence_Current >= cost;
     }
 
     bool CheckIfAllSkinsIsBought()

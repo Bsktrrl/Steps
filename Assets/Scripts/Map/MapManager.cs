@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MapManager : Singleton<MapManager>
+public class MapManager : Singleton<MapManager>, ISceneSingleton
 {
     public static event Action Action_StartIntroSequence;
     public static event Action Action_EndIntroSequence;
@@ -51,14 +51,27 @@ public class MapManager : Singleton<MapManager>
 
     public bool introSequence;
     public bool introSequence_Finished;
-    public bool haveIntroSequence = true;
 
     // The map intro and the first HUB spawn/dialogue are separate sequences.
     public bool IntroInputLocked => introSequence || !introSequence_Finished;
 
-    public bool GameplayInputLocked => IntroInputLocked ||
+    internal bool IsCompletingLevel { get; private set; }
+
+    public bool GameplayInputLocked => IntroInputLocked || IsCompletingLevel || AncientTablet.ActiveTablet ||
+        DataPersistanceManager.GameplayInputBlocked ||
+        Movement.ExistingInstance is { IsTeleporting: true } ||
         (levelName == LevelNames.HUB && HUBTutorial.Instance != null &&
          HUBTutorial.Instance.GameplayInputLocked);
+
+    internal bool TryBeginLevelCompletion()
+    {
+        if (IsCompletingLevel || !SpawnedPlayer ||
+            !SpawnedPlayer.TryGetComponent(out PlayerManager player) || !player.TryBeginLevelExit(completed: true))
+            return false;
+
+        IsCompletingLevel = true;
+        return true;
+    }
 
     private Coroutine blackScreenFadeRoutine;
 
@@ -68,6 +81,20 @@ public class MapManager : Singleton<MapManager>
 
     private void Awake()
     {
+        if (!playerObject || !playerObject.TryGetComponent(out Movement playerMovement))
+        {
+            Debug.LogWarning($"MapManager in '{gameObject.scene.name}' needs a player prefab with Movement on its root.", this);
+            enabled = false;
+            return;
+        }
+
+        if (!RegisterSceneInstance())
+        {
+            Debug.LogWarning($"Duplicate MapManager in '{gameObject.scene.name}' was disabled.", this);
+            enabled = false;
+            return;
+        }
+
         returnFromHUB = levelName == LevelNames.HUB;
 
         if (blackScreen)
@@ -77,35 +104,28 @@ public class MapManager : Singleton<MapManager>
             canvas.SetActive(true);
 
         // Lock input before instantiating the player and enabling its controls.
-        if (haveIntroSequence)
-            introSequence = true;
+        introSequence = false;
+        introSequence_Finished = false;
 
-        SpawnPlayerObject();
+        SpawnPlayerObject(playerMovement.heightOverBlock);
 
         pickup_LayerMask = ~pickup_LayerMask; //Corrects the error that resulted in all raycasts to only focus on the pickups instead of the other way around
-
-        if (haveIntroSequence)
-        {
-            introSequence = true;
-
-            Action_StartIntroSequence?.Invoke();
-        }
     }
     private void Start()
     {
         blockInfoList = FindObjectsOfType<BlockInfo>();
 
-        PlayerManager.Instance.PauseGame();
+        if (playerObjectInScene && playerObjectInScene.TryGetComponent(out PlayerManager player))
+            player.PauseGame();
     }
 
     private void OnEnable()
     {
         Movement.Action_RespawnPlayer += ShowHiddenObjects;
 
-        DataManager.Action_dataHasLoaded += SaveMapInfo;
         DataManager.Action_dataHasLoaded += InputLevelNameDisplay;
+        DataManager.Action_dataHasLoaded += SaveMapInfo;
         DataManager.Action_dataHasLoaded += FadeOutBlackScreen;
-        DataManager.Action_dataHasLoaded += TurnOnOffIntroSequence;
     }
 
     private void OnDisable()
@@ -115,7 +135,14 @@ public class MapManager : Singleton<MapManager>
         DataManager.Action_dataHasLoaded -= SaveMapInfo;
         DataManager.Action_dataHasLoaded -= InputLevelNameDisplay;
         DataManager.Action_dataHasLoaded -= FadeOutBlackScreen;
-        DataManager.Action_dataHasLoaded -= TurnOnOffIntroSequence;
+    }
+
+    private void OnDestroy()
+    {
+        if (ReferenceEquals(SpawnedPlayer, playerObjectInScene))
+            SpawnedPlayer = null;
+
+        UnregisterSceneInstance();
     }
 
 
@@ -129,27 +156,47 @@ public class MapManager : Singleton<MapManager>
     }
     void InputLevelNameDisplay()
     {
-        mapInfo_ToSave.mapNameDisplay.mapNameDisplay_norwegian = DataManager.Instance.mapNameDisplay_Store.mapNameDisplay_norwegian;
-        mapInfo_ToSave.mapNameDisplay.mapNameDisplay_english = DataManager.Instance.mapNameDisplay_Store.mapNameDisplay_english;
-        mapInfo_ToSave.mapNameDisplay.mapNameDisplay_german = DataManager.Instance.mapNameDisplay_Store.mapNameDisplay_german;
-        mapInfo_ToSave.mapNameDisplay.mapNameDisplay_chinese = DataManager.Instance.mapNameDisplay_Store.mapNameDisplay_chinese;
-        mapInfo_ToSave.mapNameDisplay.mapNameDisplay_japanese = DataManager.Instance.mapNameDisplay_Store.mapNameDisplay_japanese;
-        mapInfo_ToSave.mapNameDisplay.mapNameDisplay_korean = DataManager.Instance.mapNameDisplay_Store.mapNameDisplay_korean;
+        DataManager data = DataManager.Instance;
+        string sceneName = gameObject.scene.name;
+        MapNameDisplay menuName = data.mapNameDisplay_Store;
+        if (menuName?.sceneName != sceneName)
+            menuName = null;
+
+        MapNameDisplay display = mapInfo_ToSave.mapNameDisplay ??= new MapNameDisplay();
+        display.mapNameDisplay_norwegian = ResolveName(Languages.Norwegian, menuName?.mapNameDisplay_norwegian, display.mapNameDisplay_norwegian);
+        display.mapNameDisplay_english = ResolveName(Languages.English, menuName?.mapNameDisplay_english, display.mapNameDisplay_english);
+        display.mapNameDisplay_german = ResolveName(Languages.German, menuName?.mapNameDisplay_german, display.mapNameDisplay_german);
+        display.mapNameDisplay_chinese = ResolveName(Languages.Chinese, menuName?.mapNameDisplay_chinese, display.mapNameDisplay_chinese);
+        display.mapNameDisplay_japanese = ResolveName(Languages.Japanese, menuName?.mapNameDisplay_japanese, display.mapNameDisplay_japanese);
+        display.mapNameDisplay_korean = ResolveName(Languages.Korean, menuName?.mapNameDisplay_korean, display.mapNameDisplay_korean);
+
+        string ResolveName(Languages language, string fromMenu, string fromSave)
+        {
+            if (!string.IsNullOrWhiteSpace(fromMenu))
+                return fromMenu;
+
+            string localized = data.game_TextDatabase_Store?.GetLevelName(levelName, language);
+            if (!string.IsNullOrWhiteSpace(localized))
+                return localized;
+
+            return string.IsNullOrWhiteSpace(fromSave) ? sceneName : fromSave;
+        }
     }
 
 
     //--------------------
 
 
-    void SpawnPlayerObject()
+    void SpawnPlayerObject(float heightOverBlock)
     {
-        var playerObjectInScene = Instantiate(playerObject);
+        playerObjectInScene = Instantiate(playerObject);
 
-        playerStartPos = playerStartPos + new Vector3(0, -1 + Movement.Instance.heightOverBlock, 0);
+        playerStartPos += new Vector3(0, -1 + heightOverBlock, 0);
 
         playerObjectInScene.transform.position = playerStartPos;
 
-        playerObjectInScene.transform.parent = playerObject_Parent.transform;
+        if (playerObject_Parent)
+            playerObjectInScene.transform.SetParent(playerObject_Parent.transform);
 
         SpawnedPlayer = playerObjectInScene;
 
@@ -162,27 +209,17 @@ public class MapManager : Singleton<MapManager>
 
     public void SetAbilities()
     {
-        if (mapInfo_ToSave.abilitiesGotInLevel.Snorkel)
-            PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel = true;
-        if (mapInfo_ToSave.abilitiesGotInLevel.Flippers)
-            PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers = true;
-        if (mapInfo_ToSave.abilitiesGotInLevel.OxygenTank)
-            PlayerStats.Instance.stats.abilitiesGot_Temporary.OxygenTank = true;
+        if (!SpawnedPlayer || SpawnedPlayer.scene != gameObject.scene ||
+            !SpawnedPlayer.TryGetComponent(out PlayerStats playerStats) || playerStats.stats == null || mapInfo_ToSave == null)
+            return;
 
-        if (mapInfo_ToSave.abilitiesGotInLevel.DrillHelmet)
-            PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillHelmet = true;
-        if (mapInfo_ToSave.abilitiesGotInLevel.DrillBoots)
-            PlayerStats.Instance.stats.abilitiesGot_Temporary.DrillBoots = true;
+        AbilitiesGot levelAbilities = mapInfo_ToSave.abilitiesGotInLevel ??= new AbilitiesGot();
+        GivePlayerTempAbilities startupGrants = GetComponentInChildren<GivePlayerTempAbilities>();
+        if (startupGrants && startupGrants.isActiveAndEnabled)
+            startupGrants.ApplyTo(levelAbilities);
 
-        if (mapInfo_ToSave.abilitiesGotInLevel.SpringShoes)
-            PlayerStats.Instance.stats.abilitiesGot_Temporary.SpringShoes = true;
-        if (mapInfo_ToSave.abilitiesGotInLevel.HandDrill)
-            PlayerStats.Instance.stats.abilitiesGot_Temporary.HandDrill = true;
-
-        if (mapInfo_ToSave.abilitiesGotInLevel.GrapplingHook)
-            PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook = true;
-        if (mapInfo_ToSave.abilitiesGotInLevel.ClimingGloves)
-            PlayerStats.Instance.stats.abilitiesGot_Temporary.ClimingGloves = true;
+        // Keep the live stats separate from the map record and drop grants from the previous level.
+        playerStats.stats.abilitiesGot_Temporary = levelAbilities.Copy();
     }
 
     public void ShowHiddenObjects()
@@ -211,8 +248,41 @@ public class MapManager : Singleton<MapManager>
 
     public void FadeOutBlackScreen()
     {
-        StopBlackScreenFadeRoutine();
-        blackScreenFadeRoutine = StartCoroutine(FadeOutCoroutine());
+        if (introSequence_Finished || blackScreenFadeRoutine != null)
+            return;
+
+        blackScreenFadeRoutine = StartCoroutine(RunLevelIntro());
+    }
+
+    private IEnumerator RunLevelIntro()
+    {
+        // Startup listeners can finish loading stats and UI before the camera moves.
+        yield return null;
+
+        GlueplantCamera introCamera = FindAnyObjectByType<GlueplantCamera>();
+        if (introCamera && introCamera.gameObject.scene != gameObject.scene)
+            introCamera = null;
+
+        bool playIntro = levelName != LevelNames.HUB &&
+            DataManager.Instance.settingData_StoreList?.currentSkipIntro == SkipIntro.No;
+        introSequence = playIntro && introCamera && introCamera.TryStartTravel(SpawnedPlayer);
+        if (introSequence)
+            Action_StartIntroSequence?.Invoke();
+        else if (introCamera)
+            introCamera.UsePlayerView();
+
+        yield return FadeOutCoroutine();
+
+        while (introCamera && introCamera.IsTravelingThisIntro)
+            yield return null;
+
+        blackScreenFadeRoutine = null;
+        introSequence = false;
+        introSequence_Finished = true;
+        var holeShader = FindAnyObjectByType<HoleShaderOnOffScript>();
+        if (holeShader)
+            holeShader.HoleShader_On();
+        Action_EndIntroSequence?.Invoke();
     }
 
     private IEnumerator FadeOutCoroutine()
@@ -221,10 +291,14 @@ public class MapManager : Singleton<MapManager>
             yield break;
 
         Image blackScreenImage = blackScreen.GetComponent<Image>();
-        Image blackScreenIconImage = blackScreen.GetComponent<LoadingIcon>().loadingIcon.GetComponent<Image>();
-
-        if (blackScreenImage == null || blackScreenIconImage == null)
+        if (!blackScreenImage)
+        {
+            blackScreen.SetActive(false);
             yield break;
+        }
+
+        LoadingIcon icon = blackScreen.GetComponent<LoadingIcon>();
+        Image blackScreenIconImage = icon && icon.loadingIcon ? icon.loadingIcon.GetComponent<Image>() : null;
 
         blackScreen.SetActive(true);
 
@@ -246,7 +320,8 @@ public class MapManager : Singleton<MapManager>
 
             color.a = alpha;
             blackScreenImage.color = color;
-            blackScreenIconImage.color = color;
+            if (blackScreenIconImage)
+                blackScreenIconImage.color = color;
 
             AudioSettingsManager.Instance.FadeMasterVolumeUp(t);
 
@@ -255,14 +330,14 @@ public class MapManager : Singleton<MapManager>
 
         color.a = 0f;
         blackScreenImage.color = color;
-        blackScreenIconImage.color = color;
+        if (blackScreenIconImage)
+            blackScreenIconImage.color = color;
 
         blackScreen.SetActive(false);
 
         AudioSettingsManager.Instance.FinishMasterVolumeFadeUp();
-
-        blackScreenFadeRoutine = null;
     }
+
     public void FadeInBlackScreen()
     {
         StartFadeInBlackScreen();
@@ -325,27 +400,6 @@ public class MapManager : Singleton<MapManager>
         {
             StopCoroutine(blackScreenFadeRoutine);
             blackScreenFadeRoutine = null;
-        }
-    }
-
-    public void Action_EndIntroSequence_Invoke()
-    {
-        Action_EndIntroSequence?.Invoke();
-    }
-
-
-    //--------------------
-
-
-    void TurnOnOffIntroSequence()
-    {
-        if (DataManager.Instance.settingData_StoreList.currentSkipIntro == SkipIntro.Yes)
-        {
-            haveIntroSequence = false;
-        }
-        else if (DataManager.Instance.settingData_StoreList.currentSkipIntro == SkipIntro.No)
-        {
-            haveIntroSequence = true;
         }
     }
 }

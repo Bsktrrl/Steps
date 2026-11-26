@@ -2,42 +2,42 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SaveLoad_MapInfo : Singleton<SaveLoad_MapInfo>
 {
     public void LoadData()
     {
-        //Don't save MapInfo if not in a level
-        if (FindAnyObjectByType<MainMenuManager>()) return;
+        var map = MapManager.Instance;
+        if (!map || map.mapInfo_ToSave == null)
+            return;
 
         var list = DataManager.Instance.mapInfo_StoreList?.map_SaveInfo_List;
         if (list != null)
         {
-            string sceneName = SceneManager.GetActiveScene().name;
+            string sceneName = map.gameObject.scene.name;
             foreach (var mapInfo in list)
             {
                 if (mapInfo.mapName == sceneName)
                 {
-                    MapManager.Instance.mapInfo_ToSave = mapInfo;
-                    MapManager.Instance.mapInfo_ToSave.CorrectingMapObjects();
+                    map.mapInfo_ToSave = mapInfo;
+                    map.mapInfo_ToSave.CorrectingMapObjects();
                     return; // Loaded, no need to save here
                 }
             }
         }
 
-        MapManager.Instance.mapInfo_ToSave.SetupMap();
+        map.mapInfo_ToSave.SetupMap();
     }
     public void SaveGame()
     {
-        //Don't save MapInfo if not in a level
-        MainMenuManager mainMenuManager = FindAnyObjectByType<MainMenuManager>();
-        if (mainMenuManager) { return; }
+        var map = MapManager.Instance;
+        if (!map || map.mapInfo_ToSave == null)
+            return;
 
+        Map_SaveInfo currentMap = map.mapInfo_ToSave;
         var savedMaps = DataManager.Instance.mapInfo_StoreList?.map_SaveInfo_List;
         if (savedMaps != null && savedMaps.Count > 0)
         {
-            Map_SaveInfo currentMap = MapManager.Instance.mapInfo_ToSave;
             for (int i = 0; i < savedMaps.Count; i++)
             {
                 if (savedMaps[i].mapName == currentMap.mapName)
@@ -50,9 +50,9 @@ public class SaveLoad_MapInfo : Singleton<SaveLoad_MapInfo>
             }
         }
 
-        SaveNewLevel();
+        SaveNewLevel(currentMap);
     }
-    void SaveNewLevel()
+    void SaveNewLevel(Map_SaveInfo currentMap)
     {
         if (DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Count <= 0)
         {
@@ -62,7 +62,7 @@ public class SaveLoad_MapInfo : Singleton<SaveLoad_MapInfo>
         }
 
         print("2. Add new Level");
-        DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Add(MapManager.Instance.mapInfo_ToSave);
+        DataManager.Instance.mapInfo_StoreList.map_SaveInfo_List.Add(currentMap);
         DataPersistanceManager.instance.SaveGame();
     }
 

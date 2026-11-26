@@ -86,11 +86,15 @@ public class CameraController : Singleton<CameraController>
     //--------------------
 
 
+    internal bool IsMovementBlockingRotation =>
+        Movement.Instance.GetMovementState() == MovementStates.Moving &&
+        !Movement.Instance.IsClimbingLadder && Player_KeyInputs.Instance.IsMovementInputHeld;
+
     public void RotateCameraX()
     {
         if (isCeilingRotating) { return; }
         if (Player_Interact.Instance.isInteracting) { return; }
-        if (Movement.Instance.GetMovementState() == MovementStates.Moving && !Movement.Instance.IsClimbingLadder) return;
+        if (IsMovementBlockingRotation) return;
 
         int rotationDirection = 0;
 
@@ -110,7 +114,7 @@ public class CameraController : Singleton<CameraController>
     {
         if (isCeilingRotating) { return; }
         if (Player_Interact.Instance.isInteracting) { return; }
-        if (Movement.Instance.GetMovementState() == MovementStates.Moving && !Movement.Instance.IsClimbingLadder) return;
+        if (IsMovementBlockingRotation) return;
 
         int rotationDirection = 0;
 
@@ -172,7 +176,11 @@ public class CameraController : Singleton<CameraController>
         isRotating = true;
         isIgnoringObstaclesWhenRotating = false;
 
-        PlayerManager.Instance.PauseGame();
+        Movement movement = Movement.Instance;
+        // A concurrent step can land on a pickup or the goal and pause independently.
+        bool pauseForRotation = !movement.isMoving || movement.IsClimbingLadder;
+        if (pauseForRotation)
+            PlayerManager.Instance.PauseGame();
 
         while (true)
         {
@@ -232,12 +240,13 @@ public class CameraController : Singleton<CameraController>
 
         yield return new WaitForSeconds(waitDelay);
 
-        if (!Movement.Instance.IsClimbingLadder &&
+        if (pauseForRotation && !movement.IsClimbingLadder &&
             !Player_Animations.Instance.IsPickupAnimationPending && !PopUpManager.Instance.ability_Active)
             PlayerManager.Instance.UnpauseGame();
         isRotating = false;
 
-        Movement.Instance.previousPosition = transform.position;
+        if (!movement.isMoving)
+            movement.previousPosition = transform.position;
 
         Action_RotateCamera_End?.Invoke();
         rotationCoroutine = null;

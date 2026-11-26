@@ -23,12 +23,11 @@ public class BlockInfo : MonoBehaviour
     public int movementCost;
     public float movementSpeed;
 
-    // Movement reads its normal walking speed from the current standing block.
-    // Quicksand alone modifies this value according to the player's counter.
-    // Always calculate from the original Inspector speed (never compound it).
-    private bool controlsQuicksandMovementSpeed;
-    private float originalQuicksandMovementSpeed;
-    private int appliedQuicksandSpeedStage = -1;
+    private Block_Water water;
+    private Block_Quicksand quicksand;
+    private bool waterUsesCheckpointStats;
+
+    private bool UsesWaterMovementStats => water && water.isActiveAndEnabled && !waterUsesCheckpointStats;
 
     public MovementStates movementState;
 
@@ -96,6 +95,9 @@ public class BlockInfo : MonoBehaviour
     private void Awake()
     {
         startPos = transform.position;
+        TryGetComponent(out water);
+        TryGetComponent(out quicksand);
+        waterUsesCheckpointStats = water && TryGetComponent<Block_Checkpoint>(out _);
     }
     private void Start()
     {
@@ -106,17 +108,6 @@ public class BlockInfo : MonoBehaviour
 
         movementCost_Temp_Base = movementCost;
         movementCost_Temp = movementCost_Temp_Base;
-
-        // Only quicksand blocks participate in the speed adjustment.
-        // Both the block element and its component can identify quicksand.
-        controlsQuicksandMovementSpeed =
-            blockElement == BlockElement.Quicksand ||
-            GetComponent<Block_Quicksand>() != null;
-        if (controlsQuicksandMovementSpeed)
-        {
-            originalQuicksandMovementSpeed = movementSpeed;
-            RefreshQuicksandMovementSpeed();
-        }
 
         SetObjectRenderer();
         SetPropertyBlock();
@@ -136,34 +127,19 @@ public class BlockInfo : MonoBehaviour
         blockIsDark = false;
     }
 
-    private void Update()
+    public float GetMovementSpeed()
     {
-        //CheckDarkeningWhenPlayerIsOnElevator();
+        if (UsesWaterMovementStats)
+            return PlayerHasFlippers() ? 6f : 2.75f;
 
-        // Player_Quicksand updates its counter when a step completes.
-        // Only perform a write when the stage actually changes.
-        if (controlsQuicksandMovementSpeed)
-            RefreshQuicksandMovementSpeed();
-    }
+        if (blockElement != BlockElement.Quicksand && !quicksand)
+            return movementSpeed;
 
-    private void RefreshQuicksandMovementSpeed()
-    {
-        if (!controlsQuicksandMovementSpeed)
-            return;
-
-        int stage = 0;
-        if (Player_Quicksand.Instance != null &&
-            Player_Quicksand.Instance.isInQuicksand)
-        {
-            stage = Mathf.Clamp(Player_Quicksand.Instance.quicksandCounter, 0, 5);
-        }
-
-        if (stage == appliedQuicksandSpeedStage)
-            return;
-
-        // Stage 0 = 100%, stage 1 = 90%, ..., stage 5 = 50%.
-        movementSpeed = originalQuicksandMovementSpeed * (1f - 0.14f * stage);
-        appliedQuicksandSpeedStage = stage;
+        Player_Quicksand playerQuicksand = Player_Quicksand.Instance;
+        int stage = playerQuicksand && playerQuicksand.isInQuicksand
+            ? Mathf.Clamp(playerQuicksand.quicksandCounter, 0, 5)
+            : 0;
+        return movementSpeed * (1f - 0.14f * stage);
     }
 
 
@@ -182,14 +158,6 @@ public class BlockInfo : MonoBehaviour
 
     private void OnDisable()
     {
-        // A disabled/re-enabled quicksand block keeps its Inspector speed as
-        // the baseline; reapply the current player stage on the next Update.
-        if (controlsQuicksandMovementSpeed)
-        {
-            movementSpeed = originalQuicksandMovementSpeed;
-            appliedQuicksandSpeedStage = -1;
-        }
-
         Movement.Action_RespawnToSavePos -= ResetDarkenColor;
         Movement.Action_RespawnPlayer -= ResetBlock;
 
@@ -422,7 +390,7 @@ public class BlockInfo : MonoBehaviour
         int modifier = 0;
 
         // Mud increases cost by +1
-        if (Player_Mud.Instance != null && Player_Mud.Instance.isInMud)
+        if (Player_Mud.ExistingInstance?.isInMud == true)
         {
             modifier += 1;
         }
@@ -450,11 +418,9 @@ public class BlockInfo : MonoBehaviour
 
         // Quicksand uses the quicksand counter as the actual step cost,
         // not only as the displayed number.
-        if (GetComponent<Block_Quicksand>() &&
-            Player_Quicksand.Instance != null &&
-            Player_Quicksand.Instance.isInQuicksand)
+        if (quicksand && Player_Quicksand.ExistingInstance is { isInQuicksand: true } playerQuicksand)
         {
-            return Player_Quicksand.Instance.quicksandCounter;
+            return playerQuicksand.quicksandCounter;
         }
 
         if (blockElement == BlockElement.Water && PlayerHasFlippers())
@@ -463,8 +429,7 @@ public class BlockInfo : MonoBehaviour
         }
 
         // SwampWater makes reachable adjacent blocks cost 0.
-        if (Player_SwampWater.Instance != null &&
-            Player_SwampWater.Instance.isInSwampWater)
+        if (Player_SwampWater.ExistingInstance?.isInSwampWater == true)
         {
             return 0;
         }
@@ -476,6 +441,17 @@ public class BlockInfo : MonoBehaviour
     {
         ApplyTemporaryMovementCostModifiers();
         return movementCost_Temp;
+    }
+
+    public int GetBaseMovementCostForPlayer()
+    {
+        if (HasRootMovementCostOverride())
+            return 0;
+
+        if (UsesWaterMovementStats)
+            return PlayerHasFlippers() ? 0 : 2;
+
+        return movementCost;
     }
 
     public void ApplyTemporaryMovementCostModifiers()
@@ -554,11 +530,9 @@ public class BlockInfo : MonoBehaviour
 
     bool PlayerHasFlippers()
     {
-        if (PlayerStats.Instance == null || PlayerStats.Instance.stats == null)
-            return false;
-
-        return PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers ||
-               PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers;
+        var stats = PlayerStats.ExistingInstance?.stats;
+        return stats?.abilitiesGot_Temporary?.Flippers == true ||
+               stats?.abilitiesGot_Permanent?.Flippers == true;
     }
 
     public int GetMovementCost_ForDisplay()

@@ -75,14 +75,18 @@ public class RegionLevelImages : MonoBehaviour
 
     void SetImages()
     {
+        var menu = MainMenuManager.Instance;
+        if (!menu)
+            return;
+
         if (RememberCurrentlySelectedUIElement.Instance.currentSelectedUIElement && RememberCurrentlySelectedUIElement.Instance.currentSelectedUIElement.GetComponent<Button_ToPress>())
         {
-            MainMenuManager.Instance.subMenuState = RememberCurrentlySelectedUIElement.Instance.currentSelectedUIElement.GetComponent<Button_ToPress>().newMenuState;
+            menu.subMenuState = RememberCurrentlySelectedUIElement.Instance.currentSelectedUIElement.GetComponent<Button_ToPress>().newMenuState;
         }
 
         HideAllImages();
 
-        switch (MainMenuManager.Instance.subMenuState)
+        switch (menu.subMenuState)
         {
             case MenuState.RegionMenu_Water:
                 image_Level_1.sprite = sprite_Rivergreen_lv_1;

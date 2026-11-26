@@ -38,7 +38,7 @@ public class GameData
     //Data to run once
     /*[HideInInspector]*/ public OneTimeRunData oneTimeRunData_Save = new OneTimeRunData();
     
-    //Text Database
+    // Legacy text cache, used only when the scene has no packaged localization source.
     /*[HideInInspector]*/ public Game_TextDatabase game_TextDatabase_Save = new Game_TextDatabase();
 
     //PlayerStatsData

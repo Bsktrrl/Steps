@@ -146,6 +146,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     private RenderTexture previewTexture;
     private Vector3 previewCameraStartPosition;
     private Quaternion previewCameraStartRotation;
+    private float previewYaw;
     private GameObject visibleSkin;
     private GameObject visibleHat;
     private bool initializedSkinPreview;
@@ -159,14 +160,22 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
     //--------------------
 
 
-    private void Update()
+    private void LateUpdate()
     {
         if (!previewCamera || previewRotation == null) return;
 
         float direction = previewRotation.ReadValue<float>();
-        if (!Mathf.Approximately(direction, 0f))
-            previewCamera.RotateAround(playerDisplayObject.transform.position, Vector3.up,
-                direction * PreviewRotationSpeed * Time.unscaledDeltaTime);
+        if (Mathf.Approximately(direction, 0f) && previewYaw == 0f) return;
+
+        previewYaw = Mathf.Repeat(previewYaw + direction * PreviewRotationSpeed * Time.unscaledDeltaTime, 360f);
+
+        // The rendering rig's origin is at the center of the model, above its root.
+        // Rebuild the orbit from the original pose after the menu's layout and animations update.
+        Transform rig = playerDisplayObject.transform.parent;
+        Vector3 center = rig.position;
+        Vector3 startOffset = previewCamera.parent.TransformPoint(previewCameraStartPosition) - center;
+        Vector3 offset = Quaternion.AngleAxis(previewYaw, rig.up) * startOffset;
+        previewCamera.SetPositionAndRotation(center + offset, Quaternion.LookRotation(-offset, rig.up));
     }
 
     private void OnEnable()
@@ -202,6 +211,7 @@ public class SkinWardrobeManager : Singleton<SkinWardrobeManager>
                 previewCamera = camera.transform;
                 previewCameraStartPosition = previewCamera.localPosition;
                 previewCameraStartRotation = previewCamera.localRotation;
+                previewYaw = 0f;
             }
         }
 

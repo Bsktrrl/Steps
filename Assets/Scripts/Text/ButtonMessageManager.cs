@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,11 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
 
     private PlayerManager playerManager;
     private AncientTablet activeTablet;
+    private Interactable_NPC talkTarget;
+    private CameraController talkCameraController;
+    private CinemachineCamera talkCamera;
+    private InputType talkPromptInput;
+    private double lastTalkCheck = double.NegativeInfinity;
 
     private bool InteractionPromptsSuppressed =>
         activeTablet || (playerManager && playerManager.npcInteraction);
@@ -24,6 +30,7 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
         playerManager = GetComponentInParent<PlayerManager>();
         DataManager.Action_dataHasLoaded += UpdateButtonMessages;
         SettingsManager.Action_SetNewLanguage += UpdateButtonMessages;
+        Movement.Action_HasLandedFromFalling += RefreshTalkTarget;
         PauseMenuManager.Action_openPauseMenu += HidePromptsForPause;
         PauseMenuManager.Action_closePauseMenu += RestorePromptsAfterPause;
     }
@@ -31,8 +38,91 @@ public class ButtonMessageManager : Singleton<ButtonMessageManager>
     {
         DataManager.Action_dataHasLoaded -= UpdateButtonMessages;
         SettingsManager.Action_SetNewLanguage -= UpdateButtonMessages;
+        Movement.Action_HasLandedFromFalling -= RefreshTalkTarget;
         PauseMenuManager.Action_openPauseMenu -= HidePromptsForPause;
         PauseMenuManager.Action_closePauseMenu -= RestorePromptsAfterPause;
+        SetTalkTarget(null);
+    }
+
+    private void LateUpdate()
+    {
+        if (Time.fixedTimeAsDouble != lastTalkCheck &&
+            (!ReferenceEquals(talkTarget, null) || Interactable_NPC_ColliderTrigger.HasOverlaps))
+            RefreshTalkTarget();
+    }
+
+    internal void RefreshTalkTarget()
+    {
+        lastTalkCheck = Time.fixedTimeAsDouble;
+
+        if (playerManager && playerManager.npcInteraction)
+        {
+            if (talkTarget)
+                talkTarget.canInteract = false;
+
+            // The dialogue's blend-out still needs the camera chosen at its start.
+            HideTalkPrompt();
+            return;
+        }
+
+        if (!isActiveAndEnabled || !playerManager || !playerManager.player || !playerManager.playerBody ||
+            !Interactable_NPC_ColliderTrigger.HasOverlaps || playerManager.pauseGame || activeTablet ||
+            Player_KeyInputs.Instance.freeCam_isPressed)
+        {
+            SetTalkTarget(null);
+            return;
+        }
+
+        var movement = Movement.Instance;
+        var ceilingGrab = Player_CeilingGrab.Instance;
+        SetTalkTarget(movement.isRespawning || movement.IsTeleporting || movement.GetMovementState() == MovementStates.Falling ||
+                      ceilingGrab.isCeilingGrabbing || ceilingGrab.isCeilingRotation
+            ? null
+            : Interactable_NPC_ColliderTrigger.FindTalkTarget(playerManager, movement, talkTarget));
+    }
+
+    private void SetTalkTarget(Interactable_NPC target)
+    {
+        bool targetChanged = !ReferenceEquals(talkTarget, target);
+        if (targetChanged)
+        {
+            if (talkTarget)
+                talkTarget.canInteract = false;
+            if (talkCameraController && talkCameraController.CM_Other == talkCamera)
+                talkCameraController.CM_Other = null;
+
+            talkTarget = target;
+            talkCameraController = target ? CameraController.Instance : null;
+            talkCamera = target ? target.NPCVirtualCamera : null;
+            if (talkCameraController)
+                talkCameraController.CM_Other = talkCamera;
+        }
+
+        if (!target)
+        {
+            HideTalkPrompt();
+            return;
+        }
+
+        target.canInteract = true;
+        var prompt = buttonMessages?.buttonMessage_Talk;
+        if (prompt?.buttonMessage_Parent)
+        {
+            InputType input = ControllerState.Instance.activeController;
+            if (targetChanged || input != talkPromptInput || !prompt.buttonMessage_Parent.activeSelf)
+            {
+                talkPromptInput = input;
+                SetButtonMessage(prompt);
+                ShowButtonMessage(prompt);
+            }
+        }
+    }
+
+    private void HideTalkPrompt()
+    {
+        var prompt = buttonMessages?.buttonMessage_Talk;
+        if (prompt?.buttonMessage_Parent && prompt.buttonMessage_Parent.activeSelf)
+            HideButtonMessage(prompt);
     }
 
 

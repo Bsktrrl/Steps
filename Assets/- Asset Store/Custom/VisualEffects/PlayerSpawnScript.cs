@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 
 public class PlayerSpawnScript : Singleton<PlayerSpawnScript>
 {
+    public static event Action Action_HubSpawnStarted;
     public static event Action Action_PlayerHasSpawned;
 
     public bool playerIsSpawning;
@@ -36,7 +37,7 @@ public class PlayerSpawnScript : Singleton<PlayerSpawnScript>
 
     private void Start()
     {
-        if (!DataManager.Instance.oneTimeRunData_Store.tutorial_PlayerSpawned) //Need to have a ! at the start
+        if (ShouldPlayFirstHubSpawn())
         {
             playerBody.SetActive(false);
         }
@@ -93,7 +94,7 @@ public class PlayerSpawnScript : Singleton<PlayerSpawnScript>
 
     void SpawnPlayer_Animation()
     {
-        if (!DataManager.Instance.oneTimeRunData_Store.tutorial_PlayerSpawned) //Need to have a ! at the start
+        if (ShouldPlayFirstHubSpawn())
         {
             Movement.Instance.ResetDarkenBlocks_External();
             StartCoroutine(Spawn());
@@ -106,6 +107,13 @@ public class PlayerSpawnScript : Singleton<PlayerSpawnScript>
             Movement.Instance.SetDarkenBlocks();
         }
     }
+    bool ShouldPlayFirstHubSpawn()
+    {
+        MapManager map = FindAnyObjectByType<MapManager>();
+        return map && map.gameObject.scene == gameObject.scene && map.levelName == LevelNames.HUB &&
+               DataManager.Instance.oneTimeRunData_Store?.tutorial_PlayerSpawned == false;
+    }
+
     IEnumerator Spawn()
     {
         playerIsSpawning = true;
@@ -115,6 +123,7 @@ public class PlayerSpawnScript : Singleton<PlayerSpawnScript>
 
         playerBody.transform.localScale = Vector3.zero;
         PS1.Play();
+        Action_HubSpawnStarted?.Invoke();
 
         yield return new WaitForSeconds(5);
         PlayerManager.Instance.PauseGame();

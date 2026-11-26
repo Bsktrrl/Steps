@@ -20,11 +20,11 @@ public class SkinsManager : Singleton<SkinsManager>
 
     private void OnEnable()
     {
-        DataPersistanceManager.Action_NewGame += ResetSkinInfo;
+        DataPersistanceManager.Action_NewGame += LoadData;
     }
     private void OnDisable()
     {
-        DataPersistanceManager.Action_NewGame -= ResetSkinInfo;
+        DataPersistanceManager.Action_NewGame -= LoadData;
     }
 
 
@@ -55,22 +55,6 @@ public class SkinsManager : Singleton<SkinsManager>
         DataManager.Instance.skinsInfo_Store = skinInfo;
 
         DataPersistanceManager.instance.SaveGame();
-    }
-
-
-    //--------------------
-
-
-    void ResetSkinInfo()
-    {
-        skinInfo.activeSkinType = SkinType.None;
-        skinInfo.activeHatType = HatType.None;
-
-        skinInfo.skinWardrobeInfo = new SkinsWardrobeInfo();
-        skinInfo.skinHatInfo = new SkinsHatInfo();
-
-        skinInfo.skinWardrobeInfo.skin_Default = WardrobeSkinState.Selected;
-        SaveData();
     }
 }
 

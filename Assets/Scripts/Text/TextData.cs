@@ -9,8 +9,12 @@ public class TextData : MonoBehaviour
     [Header("Stats from Excel")]
     [SerializeField] TextAsset game_TextDatabase_Sheet;
 
-    int startRow = 3;
-    int columns = 4; //Size + 1
+    const int startRow = 3;
+    const int columns = 4; //Size + 1
+    static TextAsset cachedSheet;
+    static Game_TextDatabase cachedDatabase;
+
+    internal bool HasSource => game_TextDatabase_Sheet;
 
     [Header("Text Database")]
     public Game_TextDatabase game_TextDatabase = new Game_TextDatabase();
@@ -30,6 +34,26 @@ public class TextData : MonoBehaviour
 
     public void ReadExcelSheet()
     {
+        if (!game_TextDatabase_Sheet)
+            return;
+
+        game_TextDatabase = ReadDatabase(game_TextDatabase_Sheet);
+        DataManager.Instance.game_TextDatabase_Store = game_TextDatabase;
+    }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void ResetDatabaseCache()
+    {
+        cachedSheet = null;
+        cachedDatabase = null;
+    }
+
+    internal static Game_TextDatabase ReadDatabase(TextAsset sheet)
+    {
+        if (cachedSheet == sheet && cachedDatabase != null)
+            return cachedDatabase;
+
+        var game_TextDatabase = new Game_TextDatabase();
         for (int i = 0; i < columns - 1; i++)
         {
             Game_TextDatabase_Language gameText_LanguageList_Temp = new Game_TextDatabase_Language();
@@ -41,7 +65,7 @@ public class TextData : MonoBehaviour
         //-----
 
 
-        string[] excelData = ParseSpreadsheetCells(game_TextDatabase_Sheet.text);
+        string[] excelData = ParseSpreadsheetCells(sheet.text);
 
         //Fill the new element with data
         for (int j = 0; j < columns - 1; j++)
@@ -516,9 +540,9 @@ public class TextData : MonoBehaviour
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Read_Keyboard, 431);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Read_PlayStation, 432);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_Read_xBox, 433);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_15_Keyboard, 434);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_15_PlayStation, 435);
-            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_15_xBox, 436);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_exitFreecam_Keyboard, 434);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_exitFreecam_PlayStation, 435);
+            SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_exitFreecam_xBox, 436);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_16_Keyboard, 437);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_16_PlayStation, 438);
             SetTextData(excelData, j, ref game_TextDatabase.gameText_LanguageList[j].interractableButton_Message_16_xBox, 439);
@@ -593,8 +617,9 @@ public class TextData : MonoBehaviour
         //Remove elements that doesn't have a name
         //game_TextDatabase.gameText_LanguageList = game_TextDatabase.gameText_LanguageList.Where(obj => obj != null && !string.IsNullOrEmpty(obj.name_Region_Water)).ToList();
 
-        //Input data into DataManager for easy access thoughout the game
-        DataManager.Instance.game_TextDatabase_Store = game_TextDatabase;
+        cachedSheet = sheet;
+        cachedDatabase = game_TextDatabase;
+        return game_TextDatabase;
     }
 
 
@@ -640,7 +665,7 @@ public class TextData : MonoBehaviour
         return cells.ToArray();
     }
 
-    void SetTextData(string[] excelData, int j, ref string languageVersion, int no)
+    static void SetTextData(string[] excelData, int j, ref string languageVersion, int no)
     {
         if (excelData[(columns * no) + ((startRow - 1) * columns) + 1 + j] != "")
             languageVersion = excelData[(columns * no) + ((startRow - 1) * columns) + 1 + j].Trim();
@@ -653,10 +678,91 @@ public class TextData : MonoBehaviour
 public class Game_TextDatabase
 {
     public List<Game_TextDatabase_Language> gameText_LanguageList = new List<Game_TextDatabase_Language>();
+
+    internal string GetLevelName(LevelNames level, Languages language)
+    {
+        int index = (int)language;
+        if (gameText_LanguageList == null || index < 0 || index >= gameText_LanguageList.Count || gameText_LanguageList[index] == null)
+            return null;
+
+        Game_TextDatabase_Language names = gameText_LanguageList[index];
+        if (level == LevelNames.HUB)
+            return names.name_Region_HUB;
+        if (level < LevelNames.Rivergreen_Lv1 || level > LevelNames.Metalworks_Lv5)
+            return null;
+
+        const int levelsPerRegion = (int)LevelNames.Rivergreen_Lv5 - (int)LevelNames.Rivergreen_Lv1 + 1;
+        int levelOffset = (int)level - (int)LevelNames.Rivergreen_Lv1;
+        RegionName region = (RegionName)((int)RegionName.Rivergreen + levelOffset / levelsPerRegion);
+        return names.GetLevelName(region, levelOffset % levelsPerRegion + 1);
+    }
 }
 [Serializable]
 public class Game_TextDatabase_Language
 {
+    internal string GetLevelName(RegionName region, int number)
+    {
+        return region switch
+        {
+            RegionName.HUB => name_Region_HUB,
+            RegionName.Rivergreen => number switch
+            {
+                1 => name_Region_Water_Lv1,
+                2 => name_Region_Water_Lv2,
+                3 => name_Region_Water_Lv3,
+                4 => name_Region_Water_Lv4,
+                5 => name_Region_Water_Lv5,
+                _ => null
+            },
+            RegionName.Sandlands => number switch
+            {
+                1 => name_Region_Sand_Lv1,
+                2 => name_Region_Sand_Lv2,
+                3 => name_Region_Sand_Lv3,
+                4 => name_Region_Sand_Lv4,
+                5 => name_Region_Sand_Lv5,
+                _ => null
+            },
+            RegionName.Frostfields => number switch
+            {
+                1 => name_Region_Ice_Lv1,
+                2 => name_Region_Ice_Lv2,
+                3 => name_Region_Ice_Lv3,
+                4 => name_Region_Ice_Lv4,
+                5 => name_Region_Ice_Lv5,
+                _ => null
+            },
+            RegionName.Firevein => number switch
+            {
+                1 => name_Region_Lava_Lv1,
+                2 => name_Region_Lava_Lv2,
+                3 => name_Region_Lava_Lv3,
+                4 => name_Region_Lava_Lv4,
+                5 => name_Region_Lava_Lv5,
+                _ => null
+            },
+            RegionName.Witchmire => number switch
+            {
+                1 => name_Region_Swamp_Lv1,
+                2 => name_Region_Swamp_Lv2,
+                3 => name_Region_Swamp_Lv3,
+                4 => name_Region_Swamp_Lv4,
+                5 => name_Region_Swamp_Lv5,
+                _ => null
+            },
+            RegionName.Metalworks => number switch
+            {
+                1 => name_Region_Metal_Lv1,
+                2 => name_Region_Metal_Lv2,
+                3 => name_Region_Metal_Lv3,
+                4 => name_Region_Metal_Lv4,
+                5 => name_Region_Metal_Lv5,
+                _ => null
+            },
+            _ => null
+        };
+    }
+
     #region Region Names
     public string name_Region_Water;
     public string name_Region_Sand;
@@ -1120,9 +1226,9 @@ public class Game_TextDatabase_Language
     public string interractableButton_Message_Read_Keyboard;
     public string interractableButton_Message_Read_PlayStation;
     public string interractableButton_Message_Read_xBox;
-    public string interractableButton_Message_15_Keyboard;
-    public string interractableButton_Message_15_PlayStation;
-    public string interractableButton_Message_15_xBox;
+    public string interractableButton_Message_exitFreecam_Keyboard;
+    public string interractableButton_Message_exitFreecam_PlayStation;
+    public string interractableButton_Message_exitFreecam_xBox;
     public string interractableButton_Message_16_Keyboard;
     public string interractableButton_Message_16_PlayStation;
     public string interractableButton_Message_16_xBox;
@@ -1662,9 +1768,9 @@ public enum Text_Database_Enum
     [InspectorName("InterractableButton Message / Read")] interractableButton_Message_Read_Keyboard,
     [InspectorName("InterractableButton Message / Read")] interractableButton_Message_Read_PlayStation,
     [InspectorName("InterractableButton Message / Read")] interractableButton_Message_Read_xBox,
-    [InspectorName("InterractableButton Message / 15")] interractableButton_Message_15_Keyboard,
-    [InspectorName("InterractableButton Message / 15")] interractableButton_Message_15_PlayStation,
-    [InspectorName("InterractableButton Message / 15")] interractableButton_Message_15_xBox,
+    [InspectorName("InterractableButton Message / Exit FreeCam - Keyboard")] interractableButton_Message_exitFreecam_Keyboard,
+    [InspectorName("InterractableButton Message / Exit FreeCam - playStation")] interractableButton_Message_exitFreecam_PlayStation,
+    [InspectorName("InterractableButton Message / Exit FreeCam - xBox")] interractableButton_Message_exitFreecam_xBox,
     [InspectorName("InterractableButton Message / 16")] interractableButton_Message_16_Keyboard,
     [InspectorName("InterractableButton Message / 16")] interractableButton_Message_16_PlayStation,
     [InspectorName("InterractableButton Message / 16")] interractableButton_Message_16_xBox,

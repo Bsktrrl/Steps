@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class MenuCategorySelected : MonoBehaviour, IPointerDownHandler
+public class MenuCategorySelected : MonoBehaviour, IPointerDownHandler, ISelectHandler, IDeselectHandler
 {
     [Header("SettingState to activate")]
     public SettingState settingState;
@@ -14,15 +12,19 @@ public class MenuCategorySelected : MonoBehaviour, IPointerDownHandler
 
     [SerializeField] bool isSelected;
 
-    [HideInInspector] public GameObject lastSelected;
-
-
     //--------------------
 
 
     void OnEnable()
     {
-        StartCoroutine(WatchSelection());
+        isSelected = EventSystem.current && EventSystem.current.currentSelectedGameObject == gameObject;
+        if (isSelected)
+            ChangeSelectedSettingsButtonSegment();
+    }
+
+    void OnDisable()
+    {
+        isSelected = false;
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -36,29 +38,15 @@ public class MenuCategorySelected : MonoBehaviour, IPointerDownHandler
     //--------------------
 
 
-    public IEnumerator WatchSelection()
+    public void OnSelect(BaseEventData eventData)
     {
-        while (true)
-        {
-            GameObject current = EventSystem.current.currentSelectedGameObject;
+        isSelected = true;
+        ChangeSelectedSettingsButtonSegment();
+    }
 
-            if (current != lastSelected)
-            {
-                if (current == GetComponent<Button>().gameObject)
-                {
-                    isSelected = true;
-                    ChangeSelectedSettingsButtonSegment();
-                }
-                else
-                {
-                    isSelected = false;
-                }
-
-                lastSelected = current;
-            }
-
-            yield return null; // or yield return new WaitForSeconds(0.1f) for better performance
-        }
+    public void OnDeselect(BaseEventData eventData)
+    {
+        isSelected = false;
     }
 
     void ChangeSelectedSettingsButtonSegment()

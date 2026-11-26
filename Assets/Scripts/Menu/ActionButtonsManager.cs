@@ -19,14 +19,15 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
     [Header("Input System")]
     PlayerControls playerControls;
     MainMenuManager mainMenuManager;
+    PauseMenuManager pauseMenuManager;
     private InputSystemUIInputModule uiInputModule;
     private InputActionAsset navigationActions;
     private InputActionReference originalMove;
     private InputActionReference menuMove;
     private int rightStickBindingIndex;
-    private const float CursorIdleSeconds = 3f;
     private Vector2 lastMousePosition;
-    private float lastMouseActivity;
+    private static bool menuCursorRequested;
+    private int controllerInputFrame = -1;
 
 
     //--------------------
@@ -37,15 +38,24 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
         eventSystem = FindObjectOfType<EventSystem>();
     }
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetCursorInput()
+    {
+        menuCursorRequested = false;
+    }
+
     private void Start()
     {
         playerControls = new PlayerControls();
         mainMenuManager = FindObjectOfType<MainMenuManager>();
+        pauseMenuManager = FindAnyObjectByType<PauseMenuManager>();
+
+        if (!mainMenuManager)
+            ResetCursorInput();
 
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = mainMenuManager && Mouse.current != null;
         lastMousePosition = Mouse.current?.position.ReadValue() ?? Vector2.zero;
-        lastMouseActivity = Time.unscaledTime;
+        UpdateCursorVisibility(Mouse.current);
 
         if (eventSystem && eventSystem.TryGetComponent(out InputSystemUIInputModule inputModule))
         {
@@ -62,23 +72,23 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
     private void LateUpdate()
     {
         Mouse mouse = Mouse.current;
+        bool controllerNavigating = controllerInputFrame == Time.frameCount || HasHeldControllerNavigation();
+        if (controllerNavigating)
+            menuCursorRequested = false;
+
+        bool cursorVisible = UpdateCursorVisibility(mouse);
         if (mouse == null || !Application.isFocused) return;
 
         Vector2 position = mouse.position.ReadValue();
         bool moved = position != lastMousePosition || mouse.delta.ReadValue() != Vector2.zero;
         lastMousePosition = position;
+        // Consume the pointer position even when controller input wins this frame.
+        if (controllerNavigating || !cursorVisible ||
+            (DataPersistanceManager.GameplayInputBlocked && !DataPersistanceManager.SaveDialogOpen))
+            return;
+
         bool clicked = mouse.leftButton.wasPressedThisFrame || mouse.rightButton.wasPressedThisFrame ||
                        mouse.middleButton.wasPressedThisFrame;
-
-        if (moved || clicked || mouse.scroll.ReadValue() != Vector2.zero)
-        {
-            lastMouseActivity = Time.unscaledTime;
-            Cursor.visible = true;
-        }
-        else if (Time.unscaledTime - lastMouseActivity >= CursorIdleSeconds)
-        {
-            Cursor.visible = false;
-        }
 
         bool released = mouse.leftButton.wasReleasedThisFrame;
         if ((!moved && !clicked && !released) ||
@@ -100,6 +110,40 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
         MouseHoverUpdated?.Invoke(target);
     }
 
+    private bool IsMenuOpen => DataPersistanceManager.SaveDialogOpen || mainMenuManager ||
+        (pauseMenuManager && pauseMenuManager.isActive);
+
+    private bool HasHeldControllerNavigation()
+    {
+        if (!IsMenuOpen || !eventSystem || !uiInputModule || !uiInputModule.isActiveAndEnabled ||
+            eventSystem.currentInputModule != uiInputModule || !menuMove)
+            return false;
+
+        // The UI module can repeat navigation during a hold without a fresh input event.
+        InputAction move = menuMove.action;
+        return move?.activeControl?.device is Gamepad or Joystick && move.ReadValue<Vector2>() != Vector2.zero;
+    }
+
+    private bool UpdateCursorVisibility(Mouse mouse)
+    {
+        bool visible = mouse != null && Application.isFocused && IsMenuOpen &&
+            (!ControllerState.HasConnectedController || menuCursorRequested);
+        if (Cursor.visible != visible)
+            Cursor.visible = visible;
+        return visible;
+    }
+
+    private void OnMenuInputUsed(InputDevice device)
+    {
+        if (device is Gamepad || device is Joystick)
+        {
+            controllerInputFrame = Time.frameCount;
+            menuCursorRequested = false;
+        }
+        else if (controllerInputFrame != Time.frameCount && (device is Keyboard || (device is Mouse && IsMenuOpen)))
+            menuCursorRequested = true;
+    }
+
     internal static bool CanSelectWithMouse(Button button)
     {
         // Settings rows are already keyboard destinations. Their child arrows perform the edit.
@@ -109,11 +153,13 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
 
     private void OnEnable()
     {
+        ControllerState.MenuInputUsed += OnMenuInputUsed;
         SkinWardrobeManager.PreviewVisibilityChanged += SetWardrobePreviewActive;
     }
 
     private void OnDisable()
     {
+        ControllerState.MenuInputUsed -= OnMenuInputUsed;
         SkinWardrobeManager.PreviewVisibilityChanged -= SetWardrobePreviewActive;
     }
 
@@ -131,10 +177,11 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
         InputActionMap ui = navigationActions.AddActionMap("Menu Navigation");
         InputAction move = ui.AddAction("Move", InputActionType.Value, expectedControlLayout: "Vector2");
         move.AddCompositeBinding("2DVector")
-            .With("Up", "<Keyboard>/w").With("Up", "<Keyboard>/upArrow")
-            .With("Down", "<Keyboard>/s").With("Down", "<Keyboard>/downArrow")
-            .With("Left", "<Keyboard>/a").With("Left", "<Keyboard>/leftArrow")
-            .With("Right", "<Keyboard>/d").With("Right", "<Keyboard>/rightArrow");
+            .With("Up", "<Keyboard>/w").With("Down", "<Keyboard>/s")
+            .With("Left", "<Keyboard>/a").With("Right", "<Keyboard>/d");
+        move.AddCompositeBinding("2DVector")
+            .With("Up", "<Keyboard>/upArrow").With("Down", "<Keyboard>/downArrow")
+            .With("Left", "<Keyboard>/leftArrow").With("Right", "<Keyboard>/rightArrow");
         move.AddBinding("<Gamepad>/dpad");
         move.AddBinding("<Gamepad>/leftStick", processors: "stickDeadzone(min=0.25)");
         move.AddBinding("<Joystick>/stick", processors: "stickDeadzone(min=0.25)");

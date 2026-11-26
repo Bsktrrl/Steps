@@ -97,7 +97,7 @@ public class RenderHiderOnContact : Singleton<RenderHiderOnContact>
     void Update()
     {
         if (_freeCamActive) return;
-        if (GlueplantCamera.Instance.camera_isTraveling) { RestoreAll(); return; }
+        if (GlueplantCamera.IsTraveling) { RestoreAll(); return; }
 
         RunHideCheck();
     }

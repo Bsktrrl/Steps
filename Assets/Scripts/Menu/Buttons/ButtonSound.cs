@@ -107,6 +107,16 @@ public class ButtonSound : MonoBehaviour, ISelectHandler, IDeselectHandler
         eventData.selectedObject = gameObject;
     }
 
+    internal static void SelectWithNavigationSound(EventSystem eventSystem, GameObject target)
+    {
+        if (target.TryGetComponent(out ButtonSound sound))
+            sound.SelectWithoutNavigationSound(new BaseEventData(eventSystem));
+        else
+            eventSystem.SetSelectedGameObject(target);
+
+        Action_Button_Navigate?.Invoke();
+    }
+
 
     //--------------------
 

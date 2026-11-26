@@ -5,24 +5,22 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu_ResetLevel : MonoBehaviour
 {
-    private bool isResetting;
-
     public void ResetLevel()
     {
-        if (isResetting)
-            return;
-
         Scene scene = gameObject.scene;
         MapManager map = FindAnyObjectByType<MapManager>();
         if (!map || map.gameObject.scene != scene || !CanReload(scene))
             return;
 
-        isResetting = true;
+        DataPersistanceManager persistence = DataPersistanceManager.instance;
+        if (!persistence || !persistence.TryBeginSceneChange())
+            return;
+
         if (TryGetComponent(out ButtonSound sound))
             sound.TryButtonPressSound();
 
         // The map stays active while the pause menu is transitioning.
-        map.StartCoroutine(ReloadLevel(map, scene));
+        map.StartCoroutine(ReloadLevel(map, scene, persistence));
     }
 
     private static bool CanReload(Scene scene)
@@ -37,18 +35,19 @@ public class PauseMenu_ResetLevel : MonoBehaviour
 #endif
     }
 
-    private static IEnumerator ReloadLevel(MapManager map, Scene scene)
+    private static IEnumerator ReloadLevel(MapManager map, Scene scene, DataPersistanceManager persistence)
     {
+        yield return map.StartFadeInBlackScreen();
+
+        Player_Statistics_Manager.Active?.FinishLevelAttempt();
+        yield return persistence.SaveBeforeSceneChange();
+
         EventSystem eventSystem = EventSystem.current;
         if (eventSystem)
         {
             eventSystem.SetSelectedGameObject(null);
             eventSystem.enabled = false;
         }
-
-        yield return map.StartFadeInBlackScreen();
-
-        Player_Statistics_Manager.Active?.SaveLevelExit();
 
         GameObject player = MapManager.SpawnedPlayer;
         if (player)

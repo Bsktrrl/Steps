@@ -76,6 +76,8 @@ public class AbilitiesGot
 
     public bool ClimingGloves;
 
+    internal AbilitiesGot Copy() => (AbilitiesGot)MemberwiseClone();
+
     public bool HasAbility(Abilities ability)
     {
         return ability switch

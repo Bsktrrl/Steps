@@ -13,6 +13,28 @@ MonoBehaviour:
   m_Name: MainCamera_FarNear_Blend
   m_EditorClassIdentifier: 
   CustomBlends:
+  - From: CM_Main
+    To: CM_FreeCam
+    Blend:
+      Style: 0
+      Time: 0
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
+  - From: CM_FreeCam
+    To: CM_Main
+    Blend:
+      Style: 0
+      Time: 0
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
   - From: '**ANY CAMERA**'
     To: NPC Camera
     Blend:

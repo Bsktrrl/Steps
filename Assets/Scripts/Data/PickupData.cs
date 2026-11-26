@@ -15,4 +15,15 @@ public class PickupData : MonoBehaviour
 
     [Header("If an Ability, which in the level is it?")]
     public int abilityNo;
+
+    internal int GetPickupNumber(Items item)
+    {
+        return item switch
+        {
+            Items.Essence => essenceNo,
+            Items.Footprint => footprintNo,
+            Items.Skin => skinNo,
+            _ => abilityNo
+        };
+    }
 }

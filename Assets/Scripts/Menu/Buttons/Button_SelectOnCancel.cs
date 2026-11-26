@@ -165,22 +165,21 @@ public class CancelPauseMenuByButtonPress : MonoBehaviour
         MenuManager.Instance.currentMenuCategorySelected = currentMenuCategoryToSelect;
 
         //Make sure that mainMenu isn't tried accessed during gameplay
+        var mainMenu = MainMenuManager.Instance;
         if (menuState_ToSelect is MenuState.Pause_Menu_Main or MenuState.Pause_Menu_Options or
             MenuState.Pause_Menu_Skins or MenuState.Pause_Menu_Info)
         {
             if (pauseMenuManager)
                 pauseMenuManager.menuState = menuState_ToSelect;
         }
-        else
+        else if (mainMenu)
         {
-            MainMenuManager.Instance.menuState = menuState_ToSelect;
+            mainMenu.menuState = menuState_ToSelect;
             OverWorldManager.Instance.regionState = regionState_ToSelect;
             OverWorldManager.Instance.levelState = levelState_ToSelect;
         }
 
-        MapManager mapManager = FindObjectOfType<MapManager>();
-
-        if (mapManager == null)
+        if (mainMenu && !MapManager.Instance)
             RememberCurrentlySelectedUIElement.Instance.SaveSelectedUIElement(regionState_ToSelect, levelState_ToSelect);
 
 

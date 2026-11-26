@@ -157,7 +157,7 @@ public class SettingsManager : Singleton<SettingsManager>
         DataManager.Instance.settingData_StoreList.currentFreeCamSensitivity = settingsData.currentFreeCamSensitivity;
         DataManager.Instance.settingData_StoreList.disableGuidePopups = settingsData.disableGuidePopups;
 
-        DataPersistanceManager.instance.SaveGame();
+        DataPersistanceManager.instance.SaveSettings();
     }
 
 

@@ -19,8 +19,9 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
     [SerializeField] GameObject abilitySprite_CeilingGrab;
     [SerializeField] GameObject abilitySprite_GrapplingHook;
 
-    bool swim_FirstTime;
-    bool freeSwim_FirstTime;
+    bool swimHighlighted;
+    bool freeSwimHighlighted;
+    private CanvasGroup abilityVisibility;
 
 
     //--------------------
@@ -34,6 +35,7 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
     private void OnEnable()
     {
         MapManager.Action_EndIntroSequence += UpdateDisplay;
+        SettingsManager.Action_SetNewStepDisplay += ApplyStepsDisplaySetting;
 
         //if (MapManager.Instance.haveIntroSequence)
         //    MapManager.Action_EndIntroSequence += UpdateDisplay;
@@ -43,6 +45,8 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
         Interactable_Pickup.Action_AbilityPickupGot += UpdateDisplay;
 
         Movement.Action_StepTaken += CheckIfStandingInWater;
+        Movement.Action_LandedFromFalling += CheckIfStandingInWater;
+        Movement.Action_RespawnPlayerLate += RefreshAfterRespawn;
 
         Movement.Action_isDashing += Ability_Dash_Activation;
         Movement.Action_isDashing_Finished += Ability_Dash_Deactivation;
@@ -66,6 +70,7 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
     private void OnDisable()
     {
         MapManager.Action_EndIntroSequence -= UpdateDisplay;
+        SettingsManager.Action_SetNewStepDisplay -= ApplyStepsDisplaySetting;
 
         //if (MapManager.Instance.haveIntroSequence)
         //    MapManager.Action_EndIntroSequence -= UpdateDisplay;
@@ -75,6 +80,8 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
         Interactable_Pickup.Action_AbilityPickupGot -= UpdateDisplay;
 
         Movement.Action_StepTaken -= CheckIfStandingInWater;
+        Movement.Action_LandedFromFalling -= CheckIfStandingInWater;
+        Movement.Action_RespawnPlayerLate -= RefreshAfterRespawn;
 
         Movement.Action_isDashing -= Ability_Dash_Activation;
         Movement.Action_isDashing_Finished -= Ability_Dash_Deactivation;
@@ -102,34 +109,47 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
 
     void CheckIfStandingInWater()
     {
-        if (Movement.Instance.blockStandingOn && Movement.Instance.blockStandingOn.GetComponent<BlockInfo>().blockElement == BlockElement.Water)
-        {
-            if (!swim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel || PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel))
-            {
-                Ability_Swim_Activation();
-                swim_FirstTime = true;
-            }
+        GameObject block = Movement.Instance.blockStandingOn;
+        bool inWater = block && block.TryGetComponent(out BlockInfo info) && info.blockElement == BlockElement.Water;
+        Stats stats = PlayerStats.Instance.stats;
+        var temporary = stats?.abilitiesGot_Temporary;
+        var permanent = stats?.abilitiesGot_Permanent;
 
-            if (!freeSwim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers || PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers))
-            {
-                Ability_FreeSwim_Activation();
-                freeSwim_FirstTime = true;
-            }
+        UpdateSwimHighlight(abilitySprite_Swim, inWater && (temporary?.Snorkel == true || permanent?.Snorkel == true), ref swimHighlighted);
+        UpdateSwimHighlight(abilitySprite_FreeSwim, inWater && (temporary?.Flippers == true || permanent?.Flippers == true), ref freeSwimHighlighted);
+    }
+
+    static void UpdateSwimHighlight(GameObject icon, bool shouldHighlight, ref bool highlighted)
+    {
+        if (!icon || !icon.activeInHierarchy)
+        {
+            highlighted = false;
+            return;
         }
+
+        if (highlighted == shouldHighlight || !icon.TryGetComponent(out AbilityUIAnimator animator))
+            return;
+
+        highlighted = shouldHighlight;
+        if (highlighted)
+            animator.Activating();
         else
-        {
-            if (swim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.Snorkel || PlayerStats.Instance.stats.abilitiesGot_Permanent.Snorkel))
-            {
-                Ability_Swim_Deactivation();
-                swim_FirstTime = false;
-            }
+            animator.Deactivating();
+    }
 
-            if (freeSwim_FirstTime && (PlayerStats.Instance.stats.abilitiesGot_Temporary.Flippers || PlayerStats.Instance.stats.abilitiesGot_Permanent.Flippers))
-            {
-                Ability_FreeSwim_Deactivation();
-                freeSwim_FirstTime = false;
-            }
-        }
+    void RefreshAfterRespawn()
+    {
+        // The respawn animation resets the icons before the checkpoint tile is refreshed.
+        swimHighlighted = false;
+        freeSwimHighlighted = false;
+        StartCoroutine(RefreshSwimHighlightsNextFrame());
+    }
+
+    IEnumerator RefreshSwimHighlightsNextFrame()
+    {
+        yield return null;
+        if (isActiveAndEnabled)
+            CheckIfStandingInWater();
     }
 
 
@@ -140,6 +160,7 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
     {
         if (abilityParent)
         {
+            ApplyStepsDisplaySetting();
             abilityParent.SetActive(true);
 
             if (!abilityParent.activeInHierarchy) return;
@@ -151,6 +172,19 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
             StartCoroutine(UpdateDisplay_Delay(0.4f));
         }
     }
+
+    private void ApplyStepsDisplaySetting()
+    {
+        if (!abilityParent) return;
+
+        if (!abilityVisibility && !abilityParent.TryGetComponent(out abilityVisibility))
+            abilityVisibility = abilityParent.AddComponent<CanvasGroup>();
+
+        bool showAbilities = DataManager.Instance.settingData_StoreList?.currentStepDisplay != StepDisplay.None;
+        abilityVisibility.alpha = showAbilities ? 1f : 0f;
+        abilityVisibility.blocksRaycasts = showAbilities;
+    }
+
     IEnumerator UpdateDisplay_Delay(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
@@ -171,6 +205,7 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
         Ability_Appearance(abilitySprite_Jump, PlayerStats.Instance.stats.abilitiesGot_Temporary.SpringShoes, PlayerStats.Instance.stats.abilitiesGot_Permanent.SpringShoes);
         Ability_Appearance(abilitySprite_CeilingGrab, PlayerStats.Instance.stats.abilitiesGot_Temporary.ClimingGloves, PlayerStats.Instance.stats.abilitiesGot_Permanent.ClimingGloves);
         Ability_Appearance(abilitySprite_GrapplingHook, PlayerStats.Instance.stats.abilitiesGot_Temporary.GrapplingHook, PlayerStats.Instance.stats.abilitiesGot_Permanent.GrapplingHook);
+        CheckIfStandingInWater();
     }
 
     void Ability_Appearance(GameObject abilityObject, bool tempAbility, bool permAbility)
@@ -208,15 +243,6 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
     //--------------------
 
 
-    void Ability_Swim_Activation()
-    {
-        abilitySprite_Swim.GetComponent<AbilityUIAnimator>().Activating();
-    }
-    void Ability_Swim_Deactivation()
-    {
-        abilitySprite_Swim.GetComponent<AbilityUIAnimator>().Deactivating();
-    }
-
     void Ability_SwiftSwim_Activation()
     {
         abilitySprite_SwiftSwim.GetComponent<AbilityUIAnimator>().Activating();
@@ -224,15 +250,6 @@ public class Player_AbilityButtonDisplay : MonoBehaviour
     void Ability_SwiftSwim_Deactivation()
     {
         abilitySprite_SwiftSwim.GetComponent<AbilityUIAnimator>().Deactivating();
-    }
-
-    void Ability_FreeSwim_Activation()
-    {
-        abilitySprite_FreeSwim.GetComponent<AbilityUIAnimator>().Activating();
-    }
-    void Ability_FreeSwim_Deactivation()
-    {
-        abilitySprite_FreeSwim.GetComponent<AbilityUIAnimator>().Deactivating();
     }
 
 

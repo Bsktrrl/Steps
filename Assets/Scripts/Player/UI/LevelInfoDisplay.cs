@@ -102,13 +102,7 @@ public class LevelInfoDisplay : Singleton<LevelInfoDisplay>
         //Display Coins got
         if (mapInfo != null)
         {
-            int collectionCounter = 0;
-            if (mapInfo.levelSkin.isTaken)
-            {
-                collectionCounter++;
-            }
-
-            skinAmount.GetComponentInChildren<TextMeshProUGUI>().text = collectionCounter + " / 3";
+            skinAmount.GetComponentInChildren<TextMeshProUGUI>().text = mapInfo.CountSkinsTaken() + " / " + mapInfo.SkinPickupTotal;
         }
         else
         {

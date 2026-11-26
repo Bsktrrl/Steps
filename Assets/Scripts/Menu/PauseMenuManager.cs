@@ -67,6 +67,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     [Header("Skin Sprites")]
     #region Sprites
     public Sprite sprite_PauseMenu_HUB;
+    public Sprite sprite_PauseMenu_HUB_SourceBlock;
 
     public Sprite sprite_PauseMenu_Rivergreen_Lv1;
     public Sprite sprite_PauseMenu_Rivergreen_Lv2;
@@ -160,6 +161,9 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
     public void ClosePauseMenu()
     {
+        if (DataPersistanceManager.GameplayInputBlocked)
+            return;
+
         ////Set the first selected button for controller input
         //EventSystem.current.SetSelectedGameObject(pauseMenu_StartButton);
         //print("8. pauseMenuManager = true");
@@ -332,10 +336,11 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
                 break;
         }
 
-        if (mapInfo.isCompleted)
-            glueplant_Aquired.text = "1 / 1";
-        else
-            glueplant_Aquired.text = "0 / 1";
+        LevelNames level = MapManager.Instance.levelName;
+        StandStats stands = DataManager.Instance.glueplantStandStats_Store?.GetForLevel(level);
+        int glueplantTotal = GlueplantStandStats.IsMetalworks(level) ? StandStats.StandsPerLevel : 1;
+        int glueplantCounter = stands?.CountTaken ?? (mapInfo.isCompleted ? 1 : 0);
+        glueplant_Aquired.text = glueplantCounter + " / " + glueplantTotal;
 
         //Essence aquired
         int essenceCounter = 0;
@@ -349,12 +354,8 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         Essence_Aquired.text = essenceCounter + " / 10";
 
         //Skin aquired
-        int skinCounter = 0;
-        if (mapInfo.levelSkin.isTaken)
-        {
-            skinCounter++;
-        }
-        Skin_Aquired.text = skinCounter + " / 1";
+        int skinCounter = mapInfo.CountSkinsTaken();
+        Skin_Aquired.text = skinCounter + " / " + mapInfo.SkinPickupTotal;
 
         //StepMax aquired
         int stepsCounter = 0;
@@ -367,7 +368,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         }
         StepsMax_Aquired.text = stepsCounter + " / 3";
 
-        UpdateProgressBars(mapInfo, essenceCounter, skinCounter, stepsCounter);
+        UpdateProgressBars(glueplantCounter, glueplantTotal, essenceCounter, skinCounter, mapInfo.SkinPickupTotal, stepsCounter);
 
         //Get Abilities to get in the Level
         ability_Swimming.SetActive(false);
@@ -412,6 +413,9 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
             case SkinType.Quartz:
                 return sprite_PauseMenu_HUB;
+
+            case SkinType.SourceBlock:
+                return sprite_PauseMenu_HUB_SourceBlock;
 
             case SkinType.Rivergreen_Lv1:
                 return sprite_PauseMenu_Rivergreen_Lv1;
@@ -484,21 +488,13 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         }
     }
 
-    void UpdateProgressBars(Map_SaveInfo mapInfo, float essenceCounter, float skinCounter, float stepsCounter)
+    void UpdateProgressBars(int glueplantCounter, int glueplantTotal, float essenceCounter, float skinCounter, int skinTotal, float stepsCounter)
     {
-        if (mapInfo.isCompleted)
-            SetProgressBar(glueplant_FillImage, 1f, 1);
-        else
-            SetProgressBar(glueplant_FillImage, 0f, 1);
-
+        SetProgressBar(glueplant_FillImage, glueplantCounter, glueplantTotal);
         SetProgressBar(essence_FillImage, essenceCounter, 10);
-        SetProgressBar(skin_FillImage, skinCounter, 1);
+        SetProgressBar(skin_FillImage, skinCounter, skinTotal);
         SetProgressBar(footprint_FillImage, stepsCounter, 3);
-
-        if (mapInfo.isCompleted)
-            SetProgressBar(levelName_FillImage, 1f + essenceCounter + skinCounter + stepsCounter, 15);
-        else
-            SetProgressBar(levelName_FillImage, 0f + essenceCounter + skinCounter + stepsCounter, 15);
+        SetProgressBar(levelName_FillImage, glueplantCounter + essenceCounter + skinCounter + stepsCounter, 13 + glueplantTotal + skinTotal);
     }
     void SetProgressBar(Image fillImage, float current, float max)
     {

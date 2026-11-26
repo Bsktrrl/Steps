@@ -12,8 +12,10 @@ public class Player_Statistics_Manager : MonoBehaviour
     private const int FootprintsPerLevel = 3;
     private const int EssencePerLevel = 10;
     private const int CollectibleSkinCount = LevelCount + 1;
-    // Each level has one Glueplant and one tablet. Every collectible skin has a pickup and a purchase.
-    private const int GameProgressTotal = LevelCount * (1 + FootprintsPerLevel + EssencePerLevel + 1) +
+    private const int GlueplantGoalCount = LevelCount - GlueplantStandStats.MetalworksLevelCount;
+    private const int GlueplantPlacementCount = GlueplantStandStats.MetalworksLevelCount * StandStats.StandsPerLevel;
+    private const int GameProgressTotal = LevelCount * (FootprintsPerLevel + EssencePerLevel + 1) +
+                                          GlueplantGoalCount + GlueplantPlacementCount +
                                           CollectibleSkinCount * 2 + RegionLevelCount;
 
     private static readonly FieldInfo[] CollectibleSkinFields = typeof(SkinsWardrobeInfo)
@@ -42,11 +44,11 @@ public class Player_Statistics_Manager : MonoBehaviour
     private int pendingStepsReplenished;
     private int pendingRespawns;
     private float pendingStandingTime;
+    private float pendingFreeCamTime;
 
     // A save drains the pending counters. These totals belong to the whole attempt.
     private int attemptSteps;
     private float attemptTime;
-    private float attemptFreeCamTime;
     private bool attemptCompleted;
     private bool attemptClosed;
 
@@ -117,7 +119,7 @@ public class Player_Statistics_Manager : MonoBehaviour
         if (map)
             return;
 
-        map = FindAnyObjectByType<MapManager>();
+        map = MapManager.Instance;
         if (!map || map.gameObject.scene != gameObject.scene)
         {
             map = null;
@@ -152,9 +154,9 @@ public class Player_Statistics_Manager : MonoBehaviour
         pendingStepsReplenished = 0;
         pendingRespawns = 0;
         pendingStandingTime = 0f;
+        pendingFreeCamTime = 0f;
         attemptSteps = 0;
         attemptTime = 0f;
-        attemptFreeCamTime = 0f;
         attemptCompleted = false;
         attemptClosed = false;
     }
@@ -170,7 +172,7 @@ public class Player_Statistics_Manager : MonoBehaviour
         attemptTime += elapsed;
 
         if (freeCam && freeCam._isActive)
-            attemptFreeCamTime += elapsed;
+            pendingFreeCamTime += elapsed;
         else if (!player.pauseGame && !player.pauseMovement && !player.npcInteraction &&
                  !movement.isRespawning && !movement.isMoving && !movement.IsClimbingLadder &&
                  movement.GetMovementState() == MovementStates.Still)
@@ -203,11 +205,13 @@ public class Player_Statistics_Manager : MonoBehaviour
         AddStepsReplenished(pendingStepsReplenished);
         AddRespawns(pendingRespawns);
         AddTimeStandingStill(pendingStandingTime);
+        AddTimeInFreeCam(pendingFreeCamTime);
 
         pendingSteps = 0;
         pendingStepsReplenished = 0;
         pendingRespawns = 0;
         pendingStandingTime = 0f;
+        pendingFreeCamTime = 0f;
         CheckProgress();
     }
 
@@ -218,12 +222,6 @@ public class Player_Statistics_Manager : MonoBehaviour
 
         AddAverageStepsPerLevel(attemptSteps);
         attemptClosed = true;
-    }
-
-    internal void SaveLevelExit()
-    {
-        FinishLevelAttempt();
-        SaveStatistics();
     }
 
     internal void RecordLevelCompletion()
@@ -247,7 +245,6 @@ public class Player_Statistics_Manager : MonoBehaviour
         AddFastestLevelCOmpletion(levelName, attemptTime);
         AddSlowestLevelCOmpletion(levelName, attemptTime);
         AddAverageLevelCompletionTime(attemptTime);
-        AddTimeInFreeCam(attemptFreeCamTime);
     }
 
     private void RecordStep()
@@ -380,7 +377,8 @@ public class Player_Statistics_Manager : MonoBehaviour
                     continue;
 
                 ref LevelProgress progress = ref progressByLevel[(int)level];
-                progress.glueplantCollected |= savedMap.isCompleted;
+                if (!GlueplantStandStats.IsMetalworks(level))
+                    progress.glueplantCollected |= savedMap.isCompleted;
                 int footprints = savedMap.maxStepList?.Count(footprint => footprint?.isTaken == true) ?? 0;
                 int essence = savedMap.essenceList?.Count(pickup => pickup?.isTaken == true) ?? 0;
                 progress.footprints = Mathf.Max(progress.footprints, Mathf.Min(footprints, FootprintsPerLevel));
@@ -399,6 +397,13 @@ public class Player_Statistics_Manager : MonoBehaviour
         int progressPoints = GetSkinProgress(data.skinsInfo_Store?.skinWardrobeInfo);
         foreach (LevelProgress progress in progressByLevel)
             progressPoints += progress.Points;
+
+        GlueplantStandStats stands = data.glueplantStandStats_Store;
+        if (stands != null)
+        {
+            for (LevelNames level = LevelNames.Metalworks_Lv1; level <= LevelNames.Metalworks_Lv5; level++)
+                progressPoints += stands.GetForLevel(level).CountTaken;
+        }
 
         foreach (var _ in GetFinishedDialogues(data.charatersData_Store, includeStepellier: false))
             progressPoints++;
@@ -462,8 +467,7 @@ public class Player_Statistics_Manager : MonoBehaviour
                 }
 
                 AddPickupEssence(savedMap.essenceList?.Count(essence => essence != null && essence.isTaken) ?? 0);
-                if (savedMap.levelSkin?.isTaken == true)
-                    AddPickupSkin(1);
+                AddPickupSkin(savedMap.CountSkinsTaken());
             }
         }
 
