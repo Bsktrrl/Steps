@@ -1,19 +1,76 @@
+using System;
 using Unity.Services.Core;
 using Unity.Services.Analytics;
 using UnityEngine;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 public class AnalyticsInitializer : MonoBehaviour
 {
-    async void Awake()
-    {
-        await UnityServices.InitializeAsync();
-        Debug.Log("0. Unity Services Initialized");
+    private IAnalyticsService collectingService;
+    private bool hasStarted;
+    private int enableVersion;
 
-        if (AnalyticsService.Instance != null)
+    private void Start()
+    {
+        // The level's PlayerDataManager is created with the player during Awake.
+        hasStarted = true;
+        StartAnalyticsIfAllowed();
+    }
+
+    private void OnEnable()
+    {
+        if (hasStarted)
+            StartAnalyticsIfAllowed();
+    }
+
+    private bool AllowsCollection()
+    {
+        PlayerDataManager collection = PlayerDataManager.ExistingInstance;
+        return isActiveAndEnabled && collection && collection.isActiveAndEnabled &&
+            collection.gameObject.scene == gameObject.scene && collection.collectData;
+    }
+
+    private async void StartAnalyticsIfAllowed()
+    {
+        if (!AllowsCollection())
+            return;
+
+        int version = enableVersion;
+        try
         {
-            AnalyticsService.Instance.StartDataCollection();
+            if (UnityServices.State != ServicesInitializationState.Initialized)
+                await UnityServices.InitializeAsync();
+
+            // Initialization may finish after the scene or component was disabled.
+            if (!this || version != enableVersion || !AllowsCollection())
+                return;
+
+            IAnalyticsService service = AnalyticsService.Instance;
+            service.StartDataCollection();
+            collectingService = service;
+        }
+        catch (Exception exception)
+        {
+            Debug.LogWarning($"Unity Analytics could not start. {exception.Message}");
+        }
+    }
+
+    private void OnDisable()
+    {
+        enableVersion++;
+        if (collectingService == null)
+            return;
+
+        try
+        {
+            collectingService.StopDataCollection();
+        }
+        catch (Exception exception)
+        {
+            Debug.LogWarning($"Unity Analytics could not stop. {exception.Message}");
+        }
+        finally
+        {
+            collectingService = null;
         }
     }
 }
