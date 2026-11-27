@@ -92,10 +92,11 @@ public class Player_BodyHeight : Singleton<Player_BodyHeight>
             return height_SwampWater;
         if (block.GetComponent<Block_Mud>())
             return height_Mud;
-        if (block.GetComponent<Block_Quicksand>())
+        if (block.TryGetComponent(out Block_Quicksand quicksand))
         {
             return Player_Quicksand.Instance.quicksandCounter switch
             {
+                0 when block == movement.blockStandingOn && quicksand.isActiveAndEnabled => height_QuickSand_1,
                 1 => height_QuickSand_1,
                 2 => height_QuickSand_2,
                 3 => height_QuickSand_3,

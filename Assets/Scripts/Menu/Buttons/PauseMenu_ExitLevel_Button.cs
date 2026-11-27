@@ -29,8 +29,6 @@ public class PauseMenu_ExitLevel_Button : MonoBehaviour
     {
         yield return mapManager.StartFadeInBlackScreen();
 
-        MapStatsGathered.Instance.ExitLevel();
-
         yield return new WaitForSecondsRealtime(1f);
 
         player.FinishLevelExit();

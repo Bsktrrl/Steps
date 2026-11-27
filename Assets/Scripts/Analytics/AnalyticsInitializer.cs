@@ -26,7 +26,7 @@ public class AnalyticsInitializer : MonoBehaviour
     {
         PlayerDataManager collection = PlayerDataManager.ExistingInstance;
         return isActiveAndEnabled && collection && collection.isActiveAndEnabled &&
-            collection.gameObject.scene == gameObject.scene && collection.collectData;
+            collection.gameObject.scene == gameObject.scene && collection.UsesUnityAnalytics;
     }
 
     private async void StartAnalyticsIfAllowed()

@@ -194,19 +194,19 @@ public class Interactable_Pickup : MonoBehaviour
             case Items.Essence:
                 stats.itemsGot.essence_Max++;
                 stats.itemsGot.essence_Current++;
-                MapStatsGathered.Instance.UpdateEssencePickedUp_Stats(pickupNo);
+                MapStatsGathered.ExistingInstance?.RecordPickup(itemReceived, pickupNo);
                 Action_EssencePickupGot_isActive();
                 break;
             case Items.Footprint:
                 stats.steps_Max++;
                 stats.steps_Current++;
-                MapStatsGathered.Instance.UpdateFootprintPickedUp_Stats(pickupNo);
+                MapStatsGathered.ExistingInstance?.RecordPickup(itemReceived, pickupNo);
                 Action_FootprintPickupGot_isActive();
                 break;
             case Items.Skin:
                 stats.itemsGot.skin++;
-                MapStatsGathered.Instance.UpdateSkinPickedUp_Stats(pickupNo);
                 SkinType skin = UpdateSkinTaken();
+                MapStatsGathered.ExistingInstance?.RecordPickup(itemReceived, pickupNo, skin.ToString());
                 Player_Statistics_Manager.Active?.RecordSkinFound();
                 Action_SkinPickupGot?.Invoke(skin);
                 break;
@@ -383,7 +383,7 @@ public class Interactable_Pickup : MonoBehaviour
                 return;
         }
 
-        MapStatsGathered.Instance.UpdateAbilityPickedUp_Stats(pickupNo);
+        MapStatsGathered.ExistingInstance?.RecordPickup(Items.None, pickupNo, abilityReceived.ToString());
         Action_AbilityPickupGot_isActive();
         switch (abilityReceived)
         {

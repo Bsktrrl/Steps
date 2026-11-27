@@ -34,7 +34,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     public PlayerControls playerControls;
     InputAction[] movementPressActions;
     MapManager mapManager;
-    MapStatsGathered mapStatsGathered;
 
     [Header("KeyPresses")]
     public bool forward_isPressed = false;
@@ -117,7 +116,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     private void Start()
     {
         pauseMenuManager = FindAnyObjectByType<PauseMenuManager>();
-        mapStatsGathered = FindAnyObjectByType<MapStatsGathered>();
 
         playerControls = new PlayerControls();
         mapManager = FindObjectOfType<MapManager>();
@@ -142,13 +140,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (PlayerManager.Instance.playerBody.transform.GetComponentInChildren<Animator>())
         {
             Player_Animations.Instance.playerAnimator = PlayerManager.Instance.playerBody.GetComponentInChildren<Animator>();
-        }
-    }
-    private void Update()
-    {
-        if (freeCam_isPressed)
-        {
-            mapStatsGathered.levelStats.freeCamTimer += Time.deltaTime;
         }
     }
     private void OnEnable()
@@ -510,7 +501,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_CameraRotation()) { return; }
         if (Movement.Instance.isUpdatingDarkenBlocks) { return; }
 
-        MapStatsGathered.Instance.levelStats.cameraRotationTaken++;
         CameraController.Instance.RotateCameraX();
     }
     void OnCameraRotateY()
@@ -528,7 +518,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
         if (!ButtonChecks_CameraRotation()) { return; }
         if (Movement.Instance.isUpdatingDarkenBlocks) { return; }
 
-        MapStatsGathered.Instance.levelStats.cameraRotationTaken++;
         CameraController.Instance.RotateCameraY();
     }
     bool ButtonChecks_CameraRotation()
@@ -817,8 +806,6 @@ public class Player_KeyInputs : Singleton<Player_KeyInputs>
     {
         if (Tutorial.Instance.state_CameraRotation)
         {
-            MapStatsGathered.Instance.levelStats.cameraRotationTaken++;
-
             if (cameraX)
                 CameraController.Instance.RotateCameraX();
             else

@@ -40,7 +40,7 @@ public class PauseMenu_ResetLevel : MonoBehaviour
         yield return map.StartFadeInBlackScreen();
 
         Player_Statistics_Manager.Active?.FinishLevelAttempt();
-        yield return persistence.SaveBeforeSceneChange();
+        yield return persistence.SaveBeforeSceneChange(FeedbackOutcome.Reset);
 
         EventSystem eventSystem = EventSystem.current;
         if (eventSystem)

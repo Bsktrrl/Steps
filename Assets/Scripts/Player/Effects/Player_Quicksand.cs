@@ -11,25 +11,31 @@ public class Player_Quicksand : Singleton<Player_Quicksand>
     private void OnEnable()
     {
         Movement.Action_isSwitchingBlocks += UpdateQuicksandState;
-        Movement.Action_RespawnPlayer += UpdateQuicksandState;
+        Movement.Action_RespawnPlayer += ResetQuicksandCounter;
     }
 
     private void OnDisable()
     {
         Movement.Action_isSwitchingBlocks -= UpdateQuicksandState;
-        Movement.Action_RespawnPlayer -= UpdateQuicksandState;
+        Movement.Action_RespawnPlayer -= ResetQuicksandCounter;
+    }
+
+    private void ResetQuicksandCounter()
+    {
+        quicksandCounter = 0;
     }
 
     private void UpdateQuicksandState()
     {
-        GameObject standingBlock = Movement.Instance.blockStandingOn;
+        Movement movement = Movement.Instance;
+        GameObject standingBlock = movement.blockStandingOn;
         if (!standingBlock)
             return;
 
         isInQuicksand = standingBlock.TryGetComponent(out Block_Quicksand quicksand);
         if (!isInQuicksand)
             quicksandCounter = 0;
-        else if (quicksand.isActiveAndEnabled)
+        else if (!movement.isRespawning && quicksand.isActiveAndEnabled)
             quicksandCounter++;
     }
 }
