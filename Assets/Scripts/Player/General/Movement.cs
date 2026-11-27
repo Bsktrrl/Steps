@@ -660,7 +660,7 @@ public class Movement : Singleton<Movement>
         return false;
     }
 
-    private bool TryRunAbilityMove(MoveOptions option, ref bool stateFlag, Action animationTrigger, Action startEvent, Action statIncrement)
+    private bool TryRunAbilityMove(MoveOptions option, ref bool stateFlag, Action animationTrigger, Action startEvent)
     {
         if (!HasValidTarget(option))
             return false;
@@ -671,7 +671,6 @@ public class Movement : Singleton<Movement>
             return true;
         }
 
-        statIncrement?.Invoke();
         animationTrigger?.Invoke();
         PerformMovement(option, MovementStates.Moving, abilitySpeed, ref stateFlag);
         startEvent?.Invoke();
@@ -3806,8 +3805,7 @@ public class Movement : Singleton<Movement>
             grappleMovementTarget,
             abilitySpeed + grapplingLength);
 
-        MapStatsGathered.Instance.levelStats
-            .ability_GrapplingHook++;
+        MapStatsGathered.ExistingInstance?.RecordGrapplingHook();
         Player_Statistics_Manager.Active?.RecordGrapplingHook();
     }
 
@@ -3843,7 +3841,6 @@ public class Movement : Singleton<Movement>
         isAscending = true;
         PlayerCameraOcclusionController.Instance.CameraZoom(true);
 
-        MapStatsGathered.Instance.levelStats.ability_Ascend++;
         Anims.Trigger_AscendAnimation();
 
         if (IsStairOrSlope(moveToBlock_Ascend.targetBlock))
@@ -3871,7 +3868,6 @@ public class Movement : Singleton<Movement>
         isDescending = true;
         PlayerCameraOcclusionController.Instance.CameraZoom(true);
 
-        MapStatsGathered.Instance.levelStats.ability_Descend++;
         Anims.Trigger_DescendAnimation();
 
         if (IsStairOrSlope(moveToBlock_Descend.targetBlock))
@@ -4055,8 +4051,7 @@ public class Movement : Singleton<Movement>
                     dashOption,
                     ref isDashing,
                     () => Anims.Trigger_DashAnimation(),
-                    () => Action_isDashing?.Invoke(),
-                    () => MapStatsGathered.Instance.levelStats.ability_Dash++);
+                    () => Action_isDashing?.Invoke());
             }
         }
 
@@ -4077,8 +4072,7 @@ public class Movement : Singleton<Movement>
                     jumpOption,
                     ref isJumping,
                     () => Anims.Trigger_JumpAnimation(),
-                    () => Action_isJumping?.Invoke(),
-                    () => MapStatsGathered.Instance.levelStats.ability_Jump++);
+                    () => Action_isJumping?.Invoke());
             }
         }
 
@@ -5473,7 +5467,7 @@ public class Movement : Singleton<Movement>
                 }
 
                 if (CeilingGrab.isCeilingGrabbing)
-                    MapStatsGathered.Instance.levelStats.ability_CeilingGrab++;
+                    MapStatsGathered.ExistingInstance?.RecordCeilingStep();
             }
             else
             {
@@ -5773,7 +5767,10 @@ public class Movement : Singleton<Movement>
         isRespawning = true;
 
         if (isRespawningFirstTime)
+        {
             Player_Statistics_Manager.Active?.RecordRespawn(stepsExhausted);
+            MapStatsGathered.ExistingInstance?.RecordRespawn();
+        }
 
         // A respawn interrupts even an unfinished SwiftSwim segment.
         // Reset the external effect once rather than leaving its hull on.
@@ -5953,11 +5950,11 @@ public class Movement : Singleton<Movement>
 
     void CheckIfSwimming()
     {
-        if (TryGetStandingInfo(out BlockInfo info) &&
+        if (!swiftSwimEffectIsActive && TryGetStandingInfo(out BlockInfo info) &&
             info.blockElement == BlockElement.Water &&
             PlayerHasSwimAbility())
         {
-            MapStatsGathered.Instance.levelStats.ability_Swim++;
+            MapStatsGathered.ExistingInstance?.RecordSwimStep();
         }
     }
 

@@ -214,6 +214,8 @@ public class CameraController : Singleton<CameraController>
 
             cameraAnchor.transform.rotation = targetRotation;
 
+            if (snappedRotationState != activeSegmentTargetState)
+                MapStatsGathered.ExistingInstance?.RecordCameraRotation();
             snappedRotationState = activeSegmentTargetState;
             cameraRotationState = snappedRotationState;
 

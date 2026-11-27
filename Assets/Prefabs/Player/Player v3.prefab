@@ -15200,7 +15200,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1177206071146539063
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23965,6 +23965,121 @@ MonoBehaviour:
         totalTimeEquippedInLevels_MetalworksLv3: 0
         totalTimeEquippedInLevels_MetalworksLv4: 0
         totalTimeEquippedInLevels_MetalworksLv5: 0
+        totalTimeUsed_InfoMenu: 0
+        totalLevelsReset: 0
+        totalLevelsInterrupted: 0
+        totalTimeEquippedInLevels_Quartz: 0
+        totalTimeEquippedInLevels_SourceBlock: 0
+        totalSwimSteps: 0
+        totalSwiftSwimUses: 0
+        totalAscendUses: 0
+        totalDescendUses: 0
+        totalDashUses: 0
+        totalGrapplingHookUses: 0
+        totalJumpUses: 0
+        totalCeilingGrabSteps: 0
+        totalNPCDialogues: 0
+        totalEssencePickups: 0
+        totalFootprintPickups: 0
+        totalSkinPickups: 0
+        totalAbilityPickups: 0
+      activeSessionId: 
+      activeLevelReport:
+        id: 
+        kind: 
+        sessionId: 
+        level: 
+        scene: 
+        outcome: 
+        recordedUtc: 
+        submittedToExistingForm: 0
+        levelStats:
+          previousLevelSeconds: 0
+          timeUsed: 0
+          stepsTaken: 0
+          goalReachedTimer: 0
+          quitTimer: 0
+          respawnTaken: 0
+          cameraRotationTaken: 0
+          freeCamTimer: 0
+          ability_Swim: 0
+          ability_SwiftSwim: 0
+          ability_Ascend: 0
+          ability_Descend: 0
+          ability_Dash: 0
+          ability_GrapplingHook: 0
+          ability_Jump: 0
+          ability_CeilingGrab: 0
+          talkTo_NPC: 0
+          pickups: []
+        sessionStats:
+          session_No: 0
+          totalTimeUsed: 0
+          totalTimeUsed_Menus: 0
+          totalTimeUsed_MainMenu: 0
+          totalTimeUsed_OverworldMenu: 0
+          totalTimeUsed_WardrobeMenu: 0
+          totalTimeUsed_OptionsMenu: 0
+          totalTimeUsed_InPauseMenu: 0
+          totalTimeUsed_InLevels: 0
+          totalTimeUsed_InFreeCam: 0
+          totalLevelsVisited: 0
+          totalLevelExited: 0
+          totalLevelsCleared: 0
+          totalStepsTaken: 0
+          totalRespawnTaken: 0
+          totalCameraRotationTaken: 0
+          totalTimeEquippedInLevels_Default: 0
+          totalTimeEquippedInLevels_RivergreenLv1: 0
+          totalTimeEquippedInLevels_RivergreenLv2: 0
+          totalTimeEquippedInLevels_RivergreenLv3: 0
+          totalTimeEquippedInLevels_RivergreenLv4: 0
+          totalTimeEquippedInLevels_RivergreenLv5: 0
+          totalTimeEquippedInLevels_SandlandsLv1: 0
+          totalTimeEquippedInLevels_SandlandsLv2: 0
+          totalTimeEquippedInLevels_SandlandsLv3: 0
+          totalTimeEquippedInLevels_SandlandsLv4: 0
+          totalTimeEquippedInLevels_SandlandsLv5: 0
+          totalTimeEquippedInLevels_FrostfieldLv1: 0
+          totalTimeEquippedInLevels_FrostfieldLv2: 0
+          totalTimeEquippedInLevels_FrostfieldLv3: 0
+          totalTimeEquippedInLevels_FrostfieldLv4: 0
+          totalTimeEquippedInLevels_FrostfieldLv5: 0
+          totalTimeEquippedInLevels_FireveinLv1: 0
+          totalTimeEquippedInLevels_FireveinLv2: 0
+          totalTimeEquippedInLevels_FireveinLv3: 0
+          totalTimeEquippedInLevels_FireveinLv4: 0
+          totalTimeEquippedInLevels_FireveinLv5: 0
+          totalTimeEquippedInLevels_WitchmireLv1: 0
+          totalTimeEquippedInLevels_WitchmireLv2: 0
+          totalTimeEquippedInLevels_WitchmireLv3: 0
+          totalTimeEquippedInLevels_WitchmireLv4: 0
+          totalTimeEquippedInLevels_WitchmireLv5: 0
+          totalTimeEquippedInLevels_MetalworksLv1: 0
+          totalTimeEquippedInLevels_MetalworksLv2: 0
+          totalTimeEquippedInLevels_MetalworksLv3: 0
+          totalTimeEquippedInLevels_MetalworksLv4: 0
+          totalTimeEquippedInLevels_MetalworksLv5: 0
+          totalTimeUsed_InfoMenu: 0
+          totalLevelsReset: 0
+          totalLevelsInterrupted: 0
+          totalTimeEquippedInLevels_Quartz: 0
+          totalTimeEquippedInLevels_SourceBlock: 0
+          totalSwimSteps: 0
+          totalSwiftSwimUses: 0
+          totalAscendUses: 0
+          totalDescendUses: 0
+          totalDashUses: 0
+          totalGrapplingHookUses: 0
+          totalJumpUses: 0
+          totalCeilingGrabSteps: 0
+          totalNPCDialogues: 0
+          totalEssencePickups: 0
+          totalFootprintPickups: 0
+          totalSkinPickups: 0
+          totalAbilityPickups: 0
+      pendingFeedbackReports: []
+      levelTimes: []
       pendingSessionReports: []
       rivergreenLv1_Stats:
         timeUsed: 0
@@ -36200,7 +36315,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 35
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -49726,7 +49841,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c2278b5498d7a741b9862a4184d6347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectData: 0
+  feedbackSettings: {fileID: 11400000, guid: 23a057bae28d4aa6a0ff13858d63d89f, type: 2}
 --- !u!1 &7812761235500051849
 GameObject:
   m_ObjectHideFlags: 0
@@ -53648,6 +53763,121 @@ MonoBehaviour:
         totalTimeEquippedInLevels_MetalworksLv3: 0
         totalTimeEquippedInLevels_MetalworksLv4: 0
         totalTimeEquippedInLevels_MetalworksLv5: 0
+        totalTimeUsed_InfoMenu: 0
+        totalLevelsReset: 0
+        totalLevelsInterrupted: 0
+        totalTimeEquippedInLevels_Quartz: 0
+        totalTimeEquippedInLevels_SourceBlock: 0
+        totalSwimSteps: 0
+        totalSwiftSwimUses: 0
+        totalAscendUses: 0
+        totalDescendUses: 0
+        totalDashUses: 0
+        totalGrapplingHookUses: 0
+        totalJumpUses: 0
+        totalCeilingGrabSteps: 0
+        totalNPCDialogues: 0
+        totalEssencePickups: 0
+        totalFootprintPickups: 0
+        totalSkinPickups: 0
+        totalAbilityPickups: 0
+      activeSessionId: 
+      activeLevelReport:
+        id: 
+        kind: 
+        sessionId: 
+        level: 
+        scene: 
+        outcome: 
+        recordedUtc: 
+        submittedToExistingForm: 0
+        levelStats:
+          previousLevelSeconds: 0
+          timeUsed: 0
+          stepsTaken: 0
+          goalReachedTimer: 0
+          quitTimer: 0
+          respawnTaken: 0
+          cameraRotationTaken: 0
+          freeCamTimer: 0
+          ability_Swim: 0
+          ability_SwiftSwim: 0
+          ability_Ascend: 0
+          ability_Descend: 0
+          ability_Dash: 0
+          ability_GrapplingHook: 0
+          ability_Jump: 0
+          ability_CeilingGrab: 0
+          talkTo_NPC: 0
+          pickups: []
+        sessionStats:
+          session_No: 0
+          totalTimeUsed: 0
+          totalTimeUsed_Menus: 0
+          totalTimeUsed_MainMenu: 0
+          totalTimeUsed_OverworldMenu: 0
+          totalTimeUsed_WardrobeMenu: 0
+          totalTimeUsed_OptionsMenu: 0
+          totalTimeUsed_InPauseMenu: 0
+          totalTimeUsed_InLevels: 0
+          totalTimeUsed_InFreeCam: 0
+          totalLevelsVisited: 0
+          totalLevelExited: 0
+          totalLevelsCleared: 0
+          totalStepsTaken: 0
+          totalRespawnTaken: 0
+          totalCameraRotationTaken: 0
+          totalTimeEquippedInLevels_Default: 0
+          totalTimeEquippedInLevels_RivergreenLv1: 0
+          totalTimeEquippedInLevels_RivergreenLv2: 0
+          totalTimeEquippedInLevels_RivergreenLv3: 0
+          totalTimeEquippedInLevels_RivergreenLv4: 0
+          totalTimeEquippedInLevels_RivergreenLv5: 0
+          totalTimeEquippedInLevels_SandlandsLv1: 0
+          totalTimeEquippedInLevels_SandlandsLv2: 0
+          totalTimeEquippedInLevels_SandlandsLv3: 0
+          totalTimeEquippedInLevels_SandlandsLv4: 0
+          totalTimeEquippedInLevels_SandlandsLv5: 0
+          totalTimeEquippedInLevels_FrostfieldLv1: 0
+          totalTimeEquippedInLevels_FrostfieldLv2: 0
+          totalTimeEquippedInLevels_FrostfieldLv3: 0
+          totalTimeEquippedInLevels_FrostfieldLv4: 0
+          totalTimeEquippedInLevels_FrostfieldLv5: 0
+          totalTimeEquippedInLevels_FireveinLv1: 0
+          totalTimeEquippedInLevels_FireveinLv2: 0
+          totalTimeEquippedInLevels_FireveinLv3: 0
+          totalTimeEquippedInLevels_FireveinLv4: 0
+          totalTimeEquippedInLevels_FireveinLv5: 0
+          totalTimeEquippedInLevels_WitchmireLv1: 0
+          totalTimeEquippedInLevels_WitchmireLv2: 0
+          totalTimeEquippedInLevels_WitchmireLv3: 0
+          totalTimeEquippedInLevels_WitchmireLv4: 0
+          totalTimeEquippedInLevels_WitchmireLv5: 0
+          totalTimeEquippedInLevels_MetalworksLv1: 0
+          totalTimeEquippedInLevels_MetalworksLv2: 0
+          totalTimeEquippedInLevels_MetalworksLv3: 0
+          totalTimeEquippedInLevels_MetalworksLv4: 0
+          totalTimeEquippedInLevels_MetalworksLv5: 0
+          totalTimeUsed_InfoMenu: 0
+          totalLevelsReset: 0
+          totalLevelsInterrupted: 0
+          totalTimeEquippedInLevels_Quartz: 0
+          totalTimeEquippedInLevels_SourceBlock: 0
+          totalSwimSteps: 0
+          totalSwiftSwimUses: 0
+          totalAscendUses: 0
+          totalDescendUses: 0
+          totalDashUses: 0
+          totalGrapplingHookUses: 0
+          totalJumpUses: 0
+          totalCeilingGrabSteps: 0
+          totalNPCDialogues: 0
+          totalEssencePickups: 0
+          totalFootprintPickups: 0
+          totalSkinPickups: 0
+          totalAbilityPickups: 0
+      pendingFeedbackReports: []
+      levelTimes: []
       pendingSessionReports: []
       rivergreenLv1_Stats:
         timeUsed: 0
@@ -55589,6 +55819,121 @@ MonoBehaviour:
       totalTimeEquippedInLevels_MetalworksLv3: 0
       totalTimeEquippedInLevels_MetalworksLv4: 0
       totalTimeEquippedInLevels_MetalworksLv5: 0
+      totalTimeUsed_InfoMenu: 0
+      totalLevelsReset: 0
+      totalLevelsInterrupted: 0
+      totalTimeEquippedInLevels_Quartz: 0
+      totalTimeEquippedInLevels_SourceBlock: 0
+      totalSwimSteps: 0
+      totalSwiftSwimUses: 0
+      totalAscendUses: 0
+      totalDescendUses: 0
+      totalDashUses: 0
+      totalGrapplingHookUses: 0
+      totalJumpUses: 0
+      totalCeilingGrabSteps: 0
+      totalNPCDialogues: 0
+      totalEssencePickups: 0
+      totalFootprintPickups: 0
+      totalSkinPickups: 0
+      totalAbilityPickups: 0
+    activeSessionId: 
+    activeLevelReport:
+      id: 
+      kind: 
+      sessionId: 
+      level: 
+      scene: 
+      outcome: 
+      recordedUtc: 
+      submittedToExistingForm: 0
+      levelStats:
+        previousLevelSeconds: 0
+        timeUsed: 0
+        stepsTaken: 0
+        goalReachedTimer: 0
+        quitTimer: 0
+        respawnTaken: 0
+        cameraRotationTaken: 0
+        freeCamTimer: 0
+        ability_Swim: 0
+        ability_SwiftSwim: 0
+        ability_Ascend: 0
+        ability_Descend: 0
+        ability_Dash: 0
+        ability_GrapplingHook: 0
+        ability_Jump: 0
+        ability_CeilingGrab: 0
+        talkTo_NPC: 0
+        pickups: []
+      sessionStats:
+        session_No: 0
+        totalTimeUsed: 0
+        totalTimeUsed_Menus: 0
+        totalTimeUsed_MainMenu: 0
+        totalTimeUsed_OverworldMenu: 0
+        totalTimeUsed_WardrobeMenu: 0
+        totalTimeUsed_OptionsMenu: 0
+        totalTimeUsed_InPauseMenu: 0
+        totalTimeUsed_InLevels: 0
+        totalTimeUsed_InFreeCam: 0
+        totalLevelsVisited: 0
+        totalLevelExited: 0
+        totalLevelsCleared: 0
+        totalStepsTaken: 0
+        totalRespawnTaken: 0
+        totalCameraRotationTaken: 0
+        totalTimeEquippedInLevels_Default: 0
+        totalTimeEquippedInLevels_RivergreenLv1: 0
+        totalTimeEquippedInLevels_RivergreenLv2: 0
+        totalTimeEquippedInLevels_RivergreenLv3: 0
+        totalTimeEquippedInLevels_RivergreenLv4: 0
+        totalTimeEquippedInLevels_RivergreenLv5: 0
+        totalTimeEquippedInLevels_SandlandsLv1: 0
+        totalTimeEquippedInLevels_SandlandsLv2: 0
+        totalTimeEquippedInLevels_SandlandsLv3: 0
+        totalTimeEquippedInLevels_SandlandsLv4: 0
+        totalTimeEquippedInLevels_SandlandsLv5: 0
+        totalTimeEquippedInLevels_FrostfieldLv1: 0
+        totalTimeEquippedInLevels_FrostfieldLv2: 0
+        totalTimeEquippedInLevels_FrostfieldLv3: 0
+        totalTimeEquippedInLevels_FrostfieldLv4: 0
+        totalTimeEquippedInLevels_FrostfieldLv5: 0
+        totalTimeEquippedInLevels_FireveinLv1: 0
+        totalTimeEquippedInLevels_FireveinLv2: 0
+        totalTimeEquippedInLevels_FireveinLv3: 0
+        totalTimeEquippedInLevels_FireveinLv4: 0
+        totalTimeEquippedInLevels_FireveinLv5: 0
+        totalTimeEquippedInLevels_WitchmireLv1: 0
+        totalTimeEquippedInLevels_WitchmireLv2: 0
+        totalTimeEquippedInLevels_WitchmireLv3: 0
+        totalTimeEquippedInLevels_WitchmireLv4: 0
+        totalTimeEquippedInLevels_WitchmireLv5: 0
+        totalTimeEquippedInLevels_MetalworksLv1: 0
+        totalTimeEquippedInLevels_MetalworksLv2: 0
+        totalTimeEquippedInLevels_MetalworksLv3: 0
+        totalTimeEquippedInLevels_MetalworksLv4: 0
+        totalTimeEquippedInLevels_MetalworksLv5: 0
+        totalTimeUsed_InfoMenu: 0
+        totalLevelsReset: 0
+        totalLevelsInterrupted: 0
+        totalTimeEquippedInLevels_Quartz: 0
+        totalTimeEquippedInLevels_SourceBlock: 0
+        totalSwimSteps: 0
+        totalSwiftSwimUses: 0
+        totalAscendUses: 0
+        totalDescendUses: 0
+        totalDashUses: 0
+        totalGrapplingHookUses: 0
+        totalJumpUses: 0
+        totalCeilingGrabSteps: 0
+        totalNPCDialogues: 0
+        totalEssencePickups: 0
+        totalFootprintPickups: 0
+        totalSkinPickups: 0
+        totalAbilityPickups: 0
+    pendingFeedbackReports: []
+    levelTimes: []
     pendingSessionReports: []
     rivergreenLv1_Stats:
       timeUsed: 0

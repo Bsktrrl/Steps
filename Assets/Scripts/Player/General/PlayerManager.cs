@@ -278,8 +278,6 @@ public class PlayerManager : Singleton<PlayerManager>
             Player_Statistics_Manager.Active?.RecordLevelCompletion();
 
         Player_Statistics_Manager.Active?.FinishLevelAttempt();
-        if (pendingLevelExitIsCompletion)
-            MapStatsGathered.Instance.CompleteLevel();
 
         if (sceneName == mainMenu_Name)
         {

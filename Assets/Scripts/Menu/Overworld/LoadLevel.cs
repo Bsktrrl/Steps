@@ -74,8 +74,6 @@ public class LoadLevel : MonoBehaviour
         if (TryGetComponent(out LevelInfo levelInfo))
             levelInfo.StoreNameDisplay();
 
-        SessionStatsGathered.Instance.StoreSessionStats();
-
         if (RememberCurrentlySelectedUIElement.Instance != null && OverWorldManager.Instance != null)
         {
             OverWorldManager overworld = OverWorldManager.Instance;
