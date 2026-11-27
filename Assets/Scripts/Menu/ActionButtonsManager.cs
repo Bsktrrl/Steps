@@ -16,6 +16,8 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
     [Header("Button Navigation")]
     public InputActionReference cancel_Button;
 
+    [SerializeField] private CursorAppearance cursorAppearance;
+
     [Header("Input System")]
     PlayerControls playerControls;
     MainMenuManager mainMenuManager;
@@ -26,6 +28,7 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
     private InputActionReference menuMove;
     private int rightStickBindingIndex;
     private Vector2 lastMousePosition;
+    private bool drawMenuCursor;
     private static bool menuCursorRequested;
     private int controllerInputFrame = -1;
 
@@ -46,6 +49,7 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
 
     private void Start()
     {
+        useGUILayout = false;
         playerControls = new PlayerControls();
         mainMenuManager = FindObjectOfType<MainMenuManager>();
         pauseMenuManager = FindAnyObjectByType<PauseMenuManager>();
@@ -128,9 +132,36 @@ public class ActionButtonsManager : Singleton<ActionButtonsManager>
     {
         bool visible = mouse != null && Application.isFocused && IsMenuOpen &&
             (!ControllerState.HasConnectedController || menuCursorRequested);
-        if (Cursor.visible != visible)
-            Cursor.visible = visible;
+        drawMenuCursor = visible && cursorAppearance && cursorAppearance.normal;
+        bool showSystemCursor = visible && !drawMenuCursor;
+        if (Cursor.visible != showSystemCursor)
+            Cursor.visible = showSystemCursor;
         return visible;
+    }
+
+    private void OnGUI()
+    {
+        Mouse mouse = Mouse.current;
+        if (!drawMenuCursor || !cursorAppearance || !cursorAppearance.normal ||
+            !Application.isFocused || mouse == null ||
+            Event.current.type != EventType.Repaint)
+            return;
+
+        bool pressed = cursorAppearance.pressed &&
+            (mouse.leftButton.isPressed || mouse.leftButton.wasPressedThisFrame);
+        Texture2D texture = pressed ? cursorAppearance.pressed : cursorAppearance.normal;
+        float size = cursorAppearance.sizeAt1080p * (Screen.height / 1080f);
+        float scale = size / Mathf.Max(texture.width, texture.height);
+        Vector2 pointer = mouse.position.ReadValue();
+        pointer.y = Screen.height - pointer.y;
+        Vector2 origin = pointer - cursorAppearance.hotspot * scale;
+        Rect bounds = new(origin.x, origin.y, texture.width * scale, texture.height * scale);
+
+        Matrix4x4 previousMatrix = GUI.matrix;
+        if (pressed)
+            GUIUtility.RotateAroundPivot(cursorAppearance.pressedAngle, pointer);
+        GUI.DrawTexture(bounds, texture);
+        GUI.matrix = previousMatrix;
     }
 
     private void OnMenuInputUsed(InputDevice device)
