@@ -304,21 +304,10 @@ public class Movement : Singleton<Movement>
             movementStates != MovementStates.Falling)
             return;
 
-        if (Tutorial.Instance.tutorial_isRunning && Inputs.tutorialMovementBlocker)
+        if (isDrowning || TryStartDrowning())
             return;
 
-        //If standing in water and cannot swim, or standing in lava, force Dorwning and respawn player
-        if (ShouldStartDrowning(out BlockInfo hazardInfo, out GameObject hazardBlock))
-        {
-            if (hazardInfo.blockElement == BlockElement.Lava)
-            {
-                Player_Burning.Instance.IgniteImmediately();
-            }
-
-            StartCoroutine(StartDrowning());
-        }
-
-        if (isDrowning)
+        if (Tutorial.Instance.tutorial_isRunning && Inputs.tutorialMovementBlocker)
             return;
 
         switch (GetMovementState())
@@ -1125,37 +1114,25 @@ public class Movement : Singleton<Movement>
         pendingFreeLandingFromSlope = false;
     }
 
-    private bool ShouldStartDrowning(out BlockInfo hazardInfo, out GameObject hazardBlock)
+    private bool TryStartDrowning()
     {
-        hazardInfo = null;
-        hazardBlock = null;
-
-        if (isDrowning)
+        if (isDrowning || isRespawning || isMoving || movementStates != MovementStates.Still ||
+            !TryGetStandingInfo(out BlockInfo standingInfo))
             return false;
 
-        // Do not drown while moving/jumping/falling.
-        // Wait until the player has actually landed.
-        if (isMoving || movementStates != MovementStates.Still)
+        bool inLava = standingInfo.blockElement == BlockElement.Lava;
+        bool inUnswimmableWater = standingInfo.blockElement == BlockElement.Water && !PlayerHasSwimAbility();
+        if ((!inLava && !inUnswimmableWater) || zeroStepRespawnStarted ||
+            Map.GameplayInputLocked || Anims.IsPickupAnimationPending)
             return false;
 
-        if (!TryGetStandingInfo(out BlockInfo standingInfo))
-            return false;
-
-        if (standingInfo.blockElement == BlockElement.Water && !PlayerHasSwimAbility())
-        {
-            hazardInfo = standingInfo;
-            hazardBlock = blockStandingOn;
-            return true;
-        }
-
-        if (standingInfo.blockElement == BlockElement.Lava)
-        {
-            hazardInfo = standingInfo;
-            hazardBlock = blockStandingOn;
-            return true;
-        }
-
-        return false;
+        // Lock movement and schedule the respawn before notifying effects.
+        isDrowning = true;
+        StartCoroutine(StartDrowning());
+        if (inLava)
+            Player_Burning.Instance.IgniteImmediately();
+        Action_isDrowning?.Invoke();
+        return true;
     }
 
     private void CacheStepCostForMove(GameObject targetBlock)
@@ -4311,6 +4288,12 @@ public class Movement : Singleton<Movement>
         currentMoveTargetBlock = null;
         currentMoveStartBlock = null;
 
+        if (isDrowning)
+        {
+            FinishSwiftSwimEffectIfNeeded();
+            yield break;
+        }
+
         if (pendingDarkeningRefreshAfterChain &&
             !ShouldChainImmediatelyAfterStep() &&
             movementStates == MovementStates.Still && !isRespawning)
@@ -4694,6 +4677,7 @@ public class Movement : Singleton<Movement>
         {
             ClearFallingCarrierBlock();
             SetMovementState(MovementStates.Still);
+            TryStartDrowning();
             Action_LandedFromFalling_Invoke();
 
             Action_HasLandedFromFalling?.Invoke();
@@ -5498,6 +5482,8 @@ public class Movement : Singleton<Movement>
             return;
         }
 
+        // Resolve hazards at the landing before another move can be chained.
+        TryStartDrowning();
         PublishSettledStep();
         Action_StepTaken_Late_Invoke();
     }
@@ -5654,9 +5640,6 @@ public class Movement : Singleton<Movement>
 
     IEnumerator StartDrowning()
     {
-        Action_isDrowning?.Invoke();
-
-        isDrowning = true;
         PlayerManager.Instance.PauseMovement();
 
         ResetGrapplingHookMovementState();

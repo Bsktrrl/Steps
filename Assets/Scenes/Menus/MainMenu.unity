@@ -3440,7 +3440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 2
-  uiElementToSelect: {fileID: 908419752}
+  uiElementToSelect: {fileID: 1407211505}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
   closingMenuAnimatorList:
@@ -3477,7 +3477,6 @@ MonoBehaviour:
   settingState: 11
   selectedImage: {fileID: 1671889744}
   isSelected: 0
-  lastSelected: {fileID: 0}
 --- !u!114 &232331861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3490,7 +3489,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3daf9d1bba00f541ae3c61b5a04c183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectOnCancel: {fileID: 908419752}
+  selectOnCancel: {fileID: 1407211505}
+  transitionOnCancel: {fileID: 0}
+  selectLocallyOnCancel: 0
   menuToOpen: {fileID: 90770599}
   menuToClose: {fileID: 571270062}
   menuState_ToSelect: 2
@@ -3619,7 +3620,6 @@ MonoBehaviour:
   settingState: 11
   selectedImage: {fileID: 1369914912}
   isSelected: 0
-  lastSelected: {fileID: 0}
 --- !u!114 &239718127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3633,6 +3633,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 2078627695}
+  transitionOnCancel: {fileID: 0}
+  selectLocallyOnCancel: 0
   menuToOpen: {fileID: 1723724837}
   menuToClose: {fileID: 2058110170}
   menuState_ToSelect: 1
@@ -5152,7 +5154,6 @@ MonoBehaviour:
   settingState: 11
   selectedImage: {fileID: 1799244786}
   isSelected: 0
-  lastSelected: {fileID: 0}
 --- !u!114 &360036770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5166,6 +5167,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 908419752}
+  transitionOnCancel: {fileID: 0}
+  selectLocallyOnCancel: 0
   menuToOpen: {fileID: 90770599}
   menuToClose: {fileID: 571270062}
   menuState_ToSelect: 2
@@ -5594,23 +5597,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[0]
-      value:
+      value: 
       objectReference: {fileID: 1269574025}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[1]
-      value:
+      value: 
       objectReference: {fileID: 1034924551}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[2]
-      value:
+      value: 
       objectReference: {fileID: 1913279789}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[3]
-      value:
+      value: 
       objectReference: {fileID: 1428159815}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[4]
-      value:
+      value: 
       objectReference: {fileID: 1204945137}
     - target: {fileID: 1330780132882266929, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_Name
@@ -6014,6 +6017,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 0}
+  transitionOnCancel: {fileID: 0}
+  selectLocallyOnCancel: 0
   menuToOpen: {fileID: 1723724837}
   menuToClose: {fileID: 2058110170}
   menuState_ToSelect: 1
@@ -6707,6 +6712,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 0}
+  transitionOnCancel: {fileID: 0}
+  selectLocallyOnCancel: 0
   menuToOpen: {fileID: 1723724837}
   menuToClose: {fileID: 2058110170}
   menuState_ToSelect: 1
@@ -7124,6 +7131,7 @@ MonoBehaviour:
     map_SaveInfo_List:
     - mapName: 
       mapNameDisplay:
+        sceneName: 
         mapNameDisplay_norwegian: 
         mapNameDisplay_english: 
         mapNameDisplay_german: 
@@ -7132,11 +7140,9 @@ MonoBehaviour:
         mapNameDisplay_korean: 
       isCompleted: 0
       essenceList: []
-      levelSkin:
-        skinObj: {fileID: 0}
-        pos: {x: 0, y: 0, z: 0}
-        isTaken: 0
+      skinList: []
       maxStepList: []
+      abilityPickupList: []
       skintype: 0
       skintype_2: 0
       abilitiesInLevel:
@@ -7419,6 +7425,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 70907711}
+  transitionOnCancel: {fileID: 0}
+  selectLocallyOnCancel: 0
   menuToOpen: {fileID: 0}
   menuToClose: {fileID: 1050696377}
   menuState_ToSelect: 11
@@ -7901,7 +7909,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 2
-  uiElementToSelect: {fileID: 908419752}
+  uiElementToSelect: {fileID: 525092910}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
   closingMenuAnimatorList:
@@ -7938,7 +7946,6 @@ MonoBehaviour:
   settingState: 11
   selectedImage: {fileID: 484755053}
   isSelected: 0
-  lastSelected: {fileID: 0}
 --- !u!114 &531552964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7951,7 +7958,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3daf9d1bba00f541ae3c61b5a04c183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectOnCancel: {fileID: 908419752}
+  selectOnCancel: {fileID: 525092910}
+  transitionOnCancel: {fileID: 0}
+  selectLocallyOnCancel: 0
   menuToOpen: {fileID: 90770599}
   menuToClose: {fileID: 571270062}
   menuState_ToSelect: 2
@@ -8092,6 +8101,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 933323252}
     m_Modifications:
+    - target: {fileID: -7109615630596068076, guid: 5f5a74b252dadc842aed248bdfd0de8f, type: 3}
+      propertyPath: statsPanel
+      value: 
+      objectReference: {fileID: 1503921752}
+    - target: {fileID: -7109615630596068076, guid: 5f5a74b252dadc842aed248bdfd0de8f, type: 3}
+      propertyPath: controlsTab
+      value: 
+      objectReference: {fileID: 1503921754}
+    - target: {fileID: -7109615630596068076, guid: 5f5a74b252dadc842aed248bdfd0de8f, type: 3}
+      propertyPath: tabletPanel
+      value: 
+      objectReference: {fileID: 1503921753}
+    - target: {fileID: -7109615630596068076, guid: 5f5a74b252dadc842aed248bdfd0de8f, type: 3}
+      propertyPath: controlsPanel
+      value: 
+      objectReference: {fileID: 1503921751}
     - target: {fileID: 2110401416864898291, guid: 5f5a74b252dadc842aed248bdfd0de8f, type: 3}
       propertyPath: m_Name
       value: InfoManager
@@ -8136,30 +8161,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -7109615630596068076, guid: 5f5a74b252dadc842aed248bdfd0de8f, type: 3}
-      propertyPath: controlsPanel
-      value:
-      objectReference: {fileID: 1503921751}
-    - target: {fileID: -7109615630596068076, guid: 5f5a74b252dadc842aed248bdfd0de8f, type: 3}
-      propertyPath: statsPanel
-      value:
-      objectReference: {fileID: 1503921752}
-    - target: {fileID: -7109615630596068076, guid: 5f5a74b252dadc842aed248bdfd0de8f, type: 3}
-      propertyPath: tabletPanel
-      value:
-      objectReference: {fileID: 1503921753}
-    - target: {fileID: -7109615630596068076, guid: 5f5a74b252dadc842aed248bdfd0de8f, type: 3}
-      propertyPath: controlsTab
-      value:
-      objectReference: {fileID: 1503921754}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f5a74b252dadc842aed248bdfd0de8f, type: 3}
---- !u!1 &545025676 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2110401416864898291, guid: 5f5a74b252dadc842aed248bdfd0de8f, type: 3}
+--- !u!4 &545025675 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8044555575859198446, guid: 5f5a74b252dadc842aed248bdfd0de8f, type: 3}
   m_PrefabInstance: {fileID: 545025674}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &545025677 stripped
@@ -8167,17 +8176,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -7109615630596068076, guid: 5f5a74b252dadc842aed248bdfd0de8f, type: 3}
   m_PrefabInstance: {fileID: 545025674}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 545025676}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16a68110f826ad541803e6e4c05ee894, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
---- !u!4 &545025675 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8044555575859198446, guid: 5f5a74b252dadc842aed248bdfd0de8f, type: 3}
-  m_PrefabInstance: {fileID: 545025674}
-  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &548811009
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9713,6 +9717,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 0}
+  transitionOnCancel: {fileID: 0}
+  selectLocallyOnCancel: 0
   menuToOpen: {fileID: 1723724837}
   menuToClose: {fileID: 2058110170}
   menuState_ToSelect: 1
@@ -11086,1585 +11092,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f65ac9786292ad488c75f691e037ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStatsData:
-    sessionStats:
-      session_No: 0
-      totalTimeUsed: 0
-      totalTimeUsed_Menus: 0
-      totalTimeUsed_MainMenu: 0
-      totalTimeUsed_OverworldMenu: 0
-      totalTimeUsed_WardrobeMenu: 0
-      totalTimeUsed_OptionsMenu: 0
-      totalTimeUsed_InPauseMenu: 0
-      totalTimeUsed_InLevels: 0
-      totalTimeUsed_InFreeCam: 0
-      totalLevelsVisited: 0
-      totalLevelExited: 0
-      totalLevelsCleared: 0
-      totalStepsTaken: 0
-      totalRespawnTaken: 0
-      totalCameraRotationTaken: 0
-      totalTimeEquippedInLevels_Default: 0
-      totalTimeEquippedInLevels_RivergreenLv1: 0
-      totalTimeEquippedInLevels_RivergreenLv2: 0
-      totalTimeEquippedInLevels_RivergreenLv3: 0
-      totalTimeEquippedInLevels_RivergreenLv4: 0
-      totalTimeEquippedInLevels_RivergreenLv5: 0
-      totalTimeEquippedInLevels_SandlandsLv1: 0
-      totalTimeEquippedInLevels_SandlandsLv2: 0
-      totalTimeEquippedInLevels_SandlandsLv3: 0
-      totalTimeEquippedInLevels_SandlandsLv4: 0
-      totalTimeEquippedInLevels_SandlandsLv5: 0
-      totalTimeEquippedInLevels_FrostfieldLv1: 0
-      totalTimeEquippedInLevels_FrostfieldLv2: 0
-      totalTimeEquippedInLevels_FrostfieldLv3: 0
-      totalTimeEquippedInLevels_FrostfieldLv4: 0
-      totalTimeEquippedInLevels_FrostfieldLv5: 0
-      totalTimeEquippedInLevels_FireveinLv1: 0
-      totalTimeEquippedInLevels_FireveinLv2: 0
-      totalTimeEquippedInLevels_FireveinLv3: 0
-      totalTimeEquippedInLevels_FireveinLv4: 0
-      totalTimeEquippedInLevels_FireveinLv5: 0
-      totalTimeEquippedInLevels_WitchmireLv1: 0
-      totalTimeEquippedInLevels_WitchmireLv2: 0
-      totalTimeEquippedInLevels_WitchmireLv3: 0
-      totalTimeEquippedInLevels_WitchmireLv4: 0
-      totalTimeEquippedInLevels_WitchmireLv5: 0
-      totalTimeEquippedInLevels_MetalworksLv1: 0
-      totalTimeEquippedInLevels_MetalworksLv2: 0
-      totalTimeEquippedInLevels_MetalworksLv3: 0
-      totalTimeEquippedInLevels_MetalworksLv4: 0
-      totalTimeEquippedInLevels_MetalworksLv5: 0
-    rivergreenLv1_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    rivergreenLv2_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    rivergreenLv3_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    rivergreenLv4_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    rivergreenLv5_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    sandlandsLv1_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    sandlandsLv2_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    sandlandsLv3_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    sandlandsLv4_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    sandlandsLv5_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    frostfieldLv1_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    frostfieldLv2_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    frostfieldLv3_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    frostfieldLv4_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    frostfieldLv5_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    fireveinLv1_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    fireveinLv2_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    fireveinLv3_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    fireveinLv4_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    fireveinLv5_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    witchmireLv1_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    witchmireLv2_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    witchmireLv3_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    witchmireLv4_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    witchmireLv5_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    metalworksLv1_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    metalworksLv2_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    metalworksLv3_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    metalworksLv4_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
-    metalworksLv5_Stats:
-      timeUsed: 0
-      stepsTaken: 0
-      goalReachedTimer: 0
-      quitTimer: 0
-      respawnTaken: 0
-      cameraRotationTaken: 0
-      freeCamTimer: 0
-      ability_Swim: 0
-      ability_SwiftSwim: 0
-      ability_Ascend: 0
-      ability_Descend: 0
-      ability_Dash: 0
-      ability_GrapplingHook: 0
-      ability_Jump: 0
-      ability_CeilingGrab: 0
-      essence_1_TotalTimer: 0
-      essence_1_TotalTimer_Check: 0
-      essence_2_TotalTimer: 0
-      essence_2_TotalTimer_Check: 0
-      essence_3_TotalTimer: 0
-      essence_3_TotalTimer_Check: 0
-      essence_4_TotalTimer: 0
-      essence_4_TotalTimer_Check: 0
-      essence_5_TotalTimer: 0
-      essence_5_TotalTimer_Check: 0
-      essence_6_TotalTimer: 0
-      essence_6_TotalTimer_Check: 0
-      essence_7_TotalTimer: 0
-      essence_7_TotalTimer_Check: 0
-      essence_8_TotalTimer: 0
-      essence_8_TotalTimer_Check: 0
-      essence_9_TotalTimer: 0
-      essence_9_TotalTimer_Check: 0
-      essence_10_TotalTimer: 0
-      essence_10_TotalTimer_Check: 0
-      footprint_1_TotalTimer: 0
-      footprint_1_TotalTimer_Check: 0
-      footprint_2_TotalTimer: 0
-      footprint_2_TotalTimer_Check: 0
-      footprint_3_TotalTimer: 0
-      footprint_3_TotalTimer_Check: 0
-      skin_TotalTimer: 0
-      skin_TotalTimer_Check: 0
-      ability_1_TotalTimer: 0
-      ability_1_TotalTimer_Check: 0
-      ability_2_TotalTimer: 0
-      ability_2_TotalTimer_Check: 0
-      ability_3_TotalTimer: 0
-      ability_3_TotalTimer_Check: 0
-      talkTo_NPC: 0
 --- !u!1 &783205191
 GameObject:
   m_ObjectHideFlags: 0
@@ -14365,23 +12792,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[0]
-      value:
+      value: 
       objectReference: {fileID: 334505701}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[1]
-      value:
+      value: 
       objectReference: {fileID: 1378039825}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[2]
-      value:
+      value: 
       objectReference: {fileID: 1389189445}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[3]
-      value:
+      value: 
       objectReference: {fileID: 610094804}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[4]
-      value:
+      value: 
       objectReference: {fileID: 534582208}
     - target: {fileID: 1330780132882266929, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_Name
@@ -14645,17 +13072,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4921006152386638099, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
   m_PrefabInstance: {fileID: 969533328}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 969533330}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &969533330 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1330780132882266929, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
-  m_PrefabInstance: {fileID: 969533328}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &969533331 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7569002106724044432, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
@@ -14769,7 +13191,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2837640005518577901, guid: c9550862641363f4cbf79963a6f0b385, type: 3}
       propertyPath: uiElementToSelect
-      value:
+      value: 
       objectReference: {fileID: 1503921755}
     - target: {fileID: 2837640005518577901, guid: c9550862641363f4cbf79963a6f0b385, type: 3}
       propertyPath: closingMenuAnimatorList.Array.size
@@ -15668,23 +14090,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[0]
-      value:
+      value: 
       objectReference: {fileID: 582434861}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[1]
-      value:
+      value: 
       objectReference: {fileID: 1076478685}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[2]
-      value:
+      value: 
       objectReference: {fileID: 1495053810}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[3]
-      value:
+      value: 
       objectReference: {fileID: 29766559}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[4]
-      value:
+      value: 
       objectReference: {fileID: 1946501398}
     - target: {fileID: 1330780132882266929, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_Name
@@ -15871,17 +14293,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
---- !u!1 &1065226882 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1330780132882266929, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
-  m_PrefabInstance: {fileID: 1065226881}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1065226883 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4921006152386638099, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
   m_PrefabInstance: {fileID: 1065226881}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1065226882}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
@@ -17014,6 +15431,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 0}
+  transitionOnCancel: {fileID: 0}
+  selectLocallyOnCancel: 0
   menuToOpen: {fileID: 1723724837}
   menuToClose: {fileID: 2058110170}
   menuState_ToSelect: 1
@@ -17371,6 +15790,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 70907711}
+  transitionOnCancel: {fileID: 0}
+  selectLocallyOnCancel: 0
   menuToOpen: {fileID: 0}
   menuToClose: {fileID: 1050696377}
   menuState_ToSelect: 11
@@ -17555,7 +15976,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 2
-  uiElementToSelect: {fileID: 908419752}
+  uiElementToSelect: {fileID: 165018021}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
   closingMenuAnimatorList:
@@ -17592,7 +16013,6 @@ MonoBehaviour:
   settingState: 11
   selectedImage: {fileID: 1040996054}
   isSelected: 0
-  lastSelected: {fileID: 0}
 --- !u!114 &1163225265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17605,7 +16025,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3daf9d1bba00f541ae3c61b5a04c183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectOnCancel: {fileID: 908419752}
+  selectOnCancel: {fileID: 165018021}
+  transitionOnCancel: {fileID: 0}
+  selectLocallyOnCancel: 0
   menuToOpen: {fileID: 90770599}
   menuToClose: {fileID: 571270062}
   menuState_ToSelect: 2
@@ -17900,23 +16322,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[0]
-      value:
+      value: 
       objectReference: {fileID: 9217831691303275723}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[1]
-      value:
+      value: 
       objectReference: {fileID: 1716115172}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[2]
-      value:
+      value: 
       objectReference: {fileID: 1565225825}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[3]
-      value:
+      value: 
       objectReference: {fileID: 1376599049}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[4]
-      value:
+      value: 
       objectReference: {fileID: 1691652632}
     - target: {fileID: 1330780132882266929, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_Name
@@ -18375,6 +16797,9 @@ MonoBehaviour:
       currentCameraMotion: 0
       currentRevertedCameraMotion: 0
       currentSkipIntro: 0
+      currentFreeCamSpeed: 4
+      currentFreeCamSensitivity: 2
+      disableGuidePopups: 0
       volume_Master: 0
       volume_3DEnviroment: 0
       volume_Weather: 0
@@ -18382,6 +16807,7 @@ MonoBehaviour:
       volume_UI: 0
       volume_Dialogue: 0
     mapNameDisplay_Save:
+      sceneName: 
       mapNameDisplay_norwegian: 
       mapNameDisplay_english: 
       mapNameDisplay_german: 
@@ -18557,6 +16983,122 @@ MonoBehaviour:
         totalTimeEquippedInLevels_MetalworksLv3: 0
         totalTimeEquippedInLevels_MetalworksLv4: 0
         totalTimeEquippedInLevels_MetalworksLv5: 0
+        totalTimeUsed_InfoMenu: 0
+        totalLevelsReset: 0
+        totalLevelsInterrupted: 0
+        totalTimeEquippedInLevels_Quartz: 0
+        totalTimeEquippedInLevels_SourceBlock: 0
+        totalSwimSteps: 0
+        totalSwiftSwimUses: 0
+        totalAscendUses: 0
+        totalDescendUses: 0
+        totalDashUses: 0
+        totalGrapplingHookUses: 0
+        totalJumpUses: 0
+        totalCeilingGrabSteps: 0
+        totalNPCDialogues: 0
+        totalEssencePickups: 0
+        totalFootprintPickups: 0
+        totalSkinPickups: 0
+        totalAbilityPickups: 0
+      activeSessionId: 
+      activeLevelReport:
+        id: 
+        kind: 
+        sessionId: 
+        level: 
+        scene: 
+        outcome: 
+        recordedUtc: 
+        submittedToExistingForm: 0
+        levelStats:
+          previousLevelSeconds: 0
+          timeUsed: 0
+          stepsTaken: 0
+          goalReachedTimer: 0
+          quitTimer: 0
+          respawnTaken: 0
+          cameraRotationTaken: 0
+          freeCamTimer: 0
+          ability_Swim: 0
+          ability_SwiftSwim: 0
+          ability_Ascend: 0
+          ability_Descend: 0
+          ability_Dash: 0
+          ability_GrapplingHook: 0
+          ability_Jump: 0
+          ability_CeilingGrab: 0
+          talkTo_NPC: 0
+          pickups: []
+        sessionStats:
+          session_No: 0
+          totalTimeUsed: 0
+          totalTimeUsed_Menus: 0
+          totalTimeUsed_MainMenu: 0
+          totalTimeUsed_OverworldMenu: 0
+          totalTimeUsed_WardrobeMenu: 0
+          totalTimeUsed_OptionsMenu: 0
+          totalTimeUsed_InPauseMenu: 0
+          totalTimeUsed_InLevels: 0
+          totalTimeUsed_InFreeCam: 0
+          totalLevelsVisited: 0
+          totalLevelExited: 0
+          totalLevelsCleared: 0
+          totalStepsTaken: 0
+          totalRespawnTaken: 0
+          totalCameraRotationTaken: 0
+          totalTimeEquippedInLevels_Default: 0
+          totalTimeEquippedInLevels_RivergreenLv1: 0
+          totalTimeEquippedInLevels_RivergreenLv2: 0
+          totalTimeEquippedInLevels_RivergreenLv3: 0
+          totalTimeEquippedInLevels_RivergreenLv4: 0
+          totalTimeEquippedInLevels_RivergreenLv5: 0
+          totalTimeEquippedInLevels_SandlandsLv1: 0
+          totalTimeEquippedInLevels_SandlandsLv2: 0
+          totalTimeEquippedInLevels_SandlandsLv3: 0
+          totalTimeEquippedInLevels_SandlandsLv4: 0
+          totalTimeEquippedInLevels_SandlandsLv5: 0
+          totalTimeEquippedInLevels_FrostfieldLv1: 0
+          totalTimeEquippedInLevels_FrostfieldLv2: 0
+          totalTimeEquippedInLevels_FrostfieldLv3: 0
+          totalTimeEquippedInLevels_FrostfieldLv4: 0
+          totalTimeEquippedInLevels_FrostfieldLv5: 0
+          totalTimeEquippedInLevels_FireveinLv1: 0
+          totalTimeEquippedInLevels_FireveinLv2: 0
+          totalTimeEquippedInLevels_FireveinLv3: 0
+          totalTimeEquippedInLevels_FireveinLv4: 0
+          totalTimeEquippedInLevels_FireveinLv5: 0
+          totalTimeEquippedInLevels_WitchmireLv1: 0
+          totalTimeEquippedInLevels_WitchmireLv2: 0
+          totalTimeEquippedInLevels_WitchmireLv3: 0
+          totalTimeEquippedInLevels_WitchmireLv4: 0
+          totalTimeEquippedInLevels_WitchmireLv5: 0
+          totalTimeEquippedInLevels_MetalworksLv1: 0
+          totalTimeEquippedInLevels_MetalworksLv2: 0
+          totalTimeEquippedInLevels_MetalworksLv3: 0
+          totalTimeEquippedInLevels_MetalworksLv4: 0
+          totalTimeEquippedInLevels_MetalworksLv5: 0
+          totalTimeUsed_InfoMenu: 0
+          totalLevelsReset: 0
+          totalLevelsInterrupted: 0
+          totalTimeEquippedInLevels_Quartz: 0
+          totalTimeEquippedInLevels_SourceBlock: 0
+          totalSwimSteps: 0
+          totalSwiftSwimUses: 0
+          totalAscendUses: 0
+          totalDescendUses: 0
+          totalDashUses: 0
+          totalGrapplingHookUses: 0
+          totalJumpUses: 0
+          totalCeilingGrabSteps: 0
+          totalNPCDialogues: 0
+          totalEssencePickups: 0
+          totalFootprintPickups: 0
+          totalSkinPickups: 0
+          totalAbilityPickups: 0
+      pendingFeedbackReports: []
+      levelTimes: []
+      pendingSessionReports: []
       rivergreenLv1_Stats:
         timeUsed: 0
         stepsTaken: 0
@@ -21289,6 +19831,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 0}
+  transitionOnCancel: {fileID: 0}
+  selectLocallyOnCancel: 0
   menuToOpen: {fileID: 1723724837}
   menuToClose: {fileID: 2058110170}
   menuState_ToSelect: 1
@@ -24059,6 +22603,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -138.5
       objectReference: {fileID: 0}
+    - target: {fileID: 6264461270136626078, guid: 6cce01736ecd9c844a81f2e7bdf440ea, type: 3}
+      propertyPath: uiElementToSelect
+      value: 
+      objectReference: {fileID: 999951877}
     - target: {fileID: 9159109744464187720, guid: 6cce01736ecd9c844a81f2e7bdf440ea, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -24091,15 +22639,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6264461270136626078, guid: 6cce01736ecd9c844a81f2e7bdf440ea, type: 3}
-      propertyPath: uiElementToSelect
-      value:
-      objectReference: {fileID: 999951877}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6cce01736ecd9c844a81f2e7bdf440ea, type: 3}
+--- !u!224 &1503921749 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5272100099813316952, guid: 6cce01736ecd9c844a81f2e7bdf440ea, type: 3}
+  m_PrefabInstance: {fileID: 1503921748}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1503921750 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9197591149830024487, guid: 6cce01736ecd9c844a81f2e7bdf440ea, type: 3}
@@ -24134,13 +22683,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
---- !u!224 &1503921749 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5272100099813316952, guid: 6cce01736ecd9c844a81f2e7bdf440ea, type: 3}
-  m_PrefabInstance: {fileID: 1503921748}
-  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1504297652
 GameObject:
   m_ObjectHideFlags: 0
@@ -24404,54 +22948,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32ecb4c80a2eee44d99d79a890083a88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sessionStats:
-    session_No: 0
-    totalTimeUsed: 0
-    totalTimeUsed_Menus: 0
-    totalTimeUsed_MainMenu: 0
-    totalTimeUsed_OverworldMenu: 0
-    totalTimeUsed_WardrobeMenu: 0
-    totalTimeUsed_OptionsMenu: 0
-    totalTimeUsed_InPauseMenu: 0
-    totalTimeUsed_InLevels: 0
-    totalTimeUsed_InFreeCam: 0
-    totalLevelsVisited: 0
-    totalLevelExited: 0
-    totalLevelsCleared: 0
-    totalStepsTaken: 0
-    totalRespawnTaken: 0
-    totalCameraRotationTaken: 0
-    totalTimeEquippedInLevels_Default: 0
-    totalTimeEquippedInLevels_RivergreenLv1: 0
-    totalTimeEquippedInLevels_RivergreenLv2: 0
-    totalTimeEquippedInLevels_RivergreenLv3: 0
-    totalTimeEquippedInLevels_RivergreenLv4: 0
-    totalTimeEquippedInLevels_RivergreenLv5: 0
-    totalTimeEquippedInLevels_SandlandsLv1: 0
-    totalTimeEquippedInLevels_SandlandsLv2: 0
-    totalTimeEquippedInLevels_SandlandsLv3: 0
-    totalTimeEquippedInLevels_SandlandsLv4: 0
-    totalTimeEquippedInLevels_SandlandsLv5: 0
-    totalTimeEquippedInLevels_FrostfieldLv1: 0
-    totalTimeEquippedInLevels_FrostfieldLv2: 0
-    totalTimeEquippedInLevels_FrostfieldLv3: 0
-    totalTimeEquippedInLevels_FrostfieldLv4: 0
-    totalTimeEquippedInLevels_FrostfieldLv5: 0
-    totalTimeEquippedInLevels_FireveinLv1: 0
-    totalTimeEquippedInLevels_FireveinLv2: 0
-    totalTimeEquippedInLevels_FireveinLv3: 0
-    totalTimeEquippedInLevels_FireveinLv4: 0
-    totalTimeEquippedInLevels_FireveinLv5: 0
-    totalTimeEquippedInLevels_WitchmireLv1: 0
-    totalTimeEquippedInLevels_WitchmireLv2: 0
-    totalTimeEquippedInLevels_WitchmireLv3: 0
-    totalTimeEquippedInLevels_WitchmireLv4: 0
-    totalTimeEquippedInLevels_WitchmireLv5: 0
-    totalTimeEquippedInLevels_MetalworksLv1: 0
-    totalTimeEquippedInLevels_MetalworksLv2: 0
-    totalTimeEquippedInLevels_MetalworksLv3: 0
-    totalTimeEquippedInLevels_MetalworksLv4: 0
-    totalTimeEquippedInLevels_MetalworksLv5: 0
 --- !u!1001 &1518435337
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24514,6 +23010,39 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6298775160167397257, guid: 864ae4bc123191640a08ebb5445002cf, type: 3}
   m_PrefabInstance: {fileID: 1518435337}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1519472301 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6227564972117171337, guid: 708f515159424df4292f33b367a505ee, type: 3}
+  m_PrefabInstance: {fileID: 207062894}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1519472302 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6227564972117171338, guid: 708f515159424df4292f33b367a505ee, type: 3}
+  m_PrefabInstance: {fileID: 207062894}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1519472303 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6227564972117171339, guid: 708f515159424df4292f33b367a505ee, type: 3}
+  m_PrefabInstance: {fileID: 207062894}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1539499886
 GameObject:
   m_ObjectHideFlags: 0
@@ -25211,7 +23740,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f96d580e1342d24e800c4523546a486, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localizationSource: {fileID: 4900000, guid: 6eef0e8d73e3af849b6f20af5499eaaa, type: 3}
   gameData:
     haveStartedNewGame_Save: 0
     menuState_Save: 0
@@ -25254,6 +23782,9 @@ MonoBehaviour:
       currentCameraMotion: 0
       currentRevertedCameraMotion: 0
       currentSkipIntro: 0
+      currentFreeCamSpeed: 4
+      currentFreeCamSensitivity: 2
+      disableGuidePopups: 0
       volume_Master: 0
       volume_3DEnviroment: 0
       volume_Weather: 0
@@ -25261,6 +23792,7 @@ MonoBehaviour:
       volume_UI: 0
       volume_Dialogue: 0
     mapNameDisplay_Save:
+      sceneName: 
       mapNameDisplay_norwegian: 
       mapNameDisplay_english: 
       mapNameDisplay_german: 
@@ -25436,6 +23968,122 @@ MonoBehaviour:
         totalTimeEquippedInLevels_MetalworksLv3: 0
         totalTimeEquippedInLevels_MetalworksLv4: 0
         totalTimeEquippedInLevels_MetalworksLv5: 0
+        totalTimeUsed_InfoMenu: 0
+        totalLevelsReset: 0
+        totalLevelsInterrupted: 0
+        totalTimeEquippedInLevels_Quartz: 0
+        totalTimeEquippedInLevels_SourceBlock: 0
+        totalSwimSteps: 0
+        totalSwiftSwimUses: 0
+        totalAscendUses: 0
+        totalDescendUses: 0
+        totalDashUses: 0
+        totalGrapplingHookUses: 0
+        totalJumpUses: 0
+        totalCeilingGrabSteps: 0
+        totalNPCDialogues: 0
+        totalEssencePickups: 0
+        totalFootprintPickups: 0
+        totalSkinPickups: 0
+        totalAbilityPickups: 0
+      activeSessionId: 
+      activeLevelReport:
+        id: 
+        kind: 
+        sessionId: 
+        level: 
+        scene: 
+        outcome: 
+        recordedUtc: 
+        submittedToExistingForm: 0
+        levelStats:
+          previousLevelSeconds: 0
+          timeUsed: 0
+          stepsTaken: 0
+          goalReachedTimer: 0
+          quitTimer: 0
+          respawnTaken: 0
+          cameraRotationTaken: 0
+          freeCamTimer: 0
+          ability_Swim: 0
+          ability_SwiftSwim: 0
+          ability_Ascend: 0
+          ability_Descend: 0
+          ability_Dash: 0
+          ability_GrapplingHook: 0
+          ability_Jump: 0
+          ability_CeilingGrab: 0
+          talkTo_NPC: 0
+          pickups: []
+        sessionStats:
+          session_No: 0
+          totalTimeUsed: 0
+          totalTimeUsed_Menus: 0
+          totalTimeUsed_MainMenu: 0
+          totalTimeUsed_OverworldMenu: 0
+          totalTimeUsed_WardrobeMenu: 0
+          totalTimeUsed_OptionsMenu: 0
+          totalTimeUsed_InPauseMenu: 0
+          totalTimeUsed_InLevels: 0
+          totalTimeUsed_InFreeCam: 0
+          totalLevelsVisited: 0
+          totalLevelExited: 0
+          totalLevelsCleared: 0
+          totalStepsTaken: 0
+          totalRespawnTaken: 0
+          totalCameraRotationTaken: 0
+          totalTimeEquippedInLevels_Default: 0
+          totalTimeEquippedInLevels_RivergreenLv1: 0
+          totalTimeEquippedInLevels_RivergreenLv2: 0
+          totalTimeEquippedInLevels_RivergreenLv3: 0
+          totalTimeEquippedInLevels_RivergreenLv4: 0
+          totalTimeEquippedInLevels_RivergreenLv5: 0
+          totalTimeEquippedInLevels_SandlandsLv1: 0
+          totalTimeEquippedInLevels_SandlandsLv2: 0
+          totalTimeEquippedInLevels_SandlandsLv3: 0
+          totalTimeEquippedInLevels_SandlandsLv4: 0
+          totalTimeEquippedInLevels_SandlandsLv5: 0
+          totalTimeEquippedInLevels_FrostfieldLv1: 0
+          totalTimeEquippedInLevels_FrostfieldLv2: 0
+          totalTimeEquippedInLevels_FrostfieldLv3: 0
+          totalTimeEquippedInLevels_FrostfieldLv4: 0
+          totalTimeEquippedInLevels_FrostfieldLv5: 0
+          totalTimeEquippedInLevels_FireveinLv1: 0
+          totalTimeEquippedInLevels_FireveinLv2: 0
+          totalTimeEquippedInLevels_FireveinLv3: 0
+          totalTimeEquippedInLevels_FireveinLv4: 0
+          totalTimeEquippedInLevels_FireveinLv5: 0
+          totalTimeEquippedInLevels_WitchmireLv1: 0
+          totalTimeEquippedInLevels_WitchmireLv2: 0
+          totalTimeEquippedInLevels_WitchmireLv3: 0
+          totalTimeEquippedInLevels_WitchmireLv4: 0
+          totalTimeEquippedInLevels_WitchmireLv5: 0
+          totalTimeEquippedInLevels_MetalworksLv1: 0
+          totalTimeEquippedInLevels_MetalworksLv2: 0
+          totalTimeEquippedInLevels_MetalworksLv3: 0
+          totalTimeEquippedInLevels_MetalworksLv4: 0
+          totalTimeEquippedInLevels_MetalworksLv5: 0
+          totalTimeUsed_InfoMenu: 0
+          totalLevelsReset: 0
+          totalLevelsInterrupted: 0
+          totalTimeEquippedInLevels_Quartz: 0
+          totalTimeEquippedInLevels_SourceBlock: 0
+          totalSwimSteps: 0
+          totalSwiftSwimUses: 0
+          totalAscendUses: 0
+          totalDescendUses: 0
+          totalDashUses: 0
+          totalGrapplingHookUses: 0
+          totalJumpUses: 0
+          totalCeilingGrabSteps: 0
+          totalNPCDialogues: 0
+          totalEssencePickups: 0
+          totalFootprintPickups: 0
+          totalSkinPickups: 0
+          totalAbilityPickups: 0
+      pendingFeedbackReports: []
+      levelTimes: []
+      pendingSessionReports: []
       rivergreenLv1_Stats:
         timeUsed: 0
         stepsTaken: 0
@@ -27200,6 +25848,9 @@ MonoBehaviour:
     currentCameraMotion: 0
     currentRevertedCameraMotion: 0
     currentSkipIntro: 0
+    currentFreeCamSpeed: 4
+    currentFreeCamSensitivity: 2
+    disableGuidePopups: 0
     volume_Master: 0
     volume_3DEnviroment: 0
     volume_Weather: 0
@@ -27207,6 +25858,7 @@ MonoBehaviour:
     volume_UI: 0
     volume_Dialogue: 0
   mapNameDisplay_Store:
+    sceneName: 
     mapNameDisplay_norwegian: 
     mapNameDisplay_english: 
     mapNameDisplay_german: 
@@ -27322,6 +25974,7 @@ MonoBehaviour:
       hat_Region6_Version: 0
   game_TextDatabase_Store:
     gameText_LanguageList: []
+  localizationSource: {fileID: 4900000, guid: 6eef0e8d73e3af849b6f20af5499eaaa, type: 3}
   playerStatsData_Store:
     sessionStats:
       session_No: 0
@@ -27371,6 +26024,122 @@ MonoBehaviour:
       totalTimeEquippedInLevels_MetalworksLv3: 0
       totalTimeEquippedInLevels_MetalworksLv4: 0
       totalTimeEquippedInLevels_MetalworksLv5: 0
+      totalTimeUsed_InfoMenu: 0
+      totalLevelsReset: 0
+      totalLevelsInterrupted: 0
+      totalTimeEquippedInLevels_Quartz: 0
+      totalTimeEquippedInLevels_SourceBlock: 0
+      totalSwimSteps: 0
+      totalSwiftSwimUses: 0
+      totalAscendUses: 0
+      totalDescendUses: 0
+      totalDashUses: 0
+      totalGrapplingHookUses: 0
+      totalJumpUses: 0
+      totalCeilingGrabSteps: 0
+      totalNPCDialogues: 0
+      totalEssencePickups: 0
+      totalFootprintPickups: 0
+      totalSkinPickups: 0
+      totalAbilityPickups: 0
+    activeSessionId: 
+    activeLevelReport:
+      id: 
+      kind: 
+      sessionId: 
+      level: 
+      scene: 
+      outcome: 
+      recordedUtc: 
+      submittedToExistingForm: 0
+      levelStats:
+        previousLevelSeconds: 0
+        timeUsed: 0
+        stepsTaken: 0
+        goalReachedTimer: 0
+        quitTimer: 0
+        respawnTaken: 0
+        cameraRotationTaken: 0
+        freeCamTimer: 0
+        ability_Swim: 0
+        ability_SwiftSwim: 0
+        ability_Ascend: 0
+        ability_Descend: 0
+        ability_Dash: 0
+        ability_GrapplingHook: 0
+        ability_Jump: 0
+        ability_CeilingGrab: 0
+        talkTo_NPC: 0
+        pickups: []
+      sessionStats:
+        session_No: 0
+        totalTimeUsed: 0
+        totalTimeUsed_Menus: 0
+        totalTimeUsed_MainMenu: 0
+        totalTimeUsed_OverworldMenu: 0
+        totalTimeUsed_WardrobeMenu: 0
+        totalTimeUsed_OptionsMenu: 0
+        totalTimeUsed_InPauseMenu: 0
+        totalTimeUsed_InLevels: 0
+        totalTimeUsed_InFreeCam: 0
+        totalLevelsVisited: 0
+        totalLevelExited: 0
+        totalLevelsCleared: 0
+        totalStepsTaken: 0
+        totalRespawnTaken: 0
+        totalCameraRotationTaken: 0
+        totalTimeEquippedInLevels_Default: 0
+        totalTimeEquippedInLevels_RivergreenLv1: 0
+        totalTimeEquippedInLevels_RivergreenLv2: 0
+        totalTimeEquippedInLevels_RivergreenLv3: 0
+        totalTimeEquippedInLevels_RivergreenLv4: 0
+        totalTimeEquippedInLevels_RivergreenLv5: 0
+        totalTimeEquippedInLevels_SandlandsLv1: 0
+        totalTimeEquippedInLevels_SandlandsLv2: 0
+        totalTimeEquippedInLevels_SandlandsLv3: 0
+        totalTimeEquippedInLevels_SandlandsLv4: 0
+        totalTimeEquippedInLevels_SandlandsLv5: 0
+        totalTimeEquippedInLevels_FrostfieldLv1: 0
+        totalTimeEquippedInLevels_FrostfieldLv2: 0
+        totalTimeEquippedInLevels_FrostfieldLv3: 0
+        totalTimeEquippedInLevels_FrostfieldLv4: 0
+        totalTimeEquippedInLevels_FrostfieldLv5: 0
+        totalTimeEquippedInLevels_FireveinLv1: 0
+        totalTimeEquippedInLevels_FireveinLv2: 0
+        totalTimeEquippedInLevels_FireveinLv3: 0
+        totalTimeEquippedInLevels_FireveinLv4: 0
+        totalTimeEquippedInLevels_FireveinLv5: 0
+        totalTimeEquippedInLevels_WitchmireLv1: 0
+        totalTimeEquippedInLevels_WitchmireLv2: 0
+        totalTimeEquippedInLevels_WitchmireLv3: 0
+        totalTimeEquippedInLevels_WitchmireLv4: 0
+        totalTimeEquippedInLevels_WitchmireLv5: 0
+        totalTimeEquippedInLevels_MetalworksLv1: 0
+        totalTimeEquippedInLevels_MetalworksLv2: 0
+        totalTimeEquippedInLevels_MetalworksLv3: 0
+        totalTimeEquippedInLevels_MetalworksLv4: 0
+        totalTimeEquippedInLevels_MetalworksLv5: 0
+        totalTimeUsed_InfoMenu: 0
+        totalLevelsReset: 0
+        totalLevelsInterrupted: 0
+        totalTimeEquippedInLevels_Quartz: 0
+        totalTimeEquippedInLevels_SourceBlock: 0
+        totalSwimSteps: 0
+        totalSwiftSwimUses: 0
+        totalAscendUses: 0
+        totalDescendUses: 0
+        totalDashUses: 0
+        totalGrapplingHookUses: 0
+        totalJumpUses: 0
+        totalCeilingGrabSteps: 0
+        totalNPCDialogues: 0
+        totalEssencePickups: 0
+        totalFootprintPickups: 0
+        totalSkinPickups: 0
+        totalAbilityPickups: 0
+    pendingFeedbackReports: []
+    levelTimes: []
+    pendingSessionReports: []
     rivergreenLv1_Stats:
       timeUsed: 0
       stepsTaken: 0
@@ -29577,20 +28346,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1708515834
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1708515829}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52968417e8cf493295b735427f91c260, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
-  requiresCustomDepth: 0
-  requiresCustomColor: 0
 --- !u!114 &1708515830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29709,6 +28464,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1708515834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708515829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52968417e8cf493295b735427f91c260, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requiresCustomDepth: 0
+  requiresCustomColor: 0
 --- !u!1001 &1712554313
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30704,7 +29473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 2
-  uiElementToSelect: {fileID: 908419752}
+  uiElementToSelect: {fileID: 1998793870}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
   closingMenuAnimatorList:
@@ -30741,7 +29510,6 @@ MonoBehaviour:
   settingState: 11
   selectedImage: {fileID: 783205192}
   isSelected: 0
-  lastSelected: {fileID: 0}
 --- !u!114 &1801474022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30754,7 +29522,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3daf9d1bba00f541ae3c61b5a04c183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectOnCancel: {fileID: 908419752}
+  selectOnCancel: {fileID: 1998793870}
+  transitionOnCancel: {fileID: 0}
+  selectLocallyOnCancel: 0
   menuToOpen: {fileID: 90770599}
   menuToClose: {fileID: 571270062}
   menuState_ToSelect: 2
@@ -31957,7 +30727,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 2
-  uiElementToSelect: {fileID: 908419752}
+  uiElementToSelect: {fileID: 1952893436}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
   closingMenuAnimatorList:
@@ -31994,7 +30764,6 @@ MonoBehaviour:
   settingState: 11
   selectedImage: {fileID: 1141253450}
   isSelected: 0
-  lastSelected: {fileID: 0}
 --- !u!114 &1904105205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32007,7 +30776,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3daf9d1bba00f541ae3c61b5a04c183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectOnCancel: {fileID: 908419752}
+  selectOnCancel: {fileID: 1952893436}
+  transitionOnCancel: {fileID: 0}
+  selectLocallyOnCancel: 0
   menuToOpen: {fileID: 90770599}
   menuToClose: {fileID: 571270062}
   menuState_ToSelect: 2
@@ -33660,7 +32431,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newMenuState: 2
-  uiElementToSelect: {fileID: 908419752}
+  uiElementToSelect: {fileID: 1798834515}
   showVisualization: 0
   navigationColor: {r: 0, g: 1, b: 1, a: 1}
   closingMenuAnimatorList:
@@ -33697,7 +32468,6 @@ MonoBehaviour:
   settingState: 11
   selectedImage: {fileID: 1080319189}
   isSelected: 0
-  lastSelected: {fileID: 0}
 --- !u!114 &1967653035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33710,7 +32480,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3daf9d1bba00f541ae3c61b5a04c183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectOnCancel: {fileID: 908419752}
+  selectOnCancel: {fileID: 1798834515}
+  transitionOnCancel: {fileID: 0}
+  selectLocallyOnCancel: 0
   menuToOpen: {fileID: 90770599}
   menuToClose: {fileID: 571270062}
   menuState_ToSelect: 2
@@ -34509,23 +33281,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[0]
-      value:
+      value: 
       objectReference: {fileID: 1869201560}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[1]
-      value:
+      value: 
       objectReference: {fileID: 1930639129}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[2]
-      value:
+      value: 
       objectReference: {fileID: 1385494460}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[3]
-      value:
+      value: 
       objectReference: {fileID: 1689483887}
     - target: {fileID: 1216312224889572074, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: levelsToBeFinished.Array.data[4]
-      value:
+      value: 
       objectReference: {fileID: 1285930008}
     - target: {fileID: 1330780132882266929, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
       propertyPath: m_Name
@@ -34789,17 +33561,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4921006152386638099, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
   m_PrefabInstance: {fileID: 2018854810}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2018854812}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &2018854812 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1330780132882266929, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
-  m_PrefabInstance: {fileID: 2018854810}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &2018854813 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7569002106724044432, guid: 3769f803802e29c499e2acd6b0088569, type: 3}
@@ -36038,6 +34805,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnCancel: {fileID: 0}
+  transitionOnCancel: {fileID: 0}
+  selectLocallyOnCancel: 0
   menuToOpen: {fileID: 1723724837}
   menuToClose: {fileID: 2058110170}
   menuState_ToSelect: 1
@@ -40358,18 +39127,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1407384773}
     - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
-      propertyPath: freeCamSpeedImage
-      value:
-      objectReference: {fileID: 1519472301}
-    - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
-      propertyPath: freeCamSensitivityImage
-      value:
-      objectReference: {fileID: 1519472302}
-    - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
-      propertyPath: guidePopupsImage
-      value:
-      objectReference: {fileID: 1519472303}
-    - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
       propertyPath: textSpeedImage
       value: 
       objectReference: {fileID: 805820664}
@@ -40378,9 +39135,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1967449928}
     - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
+      propertyPath: guidePopupsImage
+      value: 
+      objectReference: {fileID: 1519472303}
+    - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
       propertyPath: cameraMotionImage
       value: 
       objectReference: {fileID: 1434294903}
+    - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
+      propertyPath: freeCamSpeedImage
+      value: 
+      objectReference: {fileID: 1519472301}
     - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
       propertyPath: stepsDisplayImage
       value: 
@@ -40405,6 +39170,10 @@ PrefabInstance:
       propertyPath: marker_DialogueVolume
       value: 
       objectReference: {fileID: 1967449923}
+    - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
+      propertyPath: freeCamSensitivityImage
+      value: 
+      objectReference: {fileID: 1519472302}
     - target: {fileID: 6700182922726613318, guid: 5ff6c3b0e2cc87c4faa44ca87b2ba001, type: 3}
       propertyPath: marker_EnviromentVolume
       value: 
@@ -40514,36 +39283,3 @@ SceneRoots:
   - {fileID: 987133965}
   - {fileID: 1999907177}
   - {fileID: 1460929833}
---- !u!114 &1519472301 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6227564972117171337, guid: 708f515159424df4292f33b367a505ee, type: 3}
-  m_PrefabInstance: {fileID: 207062894}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
---- !u!114 &1519472302 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6227564972117171338, guid: 708f515159424df4292f33b367a505ee, type: 3}
-  m_PrefabInstance: {fileID: 207062894}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
---- !u!114 &1519472303 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6227564972117171339, guid: 708f515159424df4292f33b367a505ee, type: 3}
-  m_PrefabInstance: {fileID: 207062894}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:

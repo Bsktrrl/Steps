@@ -16,7 +16,7 @@ public class PlayerDrowning_SoundManager : MonoBehaviour
     }
     private void OnDisable()
     {
-        Player_Burning.Action_PlayerStartedBurning -= Drowning_Start;
+        Movement.Action_isDrowning -= Drowning_Start;
     }
 
 
@@ -25,12 +25,14 @@ public class PlayerDrowning_SoundManager : MonoBehaviour
 
     void Drowning_Start()
     {
-        StartCoroutine(StartDrowningSound(0.25f));
+        if (isActiveAndEnabled && player_Downing_Start)
+            StartCoroutine(StartDrowningSound(0.25f));
     }
     IEnumerator StartDrowningSound(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
 
-        player_Downing_Start.Play();
+        if (isActiveAndEnabled && player_Downing_Start)
+            player_Downing_Start.Play();
     }
 }
